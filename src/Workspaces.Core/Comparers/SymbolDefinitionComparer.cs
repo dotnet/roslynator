@@ -19,6 +19,8 @@ namespace Roslynator
 
         public static SymbolDefinitionComparer SystemFirst { get; } = new DefaultSymbolDefinitionComparer(SymbolDefinitionSortOptions.SystemFirst);
 
+        public static SymbolDefinitionComparer OmitContainingNamespace { get; } = new DefaultSymbolDefinitionComparer(SymbolDefinitionSortOptions.OmitContainingNamespace);
+
         public static SymbolDefinitionComparer SystemFirstOmitContainingNamespace { get; } = new DefaultSymbolDefinitionComparer(SymbolDefinitionSortOptions.SystemFirst | SymbolDefinitionSortOptions.OmitContainingNamespace);
 
         public SymbolDefinitionSortOptions Options { get; }

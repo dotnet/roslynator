@@ -7,7 +7,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp.Syntax;
-using static Roslynator.CSharp.Refactorings.ReplaceStringLiteralRefactoring;
+using static Roslynator.CSharp.Refactorings.ConvertStringLiteralRefactoring;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -35,7 +35,7 @@ namespace Roslynator.CSharp.Refactorings
                         "Insert interpolation",
                         cancellationToken =>
                         {
-                            return ReplaceWithInterpolatedStringAsync(
+                            return ConvertToInterpolatedStringAsync(
                                 context.Document,
                                 literalExpression,
                                 startIndex,
@@ -59,7 +59,7 @@ namespace Roslynator.CSharp.Refactorings
                                     "Insert interpolation with nameof",
                                     cancellationToken =>
                                     {
-                                        return ReplaceWithInterpolatedStringAsync(
+                                        return ConvertToInterpolatedStringAsync(
                                             context.Document,
                                             literalExpression,
                                             startIndex,
@@ -82,41 +82,41 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     if (info.ContainsEscapeSequence)
                     {
-                        if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceVerbatimStringLiteralWithRegularStringLiteral))
+                        if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertVerbatimStringLiteralToRegularStringLiteral))
                         {
                             context.RegisterRefactoring(
-                                "Replace verbatim string literal with regular string literal",
+                                "Convert to regular string",
                                 ct => ReplaceWithRegularStringLiteralAsync(context.Document, literalExpression, ct),
-                                RefactoringIdentifiers.ReplaceVerbatimStringLiteralWithRegularStringLiteral);
+                                RefactoringIdentifiers.ConvertVerbatimStringLiteralToRegularStringLiteral);
                         }
 
-                        if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceVerbatimStringLiteralWithRegularStringLiterals)
+                        if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertVerbatimStringLiteralToRegularStringLiterals)
                             && info.ContainsLinefeed)
                         {
                             context.RegisterRefactoring(
-                                "Replace verbatim string literal with regular string literals",
-                                ct => ReplaceWithRegularStringLiteralsAsync(context.Document, literalExpression, ct),
-                                RefactoringIdentifiers.ReplaceVerbatimStringLiteralWithRegularStringLiterals);
+                                "Convert to regular strings",
+                                ct => ConvertToRegularStringLiteralsAsync(context.Document, literalExpression, ct),
+                                RefactoringIdentifiers.ConvertVerbatimStringLiteralToRegularStringLiterals);
                         }
                     }
                 }
-                else if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceRegularStringLiteralWithVerbatimStringLiteral)
+                else if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertRegularStringLiteralToVerbatimStringLiteral)
                     && info.ContainsEscapeSequence)
                 {
                     context.RegisterRefactoring(
-                        "Replace regular string literal with verbatim string literal",
-                        ct => ReplaceWithVerbatimStringLiteralAsync(context.Document, literalExpression, ct),
-                        RefactoringIdentifiers.ReplaceRegularStringLiteralWithVerbatimStringLiteral);
+                        "Convert to verbatim string",
+                        ct => ConvertToVerbatimStringLiteralAsync(context.Document, literalExpression, ct),
+                        RefactoringIdentifiers.ConvertRegularStringLiteralToVerbatimStringLiteral);
                 }
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseStringEmptyInsteadOfEmptyStringLiteral)
-                && CanReplaceWithStringEmpty(literalExpression))
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertEmptyStringToStringEmpty)
+                && CanConvertToStringEmpty(literalExpression))
             {
                 context.RegisterRefactoring(
-                    "Replace \"\" with 'string.Empty'",
-                    ct => ReplaceWithStringEmptyAsync(context.Document, literalExpression, ct),
-                RefactoringIdentifiers.UseStringEmptyInsteadOfEmptyStringLiteral);
+                    "Convert to 'string.Empty'",
+                    ct => ConvertToStringEmptyAsync(context.Document, literalExpression, ct),
+                RefactoringIdentifiers.ConvertEmptyStringToStringEmpty);
             }
         }
 

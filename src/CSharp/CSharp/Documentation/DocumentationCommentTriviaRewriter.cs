@@ -28,7 +28,7 @@ namespace Roslynator.CSharp.Documentation
 
                 if (tokens.Count == 1)
                 {
-                    SyntaxToken token = tokens.First();
+                    SyntaxToken token = tokens[0];
 
                     string text = token.Text;
 

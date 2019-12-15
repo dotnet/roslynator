@@ -53,6 +53,72 @@ class C
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SwapBinaryOperands)]
+        public async Task Test_BitwiseAnd()
+        {
+            await VerifyRefactoringAsync(@"
+class C
+{
+    void M(bool f1, bool f2)
+    {
+        bool f = f1 [||]& f2;
+    }
+}
+", @"
+class C
+{
+    void M(bool f1, bool f2)
+    {
+        bool f = f2 & f1;
+    }
+}
+", equivalenceKey: RefactoringId);
+        }
+
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SwapBinaryOperands)]
+        public async Task Test_BitwiseOr()
+        {
+            await VerifyRefactoringAsync(@"
+class C
+{
+    void M(bool f1, bool f2)
+    {
+        bool f = f1 [||]| f2;
+    }
+}
+", @"
+class C
+{
+    void M(bool f1, bool f2)
+    {
+        bool f = f2 | f1;
+    }
+}
+", equivalenceKey: RefactoringId);
+        }
+
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SwapBinaryOperands)]
+        public async Task Test_ExclusiveOr()
+        {
+            await VerifyRefactoringAsync(@"
+class C
+{
+    void M(bool f1, bool f2)
+    {
+        bool f = f1 [||]^ f2;
+    }
+}
+", @"
+class C
+{
+    void M(bool f1, bool f2)
+    {
+        bool f = f2 ^ f1;
+    }
+}
+", equivalenceKey: RefactoringId);
+        }
+
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SwapBinaryOperands)]
         public async Task TestNoRefactoring()
         {
             await VerifyNoRefactoringAsync(@"

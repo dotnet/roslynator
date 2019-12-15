@@ -35,10 +35,10 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 case SyntaxKind.NumericLiteralExpression:
                     {
-                        if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceHexadecimalLiteralWithDecimalLiteral)
+                        if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertHexadecimalLiteralToDecimalLiteral)
                             && context.Span.IsBetweenSpans(literalExpression))
                         {
-                            ReplaceHexadecimalLiteralWithDecimalLiteralRefactoring.ComputeRefactoring(context, literalExpression);
+                            ConvertHexadecimalLiteralToDecimalLiteralRefactoring.ComputeRefactoring(context, literalExpression);
                         }
 
                         break;

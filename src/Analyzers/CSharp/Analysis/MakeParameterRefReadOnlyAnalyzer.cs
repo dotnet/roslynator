@@ -110,72 +110,79 @@ namespace Roslynator.CSharp.Analysis
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                if (parameter.RefKind == RefKind.None)
+                if (parameter.RefKind != RefKind.None)
+                    continue;
+
+                ITypeSymbol type = parameter.Type;
+
+                if (type.Kind == SymbolKind.ErrorType)
+                    continue;
+
+                if (CSharpFacts.IsSimpleType(type.SpecialType))
+                    continue;
+
+                //TODO: ITypeSymbol.IsReadOnly, https://github.com/dotnet/roslyn/issues/23792
+                if (!type.IsReadOnlyStruct())
+                    continue;
+
+                if (walker == null)
                 {
-                    ITypeSymbol type = parameter.Type;
+                    if (methodSymbol.ImplementsInterfaceMember(allInterfaces: true))
+                        break;
 
-                    //TODO: ITypeSymbol.IsReadOnly, https://github.com/dotnet/roslyn/issues/23792
-                    if (type.IsReadOnlyStruct())
-                    {
-                        if (walker == null)
-                        {
-                            if (methodSymbol.ImplementsInterfaceMember(allInterfaces: true))
-                                return;
-
-                            walker = SyntaxWalker.GetInstance();
-                        }
-
-                        if (walker.Parameters.ContainsKey(parameter.Name))
-                        {
-                            SyntaxWalker.Free(walker);
-                            return;
-                        }
-
-                        walker.Parameters.Add(parameter.Name, parameter);
-                    }
+                    walker = SyntaxWalker.GetInstance();
                 }
+                else if (walker.Parameters.ContainsKey(parameter.Name))
+                {
+                    walker.Parameters.Clear();
+                    break;
+                }
+
+                walker.Parameters.Add(parameter.Name, parameter);
             }
 
             if (walker == null)
                 return;
 
-            walker.SemanticModel = semanticModel;
-            walker.CancellationToken = cancellationToken;
+            if (walker.Parameters.Count > 0)
+            {
+                walker.SemanticModel = semanticModel;
+                walker.CancellationToken = cancellationToken;
 
-            if (bodyOrExpressionBody is BlockSyntax body)
-            {
-                walker.VisitBlock(body);
-            }
-            else
-            {
-                walker.VisitArrowExpressionClause((ArrowExpressionClauseSyntax)bodyOrExpressionBody);
-            }
+                if (bodyOrExpressionBody is BlockSyntax body)
+                {
+                    walker.VisitBlock(body);
+                }
+                else
+                {
+                    walker.VisitArrowExpressionClause((ArrowExpressionClauseSyntax)bodyOrExpressionBody);
+                }
 
-            switch (declaration.Kind())
-            {
-                case SyntaxKind.MethodDeclaration:
+                if (walker.Parameters.Count > 0
+                    && !IsReferencedAsMethodGroup())
+                {
+                    foreach (KeyValuePair<string, IParameterSymbol> kvp in walker.Parameters)
                     {
-                        if (MethodReferencedAsMethodGroupWalker.IsReferencedAsMethodGroup(declaration.Parent, methodSymbol, semanticModel, cancellationToken))
-                            return;
-
-                        break;
+                        if (kvp.Value.GetSyntaxOrDefault(cancellationToken) is ParameterSyntax parameter)
+                            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.MakeParameterRefReadOnly, parameter.Identifier);
                     }
-                case SyntaxKind.LocalFunctionStatement:
-                    {
-                        if (MethodReferencedAsMethodGroupWalker.IsReferencedAsMethodGroup(declaration.FirstAncestor<MemberDeclarationSyntax>(), methodSymbol, semanticModel, cancellationToken))
-                            return;
-
-                        break;
-                    }
-            }
-
-            foreach (KeyValuePair<string, IParameterSymbol> kvp in walker.Parameters)
-            {
-                if (kvp.Value.GetSyntaxOrDefault(cancellationToken) is ParameterSyntax parameter)
-                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.MakeParameterRefReadOnly, parameter.Identifier);
+                }
             }
 
             SyntaxWalker.Free(walker);
+
+            bool IsReferencedAsMethodGroup()
+            {
+                switch (declaration.Kind())
+                {
+                    case SyntaxKind.MethodDeclaration:
+                        return MethodReferencedAsMethodGroupWalker.IsReferencedAsMethodGroup(declaration.Parent, methodSymbol, semanticModel, cancellationToken);
+                    case SyntaxKind.LocalFunctionStatement:
+                        return MethodReferencedAsMethodGroupWalker.IsReferencedAsMethodGroup(declaration.FirstAncestor<MemberDeclarationSyntax>(), methodSymbol, semanticModel, cancellationToken);
+                    default:
+                        return false;
+                }
+            }
         }
 
         private class SyntaxWalker : AssignedExpressionWalker
@@ -195,13 +202,12 @@ namespace Roslynator.CSharp.Analysis
 
             public void Reset()
             {
+                Parameters.Clear();
+                SemanticModel = null;
+                CancellationToken = default;
                 _isInAssignedExpression = false;
                 _localFunctionDepth = 0;
                 _anonymousFunctionDepth = 0;
-
-                SemanticModel = null;
-                CancellationToken = default;
-                Parameters.Clear();
             }
 
             protected override bool ShouldVisit
@@ -216,7 +222,7 @@ namespace Roslynator.CSharp.Analysis
                 string name = node.Identifier.ValueText;
 
                 if (Parameters.TryGetValue(name, out IParameterSymbol parameterSymbol)
-                    && SemanticModel.GetSymbol(node, CancellationToken).Equals(parameterSymbol))
+                    && parameterSymbol.Equals(SemanticModel.GetSymbol(node, CancellationToken)))
                 {
                     if (_isInAssignedExpression
                         || _localFunctionDepth > 0
@@ -284,18 +290,21 @@ namespace Roslynator.CSharp.Analysis
 
                 if (walker != null)
                 {
+                    Debug.Assert(walker.Parameters.Count == 0);
+                    Debug.Assert(walker.SemanticModel == null);
+                    Debug.Assert(walker.CancellationToken == default);
+
                     _cachedInstance = null;
                     return walker;
                 }
-                else
-                {
-                    return new SyntaxWalker();
-                }
+
+                return new SyntaxWalker();
             }
 
             public static void Free(SyntaxWalker walker)
             {
                 walker.Reset();
+
                 _cachedInstance = walker;
             }
         }

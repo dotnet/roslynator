@@ -54,7 +54,8 @@ namespace Roslynator.CSharp.CodeFixes
                     CompilerDiagnosticIdentifiers.BaseTypeIsNotCLSCompliant,
                     CompilerDiagnosticIdentifiers.ArraysAsAttributeArgumentsIsNotCLSCompliant,
                     CompilerDiagnosticIdentifiers.ConstraintTypeIsNotCLSCompliant,
-                    CompilerDiagnosticIdentifiers.TypeIsNotCLSCompliantBecauseBaseInterfaceIsNotCLSCompliant);
+                    CompilerDiagnosticIdentifiers.TypeIsNotCLSCompliantBecauseBaseInterfaceIsNotCLSCompliant,
+                    CompilerDiagnosticIdentifiers.ExplicitInterfaceDeclarationIsNotMemberOfInterface);
             }
         }
 
@@ -160,7 +161,7 @@ namespace Roslynator.CSharp.CodeFixes
                                     }
                                 case SyntaxKind.EventFieldDeclaration:
                                     {
-                                        VariableDeclaratorSyntax declarator = ((EventFieldDeclarationSyntax)memberDeclaration).Declaration.Variables.First();
+                                        VariableDeclaratorSyntax declarator = ((EventFieldDeclarationSyntax)memberDeclaration).Declaration.Variables[0];
 
                                         var eventSymbol = (IEventSymbol)semanticModel.GetDeclaredSymbol(declarator, context.CancellationToken);
 
@@ -409,6 +410,24 @@ namespace Roslynator.CSharp.CodeFixes
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case CompilerDiagnosticIdentifiers.ExplicitInterfaceDeclarationIsNotMemberOfInterface:
+                        {
+                            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddParameterToExplicitlyImplementedInterfaceMember))
+                                break;
+
+                            var context2 = new CommonFixContext(
+                                context.Document,
+                                GetEquivalenceKey(diagnostic),
+                                await context.GetSemanticModelAsync().ConfigureAwait(false),
+                                context.CancellationToken);
+
+                            CodeAction codeAction = AddParameterToInterfaceMemberRefactoring.ComputeRefactoringForExplicitImplementation(context2, memberDeclaration);
+
+                            if (codeAction != null)
+                                context.RegisterCodeFix(codeAction, diagnostic);
+
                             break;
                         }
                 }

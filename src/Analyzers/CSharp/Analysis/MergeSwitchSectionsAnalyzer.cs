@@ -54,9 +54,7 @@ namespace Roslynator.CSharp.Analysis
         {
             SyntaxList<StatementSyntax> statements = GetStatementsOrDefault(sections[0]);
 
-            int i = 1;
-
-            while (i < sections.Count)
+            for (int i = 1; i < sections.Count; i++)
             {
                 SyntaxList<StatementSyntax> nextStatements = GetStatementsOrDefault(sections[i]);
 
@@ -68,7 +66,6 @@ namespace Roslynator.CSharp.Analysis
                 }
 
                 statements = nextStatements;
-                i++;
             }
 
             return null;

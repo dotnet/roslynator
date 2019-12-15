@@ -29,8 +29,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 SyntaxToken identifier = classDeclaration.Identifier;
 
-                if (!identifier.IsMissing
-                    && span.Start >= identifier.Span.End
+                if (CheckIdentifierAndSpan(identifier, span)
                     && span.End <= identifier.GetNextToken().SpanStart)
                 {
                     RegisterRefactoring(context, classDeclaration);
@@ -55,6 +54,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (!identifier.IsMissing
                     && span.Start >= identifier.Span.End
+                    && CheckIdentifierAndSpan(identifier, span)
                     && span.End <= identifier.GetNextToken().SpanStart)
                 {
                     RegisterRefactoring(context, structDeclaration);
@@ -79,6 +79,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (!identifier.IsMissing
                     && span.Start >= identifier.Span.End
+                    && CheckIdentifierAndSpan(identifier, span)
                     && span.End <= identifier.GetNextToken().SpanStart)
                 {
                     RegisterRefactoring(context, interfaceDeclaration);
@@ -102,7 +103,8 @@ namespace Roslynator.CSharp.Refactorings
                 SyntaxToken identifier = delegateDeclaration.Identifier;
 
                 if (!identifier.IsMissing
-                    && span.Start >= identifier.Span.End)
+                    && span.Start >= identifier.Span.End
+                    && CheckIdentifierAndSpan(identifier, span))
                 {
                     ParameterListSyntax parameterList = delegateDeclaration.ParameterList;
 
@@ -131,7 +133,8 @@ namespace Roslynator.CSharp.Refactorings
                 SyntaxToken identifier = methodDeclaration.Identifier;
 
                 if (!identifier.IsMissing
-                    && span.Start >= identifier.Span.End)
+                    && span.Start >= identifier.Span.End
+                    && CheckIdentifierAndSpan(identifier, span))
                 {
                     ParameterListSyntax parameterList = methodDeclaration.ParameterList;
 
@@ -161,7 +164,8 @@ namespace Roslynator.CSharp.Refactorings
                 SyntaxToken identifier = localFunctionStatement.Identifier;
 
                 if (!identifier.IsMissing
-                    && span.Start >= identifier.Span.End)
+                    && span.Start >= identifier.Span.End
+                    && CheckIdentifierAndSpan(identifier, span))
                 {
                     ParameterListSyntax parameterList = localFunctionStatement.ParameterList;
 
@@ -172,6 +176,26 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 }
             }
+        }
+
+        private static bool CheckIdentifierAndSpan(SyntaxToken identifier, TextSpan span)
+        {
+            if (identifier.IsMissing)
+                return false;
+
+            if (span.Start < identifier.Span.End)
+                return false;
+
+            foreach (SyntaxTrivia trivia in identifier.TrailingTrivia)
+            {
+                if (trivia.SpanStart >= span.End)
+                    break;
+
+                if (!trivia.IsWhitespaceTrivia())
+                    return false;
+            }
+
+            return true;
         }
 
         private static void RegisterRefactoring(RefactoringContext context, SyntaxNode node)

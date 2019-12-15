@@ -98,7 +98,6 @@ namespace Roslynator
         /// <summary>
         /// Gets the first selected node.
         /// </summary>
-        /// <returns></returns>
         public TNode First()
         {
             return UnderlyingList[FirstIndex];
@@ -107,7 +106,6 @@ namespace Roslynator
         /// <summary>
         /// Gets the last selected node.
         /// </summary>
-        /// <returns></returns>
         public TNode Last()
         {
             return UnderlyingList[LastIndex];
@@ -118,7 +116,6 @@ namespace Roslynator
         /// </summary>
         /// <param name="list"></param>
         /// <param name="span"></param>
-        /// <returns></returns>
         public static SeparatedSyntaxListSelection<TNode> Create(SeparatedSyntaxList<TNode> list, TextSpan span)
         {
             SelectionResult result = SelectionResult.Create(list, span);
@@ -167,7 +164,6 @@ namespace Roslynator
         /// <summary>
         /// Returns an enumerator that iterates through selected nodes.
         /// </summary>
-        /// <returns></returns>
         public Enumerator GetEnumerator()
         {
             return new Enumerator(this);

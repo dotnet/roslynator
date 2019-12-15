@@ -42,7 +42,7 @@ namespace Roslynator.CSharp.Analysis
             if (!labels.Any())
                 return;
 
-            StatementSyntax statement = statements.First();
+            StatementSyntax statement = statements[0];
 
             if (!switchSection.SyntaxTree.IsSingleLineSpan(TextSpan.FromBounds(labels.Last().Span.End, statement.SpanStart)))
                 return;

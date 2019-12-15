@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.Refactorings
                 var tryStatement = (TryStatementSyntax)finallyClause.Parent;
 
                 SyntaxList<CatchClauseSyntax> catches = tryStatement.Catches;
-                CatchClauseSyntax lastCatch = catches[catches.Count - 1];
+                CatchClauseSyntax lastCatch = catches.Last();
 
                 if (lastCatch.GetTrailingTrivia().IsEmptyOrWhitespace())
                 {

@@ -33,8 +33,8 @@ namespace Roslynator.CSharp.Analysis
 
             if (forStatement.Declaration == null
                 && forStatement.Condition == null
-                && forStatement.Incrementors.Count == 0
-                && forStatement.Initializers.Count == 0
+                && !forStatement.Incrementors.Any()
+                && !forStatement.Initializers.Any()
                 && !forStatement.OpenParenToken.ContainsDirectives
                 && !forStatement.FirstSemicolonToken.ContainsDirectives
                 && !forStatement.SecondSemicolonToken.ContainsDirectives

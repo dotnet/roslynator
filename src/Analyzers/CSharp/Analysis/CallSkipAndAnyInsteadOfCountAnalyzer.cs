@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.Analysis
             if (!invocationInfo.Success)
                 return;
 
-            if (invocationInfo.Arguments.Count != 0)
+            if (invocationInfo.Arguments.Any())
                 return;
 
             if (invocationInfo.NameText != "Count")

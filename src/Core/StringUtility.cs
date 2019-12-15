@@ -141,25 +141,6 @@ namespace Roslynator
             return StringBuilderCache.GetStringAndFree(sb);
         }
 
-        public static bool IsCamelCasePrefixedWithUnderscore(string value)
-        {
-            if (value == null)
-                throw new ArgumentNullException(nameof(value));
-
-            if (value[0] == '_')
-            {
-                if (value.Length > 1)
-                {
-                    return value[1] != '_'
-                        && !char.IsUpper(value[1]);
-                }
-
-                return true;
-            }
-
-            return false;
-        }
-
         public static bool HasPrefix(string value, string prefix, StringComparison comparison = StringComparison.Ordinal)
         {
             if (value == null)

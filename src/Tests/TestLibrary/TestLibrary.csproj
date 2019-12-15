@@ -9,6 +9,7 @@
     <CodeAnalysisRuleSet>..\..\global.ruleset</CodeAnalysisRuleSet>
     <AssemblyName>Roslynator.Tests.TestLibrary</AssemblyName>
     <RootNamespace>Roslynator.Tests.TestLibrary</RootNamespace>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>

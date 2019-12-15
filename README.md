@@ -8,12 +8,13 @@ A collection of 500+ [analyzers](src/Analyzers/README.md), [refactorings](src/Re
 * [NuGet Analyzers](#nuget-analyzers)
 * [Roslynator API](#roslynator-api)
 * [Roslynator Command-Line Interface](#roslynator-command-line-interface)
-* [Roslynator for VS Code](#roslynator-for-vs-code)
+* [Roslynator for VS Code](#extensions-for-visual-studio-code)
 * [Release notes](ChangeLog.md)
 * Follow on [Twitter](https://twitter.com/roslynator)
 
 ### New Features
 
+* [Roslynator for Visual Studio Code](#extensions-for-visual-studio-code)
 * [Fix all diagnostics in a solution](docs/HowToFixAllDiagnostics.md)
 * [Generate API documentation](docs/HowToGenerateDocumentation.md)
 
@@ -30,11 +31,19 @@ Although Roslynator products are free of charge, any [donation](https://www.payp
 | [Roslynator 2019](https://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2019) | contains analyzers, refactorings and fixes for CS diagnostics. |
 | [Roslynator 2017](https://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2017) | contains analyzers, refactorings and fixes for CS diagnostics. |
 
+## Extensions for Visual Studio Code
+
+| Extension | Comment |
+| --- | --- |
+| [Roslynator](https://marketplace.visualstudio.com/items?itemName=josefpihrt-vscode.roslynator) | contains analyzers, refactorings and fixes for CS diagnostics. |
+
 ## NuGet Analyzers
 
 | Package | Version | Comment |
 | --- | --- | --- |
-| [Roslynator.Analyzers](https://www.nuget.org/packages/Roslynator.Analyzers) | [![NuGet](https://img.shields.io/nuget/v/Roslynator.Analyzers.svg)](https://www.nuget.org/packages/Roslynator.Analyzers) | contains only analyzers |
+| [Roslynator.Analyzers](https://www.nuget.org/packages/Roslynator.Analyzers) | [![NuGet](https://img.shields.io/nuget/v/Roslynator.Analyzers.svg)](https://www.nuget.org/packages/Roslynator.Analyzers) | common analyzers (RCS1xxx) |
+| [Roslynator.CodeAnalysis.Analyzers](https://www.nuget.org/packages/Roslynator.CodeAnalysis.Analyzers) | [![NuGet](https://img.shields.io/nuget/v/Roslynator.CodeAnalysis.Analyzers.svg)](https://www.nuget.org/packages/Roslynator.CodeAnalysis.Analyzers) | analyzers for Roslyn API (RCS9xxx) |
+| [Roslynator.Formatting.Analyzers](https://www.nuget.org/packages/Roslynator.Formatting.Analyzers) | [![NuGet](https://img.shields.io/nuget/v/Roslynator.Formatting.Analyzers.svg)](https://www.nuget.org/packages/Roslynator.Formatting.Analyzers) | formatting analyzers (RCS0xxx) |
 
 ## Roslynator API
 
@@ -53,12 +62,6 @@ Although Roslynator products are free of charge, any [donation](https://www.payp
 
 * Roslynator CLI is distributed via NuGet package [Roslynator.CommandLine](https://www.nuget.org/packages/Roslynator.CommandLine). &ensp;[![NuGet](https://img.shields.io/nuget/v/Roslynator.CommandLine.svg)](https://www.nuget.org/packages/Roslynator.CommandLine)
 * See [documentation](docs/cli/README.md).
-
-## Roslynator for VS Code
-
-Currently VS Code does not support distribution of Roslyn-based tools in an extension.
-Also it does not support analyzers at all.
-Please read the [tutorial](docs/RoslynatorForVisualStudioCode.md) how to install refactorings and code fixes for CS diagnostics.
 
 ## Documentation
 

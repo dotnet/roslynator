@@ -77,26 +77,15 @@ namespace Roslynator.CSharp.CodeFixes
                         return ((PrefixUnaryExpressionSyntax)expression).Operand;
                     }
                 case SyntaxKind.EqualsExpression:
-                    {
-                        var equalsExpression = (BinaryExpressionSyntax)expression;
-
-                        BinaryExpressionSyntax notEqualsExpression = NotEqualsExpression(
-                            equalsExpression.Left,
-                            SyntaxFactory.Token(SyntaxKind.ExclamationEqualsToken).WithTriviaFrom(equalsExpression.OperatorToken),
-                            equalsExpression.Right);
-
-                        return operand.ReplaceNode(equalsExpression, notEqualsExpression);
-                    }
                 case SyntaxKind.NotEqualsExpression:
+                case SyntaxKind.LessThanExpression:
+                case SyntaxKind.LessThanOrEqualExpression:
+                case SyntaxKind.GreaterThanExpression:
+                case SyntaxKind.GreaterThanOrEqualExpression:
                     {
-                        var notEqualsExpression = (BinaryExpressionSyntax)expression;
+                        BinaryExpressionSyntax newExpression = SyntaxInverter.InvertBinaryExpression((BinaryExpressionSyntax)expression);
 
-                        BinaryExpressionSyntax equalsExpression = NotEqualsExpression(
-                            notEqualsExpression.Left,
-                            SyntaxFactory.Token(SyntaxKind.EqualsEqualsToken).WithTriviaFrom(notEqualsExpression.OperatorToken),
-                            notEqualsExpression.Right);
-
-                        return operand.ReplaceNode(notEqualsExpression, equalsExpression);
+                        return operand.ReplaceNode(expression, newExpression);
                     }
                 case SyntaxKind.InvocationExpression:
                     {
@@ -104,7 +93,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                         var memberAccessExpression = (MemberAccessExpressionSyntax)invocationExpression.Expression;
 
-                        ExpressionSyntax lambdaExpression = invocationExpression.ArgumentList.Arguments.First().Expression.WalkDownParentheses();
+                        ExpressionSyntax lambdaExpression = invocationExpression.ArgumentList.Arguments[0].Expression.WalkDownParentheses();
 
                         SingleParameterLambdaExpressionInfo lambdaInfo = SyntaxInfo.SingleParameterLambdaExpressionInfo(lambdaExpression);
 

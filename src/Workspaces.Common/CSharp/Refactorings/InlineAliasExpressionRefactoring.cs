@@ -37,22 +37,12 @@ namespace Roslynator.CSharp.Refactorings.InlineAliasExpression
 
         private static SyntaxNode RemoveUsingDirective(SyntaxNode node, int index)
         {
-            switch (node.Kind())
+            switch (node)
             {
-                case SyntaxKind.CompilationUnit:
-                    {
-                        var compilationUnit = (CompilationUnitSyntax)node;
-
-                        UsingDirectiveSyntax usingDirective = compilationUnit.Usings[index];
-                        return compilationUnit.RemoveNode(usingDirective);
-                    }
-                case SyntaxKind.NamespaceDeclaration:
-                    {
-                        var namespaceDeclaration = (NamespaceDeclarationSyntax)node;
-
-                        UsingDirectiveSyntax usingDirective = namespaceDeclaration.Usings[index];
-                        return namespaceDeclaration.RemoveNode(usingDirective);
-                    }
+                case CompilationUnitSyntax compilationUnit:
+                    return compilationUnit.RemoveNode(compilationUnit.Usings[index]);
+                case NamespaceDeclarationSyntax namespaceDeclaration:
+                    return namespaceDeclaration.RemoveNode(namespaceDeclaration.Usings[index]);
             }
 
             return node;

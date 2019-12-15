@@ -159,7 +159,6 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Returns the underlying if statement if this <see cref="IfStatementOrElseClause"/> is wrapping if statement.
         /// </summary>
-        /// <returns></returns>
         public IfStatementSyntax AsIf()
         {
             return _ifStatement;
@@ -168,7 +167,6 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Returns the underlying else clause if this <see cref="ElseClauseSyntax"/> is wrapping else clause.
         /// </summary>
-        /// <returns></returns>
         public ElseClauseSyntax AsElse()
         {
             return _elseClause;
@@ -177,7 +175,6 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Returns the string representation of the underlying node, not including its leading and trailing trivia.
         /// </summary>
-        /// <returns></returns>
         public override string ToString()
         {
             return Node?.ToString() ?? "";

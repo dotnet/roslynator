@@ -22,7 +22,7 @@ namespace Roslynator.CSharp.Refactorings
         public static IfAnalysisOptions GetIfAnalysisOptions(RefactoringContext context)
         {
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseCoalesceExpressionInsteadOfIf)
-                && context.IsRefactoringEnabled(RefactoringIdentifiers.UseConditionalExpressionInsteadOfIf)
+                && context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertIfToConditionalOperator)
                 && context.IsRefactoringEnabled(RefactoringIdentifiers.SimplifyIf))
             {
                 return DefaultIfAnalysisOptions;
@@ -30,7 +30,7 @@ namespace Roslynator.CSharp.Refactorings
 
             return new IfAnalysisOptions(
                 useCoalesceExpression: context.IsRefactoringEnabled(RefactoringIdentifiers.UseCoalesceExpressionInsteadOfIf),
-                useConditionalExpression: context.IsRefactoringEnabled(RefactoringIdentifiers.UseConditionalExpressionInsteadOfIf),
+                useConditionalExpression: context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertIfToConditionalOperator),
                 useBooleanExpression: context.IsRefactoringEnabled(RefactoringIdentifiers.SimplifyIf),
                 useExpression: false);
         }
@@ -50,7 +50,7 @@ namespace Roslynator.CSharp.Refactorings
                 case IfAnalysisKind.IfElseToReturnWithConditionalExpression:
                 case IfAnalysisKind.IfElseToYieldReturnWithConditionalExpression:
                 case IfAnalysisKind.IfReturnToReturnWithConditionalExpression:
-                    return RefactoringIdentifiers.UseConditionalExpressionInsteadOfIf;
+                    return RefactoringIdentifiers.ConvertIfToConditionalOperator;
                 case IfAnalysisKind.IfElseToReturnWithBooleanExpression:
                 case IfAnalysisKind.IfElseToYieldReturnWithBooleanExpression:
                 case IfAnalysisKind.IfReturnToReturnWithBooleanExpression:
@@ -80,7 +80,7 @@ namespace Roslynator.CSharp.Refactorings
                 if (isTopmostIf
                     && context.IsAnyRefactoringEnabled(
                     RefactoringIdentifiers.UseCoalesceExpressionInsteadOfIf,
-                    RefactoringIdentifiers.UseConditionalExpressionInsteadOfIf,
+                    RefactoringIdentifiers.ConvertIfToConditionalOperator,
                     RefactoringIdentifiers.SimplifyIf))
                 {
                     SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
@@ -102,18 +102,17 @@ namespace Roslynator.CSharp.Refactorings
                 }
 
                 if (context.IsAnyRefactoringEnabled(RefactoringIdentifiers.InvertIf, RefactoringIdentifiers.InvertIfElse)
-                    && isTopmostIf
                     && context.Span.IsEmptyAndContainedInSpan(ifKeyword))
                 {
                     InvertIfRefactoring.ComputeRefactoring(context, ifStatement);
                 }
 
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceIfWithSwitch)
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertIfToSwitch)
                     && isTopmostIf)
                 {
                     SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                    ReplaceIfWithSwitchRefactoring.ComputeRefactoring(context, ifStatement, semanticModel);
+                    ConvertIfToSwitchRefactoring.ComputeRefactoring(context, ifStatement, semanticModel);
                 }
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.SplitIfStatement))

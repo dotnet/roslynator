@@ -4,11 +4,18 @@ namespace Roslynator
 {
     internal static class MetadataNames
     {
+        public static readonly MetadataName Microsoft_CodeAnalysis_CSharp_CSharpSyntaxNode = MetadataName.Parse("Microsoft.CodeAnalysis.CSharp.CSharpSyntaxNode");
+        public static readonly MetadataName Microsoft_CodeAnalysis_CSharp_SyntaxKind = MetadataName.Parse("Microsoft.CodeAnalysis.CSharp.SyntaxKind");
         public static readonly MetadataName System_ArgumentException = MetadataName.Parse("System.ArgumentException");
         public static readonly MetadataName System_ArgumentNullException = MetadataName.Parse("System.ArgumentNullException");
         public static readonly MetadataName System_Attribute = MetadataName.Parse("System.Attribute");
         public static readonly MetadataName System_AttributeUsageAttribute = MetadataName.Parse("System.AttributeUsageAttribute");
         public static readonly MetadataName System_Collections_Generic = MetadataName.Parse("System.Collections.Generic");
+        public static readonly MetadataName System_Collections_IComparer = MetadataName.Parse("System.Collections.IComparer");
+        public static readonly MetadataName System_Collections_IEqualityComparer = MetadataName.Parse("System.Collections.IEqualityComparer");
+        public static readonly MetadataName System_Collections_Generic_IAsyncEnumerable_T = MetadataName.Parse("System.Collections.Generic.IAsyncEnumerable`1");
+        public static readonly MetadataName System_Collections_Generic_IComparer_T = MetadataName.Parse("System.Collections.Generic.IComparer`1");
+        public static readonly MetadataName System_Collections_Generic_IEqualityComparer_T = MetadataName.Parse("System.Collections.Generic.IEqualityComparer`1");
         public static readonly MetadataName System_Collections_Generic_IEnumerable_T = MetadataName.Parse("System.Collections.Generic.IEnumerable`1");
         public static readonly MetadataName System_Collections_Generic_List_T = MetadataName.Parse("System.Collections.Generic.List`1");
         public static readonly MetadataName System_Collections_Generic_Dictionary_T2 = MetadataName.Parse("System.Collections.Generic.Dictionary`2");
@@ -26,6 +33,8 @@ namespace Roslynator
         public static readonly MetadataName System_Func_T2 = MetadataName.Parse("System.Func`2");
         public static readonly MetadataName System_Func_T3 = MetadataName.Parse("System.Func`3");
         public static readonly MetadataName System_IEquatable_T = MetadataName.Parse("System.IEquatable`1");
+        public static readonly MetadataName System_IComparable = MetadataName.Parse("System.IComparable");
+        public static readonly MetadataName System_IComparable_T = MetadataName.Parse("System.IComparable`1");
         public static readonly MetadataName System_Linq_Enumerable = MetadataName.Parse("System.Linq.Enumerable");
         public static readonly MetadataName System_Linq_Expressions_Expression_T = MetadataName.Parse("System.Linq.Expressions.Expression`1");
         public static readonly MetadataName System_Linq_ImmutableArrayExtensions = MetadataName.Parse("System.Linq.ImmutableArrayExtensions");
@@ -49,6 +58,7 @@ namespace Roslynator
         public static readonly MetadataName System_Threading_Tasks = MetadataName.Parse("System.Threading.Tasks");
         public static readonly MetadataName System_Threading_Tasks_Task = MetadataName.Parse("System.Threading.Tasks.Task");
         public static readonly MetadataName System_Threading_Tasks_Task_T = MetadataName.Parse("System.Threading.Tasks.Task`1");
+        public static readonly MetadataName System_Threading_Tasks_ValueTask = MetadataName.Parse("System.Threading.Tasks.ValueTask");
         public static readonly MetadataName System_Threading_Tasks_ValueTask_T = MetadataName.Parse("System.Threading.Tasks.ValueTask`1");
         public static readonly MetadataName System_TimeSpan = MetadataName.Parse("System.TimeSpan");
         public static readonly MetadataName System_ValueType = MetadataName.Parse("System.ValueType");

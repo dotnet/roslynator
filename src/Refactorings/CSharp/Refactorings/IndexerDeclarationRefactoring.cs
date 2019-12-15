@@ -2,6 +2,7 @@
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings.MakeMemberAbstract;
 using Roslynator.CSharp.Refactorings.MakeMemberVirtual;
@@ -40,6 +41,19 @@ namespace Roslynator.CSharp.Refactorings
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
                 CopyDocumentationCommentFromBaseMemberRefactoring.ComputeRefactoring(context, indexerDeclaration, semanticModel);
+            }
+
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddParameterToInterfaceMember)
+                && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(indexerDeclaration.ThisKeyword))
+            {
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                foreach (CodeAction codeAction in AddParameterToInterfaceMemberRefactoring.ComputeRefactoringForImplicitImplementation(
+                    new CommonFixContext(context.Document, RefactoringIdentifiers.AddParameterToInterfaceMember, semanticModel, context.CancellationToken),
+                    indexerDeclaration))
+                {
+                    context.RegisterRefactoring(codeAction);
+                }
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddMemberToInterface)

@@ -20,7 +20,34 @@ namespace Roslynator.CSharp.Analysis.Tests
         public override CodeFixProvider FixProvider { get; } = new LocalDeclarationStatementCodeFixProvider();
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InlineLocalVariable)]
-        public async Task Test()
+        public async Task Test_LocalDeclaration()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+        // a
+        [|int x = 1 // b
+            + 1;|]
+        int y = x;
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+        // a
+        int y = 1 // b
+            + 1;
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InlineLocalVariable)]
+        public async Task Test_YieldReturn()
         {
             await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;

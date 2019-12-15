@@ -2,11 +2,14 @@
 
 using System;
 using System.Collections.Immutable;
+using System.Diagnostics;
+using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.Syntax;
+using Roslynator.CSharp.SyntaxWalkers;
 
 namespace Roslynator.CSharp.Analysis
 {
@@ -86,26 +89,121 @@ namespace Roslynator.CSharp.Analysis
 
             ISymbol symbol = context.SemanticModel.GetSymbol(identifierName, context.CancellationToken);
 
-            if (symbol == null)
-                return;
+            switch (symbol?.Kind)
+            {
+                case SymbolKind.Local:
+                    {
+                        break;
+                    }
+                case SymbolKind.Parameter:
+                    {
+                        if (((IParameterSymbol)symbol).RefKind != RefKind.None)
+                            return;
 
-            if (!IsFixableSymbol(symbol))
+                        break;
+                    }
+                default:
+                    {
+                        return;
+                    }
+            }
+
+            RemoveRedundantAssignmentWalker walker = RemoveRedundantAssignmentWalker.GetInstance();
+
+            walker.Symbol = symbol;
+            walker.SemanticModel = context.SemanticModel;
+            walker.CancellationToken = context.CancellationToken;
+            walker.Result = false;
+
+            walker.Visit(assignmentInfo.Right);
+
+            bool result = walker.Result;
+
+            RemoveRedundantAssignmentWalker.Free(walker);
+
+            if (result)
                 return;
 
             DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveRedundantAssignment, assignment);
         }
 
-        private static bool IsFixableSymbol(ISymbol symbol)
+        private class RemoveRedundantAssignmentWalker : LocalOrParameterReferenceWalker
         {
-            switch (symbol.Kind)
+            [ThreadStatic]
+            private static RemoveRedundantAssignmentWalker _cachedInstance;
+
+            private int _anonymousFunctionDepth;
+
+            public bool Result { get; set; }
+
+            public ISymbol Symbol { get; set; }
+
+            public SemanticModel SemanticModel { get; set; }
+
+            public CancellationToken CancellationToken { get; set; }
+
+            protected override bool ShouldVisit => !Result;
+
+            public override void VisitIdentifierName(IdentifierNameSyntax node)
             {
-                case SymbolKind.Local:
-                    return true;
-                case SymbolKind.Parameter:
-                    return ((IParameterSymbol)symbol).RefKind == RefKind.None;
+                if (_anonymousFunctionDepth == 0)
+                    return;
+
+                CancellationToken.ThrowIfCancellationRequested();
+
+                if (string.Equals(node.Identifier.ValueText, Symbol.Name, StringComparison.Ordinal)
+                    && SemanticModel.GetSymbol(node, CancellationToken)?.Equals(Symbol) == true)
+                {
+                    Result = true;
+                }
             }
 
-            return false;
+            public override void VisitAnonymousMethodExpression(AnonymousMethodExpressionSyntax node)
+            {
+                _anonymousFunctionDepth++;
+                base.VisitAnonymousMethodExpression(node);
+                _anonymousFunctionDepth--;
+            }
+
+            public override void VisitSimpleLambdaExpression(SimpleLambdaExpressionSyntax node)
+            {
+                _anonymousFunctionDepth++;
+                base.VisitSimpleLambdaExpression(node);
+                _anonymousFunctionDepth--;
+            }
+
+            public override void VisitParenthesizedLambdaExpression(ParenthesizedLambdaExpressionSyntax node)
+            {
+                _anonymousFunctionDepth++;
+                base.VisitParenthesizedLambdaExpression(node);
+                _anonymousFunctionDepth--;
+            }
+
+            public static RemoveRedundantAssignmentWalker GetInstance()
+            {
+                RemoveRedundantAssignmentWalker walker = _cachedInstance;
+
+                if (walker != null)
+                {
+                    Debug.Assert(walker.Symbol == null);
+                    Debug.Assert(walker.SemanticModel == null);
+                    Debug.Assert(walker.CancellationToken == default);
+
+                    _cachedInstance = null;
+                    return walker;
+                }
+
+                return new RemoveRedundantAssignmentWalker();
+            }
+
+            public static void Free(RemoveRedundantAssignmentWalker walker)
+            {
+                walker.Symbol = null;
+                walker.SemanticModel = null;
+                walker.CancellationToken = default;
+
+                _cachedInstance = walker;
+            }
         }
     }
 }

@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Xunit;
@@ -109,13 +110,16 @@ namespace Roslynator.Tests
             }
         }
 
-        public static async Task VerifyAdditionalDocumentsAsync(Project project, ImmutableArray<ExpectedDocument> expectedDocuments)
+        public static async Task VerifyAdditionalDocumentsAsync(
+            Project project,
+            ImmutableArray<ExpectedDocument> expectedDocuments,
+            CancellationToken cancellationToken = default)
         {
             foreach (ExpectedDocument expectedDocument in expectedDocuments)
             {
                 Document document = project.GetDocument(expectedDocument.Id);
 
-                string actual = await document.ToFullStringAsync(simplify: true, format: true).ConfigureAwait(false);
+                string actual = await document.ToFullStringAsync(simplify: true, format: true, cancellationToken).ConfigureAwait(false);
 
                 Assert.Equal(expectedDocument.Text, actual);
             }

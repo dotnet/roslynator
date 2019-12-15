@@ -45,7 +45,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static void RegisterRefactoring(RefactoringContext context, StatementSyntax statement)
         {
-            bool isEmbedded = statement.IsEmbedded(canBeIfInsideElse: false);
+            bool isEmbedded = statement.IsEmbedded();
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveStatement)
                 && !isEmbedded)
@@ -90,10 +90,8 @@ namespace Roslynator.CSharp.Refactorings
                         if (block.OpenBraceToken.Span.Contains(context.Span)
                             || block.CloseBraceToken.Span.Contains(context.Span))
                         {
-                            if (parent.IsKind(SyntaxKind.UsingStatement))
+                            if (parent is UsingStatementSyntax usingStatement)
                             {
-                                var usingStatement = (UsingStatementSyntax)parent;
-
                                 while (usingStatement.IsParentKind(SyntaxKind.UsingStatement))
                                     usingStatement = (UsingStatementSyntax)usingStatement.Parent;
 
@@ -127,7 +125,7 @@ namespace Roslynator.CSharp.Refactorings
                         if (ifStatement.Else == null
                             && block.CloseBraceToken.Span.Contains(context.Span))
                         {
-                            return ifStatement;
+                            return ifStatement.GetTopmostIf();
                         }
 
                         break;

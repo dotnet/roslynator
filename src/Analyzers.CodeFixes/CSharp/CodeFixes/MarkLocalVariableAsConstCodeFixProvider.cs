@@ -47,7 +47,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             if (variables.Count == 1)
             {
-                return $"'{variables.First().Identifier.ValueText}'";
+                return $"'{variables[0].Identifier.ValueText}'";
             }
             else
             {

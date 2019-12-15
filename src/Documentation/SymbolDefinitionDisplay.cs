@@ -109,7 +109,7 @@ namespace Roslynator.Documentation
                     {
                         builder.AddPunctuation(",");
 
-                        if (additionalOptions.HasOption(SymbolDisplayAdditionalOptions.FormatBaseList))
+                        if (additionalOptions.HasOption(SymbolDisplayAdditionalOptions.WrapBaseTypes))
                         {
                             builder.AddLineBreak();
                             builder.AddIndentation();
@@ -139,7 +139,7 @@ namespace Roslynator.Documentation
                         {
                             builder.AddPunctuation(",");
 
-                            if (additionalOptions.HasOption(SymbolDisplayAdditionalOptions.FormatBaseList))
+                            if (additionalOptions.HasOption(SymbolDisplayAdditionalOptions.WrapBaseTypes))
                             {
                                 builder.AddLineBreak();
                                 builder.AddIndentation();
@@ -158,7 +158,7 @@ namespace Roslynator.Documentation
 
                 if (whereIndex != -1)
                 {
-                    if (!additionalOptions.HasOption(SymbolDisplayAdditionalOptions.FormatConstraints)
+                    if (!additionalOptions.HasOption(SymbolDisplayAdditionalOptions.WrapConstraints)
                         || (baseListCount == 1 && constraintCount == 1))
                     {
                         builder.AddSpace();
@@ -176,7 +176,7 @@ namespace Roslynator.Documentation
                 for (int i = whereIndex; i < parts.Length; i++)
                 {
                     if (parts[i].IsKeyword("where")
-                        && additionalOptions.HasOption(SymbolDisplayAdditionalOptions.FormatConstraints)
+                        && additionalOptions.HasOption(SymbolDisplayAdditionalOptions.WrapConstraints)
                         && (baseListCount > 1 || constraintCount > 1))
                     {
                         builder.AddLineBreak();
@@ -954,9 +954,7 @@ namespace Roslynator.Documentation
             int bracketsDepth = 0;
             int angleBracketsDepth = 0;
 
-            int i = 0;
-
-            while (i < parts.Count)
+            for (int i = 0; i < parts.Count; i++)
             {
                 SymbolDisplayPart part = parts[i];
 
@@ -1030,8 +1028,6 @@ namespace Roslynator.Documentation
                             }
                     }
                 }
-
-                i++;
             }
 
             return -1;

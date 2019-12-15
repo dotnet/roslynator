@@ -114,7 +114,7 @@ namespace Roslynator.CSharp.Refactorings
                 selectedLabels.Count,
                 selectedLabels.OrderBy(f => f, comparer));
 
-            var section = (SwitchSectionSyntax)labels.First().Parent;
+            var section = (SwitchSectionSyntax)labels[0].Parent;
 
             SwitchSectionSyntax newSection = section.WithLabels(newLabels);
 

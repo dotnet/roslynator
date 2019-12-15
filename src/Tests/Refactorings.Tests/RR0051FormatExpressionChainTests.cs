@@ -74,6 +74,37 @@ namespace A.B
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.FormatExpressionChain)]
+        public async Task TestRefactoring_ToSingleLine()
+        {
+            await VerifyRefactoringAsync(@"
+class C
+{
+    C M()
+    {
+        var x = new C();
+
+        return
+            x[||]
+                .M()
+                .M();
+    }
+}
+",
+@"
+class C
+{
+    C M()
+    {
+        var x = new C();
+
+        return
+            x.M().M();
+    }
+}
+", equivalenceKey: RefactoringId);
+        }
+
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.FormatExpressionChain)]
         public async Task TestNoRefactoring()
         {
             await VerifyNoRefactoringAsync(@"

@@ -354,7 +354,7 @@ namespace Roslynator.CSharp.Syntax
             if (!ConstraintClauses.Any())
                 return this;
 
-            TypeParameterConstraintClauseSyntax first = ConstraintClauses.First();
+            TypeParameterConstraintClauseSyntax first = ConstraintClauses[0];
 
             SyntaxToken token = first.WhereKeyword.GetPreviousToken();
 

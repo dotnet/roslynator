@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Diagnostics;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -59,7 +60,7 @@ namespace Roslynator.CSharp.Analysis
 
             SeparatedSyntaxList<VariableDeclaratorSyntax> declarators = fieldDeclaration.Declaration.Variables;
 
-            VariableDeclaratorSyntax firstDeclarator = declarators.First();
+            VariableDeclaratorSyntax firstDeclarator = declarators[0];
 
             var fieldSymbol = (IFieldSymbol)semanticModel.GetDeclaredSymbol(firstDeclarator, cancellationToken);
 
@@ -116,13 +117,16 @@ namespace Roslynator.CSharp.Analysis
 
         private class UseConstantInsteadOfFieldWalker : AssignedExpressionWalker
         {
+            [ThreadStatic]
+            private static UseConstantInsteadOfFieldWalker _cachedInstance;
+
             public IFieldSymbol FieldSymbol { get; set; }
 
             public SemanticModel SemanticModel { get; set; }
 
             public CancellationToken CancellationToken { get; set; }
 
-            public bool CanBeConvertedToConstant { get; private set; }
+            public bool CanBeConvertedToConstant { get; set; }
 
             protected override bool ShouldVisit
             {
@@ -139,20 +143,9 @@ namespace Roslynator.CSharp.Analysis
             {
                 CancellationToken.ThrowIfCancellationRequested();
 
-                expression = expression?.WalkDownParentheses();
-
-                if (expression.IsKind(SyntaxKind.IdentifierName))
-                {
-                    var identifierName = (IdentifierNameSyntax)expression;
-
-                    if (string.Equals(identifierName.Identifier.ValueText, FieldSymbol.Name, StringComparison.Ordinal)
-                        && SemanticModel.GetSymbol(identifierName, CancellationToken)?.Equals(FieldSymbol) == true)
-                    {
-                        return true;
-                    }
-                }
-
-                return false;
+                return expression?.WalkDownParentheses() is IdentifierNameSyntax identifierName
+                    && string.Equals(identifierName.Identifier.ValueText, FieldSymbol.Name, StringComparison.Ordinal)
+                    && SemanticModel.GetSymbol(identifierName, CancellationToken)?.Equals(FieldSymbol) == true;
             }
 
             public override void VisitArgument(ArgumentSyntax node)
@@ -185,23 +178,21 @@ namespace Roslynator.CSharp.Analysis
                 base.VisitArgument(node);
             }
 
-            [ThreadStatic]
-            private static UseConstantInsteadOfFieldWalker _cachedInstance;
-
             public static UseConstantInsteadOfFieldWalker GetInstance()
             {
                 UseConstantInsteadOfFieldWalker walker = _cachedInstance;
 
                 if (walker != null)
                 {
-                    _cachedInstance = null;
+                    Debug.Assert(walker.FieldSymbol == null);
+                    Debug.Assert(walker.SemanticModel == null);
+                    Debug.Assert(walker.CancellationToken == default);
 
+                    _cachedInstance = null;
                     return walker;
                 }
-                else
-                {
-                    return new UseConstantInsteadOfFieldWalker();
-                }
+
+                return new UseConstantInsteadOfFieldWalker();
             }
 
             public static void Free(UseConstantInsteadOfFieldWalker walker)

@@ -1,0 +1,1157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Analyzers>
+  <Analyzer Identifier="AddEmptyLineAfterEmbeddedStatement">
+    <Id>RCS0001</Id>
+    <Title>Add empty line after embedded statement.</Title>
+    <MessageFormat>Add empty line after embedded statement.</MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[if (x)
+    Foo(); // [|Id|]
+Bar();]]></Before>
+        <After><![CDATA[if (x)
+    Foo();
+
+Bar();]]></After>
+      </Sample>
+    </Samples>
+    <Remarks>This rule was originally introduced as [RCS1030](RCS1030.md)</Remarks>
+  </Analyzer>
+  <Analyzer Identifier="AddEmptyLineAfterRegionDirective">
+    <Id>RCS0002</Id>
+    <Title>Add empty line after #region.</Title>
+    <MessageFormat>Add empty after #region.</MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[class C
+{
+    #region Methods // [|Id|]
+    void M()
+    {
+    }
+    
+    #endregion
+}]]></Before>
+        <After><![CDATA[class C
+{
+    #region Methods
+
+    void M()
+    {
+    }
+    
+    #endregion
+}]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer Identifier="AddEmptyLineAfterUsingDirectiveList">
+    <Id>RCS0003</Id>
+    <Title>Add empty line after using directive list.</Title>
+    <MessageFormat>Add empty line after using directive list.</MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[// Copyright ...
+
+using System;
+using System.Linq; // [|Id|]
+namespace N
+{
+}]]></Before>
+        <After><![CDATA[// Copyright ...
+
+using System;
+using System.Linq;
+
+namespace N
+{
+}]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer Identifier="AddEmptyLineBeforeClosingBraceOfDoStatement">
+    <Id>RCS0004</Id>
+    <Title>Add empty line before closing brace of 'do' statement.</Title>
+    <MessageFormat>Add empty line before closing brace of 'do' statement.</MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[do
+{
+    Foo(); // [|Id|]
+} while (x);]]></Before>
+        <After><![CDATA[do
+{
+    Foo();
+
+} while (x);]]></After>
+      </Sample>
+    </Samples>
+    <Remarks>This rule was originally introduced as [RCS1092](RCS1092.md)</Remarks>
+  </Analyzer>
+  <Analyzer Identifier="AddEmptyLineBeforeEndRegionDirective">
+    <Id>RCS0005</Id>
+    <Title>Add empty line before #endregion.</Title>
+    <MessageFormat>Add empty line before #endregion.</MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before>
+          <![CDATA[class C
+{
+    #region Methods
+    
+    void M()
+    {
+    }
+    #endregion // [|Id|]
+}]]>
+        </Before>
+        <After>
+          <![CDATA[class C
+{
+    #region Methods
+
+    void M()
+    {
+    }
+    
+    #endregion
+}]]>
+        </After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer Identifier="AddEmptyLineBeforeUsingDirectiveList">
+    <Id>RCS0006</Id>
+    <Title>Add empty line before using directive list.</Title>
+    <MessageFormat>Add empty line before using directive list.</MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[// Copyright ...
+using System; // [|Id|]
+using System.Linq;
+
+namespace N
+{
+}]]></Before>
+        <After><![CDATA[// Copyright ...
+
+using System;
+using System.Linq;
+
+namespace N
+{
+}]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer Identifier="AddEmptyLineBetweenAccessors">
+    <Id>RCS0007</Id>
+    <Title>Add empty line between accessors.</Title>
+    <MessageFormat>Add empty line between accessors.</MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[string P
+{
+    get
+    {
+        return _p;
+    } // [|Id|]
+    set
+    {
+        _p = value;
+    }
+}]]></Before>
+        <After><![CDATA[string P
+{
+    get
+    {
+        return _p;
+    }
+
+    set
+    {
+        _p = value;
+    }
+}]]></After>
+      </Sample>
+    </Samples>
+    <Remarks>This rule does not enforce an empty line between two single-line accessors.</Remarks>
+  </Analyzer>
+  <Analyzer Identifier="AddEmptyLineBetweenBlockAndStatement">
+    <Id>RCS0008</Id>
+    <Title>Add empty line between block and statement.</Title>
+    <MessageFormat>Add empty line between block and statement.</MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[if (x)
+{
+} // [|Id|]
+Foo();]]></Before>
+        <After><![CDATA[if (x)
+{
+}
+
+Foo();]]></After>
+      </Sample>
+    </Samples>
+    <Remarks>This rule was originally introduced as [RCS1153](RCS1153.md)</Remarks>
+  </Analyzer>
+  <Analyzer Identifier="AddEmptyLineBetweenDeclarationAndDocumentationComment">
+    <Id>RCS0009</Id>
+    <Title>Add empty line between declaration and documentation comment.</Title>
+    <MessageFormat>Add empty line between declaration and documentation comment.</MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[object P1 { get; } // [|Id|]
+/// <summary>
+/// ...
+/// </summary>
+object P2 { get; }]]></Before>
+        <After><![CDATA[object P1 { get; }
+
+/// <summary>
+/// ...
+/// </summary>
+object P2 { get; }]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer Identifier="AddEmptyLineBetweenDeclarations">
+    <Id>RCS0010</Id>
+    <Title>Add empty line between declarations.</Title>
+    <MessageFormat>Add empty line between declarations.</MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before>
+      <![CDATA[class Foo
+{
+    void M1()
+    {
+    } // [|Id|]
+    void M2()
+    {
+    } // [|Id|]
+    /// <summary>
+    /// ...
+    /// </summary>
+    void M3()
+    {
+    } // [|Id|]
+    string P1 { get; set; } // [|Id|]
+    [Obsolete]
+    string P2 { get; set; }
+} // [|Id|]
+enum Bar
+{
+    A = 0, // [|Id|]
+    /// <summary>
+    /// ...
+    /// </summary>
+    B = 1, // [|Id|]
+    [Obsolete]
+    C = 2,
+}]]></Before>
+        <After><![CDATA[class Foo
+{
+    void M1()
+    {
+    }
+
+    void M2()
+    {
+    }
+
+    /// <summary>
+    /// ...
+    /// </summary>
+    void M3()
+    {
+    }
+
+    string P1 { get; set; }
+
+    [Obsolete]
+    string P2 { get; set; }
+}
+
+enum Bar
+{
+    A = 0,
+
+    /// <summary>
+    /// ...
+    /// </summary>
+    B = 1,
+
+    [Obsolete]
+    C = 2,
+}]]></After>
+      </Sample>
+    </Samples>
+    <Remarks>This rule was originally introduced as [RCS1057](RCS1057.md).
+
+This rule does not enforce an empty line between two single-line declaration.</Remarks>
+  </Analyzer>
+  <Analyzer Identifier="AddEmptyLineBetweenSingleLineAccessors">
+    <Id>RCS0011</Id>
+    <Title>Add empty line between single-line accessors.</Title>
+    <MessageFormat>Add empty line between single-line accessors.</MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[string P
+{
+    get { return _p; } // [|Id|]
+    set { _p = value; }
+}]]></Before>
+        <After><![CDATA[string P
+{
+    get { return _p; }
+    
+    set { _p = value; }
+}]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer Identifier="AddEmptyLineBetweenSingleLineDeclarations">
+    <Id>RCS0012</Id>
+    <Title>Add empty line between single-line declarations.</Title>
+    <MessageFormat>Add empty line between single-line declarations.</MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[object P1 { get; } // [|Id|]
+object P2 { get; }]]></Before>
+        <After>
+          <![CDATA[object P1 { get; }
+
+object P2 { get; }]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer Identifier="AddEmptyLineBetweenSingleLineDeclarationsOfDifferentKind">
+    <Id>RCS0013</Id>
+    <Title>Add empty line between single-line declarations of different kind.</Title>
+    <MessageFormat>Add empty line between single-line declarations of different kind.</MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[object P { get; } // [|Id|]
+object this[int index] { get; }]]></Before>
+        <After><![CDATA[object P { get; }
+
+object this[int index] { get; }]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer Identifier="AddEmptyLineBetweenSwitchSections">
+    <Id>RCS0014</Id>
+    <Title>Add empty line between switch sections.</Title>
+    <MessageFormat>Add empty line between switch sections.</MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before>
+          <![CDATA[switch (x)
+{
+    case "a":
+        return A(); // [|Id|]
+    case "b":
+        return B();
+}
+]]></Before>
+        <After>
+          <![CDATA[switch (x)
+{
+    case "a":
+        return A();
+
+    case "b":
+        return B();
+}
+]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer Identifier="AddEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace">
+    <Id>RCS0015</Id>
+    <Title>Add empty line between using directives with different root namespace.</Title>
+    <MessageFormat>Add empty line between using directives with different root namespace.</MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[using System; // [|Id|]
+using Microsoft.CodeAnalysis;
+
+namespace N
+{
+}]]></Before>
+        <After><![CDATA[using System;
+
+using Microsoft.CodeAnalysis;
+
+namespace N
+{
+}]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer Identifier="AddNewLineAfterAttributeList">
+    <Id>RCS0016</Id>
+    <Title>Add newline after attribute list.</Title>
+    <MessageFormat>Add newline after attribute list.</MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[enum Foo
+{
+    A,
+    [Obsolete] B, // [|Id|]
+    C,
+}]]></Before>
+        <After><![CDATA[enum Foo
+{
+    A,
+    [Obsolete]
+    B,
+    C,
+}]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer Identifier="AddNewLineAfterBinaryOperatorInsteadOfBeforeIt">
+    <Id>RCS0017</Id>
+    <Title>Add newline after binary operator instead of before it.</Title>
+    <MessageFormat>Add newline after binary operator instead of before it.</MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[if (x
+    && y // [|Id|]
+    && z)
+{
+}]]></Before>
+        <After><![CDATA[if (x &&
+    y &&
+    z)
+{
+}]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer Identifier="AddNewLineAfterConditionalOperatorInsteadOfBeforeIt">
+    <Id>RCS0018</Id>
+    <Title>Add newline after conditional operator instead of before it.</Title>
+    <MessageFormat>Add newline after conditional operator instead of before it.</MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[var y = (x)
+    ? Foo() // [|Id|]
+    : Bar();]]></Before>
+        <After><![CDATA[var y = (x) ?
+     Foo() :
+     Bar();]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer Identifier="AddNewLineAfterExpressionBodyArrowInsteadOfBeforeIt">
+    <Id>RCS0019</Id>
+    <Title>Add newline after expression-body arrow instead of before it.</Title>
+    <MessageFormat>Add newline after expression-body arrow instead of before it.</MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[object Foo()
+    => null; // [|Id|]]]></Before>
+        <After><![CDATA[object Foo() =>
+    null;]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer Identifier="AddNewLineAfterOpeningBraceOfAccessor">
+    <Id>RCS0020</Id>
+    <Title>Add newline after opening brace of accessor.</Title>
+    <MessageFormat>Add newline after opening brace of accessor.</MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[string Foo
+{
+    get { return _foo; } // [|Id|]
+}]]></Before>
+        <After><![CDATA[string Foo
+{
+    get
+    {
+        return _foo;
+    }
+}]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer Identifier="AddNewLineAfterOpeningBraceOfBlock">
+    <Id>RCS0021</Id>
+    <Title>Add newline after opening brace of block.</Title>
+    <MessageFormat>Add newline after opening brace of block.</MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[void Foo() { Bar(); } // [|Id|]]]></Before>
+        <After><![CDATA[void Foo()
+{
+    Bar();
+}]]></After>
+      </Sample>
+    </Samples>
+    <Remarks>This rule was originally introduced as [RCS1185](RCS1185.md)</Remarks>
+  </Analyzer>
+  <Analyzer Identifier="AddNewLineAfterOpeningBraceOfEmptyBlock">
+    <Id>RCS0022</Id>
+    <Title>Add newline after opening brace of empty block.</Title>
+    <MessageFormat>Add newline after opening brace of empty block.</MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[void Foo()
+{ } // [|Id|]]]></Before>
+        <After><![CDATA[void Foo()
+{
+}]]></After>
+      </Sample>
+    </Samples>
+    <Remarks>This rule was originally introduced as [RCS1023](RCS1023.md)</Remarks>
+  </Analyzer>
+  <Analyzer Identifier="AddNewLineAfterOpeningBraceOfTypeDeclaration">
+    <Id>RCS0023</Id>
+    <Title>Add newline after opening brace of type declaration.</Title>
+    <MessageFormat>Add newline after opening brace of type declaration.</MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[interface IFoo
+{ } // [|Id|]]]></Before>
+        <After>
+          <![CDATA[interface IFoo
+{
+}]]></After>
+      </Sample>
+    </Samples>
+    <Remarks>This rule was originally introduced as [RCS1076](RCS1076.md)</Remarks>
+  </Analyzer>
+  <Analyzer Identifier="AddNewLineAfterSwitchLabel">
+    <Id>RCS0024</Id>
+    <Title>Add newline after switch label.</Title>
+    <MessageFormat>Add newline after switch label.</MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[switch (x)
+{
+    case "a": return A(); // [|Id|]
+    case "b": return B();
+}]]></Before>
+        <After><![CDATA[switch (x)
+{
+    case "a":
+        return A();
+    case "b":
+        return B();
+}]]></After>
+      </Sample>
+    </Samples>
+    <Remarks>This rule was originally introduced as [RCS1028](RCS1028.md)</Remarks>
+  </Analyzer>
+  <Analyzer Identifier="AddNewLineBeforeAccessorOfFullProperty">
+    <Id>RCS0025</Id>
+    <Title>Add newline before accessor of full property.</Title>
+    <MessageFormat>Add newline before accessor of full property.</MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[string Foo { get { return _foo; } set { _foo = value; } } // [|Id|]]]></Before>
+        <After><![CDATA[string Foo
+{
+    get { return _foo; }
+    set { _foo = value; }
+}]]></After>
+      </Sample>
+    </Samples>
+    <Remarks>This rule was derived from [RCS1024](RCS1024.md).</Remarks>
+  </Analyzer>
+  <Analyzer Identifier="AddNewLineBeforeBinaryOperatorInsteadOfAfterIt">
+    <Id>RCS0027</Id>
+    <Title>Add newline before binary operator instead of after it.</Title>
+    <MessageFormat>Add newline before binary operator instead of after it.</MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[if (x && // [|Id|]
+    y &&
+    z)
+{
+}]]></Before>
+        <After><![CDATA[if (x
+    && y
+    && z)
+{
+}]]></After>
+      </Sample>
+    </Samples>
+    <Remarks>This rule was originally introduced as [RCS1029](RCS1029.md)</Remarks>
+  </Analyzer>
+  <Analyzer Identifier="AddNewLineBeforeConditionalOperatorInsteadOfAfterIt">
+    <Id>RCS0028</Id>
+    <Title>Add newline before conditional operator instead of after it.</Title>
+    <MessageFormat>Add newline before conditional operator instead of after it.</MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[var y = (x) ? // [|Id|]
+    Foo() :
+    Bar();]]></Before>
+        <After><![CDATA[var y = (x)
+    ? Foo()
+    : Bar();]]></After>
+      </Sample>
+    </Samples>
+    <Remarks>This rule was originally introduced as [RCS1184](RCS1184.md)</Remarks>
+  </Analyzer>
+  <Analyzer Identifier="AddNewLineBeforeConstructorInitializer">
+    <Id>RCS0029</Id>
+    <Title>Add newline before constructor initializer.</Title>
+    <MessageFormat>Add newline before constructor initializer.</MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[Foo(object p1, object p2) : base(p1) // [|Id|]
+{
+    P2 = p2;
+}]]></Before>
+        <After><![CDATA[Foo(object p1, object p2)
+    : base(p1)
+{
+    P2 = p2;
+}]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer Identifier="AddNewLineBeforeEmbeddedStatement">
+    <Id>RCS0030</Id>
+    <Title>Add newline before embedded statement.</Title>
+    <MessageFormat>Add newline before embedded statement.</MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[if (x) Foo(); // [|Id|]]]></Before>
+        <After><![CDATA[if (x)
+    Foo();]]></After>
+      </Sample>
+    </Samples>
+    <Remarks>This rule was originally introduced as [RCS1027](RCS1027.md)</Remarks>
+  </Analyzer>
+  <Analyzer Identifier="AddNewLineBeforeEnumMember">
+    <Id>RCS0031</Id>
+    <Title>Add newline before enum member.</Title>
+    <MessageFormat>Add newline before enum member.</MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[enum Foo { A, B, C, } // [|Id|]]]></Before>
+        <After><![CDATA[enum Foo
+{
+    A,
+    B,
+    C,
+}]]></After>
+      </Sample>
+    </Samples>
+    <Remarks>This rule was originally introduced as [RCS1025](RCS1025.md)</Remarks>
+  </Analyzer>
+  <Analyzer Identifier="AddNewLineBeforeExpressionBodyArrowInsteadOfAfterIt">
+    <Id>RCS0032</Id>
+    <Title>Add newline before expression-body arrow instead of after it.</Title>
+    <MessageFormat>Add newline before expression-body arrow instead of after it.</MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[object Foo() => // [|Id|]
+    null;]]></Before>
+        <After><![CDATA[object Foo()
+    => null;]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer Identifier="AddNewLineBeforeStatement">
+    <Id>RCS0033</Id>
+    <Title>Add newline before statement.</Title>
+    <MessageFormat>Add newline before statement.</MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[Foo(); Bar(); // [|Id|]]]></Before>
+        <After><![CDATA[Foo();
+Bar();]]></After>
+      </Sample>
+    </Samples>
+    <Remarks>This rule was originally introduced as [RCS1026](RCS1026.md)</Remarks>
+  </Analyzer>
+  <Analyzer Identifier="AddNewLineBeforeTypeParameterConstraint">
+    <Id>RCS0034</Id>
+    <Title>Add newline before type parameter constraint.</Title>
+    <MessageFormat>Add newline before type parameter constraint.</MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[class Foo<T1, T2> where T1 : struct where T2 : struct // [|Id|]
+{
+}]]></Before>
+        <After><![CDATA[class Foo<T1, T2>
+    where T1 : struct
+    where T2 : struct
+{
+}]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer Identifier="RemoveEmptyLineBetweenSingleLineAccessors">
+    <Id>RCS0035</Id>
+    <Title>Remove empty line between single-line accessors.</Title>
+    <MessageFormat>Remove empty line between single-line accessors.</MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[string P
+{
+    get { return _p; }
+// [|Id|]
+    set { _p = value; }
+}]]></Before>
+        <After><![CDATA[string P
+{
+    get { return _p; }
+    set { _p = value; }
+}]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer Identifier="RemoveEmptyLineBetweenSingleLineDeclarationsOfSameKind">
+    <Id>RCS0036</Id>
+    <Title>Remove empty line between single-line declarations of same kind.</Title>
+    <MessageFormat>Remove empty line between single-line declarations of same kind.</MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[object P1 { get; }
+// [|Id|]
+object P2 { get; }]]></Before>
+        <After><![CDATA[object P1 { get; }
+object P2 { get; }]]></After>
+      </Sample>
+    </Samples>
+    </Samples>
+  </Analyzer>
+  <Analyzer Identifier="RemoveEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace">
+    <Id>RCS0037</Id>
+    <Title>Remove empty line between using directives with different root namespace.</Title>
+    <MessageFormat>Remove empty line between using directives with different root namespace.</MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[using System;
+// [|Id|]
+using Microsoft.CodeAnalysis;
+
+namespace N
+{
+}]]></Before>
+        <After><![CDATA[using System;
+using Microsoft.CodeAnalysis;
+
+namespace N
+{
+}]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer Identifier="RemoveEmptyLineBetweenUsingDirectivesWithSameRootNamespace">
+    <Id>RCS0038</Id>
+    <Title>Remove empty line between using directives with same root namespace.</Title>
+    <MessageFormat>Remove empty line between using directives with same root namespace.</MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[using System;
+// [|Id|]
+using System.Linq;
+
+namespace N
+{
+}]]></Before>
+        <After><![CDATA[using System;
+using System.Linq;
+
+namespace N
+{
+}]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer Identifier="RemoveNewLineBeforeBaseList">
+    <Id>RCS0039</Id>
+    <Title>Remove newline before base list.</Title>
+    <MessageFormat>Remove newline before base list.</MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[class Foo
+    : Bar // [|Id|]
+{
+}]]></Before>
+        <After><![CDATA[class Foo : Bar
+{
+}]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer Identifier="RemoveNewLineBetweenClosingBraceAndWhileKeyword">
+    <Id>RCS0040</Id>
+    <Title>Remove newline between closing brace and 'while' keyword.</Title>
+    <MessageFormat>Remove newline between closing brace and 'while' keyword.</MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[do
+{
+    Foo();
+} // [|Id|]
+while (x);]]></Before>
+        <After><![CDATA[do
+{
+    Foo();
+} while (x);]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer Identifier="RemoveNewLineBetweenIfKeywordAndElseKeyword">
+    <Id>RCS0041</Id>
+    <Title>Remove newline between 'if' keyword and 'else' keyword.</Title>
+    <MessageFormat>Remove newline between 'if' keyword and 'else' keyword.</MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[if (x)
+{
+    Foo();
+}
+else // [|Id|]
+if (y)
+{
+    Bar();
+}]]></Before>
+        <After><![CDATA[if (x)
+{
+    Foo();
+}
+else if (y)
+{
+    Bar();
+}]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer Identifier="RemoveNewLinesFromAccessorListOfAutoProperty">
+    <Id>RCS0042</Id>
+    <Title>Remove newlines from accessor list of auto-property.</Title>
+    <MessageFormat>Remove newlines from accessor list of auto-property.</MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[string Foo
+{ // [|Id|]
+    get;
+    set;
+}]]></Before>
+        <After><![CDATA[string Foo { get; set; }]]></After>
+      </Sample>
+    </Samples>
+    <Remarks>This rule was derived from [RCS1024](RCS1024.md).</Remarks>
+  </Analyzer>
+  <Analyzer Identifier="RemoveNewLinesFromAccessorWithSingleLineExpression">
+    <Id>RCS0043</Id>
+    <Title>Remove newlines from accessor with single-line expression.</Title>
+    <MessageFormat>Remove newlines from accessor with single-line expression.</MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[string Foo
+{
+    get
+    {
+        return _foo;
+    }
+    set
+    {
+        _foo = value;
+    }
+}]]></Before>
+        <After><![CDATA[string Foo
+{
+    get { return _foo; }
+    set { _foo = value; }
+}]]></After>
+      </Sample>
+    </Samples>
+    <Remarks>This rule was derived from [RCS1024](RCS1024.md).</Remarks>
+  </Analyzer>
+  <Analyzer Identifier="UseCarriageReturnAndLinefeedAsNewLine">
+    <Id>RCS0044</Id>
+    <Title>Use carriage return + linefeed as newline.</Title>
+    <MessageFormat>Use carriage return + linefeed as newline.</MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Remarks>This rule was originally introduced as [RCS1087](RCS1087.md)</Remarks>
+  </Analyzer>
+  <Analyzer Identifier="UseLinefeedAsNewLine">
+    <Id>RCS0045</Id>
+    <Title>Use linefeed as newline.</Title>
+    <MessageFormat>Use linefeed as newline.</MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Remarks>This rule was originally introduced as [RCS1086](RCS1086.md)</Remarks>
+  </Analyzer>
+  <Analyzer Identifier="UseSpacesInsteadOfTab">
+    <Id>RCS0046</Id>
+    <Title>Use spaces instead of tab.</Title>
+    <MessageFormat>Use spaces instead of tab.</MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Remarks>This rule was originally introduced as [RCS1088](RCS1088.md)</Remarks>
+  </Analyzer>
+  <Analyzer Identifier="WrapAndIndentEachNodeInList">
+    <Id>RCS0047</Id>
+    <Title>Wrap and indent each node in list.</Title>
+    <MessageFormat>Wrap and indent each node in list.</MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[void M(object p1, // [|Id|]
+    object p2
+    object p3) 
+{
+}]]></Before>
+        <After><![CDATA[void M(
+    object p1,
+    object p2,
+    object p3) 
+{
+}]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[void M(
+    object p1, // [|Id|]
+    object p2, object p3) 
+{
+}]]></Before>
+        <After><![CDATA[void M(
+    object p1,
+    object p2,
+    object p3) 
+{
+}]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+</Analyzers>

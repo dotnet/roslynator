@@ -35,10 +35,8 @@ namespace Roslynator.CSharp.CodeFixes
 
             SyntaxNode parent = attribute.Parent;
 
-            if (parent.IsKind(SyntaxKind.AttributeList))
+            if (parent is AttributeListSyntax attributeList)
             {
-                var attributeList = (AttributeListSyntax)parent;
-
                 CodeAction codeAction = CodeAction.Create(
                     "Remove duplicate attribute",
                     cancellationToken =>

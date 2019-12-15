@@ -362,6 +362,7 @@ namespace Roslynator.CSharp.Refactorings
                 return;
 
             RefactoringFlags flags = RefactoringFlagsCache.GetInstance();
+            flags.Reset();
 
             SyntaxNode firstNode = node;
 
@@ -1018,14 +1019,10 @@ namespace Roslynator.CSharp.Refactorings
                 if (instance != null)
                 {
                     _cachedInstance = null;
-                    instance.Reset();
-                }
-                else
-                {
-                    instance = new RefactoringFlags();
+                    return instance;
                 }
 
-                return instance;
+                return new RefactoringFlags();
             }
 
             public static void Free(RefactoringFlags instance)

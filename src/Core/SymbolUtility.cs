@@ -575,8 +575,8 @@ namespace Roslynator
                     return methodSymbol;
 
                 typeSymbol = typeSymbol.BaseType;
-            }
-            while (typeSymbol != null
+
+            } while (typeSymbol != null
                 && typeSymbol.SpecialType != SpecialType.System_Object);
 
             return null;
@@ -627,7 +627,13 @@ namespace Roslynator
 
             INamedTypeSymbol originalDefinition = namedTypeSymbol.OriginalDefinition;
 
+            if (originalDefinition.HasMetadataName(MetadataNames.System_Threading_Tasks_ValueTask))
+                return true;
+
             if (originalDefinition.HasMetadataName(MetadataNames.System_Threading_Tasks_ValueTask_T))
+                return true;
+
+            if (originalDefinition.HasMetadataName(MetadataNames.System_Collections_Generic_IAsyncEnumerable_T))
                 return true;
 
             if (namedTypeSymbol.EqualsOrInheritsFrom(MetadataNames.System_Threading_Tasks_Task))

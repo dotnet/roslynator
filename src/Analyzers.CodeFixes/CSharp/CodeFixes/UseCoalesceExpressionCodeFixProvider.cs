@@ -73,12 +73,10 @@ namespace Roslynator.CSharp.CodeFixes
 
             int index = statements.IndexOf(statement);
 
-            switch (statement.Kind())
+            switch (statement)
             {
-                case SyntaxKind.IfStatement:
+                case IfStatementSyntax ifStatement:
                     {
-                        var ifStatement = (IfStatementSyntax)statement;
-
                         var expressionStatement = (ExpressionStatementSyntax)ifStatement.SingleNonBlockStatementOrDefault();
 
                         var assignment = (AssignmentExpressionSyntax)expressionStatement.Expression;
@@ -89,9 +87,7 @@ namespace Roslynator.CSharp.CodeFixes
                         BinaryExpressionSyntax coalesceExpression = CreateCoalesceExpression(
                             left.WithoutLeadingTrivia().WithTrailingTrivia(Space),
                             right.WithLeadingTrivia(Space),
-                            semanticModel.GetTypeSymbol(left, cancellationToken),
-                            ifStatement.SpanStart,
-                            semanticModel);
+                            semanticModel.GetTypeSymbol(left, cancellationToken));
 
                         AssignmentExpressionSyntax newAssignment = assignment.WithRight(coalesceExpression.WithTriviaFrom(right));
 
@@ -112,22 +108,17 @@ namespace Roslynator.CSharp.CodeFixes
 
                         return await document.ReplaceNodeAsync(ifStatement, newNode, cancellationToken).ConfigureAwait(false);
                     }
-                case SyntaxKind.ExpressionStatement:
+                case ExpressionStatementSyntax expressionStatement:
                     {
-                        var expressionStatement = (ExpressionStatementSyntax)statement;
-
                         var assignment = (AssignmentExpressionSyntax)expressionStatement.Expression;
 
                         return await RefactorAsync(document, expressionStatement, (IfStatementSyntax)statements[index + 1], index, statementsInfo, assignment.Right, semanticModel, cancellationToken).ConfigureAwait(false);
                     }
-                case SyntaxKind.LocalDeclarationStatement:
+                case LocalDeclarationStatementSyntax localDeclaration:
                     {
-                        var localDeclaration = (LocalDeclarationStatementSyntax)statement;
-
                         ExpressionSyntax value = localDeclaration
                             .Declaration
-                            .Variables
-                            .First()
+                            .Variables[0]
                             .Initializer
                             .Value;
 
@@ -159,9 +150,7 @@ namespace Roslynator.CSharp.CodeFixes
             BinaryExpressionSyntax newNode = CreateCoalesceExpression(
                 expression.WithoutTrailingTrivia(),
                 assignment.Right.WithTrailingTrivia(expression.GetTrailingTrivia()),
-                semanticModel.GetTypeSymbol(assignment.Left, cancellationToken),
-                statement.SpanStart,
-                semanticModel);
+                semanticModel.GetTypeSymbol(assignment.Left, cancellationToken));
 
             StatementSyntax newStatement = statement.ReplaceNode(expression, newNode);
 
@@ -187,14 +176,12 @@ namespace Roslynator.CSharp.CodeFixes
         private static BinaryExpressionSyntax CreateCoalesceExpression(
             ExpressionSyntax left,
             ExpressionSyntax right,
-            ITypeSymbol targetType,
-            int position,
-            SemanticModel semanticModel)
+            ITypeSymbol targetType)
         {
             if (targetType?.SupportsExplicitDeclaration() == true)
             {
                 right = CastExpression(
-                    targetType.ToMinimalTypeSyntax(semanticModel, position),
+                    targetType.ToTypeSyntax().WithSimplifierAnnotation(),
                     right.Parenthesize()).WithSimplifierAnnotation();
             }
 

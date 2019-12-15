@@ -29,7 +29,7 @@ namespace Roslynator.CSharp.Refactorings
             ExpressionSyntax expression = invocation.Expression;
             ArgumentListSyntax argumentList = invocation.ArgumentList;
             SeparatedSyntaxList<ArgumentSyntax> arguments = argumentList.Arguments;
-            ArgumentSyntax argument = arguments.First();
+            ArgumentSyntax argument = arguments[0];
 
             MemberAccessExpressionSyntax newMemberAccess = CreateNewMemberAccessExpression();
 

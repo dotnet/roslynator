@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
@@ -73,24 +72,16 @@ namespace Roslynator.CSharp.Analysis
 
         private static TypeSyntax GetTypeSyntax(SyntaxNode node)
         {
-            switch (node.Kind())
+            switch (node)
             {
-                case SyntaxKind.EventDeclaration:
+                case EventDeclarationSyntax eventDeclaration:
                     {
-                        return ((EventDeclarationSyntax)node).Type;
+                        return eventDeclaration.Type;
                     }
-                case SyntaxKind.VariableDeclarator:
+                case VariableDeclaratorSyntax declarator:
                     {
-                        var declarator = (VariableDeclaratorSyntax)node;
-
-                        SyntaxNode parent = declarator.Parent;
-
-                        if (parent?.Kind() == SyntaxKind.VariableDeclaration)
-                        {
-                            var declaration = (VariableDeclarationSyntax)parent;
-
+                        if (declarator.Parent is VariableDeclarationSyntax declaration)
                             return declaration.Type;
-                        }
 
                         break;
                     }

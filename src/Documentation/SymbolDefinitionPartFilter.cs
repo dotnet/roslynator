@@ -9,19 +9,20 @@ namespace Roslynator.Documentation
     {
         None = 0,
         ContainingNamespace = 1,
-        Attributes = 2,
-        AssemblyAttributes = 4,
-        AttributeArguments = 8,
-        Accessibility = 16,
-        Modifiers = 32,
-        ParameterName = 64,
-        ParameterDefaultValue = 128,
-        BaseType = 256,
-        BaseInterfaces = 512,
+        ContainingNamespaceInTypeHierarchy = 2,
+        Attributes = 4,
+        AssemblyAttributes = 8,
+        AttributeArguments = 16,
+        Accessibility = 32,
+        Modifiers = 64,
+        ParameterName = 128,
+        ParameterDefaultValue = 256,
+        BaseType = 512,
+        BaseInterfaces = 1024,
         BaseList = BaseType | BaseInterfaces,
-        Constraints = 1024,
-        TrailingSemicolon = 2048,
-        TrailingComma = 4096,
-        All = ContainingNamespace | Attributes | AssemblyAttributes | AttributeArguments | Accessibility | Modifiers | ParameterName | ParameterDefaultValue | BaseList | Constraints | TrailingSemicolon | TrailingComma
+        Constraints = 2048,
+        TrailingSemicolon = 4096,
+        TrailingComma = 8192,
+        All = ContainingNamespace | ContainingNamespaceInTypeHierarchy | Attributes | AssemblyAttributes | AttributeArguments | Accessibility | Modifiers | ParameterName | ParameterDefaultValue | BaseType | BaseInterfaces | Constraints | TrailingSemicolon | TrailingComma
     }
 }

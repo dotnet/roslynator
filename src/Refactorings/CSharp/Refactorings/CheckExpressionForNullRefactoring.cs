@@ -231,7 +231,7 @@ namespace Roslynator.CSharp.Refactorings
                 SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
                 ISymbol symbol = (statement is LocalDeclarationStatementSyntax localDeclaration)
-                    ? semanticModel.GetDeclaredSymbol(localDeclaration.Declaration.Variables.First(), cancellationToken)
+                    ? semanticModel.GetDeclaredSymbol(localDeclaration.Declaration.Variables[0], cancellationToken)
                     : semanticModel.GetSymbol(expression, cancellationToken);
 
                 int lastStatementIndex = IncludeAllReferencesOfSymbol(symbol, expression.Kind(), statements, statementIndex + 1, semanticModel, cancellationToken);

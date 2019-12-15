@@ -73,10 +73,8 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         foreach (SwitchLabelSyntax label in section.Labels)
                         {
-                            if (label.IsKind(SyntaxKind.CaseSwitchLabel))
+                            if (label is CaseSwitchLabelSyntax caseLabel)
                             {
-                                var caseLabel = (CaseSwitchLabelSyntax)label;
-
                                 ExpressionSyntax value = caseLabel.Value.WalkDownParentheses();
 
                                 if (value?.IsMissing == false)

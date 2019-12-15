@@ -75,7 +75,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             IEnumerable<SyntaxTrivia> trivia = statementsInfo
                 .Parent
-                .DescendantTrivia(TextSpan.FromBounds(localDeclaration.SpanStart, nextStatement.SpanStart));
+                .DescendantTrivia(TextSpan.FromBounds(localDeclaration.Span.End, nextStatement.SpanStart));
 
             if (!trivia.All(f => f.IsWhitespaceOrEndOfLineTrivia()))
             {
@@ -98,8 +98,7 @@ namespace Roslynator.CSharp.CodeFixes
             VariableDeclarationSyntax variableDeclaration = localDeclaration.Declaration;
 
             ExpressionSyntax expression = variableDeclaration
-                .Variables
-                .First()
+                .Variables[0]
                 .Initializer
                 .Value;
 

@@ -30,6 +30,8 @@ namespace Roslynator
 
         internal string FullName => Assembly.FullName;
 
+        internal string Name => Assembly.GetName().Name;
+
         public bool HasAnalyzers => AnalyzersByLanguage.Count > 0;
 
         public bool HasFixers => FixersByLanguage.Count > 0;

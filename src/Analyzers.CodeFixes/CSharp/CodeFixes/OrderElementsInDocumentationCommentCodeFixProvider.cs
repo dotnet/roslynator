@@ -138,9 +138,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                     if (ranks.TryGetValue(node1, out int rank1))
                     {
-                        int k = j + 1;
-
-                        while (k < xmlNodes.Count - i - 1)
+                        for (int k = j + 1; k < xmlNodes.Count - i - 1; k++)
                         {
                             XmlNodeSyntax node2 = xmlNodes[k];
                             if (ranks.TryGetValue(node2, out int rank2))
@@ -153,8 +151,6 @@ namespace Roslynator.CSharp.CodeFixes
 
                                 break;
                             }
-
-                            k++;
                         }
                     }
                 }

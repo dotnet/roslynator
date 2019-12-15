@@ -72,10 +72,12 @@ namespace Roslynator.CSharp.Analysis
             if (expressionTypeSymbol.TypeKind == TypeKind.Interface)
                 return;
 
-            if (typeSymbol.TypeKind != TypeKind.Interface
-                && !typeSymbol.EqualsOrInheritsFrom(expressionTypeSymbol, includeInterfaces: true))
+            if (expressionTypeSymbol.SpecialType == SpecialType.System_Object
+                || expressionTypeSymbol.TypeKind == TypeKind.Dynamic
+                || typeSymbol.TypeKind != TypeKind.Interface)
             {
-                return;
+                if (!typeSymbol.EqualsOrInheritsFrom(expressionTypeSymbol, includeInterfaces: true))
+                    return;
             }
 
             ISymbol accessedSymbol = semanticModel.GetSymbol(accessedExpression, cancellationToken);
@@ -87,8 +89,11 @@ namespace Roslynator.CSharp.Analysis
 
             if (typeSymbol.TypeKind == TypeKind.Interface)
             {
-                if (!CheckExplicitImplementation(expressionTypeSymbol, accessedSymbol))
+                if (accessedSymbol.IsAbstract
+                    && !CheckExplicitImplementation(expressionTypeSymbol, accessedSymbol))
+                {
                     return;
+                }
             }
             else
             {

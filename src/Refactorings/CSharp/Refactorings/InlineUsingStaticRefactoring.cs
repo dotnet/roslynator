@@ -72,19 +72,15 @@ namespace Roslynator.CSharp.Refactorings
 
         private static SyntaxNode RemoveUsingDirective(SyntaxNode node, int index)
         {
-            switch (node.Kind())
+            switch (node)
             {
-                case SyntaxKind.CompilationUnit:
+                case CompilationUnitSyntax compilationUnit:
                     {
-                        var compilationUnit = (CompilationUnitSyntax)node;
-
                         UsingDirectiveSyntax usingDirective = compilationUnit.Usings[index];
                         return compilationUnit.RemoveNode(usingDirective);
                     }
-                case SyntaxKind.NamespaceDeclaration:
+                case NamespaceDeclarationSyntax namespaceDeclaration:
                     {
-                        var namespaceDeclaration = (NamespaceDeclarationSyntax)node;
-
                         UsingDirectiveSyntax usingDirective = namespaceDeclaration.Usings[index];
                         return namespaceDeclaration.RemoveNode(usingDirective);
                     }

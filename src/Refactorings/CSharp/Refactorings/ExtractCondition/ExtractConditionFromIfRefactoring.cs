@@ -5,8 +5,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings.ExtractCondition
 {
-    internal abstract class ExtractConditionFromIfRefactoring
-        : ExtractConditionRefactoring<IfStatementSyntax>
+    internal abstract class ExtractConditionFromIfRefactoring : ExtractConditionRefactoring<IfStatementSyntax>
     {
         public override StatementSyntax GetStatement(IfStatementSyntax statement)
         {

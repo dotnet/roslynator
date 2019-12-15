@@ -69,7 +69,6 @@ namespace Roslynator.CSharp
         /// <param name="document"></param>
         /// <param name="member"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
         internal static Task<Document> RemoveMemberAsync(
             this Document document,
             MemberDeclarationSyntax member,
@@ -144,7 +143,6 @@ namespace Roslynator.CSharp
         /// <param name="document"></param>
         /// <param name="comments"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
         public static async Task<Document> RemoveCommentsAsync(
             this Document document,
             CommentFilter comments,
@@ -168,7 +166,6 @@ namespace Roslynator.CSharp
         /// <param name="span"></param>
         /// <param name="comments"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
         public static async Task<Document> RemoveCommentsAsync(
             this Document document,
             TextSpan span,
@@ -192,7 +189,6 @@ namespace Roslynator.CSharp
         /// <param name="document"></param>
         /// <param name="span"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
         public static async Task<Document> RemoveTriviaAsync(
             this Document document,
             TextSpan span,
@@ -214,7 +210,6 @@ namespace Roslynator.CSharp
         /// <param name="document"></param>
         /// <param name="directiveFilter"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
         public static async Task<Document> RemovePreprocessorDirectivesAsync(
             this Document document,
             PreprocessorDirectiveFilter directiveFilter,
@@ -239,7 +234,6 @@ namespace Roslynator.CSharp
         /// <param name="span"></param>
         /// <param name="directiveFilter"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
         public static async Task<Document> RemovePreprocessorDirectivesAsync(
             this Document document,
             TextSpan span,
@@ -361,7 +355,6 @@ namespace Roslynator.CSharp
         /// <param name="document"></param>
         /// <param name="region"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
         public static async Task<Document> RemoveRegionAsync(
             this Document document,
             RegionInfo region,

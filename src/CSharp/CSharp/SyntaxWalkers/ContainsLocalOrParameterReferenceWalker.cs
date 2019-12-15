@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Diagnostics;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -22,7 +23,7 @@ namespace Roslynator.CSharp.SyntaxWalkers
             CancellationToken = cancellationToken;
         }
 
-        public bool Result { get; private set; }
+        public bool Result { get; set; }
 
         public ISymbol Symbol { get; private set; }
 
@@ -51,14 +52,29 @@ namespace Roslynator.CSharp.SyntaxWalkers
             VisitList(statements, 0);
         }
 
-        public void VisitList<TNode>(SyntaxList<TNode> statements, int firstIndex) where TNode : SyntaxNode
+        public void VisitList<TNode>(SyntaxList<TNode> statements, int startIndex) where TNode : SyntaxNode
         {
-            VisitList(statements, firstIndex, statements.Count - 1);
+            VisitList(statements, startIndex, statements.Count - startIndex);
         }
 
-        public void VisitList<TNode>(SyntaxList<TNode> statements, int firstIndex, int lastIndex) where TNode : SyntaxNode
+        public void VisitList<TNode>(SyntaxList<TNode> statements, int startIndex, int count) where TNode : SyntaxNode
         {
-            for (int i = firstIndex; i <= lastIndex; i++)
+            if (startIndex < 0)
+                throw new ArgumentOutOfRangeException(nameof(startIndex));
+
+            if (startIndex > statements.Count)
+                throw new ArgumentOutOfRangeException(nameof(startIndex));
+
+            if (count < 0)
+                throw new ArgumentOutOfRangeException(nameof(count));
+
+            if (startIndex + count > statements.Count)
+                throw new ArgumentOutOfRangeException(nameof(count));
+
+            if (count == 0)
+                return;
+
+            for (int i = startIndex; i < startIndex + count; i++)
             {
                 Visit(statements[i]);
 
@@ -72,14 +88,29 @@ namespace Roslynator.CSharp.SyntaxWalkers
             VisitList(statements, 0);
         }
 
-        public void VisitList<TNode>(SeparatedSyntaxList<TNode> statements, int firstIndex) where TNode : SyntaxNode
+        public void VisitList<TNode>(SeparatedSyntaxList<TNode> statements, int startIndex) where TNode : SyntaxNode
         {
-            VisitList(statements, firstIndex, statements.Count - 1);
+            VisitList(statements, startIndex, statements.Count - startIndex);
         }
 
-        public void VisitList<TNode>(SeparatedSyntaxList<TNode> statements, int firstIndex, int lastIndex) where TNode : SyntaxNode
+        public void VisitList<TNode>(SeparatedSyntaxList<TNode> statements, int startIndex, int count) where TNode : SyntaxNode
         {
-            for (int i = firstIndex; i <= lastIndex; i++)
+            if (startIndex < 0)
+                throw new ArgumentOutOfRangeException(nameof(startIndex));
+
+            if (startIndex > statements.Count)
+                throw new ArgumentOutOfRangeException(nameof(startIndex));
+
+            if (count < 0)
+                throw new ArgumentOutOfRangeException(nameof(count));
+
+            if (startIndex + count > statements.Count)
+                throw new ArgumentOutOfRangeException(nameof(count));
+
+            if (count == 0)
+                return;
+
+            for (int i = startIndex; i < startIndex + count; i++)
             {
                 Visit(statements[i]);
 
@@ -97,10 +128,15 @@ namespace Roslynator.CSharp.SyntaxWalkers
 
             if (walker != null)
             {
+                Debug.Assert(walker.Symbol == null);
+                Debug.Assert(walker.SemanticModel == null);
+                Debug.Assert(walker.CancellationToken == default);
+
                 _cachedInstance = null;
                 walker.Symbol = symbol;
                 walker.SemanticModel = semanticModel;
                 walker.CancellationToken = cancellationToken;
+
                 return walker;
             }
 
@@ -110,9 +146,10 @@ namespace Roslynator.CSharp.SyntaxWalkers
         public static void Free(ContainsLocalOrParameterReferenceWalker walker)
         {
             walker.Result = false;
-            walker.Symbol = default;
-            walker.SemanticModel = default;
+            walker.Symbol = null;
+            walker.SemanticModel = null;
             walker.CancellationToken = default;
+
             _cachedInstance = walker;
         }
 

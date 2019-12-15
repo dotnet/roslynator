@@ -47,7 +47,7 @@ namespace Roslynator.CSharp.SyntaxWalkers
             {
                 SyntaxTriviaList leadingTrivia = token.LeadingTrivia;
 
-                if (leadingTrivia.Count > 0)
+                if (leadingTrivia.Any())
                 {
                     foreach (SyntaxTrivia trivia in leadingTrivia)
                         VisitTrivia(trivia);
@@ -61,7 +61,7 @@ namespace Roslynator.CSharp.SyntaxWalkers
             {
                 SyntaxTriviaList trailingTrivia = token.TrailingTrivia;
 
-                if (trailingTrivia.Count > 0)
+                if (trailingTrivia.Any())
                 {
                     foreach (SyntaxTrivia trivia in trailingTrivia)
                         VisitTrivia(trivia);

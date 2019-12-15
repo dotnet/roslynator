@@ -15,6 +15,8 @@ namespace Roslynator.CSharp.Refactorings
         [Obsolete("", error: false)]
         public const string ChangeMemberTypeAccordingToYieldReturnExpression = Prefix + "0020";
         [Obsolete("", error: false)]
+        public const string FormatAccessorBraces = Prefix + "0047";
+        [Obsolete("", error: false)]
         public const string MergeInterpolationIntoInterpolatedString = Prefix + "0076";
         [Obsolete("", error: false)]
         public const string WrapInElseClause = Prefix + "0173";

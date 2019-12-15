@@ -769,5 +769,96 @@ class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
+        public async Task TestNoDiagnostic_PropertyOfStructIsAssigned()
+        {
+            await VerifyNoDiagnosticAsync(@"
+struct S
+{
+    public string P { get; set; }
+}
+
+class C
+{
+    S _s;
+
+    public S S
+    {
+        get { return _s; }
+        set { _s = value; }
+    }
+
+    string P
+    {
+        get { return _s.P; }
+
+        set { _s.P = value; }
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
+        public async Task TestNoDiagnostic_PropertyOfStructIsAssigned_This()
+        {
+            await VerifyNoDiagnosticAsync(@"
+struct S
+{
+    public string P { get; set; }
+}
+
+class C
+{
+    S _s;
+
+    public S S
+    {
+        get { return _s; }
+        set { _s = value; }
+    }
+
+    string P
+    {
+        get { return _s.P; }
+
+        set { this._s.P = value; }
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
+        public async Task TestNoDiagnostic_IndexerOfStructIsAssigned()
+        {
+            await VerifyNoDiagnosticAsync(@"
+struct S
+{
+    public string this[int index]
+    {
+        get { return null; }
+        set { }
+    }
+}
+
+class C
+{
+    S _s;
+
+    public S S
+    {
+        get { return _s; }
+        set { _s = value; }
+    }
+
+    string P
+    {
+        get { return _s[0]; }
+
+        set { _s[0] = value; }
+    }
+}
+");
+        }
     }
 }

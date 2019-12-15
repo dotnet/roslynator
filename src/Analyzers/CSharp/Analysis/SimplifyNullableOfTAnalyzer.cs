@@ -72,10 +72,8 @@ namespace Roslynator.CSharp.Analysis
             if (qualifiedName.IsParentKind(SyntaxKind.UsingDirective, SyntaxKind.QualifiedCref))
                 return;
 
-            if (!qualifiedName.Right.IsKind(SyntaxKind.GenericName))
+            if (!(qualifiedName.Right is GenericNameSyntax genericName))
                 return;
-
-            var genericName = (GenericNameSyntax)qualifiedName.Right;
 
             if (genericName
                 .TypeArgumentList?

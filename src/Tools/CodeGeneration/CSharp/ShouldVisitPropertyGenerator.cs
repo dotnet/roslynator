@@ -43,7 +43,8 @@ namespace Roslynator.CodeGeneration.CSharp
                         SimpleMemberAccessExpression(
                             SimpleMemberAccessExpression(
                                 IdentifierName("propertySymbol"),
-                                IdentifierName("ContainingType")), IdentifierName("Name")),
+                                IdentifierName("ContainingType")),
+                            IdentifierName("Name")),
                         GenerateSections().ToSyntaxList().Add(DefaultSwitchSection(Block(ThrowNewInvalidOperationException(ParseExpression(@"$""Unrecognized type '{propertySymbol.ContainingType.Name}'"""))))))));
 
             IEnumerable<SwitchSectionSyntax> GenerateSections()

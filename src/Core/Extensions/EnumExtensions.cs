@@ -17,7 +17,6 @@ namespace Roslynator
         /// <param name="accessibility"></param>
         /// <param name="accessibility1"></param>
         /// <param name="accessibility2"></param>
-        /// <returns></returns>
         internal static bool Is(this Accessibility accessibility, Accessibility accessibility1, Accessibility accessibility2)
         {
             return accessibility == accessibility1
@@ -31,7 +30,6 @@ namespace Roslynator
         /// <param name="accessibility1"></param>
         /// <param name="accessibility2"></param>
         /// <param name="accessibility3"></param>
-        /// <returns></returns>
         internal static bool Is(this Accessibility accessibility, Accessibility accessibility1, Accessibility accessibility2, Accessibility accessibility3)
         {
             return accessibility == accessibility1
@@ -47,7 +45,6 @@ namespace Roslynator
         /// <param name="accessibility2"></param>
         /// <param name="accessibility3"></param>
         /// <param name="accessibility4"></param>
-        /// <returns></returns>
         internal static bool Is(this Accessibility accessibility, Accessibility accessibility1, Accessibility accessibility2, Accessibility accessibility3, Accessibility accessibility4)
         {
             return accessibility == accessibility1
@@ -65,7 +62,6 @@ namespace Roslynator
         /// <param name="accessibility3"></param>
         /// <param name="accessibility4"></param>
         /// <param name="accessibility5"></param>
-        /// <returns></returns>
         internal static bool Is(this Accessibility accessibility, Accessibility accessibility1, Accessibility accessibility2, Accessibility accessibility3, Accessibility accessibility4, Accessibility accessibility5)
         {
             return accessibility == accessibility1
@@ -80,7 +76,6 @@ namespace Roslynator
         /// </summary>
         /// <param name="accessibility"></param>
         /// <param name="other"></param>
-        /// <returns></returns>
         public static bool IsMoreRestrictiveThan(this Accessibility accessibility, Accessibility other)
         {
             switch (other)
@@ -164,7 +159,6 @@ namespace Roslynator
         /// <param name="methodKind"></param>
         /// <param name="methodKind1"></param>
         /// <param name="methodKind2"></param>
-        /// <returns></returns>
         internal static bool Is(this MethodKind methodKind, MethodKind methodKind1, MethodKind methodKind2)
         {
             return methodKind == methodKind1
@@ -178,7 +172,6 @@ namespace Roslynator
         /// <param name="methodKind1"></param>
         /// <param name="methodKind2"></param>
         /// <param name="methodKind3"></param>
-        /// <returns></returns>
         internal static bool Is(this MethodKind methodKind, MethodKind methodKind1, MethodKind methodKind2, MethodKind methodKind3)
         {
             return methodKind == methodKind1
@@ -194,7 +187,6 @@ namespace Roslynator
         /// <param name="methodKind2"></param>
         /// <param name="methodKind3"></param>
         /// <param name="methodKind4"></param>
-        /// <returns></returns>
         internal static bool Is(this MethodKind methodKind, MethodKind methodKind1, MethodKind methodKind2, MethodKind methodKind3, MethodKind methodKind4)
         {
             return methodKind == methodKind1
@@ -212,7 +204,6 @@ namespace Roslynator
         /// <param name="methodKind3"></param>
         /// <param name="methodKind4"></param>
         /// <param name="methodKind5"></param>
-        /// <returns></returns>
         internal static bool Is(this MethodKind methodKind, MethodKind methodKind1, MethodKind methodKind2, MethodKind methodKind3, MethodKind methodKind4, MethodKind methodKind5)
         {
             return methodKind == methodKind1
@@ -230,7 +221,6 @@ namespace Roslynator
         /// <param name="specialType"></param>
         /// <param name="specialType1"></param>
         /// <param name="specialType2"></param>
-        /// <returns></returns>
         internal static bool Is(this SpecialType specialType, SpecialType specialType1, SpecialType specialType2)
         {
             return specialType == specialType1
@@ -244,7 +234,6 @@ namespace Roslynator
         /// <param name="specialType1"></param>
         /// <param name="specialType2"></param>
         /// <param name="specialType3"></param>
-        /// <returns></returns>
         internal static bool Is(this SpecialType specialType, SpecialType specialType1, SpecialType specialType2, SpecialType specialType3)
         {
             return specialType == specialType1
@@ -260,7 +249,6 @@ namespace Roslynator
         /// <param name="specialType2"></param>
         /// <param name="specialType3"></param>
         /// <param name="specialType4"></param>
-        /// <returns></returns>
         internal static bool Is(this SpecialType specialType, SpecialType specialType1, SpecialType specialType2, SpecialType specialType3, SpecialType specialType4)
         {
             return specialType == specialType1
@@ -278,7 +266,6 @@ namespace Roslynator
         /// <param name="specialType3"></param>
         /// <param name="specialType4"></param>
         /// <param name="specialType5"></param>
-        /// <returns></returns>
         internal static bool Is(this SpecialType specialType, SpecialType specialType1, SpecialType specialType2, SpecialType specialType3, SpecialType specialType4, SpecialType specialType5)
         {
             return specialType == specialType1
@@ -296,7 +283,6 @@ namespace Roslynator
         /// <param name="typeKind"></param>
         /// <param name="typeKind1"></param>
         /// <param name="typeKind2"></param>
-        /// <returns></returns>
         internal static bool Is(this TypeKind typeKind, TypeKind typeKind1, TypeKind typeKind2)
         {
             return typeKind == typeKind1
@@ -310,7 +296,6 @@ namespace Roslynator
         /// <param name="typeKind1"></param>
         /// <param name="typeKind2"></param>
         /// <param name="typeKind3"></param>
-        /// <returns></returns>
         internal static bool Is(this TypeKind typeKind, TypeKind typeKind1, TypeKind typeKind2, TypeKind typeKind3)
         {
             return typeKind == typeKind1
@@ -326,7 +311,6 @@ namespace Roslynator
         /// <param name="typeKind2"></param>
         /// <param name="typeKind3"></param>
         /// <param name="typeKind4"></param>
-        /// <returns></returns>
         internal static bool Is(this TypeKind typeKind, TypeKind typeKind1, TypeKind typeKind2, TypeKind typeKind3, TypeKind typeKind4)
         {
             return typeKind == typeKind1
@@ -344,7 +328,6 @@ namespace Roslynator
         /// <param name="typeKind3"></param>
         /// <param name="typeKind4"></param>
         /// <param name="typeKind5"></param>
-        /// <returns></returns>
         internal static bool Is(this TypeKind typeKind, TypeKind typeKind1, TypeKind typeKind2, TypeKind typeKind3, TypeKind typeKind4, TypeKind typeKind5)
         {
             return typeKind == typeKind1

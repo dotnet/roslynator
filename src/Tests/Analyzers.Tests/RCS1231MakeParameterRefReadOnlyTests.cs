@@ -171,5 +171,18 @@ class C
 }
 ");
         }
+
+        [Fact]
+        public async Task TestNoDiagnostic_BoolType()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M(bool value)
+    {
+    }
+}
+");
+        }
     }
 }

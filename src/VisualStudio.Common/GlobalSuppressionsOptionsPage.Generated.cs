@@ -14,7 +14,7 @@ namespace Roslynator.VisualStudio
             get;
         }
 
-        = "RCS1237";
+        = "RCS1241";
         protected override void Fill(ICollection<BaseModel> analyzers)
         {
             analyzers.Clear();
@@ -34,7 +34,7 @@ namespace Roslynator.VisualStudio
             analyzers.Add(new BaseModel("RCS1015", "Use nameof operator.", !IsEnabled("RCS1015")));
             analyzers.Add(new BaseModel("RCS1016", "Use expression-bodied member.", !IsEnabled("RCS1016")));
             analyzers.Add(new BaseModel("RCS1017", "Avoid multiline expression body.", !IsEnabled("RCS1017")));
-            analyzers.Add(new BaseModel("RCS1018", "Add default access modifier.", !IsEnabled("RCS1018")));
+            analyzers.Add(new BaseModel("RCS1018", "Add accessibility modifiers.", !IsEnabled("RCS1018")));
             analyzers.Add(new BaseModel("RCS1019", "Order modifiers.", !IsEnabled("RCS1019")));
             analyzers.Add(new BaseModel("RCS1020", "Simplify Nullable<T> to T?.", !IsEnabled("RCS1020")));
             analyzers.Add(new BaseModel("RCS1021", "Simplify lambda expression.", !IsEnabled("RCS1021")));
@@ -86,7 +86,7 @@ namespace Roslynator.VisualStudio
             analyzers.Add(new BaseModel("RCS1070", "Remove redundant default switch section.", !IsEnabled("RCS1070")));
             analyzers.Add(new BaseModel("RCS1071", "Remove redundant base constructor call.", !IsEnabled("RCS1071")));
             analyzers.Add(new BaseModel("RCS1072", "Remove empty namespace declaration.", !IsEnabled("RCS1072")));
-            analyzers.Add(new BaseModel("RCS1073", "Replace if statement with return statement.", !IsEnabled("RCS1073")));
+            analyzers.Add(new BaseModel("RCS1073", "Convert 'if' to 'return' statement.", !IsEnabled("RCS1073")));
             analyzers.Add(new BaseModel("RCS1074", "Remove redundant constructor.", !IsEnabled("RCS1074")));
             analyzers.Add(new BaseModel("RCS1075", "Avoid empty catch clause that catches System.Exception.", !IsEnabled("RCS1075")));
             analyzers.Add(new BaseModel("RCS1076", "Format declaration braces.", !IsEnabled("RCS1076")));
@@ -113,7 +113,7 @@ namespace Roslynator.VisualStudio
             analyzers.Add(new BaseModel("RCS1100", "Format documentation summary on a single line.", !IsEnabled("RCS1100")));
             analyzers.Add(new BaseModel("RCS1101", "Format documentation summary on multiple lines.", !IsEnabled("RCS1101")));
             analyzers.Add(new BaseModel("RCS1102", "Make class static.", !IsEnabled("RCS1102")));
-            analyzers.Add(new BaseModel("RCS1103", "Replace if statement with assignment.", !IsEnabled("RCS1103")));
+            analyzers.Add(new BaseModel("RCS1103", "Convert 'if' to assignment.", !IsEnabled("RCS1103")));
             analyzers.Add(new BaseModel("RCS1104", "Simplify conditional expression.", !IsEnabled("RCS1104")));
             analyzers.Add(new BaseModel("RCS1105", "Unncessary interpolation.", !IsEnabled("RCS1105")));
             analyzers.Add(new BaseModel("RCS1106", "Remove empty destructor.", !IsEnabled("RCS1106")));
@@ -208,7 +208,7 @@ namespace Roslynator.VisualStudio
             analyzers.Add(new BaseModel("RCS1214", "Unnecessary interpolated string.", !IsEnabled("RCS1214")));
             analyzers.Add(new BaseModel("RCS1215", "Expression is always equal to true/false.", !IsEnabled("RCS1215")));
             analyzers.Add(new BaseModel("RCS1216", "Unnecessary unsafe context.", !IsEnabled("RCS1216")));
-            analyzers.Add(new BaseModel("RCS1217", "Replace interpolated string with concatenation.", !IsEnabled("RCS1217")));
+            analyzers.Add(new BaseModel("RCS1217", "Convert interpolated string to concatenation.", !IsEnabled("RCS1217")));
             analyzers.Add(new BaseModel("RCS1218", "Simplify code branching.", !IsEnabled("RCS1218")));
             analyzers.Add(new BaseModel("RCS1219", "Call 'Enumerable.Skip' and 'Enumerable.Any' instead of 'Enumerable.Count'.", !IsEnabled("RCS1219")));
             analyzers.Add(new BaseModel("RCS1220", "Use pattern matching instead of combination of 'is' operator and cast operator.", !IsEnabled("RCS1220")));
@@ -229,6 +229,10 @@ namespace Roslynator.VisualStudio
             analyzers.Add(new BaseModel("RCS1235", "Optimize method call.", !IsEnabled("RCS1235")));
             analyzers.Add(new BaseModel("RCS1236", "Use exception filter.", !IsEnabled("RCS1236")));
             analyzers.Add(new BaseModel("RCS1237", "Use bit shift operator.", !IsEnabled("RCS1237")));
+            analyzers.Add(new BaseModel("RCS1238", "Avoid nested ?: operators.", !IsEnabled("RCS1238")));
+            analyzers.Add(new BaseModel("RCS1239", "Use 'for' statement instead of 'while' statement.", !IsEnabled("RCS1239")));
+            analyzers.Add(new BaseModel("RCS1240", "Operator is unnecessary.", !IsEnabled("RCS1240")));
+            analyzers.Add(new BaseModel("RCS1241", "Implement non-generic counterpart.", !IsEnabled("RCS1241")));
         }
     }
 }

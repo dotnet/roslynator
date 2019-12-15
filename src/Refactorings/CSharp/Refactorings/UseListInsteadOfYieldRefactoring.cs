@@ -135,10 +135,8 @@ namespace Roslynator.CSharp.Refactorings
 
         private static bool IsParameterCheck(StatementSyntax statement)
         {
-            if (statement.IsKind(SyntaxKind.IfStatement))
+            if (statement is IfStatementSyntax ifStatement)
             {
-                var ifStatement = (IfStatementSyntax)statement;
-
                 return ifStatement.SingleNonBlockStatementOrDefault()?.Kind() == SyntaxKind.ThrowStatement;
             }
 

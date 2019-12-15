@@ -312,5 +312,62 @@ class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExceptionFilter)]
+        public async Task TestNoDiagnostic_ConditionContainsAwait()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System;
+using System.Threading.Tasks;
+
+class C
+{
+    async Task M()
+    {
+        try
+        {
+        }
+        catch (Exception)
+        {
+            if (await Async() != null)
+            {
+                throw;
+            }
+        }
+
+        Task<object> Async() => Task.FromResult(default(object));
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExceptionFilter)]
+        public async Task TestNoDiagnostic_BothBranchesThrow()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System;
+
+class C
+{
+    void M()
+    {
+        try
+        {
+        }
+        catch (Exception ex)
+        {
+            if (!(ex is InvalidOperationException))
+            {
+                throw;
+            }
+            else
+            {
+                throw;
+            }
+        }
+    }
+}
+");
+        }
     }
 }

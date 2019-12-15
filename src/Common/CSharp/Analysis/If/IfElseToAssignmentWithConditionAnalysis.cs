@@ -26,7 +26,7 @@ namespace Roslynator.CSharp.Analysis.If
 
         public override string Title
         {
-            get { return "Replace if-else with assignment"; }
+            get { return "Convert 'if' to assignment"; }
         }
 
         public ExpressionSyntax Left { get; }

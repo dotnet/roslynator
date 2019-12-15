@@ -214,15 +214,15 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1018</summary>
-        public static readonly DiagnosticDescriptor AddDefaultAccessModifier = new DiagnosticDescriptor(
-            id:                 DiagnosticIdentifiers.AddDefaultAccessModifier, 
-            title:              "Add default access modifier.", 
-            messageFormat:      "Add default access modifier.", 
+        public static readonly DiagnosticDescriptor AddAccessibilityModifiers = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.AddAccessibilityModifiers, 
+            title:              "Add accessibility modifiers.", 
+            messageFormat:      "Add accessibility modifiers.", 
             category:           DiagnosticCategories.Readability, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.AddDefaultAccessModifier}", 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.AddAccessibilityModifiers}", 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1019</summary>
@@ -342,7 +342,7 @@ namespace Roslynator.CSharp
             messageFormat:      "Format binary operator on next line.", 
             category:           DiagnosticCategories.Formatting, 
             defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: true, 
+            isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.FormatBinaryOperatorOnNextLine}", 
             customTags:         Array.Empty<string>());
@@ -854,18 +854,18 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1073</summary>
-        public static readonly DiagnosticDescriptor ReplaceIfStatementWithReturnStatement = new DiagnosticDescriptor(
-            id:                 DiagnosticIdentifiers.ReplaceIfStatementWithReturnStatement, 
-            title:              "Replace if statement with return statement.", 
-            messageFormat:      "Replace if statement with return statement.", 
+        public static readonly DiagnosticDescriptor ConvertIfToReturnStatement = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.ConvertIfToReturnStatement, 
+            title:              "Convert 'if' to 'return' statement.", 
+            messageFormat:      "Convert 'if' to 'return' statement.", 
             category:           DiagnosticCategories.Simplification, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.ReplaceIfStatementWithReturnStatement}", 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.ConvertIfToReturnStatement}", 
             customTags:         Array.Empty<string>());
 
-        public static readonly DiagnosticDescriptor ReplaceIfStatementWithReturnStatementFadeOut = ReplaceIfStatementWithReturnStatement.CreateFadeOut();
+        public static readonly DiagnosticDescriptor ConvertIfToReturnStatementFadeOut = ConvertIfToReturnStatement.CreateFadeOut();
 
         /// <summary>RCS1074</summary>
         public static readonly DiagnosticDescriptor RemoveRedundantConstructor = new DiagnosticDescriptor(
@@ -1186,15 +1186,15 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1103</summary>
-        public static readonly DiagnosticDescriptor ReplaceIfStatementWithAssignment = new DiagnosticDescriptor(
-            id:                 DiagnosticIdentifiers.ReplaceIfStatementWithAssignment, 
-            title:              "Replace if statement with assignment.", 
-            messageFormat:      "Replace if statement with assignment.", 
+        public static readonly DiagnosticDescriptor ConvertIfToAssignment = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.ConvertIfToAssignment, 
+            title:              "Convert 'if' to assignment.", 
+            messageFormat:      "Convert 'if' to assignment.", 
             category:           DiagnosticCategories.Simplification, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.ReplaceIfStatementWithAssignment}", 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.ConvertIfToAssignment}", 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1104</summary>
@@ -2340,18 +2340,18 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1217</summary>
-        public static readonly DiagnosticDescriptor ReplaceInterpolatedStringWithConcatenation = new DiagnosticDescriptor(
-            id:                 DiagnosticIdentifiers.ReplaceInterpolatedStringWithConcatenation, 
-            title:              "Replace interpolated string with concatenation.", 
-            messageFormat:      "Replace interpolated string with concatenation.", 
+        public static readonly DiagnosticDescriptor ConvertInterpolatedStringToConcatenation = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.ConvertInterpolatedStringToConcatenation, 
+            title:              "Convert interpolated string to concatenation.", 
+            messageFormat:      "Convert interpolated string to concatenation.", 
             category:           DiagnosticCategories.Readability, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.ReplaceInterpolatedStringWithConcatenation}", 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.ConvertInterpolatedStringToConcatenation}", 
             customTags:         Array.Empty<string>());
 
-        public static readonly DiagnosticDescriptor ReplaceInterpolatedStringWithConcatenationFadeOut = ReplaceInterpolatedStringWithConcatenation.CreateFadeOut();
+        public static readonly DiagnosticDescriptor ConvertInterpolatedStringToConcatenationFadeOut = ConvertInterpolatedStringToConcatenation.CreateFadeOut();
 
         /// <summary>RCS1218</summary>
         public static readonly DiagnosticDescriptor SimplifyCodeBranching = new DiagnosticDescriptor(
@@ -2593,6 +2593,54 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true, 
             description:        null, 
             helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.UseBitShiftOperator}", 
+            customTags:         Array.Empty<string>());
+
+        /// <summary>RCS1238</summary>
+        public static readonly DiagnosticDescriptor AvoidNestedConditionalOperators = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.AvoidNestedConditionalOperators, 
+            title:              "Avoid nested ?: operators.", 
+            messageFormat:      "Avoid nested ?: operators.", 
+            category:           DiagnosticCategories.Readability, 
+            defaultSeverity:    DiagnosticSeverity.Hidden, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.AvoidNestedConditionalOperators}", 
+            customTags:         Array.Empty<string>());
+
+        /// <summary>RCS1239</summary>
+        public static readonly DiagnosticDescriptor UseForStatementInsteadOfWhileStatement = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.UseForStatementInsteadOfWhileStatement, 
+            title:              "Use 'for' statement instead of 'while' statement.", 
+            messageFormat:      "Use 'for' statement instead of 'while' statement.", 
+            category:           DiagnosticCategories.Readability, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.UseForStatementInsteadOfWhileStatement}", 
+            customTags:         Array.Empty<string>());
+
+        /// <summary>RCS1240</summary>
+        public static readonly DiagnosticDescriptor UnnecessaryOperator = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.UnnecessaryOperator, 
+            title:              "Operator is unnecessary.", 
+            messageFormat:      "The '{0}' operator is unnecessary.", 
+            category:           DiagnosticCategories.Redundancy, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.UnnecessaryOperator}", 
+            customTags:         Array.Empty<string>());
+
+        /// <summary>RCS1241</summary>
+        public static readonly DiagnosticDescriptor ImplementNonGenericCounterpart = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.ImplementNonGenericCounterpart, 
+            title:              "Implement non-generic counterpart.", 
+            messageFormat:      "Implement {0} when implementing {0}<T>.", 
+            category:           DiagnosticCategories.Design, 
+            defaultSeverity:    DiagnosticSeverity.Hidden, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.ImplementNonGenericCounterpart}", 
             customTags:         Array.Empty<string>());
 
     }

@@ -301,6 +301,17 @@ namespace Roslynator
             Out?.WriteLine(format, arg);
         }
 
+        public static void WriteError(
+            Exception exception,
+            ConsoleColor color = ConsoleColor.Red,
+            Verbosity verbosity = Verbosity.Quiet)
+        {
+            WriteLine(exception.Message, color, verbosity);
+#if DEBUG
+            WriteLine(exception.ToString());
+#endif
+        }
+
         public static bool ShouldWrite(Verbosity verbosity)
         {
             return verbosity <= ConsoleOut.Verbosity

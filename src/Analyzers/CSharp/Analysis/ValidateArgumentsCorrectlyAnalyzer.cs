@@ -43,7 +43,7 @@ namespace Roslynator.CSharp.Analysis
             if (parameterList == null)
                 return;
 
-            if (parameterList.Parameters.Count == 0)
+            if (!parameterList.Parameters.Any())
                 return;
 
             SyntaxList<StatementSyntax> statements = body.Statements;
@@ -76,13 +76,13 @@ namespace Roslynator.CSharp.Analysis
 
             context.CancellationToken.ThrowIfCancellationRequested();
 
-            ContainsYieldWalker walker = ContainsYieldWalker.Cache.GetInstance();
+            ContainsYieldWalker walker = ContainsYieldWalker.GetInstance();
 
             walker.VisitBlock(body);
 
             YieldStatementSyntax yieldStatement = walker.YieldStatement;
 
-            ContainsYieldWalker.Cache.Free(walker);
+            ContainsYieldWalker.Free(walker);
 
             if (yieldStatement == null)
                 return;

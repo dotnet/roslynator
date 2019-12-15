@@ -486,5 +486,86 @@ namespace Roslynator.CSharp
                 }
             }
         }
+
+        public static ForStatementSyntax ConvertWhileStatementToForStatement(
+            WhileStatementSyntax whileStatement,
+            VariableDeclarationSyntax declaration = default,
+            SeparatedSyntaxList<ExpressionSyntax> initializers = default)
+        {
+            var incrementors = default(SeparatedSyntaxList<ExpressionSyntax>);
+
+            StatementSyntax statement = whileStatement.Statement;
+
+            if (statement is BlockSyntax block)
+            {
+                SyntaxList<StatementSyntax> statements = block.Statements;
+
+                if (statements.Any())
+                {
+                    int startIndex = -1;
+                    int i = statements.Count - 1;
+
+                    bool fContinue = statements.Last().IsKind(SyntaxKind.ContinueStatement);
+
+                    if (fContinue)
+                        i--;
+
+                    while (i >= 0)
+                    {
+                        if (!(statements[i] is ExpressionStatementSyntax expressionStatement))
+                            break;
+
+                        ExpressionSyntax expression = expressionStatement.Expression;
+
+                        if (expression == null
+                            || !CSharpFacts.IsIncrementOrDecrementExpression(expression.Kind()))
+                        {
+                            break;
+                        }
+
+                        startIndex = i;
+                        i--;
+                    }
+
+                    if (startIndex >= 0)
+                    {
+                        int count = statements.Count - startIndex;
+
+                        if (fContinue)
+                            count--;
+
+                        incrementors = statements
+                            .Skip(startIndex)
+                            .Take(count)
+                            .Cast<ExpressionStatementSyntax>()
+                            .Select(f => f.Expression)
+                            .ToSeparatedSyntaxList();
+
+                        statement = block.WithStatements(statements.RemoveRange(startIndex, statements.Count - startIndex));
+                    }
+                    else if (fContinue)
+                    {
+                        statement = block.WithStatements(statements.RemoveAt(statements.Count - 1));
+                    }
+                }
+            }
+
+            ExpressionSyntax condition = whileStatement.Condition;
+
+            if (condition.IsKind(SyntaxKind.TrueLiteralExpression))
+                condition = null;
+
+            return ForStatement(
+                forKeyword: Token(SyntaxKind.ForKeyword).WithTriviaFrom(whileStatement.WhileKeyword),
+                openParenToken: Token(whileStatement.OpenParenToken.LeadingTrivia, SyntaxKind.OpenParenToken, default),
+                declaration: declaration,
+                initializers: initializers,
+                firstSemicolonToken: SemicolonToken(),
+                condition: condition,
+                secondSemicolonToken: SemicolonToken(),
+                incrementors: incrementors,
+                closeParenToken: Token(default, SyntaxKind.CloseParenToken, whileStatement.CloseParenToken.TrailingTrivia),
+                statement: statement);
+        }
     }
 }

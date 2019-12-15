@@ -71,7 +71,7 @@ namespace Roslynator.CSharp.Refactorings
                 : null;
 
             ISymbol memberSymbol = (memberDeclaration is EventFieldDeclarationSyntax eventFieldDeclaration)
-                ? semanticModel.GetDeclaredSymbol(eventFieldDeclaration.Declaration.Variables.First())
+                ? semanticModel.GetDeclaredSymbol(eventFieldDeclaration.Declaration.Variables[0])
                 : semanticModel.GetDeclaredSymbol(memberDeclaration);
 
             if (memberSymbol == null)

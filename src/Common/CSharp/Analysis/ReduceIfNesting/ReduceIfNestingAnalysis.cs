@@ -429,7 +429,7 @@ namespace Roslynator.CSharp.Analysis.ReduceIfNesting
                 return false;
 
             return statements.Count > 1
-                || GetJumpKind(statements.First()) == SyntaxKind.None;
+                || GetJumpKind(statements[0]) == SyntaxKind.None;
         }
     }
 }

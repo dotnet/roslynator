@@ -13,6 +13,11 @@ namespace Roslynator
             return new TextSpan(span.Start + value, span.Length);
         }
 
+        public static TextSpan WithLength(this TextSpan span, int length)
+        {
+            return new TextSpan(span.Start, length);
+        }
+
         public static bool IsContainedIn(this TextSpan self, TextSpan span)
         {
             return span.Contains(self);

@@ -100,7 +100,7 @@ namespace Roslynator.CSharp.Refactorings
 
             int index = sections.IndexOf(switchSection);
 
-            SwitchLabelSyntax label = switchSection.Labels.First();
+            SwitchLabelSyntax label = switchSection.Labels[0];
 
             SyntaxToken firstToken = label.GetFirstToken();
 

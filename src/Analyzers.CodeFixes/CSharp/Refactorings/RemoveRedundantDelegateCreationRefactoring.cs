@@ -18,8 +18,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             ExpressionSyntax expression = objectCreation
                 .ArgumentList
-                .Arguments
-                .First()
+                .Arguments[0]
                 .Expression;
 
             IEnumerable<SyntaxTrivia> leadingTrivia = objectCreation

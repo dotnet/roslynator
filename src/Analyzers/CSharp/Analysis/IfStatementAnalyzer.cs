@@ -26,9 +26,9 @@ namespace Roslynator.CSharp.Analysis
             {
                 return ImmutableArray.Create(
                     DiagnosticDescriptors.UseCoalesceExpressionInsteadOfIf,
-                    DiagnosticDescriptors.ReplaceIfStatementWithReturnStatement,
-                    DiagnosticDescriptors.ReplaceIfStatementWithReturnStatementFadeOut,
-                    DiagnosticDescriptors.ReplaceIfStatementWithAssignment);
+                    DiagnosticDescriptors.ConvertIfToReturnStatement,
+                    DiagnosticDescriptors.ConvertIfToReturnStatementFadeOut,
+                    DiagnosticDescriptors.ConvertIfToAssignment);
             }
         }
 
@@ -43,8 +43,8 @@ namespace Roslynator.CSharp.Analysis
             {
                 if (startContext.AreAnalyzersSuppressed(
                     DiagnosticDescriptors.UseCoalesceExpressionInsteadOfIf,
-                    DiagnosticDescriptors.ReplaceIfStatementWithReturnStatement,
-                    DiagnosticDescriptors.ReplaceIfStatementWithAssignment))
+                    DiagnosticDescriptors.ConvertIfToReturnStatement,
+                    DiagnosticDescriptors.ConvertIfToAssignment))
                 {
                     return;
                 }
@@ -57,19 +57,21 @@ namespace Roslynator.CSharp.Analysis
         {
             var ifStatement = (IfStatementSyntax)context.Node;
 
-            foreach (IfAnalysis refactoring in IfAnalysis.Analyze(ifStatement, AnalysisOptions, context.SemanticModel, context.CancellationToken))
+            foreach (IfAnalysis analysis in IfAnalysis.Analyze(ifStatement, AnalysisOptions, context.SemanticModel, context.CancellationToken))
             {
-                Debug.Assert(refactoring.Kind == IfAnalysisKind.IfElseToAssignmentWithCoalesceExpression
-                    || refactoring.Kind == IfAnalysisKind.IfElseToAssignmentWithExpression
-                    || refactoring.Kind == IfAnalysisKind.IfElseToAssignmentWithCondition
-                    || refactoring.Kind == IfAnalysisKind.IfElseToReturnWithCoalesceExpression
-                    || refactoring.Kind == IfAnalysisKind.IfElseToYieldReturnWithCoalesceExpression
-                    || refactoring.Kind == IfAnalysisKind.IfReturnToReturnWithCoalesceExpression
-                    || refactoring.Kind == IfAnalysisKind.IfElseToReturnWithExpression
-                    || refactoring.Kind == IfAnalysisKind.IfElseToYieldReturnWithExpression
-                    || refactoring.Kind == IfAnalysisKind.IfReturnToReturnWithExpression, refactoring.Kind.ToString());
+                Debug.Assert(
+                    analysis.Kind == IfAnalysisKind.IfElseToAssignmentWithCoalesceExpression
+                        || analysis.Kind == IfAnalysisKind.IfElseToAssignmentWithExpression
+                        || analysis.Kind == IfAnalysisKind.IfElseToAssignmentWithCondition
+                        || analysis.Kind == IfAnalysisKind.IfElseToReturnWithCoalesceExpression
+                        || analysis.Kind == IfAnalysisKind.IfElseToYieldReturnWithCoalesceExpression
+                        || analysis.Kind == IfAnalysisKind.IfReturnToReturnWithCoalesceExpression
+                        || analysis.Kind == IfAnalysisKind.IfElseToReturnWithExpression
+                        || analysis.Kind == IfAnalysisKind.IfElseToYieldReturnWithExpression
+                        || analysis.Kind == IfAnalysisKind.IfReturnToReturnWithExpression,
+                    analysis.Kind.ToString());
 
-                switch (refactoring.Kind)
+                switch (analysis.Kind)
                 {
                     case IfAnalysisKind.IfElseToAssignmentWithCoalesceExpression:
                     case IfAnalysisKind.IfElseToReturnWithCoalesceExpression:
@@ -85,16 +87,16 @@ namespace Roslynator.CSharp.Analysis
                     case IfAnalysisKind.IfElseToYieldReturnWithExpression:
                     case IfAnalysisKind.IfReturnToReturnWithExpression:
                         {
-                            if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.ReplaceIfStatementWithReturnStatement))
-                                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ReplaceIfStatementWithReturnStatement, ifStatement);
+                            if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.ConvertIfToReturnStatement))
+                                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ConvertIfToReturnStatement, ifStatement);
 
                             break;
                         }
                     case IfAnalysisKind.IfElseToAssignmentWithExpression:
                     case IfAnalysisKind.IfElseToAssignmentWithCondition:
                         {
-                            if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.ReplaceIfStatementWithAssignment))
-                                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ReplaceIfStatementWithAssignment, ifStatement);
+                            if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.ConvertIfToAssignment))
+                                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ConvertIfToAssignment, ifStatement);
 
                             break;
                         }

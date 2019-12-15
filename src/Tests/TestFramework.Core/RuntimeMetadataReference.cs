@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Immutable;
 using System.IO;
-using System.Threading;
 using Microsoft.CodeAnalysis;
 
 namespace Roslynator
@@ -35,11 +34,13 @@ namespace Roslynator
                         CreateFromAssemblyName("System.Runtime.dll"),
                         CreateFromAssemblyName("System.Collections.dll"),
                         CreateFromAssemblyName("System.Collections.Immutable.dll"),
+                        CreateFromAssemblyName("System.Composition.AttributedModel.dll"),
                         CreateFromAssemblyName("System.ObjectModel.dll"),
                         CreateFromAssemblyName("System.Text.RegularExpressions.dll"),
                         CreateFromAssemblyName("System.Threading.Tasks.Extensions.dll"),
                         CreateFromAssemblyName("Microsoft.CodeAnalysis.dll"),
-                        CreateFromAssemblyName("Microsoft.CodeAnalysis.CSharp.dll"));
+                        CreateFromAssemblyName("Microsoft.CodeAnalysis.CSharp.dll"),
+                        CreateFromAssemblyName("Microsoft.CodeAnalysis.Workspaces.dll"));
                 }
             }
         }

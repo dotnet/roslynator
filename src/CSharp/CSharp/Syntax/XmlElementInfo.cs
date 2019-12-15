@@ -65,17 +65,8 @@ namespace Roslynator.CSharp.Syntax
                 if (count == 0)
                     return true;
 
-                if (count == 1)
-                {
-                    XmlNodeSyntax node = content[0];
-
-                    if (node.IsKind(SyntaxKind.XmlText))
-                    {
-                        var xmlText = (XmlTextSyntax)node;
-
-                        return xmlText.TextTokens.All(IsWhitespaceOrNewLine);
-                    }
-                }
+                if (content.SingleOrDefault(shouldThrow: false) is XmlTextSyntax xmlText)
+                    return xmlText.TextTokens.All(IsWhitespaceOrNewLine);
 
                 return false;
 

@@ -11,6 +11,9 @@ namespace Roslynator.CSharp.SyntaxWalkers
 {
     internal class MethodReferencedAsMethodGroupWalker : CSharpSyntaxNodeWalker
     {
+        [ThreadStatic]
+        private static MethodReferencedAsMethodGroupWalker _cachedInstance;
+
         public bool Result { get; set; }
 
         public IMethodSymbol Symbol { get; set; }
@@ -90,7 +93,7 @@ namespace Roslynator.CSharp.SyntaxWalkers
 
             try
             {
-                walker = Cache.GetInstance();
+                walker = GetInstance();
 
                 Debug.Assert(walker.Symbol == null, "");
                 Debug.Assert(walker.SemanticModel == null, "");
@@ -106,40 +109,39 @@ namespace Roslynator.CSharp.SyntaxWalkers
                 if (walker != null)
                 {
                     result = walker.Result;
-                    Cache.Free(walker);
+
+                    Free(walker);
                 }
             }
 
             return result;
         }
 
-        private static class Cache
+        private static MethodReferencedAsMethodGroupWalker GetInstance()
         {
-            [ThreadStatic]
-            private static MethodReferencedAsMethodGroupWalker _cachedInstance;
+            MethodReferencedAsMethodGroupWalker walker = _cachedInstance;
 
-            public static MethodReferencedAsMethodGroupWalker GetInstance()
+            if (walker != null)
             {
-                MethodReferencedAsMethodGroupWalker walker = _cachedInstance;
+                Debug.Assert(walker.Symbol == null);
+                Debug.Assert(walker.SemanticModel == null);
+                Debug.Assert(walker.CancellationToken == default);
 
-                if (walker != null)
-                {
-                    _cachedInstance = null;
-                    return walker;
-                }
-
-                return new MethodReferencedAsMethodGroupWalker();
+                _cachedInstance = null;
+                return walker;
             }
 
-            public static void Free(MethodReferencedAsMethodGroupWalker walker)
-            {
-                walker.Result = false;
-                walker.Symbol = null;
-                walker.SemanticModel = null;
-                walker.CancellationToken = default;
+            return new MethodReferencedAsMethodGroupWalker();
+        }
 
-                _cachedInstance = walker;
-            }
+        private static void Free(MethodReferencedAsMethodGroupWalker walker)
+        {
+            walker.Result = false;
+            walker.Symbol = null;
+            walker.SemanticModel = null;
+            walker.CancellationToken = default;
+
+            _cachedInstance = walker;
         }
     }
 }

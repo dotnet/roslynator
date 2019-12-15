@@ -19,7 +19,6 @@ namespace Roslynator.CSharp
         /// Returns a default accessibility of the specified declaration.
         /// </summary>
         /// <param name="declaration"></param>
-        /// <returns></returns>
         public static Accessibility GetDefaultAccessibility(SyntaxNode declaration)
         {
             if (declaration == null)
@@ -78,7 +77,6 @@ namespace Roslynator.CSharp
         /// Returns a default explicit accessibility of the specified declaration.
         /// </summary>
         /// <param name="declaration"></param>
-        /// <returns></returns>
         public static Accessibility GetDefaultExplicitAccessibility(SyntaxNode declaration)
         {
             if (declaration == null)
@@ -137,7 +135,6 @@ namespace Roslynator.CSharp
         /// Returns an accessibility of the specified declaration.
         /// </summary>
         /// <param name="declaration"></param>
-        /// <returns></returns>
         public static Accessibility GetAccessibility(SyntaxNode declaration)
         {
             if (declaration == null)
@@ -196,7 +193,6 @@ namespace Roslynator.CSharp
         /// Returns an explicit accessibility of the specified declaration.
         /// </summary>
         /// <param name="declaration"></param>
-        /// <returns></returns>
         public static Accessibility GetExplicitAccessibility(SyntaxNode declaration)
         {
             if (declaration == null)
@@ -255,7 +251,6 @@ namespace Roslynator.CSharp
         /// Returns an explicit accessibility of the specified modifiers.
         /// </summary>
         /// <param name="modifiers"></param>
-        /// <returns></returns>
         public static Accessibility GetExplicitAccessibility(SyntaxTokenList modifiers)
         {
             int count = modifiers.Count;
@@ -313,7 +308,6 @@ namespace Roslynator.CSharp
         /// Return true if the specified declaration is publicly visible.
         /// </summary>
         /// <param name="declaration"></param>
-        /// <returns></returns>
         public static bool IsPubliclyVisible(MemberDeclarationSyntax declaration)
         {
             if (declaration == null)
@@ -354,7 +348,6 @@ namespace Roslynator.CSharp
         /// </summary>
         /// <typeparam name="TNode"></typeparam>
         /// <param name="node"></param>
-        /// <returns></returns>
         public static TNode WithoutExplicitAccessibility<TNode>(TNode node) where TNode : SyntaxNode
         {
             return WithExplicitAccessibility(node, Accessibility.NotApplicable);
@@ -367,7 +360,6 @@ namespace Roslynator.CSharp
         /// <param name="node"></param>
         /// <param name="newAccessibility"></param>
         /// <param name="comparer"></param>
-        /// <returns></returns>
         public static TNode WithExplicitAccessibility<TNode>(
             TNode node,
             Accessibility newAccessibility,
@@ -392,7 +384,6 @@ namespace Roslynator.CSharp
         /// <param name="node"></param>
         /// <param name="accessibility"></param>
         /// <param name="ignoreOverride">Ignore "override" modifier.</param>
-        /// <returns></returns>
         public static bool IsValidAccessibility(SyntaxNode node, Accessibility accessibility, bool ignoreOverride = false)
         {
             if (node == null)

@@ -7,9 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp;
 using Roslynator.Text;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
@@ -52,12 +50,10 @@ namespace Roslynator.CSharp.Documentation
             {
                 XmlNodeSyntax xmlNode = content[i];
 
-                if (xmlNode.IsKind(SyntaxKind.XmlElement))
+                if (xmlNode is XmlElementSyntax xmlElement
+                    && xmlElement.IsLocalName("filterpriority", StringComparison.OrdinalIgnoreCase))
                 {
-                    var xmlElement = (XmlElementSyntax)xmlNode;
-
-                    if (xmlElement.IsLocalName("filterpriority", StringComparison.OrdinalIgnoreCase))
-                        content = content.RemoveAt(i);
+                    content = content.RemoveAt(i);
                 }
             }
 

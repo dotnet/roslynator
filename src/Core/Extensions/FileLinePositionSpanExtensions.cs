@@ -13,7 +13,6 @@ namespace Roslynator
         /// Returns zero-based index of the start line of the specified span.
         /// </summary>
         /// <param name="fileLinePositionSpan"></param>
-        /// <returns></returns>
         public static int StartLine(this FileLinePositionSpan fileLinePositionSpan)
         {
             return fileLinePositionSpan.StartLinePosition.Line;
@@ -23,7 +22,6 @@ namespace Roslynator
         /// Returns zero-based index of the end line of the specified span.
         /// </summary>
         /// <param name="fileLinePositionSpan"></param>
-        /// <returns></returns>
         public static int EndLine(this FileLinePositionSpan fileLinePositionSpan)
         {
             return fileLinePositionSpan.EndLinePosition.Line;
@@ -33,7 +31,6 @@ namespace Roslynator
         /// Returns true if the specified <see cref="FileLinePositionSpan"/> spans over multiple lines.
         /// </summary>
         /// <param name="fileLinePositionSpan"></param>
-        /// <returns></returns>
         public static bool IsMultiLine(this FileLinePositionSpan fileLinePositionSpan)
         {
             return fileLinePositionSpan.StartLine() != fileLinePositionSpan.EndLine();
@@ -43,7 +40,6 @@ namespace Roslynator
         /// Returns true if the specified <see cref="FileLinePositionSpan"/> does not span over multiple lines.
         /// </summary>
         /// <param name="fileLinePositionSpan"></param>
-        /// <returns></returns>
         public static bool IsSingleLine(this FileLinePositionSpan fileLinePositionSpan)
         {
             return fileLinePositionSpan.StartLine() == fileLinePositionSpan.EndLine();

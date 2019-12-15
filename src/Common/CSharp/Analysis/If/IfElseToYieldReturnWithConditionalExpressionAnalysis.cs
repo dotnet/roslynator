@@ -22,7 +22,7 @@ namespace Roslynator.CSharp.Analysis.If
 
         public override string Title
         {
-            get { return "Use conditional expression"; }
+            get { return "Convert 'if' to ?:"; }
         }
     }
 }

@@ -40,17 +40,13 @@ namespace Roslynator.CSharp
 
             foreach (SyntaxNode descendant in bodyOrExpressionBody.DescendantNodes())
             {
-                if (descendant.IsKind(SyntaxKind.ReturnStatement))
-                {
-                    var returnStatement = (ReturnStatementSyntax)descendant;
-
-                    if (returnStatement
+                if (descendant is ReturnStatementSyntax returnStatement
+                    && returnStatement
                         .Expression?
                         .WalkDownParentheses()
                         .IsKind(SyntaxKind.AwaitExpression) == false)
-                    {
-                        return default;
-                    }
+                {
+                    return default;
                 }
             }
 

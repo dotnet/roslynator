@@ -38,22 +38,44 @@ class C
         public async Task Test_ReadOnlyProperty()
         {
             await VerifyRefactoringAsync(@"
-class C
+class C : B
 {
     private string _value;
 
-    public string [||]Value { get; } = null;
+    public override string [||]Value { get; } = null;
+
+    void M()
+    {
+        var x = base.Value;
+        var y = Value;
+    }
+}
+
+class B
+{
+    public virtual string Value { get; }
 }
 ", @"
-class C
+class C : B
 {
     private string _value;
     private string _value2 = null;
 
-    public string Value
+    public override string Value
     {
         get { return _value2; }
     }
+
+    void M()
+    {
+        var x = base.Value;
+        var y = _value2;
+    }
+}
+
+class B
+{
+    public virtual string Value { get; }
 }
 ", equivalenceKey: RefactoringId);
         }

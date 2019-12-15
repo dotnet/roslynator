@@ -210,7 +210,6 @@ namespace Roslynator.CSharp
         /// Creates a list of modifiers from the specified accessibility.
         /// </summary>
         /// <param name="accessibility"></param>
-        /// <returns></returns>
         public static SyntaxTokenList TokenList(Accessibility accessibility)
         {
             switch (accessibility)
@@ -1111,6 +1110,11 @@ namespace Roslynator.CSharp
                 SemicolonToken());
         }
 
+        internal static ThrowStatementSyntax ThrowNewStatement(TypeSyntax exceptionType)
+        {
+            return ThrowStatement(ObjectCreationExpression(exceptionType, ArgumentList()));
+        }
+
         public static ForStatementSyntax ForStatement(
             VariableDeclarationSyntax declaration,
             ExpressionSyntax condition,
@@ -1123,11 +1127,6 @@ namespace Roslynator.CSharp
                 condition: condition,
                 incrementors: SingletonSeparatedList(incrementor),
                 statement: statement);
-        }
-
-        internal static ThrowStatementSyntax ThrowNewStatement(TypeSyntax exceptionType)
-        {
-            return ThrowStatement(ObjectCreationExpression(exceptionType, ArgumentList()));
         }
         #endregion Statement
 

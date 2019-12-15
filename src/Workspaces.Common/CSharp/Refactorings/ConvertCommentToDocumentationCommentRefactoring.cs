@@ -88,7 +88,7 @@ namespace Roslynator.CSharp.Refactorings
             EnumMemberDeclarationSyntax enumMemberDeclaration = token
                 .GetPreviousToken()
                 .Parent
-                .FirstAncestor<EnumMemberDeclarationSyntax>();
+                .FirstAncestorOrSelf<EnumMemberDeclarationSyntax>();
 
             int enumMemberIndex = enumDeclaration.Members.IndexOf(enumMemberDeclaration);
 

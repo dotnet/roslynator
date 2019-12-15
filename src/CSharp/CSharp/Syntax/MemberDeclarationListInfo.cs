@@ -348,7 +348,7 @@ namespace Roslynator.CSharp.Syntax
         /// </summary>
         public MemberDeclarationSyntax First()
         {
-            return Members.First();
+            return Members[0];
         }
 
         /// <summary>
@@ -360,7 +360,7 @@ namespace Roslynator.CSharp.Syntax
         }
 
         /// <summary>
-        /// Searches for a member that matches the predicate and returns returns zero-based index of the first occurrence in the list.
+        /// Searches for a member that matches the predicate and returns zero-based index of the first occurrence in the list.
         /// </summary>
         /// <param name="predicate"></param>
         public int IndexOf(Func<MemberDeclarationSyntax, bool> predicate)
@@ -414,7 +414,7 @@ namespace Roslynator.CSharp.Syntax
         }
 
         /// <summary>
-        /// Searches for a member that matches the predicate and returns returns zero-based index of the last occurrence in the list.
+        /// Searches for a member that matches the predicate and returns zero-based index of the last occurrence in the list.
         /// </summary>
         /// <param name="predicate"></param>
         public int LastIndexOf(Func<MemberDeclarationSyntax, bool> predicate)

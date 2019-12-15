@@ -62,12 +62,10 @@ namespace Roslynator.CSharp.CodeFixes
         {
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            switch (node.Kind())
+            switch (node)
             {
-                case SyntaxKind.MethodDeclaration:
+                case MethodDeclarationSyntax methodDeclaration:
                     {
-                        var methodDeclaration = (MethodDeclarationSyntax)node;
-
                         IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(methodDeclaration, cancellationToken);
 
                         UseAsyncAwaitRewriter rewriter = UseAsyncAwaitRewriter.Create(methodSymbol);
@@ -78,10 +76,8 @@ namespace Roslynator.CSharp.CodeFixes
 
                         return await document.ReplaceNodeAsync(methodDeclaration, newNode, cancellationToken).ConfigureAwait(false);
                     }
-                case SyntaxKind.LocalFunctionStatement:
+                case LocalFunctionStatementSyntax localFunction:
                     {
-                        var localFunction = (LocalFunctionStatementSyntax)node;
-
                         IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(localFunction, cancellationToken);
 
                         UseAsyncAwaitRewriter rewriter = UseAsyncAwaitRewriter.Create(methodSymbol);
@@ -94,10 +90,8 @@ namespace Roslynator.CSharp.CodeFixes
 
                         return await document.ReplaceNodeAsync(localFunction, newNode, cancellationToken).ConfigureAwait(false);
                     }
-                case SyntaxKind.SimpleLambdaExpression:
+                case SimpleLambdaExpressionSyntax lambda:
                     {
-                        var lambda = (SimpleLambdaExpressionSyntax)node;
-
                         var methodSymbol = (IMethodSymbol)semanticModel.GetSymbol(lambda, cancellationToken);
 
                         UseAsyncAwaitRewriter rewriter = UseAsyncAwaitRewriter.Create(methodSymbol);
@@ -110,10 +104,8 @@ namespace Roslynator.CSharp.CodeFixes
 
                         return await document.ReplaceNodeAsync(lambda, newNode, cancellationToken).ConfigureAwait(false);
                     }
-                case SyntaxKind.ParenthesizedLambdaExpression:
+                case ParenthesizedLambdaExpressionSyntax lambda:
                     {
-                        var lambda = (ParenthesizedLambdaExpressionSyntax)node;
-
                         var methodSymbol = (IMethodSymbol)semanticModel.GetSymbol(lambda, cancellationToken);
 
                         UseAsyncAwaitRewriter rewriter = UseAsyncAwaitRewriter.Create(methodSymbol);
@@ -126,10 +118,8 @@ namespace Roslynator.CSharp.CodeFixes
 
                         return await document.ReplaceNodeAsync(lambda, newNode, cancellationToken).ConfigureAwait(false);
                     }
-                case SyntaxKind.AnonymousMethodExpression:
+                case AnonymousMethodExpressionSyntax anonymousMethod:
                     {
-                        var anonymousMethod = (AnonymousMethodExpressionSyntax)node;
-
                         var methodSymbol = (IMethodSymbol)semanticModel.GetSymbol(anonymousMethod, cancellationToken);
 
                         UseAsyncAwaitRewriter rewriter = UseAsyncAwaitRewriter.Create(methodSymbol);

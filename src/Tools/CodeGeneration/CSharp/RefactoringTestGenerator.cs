@@ -41,11 +41,11 @@ using System.Linq;
 using System.Threading.Tasks;
 
 class C
+{
+    void M()
     {
-        void M()
-        {
-        }
     }
+}
 "", @""
 "", equivalenceKey: RefactoringId);
         }

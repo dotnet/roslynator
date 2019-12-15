@@ -498,10 +498,8 @@ namespace Roslynator.CSharp.Analysis
 
         private static ExpressionSyntax GetExpression(SyntaxNode node)
         {
-            if (node?.Kind() == SyntaxKind.Block)
+            if (node is BlockSyntax block)
             {
-                var block = (BlockSyntax)node;
-
                 StatementSyntax statement = block.Statements.SingleOrDefault(shouldThrow: false);
 
                 switch (statement?.Kind())

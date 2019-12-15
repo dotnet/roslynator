@@ -29,7 +29,6 @@ namespace Roslynator.CommandLine
 
             WriteLine(Verbosity.Minimal);
             WriteLine($"{count} Visual Studio {((count == 1) ? "installation" : "installations")} found", ConsoleColor.Green, Verbosity.Minimal);
-            WriteLine(Verbosity.Minimal);
 
             return CommandResult.Success;
         }

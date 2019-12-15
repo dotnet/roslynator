@@ -57,11 +57,11 @@ namespace Roslynator.VisualStudio
 
                 shouldSave = true;
             }
-            else if (string.Compare(LastMaxId, MaxId, StringComparison.Ordinal) < 0)
+            else if (string.CompareOrdinal(LastMaxId, MaxId) < 0)
             {
                 foreach (string id in DisabledByDefault
                     .Split(',')
-                    .Where(f => string.Compare(LastMaxId, f, StringComparison.Ordinal) < 0))
+                    .Where(f => string.CompareOrdinal(LastMaxId, f) < 0))
                 {
                     DisabledItems.Add(id);
                 }

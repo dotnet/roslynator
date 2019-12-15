@@ -109,9 +109,9 @@ namespace Roslynator.CodeFixes
 
             stopwatch.Stop();
 
-            LogHelpers.WriteProjectFixResults(results, Options, FormatProvider);
-
             WriteLine($"Done fixing solution '{CurrentSolution.FilePath}' in {stopwatch.Elapsed:mm\\:ss\\.ff}", Verbosity.Minimal);
+
+            LogHelpers.WriteProjectFixResults(results, Options, FormatProvider);
         }
 
         public async Task<ProjectFixResult> FixProjectAsync(Project project, CancellationToken cancellationToken = default)
@@ -198,7 +198,7 @@ namespace Roslynator.CodeFixes
 
             Dictionary<string, ImmutableArray<DiagnosticAnalyzer>> analyzersById = GetAnalyzersById(analyzers);
 
-            LogHelpers.WriteUsedAnalyzers(analyzers, ConsoleColor.DarkGray, Verbosity.Diagnostic);
+            LogHelpers.WriteUsedAnalyzers(analyzers, project, Options, ConsoleColor.DarkGray, Verbosity.Diagnostic);
             LogHelpers.WriteUsedFixers(fixers, ConsoleColor.DarkGray, Verbosity.Diagnostic);
 
             ImmutableArray<Diagnostic>.Builder fixedDiagnostics = ImmutableArray.CreateBuilder<Diagnostic>();
@@ -208,9 +208,7 @@ namespace Roslynator.CodeFixes
 
             var fixKind = ProjectFixKind.Success;
 
-            int iterationCount = 1;
-
-            while (true)
+            for (int iterationCount = 1; ; iterationCount++)
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
@@ -285,7 +283,6 @@ namespace Roslynator.CodeFixes
 
                 previousPreviousDiagnostics = previousDiagnostics;
                 previousDiagnostics = diagnostics;
-                iterationCount++;
             }
 
             return new ProjectFixResult(fixKind, fixedDiagnostics, analyzers: analyzers, fixers: fixers);
@@ -497,8 +494,8 @@ namespace Roslynator.CodeFixes
                         {
                             break;
                         }
-                    }
-                    while (en.MoveNext());
+
+                    } while (en.MoveNext());
 
                     count = 0;
 

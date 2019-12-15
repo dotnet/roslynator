@@ -19,6 +19,33 @@ namespace Roslynator.CSharp.Refactorings
     {
         public const string Title = "Use expression-bodied member";
 
+        public static bool CanRefactor(SyntaxNode node)
+        {
+            switch (node)
+            {
+                case MethodDeclarationSyntax methodDeclaration:
+                    return CanRefactor(methodDeclaration);
+                case PropertyDeclarationSyntax propertyDeclaration:
+                    return CanRefactor(propertyDeclaration);
+                case IndexerDeclarationSyntax indexerDeclaration:
+                    return CanRefactor(indexerDeclaration);
+                case OperatorDeclarationSyntax operatorDeclaration:
+                    return CanRefactor(operatorDeclaration);
+                case ConversionOperatorDeclarationSyntax conversionOperatorDeclaration:
+                    return CanRefactor(conversionOperatorDeclaration);
+                case ConstructorDeclarationSyntax constructorDeclaration:
+                    return CanRefactor(constructorDeclaration);
+                case DestructorDeclarationSyntax destructorDeclaration:
+                    return CanRefactor(destructorDeclaration);
+                case AccessorDeclarationSyntax accessorDeclaration:
+                    return CanRefactor(accessorDeclaration);
+                case LocalFunctionStatementSyntax localFunctionStatement:
+                    return CanRefactor(localFunctionStatement);
+            }
+
+            return false;
+        }
+
         public static bool CanRefactor(PropertyDeclarationSyntax propertyDeclaration, TextSpan? span = null)
         {
             AccessorListSyntax accessorList = propertyDeclaration.AccessorList;
@@ -114,8 +141,7 @@ namespace Roslynator.CSharp.Refactorings
             BlockSyntax body = accessorDeclaration.Body;
 
             return body != null
-                && (span == null
-                    || span.Value.IsEmptyAndContainedInSpanOrBetweenSpans(accessorDeclaration)
+                && (span?.IsEmptyAndContainedInSpanOrBetweenSpans(accessorDeclaration) != false
                     || span.Value.IsEmptyAndContainedInSpanOrBetweenSpans(body))
                 && !accessorDeclaration.AttributeLists.Any()
                 && ((accessorDeclaration.IsKind(SyntaxKind.GetAccessorDeclaration))
@@ -137,7 +163,19 @@ namespace Roslynator.CSharp.Refactorings
                 .ModifyRange(
                     selectedMembers.FirstIndex,
                     selectedMembers.Count,
-                    f => (MemberDeclarationSyntax)GetNewNode(f).WithTrailingTrivia(f.GetTrailingTrivia()).WithFormatterAnnotation());
+                    member =>
+                    {
+                        if (CanRefactor(member))
+                        {
+                            var newMember = (MemberDeclarationSyntax)Refactor(member);
+
+                            return newMember
+                                .WithTrailingTrivia(member.GetTrailingTrivia())
+                                .WithFormatterAnnotation();
+                        }
+
+                        return member;
+                    });
 
             return document.ReplaceMembersAsync(SyntaxInfo.MemberDeclarationListInfo(selectedMembers.Parent), newMembers, cancellationToken);
         }
@@ -147,14 +185,14 @@ namespace Roslynator.CSharp.Refactorings
             SyntaxNode node,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode newNode = GetNewNode(node)
+            SyntaxNode newNode = Refactor(node)
                 .WithTrailingTrivia(node.GetTrailingTrivia())
                 .WithFormatterAnnotation();
 
             return document.ReplaceNodeAsync(node, newNode, cancellationToken);
         }
 
-        private static SyntaxNode GetNewNode(SyntaxNode node)
+        private static SyntaxNode Refactor(SyntaxNode node)
         {
             switch (node.Kind())
             {

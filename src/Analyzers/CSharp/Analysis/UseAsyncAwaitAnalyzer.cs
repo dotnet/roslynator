@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -185,8 +186,8 @@ namespace Roslynator.CSharp.Analysis
                     }
 
                     t = t.BaseType;
-                }
-                while (t?.SpecialType == SpecialType.None);
+
+                } while (t?.SpecialType == SpecialType.None);
             }
 
             return false;
@@ -256,6 +257,8 @@ namespace Roslynator.CSharp.Analysis
 
                 if (walker != null)
                 {
+                    Debug.Assert(walker.ReturnStatement == null);
+
                     _cachedInstance = null;
                     return walker;
                 }

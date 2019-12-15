@@ -14,22 +14,22 @@ namespace Roslynator.VisualStudio
             get;
         }
 
-        = $"{RefactoringIdentifiers.AddIdentifierToParameter},{RefactoringIdentifiers.AddIdentifierToVariableDeclaration},{RefactoringIdentifiers.IntroduceConstructor},{RefactoringIdentifiers.RemoveAllDocumentationComments},{RefactoringIdentifiers.ReplaceForEachWithForAndReverseLoop},{RefactoringIdentifiers.ReplaceMethodWithProperty},{RefactoringIdentifiers.UseStringEmptyInsteadOfEmptyStringLiteral}";
+        = $"{RefactoringIdentifiers.AddIdentifierToParameter},{RefactoringIdentifiers.AddIdentifierToVariableDeclaration},{RefactoringIdentifiers.ConvertEmptyStringToStringEmpty},{RefactoringIdentifiers.ConvertForEachToForAndReverseLoop},{RefactoringIdentifiers.IntroduceConstructor},{RefactoringIdentifiers.RemoveAllDocumentationComments},{RefactoringIdentifiers.ReplaceMethodWithProperty}";
         protected override string MaxId
         {
             get;
         }
 
-        = RefactoringIdentifiers.DuplicateSwitchSection;
+        = RefactoringIdentifiers.AddParameterToInterfaceMember;
         internal static void SetRefactoringsDisabledByDefault(RefactoringSettings settings)
         {
             settings.Disable(RefactoringIdentifiers.AddIdentifierToParameter);
             settings.Disable(RefactoringIdentifiers.AddIdentifierToVariableDeclaration);
+            settings.Disable(RefactoringIdentifiers.ConvertEmptyStringToStringEmpty);
+            settings.Disable(RefactoringIdentifiers.ConvertForEachToForAndReverseLoop);
             settings.Disable(RefactoringIdentifiers.IntroduceConstructor);
             settings.Disable(RefactoringIdentifiers.RemoveAllDocumentationComments);
-            settings.Disable(RefactoringIdentifiers.ReplaceForEachWithForAndReverseLoop);
             settings.Disable(RefactoringIdentifiers.ReplaceMethodWithProperty);
-            settings.Disable(RefactoringIdentifiers.UseStringEmptyInsteadOfEmptyStringLiteral);
         }
 
         protected override void Fill(ICollection<BaseModel> refactorings)
@@ -76,7 +76,6 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ExtractGenericType, "Extract generic type", IsEnabled(RefactoringIdentifiers.ExtractGenericType)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ExtractStatement, "Extract statement(s)", IsEnabled(RefactoringIdentifiers.ExtractStatement)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ExtractTypeDeclarationToNewFile, "Extract type declaration to a new file", IsEnabled(RefactoringIdentifiers.ExtractTypeDeclarationToNewFile)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.FormatAccessorBraces, "Format accessor braces", IsEnabled(RefactoringIdentifiers.FormatAccessorBraces)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.FormatArgumentList, "Format argument list", IsEnabled(RefactoringIdentifiers.FormatArgumentList)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.FormatBinaryExpression, "Format binary expression", IsEnabled(RefactoringIdentifiers.FormatBinaryExpression)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.FormatConditionalExpression, "Format conditional expression", IsEnabled(RefactoringIdentifiers.FormatConditionalExpression)));
@@ -146,37 +145,37 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceAsWithCast, "Replace as expression with cast expression", IsEnabled(RefactoringIdentifiers.ReplaceAsWithCast)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceCastWithAs, "Replace cast expression with as expression", IsEnabled(RefactoringIdentifiers.ReplaceCastWithAs)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceConditionalExpressionWithExpression, "Replace conditional expression with expression", IsEnabled(RefactoringIdentifiers.ReplaceConditionalExpressionWithExpression)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceConditionalExpressionWithIfElse, "Replace ?: with if-else", IsEnabled(RefactoringIdentifiers.ReplaceConditionalExpressionWithIfElse)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertConditionalOperatorToIfElse, "Convert ?: to if-else", IsEnabled(RefactoringIdentifiers.ConvertConditionalOperatorToIfElse)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceConstantWithField, "Replace constant with field", IsEnabled(RefactoringIdentifiers.ReplaceConstantWithField)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceDoWithWhile, "Replace do statement with while statement", IsEnabled(RefactoringIdentifiers.ReplaceDoWithWhile)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertDoToWhile, "Convert 'do' to 'while'", IsEnabled(RefactoringIdentifiers.ConvertDoToWhile)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceEqualsExpressionWithStringEquals, "Replace equals expression with string.Equals", IsEnabled(RefactoringIdentifiers.ReplaceEqualsExpressionWithStringEquals)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceEqualsExpressionWithStringIsNullOrEmpty, "Replace equals expression with string.IsNullOrEmpty", IsEnabled(RefactoringIdentifiers.ReplaceEqualsExpressionWithStringIsNullOrEmpty)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceEqualsExpressionWithStringIsNullOrWhiteSpace, "Replace equals expression with string.IsNullOrWhiteSpace", IsEnabled(RefactoringIdentifiers.ReplaceEqualsExpressionWithStringIsNullOrWhiteSpace)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.InlineConstantValue, "Inline constant value", IsEnabled(RefactoringIdentifiers.InlineConstantValue)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.UseConstantInsteadOfField, "Use constant instead of field", IsEnabled(RefactoringIdentifiers.UseConstantInsteadOfField)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceForEachWithFor, "Replace foreach statement with for statement", IsEnabled(RefactoringIdentifiers.ReplaceForEachWithFor)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceForWithForEach, "Replace for statement with foreach statement", IsEnabled(RefactoringIdentifiers.ReplaceForWithForEach)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceForWithWhile, "Replace for statement with while statement", IsEnabled(RefactoringIdentifiers.ReplaceForWithWhile)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceHexadecimalLiteralWithDecimalLiteral, "Replace hexadecimal literal with decimal literal", IsEnabled(RefactoringIdentifiers.ReplaceHexadecimalLiteralWithDecimalLiteral)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceIfWithSwitch, "Replace if with switch", IsEnabled(RefactoringIdentifiers.ReplaceIfWithSwitch)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertForEachToFor, "Convert 'foreach' to 'for'", IsEnabled(RefactoringIdentifiers.ConvertForEachToFor)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertForToForEach, "Convert 'for' to 'foreach'", IsEnabled(RefactoringIdentifiers.ConvertForToForEach)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertForToWhile, "Convert 'for' to 'while'", IsEnabled(RefactoringIdentifiers.ConvertForToWhile)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertHexadecimalLiteralToDecimalLiteral, "Convert hexadecimal literal to decimal literal", IsEnabled(RefactoringIdentifiers.ConvertHexadecimalLiteralToDecimalLiteral)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertIfToSwitch, "Convert 'if' to 'switch'", IsEnabled(RefactoringIdentifiers.ConvertIfToSwitch)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.InvertPrefixOrPostfixUnaryOperator, "Invert prefix/postfix unary operator", IsEnabled(RefactoringIdentifiers.InvertPrefixOrPostfixUnaryOperator)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceInterpolatedStringWithInterpolationExpression, "Replace interpolated string with interpolation expression", IsEnabled(RefactoringIdentifiers.ReplaceInterpolatedStringWithInterpolationExpression)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceInterpolatedStringWithStringLiteral, "Replace interpolated string with string literal", IsEnabled(RefactoringIdentifiers.ReplaceInterpolatedStringWithStringLiteral)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertInterpolatedStringToStringLiteral, "Convert interpolated string to string literal", IsEnabled(RefactoringIdentifiers.ConvertInterpolatedStringToStringLiteral)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceMethodGroupWithLambda, "Replace method group with lambda", IsEnabled(RefactoringIdentifiers.ReplaceMethodGroupWithLambda)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceMethodWithProperty, "Replace method with property", IsEnabled(RefactoringIdentifiers.ReplaceMethodWithProperty)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceNullLiteralExpressionWithDefaultExpression, "Replace null literal expression with default expression", IsEnabled(RefactoringIdentifiers.ReplaceNullLiteralExpressionWithDefaultExpression)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplacePrefixOperatorWithPostfixOperator, "Replace prefix operator to postfix operator", IsEnabled(RefactoringIdentifiers.ReplacePrefixOperatorWithPostfixOperator)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplacePropertyWithMethod, "Replace property with method", IsEnabled(RefactoringIdentifiers.ReplacePropertyWithMethod)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceRegularStringLiteralWithVerbatimStringLiteral, "Replace regular string literal with verbatim string literal", IsEnabled(RefactoringIdentifiers.ReplaceRegularStringLiteralWithVerbatimStringLiteral)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceStatementWithIfElse, "Replace (yield) return statement with if-else", IsEnabled(RefactoringIdentifiers.ReplaceStatementWithIfElse)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertRegularStringLiteralToVerbatimStringLiteral, "Convert regular string literal to verbatim string literal", IsEnabled(RefactoringIdentifiers.ConvertRegularStringLiteralToVerbatimStringLiteral)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertReturnToIf, "Convert '(yield) return' to 'if'", IsEnabled(RefactoringIdentifiers.ConvertReturnToIf)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.CallIndexOfInsteadOfContains, "Call string.IndexOf instead of string.Contains", IsEnabled(RefactoringIdentifiers.CallIndexOfInsteadOfContains)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceStringFormatWithInterpolatedString, "Replace string.Format with interpolated string", IsEnabled(RefactoringIdentifiers.ReplaceStringFormatWithInterpolatedString)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceSwitchWithIf, "Replace switch with if", IsEnabled(RefactoringIdentifiers.ReplaceSwitchWithIf)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceVerbatimStringLiteralWithRegularStringLiteral, "Replace verbatim string literal with regular string literal", IsEnabled(RefactoringIdentifiers.ReplaceVerbatimStringLiteralWithRegularStringLiteral)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceVerbatimStringLiteralWithRegularStringLiterals, "Replace verbatim string literal with regular string literals", IsEnabled(RefactoringIdentifiers.ReplaceVerbatimStringLiteralWithRegularStringLiterals)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceWhileWithDo, "Replace while statement with do statement", IsEnabled(RefactoringIdentifiers.ReplaceWhileWithDo)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceWhileWithFor, "Replace while statement with for statement", IsEnabled(RefactoringIdentifiers.ReplaceWhileWithFor)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.ReverseForLoop, "Reverse for loop", IsEnabled(RefactoringIdentifiers.ReverseForLoop)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertStringFormatToInterpolatedString, "Convert 'string.Format' to interpolated string", IsEnabled(RefactoringIdentifiers.ConvertStringFormatToInterpolatedString)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertSwitchToIf, "Convert 'switch to 'if'", IsEnabled(RefactoringIdentifiers.ConvertSwitchToIf)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertVerbatimStringLiteralToRegularStringLiteral, "Convert verbatim string literal to regular string literal", IsEnabled(RefactoringIdentifiers.ConvertVerbatimStringLiteralToRegularStringLiteral)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertVerbatimStringLiteralToRegularStringLiterals, "Convert verbatim string literal to regular string literals", IsEnabled(RefactoringIdentifiers.ConvertVerbatimStringLiteralToRegularStringLiterals)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertWhileToDo, "Convert 'while' statement to 'do' statement", IsEnabled(RefactoringIdentifiers.ConvertWhileToDo)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertWhileToFor, "Convert 'while' statement to 'for' statement", IsEnabled(RefactoringIdentifiers.ConvertWhileToFor)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.ReverseForLoop, "Reverse 'for' loop", IsEnabled(RefactoringIdentifiers.ReverseForLoop)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.SimplifyIf, "Simplify if", IsEnabled(RefactoringIdentifiers.SimplifyIf)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.SimplifyLambdaExpression, "Simplify lambda expression", IsEnabled(RefactoringIdentifiers.SimplifyLambdaExpression)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.SortMemberDeclarations, "Sort member declarations", IsEnabled(RefactoringIdentifiers.SortMemberDeclarations)));
@@ -190,12 +189,12 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.UncommentSingleLineComment, "Uncomment single-line comment", IsEnabled(RefactoringIdentifiers.UncommentSingleLineComment)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.UseBitwiseOperationInsteadOfCallingHasFlag, "Use bitwise operation instead of calling 'HasFlag'", IsEnabled(RefactoringIdentifiers.UseBitwiseOperationInsteadOfCallingHasFlag)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.UseCoalesceExpressionInsteadOfIf, "Use coalesce expression instead of if", IsEnabled(RefactoringIdentifiers.UseCoalesceExpressionInsteadOfIf)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.UseConditionalExpressionInsteadOfIf, "Use conditional expression instead of if", IsEnabled(RefactoringIdentifiers.UseConditionalExpressionInsteadOfIf)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertIfToConditionalOperator, "Convert 'if' to ?:", IsEnabled(RefactoringIdentifiers.ConvertIfToConditionalOperator)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.UseElementAccessInsteadOfEnumerableMethod, "Use element access instead of 'First/Last'ElementAt' method", IsEnabled(RefactoringIdentifiers.UseElementAccessInsteadOfEnumerableMethod)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.UseEmptyStringLiteralInsteadOfStringEmpty, "Use \"\" instead of string.Empty", IsEnabled(RefactoringIdentifiers.UseEmptyStringLiteralInsteadOfStringEmpty)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.UseExpressionBodiedMember, "Use expression-bodied member", IsEnabled(RefactoringIdentifiers.UseExpressionBodiedMember)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.UseLambdaExpressionInsteadOfAnonymousMethod, "Use lambda expression instead of anonymous method", IsEnabled(RefactoringIdentifiers.UseLambdaExpressionInsteadOfAnonymousMethod)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.UseStringEmptyInsteadOfEmptyStringLiteral, "Use string.Empty instead of \"\"", IsEnabled(RefactoringIdentifiers.UseStringEmptyInsteadOfEmptyStringLiteral)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertEmptyStringToStringEmpty, "Convert \"\" to string.Empty", IsEnabled(RefactoringIdentifiers.ConvertEmptyStringToStringEmpty)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.WrapInCondition, "Wrap in condition", IsEnabled(RefactoringIdentifiers.WrapInCondition)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.WrapInIfDirective, "Wrap in #if directive", IsEnabled(RefactoringIdentifiers.WrapInIfDirective)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.WrapInRegion, "Wrap in region", IsEnabled(RefactoringIdentifiers.WrapInRegion)));
@@ -211,12 +210,12 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceObjectCreationWithDefaultValue, "Replace object creation with default value", IsEnabled(RefactoringIdentifiers.ReplaceObjectCreationWithDefaultValue)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ChangeAccessibility, "Change accessibility", IsEnabled(RefactoringIdentifiers.ChangeAccessibility)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.FormatConstraintClauses, "Format constraint clauses", IsEnabled(RefactoringIdentifiers.FormatConstraintClauses)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceForEachWithForAndReverseLoop, "Replace foreach with for and reverse loop", IsEnabled(RefactoringIdentifiers.ReplaceForEachWithForAndReverseLoop)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertForEachToForAndReverseLoop, "Convert 'foreach' to 'for' and reverse loop", IsEnabled(RefactoringIdentifiers.ConvertForEachToForAndReverseLoop)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.InvertIf, "Invert if", IsEnabled(RefactoringIdentifiers.InvertIf)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.SplitIfElse, "Split if-else", IsEnabled(RefactoringIdentifiers.SplitIfElse)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.UseCSharp6DictionaryInitializer, "Use C# 6.0 dictionary initializer", IsEnabled(RefactoringIdentifiers.UseCSharp6DictionaryInitializer)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertCommentToDocumentationComment, "Convert comment to documentation comment", IsEnabled(RefactoringIdentifiers.ConvertCommentToDocumentationComment)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceInterpolatedStringWithConcatenation, "Replace interpolated string with concatenation", IsEnabled(RefactoringIdentifiers.ReplaceInterpolatedStringWithConcatenation)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertInterpolatedStringToConcatenation, "Convert interpolated string to concatenation", IsEnabled(RefactoringIdentifiers.ConvertInterpolatedStringToConcatenation)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.SplitDeclarationAndInitialization, "Split declaration and initialization", IsEnabled(RefactoringIdentifiers.SplitDeclarationAndInitialization)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.AddMemberToInterface, "Add member to interface", IsEnabled(RefactoringIdentifiers.AddMemberToInterface)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.MergeIfWithParentIf, "Merge if with parent if", IsEnabled(RefactoringIdentifiers.MergeIfWithParentIf)));
@@ -224,18 +223,19 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.InlineProperty, "Inline property", IsEnabled(RefactoringIdentifiers.InlineProperty)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.RemoveEnumMemberValue, "Remove enum member value(s)", IsEnabled(RefactoringIdentifiers.RemoveEnumMemberValue)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.UncommentMultiLineComment, "Uncomment multi-line comment", IsEnabled(RefactoringIdentifiers.UncommentMultiLineComment)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceInterpolatedStringWithStringFormat, "Replace interpolated string with string.Format", IsEnabled(RefactoringIdentifiers.ReplaceInterpolatedStringWithStringFormat)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertInterpolatedStringToStringFormat, "Convert interpolated string to 'string.Format'", IsEnabled(RefactoringIdentifiers.ConvertInterpolatedStringToStringFormat)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.MoveUnsafeContextToContainingDeclaration, "Move unsafe context to containing declaration", IsEnabled(RefactoringIdentifiers.MoveUnsafeContextToContainingDeclaration)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ExtractEventHandlerMethod, "Extract event handler method", IsEnabled(RefactoringIdentifiers.ExtractEventHandlerMethod)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.GeneratePropertyForDebuggerDisplayAttribute, "Generate property for DebuggerDisplay attribute", IsEnabled(RefactoringIdentifiers.GeneratePropertyForDebuggerDisplayAttribute)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.AddEmptyLineBetweenDeclarations, "Add empty line between declarations", IsEnabled(RefactoringIdentifiers.AddEmptyLineBetweenDeclarations)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceForEachWithEnumerator, "Replace foreach with enumerator", IsEnabled(RefactoringIdentifiers.ReplaceForEachWithEnumerator)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.UseEnumeratorExplicitly, "Use enumerator explicitly", IsEnabled(RefactoringIdentifiers.UseEnumeratorExplicitly)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.SortCaseLabels, "Sort case labels", IsEnabled(RefactoringIdentifiers.SortCaseLabels)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.AddTagToDocumentationComment, "Add tag to documentation comment", IsEnabled(RefactoringIdentifiers.AddTagToDocumentationComment)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.RemoveAsyncAwait, "Remove async/await", IsEnabled(RefactoringIdentifiers.RemoveAsyncAwait)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ImplementCustomEnumerator, "Implement custom enumerator", IsEnabled(RefactoringIdentifiers.ImplementCustomEnumerator)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertStatementsToIfElse, "Convert statements to if-else", IsEnabled(RefactoringIdentifiers.ConvertStatementsToIfElse)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.DuplicateSwitchSection, "Duplicate switch section", IsEnabled(RefactoringIdentifiers.DuplicateSwitchSection)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.AddParameterToInterfaceMember, "Add parameter to interface member", IsEnabled(RefactoringIdentifiers.AddParameterToInterfaceMember)));
         }
     }
 }

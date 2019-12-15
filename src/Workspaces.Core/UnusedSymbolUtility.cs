@@ -25,8 +25,29 @@ namespace Roslynator
                     {
                         var namedType = (INamedTypeSymbol)symbol;
 
-                        return namedType.TypeKind != TypeKind.Class
-                            || !namedType.IsStatic;
+                        if (namedType.TypeKind == TypeKind.Class
+                            && namedType.IsStatic)
+                        {
+                            foreach (ISymbol member in namedType.GetMembers())
+                            {
+                                switch (member.Kind)
+                                {
+                                    case SymbolKind.NamedType:
+                                        {
+                                            return false;
+                                        }
+                                    case SymbolKind.Method:
+                                        {
+                                            if (((IMethodSymbol)member).IsExtensionMethod)
+                                                return false;
+
+                                            break;
+                                        }
+                                }
+                            }
+                        }
+
+                        return true;
                     }
                 case SymbolKind.Event:
                     {
@@ -144,6 +165,25 @@ namespace Roslynator
 
                         if (value == 0)
                             return false;
+                    }
+                }
+            }
+
+            if (symbol.Kind == SymbolKind.NamedType)
+            {
+                var namedType = (INamedTypeSymbol)symbol;
+
+                if (namedType.TypeKind.Is(TypeKind.Class, TypeKind.Struct))
+                {
+                    foreach (ISymbol member in namedType.GetMembers())
+                    {
+                        if (member.Kind == SymbolKind.Method)
+                        {
+                            var methodSymbol = (IMethodSymbol)member;
+
+                            if (SymbolUtility.CanBeEntryPoint(methodSymbol))
+                                return false;
+                        }
                     }
                 }
             }

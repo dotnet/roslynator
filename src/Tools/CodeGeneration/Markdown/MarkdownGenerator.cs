@@ -134,7 +134,7 @@ namespace Roslynator.CodeGeneration.Markdown
             }
         }
 
-        public static string CreateRefactoringMarkdown(RefactoringMetadata refactoring, IEnumerable<string> filePaths)
+        public static string CreateRefactoringMarkdown(RefactoringMetadata refactoring)
         {
             var format = new MarkdownFormat(tableOptions: MarkdownFormat.Default.TableOptions | TableOptions.FormatContent);
 
@@ -150,7 +150,6 @@ namespace Roslynator.CodeGeneration.Markdown
                 Heading3("Usage"),
                 GetRefactoringSamples(refactoring),
                 CreateRemarks(refactoring.Remarks),
-                CreateSourceFiles(filePaths),
                 CreateSeeAlso(refactoring.Links.Select(f => CreateLink(f)), Link("Full list of refactorings", "Refactorings.md")));
 
             document.AddFootnote();
@@ -158,7 +157,7 @@ namespace Roslynator.CodeGeneration.Markdown
             return document.ToString(format);
         }
 
-        public static string CreateAnalyzerMarkdown(AnalyzerMetadata analyzer, IEnumerable<string> filePaths)
+        public static string CreateAnalyzerMarkdown(AnalyzerMetadata analyzer, IEnumerable<(string title, string url)> appliesTo = null)
         {
             var format = new MarkdownFormat(tableOptions: MarkdownFormat.Default.TableOptions | TableOptions.FormatContent);
 
@@ -173,7 +172,7 @@ namespace Roslynator.CodeGeneration.Markdown
                 CreateSummary(analyzer.Summary),
                 Samples(),
                 CreateRemarks(analyzer.Remarks),
-                CreateSourceFiles(filePaths),
+                CreateAppliesTo(appliesTo),
                 CreateSeeAlso(
                     analyzer.Links.Select(f => CreateLink(f)),
                     Link("How to Suppress a Diagnostic", "../HowToConfigureAnalyzers.md#how-to-suppress-a-diagnostic")));
@@ -196,34 +195,22 @@ namespace Roslynator.CodeGeneration.Markdown
             }
         }
 
+        private static IEnumerable<MElement> CreateAppliesTo(IEnumerable<(string title, string url)> appliesTo)
+        {
+            if (appliesTo != null)
+            {
+                yield return Heading2("Applies to");
+                yield return BulletList(appliesTo.Select(f => LinkOrText(f.title, f.url)));
+            }
+        }
+
         private static IEnumerable<MElement> CreateSeeAlso(params object[] content)
         {
             yield return Heading2("See Also");
             yield return BulletList(content);
         }
 
-        private static IEnumerable<object> CreateSourceFiles(IEnumerable<string> filePaths)
-        {
-            using (IEnumerator<string> en = filePaths.GetEnumerator())
-            {
-                if (en.MoveNext())
-                {
-                    yield return Heading2("Related Source Files");
-
-                    do
-                    {
-                        string title = Path.GetFileName(en.Current);
-
-                        string url = "../../src" + en.Current.Replace(@"\", "/");
-
-                        yield return BulletItem(Link(title, url));
-                    }
-                    while (en.MoveNext());
-                }
-            }
-        }
-
-        public static string CreateCompilerDiagnosticMarkdown(CompilerDiagnosticMetadata diagnostic, IEnumerable<CodeFixMetadata> codeFixes, IComparer<string> comparer, IEnumerable<string> filePaths)
+        public static string CreateCompilerDiagnosticMarkdown(CompilerDiagnosticMetadata diagnostic, IEnumerable<CodeFixMetadata> codeFixes, IComparer<string> comparer)
         {
             MDocument document = Document(
                 Heading1(diagnostic.Id),
@@ -237,8 +224,7 @@ namespace Roslynator.CodeGeneration.Markdown
                 BulletList(codeFixes
                     .Where(f => f.FixableDiagnosticIds.Any(diagnosticId => diagnosticId == diagnostic.Id))
                     .Select(f => f.Title)
-                    .OrderBy(f => f, comparer)),
-                CreateSourceFiles(filePaths));
+                    .OrderBy(f => f, comparer)));
 
             document.AddFootnote();
 

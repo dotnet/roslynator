@@ -115,7 +115,6 @@ namespace Roslynator
         /// <summary>
         /// Returns the fully qualified metadata name.
         /// </summary>
-        /// <returns></returns>
         public override string ToString()
         {
             return ToString(SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces);
@@ -221,7 +220,6 @@ namespace Roslynator
         /// Indicates whether this instance and a specified <see cref="MetadataName"/> are equal.
         /// </summary>
         /// <param name="other"></param>
-        /// <returns></returns>
         public bool Equals(MetadataName other)
         {
             if (IsDefault)
@@ -308,7 +306,6 @@ namespace Roslynator
         /// Converts the string representation of a fully qualified metadata name to its <see cref="MetadataName"/> equivalent.
         /// </summary>
         /// <param name="name"></param>
-        /// <returns></returns>
         /// <exception cref="ArgumentNullException"><paramref name="name"/> is <c>null</c>.</exception>
         /// <exception cref="ArgumentException"><paramref name="name"/> is empty or invalid.</exception>
         public static MetadataName Parse(string name)
@@ -322,7 +319,6 @@ namespace Roslynator
         /// </summary>
         /// <param name="name"></param>
         /// <param name="metadataName"></param>
-        /// <returns></returns>
         public static bool TryParse(string name, out MetadataName metadataName)
         {
             metadataName = Parse(name, shouldThrow: false);

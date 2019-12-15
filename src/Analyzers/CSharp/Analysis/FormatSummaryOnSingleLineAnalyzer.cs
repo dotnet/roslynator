@@ -32,7 +32,8 @@ namespace Roslynator.CSharp.Analysis
                 [\s-[\r\n]]*
             )?
             $
-            ", RegexOptions.IgnorePatternWhitespace | RegexOptions.ExplicitCapture);
+            ",
+            RegexOptions.IgnorePatternWhitespace | RegexOptions.ExplicitCapture);
 
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {

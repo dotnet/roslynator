@@ -11,6 +11,8 @@ namespace Roslynator.CommandLine
 {
     internal static class AnalyzerAssemblyLoader
     {
+        public const string DefaultSearchPattern = "*.dll";
+
         public static AnalyzerAssembly LoadFile(
             string filePath,
             bool loadAnalyzers = true,
@@ -24,6 +26,7 @@ namespace Roslynator.CommandLine
 
         public static IEnumerable<AnalyzerAssemblyInfo> LoadFrom(
             string path,
+            string searchPattern = DefaultSearchPattern,
             bool loadAnalyzers = true,
             bool loadFixers = true,
             string language = null)
@@ -37,7 +40,7 @@ namespace Roslynator.CommandLine
             }
             else if (Directory.Exists(path))
             {
-                using (IEnumerator<string> en = Directory.EnumerateFiles(path, "*.dll", SearchOption.AllDirectories).GetEnumerator())
+                using (IEnumerator<string> en = Directory.EnumerateFiles(path, searchPattern, SearchOption.AllDirectories).GetEnumerator())
                 {
                     while (true)
                     {
@@ -56,19 +59,12 @@ namespace Roslynator.CommandLine
                                 break;
                             }
                         }
-                        catch (Exception ex)
-                        {
-                            if (ex is IOException
+                        catch (Exception ex) when (ex is IOException
                                 || ex is SecurityException
                                 || ex is UnauthorizedAccessException)
-                            {
-                                WriteLine(ex.Message, ConsoleColor.DarkGray, Verbosity.Diagnostic);
-                                continue;
-                            }
-                            else
-                            {
-                                throw;
-                            }
+                        {
+                            WriteError(ex, ConsoleColor.DarkGray, Verbosity.Diagnostic);
+                            continue;
                         }
 
                         if (analyzerAssembly?.IsEmpty == false)
@@ -87,20 +83,13 @@ namespace Roslynator.CommandLine
                 {
                     return LoadFile(filePath, loadAnalyzers, loadFixers, language);
                 }
-                catch (Exception ex)
-                {
-                    if (ex is FileLoadException
+                catch (Exception ex) when (ex is FileLoadException
                         || ex is BadImageFormatException
                         || ex is SecurityException)
-                    {
-                        WriteLine($"Cannot load assembly '{filePath}'", ConsoleColor.DarkGray, Verbosity.Diagnostic);
+                {
+                    WriteLine($"Cannot load assembly '{filePath}'", ConsoleColor.DarkGray, Verbosity.Diagnostic);
 
-                        return null;
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    return null;
                 }
             }
         }

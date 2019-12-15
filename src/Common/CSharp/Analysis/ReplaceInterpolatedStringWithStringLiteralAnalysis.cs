@@ -12,7 +12,7 @@ namespace Roslynator.CSharp.Analysis
         {
             SyntaxList<InterpolatedStringContentSyntax> contents = interpolatedString.Contents;
 
-            return contents.Count == 0
+            return !contents.Any()
                 || (contents.Count == 1 && contents[0].Kind() == SyntaxKind.InterpolatedStringText);
         }
     }
