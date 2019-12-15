@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2036
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29411.108
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{CC69BDBB-35E9-43A9-9397-4B2832270BB8}"
 EndProject
@@ -82,6 +82,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentat
 		..\docs\AnalyzersVsRefactorings.md = ..\docs\AnalyzersVsRefactorings.md
 		..\docs\HowToConfigureAnalyzers.md = ..\docs\HowToConfigureAnalyzers.md
 		..\docs\HowToConfigureRefactorings.md = ..\docs\HowToConfigureRefactorings.md
+		..\docs\HowToConfigureRulesetFile.md = ..\docs\HowToConfigureRulesetFile.md
 		..\docs\HowToCustomizeRulesForProject.md = ..\docs\HowToCustomizeRulesForProject.md
 		..\docs\HowToFixAllDiagnostics.md = ..\docs\HowToFixAllDiagnostics.md
 		..\docs\HowToGenerateDocumentation.md = ..\docs\HowToGenerateDocumentation.md

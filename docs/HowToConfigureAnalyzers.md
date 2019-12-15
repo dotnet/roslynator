@@ -2,94 +2,36 @@
 
 ## Content
 
-* [Introduction](#introduction) 
-* [What Is Rule Set](#what-is-rule-set)
-* [How to Configure a Rule Set](#how-to-configure-a-rule-set)
-* [How to Suppress a Diagnostic](#how-to-suppress-a-diagnostic)
+* [Configure Analyzers in a Ruleset File](#configure-analyzers-in-a-ruleset-file)
+* [Configure Analyzers in an EditorConfig File](#configure-analyzers-in-an-editorconfig-file)
+* [Change Default Configuration of Analyzers](#change-default-configuration-of-analyzers)
+* [Suppress Diagnostics](#suppress-diagnostics)
 
-## Introduction
 
-* It is a common requirement to enable/disable specific analyzer or/and to change its action (from **Warning** to **Info** etc.)
-* This can be easily accomplished by using **rule set**.
+## Configure Analyzers in a Ruleset File
 
-## What is Rule Set
-
-* Rule set is a group of rules where each rule define "Action" for a specific analyzer.
-* Action **None** deactivates analyzer.
-* Other actions specifies that analyzer is active but it differs in how it is displayed in the IDE.
-  
-Action | Description
---- | ---
-**None** | disabled
-**Hidden** | not visible
-**Info** | visible as **Message**
-**Warning** | visible as **Warning**
-**Error** | visible as **Error**
-
-Rule set is typically stored in a file with extension **ruleset** and it has following structure:
+* Ruleset is a group of rules where each rule define "Action" for a specific analyzer.
+* Allowed actions are **None** (disabled), **Hidden** (not visible), **Info**, **Warning** or **Error**. 
+* Rules are stored in a XML file that has extension **ruleset** and following structure:
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <RuleSet Name="My Rules" ToolsVersion="15.0">
+
+  <!-- Specify zero or more paths to other rulesets that should be included. -->
+  <Include Path="parent.ruleset" Action="Default,None,Hidden,Info,Warning,Error" />
+
   <Rules AnalyzerId="Roslynator.CSharp.Analyzers" RuleNamespace="Roslynator.CSharp.Analyzers">
-    <Rule Id="RCS1001" Action="Warning" />
+    <Rule Id="RCS...." Action="None,Hidden,Info,Warning,Error" />
   </Rules>
+
+  <!-- Specify default action that should be applied to all analyzers except those explicitly specified. -->
+  <IncludeAll Action="None,Hidden,Info,Warning,Error" />
+
 </RuleSet>
 ```
 
-## How to Configure a Rule Set
-
-### Old csproj format (.NET Framework)
-
-#### 1) Create Your Own Rule Set File
-
-* Skip this step if you already have one.
-* Go to Solution Explorer - Solution - Project - References - Analyzers - Open Active Rule Set.
-
-![Open Active Rule Set](/images/OpenActiveRuleSet.png)
-
-* Modify rule set.
-* Save rule set (this will create a new file **ProjectName.ruleset** in your project folder.
-* Move rule set file to a solution root folder (or any other location).
-
-![Rule Set Editor](/images/RuleSetEditor.png)
-
-#### 2) Modify Rule Set File Manually
-
-* Open rule set file in text editor.
-* Change value of attribute 'Name' (rule set is represented in the IDE by its name).
-
-![Edit Rule Set File](/images/EditRuleSetFile.png)
-
-#### 3) Attach Rule Set to Project(s)
-
-* Go to Main Menu - Analysis - Configure Code Analysis - For Solution
-
-![Configure Code Analysis for Solution](/images/ConfigureCodeAnalysisForSolution.png)
-
-* Change rule set for each project.
-* Change configuration and repeat previous step (optional).
-
-![Code Analysis Settings](/images/CodeAnalysisSettings.png)
-
-
-### New csproj format (.NET Core, .NET Standard)
-
-#### 1) Add New Rule Set File to Your Solution
-
-* Go to Solution Explorer - Solution - Context Menu - Add - New Item - Code Analysis Rule Set
-
-#### 2) Modify Rule Set File Manually
-
-* Open rule set file in text editor.
-* Change value of attribute 'Name' (rule set is represented in the IDE by its name).
-
-![Edit Rule Set File](/images/EditNewRuleSetFile.png)
-
-#### 3) Attach Rule Set to Project(s)
-
-* Open csproj file in text editor or go to Solution Explorer - Project - Context Menu - Edit ProjectName.csproj
-* Add following `PropertyGroup` (or add element to the existing `PropertyGroup`):
+To enforce ruleset it is necessary to reference it in a csproj file:
 
 ```xml
 <PropertyGroup>
@@ -97,13 +39,64 @@ Rule set is typically stored in a file with extension **ruleset** and it has fol
 </PropertyGroup>
 ```
 
-## How to Suppress a Diagnostic
+Please see step-by-step tutorial [how to configure ruleset file](HowToConfigureRulesetFile.md).
 
-> Note: If you want to disable an analyzer completely you have use a rule set.
+
+## Configure Analyzers in an EditorConfig File
+
+*Note: This option is applicable for Visual Studio 2019 version 16.3 and later.*
+
+Severity of a rule can be changed by adding following line to an EditorConfig file:
+```
+dotnet_diagnostic.<RULE_ID>.severity = <default|none|silent|info|warning|error>
+```
+
+For further information please see how to [set rule severity in an EditorConfig file](https://docs.microsoft.com/en-us/visualstudio/code-quality/use-roslyn-analyzers#set-rule-severity-in-an-editorconfig-file).
+
+
+## Change Default Configuration of Analyzers
+
+*Note: This option is applicable for Roslynator 2019 or later (Visual Studio) and for Roslynator for VS Code.*
+
+Roslynator ruleset file can be used to:
+
+ 1) Enable/disable analyzer(s) by DEFAULT.
+ 2) Change DEFAULT severity (action) of the analyzer(s).
+ 
+Default configuration is applied once when analyzers are loaded.
+Therefore, it may be neccessary to restart IDE for changes to take effect.
+
+### Location of Roslynator Ruleset File
+
+Roslynator ruleset file must be named **roslynator.ruleset** and must be located in one of the following folders:
+
+| Folder Path | Scope |
+| -------- | ------- |
+| `LOCAL_APP_DATA/JosefPihrt/Roslynator` | Visual Studio installations and VS Code installation |
+| `LOCAL_APP_DATA/JosefPihrt/Roslynator/VisualStudio` | Visual Studio installations |
+| `LOCAL_APP_DATA/JosefPihrt/Roslynator/VisualStudio/2019` | Visual Studio 2019 installations |
+| `LOCAL_APP_DATA/JosefPihrt/Roslynator/VisualStudioCode` | VS Code installation |
+
+### Location of LOCAL_APP_DATA Folder
+
+| OS | Path |
+| -------- | ------- |
+| Windows | `C:\Users\USER_NAME\AppData\Local` |
+| Linux | `/home/USER_NAME/.local/share` |
+| OSX | `/Users/USER_NAME/.local/share` |
+
+
+## Suppress Diagnostics
+
+Suppression of diagnostics is useful to suppress rare cases that are not or cannot be covered by an analyzer.
+
+This approach should not be used as a replacement for configuration of analyzers since analyzers that produce diagnostics still execute even if diagnostics are suppressed.
 
 ### Suppress Diagnostic for a Declaration
 
 ```csharp
+using System.Diagnostics.CodeAnalysis;
+
 class C
 {
     [SuppressMessage("Readability", "RCS1008", Justification = "<Pending>")]
@@ -115,6 +108,8 @@ class C
 ```
 
 ```csharp
+using System.Diagnostics.CodeAnalysis;
+
 [assembly: SuppressMessage("Readability", "RCS1008", Justification = "<Pending>", Scope = "member", Target = "~M:C.M")]
 
 class C
@@ -129,6 +124,8 @@ class C
 ### Suppress Diagnostic for Selected Lines
 
 ```csharp
+using System.Diagnostics.CodeAnalysis;
+
 class C
 {
     void M()
@@ -140,7 +137,28 @@ class C
 }
 ```
 
+### Suppress Diagnostic for Namespace
+
+```csharp
+using System.Diagnostics.CodeAnalysis;
+
+[assembly: SuppressMessage("Readability", "RCS1008", Justification = "<Pending>", Scope = "NamespaceAndDescendants", Target = "N1.N2")]
+
+namespace N1.N2
+{
+    class C
+    {
+        void M()
+        {
+            var x = Foo(); // no RCS1008 here
+        }
+    }
+}
+```
+
 ### Suppress Diagnostic Globally
+
+*Note: this option is applicable for Roslynator 2017*
 
 Go to Visual Studio Tools > Options > Roslynator > Global Suppressions
 
@@ -148,7 +166,4 @@ Go to Visual Studio Tools > Options > Roslynator > Global Suppressions
 
 ## See Also
 
-* [How to: Create a Custom Rule Set](https://msdn.microsoft.com/en-us/library/dd264974.aspx)
-* [Working in the Code Analysis Rule Set Editor](https://msdn.microsoft.com/en-us/library/dd380626.aspx)
-* [How to: Specify Managed Code Rule Sets for Multiple Projects in a Solution](https://msdn.microsoft.com/en-us/library/dd465181.aspx)
-* [Rule Set XML Schema](https://github.com/dotnet/roslyn/blob/master/src/Compilers/Core/Portable/RuleSet/RuleSetSchema.xsd)
+* [Use code analyzers](https://docs.microsoft.com/en-us/visualstudio/code-quality/use-roslyn-analyzers)

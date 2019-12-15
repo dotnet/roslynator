@@ -9,6 +9,7 @@
 
 * [Configure Analyzers](HowToConfigureAnalyzers.md)
 * [Configure Refactorings](HowToConfigureRefactorings.md)
+* [Configure Ruleset File](HowToConfigureRulesetFile.md)
 * [Customize Rules for a Project](HowToCustomizeRulesForProject.md)
 * [Fix All Diagnostics in a Solution](HowToFixAllDiagnostics.md)
 * [Generate API Documentation](HowToGenerateDocumentation.md)
