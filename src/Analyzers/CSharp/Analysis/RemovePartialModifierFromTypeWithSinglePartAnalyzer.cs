@@ -23,38 +23,57 @@ namespace Roslynator.CSharp.Analysis
                 throw new ArgumentNullException(nameof(context));
 
             base.Initialize(context);
+            context.EnableConcurrentExecution();
 
-            context.RegisterSymbolAction(AnalyzeNamedType, SymbolKind.NamedType);
+            context.RegisterSyntaxNodeAction(AnalyzeClassDeclaration, SyntaxKind.ClassDeclaration);
+            context.RegisterSyntaxNodeAction(AnalyzeStructDeclaration, SyntaxKind.StructDeclaration);
+            context.RegisterSyntaxNodeAction(AnalyzeInterfaceDeclaration, SyntaxKind.InterfaceDeclaration);
         }
 
-        public static void AnalyzeNamedType(SymbolAnalysisContext context)
+        private void AnalyzeClassDeclaration(SyntaxNodeAnalysisContext context)
         {
-            var symbol = (INamedTypeSymbol)context.Symbol;
+            AnalyzeTypeDeclaration(context, (TypeDeclarationSyntax)context.Node);
+        }
 
-            if (!symbol.TypeKind.Is(TypeKind.Class, TypeKind.Struct, TypeKind.Interface))
+        private void AnalyzeStructDeclaration(SyntaxNodeAnalysisContext context)
+        {
+            AnalyzeTypeDeclaration(context, (TypeDeclarationSyntax)context.Node);
+        }
+
+        private void AnalyzeInterfaceDeclaration(SyntaxNodeAnalysisContext context)
+        {
+            AnalyzeTypeDeclaration(context, (TypeDeclarationSyntax)context.Node);
+        }
+
+        private void AnalyzeTypeDeclaration(SyntaxNodeAnalysisContext context, TypeDeclarationSyntax typeDeclaration)
+        {
+            if (!typeDeclaration.Modifiers.Contains(SyntaxKind.PartialKeyword))
                 return;
 
-            SyntaxReference syntaxReference = symbol.DeclaringSyntaxReferences.SingleOrDefault(shouldThrow: false);
+            INamedTypeSymbol symbol = context.SemanticModel.GetDeclaredSymbol(typeDeclaration, context.CancellationToken);
 
-            if (syntaxReference == null)
+            if (symbol?.DeclaringSyntaxReferences.SingleOrDefault(shouldThrow: false) == null)
                 return;
 
-            if (!(syntaxReference.GetSyntax(context.CancellationToken) is MemberDeclarationSyntax memberDeclaration))
-                return;
-
-            SyntaxToken partialKeyword = SyntaxInfo.ModifierListInfo(memberDeclaration).Modifiers.Find(SyntaxKind.PartialKeyword);
-
-            if (!partialKeyword.IsKind(SyntaxKind.PartialKeyword))
-                return;
-
-            if (SyntaxInfo.MemberDeclarationListInfo(memberDeclaration)
-                .Members
-                .Any(member => member.Kind() == SyntaxKind.MethodDeclaration && ((MethodDeclarationSyntax)member).Modifiers.Contains(SyntaxKind.PartialKeyword)))
+            foreach (MemberDeclarationSyntax member in typeDeclaration.Members)
             {
-                return;
+                if (member.IsKind(SyntaxKind.MethodDeclaration))
+                {
+                    var method = (MethodDeclarationSyntax)member;
+
+                    if (method.Modifiers.Contains(SyntaxKind.PartialKeyword)
+                        && method.BodyOrExpressionBody() == null
+                        && method.ContainsUnbalancedIfElseDirectives(method.Span))
+                    {
+                        return;
+                    }
+                }
             }
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemovePartialModifierFromTypeWithSinglePart, partialKeyword);
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
+                DiagnosticDescriptors.RemovePartialModifierFromTypeWithSinglePart,
+                typeDeclaration.Modifiers.Find(SyntaxKind.PartialKeyword));
         }
     }
 }

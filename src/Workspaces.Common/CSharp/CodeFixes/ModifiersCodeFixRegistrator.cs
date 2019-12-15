@@ -430,7 +430,7 @@ namespace Roslynator.CSharp.CodeFixes
             return GetAddModifierTitle(modifierKind);
         }
 
-        private static string GetRemoveModifierTitle(SyntaxKind modifierKind)
+        internal static string GetRemoveModifierTitle(SyntaxKind modifierKind)
         {
             return $"Remove modifier '{GetText(modifierKind)}'";
         }

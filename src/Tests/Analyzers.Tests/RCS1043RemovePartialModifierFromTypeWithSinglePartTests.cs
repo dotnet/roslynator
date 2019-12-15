@@ -11,14 +11,11 @@ namespace Roslynator.CSharp.Analysis.Tests
 {
     public class RCS1043RemovePartialModifierFromTypeWithSinglePartTests : AbstractCSharpFixVerifier
     {
-        public override DiagnosticDescriptor Descriptor { get; } =
-            DiagnosticDescriptors.RemovePartialModifierFromTypeWithSinglePart;
+        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.RemovePartialModifierFromTypeWithSinglePart;
 
-        public override DiagnosticAnalyzer Analyzer { get; } =
-            new RemovePartialModifierFromTypeWithSinglePartAnalyzer();
+        public override DiagnosticAnalyzer Analyzer { get; } = new RemovePartialModifierFromTypeWithSinglePartAnalyzer();
 
-        public override CodeFixProvider FixProvider { get; } =
-            new RemovePartialModifierFromTypeWithSinglePartCodeFixProvider();
+        public override CodeFixProvider FixProvider { get; } = new RemovePartialModifierFromTypeWithSinglePartCodeFixProvider();
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemovePartialModifierFromTypeWithSinglePart)]
         public async Task Test_Class()
@@ -66,22 +63,25 @@ public struct Foo
         public async Task Test_MultipleMethodsNestedInClass()
         {
             await VerifyDiagnosticAndFixAsync(@"
-public [|partial|] class Foo
+public [|partial|] class C
 {
-    partial void FooMethod();
+    partial void M();
 
-    partial void FooMethod()
+    partial void M()
     {
     }
+
+    string M2() => null;
 }
 ", @"
-public class Foo
+public class C
 {
-    partial void FooMethod();
 
-    partial void FooMethod()
+    void M()
     {
     }
+
+    string M2() => null;
 }
 ");
         }
@@ -90,22 +90,25 @@ public class Foo
         public async Task Test_MultipleMethodsNestedInStruct()
         {
             await VerifyDiagnosticAndFixAsync(@"
-public [|partial|] struct Foo
+public [|partial|] struct C
 {
-    partial void FooMethod();
+    partial void M();
 
-    partial void FooMethod()
+    partial void M()
     {
     }
+
+    string M2() => null;
 }
 ", @"
-public struct Foo
+public struct C
 {
-    partial void FooMethod();
 
-    partial void FooMethod()
+    void M()
     {
     }
+
+    string M2() => null;
 }
 ");
         }
