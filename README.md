@@ -8,7 +8,7 @@ A collection of 500+ [analyzers](src/Analyzers/README.md), [refactorings](src/Re
 * [NuGet Analyzers](#nuget-analyzers)
 * [Roslynator API](#roslynator-api)
 * [Roslynator Command-Line Interface](#roslynator-command-line-interface)
-* [Roslynator for VS Code](#roslynator-for-vs-code)
+* [Roslynator for VS Code](#extensions-for-visual-studio-code)
 * [Release notes](ChangeLog.md)
 * Follow on [Twitter](https://twitter.com/roslynator)
 
