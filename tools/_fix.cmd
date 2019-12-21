@@ -1,6 +1,7 @@
 @echo off
 
-set _msbuildPath="C:\Program Files\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin"
+set _visualStudioPath=C:\Program Files\Microsoft Visual Studio\2017\Community
+set _msbuildPath="%_visualStudioPath%\MSBuild\15.0\Bin"
 
 %_msbuildPath%\msbuild "..\src\CommandLine.sln" /t:Build /p:Configuration=Debug /v:m /m
 
@@ -13,6 +14,10 @@ set _msbuildPath="C:\Program Files\Microsoft Visual Studio\2017\Community\MSBuil
   "..\src\CodeAnalysis.Analyzers.CodeFixes\bin\Debug\netstandard1.3\Roslynator.CodeAnalysis.Analyzers.CodeFixes.dll" ^
   "..\src\Formatting.Analyzers.CodeFixes\bin\Debug\netstandard1.3\Roslynator.Formatting.Analyzers.dll" ^
   "..\src\Formatting.Analyzers.CodeFixes\bin\Debug\netstandard1.3\Roslynator.Formatting.Analyzers.CodeFixes.dll" ^
+  "%_visualStudioPath%\Common7\IDE\CommonExtensions\Microsoft\ManagedLanguages\VBCSharp\LanguageServices\Microsoft.CodeAnalysis.CSharp.EditorFeatures.dll" ^
+  "%_visualStudioPath%\Common7\IDE\CommonExtensions\Microsoft\ManagedLanguages\VBCSharp\LanguageServices\Microsoft.CodeAnalysis.CSharp.Features.dll" ^
+  "%_visualStudioPath%\Common7\IDE\CommonExtensions\Microsoft\ManagedLanguages\VBCSharp\LanguageServices\Microsoft.CodeAnalysis.EditorFeatures.dll" ^
+  "%_visualStudioPath%\Common7\IDE\CommonExtensions\Microsoft\ManagedLanguages\VBCSharp\LanguageServices\Microsoft.CodeAnalysis.Features.dll" ^
  --format ^
  --verbosity d ^
  --file-log "roslynator.log" ^
