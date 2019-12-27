@@ -133,14 +133,6 @@ namespace Roslynator.CodeGeneration
                 @"CodeFixes\README.md",
                 MarkdownGenerator.CreateCodeFixesReadMe(compilerDiagnostics, comparer));
 
-            WriteAllText(
-                "DefaultConfigFile.xml",
-                XmlGenerator.CreateDefaultConfigFile(refactorings, codeFixes));
-
-            WriteAllText(
-                "default.ruleset",
-                XmlGenerator.CreateDefaultRuleSet(analyzers));
-
             // find files to delete
             foreach (string path in Directory.EnumerateFiles(GetPath(@"..\docs\refactorings")))
             {
