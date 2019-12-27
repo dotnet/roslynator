@@ -24,7 +24,7 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.MakeMemberAbstract)
-                && indexerDeclaration.HeaderSpan().Contains(context.Span))
+                && context.Span.IsEmptyAndContainedInSpan(indexerDeclaration.ThisKeyword))
             {
                 MakeIndexerAbstractRefactoring.ComputeRefactoring(context, indexerDeclaration);
             }

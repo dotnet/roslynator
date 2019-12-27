@@ -49,7 +49,7 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.MakeMemberAbstract)
-                && methodDeclaration.HeaderSpan().Contains(context.Span))
+                && context.Span.IsEmptyAndContainedInSpan(methodDeclaration.Identifier))
             {
                 MakeMethodAbstractRefactoring.ComputeRefactoring(context, methodDeclaration);
             }

@@ -75,7 +75,7 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.MakeMemberVirtual)
-                && propertyDeclaration.HeaderSpan().Contains(context.Span))
+                && context.Span.IsEmptyAndContainedInSpan(propertyDeclaration.Identifier))
             {
                 MakePropertyVirtualRefactoring.ComputeRefactoring(context, propertyDeclaration);
             }
