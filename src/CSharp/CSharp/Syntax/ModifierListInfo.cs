@@ -750,6 +750,11 @@ namespace Roslynator.CSharp.Syntax
                             filter |= ModifierFilter.Async;
                             break;
                         }
+                    case SyntaxKind.ExternKeyword:
+                        {
+                            filter |= ModifierFilter.Extern;
+                            break;
+                        }
                     default:
                         {
                             Debug.Fail(Modifiers[i].Kind().ToString());
