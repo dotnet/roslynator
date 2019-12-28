@@ -4,7 +4,7 @@ rem dotnet install tool -g orang.dotnet.cli
 
 set _apiVersion=1.0.0.21
 set _version=2.3.0.0
-set _vsixManifestVersion=2.3.0
+set _version3=2.3.0
 set _root=..\src
 set _options=from-file -t m r -y t -v n -o "orang.log" v=di
 
@@ -41,7 +41,7 @@ orang replace ^
   "%_root%\VisualStudio.Refactorings\source.extension.vsixmanifest" ^
  -c "patterns\vsix_manifest_version.txt" ^
   %_options% ^
- -r %_vsixManifestVersion%
+ -r %_version3%
 
 echo.
 
@@ -59,7 +59,7 @@ orang replace ^
   "%_root%\VisualStudioCode\package\package.json" ^
  -c "patterns\vscode_version.txt" ^
   %_options% ^
- -r %_version%
+ -r %_version3%
 
 echo.
 
