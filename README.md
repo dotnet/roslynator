@@ -2,6 +2,8 @@
 
 A collection of 500+ [analyzers](src/Analyzers/README.md), [refactorings](src/Refactorings/README.md) and [fixes](src/CodeFixes/README.md) for C#, powered by [Roslyn](http://github.com/dotnet/roslyn).
 
+**PROMO: Try [Orang](https://github.com/JosefPihrt/Orang), cross-platform command-line tool from the author of Roslynator. Orang can search, replace, rename and delete directories, files and its content using the power of .NET regular expressions.**
+
 ### Features
 
 * [Extensions for Visual Studio](#extensions-for-visual-studio)
