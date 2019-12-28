@@ -1,3 +1,7 @@
+### 2.3.0 (2019-12-28)
+
+* Last release of Roslynator for VS 2017
+
 ### 2.2.1 (2019-10-26)
 
 * Add set of formatting analyzers (RCS0...).
