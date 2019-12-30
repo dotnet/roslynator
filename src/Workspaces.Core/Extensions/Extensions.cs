@@ -24,6 +24,8 @@ namespace Roslynator
             {
                 case TypeKind.Class:
                     return SymbolGroupFilter.Class;
+                case TypeKind.Module:
+                    return SymbolGroupFilter.Module;
                 case TypeKind.Delegate:
                     return SymbolGroupFilter.Delegate;
                 case TypeKind.Enum:
@@ -33,7 +35,7 @@ namespace Roslynator
                 case TypeKind.Struct:
                     return SymbolGroupFilter.Struct;
                 default:
-                    throw new ArgumentException("", nameof(typeKind));
+                    throw new ArgumentException($"Invalid enum value '{typeKind}'", nameof(typeKind));
             }
         }
 
@@ -117,6 +119,8 @@ namespace Roslynator
                         {
                             case TypeKind.Class:
                                 return SymbolGroup.Class;
+                            case TypeKind.Module:
+                                return SymbolGroup.Module;
                             case TypeKind.Delegate:
                                 return SymbolGroup.Delegate;
                             case TypeKind.Enum:
@@ -162,6 +166,8 @@ namespace Roslynator
             {
                 case SymbolGroup.Namespace:
                     return "namespace";
+                case SymbolGroup.Module:
+                    return "module";
                 case SymbolGroup.Class:
                     return "class";
                 case SymbolGroup.Delegate:
@@ -197,6 +203,8 @@ namespace Roslynator
             {
                 case SymbolGroup.Namespace:
                     return "namespaces";
+                case SymbolGroup.Module:
+                    return "modules";
                 case SymbolGroup.Class:
                     return "classes";
                 case SymbolGroup.Delegate:

@@ -25,7 +25,7 @@ namespace Roslynator
                     {
                         var namedType = (INamedTypeSymbol)symbol;
 
-                        if (namedType.TypeKind == TypeKind.Class
+                        if ((namedType.TypeKind == TypeKind.Class || namedType.TypeKind == TypeKind.Module)
                             && namedType.IsStatic)
                         {
                             foreach (ISymbol member in namedType.GetMembers())

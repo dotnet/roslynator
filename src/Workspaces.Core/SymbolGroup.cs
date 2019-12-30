@@ -6,16 +6,17 @@ namespace Roslynator
     {
         None = 0,
         Namespace = 1,
-        Class = 2,
-        Struct = 3,
-        Interface = 4,
-        Enum = 5,
-        Delegate = 6,
-        Const = 7,
-        Field = 8,
-        Event = 9,
-        Property = 10,
-        Indexer = 11,
-        Method = 12
+        Module = 2,
+        Class = 3,
+        Struct = 4,
+        Interface = 5,
+        Enum = 6,
+        Delegate = 7,
+        Const = 8,
+        Field = 9,
+        Event = 10,
+        Property = 11,
+        Indexer = 12,
+        Method = 13
     }
 }

@@ -231,7 +231,7 @@ namespace Roslynator.CommandLine
                     SymbolGroup group = grouping.Key;
                     WriteLine($"      {grouping.Count()} {group.GetPluralText()}", verbosity);
 
-                    if (group == SymbolGroup.Class)
+                    if (group == SymbolGroup.Class || group == SymbolGroup.Module)
                         WriteLine($"        {grouping.Count(f => f.IsStatic)} static {group.GetPluralText()}", verbosity);
                 }
 

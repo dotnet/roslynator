@@ -110,16 +110,18 @@ namespace Roslynator
             {
                 switch (symbol.TypeKind)
                 {
-                    case TypeKind.Class:
+                    case TypeKind.Module:
                         return 1;
-                    case TypeKind.Struct:
+                    case TypeKind.Class:
                         return 2;
-                    case TypeKind.Interface:
+                    case TypeKind.Struct:
                         return 3;
-                    case TypeKind.Enum:
+                    case TypeKind.Interface:
                         return 4;
-                    case TypeKind.Delegate:
+                    case TypeKind.Enum:
                         return 5;
+                    case TypeKind.Delegate:
+                        return 6;
                 }
 
                 Debug.Fail(symbol.ToDisplayString(SymbolDisplayFormats.Test));
