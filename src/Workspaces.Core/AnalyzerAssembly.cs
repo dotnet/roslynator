@@ -82,20 +82,23 @@ namespace Roslynator
 
                         if (attribute != null)
                         {
-                            var analyzer = (DiagnosticAnalyzer)Activator.CreateInstance(typeInfo.AsType());
+                            DiagnosticAnalyzer analyzer = CreateInstanceAndCatchIfThrows<DiagnosticAnalyzer>(typeInfo);
 
-                            if (analyzers == null)
-                                analyzers = new Dictionary<string, ImmutableArray<DiagnosticAnalyzer>.Builder>();
-
-                            foreach (string language2 in attribute.Languages)
+                            if (analyzer != null)
                             {
-                                if (language == null
-                                    || language == language2)
-                                {
-                                    if (!analyzers.TryGetValue(language2, out ImmutableArray<DiagnosticAnalyzer>.Builder value))
-                                        analyzers[language2] = ImmutableArray.CreateBuilder<DiagnosticAnalyzer>();
+                                if (analyzers == null)
+                                    analyzers = new Dictionary<string, ImmutableArray<DiagnosticAnalyzer>.Builder>();
 
-                                    analyzers[language2].Add(analyzer);
+                                foreach (string language2 in attribute.Languages)
+                                {
+                                    if (language == null
+                                        || language == language2)
+                                    {
+                                        if (!analyzers.TryGetValue(language2, out ImmutableArray<DiagnosticAnalyzer>.Builder value))
+                                            analyzers[language2] = ImmutableArray.CreateBuilder<DiagnosticAnalyzer>();
+
+                                        analyzers[language2].Add(analyzer);
+                                    }
                                 }
                             }
                         }
@@ -108,20 +111,23 @@ namespace Roslynator
 
                         if (attribute != null)
                         {
-                            var fixer = (CodeFixProvider)Activator.CreateInstance(typeInfo.AsType());
+                            CodeFixProvider fixer = CreateInstanceAndCatchIfThrows<CodeFixProvider>(typeInfo);
 
-                            if (fixers == null)
-                                fixers = new Dictionary<string, ImmutableArray<CodeFixProvider>.Builder>();
-
-                            foreach (string language2 in attribute.Languages)
+                            if (fixer != null)
                             {
-                                if (language == null
-                                    || language == language2)
-                                {
-                                    if (!fixers.TryGetValue(language2, out ImmutableArray<CodeFixProvider>.Builder value))
-                                        fixers[language2] = ImmutableArray.CreateBuilder<CodeFixProvider>();
+                                if (fixers == null)
+                                    fixers = new Dictionary<string, ImmutableArray<CodeFixProvider>.Builder>();
 
-                                    fixers[language2].Add(fixer);
+                                foreach (string language2 in attribute.Languages)
+                                {
+                                    if (language == null
+                                        || language == language2)
+                                    {
+                                        if (!fixers.TryGetValue(language2, out ImmutableArray<CodeFixProvider>.Builder value))
+                                            fixers[language2] = ImmutableArray.CreateBuilder<CodeFixProvider>();
+
+                                        fixers[language2].Add(fixer);
+                                    }
                                 }
                             }
                         }
@@ -137,6 +143,21 @@ namespace Roslynator
                 analyzerAssembly,
                 analyzers?.ToImmutableDictionary(f => f.Key, f => f.Value.ToImmutableArray()) ?? ImmutableDictionary<string, ImmutableArray<DiagnosticAnalyzer>>.Empty,
                 fixers?.ToImmutableDictionary(f => f.Key, f => f.Value.ToImmutableArray()) ?? ImmutableDictionary<string, ImmutableArray<CodeFixProvider>>.Empty);
+        }
+
+        private static T CreateInstanceAndCatchIfThrows<T>(TypeInfo typeInfo)
+        {
+            try
+            {
+                return (T)Activator.CreateInstance(typeInfo.AsType());
+            }
+            catch (TargetInvocationException ex)
+            {
+                WriteLine($"Cannot create instance of type '{typeInfo.FullName}'", ConsoleColor.DarkGray, Verbosity.Diagnostic);
+                WriteLine(ex.ToString(), ConsoleColor.DarkGray, Verbosity.Diagnostic);
+            }
+
+            return default;
         }
 
         public override int GetHashCode()
