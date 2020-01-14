@@ -103,14 +103,39 @@ namespace Roslynator.CSharp.Analysis
                 if (expression.IsKind(SyntaxKind.NumericLiteralExpression))
                     return true;
 
-                ITypeSymbol typeSymbol = semanticModel
+                switch (semanticModel
                     .GetTypeInfo(expression, cancellationToken)
-                    .ConvertedType;
-
-                if (typeSymbol != null
-                    && CSharpFacts.IsNumericType(typeSymbol.SpecialType))
+                    .ConvertedType?
+                    .SpecialType)
                 {
-                    return true;
+                    case SpecialType.System_SByte:
+                    case SpecialType.System_Byte:
+                    case SpecialType.System_Int16:
+                    case SpecialType.System_UInt16:
+                    case SpecialType.System_Int32:
+                    case SpecialType.System_UInt32:
+                    case SpecialType.System_Int64:
+                    case SpecialType.System_UInt64:
+                    case SpecialType.System_Decimal:
+                        {
+                            return true;
+                        }
+                    case SpecialType.System_Single:
+                        {
+                            Optional<object> optional = semanticModel.GetConstantValue(expression, cancellationToken);
+
+                            return optional.HasValue
+                                && optional.Value is float value
+                                && !float.IsNaN(value);
+                        }
+                    case SpecialType.System_Double:
+                        {
+                            Optional<object> optional = semanticModel.GetConstantValue(expression, cancellationToken);
+
+                            return optional.HasValue
+                                && optional.Value is double value
+                                && !double.IsNaN(value);
+                        }
                 }
             }
 
