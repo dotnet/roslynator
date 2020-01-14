@@ -34,7 +34,7 @@ namespace Roslynator.CSharp.Analysis.Tests
                                  /*e*/ : /*f*/ false|] /*g*/", @"f //a
               /*b*/  /*c*/  //d
                                  /*e*/  /*f*/  /*g*/")]
-        public async Task Test_TrueFalse(string fromData, string toData)
+        public async Task Test_TrueFalse(string source, string expected)
         {
             await VerifyDiagnosticAndFixAsync(@"
 class C
@@ -44,7 +44,7 @@ class C
         if ([||]) { }
 }
 }
-", fromData, toData);
+", source, expected);
         }
 
         [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyConditionalExpression)]
@@ -54,7 +54,7 @@ class C
             ? g
             : false|] /**/", @"f
             && g /**/")]
-        public async Task Test_LogicalAnd(string fromData, string toData)
+        public async Task Test_LogicalAnd(string source, string expected)
         {
             await VerifyDiagnosticAndFixAsync(@"
 class C
@@ -64,7 +64,7 @@ class C
         if ([||]) { }
     }
 }
-", fromData, toData);
+", source, expected);
         }
 
         [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyConditionalExpression)]
@@ -73,7 +73,7 @@ class C
             ? true
             : g|] /**/", @"f
             || g /**/")]
-        public async Task Test_LogicalOr(string fromData, string toData)
+        public async Task Test_LogicalOr(string source, string expected)
         {
             await VerifyDiagnosticAndFixAsync(@"
 class C
@@ -83,7 +83,7 @@ class C
         if ([||]) { }
     }
 }
-", fromData, toData);
+", source, expected);
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyConditionalExpression)]

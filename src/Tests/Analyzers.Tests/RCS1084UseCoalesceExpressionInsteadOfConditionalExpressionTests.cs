@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.Analysis.Tests
 
         [InlineData("(s != null) ? (s) : (\"\")", "s ?? \"\"")]
         [InlineData("(s == null) ? (\"\") : (s)", "s ?? \"\"")]
-        public async Task Test_ReferenceType(string fromData, string toData)
+        public async Task Test_ReferenceType(string source, string expected)
         {
             await VerifyDiagnosticAndFixAsync(@"
 class C
@@ -35,7 +35,7 @@ class C
         s = [||];
     }
 }
-", fromData, toData);
+", source, expected);
         }
 
         [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfConditionalExpression)]
@@ -43,7 +43,7 @@ class C
         [InlineData("(ni == null) ? 1 : ni.Value", "ni ?? 1")]
         [InlineData("(ni.HasValue) ? ni.Value : 1", "ni ?? 1")]
         [InlineData("(!ni.HasValue) ? 1 : ni.Value", "ni ?? 1")]
-        public async Task Test_ValueType(string fromData, string toData)
+        public async Task Test_ValueType(string source, string expected)
         {
             await VerifyDiagnosticAndFixAsync(@"
 class C
@@ -56,7 +56,7 @@ class C
         i = [||];
     }
 }
-", fromData, toData);
+", source, expected);
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfConditionalExpression)]

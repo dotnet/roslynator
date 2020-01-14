@@ -4,7 +4,7 @@ using System;
 using Microsoft.CodeAnalysis.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Tests
+namespace Roslynator.CSharp.Testing
 {
     public static class SyntaxKindTests
     {

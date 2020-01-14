@@ -2,11 +2,11 @@
 
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.Tests.Text;
+using Roslynator.Testing.Text;
 using Xunit;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-namespace Roslynator.CSharp.Tests
+namespace Roslynator.CSharp.Testing
 {
     public static class ExpressionChainTests
     {

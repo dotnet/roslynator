@@ -12,7 +12,7 @@ namespace Roslynator.CSharp.Refactorings.Tests
         [Theory, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToConditionalOperator)]
         [InlineData("if (f) { z = x; } else { z = y; }", "z = (f) ? x : y;")]
         [InlineData("if (f) z = x; else z = y;", "z = (f) ? x : y;")]
-        public async Task Test_IfElseToAssignmentWithConditionalExpression(string fromData, string toData)
+        public async Task Test_IfElseToAssignmentWithConditionalExpression(string source, string expected)
         {
             await VerifyRefactoringAsync(@"
 class C
@@ -22,7 +22,7 @@ class C
         [||]
     }
 }
-", fromData, toData, equivalenceKey: RefactoringId);
+", source, expected, equivalenceKey: RefactoringId);
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToConditionalOperator)]
@@ -116,7 +116,7 @@ class C
         [InlineData("if (f) return x; else return y;", "return (f) ? x : y;")]
         [InlineData("if (f) { return x; } return y;", "return (f) ? x : y;")]
         [InlineData("if (f) return x; return y;", "return (f) ? x : y;")]
-        public async Task Test_IfToReturnWithConditionalExpression(string fromData, string toData)
+        public async Task Test_IfToReturnWithConditionalExpression(string source, string expected)
         {
             await VerifyRefactoringAsync(@"
 class C
@@ -126,13 +126,13 @@ class C
         [||]
     }
 }
-", fromData, toData, equivalenceKey: RefactoringId);
+", source, expected, equivalenceKey: RefactoringId);
         }
 
         [Theory, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToConditionalOperator)]
         [InlineData("if (f) { yield return x; } else { yield return y; }", "yield return (f) ? x : y;")]
         [InlineData("if (f) yield return x; else yield return y;", "yield return (f) ? x : y;")]
-        public async Task Test_IfElseToYieldReturnWithConditionalExpression(string fromData, string toData)
+        public async Task Test_IfElseToYieldReturnWithConditionalExpression(string source, string expected)
         {
             await VerifyRefactoringAsync(@"
 using System.Collections.Generic;
@@ -144,7 +144,7 @@ class C
         [||]
     }
 }
-", fromData, toData, equivalenceKey: RefactoringId);
+", source, expected, equivalenceKey: RefactoringId);
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToConditionalOperator)]

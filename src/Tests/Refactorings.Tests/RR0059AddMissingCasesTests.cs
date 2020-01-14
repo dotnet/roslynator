@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
-using Roslynator.Tests;
+using Roslynator.CSharp.Testing;
 using Xunit;
 
 namespace Roslynator.CSharp.Refactorings.Tests
@@ -10,9 +10,12 @@ namespace Roslynator.CSharp.Refactorings.Tests
     {
         public override string RefactoringId { get; } = RefactoringIdentifiers.AddMissingCases;
 
-        public override CodeVerificationOptions Options => base.Options.AddAllowedCompilerDiagnosticId(CompilerDiagnosticIdentifiers.EmptySwitchBlock);
+        protected override CSharpCodeVerificationOptions UpdateOptions(CSharpCodeVerificationOptions options)
+        {
+            return options.AddAllowedCompilerDiagnosticId(CompilerDiagnosticIdentifiers.EmptySwitchBlock);
+        }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddMissingCases)]
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddMissingCases)]
         public async Task Test_Empty()
         {
             await VerifyRefactoringAsync(@"

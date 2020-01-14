@@ -1,25 +1,18 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
-using Roslynator.Tests;
+using Roslynator.CSharp.Testing;
 using Xunit;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
     public class RR0021ChangeMethodReturnTypeToVoidTests : AbstractCSharpRefactoringVerifier
     {
-        private readonly CodeVerificationOptions _options;
-
-        public RR0021ChangeMethodReturnTypeToVoidTests()
-        {
-            _options = base.Options.AddAllowedCompilerDiagnosticId(CompilerDiagnosticIdentifiers.NotAllCodePathsReturnValue);
-        }
-
         public override string RefactoringId { get; } = RefactoringIdentifiers.ChangeMethodReturnTypeToVoid;
 
-        public override CodeVerificationOptions Options
+        protected override CSharpCodeVerificationOptions UpdateOptions(CSharpCodeVerificationOptions options)
         {
-            get { return _options; }
+            return options.AddAllowedCompilerDiagnosticId(CompilerDiagnosticIdentifiers.NotAllCodePathsReturnValue);
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ChangeMethodReturnTypeToVoid)]

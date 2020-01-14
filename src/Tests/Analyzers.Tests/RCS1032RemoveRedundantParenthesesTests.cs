@@ -271,7 +271,7 @@ class C
         [InlineData("[|(|]i) |= [|(|]0);", "i |= 0;")]
         [InlineData("[|(|]i) <<= [|(|]0);", "i <<= 0;")]
         [InlineData("[|(|]i) >>= [|(|]0);", "i >>= 0;")]
-        public async Task Test_Statement(string fromData, string toData)
+        public async Task Test_Statement(string source, string expected)
         {
             await VerifyDiagnosticAndFixAsync(@"
 using System;
@@ -286,7 +286,7 @@ class C
         [||]
     }
 }
-", fromData, toData);
+", source, expected);
         }
 
         [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantParentheses)]
@@ -294,7 +294,7 @@ class C
         [InlineData(@"f = ![|(|]s.StartsWith(""""));", @"f = !s.StartsWith("""");")]
         [InlineData("f = ![|(|]foo.Value);", "f = !foo.Value;")]
         [InlineData("f = ![|(|]foo[0]);", "f = !foo[0];")]
-        public async Task Test_LogicalNot(string fromData, string toData)
+        public async Task Test_LogicalNot(string source, string expected)
         {
             await VerifyDiagnosticAndFixAsync(@"
 class Foo
@@ -315,13 +315,13 @@ class Foo
         get { return i == 0; }
     }
 }
-", fromData, toData);
+", source, expected);
         }
 
         [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantParentheses)]
         [InlineData("[|(|]f) == [|(|]true)", "f == true")]
         [InlineData("[|(|]f) != [|(|]true)", "f != true")]
-        public async Task Test_EqualsNotEquals(string fromData, string toData)
+        public async Task Test_EqualsNotEquals(string source, string expected)
         {
             await VerifyDiagnosticAndFixAsync(@"
 class Foo
@@ -333,7 +333,7 @@ class Foo
         if ([||]) { }
     }
 }
-", fromData, toData);
+", source, expected);
         }
 
         [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantParentheses)]
@@ -341,7 +341,7 @@ class Foo
         [InlineData("[|(|]i) >= [|(|]0)", "i >= 0")]
         [InlineData("[|(|]i) < [|(|]0)", "i < 0")]
         [InlineData("[|(|]i) <= [|(|]0)", "i <= 0")]
-        public async Task Test_GreaterThanLessThan(string fromData, string toData)
+        public async Task Test_GreaterThanLessThan(string source, string expected)
         {
             await VerifyDiagnosticAndFixAsync(@"
 class Foo
@@ -353,7 +353,7 @@ class Foo
         if ([||]) { }
     }
 }
-", fromData, toData);
+", source, expected);
         }
 
         [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantParentheses)]
@@ -369,7 +369,7 @@ class Foo
         [InlineData("[|(|]i) | [|(|]0)", "i | 0")]
         [InlineData("[|(|]f) && [|(|]f2)", "f && f2")]
         [InlineData("[|(|]f) || [|(|]f2)", "f || f2")]
-        public async Task Test_BinaryExpression(string fromData, string toData)
+        public async Task Test_BinaryExpression(string source, string expected)
         {
             await VerifyDiagnosticAndFixAsync(@"
 class Foo
@@ -383,7 +383,7 @@ class Foo
         var x = [||];
     }
 }
-", fromData, toData);
+", source, expected);
         }
 
         [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantParentheses)]
@@ -399,7 +399,7 @@ class Foo
         [InlineData("[|(|]i | 0) | i", "i | 0 | i")]
         [InlineData("[|(|]f && f2) && f", "f && f2 && f")]
         [InlineData("[|(|]f || f2) || f", "f || f2 || f")]
-        public async Task Test_BinaryExpressionChain(string fromData, string toData)
+        public async Task Test_BinaryExpressionChain(string source, string expected)
         {
             await VerifyDiagnosticAndFixAsync(@"
 class Foo
@@ -413,7 +413,7 @@ class Foo
         var x = [||];
     }
 }
-", fromData, toData);
+", source, expected);
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantParentheses)]

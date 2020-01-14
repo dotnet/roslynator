@@ -1,23 +1,19 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
-using Roslynator.Tests;
+using Roslynator.CSharp.Testing;
 using Xunit;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
     public class RR0213AddParameterToInterfaceMemberTests : AbstractCSharpRefactoringVerifier
     {
-        private readonly CodeVerificationOptions _options;
-
-        public RR0213AddParameterToInterfaceMemberTests()
-        {
-            _options = base.Options.AddAllowedCompilerDiagnosticIds(new string[] { "CS0535", "CS0539" });
-        }
-
-        public override CodeVerificationOptions Options => _options;
-
         public override string RefactoringId { get; } = RefactoringIdentifiers.AddParameterToInterfaceMember;
+
+        protected override CSharpCodeVerificationOptions UpdateOptions(CSharpCodeVerificationOptions options)
+        {
+            return options.AddAllowedCompilerDiagnosticIds(new string[] { "CS0535", "CS0539" });
+        }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddParameterToInterfaceMember)]
         public async Task Test_Method()

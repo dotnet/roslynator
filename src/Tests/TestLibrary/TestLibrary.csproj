@@ -7,8 +7,8 @@
   <PropertyGroup>
     <LangVersion>latest</LangVersion>
     <CodeAnalysisRuleSet>..\..\global.ruleset</CodeAnalysisRuleSet>
-    <AssemblyName>Roslynator.Tests.TestLibrary</AssemblyName>
-    <RootNamespace>Roslynator.Tests.TestLibrary</RootNamespace>
+    <AssemblyName>Roslynator.Testing.Library</AssemblyName>
+    <RootNamespace>Roslynator.Testing</RootNamespace>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 

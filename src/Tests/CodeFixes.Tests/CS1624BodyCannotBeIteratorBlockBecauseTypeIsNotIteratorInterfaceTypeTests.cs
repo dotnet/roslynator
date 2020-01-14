@@ -2,23 +2,21 @@
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.CodeFixes;
-using Roslynator.Tests;
+using Roslynator.CSharp.Testing;
 using Xunit;
 
 namespace Roslynator.CSharp.CodeFixes.Tests
 {
     public class CS1624BodyCannotBeIteratorBlockBecauseTypeIsNotIteratorInterfaceTypeTests : AbstractCSharpCompilerDiagnosticFixVerifier
     {
-        public CS1624BodyCannotBeIteratorBlockBecauseTypeIsNotIteratorInterfaceTypeTests()
-        {
-            Options = base.Options.AddAllowedCompilerDiagnosticId(CompilerDiagnosticIdentifiers.CannotImplicitlyConvertType);
-        }
-
         public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.BodyCannotBeIteratorBlockBecauseTypeIsNotIteratorInterfaceType;
 
         public override CodeFixProvider FixProvider { get; } = new MethodDeclarationOrLocalFunctionStatementCodeFixProvider();
 
-        public override CodeVerificationOptions Options { get; }
+        protected override CSharpCodeVerificationOptions UpdateOptions(CSharpCodeVerificationOptions options)
+        {
+            return options.AddAllowedCompilerDiagnosticId(CompilerDiagnosticIdentifiers.CannotImplicitlyConvertType);
+        }
 
         [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.BodyCannotBeIteratorBlockBecauseTypeIsNotIteratorInterfaceType)]
         public async Task Test_Method_String()

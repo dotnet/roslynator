@@ -1,23 +1,19 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
-using Roslynator.Tests;
+using Roslynator.CSharp.Testing;
 using Xunit;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
     public class RR0212DuplicateSwitchSectionTests : AbstractCSharpRefactoringVerifier
     {
-        private readonly CodeVerificationOptions _options;
-
-        public RR0212DuplicateSwitchSectionTests()
-        {
-            _options = base.Options.AddAllowedCompilerDiagnosticId("CS0152");
-        }
-
         public override string RefactoringId { get; } = RefactoringIdentifiers.DuplicateSwitchSection;
 
-        public override CodeVerificationOptions Options => _options;
+        protected override CSharpCodeVerificationOptions UpdateOptions(CSharpCodeVerificationOptions options)
+        {
+            return options.AddAllowedCompilerDiagnosticId("CS0152");
+        }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.DuplicateSwitchSection)]
         public async Task Test_OnCloseBrace()

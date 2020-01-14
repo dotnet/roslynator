@@ -5,7 +5,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.CodeFixes;
-using Roslynator.Tests;
+using Roslynator.Testing;
 using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
@@ -39,7 +39,7 @@ class C
 
         //[Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBracesWhenExpressionSpansOverMultipleLines)]
         //[InlineData("", "")]
-        public async Task Test2(string fromData, string toData)
+        public async Task Test2(string source, string expected)
         {
             await VerifyDiagnosticAndFixAsync(@"
 using System;
@@ -53,7 +53,7 @@ class C
     {
     }
 }
-", fromData, toData);
+", source, expected);
         }
 
         //[Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBracesWhenExpressionSpansOverMultipleLines)]
@@ -76,7 +76,7 @@ class C
 
         //[Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBracesWhenExpressionSpansOverMultipleLines)]
         //[InlineData("")]
-        public async Task TestNoDiagnostic2(string fromData)
+        public async Task TestNoDiagnostic2(string source)
         {
             await VerifyNoDiagnosticAsync(@"
 using System;
@@ -90,7 +90,7 @@ class C
     {
     }
 }
-", fromData);
+", source);
         }
     }
 }

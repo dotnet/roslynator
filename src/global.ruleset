@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<RuleSet Name="Global Ruleset" ToolsVersion="15.0">
+<RuleSet Name="Global Ruleset" ToolsVersion="16.0">
   <Rules AnalyzerId="CodeCracker.CSharp" RuleNamespace="CodeCracker.CSharp">
     <Rule Id="CC0001" Action="None" />
     <Rule Id="CC0004" Action="None" />
@@ -192,7 +192,6 @@
     <Rule Id="CA2214" Action="Warning" />
     <Rule Id="CA2215" Action="Warning" />
     <Rule Id="CA2216" Action="Warning" />
-    <Rule Id="CA2217" Action="None" />
     <Rule Id="CA2218" Action="Warning" />
     <Rule Id="CA2219" Action="Warning" />
     <Rule Id="CA2220" Action="Warning" />
@@ -247,6 +246,8 @@
     <Rule Id="IDE0046WithoutSuggestion" Action="None" />
     <Rule Id="IDE0047" Action="None" />
     <Rule Id="IDE0047WithoutSuggestion" Action="None" />
+    <Rule Id="IDE0063" Action="None" />
+    <Rule Id="IDE0063WithoutSuggestion" Action="None" />
     <Rule Id="IDE1005" Action="Info" />
     <Rule Id="IDE1006" Action="Info" />
   </Rules>
@@ -297,7 +298,6 @@
     <Rule Id="RCS1017" Action="Info" />
     <Rule Id="RCS1018" Action="Warning" />
     <Rule Id="RCS1019" Action="Info" />
-    <Rule Id="RCS1029" Action="None" />
     <Rule Id="RCS1034" Action="Info" />
     <Rule Id="RCS1037" Action="Warning" />
     <Rule Id="RCS1039" Action="Info" />

@@ -2,23 +2,21 @@
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.CodeFixes;
-using Roslynator.Tests;
+using Roslynator.CSharp.Testing;
 using Xunit;
 
 namespace Roslynator.CSharp.CodeFixes.Tests
 {
     public class CS1983ReturnTypeOfAsyncMethodMustBeVoidOrTaskOrTaskOfTTests : AbstractCSharpCompilerDiagnosticFixVerifier
     {
-        public CS1983ReturnTypeOfAsyncMethodMustBeVoidOrTaskOrTaskOfTTests()
-        {
-            Options = base.Options.AddAllowedCompilerDiagnosticId(CompilerDiagnosticIdentifiers.SinceMethodIsAsyncMethodThatReturnsTaskReturnKeywordMustNotBeFollowedByObjectExpression);
-        }
-
         public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.ReturnTypeOfAsyncMethodMustBeVoidOrTaskOrTaskOfT;
 
         public override CodeFixProvider FixProvider { get; } = new ReturnTypeOfAsyncMethodMustBeVoidOrTaskOrTaskOfTCodeFixProvider();
 
-        public override CodeVerificationOptions Options { get; }
+        protected override CSharpCodeVerificationOptions UpdateOptions(CSharpCodeVerificationOptions options)
+        {
+            return options.AddAllowedCompilerDiagnosticId(CompilerDiagnosticIdentifiers.SinceMethodIsAsyncMethodThatReturnsTaskReturnKeywordMustNotBeFollowedByObjectExpression);
+        }
 
         [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.ReturnTypeOfAsyncMethodMustBeVoidOrTaskOrTaskOfT)]
         public async Task Test_Task()

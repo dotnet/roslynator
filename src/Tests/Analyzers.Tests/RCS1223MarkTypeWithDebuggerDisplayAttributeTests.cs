@@ -5,30 +5,24 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.CodeFixes;
-using Roslynator.Tests;
+using Roslynator.CSharp.Testing;
+using Roslynator.Testing;
 using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
     public class RCS1223MarkTypeWithDebuggerDisplayAttributeTests : AbstractCSharpFixVerifier
     {
-        private readonly CodeVerificationOptions _options;
-
-        public RCS1223MarkTypeWithDebuggerDisplayAttributeTests()
-        {
-            //TODO: Remove after upgrade to C# 7.2
-            _options = base.Options.AddAllowedCompilerDiagnosticId(CompilerDiagnosticIdentifiers.MoreThanOneProtectionModifier);
-        }
-
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.MarkTypeWithDebuggerDisplayAttribute;
 
         public override DiagnosticAnalyzer Analyzer { get; } = new MarkTypeWithDebuggerDisplayAttributeAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new MarkTypeWithDebuggerDisplayAttributeCodeFixProvider();
 
-        public override CodeVerificationOptions Options
+        protected override CSharpCodeVerificationOptions UpdateOptions(CSharpCodeVerificationOptions options)
         {
-            get { return _options; }
+            //TODO: Remove after upgrade to C# 7.2
+            return options.AddAllowedCompilerDiagnosticId(CompilerDiagnosticIdentifiers.MoreThanOneProtectionModifier);
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute)]

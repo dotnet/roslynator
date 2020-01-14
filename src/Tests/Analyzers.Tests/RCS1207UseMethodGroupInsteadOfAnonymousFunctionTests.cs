@@ -28,7 +28,7 @@ namespace Roslynator.CSharp.Analysis.Tests
         [InlineData("(f) => f.M()", "M")]
         [InlineData("(f) => { f.M(); }", "M")]
         [InlineData("delegate (string f) { f.M(); }", "M")]
-        public async Task Test_VoidAnonymousFunction_AsParameter(string fromData, string toData)
+        public async Task Test_VoidAnonymousFunction_AsParameter(string source, string expected)
         {
             await VerifyDiagnosticAndFixAsync(@"
 using System;
@@ -45,7 +45,7 @@ static class C
     
     static void M(this string value) { }
 }
-", fromData, toData);
+", source, expected);
         }
 
         [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseMethodGroupInsteadOfAnonymousFunction)]
@@ -55,7 +55,7 @@ static class C
         [InlineData("f => f.M()", "M")]
         [InlineData("f => { return f.M();}", "M")]
         [InlineData("delegate (string f) { return f.M(); }", "M")]
-        public async Task Test_AnonymousFunction_AsParameter(string fromData, string toData)
+        public async Task Test_AnonymousFunction_AsParameter(string source, string expected)
         {
             await VerifyDiagnosticAndFixAsync(@"
 using System;
@@ -73,7 +73,7 @@ static class C
     
     static string M(this string value) => value;
 }
-", fromData, toData);
+", source, expected);
         }
 
         [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseMethodGroupInsteadOfAnonymousFunction)]
@@ -83,7 +83,7 @@ static class C
         [InlineData("(f, i) => f.M(i)", "M")]
         [InlineData("(f, i) => { return f.M(i); }", "M")]
         [InlineData("delegate (string f, int i) { return f.M(i); }", "M")]
-        public async Task Test_AnonymousFunctionWithTwoParameters_AsParameter(string fromData, string toData)
+        public async Task Test_AnonymousFunctionWithTwoParameters_AsParameter(string source, string expected)
         {
             await VerifyDiagnosticAndFixAsync(@"
 using System;
@@ -101,7 +101,7 @@ static class C
     
     static string M(this string value, int index) => value;
 }
-", fromData, toData);
+", source, expected);
         }
 
         [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseMethodGroupInsteadOfAnonymousFunction)]
@@ -111,7 +111,7 @@ static class C
         [InlineData("f => f.M()", "M")]
         [InlineData("f => { return f.M(); }", "M")]
         [InlineData("delegate (string f) { return f.M(); }", "M")]
-        public async Task Test_AnonymousFunction_Assignment(string fromData, string toData)
+        public async Task Test_AnonymousFunction_Assignment(string source, string expected)
         {
             await VerifyDiagnosticAndFixAsync(@"
 using System;
@@ -125,7 +125,7 @@ static class C
     
     static string M(this string value) => value;
 }
-", fromData, toData);
+", source, expected);
         }
 
         [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseMethodGroupInsteadOfAnonymousFunction)]
@@ -135,7 +135,7 @@ static class C
         [InlineData("(f, i) => f.M(i)", "M")]
         [InlineData("(f, i) => { return f.M(i); }", "M")]
         [InlineData("delegate (string f, int i) { return f.M(i); }", "M")]
-        public async Task Test_AnonymousFunctionWithTwoParameters_Assignment(string fromData, string toData)
+        public async Task Test_AnonymousFunctionWithTwoParameters_Assignment(string source, string expected)
         {
             await VerifyDiagnosticAndFixAsync(@"
 using System;
@@ -149,13 +149,13 @@ static class C
     
     static string M(this string value, int index) => value;
 }
-", fromData, toData);
+", source, expected);
         }
 
         [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseMethodGroupInsteadOfAnonymousFunction)]
         [InlineData("() => Foo.M()", "Foo.M")]
         [InlineData("delegate () { return Foo.M(); }", "Foo.M")]
-        public async Task Test_StaticMethod_Assignment(string fromData, string toData)
+        public async Task Test_StaticMethod_Assignment(string source, string expected)
         {
             await VerifyDiagnosticAndFixAsync(@"
 using System;
@@ -173,7 +173,7 @@ static class Foo
     static string M() => null;
 
 }
-", fromData, toData);
+", source, expected);
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseMethodGroupInsteadOfAnonymousFunction)]

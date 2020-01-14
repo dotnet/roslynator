@@ -4,28 +4,25 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.CSharp.Testing;
 using Roslynator.Formatting.CodeFixes.CSharp;
-using Roslynator.Tests;
+using Roslynator.Testing;
 using Xunit;
 
 namespace Roslynator.Formatting.CSharp.Tests
 {
     public class AddEmptyLineBeforeUsingDirectiveListTests : AbstractCSharpFixVerifier
     {
-        private readonly CodeVerificationOptions _options;
-
-        public AddEmptyLineBeforeUsingDirectiveListTests()
-        {
-            _options = base.Options.AddAllowedCompilerDiagnosticId("CS0430");
-        }
-
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.AddEmptyLineBeforeUsingDirectiveList;
 
         public override DiagnosticAnalyzer Analyzer { get; } = new AddEmptyLineBeforeUsingDirectiveListAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new AddEmptyLineBeforeAndAfterUsingDirectiveListCodeFixProvider();
 
-        public override CodeVerificationOptions Options => _options;
+        protected override CSharpCodeVerificationOptions UpdateOptions(CSharpCodeVerificationOptions options)
+        {
+            return options.AddAllowedCompilerDiagnosticId("CS0430");
+        }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddEmptyLineBeforeUsingDirectiveList)]
         public async Task Test_Comment_Before()

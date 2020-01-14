@@ -12,11 +12,10 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator;
 using Roslynator.CSharp;
-using Roslynator.CSharp.Syntax;
-using Roslynator.CSharp.Tests;
+using Roslynator.CSharp.Testing;
 #endregion usings
 
-namespace Roslynator.Tests
+namespace Roslynator.Testing
 {
     internal static class Program
     {
@@ -36,7 +35,7 @@ class C
 ";
             using (Workspace workspace = new AdhocWorkspace())
             {
-                Project project = CSharpWorkspaceFactory.Instance.AddProject(workspace.CurrentSolution);
+                Project project = CSharpWorkspaceFactory.Instance.AddProject(workspace.CurrentSolution, CSharpCodeVerificationOptions.Default);
 
                 Document document = CSharpWorkspaceFactory.Instance.AddDocument(project, source);
 

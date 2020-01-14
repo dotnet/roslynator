@@ -55,7 +55,7 @@ class C
         [InlineData("i = i | 1", "i |= 1")]
         [InlineData("i = i & 1", "i &= 1")]
         [InlineData("i = i ^ 1", "i ^= 1")]
-        public async Task Test(string fromData, string toData)
+        public async Task Test(string source, string expected)
         {
             await VerifyDiagnosticAndFixAsync(@"
 class C
@@ -65,7 +65,7 @@ class C
         [||];
     }
 }
-", fromData, toData);
+", source, expected);
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCompoundAssignment)]

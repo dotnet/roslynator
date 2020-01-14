@@ -19,7 +19,7 @@ using Roslynator.CSharp.Syntax;
 
 #pragma warning disable RCS1018, RCS1213, CA1822
 
-namespace Roslynator.Tests
+namespace Roslynator.Testing
 {
     class C
     {

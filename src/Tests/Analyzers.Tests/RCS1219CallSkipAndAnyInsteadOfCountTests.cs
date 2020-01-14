@@ -26,7 +26,7 @@ namespace Roslynator.CSharp.Analysis.Tests
         [InlineData("i >= items.Count()", "!items.Skip(i).Any()")]
         [InlineData("items.Count() < i", "!items.Skip(i - 1).Any()")]
         [InlineData("i > items.Count()", "!items.Skip(i - 1).Any()")]
-        public async Task TestDiagnostic(string fromData, string toData)
+        public async Task TestDiagnostic(string source, string expected)
         {
             await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
@@ -44,7 +44,7 @@ class C
         }
     }
 }
-", fromData, toData);
+", source, expected);
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallSkipAndAnyInsteadOfCount)]

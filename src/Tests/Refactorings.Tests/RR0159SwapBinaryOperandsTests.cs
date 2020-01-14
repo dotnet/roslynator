@@ -18,7 +18,7 @@ namespace Roslynator.CSharp.Refactorings.Tests
         [InlineData("i >[||]= j", "j <= i")]
         [InlineData("i [||]< j", "j > i")]
         [InlineData("i <[||]= j", "j >= i")]
-        public async Task Test(string fromData, string toData)
+        public async Task Test(string source, string expected)
         {
             await VerifyRefactoringAsync(@"
 class C
@@ -33,13 +33,13 @@ class C
         if ([||]) { }
     }
 }
-", fromData, toData, equivalenceKey: RefactoringId);
+", source, expected, equivalenceKey: RefactoringId);
         }
 
         [Theory, Trait(Traits.Refactoring, RefactoringIdentifiers.SwapBinaryOperands)]
         [InlineData("i [||]+ j", "j + i")]
         [InlineData("i [||]* j", "j * i")]
-        public async Task Test_AddMultiply(string fromData, string toData)
+        public async Task Test_AddMultiply(string source, string expected)
         {
             await VerifyRefactoringAsync(@"
 class C
@@ -49,7 +49,7 @@ class C
         int k = [||];
     }
 }
-", fromData, toData, equivalenceKey: RefactoringId);
+", source, expected, equivalenceKey: RefactoringId);
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SwapBinaryOperands)]

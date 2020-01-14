@@ -26,7 +26,7 @@ namespace Roslynator.CSharp.Analysis.Tests
         [InlineData("Enumerable.FirstOrDefault(x)[|.|]ToString()", "Enumerable.FirstOrDefault(x)?.ToString()")]
         [InlineData("Enumerable.LastOrDefault(x)[|.|]ToString()", "Enumerable.LastOrDefault(x)?.ToString()")]
         [InlineData("Enumerable.SingleOrDefault(x)[|.|]ToString()", "Enumerable.SingleOrDefault(x)?.ToString()")]
-        public async Task Test_MemberAccessExpression(string fromData, string toData)
+        public async Task Test_MemberAccessExpression(string source, string expected)
         {
             await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
@@ -40,7 +40,7 @@ class C
         var y = [||];
     }
 }
-", fromData, toData);
+", source, expected);
         }
 
         [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
@@ -52,7 +52,7 @@ class C
         [InlineData("Enumerable.FirstOrDefault(x)[|.|]ToString()", "Enumerable.FirstOrDefault(x)?.ToString()")]
         [InlineData("Enumerable.LastOrDefault(x)[|.|]ToString()", "Enumerable.LastOrDefault(x)?.ToString()")]
         [InlineData("Enumerable.SingleOrDefault(x)[|.|]ToString()", "Enumerable.SingleOrDefault(x)?.ToString()")]
-        public async Task Test_MemberAccessExpression2(string fromData, string toData)
+        public async Task Test_MemberAccessExpression2(string source, string expected)
         {
             await VerifyDiagnosticAndFixAsync(@"
 using System.Collections;
@@ -76,13 +76,13 @@ class C : IEnumerable<object>
     public IEnumerator<object> GetEnumerator() => null;
     IEnumerator IEnumerable.GetEnumerator() => null;
 }
-", fromData, toData);
+", source, expected);
         }
 
         [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
         [InlineData("((x.ElementAtOrDefault(1)))[|.|]ToString()", "((x.ElementAtOrDefault(1)))?.ToString()")]
         [InlineData("((Enumerable.ElementAtOrDefault(x, 1)))[|.|]ToString()", "((Enumerable.ElementAtOrDefault(x, 1)))?.ToString()")]
-        public async Task Test_MemberAccessExpression_Parenthesized(string fromData, string toData)
+        public async Task Test_MemberAccessExpression_Parenthesized(string source, string expected)
         {
             await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
@@ -96,7 +96,7 @@ class C
         var y = [||];
     }
 }
-", fromData, toData);
+", source, expected);
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
@@ -138,7 +138,7 @@ class C
         [InlineData("Enumerable.FirstOrDefault(x)[|[[|]0]", "Enumerable.FirstOrDefault(x)?[0]")]
         [InlineData("Enumerable.LastOrDefault(x)[|[[|]0]", "Enumerable.LastOrDefault(x)?[0]")]
         [InlineData("Enumerable.SingleOrDefault(x)[|[[|]0]", "Enumerable.SingleOrDefault(x)?[0]")]
-        public async Task Test_ElementAccessExpression(string fromData, string toData)
+        public async Task Test_ElementAccessExpression(string source, string expected)
         {
             await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
@@ -152,7 +152,7 @@ class C
         var y = [||];
     }
 }
-", fromData, toData);
+", source, expected);
         }
 
         [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
@@ -164,7 +164,7 @@ class C
         [InlineData("Enumerable.FirstOrDefault(x)[|[[|]0]", "Enumerable.FirstOrDefault(x)?[0]")]
         [InlineData("Enumerable.LastOrDefault(x)[|[[|]0]", "Enumerable.LastOrDefault(x)?[0]")]
         [InlineData("Enumerable.SingleOrDefault(x)[|[[|]0]", "Enumerable.SingleOrDefault(x)?[0]")]
-        public async Task Test_ElementAccessExpression2(string fromData, string toData)
+        public async Task Test_ElementAccessExpression2(string source, string expected)
         {
             await VerifyDiagnosticAndFixAsync(@"
 using System.Collections;
@@ -188,7 +188,7 @@ class C : IEnumerable<object>
     public IEnumerator<object> GetEnumerator() => null;
     IEnumerator IEnumerable.GetEnumerator() => null;
 }
-", fromData, toData);
+", source, expected);
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]

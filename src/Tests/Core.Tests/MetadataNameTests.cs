@@ -2,7 +2,7 @@
 
 using Xunit;
 
-namespace Roslynator.CSharp.Tests
+namespace Roslynator.CSharp.Testing
 {
     public static class MetadataNameTests
     {

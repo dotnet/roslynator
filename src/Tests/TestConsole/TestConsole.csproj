@@ -8,8 +8,8 @@
   <PropertyGroup>
     <LangVersion>latest</LangVersion>
     <CodeAnalysisRuleSet>..\..\global.ruleset</CodeAnalysisRuleSet>
-    <AssemblyName>Roslynator.Tests.TestConsole</AssemblyName>
-    <RootNamespace>Roslynator.Tests.TestConsole</RootNamespace>
+    <AssemblyName>Roslynator.Testing.Console</AssemblyName>
+    <RootNamespace>Roslynator.Testing</RootNamespace>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\Roslynator.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
@@ -19,13 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\CSharp.Workspaces\CSharp.Workspaces.csproj" />
-    <ProjectReference Include="..\TestFramework.CSharp\TestFramework.CSharp.csproj" />
-    <ProjectReference Include="..\TestFramework.Core\TestFramework.Core.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="Tests.TestConsole.snk" />
+    <ProjectReference Include="..\Testing.CSharp\Testing.CSharp.csproj" />
+    <ProjectReference Include="..\Testing.Common\Testing.Common.csproj" />
   </ItemGroup>
 
 </Project>
