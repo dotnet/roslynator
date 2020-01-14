@@ -118,52 +118,6 @@ namespace N
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddEmptyLineAfterUsingDirectiveList)]
-        public async Task Test_CompilationUnit_CommentAndEndRegionDirective_After()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
-#region
-using System;
-using System.Linq;
-#endregion[||]
-namespace N
-{
-}
-", @"
-#region
-using System;
-using System.Linq;
-#endregion
-
-namespace N
-{
-}
-");
-        }
-
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddEmptyLineAfterUsingDirectiveList)]
-        public async Task Test_CompilationUnit_CommentAndPragmaDirective_After()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
-using System;
-using System.Linq;[||]
-#pragma warning disable x
-
-namespace N
-{
-}
-", @"
-using System;
-using System.Linq;
-
-#pragma warning disable x
-
-namespace N
-{
-}
-");
-        }
-
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddEmptyLineAfterUsingDirectiveList)]
         public async Task Test_CompilationUnit_NamespaceDeclaration_After()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -239,64 +193,6 @@ namespace N
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddEmptyLineAfterUsingDirectiveList)]
-        public async Task Test_NamespaceDeclaration_CommentAndEndRegionDirective_After()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
-namespace N
-{
-    #region
-    using System;
-    using System.Linq;
-    #endregion[||]
-    class C
-    {
-    }
-}
-", @"
-namespace N
-{
-    #region
-    using System;
-    using System.Linq;
-    #endregion
-
-    class C
-    {
-    }
-}
-");
-        }
-
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddEmptyLineAfterUsingDirectiveList)]
-        public async Task Test_NamespaceDeclaration_CommentAndPragmaDirective_After()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
-namespace N
-{
-    using System;
-    using System.Linq;[||]
-    #pragma warning disable x
-
-    class C
-    {
-    }
-}
-", @"
-namespace N
-{
-    using System;
-    using System.Linq;
-
-    #pragma warning disable x
-
-    class C
-    {
-    }
-}
-");
-        }
-
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddEmptyLineAfterUsingDirectiveList)]
         public async Task Test_NamespaceDeclaration_ClassDeclaration_After()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -313,6 +209,68 @@ namespace N
 {
     using System;
     using System.Linq;
+
+    class C
+    {
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddEmptyLineAfterUsingDirectiveList)]
+        public async Task TestNoDiagnostic_CompilationUnit_CommentAndEndRegionDirective_After()
+        {
+            await VerifyNoDiagnosticAsync(@"
+#region
+using System;
+using System.Linq;
+#endregion
+namespace N
+{
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddEmptyLineAfterUsingDirectiveList)]
+        public async Task TestNoDiagnostic_CompilationUnit_CommentAndPragmaDirective_After()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System;
+using System.Linq;
+#pragma warning disable x
+
+namespace N
+{
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddEmptyLineAfterUsingDirectiveList)]
+        public async Task TestNoDiagnostic_NamespaceDeclaration_CommentAndEndRegionDirective_After()
+        {
+            await VerifyNoDiagnosticAsync(@"
+namespace N
+{
+    #region
+    using System;
+    using System.Linq;
+    #endregion
+    class C
+    {
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddEmptyLineAfterUsingDirectiveList)]
+        public async Task TestNoDiagnostic_NamespaceDeclaration_CommentAndPragmaDirective_After()
+        {
+            await VerifyNoDiagnosticAsync(@"
+namespace N
+{
+    using System;
+    using System.Linq;
+    #pragma warning disable x
 
     class C
     {

@@ -95,21 +95,10 @@ namespace N
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddEmptyLineBeforeUsingDirectiveList)]
-        public async Task Test_Comment_ExternAliasAndRegionDirective_Before()
+        public async Task Test_ExternAliasAndRegionDirective_Before()
         {
-            await VerifyDiagnosticAndFixAsync(@"
+            await VerifyNoDiagnosticAsync(@"
 extern alias x;
-[||]#region
-using System;
-using System.Linq;
-#endregion
-
-namespace N
-{
-}
-", @"
-extern alias x;
-
 #region
 using System;
 using System.Linq;
@@ -122,19 +111,9 @@ namespace N
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddEmptyLineBeforeUsingDirectiveList)]
-        public async Task Test_Comment_CommentAndRegionDirective_Before()
+        public async Task TestNoDiagnostic_CommentAndRegionDirective_Before()
         {
-            await VerifyDiagnosticAndFixAsync(@"// x
-[||]#region
-using System;
-using System.Linq;
-#endregion
-
-namespace N
-{
-}
-", @"// x
-
+            await VerifyNoDiagnosticAsync(@"// x
 #region
 using System;
 using System.Linq;
@@ -147,19 +126,10 @@ namespace N
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddEmptyLineBeforeUsingDirectiveList)]
-        public async Task Test_CommentAndPragmaDirective_Before()
+        public async Task TestNoDiagnostic_CommentAndPragmaDirective_Before()
         {
-            await VerifyDiagnosticAndFixAsync(@"
+            await VerifyNoDiagnosticAsync(@"
 #pragma warning disable x
-[||]using System;
-using System.Linq;
-
-namespace N
-{
-}
-", @"
-#pragma warning disable x
-
 using System;
 using System.Linq;
 

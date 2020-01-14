@@ -92,36 +92,6 @@ namespace Roslynator.Formatting.CSharp
                                 ReportDiagnostic(trailingTrivia.Last().SpanStart);
                                 break;
                             }
-                        case SyntaxKind.EndRegionDirectiveTrivia:
-                            {
-                                SyntaxTrivia endRegionDirective = en.Current;
-
-                                if (en.MoveNext())
-                                {
-                                    if (en.Current.IsWhitespaceTrivia()
-                                        && !en.MoveNext())
-                                    {
-                                        ReportDiagnostic(endRegionDirective.Span.End);
-                                    }
-                                    else if (!en.Current.IsEndOfLineTrivia())
-                                    {
-                                        ReportDiagnostic(endRegionDirective.Span.End);
-                                    }
-                                }
-                                else
-                                {
-                                    ReportDiagnostic(endRegionDirective.Span.End);
-                                }
-
-                                break;
-                            }
-                        default:
-                            {
-                                if (en.Current.IsDirective)
-                                    ReportDiagnostic(trailingTrivia.Last().SpanStart);
-
-                                break;
-                            }
                     }
                 }
             }

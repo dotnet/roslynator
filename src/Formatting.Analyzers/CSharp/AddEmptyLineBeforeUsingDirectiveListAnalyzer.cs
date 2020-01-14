@@ -44,54 +44,11 @@ namespace Roslynator.Formatting.CSharp
                     if (IsPrecededWithExternAliasDirective())
                         ReportDiagnostic(usingDirective.SpanStart);
                 }
-                else
+                else if (en.Current.IsEndOfLineTrivia()
+                     && en.MoveNext()
+                     && en.Current.IsKind(SyntaxKind.SingleLineCommentTrivia))
                 {
-                    switch (en.Current.Kind())
-                    {
-                        case SyntaxKind.EndOfLineTrivia:
-                            {
-                                if (en.MoveNext()
-                                    && en.Current.IsKind(SyntaxKind.SingleLineCommentTrivia))
-                                {
-                                    ReportDiagnostic(usingDirective.SpanStart);
-                                }
-
-                                break;
-                            }
-                        case SyntaxKind.RegionDirectiveTrivia:
-                            {
-                                SyntaxTrivia regionDirective = en.Current;
-
-                                if (en.MoveNext())
-                                {
-                                    if (en.Current.IsWhitespaceTrivia()
-                                        && !en.MoveNext())
-                                    {
-                                        if (IsPrecededWithExternAliasDirective())
-                                            ReportDiagnostic(regionDirective.SpanStart);
-                                    }
-                                    else if (en.Current.IsEndOfLineTrivia()
-                                        && en.MoveNext()
-                                        && en.Current.IsKind(SyntaxKind.SingleLineCommentTrivia))
-                                    {
-                                        ReportDiagnostic(regionDirective.SpanStart);
-                                    }
-                                }
-                                else if (IsPrecededWithExternAliasDirective())
-                                {
-                                    ReportDiagnostic(regionDirective.SpanStart);
-                                }
-
-                                break;
-                            }
-                        default:
-                            {
-                                if (en.Current.IsDirective)
-                                    ReportDiagnostic(usingDirective.SpanStart);
-
-                                break;
-                            }
-                    }
+                    ReportDiagnostic(usingDirective.SpanStart);
                 }
             }
             else if (IsPrecededWithExternAliasDirective())
