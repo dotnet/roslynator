@@ -1,6 +1,6 @@
 @echo off
 
-"C:\Program Files\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\msbuild" "..\src\Roslynator.sln" ^
+"C:\Program Files\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\MSBuild" "..\src\Roslynator.sln" ^
  /t:Clean,Build ^
  /p:Configuration=Release,ReportAnalyzer=True ^
  /v:normal ^
@@ -13,7 +13,7 @@ if errorlevel 1 (
  exit
 )
 
-"C:\Program Files\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\msbuild" "..\src\Tools\LogParser\LogParser.csproj" ^
+"C:\Program Files\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\MSBuild" "..\src\Tools\LogParser\LogParser.csproj" ^
  /t:Clean,Build ^
  /p:Configuration=Release ^
  /v:minimal ^

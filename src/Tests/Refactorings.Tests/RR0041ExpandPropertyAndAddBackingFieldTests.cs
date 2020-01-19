@@ -15,20 +15,20 @@ namespace Roslynator.CSharp.Refactorings.Tests
             await VerifyRefactoringAsync(@"
 class C
 {
-    private string _value;
+    private string value;
 
     public string [||]Value { get; set; } = null;
 }
 ", @"
 class C
 {
-    private string _value;
-    private string _value2 = null;
+    private string value;
+    private string value2 = null;
 
     public string Value
     {
-        get { return _value2; }
-        set { _value2 = value; }
+        get { return value2; }
+        set { value2 = value; }
     }
 }
 ", equivalenceKey: RefactoringId);
@@ -40,7 +40,7 @@ class C
             await VerifyRefactoringAsync(@"
 class C : B
 {
-    private string _value;
+    private string value;
 
     public override string [||]Value { get; } = null;
 
@@ -58,18 +58,18 @@ class B
 ", @"
 class C : B
 {
-    private string _value;
-    private string _value2 = null;
+    private string value;
+    private string value2 = null;
 
     public override string Value
     {
-        get { return _value2; }
+        get { return value2; }
     }
 
     void M()
     {
         var x = base.Value;
-        var y = _value2;
+        var y = value2;
     }
 }
 
@@ -102,16 +102,16 @@ using System.ComponentModel;
 
 class C : INotifyPropertyChanged
 {
-    private string _value = null;
+    private string value = null;
 
     public string Value
     {
-        get { return _value; }
+        get { return value; }
         set
         {
-            if (_value != value)
+            if (this.value != value)
             {
-                _value = value;
+                this.value = value;
                 RaisePropertyChanged(nameof(Value));
             }
         }

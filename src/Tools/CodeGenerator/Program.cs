@@ -70,11 +70,7 @@ namespace Roslynator.CodeGeneration
 
             WriteCompilationUnit(
                 @"VisualStudio.Common\CodeFixesOptionsPage.Generated.cs",
-                CodeFixesOptionsPageGenerator.Generate(codeFixes, compilerDiagnostics, comparer));
-
-            WriteCompilationUnit(
-                @"VisualStudio.Common\GlobalSuppressionsOptionsPage.Generated.cs",
-                GlobalSuppressionsOptionsPageGenerator.Generate(analyzers.Where(f => !f.IsObsolete), comparer));
+                CodeFixesOptionsPageGenerator.Generate(codeFixes, comparer));
 
             WriteCompilationUnit(
                 @"CSharp\CSharp\CompilerDiagnosticIdentifiers.Generated.cs",

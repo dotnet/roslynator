@@ -5,19 +5,16 @@ using System.Diagnostics;
 
 namespace Roslynator
 {
-    public class CodeAnalysisSettings<T>
+    public abstract class CodeAnalysisSettings<T>
     {
-        public CodeAnalysisSettings()
+        protected CodeAnalysisSettings()
         {
             Disabled = new HashSet<T>();
         }
 
         public HashSet<T> Disabled { get; }
 
-        public virtual void Reset()
-        {
-            Disabled.Clear();
-        }
+        public abstract void Reset();
 
         public bool IsEnabled(T item)
         {
@@ -88,12 +85,6 @@ namespace Roslynator
             {
                 Disable(item);
             }
-        }
-
-        public void Set(Dictionary<T, bool> values)
-        {
-            foreach (KeyValuePair<T, bool> kvp in values)
-                Set(kvp.Key, kvp.Value);
         }
     }
 }

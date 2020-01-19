@@ -155,8 +155,8 @@ public abstract class Comparer : IComparer<C>, IComparer
             return 1;
         }
 
-        if (x is global::C a
-            && y is global::C b)
+        if (x is C a
+            && y is C b)
         {
             return Compare(a, b);
         }
@@ -213,8 +213,8 @@ public abstract class Comparer : IComparer<C>, IComparer
             return 1;
         }
 
-        if (x is global::C a
-            && y is global::C b)
+        if (x is C a
+            && y is C b)
         {
             return Compare(a, b);
         }
@@ -270,8 +270,8 @@ public abstract class EqualityComparer : IEqualityComparer<C>, IEqualityComparer
             return false;
         }
 
-        if (x is global::C a
-            && y is global::C b)
+        if (x is C a
+            && y is C b)
         {
             return Equals(a, b);
         }
@@ -342,8 +342,8 @@ public abstract class EqualityComparer : IEqualityComparer<C>, IEqualityComparer
             return false;
         }
 
-        if (x is global::C a
-            && y is global::C b)
+        if (x is C a
+            && y is C b)
         {
             return Equals(a, b);
         }

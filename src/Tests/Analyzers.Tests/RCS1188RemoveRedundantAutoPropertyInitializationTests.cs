@@ -209,5 +209,16 @@ class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAutoPropertyInitialization)]
+        public async Task TestNoDiagnostic_SuppressNullableWarningExpression()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    string P { get; } = null!;
+}
+", options: CSharpCodeVerificationOptions.Default.WithParseOptions(CSharpCodeVerificationOptions.Default.ParseOptions.WithLanguageVersion(LanguageVersion.Preview)));
+        }
     }
 }

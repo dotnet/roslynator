@@ -38,7 +38,7 @@ namespace Roslynator.CSharp.Analysis
 
             ExpressionSyntax value = initializer?.Value?.WalkDownParentheses();
 
-            if (value == null)
+            if (value?.IsKind(SyntaxKind.SuppressNullableWarningExpression) != false)
                 return;
 
             if (initializer.SpanOrLeadingTriviaContainsDirectives())

@@ -5,5 +5,10 @@ namespace Roslynator
     public sealed class AnalyzerSettings : CodeAnalysisSettings<string>
     {
         public static AnalyzerSettings Current { get; } = new AnalyzerSettings();
+
+        public override void Reset()
+        {
+            Disabled.Clear();
+        }
     }
 }

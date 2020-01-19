@@ -12,7 +12,7 @@ namespace Roslynator.CSharp.SyntaxWalkers
 {
     internal abstract class CSharpSyntaxNodeWalker : CSharpSyntaxWalker
     {
-        protected CSharpSyntaxNodeWalker(): base (depth: SyntaxWalkerDepth.Node)
+        protected CSharpSyntaxNodeWalker(): base(depth: SyntaxWalkerDepth.Node)
         {
         }
 
@@ -1201,6 +1201,10 @@ namespace Roslynator.CSharp.SyntaxWalkers
         {
         }
 
+        public override void VisitDiscardPattern(DiscardPatternSyntax node)
+        {
+        }
+
         public override void VisitDocumentationCommentTrivia(DocumentationCommentTriviaSyntax node)
         {
             foreach (XmlNodeSyntax xmlNode in node.Content)
@@ -1890,6 +1894,20 @@ namespace Roslynator.CSharp.SyntaxWalkers
             if (argumentList != null)
             {
                 VisitBracketedArgumentList(argumentList);
+            }
+        }
+
+        public override void VisitImplicitStackAllocArrayCreationExpression(ImplicitStackAllocArrayCreationExpressionSyntax node)
+        {
+            if (!ShouldVisit)
+            {
+                return;
+            }
+
+            InitializerExpressionSyntax initializer = node.Initializer;
+            if (initializer != null)
+            {
+                VisitInitializerExpression(initializer);
             }
         }
 
@@ -2636,6 +2654,10 @@ namespace Roslynator.CSharp.SyntaxWalkers
             }
         }
 
+        public override void VisitNullableDirectiveTrivia(NullableDirectiveTriviaSyntax node)
+        {
+        }
+
         public override void VisitNullableType(NullableTypeSyntax node)
         {
             if (!ShouldVisit)
@@ -2909,6 +2931,19 @@ namespace Roslynator.CSharp.SyntaxWalkers
             }
         }
 
+        public override void VisitPositionalPatternClause(PositionalPatternClauseSyntax node)
+        {
+            foreach (SubpatternSyntax subpattern in node.Subpatterns)
+            {
+                if (!ShouldVisit)
+                {
+                    return;
+                }
+
+                VisitSubpattern(subpattern);
+            }
+        }
+
         public override void VisitPostfixUnaryExpression(PostfixUnaryExpressionSyntax node)
         {
             if (!ShouldVisit)
@@ -3023,6 +3058,19 @@ namespace Roslynator.CSharp.SyntaxWalkers
             if (initializer != null)
             {
                 VisitEqualsValueClause(initializer);
+            }
+        }
+
+        public override void VisitPropertyPatternClause(PropertyPatternClauseSyntax node)
+        {
+            foreach (SubpatternSyntax subpattern in node.Subpatterns)
+            {
+                if (!ShouldVisit)
+                {
+                    return;
+                }
+
+                VisitSubpattern(subpattern);
             }
         }
 
@@ -3147,6 +3195,78 @@ namespace Roslynator.CSharp.SyntaxWalkers
             if (body != null)
             {
                 VisitQueryBody(body);
+            }
+        }
+
+        public override void VisitRangeExpression(RangeExpressionSyntax node)
+        {
+            if (!ShouldVisit)
+            {
+                return;
+            }
+
+            ExpressionSyntax leftOperand = node.LeftOperand;
+            if (leftOperand != null)
+            {
+                VisitExpression(leftOperand);
+            }
+
+            if (!ShouldVisit)
+            {
+                return;
+            }
+
+            ExpressionSyntax rightOperand = node.RightOperand;
+            if (rightOperand != null)
+            {
+                VisitExpression(rightOperand);
+            }
+        }
+
+        public override void VisitRecursivePattern(RecursivePatternSyntax node)
+        {
+            if (!ShouldVisit)
+            {
+                return;
+            }
+
+            TypeSyntax type = node.Type;
+            if (type != null)
+            {
+                VisitType(type);
+            }
+
+            if (!ShouldVisit)
+            {
+                return;
+            }
+
+            PositionalPatternClauseSyntax positionalPatternClause = node.PositionalPatternClause;
+            if (positionalPatternClause != null)
+            {
+                VisitPositionalPatternClause(positionalPatternClause);
+            }
+
+            if (!ShouldVisit)
+            {
+                return;
+            }
+
+            PropertyPatternClauseSyntax propertyPatternClause = node.PropertyPatternClause;
+            if (propertyPatternClause != null)
+            {
+                VisitPropertyPatternClause(propertyPatternClause);
+            }
+
+            if (!ShouldVisit)
+            {
+                return;
+            }
+
+            VariableDesignationSyntax designation = node.Designation;
+            if (designation != null)
+            {
+                VisitVariableDesignation(designation);
             }
         }
 
@@ -3333,6 +3453,17 @@ namespace Roslynator.CSharp.SyntaxWalkers
             {
                 VisitType(type);
             }
+
+            if (!ShouldVisit)
+            {
+                return;
+            }
+
+            InitializerExpressionSyntax initializer = node.Initializer;
+            if (initializer != null)
+            {
+                VisitInitializerExpression(initializer);
+            }
         }
 
         public override void VisitStructDeclaration(StructDeclarationSyntax node)
@@ -3387,6 +3518,91 @@ namespace Roslynator.CSharp.SyntaxWalkers
                 }
 
                 VisitMemberDeclaration(memberDeclaration);
+            }
+        }
+
+        public override void VisitSubpattern(SubpatternSyntax node)
+        {
+            if (!ShouldVisit)
+            {
+                return;
+            }
+
+            NameColonSyntax nameColon = node.NameColon;
+            if (nameColon != null)
+            {
+                VisitNameColon(nameColon);
+            }
+
+            if (!ShouldVisit)
+            {
+                return;
+            }
+
+            PatternSyntax pattern = node.Pattern;
+            if (pattern != null)
+            {
+                VisitPattern(pattern);
+            }
+        }
+
+        public override void VisitSwitchExpression(SwitchExpressionSyntax node)
+        {
+            if (!ShouldVisit)
+            {
+                return;
+            }
+
+            ExpressionSyntax governingExpression = node.GoverningExpression;
+            if (governingExpression != null)
+            {
+                VisitExpression(governingExpression);
+            }
+
+            foreach (SwitchExpressionArmSyntax switchExpressionArm in node.Arms)
+            {
+                if (!ShouldVisit)
+                {
+                    return;
+                }
+
+                VisitSwitchExpressionArm(switchExpressionArm);
+            }
+        }
+
+        public override void VisitSwitchExpressionArm(SwitchExpressionArmSyntax node)
+        {
+            if (!ShouldVisit)
+            {
+                return;
+            }
+
+            PatternSyntax pattern = node.Pattern;
+            if (pattern != null)
+            {
+                VisitPattern(pattern);
+            }
+
+            if (!ShouldVisit)
+            {
+                return;
+            }
+
+            WhenClauseSyntax whenClause = node.WhenClause;
+            if (whenClause != null)
+            {
+                VisitWhenClause(whenClause);
+            }
+
+            if (!ShouldVisit)
+            {
+                return;
+            }
+
+            ExpressionSyntax expression = node.Expression;
+            if (expression != null)
+            {
+                VisitExpression(expression);
             }
         }
 
@@ -3777,6 +3993,20 @@ namespace Roslynator.CSharp.SyntaxWalkers
             }
         }
 
+        public override void VisitVarPattern(VarPatternSyntax node)
+        {
+            if (!ShouldVisit)
+            {
+                return;
+            }
+
+            VariableDesignationSyntax designation = node.Designation;
+            if (designation != null)
+            {
+                VisitVariableDesignation(designation);
+            }
+        }
+
         public override void VisitWarningDirectiveTrivia(WarningDirectiveTriviaSyntax node)
         {
         }
@@ -4126,6 +4356,7 @@ namespace Roslynator.CSharp.SyntaxWalkers
                 case SyntaxKind.OrAssignmentExpression:
                 case SyntaxKind.LeftShiftAssignmentExpression:
                 case SyntaxKind.RightShiftAssignmentExpression:
+                case SyntaxKind.CoalesceAssignmentExpression:
                     VisitAssignmentExpression((AssignmentExpressionSyntax)node);
                     break;
                 case SyntaxKind.AwaitExpression:
@@ -4194,6 +4425,9 @@ namespace Roslynator.CSharp.SyntaxWalkers
                 case SyntaxKind.ImplicitElementAccess:
                     VisitImplicitElementAccess((ImplicitElementAccessSyntax)node);
                     break;
+                case SyntaxKind.ImplicitStackAllocArrayCreationExpression:
+                    VisitImplicitStackAllocArrayCreationExpression((ImplicitStackAllocArrayCreationExpressionSyntax)node);
+                    break;
                 case SyntaxKind.ArrayInitializerExpression:
                 case SyntaxKind.CollectionInitializerExpression:
                 case SyntaxKind.ComplexElementInitializerExpression:
@@ -4252,6 +4486,7 @@ namespace Roslynator.CSharp.SyntaxWalkers
                     break;
                 case SyntaxKind.PostDecrementExpression:
                 case SyntaxKind.PostIncrementExpression:
+                case SyntaxKind.SuppressNullableWarningExpression:
                     VisitPostfixUnaryExpression((PostfixUnaryExpressionSyntax)node);
                     break;
                 case SyntaxKind.PredefinedType:
@@ -4265,6 +4500,7 @@ namespace Roslynator.CSharp.SyntaxWalkers
                 case SyntaxKind.PreDecrementExpression:
                 case SyntaxKind.AddressOfExpression:
                 case SyntaxKind.PointerIndirectionExpression:
+                case SyntaxKind.IndexExpression:
                     VisitPrefixUnaryExpression((PrefixUnaryExpressionSyntax)node);
                     break;
                 case SyntaxKind.QualifiedName:
@@ -4272,6 +4508,9 @@ namespace Roslynator.CSharp.SyntaxWalkers
                     break;
                 case SyntaxKind.QueryExpression:
                     VisitQueryExpression((QueryExpressionSyntax)node);
+                    break;
+                case SyntaxKind.RangeExpression:
+                    VisitRangeExpression((RangeExpressionSyntax)node);
                     break;
                 case SyntaxKind.RefExpression:
                     VisitRefExpression((RefExpressionSyntax)node);
@@ -4293,6 +4532,9 @@ namespace Roslynator.CSharp.SyntaxWalkers
                     break;
                 case SyntaxKind.StackAllocArrayCreationExpression:
                     VisitStackAllocArrayCreationExpression((StackAllocArrayCreationExpressionSyntax)node);
+                    break;
+                case SyntaxKind.SwitchExpression:
+                    VisitSwitchExpression((SwitchExpressionSyntax)node);
                     break;
                 case SyntaxKind.ThisExpression:
                     VisitThisExpression((ThisExpressionSyntax)node);
@@ -4433,6 +4675,15 @@ namespace Roslynator.CSharp.SyntaxWalkers
                     break;
                 case SyntaxKind.DeclarationPattern:
                     VisitDeclarationPattern((DeclarationPatternSyntax)node);
+                    break;
+                case SyntaxKind.DiscardPattern:
+                    VisitDiscardPattern((DiscardPatternSyntax)node);
+                    break;
+                case SyntaxKind.RecursivePattern:
+                    VisitRecursivePattern((RecursivePatternSyntax)node);
+                    break;
+                case SyntaxKind.VarPattern:
+                    VisitVarPattern((VarPatternSyntax)node);
                     break;
                 default:
                     Debug.Fail($"Unrecognized kind '{node.Kind()}'.");

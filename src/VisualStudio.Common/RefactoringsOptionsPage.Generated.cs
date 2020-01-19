@@ -9,12 +9,6 @@ namespace Roslynator.VisualStudio
 {
     public partial class RefactoringsOptionsPage
     {
-        protected override string DisabledByDefault
-        {
-            get;
-        }
-
-        = $"{RefactoringIdentifiers.AddIdentifierToParameter},{RefactoringIdentifiers.AddIdentifierToVariableDeclaration},{RefactoringIdentifiers.ConvertEmptyStringToStringEmpty},{RefactoringIdentifiers.ConvertForEachToForAndReverseLoop},{RefactoringIdentifiers.IntroduceConstructor},{RefactoringIdentifiers.RemoveAllDocumentationComments},{RefactoringIdentifiers.ReplaceMethodWithProperty}";
         protected override string MaxId
         {
             get;

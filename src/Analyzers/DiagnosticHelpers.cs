@@ -2,7 +2,6 @@
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 
@@ -56,9 +55,6 @@ namespace Roslynator
             Location location,
             params object[] messageArgs)
         {
-            if (IsSuppressed(descriptor))
-                return;
-
             context.ReportDiagnostic(Diagnostic.Create(
                 descriptor: descriptor,
                 location: location,
@@ -72,9 +68,6 @@ namespace Roslynator
             IEnumerable<Location> additionalLocations,
             params object[] messageArgs)
         {
-            if (IsSuppressed(descriptor))
-                return;
-
             context.ReportDiagnostic(Diagnostic.Create(
                 descriptor: descriptor,
                 location: location,
@@ -89,9 +82,6 @@ namespace Roslynator
             ImmutableDictionary<string, string> properties,
             params object[] messageArgs)
         {
-            if (IsSuppressed(descriptor))
-                return;
-
             context.ReportDiagnostic(Diagnostic.Create(
                 descriptor: descriptor,
                 location: location,
@@ -107,9 +97,6 @@ namespace Roslynator
             ImmutableDictionary<string, string> properties,
             params object[] messageArgs)
         {
-            if (IsSuppressed(descriptor))
-                return;
-
             context.ReportDiagnostic(Diagnostic.Create(
                 descriptor: descriptor,
                 location: location,
@@ -177,9 +164,6 @@ namespace Roslynator
             Location location,
             params object[] messageArgs)
         {
-            if (IsSuppressed(descriptor))
-                return;
-
             context.ReportDiagnostic(Diagnostic.Create(
                 descriptor: descriptor,
                 location: location,
@@ -193,9 +177,6 @@ namespace Roslynator
             IEnumerable<Location> additionalLocations,
             params object[] messageArgs)
         {
-            if (IsSuppressed(descriptor))
-                return;
-
             context.ReportDiagnostic(Diagnostic.Create(
                 descriptor: descriptor,
                 location: location,
@@ -210,9 +191,6 @@ namespace Roslynator
             ImmutableDictionary<string, string> properties,
             params object[] messageArgs)
         {
-            if (IsSuppressed(descriptor))
-                return;
-
             context.ReportDiagnostic(Diagnostic.Create(
                 descriptor: descriptor,
                 location: location,
@@ -228,9 +206,6 @@ namespace Roslynator
             ImmutableDictionary<string, string> properties,
             params object[] messageArgs)
         {
-            if (IsSuppressed(descriptor))
-                return;
-
             context.ReportDiagnostic(Diagnostic.Create(
                 descriptor: descriptor,
                 location: location,
@@ -298,9 +273,6 @@ namespace Roslynator
             Location location,
             params object[] messageArgs)
         {
-            if (IsSuppressed(descriptor))
-                return;
-
             context.ReportDiagnostic(Diagnostic.Create(
                 descriptor: descriptor,
                 location: location,
@@ -314,9 +286,6 @@ namespace Roslynator
             IEnumerable<Location> additionalLocations,
             params object[] messageArgs)
         {
-            if (IsSuppressed(descriptor))
-                return;
-
             context.ReportDiagnostic(Diagnostic.Create(
                 descriptor: descriptor,
                 location: location,
@@ -331,9 +300,6 @@ namespace Roslynator
             ImmutableDictionary<string, string> properties,
             params object[] messageArgs)
         {
-            if (IsSuppressed(descriptor))
-                return;
-
             context.ReportDiagnostic(Diagnostic.Create(
                 descriptor: descriptor,
                 location: location,
@@ -349,9 +315,6 @@ namespace Roslynator
             ImmutableDictionary<string, string> properties,
             params object[] messageArgs)
         {
-            if (IsSuppressed(descriptor))
-                return;
-
             context.ReportDiagnostic(Diagnostic.Create(
                 descriptor: descriptor,
                 location: location,
@@ -360,12 +323,5 @@ namespace Roslynator
                 messageArgs: messageArgs));
         }
         #endregion SyntaxTreeAnalysisContext
-
-        private static bool IsSuppressed(DiagnosticDescriptor descriptor)
-        {
-            Debug.WriteLineIf(!AnalyzerSettings.Current.IsEnabled(descriptor.Id), $"{descriptor.Id} suppressed");
-
-            return !AnalyzerSettings.Current.IsEnabled(descriptor.Id);
-        }
     }
 }

@@ -436,8 +436,7 @@ class B : C
         }
 
         //TODO: Add test for default interface implementation (RCS1151)
-        //[Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantCast)]
-        public async Task TestNoDiagnostic_DefaultInterfaceImplementation()
+        internal async Task TestNoDiagnostic_DefaultInterfaceImplementation()
         {
             await VerifyNoDiagnosticAsync(@"
 interface IC

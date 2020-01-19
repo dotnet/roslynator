@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\$(Configuration)\netstandard1.3\Roslynator.Documentation.xml</DocumentationFile>
+    <DocumentationFile>bin\$(Configuration)\netstandard2.0\Roslynator.Documentation.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup>

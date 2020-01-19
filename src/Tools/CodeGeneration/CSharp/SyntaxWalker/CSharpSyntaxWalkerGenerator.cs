@@ -222,6 +222,9 @@ namespace Roslynator.CodeGeneration.CSharp
                     case "XmlElementStartTagSyntax":
                     case "XmlNameSyntax":
                     case "XmlPrefixSyntax":
+                    case "PositionalPatternClauseSyntax":
+                    case "PropertyPatternClauseSyntax":
+                    case "SubpatternSyntax":
                         {
                             if (UseCustomVisitMethod)
                             {
@@ -574,7 +577,7 @@ namespace Roslynator.CodeGeneration.CSharp
                 ParameterList(Parameter(IdentifierName(name), "node")),
                 Block(
                     SwitchStatement(
-                        SimpleMemberInvocationExpression(IdentifierName("node"), IdentifierName("Kind")),
+                        SimpleMemberInvocationExpression(IdentifierName("node"), IdentifierName("Kind")).Parenthesize(),
                         CreateSections().ToSyntaxList())));
 
             IEnumerable<SwitchSectionSyntax> CreateSections()

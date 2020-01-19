@@ -270,10 +270,8 @@ internal class IC
 ");
         }
 
-        //TODO: Test after upgrade to C# 7.2
-#pragma warning disable xUnit1013
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute)]
         public async Task TestNoDiagnostic_NonPubliclyVisibleType_PrivateProtecteed()
-#pragma warning restore xUnit1013
         {
             await VerifyNoDiagnosticAsync(@"
 using System.Diagnostics;

@@ -1,6 +1,6 @@
 @echo off
 
-set _msbuildPath="C:\Program Files\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\msbuild"
+set _msbuildPath="C:\Program Files\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\MSBuild"
 set _properties=Configuration=Release,Deterministic=true,TreatWarningsAsErrors=true,WarningsNotAsErrors=1591
 set _version=2.3.1
 
@@ -17,7 +17,7 @@ if errorlevel 1 (
  exit
 )
 
-"..\src\Tools\MetadataGenerator\bin\Release\net461\Roslynator.MetadataGenerator.exe" "..\src"
+"..\src\Tools\MetadataGenerator\bin\Release\net472\Roslynator.MetadataGenerator.exe" "..\src"
 dotnet "..\src\Tools\CodeGenerator\bin\Release\netcoreapp2.0\CodeGenerator.dll" "..\src"
 
 %_msbuildPath% "..\src\Roslynator.sln" ^
@@ -113,9 +113,6 @@ dotnet pack -c Release --no-build -v normal "..\src\CSharp.Workspaces\CSharp.Wor
 
 del /Q "..\src\VisualStudio\bin\Release\Roslynator.VisualStudio.*.vsix"
 ren    "..\src\VisualStudio\bin\Release\Roslynator.VisualStudio.vsix" "Roslynator.VisualStudio.%_version%.vsix"
-
-del /Q "..\src\VisualStudio.Refactorings\bin\Release\Roslynator.VisualStudio.Refactorings.*.vsix"
-ren    "..\src\VisualStudio.Refactorings\bin\Release\Roslynator.VisualStudio.Refactorings.vsix" "Roslynator.VisualStudio.Refactorings.%_version%.vsix"
 
 echo OK
 pause

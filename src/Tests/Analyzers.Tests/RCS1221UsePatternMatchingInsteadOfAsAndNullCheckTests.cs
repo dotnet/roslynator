@@ -334,7 +334,7 @@ class C
         }
     }
 }
-", options: CSharpCodeVerificationOptions.DefaultWithCSharp6);
+", options: CSharpCodeVerificationOptions.Default_CSharp6);
         }
     }
 }

@@ -2,8 +2,11 @@
 
 using System;
 using System.Runtime.InteropServices;
+using System.Threading;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
+
+#pragma warning disable RCS1090
 
 namespace Roslynator.VisualStudio
 {
@@ -27,11 +30,17 @@ namespace Roslynator.VisualStudio
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
     [Guid("7AD86013-9E55-4BBE-98CC-DE72FADAB1E6")]
     [ProvideOptionPage(typeof(GeneralOptionsPage), "Roslynator", "General", 0, 0, true, Sort = 0)]
-    [ProvideOptionPage(typeof(GlobalSuppressionsOptionsPage), "Roslynator", "Global Suppressions", 0, 0, true, Sort = 1)]
+    [ProvideOptionPage(typeof(AnalyzersOptionsPage), "Roslynator", "Analyzers", 0, 0, true, Sort = 1)]
     [ProvideOptionPage(typeof(RefactoringsOptionsPage), "Roslynator", "Refactorings", 0, 0, true, Sort = 2)]
     [ProvideOptionPage(typeof(CodeFixesOptionsPage), "Roslynator", "Code Fixes", 0, 0, true, Sort = 3)]
     [ProvideAutoLoad(VSConstants.UICONTEXT.SolutionOpening_string, PackageAutoLoadFlags.BackgroundLoad)]
     public sealed class VSPackage : AbstractPackage
     {
+        protected override async System.Threading.Tasks.Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
+        {
+            await base.InitializeAsync(cancellationToken, progress);
+
+            RuleSetHelpers.EnsureRuleSetExistsInLocalAppData(showErrorMessage: true);
+        }
     }
 }

@@ -4,6 +4,6 @@ namespace Roslynator.CodeAnalysis.CSharp
 {
     public static partial class DiagnosticDescriptors
     {
-        private const string HelpLinkUriRoot = "http://pihrt.net/roslynator/analyzer?id=";
+        private static DiagnosticDescriptorFactory Factory { get; } = DiagnosticDescriptorFactory.CreateFromAssemblyLocation(typeof(DiagnosticDescriptors).Assembly.Location);
     }
 }

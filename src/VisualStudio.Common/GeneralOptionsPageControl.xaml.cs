@@ -9,7 +9,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
-using System.Xml;
 using Microsoft.Win32;
 using Roslynator.Configuration;
 
@@ -17,8 +16,6 @@ namespace Roslynator.VisualStudio
 {
     public partial class GeneralOptionsPageControl : UserControl, INotifyPropertyChanged
     {
-        private static readonly char[] _separator = new char[] { ',' };
-
         private bool _prefixFieldIdentifierWithUnderscore;
         private bool _useConfigFile;
 
@@ -73,7 +70,7 @@ namespace Roslynator.VisualStudio
             var dialog = new SaveFileDialog()
             {
                 Filter = "All Files  (*.*)|*.*|Config Files (*.config)|*.config",
-                FileName = Path.GetFileName(Settings.ConfigFileName),
+                FileName = Path.GetFileName(CodeAnalysisConfiguration.ConfigFileName),
                 DefaultExt = "config",
                 AddExtension = true,
                 CheckPathExists = true,
@@ -83,22 +80,7 @@ namespace Roslynator.VisualStudio
             if (dialog.ShowDialog() != true)
                 return;
 
-            IEnumerable<string> globalSuppressions = null;
-
             AbstractPackage package = AbstractPackage.Instance;
-
-            if (package.GlobalSuppressionsOptionsPage.IsLoaded)
-            {
-                globalSuppressions = package.GlobalSuppressionsOptionsPage
-                    .Control
-                    .Items
-                    .Where(f => f.Enabled)
-                    .Select(f => f.Id);
-            }
-            else
-            {
-                globalSuppressions = package.GlobalSuppressionsOptionsPage.GetDisabledItems();
-            }
 
             IEnumerable<string> disabledRefactorings = null;
 
@@ -130,15 +112,14 @@ namespace Roslynator.VisualStudio
                 disabledCodeFixes = package.CodeFixesOptionsPage.GetDisabledItems();
             }
 
-            var settings = new Settings(
+            var configuration = new CodeAnalysisConfiguration(
                 refactorings: disabledRefactorings.Select(f => new KeyValuePair<string, bool>(f, false)),
                 codeFixes: disabledCodeFixes.Select(f => new KeyValuePair<string, bool>(f, false)),
-                globalSuppressions: globalSuppressions,
                 prefixFieldIdentifierWithUnderscore: PrefixFieldIdentifierWithUnderscore);
 
             try
             {
-                settings.Save(dialog.FileName);
+                configuration.Save(dialog.FileName);
             }
             catch (Exception ex) when (ex is IOException
                     || ex is UnauthorizedAccessException)
@@ -159,38 +140,20 @@ namespace Roslynator.VisualStudio
             if (dialog.ShowDialog() != true)
                 return;
 
-            Settings settings = null;
-
-            try
-            {
-                settings = Settings.Load(dialog.FileName);
-            }
-            catch (Exception ex) when (ex is IOException
-                    || ex is UnauthorizedAccessException
-                    || ex is XmlException)
-            {
-                ShowErrorMessage(ex);
-                return;
-            }
+            CodeAnalysisConfiguration configuration = CodeAnalysisConfiguration.LoadAndCatchIfThrows(dialog.FileName, ShowErrorMessage);
 
             AbstractPackage package = AbstractPackage.Instance;
 
-            package.GlobalSuppressionsOptionsPage.Load();
             package.RefactoringsOptionsPage.Load();
             package.CodeFixesOptionsPage.Load();
 
-            PrefixFieldIdentifierWithUnderscore = settings.PrefixFieldIdentifierWithUnderscore;
+            PrefixFieldIdentifierWithUnderscore = configuration.PrefixFieldIdentifierWithUnderscore;
 
-            foreach (BaseModel model in package.GlobalSuppressionsOptionsPage.Control.Items)
-                model.Enabled = settings.GlobalSuppressions.Contains(model.Id);
+            Update(package.RefactoringsOptionsPage, configuration.GetDisabledRefactorings().ToHashSet());
+            Update(package.CodeFixesOptionsPage, configuration.GetDisabledCodeFixes().ToHashSet());
 
-            Update(package.RefactoringsOptionsPage, settings.Refactorings);
-            Update(package.CodeFixesOptionsPage, settings.CodeFixes);
-
-            void Update(BaseOptionsPage optionsPage, Dictionary<string, bool> dic)
+            void Update(BaseOptionsPage optionsPage, HashSet<string> disabledIds)
             {
-                var disabledIds = new HashSet<string>(dic.Where(f => !f.Value).Select(f => f.Key));
-
                 foreach (BaseModel model in optionsPage.Control.Items)
                 {
                     model.Enabled = !disabledIds.Contains(model.Id);

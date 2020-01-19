@@ -5,6 +5,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.CodeFixes;
+using Roslynator.CSharp.Tests;
 using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
@@ -234,10 +235,8 @@ class Foo
 ");
         }
 
-        //TODO: Reports diagnostic before C# 7.3
-#pragma warning disable xUnit1013
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseMethodGroupInsteadOfAnonymousFunction)]
         public async Task TestNoDiagnostic_ReportsDiagnosticBeforeCSharp73()
-#pragma warning restore xUnit1013
         {
             await VerifyNoDiagnosticAsync(@"
 using System;
@@ -254,7 +253,7 @@ class C
 
     private static ImmutableArray<int> M2(string s) => throw new NotImplementedException();
 }
-");
+", options: CSharpCodeVerificationOptions.Default_CSharp7_3);
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseMethodGroupInsteadOfAnonymousFunction)]

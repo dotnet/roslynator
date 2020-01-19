@@ -2,14 +2,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using Roslynator.CodeFixes;
-using Roslynator.Configuration;
-using Roslynator.CSharp;
 
 namespace Roslynator.VisualStudio
 {
@@ -38,21 +35,15 @@ namespace Roslynator.VisualStudio
                         {
                             DisabledItems.Add(id);
                         }
-                        else if (id.StartsWith(CodeFixIdentifiers.Prefix, StringComparison.Ordinal))
+                        else if (id.StartsWith(CodeFixIdentifier.CodeFixIdPrefix, StringComparison.Ordinal))
                         {
-                            if (CodeFixMap.CodeFixDescriptorsById.TryGetValue(id, out CodeFixDescriptor codeFixDescriptor))
-                            {
-                                foreach (string compilerDiagnosticId in codeFixDescriptor.FixableDiagnosticIds)
-                                    DisabledItems.Add($"{compilerDiagnosticId}.{codeFixDescriptor.Id}");
-                            }
+                            foreach (string compilerDiagnosticId in CodeFixMap.GetCompilerDiagnosticIds(id))
+                                DisabledItems.Add($"{compilerDiagnosticId}.{id}");
                         }
                         else if (id.StartsWith("CS", StringComparison.Ordinal))
                         {
-                            if (CodeFixMap.CodeFixDescriptorsByCompilerDiagnosticId.TryGetValue(id, out ReadOnlyCollection<CodeFixDescriptor> codeFixDescriptors))
-                            {
-                                foreach (CodeFixDescriptor codeFixDescriptor in codeFixDescriptors)
-                                    DisabledItems.Add($"{id}.{codeFixDescriptor.Id}");
-                            }
+                            foreach (string codeFixId in CodeFixMap.GetCodeFixIds(id))
+                                DisabledItems.Add($"{id}.{codeFixId}");
                         }
                         else
                         {
@@ -69,8 +60,8 @@ namespace Roslynator.VisualStudio
 
             if (e.ApplyBehavior == ApplyKind.Apply)
             {
-                SettingsManager.Instance.UpdateVisualStudioSettings(this);
-                SettingsManager.Instance.ApplyTo(CodeFixSettings.Current);
+                ApplyTo(Settings.Instance);
+                Settings.Instance.ApplyTo(CodeFixSettings.Current);
             }
         }
 
@@ -80,16 +71,27 @@ namespace Roslynator.VisualStudio
                 SetIsEnabled(model.Id, model.Enabled);
         }
 
+        internal void ApplyTo(Settings settings)
+        {
+            IEnumerable<KeyValuePair<string, bool>> codeFixes = GetDisabledItems()
+                .Select(f => new KeyValuePair<string, bool>(f, false));
+
+            settings.VisualStudio = settings.VisualStudio.WithCodeFixes(codeFixes);
+        }
+
         protected override void Fill(ICollection<BaseModel> items)
         {
             items.Clear();
 
-            foreach ((CodeFixDescriptor codeFixDescriptor, string compilerDiagnosticId) in CodeFixMap.CodeFixDescriptorsById
-                .SelectMany(kvp => kvp.Value.FixableDiagnosticIds.Select(compilerDiagnosticId => (codeFixDescriptor: kvp.Value, compilerDiagnosticId: compilerDiagnosticId)))
-                .OrderBy(f => f.compilerDiagnosticId)
-                .ThenBy(f => f.codeFixDescriptor.Id))
+            foreach (CompilerDiagnosticFix compilerDiagnosticFix in CodeFixMap.GetCompilerDiagnosticFixes()
+                .OrderBy(f => f.CompilerDiagnosticId)
+                .ThenBy(f => f.CodeFixId))
             {
-                var model = new CodeFixModel(compilerDiagnosticId, CodeFixMap.CompilerDiagnosticsById[compilerDiagnosticId].Title.ToString(), codeFixDescriptor.Id, codeFixDescriptor.Title);
+                var model = new CodeFixModel(
+                    compilerDiagnosticFix.CompilerDiagnosticId,
+                    compilerDiagnosticFix.CompilerDiagnosticTitle,
+                    compilerDiagnosticFix.CodeFixId,
+                    compilerDiagnosticFix.CodeFixTitle);
 
                 model.Enabled = IsEnabled(model.Id);
 

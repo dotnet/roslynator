@@ -422,7 +422,7 @@ class C
 {
     public string P { get; private set; }
 }
-", options: CSharpCodeVerificationOptions.DefaultWithCSharp5);
+", options: CSharpCodeVerificationOptions.Default_CSharp5);
         }
     }
 }

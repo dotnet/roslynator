@@ -78,11 +78,11 @@ using System;
 
 class C
 {
-    private DateTime _dateTime;
+    private DateTime dateTime;
 
     void M()
     {
-        _dateTime = DateTime.Now;
+        dateTime = DateTime.Now;
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId, CodeFixIdentifiers.IntroduceField));
@@ -106,11 +106,11 @@ using System;
 
 class C
 {
-    private static DateTime _dateTime;
+    private static DateTime dateTime;
 
     static void M()
     {
-        _dateTime = DateTime.Now;
+        dateTime = DateTime.Now;
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId, CodeFixIdentifiers.IntroduceField));

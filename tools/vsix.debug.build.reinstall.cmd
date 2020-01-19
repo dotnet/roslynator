@@ -1,6 +1,6 @@
 @echo off
 
-"C:\Program Files\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\msbuild" "..\src\VisualStudio\VisualStudio.csproj" ^
+"C:\Program Files\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\MSBuild" "..\src\VisualStudio.sln" ^
  /t:Clean,Build ^
  /p:Configuration=Debug,RunCodeAnalysis=false,DeployExtension=false ^
  /nr:false ^
@@ -12,10 +12,10 @@ if errorlevel 1 (
  exit
 )
 
-set _vsixInstallerExe="C:\Program Files\Microsoft Visual Studio\2017\Community\Common7\IDE\VSIXInstaller"
+set _vsixInstallerExe="C:\Program Files\Microsoft Visual Studio\2019\Community\Common7\IDE\VSIXInstaller"
 
 echo Uninstalling Roslynator...
-%_vsixInstallerExe% /q /u:9289a8ab-1bb6-496b-9992-9f7ea27f66a8
+%_vsixInstallerExe% /q /u:d42db039-5432-4399-bb62-67a9b4c3b838
 echo Uninstalled Roslynator
 
 if errorlevel 1 (

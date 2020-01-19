@@ -68,25 +68,27 @@ namespace Roslynator.CSharp.Analysis
 
             DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseCompoundAssignment, assignmentExpression, GetCompoundAssignmentOperatorText(binaryExpression));
             DiagnosticHelpers.ReportNode(context, DiagnosticDescriptors.UseCompoundAssignmentFadeOut, binaryExpression.Left);
-        }
 
-        private static bool CanBeReplacedWithCompoundAssignment(SyntaxKind kind)
-        {
-            switch (kind)
+            bool CanBeReplacedWithCompoundAssignment(SyntaxKind kind)
             {
-                case SyntaxKind.AddExpression:
-                case SyntaxKind.SubtractExpression:
-                case SyntaxKind.MultiplyExpression:
-                case SyntaxKind.DivideExpression:
-                case SyntaxKind.ModuloExpression:
-                case SyntaxKind.BitwiseAndExpression:
-                case SyntaxKind.ExclusiveOrExpression:
-                case SyntaxKind.BitwiseOrExpression:
-                case SyntaxKind.LeftShiftExpression:
-                case SyntaxKind.RightShiftExpression:
-                    return true;
-                default:
-                    return false;
+                switch (kind)
+                {
+                    case SyntaxKind.AddExpression:
+                    case SyntaxKind.SubtractExpression:
+                    case SyntaxKind.MultiplyExpression:
+                    case SyntaxKind.DivideExpression:
+                    case SyntaxKind.ModuloExpression:
+                    case SyntaxKind.BitwiseAndExpression:
+                    case SyntaxKind.ExclusiveOrExpression:
+                    case SyntaxKind.BitwiseOrExpression:
+                    case SyntaxKind.LeftShiftExpression:
+                    case SyntaxKind.RightShiftExpression:
+                        return true;
+                    case SyntaxKind.CoalesceExpression:
+                        return ((CSharpCompilation)context.Compilation).LanguageVersion >= LanguageVersion.CSharp8;
+                    default:
+                        return false;
+                }
             }
         }
 

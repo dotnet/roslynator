@@ -1,9 +1,11 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
-using System.Security;
 using System.Threading;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
@@ -42,9 +44,9 @@ namespace Roslynator.VisualStudio
             get { return (CodeFixesOptionsPage)GetDialogPage(typeof(CodeFixesOptionsPage)); }
         }
 
-        public GlobalSuppressionsOptionsPage GlobalSuppressionsOptionsPage
+        public AnalyzersOptionsPage AnalyzersOptionsPage
         {
-            get { return (GlobalSuppressionsOptionsPage)GetDialogPage(typeof(GlobalSuppressionsOptionsPage)); }
+            get { return (AnalyzersOptionsPage)GetDialogPage(typeof(AnalyzersOptionsPage)); }
         }
 
         protected override async System.Threading.Tasks.Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
@@ -76,7 +78,6 @@ namespace Roslynator.VisualStudio
             GeneralOptionsPage generalOptionsPage = GeneralOptionsPage;
             RefactoringsOptionsPage refactoringsOptionsPage = RefactoringsOptionsPage;
             CodeFixesOptionsPage codeFixesOptionsPage = CodeFixesOptionsPage;
-            GlobalSuppressionsOptionsPage globalSuppressionsOptionsPage = GlobalSuppressionsOptionsPage;
 
             Version currentVersion = typeof(GeneralOptionsPage).Assembly.GetName().Version;
 
@@ -87,14 +88,12 @@ namespace Roslynator.VisualStudio
                 generalOptionsPage.SaveSettingsToStorage();
             }
 
-            codeFixesOptionsPage.CheckNewItemsDisabledByDefault();
-            refactoringsOptionsPage.CheckNewItemsDisabledByDefault();
-            globalSuppressionsOptionsPage.CheckNewItemsDisabledByDefault();
+            refactoringsOptionsPage.CheckNewItemsDisabledByDefault(CodeAnalysisConfiguration.Default.GetDisabledRefactorings());
+            codeFixesOptionsPage.CheckNewItemsDisabledByDefault(CodeAnalysisConfiguration.Default.GetDisabledCodeFixes());
 
-            SettingsManager.Instance.UpdateVisualStudioSettings(generalOptionsPage);
-            SettingsManager.Instance.UpdateVisualStudioSettings(refactoringsOptionsPage);
-            SettingsManager.Instance.UpdateVisualStudioSettings(codeFixesOptionsPage);
-            SettingsManager.Instance.UpdateVisualStudioSettings(globalSuppressionsOptionsPage);
+            generalOptionsPage.ApplyTo(Settings.Instance);
+            refactoringsOptionsPage.ApplyTo(Settings.Instance);
+            codeFixesOptionsPage.ApplyTo(Settings.Instance);
         }
 
         private void AfterOpenSolution(object sender = null, OpenSolutionEventArgs e = null)
@@ -106,7 +105,7 @@ namespace Roslynator.VisualStudio
                 && !string.IsNullOrEmpty(solutionFileName))
             {
                 SolutionDirectoryPath = Path.GetDirectoryName(solutionFileName);
-                ConfigFilePath = Path.Combine(SolutionDirectoryPath, Settings.ConfigFileName);
+                ConfigFilePath = Path.Combine(SolutionDirectoryPath, CodeAnalysisConfiguration.ConfigFileName);
             }
 
             UpdateSettings();
@@ -128,28 +127,15 @@ namespace Roslynator.VisualStudio
 
         private void UpdateSettings()
         {
-            SettingsManager.Instance.ConfigFileSettings = LoadConfigFileSettings();
-            SettingsManager.Instance.ApplyTo(RefactoringSettings.Current);
-            SettingsManager.Instance.ApplyTo(CodeFixSettings.Current);
-            SettingsManager.Instance.ApplyTo(AnalyzerSettings.Current);
+            Settings.Instance.ConfigFile = LoadConfigFileSettings();
+            Settings.Instance.ApplyTo(RefactoringSettings.Current);
+            Settings.Instance.ApplyTo(CodeFixSettings.Current);
 
-            Settings LoadConfigFileSettings()
+            CodeAnalysisConfiguration LoadConfigFileSettings()
             {
-                if (!File.Exists(ConfigFilePath))
-                    return null;
-
-                try
+                if (File.Exists(ConfigFilePath))
                 {
-                    return Settings.Load(ConfigFilePath);
-                }
-                catch (IOException)
-                {
-                }
-                catch (UnauthorizedAccessException)
-                {
-                }
-                catch (SecurityException)
-                {
+                    return CodeAnalysisConfiguration.LoadAndCatchIfThrows(ConfigFilePath, ex => Debug.Fail(ex.ToString()));
                 }
 
                 return null;
@@ -161,7 +147,7 @@ namespace Roslynator.VisualStudio
             if (!Directory.Exists(SolutionDirectoryPath))
                 return;
 
-            _watcher = new FileSystemWatcher(SolutionDirectoryPath, Settings.ConfigFileName)
+            _watcher = new FileSystemWatcher(SolutionDirectoryPath, CodeAnalysisConfiguration.ConfigFileName)
             {
                 EnableRaisingEvents = true,
                 IncludeSubdirectories = false,

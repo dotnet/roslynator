@@ -79,7 +79,7 @@ namespace Roslynator.CodeGeneration
                 return stringWriter.ToString();
             }
 
-            string GetAction(AnalyzerMetadata analyzer)
+            static string GetAction(AnalyzerMetadata analyzer)
             {
                 return (analyzer.IsEnabledByDefault)
                     ? analyzer.DefaultSeverity

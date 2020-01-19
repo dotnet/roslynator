@@ -53,7 +53,7 @@ namespace Roslynator.CodeGeneration
 
             WriteAnalyzersByCategory(@"Analyzers\AnalyzersByCategory.md", analyzers);
 #if !DEBUG
-            VisualStudioInstance instance = MSBuildLocator.QueryVisualStudioInstances().First(f => f.Version.Major == 15);
+            VisualStudioInstance instance = MSBuildLocator.QueryVisualStudioInstances().First(f => f.Version.Major == 16);
 
             MSBuildLocator.RegisterInstance(instance);
 

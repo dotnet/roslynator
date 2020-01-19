@@ -31,23 +31,24 @@ namespace Roslynator.CodeGeneration.CSharp
                             CreateMembers(
                                 analyzers
                                     .Where(f => f.IsObsolete == obsolete)
-                                    .OrderBy(f => f.Id, comparer))))));
+                                    .OrderBy(f => f.Id, comparer), obsolete: obsolete)))));
 
             compilationUnit = compilationUnit.NormalizeWhitespace();
 
             return (CompilationUnitSyntax)Rewriter.Instance.Visit(compilationUnit);
         }
 
-        private static IEnumerable<MemberDeclarationSyntax> CreateMembers(IEnumerable<AnalyzerMetadata> analyzers)
+        private static IEnumerable<MemberDeclarationSyntax> CreateMembers(IEnumerable<AnalyzerMetadata> analyzers, bool obsolete)
         {
             foreach (AnalyzerMetadata analyzer in analyzers)
             {
                 FieldDeclarationSyntax fieldDeclaration = FieldDeclaration(
-                    Modifiers.Public_Static_ReadOnly(),
+                    (obsolete) ? Modifiers.Internal_Static_ReadOnly() : Modifiers.Public_Static_ReadOnly(),
                     IdentifierName("DiagnosticDescriptor"),
                     analyzer.Identifier,
-                    ObjectCreationExpression(
-                        IdentifierName("DiagnosticDescriptor"),
+                    SimpleMemberInvocationExpression(
+                        IdentifierName("Factory"),
+                        IdentifierName("Create"),
                         ArgumentList(
                             Argument(
                                 NameColon("id"),
@@ -72,7 +73,7 @@ namespace Roslynator.CodeGeneration.CSharp
                                 NullLiteralExpression()),
                             Argument(
                                 NameColon("helpLinkUri"),
-                                ParseExpression($"$\"{{HelpLinkUriRoot}}{{DiagnosticIdentifiers.{analyzer.Identifier}}}\"")),
+                                SimpleMemberAccessExpression(IdentifierName("DiagnosticIdentifiers"), IdentifierName(analyzer.Identifier))),
                             Argument(
                                 NameColon("customTags"),
                                 (analyzer.SupportsFadeOut)
@@ -99,8 +100,9 @@ namespace Roslynator.CodeGeneration.CSharp
                         IdentifierName("DiagnosticDescriptor"),
                         analyzer.Identifier + "FadeOut",
                         SimpleMemberInvocationExpression(
-                            IdentifierName(analyzer.Identifier),
-                            IdentifierName("CreateFadeOut"))).AddObsoleteAttributeIf(analyzer.IsObsolete, error: true);
+                            IdentifierName("DiagnosticDescriptorFactory"),
+                            IdentifierName("CreateFadeOut"),
+                            ArgumentList(Argument(IdentifierName(analyzer.Identifier))))).AddObsoleteAttributeIf(analyzer.IsObsolete, error: true);
                 }
             }
         }
@@ -118,9 +120,14 @@ namespace Roslynator.CodeGeneration.CSharp
 
             public override SyntaxNode VisitArgument(ArgumentSyntax node)
             {
-                return node
-                    .WithNameColon(node.NameColon.AppendToLeadingTrivia(TriviaList(NewLine(), Whitespace("            "))))
-                    .WithExpression(node.Expression.PrependToLeadingTrivia(Whitespace(new string(' ', 18 - node.NameColon.Name.Identifier.ValueText.Length))));
+                if (node.NameColon != null)
+                {
+                    return node
+                        .WithNameColon(node.NameColon.AppendToLeadingTrivia(TriviaList(NewLine(), Whitespace("            "))))
+                        .WithExpression(node.Expression.PrependToLeadingTrivia(Whitespace(new string(' ', 18 - node.NameColon.Name.Identifier.ValueText.Length))));
+                }
+
+                return node;
             }
 
             public override SyntaxNode VisitAttribute(AttributeSyntax node)

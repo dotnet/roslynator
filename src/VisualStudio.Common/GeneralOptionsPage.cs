@@ -6,7 +6,6 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using Microsoft.VisualStudio.Shell;
 using Roslynator.VisualStudio.TypeConverters;
-using Roslynator.Configuration;
 
 namespace Roslynator.VisualStudio
 {
@@ -17,7 +16,6 @@ namespace Roslynator.VisualStudio
 
         public GeneralOptionsPage()
         {
-            PrefixFieldIdentifierWithUnderscore = true;
             UseConfigFile = true;
         }
 
@@ -69,11 +67,18 @@ namespace Roslynator.VisualStudio
                 PrefixFieldIdentifierWithUnderscore = _control.PrefixFieldIdentifierWithUnderscore;
                 UseConfigFile = _control.UseConfigFile;
 
-                SettingsManager.Instance.UpdateVisualStudioSettings(this);
-                SettingsManager.Instance.ApplyTo(RefactoringSettings.Current);
+                ApplyTo(Settings.Instance);
+                Settings.Instance.ApplyTo(RefactoringSettings.Current);
             }
 
             base.OnApply(e);
+        }
+
+        internal void ApplyTo(Settings settings)
+        {
+            settings.UseConfigFile = UseConfigFile;
+
+            settings.VisualStudio = settings.VisualStudio.WithPrefixFieldIdentifierWithUnderscore(PrefixFieldIdentifierWithUnderscore);
         }
     }
 }

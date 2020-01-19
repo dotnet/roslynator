@@ -70,40 +70,5 @@ class C
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
             }
         }
-
-        public class ParameterTests : CS0136LocalOrParameterCannotBeDeclaredInThisScopeTests
-        {
-            public override CodeFixProvider FixProvider { get; } = new ParameterCannotBeDeclaredInThisScopeCodeFixProvider();
-
-            [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.LocalOrParameterCannotBeDeclaredInThisScopeBecauseThatNameIsUsedInEnclosingScopeToDefineLocalOrParameter)]
-            public async Task Test_RemoveParameter()
-            {
-                await VerifyFixAsync(@"
-class C
-{
-    void M()
-    {
-        string value = null;
-
-        void LF(string value)
-        {
-        }
-    }
-}
-", @"
-class C
-{
-    void M()
-    {
-        string value = null;
-
-        void LF()
-        {
-        }
-    }
-}
-", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-            }
-        }
     }
 }
