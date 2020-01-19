@@ -1,3 +1,7 @@
+### 2.3.1 (2020-01-20)
+
+* Last release of package Roslynator.Analyzers (2.3.0) that references Roslyn 2.x (VS 2017)
+
 ### 2.3.0 (2019-12-28)
 
 * Last release of Roslynator for VS 2017
