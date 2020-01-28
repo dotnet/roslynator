@@ -54,7 +54,7 @@
 | RR0142 | [Convert regular string literal to verbatim string literal](../../docs/refactorings/RR0142.md) | &#x2713; |
 | RR0211 | [Convert statements to if-else](../../docs/refactorings/RR0211.md) | &#x2713; |
 | RR0145 | [Convert 'string.Format' to interpolated string](../../docs/refactorings/RR0145.md) | &#x2713; |
-| RR0147 | [Convert 'switch to 'if'](../../docs/refactorings/RR0147.md) | &#x2713; |
+| RR0147 | [Convert 'switch' to 'if'](../../docs/refactorings/RR0147.md) | &#x2713; |
 | RR0148 | [Convert verbatim string literal to regular string literal](../../docs/refactorings/RR0148.md) | &#x2713; |
 | RR0149 | [Convert verbatim string literal to regular string literals](../../docs/refactorings/RR0149.md) | &#x2713; |
 | RR0150 | [Convert 'while' statement to 'do' statement](../../docs/refactorings/RR0150.md) | &#x2713; |
