@@ -5,28 +5,23 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.CodeFixes;
-using Roslynator.CSharp.Analysis;
+using Roslynator.CSharp.Testing;
 using Xunit;
-using Roslynator.Tests;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
     public class RCS1174RemoveRedundantAsyncAwaitTests : AbstractCSharpFixVerifier
     {
-        private readonly CodeVerificationOptions _options;
-
-        public RCS1174RemoveRedundantAsyncAwaitTests()
-        {
-            _options = base.Options.AddAllowedCompilerDiagnosticId(CompilerDiagnosticIdentifiers.UnreachableCodeDetected);
-        }
-
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.RemoveRedundantAsyncAwait;
 
         public override DiagnosticAnalyzer Analyzer { get; } = new RemoveRedundantAsyncAwaitAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new RemoveRedundantAsyncAwaitCodeFixProvider();
 
-        public override CodeVerificationOptions Options => _options;
+        protected override CSharpCodeVerificationOptions UpdateOptions(CSharpCodeVerificationOptions options)
+        {
+            return base.UpdateOptions(options).AddAllowedCompilerDiagnosticId(CompilerDiagnosticIdentifiers.UnreachableCodeDetected);
+        }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
         public async Task Test_Method_Body_ReturnAwait()
