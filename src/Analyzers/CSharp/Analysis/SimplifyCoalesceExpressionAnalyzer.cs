@@ -94,7 +94,7 @@ namespace Roslynator.CSharp.Analysis
                     return BinaryExpressionPart.Left;
                 case SyntaxKind.DefaultExpression:
                     {
-                        if (IsDefaultOfReferenceType((DefaultExpressionSyntax)left, semanticModel, cancellationToken))
+                        if (IsDefaultOfReferenceOrNullableType((DefaultExpressionSyntax)left, semanticModel, cancellationToken))
                             return BinaryExpressionPart.Left;
 
                         break;
@@ -129,10 +129,12 @@ namespace Roslynator.CSharp.Analysis
             switch (rightKind)
             {
                 case SyntaxKind.NullLiteralExpression:
-                    return BinaryExpressionPart.Right;
+                    {
+                        return BinaryExpressionPart.Right;
+                    }
                 case SyntaxKind.DefaultExpression:
                     {
-                        if (IsDefaultOfReferenceType((DefaultExpressionSyntax)right, semanticModel, cancellationToken))
+                        if (IsDefaultOfReferenceOrNullableType((DefaultExpressionSyntax)right, semanticModel, cancellationToken))
                             return BinaryExpressionPart.Right;
 
                         break;
@@ -148,12 +150,15 @@ namespace Roslynator.CSharp.Analysis
             return BinaryExpressionPart.None;
         }
 
-        private static bool IsDefaultOfReferenceType(DefaultExpressionSyntax defaultExpression, SemanticModel semanticModel, CancellationToken cancellationToken)
+        private static bool IsDefaultOfReferenceOrNullableType(DefaultExpressionSyntax defaultExpression, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
             TypeSyntax type = defaultExpression.Type;
 
             if (type != null)
             {
+                if (type.IsKind(SyntaxKind.NullableType))
+                    return true;
+
                 ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, cancellationToken);
 
                 if (typeSymbol?.IsErrorType() == false
