@@ -27,6 +27,7 @@ namespace Roslynator
                 static ImmutableArray<string> Create()
                 {
                     return ImmutableArray.Create(
+                        "netstandard.dll",
                         "System.Core.dll",
                         "System.Linq.dll",
                         "System.Linq.Expressions.dll",
