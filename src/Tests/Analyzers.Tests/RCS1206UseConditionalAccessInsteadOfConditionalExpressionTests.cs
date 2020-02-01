@@ -214,6 +214,74 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccessInsteadOfConditionalExpression)]
+        public async Task Test_StructAndDefaultOfNullable()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System;
+
+class C
+{
+    void M()
+    {
+        C x = null;
+
+        int? y = [|(x != null) ? x.M2() : default(int?)|];
+    }
+
+    int M2() => default;
+}
+", @"
+using System;
+
+class C
+{
+    void M()
+    {
+        C x = null;
+
+        int? y = x?.M2();
+    }
+
+    int M2() => default;
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccessInsteadOfConditionalExpression)]
+        public async Task Test_DefaultOfNullableAndStruct()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System;
+
+class C
+{
+    void M()
+    {
+        C x = null;
+
+        int? y = [|(x == null) ? default(int?) : x.M2()|];
+    }
+
+    int M2() => default;
+}
+", @"
+using System;
+
+class C
+{
+    void M()
+    {
+        C x = null;
+
+        int? y = x?.M2();
+    }
+
+    int M2() => default;
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccessInsteadOfConditionalExpression)]
         public async Task TestNoDiagnostic()
         {
             await VerifyNoDiagnosticAsync(@"

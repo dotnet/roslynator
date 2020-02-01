@@ -168,7 +168,8 @@ namespace Roslynator.CSharp.Analysis
 
                 if (typeSymbol?.IsErrorType() == false
                     && (typeSymbol.IsReferenceType || typeSymbol.IsValueType)
-                    && semanticModel.IsDefaultValue(typeSymbol, whenNull, cancellationToken)
+                    && (semanticModel.IsDefaultValue(typeSymbol, whenNull, cancellationToken)
+                        || IsDefaultOfNullableStruct(typeSymbol, whenNull, semanticModel, cancellationToken))
                     && !CSharpUtility.ContainsOutArgumentWithLocal(whenNotNull, semanticModel, cancellationToken)
                     && !conditionalExpressionInfo.ConditionalExpression.IsInExpressionTree(semanticModel, cancellationToken))
                 {
@@ -178,6 +179,30 @@ namespace Roslynator.CSharp.Analysis
                         conditionalExpressionInfo.ConditionalExpression);
                 }
             }
+        }
+
+        private static bool IsDefaultOfNullableStruct(
+            ITypeSymbol typeSymbol,
+            ExpressionSyntax whenNull,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
+        {
+            if (typeSymbol.IsValueType
+                && !typeSymbol.IsNullableType()
+                && whenNull.IsKind(SyntaxKind.DefaultExpression))
+            {
+                var defaultExpression = (DefaultExpressionSyntax)whenNull;
+
+                TypeSyntax type = defaultExpression.Type;
+
+                if (type.IsKind(SyntaxKind.NullableType)
+                    && semanticModel.GetTypeSymbol(type, cancellationToken)?.IsNullableOf(typeSymbol) == true)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

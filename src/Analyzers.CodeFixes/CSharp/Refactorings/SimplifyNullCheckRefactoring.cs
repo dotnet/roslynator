@@ -80,8 +80,12 @@ namespace Roslynator.CSharp.Refactorings
             if (newNode == null)
                 newNode = ParseExpression(whenNotNull.ToString().Insert(expression.Span.End - whenNotNull.SpanStart, "?"));
 
-            if (coalesce || !semanticModel.GetTypeSymbol(whenNotNull, cancellationToken).IsReferenceTypeOrNullableType())
+            if (coalesce
+                || (!semanticModel.GetTypeSymbol(whenNotNull, cancellationToken).IsReferenceTypeOrNullableType()
+                    && (whenNull as DefaultExpressionSyntax)?.Type.IsKind(SyntaxKind.NullableType) != true))
+            {
                 newNode = CoalesceExpression(newNode.Parenthesize(), whenNull.Parenthesize());
+            }
 
             newNode = newNode
                 .WithTriviaFrom(conditionalExpression)
