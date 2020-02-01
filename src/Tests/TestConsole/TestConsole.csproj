@@ -15,12 +15,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Testing.CSharp\Testing.CSharp.csproj" />
-    <ProjectReference Include="..\Testing.Common\Testing.Common.csproj" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.4.0" />
   </ItemGroup>
 
 </Project>
