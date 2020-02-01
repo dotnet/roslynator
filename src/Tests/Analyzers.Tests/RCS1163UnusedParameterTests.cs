@@ -144,5 +144,24 @@ class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedParameter)]
+        public async Task TestNoDiagnostic_SwitchExpression()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System;
+
+class C
+{
+    string M(StringSplitOptions options)
+    {
+        return options switch
+        {
+            _ => """"
+        };
+    }
+}
+");
+        }
     }
 }
