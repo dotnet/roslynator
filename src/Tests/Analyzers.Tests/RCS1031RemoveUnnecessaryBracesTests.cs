@@ -167,5 +167,30 @@ class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBraces)]
+        public async Task TestNoDiagnostic_UsingLocalVariable()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System;
+
+class C
+{
+    void M()
+    {
+        string s = null;
+
+        switch (s)
+        {
+            case """":
+                {
+                    using IDisposable disposable = default;
+                    break;
+                }
+        }
+    }
+}
+");
+        }
     }
 }
