@@ -198,6 +198,29 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantEmptyLine)]
+        public async Task Test_EmptyLineAfterDocComment()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    /// <summary></summary>
+[|
+|]    void M()
+    {
+    }
+}
+", @"
+class C
+{
+    /// <summary></summary>
+    void M()
+    {
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantEmptyLine)]
         public async Task TestNoDiagnostic_ObjectInitializer()
         {
             await VerifyNoDiagnosticAsync(@"
