@@ -2,10 +2,12 @@
 
 using System.Collections.Immutable;
 using System.Composition;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CodeFixes;
 
@@ -29,8 +31,14 @@ namespace Roslynator.CSharp.CodeFixes
         {
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            if (!TryFindTrivia(root, context.Span.Start, out SyntaxTrivia trivia))
+            TextSpan span = context.Span;
+
+            if (!root.FindTrivia(span.Start).IsWhitespaceOrEndOfLineTrivia()
+                && !root.FindToken(span.Start, findInsideTrivia: true).IsKind(SyntaxKind.XmlTextLiteralToken))
+            {
+                Debug.Fail("");
                 return;
+            }
 
             foreach (Diagnostic diagnostic in context.Diagnostics)
             {
@@ -40,7 +48,7 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Remove trailing white-space",
-                                ct => context.Document.WithTextChangeAsync(new TextChange(context.Span, ""), ct),
+                                ct => context.Document.WithTextChangeAsync(new TextChange(span, ""), ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -50,7 +58,7 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Remove empty line",
-                                ct => context.Document.WithTextChangeAsync(new TextChange(context.Span, ""), ct),
+                                ct => context.Document.WithTextChangeAsync(new TextChange(span, ""), ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
