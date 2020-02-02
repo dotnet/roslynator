@@ -114,6 +114,34 @@ enum Foo
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.EnumShouldDeclareExplicitValues)]
+        public async Task Test_Flags_BitShift()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System;
+
+[Flags]
+enum [|Foo|]
+{
+    A,
+    B,
+    C,
+    D,
+}
+", @"
+using System;
+
+[Flags]
+enum Foo
+{
+    A = 0,
+    B = 1,
+    C = 1 << 1,
+    D = 1 << 2,
+}
+", equivalenceKey: EquivalenceKey.Create(Descriptor.Id, "BitShift"));
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.EnumShouldDeclareExplicitValues)]
         public async Task Test_Flags2()
         {
             await VerifyDiagnosticAndFixAsync(@"

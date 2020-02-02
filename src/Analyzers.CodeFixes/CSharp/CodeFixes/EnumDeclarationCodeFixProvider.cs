@@ -91,12 +91,25 @@ namespace Roslynator.CSharp.CodeFixes
                                 return;
                             }
 
+                            bool isFlags = enumSymbol.HasAttribute(MetadataNames.System_FlagsAttribute);
+
                             CodeAction codeAction = CodeAction.Create(
                                 "Declare explicit values",
-                                ct => DeclareExplicitValueAsync(document, enumDeclaration, enumSymbol, values, semanticModel, ct),
+                                ct => DeclareExplicitValueAsync(document, enumDeclaration, enumSymbol, isFlags, useBitShift: false, values, semanticModel, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
+
+                            if (isFlags)
+                            {
+                                CodeAction codeAction2 = CodeAction.Create(
+                                    "Declare explicit values (and use '<<' operator)",
+                                    ct => DeclareExplicitValueAsync(document, enumDeclaration, enumSymbol, isFlags, useBitShift: true, values, semanticModel, ct),
+                                    GetEquivalenceKey(diagnostic, "BitShift"));
+
+                                context.RegisterCodeFix(codeAction2, diagnostic);
+                            }
+
                             break;
                         }
                     case DiagnosticIdentifiers.UseBitShiftOperator:
@@ -195,12 +208,12 @@ namespace Roslynator.CSharp.CodeFixes
             Document document,
             EnumDeclarationSyntax enumDeclaration,
             INamedTypeSymbol enumSymbol,
+            bool isFlags,
+            bool useBitShift,
             ImmutableArray<ulong> values,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            bool isFlags = enumSymbol.HasAttribute(MetadataNames.System_FlagsAttribute);
-
             List<ulong> reservedValues = values.ToList();
 
             SeparatedSyntaxList<EnumMemberDeclarationSyntax> members = enumDeclaration.Members;
@@ -234,7 +247,21 @@ namespace Roslynator.CSharp.CodeFixes
                     {
                         reservedValues.Add(value.Value);
 
-                        EqualsValueClauseSyntax equalsValue = EqualsValueClause(NumericLiteralExpression(value.Value, enumSymbol.EnumUnderlyingType.SpecialType));
+                        ExpressionSyntax expression;
+
+                        if (useBitShift
+                            && value.Value > 1)
+                        {
+                            var power = (int)Math.Log(Convert.ToDouble(value.Value), 2);
+
+                            expression = LeftShiftExpression(NumericLiteralExpression(1), NumericLiteralExpression(power));
+                        }
+                        else
+                        {
+                            expression = NumericLiteralExpression(value.Value, enumSymbol.EnumUnderlyingType.SpecialType);
+                        }
+
+                        EqualsValueClauseSyntax equalsValue = EqualsValueClause(expression);
 
                         EnumMemberDeclarationSyntax newMember = members[i].WithEqualsValue(equalsValue);
 
