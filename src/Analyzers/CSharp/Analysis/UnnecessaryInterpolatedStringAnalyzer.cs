@@ -38,7 +38,7 @@ namespace Roslynator.CSharp.Analysis
             });
         }
 
-        public static void AnalyzeInterpolatedStringExpression(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeInterpolatedStringExpression(SyntaxNodeAnalysisContext context)
         {
             if (context.Node.ContainsDiagnostics)
                 return;

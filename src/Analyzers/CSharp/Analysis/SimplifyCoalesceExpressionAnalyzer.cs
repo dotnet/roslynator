@@ -30,7 +30,7 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(AnalyzeCoalesceExpression, SyntaxKind.CoalesceExpression);
         }
 
-        public static void AnalyzeCoalesceExpression(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeCoalesceExpression(SyntaxNodeAnalysisContext context)
         {
             var coalesceExpression = (BinaryExpressionSyntax)context.Node;
 

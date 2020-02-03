@@ -29,7 +29,7 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(AnalyzeLogicalNotExpression, SyntaxKind.LogicalNotExpression);
         }
 
-        public static void AnalyzeLogicalNotExpression(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeLogicalNotExpression(SyntaxNodeAnalysisContext context)
         {
             var logicalNot = (PrefixUnaryExpressionSyntax)context.Node;
 

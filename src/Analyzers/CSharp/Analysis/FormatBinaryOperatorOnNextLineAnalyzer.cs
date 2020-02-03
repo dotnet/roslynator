@@ -49,7 +49,7 @@ namespace Roslynator.CSharp.Analysis
                 SyntaxKind.AsExpression);
         }
 
-        public static void AnalyzeBinaryExpression(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeBinaryExpression(SyntaxNodeAnalysisContext context)
         {
             var binaryExpression = (BinaryExpressionSyntax)context.Node;
 

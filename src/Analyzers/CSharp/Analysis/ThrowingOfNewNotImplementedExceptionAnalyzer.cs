@@ -37,14 +37,14 @@ namespace Roslynator.CSharp.Analysis
             });
         }
 
-        public static void AnalyzeThrowStatement(SyntaxNodeAnalysisContext context, INamedTypeSymbol exceptionSymbol)
+        private static void AnalyzeThrowStatement(SyntaxNodeAnalysisContext context, INamedTypeSymbol exceptionSymbol)
         {
             var throwStatement = (ThrowStatementSyntax)context.Node;
 
             Analyze(context, throwStatement.Expression, exceptionSymbol);
         }
 
-        internal static void AnalyzeThrowExpression(SyntaxNodeAnalysisContext context, INamedTypeSymbol exceptionSymbol)
+        private static void AnalyzeThrowExpression(SyntaxNodeAnalysisContext context, INamedTypeSymbol exceptionSymbol)
         {
             var throwExpression = (ThrowExpressionSyntax)context.Node;
 

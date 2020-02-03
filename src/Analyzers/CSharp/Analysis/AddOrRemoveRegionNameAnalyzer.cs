@@ -27,7 +27,7 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(AnalyzeEndRegionDirectiveTrivia, SyntaxKind.EndRegionDirectiveTrivia);
         }
 
-        public static void AnalyzeEndRegionDirectiveTrivia(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeEndRegionDirectiveTrivia(SyntaxNodeAnalysisContext context)
         {
             var endRegionDirective = (EndRegionDirectiveTriviaSyntax)context.Node;
 

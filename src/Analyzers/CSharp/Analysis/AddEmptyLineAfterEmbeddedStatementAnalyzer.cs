@@ -38,56 +38,56 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(AnalyzeElseClause, SyntaxKind.ElseClause);
         }
 
-        public static void AnalyzeIfStatement(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeIfStatement(SyntaxNodeAnalysisContext context)
         {
             var ifStatement = (IfStatementSyntax)context.Node;
 
             Analyze(context, ifStatement, ifStatement.CloseParenToken, ifStatement.Statement);
         }
 
-        public static void AnalyzeCommonForEachStatement(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeCommonForEachStatement(SyntaxNodeAnalysisContext context)
         {
             var forEachStatement = (CommonForEachStatementSyntax)context.Node;
 
             Analyze(context, forEachStatement, forEachStatement.CloseParenToken, forEachStatement.Statement);
         }
 
-        public static void AnalyzeForStatement(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeForStatement(SyntaxNodeAnalysisContext context)
         {
             var forStatement = (ForStatementSyntax)context.Node;
 
             Analyze(context, forStatement, forStatement.CloseParenToken, forStatement.Statement);
         }
 
-        public static void AnalyzeUsingStatement(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeUsingStatement(SyntaxNodeAnalysisContext context)
         {
             var usingStatement = (UsingStatementSyntax)context.Node;
 
             Analyze(context, usingStatement, usingStatement.CloseParenToken, usingStatement.Statement);
         }
 
-        public static void AnalyzeWhileStatement(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeWhileStatement(SyntaxNodeAnalysisContext context)
         {
             var whileStatement = (WhileStatementSyntax)context.Node;
 
             Analyze(context, whileStatement, whileStatement.CloseParenToken, whileStatement.Statement);
         }
 
-        public static void AnalyzeLockStatement(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeLockStatement(SyntaxNodeAnalysisContext context)
         {
             var lockStatement = (LockStatementSyntax)context.Node;
 
             Analyze(context, lockStatement, lockStatement.CloseParenToken, lockStatement.Statement);
         }
 
-        public static void AnalyzeFixedStatement(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeFixedStatement(SyntaxNodeAnalysisContext context)
         {
             var fixedStatement = (FixedStatementSyntax)context.Node;
 
             Analyze(context, fixedStatement, fixedStatement.CloseParenToken, fixedStatement.Statement);
         }
 
-        public static void AnalyzeElseClause(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeElseClause(SyntaxNodeAnalysisContext context)
         {
             var elseClause = (ElseClauseSyntax)context.Node;
 

@@ -32,14 +32,14 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(AnalyzeGetAccessorDeclaration, SyntaxKind.GetAccessorDeclaration);
         }
 
-        public static void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
         {
             var methodDeclaration = (MethodDeclarationSyntax)context.Node;
 
             Analyze(context, methodDeclaration, methodDeclaration.Body);
         }
 
-        public static void AnalyzeGetAccessorDeclaration(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeGetAccessorDeclaration(SyntaxNodeAnalysisContext context)
         {
             var accessor = (AccessorDeclarationSyntax)context.Node;
 

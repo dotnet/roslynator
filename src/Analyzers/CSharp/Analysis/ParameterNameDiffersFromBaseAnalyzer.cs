@@ -30,7 +30,7 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSymbolAction(AnalyzePropertySymbol, SymbolKind.Property);
         }
 
-        public static void AnalyzeMethodSymbol(SymbolAnalysisContext context)
+        private static void AnalyzeMethodSymbol(SymbolAnalysisContext context)
         {
             var methodSymbol = (IMethodSymbol)context.Symbol;
 
@@ -45,7 +45,7 @@ namespace Roslynator.CSharp.Analysis
             }
         }
 
-        public static void AnalyzePropertySymbol(SymbolAnalysisContext context)
+        private static void AnalyzePropertySymbol(SymbolAnalysisContext context)
         {
             var propertySymbol = (IPropertySymbol)context.Symbol;
 

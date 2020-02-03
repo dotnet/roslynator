@@ -26,7 +26,7 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(AnalyzeEmptyStatement, SyntaxKind.EmptyStatement);
         }
 
-        public static void AnalyzeEmptyStatement(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeEmptyStatement(SyntaxNodeAnalysisContext context)
         {
             SyntaxNode emptyStatement = context.Node;
 

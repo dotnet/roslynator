@@ -29,7 +29,7 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(AnalyzeAccessorList, SyntaxKind.AccessorList);
         }
 
-        public static void AnalyzeAccessorList(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeAccessorList(SyntaxNodeAnalysisContext context)
         {
             var accessorList = (AccessorListSyntax)context.Node;
 

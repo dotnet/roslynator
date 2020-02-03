@@ -29,7 +29,7 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(AnalyzeInterpolation, SyntaxKind.Interpolation);
         }
 
-        public static void AnalyzeAddExpression(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeAddExpression(SyntaxNodeAnalysisContext context)
         {
             var addExpression = (BinaryExpressionSyntax)context.Node;
 
@@ -75,7 +75,7 @@ namespace Roslynator.CSharp.Analysis
             }
         }
 
-        public static void AnalyzeInterpolation(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeInterpolation(SyntaxNodeAnalysisContext context)
         {
             var interpolation = (InterpolationSyntax)context.Node;
 

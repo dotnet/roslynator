@@ -43,7 +43,7 @@ namespace Roslynator.CSharp.Analysis
             });
         }
 
-        public static void AnalyzeSimpleAssignmentExpression(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeSimpleAssignmentExpression(SyntaxNodeAnalysisContext context)
         {
             if (context.Node.SpanContainsDirectives())
                 return;
@@ -90,12 +90,12 @@ namespace Roslynator.CSharp.Analysis
             DiagnosticHelpers.ReportNode(context, DiagnosticDescriptors.UsePostfixUnaryOperatorInsteadOfAssignmentFadeOut, binaryRight, operatorText);
         }
 
-        public static void AnalyzeAddAssignmentExpression(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeAddAssignmentExpression(SyntaxNodeAnalysisContext context)
         {
             AnalyzeAddOrSubtractAssignmentExpression(context);
         }
 
-        public static void AnalyzeSubtractAssignmentExpression(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeSubtractAssignmentExpression(SyntaxNodeAnalysisContext context)
         {
             AnalyzeAddOrSubtractAssignmentExpression(context);
         }

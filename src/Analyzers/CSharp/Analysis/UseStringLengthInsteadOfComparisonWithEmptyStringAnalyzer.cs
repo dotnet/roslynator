@@ -29,7 +29,7 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(AnalyzeEqualsExpression, SyntaxKind.EqualsExpression);
         }
 
-        public static void AnalyzeEqualsExpression(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeEqualsExpression(SyntaxNodeAnalysisContext context)
         {
             var equalsExpression = (BinaryExpressionSyntax)context.Node;
 

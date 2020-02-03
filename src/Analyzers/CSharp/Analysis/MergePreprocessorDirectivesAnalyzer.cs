@@ -27,7 +27,7 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(AnalyzePragmaWarningDirectiveTrivia, SyntaxKind.PragmaWarningDirectiveTrivia);
         }
 
-        public static void AnalyzePragmaWarningDirectiveTrivia(SyntaxNodeAnalysisContext context)
+        private static void AnalyzePragmaWarningDirectiveTrivia(SyntaxNodeAnalysisContext context)
         {
             var directive = (PragmaWarningDirectiveTriviaSyntax)context.Node;
 

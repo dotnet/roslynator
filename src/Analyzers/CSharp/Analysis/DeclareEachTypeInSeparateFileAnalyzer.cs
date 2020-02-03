@@ -27,7 +27,7 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(AnalyzeCompilationUnit, SyntaxKind.CompilationUnit);
         }
 
-        public static void AnalyzeCompilationUnit(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeCompilationUnit(SyntaxNodeAnalysisContext context)
         {
             var compilationUnit = (CompilationUnitSyntax)context.Node;
 

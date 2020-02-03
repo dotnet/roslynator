@@ -28,7 +28,7 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(AnalyzeSwitchSection, SyntaxKind.SwitchSection);
         }
 
-        public static void AnalyzeSwitchSection(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeSwitchSection(SyntaxNodeAnalysisContext context)
         {
             var switchSection = (SwitchSectionSyntax)context.Node;
 

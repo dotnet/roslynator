@@ -44,7 +44,7 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(AnalyzeFieldDeclaration, SyntaxKind.FieldDeclaration);
         }
 
-        public static void AnalyzeUnsafeStatement(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeUnsafeStatement(SyntaxNodeAnalysisContext context)
         {
             var unsafeStatement = (UnsafeStatementSyntax)context.Node;
 
@@ -57,7 +57,7 @@ namespace Roslynator.CSharp.Analysis
             DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UnnecessaryUnsafeContext, unsafeStatement.UnsafeKeyword);
         }
 
-        public static void AnalyzeLocalFunctionStatement(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeLocalFunctionStatement(SyntaxNodeAnalysisContext context)
         {
             var localFunctionStatement = (LocalFunctionStatementSyntax)context.Node;
 
@@ -83,84 +83,84 @@ namespace Roslynator.CSharp.Analysis
             DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UnnecessaryUnsafeContext, modifiers[index]);
         }
 
-        public static void AnalyzeTypeDeclaration(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeTypeDeclaration(SyntaxNodeAnalysisContext context)
         {
             var typeDeclaration = (TypeDeclarationSyntax)context.Node;
 
             AnalyzeMemberDeclaration(context, typeDeclaration, typeDeclaration.Modifiers);
         }
 
-        public static void AnalyzeDelegateDeclaration(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeDelegateDeclaration(SyntaxNodeAnalysisContext context)
         {
             var delegateDeclaration = (DelegateDeclarationSyntax)context.Node;
 
             AnalyzeMemberDeclaration(context, delegateDeclaration, delegateDeclaration.Modifiers);
         }
 
-        public static void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
         {
             var methodDeclaration = (MethodDeclarationSyntax)context.Node;
 
             AnalyzeMemberDeclaration(context, methodDeclaration, methodDeclaration.Modifiers);
         }
 
-        public static void AnalyzeOperatorDeclaration(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeOperatorDeclaration(SyntaxNodeAnalysisContext context)
         {
             var operatorDeclaration = (OperatorDeclarationSyntax)context.Node;
 
             AnalyzeMemberDeclaration(context, operatorDeclaration, operatorDeclaration.Modifiers);
         }
 
-        public static void AnalyzeConversionOperatorDeclaration(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeConversionOperatorDeclaration(SyntaxNodeAnalysisContext context)
         {
             var conversionOperatorDeclaration = (ConversionOperatorDeclarationSyntax)context.Node;
 
             AnalyzeMemberDeclaration(context, conversionOperatorDeclaration, conversionOperatorDeclaration.Modifiers);
         }
 
-        public static void AnalyzeConstructorDeclaration(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeConstructorDeclaration(SyntaxNodeAnalysisContext context)
         {
             var constructorDeclaration = (ConstructorDeclarationSyntax)context.Node;
 
             AnalyzeMemberDeclaration(context, constructorDeclaration, constructorDeclaration.Modifiers);
         }
 
-        public static void AnalyzeDestructorDeclaration(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeDestructorDeclaration(SyntaxNodeAnalysisContext context)
         {
             var destructorDeclaration = (DestructorDeclarationSyntax)context.Node;
 
             AnalyzeMemberDeclaration(context, destructorDeclaration, destructorDeclaration.Modifiers);
         }
 
-        public static void AnalyzeEventDeclaration(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeEventDeclaration(SyntaxNodeAnalysisContext context)
         {
             var eventDeclaration = (EventDeclarationSyntax)context.Node;
 
             AnalyzeMemberDeclaration(context, eventDeclaration, eventDeclaration.Modifiers);
         }
 
-        public static void AnalyzeEventFieldDeclaration(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeEventFieldDeclaration(SyntaxNodeAnalysisContext context)
         {
             var eventFieldDeclaration = (EventFieldDeclarationSyntax)context.Node;
 
             AnalyzeMemberDeclaration(context, eventFieldDeclaration, eventFieldDeclaration.Modifiers);
         }
 
-        public static void AnalyzeFieldDeclaration(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeFieldDeclaration(SyntaxNodeAnalysisContext context)
         {
             var fieldDeclaration = (FieldDeclarationSyntax)context.Node;
 
             AnalyzeMemberDeclaration(context, fieldDeclaration, fieldDeclaration.Modifiers);
         }
 
-        public static void AnalyzePropertyDeclaration(SyntaxNodeAnalysisContext context)
+        private static void AnalyzePropertyDeclaration(SyntaxNodeAnalysisContext context)
         {
             var propertyDeclaration = (PropertyDeclarationSyntax)context.Node;
 
             AnalyzeMemberDeclaration(context, propertyDeclaration, propertyDeclaration.Modifiers);
         }
 
-        public static void AnalyzeIndexerDeclaration(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeIndexerDeclaration(SyntaxNodeAnalysisContext context)
         {
             var indexerDeclaration = (IndexerDeclarationSyntax)context.Node;
 

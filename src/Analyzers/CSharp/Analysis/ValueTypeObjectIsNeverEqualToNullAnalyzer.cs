@@ -29,12 +29,12 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(AnalyzeNotEqualsExpression, SyntaxKind.NotEqualsExpression);
         }
 
-        internal static void AnalyzeEqualsExpression(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeEqualsExpression(SyntaxNodeAnalysisContext context)
         {
             Analyze(context, (BinaryExpressionSyntax)context.Node);
         }
 
-        internal static void AnalyzeNotEqualsExpression(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeNotEqualsExpression(SyntaxNodeAnalysisContext context)
         {
             Analyze(context, (BinaryExpressionSyntax)context.Node);
         }

@@ -33,7 +33,7 @@ namespace Roslynator.CSharp.Analysis
                 SyntaxKind.CollectionInitializerExpression);
         }
 
-        public static void AnalyzeInitializerExpression(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeInitializerExpression(SyntaxNodeAnalysisContext context)
         {
             var initializer = (InitializerExpressionSyntax)context.Node;
 

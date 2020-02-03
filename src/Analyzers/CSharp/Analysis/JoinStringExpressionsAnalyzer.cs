@@ -31,7 +31,7 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(AnalyzeAddExpression, SyntaxKind.AddExpression);
         }
 
-        public static void AnalyzeAddExpression(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeAddExpression(SyntaxNodeAnalysisContext context)
         {
             SyntaxNode node = context.Node;
 

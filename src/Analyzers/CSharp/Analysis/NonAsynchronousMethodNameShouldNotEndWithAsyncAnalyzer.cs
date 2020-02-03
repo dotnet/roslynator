@@ -44,7 +44,7 @@ namespace Roslynator.CSharp.Analysis
             });
         }
 
-        public static void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context, bool shouldCheckWindowsRuntimeTypes)
+        private static void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context, bool shouldCheckWindowsRuntimeTypes)
         {
             var methodDeclaration = (MethodDeclarationSyntax)context.Node;
 

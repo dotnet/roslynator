@@ -38,7 +38,7 @@ namespace Roslynator.CSharp.Analysis
             });
         }
 
-        public static void AnalyzeElseClause(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeElseClause(SyntaxNodeAnalysisContext context)
         {
             var elseClause = (ElseClauseSyntax)context.Node;
 

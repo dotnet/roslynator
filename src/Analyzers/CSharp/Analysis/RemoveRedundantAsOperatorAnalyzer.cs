@@ -29,7 +29,7 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(AnalyzeAsExpression, SyntaxKind.AsExpression);
         }
 
-        public static void AnalyzeAsExpression(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeAsExpression(SyntaxNodeAnalysisContext context)
         {
             var binaryExpression = (BinaryExpressionSyntax)context.Node;
 

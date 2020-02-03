@@ -31,7 +31,7 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(AnalyzeGenericName, SyntaxKind.GenericName);
         }
 
-        public static void AnalyzeGenericName(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeGenericName(SyntaxNodeAnalysisContext context)
         {
             var genericName = (GenericNameSyntax)context.Node;
 
@@ -65,7 +65,7 @@ namespace Roslynator.CSharp.Analysis
             DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.SimplifyNullableOfT, genericName);
         }
 
-        public static void AnalyzeQualifiedName(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeQualifiedName(SyntaxNodeAnalysisContext context)
         {
             var qualifiedName = (QualifiedNameSyntax)context.Node;
 

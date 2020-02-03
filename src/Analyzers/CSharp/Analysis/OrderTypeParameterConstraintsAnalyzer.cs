@@ -28,7 +28,7 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(AnalyzeTypeParameterList, SyntaxKind.TypeParameterList);
         }
 
-        public static void AnalyzeTypeParameterList(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeTypeParameterList(SyntaxNodeAnalysisContext context)
         {
             var typeParameterList = (TypeParameterListSyntax)context.Node;
 

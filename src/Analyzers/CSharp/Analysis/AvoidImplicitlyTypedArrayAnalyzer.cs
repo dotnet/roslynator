@@ -28,7 +28,7 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(AnalyzeImplicitArrayCreationExpression, SyntaxKind.ImplicitArrayCreationExpression);
         }
 
-        public static void AnalyzeImplicitArrayCreationExpression(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeImplicitArrayCreationExpression(SyntaxNodeAnalysisContext context)
         {
             var expression = (ImplicitArrayCreationExpressionSyntax)context.Node;
 

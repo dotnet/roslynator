@@ -39,7 +39,7 @@ namespace Roslynator.CSharp.Analysis
             });
         }
 
-        public static void AnalyzeRegionDirective(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeRegionDirective(SyntaxNodeAnalysisContext context)
         {
             var regionDirective = (RegionDirectiveTriviaSyntax)context.Node;
 

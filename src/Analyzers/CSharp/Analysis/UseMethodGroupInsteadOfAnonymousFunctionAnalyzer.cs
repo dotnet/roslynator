@@ -43,7 +43,7 @@ namespace Roslynator.CSharp.Analysis
             });
         }
 
-        public static void AnalyzeSimpleLambdaExpression(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeSimpleLambdaExpression(SyntaxNodeAnalysisContext context)
         {
             if (context.Node.SpanContainsDirectives())
                 return;
@@ -129,7 +129,7 @@ namespace Roslynator.CSharp.Analysis
             FadeOut(context, parameter, null, lambda.Body as BlockSyntax, argumentList, lambda.ArrowToken, memberAccessExpression);
         }
 
-        public static void AnalyzeParenthesizedLambdaExpression(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeParenthesizedLambdaExpression(SyntaxNodeAnalysisContext context)
         {
             if (context.Node.SpanContainsDirectives())
                 return;
@@ -225,7 +225,7 @@ namespace Roslynator.CSharp.Analysis
             FadeOut(context, null, parameterList, lambda.Body as BlockSyntax, argumentList, lambda.ArrowToken, memberAccessExpression);
         }
 
-        public static void AnalyzeAnonyousMethodExpression(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeAnonyousMethodExpression(SyntaxNodeAnalysisContext context)
         {
             if (context.Node.SpanContainsDirectives())
                 return;

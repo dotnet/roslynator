@@ -28,7 +28,7 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(AnalyzeFieldDeclaration, SyntaxKind.FieldDeclaration);
         }
 
-        internal static void AnalyzeFieldDeclaration(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeFieldDeclaration(SyntaxNodeAnalysisContext context)
         {
             var fieldDeclaration = (FieldDeclarationSyntax)context.Node;
 

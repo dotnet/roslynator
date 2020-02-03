@@ -44,7 +44,7 @@ namespace Roslynator.CSharp.Analysis
             });
         }
 
-        public static void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
         {
             var methodDeclaration = (MethodDeclarationSyntax)context.Node;
 
@@ -63,7 +63,7 @@ namespace Roslynator.CSharp.Analysis
             }
         }
 
-        public static void AnalyzeLocalFunctionStatement(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeLocalFunctionStatement(SyntaxNodeAnalysisContext context)
         {
             var localFunction = (LocalFunctionStatementSyntax)context.Node;
 
@@ -82,7 +82,7 @@ namespace Roslynator.CSharp.Analysis
             }
         }
 
-        public static void AnalyzeAnonymousMethodExpression(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeAnonymousMethodExpression(SyntaxNodeAnalysisContext context)
         {
             var anonymousMethod = (AnonymousMethodExpressionSyntax)context.Node;
 
@@ -101,7 +101,7 @@ namespace Roslynator.CSharp.Analysis
             }
         }
 
-        public static void AnalyzeLambdaExpression(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeLambdaExpression(SyntaxNodeAnalysisContext context)
         {
             var lambda = (LambdaExpressionSyntax)context.Node;
 

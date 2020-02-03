@@ -42,7 +42,7 @@ namespace Roslynator.CSharp.Analysis
             });
         }
 
-        public static void AnalyzeAssignmentExpression(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeAssignmentExpression(SyntaxNodeAnalysisContext context)
         {
             var assignmentExpression = (AssignmentExpressionSyntax)context.Node;
 

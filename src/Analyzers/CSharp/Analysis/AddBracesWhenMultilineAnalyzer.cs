@@ -37,7 +37,7 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(AnalyzeFixedStatement, SyntaxKind.FixedStatement);
         }
 
-        public static void AnalyzeIfStatement(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeIfStatement(SyntaxNodeAnalysisContext context)
         {
             var ifStatement = (IfStatementSyntax)context.Node;
 
@@ -58,7 +58,7 @@ namespace Roslynator.CSharp.Analysis
             ReportDiagnostic(context, ifStatement, statement);
         }
 
-        public static void AnalyzeCommonForEachStatement(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeCommonForEachStatement(SyntaxNodeAnalysisContext context)
         {
             var forEachStatement = (CommonForEachStatementSyntax)context.Node;
 
@@ -76,7 +76,7 @@ namespace Roslynator.CSharp.Analysis
             ReportDiagnostic(context, forEachStatement, statement);
         }
 
-        public static void AnalyzeForStatement(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeForStatement(SyntaxNodeAnalysisContext context)
         {
             var forStatement = (ForStatementSyntax)context.Node;
 
@@ -94,7 +94,7 @@ namespace Roslynator.CSharp.Analysis
             ReportDiagnostic(context, forStatement, statement);
         }
 
-        public static void AnalyzeUsingStatement(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeUsingStatement(SyntaxNodeAnalysisContext context)
         {
             var usingStatement = (UsingStatementSyntax)context.Node;
 
@@ -112,7 +112,7 @@ namespace Roslynator.CSharp.Analysis
             ReportDiagnostic(context, usingStatement, statement);
         }
 
-        public static void AnalyzeWhileStatement(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeWhileStatement(SyntaxNodeAnalysisContext context)
         {
             var whileStatement = (WhileStatementSyntax)context.Node;
 
@@ -130,7 +130,7 @@ namespace Roslynator.CSharp.Analysis
             ReportDiagnostic(context, whileStatement, statement);
         }
 
-        public static void AnalyzeDoStatement(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeDoStatement(SyntaxNodeAnalysisContext context)
         {
             var doStatement = (DoStatementSyntax)context.Node;
 
@@ -148,7 +148,7 @@ namespace Roslynator.CSharp.Analysis
             ReportDiagnostic(context, doStatement, statement);
         }
 
-        public static void AnalyzeLockStatement(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeLockStatement(SyntaxNodeAnalysisContext context)
         {
             var lockStatement = (LockStatementSyntax)context.Node;
 
@@ -166,7 +166,7 @@ namespace Roslynator.CSharp.Analysis
             ReportDiagnostic(context, lockStatement, statement);
         }
 
-        public static void AnalyzeFixedStatement(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeFixedStatement(SyntaxNodeAnalysisContext context)
         {
             var fixedStatement = (FixedStatementSyntax)context.Node;
 

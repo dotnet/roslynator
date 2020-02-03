@@ -30,7 +30,7 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(AnalyzeLogicalOrExpression, SyntaxKind.LogicalOrExpression);
         }
 
-        public static void AnalyzeLogicalOrExpression(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeLogicalOrExpression(SyntaxNodeAnalysisContext context)
         {
             SyntaxNode node = context.Node;
 

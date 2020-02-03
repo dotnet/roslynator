@@ -42,7 +42,7 @@ namespace Roslynator.CSharp.Analysis.ReturnTaskInsteadOfNull
             });
         }
 
-        public static void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context, INamedTypeSymbol taskOfTSymbol)
+        private static void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context, INamedTypeSymbol taskOfTSymbol)
         {
             var methodDeclaration = (MethodDeclarationSyntax)context.Node;
 
@@ -95,7 +95,7 @@ namespace Roslynator.CSharp.Analysis.ReturnTaskInsteadOfNull
             }
         }
 
-        public static void AnalyzeLocalFunction(SyntaxNodeAnalysisContext context, INamedTypeSymbol taskOfTSymbol)
+        private static void AnalyzeLocalFunction(SyntaxNodeAnalysisContext context, INamedTypeSymbol taskOfTSymbol)
         {
             var localFunction = (LocalFunctionStatementSyntax)context.Node;
 
@@ -148,7 +148,7 @@ namespace Roslynator.CSharp.Analysis.ReturnTaskInsteadOfNull
             }
         }
 
-        public static void AnalyzePropertyDeclaration(SyntaxNodeAnalysisContext context, INamedTypeSymbol taskOfTSymbol)
+        private static void AnalyzePropertyDeclaration(SyntaxNodeAnalysisContext context, INamedTypeSymbol taskOfTSymbol)
         {
             var propertyDeclaration = (PropertyDeclarationSyntax)context.Node;
 
@@ -198,7 +198,7 @@ namespace Roslynator.CSharp.Analysis.ReturnTaskInsteadOfNull
             }
         }
 
-        public static void AnalyzeIndexerDeclaration(SyntaxNodeAnalysisContext context, INamedTypeSymbol taskOfTSymbol)
+        private static void AnalyzeIndexerDeclaration(SyntaxNodeAnalysisContext context, INamedTypeSymbol taskOfTSymbol)
         {
             var indexerDeclaration = (IndexerDeclarationSyntax)context.Node;
 
@@ -248,7 +248,7 @@ namespace Roslynator.CSharp.Analysis.ReturnTaskInsteadOfNull
             }
         }
 
-        public static void AnalyzeLambdaExpression(SyntaxNodeAnalysisContext context, INamedTypeSymbol taskOfTSymbol)
+        private static void AnalyzeLambdaExpression(SyntaxNodeAnalysisContext context, INamedTypeSymbol taskOfTSymbol)
         {
             var lambda = (LambdaExpressionSyntax)context.Node;
 
@@ -293,7 +293,7 @@ namespace Roslynator.CSharp.Analysis.ReturnTaskInsteadOfNull
             }
         }
 
-        public static void AnalyzeAnonymousMethod(SyntaxNodeAnalysisContext context, INamedTypeSymbol taskOfTSymbol)
+        private static void AnalyzeAnonymousMethod(SyntaxNodeAnalysisContext context, INamedTypeSymbol taskOfTSymbol)
         {
             var anonymousMethod = (AnonymousMethodExpressionSyntax)context.Node;
 

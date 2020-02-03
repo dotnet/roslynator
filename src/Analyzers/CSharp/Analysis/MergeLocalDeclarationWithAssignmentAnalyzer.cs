@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.Analysis
             });
         }
 
-        public static void AnalyzeLocalDeclarationStatement(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeLocalDeclarationStatement(SyntaxNodeAnalysisContext context)
         {
             var localDeclaration = (LocalDeclarationStatementSyntax)context.Node;
 

@@ -30,17 +30,17 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(AnalyzeIsPatternExpression, SyntaxKind.IsPatternExpression);
         }
 
-        public static void AnalyzeEqualsExpression(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeEqualsExpression(SyntaxNodeAnalysisContext context)
         {
             Analyze(context, context.Node);
         }
 
-        public static void AnalyzeNotEqualsExpression(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeNotEqualsExpression(SyntaxNodeAnalysisContext context)
         {
             Analyze(context, context.Node);
         }
 
-        public static void AnalyzeIsPatternExpression(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeIsPatternExpression(SyntaxNodeAnalysisContext context)
         {
             Analyze(context, context.Node);
         }

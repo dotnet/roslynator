@@ -35,7 +35,7 @@ namespace Roslynator.CSharp.Analysis.UsePatternMatching
             });
         }
 
-        public static void AnalyzeIsExpression(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeIsExpression(SyntaxNodeAnalysisContext context)
         {
             var isExpression = (BinaryExpressionSyntax)context.Node;
 

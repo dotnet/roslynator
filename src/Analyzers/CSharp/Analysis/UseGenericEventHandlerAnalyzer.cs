@@ -26,7 +26,7 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSymbolAction(AnalyzeEvent, SymbolKind.Event);
         }
 
-        public static void AnalyzeEvent(SymbolAnalysisContext context)
+        private static void AnalyzeEvent(SymbolAnalysisContext context)
         {
             var eventSymbol = (IEventSymbol)context.Symbol;
 

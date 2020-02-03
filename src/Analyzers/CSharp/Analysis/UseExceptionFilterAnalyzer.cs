@@ -34,7 +34,7 @@ namespace Roslynator.CSharp.Analysis
             });
         }
 
-        public static void AnalyzeCatchClause(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeCatchClause(SyntaxNodeAnalysisContext context)
         {
             var catchClause = (CatchClauseSyntax)context.Node;
 

@@ -30,7 +30,7 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(AnalyzeLogicalAndExpression, SyntaxKind.LogicalAndExpression);
         }
 
-        internal static void AnalyzeLogicalAndExpression(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeLogicalAndExpression(SyntaxNodeAnalysisContext context)
         {
             var logicalAnd = (BinaryExpressionSyntax)context.Node;
 

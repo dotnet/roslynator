@@ -32,7 +32,7 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(AnalyzeBaseArgumentList, SyntaxKind.BracketedArgumentList);
         }
 
-        public static void AnalyzeBaseArgumentList(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeBaseArgumentList(SyntaxNodeAnalysisContext context)
         {
             if (context.Node.ContainsDiagnostics)
                 return;

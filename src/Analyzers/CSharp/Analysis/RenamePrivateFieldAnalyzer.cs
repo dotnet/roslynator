@@ -25,7 +25,7 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSymbolAction(AnalyzeFieldSymbol, SymbolKind.Field);
         }
 
-        public static void AnalyzeFieldSymbol(SymbolAnalysisContext context)
+        private static void AnalyzeFieldSymbol(SymbolAnalysisContext context)
         {
             var fieldSymbol = (IFieldSymbol)context.Symbol;
 

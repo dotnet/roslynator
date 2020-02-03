@@ -34,7 +34,7 @@ namespace Roslynator.CSharp.Analysis
             });
         }
 
-        public static void AnalyzeNamedType(SymbolAnalysisContext context, INamedTypeSymbol exceptionSymbol)
+        private static void AnalyzeNamedType(SymbolAnalysisContext context, INamedTypeSymbol exceptionSymbol)
         {
             var symbol = (INamedTypeSymbol)context.Symbol;
 

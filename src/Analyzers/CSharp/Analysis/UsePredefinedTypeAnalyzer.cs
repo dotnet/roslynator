@@ -31,7 +31,7 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(AnalyzeSimpleMemberAccessExpression, SyntaxKind.SimpleMemberAccessExpression);
         }
 
-        public static void AnalyzeIdentifierName(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeIdentifierName(SyntaxNodeAnalysisContext context)
         {
             var identifierName = (IdentifierNameSyntax)context.Node;
 
@@ -69,7 +69,7 @@ namespace Roslynator.CSharp.Analysis
             ReportDiagnostic(context, identifierName);
         }
 
-        public static void AnalyzeXmlCrefAttribute(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeXmlCrefAttribute(SyntaxNodeAnalysisContext context)
         {
             var xmlCrefAttribute = (XmlCrefAttributeSyntax)context.Node;
 
@@ -119,7 +119,7 @@ namespace Roslynator.CSharp.Analysis
             ReportDiagnostic(context, cref);
         }
 
-        public static void AnalyzeQualifiedName(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeQualifiedName(SyntaxNodeAnalysisContext context)
         {
             var qualifiedName = (QualifiedNameSyntax)context.Node;
 
@@ -144,7 +144,7 @@ namespace Roslynator.CSharp.Analysis
             ReportDiagnostic(context, qualifiedName);
         }
 
-        public static void AnalyzeSimpleMemberAccessExpression(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeSimpleMemberAccessExpression(SyntaxNodeAnalysisContext context)
         {
             var memberAccess = (MemberAccessExpressionSyntax)context.Node;
 

@@ -33,7 +33,7 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(AnalyzeNotEqualsExpression, SyntaxKind.NotEqualsExpression);
         }
 
-        public static void AnalyzeEqualsExpression(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeEqualsExpression(SyntaxNodeAnalysisContext context)
         {
             if (context.Node.ContainsDiagnostics)
                 return;
@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.Analysis
             Analyze(context, (BinaryExpressionSyntax)context.Node, NullCheckStyles.EqualsToNull);
         }
 
-        public static void AnalyzeNotEqualsExpression(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeNotEqualsExpression(SyntaxNodeAnalysisContext context)
         {
             if (context.Node.ContainsDiagnostics)
                 return;

@@ -30,7 +30,7 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSymbolAction(AnalyzeProperty, SymbolKind.Property);
         }
 
-        public static void AnalyzeMethod(SymbolAnalysisContext context)
+        private static void AnalyzeMethod(SymbolAnalysisContext context)
         {
             ISymbol symbol = context.Symbol;
 
@@ -40,7 +40,7 @@ namespace Roslynator.CSharp.Analysis
             Analyze(context, symbol);
         }
 
-        public static void AnalyzeProperty(SymbolAnalysisContext context)
+        private static void AnalyzeProperty(SymbolAnalysisContext context)
         {
             Analyze(context, context.Symbol);
         }

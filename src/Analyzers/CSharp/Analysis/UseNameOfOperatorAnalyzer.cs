@@ -68,7 +68,7 @@ namespace Roslynator.CSharp.Analysis
             DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseNameOfOperator, invocationInfo.InvocationExpression);
         }
 
-        public static void AnalyzeArgument(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeArgument(SyntaxNodeAnalysisContext context)
         {
             var argument = (ArgumentSyntax)context.Node;
 

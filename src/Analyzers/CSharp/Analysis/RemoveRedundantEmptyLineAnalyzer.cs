@@ -177,56 +177,56 @@ namespace Roslynator.CSharp.Analysis
             }
         }
 
-        internal static void AnalyzeIfStatement(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeIfStatement(SyntaxNodeAnalysisContext context)
         {
             var ifStatement = (IfStatementSyntax)context.Node;
 
             AnalyzeEmbeddedStatement(context, ifStatement.CloseParenToken, ifStatement.Statement);
         }
 
-        internal static void AnalyzeCommonForEachStement(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeCommonForEachStement(SyntaxNodeAnalysisContext context)
         {
             var forEachStatement = (CommonForEachStatementSyntax)context.Node;
 
             AnalyzeEmbeddedStatement(context, forEachStatement.CloseParenToken, forEachStatement.Statement);
         }
 
-        internal static void AnalyzeForStatement(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeForStatement(SyntaxNodeAnalysisContext context)
         {
             var forStatement = (ForStatementSyntax)context.Node;
 
             AnalyzeEmbeddedStatement(context, forStatement.CloseParenToken, forStatement.Statement);
         }
 
-        internal static void AnalyzeUsingStatement(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeUsingStatement(SyntaxNodeAnalysisContext context)
         {
             var usingStatement = (UsingStatementSyntax)context.Node;
 
             AnalyzeEmbeddedStatement(context, usingStatement.CloseParenToken, usingStatement.Statement);
         }
 
-        internal static void AnalyzeWhileStatement(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeWhileStatement(SyntaxNodeAnalysisContext context)
         {
             var whileStatement = (WhileStatementSyntax)context.Node;
 
             AnalyzeEmbeddedStatement(context, whileStatement.CloseParenToken, whileStatement.Statement);
         }
 
-        internal static void AnalyzeDoStatement(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeDoStatement(SyntaxNodeAnalysisContext context)
         {
             var doStatement = (DoStatementSyntax)context.Node;
 
             AnalyzeEmbeddedStatement(context, doStatement.DoKeyword, doStatement.Statement);
         }
 
-        internal static void AnalyzeLockStatement(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeLockStatement(SyntaxNodeAnalysisContext context)
         {
             var lockStatement = (LockStatementSyntax)context.Node;
 
             AnalyzeEmbeddedStatement(context, lockStatement.CloseParenToken, lockStatement.Statement);
         }
 
-        internal static void AnalyzeFixedStatement(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeFixedStatement(SyntaxNodeAnalysisContext context)
         {
             var fixedStatement = (FixedStatementSyntax)context.Node;
 

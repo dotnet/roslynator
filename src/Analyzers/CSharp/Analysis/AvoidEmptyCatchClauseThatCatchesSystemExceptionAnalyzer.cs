@@ -35,7 +35,7 @@ namespace Roslynator.CSharp.Analysis
             });
         }
 
-        public static void AnalyzeCatchClause(SyntaxNodeAnalysisContext context, ITypeSymbol exceptionSymbol)
+        private static void AnalyzeCatchClause(SyntaxNodeAnalysisContext context, ITypeSymbol exceptionSymbol)
         {
             var catchClause = (CatchClauseSyntax)context.Node;
 

@@ -30,7 +30,7 @@ namespace Roslynator.CSharp.Analysis
                 SyntaxKind.NotEqualsExpression);
         }
 
-        public static void AnalyzeBinaryExpression(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeBinaryExpression(SyntaxNodeAnalysisContext context)
         {
             var binaryExpression = (BinaryExpressionSyntax)context.Node;
 

@@ -31,7 +31,7 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(AnalyzeSimpleAssignment, SyntaxKind.SimpleAssignmentExpression);
         }
 
-        internal static void AnalyzeSimpleAssignment(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeSimpleAssignment(SyntaxNodeAnalysisContext context)
         {
             if (context.Node.ContainsDiagnostics)
                 return;

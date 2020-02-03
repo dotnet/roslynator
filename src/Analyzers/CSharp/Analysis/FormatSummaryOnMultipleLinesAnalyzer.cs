@@ -29,7 +29,7 @@ namespace Roslynator.CSharp.Analysis
                 SyntaxKind.SingleLineDocumentationCommentTrivia);
         }
 
-        public static void AnalyzeSingleLineDocumentationCommentTrivia(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeSingleLineDocumentationCommentTrivia(SyntaxNodeAnalysisContext context)
         {
             var documentationComment = (DocumentationCommentTriviaSyntax)context.Node;
 
