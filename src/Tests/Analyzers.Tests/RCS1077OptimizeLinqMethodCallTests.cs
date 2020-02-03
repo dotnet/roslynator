@@ -962,6 +962,70 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+        public async Task Test_CallOrderByDescendingInsteadOfOrderByAndReverse()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System.Collections.Generic;
+using System.Linq;
+
+class C
+{
+    void M()
+    {
+        IEnumerable<object> x = null;
+
+        x = x.[|OrderBy(f => f).Reverse()|];
+    }
+}
+", @"
+using System.Collections.Generic;
+using System.Linq;
+
+class C
+{
+    void M()
+    {
+        IEnumerable<object> x = null;
+
+        x = x.OrderByDescending(f => f);
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+        public async Task Test_CallSumInsteadOfSelectManyAndCount()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System.Collections.Generic;
+using System.Linq;
+
+class C
+{
+    void M()
+    {
+        IEnumerable<List<object>> x = null;
+
+        int count = x.[|SelectMany(f => f).Count()|];
+    }
+}
+", @"
+using System.Collections.Generic;
+using System.Linq;
+
+class C
+{
+    void M()
+    {
+        IEnumerable<List<object>> x = null;
+
+        int count = x.Sum(f => f.Count);
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
         public async Task TestNoDiagnostic_CallOfTypeInsteadOfWhereAndCast()
         {
             await VerifyNoDiagnosticAsync(@"

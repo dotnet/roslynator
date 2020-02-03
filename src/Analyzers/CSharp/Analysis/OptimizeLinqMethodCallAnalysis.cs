@@ -173,7 +173,7 @@ namespace Roslynator.CSharp.Analysis
 
             TextSpan span = TextSpan.FromBounds(invocationInfo2.Name.SpanStart, invocation.Span.End);
 
-            Report(context, invocation, span, checkDirectives: true, property: new KeyValuePair<string, string>("Name", "SimplifyLinqMethodChain"));
+            Report(context, invocation, span, checkDirectives: true, properties: Properties.SimplifyLinqMethodChain);
         }
 
         public static void AnalyzeFirstOrDefault(SyntaxNodeAnalysisContext context, in SimpleMemberInvocationExpressionInfo invocationInfo)
@@ -399,25 +399,6 @@ namespace Roslynator.CSharp.Analysis
             TextSpan span = TextSpan.FromBounds(invocationInfo2.Name.SpanStart, invocationExpression.Span.End);
 
             Report(context, invocationExpression, span, checkDirectives: true);
-
-            SyntaxNode GetLambdaExpression(ExpressionSyntax expression)
-            {
-                CSharpSyntaxNode body = (expression as LambdaExpressionSyntax)?.Body;
-
-                if (body?.Kind() == SyntaxKind.Block)
-                {
-                    StatementSyntax statement = ((BlockSyntax)body).Statements.SingleOrDefault(shouldThrow: false);
-
-                    if (statement?.Kind() == SyntaxKind.ReturnStatement)
-                    {
-                        var returnStatement = (ReturnStatementSyntax)statement;
-
-                        return returnStatement.Expression;
-                    }
-                }
-
-                return body;
-            }
         }
 
         public static void AnalyzeOfType(
@@ -485,7 +466,7 @@ namespace Roslynator.CSharp.Analysis
             if (!typeSymbol.ContainingNamespace.HasMetadataName(MetadataNames.System_Collections_Generic))
                 return;
 
-            Report(context, invocationInfo.Name, property: new KeyValuePair<string, string>("MethodName", "Peek"));
+            Report(context, invocationInfo.Name, properties: Properties.Peek);
         }
 
         public static void AnalyzeCount(SyntaxNodeAnalysisContext context, in SimpleMemberInvocationExpressionInfo invocationInfo)
@@ -517,7 +498,7 @@ namespace Roslynator.CSharp.Analysis
                 if (CanBeReplacedWithMemberAccessExpression(invocationExpression)
                     && CheckInfiniteRecursion(typeSymbol, propertyName, invocationExpression.SpanStart, semanticModel, cancellationToken))
                 {
-                    ReportNameWithArgumentList(context, invocationInfo, property: new KeyValuePair<string, string>("PropertyName", propertyName), messageArgs: propertyName);
+                    ReportNameWithArgumentList(context, invocationInfo, properties: Properties.GetCountOrLength(propertyName), messageArgs: propertyName);
                 }
 
                 return;
@@ -601,6 +582,125 @@ namespace Roslynator.CSharp.Analysis
             }
         }
 
+        // x.OrderBy(f => f).Reverse() >>> x.OrderByDescending(f => f)
+        public static void AnalyzeOrderByAndReverse(SyntaxNodeAnalysisContext context, in SimpleMemberInvocationExpressionInfo invocationInfo)
+        {
+            SimpleMemberInvocationExpressionInfo invocationInfo2 = SyntaxInfo.SimpleMemberInvocationExpressionInfo(invocationInfo.Expression);
+
+            if (!invocationInfo2.Success)
+                return;
+
+            ArgumentSyntax argument = invocationInfo2.Arguments.SingleOrDefault(shouldThrow: false);
+
+            if (argument == null)
+                return;
+
+            if (!string.Equals(invocationInfo2.NameText, "OrderBy", StringComparison.Ordinal))
+                return;
+
+            InvocationExpressionSyntax invocationExpression = invocationInfo.InvocationExpression;
+
+            SemanticModel semanticModel = context.SemanticModel;
+            CancellationToken cancellationToken = context.CancellationToken;
+
+            IMethodSymbol methodSymbol = semanticModel.GetReducedExtensionMethodInfo(invocationExpression, cancellationToken).Symbol;
+
+            if (methodSymbol == null)
+                return;
+
+            if (!SymbolUtility.IsLinqExtensionOfIEnumerableOfTWithoutParameters(methodSymbol, "Reverse"))
+                return;
+
+            IMethodSymbol methodSymbol2 = semanticModel.GetReducedExtensionMethodInfo(invocationInfo2.InvocationExpression, cancellationToken).Symbol;
+
+            if (methodSymbol2 == null)
+                return;
+
+            if (!SymbolUtility.IsLinqExtensionOfIEnumerableOfT(methodSymbol2, "OrderBy", parameterCount: 2))
+                return;
+
+            TextSpan span = TextSpan.FromBounds(invocationInfo2.Name.SpanStart, invocationExpression.Span.End);
+
+            Report(context, invocationExpression, span, checkDirectives: true);
+        }
+
+        // x.SelectMany(f => f).Count() >>> x.Sum(f = f.Count)
+        public static bool AnalyzeSelectManyAndCount(SyntaxNodeAnalysisContext context, in SimpleMemberInvocationExpressionInfo invocationInfo)
+        {
+            SimpleMemberInvocationExpressionInfo invocationInfo2 = SyntaxInfo.SimpleMemberInvocationExpressionInfo(invocationInfo.Expression);
+
+            if (!invocationInfo2.Success)
+                return false;
+
+            ArgumentSyntax argument = invocationInfo2.Arguments.SingleOrDefault(shouldThrow: false);
+
+            if (argument == null)
+                return false;
+
+            if (!string.Equals(invocationInfo2.NameText, "SelectMany", StringComparison.Ordinal))
+                return false;
+
+            InvocationExpressionSyntax invocationExpression = invocationInfo.InvocationExpression;
+
+            SemanticModel semanticModel = context.SemanticModel;
+            CancellationToken cancellationToken = context.CancellationToken;
+
+            IMethodSymbol methodSymbol = semanticModel.GetReducedExtensionMethodInfo(invocationExpression, cancellationToken).Symbol;
+
+            if (methodSymbol == null)
+                return false;
+
+            if (!SymbolUtility.IsLinqExtensionOfIEnumerableOfTWithoutParameters(methodSymbol, "Count"))
+                return false;
+
+            IMethodSymbol methodSymbol2 = semanticModel.GetReducedExtensionMethodInfo(invocationInfo2.InvocationExpression, cancellationToken).Symbol;
+
+            if (methodSymbol2 == null)
+                return false;
+
+            if (!SymbolUtility.IsLinqExtensionOfIEnumerableOfT(methodSymbol2, "SelectMany", parameterCount: 2))
+                return false;
+
+            ExpressionSyntax expression = GetLambdaExpression(argument.Expression);
+
+            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken);
+
+            if (typeSymbol == null)
+                return false;
+
+            string propertyName = SymbolUtility.GetCountOrLengthPropertyName(typeSymbol, semanticModel, expression.SpanStart);
+
+            if (propertyName != null
+                && CheckInfiniteRecursion(typeSymbol, propertyName, invocationExpression.SpanStart, semanticModel, cancellationToken))
+            {
+                TextSpan span = TextSpan.FromBounds(invocationInfo2.Name.SpanStart, invocationExpression.Span.End);
+
+                Report(context, invocationExpression, span, checkDirectives: true, properties: Properties.GetSumCountOrLength(propertyName), messageArgs: propertyName);
+                return true;
+            }
+
+            return false;
+        }
+
+        private static ExpressionSyntax GetLambdaExpression(ExpressionSyntax expression)
+        {
+            CSharpSyntaxNode body = (expression as LambdaExpressionSyntax)?.Body;
+
+            if (body?.Kind() == SyntaxKind.Block)
+            {
+                StatementSyntax statement = ((BlockSyntax)body).Statements.SingleOrDefault(shouldThrow: false);
+
+                if (statement?.Kind() == SyntaxKind.ReturnStatement)
+                {
+                    var returnStatement = (ReturnStatementSyntax)statement;
+
+                    return returnStatement.Expression;
+                }
+            }
+
+            return body as ExpressionSyntax;
+        }
+
         private static bool CheckInfiniteRecursion(
             ITypeSymbol typeSymbol,
             string propertyName,
@@ -641,7 +741,7 @@ namespace Roslynator.CSharp.Analysis
             SyntaxNodeAnalysisContext context,
             in SimpleMemberInvocationExpressionInfo invocationInfo,
             bool checkDirectives = false,
-            KeyValuePair<string, string>? property = null,
+            ImmutableDictionary<string, string> properties = null,
             params string[] messageArgs)
         {
             Report(
@@ -649,7 +749,7 @@ namespace Roslynator.CSharp.Analysis
                 node: invocationInfo.InvocationExpression,
                 span: TextSpan.FromBounds(invocationInfo.Name.SpanStart, invocationInfo.ArgumentList.Span.End),
                 checkDirectives: checkDirectives,
-                property: property,
+                properties: properties,
                 messageArgs: messageArgs);
         }
 
@@ -657,7 +757,7 @@ namespace Roslynator.CSharp.Analysis
             SyntaxNodeAnalysisContext context,
             SyntaxNode node,
             bool checkDirectives = false,
-            KeyValuePair<string, string>? property = null,
+            ImmutableDictionary<string, string> properties = null,
             params string[] messageArgs)
         {
             Report(
@@ -665,7 +765,7 @@ namespace Roslynator.CSharp.Analysis
                 node: node,
                 span: node.Span,
                 checkDirectives: checkDirectives,
-                property: property,
+                properties: properties,
                 messageArgs: messageArgs);
         }
 
@@ -674,7 +774,7 @@ namespace Roslynator.CSharp.Analysis
             SyntaxNode node,
             TextSpan span,
             bool checkDirectives = false,
-            KeyValuePair<string, string>? property = null,
+            ImmutableDictionary<string, string> properties = null,
             params string[] messageArgs)
         {
             if (checkDirectives
@@ -683,15 +783,60 @@ namespace Roslynator.CSharp.Analysis
                 return;
             }
 
-            ImmutableDictionary<string, string> properties = (property != null)
-                ? ImmutableDictionary.CreateRange(new KeyValuePair<string, string>[] { property.Value })
-                : ImmutableDictionary<string, string>.Empty;
-
             DiagnosticHelpers.ReportDiagnostic(context,
                 descriptor: DiagnosticDescriptors.OptimizeLinqMethodCall,
                 location: Location.Create(node.SyntaxTree, span),
-                properties: properties,
+                properties: properties ?? ImmutableDictionary<string, string>.Empty,
                 messageArgs: messageArgs);
+        }
+
+        private static class Properties
+        {
+            public static ImmutableDictionary<string, string> GetCountOrLength(string propertyName)
+            {
+                switch (propertyName)
+                {
+                    case "Count":
+                        return Count;
+                    case "Length":
+                        return Length;
+                    default:
+                        throw new InvalidOperationException();
+                }
+            }
+
+            public static ImmutableDictionary<string, string> GetSumCountOrLength(string propertyName)
+            {
+                switch (propertyName)
+                {
+                    case "Count":
+                        return Sum_Count;
+                    case "Length":
+                        return Sum_Length;
+                    default:
+                        throw new InvalidOperationException();
+                }
+            }
+
+            public static ImmutableDictionary<string, string> Peek { get; } = ImmutableDictionary.CreateRange(new KeyValuePair<string, string>[] { new KeyValuePair<string, string>("MethodName", "Peek") });
+
+            public static ImmutableDictionary<string, string> SimplifyLinqMethodChain { get; } = ImmutableDictionary.CreateRange(new KeyValuePair<string, string>[] { new KeyValuePair<string, string>("Name", "SimplifyLinqMethodChain") });
+
+            public static ImmutableDictionary<string, string> Count { get; } = ImmutableDictionary.CreateRange(new KeyValuePair<string, string>[] { new KeyValuePair<string, string>("PropertyName", "Count") });
+
+            public static ImmutableDictionary<string, string> Length { get; } = ImmutableDictionary.CreateRange(new KeyValuePair<string, string>[] { new KeyValuePair<string, string>("PropertyName", "Length") });
+
+            public static ImmutableDictionary<string, string> Sum_Count { get; } = ImmutableDictionary.CreateRange(new KeyValuePair<string, string>[]
+            {
+                new KeyValuePair<string, string>("PropertyName", "Count"),
+                new KeyValuePair<string, string>("MethodName", "Sum")
+            });
+
+            public static ImmutableDictionary<string, string> Sum_Length { get; } = ImmutableDictionary.CreateRange(new KeyValuePair<string, string>[]
+            {
+                new KeyValuePair<string, string>("PropertyName", "Length"),
+                new KeyValuePair<string, string>("MethodName", "Sum")
+            });
         }
     }
 }

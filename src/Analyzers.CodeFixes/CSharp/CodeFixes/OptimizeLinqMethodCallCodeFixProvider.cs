@@ -125,6 +125,16 @@ namespace Roslynator.CSharp.CodeFixes
 
                             return;
                         }
+                    case "Reverse":
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Call 'OrderByDescending",
+                                ct => CallOrderByDescendingInsteadOfOrderByAndReverseAsync(document, invocationInfo, ct),
+                                GetEquivalenceKey(diagnostic, "CallOrderByDescendingInsteadOfOrderByAndReverse"));
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            return;
+                        }
                     case "Select":
                         {
                             CodeAction codeAction = CodeAction.Create(
@@ -175,12 +185,25 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             if (diagnostic.Properties.TryGetValue("PropertyName", out string propertyName))
                             {
-                                CodeAction codeAction = CodeAction.Create(
-                                    $"Use '{propertyName}' property instead of calling 'Count'",
-                                    ct => UseCountOrLengthPropertyInsteadOfCountMethodAsync(document, invocation, diagnostic.Properties["PropertyName"], ct),
-                                    GetEquivalenceKey(diagnostic, "UseCountOrLengthPropertyInsteadOfCountMethod"));
+                                if (diagnostic.Properties.TryGetValue("MethodName", out string methodName)
+                                    && methodName == "Sum")
+                                {
+                                    CodeAction codeAction = CodeAction.Create(
+                                        "Call 'Sum'",
+                                        ct => CallSumInsteadOfSelectManyAndCountAsync(document, invocationInfo, propertyName, ct),
+                                        GetEquivalenceKey(diagnostic, "CallSumInsteadOfSelectManyAndCount"));
 
-                                context.RegisterCodeFix(codeAction, diagnostic);
+                                    context.RegisterCodeFix(codeAction, diagnostic);
+                                }
+                                else
+                                {
+                                    CodeAction codeAction = CodeAction.Create(
+                                        $"Use '{propertyName}' property instead of calling 'Count'",
+                                        ct => UseCountOrLengthPropertyInsteadOfCountMethodAsync(document, invocation, diagnostic.Properties["PropertyName"], ct),
+                                        GetEquivalenceKey(diagnostic, "UseCountOrLengthPropertyInsteadOfCountMethod"));
+
+                                    context.RegisterCodeFix(codeAction, diagnostic);
+                                }
                             }
                             else if (invocation.Parent is BinaryExpressionSyntax binaryExpression)
                             {
@@ -511,6 +534,57 @@ namespace Roslynator.CSharp.CodeFixes
                 .WithTriviaFrom(conditionalExpression);
 
             return document.ReplaceNodeAsync(conditionalExpression, newInvocationExpression, cancellationToken);
+        }
+
+        private static Task<Document> CallOrderByDescendingInsteadOfOrderByAndReverseAsync(
+            Document document,
+            in SimpleMemberInvocationExpressionInfo invocationInfo,
+            CancellationToken cancellationToken)
+        {
+            InvocationExpressionSyntax invocationExpression2 = SimpleMemberInvocationExpressionInfo(invocationInfo.Expression).InvocationExpression;
+
+            InvocationExpressionSyntax newInvocationExpression = ChangeInvokedMethodName(invocationExpression2, "OrderByDescending");
+
+            return document.ReplaceNodeAsync(invocationInfo.InvocationExpression, newInvocationExpression, cancellationToken);
+        }
+
+        private static Task<Document> CallSumInsteadOfSelectManyAndCountAsync(
+            Document document,
+            in SimpleMemberInvocationExpressionInfo invocationInfo,
+            string propertyName,
+            CancellationToken cancellationToken)
+        {
+            SimpleMemberInvocationExpressionInfo invocationInfo2 = SimpleMemberInvocationExpressionInfo(invocationInfo.Expression);
+
+            ArgumentSyntax argument = invocationInfo2.Arguments.Single();
+
+            var lambdaExpression = (LambdaExpressionSyntax)argument.Expression;
+
+            ExpressionSyntax expression;
+            if (lambdaExpression.Body is BlockSyntax block)
+            {
+                var returnStatement = (ReturnStatementSyntax)block.Statements.Single();
+
+                expression = returnStatement.Expression;
+            }
+            else
+            {
+                expression = (ExpressionSyntax)lambdaExpression.Body;
+            }
+
+            MemberAccessExpressionSyntax memberAccessExpression = SimpleMemberAccessExpression(
+                expression.WithoutTrivia(),
+                IdentifierName(propertyName)).WithTriviaFrom(expression);
+
+            LambdaExpressionSyntax newLambdaExpression = lambdaExpression.ReplaceNode(expression, memberAccessExpression);
+
+            ArgumentSyntax newArgument = argument.WithExpression(newLambdaExpression);
+
+            InvocationExpressionSyntax newInvocationExpression = invocationInfo2.InvocationExpression.ReplaceNode(argument, newArgument);
+
+            newInvocationExpression = ChangeInvokedMethodName(newInvocationExpression, "Sum");
+
+            return document.ReplaceNodeAsync(invocationInfo.InvocationExpression, newInvocationExpression, cancellationToken);
         }
     }
 }

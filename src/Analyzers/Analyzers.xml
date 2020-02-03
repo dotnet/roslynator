@@ -1781,6 +1781,14 @@ object x = items.Peek();]]></After>
         <Before><![CDATA[enumerable.Any() ? enumerable.First() : default // [|Id|]]]></Before>
         <After><![CDATA[enumerable.FirstOrDefault()]]></After>
       </Sample>
+      <Sample>
+        <Before><![CDATA[enumerable.OrderBy(f => f).Reverse() // [|Id|]]]></Before>
+        <After><![CDATA[enumerable.OrderByDescending()]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[enumerable.SelectMany(f => f.Items).Count() // [|Id|]]]></Before>
+        <After><![CDATA[enumerable.Sum(f => f.Items.Count)]]></After>
+      </Sample>
     </Samples>
   </Analyzer>
   <Analyzer Identifier="UseEmptyStringLiteralInsteadOfStringEmpty">
