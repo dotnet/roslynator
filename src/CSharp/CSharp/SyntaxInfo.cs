@@ -662,8 +662,6 @@ namespace Roslynator.CSharp
         /// <param name="allowedStyles"></param>
         /// <param name="walkDownParentheses"></param>
         /// <param name="allowMissing"></param>
-        /// 
-        /// 
         public static NullCheckExpressionInfo NullCheckExpressionInfo(
             SyntaxNode node,
             NullCheckStyles allowedStyles = NullCheckStyles.ComparisonToNull | NullCheckStyles.IsPattern,

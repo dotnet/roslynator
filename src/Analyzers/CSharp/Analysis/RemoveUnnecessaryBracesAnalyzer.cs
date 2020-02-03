@@ -72,7 +72,7 @@ namespace Roslynator.CSharp.Analysis
             if (!AnalyzeTrivia(openBrace.TrailingTrivia))
                 return;
 
-            if (!AnalyzeTrivia(statements.First().GetLeadingTrivia()))
+            if (!AnalyzeTrivia(statements[0].GetLeadingTrivia()))
                 return;
 
             if (!AnalyzeTrivia(statements.Last().GetTrailingTrivia()))

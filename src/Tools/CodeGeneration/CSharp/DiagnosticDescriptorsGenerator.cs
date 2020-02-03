@@ -31,7 +31,8 @@ namespace Roslynator.CodeGeneration.CSharp
                             CreateMembers(
                                 analyzers
                                     .Where(f => f.IsObsolete == obsolete)
-                                    .OrderBy(f => f.Id, comparer), obsolete: obsolete)))));
+                                    .OrderBy(f => f.Id, comparer),
+                                obsolete: obsolete)))));
 
             compilationUnit = compilationUnit.NormalizeWhitespace();
 

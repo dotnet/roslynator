@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Refactorings.Tests
             return options.AddAllowedCompilerDiagnosticId(CompilerDiagnosticIdentifiers.EmptySwitchBlock);
         }
 
-    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddMissingCases)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddMissingCases)]
         public async Task Test_Empty()
         {
             await VerifyRefactoringAsync(@"
