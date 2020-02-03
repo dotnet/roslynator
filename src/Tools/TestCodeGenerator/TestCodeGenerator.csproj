@@ -6,10 +6,6 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <CodeAnalysisRuleSet>..\..\global.ruleset</CodeAnalysisRuleSet>
-    <LangVersion>latest</LangVersion>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\..\Roslynator.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <ItemGroup>

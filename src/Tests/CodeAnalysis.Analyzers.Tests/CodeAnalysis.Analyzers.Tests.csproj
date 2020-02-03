@@ -7,12 +7,7 @@
   <PropertyGroup>
     <AssemblyName>Roslynator.CodeAnalysis.Analyzers.Tests</AssemblyName>
     <RootNamespace>Roslynator.CodeAnalysis.Analyzers.Tests</RootNamespace>
-    <CodeAnalysisRuleSet>..\tests.ruleset</CodeAnalysisRuleSet>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\..\Roslynator.snk</AssemblyOriginatorKeyFile>
-    <LangVersion>latest</LangVersion>
     <IsPackable>false</IsPackable>
-    <Copyright>Copyright (c) 2017-2019 Josef Pihrt</Copyright>
   </PropertyGroup>
 
   <ItemGroup>

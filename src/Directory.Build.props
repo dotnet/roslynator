@@ -1,0 +1,12 @@
+﻿<Project>
+
+  <PropertyGroup>
+    <LangVersion>8.0</LangVersion>
+    <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)global.ruleset</CodeAnalysisRuleSet>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)Roslynator.snk</AssemblyOriginatorKeyFile>
+    <Authors>Josef Pihrt</Authors>
+    <Copyright>Copyright (c) 2017-2020 Josef Pihrt</Copyright>
+  </PropertyGroup>
+
+</Project>

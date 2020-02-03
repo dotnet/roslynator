@@ -8,18 +8,12 @@
     <Version>1.0.0.0</Version>
     <AssemblyName>Roslynator.Metadata</AssemblyName>
     <RootNamespace>Roslynator.Metadata</RootNamespace>
-    <CodeAnalysisRuleSet>..\..\global.ruleset</CodeAnalysisRuleSet>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\..\Roslynator.snk</AssemblyOriginatorKeyFile>
-    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup>
     <IsPackable>false</IsPackable>
-    <Authors>Josef Pihrt</Authors>
     <Company></Company>
     <Description></Description>
-    <Copyright>Copyright (c) 2017-2018 Josef Pihrt</Copyright>
   </PropertyGroup>
 
   <ItemGroup>

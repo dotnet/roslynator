@@ -7,11 +7,8 @@
   <PropertyGroup>
     <AssemblyName>Roslynator.CSharp.CodeFixes.Tests</AssemblyName>
     <RootNamespace>Roslynator.CSharp.CodeFixes.Tests</RootNamespace>
-    <CodeAnalysisRuleSet>..\tests.ruleset</CodeAnalysisRuleSet>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <LangVersion>latest</LangVersion>
     <IsPackable>false</IsPackable> 
-    <Copyright>Copyright (c) 2017-2018 Josef Pihrt</Copyright>
   </PropertyGroup>
 
   <ItemGroup>

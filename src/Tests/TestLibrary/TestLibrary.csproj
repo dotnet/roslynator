@@ -6,7 +6,6 @@
 
   <PropertyGroup>
     <LangVersion>preview</LangVersion>
-    <CodeAnalysisRuleSet>..\..\global.ruleset</CodeAnalysisRuleSet>
     <AssemblyName>Roslynator.Testing.Library</AssemblyName>
     <RootNamespace>Roslynator.Testing</RootNamespace>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>

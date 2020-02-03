@@ -10,10 +10,6 @@
     <AssemblyName>Roslynator</AssemblyName>
     <RootNamespace>Roslynator.CommandLine</RootNamespace>
     <CodeAnalysisRuleSet>CommandLine.ruleset</CodeAnalysisRuleSet>
-    <LangVersion>latest</LangVersion>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\Roslynator.snk</AssemblyOriginatorKeyFile>
-    <Copyright>Copyright (c) 2017-2019 Josef Pihrt</Copyright>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(RoslynatorCommandLine)' == true">

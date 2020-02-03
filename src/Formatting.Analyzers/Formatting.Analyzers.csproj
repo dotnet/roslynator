@@ -8,12 +8,7 @@
     <Version>1.0.0.1</Version>
     <AssemblyName>Roslynator.Formatting.Analyzers</AssemblyName>
     <RootNamespace>Roslynator.Formatting</RootNamespace>
-    <CodeAnalysisRuleSet>..\global.ruleset</CodeAnalysisRuleSet>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\Roslynator.snk</AssemblyOriginatorKeyFile>
-    <LangVersion>7.2</LangVersion>
     <IsPackable>false</IsPackable>
-    <Copyright>Copyright (c) 2017-2018 Josef Pihrt</Copyright>
   </PropertyGroup>
 
   <ItemGroup>

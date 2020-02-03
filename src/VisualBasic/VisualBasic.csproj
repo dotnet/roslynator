@@ -9,17 +9,12 @@
     <AssemblyName>Roslynator.VisualBasic</AssemblyName>
     <RootNamespace>Roslynator</RootNamespace>
     <CodeAnalysisRuleSet>..\api.ruleset</CodeAnalysisRuleSet>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\Roslynator.snk</AssemblyOriginatorKeyFile>
-    <LangVersion>7.2</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup>
     <IsPackable>false</IsPackable>
-    <Authors>Josef Pihrt</Authors>
     <Company></Company>
     <Description>This library extends functionality of package Microsoft.CodeAnalysis.VisualBasic</Description>
-    <Copyright>Copyright (c) 2017-2019 Josef Pihrt</Copyright>
   </PropertyGroup>
 
   <ItemGroup>

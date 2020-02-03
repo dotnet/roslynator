@@ -8,10 +8,6 @@
     <Version>1.0.1.0</Version>
     <AssemblyName>Roslynator.Testing.Common</AssemblyName>
     <RootNamespace>Roslynator.Testing</RootNamespace>
-    <CodeAnalysisRuleSet>..\..\global.ruleset</CodeAnalysisRuleSet>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\..\Roslynator.snk</AssemblyOriginatorKeyFile>
-    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -24,10 +20,8 @@
   <PropertyGroup>
     <PackageId>Roslynator.Testing.Common</PackageId>
     <PackageVersion>1.0.0-beta</PackageVersion>
-    <Authors>Josef Pihrt</Authors>
     <Company></Company>
     <Description>Test framework for Roslyn analyzers, refactorings and code fixes.</Description>
-    <Copyright>Copyright (c) 2017-2019 Josef Pihrt</Copyright>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/JosefPihrt/Roslynator</PackageProjectUrl>

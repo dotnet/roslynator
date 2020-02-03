@@ -8,13 +8,8 @@
     <Version>1.0.0.1</Version>
     <AssemblyName>Roslynator.Formatting.Analyzers.CodeFixes</AssemblyName>
     <RootNamespace>Roslynator.Formatting</RootNamespace>
-    <CodeAnalysisRuleSet>..\global.ruleset</CodeAnalysisRuleSet>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\Roslynator.snk</AssemblyOriginatorKeyFile>
-    <LangVersion>7.2</LangVersion>
     <NuspecFile>Roslynator.Formatting.Analyzers.nuspec</NuspecFile> 
     <NuspecProperties>configuration=$(Configuration)</NuspecProperties>
-    <Copyright>Copyright (c) 2017-2019 Josef Pihrt</Copyright>
   </PropertyGroup>
 
   <ItemGroup>

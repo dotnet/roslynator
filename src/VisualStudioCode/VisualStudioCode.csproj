@@ -8,12 +8,7 @@
     <Version>2.1.3.0</Version>
     <AssemblyName>Roslynator.VisualStudioCode</AssemblyName>
     <RootNamespace>Roslynator</RootNamespace>
-    <CodeAnalysisRuleSet>..\global.ruleset</CodeAnalysisRuleSet>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\Roslynator.snk</AssemblyOriginatorKeyFile>
-    <LangVersion>7.2</LangVersion>
     <IsPackable>false</IsPackable>
-    <Copyright>Copyright (c) 2017-2019 Josef Pihrt</Copyright>
   </PropertyGroup>
 
   <ItemGroup>

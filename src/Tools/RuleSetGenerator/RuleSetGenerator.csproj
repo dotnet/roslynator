@@ -8,10 +8,6 @@
   <PropertyGroup>
     <AssemblyName>Roslynator.RuleSetGenerator</AssemblyName>
     <RootNamespace>Roslynator.CodeGeneration</RootNamespace>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\..\Roslynator.snk</AssemblyOriginatorKeyFile>
-    <CodeAnalysisRuleSet>..\..\global.ruleset</CodeAnalysisRuleSet>
-    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

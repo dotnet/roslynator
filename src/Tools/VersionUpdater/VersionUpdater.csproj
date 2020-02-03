@@ -3,8 +3,6 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <CodeAnalysisRuleSet>..\..\global.ruleset</CodeAnalysisRuleSet>
-    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
