@@ -109,7 +109,7 @@ namespace Roslynator.CodeGeneration.CSharp
                         Block(statements));
                 }
 
-                IEnumerable<SyntaxKind> GetSyntaxKinds(INamedTypeSymbol syntaxSymbol)
+                static IEnumerable<SyntaxKind> GetSyntaxKinds(INamedTypeSymbol syntaxSymbol)
                 {
                     switch (syntaxSymbol.Name)
                     {

@@ -135,7 +135,7 @@ namespace Roslynator.CSharp.Analysis
                 DiagnosticDescriptors.UseConditionalAccess,
                 Location.Create(binaryExpression.SyntaxTree, TextSpan.FromBounds(left.SpanStart, right.Span.End)));
 
-            bool ExistsImplicitConversionToBoolean(INamedTypeSymbol typeSymbol)
+            static bool ExistsImplicitConversionToBoolean(INamedTypeSymbol typeSymbol)
             {
                 foreach (ISymbol member in typeSymbol.GetMembers(WellKnownMemberNames.ImplicitConversionName))
                 {
@@ -335,7 +335,7 @@ namespace Roslynator.CSharp.Analysis
         {
             ExpressionSyntax e = binaryExpression;
 
-            ExpressionSyntax left = null;
+            ExpressionSyntax left;
             ExpressionSyntax right = null;
 
             while (true)
@@ -377,7 +377,6 @@ namespace Roslynator.CSharp.Analysis
                         }
 
                         right = left;
-                        left = null;
                     }
                 }
             }

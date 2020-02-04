@@ -143,7 +143,7 @@ namespace Roslynator.CSharp
 
             return document.ReplaceNodeAsync(binaryExpression, newBinaryExpressions, cancellationToken);
 
-            SyntaxKind GetOperatorTokenKind(SyntaxKind kind)
+            static SyntaxKind GetOperatorTokenKind(SyntaxKind kind)
             {
                 switch (kind)
                 {

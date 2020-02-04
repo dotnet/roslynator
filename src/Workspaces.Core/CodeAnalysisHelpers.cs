@@ -17,7 +17,7 @@ namespace Roslynator
             AnalyzerAssemblyList analyzerReferences,
             CodeAnalysisOptions options)
         {
-            (ImmutableArray<DiagnosticAnalyzer> analyzers, ImmutableArray<CodeFixProvider> fixers) = GetAnalyzersAndFixers(
+            (ImmutableArray<DiagnosticAnalyzer> analyzers, ImmutableArray<CodeFixProvider> _) = GetAnalyzersAndFixers(
                 project: project,
                 analyzerAssemblies: analyzerAssemblies,
                 analyzerReferences: analyzerReferences,

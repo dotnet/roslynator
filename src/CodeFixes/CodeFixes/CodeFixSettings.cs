@@ -24,7 +24,7 @@ namespace Roslynator.CodeFixes
 
                 return _codeFixes;
 
-                IEnumerable<KeyValuePair<CodeFixIdentifier, bool>> LoadCodeFixes()
+                static IEnumerable<KeyValuePair<CodeFixIdentifier, bool>> LoadCodeFixes()
                 {
                     foreach (KeyValuePair<string, bool> kvp in CodeAnalysisConfiguration.Default.CodeFixes)
                     {

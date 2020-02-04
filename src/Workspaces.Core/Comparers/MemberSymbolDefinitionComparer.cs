@@ -30,7 +30,7 @@ namespace Roslynator
             if (y == null)
                 return 1;
 
-            int diff = 0;
+            int diff;
 
             if ((SymbolComparer.Options & SymbolDefinitionSortOptions.OmitContainingNamespace) == 0)
             {

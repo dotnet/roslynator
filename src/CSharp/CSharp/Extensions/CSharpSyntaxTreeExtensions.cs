@@ -26,7 +26,7 @@ namespace Roslynator.CSharp
 
             return default;
 
-            SyntaxList<MemberDeclarationSyntax> GetMembers(MemberDeclarationSyntax memberDeclaration)
+            static SyntaxList<MemberDeclarationSyntax> GetMembers(MemberDeclarationSyntax memberDeclaration)
             {
                 switch (memberDeclaration)
                 {

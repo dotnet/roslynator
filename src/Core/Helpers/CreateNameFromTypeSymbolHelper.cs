@@ -95,7 +95,7 @@ namespace Roslynator.Helpers
 
             return typeSymbol;
 
-            bool ValidateTypeArgumentName(string name)
+            static bool ValidateTypeArgumentName(string name)
             {
                 if (name.Length <= 1)
                     return false;

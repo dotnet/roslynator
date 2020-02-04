@@ -16,10 +16,10 @@ namespace Roslynator.Documentation
             {
                 if (en.MoveNext())
                 {
-                    XNode node = null;
+                    XNode node;
 
                     bool isFirst = true;
-                    bool isLast = false;
+                    bool isLast;
 
                     do
                     {

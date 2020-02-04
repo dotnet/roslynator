@@ -133,7 +133,7 @@ namespace Roslynator.CSharp.Refactorings
             }
             else
             {
-                IfStatementSyntax lastIfStatement = ifStatement;
+                IfStatementSyntax lastIfStatement;
 
                 InvertIfAnalysis a = analysis.AnalyzeNextStatement();
 
@@ -337,7 +337,7 @@ namespace Roslynator.CSharp.Refactorings
                         i++;
                     }
 
-                    lastStatement = lastStatement ?? next;
+                    lastStatement ??= next;
                 }
             }
 

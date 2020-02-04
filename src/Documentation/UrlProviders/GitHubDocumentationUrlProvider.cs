@@ -130,7 +130,7 @@ namespace Roslynator.Documentation
                 return StringBuilderCache.GetStringAndFree(sb) + fragment;
             }
 
-            bool FoldersEqual(ImmutableArray<string> folders1, ImmutableArray<string> folders2)
+            static bool FoldersEqual(ImmutableArray<string> folders1, ImmutableArray<string> folders2)
             {
                 int length = folders1.Length;
 

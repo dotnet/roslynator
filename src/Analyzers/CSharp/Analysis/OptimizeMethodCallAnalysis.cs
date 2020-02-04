@@ -295,7 +295,7 @@ namespace Roslynator.CSharp.Analysis
                 return null;
             }
 
-            bool IsDictionaryContainsKey(IMethodSymbol symbol)
+            static bool IsDictionaryContainsKey(IMethodSymbol symbol)
             {
                 return symbol?.DeclaredAccessibility == Accessibility.Public
                     && !symbol.IsStatic
@@ -305,7 +305,7 @@ namespace Roslynator.CSharp.Analysis
                     && symbol.ContainingType.OriginalDefinition.HasMetadataName(MetadataNames.System_Collections_Generic_Dictionary_T2);
             }
 
-            bool IsDictionaryAdd(IMethodSymbol symbol)
+            static bool IsDictionaryAdd(IMethodSymbol symbol)
             {
                 return symbol?.DeclaredAccessibility == Accessibility.Public
                     && !symbol.IsStatic

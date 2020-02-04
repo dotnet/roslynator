@@ -235,7 +235,7 @@ namespace Roslynator.CSharp.Refactorings
 
             int i = 0;
 
-            int lastPos = i;
+            int lastPos;
 
             while (true)
             {

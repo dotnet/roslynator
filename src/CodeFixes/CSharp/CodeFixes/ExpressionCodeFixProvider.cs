@@ -668,7 +668,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             return node.ReplaceNode(expression, BooleanLiteralExpression(isTrue));
 
-            TRoot RemoveOrReplaceNode<TRoot>(
+            static TRoot RemoveOrReplaceNode<TRoot>(
                 TRoot root,
                 SyntaxNode nodeToRemove,
                 SyntaxNode newNode) where TRoot : SyntaxNode

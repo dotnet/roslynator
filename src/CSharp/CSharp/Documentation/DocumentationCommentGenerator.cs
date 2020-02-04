@@ -258,7 +258,7 @@ namespace Roslynator.CSharp.Documentation
             bool canGenerateReturns = false,
             DocumentationCommentGeneratorSettings settings = null)
         {
-            settings = settings ?? DocumentationCommentGeneratorSettings.Default;
+            settings ??= DocumentationCommentGeneratorSettings.Default;
 
             ImmutableArray<string> summary = settings.Summary;
 

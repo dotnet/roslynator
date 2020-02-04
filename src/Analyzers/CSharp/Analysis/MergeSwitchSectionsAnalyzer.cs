@@ -102,7 +102,7 @@ namespace Roslynator.CSharp.Analysis
         {
             switch (statement1)
             {
-                case BreakStatementSyntax breakStatement:
+                case BreakStatementSyntax _:
                     {
                         return statement2.Kind() == SyntaxKind.BreakStatement;
                     }

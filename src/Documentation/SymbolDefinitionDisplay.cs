@@ -208,7 +208,7 @@ namespace Roslynator.Documentation
                     IMethodSymbol getMethod = propertySymbol.GetMethod;
                     if (getMethod != null)
                     {
-                        builder = builder ?? parts.ToBuilder();
+                        builder ??= parts.ToBuilder();
 
                         AddAccessorAttributes(builder, getMethod, format, additionalOptions, shouldDisplayAttribute: shouldDisplayAttribute);
                     }
@@ -216,7 +216,7 @@ namespace Roslynator.Documentation
                     IMethodSymbol setMethod = propertySymbol.SetMethod;
                     if (setMethod != null)
                     {
-                        builder = builder ?? parts.ToBuilder();
+                        builder ??= parts.ToBuilder();
 
                         AddAccessorAttributes(builder, setMethod, format, additionalOptions, shouldDisplayAttribute: shouldDisplayAttribute);
                     }
@@ -233,7 +233,7 @@ namespace Roslynator.Documentation
                     {
                         hasEventAccessorList = true;
 
-                        builder = builder ?? parts.ToBuilder();
+                        builder ??= parts.ToBuilder();
 
                         AddEventAccessorAttributes(builder, addAttributes, removeAttributes, format, additionalOptions);
                     }
@@ -245,7 +245,7 @@ namespace Roslynator.Documentation
             if (additionalOptions.HasOption(SymbolDisplayAdditionalOptions.IncludeParameterAttributes)
                 && parameters.Any(f => GetAttributes(f, shouldDisplayAttribute).Any()))
             {
-                builder = builder ?? parts.ToBuilder();
+                builder ??= parts.ToBuilder();
 
                 AddParameterAttributes(builder, symbol, parameters, format, additionalOptions, shouldDisplayAttribute);
             }
@@ -253,7 +253,7 @@ namespace Roslynator.Documentation
             if (additionalOptions.HasOption(SymbolDisplayAdditionalOptions.FormatParameters)
                 && parameters.Length > 1)
             {
-                builder = builder ?? parts.ToBuilder();
+                builder ??= parts.ToBuilder();
 
                 FormatParameters(symbol, builder, DefinitionListFormat.Default.IndentChars);
             }
@@ -582,7 +582,7 @@ namespace Roslynator.Documentation
                         }
                 }
 
-                SymbolDisplayPartKind GetSymbolDisplayPart(SpecialType specialType)
+                static SymbolDisplayPartKind GetSymbolDisplayPart(SpecialType specialType)
                 {
                     switch (specialType)
                     {

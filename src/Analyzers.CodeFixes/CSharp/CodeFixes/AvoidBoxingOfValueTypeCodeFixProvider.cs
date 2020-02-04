@@ -56,7 +56,7 @@ namespace Roslynator.CSharp.CodeFixes
             ExpressionSyntax expression,
             CancellationToken cancellationToken)
         {
-            ExpressionSyntax newNode = null;
+            ExpressionSyntax newNode;
 
             if (expression.Kind() == SyntaxKind.CharacterLiteralExpression)
             {

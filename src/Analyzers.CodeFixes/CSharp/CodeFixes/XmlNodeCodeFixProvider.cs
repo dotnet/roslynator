@@ -108,7 +108,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             return document.RemoveNodeAsync(element, cancellationToken);
 
-            bool IsXmlTextBetweenLines(XmlTextSyntax xmlText)
+            static bool IsXmlTextBetweenLines(XmlTextSyntax xmlText)
             {
                 SyntaxTokenList tokens = xmlText.TextTokens;
 
@@ -137,14 +137,14 @@ namespace Roslynator.CSharp.CodeFixes
 
                 return true;
 
-                bool IsEmptyOrWhitespace(SyntaxToken token)
+                static bool IsEmptyOrWhitespace(SyntaxToken token)
                 {
                     return token.IsKind(SyntaxKind.XmlTextLiteralToken)
                         && StringUtility.IsEmptyOrWhitespace(token.ValueText);
                 }
             }
 
-            bool IsWhitespace(XmlTextSyntax xmlText)
+            static bool IsWhitespace(XmlTextSyntax xmlText)
             {
                 string text = xmlText.TextTokens.SingleOrDefault(shouldThrow: false).ValueText;
 
@@ -152,7 +152,7 @@ namespace Roslynator.CSharp.CodeFixes
                     && StringUtility.IsEmptyOrWhitespace(text);
             }
 
-            bool IsNewLine(XmlTextSyntax xmlText)
+            static bool IsNewLine(XmlTextSyntax xmlText)
             {
                 return xmlText.TextTokens.SingleOrDefault(shouldThrow: false).IsKind(SyntaxKind.XmlTextLiteralNewLineToken);
             }

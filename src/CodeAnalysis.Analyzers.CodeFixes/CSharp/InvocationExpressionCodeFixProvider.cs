@@ -73,8 +73,6 @@ namespace Roslynator.CodeAnalysis.CSharp
         {
             SimpleMemberInvocationExpressionInfo invocationInfo = SyntaxInfo.SimpleMemberInvocationExpressionInfo(invocationExpression);
 
-            MemberAccessExpressionSyntax memberAccessExpression = invocationInfo.MemberAccessExpression;
-
             ArgumentListSyntax argumentList = invocationInfo.ArgumentList;
 
             SyntaxToken openParenToken = argumentList.OpenParenToken;

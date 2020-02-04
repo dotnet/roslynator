@@ -73,7 +73,7 @@ namespace Roslynator
                 count2--;
             }
 
-            int CountContainingNamespaces(INamespaceSymbol namespaceSymbol)
+            static int CountContainingNamespaces(INamespaceSymbol namespaceSymbol)
             {
                 int count = 0;
 
@@ -90,7 +90,7 @@ namespace Roslynator
                 return count;
             }
 
-            INamespaceSymbol GetNamespaceSymbol(INamespaceSymbol namespaceSymbol, int count)
+            static INamespaceSymbol GetNamespaceSymbol(INamespaceSymbol namespaceSymbol, int count)
             {
                 while (count > 0)
                 {

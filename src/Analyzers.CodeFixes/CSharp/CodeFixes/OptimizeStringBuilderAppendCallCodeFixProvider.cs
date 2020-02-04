@@ -97,7 +97,7 @@ namespace Roslynator.CSharp.CodeFixes
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
             InvocationExpressionSyntax invocation = invocationInfo.InvocationExpression;
-            InvocationExpressionSyntax newInvocation = null;
+            InvocationExpressionSyntax newInvocation;
 
             bool isAppendLine = string.Equals(invocationInfo.NameText, "AppendLine", StringComparison.Ordinal);
 

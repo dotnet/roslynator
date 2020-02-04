@@ -79,7 +79,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             context.RegisterCodeFix(codeAction, diagnostic);
 
-            int FindMissingCommaPosition<TNode>(SeparatedSyntaxList<TNode> nodes, TNode node) where TNode : SyntaxNode
+            static int FindMissingCommaPosition<TNode>(SeparatedSyntaxList<TNode> nodes, TNode node) where TNode : SyntaxNode
             {
                 int index = nodes.IndexOf(node);
 

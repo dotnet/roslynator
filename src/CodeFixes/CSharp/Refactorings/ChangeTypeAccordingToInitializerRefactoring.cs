@@ -66,7 +66,7 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             CodeFixRegistrationResult result = default;
-            CodeFixRegistrationResult result2 = default;
+            CodeFixRegistrationResult result2;
 
             if (typeSymbol?.SupportsExplicitDeclaration() == true)
             {

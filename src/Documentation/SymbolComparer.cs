@@ -49,7 +49,7 @@ namespace Roslynator.Documentation
             if (y == null)
                 return 1;
 
-            int diff = 0;
+            int diff;
 
             if (IncludeNamespaces)
             {

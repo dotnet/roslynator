@@ -31,7 +31,7 @@ namespace Roslynator.CSharp.Analysis
             if (!context.Tree.TryGetText(out SourceText sourceText))
                 return;
 
-            if (!context.Tree.TryGetRoot(out SyntaxNode root))
+            if (!context.Tree.TryGetRoot(out SyntaxNode _))
                 return;
 
             foreach (TextLine textLine in sourceText.Lines)

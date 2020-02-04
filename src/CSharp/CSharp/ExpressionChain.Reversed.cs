@@ -161,7 +161,7 @@ namespace Roslynator.CSharp
 
                                 BinaryExpressionSyntax binaryExpression = _chain.BinaryExpression;
 
-                                ExpressionSyntax left = null;
+                                ExpressionSyntax left;
 
                                 while (true)
                                 {

@@ -72,7 +72,7 @@ namespace Roslynator.CodeAnalysis.CSharp
 
             return document.ReplaceNodeAsync(attributeArgument, newAttributeArgument, cancellationToken);
 
-            ImmutableDictionary<string, string> LoadLanguageNames()
+            static ImmutableDictionary<string, string> LoadLanguageNames()
             {
                 return typeof(LanguageNames)
                     .GetRuntimeFields()

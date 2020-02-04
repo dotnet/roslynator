@@ -101,7 +101,7 @@ namespace Roslynator.CSharp
 
             return BracesAnalysisFlags.None;
 
-            bool SupportsEmbedded(StatementSyntax statement)
+            static bool SupportsEmbedded(StatementSyntax statement)
             {
                 if (statement.IsParentKind(SyntaxKind.IfStatement)
                     && ((IfStatementSyntax)statement.Parent).Condition?.IsMultiLine() == true)

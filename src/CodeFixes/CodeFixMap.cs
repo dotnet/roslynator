@@ -60,7 +60,7 @@ namespace Roslynator
 
                 return _codeFixDescriptorsById;
 
-                ReadOnlyDictionary<string, CodeFixDescriptor> LoadCodeFixDescriptorsById()
+                static ReadOnlyDictionary<string, CodeFixDescriptor> LoadCodeFixDescriptorsById()
                 {
                     Dictionary<string, CodeFixDescriptor> dic = typeof(CodeFixDescriptors)
                         .GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
@@ -104,7 +104,7 @@ namespace Roslynator
 
                 return _compilerDiagnosticsById;
 
-                ReadOnlyDictionary<string, DiagnosticDescriptor> LoadCompilerDiagnosticsById()
+                static ReadOnlyDictionary<string, DiagnosticDescriptor> LoadCompilerDiagnosticsById()
                 {
                     Dictionary<string, DiagnosticDescriptor> dic = typeof(CompilerDiagnosticDescriptors)
                         .GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)

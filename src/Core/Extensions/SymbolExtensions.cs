@@ -1656,7 +1656,7 @@ namespace Roslynator
 
             return false;
 
-            bool SupportsExplicitDeclaration2(ImmutableArray<ITypeSymbol> typeSymbols)
+            static bool SupportsExplicitDeclaration2(ImmutableArray<ITypeSymbol> typeSymbols)
             {
                 foreach (ITypeSymbol symbol in typeSymbols)
                 {

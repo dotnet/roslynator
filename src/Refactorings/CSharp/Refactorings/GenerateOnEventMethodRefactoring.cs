@@ -32,7 +32,7 @@ namespace Roslynator.CSharp.Refactorings
                 if (!context.Span.IsContainedInSpanOrBetweenSpans(variableDeclarator.Identifier))
                     continue;
 
-                semanticModel = semanticModel ?? await context.GetSemanticModelAsync().ConfigureAwait(false);
+                semanticModel ??= await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                 var eventSymbol = semanticModel.GetDeclaredSymbol(variableDeclarator, context.CancellationToken) as IEventSymbol;
 

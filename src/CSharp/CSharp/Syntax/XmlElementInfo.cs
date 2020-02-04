@@ -70,7 +70,7 @@ namespace Roslynator.CSharp.Syntax
 
                 return false;
 
-                bool IsWhitespaceOrNewLine(SyntaxToken token)
+                static bool IsWhitespaceOrNewLine(SyntaxToken token)
                 {
                     switch (token.Kind())
                     {

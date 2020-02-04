@@ -137,7 +137,7 @@ namespace Roslynator
 
             return false;
 
-            bool? HasIndexer(SpecialType specialType)
+            static bool? HasIndexer(SpecialType specialType)
             {
                 switch (specialType)
                 {
@@ -203,7 +203,7 @@ namespace Roslynator
 
             return null;
 
-            string GetCountOrLengthPropertyName(SpecialType specialType)
+            static string GetCountOrLengthPropertyName(SpecialType specialType)
             {
                 switch (specialType)
                 {

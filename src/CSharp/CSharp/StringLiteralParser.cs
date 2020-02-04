@@ -357,7 +357,7 @@ namespace Roslynator.CSharp
                                 if (pos + 4 >= text.Length)
                                     return false;
 
-                                if (!uint.TryParse(text.Substring(pos + 1, 4), NumberStyles.HexNumber, NumberFormatInfo.CurrentInfo, out uint result))
+                                if (!uint.TryParse(text.Substring(pos + 1, 4), NumberStyles.HexNumber, NumberFormatInfo.CurrentInfo, out uint _))
                                     return false;
 
                                 if (IsOverlap(span, startPos, 6))

@@ -995,7 +995,7 @@ namespace Roslynator.Documentation
             int max = startIndex + length;
 
             int i = startIndex;
-            int j = 0;
+            int j;
 
             while (i < max)
             {

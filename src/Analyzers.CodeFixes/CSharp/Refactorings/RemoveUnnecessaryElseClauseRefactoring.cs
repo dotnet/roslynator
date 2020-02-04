@@ -20,7 +20,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             var ifStatement = (IfStatementSyntax)elseClause.Parent;
 
-            List<StatementSyntax> newStatements = null;
+            List<StatementSyntax> newStatements;
 
             if (elseClause.Statement is BlockSyntax block)
             {

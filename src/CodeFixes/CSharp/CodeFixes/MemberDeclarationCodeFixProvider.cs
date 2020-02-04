@@ -443,15 +443,13 @@ namespace Roslynator.CSharp.CodeFixes
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            MethodDeclarationSyntax newNode = methodDeclaration;
-
             var returnType = (TupleTypeSyntax)methodDeclaration.ReturnType;
 
-            SyntaxToken newIdentifier = SyntaxFactory.Identifier(newName).WithTriviaFrom(tupleElement.Identifier);
+            SyntaxToken newIdentifier = Identifier(newName).WithTriviaFrom(tupleElement.Identifier);
 
             SeparatedSyntaxList<TupleElementSyntax> newElements = returnType.Elements.Replace(tupleElement, tupleElement.WithIdentifier(newIdentifier));
 
-            newNode = methodDeclaration.WithReturnType(returnType.WithElements(newElements));
+            MethodDeclarationSyntax newNode = methodDeclaration.WithReturnType(returnType.WithElements(newElements));
 
             var rewriter = new RenameRewriter(fieldSymbol, newName, semanticModel, cancellationToken);
 
@@ -476,15 +474,12 @@ namespace Roslynator.CSharp.CodeFixes
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            PropertyDeclarationSyntax newNode = propertyDeclaration;
-
             var type = (TupleTypeSyntax)propertyDeclaration.Type;
 
-            SyntaxToken newIdentifier = SyntaxFactory.Identifier(newName).WithTriviaFrom(tupleElement.Identifier);
+            SyntaxToken newIdentifier = Identifier(newName).WithTriviaFrom(tupleElement.Identifier);
 
             SeparatedSyntaxList<TupleElementSyntax> newElements = type.Elements.Replace(tupleElement, tupleElement.WithIdentifier(newIdentifier));
-
-            newNode = propertyDeclaration.WithType(type.WithElements(newElements));
+            PropertyDeclarationSyntax newNode = propertyDeclaration.WithType(type.WithElements(newElements));
 
             var rewriter = new RenameRewriter(fieldSymbol, newName, semanticModel, cancellationToken);
 

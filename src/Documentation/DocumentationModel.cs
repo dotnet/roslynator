@@ -199,7 +199,7 @@ namespace Roslynator.Documentation
 
             return null;
 
-            INamedTypeSymbol GetTypeParameterConstraintClass(ITypeParameterSymbol typeParameter)
+            static INamedTypeSymbol GetTypeParameterConstraintClass(ITypeParameterSymbol typeParameter)
             {
                 foreach (ITypeSymbol constraintType in typeParameter.ConstraintTypes)
                 {

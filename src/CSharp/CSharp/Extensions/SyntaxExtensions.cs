@@ -1236,7 +1236,7 @@ namespace Roslynator.CSharp
 
             DocumentationCommentInserter inserter = DocumentationCommentInserter.Create(member);
 
-            settings = settings ?? DocumentationCommentGeneratorSettings.Default;
+            settings ??= DocumentationCommentGeneratorSettings.Default;
 
             settings = settings.WithIndentation(inserter.Indent);
 

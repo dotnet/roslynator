@@ -138,7 +138,7 @@ namespace Roslynator.FindSymbols
             if (symbol.IsImplicitlyDeclared)
                 return SymbolFilterReason.ImplicitlyDeclared;
 
-            var group = SymbolGroupFilter.None;
+            SymbolGroupFilter group;
 
             if (symbol.IsConst)
             {

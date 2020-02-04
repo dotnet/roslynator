@@ -27,7 +27,7 @@ namespace Roslynator.CSharp.Refactorings
 
             return document.ReplaceNodeAsync(lambda, newLambda, cancellationToken);
 
-            ExpressionSyntax GetExpression(StatementSyntax statement)
+            static ExpressionSyntax GetExpression(StatementSyntax statement)
             {
                 switch (statement.Kind())
                 {

@@ -95,7 +95,7 @@ namespace Roslynator.CSharp.Refactorings
 
             return document.ReplaceNodeAsync(typeDeclaration, typeDeclaration.WithMembers(newMembers), cancellationToken);
 
-            BlockSyntax CreateMethodBody(CSharpSyntaxNode lambdaBody)
+            static BlockSyntax CreateMethodBody(CSharpSyntaxNode lambdaBody)
             {
                 switch (lambdaBody)
                 {

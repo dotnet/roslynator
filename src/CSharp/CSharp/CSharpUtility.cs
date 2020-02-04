@@ -435,7 +435,7 @@ namespace Roslynator.CSharp
                 yield return e;
             }
 
-            ExpressionSyntax GetLastChild(SyntaxNode node)
+            static ExpressionSyntax GetLastChild(SyntaxNode node)
             {
                 switch (node?.Kind())
                 {
@@ -454,7 +454,7 @@ namespace Roslynator.CSharp
                 return null;
             }
 
-            SyntaxNode GetPreviousSibling(SyntaxNode node)
+            static SyntaxNode GetPreviousSibling(SyntaxNode node)
             {
                 SyntaxNode parent = node.Parent;
 
@@ -483,7 +483,7 @@ namespace Roslynator.CSharp
                 return null;
             }
 
-            bool IsFirstChild(SyntaxNode node)
+            static bool IsFirstChild(SyntaxNode node)
             {
                 SyntaxNode parent = node.Parent;
 

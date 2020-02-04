@@ -194,7 +194,7 @@ namespace Roslynator.Documentation
             ImmutableArray<SymbolDisplayPart> parts)
         {
             ISymbol s = null;
-            int j = 0;
+            int j;
 
             for (int i = 0; i < parts.Length; i++)
             {

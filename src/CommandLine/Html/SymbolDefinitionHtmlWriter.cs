@@ -426,7 +426,7 @@ namespace Roslynator.Documentation.Html
             SymbolDisplayFormat format = null,
             bool removeAttributeSuffix = false)
         {
-            bool shouldWriteContainingNamespace = false;
+            bool shouldWriteContainingNamespace;
 
             if (symbol.Kind == SymbolKind.Field
                 && symbol.ContainingType.TypeKind == TypeKind.Enum)
@@ -820,10 +820,9 @@ namespace Roslynator.Documentation.Html
             {
                 if (en.MoveNext())
                 {
-                    XNode node = null;
-
+                    XNode node;
                     bool isFirst = true;
-                    bool isLast = false;
+                    bool isLast;
 
                     do
                     {

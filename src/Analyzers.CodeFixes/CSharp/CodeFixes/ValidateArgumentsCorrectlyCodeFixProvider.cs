@@ -71,8 +71,6 @@ namespace Roslynator.CSharp.CodeFixes
 
             List<StatementSyntax> localFunctionStatements = statements.Skip(index).ToList();
 
-            int lastIndex = localFunctionStatements.Count - 1;
-
             localFunctionStatements[0] = localFunctionStatements[0].TrimLeadingTrivia();
 
             LocalFunctionStatementSyntax localFunction = LocalFunctionStatement(

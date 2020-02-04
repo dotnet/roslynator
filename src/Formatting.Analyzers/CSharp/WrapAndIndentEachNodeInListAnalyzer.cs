@@ -37,66 +37,66 @@ namespace Roslynator.Formatting.CSharp
         {
             var typeArgumentList = (TypeArgumentListSyntax)context.Node;
 
-            Analyze(context, typeArgumentList.Arguments, typeArgumentList.LessThanToken);
+            Analyze(context, typeArgumentList.Arguments);
         }
 
         private static void AnalyzeArgumentList(SyntaxNodeAnalysisContext context)
         {
             var argumentList = (ArgumentListSyntax)context.Node;
 
-            Analyze(context, argumentList.Arguments, argumentList.OpenParenToken);
+            Analyze(context, argumentList.Arguments);
         }
 
         private static void AnalyzeBracketedArgumentList(SyntaxNodeAnalysisContext context)
         {
             var argumentList = (BracketedArgumentListSyntax)context.Node;
 
-            Analyze(context, argumentList.Arguments, argumentList.OpenBracketToken);
+            Analyze(context, argumentList.Arguments);
         }
 
         private static void AnalyzeAttributeList(SyntaxNodeAnalysisContext context)
         {
             var attributeList = (AttributeListSyntax)context.Node;
 
-            Analyze(context, attributeList.Attributes, attributeList.OpenBracketToken);
+            Analyze(context, attributeList.Attributes);
         }
 
         private static void AnalyzeAttributeArgumentList(SyntaxNodeAnalysisContext context)
         {
             var attributeArgumentList = (AttributeArgumentListSyntax)context.Node;
 
-            Analyze(context, attributeArgumentList.Arguments, attributeArgumentList.OpenParenToken);
+            Analyze(context, attributeArgumentList.Arguments);
         }
 
         private static void AnalyzeBaseList(SyntaxNodeAnalysisContext context)
         {
             var baseList = (BaseListSyntax)context.Node;
 
-            Analyze(context, baseList.Types, baseList.ColonToken);
+            Analyze(context, baseList.Types);
         }
 
         private static void AnalyzeParameterList(SyntaxNodeAnalysisContext context)
         {
             var parameterList = (ParameterListSyntax)context.Node;
 
-            Analyze(context, parameterList.Parameters, parameterList.OpenParenToken);
+            Analyze(context, parameterList.Parameters);
         }
 
         private static void AnalyzeBracketedParameterList(SyntaxNodeAnalysisContext context)
         {
             var parameterList = (BracketedParameterListSyntax)context.Node;
 
-            Analyze(context, parameterList.Parameters, parameterList.OpenBracketToken);
+            Analyze(context, parameterList.Parameters);
         }
 
         private static void AnalyzeTypeParameterList(SyntaxNodeAnalysisContext context)
         {
             var typeParameterList = (TypeParameterListSyntax)context.Node;
 
-            Analyze(context, typeParameterList.Parameters, typeParameterList.LessThanToken);
+            Analyze(context, typeParameterList.Parameters);
         }
 
-        private static void Analyze<TNode>(SyntaxNodeAnalysisContext context, SeparatedSyntaxList<TNode> nodes, SyntaxToken token) where TNode : SyntaxNode
+        private static void Analyze<TNode>(SyntaxNodeAnalysisContext context, SeparatedSyntaxList<TNode> nodes) where TNode : SyntaxNode
         {
             int count = nodes.Count;
 

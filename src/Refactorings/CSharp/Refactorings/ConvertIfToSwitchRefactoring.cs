@@ -329,7 +329,7 @@ namespace Roslynator.CSharp.Refactorings
 
             return false;
 
-            bool ShouldDescendIntoChildren(SyntaxKind kind)
+            static bool ShouldDescendIntoChildren(SyntaxKind kind)
             {
                 return !IsIterationStatement(kind) && !IsFunction(kind);
             }

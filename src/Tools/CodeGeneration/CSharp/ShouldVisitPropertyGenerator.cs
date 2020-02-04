@@ -83,7 +83,7 @@ namespace Roslynator.CodeGeneration.CSharp
                                 sections)));
                 }
 
-                IEnumerable<SwitchLabelSyntax> GenerateLabels(IEnumerable<IPropertySymbol> propertySymbols)
+                static IEnumerable<SwitchLabelSyntax> GenerateLabels(IEnumerable<IPropertySymbol> propertySymbols)
                 {
                     foreach (IPropertySymbol propertySymbol in propertySymbols)
                     {

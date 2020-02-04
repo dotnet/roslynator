@@ -135,7 +135,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             ExpressionSyntax filterExpression = ifStatement.Condition;
 
-            SyntaxList<StatementSyntax> newStatements = statements;
+            SyntaxList<StatementSyntax> newStatements;
 
             if (ifStatement.Statement.SingleNonBlockStatementOrDefault() is ThrowStatementSyntax throwStatement
                 && throwStatement.Expression == null)

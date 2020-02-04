@@ -76,7 +76,7 @@ namespace Roslynator.Host.Mef
                 .Where(f => f != null)
                 .ToImmutableArray();
 
-            IEnumerable<string> GetAssemblyNames()
+            static IEnumerable<string> GetAssemblyNames()
             {
                 AssemblyName assemblyName = typeof(MefHostServices).GetTypeInfo().Assembly.GetName();
                 Version assemblyVersion = assemblyName.Version;

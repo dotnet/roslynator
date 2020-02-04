@@ -24,7 +24,7 @@ namespace Roslynator
 
                 return _emptyRuleSet;
 
-                RuleSet CreateEmptyRuleSet()
+                static RuleSet CreateEmptyRuleSet()
                 {
                     return new RuleSet(
                         filePath: "",

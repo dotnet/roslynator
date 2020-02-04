@@ -1288,7 +1288,7 @@ namespace Roslynator.Documentation
                 }
             }
 
-            string CreateLocalLink(ISymbol symbol)
+            static string CreateLocalLink(ISymbol symbol)
             {
                 return DocumentationUtility.CreateLocalLink(symbol, "class-hierarchy-");
             }

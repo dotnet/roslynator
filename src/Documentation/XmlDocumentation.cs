@@ -16,13 +16,11 @@ namespace Roslynator.Documentation
 
         private static readonly Regex _indentationRegex = new Regex("(?<=\n)" + DefaultIndentChars);
 
-        private readonly XDocument _document;
         private readonly XElement _membersElement;
         private ImmutableDictionary<string, XElement> _elementsById;
 
         private XmlDocumentation(XDocument document)
         {
-            _document = document;
             _membersElement = document.Root.Element("members");
         }
 

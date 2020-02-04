@@ -126,7 +126,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             return document.ReplaceNodeAsync(switchSection, newSwitchSection, cancellationToken);
 
-            SyntaxTriviaList AddTriviaIfNecessary(SyntaxTriviaList trivia, SyntaxTriviaList triviaToAdd)
+            static SyntaxTriviaList AddTriviaIfNecessary(SyntaxTriviaList trivia, SyntaxTriviaList triviaToAdd)
             {
                 if (triviaToAdd.Any(f => f.IsKind(SyntaxKind.SingleLineCommentTrivia)))
                     trivia = trivia.AddRange(triviaToAdd);

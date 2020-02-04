@@ -307,7 +307,7 @@ public int global::System.Collections.IEqualityComparer.GetHashCode(object obj)
 
         private static SeparatedSyntaxList<BaseTypeSyntax> AddBaseType(SeparatedSyntaxList<BaseTypeSyntax> baseTypes, SimpleBaseTypeSyntax baseType)
         {
-            SyntaxTriviaList trailingTrivia = default;
+            SyntaxTriviaList trailingTrivia;
 
             SyntaxToken trailingSeparator = baseTypes.GetTrailingSeparator();
 

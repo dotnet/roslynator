@@ -381,7 +381,7 @@ namespace Roslynator.CSharp.Syntax
             if (accessibility == newAccessibility)
                 return this;
 
-            comparer = comparer ?? ModifierKindComparer.Default;
+            comparer ??= ModifierKindComparer.Default;
 
             SyntaxNode declaration = Parent;
 

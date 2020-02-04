@@ -420,7 +420,7 @@ namespace Roslynator.CSharp.Analysis
                 }
             }
 
-            bool IsExpectedTrailingTrivia(SyntaxTriviaList triviaList)
+            static bool IsExpectedTrailingTrivia(SyntaxTriviaList triviaList)
             {
                 foreach (SyntaxTrivia trivia in triviaList)
                 {

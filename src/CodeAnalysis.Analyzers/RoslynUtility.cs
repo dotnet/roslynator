@@ -21,7 +21,7 @@ namespace Roslynator
 
                 return _wellKnownLanguageNames;
 
-                ImmutableHashSet<string> LoadLanguageNames()
+                static ImmutableHashSet<string> LoadLanguageNames()
                 {
                     return typeof(LanguageNames)
                         .GetRuntimeFields()

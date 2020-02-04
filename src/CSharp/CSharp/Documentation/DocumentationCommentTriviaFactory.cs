@@ -74,7 +74,7 @@ namespace Roslynator.CSharp.Documentation
                 {
                     if (s.Length > 0)
                     {
-                        indent = indent ?? Regex.Match(s, "^ *").Value;
+                        indent ??= Regex.Match(s, "^ *").Value;
 
                         sb.Append("/// ");
                         s = Regex.Replace(s, $"^{indent}", "");

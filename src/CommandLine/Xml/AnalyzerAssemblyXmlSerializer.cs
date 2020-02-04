@@ -127,7 +127,7 @@ namespace Roslynator.CommandLine.Xml
                         CreateFixAllProviderElement(fixer));
                 }
 
-                XElement CreateFixAllProviderElement(CodeFixProvider fixer)
+                static XElement CreateFixAllProviderElement(CodeFixProvider fixer)
                 {
                     FixAllProvider fixAllProvider = fixer.GetFixAllProvider();
 

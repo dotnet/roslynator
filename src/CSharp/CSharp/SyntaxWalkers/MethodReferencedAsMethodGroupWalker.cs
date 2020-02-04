@@ -35,7 +35,7 @@ namespace Roslynator.CSharp.SyntaxWalkers
                 Result = true;
             }
 
-            bool IsInvoked(IdentifierNameSyntax identifierName)
+            static bool IsInvoked(IdentifierNameSyntax identifierName)
             {
                 SyntaxNode parent = identifierName.Parent;
 

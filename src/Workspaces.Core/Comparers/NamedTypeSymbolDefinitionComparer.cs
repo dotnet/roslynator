@@ -26,7 +26,7 @@ namespace Roslynator
             if (y == null)
                 return 1;
 
-            int diff = 0;
+            int diff;
 
             if ((SymbolComparer.Options & SymbolDefinitionSortOptions.OmitContainingNamespace) == 0)
             {
@@ -78,7 +78,7 @@ namespace Roslynator
                 count2--;
             }
 
-            int CountContainingTypes(INamedTypeSymbol namedType)
+            static int CountContainingTypes(INamedTypeSymbol namedType)
             {
                 int count = 0;
 
@@ -95,7 +95,7 @@ namespace Roslynator
                 return count;
             }
 
-            INamedTypeSymbol GetContainingType(INamedTypeSymbol namedType, int count)
+            static INamedTypeSymbol GetContainingType(INamedTypeSymbol namedType, int count)
             {
                 while (count > 0)
                 {
@@ -106,7 +106,7 @@ namespace Roslynator
                 return namedType;
             }
 
-            int GetRank(INamedTypeSymbol symbol)
+            static int GetRank(INamedTypeSymbol symbol)
             {
                 switch (symbol.TypeKind)
                 {

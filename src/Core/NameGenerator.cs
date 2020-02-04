@@ -263,7 +263,7 @@ namespace Roslynator
                 && uniqueName.Length > newName.Length
                 && AreDigits(uniqueName, newName.Length, uniqueName.Length - newName.Length);
 
-            bool AreDigits(string value, int start, int count)
+            static bool AreDigits(string value, int start, int count)
             {
                 int max = start + count;
 

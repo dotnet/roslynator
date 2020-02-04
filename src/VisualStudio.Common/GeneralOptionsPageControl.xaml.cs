@@ -152,7 +152,7 @@ namespace Roslynator.VisualStudio
             Update(package.RefactoringsOptionsPage, configuration.GetDisabledRefactorings().ToHashSet());
             Update(package.CodeFixesOptionsPage, configuration.GetDisabledCodeFixes().ToHashSet());
 
-            void Update(BaseOptionsPage optionsPage, HashSet<string> disabledIds)
+            static void Update(BaseOptionsPage optionsPage, HashSet<string> disabledIds)
             {
                 foreach (BaseModel model in optionsPage.Control.Items)
                 {

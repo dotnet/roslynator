@@ -54,8 +54,6 @@ namespace Roslynator.Documentation
 
             while (count > 0)
             {
-                int c = count;
-
                 t = symbol.ContainingType;
 
                 while (count > 1)

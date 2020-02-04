@@ -44,7 +44,7 @@ namespace Roslynator.VisualBasic.CodeMetrics
 
             base.VisitEndBlockStatement(node);
 
-            bool AnalyzeTrailingTrivia(in SyntaxTriviaList trailingTrivia)
+            static bool AnalyzeTrailingTrivia(in SyntaxTriviaList trailingTrivia)
             {
                 SyntaxTriviaList.Enumerator en = trailingTrivia.GetEnumerator();
 

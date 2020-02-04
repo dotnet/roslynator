@@ -347,7 +347,7 @@ namespace Roslynator.CommandLine
 
             return solutionPath ?? projectPath;
 
-            string FindFile(IEnumerable<string> files, string errorMessage)
+            static string FindFile(IEnumerable<string> files, string errorMessage)
             {
                 using (IEnumerator<string> en = files.GetEnumerator())
                 {

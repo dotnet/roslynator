@@ -144,7 +144,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             return switchStatement.WithSections(newSections);
 
-            SwitchSectionSyntax CreateNewSection(SwitchSectionSyntax section)
+            static SwitchSectionSyntax CreateNewSection(SwitchSectionSyntax section)
             {
                 SyntaxList<StatementSyntax> statements = section.GetStatements();
 

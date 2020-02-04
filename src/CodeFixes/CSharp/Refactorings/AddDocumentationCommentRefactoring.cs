@@ -34,7 +34,7 @@ namespace Roslynator.CSharp.Refactorings
                 }
             }
 
-            newNode = newNode ?? memberDeclaration.WithNewSingleLineDocumentationComment();
+            newNode ??= memberDeclaration.WithNewSingleLineDocumentationComment();
 
             return await document.ReplaceNodeAsync(memberDeclaration, newNode, cancellationToken).ConfigureAwait(false);
         }

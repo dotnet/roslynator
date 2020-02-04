@@ -340,7 +340,7 @@ namespace Roslynator.CSharp.Analysis
 
             return null;
 
-            IdentifierNameSyntax GetIdentifierName(ExpressionSyntax expression)
+            static IdentifierNameSyntax GetIdentifierName(ExpressionSyntax expression)
             {
                 if (expression?.Kind() == SyntaxKind.SimpleAssignmentExpression)
                 {

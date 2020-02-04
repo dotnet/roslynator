@@ -83,7 +83,7 @@ namespace Roslynator.CommandLine
                 }
             }
 
-            string GetAction(DiagnosticDescriptor diagnosticDescriptor)
+            static string GetAction(DiagnosticDescriptor diagnosticDescriptor)
             {
                 return (diagnosticDescriptor.IsEnabledByDefault)
                     ? diagnosticDescriptor.DefaultSeverity.ToString()

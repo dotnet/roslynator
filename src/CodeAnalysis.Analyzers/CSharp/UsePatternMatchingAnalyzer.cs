@@ -216,7 +216,7 @@ namespace Roslynator.CodeAnalysis.CSharp
                 }
             }
 
-            string GetName2(InvocationExpressionSyntax invocationExpression)
+            static string GetName2(InvocationExpressionSyntax invocationExpression)
             {
                 SimpleMemberInvocationExpressionInfo invocationInfo = SyntaxInfo.SimpleMemberInvocationExpressionInfo(invocationExpression);
 

@@ -513,14 +513,14 @@ namespace Roslynator.CSharp.Refactorings
                     }
             }
 
-            BinaryExpressionSyntax LogicalAndExpression(ExpressionSyntax left, ExpressionSyntax right)
+            static BinaryExpressionSyntax LogicalAndExpression(ExpressionSyntax left, ExpressionSyntax right)
             {
                 return CSharpFactory.LogicalAndExpression(
                     left.Parenthesize(),
                     right.Parenthesize());
             }
 
-            BinaryExpressionSyntax LogicalOrExpression(ExpressionSyntax left, ExpressionSyntax right)
+            static BinaryExpressionSyntax LogicalOrExpression(ExpressionSyntax left, ExpressionSyntax right)
             {
                 return CSharpFactory.LogicalOrExpression(
                     left.Parenthesize(),
