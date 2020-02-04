@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Diagnostics;
+using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -67,10 +68,29 @@ namespace Roslynator.CSharp.Analysis
         {
             var asExpression = (BinaryExpressionSyntax)context.Node;
 
+            if (asExpression.ContainsDiagnostics)
+                return;
+
             ExpressionSyntax expression = asExpression.WalkUpParentheses();
 
             if (asExpression == expression)
                 return;
+
+            SemanticModel semanticModel = context.SemanticModel;
+            CancellationToken cancellationToken = context.CancellationToken;
+
+            if (asExpression.Left.IsKind(SyntaxKind.ThisExpression))
+            {
+                var interfaceSymbol = semanticModel.GetTypeSymbol(asExpression.Right, cancellationToken) as INamedTypeSymbol;
+
+                if (interfaceSymbol?.TypeKind == TypeKind.Interface)
+                {
+                    ITypeSymbol thisTypeSymbol = semanticModel.GetTypeSymbol(asExpression.Left, cancellationToken);
+
+                    if (thisTypeSymbol.Implements(interfaceSymbol, allInterfaces: true))
+                        return;
+                }
+            }
 
             SyntaxNode topExpression = GetAccessExpression(expression)?.WalkUp(f => f.IsKind(
                 SyntaxKind.SimpleMemberAccessExpression,
@@ -81,14 +101,14 @@ namespace Roslynator.CSharp.Analysis
             if (topExpression == null)
                 return;
 
-            if (context.SemanticModel
-                .GetTypeSymbol(asExpression, context.CancellationToken)?
+            if (semanticModel
+                .GetTypeSymbol(asExpression, cancellationToken)?
                 .IsReferenceType != true)
             {
                 return;
             }
 
-            ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(topExpression, context.CancellationToken);
+            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(topExpression, cancellationToken);
 
             if (typeSymbol == null)
                 return;
@@ -96,7 +116,7 @@ namespace Roslynator.CSharp.Analysis
             if (!typeSymbol.IsReferenceType && !typeSymbol.IsValueType)
                 return;
 
-            if (context.SemanticModel.GetSymbol(topExpression, context.CancellationToken) is IMethodSymbol methodSymbol
+            if (semanticModel.GetSymbol(topExpression, cancellationToken) is IMethodSymbol methodSymbol
                 && methodSymbol.IsExtensionMethod)
             {
                 return;

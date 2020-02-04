@@ -118,6 +118,25 @@ static class E
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
+        public async Task TestNoDiagnostic_ThisCastedToItsInterface()
+        {
+            await VerifyNoDiagnosticAsync(@"
+interface I
+{
+    void M();
+}
+
+class C : I
+{
+    public void M() 
+    {
+        (this as I).M();
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
         public async Task TestNoFix_AwaitExpression()
         {
             await VerifyNoFixAsync(@"
