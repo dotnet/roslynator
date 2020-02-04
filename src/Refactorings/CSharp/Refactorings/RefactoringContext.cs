@@ -769,7 +769,7 @@ namespace Roslynator.CSharp.Refactorings
                             if (flags.IsSet(Flag.CastExpression))
                                 continue;
 
-                            CastExpressionRefactoring.ComputeRefactorings(this, (CastExpressionSyntax)node);
+                            await CastExpressionRefactoring.ComputeRefactoringsAsync(this, (CastExpressionSyntax)node).ConfigureAwait(false);
                             flags.Set(Flag.CastExpression);
                             continue;
                         }

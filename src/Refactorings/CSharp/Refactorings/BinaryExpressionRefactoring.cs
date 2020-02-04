@@ -87,7 +87,7 @@ namespace Roslynator.CSharp.Refactorings
                 if (ReplaceAsWithCastAnalysis.IsFixable(binaryExpression, semanticModel, context.CancellationToken))
                 {
                     context.RegisterRefactoring(
-                        "Replace as with cast",
+                        ReplaceAsWithCastRefactoring.Title,
                         cancellationToken => ReplaceAsWithCastRefactoring.RefactorAsync(context.Document, binaryExpression, cancellationToken),
                         RefactoringIdentifiers.ReplaceAsWithCast);
                 }

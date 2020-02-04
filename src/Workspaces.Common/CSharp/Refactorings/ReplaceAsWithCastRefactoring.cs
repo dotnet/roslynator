@@ -10,6 +10,8 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class ReplaceAsWithCastRefactoring
     {
+        public const string Title = "Replace 'as' with cast";
+
         public static Task<Document> RefactorAsync(
             Document document,
             BinaryExpressionSyntax binaryExpression,

@@ -40,7 +40,7 @@ namespace Roslynator.CSharp.CodeFixes
                 return;
 
             CodeAction codeAction = CodeAction.Create(
-                "Replace as with cast",
+                ReplaceAsWithCastRefactoring.Title,
                 cancellationToken => ReplaceAsWithCastRefactoring.RefactorAsync(context.Document, binaryExpression, cancellationToken),
                 GetEquivalenceKey(diagnostic));
 
