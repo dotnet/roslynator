@@ -90,7 +90,7 @@ namespace Roslynator.CSharp
         public const string UseLinefeedAsNewLine = "RCS1086";
         public const string UseCarriageReturnAndLinefeedAsNewLine = "RCS1087";
         public const string UseSpacesInsteadOfTab = "RCS1088";
-        public const string UsePostfixUnaryOperatorInsteadOfAssignment = "RCS1089";
+        public const string UseUnaryOperatorInsteadOfAssignment = "RCS1089";
         public const string CallConfigureAwait = "RCS1090";
         public const string RemoveEmptyRegion = "RCS1091";
         public const string AddEmptyLineBeforeWhileInDoStatement = "RCS1092";

@@ -1026,18 +1026,18 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1089</summary>
-        public static readonly DiagnosticDescriptor UsePostfixUnaryOperatorInsteadOfAssignment = Factory.Create(
-            id:                 DiagnosticIdentifiers.UsePostfixUnaryOperatorInsteadOfAssignment, 
+        public static readonly DiagnosticDescriptor UseUnaryOperatorInsteadOfAssignment = Factory.Create(
+            id:                 DiagnosticIdentifiers.UseUnaryOperatorInsteadOfAssignment, 
             title:              "Use --/++ operator instead of assignment.", 
             messageFormat:      "Use {0} operator instead of assignment.", 
             category:           DiagnosticCategories.Simplification, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.UsePostfixUnaryOperatorInsteadOfAssignment, 
+            helpLinkUri:        DiagnosticIdentifiers.UseUnaryOperatorInsteadOfAssignment, 
             customTags:         Array.Empty<string>());
 
-        public static readonly DiagnosticDescriptor UsePostfixUnaryOperatorInsteadOfAssignmentFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(UsePostfixUnaryOperatorInsteadOfAssignment);
+        public static readonly DiagnosticDescriptor UseUnaryOperatorInsteadOfAssignmentFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(UseUnaryOperatorInsteadOfAssignment);
 
         /// <summary>RCS1090</summary>
         public static readonly DiagnosticDescriptor CallConfigureAwait = Factory.Create(

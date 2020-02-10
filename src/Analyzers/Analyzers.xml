@@ -1970,7 +1970,7 @@ public string Foo // [|Id|]
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UsePostfixUnaryOperatorInsteadOfAssignment">
+  <Analyzer Identifier="UseUnaryOperatorInsteadOfAssignment">
     <Id>RCS1089</Id>
     <Title>Use --/++ operator instead of assignment.</Title>
     <MessageFormat>Use {0} operator instead of assignment.</MessageFormat>
@@ -1983,6 +1983,10 @@ public string Foo // [|Id|]
       <Sample>
         <Before><![CDATA[i = i + 1; // [|Id|]]]></Before>
         <After><![CDATA[i++;]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[M(i + 1); // [|Id|]]]></Before>
+        <After><![CDATA[M(++i);]]></After>
       </Sample>
     </Samples>
   </Analyzer>

@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Immutable;
-using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -12,15 +11,15 @@ using Microsoft.CodeAnalysis.Text;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class UsePostfixUnaryOperatorInsteadOfAssignmentAnalyzer : BaseDiagnosticAnalyzer
+    public class UseUnaryOperatorInsteadOfAssignmentAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticDescriptors.UsePostfixUnaryOperatorInsteadOfAssignment,
-                    DiagnosticDescriptors.UsePostfixUnaryOperatorInsteadOfAssignmentFadeOut);
+                    DiagnosticDescriptors.UseUnaryOperatorInsteadOfAssignment,
+                    DiagnosticDescriptors.UseUnaryOperatorInsteadOfAssignmentFadeOut);
             }
         }
 
@@ -34,7 +33,7 @@ namespace Roslynator.CSharp.Analysis
 
             context.RegisterCompilationStartAction(startContext =>
             {
-                if (startContext.IsAnalyzerSuppressed(DiagnosticDescriptors.UsePostfixUnaryOperatorInsteadOfAssignment))
+                if (startContext.IsAnalyzerSuppressed(DiagnosticDescriptors.UseUnaryOperatorInsteadOfAssignment))
                     return;
 
                 startContext.RegisterSyntaxNodeAction(AnalyzeSimpleAssignmentExpression, SyntaxKind.SimpleAssignmentExpression);
@@ -85,9 +84,9 @@ namespace Roslynator.CSharp.Analysis
 
             ReportDiagnostic(context, assignment, operatorText);
 
-            DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.UsePostfixUnaryOperatorInsteadOfAssignmentFadeOut, assignment.OperatorToken, operatorText);
-            DiagnosticHelpers.ReportNode(context, DiagnosticDescriptors.UsePostfixUnaryOperatorInsteadOfAssignmentFadeOut, binaryLeft, operatorText);
-            DiagnosticHelpers.ReportNode(context, DiagnosticDescriptors.UsePostfixUnaryOperatorInsteadOfAssignmentFadeOut, binaryRight, operatorText);
+            DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.UseUnaryOperatorInsteadOfAssignmentFadeOut, assignment.OperatorToken, operatorText);
+            DiagnosticHelpers.ReportNode(context, DiagnosticDescriptors.UseUnaryOperatorInsteadOfAssignmentFadeOut, binaryLeft, operatorText);
+            DiagnosticHelpers.ReportNode(context, DiagnosticDescriptors.UseUnaryOperatorInsteadOfAssignmentFadeOut, binaryRight, operatorText);
         }
 
         private static void AnalyzeAddAssignmentExpression(SyntaxNodeAnalysisContext context)
@@ -127,62 +126,36 @@ namespace Roslynator.CSharp.Analysis
 
             SyntaxToken operatorToken = assignment.OperatorToken;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UsePostfixUnaryOperatorInsteadOfAssignmentFadeOut, Location.Create(assignment.SyntaxTree, new TextSpan(operatorToken.SpanStart, 1)), operatorText);
-            DiagnosticHelpers.ReportNode(context, DiagnosticDescriptors.UsePostfixUnaryOperatorInsteadOfAssignmentFadeOut, assignment.Right, operatorText);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseUnaryOperatorInsteadOfAssignmentFadeOut, Location.Create(assignment.SyntaxTree, new TextSpan(operatorToken.SpanStart, 1)), operatorText);
+            DiagnosticHelpers.ReportNode(context, DiagnosticDescriptors.UseUnaryOperatorInsteadOfAssignmentFadeOut, assignment.Right, operatorText);
         }
 
         private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, AssignmentExpressionSyntax assignment, string operatorText)
         {
             DiagnosticHelpers.ReportDiagnostic(context,
-                DiagnosticDescriptors.UsePostfixUnaryOperatorInsteadOfAssignment,
+                DiagnosticDescriptors.UseUnaryOperatorInsteadOfAssignment,
                 assignment,
                 operatorText);
         }
 
-        public static SyntaxKind GetPostfixUnaryOperatorKind(AssignmentExpressionSyntax assignment)
+        public static bool UseIncrementOperator(AssignmentExpressionSyntax assignment)
         {
-            if (assignment == null)
-                throw new ArgumentNullException(nameof(assignment));
-
-            switch (assignment.Kind())
+            return (assignment.Kind()) switch
             {
-                case SyntaxKind.AddAssignmentExpression:
-                    return SyntaxKind.PostIncrementExpression;
-                case SyntaxKind.SubtractAssignmentExpression:
-                    return SyntaxKind.PostDecrementExpression;
-            }
-
-            switch (assignment.Right?.Kind())
-            {
-                case SyntaxKind.AddExpression:
-                    return SyntaxKind.PostIncrementExpression;
-                case SyntaxKind.SubtractExpression:
-                    return SyntaxKind.PostDecrementExpression;
-            }
-
-            Debug.Fail(assignment.Kind().ToString());
-
-            return SyntaxKind.None;
+                SyntaxKind.AddAssignmentExpression => true,
+                SyntaxKind.SubtractAssignmentExpression => false,
+                _ => (assignment.Right?.Kind()) switch
+                {
+                    SyntaxKind.AddExpression => true,
+                    SyntaxKind.SubtractExpression => false,
+                    _ => throw new InvalidOperationException(),
+                },
+            };
         }
 
         public static string GetOperatorText(AssignmentExpressionSyntax assignment)
         {
-            return GetOperatorText(GetPostfixUnaryOperatorKind(assignment));
-        }
-
-        private static string GetOperatorText(SyntaxKind kind)
-        {
-            switch (kind)
-            {
-                case SyntaxKind.PostIncrementExpression:
-                    return "++";
-                case SyntaxKind.PostDecrementExpression:
-                    return "--";
-            }
-
-            Debug.Fail(kind.ToString());
-
-            return "";
+            return (UseIncrementOperator(assignment)) ? "++" : "--";
         }
     }
 }
