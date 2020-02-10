@@ -67,6 +67,25 @@ namespace Roslynator.CommandLine
 
             ImmutableArray<Compilation> compilations = await GetCompilationsAsync(projectOrSolution, cancellationToken);
 
+            INamedTypeSymbol hierarchyRoot = null;
+
+            if (!string.IsNullOrEmpty(Options.HierarchyRoot))
+            {
+                foreach (Compilation compilation in compilations)
+                {
+                    hierarchyRoot = compilation.GetTypeByMetadataName(Options.HierarchyRoot);
+
+                    if (hierarchyRoot != null)
+                        break;
+                }
+
+                if (hierarchyRoot == null)
+                {
+                    WriteLine($"Cannot find type '{Options.HierarchyRoot}'", Verbosity.Quiet);
+                    return CommandResult.Fail;
+                }
+            }
+
             IEnumerable<IAssemblySymbol> assemblies = compilations.Select(f => f.Assembly);
 
             HashSet<IAssemblySymbol> externalAssemblies = null;
@@ -99,7 +118,8 @@ namespace Roslynator.CommandLine
                     stringWriter,
                     filter: SymbolFilterOptions,
                     format: format,
-                    documentationProvider: documentationProvider);
+                    documentationProvider: documentationProvider,
+                    hierarchyRoot: hierarchyRoot);
 
                 writer.WriteDocument(assemblies, cancellationToken);
 
@@ -120,7 +140,7 @@ namespace Roslynator.CommandLine
                     var xmlWriterSettings = new XmlWriterSettings() { Indent = true, IndentChars = Options.IndentChars };
 
                     using (XmlWriter xmlWriter = XmlWriter.Create(path, xmlWriterSettings))
-                    using (SymbolDefinitionWriter writer = new SymbolDefinitionXmlWriter(xmlWriter, SymbolFilterOptions, format, documentationProvider))
+                    using (SymbolDefinitionWriter writer = new SymbolDefinitionXmlWriter(xmlWriter, SymbolFilterOptions, format, documentationProvider, hierarchyRoot))
                     {
                         writer.WriteDocument(assemblies, cancellationToken);
                     }
@@ -134,7 +154,7 @@ namespace Roslynator.CommandLine
                     var xmlWriterSettings = new XmlWriterSettings() { OmitXmlDeclaration = true, Indent = true, IndentChars = "" };
 
                     using (XmlWriter xmlWriter = XmlWriter.Create(path, xmlWriterSettings))
-                    using (SymbolDefinitionWriter writer = new SymbolDefinitionHtmlWriter(xmlWriter, SymbolFilterOptions, format, documentationProvider, sourceReferenceProvider))
+                    using (SymbolDefinitionWriter writer = new SymbolDefinitionHtmlWriter(xmlWriter, SymbolFilterOptions, format, documentationProvider, hierarchyRoot, sourceReferenceProvider))
                     {
                         writer.WriteDocument(assemblies, cancellationToken);
                     }
@@ -146,7 +166,7 @@ namespace Roslynator.CommandLine
                     using (var fileStream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.Read))
                     using (var streamWriter = new StreamWriter(fileStream, Encodings.UTF8NoBom))
                     using (MarkdownWriter markdownWriter = MarkdownWriter.Create(streamWriter, markdownWriterSettings))
-                    using (SymbolDefinitionWriter writer = new SymbolDefinitionMarkdownWriter(markdownWriter, SymbolFilterOptions, format))
+                    using (SymbolDefinitionWriter writer = new SymbolDefinitionMarkdownWriter(markdownWriter, SymbolFilterOptions, format, hierarchyRoot: hierarchyRoot))
                     {
                         writer.WriteDocument(assemblies, cancellationToken);
                     }
@@ -170,7 +190,7 @@ namespace Roslynator.CommandLine
                             jsonWriter.Formatting = Newtonsoft.Json.Formatting.None;
                         }
 
-                        using (SymbolDefinitionWriter writer = new SymbolDefinitionJsonWriter(jsonWriter, SymbolFilterOptions, format, documentationProvider))
+                        using (SymbolDefinitionWriter writer = new SymbolDefinitionJsonWriter(jsonWriter, SymbolFilterOptions, format, documentationProvider, hierarchyRoot))
                         {
                             writer.WriteDocument(assemblies, cancellationToken);
                         }
@@ -185,7 +205,7 @@ namespace Roslynator.CommandLine
 #endif
             }
 
-            TestOutput(compilations, assemblies, format, cancellationToken);
+            TestOutput(compilations, assemblies, format, hierarchyRoot, cancellationToken);
 
 #if DEBUG
             if (ShouldWrite(Verbosity.Normal))
@@ -282,12 +302,14 @@ namespace Roslynator.CommandLine
             ImmutableArray<Compilation> compilations,
             IEnumerable<IAssemblySymbol> assemblies,
             DefinitionListFormat format,
+            INamedTypeSymbol hierarchyRoot,
             CancellationToken cancellationToken)
         {
             using (SymbolDefinitionWriter textWriter = new SymbolDefinitionTextWriter(
                 ConsoleOut,
                 filter: SymbolFilterOptions,
-                format: format))
+                format: format,
+                hierarchyRoot: hierarchyRoot))
             {
                 textWriter.WriteDocument(assemblies, cancellationToken);
             }
@@ -307,7 +329,7 @@ namespace Roslynator.CommandLine
                     jsonWriter.Formatting = Newtonsoft.Json.Formatting.None;
                 }
 
-                using (SymbolDefinitionWriter writer = new SymbolDefinitionJsonWriter(jsonWriter, SymbolFilterOptions, format, null))
+                using (SymbolDefinitionWriter writer = new SymbolDefinitionJsonWriter(jsonWriter, SymbolFilterOptions, format, default(SymbolDocumentationProvider), hierarchyRoot))
                 {
                     writer.WriteDocument(assemblies, cancellationToken);
                 }
@@ -316,7 +338,7 @@ namespace Roslynator.CommandLine
             WriteLine();
 
             using (XmlWriter xmlWriter = XmlWriter.Create(ConsoleOut, new XmlWriterSettings() { Indent = true, IndentChars = Options.IndentChars }))
-            using (SymbolDefinitionWriter writer = new SymbolDefinitionXmlWriter(xmlWriter, SymbolFilterOptions, format, new SymbolDocumentationProvider(compilations)))
+            using (SymbolDefinitionWriter writer = new SymbolDefinitionXmlWriter(xmlWriter, SymbolFilterOptions, format, new SymbolDocumentationProvider(compilations), hierarchyRoot))
             {
                 writer.WriteDocument(assemblies, cancellationToken);
             }
@@ -324,13 +346,13 @@ namespace Roslynator.CommandLine
             WriteLine();
 
             using (XmlWriter xmlWriter = XmlWriter.Create(ConsoleOut, new XmlWriterSettings() { OmitXmlDeclaration = true, Indent = true, IndentChars = "" }))
-            using (SymbolDefinitionWriter writer = new SymbolDefinitionHtmlWriter(xmlWriter, SymbolFilterOptions, format, new SymbolDocumentationProvider(compilations)))
+            using (SymbolDefinitionWriter writer = new SymbolDefinitionHtmlWriter(xmlWriter, SymbolFilterOptions, format, new SymbolDocumentationProvider(compilations), hierarchyRoot))
                 writer.WriteDocument(assemblies, cancellationToken);
 
             WriteLine();
 
             using (MarkdownWriter markdownWriter = MarkdownWriter.Create(ConsoleOut))
-            using (SymbolDefinitionWriter writer = new SymbolDefinitionMarkdownWriter(markdownWriter, SymbolFilterOptions, format, null))
+            using (SymbolDefinitionWriter writer = new SymbolDefinitionMarkdownWriter(markdownWriter, SymbolFilterOptions, format, default(SymbolDocumentationProvider), hierarchyRoot))
             {
                 writer.WriteDocument(assemblies, cancellationToken);
             }

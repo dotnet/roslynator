@@ -52,6 +52,11 @@ namespace Roslynator.CommandLine
             MetaValue = "<INDENT_CHARS>")]
         public string IndentChars { get; set; }
 
+        [Option(longName: "hierarchy-root",
+            HelpText = "Defines symbol that should be used as a root of a type hierarchy.",
+            MetaValue = "<FULLY_QUALIFIED_METADATA_NAME>")]
+        public string HierarchyRoot { get; set; }
+
         [Option(longName: ParameterNames.Layout,
             HelpText = "Defines layout of a list of symbol definitions. Allowed values are namespace-list, namespace-hierarchy or type-hierarchy. Default value is namespace-list.")]
         public string Layout { get; set; }

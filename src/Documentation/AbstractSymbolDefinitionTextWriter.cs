@@ -10,7 +10,8 @@ namespace Roslynator.Documentation
         protected AbstractSymbolDefinitionTextWriter(
             SymbolFilterOptions filter,
             DefinitionListFormat format = null,
-            SymbolDocumentationProvider documentationProvider = null) : base(filter, format, documentationProvider)
+            SymbolDocumentationProvider documentationProvider = null,
+            INamedTypeSymbol hierarchyRoot = null) : base(filter, format, documentationProvider, hierarchyRoot)
         {
         }
 

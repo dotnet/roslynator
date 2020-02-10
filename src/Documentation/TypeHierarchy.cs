@@ -154,6 +154,7 @@ namespace Roslynator.Documentation
         public static TypeHierarchy Create(
             IEnumerable<IAssemblySymbol> assemblies,
             SymbolFilterOptions filter = null,
+            INamedTypeSymbol root = null,
             IComparer<INamedTypeSymbol> comparer = null)
         {
             Func<INamedTypeSymbol, bool> predicate = null;
@@ -163,23 +164,26 @@ namespace Roslynator.Documentation
 
             IEnumerable<INamedTypeSymbol> types = assemblies.SelectMany(a => a.GetTypes(predicate));
 
-            return Create(types, comparer);
+            return Create(types, root, comparer);
         }
 
-        public static TypeHierarchy Create(IEnumerable<INamedTypeSymbol> types, IComparer<INamedTypeSymbol> comparer = null)
+        public static TypeHierarchy Create(IEnumerable<INamedTypeSymbol> types, INamedTypeSymbol root = null, IComparer<INamedTypeSymbol> comparer = null)
         {
             if (comparer == null)
                 comparer = SymbolDefinitionComparer.SystemFirst.TypeComparer;
 
-            INamedTypeSymbol objectType = FindObjectType();
+            if (root == null)
+            {
+                root = FindObjectType();
 
-            if (objectType == null)
-                throw new InvalidOperationException("Object type not found.");
+                if (root == null)
+                    throw new InvalidOperationException("Object type not found.");
+            }
 
             Dictionary<INamedTypeSymbol, TypeHierarchyItem> allItems = types
                 .ToDictionary(f => f, f => new TypeHierarchyItem(f), MetadataNameEqualityComparer<INamedTypeSymbol>.Instance);
 
-            allItems[objectType] = new TypeHierarchyItem(objectType, isExternal: true);
+            allItems[root] = new TypeHierarchyItem(root, isExternal: true);
 
             foreach (INamedTypeSymbol type in types)
             {
@@ -194,14 +198,19 @@ namespace Roslynator.Documentation
                 }
             }
 
-            TypeHierarchyItem root = FillHierarchyItem(allItems[objectType], null);
+            TypeHierarchyItem rootItem = FillHierarchyItem(allItems[root], null);
 
-            ImmutableArray<TypeHierarchyItem> interfaces = allItems
-                .Select(f => f.Value)
-                .OrderBy(f => f.Symbol, comparer)
-                .ToImmutableArray();
+            ImmutableArray<TypeHierarchyItem> interfaces = ImmutableArray<TypeHierarchyItem>.Empty;
 
-            return new TypeHierarchy(root, interfaces);
+            if (root.SpecialType == SpecialType.System_Object)
+            {
+                interfaces = allItems
+                    .Select(f => f.Value)
+                    .OrderBy(f => f.Symbol, comparer)
+                    .ToImmutableArray();
+            }
+
+            return new TypeHierarchy(rootItem, interfaces);
 
             TypeHierarchyItem FillHierarchyItem(TypeHierarchyItem item, TypeHierarchyItem parent)
             {

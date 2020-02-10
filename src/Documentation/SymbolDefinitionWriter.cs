@@ -24,11 +24,13 @@ namespace Roslynator.Documentation
         protected SymbolDefinitionWriter(
             SymbolFilterOptions filter = null,
             DefinitionListFormat format = null,
-            SymbolDocumentationProvider documentationProvider = null)
+            SymbolDocumentationProvider documentationProvider = null,
+            INamedTypeSymbol hierarchyRoot = null)
         {
             Filter = filter ?? SymbolFilterOptions.Default;
             Format = format ?? DefinitionListFormat.Default;
             DocumentationProvider = documentationProvider;
+            HierarchyRoot = hierarchyRoot;
 
             _typeDefinitionNameFormat = new SymbolDisplayFormat(
                 typeQualificationStyle: (Layout == SymbolDefinitionListLayout.TypeHierarchy && Format.Includes(SymbolDefinitionPartFilter.ContainingNamespaceInTypeHierarchy))
@@ -47,6 +49,8 @@ namespace Roslynator.Documentation
         public DefinitionListFormat Format { get; }
 
         public SymbolDocumentationProvider DocumentationProvider { get; }
+
+        public INamedTypeSymbol HierarchyRoot { get; }
 
         public SymbolDefinitionComparer Comparer
         {
@@ -365,7 +369,7 @@ namespace Roslynator.Documentation
                 ? SymbolDefinitionComparer.SystemFirst.TypeComparer
                 : SymbolDefinitionComparer.OmitContainingNamespace.TypeComparer;
 
-            TypeHierarchy hierarchy = TypeHierarchy.Create(types, comparer);
+            TypeHierarchy hierarchy = TypeHierarchy.Create(types, HierarchyRoot, comparer);
 
             WriteTypeHierarchy(hierarchy, cancellationToken);
         }

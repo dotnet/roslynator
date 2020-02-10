@@ -25,7 +25,8 @@ namespace Roslynator.Documentation.Json
             JsonWriter writer,
             SymbolFilterOptions filter = null,
             DefinitionListFormat format = null,
-            SymbolDocumentationProvider documentationProvider = null) : base(filter, format, documentationProvider)
+            SymbolDocumentationProvider documentationProvider = null,
+            INamedTypeSymbol hierarchyRoot = null) : base(filter, format, documentationProvider, hierarchyRoot)
         {
             _writer = writer;
         }
@@ -298,7 +299,7 @@ namespace Roslynator.Documentation.Json
             {
                 _attributeStringBuilder = new StringBuilder();
                 var stringWriter = new StringWriter(_attributeStringBuilder);
-                _definitionWriter = new SymbolDefinitionTextWriter(stringWriter, Filter, Format, DocumentationProvider);
+                _definitionWriter = new SymbolDefinitionTextWriter(stringWriter, Filter, Format, documentationProvider: DocumentationProvider);
             }
 
             _definitionWriter.WriteAttribute(attribute);
@@ -498,7 +499,7 @@ namespace Roslynator.Documentation.Json
             {
                 _attributeStringBuilder = new StringBuilder();
                 var stringWriter = new StringWriter(_attributeStringBuilder);
-                _definitionWriter = new SymbolDefinitionTextWriter(stringWriter, Filter, Format, DocumentationProvider);
+                _definitionWriter = new SymbolDefinitionTextWriter(stringWriter, Filter, Format, documentationProvider: DocumentationProvider);
             }
 
             _definitionWriter.WriteDefinition(symbol, parts);

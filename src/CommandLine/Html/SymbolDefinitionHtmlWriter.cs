@@ -26,8 +26,9 @@ namespace Roslynator.Documentation.Html
             SymbolFilterOptions filter = null,
             DefinitionListFormat format = null,
             SymbolDocumentationProvider documentationProvider = null,
+            INamedTypeSymbol hierarchyRoot = null,
             SourceReferenceProvider sourceReferenceProvider = null,
-            DocumentationDisplayMode documentationDisplayMode = DocumentationDisplayMode.ToolTip) : base(filter, format, documentationProvider)
+            DocumentationDisplayMode documentationDisplayMode = DocumentationDisplayMode.ToolTip) : base(filter, format, documentationProvider, hierarchyRoot)
         {
             _writer = writer;
             SourceReferenceProvider = sourceReferenceProvider;
