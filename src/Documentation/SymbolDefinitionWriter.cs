@@ -260,7 +260,9 @@ namespace Roslynator.Documentation
         public virtual void WriteDocument(IEnumerable<IAssemblySymbol> assemblies, CancellationToken cancellationToken = default)
         {
             WriteStartDocument();
-            WriteAssemblies(assemblies, cancellationToken);
+
+            if (Format.Includes(SymbolDefinitionPartFilter.Assemblies))
+                WriteAssemblies(assemblies, cancellationToken);
 
             if (!Format.GroupByAssembly)
             {
@@ -277,7 +279,7 @@ namespace Roslynator.Documentation
             WriteEndDocument();
         }
 
-        public virtual void WriteAssemblies(IEnumerable<IAssemblySymbol> assemblies, CancellationToken cancellationToken = default)
+        private void WriteAssemblies(IEnumerable<IAssemblySymbol> assemblies, CancellationToken cancellationToken = default)
         {
             WriteStartAssemblies();
 

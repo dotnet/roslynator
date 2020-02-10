@@ -8,21 +8,22 @@ namespace Roslynator.Documentation
     internal enum SymbolDefinitionPartFilter
     {
         None = 0,
-        ContainingNamespace = 1,
-        ContainingNamespaceInTypeHierarchy = 2,
-        Attributes = 4,
-        AssemblyAttributes = 8,
-        AttributeArguments = 16,
-        Accessibility = 32,
-        Modifiers = 64,
-        ParameterName = 128,
-        ParameterDefaultValue = 256,
-        BaseType = 512,
-        BaseInterfaces = 1024,
+        Assemblies = 1,
+        ContainingNamespace = 2,
+        ContainingNamespaceInTypeHierarchy = 4,
+        Attributes = 8,
+        AssemblyAttributes = 16,
+        AttributeArguments = 32,
+        Accessibility = 64,
+        Modifiers = 128,
+        ParameterName = 256,
+        ParameterDefaultValue = 512,
+        BaseType = 1024,
+        BaseInterfaces = 2048,
         BaseList = BaseType | BaseInterfaces,
-        Constraints = 2048,
-        TrailingSemicolon = 4096,
-        TrailingComma = 8192,
-        All = ContainingNamespace | ContainingNamespaceInTypeHierarchy | Attributes | AssemblyAttributes | AttributeArguments | Accessibility | Modifiers | ParameterName | ParameterDefaultValue | BaseType | BaseInterfaces | Constraints | TrailingSemicolon | TrailingComma
+        Constraints = 4096,
+        TrailingSemicolon = 8192,
+        TrailingComma = 16384,
+        All = Assemblies | ContainingNamespace | ContainingNamespaceInTypeHierarchy | Attributes | AssemblyAttributes | AttributeArguments | Accessibility | Modifiers | ParameterName | ParameterDefaultValue | BaseType | BaseInterfaces | Constraints | TrailingSemicolon | TrailingComma
     }
 }

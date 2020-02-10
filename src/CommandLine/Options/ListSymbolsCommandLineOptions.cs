@@ -33,7 +33,7 @@ namespace Roslynator.CommandLine
         public IEnumerable<string> IgnoredAttributes { get; set; }
 
         [Option(longName: ParameterNames.IgnoredParts,
-            HelpText = "Defines parts of a symbol definition that should be excluded. Allowed values are containing-namespace, containing-namespace-in-type-hierarchy, attributes, assembly-attributes, attribute-arguments, accessibility, modifiers, parameter-name, parameter-default-value, base-type, base-interfaces, constraints, trailing-semicolon, trailing-comma.",
+            HelpText = "Defines parts of a symbol definition that should be excluded. Allowed values are assemblies, containing-namespace, containing-namespace-in-type-hierarchy, attributes, assembly-attributes, attribute-arguments, accessibility, modifiers, parameter-name, parameter-default-value, base-type, base-interfaces, constraints, trailing-semicolon, trailing-comma.",
             MetaValue = "<IGNORED_PARTS>")]
         public IEnumerable<string> IgnoredParts { get; set; }
 
