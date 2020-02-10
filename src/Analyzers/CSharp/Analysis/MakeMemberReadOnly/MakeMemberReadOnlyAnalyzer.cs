@@ -163,7 +163,8 @@ namespace Roslynator.CSharp.Analysis.MakeMemberReadOnly
 
             return type.IsReferenceType
                 || type.TypeKind == TypeKind.Enum
-                || CSharpFacts.IsSimpleType(type.SpecialType);
+                || CSharpFacts.IsSimpleType(type.SpecialType)
+                || type.IsReadOnlyStruct();
         }
     }
 }

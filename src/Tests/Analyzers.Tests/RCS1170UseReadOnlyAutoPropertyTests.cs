@@ -55,7 +55,7 @@ class C
 {
     public int P { get; [|private set;|] }
 
-public C()
+    public C()
     {
         P = 0;
     }
@@ -83,7 +83,7 @@ class C
 {
     public StringSplitOptions P { get; [|private set;|] }
 
-public C()
+    public C()
     {
         P = 0;
     }
@@ -99,6 +99,40 @@ class C
     {
         P = 0;
     }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
+        public async Task Test_InstanceProperty_ReadOnlyStruct()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    public B P { get; [|private set;|] }
+
+    public C()
+    {
+        P = default;
+    }
+}
+
+readonly struct B
+{
+}
+", @"
+class C
+{
+    public B P { get; }
+
+    public C()
+    {
+        P = default;
+    }
+}
+
+readonly struct B
+{
 }
 ");
         }
@@ -181,11 +215,13 @@ class C
         public async Task TestNoDiagnostic_Struct()
         {
             await VerifyNoDiagnosticAsync(@"
-using System;
-
 class C
 {
-    public DateTime P { get; private set; }
+    public B P { get; private set; }
+}
+
+struct B
+{
 }
 ");
         }

@@ -103,6 +103,40 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeFieldReadOnly)]
+        public async Task Test_InstanceField_ReadOnlyStruct()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    [|private B _f;|]
+
+    public C()
+    {
+        _f = default;
+    }
+}
+
+readonly struct B
+{
+}
+", @"
+class C
+{
+    private readonly B _f;
+
+    public C()
+    {
+        _f = default;
+    }
+}
+
+readonly struct B
+{
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeFieldReadOnly)]
         public async Task Test_StaticField()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -148,11 +182,13 @@ class C
         public async Task TestNoDiagnostic_Struct()
         {
             await VerifyNoDiagnosticAsync(@"
-using System;
-
 class C
 {
-    DateTime _f;
+    B _f;
+}
+
+struct B
+{
 }
 ");
         }
