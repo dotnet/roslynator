@@ -121,7 +121,7 @@ namespace Roslynator.CSharp
             [SuppressMessage("Usage", "RCS1223:Mark publicly visible type with DebuggerDisplay attribute.", Justification = "<Pending>")]
             public struct Enumerator
             {
-                private ExpressionChain _chain;
+                private readonly ExpressionChain _chain;
                 private ExpressionSyntax _current;
                 private State _state;
 
