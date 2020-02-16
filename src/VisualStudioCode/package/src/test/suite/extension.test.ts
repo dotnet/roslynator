@@ -43,10 +43,10 @@ suite('Auto update omnisharp.json', () => {
 			RoslynExtensionsOptions: {
 				EnableAnalyzersSupport: true,
 				LocationPaths: [
-					"/temp/home/.vscode/extensions/josefpihrt-vscode.roslynator-1.0.1/roslyn/common",
-					"/temp/home/.vscode/extensions/josefpihrt-vscode.roslynator-1.0.1/roslyn/analyzers",
-					"/temp/home/.vscode/extensions/josefpihrt-vscode.roslynator-1.0.1/roslyn/refactorings",
-					"/temp/home/.vscode/extensions/josefpihrt-vscode.roslynator-1.0.1/roslyn/fixes"
+					'/temp/home/.vscode/extensions/josefpihrt-vscode.roslynator-1.0.1/roslyn/common',
+					'/temp/home/.vscode/extensions/josefpihrt-vscode.roslynator-1.0.1/roslyn/analyzers',
+					'/temp/home/.vscode/extensions/josefpihrt-vscode.roslynator-1.0.1/roslyn/refactorings',
+					'/temp/home/.vscode/extensions/josefpihrt-vscode.roslynator-1.0.1/roslyn/fixes'
 				]
 			}
 		};
@@ -65,5 +65,37 @@ suite('Auto update omnisharp.json', () => {
 			p => p.includes('josefpihrt-vscode.roslynator-1.0.2')));
 		assert.ok(omnisharpSettings.RoslynExtensionsOptions?.LocationPaths?.every(
 			p => !p.includes('josefpihrt-vscode.roslynator-1.0.1')));
+	});
+
+	test('Handle camel cased properties', () => {
+		const oldOmnisharpSettings = {
+			RoslynExtensionsOptions: {
+				enableAnalyzersSupport: true,
+				locationPaths: [
+					'/path/to/custom/analyzers/'
+				]
+			}
+		};
+
+		fs.mkdirSync(omnisharpPath);
+		fs.writeJSONSync(omnisharpJsonPath, oldOmnisharpSettings);
+
+		roslynator.ensureConfigurationUpdated({
+			extensionDirectoryPath: path.join(extensionsPath, 'josefpihrt-vscode.roslynator-1.0.1'),
+			homeDirectoryPath: homePath
+		});
+
+		const omnisharpSettings = fs.readJSONSync(omnisharpJsonPath);
+
+		assert.strictEqual(omnisharpSettings.RoslynExtensionsOptions.LocationPaths, undefined);
+		assert.strictEqual(omnisharpSettings.RoslynExtensionsOptions.EnableAnalyzersSupport, undefined);
+
+		assert.ok(omnisharpSettings.RoslynExtensionsOptions.enableAnalyzersSupport);
+
+		assert.ok((omnisharpSettings.RoslynExtensionsOptions.locationPaths as string[])
+			.includes('/path/to/custom/analyzers/'));
+
+		assert.ok((omnisharpSettings.RoslynExtensionsOptions.locationPaths as string[])
+			.some(p => p.includes('josefpihrt-vscode.roslynator-1.0.1')));
 	});
 });

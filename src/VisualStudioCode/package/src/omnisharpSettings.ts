@@ -4,3 +4,9 @@ export interface OmnisharpSettings {
 		LocationPaths?: string[];
 	};
 }
+
+export enum OmnisharpSettingsKey {
+	RoslynExtensionsOptions = 'RoslynExtensionsOptions',
+	EnableAnalyzersSupport = 'EnableAnalyzersSupport',
+	LocationPaths = 'LocationPaths'
+}
