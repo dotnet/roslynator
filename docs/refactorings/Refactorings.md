@@ -649,11 +649,11 @@ else
 * **Syntax**: string\.Format method
 ![Convert 'string.Format' to interpolated string](../../images/refactorings/ConvertStringFormatToInterpolatedString.png)
 
-#### Convert 'switch to 'if' \(RR0147\)
+#### Convert 'switch' to 'if' \(RR0147\)
 
 * **Syntax**: switch statement
 * **Span**: switch keyword
-![Convert 'switch to 'if'](../../images/refactorings/ConvertSwitchToIf.png)
+![Convert 'switch' to 'if'](../../images/refactorings/ConvertSwitchToIf.png)
 
 #### Convert verbatim string literal to regular string literal \(RR0148\)
 

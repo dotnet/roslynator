@@ -1182,7 +1182,7 @@ i--;]]></After>
       <Syntax>string.Format method</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0147" Identifier="ConvertSwitchToIf" Title="Convert 'switch to 'if'">
+  <Refactoring Id="RR0147" Identifier="ConvertSwitchToIf" Title="Convert 'switch' to 'if'">
     <Syntaxes>
       <Syntax>switch statement</Syntax>
     </Syntaxes>
