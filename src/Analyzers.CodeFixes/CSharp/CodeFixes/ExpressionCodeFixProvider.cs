@@ -7,9 +7,11 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
-using Microsoft.CodeAnalysis.CSharp;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.CodeFixes
 {
@@ -45,7 +47,7 @@ namespace Roslynator.CSharp.CodeFixes
                             {
                                 var binaryExpression = (BinaryExpressionSyntax)expression;
 
-                                LiteralExpressionSyntax newNode = CSharpFactory.BooleanLiteralExpression(binaryExpression.IsKind(SyntaxKind.GreaterThanOrEqualExpression, SyntaxKind.LessThanOrEqualExpression));
+                                LiteralExpressionSyntax newNode = BooleanLiteralExpression(binaryExpression.IsKind(SyntaxKind.GreaterThanOrEqualExpression, SyntaxKind.LessThanOrEqualExpression));
 
                                 CodeAction codeAction = CodeAction.Create(
                                     $"Replace expression with '{newNode}'",
@@ -54,7 +56,30 @@ namespace Roslynator.CSharp.CodeFixes
 
                                 context.RegisterCodeFix(codeAction, diagnostic);
                             }
-                            else
+                            else if (diagnostic.Properties.TryGetValue("DoubleNaN", out string leftOrRight))
+                            {
+                                var binaryExpression = (BinaryExpressionSyntax)expression;
+
+                                CodeAction codeAction = CodeAction.Create(
+                                    $"Call 'IsNaN'",
+                                    ct =>
+                                    {
+                                        ExpressionSyntax newExpression = SimpleMemberInvocationExpression(
+                                            CSharpTypeFactory.DoubleType(),
+                                            IdentifierName("IsNaN"),
+                                            Argument((leftOrRight == "Left") ? binaryExpression.Left.WithoutLeadingTrivia() : binaryExpression.Right.WithoutTrailingTrivia()));
+
+                                        if (binaryExpression.IsKind(SyntaxKind.NotEqualsExpression))
+                                            newExpression = LogicalNotExpression(newExpression);
+
+                                        newExpression = newExpression.Parenthesize().WithTriviaFrom(binaryExpression);
+
+                                        return document.ReplaceNodeAsync(binaryExpression, newExpression, ct);
+                                    },
+                                    GetEquivalenceKey(diagnostic));
+
+                                context.RegisterCodeFix(codeAction, diagnostic);
+                            }
                             {
                                 CodeAction codeAction = CodeAction.Create(
                                     "Remove null check",

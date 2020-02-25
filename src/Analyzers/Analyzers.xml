@@ -4674,6 +4674,10 @@ if (items.Count < 0) // [|Id|]
 {
 }]]></Before>
       </Sample>
+      <Sample>
+        <Before><![CDATA[x == double.NaN]]></Before>
+        <After><![CDATA[double.IsNaN(x)]]></After>
+      </Sample>
     </Samples>
   </Analyzer>
   <Analyzer Identifier="UnnecessaryUnsafeContext">

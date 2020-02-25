@@ -204,6 +204,78 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ExpressionIsAlwaysEqualToTrueOrFalse)]
+        public async Task Test_EqualsToDoubleNaN()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+        double x = default;
+        if ([|x == double.NaN|]) { }
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+        double x = default;
+        if (double.IsNaN(x)) { }
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ExpressionIsAlwaysEqualToTrueOrFalse)]
+        public async Task Test_EqualsToDoubleNaN_Right()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+        double x = default;
+        if ([|double.NaN == x|]) { }
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+        double x = default;
+        if (double.IsNaN(x)) { }
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ExpressionIsAlwaysEqualToTrueOrFalse)]
+        public async Task Test_NotEqualsToDoubleNaN()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+        double x = default;
+        if ([|x != double.NaN|]) { }
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+        double x = default;
+        if (!double.IsNaN(x)) { }
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ExpressionIsAlwaysEqualToTrueOrFalse)]
         public async Task TestNoDiagnostic_ReversedForStatement()
         {
             await VerifyNoDiagnosticAsync(@"

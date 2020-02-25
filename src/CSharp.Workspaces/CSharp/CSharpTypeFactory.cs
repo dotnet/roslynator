@@ -9,6 +9,7 @@ namespace Roslynator.CSharp
     {
         private static TypeSyntax _boolType;
         private static TypeSyntax _intType;
+        private static TypeSyntax _doubleType;
         private static TypeSyntax _stringType;
         private static TypeSyntax _objectType;
         private static TypeSyntax _notImplementedException;
@@ -22,6 +23,11 @@ namespace Roslynator.CSharp
         public static TypeSyntax IntType()
         {
             return _intType ?? (_intType = Parse("System.Int32"));
+        }
+
+        public static TypeSyntax DoubleType()
+        {
+            return _doubleType ?? (_doubleType = Parse("System.Double"));
         }
 
         public static TypeSyntax StringType()
