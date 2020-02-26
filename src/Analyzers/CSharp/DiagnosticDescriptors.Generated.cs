@@ -664,7 +664,7 @@ namespace Roslynator.CSharp
             messageFormat:      "Add empty line between declarations.", 
             category:           DiagnosticCategories.Formatting, 
             defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: true, 
+            isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.AddEmptyLineBetweenDeclarations, 
             customTags:         Array.Empty<string>());
