@@ -139,7 +139,6 @@ namespace Roslynator.CSharp
         public const string AddEmptyLineAfterClosingBrace = "RCS1153";
         public const string SortEnumMembers = "RCS1154";
         public const string UseStringComparison = "RCS1155";
-        public const string UseStringLengthInsteadOfComparisonWithEmptyString = "RCS1156";
         public const string CompositeEnumValueContainsUndefinedFlag = "RCS1157";
         public const string StaticMemberInGenericTypeShouldUseTypeParameter = "RCS1158";
         public const string UseGenericEventHandler = "RCS1159";

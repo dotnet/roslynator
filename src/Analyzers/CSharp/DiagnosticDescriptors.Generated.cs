@@ -1625,18 +1625,6 @@ namespace Roslynator.CSharp
             helpLinkUri:        DiagnosticIdentifiers.UseStringComparison, 
             customTags:         Array.Empty<string>());
 
-        /// <summary>RCS1156</summary>
-        public static readonly DiagnosticDescriptor UseStringLengthInsteadOfComparisonWithEmptyString = Factory.Create(
-            id:                 DiagnosticIdentifiers.UseStringLengthInsteadOfComparisonWithEmptyString, 
-            title:              "Use string.Length instead of comparison with empty string.", 
-            messageFormat:      "Use string.Length instead of comparison with empty string.", 
-            category:           DiagnosticCategories.Usage, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: true, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.UseStringLengthInsteadOfComparisonWithEmptyString, 
-            customTags:         Array.Empty<string>());
-
         /// <summary>RCS1157</summary>
         public static readonly DiagnosticDescriptor CompositeEnumValueContainsUndefinedFlag = Factory.Create(
             id:                 DiagnosticIdentifiers.CompositeEnumValueContainsUndefinedFlag, 

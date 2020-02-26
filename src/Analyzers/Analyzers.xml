@@ -2508,7 +2508,21 @@ public static partial class Foo
 {
 }]]></After>
       </Sample>
+      <Sample>
+        <Before><![CDATA[if (s == "") // [|Id|]
+{
+}]]></Before>
+        <After><![CDATA[if (string.IsNullOrEmpty(s))
+{
+}]]></After>
+      </Sample>
     </Samples>
+    <Links>
+      <Link>
+        <Url>https://docs.microsoft.com/en-us/visualstudio/code-quality/ca1820</Url>
+        <Text>CA1820: Test for empty strings using string length</Text>
+      </Link>
+    </Links>
   </Analyzer>
   <Analyzer Identifier="RemoveRedundantDelegateCreation">
     <Id>RCS1114</Id>
@@ -3311,7 +3325,7 @@ Foo();]]></After>
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="UseStringLengthInsteadOfComparisonWithEmptyString">
+  <Analyzer Identifier="UseStringLengthInsteadOfComparisonWithEmptyString" IsObsolete="true">
     <Id>RCS1156</Id>
     <Title>Use string.Length instead of comparison with empty string.</Title>
     <MessageFormat>Use string.Length instead of comparison with empty string.</MessageFormat>
