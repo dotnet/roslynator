@@ -21,7 +21,7 @@ namespace Roslynator.CSharp
         public static Task<Document> ToSingleLineAsync<TNode>(
             Document document,
             TNode node,
-            CancellationToken cancellationToken = default(CancellationToken)) where TNode : SyntaxNode
+            CancellationToken cancellationToken = default) where TNode : SyntaxNode
         {
             TextSpan span = (node.GetTrailingTrivia().IsEmptyOrWhitespace())
                 ? TextSpan.FromBounds(node.SpanStart, node.FullSpan.End)
@@ -36,7 +36,7 @@ namespace Roslynator.CSharp
             Document document,
             TNode node,
             TextSpan span,
-            CancellationToken cancellationToken = default(CancellationToken)) where TNode : SyntaxNode
+            CancellationToken cancellationToken = default) where TNode : SyntaxNode
         {
             TNode newNode = node.ReplaceWhitespace(ElasticSpace, span).WithFormatterAnnotation();
 
@@ -47,7 +47,7 @@ namespace Roslynator.CSharp
             Document document,
             InitializerExpressionSyntax initializer,
             bool removeTrailingComma = false,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             InitializerExpressionSyntax newInitializer = initializer
                 .ReplaceWhitespace(ElasticSpace, TextSpan.FromBounds(initializer.SpanStart, initializer.Span.End))
@@ -173,14 +173,14 @@ namespace Roslynator.CSharp
         public static Task<Document> ToMultiLineAsync(
             Document document,
             ConditionalExpressionSyntax conditionalExpression,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             ConditionalExpressionSyntax newNode = ToMultiLine(conditionalExpression, cancellationToken);
 
             return document.ReplaceNodeAsync(conditionalExpression, newNode, cancellationToken);
         }
 
-        public static ConditionalExpressionSyntax ToMultiLine(ConditionalExpressionSyntax conditionalExpression, CancellationToken cancellationToken = default(CancellationToken))
+        public static ConditionalExpressionSyntax ToMultiLine(ConditionalExpressionSyntax conditionalExpression, CancellationToken cancellationToken = default)
         {
             SyntaxTriviaList leadingTrivia = conditionalExpression.GetIncreasedIndentation(cancellationToken);
 
@@ -197,14 +197,14 @@ namespace Roslynator.CSharp
         public static Task<Document> ToMultiLineAsync(
             Document document,
             ParameterListSyntax parameterList,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             ParameterListSyntax newNode = ToMultiLine(parameterList);
 
             return document.ReplaceNodeAsync(parameterList, newNode, cancellationToken);
         }
 
-        public static ParameterListSyntax ToMultiLine(ParameterListSyntax parameterList, CancellationToken cancellationToken = default(CancellationToken))
+        public static ParameterListSyntax ToMultiLine(ParameterListSyntax parameterList, CancellationToken cancellationToken = default)
         {
             SyntaxTriviaList leadingTrivia = parameterList.GetIncreasedIndentation(cancellationToken);
 
@@ -233,7 +233,7 @@ namespace Roslynator.CSharp
         public static Task<Document> ToMultiLineAsync(
             Document document,
             InitializerExpressionSyntax initializer,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             InitializerExpressionSyntax newNode = ToMultiLine(initializer, cancellationToken)
                 .WithFormatterAnnotation();
@@ -272,14 +272,14 @@ namespace Roslynator.CSharp
         public static Task<Document> ToMultiLineAsync(
             Document document,
             ArgumentListSyntax argumentList,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             ArgumentListSyntax newNode = ToMultiLine(argumentList);
 
             return document.ReplaceNodeAsync(argumentList, newNode, cancellationToken);
         }
 
-        public static ArgumentListSyntax ToMultiLine(ArgumentListSyntax argumentList, CancellationToken cancellationToken = default(CancellationToken))
+        public static ArgumentListSyntax ToMultiLine(ArgumentListSyntax argumentList, CancellationToken cancellationToken = default)
         {
             SyntaxTriviaList leadingTrivia = argumentList.GetIncreasedIndentation(cancellationToken);
 
@@ -313,7 +313,7 @@ namespace Roslynator.CSharp
             Document document,
             ExpressionSyntax expression,
             SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             SyntaxTrivia trivia = expression.GetIndentation(cancellationToken);
 
@@ -382,14 +382,14 @@ namespace Roslynator.CSharp
         public static Task<Document> ToMultiLineAsync(
             Document document,
             AttributeArgumentListSyntax argumentList,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             AttributeArgumentListSyntax newNode = ToMultiLine(argumentList, cancellationToken);
 
             return document.ReplaceNodeAsync(argumentList, newNode, cancellationToken);
         }
 
-        private static AttributeArgumentListSyntax ToMultiLine(AttributeArgumentListSyntax argumentList, CancellationToken cancellationToken = default(CancellationToken))
+        private static AttributeArgumentListSyntax ToMultiLine(AttributeArgumentListSyntax argumentList, CancellationToken cancellationToken = default)
         {
             SyntaxTriviaList leadingTrivia = argumentList.GetIncreasedIndentation(cancellationToken);
 
@@ -422,7 +422,7 @@ namespace Roslynator.CSharp
         public static Task<Document> ToMultiLineAsync(
             Document document,
             BinaryExpressionSyntax condition,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             SyntaxTriviaList leadingTrivia = condition.GetIncreasedIndentation(cancellationToken);
 
@@ -438,7 +438,7 @@ namespace Roslynator.CSharp
         public static Task<Document> ToMultiLineAsync(
             Document document,
             AccessorDeclarationSyntax accessor,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             AccessorDeclarationSyntax newAccessor = ToMultiLine(accessor);
 

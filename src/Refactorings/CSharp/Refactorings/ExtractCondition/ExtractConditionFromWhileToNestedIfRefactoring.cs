@@ -36,7 +36,7 @@ namespace Roslynator.CSharp.Refactorings.ExtractCondition
             WhileStatementSyntax whileStatement,
             BinaryExpressionSyntax condition,
             ExpressionSyntax expression,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             WhileStatementSyntax newNode = RemoveExpressionFromCondition(whileStatement, condition, expression);
 
@@ -50,7 +50,7 @@ namespace Roslynator.CSharp.Refactorings.ExtractCondition
             WhileStatementSyntax whileStatement,
             BinaryExpressionSyntax condition,
             in ExpressionChain expressionChain,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             WhileStatementSyntax newNode = RemoveExpressionsFromCondition(whileStatement, condition, expressionChain);
 

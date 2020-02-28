@@ -20,7 +20,7 @@ namespace Roslynator.CSharp.Refactorings
             ClassDeclarationSyntax classDeclaration,
             IMethodSymbol[] constructorSymbols,
             SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             SyntaxList<MemberDeclarationSyntax> members = classDeclaration.Members;
 
@@ -109,7 +109,7 @@ namespace Roslynator.CSharp.Refactorings
             switch (parameterSymbol.RefKind)
             {
                 case RefKind.None:
-                    return default(SyntaxTokenList);
+                    return default;
                 case RefKind.Ref:
                     return TokenList(SyntaxKind.RefKeyword);
                 case RefKind.Out:

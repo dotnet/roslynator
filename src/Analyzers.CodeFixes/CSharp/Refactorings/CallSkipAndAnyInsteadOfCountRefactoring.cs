@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Refactorings
         public static Task<Document> RefactorAsync(
             Document document,
             BinaryExpressionSyntax binaryExpression,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (!(binaryExpression.Left is InvocationExpressionSyntax invocationExpression))
             {

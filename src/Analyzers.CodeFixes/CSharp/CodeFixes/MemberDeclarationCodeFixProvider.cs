@@ -176,7 +176,7 @@ namespace Roslynator.CSharp.CodeFixes
         private static Task<Document> OrderModifiersAsync(
             Document document,
             MemberDeclarationSyntax declaration,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             ModifierListInfo info = SyntaxInfo.ModifierListInfo(declaration);
 

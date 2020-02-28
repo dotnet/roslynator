@@ -33,7 +33,7 @@ namespace Roslynator.CSharp.Refactorings
         public static Task<Document> RefactorAsync(
             Document document,
             ForStatementSyntax forStatement,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             VariableDeclarationSyntax declaration = forStatement.Declaration;
 

@@ -69,7 +69,7 @@ namespace Roslynator.CSharp.Refactorings
             InvocationExpressionSyntax invocationExpression,
             string memberName,
             ExpressionSyntax expression,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             var memberAccessExpression = (MemberAccessExpressionSyntax)invocationExpression.Expression;
 

@@ -20,7 +20,7 @@ namespace Roslynator.CSharp.Refactorings
         public static Task<Document> RefactorAsync(
             Document document,
             SwitchSectionSyntax switchSection,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             var block = (BlockSyntax)switchSection.Statements[0];
 

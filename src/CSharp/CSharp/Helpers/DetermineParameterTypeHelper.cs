@@ -16,7 +16,7 @@ namespace Roslynator.CSharp.Helpers
         public static ImmutableArray<ITypeSymbol> DetermineParameterTypes(
             ArgumentSyntax argument,
             SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (argument.Parent is BaseArgumentListSyntax argumentList)
             {
@@ -66,7 +66,7 @@ namespace Roslynator.CSharp.Helpers
             if (node is ConstructorInitializerSyntax constructorInitializer)
                 return semanticModel.GetSymbolInfo(constructorInitializer, cancellationToken);
 
-            return default(SymbolInfo);
+            return default;
         }
 
         private static ITypeSymbol DetermineParameterType(

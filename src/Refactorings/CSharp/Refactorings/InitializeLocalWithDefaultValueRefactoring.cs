@@ -52,7 +52,7 @@ namespace Roslynator.CSharp.Refactorings
             LocalDeclarationStatementSyntax localDeclaration,
             VariableDeclaratorSyntax declarator,
             ITypeSymbol typeSymbol,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             VariableDeclaratorSyntax newDeclarator = GetNewDeclarator(localDeclaration.Declaration.Type.WithoutTrivia());
 

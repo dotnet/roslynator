@@ -9,7 +9,7 @@ namespace Roslynator.CSharp.Documentation
 {
     internal class AddBaseOrNewDocumentationCommentRewriter : AddNewDocumentationCommentRewriter
     {
-        public AddBaseOrNewDocumentationCommentRewriter(SemanticModel semanticModel, DocumentationCommentGeneratorSettings settings = null, bool skipNamespaceDeclaration = true, CancellationToken cancellationToken = default(CancellationToken))
+        public AddBaseOrNewDocumentationCommentRewriter(SemanticModel semanticModel, DocumentationCommentGeneratorSettings settings = null, bool skipNamespaceDeclaration = true, CancellationToken cancellationToken = default)
             : base(settings, skipNamespaceDeclaration)
         {
             SemanticModel = semanticModel;

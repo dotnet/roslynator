@@ -17,7 +17,7 @@ namespace Roslynator.CSharp.Refactorings
         public static Task<Document> UseElementAccessInsteadOfElementAtAsync(
             Document document,
             InvocationExpressionSyntax invocation,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             ArgumentListSyntax argumentList = invocation.ArgumentList;
 
@@ -51,7 +51,7 @@ namespace Roslynator.CSharp.Refactorings
         public static Task<Document> UseElementAccessInsteadOfFirstAsync(
             Document document,
             InvocationExpressionSyntax invocation,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             ArgumentListSyntax argumentList = invocation.ArgumentList;
 
@@ -86,7 +86,7 @@ namespace Roslynator.CSharp.Refactorings
             Document document,
             InvocationExpressionSyntax invocation,
             string propertyName,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             ArgumentListSyntax argumentList = invocation.ArgumentList;
 

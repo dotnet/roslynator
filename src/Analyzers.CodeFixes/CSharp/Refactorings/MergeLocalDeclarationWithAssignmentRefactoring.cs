@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Refactorings
         public static Task<Document> RefactorAsync(
             Document document,
             VariableDeclaratorSyntax declarator,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             var declaration = (VariableDeclarationSyntax)declarator.Parent;
 

@@ -385,7 +385,7 @@ namespace Roslynator.Documentation.Json
             }
         }
 
-        internal override void WriteTypeHierarchyItem(TypeHierarchyItem item, CancellationToken cancellationToken = default(CancellationToken))
+        internal override void WriteTypeHierarchyItem(TypeHierarchyItem item, CancellationToken cancellationToken = default)
         {
             INamedTypeSymbol typeSymbol = item.Symbol;
 

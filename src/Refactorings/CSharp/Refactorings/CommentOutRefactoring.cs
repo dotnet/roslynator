@@ -48,7 +48,7 @@ namespace Roslynator.CSharp.Refactorings
             Document document,
             int startLine,
             int endLine,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
 

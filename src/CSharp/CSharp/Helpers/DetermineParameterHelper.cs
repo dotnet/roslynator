@@ -17,7 +17,7 @@ namespace Roslynator.CSharp.Helpers
             SemanticModel semanticModel,
             bool allowParams = false,
             bool allowCandidate = false,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (!(argument.Parent is BaseArgumentListSyntax argumentList))
                 return null;
@@ -83,7 +83,7 @@ namespace Roslynator.CSharp.Helpers
             SemanticModel semanticModel,
             bool allowParams = false,
             bool allowCandidate = false,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (attributeArgument.NameEquals != null)
                 return null;
@@ -172,7 +172,7 @@ namespace Roslynator.CSharp.Helpers
             if (node is ConstructorInitializerSyntax constructorInitializer)
                 return semanticModel.GetSymbolInfo(constructorInitializer, cancellationToken);
 
-            return default(SymbolInfo);
+            return default;
         }
     }
 }

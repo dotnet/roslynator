@@ -40,7 +40,7 @@ namespace Roslynator.CSharp
         internal static OverriddenSymbolInfo Create(
             SyntaxNode node,
             SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (node == null)
                 return Default;

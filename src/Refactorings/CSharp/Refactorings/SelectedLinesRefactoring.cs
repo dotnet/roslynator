@@ -21,7 +21,7 @@ namespace Roslynator.CSharp.Refactorings
         public Task<Document> RefactorAsync(
             Document document,
             TextLineCollectionSelection selectedLines,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
 

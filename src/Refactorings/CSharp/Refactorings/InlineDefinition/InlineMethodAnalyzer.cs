@@ -123,7 +123,7 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
                 }
                 else
                 {
-                    return default(ImmutableArray<ParameterInfo>);
+                    return default;
                 }
             }
 
@@ -140,7 +140,7 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
                     }
                     else
                     {
-                        return default(ImmutableArray<ParameterInfo>);
+                        return default;
                     }
                 }
             }

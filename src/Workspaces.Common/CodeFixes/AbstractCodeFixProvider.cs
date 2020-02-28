@@ -99,7 +99,7 @@ namespace Roslynator.CodeFixes
         {
             token = root.FindToken(position, findInsideTrivia: findInsideTrivia);
 
-            bool success = token != default(SyntaxToken);
+            bool success = token != default;
 
             Assert.True(success, nameof(token));
 
@@ -114,7 +114,7 @@ namespace Roslynator.CodeFixes
         {
             trivia = root.FindTrivia(position, findInsideTrivia: findInsideTrivia);
 
-            bool success = trivia != default(SyntaxTrivia);
+            bool success = trivia != default;
 
             Assert.True(success, nameof(trivia));
 

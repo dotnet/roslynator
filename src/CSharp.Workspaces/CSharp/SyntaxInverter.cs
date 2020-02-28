@@ -23,7 +23,7 @@ namespace Roslynator.CSharp
         /// <param name="cancellationToken"></param>
         public static ExpressionSyntax LogicallyInvert(
             ExpressionSyntax expression,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             return LogicallyInvert(expression, semanticModel: null, cancellationToken);
         }
@@ -37,7 +37,7 @@ namespace Roslynator.CSharp
         public static ExpressionSyntax LogicallyInvert(
             ExpressionSyntax expression,
             SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (expression == null)
                 throw new ArgumentNullException(nameof(expression));

@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.Refactorings.AddOrRemoveParameterName
             Document document,
             ArgumentListSyntax argumentList,
             SeparatedSyntaxListSelection<ArgumentSyntax> selection,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             var rewriter = new RemoveParameterNameRewriter(selection.ToImmutableArray());
 

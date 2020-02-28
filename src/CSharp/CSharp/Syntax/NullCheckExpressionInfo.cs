@@ -97,7 +97,7 @@ namespace Roslynator.CSharp.Syntax
             NullCheckStyles allowedStyles = NullCheckStyles.All,
             bool walkDownParentheses = true,
             bool allowMissing = false,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (semanticModel == null)
                 throw new ArgumentNullException(nameof(semanticModel));

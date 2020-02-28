@@ -183,7 +183,7 @@ namespace Roslynator.CSharp.Refactorings
         public static Task<Document> RefactorAsync(
             Document document,
             SyntaxNode node,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             SyntaxNode newNode = Refactor(node)
                 .WithTrailingTrivia(node.GetTrailingTrivia())

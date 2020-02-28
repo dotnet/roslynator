@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Refactorings
         public static Task<Document> RefactorAsync(
             Document document,
             InterpolationSyntax interpolation,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             var interpolatedString = (InterpolatedStringExpressionSyntax)interpolation.Parent;
 

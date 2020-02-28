@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Analysis
         public static bool IsFixable(
             InvocationExpressionSyntax invocation,
             SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             SimpleMemberInvocationExpressionInfo invocationInfo = SyntaxInfo.SimpleMemberInvocationExpressionInfo(invocation);
 
@@ -32,7 +32,7 @@ namespace Roslynator.CSharp.Analysis
         public static bool IsFixable(
             in SimpleMemberInvocationExpressionInfo invocationInfo,
             SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (CSharpUtility.IsConditionallyAccessed(invocationInfo.InvocationExpression))
                 return false;

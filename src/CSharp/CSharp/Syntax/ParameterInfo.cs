@@ -14,9 +14,9 @@ namespace Roslynator.CSharp.Syntax
         public ParameterInfo(ParameterSyntax parameter, CSharpSyntaxNode body)
         {
             Parameter = parameter;
-            ParameterList = default(BaseParameterListSyntax);
+            ParameterList = default;
             Body = body;
-            TypeParameterList = default(TypeParameterListSyntax);
+            TypeParameterList = default;
         }
 
         public ParameterInfo(BaseParameterListSyntax parameterList, CSharpSyntaxNode body)
@@ -27,7 +27,7 @@ namespace Roslynator.CSharp.Syntax
         public ParameterInfo(BaseParameterListSyntax parameterList, TypeParameterListSyntax typeParameterList, CSharpSyntaxNode body)
         {
             ParameterList = parameterList;
-            Parameter = default(ParameterSyntax);
+            Parameter = default;
             Body = body;
             TypeParameterList = typeParameterList;
         }
@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.Syntax
 
         public SeparatedSyntaxList<TypeParameterSyntax> TypeParameters
         {
-            get { return TypeParameterList?.Parameters ?? default(SeparatedSyntaxList<TypeParameterSyntax>); }
+            get { return TypeParameterList?.Parameters ?? default; }
         }
 
         public ParameterSyntax Parameter { get; }
@@ -50,7 +50,7 @@ namespace Roslynator.CSharp.Syntax
 
         public SeparatedSyntaxList<ParameterSyntax> Parameters
         {
-            get { return ParameterList?.Parameters ?? default(SeparatedSyntaxList<ParameterSyntax>); }
+            get { return ParameterList?.Parameters ?? default; }
         }
 
         public CSharpSyntaxNode Body { get; }
@@ -94,7 +94,7 @@ namespace Roslynator.CSharp.Syntax
                 return default;
 
             TypeParameterListSyntax typeParameterList = methodDeclaration.TypeParameterList;
-            SeparatedSyntaxList<TypeParameterSyntax> typeParameters = typeParameterList?.Parameters ?? default(SeparatedSyntaxList<TypeParameterSyntax>);
+            SeparatedSyntaxList<TypeParameterSyntax> typeParameters = typeParameterList?.Parameters ?? default;
 
             if (!CheckTypeParameters(typeParameters, allowMissing))
                 return default;
@@ -156,7 +156,7 @@ namespace Roslynator.CSharp.Syntax
                 return default;
 
             TypeParameterListSyntax typeParameterList = delegateDeclaration.TypeParameterList;
-            SeparatedSyntaxList<TypeParameterSyntax> typeParameters = typeParameterList?.Parameters ?? default(SeparatedSyntaxList<TypeParameterSyntax>);
+            SeparatedSyntaxList<TypeParameterSyntax> typeParameters = typeParameterList?.Parameters ?? default;
 
             if (!CheckTypeParameters(typeParameters, allowMissing))
                 return default;
@@ -183,7 +183,7 @@ namespace Roslynator.CSharp.Syntax
                 return default;
 
             TypeParameterListSyntax typeParameterList = localFunction.TypeParameterList;
-            SeparatedSyntaxList<TypeParameterSyntax> typeParameters = typeParameterList?.Parameters ?? default(SeparatedSyntaxList<TypeParameterSyntax>);
+            SeparatedSyntaxList<TypeParameterSyntax> typeParameters = typeParameterList?.Parameters ?? default;
 
             if (!CheckTypeParameters(typeParameters, allowMissing))
                 return default;

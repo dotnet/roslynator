@@ -63,7 +63,7 @@ namespace Roslynator.CSharp.Refactorings
             Document document,
             ParameterSyntax parameter,
             ITypeSymbol typeSymbol,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             ParameterSyntax newParameter = GetNewParameter();
 

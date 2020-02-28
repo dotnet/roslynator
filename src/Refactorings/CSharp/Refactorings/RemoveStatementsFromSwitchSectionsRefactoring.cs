@@ -17,7 +17,7 @@ namespace Roslynator.CSharp.Refactorings
             Document document,
             SwitchStatementSyntax switchStatement,
             ImmutableArray<SwitchSectionSyntax> sections,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             IEnumerable<SwitchSectionSyntax> newSections = switchStatement
                 .Sections

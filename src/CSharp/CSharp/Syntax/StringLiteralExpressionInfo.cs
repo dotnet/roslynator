@@ -30,7 +30,7 @@ namespace Roslynator.CSharp.Syntax
         /// </summary>
         public SyntaxToken Token
         {
-            get { return Expression?.Token ?? default(SyntaxToken); }
+            get { return Expression?.Token ?? default; }
         }
 
         /// <summary>

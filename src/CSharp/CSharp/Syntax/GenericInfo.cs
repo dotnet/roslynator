@@ -67,7 +67,7 @@ namespace Roslynator.CSharp.Syntax
         /// </summary>
         public SeparatedSyntaxList<TypeParameterSyntax> TypeParameters
         {
-            get { return TypeParameterList?.Parameters ?? default(SeparatedSyntaxList<TypeParameterSyntax>); }
+            get { return TypeParameterList?.Parameters ?? default; }
         }
 
         /// <summary>
@@ -283,7 +283,7 @@ namespace Roslynator.CSharp.Syntax
                 SeparatedSyntaxList<TypeParameterSyntax> parameters = self.TypeParameters;
 
                 return (parameters.Count == 1)
-                    ? default(TypeParameterListSyntax)
+                    ? default
                     : self.TypeParameterList.WithParameters(parameters.Remove(typeParameter));
             }
         }

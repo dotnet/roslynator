@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Refactorings
         public static Task<Document> RefactorAsync(
             Document document,
             IfStatementSyntax ifStatement,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             IfStatementSyntax newNode = SyntaxRewriter.VisitNode(ifStatement).WithFormatterAnnotation();
 

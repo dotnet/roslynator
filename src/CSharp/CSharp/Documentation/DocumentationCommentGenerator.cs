@@ -245,16 +245,16 @@ namespace Roslynator.CSharp.Documentation
             bool canGenerateReturns = false,
             DocumentationCommentGeneratorSettings settings = null)
         {
-            SeparatedSyntaxList<TypeParameterSyntax> typeParameters = typeParameterList?.Parameters ?? default(SeparatedSyntaxList<TypeParameterSyntax>);
+            SeparatedSyntaxList<TypeParameterSyntax> typeParameters = typeParameterList?.Parameters ?? default;
 
-            SeparatedSyntaxList<ParameterSyntax> parameters = parameterList?.Parameters ?? default(SeparatedSyntaxList<ParameterSyntax>);
+            SeparatedSyntaxList<ParameterSyntax> parameters = parameterList?.Parameters ?? default;
 
             return Generate(typeParameters, parameters, canGenerateReturns, settings);
         }
 
         private static SyntaxTriviaList Generate(
-            SeparatedSyntaxList<TypeParameterSyntax> typeParameters = default(SeparatedSyntaxList<TypeParameterSyntax>),
-            SeparatedSyntaxList<ParameterSyntax> parameters = default(SeparatedSyntaxList<ParameterSyntax>),
+            SeparatedSyntaxList<TypeParameterSyntax> typeParameters = default,
+            SeparatedSyntaxList<ParameterSyntax> parameters = default,
             bool canGenerateReturns = false,
             DocumentationCommentGeneratorSettings settings = null)
         {

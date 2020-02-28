@@ -53,7 +53,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 SyntaxTrivia trivia = declaration.FindTrivia(span.Start);
 
-                Debug.Assert(trivia != default(SyntaxTrivia));
+                Debug.Assert(trivia != default);
 
                 SyntaxToken token = trivia.Token;
 

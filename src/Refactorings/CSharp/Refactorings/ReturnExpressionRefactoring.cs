@@ -67,7 +67,7 @@ namespace Roslynator.CSharp.Refactorings
         internal static (ISymbol symbol, ITypeSymbol typeSymbol) GetContainingSymbolAndType(
             ExpressionSyntax expression,
             SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             switch (semanticModel.GetEnclosingSymbol(expression.SpanStart, cancellationToken))
             {

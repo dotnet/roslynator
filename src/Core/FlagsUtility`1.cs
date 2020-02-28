@@ -98,7 +98,7 @@ namespace Roslynator
                     }
                 }
 
-                return default(Optional<sbyte>);
+                return default;
             }
 
             public override bool IsZeroOrPowerOfTwo(sbyte value)
@@ -190,7 +190,7 @@ namespace Roslynator
                     }
                 }
 
-                return default(Optional<byte>);
+                return default;
             }
 
             public override bool IsZeroOrPowerOfTwo(byte value)
@@ -282,7 +282,7 @@ namespace Roslynator
                     }
                 }
 
-                return default(Optional<short>);
+                return default;
             }
 
             public override bool IsZeroOrPowerOfTwo(short value)
@@ -374,7 +374,7 @@ namespace Roslynator
                     }
                 }
 
-                return default(Optional<ushort>);
+                return default;
             }
 
             public override bool IsZeroOrPowerOfTwo(ushort value)
@@ -466,7 +466,7 @@ namespace Roslynator
                     }
                 }
 
-                return default(Optional<int>);
+                return default;
             }
 
             public override bool IsZeroOrPowerOfTwo(int value)
@@ -558,7 +558,7 @@ namespace Roslynator
                     }
                 }
 
-                return default(Optional<uint>);
+                return default;
             }
 
             public override bool IsZeroOrPowerOfTwo(uint value)
@@ -650,7 +650,7 @@ namespace Roslynator
                     }
                 }
 
-                return default(Optional<long>);
+                return default;
             }
 
             public override bool IsZeroOrPowerOfTwo(long value)
@@ -742,7 +742,7 @@ namespace Roslynator
                     }
                 }
 
-                return default(Optional<ulong>);
+                return default;
             }
 
             public override bool IsZeroOrPowerOfTwo(ulong value)

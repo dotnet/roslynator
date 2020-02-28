@@ -211,7 +211,7 @@ namespace Roslynator.CSharp.CodeFixes
                 accessorList: accessorList,
                 expressionBody: default(ArrowExpressionClauseSyntax),
                 initializer: initializer,
-                semicolonToken: (initializer != null) ? SemicolonToken() : default(SyntaxToken));
+                semicolonToken: (initializer != null) ? SemicolonToken() : default);
 
             return newProperty
                 .WithTriviaFrom(property)

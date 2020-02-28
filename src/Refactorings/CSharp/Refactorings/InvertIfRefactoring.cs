@@ -74,7 +74,7 @@ namespace Roslynator.CSharp.Refactorings
         private static async Task<Document> InvertIfElseAsync(
             Document document,
             IfStatementSyntax ifStatement,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -101,7 +101,7 @@ namespace Roslynator.CSharp.Refactorings
             Document document,
             IfStatementSyntax ifStatement,
             bool recursive = false,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
 

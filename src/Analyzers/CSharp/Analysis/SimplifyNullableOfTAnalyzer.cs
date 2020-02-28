@@ -102,7 +102,7 @@ namespace Roslynator.CSharp.Analysis
         private static bool IsWithinNameOfExpression(
             SyntaxNode node,
             SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             for (node = node.Parent; node != null; node = node.Parent)
             {

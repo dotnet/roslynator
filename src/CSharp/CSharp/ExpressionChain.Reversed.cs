@@ -29,7 +29,7 @@ namespace Roslynator.CSharp
 
             internal bool IsStringConcatenation(
                 SemanticModel semanticModel,
-                CancellationToken cancellationToken = default(CancellationToken))
+                CancellationToken cancellationToken = default)
             {
                 if (!_chain.BinaryExpression.IsKind(SyntaxKind.AddExpression))
                     return false;

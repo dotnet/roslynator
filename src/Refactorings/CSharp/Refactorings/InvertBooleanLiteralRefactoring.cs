@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Refactorings
         public static Task<Document> RefactorAsync(
             Document document,
             LiteralExpressionSyntax literalExpression,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             LiteralExpressionSyntax newNode = BooleanLiteralExpression(!literalExpression.IsKind(SyntaxKind.TrueLiteralExpression))
                 .WithTriviaFrom(literalExpression);

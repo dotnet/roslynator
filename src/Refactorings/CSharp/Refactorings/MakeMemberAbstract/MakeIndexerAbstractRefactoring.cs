@@ -31,7 +31,7 @@ namespace Roslynator.CSharp.Refactorings.MakeMemberAbstract
         public static Task<Document> RefactorAsync(
             Document document,
             IndexerDeclarationSyntax indexerDeclaration,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             AccessorListSyntax accessorList = AccessorList();
 

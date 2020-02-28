@@ -87,7 +87,7 @@ namespace Roslynator.CSharp.Refactorings
             LocalDeclarationStatementSyntax localDeclaration,
             TypeSyntax type,
             VariableDeclaratorSyntax variable,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             int variableCount = localDeclaration.Declaration.Variables.Count;
             ExpressionSyntax initializerValue = variable.Initializer?.Value;

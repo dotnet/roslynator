@@ -91,7 +91,7 @@ namespace Roslynator.CSharp.Refactorings
         public static bool CanRefactor(
             ParameterSyntax parameter,
             SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             BlockSyntax body = GetBody(parameter);
 
@@ -125,7 +125,7 @@ namespace Roslynator.CSharp.Refactorings
             Document document,
             ImmutableArray<ParameterSyntax> parameters,
             SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             BlockSyntax body = GetBody(parameters[0]);
 
@@ -203,7 +203,7 @@ namespace Roslynator.CSharp.Refactorings
         private static NullCheckExpressionInfo GetNullCheckExpressionInfo(
             StatementSyntax statement,
             SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (!(statement is IfStatementSyntax ifStatement))
                 return default;

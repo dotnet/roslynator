@@ -292,7 +292,7 @@ namespace Roslynator.CSharp.CodeFixes
         private static Task<Document> SimplifyLinqMethodChainAsync(
             Document document,
             in SimpleMemberInvocationExpressionInfo invocationInfo,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             SimpleMemberInvocationExpressionInfo invocationInfo2 = SimpleMemberInvocationExpressionInfo(invocationInfo.Expression);
 
@@ -423,7 +423,7 @@ namespace Roslynator.CSharp.CodeFixes
             Document document,
             InvocationExpressionSyntax invocation,
             string propertyName,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
 
@@ -444,7 +444,7 @@ namespace Roslynator.CSharp.CodeFixes
             Document document,
             InvocationExpressionSyntax invocationExpression,
             BinaryExpressionSyntax binaryExpression,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             ExpressionSyntax left = binaryExpression.Left;
 

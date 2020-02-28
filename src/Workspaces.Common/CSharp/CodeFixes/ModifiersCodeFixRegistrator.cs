@@ -51,7 +51,7 @@ namespace Roslynator.CSharp.CodeFixes
             TNode node,
             SyntaxKind modifierKind,
             IComparer<SyntaxKind> comparer = null,
-            CancellationToken cancellationToken = default(CancellationToken)) where TNode : SyntaxNode
+            CancellationToken cancellationToken = default) where TNode : SyntaxNode
         {
             TNode newNode = AddModifier(node, modifierKind, comparer);
 
@@ -171,7 +171,7 @@ namespace Roslynator.CSharp.CodeFixes
             Document document,
             TNode node,
             SyntaxKind modifierKind,
-            CancellationToken cancellationToken = default(CancellationToken)) where TNode : SyntaxNode
+            CancellationToken cancellationToken = default) where TNode : SyntaxNode
         {
             TNode newNode = ModifierList.Remove(node, modifierKind);
 
@@ -182,7 +182,7 @@ namespace Roslynator.CSharp.CodeFixes
             Document document,
             TNode node,
             SyntaxToken modifier,
-            CancellationToken cancellationToken = default(CancellationToken)) where TNode : SyntaxNode
+            CancellationToken cancellationToken = default) where TNode : SyntaxNode
         {
             TNode newNode = ModifierList.Remove(node, modifier);
 
@@ -285,7 +285,7 @@ namespace Roslynator.CSharp.CodeFixes
         {
             SyntaxToken modifier = SyntaxInfo.ModifierListInfo(node).Modifiers.SingleOrDefault(shouldThrow: false);
 
-            if (modifier != default(SyntaxToken))
+            if (modifier != default)
             {
                 RemoveModifier(context, diagnostic, node, modifier, additionalKey);
             }
@@ -319,7 +319,7 @@ namespace Roslynator.CSharp.CodeFixes
                 {
                     if (IsAccessibilityModifier(accessModifier.Kind()))
                     {
-                        accessModifier = default(SyntaxToken);
+                        accessModifier = default;
                         break;
                     }
                     else

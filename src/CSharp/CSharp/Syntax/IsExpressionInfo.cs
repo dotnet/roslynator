@@ -44,7 +44,7 @@ namespace Roslynator.CSharp.Syntax
         /// </summary>
         public SyntaxToken OperatorToken
         {
-            get { return IsExpression?.OperatorToken ?? default(SyntaxToken); }
+            get { return IsExpression?.OperatorToken ?? default; }
         }
 
         /// <summary>

@@ -68,7 +68,7 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
         public virtual Task<Document> InlineAsync(
             SyntaxNode node,
             ExpressionSyntax expression,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             ExpressionSyntax newExpression = RewriteExpression(node, expression);
 
@@ -78,7 +78,7 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
         public virtual async Task<Solution> InlineAndRemoveAsync(
             SyntaxNode node,
             ExpressionSyntax expression,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (node.SyntaxTree == Declaration.SyntaxTree)
             {
@@ -115,7 +115,7 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
         public virtual Task<Document> InlineAsync(
             ExpressionStatementSyntax expressionStatement,
             SyntaxList<StatementSyntax> statements,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             int count = statements.Count;
 
@@ -141,7 +141,7 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
         public virtual async Task<Solution> InlineAndRemoveAsync(
             ExpressionStatementSyntax expressionStatement,
             SyntaxList<StatementSyntax> statements,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (expressionStatement.SyntaxTree == Declaration.SyntaxTree)
             {

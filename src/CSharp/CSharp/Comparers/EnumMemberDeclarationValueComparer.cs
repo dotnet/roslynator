@@ -16,7 +16,7 @@ namespace Roslynator.CSharp.Comparers
         private readonly SemanticModel _semanticModel;
         private readonly CancellationToken _cancellationToken;
 
-        public EnumMemberDeclarationValueComparer(IComparer<object> valueComparer, SemanticModel semanticModel, CancellationToken cancellationToken = default(CancellationToken))
+        public EnumMemberDeclarationValueComparer(IComparer<object> valueComparer, SemanticModel semanticModel, CancellationToken cancellationToken = default)
         {
             _valueComparer = valueComparer;
             _semanticModel = semanticModel;
@@ -56,7 +56,7 @@ namespace Roslynator.CSharp.Comparers
         public static bool IsSorted(
             IEnumerable<EnumMemberDeclarationSyntax> enumMembers,
             SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (enumMembers == null)
                 throw new ArgumentNullException(nameof(enumMembers));

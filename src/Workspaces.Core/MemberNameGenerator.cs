@@ -19,7 +19,7 @@ namespace Roslynator
             Solution solution,
             NameGenerator nameGenerator,
             bool isCaseSensitive = true,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (memberSymbol == null)
                 throw new ArgumentNullException(nameof(memberSymbol));
@@ -40,7 +40,7 @@ namespace Roslynator
             ISymbol memberSymbol,
             Solution solution,
             bool isCaseSensitive = true,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (memberSymbol == null)
                 throw new ArgumentNullException(nameof(memberSymbol));
@@ -57,7 +57,7 @@ namespace Roslynator
             ISymbol memberSymbol,
             Solution solution,
             bool isCaseSensitive = true,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             HashSet<string> reservedNames = GetMemberNames(memberSymbol, isCaseSensitive);
 

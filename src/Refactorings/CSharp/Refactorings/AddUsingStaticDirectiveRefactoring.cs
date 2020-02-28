@@ -49,7 +49,7 @@ namespace Roslynator.CSharp.Refactorings
             Document document,
             string name,
             MemberAccessExpressionSyntax memberAccess,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 

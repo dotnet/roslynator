@@ -102,7 +102,7 @@ namespace Roslynator.CSharp.Analysis
                 }
             }
 
-            return default(ExpressionPair);
+            return default;
         }
 
         private readonly struct ExpressionPair

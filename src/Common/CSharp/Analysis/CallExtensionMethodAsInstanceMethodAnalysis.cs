@@ -20,7 +20,7 @@ namespace Roslynator.CSharp.Analysis
             InvocationExpressionSyntax invocationExpression,
             SemanticModel semanticModel,
             bool allowAnyExpression = false,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             ExpressionSyntax expression = invocationExpression
                 .ArgumentList?

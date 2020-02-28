@@ -108,7 +108,7 @@ namespace Roslynator.CSharp.Refactorings
             Document document,
             ObjectCreationExpressionSyntax objectCreation,
             StatementListSelection selectedStatements,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             ExpressionStatementSyntax[] expressionStatements = selectedStatements
                 .Skip(1)

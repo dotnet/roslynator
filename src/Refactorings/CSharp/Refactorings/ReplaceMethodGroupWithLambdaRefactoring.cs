@@ -72,7 +72,7 @@ namespace Roslynator.CSharp.Refactorings
             if (parameterSymbols.Length == 0)
             {
                 lambda = ParenthesizedLambdaExpression(
-                    (methodSymbol.IsAsync) ? Token(SyntaxKind.AsyncKeyword) : default(SyntaxToken),
+                    (methodSymbol.IsAsync) ? Token(SyntaxKind.AsyncKeyword) : default,
                     ParameterList(),
                     Token(SyntaxKind.EqualsGreaterThanToken),
                     InvocationExpression(expression, ArgumentList()));
@@ -89,7 +89,7 @@ namespace Roslynator.CSharp.Refactorings
                 if (parameterSymbols.Length == 1)
                 {
                     lambda = SimpleLambdaExpression(
-                        (methodSymbol.IsAsync) ? Token(SyntaxKind.AsyncKeyword) : default(SyntaxToken),
+                        (methodSymbol.IsAsync) ? Token(SyntaxKind.AsyncKeyword) : default,
                         parameter,
                         Token(SyntaxKind.EqualsGreaterThanToken),
                         InvocationExpression(expression, ArgumentList(argument)));
@@ -99,7 +99,7 @@ namespace Roslynator.CSharp.Refactorings
                     string name2 = NameGenerator.Default.EnsureUniqueLocalName(DefaultNames.SecondLambdaParameter, semanticModel, position, cancellationToken: cancellationToken);
 
                     lambda = ParenthesizedLambdaExpression(
-                        (methodSymbol.IsAsync) ? Token(SyntaxKind.AsyncKeyword) : default(SyntaxToken),
+                        (methodSymbol.IsAsync) ? Token(SyntaxKind.AsyncKeyword) : default,
                         ParameterList(parameter, Parameter(Identifier(name2))),
                         Token(SyntaxKind.EqualsGreaterThanToken),
                         InvocationExpression(expression, ArgumentList(argument, Argument(IdentifierName(name2)))));

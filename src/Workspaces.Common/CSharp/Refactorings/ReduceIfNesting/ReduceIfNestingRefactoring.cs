@@ -16,7 +16,7 @@ namespace Roslynator.CSharp.Refactorings.ReduceIfNesting
             IfStatementSyntax ifStatement,
             SyntaxKind jumpKind,
             bool recursive,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             StatementListInfo statementsInfo = SyntaxInfo.StatementListInfo(ifStatement);
 

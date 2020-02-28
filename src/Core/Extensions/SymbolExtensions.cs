@@ -92,7 +92,7 @@ namespace Roslynator
                 }
             }
 
-            return default(ISymbol);
+            return default;
         }
 
         /// <summary>
@@ -162,7 +162,7 @@ namespace Roslynator
                 }
             }
 
-            return default(TSymbol);
+            return default;
         }
 
         /// <summary>
@@ -307,21 +307,21 @@ namespace Roslynator
                 && symbol.ContainingType.IsAnonymousType;
         }
 
-        internal static SyntaxNode GetSyntax(this ISymbol symbol, CancellationToken cancellationToken = default(CancellationToken))
+        internal static SyntaxNode GetSyntax(this ISymbol symbol, CancellationToken cancellationToken = default)
         {
             return symbol
                 .DeclaringSyntaxReferences[0]
                 .GetSyntax(cancellationToken);
         }
 
-        internal static Task<SyntaxNode> GetSyntaxAsync(this ISymbol symbol, CancellationToken cancellationToken = default(CancellationToken))
+        internal static Task<SyntaxNode> GetSyntaxAsync(this ISymbol symbol, CancellationToken cancellationToken = default)
         {
             return symbol
                 .DeclaringSyntaxReferences[0]
                 .GetSyntaxAsync(cancellationToken);
         }
 
-        internal static SyntaxNode GetSyntaxOrDefault(this ISymbol symbol, CancellationToken cancellationToken = default(CancellationToken))
+        internal static SyntaxNode GetSyntaxOrDefault(this ISymbol symbol, CancellationToken cancellationToken = default)
         {
             return symbol
                 .DeclaringSyntaxReferences
@@ -456,7 +456,7 @@ namespace Roslynator
                 case SymbolKind.Property:
                     return ((IPropertySymbol)symbol).Parameters;
                 default:
-                    return default(ImmutableArray<IParameterSymbol>);
+                    return default;
             }
         }
 
@@ -1840,7 +1840,7 @@ namespace Roslynator
                 }
             }
 
-            return default(TSymbol);
+            return default;
         }
 
         /// <summary>

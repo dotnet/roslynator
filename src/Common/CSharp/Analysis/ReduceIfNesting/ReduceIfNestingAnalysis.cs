@@ -25,7 +25,7 @@ namespace Roslynator.CSharp.Analysis.ReduceIfNesting
             IfStatementSyntax ifStatement,
             SemanticModel semanticModel,
             ReduceIfNestingOptions options,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (!IsFixable(ifStatement))
                 return Fail(ifStatement);
@@ -38,7 +38,7 @@ namespace Roslynator.CSharp.Analysis.ReduceIfNesting
             SemanticModel semanticModel,
             SyntaxKind jumpKind,
             ReduceIfNestingOptions options,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             StatementListInfo statementsInfo = SyntaxInfo.StatementListInfo(ifStatement);
 

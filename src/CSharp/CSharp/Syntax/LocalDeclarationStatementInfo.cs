@@ -29,7 +29,7 @@ namespace Roslynator.CSharp.Syntax
         /// </summary>
         public SyntaxTokenList Modifiers
         {
-            get { return Statement?.Modifiers ?? default(SyntaxTokenList); }
+            get { return Statement?.Modifiers ?? default; }
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace Roslynator.CSharp.Syntax
         /// </summary>
         public SeparatedSyntaxList<VariableDeclaratorSyntax> Variables
         {
-            get { return Statement?.Declaration.Variables ?? default(SeparatedSyntaxList<VariableDeclaratorSyntax>); }
+            get { return Statement?.Declaration.Variables ?? default; }
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace Roslynator.CSharp.Syntax
         /// </summary>
         public SyntaxToken SemicolonToken
         {
-            get { return Statement?.SemicolonToken ?? default(SyntaxToken); }
+            get { return Statement?.SemicolonToken ?? default; }
         }
 
         /// <summary>

@@ -303,7 +303,7 @@ namespace Roslynator.CSharp.Refactorings
             return document.ReplaceStatementsAsync(statementsInfo, newStatements, cancellationToken);
         }
 
-        private static IfStatementSyntax CreateNullCheck(ExpressionSyntax expression, SyntaxList<StatementSyntax> statements = default(SyntaxList<StatementSyntax>))
+        private static IfStatementSyntax CreateNullCheck(ExpressionSyntax expression, SyntaxList<StatementSyntax> statements = default)
         {
             SyntaxToken openBrace = (statements.Any())
                 ? OpenBraceToken()

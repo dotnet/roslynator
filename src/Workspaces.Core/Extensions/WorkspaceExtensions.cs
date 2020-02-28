@@ -25,7 +25,7 @@ namespace Roslynator
         public static async Task<Document> WithTextChangeAsync(
             this Document document,
             TextChange textChange,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (document == null)
                 throw new ArgumentNullException(nameof(document));
@@ -46,7 +46,7 @@ namespace Roslynator
         public static async Task<Document> WithTextChangesAsync(
             this Document document,
             TextChange[] textChanges,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (document == null)
                 throw new ArgumentNullException(nameof(document));
@@ -70,7 +70,7 @@ namespace Roslynator
         public static async Task<Document> WithTextChangesAsync(
             this Document document,
             IEnumerable<TextChange> textChanges,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (document == null)
                 throw new ArgumentNullException(nameof(document));
@@ -96,7 +96,7 @@ namespace Roslynator
             this Document document,
             SyntaxNode oldNode,
             SyntaxNode newNode,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (document == null)
                 throw new ArgumentNullException(nameof(document));
@@ -125,7 +125,7 @@ namespace Roslynator
             this Document document,
             SyntaxNode oldNode,
             IEnumerable<SyntaxNode> newNodes,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (document == null)
                 throw new ArgumentNullException(nameof(document));
@@ -155,7 +155,7 @@ namespace Roslynator
             this Document document,
             IEnumerable<TNode> nodes,
             Func<TNode, TNode, SyntaxNode> computeReplacementNode,
-            CancellationToken cancellationToken = default(CancellationToken)) where TNode : SyntaxNode
+            CancellationToken cancellationToken = default) where TNode : SyntaxNode
         {
             if (document == null)
                 throw new ArgumentNullException(nameof(document));
@@ -184,7 +184,7 @@ namespace Roslynator
             this Document document,
             SyntaxToken oldToken,
             SyntaxToken newToken,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (document == null)
                 throw new ArgumentNullException(nameof(document));
@@ -207,7 +207,7 @@ namespace Roslynator
             this Document document,
             SyntaxToken oldToken,
             IEnumerable<SyntaxToken> newTokens,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (document == null)
                 throw new ArgumentNullException(nameof(document));
@@ -233,7 +233,7 @@ namespace Roslynator
             this Document document,
             SyntaxTrivia oldTrivia,
             SyntaxTrivia newTrivia,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (document == null)
                 throw new ArgumentNullException(nameof(document));
@@ -256,7 +256,7 @@ namespace Roslynator
             this Document document,
             SyntaxTrivia oldTrivia,
             IEnumerable<SyntaxTrivia> newTrivia,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (document == null)
                 throw new ArgumentNullException(nameof(document));
@@ -282,7 +282,7 @@ namespace Roslynator
             this Document document,
             SyntaxNode nodeInList,
             SyntaxNode newNode,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (newNode == null)
                 throw new ArgumentNullException(nameof(newNode));
@@ -301,7 +301,7 @@ namespace Roslynator
             this Document document,
             SyntaxNode nodeInList,
             IEnumerable<SyntaxNode> newNodes,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (document == null)
                 throw new ArgumentNullException(nameof(document));
@@ -330,7 +330,7 @@ namespace Roslynator
             this Document document,
             SyntaxNode nodeInList,
             SyntaxNode newNode,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (newNode == null)
                 throw new ArgumentNullException(nameof(newNode));
@@ -349,7 +349,7 @@ namespace Roslynator
             this Document document,
             SyntaxNode nodeInList,
             IEnumerable<SyntaxNode> newNodes,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (document == null)
                 throw new ArgumentNullException(nameof(document));
@@ -378,7 +378,7 @@ namespace Roslynator
             this Document document,
             SyntaxNode node,
             SyntaxRemoveOptions options,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (document == null)
                 throw new ArgumentNullException(nameof(document));
@@ -404,7 +404,7 @@ namespace Roslynator
             this Document document,
             IEnumerable<SyntaxNode> nodes,
             SyntaxRemoveOptions options,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (document == null)
                 throw new ArgumentNullException(nameof(document));
@@ -438,7 +438,7 @@ namespace Roslynator
             this Solution solution,
             TNode oldNode,
             TNode newNode,
-            CancellationToken cancellationToken = default(CancellationToken)) where TNode : SyntaxNode
+            CancellationToken cancellationToken = default) where TNode : SyntaxNode
         {
             if (solution == null)
                 throw new ArgumentNullException(nameof(solution));
@@ -470,7 +470,7 @@ namespace Roslynator
             this Solution solution,
             IEnumerable<TNode> nodes,
             Func<TNode, TNode, SyntaxNode> computeReplacementNodes,
-            CancellationToken cancellationToken = default(CancellationToken)) where TNode : SyntaxNode
+            CancellationToken cancellationToken = default) where TNode : SyntaxNode
         {
             if (solution == null)
                 throw new ArgumentNullException(nameof(solution));

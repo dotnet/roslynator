@@ -61,7 +61,7 @@ namespace Roslynator.CSharp.Syntax
         /// </summary>
         public SeparatedSyntaxList<ArgumentSyntax> Arguments
         {
-            get { return InvocationExpression?.ArgumentList.Arguments ?? default(SeparatedSyntaxList<ArgumentSyntax>); }
+            get { return InvocationExpression?.ArgumentList.Arguments ?? default; }
         }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace Roslynator.CSharp.Syntax
         /// </summary>
         public SyntaxToken OperatorToken
         {
-            get { return MemberAccessExpression?.OperatorToken ?? default(SyntaxToken); }
+            get { return MemberAccessExpression?.OperatorToken ?? default; }
         }
 
         /// <summary>

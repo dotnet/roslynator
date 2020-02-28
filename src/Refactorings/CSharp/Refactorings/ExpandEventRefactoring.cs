@@ -21,7 +21,7 @@ namespace Roslynator.CSharp.Refactorings
         public static Task<Document> RefactorAsync(
             Document document,
             EventFieldDeclarationSyntax eventDeclaration,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             EventDeclarationSyntax newNode = ExpandEvent(eventDeclaration)
                 .WithTriviaFrom(eventDeclaration)

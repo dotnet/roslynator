@@ -11,7 +11,7 @@ namespace Roslynator
             SyntaxNode node,
             string name,
             SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             ISymbol symbol = semanticModel.GetSymbol(node, cancellationToken);
 

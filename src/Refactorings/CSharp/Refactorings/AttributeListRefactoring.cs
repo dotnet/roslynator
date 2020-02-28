@@ -46,7 +46,7 @@ namespace Roslynator.CSharp.Refactorings
             Document document,
             MemberDeclarationSyntax member,
             AttributeListSyntax[] attributeLists,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             SyntaxList<AttributeListSyntax> lists = member.GetAttributeLists();
 
@@ -72,7 +72,7 @@ namespace Roslynator.CSharp.Refactorings
             Document document,
             MemberDeclarationSyntax member,
             AttributeListSyntax[] attributeLists,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             SyntaxList<AttributeListSyntax> lists = member.GetAttributeLists();
 
@@ -147,7 +147,7 @@ namespace Roslynator.CSharp.Refactorings
                 default:
                     {
                         Debug.Assert(node.Kind() == SyntaxKind.GlobalStatement, node.Kind().ToString());
-                        return default(SyntaxList<AttributeListSyntax>);
+                        return default;
                     }
             }
         }

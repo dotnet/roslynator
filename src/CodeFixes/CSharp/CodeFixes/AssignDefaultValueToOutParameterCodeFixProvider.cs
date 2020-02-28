@@ -139,7 +139,7 @@ namespace Roslynator.CSharp.CodeFixes
             ImmutableArray<IParameterSymbol> parameterSymbols,
             ImmutableArray<ISymbol> alwaysAssigned,
             SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             IEnumerable<ExpressionStatementSyntax> expressionStatements = parameterSymbols
                 .Where(f => f.RefKind == RefKind.Out && !alwaysAssigned.Contains(f))

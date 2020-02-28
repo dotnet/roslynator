@@ -55,7 +55,7 @@ namespace Roslynator.CSharp.Refactorings.AddOrRemoveParameterName
             Document document,
             ArgumentListSyntax argumentList,
             SeparatedSyntaxListSelection<ArgumentSyntax> selection,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 

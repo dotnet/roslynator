@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Refactorings
             Document document,
             SyntaxNode node,
             ITypeSymbol typeSymbol,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             SyntaxNode newNode = GetNewNode(node, typeSymbol.ToTypeSyntax())
                 .WithTriviaFrom(node)

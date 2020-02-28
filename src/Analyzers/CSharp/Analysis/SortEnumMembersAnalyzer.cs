@@ -44,7 +44,7 @@ namespace Roslynator.CSharp.Analysis
         private static bool IsListUnsorted(
             SeparatedSyntaxList<EnumMemberDeclarationSyntax> members,
             SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             int count = members.Count;
 

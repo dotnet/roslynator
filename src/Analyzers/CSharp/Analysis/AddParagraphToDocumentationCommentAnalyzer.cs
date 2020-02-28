@@ -73,7 +73,7 @@ namespace Roslynator.CSharp.Analysis
         internal static (TextSpan span1, TextSpan span2, List<TextSpan> spans) FindFixableSpan(
             SyntaxList<XmlNodeSyntax> nodes,
             bool stopOnFirstMatch = false,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             int index = -1;
             int endIndex = -1;

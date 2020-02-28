@@ -84,7 +84,7 @@ namespace Roslynator.CSharp.Analysis
             ExpressionSyntax left,
             BinaryExpressionSyntax right,
             SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(left);
 

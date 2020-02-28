@@ -37,7 +37,7 @@ namespace Roslynator.CSharp.Syntax
         /// </summary>
         public SeparatedSyntaxList<TypeParameterConstraintSyntax> Constraints
         {
-            get { return ConstraintClause?.Constraints ?? default(SeparatedSyntaxList<TypeParameterConstraintSyntax>); }
+            get { return ConstraintClause?.Constraints ?? default; }
         }
 
         /// <summary>

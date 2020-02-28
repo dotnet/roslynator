@@ -48,7 +48,7 @@ namespace Roslynator.CSharp.Syntax
             {
                 return (Success)
                     ? TextSpan.FromBounds(Directive.SpanStart, EndDirective.Span.End)
-                    : default(TextSpan);
+                    : default;
             }
         }
 
@@ -61,7 +61,7 @@ namespace Roslynator.CSharp.Syntax
             {
                 return (Success)
                     ? TextSpan.FromBounds(Directive.FullSpan.Start, EndDirective.FullSpan.End)
-                    : default(TextSpan);
+                    : default;
             }
         }
 

@@ -112,7 +112,7 @@ namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
 
         private async Task<Document> RefactorAsync(
             Document document,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             ConstructorDeclarationSyntax constructor = Constructor;
 

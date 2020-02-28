@@ -123,7 +123,7 @@ namespace Roslynator.CSharp
             {
                 if (_count == -1)
                 {
-                    if (_ifOrElse != default(IfStatementOrElseClause))
+                    if (_ifOrElse != default)
                     {
                         _count++;
                         return true;

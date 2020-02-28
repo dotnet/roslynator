@@ -31,7 +31,7 @@ namespace Roslynator.CSharp.Refactorings
         public static Task<Document> RefactorAsync(
             Document document,
             SyntaxToken operatorToken,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             SyntaxToken newToken = SyntaxFactory.Token(GetInvertedOperatorKind(operatorToken))
                 .WithTriviaFrom(operatorToken);

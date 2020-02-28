@@ -111,7 +111,7 @@ namespace Roslynator.CSharp.Refactorings
             Document document,
             PrefixUnaryExpressionSyntax preIncrement,
             PostfixUnaryExpressionSyntax postIncrement,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             return document.ReplaceNodeAsync(preIncrement, postIncrement, cancellationToken);
         }
@@ -120,7 +120,7 @@ namespace Roslynator.CSharp.Refactorings
             Document document,
             PrefixUnaryExpressionSyntax preIncrement,
             PrefixUnaryExpressionSyntax preDecrement,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             return document.ReplaceNodeAsync(preIncrement, preDecrement, cancellationToken);
         }
@@ -129,7 +129,7 @@ namespace Roslynator.CSharp.Refactorings
             Document document,
             PrefixUnaryExpressionSyntax preDecrement,
             PostfixUnaryExpressionSyntax postDecrement,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             return document.ReplaceNodeAsync(preDecrement, postDecrement, cancellationToken);
         }
@@ -138,7 +138,7 @@ namespace Roslynator.CSharp.Refactorings
             Document document,
             PrefixUnaryExpressionSyntax preDecrement,
             PrefixUnaryExpressionSyntax preIncrement,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             return document.ReplaceNodeAsync(preDecrement, preIncrement, cancellationToken);
         }

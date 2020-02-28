@@ -16,7 +16,7 @@ namespace Roslynator.CSharp.Refactorings
         public static async Task<Solution> RefactorAsync(
             Document document,
             MemberDeclarationSyntax memberDeclaration,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 

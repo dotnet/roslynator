@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Refactorings
         public static Task<Document> RefactorAsync(
             Document document,
             UsingDirectiveSyntax usingDirective,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             return InlineAliasExpressionRefactoring.RefactorAsync(document, usingDirective, cancellationToken);
         }

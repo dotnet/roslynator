@@ -87,7 +87,7 @@ namespace Roslynator.CSharp.Refactorings
             Document document,
             PropertyDeclarationSyntax property,
             string methodName,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             AccessorDeclarationSyntax setter = property.Setter();
 

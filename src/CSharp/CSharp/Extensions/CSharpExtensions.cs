@@ -24,7 +24,7 @@ namespace Roslynator.CSharp
         internal static IMethodSymbol GetDeclaredSymbol(
             this SemanticModel semanticModel,
             LocalFunctionStatementSyntax localFunction,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             return (IMethodSymbol)ModelExtensions.GetDeclaredSymbol(semanticModel, localFunction, cancellationToken);
         }
@@ -38,7 +38,7 @@ namespace Roslynator.CSharp
         public static ISymbol GetSymbol(
             this SemanticModel semanticModel,
             AttributeSyntax attribute,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             return Microsoft.CodeAnalysis.CSharp.CSharpExtensions
                 .GetSymbolInfo(semanticModel, attribute, cancellationToken)
@@ -54,7 +54,7 @@ namespace Roslynator.CSharp
         public static ISymbol GetSymbol(
             this SemanticModel semanticModel,
             ConstructorInitializerSyntax constructorInitializer,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             return Microsoft.CodeAnalysis.CSharp.CSharpExtensions
                 .GetSymbolInfo(semanticModel, constructorInitializer, cancellationToken)
@@ -70,7 +70,7 @@ namespace Roslynator.CSharp
         public static ISymbol GetSymbol(
             this SemanticModel semanticModel,
             CrefSyntax cref,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             return Microsoft.CodeAnalysis.CSharp.CSharpExtensions
                 .GetSymbolInfo(semanticModel, cref, cancellationToken)
@@ -86,7 +86,7 @@ namespace Roslynator.CSharp
         public static ISymbol GetSymbol(
             this SemanticModel semanticModel,
             ExpressionSyntax expression,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             return Microsoft.CodeAnalysis.CSharp.CSharpExtensions
                 .GetSymbolInfo(semanticModel, expression, cancellationToken)
@@ -102,7 +102,7 @@ namespace Roslynator.CSharp
         public static ISymbol GetSymbol(
             this SemanticModel semanticModel,
             OrderingSyntax ordering,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             return Microsoft.CodeAnalysis.CSharp.CSharpExtensions
                 .GetSymbolInfo(semanticModel, ordering, cancellationToken)
@@ -118,7 +118,7 @@ namespace Roslynator.CSharp
         public static ISymbol GetSymbol(
             this SemanticModel semanticModel,
             SelectOrGroupClauseSyntax selectOrGroupClause,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             return Microsoft.CodeAnalysis.CSharp.CSharpExtensions
                 .GetSymbolInfo(semanticModel, selectOrGroupClause, cancellationToken)
@@ -134,7 +134,7 @@ namespace Roslynator.CSharp
         public static ITypeSymbol GetTypeSymbol(
             this SemanticModel semanticModel,
             AttributeSyntax attribute,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             return Microsoft.CodeAnalysis.CSharp.CSharpExtensions
                 .GetTypeInfo(semanticModel, attribute, cancellationToken)
@@ -150,7 +150,7 @@ namespace Roslynator.CSharp
         public static ITypeSymbol GetTypeSymbol(
             this SemanticModel semanticModel,
             ConstructorInitializerSyntax constructorInitializer,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             return Microsoft.CodeAnalysis.CSharp.CSharpExtensions
                 .GetTypeInfo(semanticModel, constructorInitializer, cancellationToken)
@@ -166,7 +166,7 @@ namespace Roslynator.CSharp
         public static ITypeSymbol GetTypeSymbol(
             this SemanticModel semanticModel,
             ExpressionSyntax expression,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             return Microsoft.CodeAnalysis.CSharp.CSharpExtensions
                 .GetTypeInfo(semanticModel, expression, cancellationToken)
@@ -182,7 +182,7 @@ namespace Roslynator.CSharp
         public static ITypeSymbol GetTypeSymbol(
             this SemanticModel semanticModel,
             SelectOrGroupClauseSyntax selectOrGroupClause,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             return Microsoft.CodeAnalysis.CSharp.CSharpExtensions
                 .GetTypeInfo(semanticModel, selectOrGroupClause, cancellationToken)
@@ -261,7 +261,7 @@ namespace Roslynator.CSharp
             ArgumentSyntax argument,
             bool allowParams = false,
             bool allowCandidate = false,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (semanticModel == null)
                 throw new ArgumentNullException(nameof(semanticModel));
@@ -286,7 +286,7 @@ namespace Roslynator.CSharp
             AttributeArgumentSyntax attributeArgument,
             bool allowParams = false,
             bool allowCandidate = false,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (attributeArgument == null)
                 throw new ArgumentNullException(nameof(attributeArgument));
@@ -308,7 +308,7 @@ namespace Roslynator.CSharp
             this SemanticModel semanticModel,
             ITypeSymbol typeSymbol,
             ExpressionSyntax expression,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (semanticModel == null)
                 throw new ArgumentNullException(nameof(semanticModel));
@@ -552,7 +552,7 @@ namespace Roslynator.CSharp
         public static ExtensionMethodSymbolInfo GetExtensionMethodInfo(
             this SemanticModel semanticModel,
             ExpressionSyntax expression,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (GetSymbol(semanticModel, expression, cancellationToken) is IMethodSymbol methodSymbol
                 && methodSymbol.IsExtensionMethod)
@@ -565,7 +565,7 @@ namespace Roslynator.CSharp
                 return new ExtensionMethodSymbolInfo(methodSymbol, null);
             }
 
-            return default(ExtensionMethodSymbolInfo);
+            return default;
         }
 
         /// <summary>
@@ -577,7 +577,7 @@ namespace Roslynator.CSharp
         public static ExtensionMethodSymbolInfo GetReducedExtensionMethodInfo(
             this SemanticModel semanticModel,
             ExpressionSyntax expression,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (GetSymbol(semanticModel, expression, cancellationToken) is IMethodSymbol methodSymbol
                 && methodSymbol.IsExtensionMethod)
@@ -588,7 +588,7 @@ namespace Roslynator.CSharp
                     return new ExtensionMethodSymbolInfo(reducedFrom, methodSymbol);
             }
 
-            return default(ExtensionMethodSymbolInfo);
+            return default;
         }
 
         /// <summary>
@@ -600,7 +600,7 @@ namespace Roslynator.CSharp
         public static IMethodSymbol GetMethodSymbol(
             this SemanticModel semanticModel,
             ExpressionSyntax expression,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             return GetSymbol(semanticModel, expression, cancellationToken) as IMethodSymbol;
         }
@@ -608,7 +608,7 @@ namespace Roslynator.CSharp
         internal static MethodDeclarationSyntax GetOtherPart(
             this SemanticModel semanticModel,
             MethodDeclarationSyntax methodDeclaration,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(methodDeclaration, cancellationToken);
 
@@ -629,7 +629,7 @@ namespace Roslynator.CSharp
         public static bool HasConstantValue(
             this SemanticModel semanticModel,
             ExpressionSyntax expression,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             return Microsoft.CodeAnalysis.CSharp.CSharpExtensions.GetConstantValue(semanticModel, expression, cancellationToken).HasValue;
         }

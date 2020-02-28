@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Refactorings
         public static Task<Document> RefactorAsync(
             Document document,
             DoStatementSyntax doStatement,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             SyntaxTriviaList trailingTrivia = doStatement.Statement
                 .GetTrailingTrivia()

@@ -98,7 +98,7 @@ namespace Roslynator.CSharp.Refactorings
             IEventSymbol eventSymbol,
             ITypeSymbol eventArgsSymbol,
             bool supportsCSharp6,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             MemberDeclarationListInfo info = SyntaxInfo.MemberDeclarationListInfo(eventFieldDeclaration.Parent);
 

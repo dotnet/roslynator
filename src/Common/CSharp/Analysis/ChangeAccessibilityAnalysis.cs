@@ -31,7 +31,7 @@ namespace Roslynator.CSharp.Analysis
         public static AccessibilityFilter GetValidAccessibilityFilter(
             MemberDeclarationListSelection selectedMembers,
             SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (selectedMembers.Count < 2)
                 return AccessibilityFilter.None;

@@ -21,7 +21,7 @@ namespace Roslynator
         public static int GetStartLine(
             this SyntaxTree syntaxTree,
             TextSpan span,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (syntaxTree == null)
                 throw new ArgumentNullException(nameof(syntaxTree));
@@ -38,7 +38,7 @@ namespace Roslynator
         public static int GetEndLine(
             this SyntaxTree syntaxTree,
             TextSpan span,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (syntaxTree == null)
                 throw new ArgumentNullException(nameof(syntaxTree));
@@ -55,7 +55,7 @@ namespace Roslynator
         public static bool IsMultiLineSpan(
             this SyntaxTree syntaxTree,
             TextSpan span,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (syntaxTree == null)
                 throw new ArgumentNullException(nameof(syntaxTree));
@@ -72,7 +72,7 @@ namespace Roslynator
         public static bool IsSingleLineSpan(
             this SyntaxTree syntaxTree,
             TextSpan span,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (syntaxTree == null)
                 throw new ArgumentNullException(nameof(syntaxTree));
@@ -83,7 +83,7 @@ namespace Roslynator
         internal static int GetLineCount(
             this SyntaxTree syntaxTree,
             TextSpan span,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (syntaxTree == null)
                 throw new ArgumentNullException(nameof(syntaxTree));

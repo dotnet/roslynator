@@ -130,7 +130,7 @@ namespace Roslynator.CSharp
         public static Task<Document> SwapBinaryOperandsAsync(
             Document document,
             BinaryExpressionSyntax binaryExpression,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             ExpressionSyntax left = binaryExpression.Left;
             ExpressionSyntax right = binaryExpression.Right;
@@ -165,7 +165,7 @@ namespace Roslynator.CSharp
             Document document,
             DocumentationCommentGeneratorSettings settings = null,
             bool skipNamespaceDeclaration = true,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
@@ -181,7 +181,7 @@ namespace Roslynator.CSharp
             SemanticModel semanticModel,
             DocumentationCommentGeneratorSettings settings = null,
             bool skipNamespaceDeclaration = true,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 

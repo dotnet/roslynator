@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Refactorings
         public static Task<Document> RefactorAsync(
             Document document,
             ExpressionSyntax expression,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             var newNode = (ExpressionSyntax)SyntaxRewriter.Instance.Visit(expression);
 

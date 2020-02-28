@@ -63,7 +63,7 @@ namespace Roslynator.CSharp.Syntax
             SyntaxNode node,
             SemanticModel semanticModel,
             bool walkDownParentheses = true,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             return Create(
                 Walk(node, walkDownParentheses) as BinaryExpressionSyntax,
@@ -74,7 +74,7 @@ namespace Roslynator.CSharp.Syntax
         internal static StringConcatenationExpressionInfo Create(
             BinaryExpressionSyntax binaryExpression,
             SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             ExpressionChain chain = binaryExpression.AsChain();
 
@@ -87,7 +87,7 @@ namespace Roslynator.CSharp.Syntax
         internal static StringConcatenationExpressionInfo Create(
             in ExpressionChain chain,
             SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (!chain.Reverse().IsStringConcatenation(semanticModel, cancellationToken))
                 return default;

@@ -38,7 +38,7 @@ namespace Roslynator.CSharp.Refactorings
         public static async Task<Document> RefactorAsync(
             Document document,
             VariableDeclarationSyntax variableDeclaration,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             switch (variableDeclaration.Parent.Kind())
             {

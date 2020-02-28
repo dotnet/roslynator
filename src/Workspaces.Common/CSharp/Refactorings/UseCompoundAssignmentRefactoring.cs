@@ -16,7 +16,7 @@ namespace Roslynator.CSharp.Refactorings
         public static Task<Document> RefactorAsync(
             Document document,
             AssignmentExpressionSyntax assignmentExpression,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             SyntaxToken operatorToken = assignmentExpression.OperatorToken;
 

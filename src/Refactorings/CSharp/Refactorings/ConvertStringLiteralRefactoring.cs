@@ -26,7 +26,7 @@ namespace Roslynator.CSharp.Refactorings
             int interpolationStartIndex = -1,
             int interpolationLength = 0,
             bool addNameOf = false,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             string s = literalExpression.Token.Text;
 
@@ -86,7 +86,7 @@ namespace Roslynator.CSharp.Refactorings
         public static Task<Document> ConvertToStringEmptyAsync(
             Document document,
             LiteralExpressionSyntax literalExpression,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             MemberAccessExpressionSyntax newNode = SimpleMemberAccessExpression(
                     StringType(),
@@ -100,7 +100,7 @@ namespace Roslynator.CSharp.Refactorings
         public static Task<Document> ReplaceWithRegularStringLiteralAsync(
             Document document,
             LiteralExpressionSyntax literalExpression,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             string s = CreateRegularStringLiteral(literalExpression.Token.ValueText);
 
@@ -113,7 +113,7 @@ namespace Roslynator.CSharp.Refactorings
         public static Task<Document> ConvertToRegularStringLiteralsAsync(
             Document document,
             LiteralExpressionSyntax literalExpression,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             BinaryExpressionSyntax newNode = CreateAddExpression(literalExpression.Token.ValueText)
                 .WithTriviaFrom(literalExpression)
@@ -125,7 +125,7 @@ namespace Roslynator.CSharp.Refactorings
         public static Task<Document> ConvertToVerbatimStringLiteralAsync(
             Document document,
             LiteralExpressionSyntax literalExpression,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             string s = literalExpression.Token.ValueText;
 

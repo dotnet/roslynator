@@ -53,7 +53,7 @@ namespace Roslynator.CSharp.Refactorings
             InterpolatedStringExpressionSyntax interpolatedString,
             TextSpan span,
             bool addNameOf = false,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             string s = interpolatedString.ToString();
 

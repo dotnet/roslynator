@@ -27,7 +27,7 @@ namespace Roslynator.CSharp.Refactorings.ExtractCondition
             in StatementListInfo statementsInfo,
             BinaryExpressionSyntax condition,
             ExpressionSyntax expression,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             var ifStatement = (IfStatementSyntax)condition.Parent;
 

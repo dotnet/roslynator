@@ -25,7 +25,7 @@ namespace Roslynator.CSharp.Refactorings
         private static Task<Document> RefactorAsync(
             Document document,
             ElseClauseSyntax elseClause,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             var ifStatement = (IfStatementSyntax)elseClause.Statement;
 

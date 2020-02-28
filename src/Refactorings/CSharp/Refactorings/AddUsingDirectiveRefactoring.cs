@@ -57,7 +57,7 @@ namespace Roslynator.CSharp.Refactorings
             Document document,
             SyntaxNode node,
             INamespaceSymbol namespaceSymbol,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 

@@ -12,7 +12,7 @@ namespace Roslynator.CSharp.Refactorings
         public static Task<Document> RefactorAsync(
             Document document,
             LockStatementSyntax lockStatement,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             return IntroduceFieldToLockOnRefactoring.RefactorAsync(document, lockStatement, cancellationToken);
         }

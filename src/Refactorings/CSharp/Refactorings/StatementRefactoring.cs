@@ -178,7 +178,7 @@ namespace Roslynator.CSharp.Refactorings
         private static Task<Document> DuplicateStatementAsync(
             Document document,
             StatementSyntax statement,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             StatementListInfo statementsInfo = SyntaxInfo.StatementListInfo(statement);
             if (statementsInfo.Success)
@@ -211,7 +211,7 @@ namespace Roslynator.CSharp.Refactorings
         private static Task<Document> RemoveAllSwitchSectionsAsync(
             Document document,
             SwitchStatementSyntax switchStatement,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             SwitchStatementSyntax newSwitchStatement = switchStatement
                 .WithSections(default(SyntaxList<SwitchSectionSyntax>))

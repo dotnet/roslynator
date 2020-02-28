@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Refactorings
             Document document,
             MemberDeclarationSyntax memberDeclaration,
             bool copyCommentFromBaseIfAvailable,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             MemberDeclarationSyntax newNode = null;
 

@@ -149,7 +149,7 @@ namespace Roslynator.CSharp.Refactorings
         private static ITypeSymbol GetType(
             TypeSyntax returnType,
             SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             ITypeSymbol returnTypeSymbol = semanticModel.GetTypeSymbol(returnType, cancellationToken);
 

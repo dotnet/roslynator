@@ -87,7 +87,7 @@ namespace Roslynator.CSharp.Refactorings
         public static Task<Document> RefactorAsync(
             Document document,
             StatementSyntax statement,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             BlockSyntax block = SyntaxFactory.Block(statement)
                 .WithFormatterAnnotation();

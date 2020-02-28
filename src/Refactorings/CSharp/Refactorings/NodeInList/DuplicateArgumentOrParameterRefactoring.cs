@@ -34,7 +34,7 @@ namespace Roslynator.CSharp.Refactorings.NodeInList
         protected Task<Document> RefactorAsync(
             Document document,
             int nodeIndex,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             var info = new RewriterInfo<TSyntax>(
                 List[nodeIndex],

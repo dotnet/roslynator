@@ -97,7 +97,7 @@ namespace Roslynator.CSharp.Refactorings
             Document document,
             TypeSyntax type,
             string name,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             SyntaxTrivia endOfLine = type.GetTrailingTrivia()
                 .SkipWhile(f => f.IsWhitespaceTrivia())
@@ -114,7 +114,7 @@ namespace Roslynator.CSharp.Refactorings
             Document document,
             ExpressionStatementSyntax expressionStatement,
             string name,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             LocalDeclarationStatementSyntax newNode = LocalDeclarationStatement(
                 VariableDeclaration(

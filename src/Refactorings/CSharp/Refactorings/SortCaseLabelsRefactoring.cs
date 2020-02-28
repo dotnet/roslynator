@@ -105,7 +105,7 @@ namespace Roslynator.CSharp.Refactorings
             Document document,
             SyntaxListSelection<SwitchLabelSyntax> selectedLabels,
             IComparer<SwitchLabelSyntax> comparer,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             SyntaxList<SwitchLabelSyntax> labels = selectedLabels.UnderlyingList;
 

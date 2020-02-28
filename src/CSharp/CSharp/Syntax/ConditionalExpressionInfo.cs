@@ -51,7 +51,7 @@ namespace Roslynator.CSharp.Syntax
         /// </summary>
         public SyntaxToken QuestionToken
         {
-            get { return ConditionalExpression?.QuestionToken ?? default(SyntaxToken); }
+            get { return ConditionalExpression?.QuestionToken ?? default; }
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace Roslynator.CSharp.Syntax
         /// </summary>
         public SyntaxToken ColonToken
         {
-            get { return ConditionalExpression?.ColonToken ?? default(SyntaxToken); }
+            get { return ConditionalExpression?.ColonToken ?? default; }
         }
 
         /// <summary>

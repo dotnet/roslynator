@@ -48,7 +48,7 @@ namespace Roslynator.CSharp.Refactorings.ConvertReturnToIf
             Document document,
             TStatement statement,
             ExpressionSyntax expression,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             IfStatementSyntax ifStatement = CreateIfStatement(statement, expression)
                 .WithTriviaFrom(statement)

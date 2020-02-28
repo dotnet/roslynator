@@ -19,7 +19,7 @@ namespace Roslynator
             }
             else
             {
-                return (list.Count == 1) ? list[0] : default(T);
+                return (list.Count == 1) ? list[0] : default;
             }
         }
 
@@ -39,14 +39,14 @@ namespace Roslynator
                     for (int j = i + 1; j < count; j++)
                     {
                         if (predicate(list[j]))
-                            return default(T);
+                            return default;
                     }
 
                     return list[i];
                 }
             }
 
-            return default(T);
+            return default;
         }
 
         public static bool IsSorted<T>(this IReadOnlyList<T> values, IComparer<T> comparer)

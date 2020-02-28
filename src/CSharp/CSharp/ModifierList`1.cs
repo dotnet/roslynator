@@ -163,7 +163,7 @@ namespace Roslynator.CSharp
                 token = modifiers[index];
             }
 
-            if (token != default(SyntaxToken))
+            if (token != default)
             {
                 SyntaxTriviaList newLeadingTrivia = token.LeadingTrivia;
 
@@ -633,7 +633,7 @@ namespace Roslynator.CSharp
         {
             internal override SyntaxList<AttributeListSyntax> GetAttributeLists(LocalDeclarationStatementSyntax node)
             {
-                return default(SyntaxList<AttributeListSyntax>);
+                return default;
             }
 
             internal override SyntaxTokenList GetModifiers(LocalDeclarationStatementSyntax node)
@@ -651,7 +651,7 @@ namespace Roslynator.CSharp
         {
             internal override SyntaxList<AttributeListSyntax> GetAttributeLists(LocalFunctionStatementSyntax node)
             {
-                return default(SyntaxList<AttributeListSyntax>);
+                return default;
             }
 
             internal override SyntaxTokenList GetModifiers(LocalFunctionStatementSyntax node)

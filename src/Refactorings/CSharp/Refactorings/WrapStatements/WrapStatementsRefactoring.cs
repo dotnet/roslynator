@@ -17,7 +17,7 @@ namespace Roslynator.CSharp.Refactorings.WrapStatements
         public Task<Document> RefactorAsync(
             Document document,
             StatementListSelection selectedStatements,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             StatementSyntax[] statements = selectedStatements.ToArray();
 
@@ -54,7 +54,7 @@ namespace Roslynator.CSharp.Refactorings.WrapStatements
         public Task<Document> RefactorAsync(
             Document document,
             StatementSyntax embeddedStatement,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             BlockSyntax newNode = Block(CreateStatement(ImmutableArray.Create(embeddedStatement)))
                 .WithFormatterAnnotation();

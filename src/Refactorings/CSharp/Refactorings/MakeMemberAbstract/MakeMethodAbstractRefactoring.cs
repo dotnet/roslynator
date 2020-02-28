@@ -30,7 +30,7 @@ namespace Roslynator.CSharp.Refactorings.MakeMemberAbstract
         public static Task<Document> RefactorAsync(
             Document document,
             MethodDeclarationSyntax methodDeclaration,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             MethodDeclarationSyntax newNode = methodDeclaration
                 .WithExpressionBody(null)

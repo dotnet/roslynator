@@ -27,7 +27,7 @@ namespace Roslynator.CSharp.Refactorings.Documentation
         public async Task<Document> RefactorAsync(
             Document document,
             DocumentationCommentTriviaSyntax comment,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
 

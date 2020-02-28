@@ -187,7 +187,7 @@ namespace Roslynator.CSharp.Analysis.AddExceptionToDocumentationComment
         internal static ISymbol GetDeclarationSymbol(
             int position,
             SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             ISymbol symbol = semanticModel.GetEnclosingSymbol(position, cancellationToken);
 

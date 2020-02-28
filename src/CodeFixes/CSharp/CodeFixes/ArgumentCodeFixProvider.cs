@@ -258,7 +258,7 @@ namespace Roslynator.CSharp.CodeFixes
             ImmutableArray<ISymbol> candidateSymbols = symbolInfo.CandidateSymbols;
 
             if (candidateSymbols.IsEmpty)
-                return default(ImmutableArray<IParameterSymbol>);
+                return default;
 
             int argumentCount = argumentList.Arguments.Count;
 
@@ -274,7 +274,7 @@ namespace Roslynator.CSharp.CodeFixes
                     && parameters2.Length == argumentCount)
                 {
                     if (!parameters.IsDefault)
-                        return default(ImmutableArray<IParameterSymbol>);
+                        return default;
 
                     parameters = parameters2;
                 }

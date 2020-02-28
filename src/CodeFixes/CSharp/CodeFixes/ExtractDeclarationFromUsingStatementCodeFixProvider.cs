@@ -50,7 +50,7 @@ namespace Roslynator.CSharp.CodeFixes
         public static Task<Document> RefactorAsync(
             Document document,
             UsingStatementSyntax usingStatement,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             StatementListInfo statementsInfo = SyntaxInfo.StatementListInfo(usingStatement);
 

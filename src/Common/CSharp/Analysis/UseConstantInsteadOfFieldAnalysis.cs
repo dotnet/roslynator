@@ -16,7 +16,7 @@ namespace Roslynator.CSharp.Analysis
             FieldDeclarationSyntax fieldDeclaration,
             SemanticModel semanticModel,
             bool onlyPrivate = false,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             bool isStatic = false;
             bool isReadOnly = false;

@@ -104,7 +104,7 @@ namespace Roslynator
 
         internal static TNode SingleOrDefault<TNode>(this SeparatedSyntaxList<TNode> list, bool shouldThrow) where TNode : SyntaxNode
         {
-            return (shouldThrow) ? list.SingleOrDefault() : (list.Count == 1) ? list[0] : default(TNode);
+            return (shouldThrow) ? list.SingleOrDefault() : (list.Count == 1) ? list[0] : default;
         }
 
         internal static TNode SingleOrDefault<TNode>(this SeparatedSyntaxList<TNode> list, Func<TNode, bool> predicate, bool shouldThrow) where TNode : SyntaxNode
@@ -123,14 +123,14 @@ namespace Roslynator
                     while (en.MoveNext())
                     {
                         if (predicate(en.Current))
-                            return default(TNode);
+                            return default;
                     }
 
                     return result;
                 }
             }
 
-            return default(TNode);
+            return default;
         }
 
         internal static TNode LastButOne<TNode>(this SeparatedSyntaxList<TNode> list) where TNode : SyntaxNode
@@ -140,7 +140,7 @@ namespace Roslynator
 
         internal static TNode LastButOneOrDefault<TNode>(this SeparatedSyntaxList<TNode> list) where TNode : SyntaxNode
         {
-            return (list.Count > 1) ? list.LastButOne() : default(TNode);
+            return (list.Count > 1) ? list.LastButOne() : default;
         }
 
         /// <summary>
@@ -354,7 +354,7 @@ namespace Roslynator
 
         internal static TNode SingleOrDefault<TNode>(this SyntaxList<TNode> list, bool shouldThrow) where TNode : SyntaxNode
         {
-            return (shouldThrow) ? list.SingleOrDefault() : ((list.Count == 1) ? list[0] : default(TNode));
+            return (shouldThrow) ? list.SingleOrDefault() : ((list.Count == 1) ? list[0] : default);
         }
 
         internal static TNode SingleOrDefault<TNode>(this SyntaxList<TNode> list, Func<TNode, bool> predicate, bool shouldThrow) where TNode : SyntaxNode
@@ -373,14 +373,14 @@ namespace Roslynator
                     while (en.MoveNext())
                     {
                         if (predicate(en.Current))
-                            return default(TNode);
+                            return default;
                     }
 
                     return result;
                 }
             }
 
-            return default(TNode);
+            return default;
         }
 
         internal static bool SpanContainsDirectives<TNode>(this SyntaxList<TNode> list) where TNode : SyntaxNode
@@ -410,7 +410,7 @@ namespace Roslynator
 
         internal static TNode LastButOneOrDefault<TNode>(this SyntaxList<TNode> list) where TNode : SyntaxNode
         {
-            return (list.Count > 1) ? list.LastButOne() : default(TNode);
+            return (list.Count > 1) ? list.LastButOne() : default;
         }
 
         /// <summary>
@@ -721,22 +721,22 @@ namespace Roslynator
                 .WithTrailingTrivia(token.TrailingTrivia);
         }
 
-        internal static int GetSpanStartLine(this SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken))
+        internal static int GetSpanStartLine(this SyntaxNode node, CancellationToken cancellationToken = default)
         {
             return node.SyntaxTree.GetLineSpan(node.Span, cancellationToken).StartLine();
         }
 
-        internal static int GetFullSpanStartLine(this SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken))
+        internal static int GetFullSpanStartLine(this SyntaxNode node, CancellationToken cancellationToken = default)
         {
             return node.SyntaxTree.GetLineSpan(node.FullSpan, cancellationToken).StartLine();
         }
 
-        internal static int GetSpanEndLine(this SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken))
+        internal static int GetSpanEndLine(this SyntaxNode node, CancellationToken cancellationToken = default)
         {
             return node.SyntaxTree.GetLineSpan(node.Span, cancellationToken).EndLine();
         }
 
-        internal static int GetFullSpanEndLine(this SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken))
+        internal static int GetFullSpanEndLine(this SyntaxNode node, CancellationToken cancellationToken = default)
         {
             return node.SyntaxTree.GetLineSpan(node.FullSpan, cancellationToken).EndLine();
         }
@@ -821,7 +821,7 @@ namespace Roslynator
                     return tnode;
             }
 
-            return default(TNode);
+            return default;
         }
 
         /// <summary>
@@ -844,7 +844,7 @@ namespace Roslynator
                     return tnode;
             }
 
-            return default(TNode);
+            return default;
         }
 
         /// <summary>
@@ -865,7 +865,7 @@ namespace Roslynator
                     return tnode;
             }
 
-            return default(TNode);
+            return default;
         }
 
         /// <summary>
@@ -888,7 +888,7 @@ namespace Roslynator
                     return tnode;
             }
 
-            return default(TNode);
+            return default;
         }
 
         internal static SyntaxNode GetParent(this SyntaxNode node, bool ascendOutOfTrivia)
@@ -1092,22 +1092,22 @@ namespace Roslynator
             return SyntaxTriviaList.Empty;
         }
 
-        internal static int GetSpanStartLine(this SyntaxToken token, CancellationToken cancellationToken = default(CancellationToken))
+        internal static int GetSpanStartLine(this SyntaxToken token, CancellationToken cancellationToken = default)
         {
             return token.SyntaxTree.GetLineSpan(token.Span, cancellationToken).StartLine();
         }
 
-        internal static int GetFullSpanStartLine(this SyntaxToken token, CancellationToken cancellationToken = default(CancellationToken))
+        internal static int GetFullSpanStartLine(this SyntaxToken token, CancellationToken cancellationToken = default)
         {
             return token.SyntaxTree.GetLineSpan(token.FullSpan, cancellationToken).StartLine();
         }
 
-        internal static int GetSpanEndLine(this SyntaxToken token, CancellationToken cancellationToken = default(CancellationToken))
+        internal static int GetSpanEndLine(this SyntaxToken token, CancellationToken cancellationToken = default)
         {
             return token.SyntaxTree.GetLineSpan(token.Span, cancellationToken).EndLine();
         }
 
-        internal static int GetFullSpanEndLine(this SyntaxToken token, CancellationToken cancellationToken = default(CancellationToken))
+        internal static int GetFullSpanEndLine(this SyntaxToken token, CancellationToken cancellationToken = default)
         {
             return token.SyntaxTree.GetLineSpan(token.FullSpan, cancellationToken).EndLine();
         }
@@ -1335,7 +1335,7 @@ namespace Roslynator
                 }
             }
 
-            triviaList = default(SyntaxTriviaList);
+            triviaList = default;
             return false;
         }
 

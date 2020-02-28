@@ -122,7 +122,7 @@ namespace Roslynator.CSharp.SyntaxWalkers
         public static ContainsLocalOrParameterReferenceWalker GetInstance(
             ISymbol symbol,
             SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             ContainsLocalOrParameterReferenceWalker walker = _cachedInstance;
 

@@ -94,7 +94,7 @@ namespace Roslynator.CSharp.Refactorings
         public static Task<Document> RefactorAsync(
             Document document,
             GenericNameSyntax genericName,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             TypeSyntax typeSyntax = genericName
                 .TypeArgumentList

@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Refactorings
         public static Task<Document> RefactorAsync(
             Document document,
             AnonymousMethodExpressionSyntax anonymousMethod,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             ExpressionSyntax newNode = ParenthesizedLambdaExpression(
                 anonymousMethod.AsyncKeyword,

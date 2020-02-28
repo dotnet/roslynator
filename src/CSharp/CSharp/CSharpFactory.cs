@@ -385,12 +385,12 @@ namespace Roslynator.CSharp
                 members);
         }
 
-        public static ClassDeclarationSyntax ClassDeclaration(SyntaxTokenList modifiers, string identifier, SyntaxList<MemberDeclarationSyntax> members = default(SyntaxList<MemberDeclarationSyntax>))
+        public static ClassDeclarationSyntax ClassDeclaration(SyntaxTokenList modifiers, string identifier, SyntaxList<MemberDeclarationSyntax> members = default)
         {
             return ClassDeclaration(modifiers, Identifier(identifier), members);
         }
 
-        public static ClassDeclarationSyntax ClassDeclaration(SyntaxTokenList modifiers, SyntaxToken identifier, SyntaxList<MemberDeclarationSyntax> members = default(SyntaxList<MemberDeclarationSyntax>))
+        public static ClassDeclarationSyntax ClassDeclaration(SyntaxTokenList modifiers, SyntaxToken identifier, SyntaxList<MemberDeclarationSyntax> members = default)
         {
             return SyntaxFactory.ClassDeclaration(
                 default(SyntaxList<AttributeListSyntax>),
@@ -423,12 +423,12 @@ namespace Roslynator.CSharp
                 structDeclaration.SemicolonToken);
         }
 
-        public static StructDeclarationSyntax StructDeclaration(SyntaxTokenList modifiers, string identifier, SyntaxList<MemberDeclarationSyntax> members = default(SyntaxList<MemberDeclarationSyntax>))
+        public static StructDeclarationSyntax StructDeclaration(SyntaxTokenList modifiers, string identifier, SyntaxList<MemberDeclarationSyntax> members = default)
         {
             return StructDeclaration(modifiers, Identifier(identifier), members);
         }
 
-        public static StructDeclarationSyntax StructDeclaration(SyntaxTokenList modifiers, SyntaxToken identifier, SyntaxList<MemberDeclarationSyntax> members = default(SyntaxList<MemberDeclarationSyntax>))
+        public static StructDeclarationSyntax StructDeclaration(SyntaxTokenList modifiers, SyntaxToken identifier, SyntaxList<MemberDeclarationSyntax> members = default)
         {
             return SyntaxFactory.StructDeclaration(
                 default(SyntaxList<AttributeListSyntax>),
@@ -461,12 +461,12 @@ namespace Roslynator.CSharp
                 classDeclaration.SemicolonToken);
         }
 
-        public static InterfaceDeclarationSyntax InterfaceDeclaration(SyntaxTokenList modifiers, string identifier, SyntaxList<MemberDeclarationSyntax> members = default(SyntaxList<MemberDeclarationSyntax>))
+        public static InterfaceDeclarationSyntax InterfaceDeclaration(SyntaxTokenList modifiers, string identifier, SyntaxList<MemberDeclarationSyntax> members = default)
         {
             return InterfaceDeclaration(modifiers, Identifier(identifier), members);
         }
 
-        public static InterfaceDeclarationSyntax InterfaceDeclaration(SyntaxTokenList modifiers, SyntaxToken identifier, SyntaxList<MemberDeclarationSyntax> members = default(SyntaxList<MemberDeclarationSyntax>))
+        public static InterfaceDeclarationSyntax InterfaceDeclaration(SyntaxTokenList modifiers, SyntaxToken identifier, SyntaxList<MemberDeclarationSyntax> members = default)
         {
             return SyntaxFactory.InterfaceDeclaration(
                 default(SyntaxList<AttributeListSyntax>),
@@ -558,7 +558,7 @@ namespace Roslynator.CSharp
                 modifiers,
                 type,
                 identifier,
-                (value != null) ? EqualsValueClause(value) : default(EqualsValueClauseSyntax));
+                (value != null) ? EqualsValueClause(value) : default);
         }
 
         public static FieldDeclarationSyntax FieldDeclaration(SyntaxTokenList modifiers, TypeSyntax type, SyntaxToken identifier, EqualsValueClauseSyntax initializer)
@@ -789,8 +789,8 @@ namespace Roslynator.CSharp
                 identifier,
                 accessorList,
                 default(ArrowExpressionClauseSyntax),
-                (value != null) ? EqualsValueClause(value) : default(EqualsValueClauseSyntax),
-                (value != null) ? SemicolonToken() : default(SyntaxToken));
+                (value != null) ? EqualsValueClause(value) : default,
+                (value != null) ? SemicolonToken() : default);
         }
 
         public static PropertyDeclarationSyntax PropertyDeclaration(
@@ -966,17 +966,17 @@ namespace Roslynator.CSharp
                 SemicolonToken());
         }
 
-        public static AccessorDeclarationSyntax AutoGetAccessorDeclaration(SyntaxTokenList modifiers = default(SyntaxTokenList))
+        public static AccessorDeclarationSyntax AutoGetAccessorDeclaration(SyntaxTokenList modifiers = default)
         {
             return AutoAccessorDeclaration(SyntaxKind.GetAccessorDeclaration, modifiers);
         }
 
-        public static AccessorDeclarationSyntax AutoSetAccessorDeclaration(SyntaxTokenList modifiers = default(SyntaxTokenList))
+        public static AccessorDeclarationSyntax AutoSetAccessorDeclaration(SyntaxTokenList modifiers = default)
         {
             return AutoAccessorDeclaration(SyntaxKind.SetAccessorDeclaration, modifiers);
         }
 
-        private static AccessorDeclarationSyntax AutoAccessorDeclaration(SyntaxKind kind, SyntaxTokenList modifiers = default(SyntaxTokenList))
+        private static AccessorDeclarationSyntax AutoAccessorDeclaration(SyntaxKind kind, SyntaxTokenList modifiers = default)
         {
             return AccessorDeclaration(
                 kind,
@@ -1762,7 +1762,7 @@ namespace Roslynator.CSharp
                 ArgumentList(SyntaxFactory.Argument(expression)));
         }
 
-        public static InitializerExpressionSyntax ArrayInitializerExpression(SeparatedSyntaxList<ExpressionSyntax> expressions = default(SeparatedSyntaxList<ExpressionSyntax>))
+        public static InitializerExpressionSyntax ArrayInitializerExpression(SeparatedSyntaxList<ExpressionSyntax> expressions = default)
         {
             return InitializerExpression(SyntaxKind.ArrayInitializerExpression, expressions);
         }
@@ -1772,7 +1772,7 @@ namespace Roslynator.CSharp
             return InitializerExpression(SyntaxKind.ArrayInitializerExpression, openBraceToken, expressions, closeBraceToken);
         }
 
-        public static InitializerExpressionSyntax CollectionInitializerExpression(SeparatedSyntaxList<ExpressionSyntax> expressions = default(SeparatedSyntaxList<ExpressionSyntax>))
+        public static InitializerExpressionSyntax CollectionInitializerExpression(SeparatedSyntaxList<ExpressionSyntax> expressions = default)
         {
             return InitializerExpression(SyntaxKind.CollectionInitializerExpression, expressions);
         }
@@ -1782,7 +1782,7 @@ namespace Roslynator.CSharp
             return InitializerExpression(SyntaxKind.CollectionInitializerExpression, openBraceToken, expressions, closeBraceToken);
         }
 
-        public static InitializerExpressionSyntax ComplexElementInitializerExpression(SeparatedSyntaxList<ExpressionSyntax> expressions = default(SeparatedSyntaxList<ExpressionSyntax>))
+        public static InitializerExpressionSyntax ComplexElementInitializerExpression(SeparatedSyntaxList<ExpressionSyntax> expressions = default)
         {
             return InitializerExpression(SyntaxKind.ComplexElementInitializerExpression, expressions);
         }
@@ -1792,7 +1792,7 @@ namespace Roslynator.CSharp
             return InitializerExpression(SyntaxKind.ComplexElementInitializerExpression, openBraceToken, expressions, closeBraceToken);
         }
 
-        public static InitializerExpressionSyntax ObjectInitializerExpression(SeparatedSyntaxList<ExpressionSyntax> expressions = default(SeparatedSyntaxList<ExpressionSyntax>))
+        public static InitializerExpressionSyntax ObjectInitializerExpression(SeparatedSyntaxList<ExpressionSyntax> expressions = default)
         {
             return InitializerExpression(SyntaxKind.ObjectInitializerExpression, expressions);
         }

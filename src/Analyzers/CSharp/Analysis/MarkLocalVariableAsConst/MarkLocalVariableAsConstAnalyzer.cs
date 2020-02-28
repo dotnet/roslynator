@@ -111,7 +111,7 @@ namespace Roslynator.CSharp.Analysis.MarkLocalVariableAsConst
             ExpressionSyntax expression,
             ITypeSymbol typeSymbol,
             SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (expression?.IsMissing != false)
                 return false;

@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.Refactorings
             ForEachStatementSyntax forEachStatement,
             SemanticModel semanticModel,
             bool reverseLoop = false,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             string name = NameGenerator.Default.EnsureUniqueLocalName(
                 DefaultNames.ForVariable,

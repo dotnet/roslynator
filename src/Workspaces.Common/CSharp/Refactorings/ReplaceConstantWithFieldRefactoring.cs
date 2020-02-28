@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Refactorings
         public static async Task<Document> RefactorAsync(
             Document document,
             FieldDeclarationSyntax field,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             FieldDeclarationSyntax newField = field
                 .RemoveModifier(SyntaxKind.ConstKeyword)

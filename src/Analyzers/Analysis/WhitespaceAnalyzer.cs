@@ -70,7 +70,7 @@ namespace Roslynator.CSharp.Analysis
                     }
                     else
                     {
-                        emptyLines = default(TextSpan);
+                        emptyLines = default;
                     }
                 }
                 else
@@ -82,7 +82,7 @@ namespace Roslynator.CSharp.Analysis
                             Location.Create(context.Tree, emptyLines));
                     }
 
-                    emptyLines = default(TextSpan);
+                    emptyLines = default;
 
                     int end = textLine.End - 1;
 

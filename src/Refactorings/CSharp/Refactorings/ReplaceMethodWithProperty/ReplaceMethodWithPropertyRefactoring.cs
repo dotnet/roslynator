@@ -25,7 +25,7 @@ namespace Roslynator.CSharp.Refactorings.ReplaceMethodWithProperty
         public static async Task<Solution> RefactorAsync(
             Document document,
             MethodDeclarationSyntax methodDeclaration,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             Solution solution = document.Solution();
 

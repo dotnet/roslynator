@@ -44,7 +44,7 @@ namespace Roslynator.CSharp.Analysis
 
             TextSpan span = GetRedundantSpan(coalesceExpression, info.Left, info.Right, context.SemanticModel, context.CancellationToken);
 
-            if (span == default(TextSpan))
+            if (span == default)
                 return;
 
             DiagnosticHelpers.ReportDiagnostic(context,
@@ -66,7 +66,7 @@ namespace Roslynator.CSharp.Analysis
                 case BinaryExpressionPart.Right:
                     return TextSpan.FromBounds(coalesceExpression.OperatorToken.SpanStart, coalesceExpression.Right.Span.End);
                 default:
-                    return default(TextSpan);
+                    return default;
             }
         }
 

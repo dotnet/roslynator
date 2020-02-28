@@ -43,7 +43,7 @@ namespace Roslynator.Documentation.Html
 
         public DocumentationDisplayMode DocumentationDisplayMode { get; }
 
-        public override void WriteDocument(IEnumerable<IAssemblySymbol> assemblies, CancellationToken cancellationToken = default(CancellationToken))
+        public override void WriteDocument(IEnumerable<IAssemblySymbol> assemblies, CancellationToken cancellationToken = default)
         {
             try
             {
@@ -537,7 +537,7 @@ namespace Roslynator.Documentation.Html
             WriteString(DocumentationUtility.CreateLocalLink(symbol));
         }
 
-        internal override void WriteTypeHierarchyItem(TypeHierarchyItem item, CancellationToken cancellationToken = default(CancellationToken))
+        internal override void WriteTypeHierarchyItem(TypeHierarchyItem item, CancellationToken cancellationToken = default)
         {
             (_typeHierarchy ?? (_typeHierarchy = new List<TypeHierarchyItem>())).Add(item);
             base.WriteTypeHierarchyItem(item, cancellationToken);

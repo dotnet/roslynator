@@ -152,7 +152,7 @@ namespace Roslynator.CSharp.Refactorings
             Solution solution,
             ISymbol symbol,
             Accessibility newAccessibility,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             ImmutableArray<MemberDeclarationSyntax> memberDeclarations = GetMemberDeclarations(symbol, cancellationToken)
                 .Concat(await FindOverridingMemberDeclarationsAsync(symbol, solution, cancellationToken).ConfigureAwait(false))
@@ -164,7 +164,7 @@ namespace Roslynator.CSharp.Refactorings
         private static async Task<IEnumerable<MemberDeclarationSyntax>> FindOverridingMemberDeclarationsAsync(
             ISymbol symbol,
             Solution solution,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             IEnumerable<ISymbol> symbols = await SymbolFinder.FindOverridesAsync(symbol, solution, cancellationToken: cancellationToken).ConfigureAwait(false);
 
@@ -173,7 +173,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static IEnumerable<MemberDeclarationSyntax> GetMemberDeclarations(
             ISymbol symbol,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             foreach (SyntaxReference syntaxReference in symbol.DeclaringSyntaxReferences)
             {

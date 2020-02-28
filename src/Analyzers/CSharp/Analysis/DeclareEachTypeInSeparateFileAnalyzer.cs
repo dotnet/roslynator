@@ -81,7 +81,7 @@ namespace Roslynator.CSharp.Analysis
         {
             SyntaxToken token = CSharpUtility.GetIdentifier(member);
 
-            if (token == default(SyntaxToken))
+            if (token == default)
                 return;
 
             DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.DeclareEachTypeInSeparateFile, token);

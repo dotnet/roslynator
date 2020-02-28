@@ -253,7 +253,7 @@ namespace Roslynator.CSharp.Analysis
                     || name == "ToUpperInvariant";
             }
 
-            invocationInfo = default(SimpleMemberInvocationExpressionInfo);
+            invocationInfo = default;
             return false;
         }
 

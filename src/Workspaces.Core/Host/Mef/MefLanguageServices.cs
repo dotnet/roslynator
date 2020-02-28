@@ -56,7 +56,7 @@ namespace Roslynator.Host.Mef
                 });
             }
 
-            return service != default(Lazy<ILanguageService, LanguageServiceMetadata>);
+            return service != default;
         }
     }
 }

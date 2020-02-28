@@ -89,7 +89,7 @@ namespace Roslynator.CSharp.Refactorings
             Document document,
             InvocationExpressionSyntax invocation,
             SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             SeparatedSyntaxList<ArgumentSyntax> arguments = invocation.ArgumentList.Arguments;
 

@@ -42,7 +42,7 @@ namespace Roslynator.CSharp.Analysis.If
             IfStatementSyntax ifStatement,
             IfAnalysisOptions options,
             SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (!ifStatement.IsTopmostIf())
                 return Empty;

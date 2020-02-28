@@ -39,7 +39,7 @@ namespace Roslynator.CSharp.Refactorings
             Document document,
             ExpressionStatementSyntax statement,
             ReturnStatementSyntax returnStatement,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             var block = (BlockSyntax)statement.Parent;
 

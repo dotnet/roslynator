@@ -89,7 +89,7 @@ namespace Roslynator.CSharp.Refactorings
         public static Task<Document> RefactorAsync(
             Document document,
             StatementSyntax statement,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             IEnumerable<StatementSyntax> newNodes = GetNewNodes(statement).Select(f => f.WithFormatterAnnotation());
 

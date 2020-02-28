@@ -61,7 +61,7 @@ namespace Roslynator.CSharp.Syntax
         /// </summary>
         public SyntaxTokenList Modifiers
         {
-            get { return Statement?.Modifiers ?? default(SyntaxTokenList); }
+            get { return Statement?.Modifiers ?? default; }
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace Roslynator.CSharp.Syntax
         /// </summary>
         public SyntaxToken Identifier
         {
-            get { return Declarator?.Identifier ?? default(SyntaxToken); }
+            get { return Declarator?.Identifier ?? default; }
         }
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace Roslynator.CSharp.Syntax
         /// </summary>
         public SyntaxToken EqualsToken
         {
-            get { return Initializer?.EqualsToken ?? default(SyntaxToken); }
+            get { return Initializer?.EqualsToken ?? default; }
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace Roslynator.CSharp.Syntax
         /// </summary>
         public SyntaxToken SemicolonToken
         {
-            get { return Statement?.SemicolonToken ?? default(SyntaxToken); }
+            get { return Statement?.SemicolonToken ?? default; }
         }
 
         /// <summary>

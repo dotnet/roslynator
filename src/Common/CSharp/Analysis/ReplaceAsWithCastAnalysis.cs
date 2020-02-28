@@ -12,7 +12,7 @@ namespace Roslynator.CSharp.Analysis
         public static bool IsFixable(
             BinaryExpressionSyntax binaryExpression,
             SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             AsExpressionInfo info = SyntaxInfo.AsExpressionInfo(binaryExpression);
 

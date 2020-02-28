@@ -76,7 +76,7 @@ namespace Roslynator.CSharp.Refactorings
             Document document,
             ParameterSyntax parameter,
             string name,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             ParameterSyntax newParameter = parameter
                 .WithType(parameter.Type.WithoutTrailingTrivia())

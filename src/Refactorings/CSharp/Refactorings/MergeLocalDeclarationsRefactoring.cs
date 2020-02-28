@@ -65,7 +65,7 @@ namespace Roslynator.CSharp.Refactorings
         private static Task<Document> RefactorAsync(
             Document document,
             StatementListSelection selectedStatements,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             LocalDeclarationStatementSyntax[] localDeclarations = selectedStatements
                 .Cast<LocalDeclarationStatementSyntax>()

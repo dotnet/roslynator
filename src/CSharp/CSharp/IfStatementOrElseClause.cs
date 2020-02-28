@@ -129,7 +129,7 @@ namespace Roslynator.CSharp
                 if (_elseClause != null)
                     return _elseClause.Span;
 
-                return default(TextSpan);
+                return default;
             }
         }
 
@@ -146,7 +146,7 @@ namespace Roslynator.CSharp
                 if (_elseClause != null)
                     return _elseClause.FullSpan;
 
-                return default(TextSpan);
+                return default;
             }
         }
 

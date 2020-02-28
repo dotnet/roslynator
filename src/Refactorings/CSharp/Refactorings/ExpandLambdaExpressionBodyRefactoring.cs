@@ -24,7 +24,7 @@ namespace Roslynator.CSharp.Refactorings
             Document document,
             LambdaExpressionSyntax lambda,
             ExpressionSyntax expression,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 

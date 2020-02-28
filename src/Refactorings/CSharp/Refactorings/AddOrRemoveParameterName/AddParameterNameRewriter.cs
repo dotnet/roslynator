@@ -39,7 +39,7 @@ namespace Roslynator.CSharp.Refactorings.AddOrRemoveParameterName
         private static ArgumentSyntax AddParameterName(
             ArgumentSyntax argument,
             SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (argument.NameColon?.IsMissing != false)
             {

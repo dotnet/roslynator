@@ -12,7 +12,7 @@ namespace Roslynator.CSharp.Analysis
         public static bool IsFixable(
             MemberAccessExpressionSyntax memberAccess,
             SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (memberAccess.IsParentKind(SyntaxKind.SimpleMemberAccessExpression))
                 return false;

@@ -32,7 +32,7 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
         public override Task<Document> InlineAsync(
             SyntaxNode node,
             ExpressionSyntax expression,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             node = GetNodeToReplace(node);
 
@@ -42,7 +42,7 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
         public override Task<Solution> InlineAndRemoveAsync(
             SyntaxNode node,
             ExpressionSyntax expression,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             node = GetNodeToReplace(node);
 

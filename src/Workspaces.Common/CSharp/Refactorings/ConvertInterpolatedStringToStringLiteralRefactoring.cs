@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Refactorings
         public static Task<Document> RefactorAsync(
             Document document,
             InterpolatedStringExpressionSyntax interpolatedString,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             string s = StringUtility.ReplaceDoubleBracesWithSingleBrace(interpolatedString.ToString().Substring(1));
 

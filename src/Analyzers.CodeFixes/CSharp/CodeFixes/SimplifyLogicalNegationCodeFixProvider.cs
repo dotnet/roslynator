@@ -47,7 +47,7 @@ namespace Roslynator.CSharp.CodeFixes
         private static Task<Document> SimplifyLogicalNegationAsync(
             Document document,
             PrefixUnaryExpressionSyntax logicalNot,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             ExpressionSyntax newNode = GetNewNode(logicalNot)
                 .WithTriviaFrom(logicalNot)

@@ -18,7 +18,7 @@ namespace Roslynator
             ISymbol symbol,
             Solution solution,
             bool allowCandidate = false,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             return FindReferencesAsync(symbol, solution, null, allowCandidate, cancellationToken);
         }
@@ -28,7 +28,7 @@ namespace Roslynator
             Solution solution,
             IImmutableSet<Document> documents,
             bool allowCandidate = false,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (symbol == null)
                 throw new ArgumentNullException(nameof(symbol));
@@ -61,7 +61,7 @@ namespace Roslynator
             ISymbol symbol,
             Solution solution,
             bool allowCandidate = false,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             return FindReferencesByDocumentAsync(symbol, solution, null, allowCandidate, cancellationToken);
         }
@@ -71,7 +71,7 @@ namespace Roslynator
             Solution solution,
             IImmutableSet<Document> documents,
             bool allowCandidate = false,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (symbol == null)
                 throw new ArgumentNullException(nameof(symbol));
@@ -113,7 +113,7 @@ namespace Roslynator
             ISymbol symbol,
             Document document,
             bool allowCandidate = false,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (symbol == null)
                 throw new ArgumentNullException(nameof(symbol));

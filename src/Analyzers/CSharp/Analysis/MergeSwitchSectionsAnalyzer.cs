@@ -128,7 +128,7 @@ namespace Roslynator.CSharp.Analysis
             foreach (SwitchLabelSyntax label in section.Labels)
             {
                 if (!label.Kind().Is(SyntaxKind.CaseSwitchLabel, SyntaxKind.DefaultSwitchLabel))
-                    return default(SyntaxList<StatementSyntax>);
+                    return default;
             }
 
             SyntaxList<StatementSyntax> statements = section.Statements;

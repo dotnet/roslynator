@@ -50,7 +50,7 @@ namespace Roslynator.CSharp.Refactorings
         public static Task<Document> RefactorAsync(
             Document document,
             AttributeArgumentSyntax argument,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             var argumentList = (AttributeArgumentListSyntax)argument.Parent;
 
