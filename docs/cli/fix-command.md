@@ -40,7 +40,7 @@ The project or solution to fix.
 
 ### Optional Options
 
-**`a-|--analyzer-assemblies`** <PATH>
+**`-a|--analyzer-assemblies`** <PATH>
 
 Defines one or more paths to:
 
