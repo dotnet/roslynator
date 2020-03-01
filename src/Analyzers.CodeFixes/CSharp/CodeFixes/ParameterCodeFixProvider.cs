@@ -17,7 +17,13 @@ namespace Roslynator.CSharp.CodeFixes
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.OverridingMemberCannotChangeParamsModifier); }
+            get
+            {
+                return ImmutableArray.Create(
+                    DiagnosticIdentifiers.OverridingMemberCannotChangeParamsModifier,
+                    DiagnosticIdentifiers.MakeParameterRefReadOnly,
+                    DiagnosticIdentifiers.DoNotPassNonReadOnlyStructByReadOnlyReference);
+            }
         }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -40,6 +46,20 @@ namespace Roslynator.CSharp.CodeFixes
                             else
                             {
                                 ModifiersCodeFixRegistrator.AddModifier(context, diagnostic, parameter, SyntaxKind.ParamsKeyword);
+                            }
+
+                            break;
+                        }
+                    case DiagnosticIdentifiers.MakeParameterRefReadOnly:
+                    case DiagnosticIdentifiers.DoNotPassNonReadOnlyStructByReadOnlyReference:
+                        {
+                            if (parameter.Modifiers.Contains(SyntaxKind.InKeyword))
+                            {
+                                ModifiersCodeFixRegistrator.RemoveModifier(context, diagnostic, parameter, SyntaxKind.InKeyword);
+                            }
+                            else
+                            {
+                                ModifiersCodeFixRegistrator.AddModifier(context, diagnostic, parameter, SyntaxKind.InKeyword);
                             }
 
                             break;

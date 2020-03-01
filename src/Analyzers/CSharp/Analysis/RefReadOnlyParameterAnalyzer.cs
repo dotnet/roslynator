@@ -14,11 +14,16 @@ using Roslynator.CSharp.SyntaxWalkers;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class MakeParameterRefReadOnlyAnalyzer : BaseDiagnosticAnalyzer
+    public class RefReadOnlyParameterAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.MakeParameterRefReadOnly); }
+            get
+            {
+                return ImmutableArray.Create(
+                    DiagnosticDescriptors.MakeParameterRefReadOnly,
+                    DiagnosticDescriptors.DoNotPassNonReadOnlyStructByReadOnlyReference);
+            }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -110,9 +115,6 @@ namespace Roslynator.CSharp.Analysis
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                if (parameter.RefKind != RefKind.None)
-                    continue;
-
                 ITypeSymbol type = parameter.Type;
 
                 if (type.Kind == SymbolKind.ErrorType)
@@ -123,6 +125,20 @@ namespace Roslynator.CSharp.Analysis
 
                 //TODO: ITypeSymbol.IsReadOnly, https://github.com/dotnet/roslyn/issues/23792
                 if (!type.IsReadOnlyStruct())
+                {
+                    if (parameter.RefKind == RefKind.In)
+                    {
+                        var parameterSyntax = (ParameterSyntax)parameter.GetSyntax(cancellationToken);
+
+                        Debug.Assert(parameterSyntax.Modifiers.Contains(SyntaxKind.InKeyword), "");
+
+                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.DoNotPassNonReadOnlyStructByReadOnlyReference, parameterSyntax.Identifier);
+                    }
+
+                    continue;
+                }
+
+                if (parameter.RefKind != RefKind.None)
                     continue;
 
                 if (walker == null)

@@ -2631,5 +2631,17 @@ namespace Roslynator.CSharp
             helpLinkUri:        DiagnosticIdentifiers.ImplementNonGenericCounterpart, 
             customTags:         Array.Empty<string>());
 
+        /// <summary>RCS1242</summary>
+        public static readonly DiagnosticDescriptor DoNotPassNonReadOnlyStructByReadOnlyReference = Factory.Create(
+            id:                 DiagnosticIdentifiers.DoNotPassNonReadOnlyStructByReadOnlyReference, 
+            title:              "Do not pass non-read-only struct by read-only reference.", 
+            messageFormat:      "Do not pass non-read-only struct by read-only reference.", 
+            category:           DiagnosticCategories.Performance, 
+            defaultSeverity:    DiagnosticSeverity.Warning, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.DoNotPassNonReadOnlyStructByReadOnlyReference, 
+            customTags:         Array.Empty<string>());
+
     }
 }
