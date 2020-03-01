@@ -2643,5 +2643,17 @@ namespace Roslynator.CSharp
             helpLinkUri:        DiagnosticIdentifiers.DoNotPassNonReadOnlyStructByReadOnlyReference, 
             customTags:         Array.Empty<string>());
 
+        /// <summary>RCS1243</summary>
+        public static readonly DiagnosticDescriptor DuplicateWordInComment = Factory.Create(
+            id:                 DiagnosticIdentifiers.DuplicateWordInComment, 
+            title:              "Duplicate word in a comment.", 
+            messageFormat:      "Duplicate word in a comment.", 
+            category:           DiagnosticCategories.General, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.DuplicateWordInComment, 
+            customTags:         WellKnownDiagnosticTags.Unnecessary);
+
     }
 }

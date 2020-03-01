@@ -5682,4 +5682,30 @@ public abstract class EqualityComparer : IEqualityComparer<C>, IEqualityComparer
       </Link>
     </Links>
   </Analyzer>
+  <Analyzer Identifier="DuplicateWordInComment">
+    <Id>RCS1243</Id>
+    <Title>Duplicate word in a comment.</Title>
+    <MessageFormat>Duplicate word in a comment.</MessageFormat>
+    <Category>General</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>true</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[/// <summary>
+/// This is the the comment.
+/// </summary>
+public class C
+{
+}]]></Before>
+        <After><![CDATA[/// <summary>
+/// This is the comment.
+/// </summary>
+public class C
+{
+}]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
 </Analyzers>

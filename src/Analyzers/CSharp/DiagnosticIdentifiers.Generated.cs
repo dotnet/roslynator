@@ -223,5 +223,6 @@ namespace Roslynator.CSharp
         public const string UnnecessaryOperator = "RCS1240";
         public const string ImplementNonGenericCounterpart = "RCS1241";
         public const string DoNotPassNonReadOnlyStructByReadOnlyReference = "RCS1242";
+        public const string DuplicateWordInComment = "RCS1243";
     }
 }
