@@ -2655,5 +2655,17 @@ namespace Roslynator.CSharp
             helpLinkUri:        DiagnosticIdentifiers.DuplicateWordInComment, 
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
+        /// <summary>RCS1244</summary>
+        public static readonly DiagnosticDescriptor SimplifyDefaultExpression = Factory.Create(
+            id:                 DiagnosticIdentifiers.SimplifyDefaultExpression, 
+            title:              "Simplify 'default' expression.", 
+            messageFormat:      "Simplify 'default' expression.", 
+            category:           DiagnosticCategories.Simplification, 
+            defaultSeverity:    DiagnosticSeverity.Hidden, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.SimplifyDefaultExpression, 
+            customTags:         WellKnownDiagnosticTags.Unnecessary);
+
     }
 }

@@ -5708,4 +5708,28 @@ public class C
       </Sample>
     </Samples>
   </Analyzer>
+  <Analyzer Identifier="SimplifyDefaultExpression">
+    <Id>RCS1244</Id>
+    <Title>Simplify 'default' expression.</Title>
+    <MessageFormat>Simplify 'default' expression.</MessageFormat>
+    <Category>Simplification</Category>
+    <DefaultSeverity>Hidden</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>true</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <MinLanguageVersion>7.1</MinLanguageVersion>
+    <Summary>This analyzer is similar to [IDE0034](https://docs.microsoft.com/visualstudio/ide/common-quick-actions#remove-type-from-default-value-expression) but there are some differences. For example this analyzer does not simplify 'default' expression passed as an argument expression.</Summary>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[Foo M(Foo foo = default(Foo)) [|Id|]
+{
+    return default(Foo); [|Id|]
+}]]></Before>
+        <After><![CDATA[Foo M(Foo foo = default)
+{
+    return default;
+}]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
 </Analyzers>

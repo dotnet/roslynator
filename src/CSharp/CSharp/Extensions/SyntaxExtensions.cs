@@ -371,6 +371,14 @@ namespace Roslynator.CSharp
         }
         #endregion ConversionOperatorDeclarationSyntax
 
+        #region DefaultExpressionSyntax
+        //TODO: make public
+        internal static TextSpan ParenthesesSpan(this DefaultExpressionSyntax defaultExpression)
+        {
+            return TextSpan.FromBounds(defaultExpression.OpenParenToken.SpanStart, defaultExpression.CloseParenToken.Span.End);
+        }
+        #endregion DefaultExpressionSyntax
+
         #region DelegateDeclarationSyntax
         /// <summary>
         /// Returns true the specified delegate return type is <see cref="void"/>.

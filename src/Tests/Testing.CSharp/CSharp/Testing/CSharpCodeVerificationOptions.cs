@@ -15,6 +15,7 @@ namespace Roslynator.CSharp.Testing
     {
         private static CSharpCodeVerificationOptions _default_CSharp5;
         private static CSharpCodeVerificationOptions _default_CSharp6;
+        private static CSharpCodeVerificationOptions _default_CSharp7;
         private static CSharpCodeVerificationOptions _default_CSharp7_3;
 
         public CSharpCodeVerificationOptions(
@@ -102,6 +103,19 @@ namespace Roslynator.CSharp.Testing
                 return _default_CSharp6;
 
                 static CSharpCodeVerificationOptions Create() => Default.WithParseOptions(Default.ParseOptions.WithLanguageVersion(LanguageVersion.CSharp6));
+            }
+        }
+
+        internal static CSharpCodeVerificationOptions Default_CSharp7
+        {
+            get
+            {
+                if (_default_CSharp7 == null)
+                    Interlocked.CompareExchange(ref _default_CSharp7, Create(), null);
+
+                return _default_CSharp7;
+
+                static CSharpCodeVerificationOptions Create() => Default.WithParseOptions(Default.ParseOptions.WithLanguageVersion(LanguageVersion.CSharp7));
             }
         }
 

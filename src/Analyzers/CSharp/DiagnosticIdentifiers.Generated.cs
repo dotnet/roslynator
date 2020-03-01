@@ -224,5 +224,6 @@ namespace Roslynator.CSharp
         public const string ImplementNonGenericCounterpart = "RCS1241";
         public const string DoNotPassNonReadOnlyStructByReadOnlyReference = "RCS1242";
         public const string DuplicateWordInComment = "RCS1243";
+        public const string SimplifyDefaultExpression = "RCS1244";
     }
 }
