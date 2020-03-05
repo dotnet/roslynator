@@ -15,7 +15,12 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.SimplifyConditionalExpression); }
+            get
+            {
+                return ImmutableArray.Create(
+                    DiagnosticDescriptors.SimplifyConditionalExpression,
+                    DiagnosticDescriptors.SimplifyConditionalExpression2);
+            }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -44,30 +49,51 @@ namespace Roslynator.CSharp.Analysis
                 return;
 
             SyntaxKind trueKind = info.WhenTrue.Kind();
+            SyntaxKind falseKind = info.WhenFalse.Kind();
 
             if (trueKind == SyntaxKind.TrueLiteralExpression)
             {
-                if (context.SemanticModel.GetTypeInfo(info.WhenFalse, context.CancellationToken).ConvertedType?.SpecialType == SpecialType.System_Boolean)
+                // a ? true : false >>> a
+                // a ? true : b >>> a || b
+                if (falseKind == SyntaxKind.FalseLiteralExpression
+                    || context.SemanticModel.GetTypeInfo(info.WhenFalse, context.CancellationToken).ConvertedType?.SpecialType == SpecialType.System_Boolean)
                 {
-                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.SimplifyConditionalExpression, conditionalExpression);
+                    Report(DiagnosticDescriptors.SimplifyConditionalExpression);
                 }
             }
-            else
+            else if (trueKind == SyntaxKind.FalseLiteralExpression)
             {
-                SyntaxKind falseKind = info.WhenFalse.Kind();
+                /// a ? false : true >>> !a
+                if (falseKind == SyntaxKind.TrueLiteralExpression)
+                {
+                    Report(DiagnosticDescriptors.SimplifyConditionalExpression);
+                }
+                /// a ? false : b >>> !a && b
+                else if (context.SemanticModel.GetTypeInfo(info.WhenFalse, context.CancellationToken).ConvertedType?.SpecialType == SpecialType.System_Boolean)
+                {
+                    Report(DiagnosticDescriptors.SimplifyConditionalExpression2);
+                }
+            }
+            else if (falseKind == SyntaxKind.TrueLiteralExpression)
+            {
+                // a ? b : true >>> !a || b
+                if (context.SemanticModel.GetTypeInfo(info.WhenTrue, context.CancellationToken).ConvertedType?.SpecialType == SpecialType.System_Boolean)
+                {
+                    Report(DiagnosticDescriptors.SimplifyConditionalExpression2);
+                }
+            }
+            else if (falseKind == SyntaxKind.FalseLiteralExpression)
+            {
+                // a ? b : false >>> a && b
+                if (context.SemanticModel.GetTypeInfo(info.WhenTrue, context.CancellationToken).ConvertedType?.SpecialType == SpecialType.System_Boolean)
+                {
+                    Report(DiagnosticDescriptors.SimplifyConditionalExpression);
+                }
+            }
 
-                if (falseKind == SyntaxKind.FalseLiteralExpression)
-                {
-                    if (context.SemanticModel.GetTypeInfo(info.WhenTrue, context.CancellationToken).ConvertedType?.SpecialType == SpecialType.System_Boolean)
-                    {
-                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.SimplifyConditionalExpression, conditionalExpression);
-                    }
-                }
-                else if (trueKind == SyntaxKind.FalseLiteralExpression
-                    && falseKind == SyntaxKind.TrueLiteralExpression)
-                {
-                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.SimplifyConditionalExpression, conditionalExpression);
-                }
+            void Report(DiagnosticDescriptor descriptor)
+            {
+                DiagnosticHelpers.ReportDiagnosticIfNotSuppressed(context, descriptor, conditionalExpression);
             }
         }
     }

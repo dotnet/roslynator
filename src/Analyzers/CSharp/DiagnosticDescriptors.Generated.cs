@@ -2667,5 +2667,17 @@ namespace Roslynator.CSharp
             helpLinkUri:        DiagnosticIdentifiers.SimplifyDefaultExpression, 
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
+        /// <summary>RCS1245</summary>
+        public static readonly DiagnosticDescriptor SimplifyConditionalExpression2 = Factory.Create(
+            id:                 DiagnosticIdentifiers.SimplifyConditionalExpression2, 
+            title:              "Simplify conditional expression.", 
+            messageFormat:      "Simplify conditional expression.", 
+            category:           DiagnosticCategories.Simplification, 
+            defaultSeverity:    DiagnosticSeverity.Hidden, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.SimplifyConditionalExpression2, 
+            customTags:         Array.Empty<string>());
+
     }
 }

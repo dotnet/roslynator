@@ -2311,6 +2311,10 @@ else
         <After><![CDATA[bool x = y;]]></After>
       </Sample>
       <Sample>
+        <Before><![CDATA[bool x = y ? false : true; // [|Id|]]]></Before>
+        <After><![CDATA[bool x = !y;]]></After>
+      </Sample>
+      <Sample>
         <Before><![CDATA[bool x = y ? z : false; // [|Id|]]]></Before>
         <After><![CDATA[bool x = y && z;]]></After>
       </Sample>
@@ -5729,6 +5733,26 @@ public class C
 {
     return default;
 }]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer Identifier="SimplifyConditionalExpression2">
+    <Id>RCS1245</Id>
+    <Title>Simplify conditional expression.</Title>
+    <MessageFormat>Simplify conditional expression.</MessageFormat>
+    <Category>Simplification</Category>
+    <DefaultSeverity>Hidden</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[bool x = y ? false : z; // [|Id|]]]></Before>
+        <After><![CDATA[bool x = !y && z;]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[bool x = y ? z : true; // [|Id|]]]></Before>
+        <After><![CDATA[bool x = !y || z;]]></After>
       </Sample>
     </Samples>
   </Analyzer>

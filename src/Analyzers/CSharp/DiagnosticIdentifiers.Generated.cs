@@ -225,5 +225,6 @@ namespace Roslynator.CSharp
         public const string DoNotPassNonReadOnlyStructByReadOnlyReference = "RCS1242";
         public const string DuplicateWordInComment = "RCS1243";
         public const string SimplifyDefaultExpression = "RCS1244";
+        public const string SimplifyConditionalExpression2 = "RCS1245";
     }
 }
