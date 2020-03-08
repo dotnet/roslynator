@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as os from 'os';
 import * as path from 'path';
-import { configurationFileContent } from './configurationFiles';
+import { configurationFileContent } from './configurationFiles.generated';
 import { ensureOmnisharpConfigurationUpdated } from './updateOmnisharpConfiguration';
 import { openRoslynatorConfiguration } from './openRoslynatorConfiguration';
 
