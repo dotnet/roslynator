@@ -22,6 +22,11 @@ del /S /Q roslyn\*.dll
 
 cd roslyn
 
+md common
+md analyzers
+md fixes
+md refactorings
+
 copy /Y ..\..\bin\Release\netstandard2.0\Roslynator.Core.dll common
 copy /Y ..\..\bin\Release\netstandard2.0\Roslynator.Common.dll common
 copy /Y ..\..\bin\Release\netstandard2.0\Roslynator.CSharp.dll common
@@ -36,6 +41,8 @@ copy /Y ..\..\bin\Release\netstandard2.0\Roslynator.CSharp.Refactorings.dll refa
 copy /Y ..\..\bin\Release\netstandard2.0\Roslynator.CSharp.CodeFixes.dll fixes
 
 cd ..
+
+npm install
 
 echo Package is being created
 vsce package
