@@ -3,7 +3,7 @@ import * as assert from 'assert';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 
-import * as roslynator from '../../extension';
+import { ensureOmnisharpConfigurationUpdated } from '../../updateOmnisharpConfiguration';
 import { OmnisharpSettings } from '../../omnisharpSettings';
 
 suite('Auto update omnisharp.json', () => {
@@ -24,7 +24,7 @@ suite('Auto update omnisharp.json', () => {
 	});
 
 	test('Create omnisharp.json', () => {
-		roslynator.ensureConfigurationUpdated({
+		ensureOmnisharpConfigurationUpdated({
 			extensionDirectoryPath: path.join(extensionsPath, 'josefpihrt-vscode.roslynator-1.0.1'),
 			homeDirectoryPath: homePath
 		});
@@ -54,7 +54,7 @@ suite('Auto update omnisharp.json', () => {
 		fs.mkdirSync(omnisharpPath);
 		fs.writeJSONSync(omnisharpJsonPath, oldOmnisharpSettings);
 
-		roslynator.ensureConfigurationUpdated({
+		ensureOmnisharpConfigurationUpdated({
 			extensionDirectoryPath: path.join(extensionsPath, 'josefpihrt-vscode.roslynator-1.0.2'),
 			homeDirectoryPath: homePath
 		});
@@ -80,7 +80,7 @@ suite('Auto update omnisharp.json', () => {
 		fs.mkdirSync(omnisharpPath);
 		fs.writeJSONSync(omnisharpJsonPath, oldOmnisharpSettings);
 
-		roslynator.ensureConfigurationUpdated({
+		ensureOmnisharpConfigurationUpdated({
 			extensionDirectoryPath: path.join(extensionsPath, 'josefpihrt-vscode.roslynator-1.0.1'),
 			homeDirectoryPath: homePath
 		});

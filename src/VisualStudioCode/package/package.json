@@ -26,7 +26,7 @@
     "CSharp"
   ],
   "engines": {
-    "vscode": "^1.31.0"
+    "vscode": "^1.42.0"
   },
   "files": [
     "roslyn/*"
@@ -38,6 +38,16 @@
     "*"
   ],
   "contributes": {
+    "commands": [
+      {
+        "title": "Roslynator: Open Configuration of Analyzers (roslynator.ruleset)",
+        "command": "roslynator.openConfigurationOfAnalyzers"
+      },
+      {
+        "title": "Roslynator: Open Configuration of Refactorings and Fixes (roslynator.config)",
+        "command": "roslynator.openConfigurationOfRefactoringsAndFixes"
+      }
+    ],
     "configuration": {
       "title": "Roslynator",
       "properties": {
@@ -63,7 +73,7 @@
     "@types/json5": "0.0.30",
     "@types/mocha": "^5.2.7",
     "@types/node": "^12.11.7",
-    "@types/vscode": "^1.31.0",
+    "@types/vscode": "^1.42.0",
     "fs-extra": "^8.1.0",
     "glob": "^7.1.5",
     "mocha": "^6.2.2",
