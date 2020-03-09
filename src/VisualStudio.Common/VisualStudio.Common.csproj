@@ -103,6 +103,7 @@
     <Compile Include="GeneralOptionsPageControl.xaml.cs">
       <DependentUpon>GeneralOptionsPageControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="RuleSetHelpers.Generated.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="CodeFixesOptionsPage.cs">
       <SubType>Component</SubType>

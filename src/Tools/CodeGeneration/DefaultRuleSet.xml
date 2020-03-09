@@ -1,5 +1,4 @@
-export const configurationFileContent = {
-	ruleset: `<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <!--
 
 This rule set can be used to:
@@ -29,21 +28,4 @@ Just add ruleset file to a solution and open it.
 
   </Rules>
 
-</RuleSet>`,
-	config: `<?xml version="1.0" encoding="utf-8"?>
-<Roslynator>
-  <Settings>
-    <General>
-      <!-- <PrefixFieldIdentifierWithUnderscore>true</PrefixFieldIdentifierWithUnderscore> -->
-    </General>
-    <Refactorings>
-      <!-- <Refactoring Id="RRxxxx" IsEnabled="false" /> -->
-    </Refactorings>
-    <CodeFixes>
-      <!-- <CodeFix Id="CSxxxx.RCFxxxx" IsEnabled="false" /> -->
-      <!-- <CodeFix Id="CSxxxx" IsEnabled="false" /> -->
-      <!-- <CodeFix Id="RCFxxxx" IsEnabled="false" /> -->
-    </CodeFixes>
-  </Settings>
-</Roslynator>`
-};
+</RuleSet>
