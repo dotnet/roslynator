@@ -61,7 +61,7 @@ namespace Roslynator.CSharp.CodeFixes
                                 var binaryExpression = (BinaryExpressionSyntax)expression;
 
                                 CodeAction codeAction = CodeAction.Create(
-                                    $"Call 'IsNaN'",
+                                    "Call 'IsNaN'",
                                     ct =>
                                     {
                                         ExpressionSyntax newExpression = SimpleMemberInvocationExpression(
