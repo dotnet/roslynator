@@ -15,6 +15,7 @@ orang replace ^
   "%_root%\Common\Common.csproj" ^
   "%_root%\Workspaces.Common\Workspaces.Common.csproj" ^
   "%_root%\Refactorings\Refactorings.csproj" ^
+  "%_root%\VisualStudioCode\VisualStudioCode.csproj" ^
  -c "patterns\csproj_version.txt" ^
   %_options% ^
  -r %_version% 
@@ -67,6 +68,6 @@ orang replace ^
   build.cmd ^
  -c "patterns\build_script_version.txt" ^
   %_options% ^
- -r %_version%
+ -r %_version3%
 
 pause
