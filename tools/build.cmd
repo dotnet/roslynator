@@ -2,7 +2,7 @@
 
 set _msbuildPath="C:\Program Files\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\MSBuild"
 set _properties=Configuration=Release,Deterministic=true,TreatWarningsAsErrors=true,WarningsNotAsErrors=1591
-set _version=2.3.1
+set _version=2.9.0
 
 dotnet restore --force "..\src\Roslynator.sln"
 

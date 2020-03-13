@@ -2,11 +2,11 @@
 
 rem dotnet install tool -g orang.dotnet.cli
 
-set _apiVersion=1.0.0.22
-set _version=2.3.0.1
-set _version3=2.3.1
+set _apiVersion=1.0.0.23
+set _version=2.9.0.0
+set _version3=2.9.0
 set _root=..\src
-set _options=from-file -t m r -y t -v n -o "orang.log" v=di
+set _options=from-file -t m r -y trim-line -v n -o "orang.log" v=di
 
 orang replace ^
   "%_root%\Analyzers\Analyzers.csproj" ^

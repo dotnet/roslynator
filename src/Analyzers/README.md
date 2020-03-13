@@ -56,7 +56,7 @@
 | RCS1052 | [Declare each attribute separately](../../docs/analyzers/RCS1052.md) | Readability | None |
 | RCS1055 | [Avoid semicolon at the end of declaration](../../docs/analyzers/RCS1055.md) | Redundancy | Hidden |
 | RCS1056 | [Avoid usage of using alias directive](../../docs/analyzers/RCS1056.md) | Readability | None |
-| RCS1057 | [Add empty line between declarations](../../docs/analyzers/RCS1057.md) | Formatting | Info |
+| RCS1057 | [Add empty line between declarations](../../docs/analyzers/RCS1057.md) | Formatting | None |
 | RCS1058 | [Use compound assignment](../../docs/analyzers/RCS1058.md) | Simplification | Info |
 | RCS1059 | [Avoid locking on publicly accessible instance](../../docs/analyzers/RCS1059.md) | Design | Warning |
 | RCS1060 | [Declare each type in separate file](../../docs/analyzers/RCS1060.md) | Maintainability | None |
@@ -135,7 +135,6 @@
 | RCS1153 | [Add empty line after closing brace](../../docs/analyzers/RCS1153.md) | Formatting | None |
 | RCS1154 | [Sort enum members](../../docs/analyzers/RCS1154.md) | Readability | Info |
 | RCS1155 | [Use StringComparison when comparing strings](../../docs/analyzers/RCS1155.md) | Usage | Warning |
-| RCS1156 | [Use string.Length instead of comparison with empty string](../../docs/analyzers/RCS1156.md) | Usage | Info |
 | RCS1157 | [Composite enum value contains undefined flag](../../docs/analyzers/RCS1157.md) | Design | Info |
 | RCS1158 | [Static member in generic type should use a type parameter](../../docs/analyzers/RCS1158.md) | Design | Info |
 | RCS1159 | [Use EventHandler\<T>](../../docs/analyzers/RCS1159.md) | Usage | Info |
@@ -219,6 +218,10 @@
 | RCS1239 | [Use 'for' statement instead of 'while' statement](../../docs/analyzers/RCS1239.md) | Readability | Info |
 | RCS1240 | [Operator is unnecessary](../../docs/analyzers/RCS1240.md) | Redundancy | Info |
 | RCS1241 | [Implement non-generic counterpart](../../docs/analyzers/RCS1241.md) | Design | Hidden |
+| RCS1242 | [Do not pass non-read-only struct by read-only reference](../../docs/analyzers/RCS1242.md) | Performance | Warning |
+| RCS1243 | [Duplicate word in a comment](../../docs/analyzers/RCS1243.md) | General | Info |
+| RCS1244 | [Simplify 'default' expression](../../docs/analyzers/RCS1244.md) | Simplification | Hidden |
+| RCS1245 | [Simplify conditional expression](../../docs/analyzers/RCS1245.md) | Simplification | Hidden |
 
 
 *\(Generated with [DotMarkdown](http://github.com/JosefPihrt/DotMarkdown)\)*

@@ -24,7 +24,7 @@
 | Formatting | [Add empty line after closing brace](../../docs/analyzers/RCS1153.md) | RCS1153 | None |
 | Formatting | [Add empty line after embedded statement](../../docs/analyzers/RCS1030.md) | RCS1030 | None |
 | Formatting | [Add empty line before 'while' keyword in 'do' statement](../../docs/analyzers/RCS1092.md) | RCS1092 | None |
-| Formatting | [Add empty line between declarations](../../docs/analyzers/RCS1057.md) | RCS1057 | Info |
+| Formatting | [Add empty line between declarations](../../docs/analyzers/RCS1057.md) | RCS1057 | None |
 | Formatting | [Add new line after switch label](../../docs/analyzers/RCS1028.md) | RCS1028 | None |
 | Formatting | [Add new line before embedded statement](../../docs/analyzers/RCS1027.md) | RCS1027 | None |
 | Formatting | [Add new line before enum member](../../docs/analyzers/RCS1025.md) | RCS1025 | None |
@@ -40,6 +40,7 @@
 | Formatting | [Format single-line block](../../docs/analyzers/RCS1185.md) | RCS1185 | None |
 | General | [Bitwise operation on enum without Flags attribute](../../docs/analyzers/RCS1130.md) | RCS1130 | Info |
 | General | [Convert comment to documentation comment](../../docs/analyzers/RCS1181.md) | RCS1181 | Hidden |
+| General | [Duplicate word in a comment](../../docs/analyzers/RCS1243.md) | RCS1243 | Info |
 | General | [Mark local variable as const](../../docs/analyzers/RCS1118.md) | RCS1118 | Info |
 | General | [Throwing of new NotImplementedException](../../docs/analyzers/RCS1079.md) | RCS1079 | Info |
 | General | [Use "" instead of string.Empty](../../docs/analyzers/RCS1078.md) | RCS1078 | None |
@@ -60,6 +61,7 @@
 | Naming | [Rename private field according to camel case with underscore](../../docs/analyzers/RCS1045.md) | RCS1045 | None |
 | Performance | [Avoid unnecessary boxing of value type](../../docs/analyzers/RCS1198.md) | RCS1198 | None |
 | Performance | [Call 'Enumerable.Skip' and 'Enumerable.Any' instead of 'Enumerable.Count'](../../docs/analyzers/RCS1219.md) | RCS1219 | None |
+| Performance | [Do not pass non-read-only struct by read-only reference](../../docs/analyzers/RCS1242.md) | RCS1242 | Warning |
 | Performance | [Make parameter ref read-only](../../docs/analyzers/RCS1231.md) | RCS1231 | None |
 | Performance | [Optimize LINQ method call](../../docs/analyzers/RCS1077.md) | RCS1077 | Info |
 | Performance | [Optimize method call](../../docs/analyzers/RCS1235.md) | RCS1235 | Info |
@@ -156,6 +158,8 @@
 | Simplification | [Simplify boolean expression](../../docs/analyzers/RCS1199.md) | RCS1199 | Info |
 | Simplification | [Simplify coalesce expression](../../docs/analyzers/RCS1143.md) | RCS1143 | Hidden |
 | Simplification | [Simplify conditional expression](../../docs/analyzers/RCS1104.md) | RCS1104 | Info |
+| Simplification | [Simplify conditional expression](../../docs/analyzers/RCS1245.md) | RCS1245 | Hidden |
+| Simplification | [Simplify 'default' expression](../../docs/analyzers/RCS1244.md) | RCS1244 | Hidden |
 | Simplification | [Simplify lambda expression](../../docs/analyzers/RCS1021.md) | RCS1021 | Info |
 | Simplification | [Simplify lazy initialization](../../docs/analyzers/RCS1171.md) | RCS1171 | Info |
 | Simplification | [Simplify logical negation](../../docs/analyzers/RCS1068.md) | RCS1068 | Info |
@@ -214,7 +218,6 @@
 | Usage | [Use Regex instance instead of static method](../../docs/analyzers/RCS1186.md) | RCS1186 | Hidden |
 | Usage | [Use short-circuiting operator](../../docs/analyzers/RCS1233.md) | RCS1233 | Info |
 | Usage | [Use 'string.IsNullOrEmpty' method](../../docs/analyzers/RCS1113.md) | RCS1113 | Info |
-| Usage | [Use string.Length instead of comparison with empty string](../../docs/analyzers/RCS1156.md) | RCS1156 | Info |
 | Usage | [Use StringComparison when comparing strings](../../docs/analyzers/RCS1155.md) | RCS1155 | Warning |
 | Usage | [Value type object is never equal to null](../../docs/analyzers/RCS1166.md) | RCS1166 | Info |
 
