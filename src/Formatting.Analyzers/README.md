@@ -1,4 +1,4 @@
-## Roslynator Analyzers
+## Roslynator\.Formatting\.Analyzers
 
 [Search Analyzers](http://pihrt.net/Roslynator/Analyzers)
 

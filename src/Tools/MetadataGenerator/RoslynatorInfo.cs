@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
@@ -15,16 +16,16 @@ namespace Roslynator.CodeGeneration
     {
         public RoslynatorInfo(
             Solution solution,
-            ImmutableArray<ISymbol> diagnosticDescriptors,
-            ImmutableArray<ISymbol> diagnosticIdentifiers,
-            ImmutableArray<ISymbol> refactoringIdentifiers,
-            ImmutableArray<ISymbol> compilerDiagnosticIdentifiers)
+            IEnumerable<ISymbol> diagnosticDescriptors,
+            IEnumerable<ISymbol> diagnosticIdentifiers,
+            IEnumerable<ISymbol> refactoringIdentifiers,
+            IEnumerable<ISymbol> compilerDiagnosticIdentifiers)
         {
             Solution = solution;
-            DiagnosticDescriptors = diagnosticDescriptors;
-            DiagnosticIdentifiers = diagnosticIdentifiers;
-            RefactoringIdentifiers = refactoringIdentifiers;
-            CompilerDiagnosticIdentifiers = compilerDiagnosticIdentifiers;
+            DiagnosticDescriptors = diagnosticDescriptors.ToImmutableArray();
+            DiagnosticIdentifiers = diagnosticIdentifiers.ToImmutableArray();
+            RefactoringIdentifiers = refactoringIdentifiers.ToImmutableArray();
+            CompilerDiagnosticIdentifiers = compilerDiagnosticIdentifiers.ToImmutableArray();
 
             SolutionDirectory = Path.GetDirectoryName(solution.FilePath);
         }
@@ -43,36 +44,39 @@ namespace Roslynator.CodeGeneration
 
         public static async Task<RoslynatorInfo> Create(Solution solution, CancellationToken cancellationToken = default)
         {
-            Project analyzersProject = solution.Projects.First(f => f.Name == "Analyzers");
+            AnalyzersInfo analyzersInfo = await AnalyzersInfo.Create(solution, "Analyzers", "Roslynator.CSharp.DiagnosticDescriptors", "Roslynator.CSharp.DiagnosticIdentifiers").ConfigureAwait(false);
+            AnalyzersInfo codeAnalysisAnalyzersInfo = await AnalyzersInfo.Create(solution, "CodeAnalysis.Analyzers", "Roslynator.CodeAnalysis.CSharp.DiagnosticDescriptors", "Roslynator.CodeAnalysis.CSharp.DiagnosticIdentifiers").ConfigureAwait(false);
+            AnalyzersInfo formattingAnalyzersInfo = await AnalyzersInfo.Create(solution, "Formatting.Analyzers", "Roslynator.Formatting.CSharp.DiagnosticDescriptors", "Roslynator.Formatting.CSharp.DiagnosticIdentifiers").ConfigureAwait(false);
 
-            Compilation analyzersCompilation = await analyzersProject.GetCompilationAsync(cancellationToken).ConfigureAwait(false);
-
-            ImmutableArray<ISymbol> diagnosticDescriptors = analyzersCompilation.GetTypeByMetadataName("Roslynator.CSharp.DiagnosticDescriptors").GetMembers();
-
-            ImmutableArray<ISymbol> diagnosticIdentifiers = analyzersCompilation.GetTypeByMetadataName("Roslynator.CSharp.DiagnosticIdentifiers").GetMembers();
-
-            Project refactoringsProject = solution.Projects.First(f => f.Name == "Refactorings");
-
-            Compilation refactoringsCompilation = await refactoringsProject.GetCompilationAsync(cancellationToken).ConfigureAwait(false);
+            Compilation refactoringsCompilation = await solution.Projects.First(f => f.Name == "Refactorings").GetCompilationAsync(cancellationToken).ConfigureAwait(false);
 
             ImmutableArray<ISymbol> refactoringIdentifiers = refactoringsCompilation.GetTypeByMetadataName("Roslynator.CSharp.Refactorings.RefactoringIdentifiers").GetMembers();
 
-            Project csharpProject = solution.Projects.First(f => f.Name == "CSharp");
-
-            Compilation csharpCompilation = await csharpProject.GetCompilationAsync(cancellationToken).ConfigureAwait(false);
+            Compilation csharpCompilation = await solution.Projects.First(f => f.Name == "CSharp").GetCompilationAsync(cancellationToken).ConfigureAwait(false);
 
             ImmutableArray<ISymbol> compilerDiagnosticIdentifiers = csharpCompilation.GetTypeByMetadataName("Roslynator.CSharp.CompilerDiagnosticIdentifiers").GetMembers();
 
-            return new RoslynatorInfo(solution, diagnosticDescriptors, diagnosticIdentifiers, refactoringIdentifiers, compilerDiagnosticIdentifiers);
+            return new RoslynatorInfo(
+                solution,
+                analyzersInfo.Descriptors.Concat(codeAnalysisAnalyzersInfo.Descriptors).Concat(formattingAnalyzersInfo.Descriptors),
+                analyzersInfo.Identifiers.Concat(codeAnalysisAnalyzersInfo.Identifiers).Concat(formattingAnalyzersInfo.Identifiers),
+                refactoringIdentifiers,
+                compilerDiagnosticIdentifiers);
         }
 
         public async Task<IEnumerable<string>> GetAnalyzerFilesAsync(string identifier, CancellationToken cancellationToken = default)
         {
-            ISymbol diagnosticDescriptor = DiagnosticDescriptors.First(f => f.Name == identifier);
+            ISymbol diagnosticDescriptor = DiagnosticDescriptors.FirstOrDefault(f => f.Name == identifier);
+
+            if (diagnosticDescriptor == null)
+                throw new InvalidOperationException($"Diagnostic descriptor symbol not found for identifier '{identifier}'.");
 
             IEnumerable<ReferencedSymbol> referencedSymbols = await SymbolFinder.FindReferencesAsync(diagnosticDescriptor, Solution, cancellationToken).ConfigureAwait(false);
 
-            ISymbol diagnosticIdentifier = DiagnosticIdentifiers.First(f => f.Name == identifier);
+            ISymbol diagnosticIdentifier = DiagnosticIdentifiers.FirstOrDefault(f => f.Name == identifier);
+
+            if (diagnosticIdentifier == null)
+                throw new InvalidOperationException($"Diagnostic identifier symbol not found for identifier '{identifier}'.");
 
             IEnumerable<ReferencedSymbol> referencedSymbols2 = await SymbolFinder.FindReferencesAsync(diagnosticIdentifier, Solution, cancellationToken).ConfigureAwait(false);
 
@@ -81,7 +85,10 @@ namespace Roslynator.CodeGeneration
 
         public async Task<IEnumerable<string>> GetRefactoringFilesAsync(string identifier, CancellationToken cancellationToken = default)
         {
-            ISymbol symbol = RefactoringIdentifiers.First(f => f.Name == identifier);
+            ISymbol symbol = RefactoringIdentifiers.FirstOrDefault(f => f.Name == identifier);
+
+            if (symbol == null)
+                throw new InvalidOperationException($"Refactoring identifier symbol not found for identifier '{identifier}'.");
 
             IEnumerable<ReferencedSymbol> referencedSymbols = await SymbolFinder.FindReferencesAsync(symbol, Solution, cancellationToken).ConfigureAwait(false);
 
@@ -90,7 +97,10 @@ namespace Roslynator.CodeGeneration
 
         public async Task<IEnumerable<string>> GetCompilerDiagnosticFilesAsync(string identifier, CancellationToken cancellationToken = default)
         {
-            ISymbol symbol = CompilerDiagnosticIdentifiers.First(f => f.Name == identifier);
+            ISymbol symbol = CompilerDiagnosticIdentifiers.FirstOrDefault(f => f.Name == identifier);
+
+            if (symbol == null)
+                throw new InvalidOperationException($"Compiler diagnostic identifier symbol not found for identifier '{identifier}'.");
 
             IEnumerable<ReferencedSymbol> referencedSymbols = await SymbolFinder.FindReferencesAsync(symbol, Solution, cancellationToken).ConfigureAwait(false);
 
@@ -105,6 +115,37 @@ namespace Roslynator.CodeGeneration
                 .Select(f => f.Document.FilePath.Replace(SolutionDirectory, ""))
                 .Distinct()
                 .OrderBy(f => f);
+        }
+
+        private class AnalyzersInfo
+        {
+            public AnalyzersInfo(ImmutableArray<ISymbol> diagnosticDescriptors, ImmutableArray<ISymbol> diagnosticIdentifiers)
+            {
+                Descriptors = diagnosticDescriptors;
+                Identifiers = diagnosticIdentifiers;
+            }
+
+            public static async Task<AnalyzersInfo> Create(
+                Solution solution,
+                string projectName,
+                string descriptorsTypeName,
+                string identifiersTypeName,
+                CancellationToken cancellationToken = default)
+            {
+                Project analyzersProject = solution.Projects.First(f => f.Name == projectName);
+
+                Compilation analyzersCompilation = await analyzersProject.GetCompilationAsync(cancellationToken).ConfigureAwait(false);
+
+                ImmutableArray<ISymbol> diagnosticDescriptors = analyzersCompilation.GetTypeByMetadataName(descriptorsTypeName).GetMembers();
+
+                ImmutableArray<ISymbol> diagnosticIdentifiers = analyzersCompilation.GetTypeByMetadataName(identifiersTypeName).GetMembers();
+
+                return new AnalyzersInfo(diagnosticDescriptors, diagnosticIdentifiers);
+            }
+
+            public ImmutableArray<ISymbol> Descriptors { get; }
+
+            public ImmutableArray<ISymbol> Identifiers { get; }
         }
     }
 }

@@ -45,11 +45,11 @@ namespace Roslynator.CodeGeneration
             ImmutableArray<CodeFixMetadata> codeFixes = metadata.CodeFixes;
             ImmutableArray<CompilerDiagnosticMetadata> compilerDiagnostics = metadata.CompilerDiagnostics;
 
-            WriteAnalyzersReadMe(@"Analyzers\README.md", analyzers);
+            WriteAnalyzersReadMe(@"Analyzers\README.md", analyzers, "Roslynator.Analyzers");
 
-            WriteAnalyzersReadMe(@"CodeAnalysis.Analyzers\README.md", codeAnalysisAnalyzers);
+            WriteAnalyzersReadMe(@"CodeAnalysis.Analyzers\README.md", codeAnalysisAnalyzers, "Roslynator.CodeAnalysis.Analyzers");
 
-            WriteAnalyzersReadMe(@"Formatting.Analyzers\README.md", formattingAnalyzers);
+            WriteAnalyzersReadMe(@"Formatting.Analyzers\README.md", formattingAnalyzers, "Roslynator.Formatting.Analyzers");
 #if !DEBUG
             VisualStudioInstance instance = MSBuildLocator.QueryVisualStudioInstances().First(f => f.Version.Major == 16);
 
@@ -70,6 +70,8 @@ namespace Roslynator.CodeGeneration
                 RoslynatorInfo roslynatorInfo = await RoslynatorInfo.Create(solution).ConfigureAwait(false);
 
                 IOrderedEnumerable<SourceFile> sourceFiles = analyzers
+                    .Concat(codeAnalysisAnalyzers)
+                    .Concat(formattingAnalyzers)
                     .Select(f => new SourceFile(f.Id, roslynatorInfo.GetAnalyzerFilesAsync(f.Identifier).Result))
                     .Concat(refactorings
                         .Select(f => new SourceFile(f.Id, roslynatorInfo.GetRefactoringFilesAsync(f.Identifier).Result)))
@@ -156,11 +158,11 @@ namespace Roslynator.CodeGeneration
                 }
             }
 
-            void WriteAnalyzersReadMe(string path, ImmutableArray<AnalyzerMetadata> descriptors)
+            void WriteAnalyzersReadMe(string path, ImmutableArray<AnalyzerMetadata> descriptors, string title)
             {
                 WriteAllText(
                     path,
-                    MarkdownGenerator.CreateAnalyzersReadMe(descriptors.Where(f => !f.IsObsolete), comparer));
+                    MarkdownGenerator.CreateAnalyzersReadMe(descriptors.Where(f => !f.IsObsolete), title, comparer));
             }
 
             void WriteAllText(string relativePath, string content, bool onlyIfChanges = true, bool fileMustExists = true)

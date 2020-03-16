@@ -231,10 +231,10 @@ namespace Roslynator.CodeGeneration.Markdown
             return document.ToString(MarkdownFormat.Default.WithTableOptions(MarkdownFormat.Default.TableOptions | TableOptions.FormatContent));
         }
 
-        public static string CreateAnalyzersReadMe(IEnumerable<AnalyzerMetadata> analyzers, IComparer<string> comparer)
+        public static string CreateAnalyzersReadMe(IEnumerable<AnalyzerMetadata> analyzers, string title, IComparer<string> comparer)
         {
             MDocument document = Document(
-                Heading2("Roslynator Analyzers"),
+                Heading2(title),
                 Link("Search Analyzers", "http://pihrt.net/Roslynator/Analyzers"),
                 Table(
                     TableRow("Id", "Title", "Category", "Severity"),
