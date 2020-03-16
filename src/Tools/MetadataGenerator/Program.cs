@@ -50,8 +50,6 @@ namespace Roslynator.CodeGeneration
             WriteAnalyzersReadMe(@"CodeAnalysis.Analyzers\README.md", codeAnalysisAnalyzers);
 
             WriteAnalyzersReadMe(@"Formatting.Analyzers\README.md", formattingAnalyzers);
-
-            WriteAnalyzersByCategory(@"Analyzers\AnalyzersByCategory.md", analyzers);
 #if !DEBUG
             VisualStudioInstance instance = MSBuildLocator.QueryVisualStudioInstances().First(f => f.Version.Major == 16);
 
@@ -163,13 +161,6 @@ namespace Roslynator.CodeGeneration
                 WriteAllText(
                     path,
                     MarkdownGenerator.CreateAnalyzersReadMe(descriptors.Where(f => !f.IsObsolete), comparer));
-            }
-
-            void WriteAnalyzersByCategory(string path, ImmutableArray<AnalyzerMetadata> descriptors)
-            {
-                WriteAllText(
-                    path,
-                    MarkdownGenerator.CreateAnalyzersByCategoryMarkdown(descriptors.Where(f => !f.IsObsolete), comparer));
             }
 
             void WriteAllText(string relativePath, string content, bool onlyIfChanges = true, bool fileMustExists = true)
