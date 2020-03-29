@@ -537,9 +537,11 @@ class C
 {
     void M()
     {
+        char a = 'a';
+
         var sb = new StringBuilder();
 
-        sb.Append([|""a"" + ""b"" + ""c""|]);
+        sb.Append([|a + ""b"" + ""c""|]);
     }
 }
 ", @"
@@ -549,9 +551,11 @@ class C
 {
     void M()
     {
+        char a = 'a';
+
         var sb = new StringBuilder();
 
-        sb.Append('a').Append('b').Append('c');
+        sb.Append(a).Append('b').Append('c');
     }
 }
 ");
@@ -774,6 +778,26 @@ class C
         var sb = new StringBuilder();
 
         sb.AppendLine(s);
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+        public async Task TestNoDiagnostic_Const()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System.Text;
+
+class C
+{
+    void M()
+    {
+        const string s = null;
+
+        var sb = new StringBuilder();
+
+        sb.Append(""x"" + s);
     }
 }
 ");

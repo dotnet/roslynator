@@ -78,7 +78,8 @@ namespace Roslynator.CSharp.Analysis
                             BinaryExpressionInfo binaryExpressionInfo = SyntaxInfo.BinaryExpressionInfo((BinaryExpressionSyntax)expression);
 
                             if (binaryExpressionInfo.Success
-                                && binaryExpressionInfo.AsChain().Reverse().IsStringConcatenation(context.SemanticModel, context.CancellationToken))
+                                && binaryExpressionInfo.AsChain().Reverse().IsStringConcatenation(context.SemanticModel, context.CancellationToken)
+                                && !context.SemanticModel.GetConstantValue(expression, context.CancellationToken).HasValue)
                             {
                                 ReportDiagnostic(argument);
                             }
