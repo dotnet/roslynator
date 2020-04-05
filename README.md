@@ -47,7 +47,7 @@ Although Roslynator products are free of charge, any [donation](https://www.payp
 | [Roslynator.CodeAnalysis.Analyzers](https://www.nuget.org/packages/Roslynator.CodeAnalysis.Analyzers) | [![NuGet](https://img.shields.io/nuget/v/Roslynator.CodeAnalysis.Analyzers.svg)](https://www.nuget.org/packages/Roslynator.CodeAnalysis.Analyzers) | analyzers for Roslyn API (RCS9xxx) ([list](http://pihrt.net/Roslynator/Analyzers?Query=RCS9)) |
 | [Roslynator.Formatting.Analyzers](https://www.nuget.org/packages/Roslynator.Formatting.Analyzers) | [![NuGet](https://img.shields.io/nuget/v/Roslynator.Formatting.Analyzers.svg)](https://www.nuget.org/packages/Roslynator.Formatting.Analyzers) | formatting analyzers (RCS0xxx) ([list](http://pihrt.net/Roslynator/Analyzers?Query=RCS0)) |
 
-* Note: All analyzers in package Roslynator.Formatting.Analyzers are disabled by default.*
+*Note: All analyzers in package Roslynator.Formatting.Analyzers are disabled by default.*
 
 ## Roslynator API
 
