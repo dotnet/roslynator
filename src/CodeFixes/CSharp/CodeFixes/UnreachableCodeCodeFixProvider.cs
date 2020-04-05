@@ -1,9 +1,10 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Composition;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
@@ -68,18 +69,17 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                         else
                         {
-                            SyntaxRemoveOptions removeOptions = SyntaxRefactorings.DefaultRemoveOptions;
+                            int lastIndex = statements.LastIndexOf(f => !f.IsKind(SyntaxKind.LocalFunctionStatement));
 
-                            if (statement.GetLeadingTrivia().IsEmptyOrWhitespace())
-                                removeOptions &= ~SyntaxRemoveOptions.KeepLeadingTrivia;
+                            SyntaxList<StatementSyntax> nodes = RemoveRange(statements, index, lastIndex - index + 1, f => !f.IsKind(SyntaxKind.LocalFunctionStatement));
 
-                            if (statements.Last().GetTrailingTrivia().IsEmptyOrWhitespace())
-                                removeOptions &= ~SyntaxRemoveOptions.KeepTrailingTrivia;
-
-                            return context.Document.RemoveNodesAsync(statements.Skip(index), removeOptions, cancellationToken);
+                            return context.Document.ReplaceStatementsAsync(
+                                statementsInfo,
+                                nodes,
+                                cancellationToken);
                         }
                     },
-                    GetEquivalenceKey(diagnostic));
+                    base.GetEquivalenceKey(diagnostic));
 
                 context.RegisterCodeFix(codeAction, diagnostic);
             }
@@ -209,6 +209,44 @@ namespace Roslynator.CSharp.CodeFixes
                     return document.ReplaceNodeAsync(ifStatement, newNode, cancellationToken);
                 },
                 GetEquivalenceKey(diagnostic));
+        }
+
+        //TODO: move to API
+        private SyntaxList<TNode> RemoveRange<TNode>(
+            SyntaxList<TNode> list,
+            int index,
+            int count,
+            Func<TNode, bool> predicate) where TNode : SyntaxNode
+        {
+            return SyntaxFactory.List(RemoveRange());
+
+            IEnumerable<TNode> RemoveRange()
+            {
+                SyntaxList<TNode>.Enumerator en = list.GetEnumerator();
+
+                int i = 0;
+
+                while (i < index
+                    && en.MoveNext())
+                {
+                    yield return en.Current;
+                    i++;
+                }
+
+                int endIndex = index + count;
+
+                while (i < endIndex
+                    && en.MoveNext())
+                {
+                    if (!predicate(en.Current))
+                        yield return en.Current;
+
+                    i++;
+                }
+
+                while (en.MoveNext())
+                    yield return en.Current;
+            }
         }
     }
 }

@@ -44,5 +44,93 @@ class C
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
         }
+
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.UnreachableCodeDetected)]
+        public async Task Test_LocalFunction()
+        {
+            await VerifyFixAsync(@"
+class C
+{
+    void M()
+    {
+        LF();
+
+        return;
+
+        LF();
+
+        void LF()
+        {
+            return;
+        }
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+        LF();
+
+        return;
+
+        void LF()
+        {
+            return;
+        }
+    }
+}
+", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
+        }
+
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.UnreachableCodeDetected)]
+        public async Task Test_LocalFunction2()
+        {
+            await VerifyFixAsync(@"
+class C
+{
+    void M()
+    {
+        LF();
+
+        return;
+
+        LF();
+
+        void LF()
+        {
+            return;
+        }
+
+        LF2();
+
+        void LF2()
+        {
+            return;
+        }
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+        LF();
+
+        return;
+
+        void LF()
+        {
+            return;
+        }
+
+        void LF2()
+        {
+            return;
+        }
+    }
+}
+", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
+        }
     }
 }
