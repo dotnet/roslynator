@@ -69,6 +69,42 @@ class C
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ChangeAccessibility)]
+        public async Task Test_MultipleDeclarations_AllImplicit()
+        {
+            await VerifyRefactoringAsync(@"
+class C
+{
+[|    object M1() => null;
+    object M2() => null;|]
+}
+", @"
+class C
+{
+    private object M1() => null;
+    private object M2() => null;
+}
+", equivalenceKey: EquivalenceKey.Join(RefactoringId, nameof(Accessibility.Private)));
+        }
+
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ChangeAccessibility)]
+        public async Task Test_MultipleDeclarations_AnyImplicit()
+        {
+            await VerifyRefactoringAsync(@"
+class C
+{
+[|    private object M1() => null;
+    object M2() => null;|]
+}
+", @"
+class C
+{
+    private object M1() => null;
+    private object M2() => null;
+}
+", equivalenceKey: EquivalenceKey.Join(RefactoringId, nameof(Accessibility.Private)));
+        }
+
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ChangeAccessibility)]
         public async Task TestNoRefactoring_OverrideDeclarationWithoutBaseSource()
         {
             await VerifyNoRefactoringAsync(@"

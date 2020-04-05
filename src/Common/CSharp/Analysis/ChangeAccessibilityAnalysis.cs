@@ -38,6 +38,7 @@ namespace Roslynator.CSharp.Analysis
 
             ImmutableArray<Accessibility> avaiableAccessibilities = AvailableAccessibilities;
 
+            bool isAllExplicit = true;
             var all = AccessibilityFilter.None;
 
             AccessibilityFilter valid = AccessibilityFilter.Public
@@ -51,6 +52,8 @@ namespace Roslynator.CSharp.Analysis
 
                 if (accessibility == Accessibility.NotApplicable)
                 {
+                    isAllExplicit = false;
+
                     accessibility = SyntaxAccessibility.GetDefaultExplicitAccessibility(member);
 
                     if (accessibility == Accessibility.NotApplicable)
@@ -124,16 +127,19 @@ namespace Roslynator.CSharp.Analysis
                 }
             }
 
-            switch (all)
+            if (isAllExplicit)
             {
-                case AccessibilityFilter.Private:
-                case AccessibilityFilter.Protected:
-                case AccessibilityFilter.Internal:
-                case AccessibilityFilter.Public:
-                    {
-                        valid &= ~all;
-                        break;
-                    }
+                switch (all)
+                {
+                    case AccessibilityFilter.Private:
+                    case AccessibilityFilter.Protected:
+                    case AccessibilityFilter.Internal:
+                    case AccessibilityFilter.Public:
+                        {
+                            valid &= ~all;
+                            break;
+                        }
+                }
             }
 
             return valid;
