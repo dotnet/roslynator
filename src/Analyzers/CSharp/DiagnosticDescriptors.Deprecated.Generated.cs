@@ -295,18 +295,6 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         [Obsolete("", error: true)]
-        internal static readonly DiagnosticDescriptor UseStringLengthInsteadOfComparisonWithEmptyString = Factory.Create(
-            id:                 DiagnosticIdentifiers.UseStringLengthInsteadOfComparisonWithEmptyString, 
-            title:              "Use string.Length instead of comparison with empty string.", 
-            messageFormat:      "Use string.Length instead of comparison with empty string.", 
-            category:           DiagnosticCategories.Usage, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: true, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.UseStringLengthInsteadOfComparisonWithEmptyString, 
-            customTags:         Array.Empty<string>());
-
-        [Obsolete("", error: true)]
         internal static readonly DiagnosticDescriptor OverridingMemberCannotChangeAccessModifiers = Factory.Create(
             id:                 DiagnosticIdentifiers.OverridingMemberCannotChangeAccessModifiers, 
             title:              "Overriding member cannot change access modifiers.", 

@@ -26,13 +26,10 @@ namespace Roslynator.CSharp.Analysis
                 throw new ArgumentNullException(nameof(context));
 
             base.Initialize(context);
-            context.EnableConcurrentExecution();
 
             context.RegisterSyntaxNodeAction(AnalyzeBinaryExpression,
                 SyntaxKind.LogicalOrExpression,
                 SyntaxKind.LogicalAndExpression);
-
-            context.RegisterSyntaxNodeAction(AnalyzeEqualsExpression, SyntaxKind.EqualsExpression);
         }
 
         private static void AnalyzeBinaryExpression(SyntaxNodeAnalysisContext context)
@@ -126,38 +123,6 @@ namespace Roslynator.CSharp.Analysis
         {
             return semanticModel.GetSymbol(expression1, cancellationToken)?
                 .Equals(semanticModel.GetSymbol(expression2, cancellationToken)) == true;
-        }
-
-        private static void AnalyzeEqualsExpression(SyntaxNodeAnalysisContext context)
-        {
-            var equalsExpression = (BinaryExpressionSyntax)context.Node;
-
-            if (equalsExpression.ContainsDirectives)
-                return;
-
-            BinaryExpressionInfo equalsExpressionInfo = SyntaxInfo.BinaryExpressionInfo(equalsExpression);
-
-            if (!equalsExpressionInfo.Success)
-                return;
-
-            ExpressionSyntax left = equalsExpressionInfo.Left;
-            ExpressionSyntax right = equalsExpressionInfo.Right;
-
-            SemanticModel semanticModel = context.SemanticModel;
-            CancellationToken cancellationToken = context.CancellationToken;
-
-            if (CSharpUtility.IsEmptyStringExpression(left, semanticModel, cancellationToken))
-            {
-                if (CSharpUtility.IsStringExpression(right, semanticModel, cancellationToken))
-                {
-                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseStringIsNullOrEmptyMethod, equalsExpression);
-                }
-            }
-            else if (CSharpUtility.IsEmptyStringExpression(right, semanticModel, cancellationToken)
-                && CSharpUtility.IsStringExpression(left, semanticModel, cancellationToken))
-            {
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseStringIsNullOrEmptyMethod, equalsExpression);
-            }
         }
     }
 }

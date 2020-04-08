@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Immutable;
 using System.Composition;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -33,6 +33,7 @@ namespace Roslynator.CSharp.CodeFixes
                     DiagnosticIdentifiers.UseStringIsNullOrEmptyMethod,
                     DiagnosticIdentifiers.SimplifyCoalesceExpression,
                     DiagnosticIdentifiers.RemoveRedundantAsOperator,
+                    DiagnosticIdentifiers.UseStringLengthInsteadOfComparisonWithEmptyString,
                     DiagnosticIdentifiers.UnconstrainedTypeParameterCheckedForNull,
                     DiagnosticIdentifiers.ValueTypeObjectIsNeverEqualToNull,
                     DiagnosticIdentifiers.JoinStringExpressions,
@@ -91,7 +92,7 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Use 'string.IsNullOrEmpty' method",
-                                ct => UseStringIsNullOrEmptyMethodAsync(document, binaryExpression, ct),
+                                cancellationToken => UseStringIsNullOrEmptyMethodAsync(document, binaryExpression, cancellationToken),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -120,6 +121,16 @@ namespace Roslynator.CSharp.CodeFixes
                             CodeAction codeAction = CodeAction.Create(
                                 "Remove redundant 'as' operator",
                                 cancellationToken => RemoveRedundantAsOperatorRefactoring.RefactorAsync(document, binaryExpression, cancellationToken),
+                                GetEquivalenceKey(diagnostic));
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.UseStringLengthInsteadOfComparisonWithEmptyString:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Use string.Length",
+                                cancellationToken => UseStringLengthInsteadOfComparisonWithEmptyStringAsync(document, binaryExpression, cancellationToken),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -260,50 +271,69 @@ namespace Roslynator.CSharp.CodeFixes
             }
         }
 
-        private static async Task<Document> UseStringIsNullOrEmptyMethodAsync(
+        private static Task<Document> UseStringIsNullOrEmptyMethodAsync(
             Document document,
             BinaryExpressionSyntax binaryExpression,
             CancellationToken cancellationToken)
         {
-            if (binaryExpression.IsKind(SyntaxKind.EqualsExpression))
+            NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(binaryExpression.Left);
+
+            ExpressionSyntax newNode = SimpleMemberInvocationExpression(
+                CSharpTypeFactory.StringType(),
+                IdentifierName("IsNullOrEmpty"),
+                Argument(nullCheck.Expression));
+
+            if (nullCheck.IsCheckingNotNull)
+                newNode = LogicalNotExpression(newNode);
+
+            newNode = newNode
+                .WithTriviaFrom(binaryExpression)
+                .WithFormatterAnnotation();
+
+            return document.ReplaceNodeAsync(binaryExpression, newNode, cancellationToken);
+        }
+
+        private static async Task<Document> UseStringLengthInsteadOfComparisonWithEmptyStringAsync(
+            Document document,
+            BinaryExpressionSyntax binaryExpression,
+            CancellationToken cancellationToken)
+        {
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
+            ExpressionSyntax left = binaryExpression.Left;
+
+            ExpressionSyntax right = binaryExpression.Right;
+
+            BinaryExpressionSyntax newNode;
+
+            if (CSharpUtility.IsEmptyStringExpression(left, semanticModel, cancellationToken))
             {
-                SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
-
-                BinaryExpressionInfo binaryExpressionInfo = SyntaxInfo.BinaryExpressionInfo(binaryExpression);
-
-                ExpressionSyntax expression = (CSharpUtility.IsEmptyStringExpression(binaryExpressionInfo.Left, semanticModel, cancellationToken))
-                    ? binaryExpressionInfo.Right
-                    : binaryExpressionInfo.Left;
-
-                ExpressionSyntax newNode = SimpleMemberInvocationExpression(
-                    CSharpTypeFactory.StringType(),
-                    IdentifierName("IsNullOrEmpty"),
-                    Argument(expression));
-
-                newNode = newNode
-                    .WithTriviaFrom(binaryExpression)
-                    .WithFormatterAnnotation();
-
-                return await document.ReplaceNodeAsync(binaryExpression, newNode, cancellationToken).ConfigureAwait(false);
+                newNode = binaryExpression
+                    .WithLeft(NumericLiteralExpression(0))
+                    .WithRight(CreateConditionalAccess(right));
+            }
+            else if (CSharpUtility.IsEmptyStringExpression(right, semanticModel, cancellationToken))
+            {
+                newNode = binaryExpression
+                    .WithLeft(CreateConditionalAccess(left))
+                    .WithRight(NumericLiteralExpression(0));
             }
             else
             {
-                NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(binaryExpression.Left);
-
-                ExpressionSyntax newNode = SimpleMemberInvocationExpression(
-                    CSharpTypeFactory.StringType(),
-                    IdentifierName("IsNullOrEmpty"),
-                    Argument(nullCheck.Expression));
-
-                if (nullCheck.IsCheckingNotNull)
-                    newNode = LogicalNotExpression(newNode);
-
-                newNode = newNode
-                    .WithTriviaFrom(binaryExpression)
-                    .WithFormatterAnnotation();
-
-                return await document.ReplaceNodeAsync(binaryExpression, newNode, cancellationToken).ConfigureAwait(false);
+                Debug.Fail(binaryExpression.ToString());
+                return document;
             }
+
+            newNode = newNode.WithTriviaFrom(binaryExpression).WithFormatterAnnotation();
+
+            return await document.ReplaceNodeAsync(binaryExpression, newNode, cancellationToken).ConfigureAwait(false);
+        }
+
+        private static ConditionalAccessExpressionSyntax CreateConditionalAccess(ExpressionSyntax expression)
+        {
+            return ConditionalAccessExpression(
+                expression.Parenthesize(),
+                MemberBindingExpression(IdentifierName("Length")));
         }
     }
 }
