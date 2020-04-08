@@ -126,7 +126,8 @@ namespace Roslynator.CSharp.Analysis
                 //TODO: ITypeSymbol.IsReadOnly, https://github.com/dotnet/roslyn/issues/23792
                 if (!type.IsReadOnlyStruct())
                 {
-                    if (parameter.RefKind == RefKind.In)
+                    if (parameter.RefKind == RefKind.In
+                        && type.TypeKind == TypeKind.Struct)
                     {
                         var parameterSyntax = (ParameterSyntax)parameter.GetSyntax(cancellationToken);
 
