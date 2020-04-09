@@ -14,15 +14,15 @@ using Roslynator.CSharp.Syntax;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class MergeIfStatementWithNestedIfStatementAnalyzer : BaseDiagnosticAnalyzer
+    public class MergeIfWithNestedIfAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticDescriptors.MergeIfStatementWithNestedIfStatement,
-                    DiagnosticDescriptors.MergeIfStatementWithNestedIfStatementFadeOut);
+                    DiagnosticDescriptors.MergeIfWithNestedIf,
+                    DiagnosticDescriptors.MergeIfWithNestedIfFadeOut);
             }
         }
 
@@ -35,7 +35,7 @@ namespace Roslynator.CSharp.Analysis
 
             context.RegisterCompilationStartAction(startContext =>
             {
-                if (startContext.IsAnalyzerSuppressed(DiagnosticDescriptors.MergeIfStatementWithNestedIfStatement))
+                if (startContext.IsAnalyzerSuppressed(DiagnosticDescriptors.MergeIfWithNestedIf))
                     return;
 
                 startContext.RegisterSyntaxNodeAction(AnalyzeIfStatement, SyntaxKind.IfStatement);
@@ -73,16 +73,16 @@ namespace Roslynator.CSharp.Analysis
 
         private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, IfStatementSyntax ifStatement, IfStatementSyntax nestedIf)
         {
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.MergeIfStatementWithNestedIfStatement, ifStatement);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.MergeIfWithNestedIf, ifStatement);
 
-            DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.MergeIfStatementWithNestedIfStatementFadeOut, nestedIf.IfKeyword);
-            DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.MergeIfStatementWithNestedIfStatementFadeOut, nestedIf.OpenParenToken);
-            DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.MergeIfStatementWithNestedIfStatementFadeOut, nestedIf.CloseParenToken);
+            DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.MergeIfWithNestedIfFadeOut, nestedIf.IfKeyword);
+            DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.MergeIfWithNestedIfFadeOut, nestedIf.OpenParenToken);
+            DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.MergeIfWithNestedIfFadeOut, nestedIf.CloseParenToken);
 
             if (ifStatement.Statement.IsKind(SyntaxKind.Block)
                 && nestedIf.Statement.IsKind(SyntaxKind.Block))
             {
-                CSharpDiagnosticHelpers.ReportBraces(context, DiagnosticDescriptors.MergeIfStatementWithNestedIfStatementFadeOut, (BlockSyntax)nestedIf.Statement);
+                CSharpDiagnosticHelpers.ReportBraces(context, DiagnosticDescriptors.MergeIfWithNestedIfFadeOut, (BlockSyntax)nestedIf.Statement);
             }
         }
 

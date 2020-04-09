@@ -2,13 +2,14 @@
 
 using System.Collections.Immutable;
 using System.Composition;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
-using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.CodeFixes
 {
@@ -21,8 +22,8 @@ namespace Roslynator.CSharp.CodeFixes
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticIdentifiers.RemoveEmptyElseClause,
-                    DiagnosticIdentifiers.MergeElseClauseWithNestedIfStatement);
+                    DiagnosticIdentifiers.RemoveEmptyElse,
+                    DiagnosticIdentifiers.MergeElseWithNestedIf);
             }
         }
 
@@ -37,21 +38,21 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 switch (diagnostic.Id)
                 {
-                    case DiagnosticIdentifiers.RemoveEmptyElseClause:
+                    case DiagnosticIdentifiers.RemoveEmptyElse:
                         {
                             CodeAction codeAction = CodeAction.Create(
-                                "Remove empty else clause",
-                                cancellationToken => RemoveEmptyElseClauseRefactoring.RefactorAsync(context.Document, elseClause, cancellationToken),
+                                "Remove empty 'else'",
+                                ct => RemoveEmptyElseAsync(context.Document, elseClause, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
-                    case DiagnosticIdentifiers.MergeElseClauseWithNestedIfStatement:
+                    case DiagnosticIdentifiers.MergeElseWithNestedIf:
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Remove braces",
-                                cancellationToken => MergeElseClauseWithNestedIfStatementRefactoring.RefactorAsync(context.Document, elseClause, cancellationToken),
+                                ct => MergeElseWithNestedIfAsync(context.Document, elseClause, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -59,6 +60,46 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                 }
             }
+        }
+
+        private static async Task<Document> RemoveEmptyElseAsync(
+            Document document,
+            ElseClauseSyntax elseClause,
+            CancellationToken cancellationToken)
+        {
+            if (elseClause.IsParentKind(SyntaxKind.IfStatement))
+            {
+                var ifStatement = (IfStatementSyntax)elseClause.Parent;
+                StatementSyntax statement = ifStatement.Statement;
+
+                if (statement?.GetTrailingTrivia().IsEmptyOrWhitespace() == true)
+                {
+                    IfStatementSyntax newIfStatement = ifStatement
+                        .WithStatement(statement.WithTrailingTrivia(elseClause.GetTrailingTrivia()))
+                        .WithElse(null);
+
+                    return await document.ReplaceNodeAsync(ifStatement, newIfStatement, cancellationToken).ConfigureAwait(false);
+                }
+            }
+
+            return await document.RemoveNodeAsync(elseClause, SyntaxRemoveOptions.KeepExteriorTrivia, cancellationToken).ConfigureAwait(false);
+        }
+
+        private static Task<Document> MergeElseWithNestedIfAsync(
+            Document document,
+            ElseClauseSyntax elseClause,
+            CancellationToken cancellationToken = default)
+        {
+            var block = (BlockSyntax)elseClause.Statement;
+
+            var ifStatement = (IfStatementSyntax)block.Statements[0];
+
+            ElseClauseSyntax newElseClause = elseClause
+                .WithStatement(ifStatement)
+                .WithElseKeyword(elseClause.ElseKeyword.WithoutTrailingTrivia())
+                .WithFormatterAnnotation();
+
+            return document.ReplaceNodeAsync(elseClause, newElseClause, cancellationToken);
         }
     }
 }

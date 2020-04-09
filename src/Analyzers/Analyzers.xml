@@ -129,10 +129,10 @@ using (var sr = new StreamReader(fs))
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="MergeElseClauseWithNestedIfStatement">
+  <Analyzer Identifier="MergeElseWithNestedIf">
     <Id>RCS1006</Id>
-    <Title>Merge else clause with nested if statement.</Title>
-    <MessageFormat>Merge else clause with nested if statement.</MessageFormat>
+    <Title>Merge 'else' with nested 'if'.</Title>
+    <MessageFormat>Merge 'else' with nested 'if'.</MessageFormat>
     <Category>Simplification</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -832,10 +832,10 @@ public void Foo()
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="RemoveEmptyElseClause">
+  <Analyzer Identifier="RemoveEmptyElse">
     <Id>RCS1040</Id>
-    <Title>Remove empty else clause.</Title>
-    <MessageFormat>Remove empty else clause.</MessageFormat>
+    <Title>Remove empty 'else'.</Title>
+    <MessageFormat>Remove empty 'else'.</MessageFormat>
     <Category>Redundancy</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -1326,10 +1326,10 @@ public class Bar
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="MergeIfStatementWithNestedIfStatement">
+  <Analyzer Identifier="MergeIfWithNestedIf">
     <Id>RCS1061</Id>
-    <Title>Merge if statement with nested if statement.</Title>
-    <MessageFormat>Merge if statement with nested if statement.</MessageFormat>
+    <Title>Merge 'if' with nested 'if'.</Title>
+    <MessageFormat>Merge 'if' with nested 'if'.</MessageFormat>
     <Category>Simplification</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -3700,8 +3700,8 @@ abstract class Foo : IFoo
   </Analyzer>
   <Analyzer Identifier="UseCoalesceExpressionInsteadOfIf">
     <Id>RCS1173</Id>
-    <Title>Use coalesce expression instead of if.</Title>
-    <MessageFormat>Use coalesce expression instead of if.</MessageFormat>
+    <Title>Use coalesce expression instead of 'if'.</Title>
+    <MessageFormat>Use coalesce expression instead of 'if'.</MessageFormat>
     <Category>Simplification</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -4457,8 +4457,8 @@ int i = (x != null) ? x.Value.GetHashCode() : 0; // [|Id|]]]></Before>
   </Analyzer>
   <Analyzer Identifier="ReduceIfNesting">
     <Id>RCS1208</Id>
-    <Title>Reduce if nesting.</Title>
-    <MessageFormat>Reduce if nesting.</MessageFormat>
+    <Title>Reduce 'if' nesting.</Title>
+    <MessageFormat>Reduce 'if' nesting.</MessageFormat>
     <Category>Style</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -4569,9 +4569,9 @@ Foo3();]]></After>
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="RemoveUnnecessaryElseClause">
+  <Analyzer Identifier="RemoveUnnecessaryElse">
     <Id>RCS1211</Id>
-    <Title>Remove unnecessary else clause.</Title>
+    <Title>Remove unnecessary 'else'.</Title>
     <MessageFormat>Remove unnecessary else clause.</MessageFormat>
     <Category>Redundancy</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>

@@ -9,15 +9,15 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1040RemoveEmptyElseClauseTests : AbstractCSharpFixVerifier
+    public class RCS1040RemoveEmptyElseTests : AbstractCSharpFixVerifier
     {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.RemoveEmptyElseClause;
+        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.RemoveEmptyElse;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new RemoveEmptyElseClauseAnalyzer();
+        public override DiagnosticAnalyzer Analyzer { get; } = new RemoveEmptyElseAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new ElseClauseCodeFixProvider();
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptyElseClause)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptyElse)]
         public async Task Test()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -50,7 +50,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptyElseClause)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptyElse)]
         public async Task TestNoDiagnostic_ElseIf()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -71,7 +71,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptyElseClause)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptyElse)]
         public async Task TestNoDiagnostic_NonEmptyElse()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -93,7 +93,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptyElseClause)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptyElse)]
         public async Task TestNoDiagnostic_IfElseEmbededInIfWithElse()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -114,7 +114,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptyElseClause)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptyElse)]
         public async Task TestNoDiagnostic_IfElseEmbededInIfWithElse2()
         {
             await VerifyNoDiagnosticAsync(@"

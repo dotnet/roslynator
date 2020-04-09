@@ -76,18 +76,18 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor SimplifyNestedUsingStatementFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(SimplifyNestedUsingStatement);
 
         /// <summary>RCS1006</summary>
-        public static readonly DiagnosticDescriptor MergeElseClauseWithNestedIfStatement = Factory.Create(
-            id:                 DiagnosticIdentifiers.MergeElseClauseWithNestedIfStatement, 
-            title:              "Merge else clause with nested if statement.", 
-            messageFormat:      "Merge else clause with nested if statement.", 
+        public static readonly DiagnosticDescriptor MergeElseWithNestedIf = Factory.Create(
+            id:                 DiagnosticIdentifiers.MergeElseWithNestedIf, 
+            title:              "Merge 'else' with nested 'if'.", 
+            messageFormat:      "Merge 'else' with nested 'if'.", 
             category:           DiagnosticCategories.Simplification, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.MergeElseClauseWithNestedIfStatement, 
+            helpLinkUri:        DiagnosticIdentifiers.MergeElseWithNestedIf, 
             customTags:         Array.Empty<string>());
 
-        public static readonly DiagnosticDescriptor MergeElseClauseWithNestedIfStatementFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(MergeElseClauseWithNestedIfStatement);
+        public static readonly DiagnosticDescriptor MergeElseWithNestedIfFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(MergeElseWithNestedIf);
 
         /// <summary>RCS1007</summary>
         public static readonly DiagnosticDescriptor AddBraces = Factory.Create(
@@ -472,15 +472,15 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1040</summary>
-        public static readonly DiagnosticDescriptor RemoveEmptyElseClause = Factory.Create(
-            id:                 DiagnosticIdentifiers.RemoveEmptyElseClause, 
-            title:              "Remove empty else clause.", 
-            messageFormat:      "Remove empty else clause.", 
+        public static readonly DiagnosticDescriptor RemoveEmptyElse = Factory.Create(
+            id:                 DiagnosticIdentifiers.RemoveEmptyElse, 
+            title:              "Remove empty 'else'.", 
+            messageFormat:      "Remove empty 'else'.", 
             category:           DiagnosticCategories.Redundancy, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.RemoveEmptyElseClause, 
+            helpLinkUri:        DiagnosticIdentifiers.RemoveEmptyElse, 
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1041</summary>
@@ -708,18 +708,18 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1061</summary>
-        public static readonly DiagnosticDescriptor MergeIfStatementWithNestedIfStatement = Factory.Create(
-            id:                 DiagnosticIdentifiers.MergeIfStatementWithNestedIfStatement, 
-            title:              "Merge if statement with nested if statement.", 
-            messageFormat:      "Merge if statement with nested if statement.", 
+        public static readonly DiagnosticDescriptor MergeIfWithNestedIf = Factory.Create(
+            id:                 DiagnosticIdentifiers.MergeIfWithNestedIf, 
+            title:              "Merge 'if' with nested 'if'.", 
+            messageFormat:      "Merge 'if' with nested 'if'.", 
             category:           DiagnosticCategories.Simplification, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.MergeIfStatementWithNestedIfStatement, 
+            helpLinkUri:        DiagnosticIdentifiers.MergeIfWithNestedIf, 
             customTags:         Array.Empty<string>());
 
-        public static readonly DiagnosticDescriptor MergeIfStatementWithNestedIfStatementFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(MergeIfStatementWithNestedIfStatement);
+        public static readonly DiagnosticDescriptor MergeIfWithNestedIfFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(MergeIfWithNestedIf);
 
         /// <summary>RCS1062</summary>
         public static readonly DiagnosticDescriptor AvoidInterpolatedStringWithNoInterpolation = Factory.Create(
@@ -1820,8 +1820,8 @@ namespace Roslynator.CSharp
         /// <summary>RCS1173</summary>
         public static readonly DiagnosticDescriptor UseCoalesceExpressionInsteadOfIf = Factory.Create(
             id:                 DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfIf, 
-            title:              "Use coalesce expression instead of if.", 
-            messageFormat:      "Use coalesce expression instead of if.", 
+            title:              "Use coalesce expression instead of 'if'.", 
+            messageFormat:      "Use coalesce expression instead of 'if'.", 
             category:           DiagnosticCategories.Simplification, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
@@ -2232,8 +2232,8 @@ namespace Roslynator.CSharp
         /// <summary>RCS1208</summary>
         public static readonly DiagnosticDescriptor ReduceIfNesting = Factory.Create(
             id:                 DiagnosticIdentifiers.ReduceIfNesting, 
-            title:              "Reduce if nesting.", 
-            messageFormat:      "Reduce if nesting.", 
+            title:              "Reduce 'if' nesting.", 
+            messageFormat:      "Reduce 'if' nesting.", 
             category:           DiagnosticCategories.Style, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
@@ -2266,15 +2266,15 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1211</summary>
-        public static readonly DiagnosticDescriptor RemoveUnnecessaryElseClause = Factory.Create(
-            id:                 DiagnosticIdentifiers.RemoveUnnecessaryElseClause, 
-            title:              "Remove unnecessary else clause.", 
+        public static readonly DiagnosticDescriptor RemoveUnnecessaryElse = Factory.Create(
+            id:                 DiagnosticIdentifiers.RemoveUnnecessaryElse, 
+            title:              "Remove unnecessary 'else'.", 
             messageFormat:      "Remove unnecessary else clause.", 
             category:           DiagnosticCategories.Redundancy, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.RemoveUnnecessaryElseClause, 
+            helpLinkUri:        DiagnosticIdentifiers.RemoveUnnecessaryElse, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1212</summary>

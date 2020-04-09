@@ -28,7 +28,7 @@ namespace Roslynator.CSharp.CodeFixes
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticIdentifiers.MergeIfStatementWithNestedIfStatement,
+                    DiagnosticIdentifiers.MergeIfWithNestedIf,
                     DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfIf,
                     DiagnosticIdentifiers.ConvertIfToReturnStatement,
                     DiagnosticIdentifiers.ConvertIfToAssignment,
@@ -48,17 +48,11 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 switch (diagnostic.Id)
                 {
-                    case DiagnosticIdentifiers.MergeIfStatementWithNestedIfStatement:
+                    case DiagnosticIdentifiers.MergeIfWithNestedIf:
                         {
                             CodeAction codeAction = CodeAction.Create(
-                                "Merge if with nested if",
-                                cancellationToken =>
-                                {
-                                    return MergeIfStatementWithNestedIfStatementRefactoring.RefactorAsync(
-                                        context.Document,
-                                        ifStatement,
-                                        cancellationToken);
-                                },
+                                "Merge 'if' with nested 'if'",
+                                ct => MergeIfWithNestedIfAsync(context.Document, ifStatement, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -178,6 +172,47 @@ namespace Roslynator.CSharp.CodeFixes
                 {
                     return statements.Replace(ifStatement, statement);
                 }
+            }
+        }
+
+        public static Task<Document> MergeIfWithNestedIfAsync(
+            Document document,
+            IfStatementSyntax ifStatement,
+            CancellationToken cancellationToken = default)
+        {
+            IfStatementSyntax nestedIf = MergeIfWithNestedIfAnalyzer.GetNestedIfStatement(ifStatement);
+
+            ExpressionSyntax left = ifStatement.Condition.Parenthesize();
+            ExpressionSyntax right = nestedIf.Condition;
+
+            if (!right.IsKind(SyntaxKind.LogicalAndExpression))
+                right = right.Parenthesize();
+
+            BinaryExpressionSyntax newCondition = CSharpFactory.LogicalAndExpression(left, right);
+
+            IfStatementSyntax newNode = GetNewIfStatement(ifStatement, nestedIf)
+                .WithCondition(newCondition)
+                .WithFormatterAnnotation();
+
+            return document.ReplaceNodeAsync(ifStatement, newNode, cancellationToken);
+        }
+
+        private static IfStatementSyntax GetNewIfStatement(IfStatementSyntax ifStatement, IfStatementSyntax ifStatement2)
+        {
+            if (ifStatement.Statement.IsKind(SyntaxKind.Block))
+            {
+                if (ifStatement2.Statement.IsKind(SyntaxKind.Block))
+                {
+                    return ifStatement.ReplaceNode(ifStatement2, ((BlockSyntax)ifStatement2.Statement).Statements);
+                }
+                else
+                {
+                    return ifStatement.ReplaceNode(ifStatement2, ifStatement2.Statement);
+                }
+            }
+            else
+            {
+                return ifStatement.ReplaceNode(ifStatement.Statement, ifStatement2.Statement);
             }
         }
     }

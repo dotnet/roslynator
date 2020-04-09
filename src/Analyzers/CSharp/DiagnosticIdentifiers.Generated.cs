@@ -13,7 +13,7 @@ namespace Roslynator.CSharp
         public const string AddBracesToIfElseWhenExpressionSpansOverMultipleLines = "RCS1003";
         public const string RemoveBracesFromIfElse = "RCS1004";
         public const string SimplifyNestedUsingStatement = "RCS1005";
-        public const string MergeElseClauseWithNestedIfStatement = "RCS1006";
+        public const string MergeElseWithNestedIf = "RCS1006";
         public const string AddBraces = "RCS1007";
         public const string UseExplicitTypeInsteadOfVarWhenTypeIsNotObvious = "RCS1008";
         public const string UseExplicitTypeInsteadOfVarInForEach = "RCS1009";
@@ -45,7 +45,7 @@ namespace Roslynator.CSharp
         public const string RemoveTrailingWhitespace = "RCS1037";
         public const string RemoveEmptyStatement = "RCS1038";
         public const string RemoveArgumentListFromAttribute = "RCS1039";
-        public const string RemoveEmptyElseClause = "RCS1040";
+        public const string RemoveEmptyElse = "RCS1040";
         public const string RemoveEmptyInitializer = "RCS1041";
         public const string RemoveEnumDefaultUnderlyingType = "RCS1042";
         public const string RemovePartialModifierFromTypeWithSinglePart = "RCS1043";
@@ -64,7 +64,7 @@ namespace Roslynator.CSharp
         public const string UseCompoundAssignment = "RCS1058";
         public const string AvoidLockingOnPubliclyAccessibleInstance = "RCS1059";
         public const string DeclareEachTypeInSeparateFile = "RCS1060";
-        public const string MergeIfStatementWithNestedIfStatement = "RCS1061";
+        public const string MergeIfWithNestedIf = "RCS1061";
         public const string AvoidInterpolatedStringWithNoInterpolation = "RCS1062";
         public const string AvoidUsageOfDoStatementToCreateInfiniteLoop = "RCS1063";
         public const string AvoidUsageOfForStatementToCreateInfiniteLoop = "RCS1064";
@@ -192,7 +192,7 @@ namespace Roslynator.CSharp
         public const string ReduceIfNesting = "RCS1208";
         public const string OrderTypeParameterConstraints = "RCS1209";
         public const string ReturnTaskInsteadOfNull = "RCS1210";
-        public const string RemoveUnnecessaryElseClause = "RCS1211";
+        public const string RemoveUnnecessaryElse = "RCS1211";
         public const string RemoveRedundantAssignment = "RCS1212";
         public const string RemoveUnusedMemberDeclaration = "RCS1213";
         public const string UnnecessaryInterpolatedString = "RCS1214";
