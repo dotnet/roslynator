@@ -80,6 +80,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                                 context.RegisterCodeFix(codeAction, diagnostic);
                             }
+                            else
                             {
                                 CodeAction codeAction = CodeAction.Create(
                                     "Remove null check",
