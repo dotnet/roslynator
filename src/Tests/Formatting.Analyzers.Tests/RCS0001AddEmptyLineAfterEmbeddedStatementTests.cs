@@ -49,6 +49,41 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddEmptyLineAfterEmbeddedStatement)]
+        public async Task Test_ElseIf()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+        bool f = false;
+
+        if (f)
+            M();
+        else if (f)
+            M();[||]
+        M();
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+        bool f = false;
+
+        if (f)
+            M();
+        else if (f)
+            M();
+
+        M();
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddEmptyLineAfterEmbeddedStatement)]
         public async Task Test_Else()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -322,6 +357,47 @@ class C
                 M();
 
             M();
+        }
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddEmptyLineAfterEmbeddedStatement)]
+        public async Task Test_Switch()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+        bool f = false;
+        string s = null;
+
+        switch (s)
+        {
+            case null:
+                if (f)
+                    M();[||]
+                break;
+        }
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+        bool f = false;
+        string s = null;
+
+        switch (s)
+        {
+            case null:
+                if (f)
+                    M();
+
+                break;
         }
     }
 }

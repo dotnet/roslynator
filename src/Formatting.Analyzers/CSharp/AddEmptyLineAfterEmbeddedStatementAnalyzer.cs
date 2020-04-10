@@ -8,6 +8,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp;
+using Roslynator.CSharp.Syntax;
 
 namespace Roslynator.Formatting.CSharp
 {
@@ -38,7 +39,10 @@ namespace Roslynator.Formatting.CSharp
         {
             var ifStatement = (IfStatementSyntax)context.Node;
 
-            Analyze(context, ifStatement, ifStatement.CloseParenToken, ifStatement.Statement);
+            if (ifStatement.Else != null)
+                return;
+
+            Analyze(context, ifStatement.GetTopmostIf(), ifStatement.CloseParenToken, ifStatement.Statement);
         }
 
         private static void AnalyzeCommonForEachStatement(SyntaxNodeAnalysisContext context)
@@ -112,27 +116,23 @@ namespace Roslynator.Formatting.CSharp
             if (statement?.IsKind(SyntaxKind.Block, SyntaxKind.EmptyStatement) != false)
                 return;
 
-            if (!containingStatement.SyntaxTree.IsMultiLineSpan(TextSpan.FromBounds(token.SpanStart, statement.SpanStart)))
+            StatementListInfo statementsInfo = SyntaxInfo.StatementListInfo(containingStatement);
+
+            if (!statementsInfo.Success)
                 return;
 
-            SyntaxNode parent = containingStatement.Parent;
+            SyntaxTree syntaxTree = containingStatement.SyntaxTree;
 
-            if (!(parent is BlockSyntax block))
+            if (!syntaxTree.IsMultiLineSpan(TextSpan.FromBounds(token.SpanStart, statement.SpanStart)))
                 return;
 
-            SyntaxList<StatementSyntax> statements = block.Statements;
+            StatementSyntax nextStatement = containingStatement.NextStatement();
 
-            int index = statements.IndexOf(containingStatement);
-
-            if (index == statements.Count - 1)
+            if (nextStatement == null)
                 return;
 
-            if (containingStatement
-                .SyntaxTree
-                .GetLineCount(TextSpan.FromBounds(statement.Span.End, statements[index + 1].SpanStart)) > 2)
-            {
+            if (syntaxTree.GetLineCount(TextSpan.FromBounds(statement.Span.End, nextStatement.SpanStart)) > 2)
                 return;
-            }
 
             SyntaxTrivia trivia = statement
                 .GetTrailingTrivia()
@@ -143,7 +143,7 @@ namespace Roslynator.Formatting.CSharp
 
             context.ReportDiagnostic(
                 DiagnosticDescriptors.AddEmptyLineAfterEmbeddedStatement,
-                Location.Create(trivia.SyntaxTree, trivia.Span.WithLength(0)));
+                Location.Create(syntaxTree, trivia.Span.WithLength(0)));
         }
     }
 }
