@@ -19,9 +19,6 @@ namespace Roslynator.CSharp.Analysis
 
         public override void Initialize(AnalysisContext context)
         {
-            if (context == null)
-                throw new ArgumentNullException(nameof(context));
-
             base.Initialize(context);
 
             context.RegisterSyntaxNodeAction(AnalyzeBinaryExpression, SyntaxKind.MultiplyExpression, SyntaxKind.DivideExpression, SyntaxKind.ModuloExpression, SyntaxKind.AddExpression, SyntaxKind.SubtractExpression, SyntaxKind.LeftShiftExpression, SyntaxKind.RightShiftExpression, SyntaxKind.LessThanExpression, SyntaxKind.GreaterThanExpression, SyntaxKind.LessThanOrEqualExpression, SyntaxKind.GreaterThanOrEqualExpression, SyntaxKind.EqualsExpression, SyntaxKind.NotEqualsExpression, SyntaxKind.BitwiseAndExpression, SyntaxKind.ExclusiveOrExpression, SyntaxKind.BitwiseOrExpression, SyntaxKind.LogicalAndExpression, SyntaxKind.LogicalOrExpression);
