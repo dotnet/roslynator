@@ -29,7 +29,12 @@ namespace Roslynator.CSharp.CodeFixes
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.OptimizeLinqMethodCall); }
+            get
+            {
+                return ImmutableArray.Create(
+                    DiagnosticIdentifiers.OptimizeLinqMethodCall,
+                    DiagnosticIdentifiers.UseElementAccess);
+            }
         }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)

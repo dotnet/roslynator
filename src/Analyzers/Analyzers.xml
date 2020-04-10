@@ -1738,14 +1738,6 @@ catch (Exception ex) // [|Id|]
         <After><![CDATA[bool x = items.Any();]]></After>
       </Sample>
       <Sample>
-        <Before><![CDATA[var x = list.ElementAt(1); // [|Id|]]]></Before>
-        <After><![CDATA[var x = list[1];]]></After>
-      </Sample>
-      <Sample>
-        <Before><![CDATA[var x = list.First(); // [|Id|]]]></Before>
-        <After><![CDATA[var x = list[0];]]></After>
-      </Sample>
-      <Sample>
         <Before><![CDATA[if (enumerable.Count() != 0) // [|Id|]
 {
 }]]></Before>
@@ -5745,6 +5737,26 @@ public class C
       <Sample>
         <Before><![CDATA[bool x = y ? z : true; // [|Id|]]]></Before>
         <After><![CDATA[bool x = !y || z;]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer Identifier="UseElementAccess">
+    <Id>RCS1246</Id>
+    <Title>Use element access.</Title>
+    <MessageFormat>Use element access.</MessageFormat>
+    <Category>Usage</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[list.First()]]></Before>
+        <After><![CDATA[list[0]]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[list.ElementAt(1)]]></Before>
+        <After><![CDATA[list[1]]]></After>
       </Sample>
     </Samples>
   </Analyzer>
