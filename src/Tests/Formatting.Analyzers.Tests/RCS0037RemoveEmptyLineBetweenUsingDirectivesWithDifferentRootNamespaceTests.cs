@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Roslynator.Formatting.CSharp.Tests
 {
-    public class RemoveEmptyLineBetweenUsingDirectivesWithDifferentRootNamespaceTests : AbstractCSharpFixVerifier
+    public class RCS0037RemoveEmptyLineBetweenUsingDirectivesWithDifferentRootNamespaceTests : AbstractCSharpFixVerifier
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.RemoveEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace;
 

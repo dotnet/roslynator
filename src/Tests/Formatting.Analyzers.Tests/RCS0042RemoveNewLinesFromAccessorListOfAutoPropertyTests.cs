@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Roslynator.Formatting.CSharp.Tests
 {
-    public class RemoveNewLinesFromAccessorListOfAutoPropertyTests : AbstractCSharpFixVerifier
+    public class RCS0042RemoveNewLinesFromAccessorListOfAutoPropertyTests : AbstractCSharpFixVerifier
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.RemoveNewLinesFromAccessorListOfAutoProperty;
 

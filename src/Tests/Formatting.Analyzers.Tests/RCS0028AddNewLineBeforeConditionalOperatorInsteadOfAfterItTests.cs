@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Roslynator.Formatting.CSharp.Tests
 {
-    public class AddNewLineBeforeConditionalOperatorInsteadOfAfterItTests : AbstractCSharpFixVerifier
+    public class RCS0028AddNewLineBeforeConditionalOperatorInsteadOfAfterItTests : AbstractCSharpFixVerifier
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.AddNewLineBeforeConditionalOperatorInsteadOfAfterIt;
 

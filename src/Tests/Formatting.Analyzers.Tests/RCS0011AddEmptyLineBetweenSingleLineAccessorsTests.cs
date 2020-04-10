@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Roslynator.Formatting.CSharp.Tests
 {
-    public class AddEmptyLineBetweenSingleLineAccessorsTests : AbstractCSharpFixVerifier
+    public class RCS0011AddEmptyLineBetweenSingleLineAccessorsTests : AbstractCSharpFixVerifier
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.AddEmptyLineBetweenSingleLineAccessors;
 

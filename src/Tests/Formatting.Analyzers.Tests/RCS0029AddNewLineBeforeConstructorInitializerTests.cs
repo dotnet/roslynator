@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Roslynator.Formatting.CSharp.Tests
 {
-    public class AddNewLineBeforeConstructorInitializerTests : AbstractCSharpFixVerifier
+    public class RCS0029AddNewLineBeforeConstructorInitializerTests : AbstractCSharpFixVerifier
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.AddNewLineBeforeConstructorInitializer;
 

@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Roslynator.Formatting.CSharp.Tests
 {
-    public class UseCarriageReturnAndLinefeedAsNewLineTests : AbstractCSharpFixVerifier
+    public class RCS0044UseCarriageReturnAndLinefeedAsNewLineTests : AbstractCSharpFixVerifier
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.UseCarriageReturnAndLinefeedAsNewLine;
 

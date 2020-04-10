@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Roslynator.Formatting.CSharp.Tests
 {
-    public class AddNewLineAfterExpressionBodyArrowInsteadOfBeforeItTests : AbstractCSharpFixVerifier
+    public class RCS0019AddNewLineAfterExpressionBodyArrowInsteadOfBeforeItTests : AbstractCSharpFixVerifier
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.AddNewLineAfterExpressionBodyArrowInsteadOfBeforeIt;
 

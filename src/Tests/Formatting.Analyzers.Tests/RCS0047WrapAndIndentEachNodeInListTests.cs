@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Roslynator.Formatting.CSharp.Tests
 {
-    public class WrapAndIndentEachNodeInListTests : AbstractCSharpFixVerifier
+    public class RCS0047WrapAndIndentEachNodeInListTests : AbstractCSharpFixVerifier
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.WrapAndIndentEachNodeInList;
 

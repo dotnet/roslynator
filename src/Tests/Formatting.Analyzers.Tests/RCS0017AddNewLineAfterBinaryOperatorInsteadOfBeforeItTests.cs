@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Roslynator.Formatting.CSharp.Tests
 {
-    public class AddNewLineAfterBinaryOperatorInsteadOfBeforeItTests : AbstractCSharpFixVerifier
+    public class RCS0017AddNewLineAfterBinaryOperatorInsteadOfBeforeItTests : AbstractCSharpFixVerifier
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.AddNewLineAfterBinaryOperatorInsteadOfBeforeIt;
 

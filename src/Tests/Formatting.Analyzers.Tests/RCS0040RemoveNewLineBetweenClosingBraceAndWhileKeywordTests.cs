@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Roslynator.Formatting.CSharp.Tests
 {
-    public class RemoveNewLineBetweenClosingBraceAndWhileKeywordTests : AbstractCSharpFixVerifier
+    public class RCS0040RemoveNewLineBetweenClosingBraceAndWhileKeywordTests : AbstractCSharpFixVerifier
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.RemoveNewLineBetweenClosingBraceAndWhileKeyword;
 
