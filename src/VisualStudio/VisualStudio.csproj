@@ -126,6 +126,14 @@
       <Project>{3b0653f4-919d-4049-84a8-b1cc173415d7}</Project>
       <Name>Analyzers.CodeFixes</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Formatting.Analyzers.CodeFixes\Formatting.Analyzers.CodeFixes.csproj">
+      <Project>{f043c66e-e5cb-4e2b-b38c-534a85f67335}</Project>
+      <Name>Formatting.Analyzers.CodeFixes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Formatting.Analyzers\Formatting.Analyzers.csproj">
+      <Project>{9463c16e-54ea-4778-a9a1-2c475712292e}</Project>
+      <Name>Formatting.Analyzers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Workspaces.Common\Workspaces.Common.csproj">
       <Project>{d6b3faf2-c92d-4b2d-82df-d6b3dd7f4107}</Project>
       <Name>Workspaces.Common</Name>
