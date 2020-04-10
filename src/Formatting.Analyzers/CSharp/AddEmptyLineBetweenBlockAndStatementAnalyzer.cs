@@ -116,7 +116,9 @@ namespace Roslynator.Formatting.CSharp
 
         private static void Analyze(SyntaxNodeAnalysisContext context, SyntaxToken closeBrace, StatementSyntax blockOrStatement)
         {
-            StatementSyntax nextStatement = blockOrStatement.NextStatement();
+            StatementSyntax nextStatement = (blockOrStatement is IfStatementSyntax ifStatement)
+                ? ifStatement.GetTopmostIf().NextStatement()
+                : blockOrStatement.NextStatement();
 
             if (nextStatement != null
                 && closeBrace.SyntaxTree.GetLineCount(TextSpan.FromBounds(closeBrace.Span.End, nextStatement.SpanStart)) == 2)

@@ -394,6 +394,45 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddEmptyLineBetweenBlockAndStatement)]
+        public async Task Test_ElseIf()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+        bool x = false;
+
+        if (x)
+        {
+        }
+        else if (x)
+        {
+        }[||]
+        M();
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+        bool x = false;
+
+        if (x)
+        {
+        }
+        else if (x)
+        {
+        }
+
+        M();
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddEmptyLineBetweenBlockAndStatement)]
         public async Task Test_Else()
         {
             await VerifyDiagnosticAndFixAsync(@"
