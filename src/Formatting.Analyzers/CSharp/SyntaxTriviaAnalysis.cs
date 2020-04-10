@@ -10,6 +10,18 @@ namespace Roslynator.Formatting.CSharp
 {
     internal static class SyntaxTriviaAnalysis
     {
+        public static bool IsExteriorTriviaEmptyOrWhitespace(SyntaxNode node)
+        {
+            return node.GetLeadingTrivia().IsEmptyOrWhitespace()
+                && node.GetTrailingTrivia().IsEmptyOrWhitespace();
+        }
+
+        public static bool IsExteriorTriviaEmptyOrWhitespace(SyntaxToken token)
+        {
+            return token.LeadingTrivia.IsEmptyOrWhitespace()
+                && token.TrailingTrivia.IsEmptyOrWhitespace();
+        }
+
         public static bool IsEmptyOrSingleWhitespaceTrivia(SyntaxTriviaList triviaList)
         {
             int count = triviaList.Count;

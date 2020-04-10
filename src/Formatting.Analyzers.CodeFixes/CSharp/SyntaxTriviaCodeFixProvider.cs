@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
+using Roslynator.CSharp;
 using Roslynator.Formatting.CSharp;
 
 namespace Roslynator.Formatting.CodeFixes.CSharp
@@ -19,6 +20,8 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
             get
             {
                 return ImmutableArray.Create(
+                    DiagnosticIdentifiers.AddEmptyLineAfterTopComment,
+                    DiagnosticIdentifiers.AddEmptyLineBeforeTopDeclaration,
                     DiagnosticIdentifiers.AddEmptyLineBetweenAccessors,
                     DiagnosticIdentifiers.AddEmptyLineBetweenSingleLineAccessors,
                     DiagnosticIdentifiers.AddEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace,
@@ -43,6 +46,17 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
 
             switch (diagnostic.Id)
             {
+                case DiagnosticIdentifiers.AddEmptyLineAfterTopComment:
+                    {
+                        CodeAction codeAction = CodeAction.Create(
+                            CodeFixTitles.AddEmptyLine,
+                            ct => document.ReplaceTokenAsync(trivia.Token, trivia.Token.AppendEndOfLineToLeadingTrivia(), ct),
+                            GetEquivalenceKey(diagnostic));
+
+                        context.RegisterCodeFix(codeAction, diagnostic);
+                        break;
+                    }
+                case DiagnosticIdentifiers.AddEmptyLineBeforeTopDeclaration:
                 case DiagnosticIdentifiers.AddEmptyLineBetweenAccessors:
                 case DiagnosticIdentifiers.AddEmptyLineBetweenSingleLineAccessors:
                 case DiagnosticIdentifiers.AddEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace:

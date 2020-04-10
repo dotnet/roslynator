@@ -561,5 +561,41 @@ namespace Roslynator.Formatting.CSharp
             helpLinkUri:        DiagnosticIdentifiers.WrapAndIndentEachNodeInList, 
             customTags:         Array.Empty<string>());
 
+        /// <summary>RCS0048</summary>
+        public static readonly DiagnosticDescriptor RemoveNewlinesFromInitializerWithSingleLineExpression = Factory.Create(
+            id:                 DiagnosticIdentifiers.RemoveNewlinesFromInitializerWithSingleLineExpression, 
+            title:              "Remove newlines from initializer with single-line expression.", 
+            messageFormat:      "Remove newlines from initializer with single-line expression.", 
+            category:           DiagnosticCategories.Formatting, 
+            defaultSeverity:    DiagnosticSeverity.Hidden, 
+            isEnabledByDefault: false, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.RemoveNewlinesFromInitializerWithSingleLineExpression, 
+            customTags:         Array.Empty<string>());
+
+        /// <summary>RCS0049</summary>
+        public static readonly DiagnosticDescriptor AddEmptyLineAfterTopComment = Factory.Create(
+            id:                 DiagnosticIdentifiers.AddEmptyLineAfterTopComment, 
+            title:              "Add empty line after top comment.", 
+            messageFormat:      "Add empty line after top comment.", 
+            category:           DiagnosticCategories.Formatting, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: false, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.AddEmptyLineAfterTopComment, 
+            customTags:         Array.Empty<string>());
+
+        /// <summary>RCS0050</summary>
+        public static readonly DiagnosticDescriptor AddEmptyLineBeforeTopDeclaration = Factory.Create(
+            id:                 DiagnosticIdentifiers.AddEmptyLineBeforeTopDeclaration, 
+            title:              "Add empty line before top declaration.", 
+            messageFormat:      "Add empty line before top declaration.", 
+            category:           DiagnosticCategories.Formatting, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: false, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.AddEmptyLineBeforeTopDeclaration, 
+            customTags:         Array.Empty<string>());
+
     }
 }

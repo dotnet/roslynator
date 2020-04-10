@@ -1154,4 +1154,81 @@ else if (y)
       </Sample>
     </Samples>
   </Analyzer>
+  <Analyzer Identifier="RemoveNewlinesFromInitializerWithSingleLineExpression">
+    <Id>RCS0048</Id>
+    <Title>Remove newlines from initializer with single-line expression.</Title>
+    <MessageFormat>Remove newlines from initializer with single-line expression.</MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Hidden</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[var dic = new Dictionary<int, string>()
+{ // [|Id|]
+    { 0, "0" }
+};]]></Before>
+        <After><![CDATA[var dic = new Dictionary<int, string>() { { 0, "0" } };]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer Identifier="AddEmptyLineAfterTopComment">
+    <Id>RCS0049</Id>
+    <Title>Add empty line after top comment.</Title>
+    <MessageFormat>Add empty line after top comment.</MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before>
+          <![CDATA[// Copyright ...
+using System; // [|Id|]
+
+namespace Foo
+{
+}]]>
+        </Before>
+        <After>
+          <![CDATA[// Copyright ...
+
+using System;
+
+namespace Foo
+{
+}]]>
+        </After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer Identifier="AddEmptyLineBeforeTopDeclaration">
+    <Id>RCS0050</Id>
+    <Title>Add empty line before top declaration.</Title>
+    <MessageFormat>Add empty line before top declaration.</MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before>
+          <![CDATA[using System; // [|Id|]
+namespace Foo
+{
+}]]>
+        </Before>
+        <After>
+          <![CDATA[using System;
+
+namespace Foo
+{
+}]]>
+        </After>
+      </Sample>
+    </Samples>
+  </Analyzer>
 </Analyzers>
