@@ -135,6 +135,7 @@ namespace Roslynator.CommandLine
             writer.WriteEndElement();
         }
 
+#pragma warning disable RS1024
         private static bool IsImplicitConstructor(ISymbol symbol)
         {
             return symbol is IMethodSymbol methodSymbol
@@ -142,5 +143,6 @@ namespace Roslynator.CommandLine
                 && !methodSymbol.Parameters.Any()
                 && methodSymbol.ContainingType.InstanceConstructors.SingleOrDefault(shouldThrow: false) == methodSymbol;
         }
+#pragma warning restore RS1024
     }
 }
