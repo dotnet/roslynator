@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Analysis.RemoveRedundantStatement
         {
         }
 
-        protected override bool IsFixable(StatementSyntax statement, BlockSyntax block, SyntaxKind parentKind)
+        protected override bool IsFixable(StatementSyntax statement, StatementSyntax containingStatement, BlockSyntax block, SyntaxKind parentKind)
         {
             if (!parentKind.Is(
                 SyntaxKind.MethodDeclaration,
@@ -26,14 +26,14 @@ namespace Roslynator.CSharp.Analysis.RemoveRedundantStatement
 
             SyntaxList<StatementSyntax> statements = block.Statements;
 
-            if (object.ReferenceEquals(statements.SingleOrDefault(ignoreLocalFunctions: true, shouldThrow: false), statement))
+            if (object.ReferenceEquals(statements.SingleOrDefault(ignoreLocalFunctions: true, shouldThrow: false), containingStatement))
                 return false;
 
             ContainsYieldWalker walker = ContainsYieldWalker.GetInstance();
 
             bool success = false;
 
-            int index = statements.IndexOf(statement);
+            int index = statements.IndexOf(containingStatement);
 
             for (int i = 0; i < index; i++)
             {

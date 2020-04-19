@@ -3,7 +3,6 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace Roslynator.CSharp.Analysis.RemoveRedundantStatement
 {
@@ -72,7 +71,7 @@ namespace Roslynator.CSharp.Analysis.RemoveRedundantStatement
                         }
                     default:
                         {
-                            return IsFixable(containingStatement, block, kind);
+                            return IsFixable(statement, containingStatement, block, kind);
                         }
                 }
             }
@@ -135,12 +134,12 @@ namespace Roslynator.CSharp.Analysis.RemoveRedundantStatement
                         }
                     default:
                         {
-                            return IsFixable(containingStatement, block, kind);
+                            return IsFixable(statement, containingStatement, block, kind);
                         }
                 }
             }
         }
 
-        protected abstract bool IsFixable(StatementSyntax statement, BlockSyntax block, SyntaxKind parentKind);
+        protected abstract bool IsFixable(StatementSyntax statement, StatementSyntax containingStatement, BlockSyntax block, SyntaxKind parentKind);
     }
 }

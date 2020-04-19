@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Analysis.RemoveRedundantStatement
         {
         }
 
-        protected override bool IsFixable(StatementSyntax statement, BlockSyntax block, SyntaxKind parentKind)
+        protected override bool IsFixable(StatementSyntax statement, StatementSyntax containingStatement, BlockSyntax block, SyntaxKind parentKind)
         {
             return CSharpFacts.IsIterationStatement(parentKind);
         }

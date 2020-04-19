@@ -46,25 +46,36 @@ namespace Roslynator.CSharp.Analysis.RemoveRedundantStatement
             return false;
         }
 
-        protected override bool IsFixable(StatementSyntax statement, BlockSyntax block, SyntaxKind parentKind)
+        protected override bool IsFixable(StatementSyntax statement, StatementSyntax containingStatement, BlockSyntax block, SyntaxKind parentKind)
         {
-            if (!parentKind.Is(
-                SyntaxKind.ConstructorDeclaration,
-                SyntaxKind.DestructorDeclaration,
-                SyntaxKind.MethodDeclaration,
-                SyntaxKind.SetAccessorDeclaration,
-                SyntaxKind.LocalFunctionStatement))
+            switch (parentKind)
             {
-                return false;
+                case SyntaxKind.ConstructorDeclaration:
+                case SyntaxKind.DestructorDeclaration:
+                case SyntaxKind.SetAccessorDeclaration:
+                    {
+                        return true;
+                    }
+                case SyntaxKind.MethodDeclaration:
+                    {
+                        return ((MethodDeclarationSyntax)block.Parent).ReturnType?.IsVoid() == true;
+                    }
+                case SyntaxKind.LocalFunctionStatement:
+                    {
+                        return ((LocalFunctionStatementSyntax)block.Parent).ReturnType?.IsVoid() == true;
+                    }
+                case SyntaxKind.SimpleLambdaExpression:
+                case SyntaxKind.ParenthesizedLambdaExpression:
+                case SyntaxKind.AnonymousMethodExpression:
+                    {
+                        return statement is ReturnStatementSyntax returnStatement
+                            && returnStatement.Expression == null;
+                    }
+                default:
+                    {
+                        return false;
+                    }
             }
-
-            if (parentKind == SyntaxKind.MethodDeclaration)
-                return ((MethodDeclarationSyntax)block.Parent).ReturnType?.IsVoid() == true;
-
-            if (parentKind == SyntaxKind.LocalFunctionStatement)
-                return ((LocalFunctionStatementSyntax)block.Parent).ReturnType?.IsVoid() == true;
-
-            return true;
         }
     }
 }
