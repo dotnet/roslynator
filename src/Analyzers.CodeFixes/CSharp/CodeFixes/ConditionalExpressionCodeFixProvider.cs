@@ -54,7 +54,7 @@ namespace Roslynator.CSharp.CodeFixes
                     case DiagnosticIdentifiers.ParenthesizeConditionInConditionalExpression:
                         {
                             CodeAction codeAction = CodeAction.Create(
-                                "Wrap condition in parentheses",
+                                "Parenthesize condition",
                                 cancellationToken => ParenthesizeConditionInConditionalExpressionRefactoring.RefactorAsync(document, conditionalExpression, cancellationToken),
                                 GetEquivalenceKey(diagnostic));
 

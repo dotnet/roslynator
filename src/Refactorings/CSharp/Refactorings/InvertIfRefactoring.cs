@@ -42,7 +42,7 @@ namespace Roslynator.CSharp.Refactorings
                         && !elseStatement.IsKind(SyntaxKind.IfStatement))
                     {
                         context.RegisterRefactoring(
-                            "Invert if-else",
+                            "Invert if",
                             ct => InvertIfElseAsync(document, ifStatement, ct),
                             RefactoringIdentifiers.InvertIfElse);
                     }
