@@ -4,8 +4,8 @@ import * as path from 'path';
 import * as fs from 'fs';
 import { findKey, OmnisharpSettingsKey } from './omnisharpSettings';
 
-function removeLocationPaths() {
-	const omnisharpJsonPath = path.join(os.homedir(), '.omnisharp', 'omnisharp.json');
+export function removeLocationPaths(homeDirectoryPath: string) {
+	const omnisharpJsonPath = path.join(homeDirectoryPath, '.omnisharp', 'omnisharp.json');
 
 	if (!fs.existsSync(omnisharpJsonPath)) {
 		return;
@@ -33,5 +33,5 @@ function removeLocationPaths() {
 	fs.writeFileSync(omnisharpJsonPath, updatedOmnisharpJson);
 }
 
-removeLocationPaths();
+removeLocationPaths(os.homedir());
 
