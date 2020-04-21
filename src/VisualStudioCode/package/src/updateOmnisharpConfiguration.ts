@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as json5 from 'json5';
-import { OmnisharpSettingsKey } from './omnisharpSettings';
+import { OmnisharpSettingsKey, findKey } from './omnisharpSettings';
 import { Context } from './context';
 
 export function ensureOmnisharpConfigurationUpdated(context: Context) {
@@ -72,8 +72,4 @@ export function ensureOmnisharpConfigurationUpdated(context: Context) {
 
 		vscode.window.showInformationMessage('omnisharp.json has been updated with Roslynator configuration.');
 	}
-}
-
-function findKey(settings: any, key: OmnisharpSettingsKey) {
-	return Object.keys(settings).find(k => k.toLowerCase() === key.toLowerCase()) ?? key;
 }
