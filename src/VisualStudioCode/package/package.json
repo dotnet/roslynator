@@ -65,7 +65,8 @@
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile",
-    "test": "node ./out/test/runTest.js"
+    "test": "node ./out/test/runTest.js",
+    "vscode:uninstall": "node ./out/cleanupOmnisharpConfiguration.js"
   },
   "devDependencies": {
     "@types/fs-extra": "^8.0.1",
