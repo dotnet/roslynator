@@ -2237,4 +2237,40 @@ class Foo : IFoo
       </Sample>
     </Samples>
   </Refactoring>
+  <Refactoring Id="RR0214" Identifier="ConvertSwitchExpressionToSwitchStatement" Title="Convert 'switch' expression to 'switch' statement">
+    <Syntaxes>
+      <Syntax>switch expression</Syntax>
+    </Syntaxes>
+    <Span>switch keyword</Span>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[return dayOfWeek switch
+{
+    DayOfWeek.Monday => 1,
+    DayOfWeek.Tuesday => 2,
+    DayOfWeek.Wednesday => 3,
+    DayOfWeek.Thursday => 4,
+    DayOfWeek.Friday => 5,
+    _ => throw new Exception(),
+};
+]]></Before>
+        <After><![CDATA[switch (dayOfWeek)
+{
+    case DayOfWeek.Monday:
+        return 1;
+    case DayOfWeek.Tuesday:
+        return 2;
+    case DayOfWeek.Wednesday:
+        return 3;
+    case DayOfWeek.Thursday:
+        return 4;
+    case DayOfWeek.Friday:
+        return 5;
+    default:
+        throw new Exception();
+}
+]]></After>
+      </Sample>
+    </Samples>
+  </Refactoring>
 </Refactorings>

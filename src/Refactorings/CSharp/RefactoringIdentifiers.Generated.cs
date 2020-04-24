@@ -58,6 +58,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string ConvertReturnToIf = Prefix + "0143";
         public const string ConvertStatementsToIfElse = Prefix + "0211";
         public const string ConvertStringFormatToInterpolatedString = Prefix + "0145";
+        public const string ConvertSwitchExpressionToSwitchStatement = Prefix + "0214";
         public const string ConvertSwitchToIf = Prefix + "0147";
         public const string ConvertVerbatimStringLiteralToRegularStringLiteral = Prefix + "0148";
         public const string ConvertVerbatimStringLiteralToRegularStringLiterals = Prefix + "0149";
