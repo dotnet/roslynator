@@ -434,6 +434,31 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
             _containingMethodSymbol = null;
         }
 
+        public override void VisitStackAllocArrayCreationExpression(StackAllocArrayCreationExpressionSyntax node)
+        {
+            TypeSyntax type = node.Type;
+
+            if (type != null)
+            {
+                if (type.IsKind(SyntaxKind.ArrayType))
+                {
+                    VisitArrayType((ArrayTypeSyntax)type);
+                }
+                else
+                {
+                    VisitType(type);
+                }
+            }
+
+            if (!ShouldVisit)
+                return;
+
+            InitializerExpressionSyntax initializer = node.Initializer;
+
+            if (initializer != null)
+                VisitInitializerExpression(initializer);
+        }
+
         private void VisitMembers(SyntaxList<MemberDeclarationSyntax> members)
         {
             foreach (MemberDeclarationSyntax memberDeclaration in members)

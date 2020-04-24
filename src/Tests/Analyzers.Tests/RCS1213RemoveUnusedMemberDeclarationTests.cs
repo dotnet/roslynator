@@ -332,5 +332,23 @@ class C
 }
 ", options: Options.AddAllowedCompilerDiagnosticId("CS0246"));
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]
+        public async Task TestNoDiagnostic_Stackalloc()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System;
+
+class C
+{
+    private const int K = 64;
+
+    public void M()
+    {
+        Span<char> buffer = stackalloc char[K];
+    }
+}
+");
+        }
     }
 }
