@@ -576,30 +576,24 @@ if (y)
       <Syntax>selected attribute lists</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0075" Identifier="MergeIfStatements" Title="Merge if statements">
+  <Refactoring Id="RR0075" Identifier="MergeIfStatements" Title="Merge 'if' statements">
     <Syntaxes>
-      <Syntax>selected if statements</Syntax>
+      <Syntax>selected 'if' statements</Syntax>
     </Syntaxes>
     <Samples>
       <Sample>
-        <Before><![CDATA[bool condition1 = false;
-bool condition2 = false;
-
-if (condition1)
+        <Before><![CDATA[if (x)
 {
     return false;
 }
 
-if (condition2)
+if (y)
 {
     return false;
 }
 
 return true;]]></Before>
-        <After><![CDATA[bool condition1 = false;
-bool condition2 = false;
-
-if (condition1 || condition2)
+        <After><![CDATA[if (x || y)
 {
     return false;
 }

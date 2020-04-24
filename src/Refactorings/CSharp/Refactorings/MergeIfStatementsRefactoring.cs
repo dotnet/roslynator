@@ -53,7 +53,7 @@ namespace Roslynator.CSharp.Refactorings
             Document document = context.Document;
 
             context.RegisterRefactoring(
-                "Merge if statements",
+                "Merge 'if' statements",
                 ct => RefactorAsync(document, selectedStatements, ct),
                 RefactoringIdentifiers.MergeIfStatements);
         }
