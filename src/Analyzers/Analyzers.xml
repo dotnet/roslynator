@@ -1073,10 +1073,10 @@ if (!f)
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="ParenthesizeConditionInConditionalExpression">
+  <Analyzer Identifier="ParenthesizeConditionOfConditionalExpression">
     <Id>RCS1051</Id>
-    <Title>Parenthesize condition in conditional expression.</Title>
-    <MessageFormat>Parenthesize condition in conditional expression.</MessageFormat>
+    <Title>Parenthesize condition of conditional expression.</Title>
+    <MessageFormat>Parenthesize condition of conditional expression.</MessageFormat>
     <Category>Style</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>

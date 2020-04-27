@@ -28,7 +28,7 @@ namespace Roslynator.CSharp.CodeFixes
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticIdentifiers.ParenthesizeConditionInConditionalExpression,
+                    DiagnosticIdentifiers.ParenthesizeConditionOfConditionalExpression,
                     DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfConditionalExpression,
                     DiagnosticIdentifiers.SimplifyConditionalExpression,
                     DiagnosticIdentifiers.SimplifyConditionalExpression2,
@@ -51,11 +51,11 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 switch (diagnostic.Id)
                 {
-                    case DiagnosticIdentifiers.ParenthesizeConditionInConditionalExpression:
+                    case DiagnosticIdentifiers.ParenthesizeConditionOfConditionalExpression:
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Parenthesize condition",
-                                cancellationToken => ParenthesizeConditionInConditionalExpressionRefactoring.RefactorAsync(document, conditionalExpression, cancellationToken),
+                                cancellationToken => ParenthesizeConditionOfConditionalExpressionAsync(document, conditionalExpression, cancellationToken),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -266,6 +266,20 @@ namespace Roslynator.CSharp.CodeFixes
                 .WithLeadingTrivia(conditionalExpression.GetLeadingTrivia())
                 .WithTrailingTrivia(trailingTrivia)
                 .WithSimplifierAnnotation();
+        }
+
+        private static Task<Document> ParenthesizeConditionOfConditionalExpressionAsync(
+            Document document,
+            ConditionalExpressionSyntax conditionalExpression,
+            CancellationToken cancellationToken)
+        {
+            ConditionalExpressionSyntax newNode = conditionalExpression
+                .WithCondition(
+                    ParenthesizedExpression(conditionalExpression.Condition.WithoutTrivia())
+                        .WithTriviaFrom(conditionalExpression.Condition))
+                .WithFormatterAnnotation();
+
+            return document.ReplaceNodeAsync(conditionalExpression, newNode, cancellationToken);
         }
     }
 }

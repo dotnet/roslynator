@@ -610,15 +610,15 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1051</summary>
-        public static readonly DiagnosticDescriptor ParenthesizeConditionInConditionalExpression = Factory.Create(
-            id:                 DiagnosticIdentifiers.ParenthesizeConditionInConditionalExpression, 
-            title:              "Parenthesize condition in conditional expression.", 
-            messageFormat:      "Parenthesize condition in conditional expression.", 
+        public static readonly DiagnosticDescriptor ParenthesizeConditionOfConditionalExpression = Factory.Create(
+            id:                 DiagnosticIdentifiers.ParenthesizeConditionOfConditionalExpression, 
+            title:              "Parenthesize condition of conditional expression.", 
+            messageFormat:      "Parenthesize condition of conditional expression.", 
             category:           DiagnosticCategories.Style, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.ParenthesizeConditionInConditionalExpression, 
+            helpLinkUri:        DiagnosticIdentifiers.ParenthesizeConditionOfConditionalExpression, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1052</summary>
