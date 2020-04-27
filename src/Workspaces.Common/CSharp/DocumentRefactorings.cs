@@ -127,40 +127,6 @@ namespace Roslynator.CSharp
             return RemoveAsyncAwait.RefactorAsync(document, asyncKeyword, cancellationToken);
         }
 
-        public static Task<Document> SwapBinaryOperandsAsync(
-            Document document,
-            BinaryExpressionSyntax binaryExpression,
-            CancellationToken cancellationToken = default)
-        {
-            ExpressionSyntax left = binaryExpression.Left;
-            ExpressionSyntax right = binaryExpression.Right;
-            SyntaxToken token = binaryExpression.OperatorToken;
-
-            ExpressionSyntax newBinaryExpressions = binaryExpression.Update(
-                left: right.WithTriviaFrom(left),
-                operatorToken: Token(token.LeadingTrivia, GetOperatorTokenKind(token.Kind()), token.TrailingTrivia),
-                right: left.WithTriviaFrom(right));
-
-            return document.ReplaceNodeAsync(binaryExpression, newBinaryExpressions, cancellationToken);
-
-            static SyntaxKind GetOperatorTokenKind(SyntaxKind kind)
-            {
-                switch (kind)
-                {
-                    case SyntaxKind.LessThanToken:
-                        return SyntaxKind.GreaterThanToken;
-                    case SyntaxKind.LessThanEqualsToken:
-                        return SyntaxKind.GreaterThanEqualsToken;
-                    case SyntaxKind.GreaterThanToken:
-                        return SyntaxKind.LessThanToken;
-                    case SyntaxKind.GreaterThanEqualsToken:
-                        return SyntaxKind.LessThanEqualsToken;
-                    default:
-                        return kind;
-                }
-            }
-        }
-
         public static async Task<Document> AddNewDocumentationCommentsAsync(
             Document document,
             DocumentationCommentGeneratorSettings settings = null,

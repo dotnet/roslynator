@@ -567,5 +567,28 @@ namespace Roslynator.CSharp
                 closeParenToken: Token(default, SyntaxKind.CloseParenToken, whileStatement.CloseParenToken.TrailingTrivia),
                 statement: statement);
         }
+
+        public static BinaryExpressionSyntax SwapBinaryOperands(BinaryExpressionSyntax binaryExpression)
+        {
+            ExpressionSyntax left = binaryExpression.Left;
+            ExpressionSyntax right = binaryExpression.Right;
+            SyntaxToken token = binaryExpression.OperatorToken;
+
+            SyntaxKind tokenKind = token.Kind();
+
+            SyntaxKind newTokenKind = tokenKind switch
+            {
+                SyntaxKind.LessThanToken => SyntaxKind.GreaterThanToken,
+                SyntaxKind.LessThanEqualsToken => SyntaxKind.GreaterThanEqualsToken,
+                SyntaxKind.GreaterThanToken => SyntaxKind.LessThanToken,
+                SyntaxKind.GreaterThanEqualsToken => SyntaxKind.LessThanEqualsToken,
+                _ => tokenKind,
+            };
+
+            return binaryExpression.Update(
+                left: right.WithTriviaFrom(left),
+                operatorToken: Token(token.LeadingTrivia, newTokenKind, token.TrailingTrivia),
+                right: left.WithTriviaFrom(right));
+        }
     }
 }
