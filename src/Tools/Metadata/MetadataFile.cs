@@ -2,8 +2,10 @@
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
@@ -31,18 +33,19 @@ namespace Roslynator.Metadata
             foreach (XElement element in doc.Root.Elements())
             {
                 string id = element.Element("Id").Value;
+                string title = element.Element("Title").Value;
 
                 yield return new AnalyzerMetadata(
                     id,
                     element.Attribute("Identifier").Value,
-                    element.Element("Title").Value,
-                    element.Element("MessageFormat").Value,
+                    title,
+                    element.Element("MessageFormat")?.Value ?? title,
                     element.Element("Category").Value,
                     element.Element("DefaultSeverity").Value,
                     bool.Parse(element.Element("IsEnabledByDefault").Value),
                     element.AttributeValueAsBooleanOrDefault("IsObsolete"),
-                    bool.Parse(element.Element("SupportsFadeOut").Value),
-                    bool.Parse(element.Element("SupportsFadeOutAnalyzer").Value),
+                    bool.Parse(element.Element("SupportsFadeOut")?.Value ?? bool.FalseString),
+                    bool.Parse(element.Element("SupportsFadeOutAnalyzer")?.Value ?? bool.FalseString),
                     element.Element("MinLanguageVersion")?.Value,
                     element.Element("Summary")?.Value.NormalizeNewLine(),
                     element.Element("Remarks")?.Value.NormalizeNewLine(),
@@ -202,6 +205,121 @@ namespace Roslynator.Metadata
 
             using (var fs = new FileStream(path, FileMode.Create))
             using (XmlWriter xw = XmlWriter.Create(fs, new XmlWriterSettings() { Indent = true }))
+                doc.Save(xw);
+        }
+
+        public static void CleanAnalyzers(string filePath)
+        {
+            Debug.WriteLine(filePath);
+
+            XDocument doc = XDocument.Load(filePath);
+
+            foreach (XElement element in doc.Root.Elements())
+            {
+                string title = element.Element("Title").Value;
+
+                XElement messageFormatElement = element.Element("MessageFormat");
+
+                if (messageFormatElement != null)
+                {
+                    string messageFormat = messageFormatElement.Value;
+
+                    if (string.IsNullOrWhiteSpace(messageFormat)
+                        || string.Equals(title, messageFormat, System.StringComparison.Ordinal))
+
+                    {
+                        messageFormatElement.Remove();
+                    }
+                }
+
+                XElement supportsFadeOutElement = element.Element("SupportsFadeOut");
+
+                if (supportsFadeOutElement != null
+                    && !bool.Parse(supportsFadeOutElement.Value))
+                {
+                    supportsFadeOutElement.Remove();
+                }
+
+                XElement supportsFadeOutAnalyzerElement = element.Element("SupportsFadeOutAnalyzer");
+
+                if (supportsFadeOutAnalyzerElement != null
+                    && !bool.Parse(supportsFadeOutAnalyzerElement.Value))
+                {
+                    supportsFadeOutAnalyzerElement.Remove();
+                }
+
+                XElement minLanguageVersionElement = element.Element("MinLanguageVersion");
+
+                if (minLanguageVersionElement != null
+                    && string.IsNullOrWhiteSpace(minLanguageVersionElement.Value))
+                {
+                    minLanguageVersionElement.Remove();
+                }
+
+                XElement summaryElement = element.Element("Summary");
+
+                if (summaryElement != null
+                    && string.IsNullOrWhiteSpace(summaryElement.Value))
+                {
+                    summaryElement.Remove();
+                }
+
+                XElement remarksElement = element.Element("Remarks");
+
+                if (remarksElement != null
+                    && string.IsNullOrWhiteSpace(remarksElement.Value))
+                {
+                    remarksElement.Remove();
+                }
+
+                XElement samplesElement = element.Element("Samples");
+
+                if (samplesElement != null)
+                {
+                    foreach (XElement sampleElement in samplesElement.Elements("Sample"))
+                    {
+                        XElement beforeElement = sampleElement.Element("Before");
+                        XElement afterElement = sampleElement.Element("After");
+
+                        if (string.IsNullOrEmpty(beforeElement?.Value)
+                            && string.IsNullOrEmpty(afterElement?.Value))
+                        {
+                            sampleElement.Remove();
+                            continue;
+                        }
+
+                        if (beforeElement != null)
+                        {
+                            string before = beforeElement.Value;
+
+                            if (!before.Contains('\n'))
+                            {
+                                string newBefore = Regex.Replace(before, @"\ *//\ *\[\|Id\|\]\ *\z", "");
+
+                                if (before.Length != newBefore.Length)
+                                    beforeElement.ReplaceNodes(new XCData(newBefore));
+                            }
+                        }
+                    }
+
+                    if (samplesElement.IsEmpty)
+                        samplesElement.Remove();
+                }
+
+                XElement linksElement = element.Element("Links");
+
+                if (linksElement != null)
+                {
+                    foreach (XElement linkElement in linksElement.Elements("Link"))
+                    {
+                        if (string.IsNullOrWhiteSpace(linkElement.Value))
+                            linkElement.Remove();
+                    }
+                }
+            }
+
+            using (var sw = new StreamWriter(filePath))
+            using (XmlWriter xw = XmlWriter.Create(sw, new XmlWriterSettings() { Indent = true, Encoding = Encoding.UTF8 }))
                 doc.Save(xw);
         }
     }

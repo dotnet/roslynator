@@ -3,12 +3,9 @@
   <Analyzer Identifier="UsePatternMatching">
     <Id>RCS9001</Id>
     <Title>Use pattern matching.</Title>
-    <MessageFormat>Use pattern matching.</MessageFormat>
     <Category>Usage</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
-    <SupportsFadeOut>false</SupportsFadeOut>
-    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
         <Before><![CDATA[if (syntaxNode.IsKind(SyntaxKind.IdentifierName)) // [|Id|]
@@ -37,15 +34,12 @@ var identifierName = (IdentifierNameSyntax)syntaxNode;
   <Analyzer Identifier="UsePropertySyntaxNodeSpanStart">
     <Id>RCS9002</Id>
     <Title>Use property SyntaxNode.SpanStart.</Title>
-    <MessageFormat>Use property SyntaxNode.SpanStart.</MessageFormat>
     <Category>Performance</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
-    <SupportsFadeOut>false</SupportsFadeOut>
-    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[node.Span.Start // [|Id|]]]></Before>
+        <Before><![CDATA[node.Span.Start]]></Before>
         <After><![CDATA[node.SpanStart]]></After>
       </Sample>
     </Samples>
@@ -53,7 +47,6 @@ var identifierName = (IdentifierNameSyntax)syntaxNode;
   <Analyzer Identifier="UnnecessaryConditionalAccess">
     <Id>RCS9003</Id>
     <Title>Unnecessary conditional access.</Title>
-    <MessageFormat>Unnecessary conditional access.</MessageFormat>
     <Category>Performance</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -61,7 +54,7 @@ var identifierName = (IdentifierNameSyntax)syntaxNode;
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[node?.IsKind(kind) == true // [|Id|]]]></Before>
+        <Before><![CDATA[node?.IsKind(kind) == true]]></Before>
         <After><![CDATA[node.IsKind(kind)]]></After>
       </Sample>
     </Samples>
@@ -69,19 +62,16 @@ var identifierName = (IdentifierNameSyntax)syntaxNode;
   <Analyzer Identifier="CallAnyInsteadOfAccessingCount">
     <Id>RCS9004</Id>
     <Title>Call 'Any' instead of accessing 'Count'.</Title>
-    <MessageFormat>Call 'Any' instead of accessing 'Count'.</MessageFormat>
     <Category>Performance</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
-    <SupportsFadeOut>false</SupportsFadeOut>
-    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[syntaxList.Count > 0 // [|Id|]]]></Before>
+        <Before><![CDATA[syntaxList.Count > 0]]></Before>
         <After><![CDATA[syntaxList.Any()]]></After>
       </Sample>
       <Sample>
-        <Before><![CDATA[syntaxList.Count == 0 // [|Id|]]]></Before>
+        <Before><![CDATA[syntaxList.Count == 0]]></Before>
         <After><![CDATA[!syntaxList.Any()]]></After>
       </Sample>
     </Samples>
@@ -96,15 +86,13 @@ var identifierName = (IdentifierNameSyntax)syntaxNode;
   <Analyzer Identifier="UnnecessaryNullCheck">
     <Id>RCS9005</Id>
     <Title>Unnecessary null check.</Title>
-    <MessageFormat>Unnecessary null check.</MessageFormat>
     <Category>Performance</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
-    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[syntaxNode != null && syntaxNode.IsKind(kind) // [|Id|]]]></Before>
+        <Before><![CDATA[syntaxNode != null && syntaxNode.IsKind(kind)]]></Before>
         <After><![CDATA[syntaxNode.IsKind(kind)]]></After>
       </Sample>
     </Samples>
@@ -112,19 +100,16 @@ var identifierName = (IdentifierNameSyntax)syntaxNode;
   <Analyzer Identifier="UseElementAccess">
     <Id>RCS9006</Id>
     <Title>Use element access.</Title>
-    <MessageFormat>Use element access.</MessageFormat>
     <Category>Usage</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
-    <SupportsFadeOut>false</SupportsFadeOut>
-    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[syntaxList.First() // [|Id|]]]></Before>
+        <Before><![CDATA[syntaxList.First()]]></Before>
         <After><![CDATA[syntaxList[0]]]></After>
       </Sample>
       <Sample>
-        <Before><![CDATA[triviaList.ElementAt(1) // [|Id|]]]></Before>
+        <Before><![CDATA[triviaList.ElementAt(1)]]></Before>
         <After><![CDATA[triviaList[1]]]></After>
       </Sample>
     </Samples>
@@ -139,15 +124,12 @@ var identifierName = (IdentifierNameSyntax)syntaxNode;
   <Analyzer Identifier="UseReturnValue">
     <Id>RCS9007</Id>
     <Title>Use return value.</Title>
-    <MessageFormat>Use return value.</MessageFormat>
     <Category>Usage</Category>
     <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
-    <SupportsFadeOut>false</SupportsFadeOut>
-    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[ifStatement.WithCondition(newCondition); // [|Id|]]]></Before>
+        <Before><![CDATA[ifStatement.WithCondition(newCondition);]]></Before>
         <After><![CDATA[var x = ifStatement.WithCondition(newCondition);]]></After>
       </Sample>
     </Samples>
@@ -155,15 +137,12 @@ var identifierName = (IdentifierNameSyntax)syntaxNode;
   <Analyzer Identifier="CallLastInsteadOfUsingElementAccess">
     <Id>RCS9008</Id>
     <Title>Call 'Last' instead of using [].</Title>
-    <MessageFormat>Call 'Last' instead of using [].</MessageFormat>
     <Category>Usage</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
-    <SupportsFadeOut>false</SupportsFadeOut>
-    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[syntaxList[syntaxList.Count - 1] // [|Id|]]]></Before>
+        <Before><![CDATA[syntaxList[syntaxList.Count - 1]]]></Before>
         <After><![CDATA[!syntaxList.Last()]]></After>
       </Sample>
     </Samples>
@@ -178,12 +157,9 @@ var identifierName = (IdentifierNameSyntax)syntaxNode;
   <Analyzer Identifier="UnknownLanguageName">
     <Id>RCS9009</Id>
     <Title>Unknown language name.</Title>
-    <MessageFormat>Unknown language name.</MessageFormat>
     <Category>General</Category>
     <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
-    <SupportsFadeOut>false</SupportsFadeOut>
-    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
         <Before><![CDATA[[DiagnosticAnalyzer("C")] // [|Id|]
@@ -200,12 +176,9 @@ class FooDiagnosticAnalyzer : DiagnosticAnalyzer
   <Analyzer Identifier="SpecifyExportCodeRefactoringProviderAttributeName">
     <Id>RCS9010</Id>
     <Title>Specify ExportCodeRefactoringProviderAttribute.Name.</Title>
-    <MessageFormat>Specify ExportCodeRefactoringProviderAttribute.Name.</MessageFormat>
     <Category>Usage</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
-    <SupportsFadeOut>false</SupportsFadeOut>
-    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
         <Before><![CDATA[[ExportCodeRefactoringProvider(LanguageNames.CSharp)] // [|Id|]
@@ -222,12 +195,9 @@ class FooCodeRefactoringProvider : CodeRefactoringProvider
   <Analyzer Identifier="SpecifyExportCodeFixProviderAttributeName">
     <Id>RCS9011</Id>
     <Title>Specify ExportCodeFixProviderAttribute.Name.</Title>
-    <MessageFormat>Specify ExportCodeFixProviderAttribute.Name.</MessageFormat>
     <Category>Usage</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
-    <SupportsFadeOut>false</SupportsFadeOut>
-    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
         <Before><![CDATA[[ExportCodeFixProvider(LanguageNames.CSharp)] // [|Id|]
