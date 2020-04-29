@@ -99,7 +99,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSharp.Tests", "Tests\CShar
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSharp.Workspaces.Tests", "Tests\CSharp.Workspaces.Tests\CSharp.Workspaces.Tests.csproj", "{51056D0E-3697-4419-9760-B46BF3B4A16C}"
 EndProject
-		..\docs\HowToConfigureRulesetFile.md = ..\docs\HowToConfigureRulesetFile.md
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Documentation", "Documentation\Documentation.csproj", "{BE5E7831-F687-47E6-BC60-969BDEA93EAC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommandLine", "CommandLine\CommandLine.csproj", "{A865E4D9-30C3-4CC8-A1AB-A897A7A1DA0C}"
