@@ -29,8 +29,7 @@ namespace Roslynator.CSharp.CodeFixes
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.UseCompoundAssignment,
                     DiagnosticIdentifiers.UseUnaryOperatorInsteadOfAssignment,
-                    DiagnosticIdentifiers.RemoveRedundantDelegateCreation,
-                    DiagnosticIdentifiers.RemoveRedundantAssignment);
+                    DiagnosticIdentifiers.RemoveRedundantDelegateCreation);
             }
         }
 
@@ -82,22 +81,6 @@ namespace Roslynator.CSharp.CodeFixes
                                     return RemoveRedundantDelegateCreationRefactoring.RefactorAsync(
                                         document,
                                         (ObjectCreationExpressionSyntax)assignment.Right,
-                                        cancellationToken);
-                                },
-                                GetEquivalenceKey(diagnostic));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
-                    case DiagnosticIdentifiers.RemoveRedundantAssignment:
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Remove redundant assignment",
-                                cancellationToken =>
-                                {
-                                    return RemoveRedundantAssignmentRefactoring.RefactorAsync(
-                                        document,
-                                        assignment,
                                         cancellationToken);
                                 },
                                 GetEquivalenceKey(diagnostic));

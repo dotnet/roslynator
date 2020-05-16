@@ -199,6 +199,21 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         [Obsolete("", error: true)]
+        internal static readonly DiagnosticDescriptor MergeLocalDeclarationWithAssignment = Factory.Create(
+            id:                 DiagnosticIdentifiers.MergeLocalDeclarationWithAssignment, 
+            title:              "Merge local declaration with assignment.", 
+            messageFormat:      "Merge local declaration with assignment.", 
+            category:           DiagnosticCategories.Simplification, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.MergeLocalDeclarationWithAssignment, 
+            customTags:         Array.Empty<string>());
+
+        [Obsolete("", error: true)]
+        public static readonly DiagnosticDescriptor MergeLocalDeclarationWithAssignmentFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(MergeLocalDeclarationWithAssignment);
+
+        [Obsolete("", error: true)]
         internal static readonly DiagnosticDescriptor ReplaceReturnWithYieldReturn = Factory.Create(
             id:                 DiagnosticIdentifiers.ReplaceReturnWithYieldReturn, 
             title:              "Replace return with yield return.", 

@@ -2422,7 +2422,7 @@ else
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="MergeLocalDeclarationWithAssignment">
+  <Analyzer Identifier="MergeLocalDeclarationWithAssignment" IsObsolete="true">
     <Id>RCS1127</Id>
     <Title>Merge local declaration with assignment.</Title>
     <Category>Simplification</Category>
@@ -4088,16 +4088,22 @@ return WhenFalse();]]></After>
     <Category>Redundancy</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[bool Foo()
+        <Before><![CDATA[string x; // [|Id|]
+x = "";]]></Before>
+        <After><![CDATA[string x = "";]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[bool M()
 {
     // ...
 
-    f = false; // [|Id|]
-    return f;
+    x = false; // [|Id|]
+    return x;
 }]]></Before>
-        <After><![CDATA[bool Foo()
+        <After><![CDATA[bool M()
 {
     // ...
 

@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Analysis.Tests
 
         public override DiagnosticAnalyzer Analyzer { get; } = new RemoveRedundantAssignmentAnalyzer();
 
-        public override CodeFixProvider FixProvider { get; } = new AssignmentExpressionCodeFixProvider();
+        public override CodeFixProvider FixProvider { get; } = new RemoveRedundantAssignmentCodeFixProvider();
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
         public async Task Test_Local()
@@ -78,8 +78,13 @@ class C
     string M()
     {
         string s = null;
+        M2();
         [|s = """"|]; //x
         return s;
+    }
+
+    void M2()
+    {
     }
 }
 ", @"
@@ -88,8 +93,13 @@ class C
     string M()
     {
         string s = null;
+        M2();
         //x
         return """";
+    }
+
+    void M2()
+    {
     }
 }
 ");
@@ -115,6 +125,29 @@ class C
     {
         string s = """";
         return s + s;
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
+        public async Task Test_LocalDeclaration()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+        string [|s|];
+        s = null;
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+        string s = null;
     }
 }
 ");

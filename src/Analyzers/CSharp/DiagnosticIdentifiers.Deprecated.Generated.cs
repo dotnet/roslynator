@@ -39,6 +39,8 @@ namespace Roslynator.CSharp
         [Obsolete("", error: true)]
         public const string MarkMemberAsStatic = "RCS1125";
         [Obsolete("", error: true)]
+        public const string MergeLocalDeclarationWithAssignment = "RCS1127";
+        [Obsolete("", error: true)]
         public const string ReplaceReturnWithYieldReturn = "RCS1131";
         [Obsolete("", error: true)]
         public const string AddDocumentationComment = "RCS1137";

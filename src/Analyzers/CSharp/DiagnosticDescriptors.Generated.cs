@@ -1371,20 +1371,6 @@ namespace Roslynator.CSharp
             helpLinkUri:        DiagnosticIdentifiers.AddBracesToIfElse, 
             customTags:         Array.Empty<string>());
 
-        /// <summary>RCS1127</summary>
-        public static readonly DiagnosticDescriptor MergeLocalDeclarationWithAssignment = Factory.Create(
-            id:                 DiagnosticIdentifiers.MergeLocalDeclarationWithAssignment, 
-            title:              "Merge local declaration with assignment.", 
-            messageFormat:      "Merge local declaration with assignment.", 
-            category:           DiagnosticCategories.Simplification, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: true, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.MergeLocalDeclarationWithAssignment, 
-            customTags:         Array.Empty<string>());
-
-        public static readonly DiagnosticDescriptor MergeLocalDeclarationWithAssignmentFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(MergeLocalDeclarationWithAssignment);
-
         /// <summary>RCS1128</summary>
         public static readonly DiagnosticDescriptor UseCoalesceExpression = Factory.Create(
             id:                 DiagnosticIdentifiers.UseCoalesceExpression, 
@@ -2288,6 +2274,8 @@ namespace Roslynator.CSharp
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.RemoveRedundantAssignment, 
             customTags:         Array.Empty<string>());
+
+        public static readonly DiagnosticDescriptor RemoveRedundantAssignmentFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(RemoveRedundantAssignment);
 
         /// <summary>RCS1213</summary>
         public static readonly DiagnosticDescriptor RemoveUnusedMemberDeclaration = Factory.Create(
