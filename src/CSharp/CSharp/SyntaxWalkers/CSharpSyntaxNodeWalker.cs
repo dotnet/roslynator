@@ -120,18 +120,15 @@ namespace Roslynator.CSharp.SyntaxWalkers
                 VisitParameterList(parameterList);
             }
 
-            CSharpSyntaxNode body = node.Body;
-            if (body is ExpressionSyntax expression)
+            if (!ShouldVisit)
             {
-                VisitExpression(expression);
+                return;
             }
-            else if (body is StatementSyntax statement)
+
+            BlockSyntax block = node.Block;
+            if (block != null)
             {
-                VisitStatement(statement);
-            }
-            else
-            {
-                Visit(body);
+                VisitBlock(block);
             }
         }
 
@@ -1736,6 +1733,16 @@ namespace Roslynator.CSharp.SyntaxWalkers
 
         public override void VisitGlobalStatement(GlobalStatementSyntax node)
         {
+            foreach (AttributeListSyntax attributeList in node.AttributeLists)
+            {
+                if (!ShouldVisit)
+                {
+                    return;
+                }
+
+                VisitAttributeList(attributeList);
+            }
+
             if (!ShouldVisit)
             {
                 return;
@@ -2612,6 +2619,16 @@ namespace Roslynator.CSharp.SyntaxWalkers
 
         public override void VisitNamespaceDeclaration(NamespaceDeclarationSyntax node)
         {
+            foreach (AttributeListSyntax attributeList in node.AttributeLists)
+            {
+                if (!ShouldVisit)
+                {
+                    return;
+                }
+
+                VisitAttributeList(attributeList);
+            }
+
             if (!ShouldVisit)
             {
                 return;
@@ -2889,18 +2906,26 @@ namespace Roslynator.CSharp.SyntaxWalkers
                 VisitParameterList(parameterList);
             }
 
-            CSharpSyntaxNode body = node.Body;
-            if (body is ExpressionSyntax expression)
+            if (!ShouldVisit)
             {
-                VisitExpression(expression);
+                return;
             }
-            else if (body is StatementSyntax statement)
+
+            BlockSyntax block = node.Block;
+            if (block != null)
             {
-                VisitStatement(statement);
+                VisitBlock(block);
             }
-            else
+
+            if (!ShouldVisit)
             {
-                Visit(body);
+                return;
+            }
+
+            ExpressionSyntax expressionBody = node.ExpressionBody;
+            if (expressionBody != null)
+            {
+                VisitExpression(expressionBody);
             }
         }
 
@@ -3404,18 +3429,26 @@ namespace Roslynator.CSharp.SyntaxWalkers
                 VisitParameter(parameter);
             }
 
-            CSharpSyntaxNode body = node.Body;
-            if (body is ExpressionSyntax expression)
+            if (!ShouldVisit)
             {
-                VisitExpression(expression);
+                return;
             }
-            else if (body is StatementSyntax statement)
+
+            BlockSyntax block = node.Block;
+            if (block != null)
             {
-                VisitStatement(statement);
+                VisitBlock(block);
             }
-            else
+
+            if (!ShouldVisit)
             {
-                Visit(body);
+                return;
+            }
+
+            ExpressionSyntax expressionBody = node.ExpressionBody;
+            if (expressionBody != null)
+            {
+                VisitExpression(expressionBody);
             }
         }
 

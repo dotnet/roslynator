@@ -577,7 +577,7 @@ namespace Roslynator.CodeGeneration.CSharp
                 ParameterList(Parameter(IdentifierName(name), "node")),
                 Block(
                     SwitchStatement(
-                        SimpleMemberInvocationExpression(IdentifierName("node"), IdentifierName("Kind")).Parenthesize(),
+                        SimpleMemberInvocationExpression(IdentifierName("node"), IdentifierName("Kind")),
                         CreateSections().ToSyntaxList())));
 
             IEnumerable<SwitchSectionSyntax> CreateSections()

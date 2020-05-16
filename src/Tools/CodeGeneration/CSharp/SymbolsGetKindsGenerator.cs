@@ -55,7 +55,7 @@ namespace Roslynator.CodeGeneration.CSharp
                 ParameterList(Parameter(IdentifierName("INamedTypeSymbol"), "syntaxSymbol")),
                 Block(
                     SwitchStatement(
-                        SimpleMemberAccessExpression(IdentifierName("syntaxSymbol"), IdentifierName("Name")).Parenthesize(),
+                        SimpleMemberAccessExpression(IdentifierName("syntaxSymbol"), IdentifierName("Name")),
                         GenerateSections().ToSyntaxList())));
 
             foreach (string enumName in enumNames)

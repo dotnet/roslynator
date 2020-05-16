@@ -62,9 +62,10 @@ namespace Roslynator.CodeGeneration.CSharp
                         case "AsyncKeyword":
                         case "DelegateKeyword":
                         case "ParameterList":
-                        case "Body":
-                            return true;
                         case "Block":
+                            return true;
+                        case "Body":
+                        case "ExpressionBody":
                             return false;
                         default:
                             throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
@@ -938,6 +939,7 @@ namespace Roslynator.CodeGeneration.CSharp
                     switch (propertySymbol.Name)
                     {
                         case "AttributeLists":
+                        case "Modifiers":
                         case "Identifier":
                         case "EqualsValue":
                             return true;
@@ -983,6 +985,7 @@ namespace Roslynator.CodeGeneration.CSharp
                         case "ExplicitInterfaceSpecifier":
                         case "Identifier":
                         case "AccessorList":
+                        case "SemicolonToken":
                             return true;
                         default:
                             throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
@@ -1173,6 +1176,8 @@ namespace Roslynator.CodeGeneration.CSharp
                 {
                     switch (propertySymbol.Name)
                     {
+                        case "AttributeLists":
+                        case "Modifiers":
                         case "Statement":
                             return true;
                         default:
@@ -1724,6 +1729,8 @@ namespace Roslynator.CodeGeneration.CSharp
                 {
                     switch (propertySymbol.Name)
                     {
+                        case "AttributeLists":
+                        case "Modifiers":
                         case "NamespaceKeyword":
                         case "Name":
                         case "OpenBraceToken":
@@ -1890,8 +1897,11 @@ namespace Roslynator.CodeGeneration.CSharp
                         case "AsyncKeyword":
                         case "ParameterList":
                         case "ArrowToken":
-                        case "Body":
+                        case "ExpressionBody":
+                        case "Block":
                             return true;
+                        case "Body":
+                            return false;
                         default:
                             throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
                     }
@@ -2219,8 +2229,11 @@ namespace Roslynator.CodeGeneration.CSharp
                         case "AsyncKeyword":
                         case "Parameter":
                         case "ArrowToken":
-                        case "Body":
+                        case "ExpressionBody":
+                        case "Block":
                             return true;
+                        case "Body":
+                            return false;
                         default:
                             throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
                     }
@@ -2859,6 +2872,7 @@ namespace Roslynator.CodeGeneration.CSharp
                         case "HashToken":
                         case "NullableKeyword":
                         case "SettingToken":
+                        case "TargetToken":
                         case "EndOfDirectiveToken":
                         case "IsActive":
                             return true;
