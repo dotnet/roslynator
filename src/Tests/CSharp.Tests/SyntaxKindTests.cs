@@ -507,7 +507,6 @@ namespace Roslynator.CSharp.Testing
                     case SyntaxKind.QuestionQuestionEqualsToken:
                     case SyntaxKind.NullableKeyword:
                     case SyntaxKind.EnableKeyword:
-                    case SyntaxKind.SafeOnlyKeyword:
                     case SyntaxKind.VarKeyword:
                     case SyntaxKind.RangeExpression:
                     case SyntaxKind.CoalesceAssignmentExpression:
@@ -522,6 +521,9 @@ namespace Roslynator.CSharp.Testing
                     case SyntaxKind.VarPattern:
                     case SyntaxKind.SuppressNullableWarningExpression:
                     case SyntaxKind.NullableDirectiveTrivia:
+                    // new in 3.5.0
+                    case SyntaxKind.WarningsKeyword:
+                    case SyntaxKind.AnnotationsKeyword:
                         {
                             break;
                         }

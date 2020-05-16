@@ -170,7 +170,7 @@ namespace Roslynator.CSharp.Refactorings
             CancellationToken cancellationToken)
         {
             SwitchStatementSyntax switchStatement = SwitchStatement(
-                ParenthesizedExpression(GetSwitchExpression(ifStatement).WalkDownParentheses()),
+                GetSwitchExpression(ifStatement).WalkDownParentheses().Parenthesize(),
                 List(CreateSwitchSections(ifStatement)));
 
             switchStatement = switchStatement

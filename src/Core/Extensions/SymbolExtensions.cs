@@ -1213,7 +1213,7 @@ namespace Roslynator
         public static bool IsNullableOf(this INamedTypeSymbol namedTypeSymbol, ITypeSymbol typeArgument)
         {
             return namedTypeSymbol.IsNullableType()
-                && namedTypeSymbol.TypeArguments[0] == typeArgument;
+                && SymbolEqualityComparer.Default.Equals(namedTypeSymbol.TypeArguments[0], typeArgument);
         }
 
         /// <summary>
