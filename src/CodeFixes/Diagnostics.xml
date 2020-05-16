@@ -981,6 +981,13 @@
     Message="Optional parameters must appear after all required parameters"
     HelpUrl="" />
   <Diagnostic
+    Id="CS1741"
+    Identifier="RefOrOutParameterCannotHaveDefaultValue"
+    Severity="Error"
+    Title="A ref or out parameter cannot have a default value."
+    Message="A ref or out parameter cannot have a default value"
+    HelpUrl="" />
+  <Diagnostic
     Id="CS1743"
     Identifier="CannotSpecifyDefaultValueForThisParameter"
     Severity="Error"

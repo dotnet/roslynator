@@ -1688,6 +1688,18 @@ namespace Roslynator.CSharp
             helpLinkUri:        "", 
             customTags:         WellKnownDiagnosticTags.Compiler);
 
+        /// <summary>CS1741</summary>
+        public static readonly DiagnosticDescriptor RefOrOutParameterCannotHaveDefaultValue = new DiagnosticDescriptor(
+            id:                 CompilerDiagnosticIdentifiers.RefOrOutParameterCannotHaveDefaultValue, 
+            title:              "A ref or out parameter cannot have a default value.", 
+            messageFormat:      "A ref or out parameter cannot have a default value", 
+            category:           "Compiler", 
+            defaultSeverity:    DiagnosticSeverity.Error, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        "", 
+            customTags:         WellKnownDiagnosticTags.Compiler);
+
         /// <summary>CS1743</summary>
         public static readonly DiagnosticDescriptor CannotSpecifyDefaultValueForThisParameter = new DiagnosticDescriptor(
             id:                 CompilerDiagnosticIdentifiers.CannotSpecifyDefaultValueForThisParameter, 

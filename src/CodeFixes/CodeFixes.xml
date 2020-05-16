@@ -528,6 +528,7 @@
   <CodeFix Id="RCF0093" Identifier="RemoveDefaultValueFromParameter" Title="Remove default value from parameter">
     <FixableDiagnosticIds>
       <Id>CS1751</Id>
+      <Id>CS1741</Id>
       <Id>CS1743</Id>
     </FixableDiagnosticIds>
   </CodeFix>

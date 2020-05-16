@@ -705,11 +705,12 @@ namespace Roslynator.CSharp
             "CS0029", 
             "CS0030");
 
-        /// <summary>RCF0093 (fixes CS1743, CS1751)</summary>
+        /// <summary>RCF0093 (fixes CS1741, CS1743, CS1751)</summary>
         public static readonly CodeFixDescriptor RemoveDefaultValueFromParameter = new CodeFixDescriptor(
             id:                 CodeFixIdentifiers.RemoveDefaultValueFromParameter, 
             title:              "Remove default value from parameter", 
             isEnabledByDefault: true, 
+            "CS1741", 
             "CS1743", 
             "CS1751");
 
