@@ -304,44 +304,6 @@ class B
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantCast)]
-        public async Task TestNoDiagnostic_CastFromObject()
-        {
-            await VerifyNoDiagnosticAsync(@"
-using System.Collections;
-using System.Linq;
-
-class C
-{
-    void M()
-    {
-        object value = null;
-
-        var values = ((IEnumerable)value).Cast<object>();
-    }
-}
-");
-        }
-
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantCast)]
-        public async Task TestNoDiagnostic_CastFromDynamic()
-        {
-            await VerifyNoDiagnosticAsync(@"
-using System.Collections;
-using System.Linq;
-
-class C
-{
-    void M()
-    {
-        dynamic value = null;
-
-        var values = ((IEnumerable)value).Cast<object>();
-    }
-}
-");
-        }
-
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantCast)]
         public async Task TestNoDiagnostic_NotAccessible()
         {
             await VerifyNoDiagnosticAsync(@"
