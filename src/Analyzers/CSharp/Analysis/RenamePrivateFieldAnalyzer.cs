@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -12,7 +11,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.RenamePrivateFieldAccordingToCamelCaseWithUnderscore); }
+            get { return ImmutableArray.Create(DiagnosticDescriptors.RenamePrivateFieldToCamelCaseWithUnderscore); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -33,7 +32,7 @@ namespace Roslynator.CSharp.Analysis
                 && !IsValidIdentifier(fieldSymbol.Name))
             {
                 DiagnosticHelpers.ReportDiagnostic(context,
-                    DiagnosticDescriptors.RenamePrivateFieldAccordingToCamelCaseWithUnderscore,
+                    DiagnosticDescriptors.RenamePrivateFieldToCamelCaseWithUnderscore,
                     fieldSymbol.Locations[0]);
             }
         }

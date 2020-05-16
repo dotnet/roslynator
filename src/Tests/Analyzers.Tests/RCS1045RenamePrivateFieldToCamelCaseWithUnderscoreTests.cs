@@ -9,15 +9,15 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1045RenamePrivateFieldAccordingToCamelCaseWithUnderscoreTests : AbstractCSharpFixVerifier
+    public class RCS1045RenamePrivateFieldToCamelCaseWithUnderscoreTests : AbstractCSharpFixVerifier
     {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.RenamePrivateFieldAccordingToCamelCaseWithUnderscore;
+        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.RenamePrivateFieldToCamelCaseWithUnderscore;
 
         public override DiagnosticAnalyzer Analyzer { get; } = new RenamePrivateFieldAnalyzer();
 
-        public override CodeFixProvider FixProvider { get; } = new RenameFieldAccordingToCamelCaseWithUnderscoreCodeFixProvider();
+        public override CodeFixProvider FixProvider { get; } = new RenamePrivateFieldToCamelCaseWithUnderscoreCodeFixProvider();
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RenamePrivateFieldAccordingToCamelCaseWithUnderscore)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RenamePrivateFieldToCamelCaseWithUnderscore)]
         public async Task Test_Lowercase()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -35,7 +35,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RenamePrivateFieldAccordingToCamelCaseWithUnderscore)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RenamePrivateFieldToCamelCaseWithUnderscore)]
         public async Task Test_Uppercase()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -51,7 +51,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RenamePrivateFieldAccordingToCamelCaseWithUnderscore)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RenamePrivateFieldToCamelCaseWithUnderscore)]
         public async Task Test_UnderscoreUppercase()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -67,7 +67,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RenamePrivateFieldAccordingToCamelCaseWithUnderscore)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RenamePrivateFieldToCamelCaseWithUnderscore)]
         public async Task Test_Underscore()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -83,7 +83,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RenamePrivateFieldAccordingToCamelCaseWithUnderscore)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RenamePrivateFieldToCamelCaseWithUnderscore)]
         public async Task TestNoDiagnostic_StaticPrefix()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -94,7 +94,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RenamePrivateFieldAccordingToCamelCaseWithUnderscore)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RenamePrivateFieldToCamelCaseWithUnderscore)]
         public async Task TestNoDiagnostic_ThreadPrefix()
         {
             await VerifyNoDiagnosticAsync(@"

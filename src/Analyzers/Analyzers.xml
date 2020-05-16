@@ -864,10 +864,9 @@ catch (Exception ex)
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="RenamePrivateFieldAccordingToCamelCaseWithUnderscore">
+  <Analyzer Identifier="RenamePrivateFieldToCamelCaseWithUnderscore">
     <Id>RCS1045</Id>
-    <Title>Rename private field according to camel case with underscore.</Title>
-    <MessageFormat>Rename private field to camel case with underscore.</MessageFormat>
+    <Title>Rename private field to camel case with underscore.</Title>
     <Category>Naming</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>

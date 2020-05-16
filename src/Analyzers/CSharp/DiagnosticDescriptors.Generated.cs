@@ -532,15 +532,15 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1045</summary>
-        public static readonly DiagnosticDescriptor RenamePrivateFieldAccordingToCamelCaseWithUnderscore = Factory.Create(
-            id:                 DiagnosticIdentifiers.RenamePrivateFieldAccordingToCamelCaseWithUnderscore, 
-            title:              "Rename private field according to camel case with underscore.", 
+        public static readonly DiagnosticDescriptor RenamePrivateFieldToCamelCaseWithUnderscore = Factory.Create(
+            id:                 DiagnosticIdentifiers.RenamePrivateFieldToCamelCaseWithUnderscore, 
+            title:              "Rename private field to camel case with underscore.", 
             messageFormat:      "Rename private field to camel case with underscore.", 
             category:           DiagnosticCategories.Naming, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.RenamePrivateFieldAccordingToCamelCaseWithUnderscore, 
+            helpLinkUri:        DiagnosticIdentifiers.RenamePrivateFieldToCamelCaseWithUnderscore, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1046</summary>

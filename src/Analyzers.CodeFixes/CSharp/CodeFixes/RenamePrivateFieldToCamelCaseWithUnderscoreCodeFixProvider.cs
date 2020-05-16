@@ -2,24 +2,26 @@
 
 using System.Collections.Immutable;
 using System.Composition;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Options;
+using Microsoft.CodeAnalysis.Rename;
 using Roslynator.CodeFixes;
-using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.CodeFixes
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(RenameFieldAccordingToCamelCaseWithUnderscoreCodeFixProvider))]
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(RenamePrivateFieldToCamelCaseWithUnderscoreCodeFixProvider))]
     [Shared]
-    public class RenameFieldAccordingToCamelCaseWithUnderscoreCodeFixProvider : BaseCodeFixProvider
+    public class RenamePrivateFieldToCamelCaseWithUnderscoreCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.RenamePrivateFieldAccordingToCamelCaseWithUnderscore); }
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.RenamePrivateFieldToCamelCaseWithUnderscore); }
         }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -43,10 +45,24 @@ namespace Roslynator.CSharp.CodeFixes
 
             CodeAction codeAction = CodeAction.Create(
                 $"Rename '{oldName}' to '{newName}'",
-                cancellationToken => RenamePrivateFieldAccordingToCamelCaseWithUnderscoreRefactoring.RefactorAsync(context.Document, symbol, newName, cancellationToken),
-                DiagnosticIdentifiers.RenamePrivateFieldAccordingToCamelCaseWithUnderscore);
+                cancellationToken => RefactorAsync(context.Document, symbol, newName, cancellationToken),
+                DiagnosticIdentifiers.RenamePrivateFieldToCamelCaseWithUnderscore);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
+        }
+
+        private static Task<Solution> RefactorAsync(
+            Document document,
+            ISymbol symbol,
+            string newName,
+            CancellationToken cancellationToken)
+        {
+            return Renamer.RenameSymbolAsync(
+                document.Solution(),
+                symbol,
+                newName,
+                default(OptionSet),
+                cancellationToken);
         }
     }
 }
