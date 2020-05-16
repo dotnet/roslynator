@@ -472,15 +472,15 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1040</summary>
-        public static readonly DiagnosticDescriptor RemoveEmptyElse = Factory.Create(
-            id:                 DiagnosticIdentifiers.RemoveEmptyElse, 
-            title:              "Remove empty 'else'.", 
-            messageFormat:      "Remove empty 'else'.", 
+        public static readonly DiagnosticDescriptor RemoveEmptyElseClause = Factory.Create(
+            id:                 DiagnosticIdentifiers.RemoveEmptyElseClause, 
+            title:              "Remove empty 'else' clause.", 
+            messageFormat:      "Remove empty 'else' clause.", 
             category:           DiagnosticCategories.Redundancy, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.RemoveEmptyElse, 
+            helpLinkUri:        DiagnosticIdentifiers.RemoveEmptyElseClause, 
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1041</summary>

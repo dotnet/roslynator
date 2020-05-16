@@ -45,7 +45,7 @@ namespace Roslynator.CSharp
         public const string RemoveTrailingWhitespace = "RCS1037";
         public const string RemoveEmptyStatement = "RCS1038";
         public const string RemoveArgumentListFromAttribute = "RCS1039";
-        public const string RemoveEmptyElse = "RCS1040";
+        public const string RemoveEmptyElseClause = "RCS1040";
         public const string RemoveEmptyInitializer = "RCS1041";
         public const string RemoveEnumDefaultUnderlyingType = "RCS1042";
         public const string RemovePartialModifierFromTypeWithSinglePart = "RCS1043";

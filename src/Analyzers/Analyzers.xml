@@ -763,9 +763,9 @@ public void Foo()
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="RemoveEmptyElse">
+  <Analyzer Identifier="RemoveEmptyElseClause">
     <Id>RCS1040</Id>
-    <Title>Remove empty 'else'.</Title>
+    <Title>Remove empty 'else' clause.</Title>
     <Category>Redundancy</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>

@@ -22,7 +22,7 @@ namespace Roslynator.CSharp.CodeFixes
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticIdentifiers.RemoveEmptyElse,
+                    DiagnosticIdentifiers.RemoveEmptyElseClause,
                     DiagnosticIdentifiers.MergeElseWithNestedIf);
             }
         }
@@ -38,11 +38,11 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 switch (diagnostic.Id)
                 {
-                    case DiagnosticIdentifiers.RemoveEmptyElse:
+                    case DiagnosticIdentifiers.RemoveEmptyElseClause:
                         {
                             CodeAction codeAction = CodeAction.Create(
-                                "Remove empty 'else'",
-                                ct => RemoveEmptyElseAsync(context.Document, elseClause, ct),
+                                "Remove empty 'else' clause",
+                                ct => RemoveEmptyElseClauseAsync(context.Document, elseClause, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -62,7 +62,7 @@ namespace Roslynator.CSharp.CodeFixes
             }
         }
 
-        private static async Task<Document> RemoveEmptyElseAsync(
+        private static async Task<Document> RemoveEmptyElseClauseAsync(
             Document document,
             ElseClauseSyntax elseClause,
             CancellationToken cancellationToken)
