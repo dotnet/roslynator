@@ -9,7 +9,7 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class ReplaceNullLiteralExpressionWithDefaultExpressionRefactoring
+    internal static class ConvertNullLiteralToDefaultExpressionRefactoring
     {
         public static async Task ComputeRefactoringAsync(RefactoringContext context, ExpressionSyntax expression)
         {
@@ -27,9 +27,9 @@ namespace Roslynator.CSharp.Refactorings
                 return;
 
             context.RegisterRefactoring(
-                $"Replace 'null' with 'default({SymbolDisplay.ToMinimalDisplayString(typeSymbol, semanticModel, expression.SpanStart, SymbolDisplayFormats.Default)})'",
+                $"Convert to 'default({SymbolDisplay.ToMinimalDisplayString(typeSymbol, semanticModel, expression.SpanStart, SymbolDisplayFormats.Default)})'",
                 cancellationToken => RefactorAsync(context.Document, expression, typeSymbol, cancellationToken),
-                RefactoringIdentifiers.ReplaceNullLiteralExpressionWithDefaultExpression);
+                RefactoringIdentifiers.ConvertNullLiteralToDefaultExpression);
         }
 
         public static async Task<Document> RefactorAsync(

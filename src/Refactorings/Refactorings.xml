@@ -1124,7 +1124,7 @@ i--;]]></After>
     </Syntaxes>
     <Span>method header</Span>
   </Refactoring>
-  <Refactoring Id="RR0139" Identifier="ReplaceNullLiteralExpressionWithDefaultExpression" Title="Replace null literal expression with default expression">
+  <Refactoring Id="RR0139" Identifier="ConvertNullLiteralToDefaultExpression" Title="Convert null literal to default expression">
     <Syntaxes>
       <Syntax>argument</Syntax>
     </Syntaxes>
