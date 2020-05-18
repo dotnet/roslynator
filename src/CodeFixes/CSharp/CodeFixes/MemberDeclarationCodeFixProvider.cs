@@ -205,7 +205,7 @@ namespace Roslynator.CSharp.CodeFixes
                             if (node == null)
                                 break;
 
-                            ModifiersCodeFixRegistrator.AddModifier(context, diagnostic, node, SyntaxKind.PartialKeyword);
+                            ModifiersCodeFixRegistrator.AddModifier(context, diagnostic, node, SyntaxKind.PartialKeyword, title: $"Make {CSharpFacts.GetTitle(node)} partial");
                             break;
                         }
                     case CompilerDiagnosticIdentifiers.MemberIsAbstractButItIsContainedInNonAbstractClass:

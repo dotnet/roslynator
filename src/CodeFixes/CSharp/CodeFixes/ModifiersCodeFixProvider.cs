@@ -400,7 +400,8 @@ namespace Roslynator.CSharp.CodeFixes
                                 context,
                                 diagnostic,
                                 ImmutableArray.CreateRange(syntaxReferences, f => f.GetSyntax(context.CancellationToken)),
-                                SyntaxKind.PartialKeyword);
+                                SyntaxKind.PartialKeyword,
+                                title: $"Make {CSharpFacts.GetTitle(node)} partial");
 
                             break;
                         }
