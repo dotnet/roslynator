@@ -95,7 +95,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.MakeMemberVirtual, "Make member virtual", IsEnabled(RefactoringIdentifiers.MakeMemberVirtual)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.MergeAssignmentExpressionWithReturnStatement, "Merge assignment expression with return statement", IsEnabled(RefactoringIdentifiers.MergeAssignmentExpressionWithReturnStatement)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.MergeAttributes, "Merge attributes", IsEnabled(RefactoringIdentifiers.MergeAttributes)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.MergeIfStatements, "Merge if statements", IsEnabled(RefactoringIdentifiers.MergeIfStatements)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.MergeIfStatements, "Merge 'if' statements", IsEnabled(RefactoringIdentifiers.MergeIfStatements)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.MergeLocalDeclarations, "Merge local declarations", IsEnabled(RefactoringIdentifiers.MergeLocalDeclarations)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.JoinStringExpressions, "Join string expressions", IsEnabled(RefactoringIdentifiers.JoinStringExpressions)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.InvertBinaryExpression, "Invert binary expression", IsEnabled(RefactoringIdentifiers.InvertBinaryExpression)));
@@ -157,7 +157,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertInterpolatedStringToStringLiteral, "Convert interpolated string to string literal", IsEnabled(RefactoringIdentifiers.ConvertInterpolatedStringToStringLiteral)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceMethodGroupWithLambda, "Replace method group with lambda", IsEnabled(RefactoringIdentifiers.ReplaceMethodGroupWithLambda)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceMethodWithProperty, "Replace method with property", IsEnabled(RefactoringIdentifiers.ReplaceMethodWithProperty)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceNullLiteralExpressionWithDefaultExpression, "Replace null literal expression with default expression", IsEnabled(RefactoringIdentifiers.ReplaceNullLiteralExpressionWithDefaultExpression)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertNullLiteralToDefaultExpression, "Convert null literal to default expression", IsEnabled(RefactoringIdentifiers.ConvertNullLiteralToDefaultExpression)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplacePrefixOperatorWithPostfixOperator, "Replace prefix operator to postfix operator", IsEnabled(RefactoringIdentifiers.ReplacePrefixOperatorWithPostfixOperator)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplacePropertyWithMethod, "Replace property with method", IsEnabled(RefactoringIdentifiers.ReplacePropertyWithMethod)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertRegularStringLiteralToVerbatimStringLiteral, "Convert regular string literal to verbatim string literal", IsEnabled(RefactoringIdentifiers.ConvertRegularStringLiteralToVerbatimStringLiteral)));
