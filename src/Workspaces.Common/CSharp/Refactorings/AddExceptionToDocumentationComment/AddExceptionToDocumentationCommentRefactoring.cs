@@ -178,13 +178,13 @@ namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
                     if (cref != null
                         && (semanticModel.GetSymbol(cref, cancellationToken) is INamedTypeSymbol symbol))
                     {
-                        if (exceptionSymbol.Equals(symbol))
+                        if (SymbolEqualityComparer.Default.Equals(exceptionSymbol, symbol))
                             return true;
 
                         // http://github.com/dotnet/roslyn/issues/22923
                         if (exceptionSymbol.IsGenericType
                             && symbol.IsGenericType
-                            && exceptionSymbol.ConstructedFrom.Equals(symbol.ConstructedFrom))
+                            && SymbolEqualityComparer.Default.Equals(exceptionSymbol.ConstructedFrom, symbol.ConstructedFrom))
                         {
                             return true;
                         }
@@ -286,7 +286,7 @@ namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
 
             foreach (ThrowInfo info in GetOtherUndocumentedExceptions(memberDeclaration, declarationSymbol, node => node != throwInfo.Node, exceptionSymbol, semanticModel, cancellationToken))
             {
-                if (!throwInfos.Any(f => f.ExceptionSymbol == info.ExceptionSymbol))
+                if (!throwInfos.Any(f => SymbolEqualityComparer.Default.Equals(f.ExceptionSymbol, info.ExceptionSymbol)))
                     throwInfos.Add(info);
             }
 

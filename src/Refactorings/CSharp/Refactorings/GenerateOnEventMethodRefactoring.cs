@@ -56,7 +56,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (containingType.ContainsMember<IMethodSymbol>(
                     $"On{eventSymbol.Name}",
-                    methodSymbol => eventArgsSymbol.Equals(methodSymbol.Parameters.SingleOrDefault(shouldThrow: false)?.Type)))
+                    methodSymbol => SymbolEqualityComparer.Default.Equals(eventArgsSymbol, methodSymbol.Parameters.SingleOrDefault(shouldThrow: false)?.Type)))
                 {
                     continue;
                 }

@@ -201,7 +201,7 @@ namespace Roslynator.CSharp.Refactorings
                 ExpressionSyntax expression = expressionBody.Expression;
 
                 return expression != null
-                    && symbol.Equals(GetBackingFieldSymbol(expression, semanticModel, cancellationToken));
+                    && SymbolEqualityComparer.Default.Equals(symbol, GetBackingFieldSymbol(expression, semanticModel, cancellationToken));
             }
             else
             {
@@ -223,14 +223,14 @@ namespace Roslynator.CSharp.Refactorings
                 StatementSyntax statement = body.Statements.SingleOrDefault(shouldThrow: false);
 
                 if (statement != null)
-                    return symbol.Equals(GetBackingFieldSymbol(statement, semanticModel, cancellationToken));
+                    return SymbolEqualityComparer.Default.Equals(symbol, GetBackingFieldSymbol(statement, semanticModel, cancellationToken));
             }
             else
             {
                 ExpressionSyntax expression = getter.ExpressionBody?.Expression;
 
                 return expression != null
-                    && symbol.Equals(GetBackingFieldSymbol(expression, semanticModel, cancellationToken));
+                    && SymbolEqualityComparer.Default.Equals(symbol, GetBackingFieldSymbol(expression, semanticModel, cancellationToken));
             }
 
             return false;

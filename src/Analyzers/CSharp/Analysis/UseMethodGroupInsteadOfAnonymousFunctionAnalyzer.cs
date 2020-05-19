@@ -75,7 +75,7 @@ namespace Roslynator.CSharp.Analysis
                     return;
                 }
                 else if (isReduced
-                    && !context.ContainingSymbol.ContainingType.Equals(methodSymbol.ContainingType))
+                    && !SymbolEqualityComparer.Default.Equals(context.ContainingSymbol.ContainingType, methodSymbol.ContainingType))
                 {
                     return;
                 }
@@ -159,7 +159,7 @@ namespace Roslynator.CSharp.Analysis
                     return;
                 }
                 else if (methodSymbol.MethodKind == MethodKind.ReducedExtension
-                    && !context.ContainingSymbol.ContainingType.Equals(methodSymbol.ContainingType))
+                    && !SymbolEqualityComparer.Default.Equals(context.ContainingSymbol.ContainingType, methodSymbol.ContainingType))
                 {
                     return;
                 }
@@ -260,7 +260,7 @@ namespace Roslynator.CSharp.Analysis
                     return;
                 }
                 else if (methodSymbol.MethodKind == MethodKind.ReducedExtension
-                    && !context.ContainingSymbol.ContainingType.Equals(methodSymbol.ContainingType))
+                    && !SymbolEqualityComparer.Default.Equals(context.ContainingSymbol.ContainingType, methodSymbol.ContainingType))
                 {
                     return;
                 }
@@ -380,7 +380,7 @@ namespace Roslynator.CSharp.Analysis
 
             for (int i = 0; i < parameters.Length; i++)
             {
-                if (!parameters[i].Type.Equals(parameters2[i].Type))
+                if (!SymbolEqualityComparer.Default.Equals(parameters[i].Type, parameters2[i].Type))
                     return false;
             }
 
@@ -454,8 +454,8 @@ namespace Roslynator.CSharp.Analysis
 
             bool CheckSpeculativeSymbol(SymbolInfo symbolInfo)
             {
-                return symbolInfo.Symbol?.Equals(methodSymbol) == true
-                    || symbolInfo.CandidateSymbols.SingleOrDefault(shouldThrow: false)?.Equals(methodSymbol) == true;
+                return SymbolEqualityComparer.Default.Equals(symbolInfo.Symbol, methodSymbol)
+                    || SymbolEqualityComparer.Default.Equals(symbolInfo.CandidateSymbols.SingleOrDefault(shouldThrow: false), methodSymbol);
             }
         }
 

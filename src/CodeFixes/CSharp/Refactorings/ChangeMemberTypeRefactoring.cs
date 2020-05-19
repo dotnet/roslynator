@@ -74,7 +74,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     newTypeSymbol = taskOfT.Construct(expressionTypeSymbol);
                 }
-                else if (expressionTypeSymbol.OriginalDefinition.Equals(taskOfT))
+                else if (SymbolEqualityComparer.Default.Equals(expressionTypeSymbol, taskOfT))
                 {
                     insertAwait = true;
                     additionalKey = "InsertAwait";

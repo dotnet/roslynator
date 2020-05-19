@@ -339,7 +339,7 @@ namespace Roslynator.CSharp
                         TypeSyntax type = defaultExpression.Type;
 
                         return type != null
-                            && typeSymbol.Equals(semanticModel.GetTypeSymbol(type, cancellationToken));
+                            && SymbolEqualityComparer.Default.Equals(typeSymbol, semanticModel.GetTypeSymbol(type, cancellationToken));
                     }
             }
 

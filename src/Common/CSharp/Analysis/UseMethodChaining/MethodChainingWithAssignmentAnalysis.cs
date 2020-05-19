@@ -46,7 +46,7 @@ namespace Roslynator.CSharp.Analysis.UseMethodChaining
             if (methodSymbol == null)
                 return false;
 
-            if (!methodSymbol.ReturnType.Equals(typeSymbol))
+            if (!SymbolEqualityComparer.Default.Equals(methodSymbol.ReturnType, typeSymbol))
                 return false;
 
             if (IsReferenced(invocationInfo.InvocationExpression, identifierName, name, semanticModel, cancellationToken))
@@ -73,7 +73,7 @@ namespace Roslynator.CSharp.Analysis.UseMethodChaining
                     if (symbol == null)
                         symbol = semanticModel.GetSymbol(identifierName, cancellationToken);
 
-                    if (semanticModel.GetSymbol(identifierName2, cancellationToken)?.Equals(symbol) == true)
+                    if (SymbolEqualityComparer.Default.Equals(semanticModel.GetSymbol(identifierName2, cancellationToken), symbol))
                         return true;
                 }
             }

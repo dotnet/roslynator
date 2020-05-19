@@ -257,7 +257,7 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
                             {
                                 if (!NodeEnclosingType
                                     .BaseTypesAndSelf()
-                                    .Any(f => f.Equals(containingType)))
+                                    .Any(f => SymbolEqualityComparer.Default.Equals(f, containingType)))
                                 {
                                     replacementMap.Add(identifierName, CSharpFactory.SimpleMemberAccessExpression(containingType.ToTypeSyntax().WithSimplifierAnnotation(), identifierName));
                                 }
@@ -323,7 +323,7 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
                     }
                 }
 
-                return parameterSymbol.OriginalDefinition.Equals(parameterSymbol2);
+                return SymbolEqualityComparer.Default.Equals(parameterSymbol.OriginalDefinition, parameterSymbol2);
             }
         }
 

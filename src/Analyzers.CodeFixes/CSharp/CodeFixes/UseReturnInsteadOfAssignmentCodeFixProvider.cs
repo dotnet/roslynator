@@ -191,7 +191,7 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 SeparatedSyntaxList<VariableDeclaratorSyntax> declarators = localDeclarationStatement.Declaration.Variables;
 
-                VariableDeclaratorSyntax declarator = declarators.FirstOrDefault(f => semanticModel.GetDeclaredSymbol(f, cancellationToken)?.Equals(symbol) == true);
+                VariableDeclaratorSyntax declarator = declarators.FirstOrDefault(f => SymbolEqualityComparer.Default.Equals(semanticModel.GetDeclaredSymbol(f, cancellationToken), symbol));
 
                 if (declarator != null)
                 {

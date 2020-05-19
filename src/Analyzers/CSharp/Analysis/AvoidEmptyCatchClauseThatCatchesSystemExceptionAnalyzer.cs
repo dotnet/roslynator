@@ -52,7 +52,7 @@ namespace Roslynator.CSharp.Analysis
 
             ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(type, context.CancellationToken);
 
-            if (typeSymbol?.Equals(exceptionSymbol) != true)
+            if (!SymbolEqualityComparer.Default.Equals(typeSymbol, exceptionSymbol))
                 return;
 
             DiagnosticHelpers.ReportDiagnostic(context,

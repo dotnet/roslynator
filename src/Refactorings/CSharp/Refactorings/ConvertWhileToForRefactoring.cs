@@ -112,7 +112,7 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         typeSymbol = symbol.Type;
                     }
-                    else if (!typeSymbol.Equals(symbol.Type))
+                    else if (!SymbolEqualityComparer.Default.Equals(typeSymbol, symbol.Type))
                     {
                         return result;
                     }

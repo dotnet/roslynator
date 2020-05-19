@@ -189,7 +189,7 @@ namespace Roslynator.CSharp.CodeFixes
                                     {
                                         foreach (ITypeSymbol typeSymbol2 in DetermineParameterTypeHelper.DetermineParameterTypes(argument, semanticModel, context.CancellationToken))
                                         {
-                                            if (!typeSymbol.Equals(typeSymbol2)
+                                            if (!SymbolEqualityComparer.Default.Equals(typeSymbol, typeSymbol2)
                                                 && typeSymbol2 is IArrayTypeSymbol arrayType
                                                 && semanticModel.IsImplicitConversion(expression, arrayType.ElementType))
                                             {

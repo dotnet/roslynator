@@ -111,7 +111,7 @@ namespace Roslynator.CSharp.Analysis
                         propertySymbol = methodSymbol.AssociatedSymbol as IPropertySymbol;
                 }
 
-                if (propertySymbol == indexerSymbol)
+                if (SymbolEqualityComparer.Default.Equals(propertySymbol, indexerSymbol))
                     return false;
             }
 

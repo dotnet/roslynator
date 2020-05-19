@@ -112,7 +112,7 @@ namespace Roslynator.CSharp.CodeFixes
                 if (node.IsKind(SyntaxKind.SimpleMemberAccessExpression)
                     && string.Equals((node.Expression as IdentifierNameSyntax)?.Identifier.ValueText, _name, StringComparison.Ordinal)
                     && string.Equals((node.Name as IdentifierNameSyntax)?.Identifier.ValueText, "Current", StringComparison.Ordinal)
-                    && _symbol.Equals(_semanticModel.GetSymbol(node.Expression, _cancellationToken)))
+                    && SymbolEqualityComparer.Default.Equals(_symbol, _semanticModel.GetSymbol(node.Expression, _cancellationToken)))
                 {
                     return _newName.WithTriviaFrom(node);
                 }

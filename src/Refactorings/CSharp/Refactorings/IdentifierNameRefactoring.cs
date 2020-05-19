@@ -58,7 +58,7 @@ namespace Roslynator.CSharp.Refactorings
             if (fieldSymbol.IsStatic != propertySymbol.IsStatic)
                 return;
 
-            if (fieldSymbol.ContainingType != propertySymbol.ContainingType)
+            if (!SymbolEqualityComparer.Default.Equals(fieldSymbol.ContainingType, propertySymbol.ContainingType))
                 return;
 
             string newName = StringUtility.ToCamelCase(propertySymbol.Name, context.Settings.PrefixFieldIdentifierWithUnderscore);

@@ -53,7 +53,7 @@ namespace Roslynator.CSharp.Refactorings
                 if (typeSymbol.IsErrorType())
                     return false;
 
-                if (prevTypeSymbol != null && prevTypeSymbol != typeSymbol)
+                if (prevTypeSymbol != null && !SymbolEqualityComparer.Default.Equals(prevTypeSymbol, typeSymbol))
                     return false;
 
                 prevTypeSymbol = typeSymbol;

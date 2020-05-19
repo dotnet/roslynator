@@ -98,7 +98,7 @@ namespace Roslynator.CSharp.Refactorings
 
             ISymbol expressionSymbol = semanticModel.GetSymbol(memberAccess.Expression, cancellationToken);
 
-            if (!symbol.Equals(expressionSymbol))
+            if (!SymbolEqualityComparer.Default.Equals(symbol, expressionSymbol))
                 return false;
 
             return semanticModel.GetSymbol(left, cancellationToken)?.Kind == SymbolKind.Property;

@@ -54,7 +54,7 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
 
             INamedTypeSymbol enclosingType = semanticModel.GetEnclosingNamedType(node.SpanStart, cancellationToken);
 
-            if (propertySymbol.ContainingType?.Equals(enclosingType) != true)
+            if (!SymbolEqualityComparer.Default.Equals(propertySymbol.ContainingType, enclosingType))
                 return null;
 
             if (!node.IsParentKind(SyntaxKind.MemberBindingExpression))

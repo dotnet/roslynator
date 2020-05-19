@@ -113,7 +113,7 @@ namespace Roslynator.CSharp.Analysis
 
                 for (int i = 0; i < parameters1.Length; i++)
                 {
-                    if (!parameters1[i].Type.Equals(parameters2[i].Type))
+                    if (!SymbolEqualityComparer.Default.Equals(parameters1[i].Type, parameters2[i].Type))
                         return false;
                 }
 

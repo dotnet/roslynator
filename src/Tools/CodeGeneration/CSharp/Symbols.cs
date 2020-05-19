@@ -136,8 +136,8 @@ namespace Roslynator.CodeGeneration.CSharp
 
             foreach (IPropertySymbol symbol in GetPropertySymbols(propertySymbol.Type, name))
             {
-                if (symbol.Type.OriginalDefinition.Equals(SyntaxListSymbol)
-                    || symbol.Type.OriginalDefinition.Equals(SeparatedSyntaxListSymbol))
+                if (SymbolEqualityComparer.Default.Equals(symbol.Type.OriginalDefinition, SyntaxListSymbol)
+                    || SymbolEqualityComparer.Default.Equals(symbol.Type.OriginalDefinition, SeparatedSyntaxListSymbol))
                 {
                     return symbol;
                 }
@@ -161,18 +161,18 @@ namespace Roslynator.CodeGeneration.CSharp
 
         public static bool IsSyntaxTypeSymbol(ITypeSymbol typeSymbol)
         {
-            if (typeSymbol.Equals(SyntaxTokenListSymbol))
+            if (SymbolEqualityComparer.Default.Equals(typeSymbol, SyntaxTokenListSymbol))
                 return true;
 
-            if (typeSymbol.Equals(SyntaxTokenSymbol))
+            if (SymbolEqualityComparer.Default.Equals(typeSymbol, SyntaxTokenSymbol))
                 return true;
 
             ITypeSymbol originalDefinition = typeSymbol.OriginalDefinition;
 
-            if (originalDefinition.Equals(SyntaxListSymbol))
+            if (SymbolEqualityComparer.Default.Equals(originalDefinition, SyntaxListSymbol))
                 return true;
 
-            if (originalDefinition.Equals(SeparatedSyntaxListSymbol))
+            if (SymbolEqualityComparer.Default.Equals(originalDefinition, SeparatedSyntaxListSymbol))
                 return true;
 
             if (typeSymbol.EqualsOrInheritsFrom(SyntaxNodeSymbol))

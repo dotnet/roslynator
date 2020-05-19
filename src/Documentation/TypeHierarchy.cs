@@ -123,7 +123,7 @@ namespace Roslynator.Documentation
                 {
                     foreach (TypeHierarchyItem interfaceItem in Interfaces)
                     {
-                        if (interfaceItem.Symbol == interfaceSymbol2)
+                        if (SymbolEqualityComparer.Default.Equals(interfaceItem.Symbol, interfaceSymbol2))
                             return false;
                     }
                 }

@@ -79,12 +79,12 @@ namespace Roslynator.Documentation
             {
                 foreach (INamedTypeSymbol symbol in Types)
                 {
-                    if (symbol.BaseType?.OriginalDefinition.Equals(typeSymbol) == true)
+                    if (SymbolEqualityComparer.Default.Equals(symbol.BaseType?.OriginalDefinition, typeSymbol))
                         yield return symbol;
 
                     foreach (INamedTypeSymbol interfaceSymbol in symbol.Interfaces)
                     {
-                        if (interfaceSymbol.OriginalDefinition.Equals(typeSymbol))
+                        if (SymbolEqualityComparer.Default.Equals(interfaceSymbol.OriginalDefinition, typeSymbol))
                             yield return symbol;
                     }
                 }
@@ -144,7 +144,7 @@ namespace Roslynator.Documentation
                             {
                                 ITypeSymbol typeSymbol2 = GetExtendedType(methodSymbol);
 
-                                if (typeSymbol == typeSymbol2)
+                                if (SymbolEqualityComparer.Default.Equals(typeSymbol, typeSymbol2))
                                     yield return methodSymbol;
                             }
                         }

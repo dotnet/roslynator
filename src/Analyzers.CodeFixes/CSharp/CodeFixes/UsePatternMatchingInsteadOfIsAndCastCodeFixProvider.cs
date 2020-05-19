@@ -121,7 +121,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             IEnumerable<SyntaxNode> nodes = nodeToRewrite
                 .DescendantNodes()
-                .Where(f => f.IsKind(SyntaxKind.IdentifierName) && symbol.Equals(semanticModel.GetSymbol(f, cancellationToken)))
+                .Where(f => f.IsKind(SyntaxKind.IdentifierName) && SymbolEqualityComparer.Default.Equals(symbol, semanticModel.GetSymbol(f, cancellationToken)))
                 .Select(f =>
                 {
                     if (f.IsParentKind(SyntaxKind.SimpleMemberAccessExpression)

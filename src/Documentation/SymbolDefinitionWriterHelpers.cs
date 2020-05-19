@@ -213,7 +213,7 @@ namespace Roslynator.Documentation
 
                 if (symbol.IsKind(SymbolKind.NamedType))
                 {
-                    if (s == symbol)
+                    if (SymbolEqualityComparer.Default.Equals(s, symbol))
                     {
                         if (((INamedTypeSymbol)s).TypeKind != TypeKind.Delegate
                             || Peek(j).IsPunctuation("("))

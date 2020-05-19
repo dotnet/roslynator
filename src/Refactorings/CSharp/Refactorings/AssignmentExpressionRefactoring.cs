@@ -42,7 +42,7 @@ namespace Roslynator.CSharp.Refactorings
                         ITypeSymbol rightSymbol = semanticModel.GetTypeSymbol(right, context.CancellationToken);
 
                         if (rightSymbol?.IsErrorType() == false
-                            && !leftSymbol.Equals(rightSymbol))
+                            && !SymbolEqualityComparer.Default.Equals(leftSymbol, rightSymbol))
                         {
                             ModifyExpressionRefactoring.ComputeRefactoring(context, right, leftSymbol, semanticModel);
                         }

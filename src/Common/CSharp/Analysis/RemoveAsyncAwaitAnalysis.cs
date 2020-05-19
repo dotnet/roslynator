@@ -395,7 +395,7 @@ namespace Roslynator.CSharp.Analysis
 
         private static bool VerifyAwaitType(AwaitExpressionSyntax awaitExpression, ITypeSymbol typeArgument, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
-            if (!typeArgument.Equals(semanticModel.GetTypeSymbol(awaitExpression, cancellationToken)))
+            if (!SymbolEqualityComparer.Default.Equals(typeArgument, semanticModel.GetTypeSymbol(awaitExpression, cancellationToken)))
                 return false;
 
             ExpressionSyntax expression = awaitExpression.Expression;

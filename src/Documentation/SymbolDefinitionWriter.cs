@@ -941,7 +941,7 @@ namespace Roslynator.Documentation
 
             if (startIndex >= 0)
             {
-                Debug.Assert(symbol == s, parts.ToDisplayString());
+                Debug.Assert(SymbolEqualityComparer.Default.Equals(symbol, s), parts.ToDisplayString());
 
                 WriteParts(symbol, parts, 0, startIndex);
 

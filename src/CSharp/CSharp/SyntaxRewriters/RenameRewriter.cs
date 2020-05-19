@@ -40,10 +40,8 @@ namespace Roslynator.CSharp.SyntaxRewriters
             {
                 ISymbol symbol = SemanticModel.GetSymbol(node, CancellationToken);
 
-                if (Symbol.Equals(symbol))
-                {
+                if (SymbolEqualityComparer.Default.Equals(Symbol, symbol))
                     return Rename(node);
-                }
             }
 
             return base.VisitIdentifierName(node);

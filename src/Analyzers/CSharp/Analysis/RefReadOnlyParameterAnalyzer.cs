@@ -235,7 +235,7 @@ namespace Roslynator.CSharp.Analysis
                 string name = node.Identifier.ValueText;
 
                 if (Parameters.TryGetValue(name, out IParameterSymbol parameterSymbol)
-                    && parameterSymbol.Equals(SemanticModel.GetSymbol(node, CancellationToken)))
+                    && SymbolEqualityComparer.Default.Equals(parameterSymbol, SemanticModel.GetSymbol(node, CancellationToken)))
                 {
                     if (_isInAssignedExpression
                         || _localFunctionDepth > 0

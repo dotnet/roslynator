@@ -202,7 +202,7 @@ namespace Roslynator.CSharp.Analysis
             SimpleAssignmentStatementInfo assignmentInfo = SyntaxInfo.SimpleAssignmentStatementInfo(statement);
 
             return assignmentInfo.Success
-                && semanticModel.GetSymbol(assignmentInfo.Left, cancellationToken)?.Equals(symbol) == true;
+                && SymbolEqualityComparer.Default.Equals(semanticModel.GetSymbol(assignmentInfo.Left, cancellationToken), symbol);
         }
     }
 }

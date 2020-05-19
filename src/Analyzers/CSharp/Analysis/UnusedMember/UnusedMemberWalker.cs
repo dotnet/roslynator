@@ -118,8 +118,8 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
 
                         symbol = symbol.OriginalDefinition;
 
-                        if (info.Symbol.Equals(symbol)
-                            && _containingMethodSymbol?.Equals(symbol) != true)
+                        if (SymbolEqualityComparer.Default.Equals(info.Symbol, symbol)
+                            && !SymbolEqualityComparer.Default.Equals(_containingMethodSymbol, symbol))
                         {
                             RemoveNodeAt(i);
                         }
@@ -137,8 +137,8 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
                         {
                             ISymbol symbol = candidateSymbols[j].OriginalDefinition;
 
-                            if (info.Symbol.Equals(symbol)
-                                && _containingMethodSymbol?.Equals(symbol) != true)
+                            if (SymbolEqualityComparer.Default.Equals(info.Symbol, symbol)
+                                && !SymbolEqualityComparer.Default.Equals(_containingMethodSymbol, symbol))
                             {
                                 RemoveNodeAt(i);
                             }

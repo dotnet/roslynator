@@ -78,7 +78,7 @@ namespace Roslynator.CSharp.Analysis
 
             ISymbol symbol = semanticModel.GetSymbol(invocationInfo.Name, cancellationToken);
 
-            if (!overriddenMethod.Equals(symbol))
+            if (!SymbolEqualityComparer.Default.Equals(overriddenMethod, symbol))
                 return;
 
             if (!CheckParameters(methodDeclaration.ParameterList, invocationInfo.ArgumentList, semanticModel, cancellationToken))
@@ -131,9 +131,9 @@ namespace Roslynator.CSharp.Analysis
 
             for (int i = 0; i < parameters.Count; i++)
             {
-                if (semanticModel
-                    .GetDeclaredSymbol(parameters[i], cancellationToken)?
-                    .Equals(GetParameterSymbol(arguments[i].Expression, semanticModel, cancellationToken)) != true)
+                if (!SymbolEqualityComparer.Default.Equals(
+                    semanticModel.GetDeclaredSymbol(parameters[i], cancellationToken),
+                    GetParameterSymbol(arguments[i].Expression, semanticModel, cancellationToken)))
                 {
                     return false;
                 }
@@ -306,7 +306,7 @@ namespace Roslynator.CSharp.Analysis
 
                         ISymbol symbol = semanticModel.GetSymbol(simpleName, cancellationToken);
 
-                        return overriddenProperty.Equals(symbol);
+                        return SymbolEqualityComparer.Default.Equals(overriddenProperty, symbol);
                     }
                 case SyntaxKind.SetAccessorDeclaration:
                     {
@@ -350,7 +350,7 @@ namespace Roslynator.CSharp.Analysis
 
                         ISymbol symbol = semanticModel.GetSymbol(simpleName, cancellationToken);
 
-                        return overriddenProperty.Equals(symbol);
+                        return SymbolEqualityComparer.Default.Equals(overriddenProperty, symbol);
                     }
                 case SyntaxKind.UnknownAccessorDeclaration:
                     {
@@ -436,7 +436,7 @@ namespace Roslynator.CSharp.Analysis
 
                         ISymbol symbol = semanticModel.GetSymbol(elementAccess, cancellationToken);
 
-                        return overriddenProperty.Equals(symbol)
+                        return SymbolEqualityComparer.Default.Equals(overriddenProperty, symbol)
                             && CheckParameters(indexerDeclaration.ParameterList, elementAccess.ArgumentList, semanticModel, cancellationToken)
                             && CheckDefaultValues(propertySymbol.Parameters, overriddenProperty.Parameters);
                     }
@@ -480,7 +480,7 @@ namespace Roslynator.CSharp.Analysis
 
                         ISymbol symbol = semanticModel.GetSymbol(elementAccess, cancellationToken);
 
-                        return overriddenProperty.Equals(symbol)
+                        return SymbolEqualityComparer.Default.Equals(overriddenProperty, symbol)
                             && CheckParameters(indexerDeclaration.ParameterList, elementAccess.ArgumentList, semanticModel, cancellationToken)
                             && CheckDefaultValues(propertySymbol.Parameters, overriddenProperty.Parameters);
                     }

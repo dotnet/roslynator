@@ -72,7 +72,7 @@ namespace Roslynator
 
                         foreach (ISymbol symbol in semanticModel.LookupSymbols(referenceLocation.Location.SourceSpan.Start))
                         {
-                            if (!memberSymbol.Equals(symbol))
+                            if (!SymbolEqualityComparer.Default.Equals(memberSymbol, symbol))
                                 reservedNames.Add(symbol.Name);
                         }
                     }
@@ -92,7 +92,7 @@ namespace Roslynator
             {
                 IEnumerable<string> memberNames = containingType
                     .GetMembers()
-                    .Where(f => !memberSymbol.Equals(f))
+                    .Where(f => !SymbolEqualityComparer.Default.Equals(memberSymbol, f))
                     .Select(f => f.Name);
 
                 return CreateHashSet(memberNames, isCaseSensitive);

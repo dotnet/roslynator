@@ -133,7 +133,7 @@ namespace Roslynator.CodeGeneration.CSharp
             ITypeSymbol propertyType = context.PropertyType;
             string propertyName = context.PropertyName;
 
-            if (propertyType.OriginalDefinition.Equals(SyntaxListSymbol))
+            if (SymbolEqualityComparer.Default.Equals(propertyType.OriginalDefinition, SyntaxListSymbol))
             {
                 if (UseCustomVisitMethod)
                 {
@@ -144,7 +144,7 @@ namespace Roslynator.CodeGeneration.CSharp
                     context.AddStatement(VisitStatement("VisitList", parameterName, propertyName));
                 }
             }
-            else if (propertyType.OriginalDefinition.Equals(SeparatedSyntaxListSymbol))
+            else if (SymbolEqualityComparer.Default.Equals(propertyType.OriginalDefinition, SeparatedSyntaxListSymbol))
             {
                 if (UseCustomVisitMethod)
                 {
@@ -155,14 +155,14 @@ namespace Roslynator.CodeGeneration.CSharp
                     context.AddStatement(VisitStatement("VisitSeparatedList", parameterName, propertyName));
                 }
             }
-            else if (propertyType.Equals(SyntaxTokenListSymbol))
+            else if (SymbolEqualityComparer.Default.Equals(propertyType, SyntaxTokenListSymbol))
             {
                 if (Depth >= SyntaxWalkerDepth.Token)
                 {
                     context.AddStatement(VisitStatement("VisitTokenList", parameterName, propertyName));
                 }
             }
-            else if (propertyType.Equals(SyntaxTokenSymbol))
+            else if (SymbolEqualityComparer.Default.Equals(propertyType, SyntaxTokenSymbol))
             {
                 if (Depth >= SyntaxWalkerDepth.Token)
                 {
@@ -415,7 +415,7 @@ namespace Roslynator.CodeGeneration.CSharp
             }
             else
             {
-                methodName = (listPropertySymbol.Type.OriginalDefinition.Equals(SyntaxListSymbol)) ? "VisitList" : "VisitSeparatedList";
+                methodName = (SymbolEqualityComparer.Default.Equals(listPropertySymbol.Type.OriginalDefinition, SyntaxListSymbol)) ? "VisitList" : "VisitSeparatedList";
 
                 statement = VisitStatement(methodName, variableName, listPropertySymbol.Name);
             }

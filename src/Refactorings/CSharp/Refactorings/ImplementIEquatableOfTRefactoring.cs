@@ -50,7 +50,7 @@ namespace Roslynator.CSharp.Refactorings
             foreach (INamedTypeSymbol interfaceSymbol in classSymbol.AllInterfaces)
             {
                 if (interfaceSymbol.HasMetadataName(MetadataNames.System_IEquatable_T)
-                    && interfaceSymbol.TypeArguments.Single().Equals(classSymbol))
+                    && SymbolEqualityComparer.Default.Equals(interfaceSymbol.TypeArguments.Single(), classSymbol))
                 {
                     return;
                 }
@@ -101,7 +101,7 @@ namespace Roslynator.CSharp.Refactorings
             foreach (INamedTypeSymbol interfaceSymbol in typeSymbol.AllInterfaces)
             {
                 if (interfaceSymbol.HasMetadataName(MetadataNames.System_IEquatable_T)
-                    && interfaceSymbol.TypeArguments.Single().Equals(typeSymbol))
+                    && SymbolEqualityComparer.Default.Equals(interfaceSymbol.TypeArguments.Single(), typeSymbol))
                 {
                     return;
                 }

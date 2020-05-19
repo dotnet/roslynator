@@ -97,7 +97,7 @@ namespace Roslynator.CSharp.Analysis.MakeMemberReadOnly
 
                 ISymbol symbol2 = SemanticModel.GetSymbol(identifierName, CancellationToken)?.OriginalDefinition;
 
-                if (symbol.Equals(symbol2))
+                if (SymbolEqualityComparer.Default.Equals(symbol, symbol2))
                     Symbols.Remove(symbol.Name);
             }
         }

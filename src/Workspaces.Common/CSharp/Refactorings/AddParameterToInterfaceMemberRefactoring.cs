@@ -265,7 +265,7 @@ namespace Roslynator.CSharp.Refactorings
                 if (parameters.Length != parameters2.Length + 1)
                     continue;
 
-                if (!methodSymbol.ReturnType.Equals(methodSymbol2.ReturnType))
+                if (!SymbolEqualityComparer.Default.Equals(methodSymbol.ReturnType, methodSymbol2.ReturnType))
                     continue;
 
                 if (!ParametersEqual(parameters, parameters2))
@@ -301,7 +301,7 @@ namespace Roslynator.CSharp.Refactorings
                 if (parameters.Length != parameters2.Length + 1)
                     continue;
 
-                if (!propertySymbol.Type.Equals(propertySymbol2.Type))
+                if (!SymbolEqualityComparer.Default.Equals(propertySymbol.Type, propertySymbol2.Type))
                     continue;
 
                 if (!ParametersEqual(parameters, parameters2))
@@ -320,7 +320,7 @@ namespace Roslynator.CSharp.Refactorings
                 if (parameters[j].RefKind != parameters2[j].RefKind)
                     return false;
 
-                if (!parameters[j].Type.Equals(parameters2[j].Type))
+                if (!SymbolEqualityComparer.Default.Equals(parameters[j].Type, parameters2[j].Type))
                     return false;
             }
 

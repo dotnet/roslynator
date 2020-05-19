@@ -41,7 +41,7 @@ namespace Roslynator
 
         public bool Equals(TypeAnalysis other)
         {
-            return Symbol == other.Symbol;
+            return SymbolEqualityComparer.Default.Equals(Symbol, other.Symbol);
         }
 
         public override int GetHashCode()

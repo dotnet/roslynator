@@ -112,7 +112,7 @@ namespace Roslynator
 
             ITypeSymbol originalDefinition = typeSymbol.OriginalDefinition;
 
-            if (!typeSymbol.Equals(originalDefinition))
+            if (!SymbolEqualityComparer.Default.Equals(typeSymbol, originalDefinition))
             {
                 hasIndexer = HasIndexer(originalDefinition.SpecialType);
 
@@ -174,7 +174,7 @@ namespace Roslynator
 
             ITypeSymbol originalDefinition = typeSymbol.OriginalDefinition;
 
-            if (!typeSymbol.Equals(originalDefinition))
+            if (!SymbolEqualityComparer.Default.Equals(typeSymbol, originalDefinition))
             {
                 propertyName = GetCountOrLengthPropertyName(originalDefinition.SpecialType);
 
@@ -231,8 +231,8 @@ namespace Roslynator
             ImmutableArray<ITypeSymbol> typeArguments = ((INamedTypeSymbol)symbol).TypeArguments;
 
             return typeArguments.Length == 2
-                && typeArguments[0].Equals(parameter1)
-                && typeArguments[1].Equals(parameter2);
+                && SymbolEqualityComparer.Default.Equals(typeArguments[0], parameter1)
+                && SymbolEqualityComparer.Default.Equals(typeArguments[1], parameter2);
         }
 
         public static bool IsPredicateFunc(ISymbol symbol, ITypeSymbol parameter)
@@ -243,7 +243,7 @@ namespace Roslynator
             ImmutableArray<ITypeSymbol> typeArguments = ((INamedTypeSymbol)symbol).TypeArguments;
 
             return typeArguments.Length == 2
-                && typeArguments[0].Equals(parameter)
+                && SymbolEqualityComparer.Default.Equals(typeArguments[0], parameter)
                 && typeArguments[1].SpecialType == SpecialType.System_Boolean;
         }
 
@@ -255,8 +255,8 @@ namespace Roslynator
             ImmutableArray<ITypeSymbol> typeArguments = ((INamedTypeSymbol)symbol).TypeArguments;
 
             return typeArguments.Length == 3
-                && typeArguments[0].Equals(parameter1)
-                && typeArguments[1].Equals(parameter2)
+                && SymbolEqualityComparer.Default.Equals(typeArguments[0], parameter1)
+                && SymbolEqualityComparer.Default.Equals(typeArguments[1], parameter2)
                 && typeArguments[2].SpecialType == SpecialType.System_Boolean;
         }
 
@@ -303,7 +303,7 @@ namespace Roslynator
             ImmutableArray<ITypeSymbol> typeArguments = ((INamedTypeSymbol)typeSymbol).TypeArguments;
 
             return typeArguments.Length == 3
-                && typeArguments[0].Equals(methodSymbol.TypeArguments[0])
+                && SymbolEqualityComparer.Default.Equals(typeArguments[0], methodSymbol.TypeArguments[0])
                 && typeArguments[1].SpecialType == SpecialType.System_Int32
                 && typeArguments[2].SpecialType == SpecialType.System_Boolean;
         }

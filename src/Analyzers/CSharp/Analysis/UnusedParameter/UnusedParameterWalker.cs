@@ -125,7 +125,7 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
                 if (IsIndexer)
                     symbol = GetIndexerParameterSymbol(node, symbol);
 
-                if (info.Symbol.Equals(symbol))
+                if (SymbolEqualityComparer.Default.Equals(info.Symbol, symbol))
                     RemoveNode(name);
             }
         }

@@ -70,7 +70,7 @@ namespace Roslynator.CSharp.Refactorings.InlineAliasExpression
             {
                 IAliasSymbol aliasSymbol = SemanticModel.GetAliasInfo(node, CancellationToken);
 
-                if (aliasSymbol?.Equals(AliasSymbol) == true)
+                if (SymbolEqualityComparer.Default.Equals(aliasSymbol, AliasSymbol))
                 {
                     return Replacement
                         .WithTriviaFrom(node)

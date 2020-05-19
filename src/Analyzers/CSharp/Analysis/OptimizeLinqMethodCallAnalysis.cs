@@ -393,7 +393,7 @@ namespace Roslynator.CSharp.Analysis
 
             ITypeSymbol typeSymbol2 = semanticModel.GetTypeSymbol(type2, cancellationToken);
 
-            if (!typeSymbol.Equals(typeSymbol2))
+            if (!SymbolEqualityComparer.Default.Equals(typeSymbol, typeSymbol2))
                 return;
 
             TextSpan span = TextSpan.FromBounds(invocationInfo2.Name.SpanStart, invocationExpression.Span.End);
@@ -728,7 +728,7 @@ namespace Roslynator.CSharp.Analysis
 
                 if (propertySymbol?.IsIndexer == false
                     && propertySymbol.Name == propertyName
-                    && propertySymbol.ContainingType == typeSymbol)
+                    && SymbolEqualityComparer.Default.Equals(propertySymbol.ContainingType, typeSymbol))
                 {
                     return false;
                 }

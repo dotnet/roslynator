@@ -145,7 +145,7 @@ namespace Roslynator.CSharp.Analysis
 
                 return expression?.WalkDownParentheses() is IdentifierNameSyntax identifierName
                     && string.Equals(identifierName.Identifier.ValueText, FieldSymbol.Name, StringComparison.Ordinal)
-                    && SemanticModel.GetSymbol(identifierName, CancellationToken)?.Equals(FieldSymbol) == true;
+                    && SymbolEqualityComparer.Default.Equals(SemanticModel.GetSymbol(identifierName, CancellationToken), FieldSymbol);
             }
 
             public override void VisitArgument(ArgumentSyntax node)

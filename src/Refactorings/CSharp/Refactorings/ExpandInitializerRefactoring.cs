@@ -160,7 +160,7 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             TypeInfo typeInfo = semanticModel.GetTypeInfo(expression, cancellationToken);
 
-                            if (parameter.Type.Equals(typeInfo.ConvertedType))
+                            if (SymbolEqualityComparer.Default.Equals(parameter.Type, typeInfo.ConvertedType))
                                 return true;
                         }
                     }
@@ -193,7 +193,7 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             TypeInfo typeInfo = semanticModel.GetTypeInfo(expression, cancellationToken);
 
-                            if (parameter.Type.Equals(typeInfo.ConvertedType))
+                            if (SymbolEqualityComparer.Default.Equals(parameter.Type, typeInfo.ConvertedType))
                                 return true;
                         }
                     }

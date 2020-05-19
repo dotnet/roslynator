@@ -59,7 +59,7 @@ namespace Roslynator.CSharp.Analysis
             if (typeSymbol == null)
                 return;
 
-            if (!typeSymbol.Equals(exceptionSymbol))
+            if (!SymbolEqualityComparer.Default.Equals(typeSymbol, exceptionSymbol))
                 return;
 
             DiagnosticHelpers.ReportDiagnostic(context,

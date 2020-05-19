@@ -52,11 +52,11 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     ITypeSymbol typeArgument = ((INamedTypeSymbol)memberTypeSymbol).TypeArguments[0];
 
-                    if (!typeArgument.Equals(expressionSymbol))
+                    if (!SymbolEqualityComparer.Default.Equals(typeArgument, expressionSymbol))
                         return typeArgument;
                 }
             }
-            else if (!memberTypeSymbol.Equals(expressionSymbol))
+            else if (!SymbolEqualityComparer.Default.Equals(memberTypeSymbol, expressionSymbol))
             {
                 return memberTypeSymbol;
             }

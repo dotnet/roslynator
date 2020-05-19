@@ -94,7 +94,7 @@ namespace Roslynator.CSharp.Refactorings
             foreach (SyntaxNode descendant in node.DescendantNodes())
             {
                 if ((descendant is IdentifierNameSyntax identifierName)
-                    && symbol.Equals(semanticModel.GetSymbol(identifierName, cancellationToken)))
+                    && SymbolEqualityComparer.Default.Equals(symbol, semanticModel.GetSymbol(identifierName, cancellationToken)))
                 {
                     lastReference = identifierName;
                 }

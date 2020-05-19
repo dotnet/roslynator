@@ -59,7 +59,7 @@ namespace Roslynator.CSharp.Analysis.UsePatternMatching
                     }
                 }
 
-                if (_symbol.Equals(_semanticModel.GetSymbol(node, _cancellationToken)))
+                if (SymbolEqualityComparer.Default.Equals(_symbol, _semanticModel.GetSymbol(node, _cancellationToken)))
                 {
                     ExpressionSyntax n = node;
 

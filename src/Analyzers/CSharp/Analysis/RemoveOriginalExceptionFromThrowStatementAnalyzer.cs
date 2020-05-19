@@ -89,7 +89,7 @@ namespace Roslynator.CSharp.Analysis
                 {
                     ISymbol symbol = SemanticModel.GetSymbol(expression, CancellationToken);
 
-                    if (Symbol.Equals(symbol))
+                    if (SymbolEqualityComparer.Default.Equals(Symbol, symbol))
                         ThrowStatement = node;
                 }
 

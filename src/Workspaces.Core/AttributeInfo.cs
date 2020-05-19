@@ -28,7 +28,7 @@ namespace Roslynator
         {
             public override bool Equals(AttributeInfo x, AttributeInfo y)
             {
-                return x.AttributeClass == y.AttributeClass;
+                return SymbolEqualityComparer.Default.Equals(x.AttributeClass, y.AttributeClass);
             }
 
             public override int GetHashCode(AttributeInfo obj)

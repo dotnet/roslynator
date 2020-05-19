@@ -110,7 +110,7 @@ namespace Roslynator.CSharp.Refactorings
             if (expressionType?.IsErrorType() != false)
                 return;
 
-            if (declarationType.Equals(expressionType))
+            if (SymbolEqualityComparer.Default.Equals(declarationType, expressionType))
                 return;
 
             ModifyExpressionRefactoring.ComputeRefactoring(context, declarator.Initializer.Value, declarationType, semanticModel);

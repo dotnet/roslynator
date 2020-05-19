@@ -60,7 +60,7 @@ namespace Roslynator.CSharp.Refactorings
                     ISymbol symbol = semanticModel.GetSymbol(name, cancellationToken);
 
                     if (symbol.IsKind(SymbolKind.Event, SymbolKind.Field, SymbolKind.Method, SymbolKind.Property)
-                        && symbol.ContainingType?.Equals(classSymbol) == true)
+                        && SymbolEqualityComparer.Default.Equals(symbol.ContainingType, classSymbol))
                     {
                         names.Add(name);
                     }

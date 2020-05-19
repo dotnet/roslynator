@@ -84,7 +84,7 @@ namespace Roslynator.CSharp.Analysis.UsePatternMatching
                 if (typeSymbol.IsNullableType())
                     return;
 
-                if (!semanticModel.GetTypeSymbol(localInfo.Type, cancellationToken).Equals(typeSymbol))
+                if (!SymbolEqualityComparer.Default.Equals(semanticModel.GetTypeSymbol(localInfo.Type, cancellationToken), typeSymbol))
                     return;
             }
 

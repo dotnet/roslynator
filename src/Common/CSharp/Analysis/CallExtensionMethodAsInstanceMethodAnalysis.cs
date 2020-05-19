@@ -62,10 +62,9 @@ namespace Roslynator.CSharp.Analysis
             if (newInvocationExpression == null)
                 return Fail;
 
-            if (semanticModel
-                .GetSpeculativeMethodSymbol(invocationExpression.SpanStart, newInvocationExpression)?
-                .ReducedFromOrSelf()
-                .Equals(methodSymbol.ConstructedFrom) != true)
+            if (!SymbolEqualityComparer.Default.Equals(
+                semanticModel.GetSpeculativeMethodSymbol(invocationExpression.SpanStart, newInvocationExpression)?.ReducedFromOrSelf(),
+                methodSymbol.ConstructedFrom))
             {
                 return Fail;
             }

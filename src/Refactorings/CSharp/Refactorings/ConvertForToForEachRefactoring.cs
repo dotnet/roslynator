@@ -167,7 +167,7 @@ namespace Roslynator.CSharp.Refactorings
 
             ISymbol expressionSymbol = semanticModel.GetSymbol(expression, cancellationToken);
 
-            return symbol.Equals(expressionSymbol);
+            return SymbolEqualityComparer.Default.Equals(symbol, expressionSymbol);
         }
     }
 }

@@ -32,7 +32,7 @@ namespace Roslynator.CSharp.Analysis.AddExceptionToDocumentationComment
             if (leftSymbol?.Kind != SymbolKind.Parameter)
                 return null;
 
-            if (leftSymbol.ContainingSymbol?.Equals(DeclarationSymbol) != true)
+            if (!SymbolEqualityComparer.Default.Equals(leftSymbol.ContainingSymbol, DeclarationSymbol))
                 return null;
 
             return (IParameterSymbol)leftSymbol;

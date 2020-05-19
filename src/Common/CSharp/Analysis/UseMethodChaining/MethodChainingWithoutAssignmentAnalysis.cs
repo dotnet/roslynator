@@ -36,8 +36,8 @@ namespace Roslynator.CSharp.Analysis.UseMethodChaining
             IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(invocationInfo.InvocationExpression, cancellationToken);
 
             return methodSymbol?.IsStatic == false
-                && methodSymbol.ContainingType?.Equals(typeSymbol) == true
-                && methodSymbol.ReturnType.Equals(typeSymbol);
+                && SymbolEqualityComparer.Default.Equals(methodSymbol.ContainingType, typeSymbol)
+                && SymbolEqualityComparer.Default.Equals(methodSymbol.ReturnType, typeSymbol);
         }
     }
 }

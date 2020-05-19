@@ -118,8 +118,9 @@ namespace Roslynator.CSharp.Analysis
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            return semanticModel.GetSymbol(expression1, cancellationToken)?
-                .Equals(semanticModel.GetSymbol(expression2, cancellationToken)) == true;
+            return SymbolEqualityComparer.Default.Equals(
+                semanticModel.GetSymbol(expression1, cancellationToken),
+                semanticModel.GetSymbol(expression2, cancellationToken));
         }
     }
 }

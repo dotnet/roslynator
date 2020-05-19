@@ -226,7 +226,7 @@ namespace Roslynator.CSharp
             if (typeSymbol.IsKind(SymbolKind.ErrorType, SymbolKind.DynamicType))
                 return false;
 
-            if (!typeSymbol.Equals(semanticModel.GetTypeSymbol(expression, cancellationToken)))
+            if (!SymbolEqualityComparer.Default.Equals(typeSymbol, semanticModel.GetTypeSymbol(expression, cancellationToken)))
                 return false;
 
             switch (typeAppearance)

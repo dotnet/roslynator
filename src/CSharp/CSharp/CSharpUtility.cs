@@ -146,7 +146,7 @@ namespace Roslynator.CSharp
                         NameSyntax name = usingDirective.Name;
 
                         if (name != null
-                            && staticClassSymbol.Equals(semanticModel.GetSymbol(name, cancellationToken)))
+                            && SymbolEqualityComparer.Default.Equals(staticClassSymbol, semanticModel.GetSymbol(name, cancellationToken)))
                         {
                             return true;
                         }

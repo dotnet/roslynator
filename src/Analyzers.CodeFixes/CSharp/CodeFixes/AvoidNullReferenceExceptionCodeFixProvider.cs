@@ -100,9 +100,9 @@ namespace Roslynator.CSharp.CodeFixes
             ITypeSymbol type = typeInfo.Type;
             ITypeSymbol convertedType = typeInfo.ConvertedType;
 
-            if (!type.Equals(convertedType)
+            if (!SymbolEqualityComparer.Default.Equals(type, convertedType)
                 && type.IsNullableType()
-                && ((INamedTypeSymbol)type).TypeArguments[0].Equals(convertedType))
+                && SymbolEqualityComparer.Default.Equals(((INamedTypeSymbol)type).TypeArguments[0], convertedType))
             {
                 ExpressionSyntax defaultValue = convertedType.GetDefaultValueSyntax(document.GetDefaultSyntaxOptions());
 

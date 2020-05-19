@@ -39,7 +39,7 @@ namespace Roslynator
 
                         for (int j = 0; j < members.Length; j++)
                         {
-                            if (symbol.Equals(containingType.FindImplementationForInterfaceMember(members[j])))
+                            if (SymbolEqualityComparer.Default.Equals(symbol, containingType.FindImplementationForInterfaceMember(members[j])))
                             {
                                 yield return members[j];
                             }
@@ -79,13 +79,13 @@ namespace Roslynator
                 for (int i = 0; i < interfaces.Length; i++)
                 {
                     if (interfaceSymbol == null
-                        || interfaces[i].Equals(interfaceSymbol))
+                        || SymbolEqualityComparer.Default.Equals(interfaces[i], interfaceSymbol))
                     {
                         ImmutableArray<ISymbol> members = interfaces[i].GetMembers();
 
                         for (int j = 0; j < members.Length; j++)
                         {
-                            if (symbol.Equals(containingType.FindImplementationForInterfaceMember(members[j])))
+                            if (SymbolEqualityComparer.Default.Equals(symbol, containingType.FindImplementationForInterfaceMember(members[j])))
                                 return members[j];
                         }
                     }
@@ -146,14 +146,14 @@ namespace Roslynator
                 for (int i = 0; i < interfaces.Length; i++)
                 {
                     if (interfaceSymbol == null
-                        || interfaces[i].Equals(interfaceSymbol))
+                        || SymbolEqualityComparer.Default.Equals(interfaces[i], interfaceSymbol))
                     {
                         ImmutableArray<ISymbol> members = interfaces[i].GetMembers();
 
                         for (int j = 0; j < members.Length; j++)
                         {
                             if ((members[j] is TSymbol tmember)
-                                && symbol.Equals(containingType.FindImplementationForInterfaceMember(tmember)))
+                                && SymbolEqualityComparer.Default.Equals(symbol, containingType.FindImplementationForInterfaceMember(tmember)))
                             {
                                 return tmember;
                             }
@@ -345,7 +345,7 @@ namespace Roslynator
 
                 for (int i = 0; i < attributes.Length; i++)
                 {
-                    if (attributes[i].AttributeClass.Equals(attributeClass))
+                    if (SymbolEqualityComparer.Default.Equals(attributes[i].AttributeClass, attributeClass))
                         return attributes[i];
                 }
             }
@@ -1584,7 +1584,7 @@ namespace Roslynator
 
                 for (int i = 0; i < interfaces.Length; i++)
                 {
-                    if (interfaces[i].Equals(interfaceSymbol))
+                    if (SymbolEqualityComparer.Default.Equals(interfaces[i], interfaceSymbol))
                         return true;
                 }
             }
@@ -1705,7 +1705,7 @@ namespace Roslynator
             {
                 Debug.Assert(t.TypeKind.Is(TypeKind.Class, TypeKind.Error), t.TypeKind.ToString());
 
-                if (t.OriginalDefinition.Equals(baseType))
+                if (SymbolEqualityComparer.Default.Equals(t.OriginalDefinition, baseType))
                     return true;
 
                 t = t.BaseType;
@@ -1716,7 +1716,7 @@ namespace Roslynator
             {
                 foreach (INamedTypeSymbol interfaceType in type.AllInterfaces)
                 {
-                    if (interfaceType.OriginalDefinition.Equals(baseType))
+                    if (SymbolEqualityComparer.Default.Equals(interfaceType.OriginalDefinition, baseType))
                         return true;
                 }
             }
@@ -1768,7 +1768,7 @@ namespace Roslynator
             if (type == null)
                 throw new ArgumentNullException(nameof(type));
 
-            return type.Equals(baseType)
+            return SymbolEqualityComparer.Default.Equals(type, baseType)
                 || InheritsFrom(type, baseType, includeInterfaces);
         }
 

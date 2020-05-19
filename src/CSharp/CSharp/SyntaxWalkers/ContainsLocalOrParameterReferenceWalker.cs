@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.SyntaxWalkers
             CancellationToken.ThrowIfCancellationRequested();
 
             if (string.Equals(node.Identifier.ValueText, Symbol.Name, StringComparison.Ordinal)
-                && SemanticModel.GetSymbol(node, CancellationToken)?.Equals(Symbol) == true)
+                && SymbolEqualityComparer.Default.Equals(SemanticModel.GetSymbol(node, CancellationToken), Symbol))
             {
                 Result = true;
             }

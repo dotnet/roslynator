@@ -55,7 +55,7 @@ namespace Roslynator.CSharp.Analysis
                 }
             }
 
-            if (!_symbol.Equals(_semanticModel.GetSymbol(node, _cancellationToken)))
+            if (!SymbolEqualityComparer.Default.Equals(_symbol, _semanticModel.GetSymbol(node, _cancellationToken)))
                 return;
 
             if (!node.IsParentKind(SyntaxKind.SimpleMemberAccessExpression))

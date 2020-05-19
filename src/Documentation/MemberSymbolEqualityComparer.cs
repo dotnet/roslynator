@@ -172,7 +172,7 @@ namespace Roslynator.Documentation
                     return false;
 
                 return x.RefKind == y.RefKind
-                    && x.Type == y.Type;
+                    && SymbolEqualityComparer.Default.Equals(x.Type, y.Type);
             }
 
             public override int GetHashCode(IParameterSymbol obj)

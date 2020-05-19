@@ -80,7 +80,7 @@ namespace Roslynator.CSharp.Analysis
                     {
                         ISymbol symbol = context.SemanticModel.GetDeclaredSymbol(declarator, context.CancellationToken);
 
-                        if (symbol?.Equals(context.SemanticModel.GetSymbol(identifierName, context.CancellationToken)) == true)
+                        if (SymbolEqualityComparer.Default.Equals(symbol, context.SemanticModel.GetSymbol(identifierName, context.CancellationToken)))
                             ReportDiagnostic(context, info.Statement, methodName);
                     }
                 }

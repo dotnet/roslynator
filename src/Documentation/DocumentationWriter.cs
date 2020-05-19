@@ -793,7 +793,7 @@ namespace Roslynator.Documentation
                         WriteStartBulletItem();
                         WriteTypeLink(en.Current.AttributeClass, includeContainingNamespace: Options.IncludeContainingNamespace(IncludeContainingNamespaceFilter.Attribute));
 
-                        if (symbol != en.Current.Target)
+                        if (!SymbolEqualityComparer.Default.Equals(symbol, en.Current.Target))
                         {
                             WriteInheritedFrom(en.Current.Target.OriginalDefinition, TypeSymbolDisplayFormats.Name_ContainingTypes_TypeParameters);
                         }
@@ -1350,7 +1350,7 @@ namespace Roslynator.Documentation
                         WriteObsolete(symbol);
 
                         bool isInherited = containingType != null
-                            && symbol.ContainingType != containingType;
+                            && !SymbolEqualityComparer.Default.Equals(symbol.ContainingType, containingType);
 
                         if (symbol.Kind == SymbolKind.Parameter)
                         {

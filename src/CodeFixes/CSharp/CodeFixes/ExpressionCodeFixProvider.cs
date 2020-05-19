@@ -75,7 +75,7 @@ namespace Roslynator.CSharp.CodeFixes
                                         context.RegisterCodeFix(codeAction, diagnostic);
                                     }
                                 }
-                                else if (namedType.TypeArguments[0].Equals(convertedType))
+                                else if (SymbolEqualityComparer.Default.Equals(namedType.TypeArguments[0], convertedType))
                                 {
                                     if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.UseCoalesceExpression))
                                     {
@@ -113,7 +113,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                             if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.CreateSingletonArray)
                                 && type?.IsErrorType() == false
-                                && !type.Equals(convertedType)
+                                && !SymbolEqualityComparer.Default.Equals(type, convertedType)
                                 && (convertedType is IArrayTypeSymbol arrayType)
                                 && semanticModel.IsImplicitConversion(expression, arrayType.ElementType))
                             {

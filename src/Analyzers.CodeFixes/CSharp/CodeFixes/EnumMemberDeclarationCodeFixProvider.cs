@@ -165,7 +165,7 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 IFieldSymbol fieldSymbol = semanticModel.GetDeclaredSymbol(enumMember, cancellationToken);
 
-                if (fieldSymbolInfo.Symbol != fieldSymbol)
+                if (!SymbolEqualityComparer.Default.Equals(fieldSymbolInfo.Symbol, fieldSymbol))
                 {
                     EnumFieldSymbolInfo fieldSymbolInfo2 = EnumFieldSymbolInfo.Create(fieldSymbol);
 

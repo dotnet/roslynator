@@ -108,10 +108,10 @@ namespace Roslynator.CSharp.Analysis
             if (!propertySymbol.ExplicitInterfaceImplementations.IsDefaultOrEmpty)
                 return;
 
-            if (!propertySymbol.Type.Equals(fieldSymbol.Type))
+            if (!SymbolEqualityComparer.Default.Equals(propertySymbol.Type, fieldSymbol.Type))
                 return;
 
-            if (propertySymbol.ContainingType?.Equals(fieldSymbol.ContainingType) != true)
+            if (!SymbolEqualityComparer.Default.Equals(propertySymbol.ContainingType, fieldSymbol.ContainingType))
                 return;
 
             if (setter == null
@@ -288,7 +288,7 @@ namespace Roslynator.CSharp.Analysis
 
             ISymbol setterSymbol = semanticModel.GetSymbol(setterName, cancellationToken);
 
-            if (fieldSymbol.Equals(setterSymbol))
+            if (SymbolEqualityComparer.Default.Equals(fieldSymbol, setterSymbol))
                 return fieldSymbol;
 
             return null;
@@ -626,7 +626,7 @@ namespace Roslynator.CSharp.Analysis
             private bool IsBackingFieldReference(IdentifierNameSyntax identifierName)
             {
                 return string.Equals(identifierName.Identifier.ValueText, FieldSymbol.Name, StringComparison.Ordinal)
-                    && SemanticModel.GetSymbol(identifierName, CancellationToken)?.Equals(FieldSymbol) == true;
+                    && SymbolEqualityComparer.Default.Equals(SemanticModel.GetSymbol(identifierName, CancellationToken), FieldSymbol);
             }
 
             [ThreadStatic]

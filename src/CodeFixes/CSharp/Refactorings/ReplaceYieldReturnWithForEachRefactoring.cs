@@ -28,13 +28,13 @@ namespace Roslynator.CSharp.Refactorings
 
             ITypeSymbol convertedType = typeInfo.ConvertedType;
 
-            if (type == convertedType)
+            if (SymbolEqualityComparer.Default.Equals(type, convertedType))
                 return;
 
             if (namedTypeSymbol.ConstructedFrom.SpecialType != SpecialType.System_Collections_Generic_IEnumerable_T)
                 return;
 
-            if (!namedTypeSymbol.TypeArguments[0].Equals(convertedType))
+            if (!SymbolEqualityComparer.Default.Equals(namedTypeSymbol.TypeArguments[0], convertedType))
                 return;
 
             CodeAction codeAction = CodeAction.Create(

@@ -204,7 +204,7 @@ namespace Roslynator.Documentation
                 {
                     ISymbol assemblyOrModule = compilation.GetAssemblyOrModuleSymbol(externalReference);
 
-                    if (assembly == assemblyOrModule)
+                    if (SymbolEqualityComparer.Default.Equals(assembly, assemblyOrModule))
                         return ImmutableInterlocked.GetOrAdd(ref _assemblyToReferenceMap, assembly, externalReference);
                 }
             }
