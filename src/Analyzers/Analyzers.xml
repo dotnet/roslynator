@@ -1302,12 +1302,23 @@ while (true);]]></Before>
   </Analyzer>
   <Analyzer Identifier="RemoveEmptyFinallyClause">
     <Id>RCS1066</Id>
-    <Title>Remove empty finally clause.</Title>
+    <Title>Remove empty 'finally' clause.</Title>
     <Category>Redundancy</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
     <Samples>
+      <Sample>
+        <Before><![CDATA[try
+{
+    Foo();
+}
+finally // [|Id|]
+{
+}]]></Before>
+        <After><![CDATA[Foo();]]></After>
+      </Sample>
       <Sample>
         <Before><![CDATA[try
 {

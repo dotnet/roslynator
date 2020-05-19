@@ -772,14 +772,16 @@ namespace Roslynator.CSharp
         /// <summary>RCS1066</summary>
         public static readonly DiagnosticDescriptor RemoveEmptyFinallyClause = Factory.Create(
             id:                 DiagnosticIdentifiers.RemoveEmptyFinallyClause, 
-            title:              "Remove empty finally clause.", 
-            messageFormat:      "Remove empty finally clause.", 
+            title:              "Remove empty 'finally' clause.", 
+            messageFormat:      "Remove empty 'finally' clause.", 
             category:           DiagnosticCategories.Redundancy, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
             isEnabledByDefault: true, 
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.RemoveEmptyFinallyClause, 
             customTags:         WellKnownDiagnosticTags.Unnecessary);
+
+        public static readonly DiagnosticDescriptor RemoveEmptyFinallyClauseFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(RemoveEmptyFinallyClause);
 
         /// <summary>RCS1067</summary>
         public static readonly DiagnosticDescriptor RemoveArgumentListFromObjectCreation = Factory.Create(

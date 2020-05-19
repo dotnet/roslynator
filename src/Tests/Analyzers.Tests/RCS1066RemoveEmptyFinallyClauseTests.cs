@@ -53,6 +53,42 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptyFinallyClause)]
+        public async Task Test_TryFinally()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+        try
+        {
+            //x
+            M();
+            M2();
+        }
+        [|finally
+        {
+        }|]
+    }
+
+    string M2() => null;
+}
+", @"
+class C
+{
+    void M()
+    {
+        //x
+        M();
+        M2();
+    }
+
+    string M2() => null;
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptyFinallyClause)]
         public async Task TestNoDiagnostic_NonEmptyFinally()
         {
             await VerifyNoDiagnosticAsync(@"

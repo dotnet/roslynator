@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -14,7 +13,12 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.RemoveEmptyFinallyClause); }
+            get
+            {
+                return ImmutableArray.Create(
+                    DiagnosticDescriptors.RemoveEmptyFinallyClause,
+                    DiagnosticDescriptors.RemoveEmptyFinallyClauseFadeOut);
+            }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -31,27 +35,49 @@ namespace Roslynator.CSharp.Analysis
             if (!(finallyClause.Parent is TryStatementSyntax tryStatement))
                 return;
 
-            if (!tryStatement.Catches.Any())
-                return;
+            BlockSyntax finallyBlock = finallyClause.Block;
 
-            BlockSyntax block = finallyClause.Block;
-
-            if (block?.Statements.Any() != false)
+            if (finallyBlock?.Statements.Any() != false)
                 return;
 
             if (!finallyClause.FinallyKeyword.TrailingTrivia.IsEmptyOrWhitespace())
                 return;
 
-            if (!block.OpenBraceToken.LeadingTrivia.IsEmptyOrWhitespace())
+            if (!SyntaxTriviaAnalysis.IsExteriorTriviaEmptyOrWhitespace(finallyBlock.OpenBraceToken))
                 return;
 
-            if (!block.OpenBraceToken.TrailingTrivia.IsEmptyOrWhitespace())
+            if (!finallyBlock.CloseBraceToken.LeadingTrivia.IsEmptyOrWhitespace())
                 return;
 
-            if (!block.CloseBraceToken.LeadingTrivia.IsEmptyOrWhitespace())
-                return;
+            if (tryStatement.Catches.Any())
+            {
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveEmptyFinallyClause, finallyClause);
+            }
+            else
+            {
+                BlockSyntax tryBlock = tryStatement.Block;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveEmptyFinallyClause, finallyClause);
+                if (tryBlock?.Statements.Any() != true)
+                    return;
+
+                if (!SyntaxTriviaAnalysis.IsExteriorTriviaEmptyOrWhitespace(tryStatement.TryKeyword))
+                    return;
+
+                if (!SyntaxTriviaAnalysis.IsExteriorTriviaEmptyOrWhitespace(tryBlock.OpenBraceToken))
+                    return;
+
+                if (!SyntaxTriviaAnalysis.IsExteriorTriviaEmptyOrWhitespace(tryBlock.CloseBraceToken))
+                    return;
+
+                if (!finallyClause.FinallyKeyword.LeadingTrivia.IsEmptyOrWhitespace())
+                    return;
+
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveEmptyFinallyClause, finallyClause);
+
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveEmptyFinallyClauseFadeOut, tryStatement.TryKeyword);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveEmptyFinallyClauseFadeOut, tryBlock.OpenBraceToken);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveEmptyFinallyClauseFadeOut, tryBlock.CloseBraceToken);
+            }
         }
     }
 }
