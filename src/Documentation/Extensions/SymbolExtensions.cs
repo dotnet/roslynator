@@ -297,7 +297,8 @@ namespace Roslynator.Documentation
                     {
                         TypedConstant typedConstant = attributeUsage.NamedArguments.FirstOrDefault(f => f.Key == "Inherited").Value;
 
-                        if (typedConstant.Type?.SpecialType == SpecialType.System_Boolean
+                        if (typedConstant.Kind != TypedConstantKind.Error
+                            && typedConstant.Type?.SpecialType == SpecialType.System_Boolean
                             && (!(bool)typedConstant.Value))
                         {
                             continue;
