@@ -2,13 +2,14 @@
 
 using System.Collections.Immutable;
 using System.Composition;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
-using Roslynator.CSharp.Refactorings;
+using Roslynator.CSharp.Analysis;
 
 namespace Roslynator.CSharp.CodeFixes
 {
@@ -18,7 +19,7 @@ namespace Roslynator.CSharp.CodeFixes
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.UseMethodGroupInsteadOfAnonymousFunction); }
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.ConvertAnonymousFunctionToMethodGroup); }
         }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -32,11 +33,11 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 switch (diagnostic.Id)
                 {
-                    case DiagnosticIdentifiers.UseMethodGroupInsteadOfAnonymousFunction:
+                    case DiagnosticIdentifiers.ConvertAnonymousFunctionToMethodGroup:
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Use method group",
-                                cancellationToken => UseMethodGroupInsteadOfAnonymousFunctionRefactoring.RefactorAsync(context.Document, anonymousFunction, cancellationToken),
+                                ct => ConvertAnonymousFunctionToMethodGroupAsync(context.Document, anonymousFunction, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -44,6 +45,27 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                 }
             }
+        }
+
+        private static async Task<Document> ConvertAnonymousFunctionToMethodGroupAsync(
+            Document document,
+            AnonymousFunctionExpressionSyntax anonymousFunction,
+            CancellationToken cancellationToken)
+        {
+            InvocationExpressionSyntax invocationExpression = ConvertAnonymousFunctionToMethodGroupAnalyzer.GetInvocationExpression(anonymousFunction.Body);
+
+            ExpressionSyntax newNode = invocationExpression.Expression;
+
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
+            var methodSymbol = (IMethodSymbol)semanticModel.GetSymbol(invocationExpression, cancellationToken);
+
+            if (methodSymbol.IsReducedExtensionMethod())
+                newNode = ((MemberAccessExpressionSyntax)newNode).Name;
+
+            newNode = newNode.WithTriviaFrom(anonymousFunction);
+
+            return await document.ReplaceNodeAsync(anonymousFunction, newNode, cancellationToken).ConfigureAwait(false);
         }
     }
 }

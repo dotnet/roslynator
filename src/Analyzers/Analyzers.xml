@@ -3948,9 +3948,9 @@ int i = (x != null) ? x.Value.GetHashCode() : 0; // [|Id|]]]></Before>
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="UseMethodGroupInsteadOfAnonymousFunction">
+  <Analyzer Identifier="ConvertAnonymousFunctionToMethodGroup">
     <Id>RCS1207</Id>
-    <Title>Use method group instead of anonymous function.</Title>
+    <Title>Convert anonymous function to method group.</Title>
     <Category>Simplification</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>

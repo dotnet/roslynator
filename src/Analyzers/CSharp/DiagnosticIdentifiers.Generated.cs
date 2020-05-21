@@ -186,7 +186,7 @@ namespace Roslynator.CSharp
         public const string UseEventArgsEmpty = "RCS1204";
         public const string OrderNamedArguments = "RCS1205";
         public const string UseConditionalAccessInsteadOfConditionalExpression = "RCS1206";
-        public const string UseMethodGroupInsteadOfAnonymousFunction = "RCS1207";
+        public const string ConvertAnonymousFunctionToMethodGroup = "RCS1207";
         public const string ReduceIfNesting = "RCS1208";
         public const string OrderTypeParameterConstraints = "RCS1209";
         public const string ReturnTaskInsteadOfNull = "RCS1210";

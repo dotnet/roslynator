@@ -2192,18 +2192,18 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1207</summary>
-        public static readonly DiagnosticDescriptor UseMethodGroupInsteadOfAnonymousFunction = Factory.Create(
-            id:                 DiagnosticIdentifiers.UseMethodGroupInsteadOfAnonymousFunction, 
-            title:              "Use method group instead of anonymous function.", 
-            messageFormat:      "Use method group instead of anonymous function.", 
+        public static readonly DiagnosticDescriptor ConvertAnonymousFunctionToMethodGroup = Factory.Create(
+            id:                 DiagnosticIdentifiers.ConvertAnonymousFunctionToMethodGroup, 
+            title:              "Convert anonymous function to method group.", 
+            messageFormat:      "Convert anonymous function to method group.", 
             category:           DiagnosticCategories.Simplification, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.UseMethodGroupInsteadOfAnonymousFunction, 
+            helpLinkUri:        DiagnosticIdentifiers.ConvertAnonymousFunctionToMethodGroup, 
             customTags:         Array.Empty<string>());
 
-        public static readonly DiagnosticDescriptor UseMethodGroupInsteadOfAnonymousFunctionFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(UseMethodGroupInsteadOfAnonymousFunction);
+        public static readonly DiagnosticDescriptor ConvertAnonymousFunctionToMethodGroupFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(ConvertAnonymousFunctionToMethodGroup);
 
         /// <summary>RCS1208</summary>
         public static readonly DiagnosticDescriptor ReduceIfNesting = Factory.Create(
