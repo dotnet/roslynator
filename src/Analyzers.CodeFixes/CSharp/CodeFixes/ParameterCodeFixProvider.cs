@@ -20,7 +20,7 @@ namespace Roslynator.CSharp.CodeFixes
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticIdentifiers.OverridingMemberCannotChangeParamsModifier,
+                    DiagnosticIdentifiers.OverridingMemberShouldNotChangeParamsModifier,
                     DiagnosticIdentifiers.MakeParameterRefReadOnly,
                     DiagnosticIdentifiers.DoNotPassNonReadOnlyStructByReadOnlyReference);
             }
@@ -37,7 +37,7 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 switch (diagnostic.Id)
                 {
-                    case DiagnosticIdentifiers.OverridingMemberCannotChangeParamsModifier:
+                    case DiagnosticIdentifiers.OverridingMemberShouldNotChangeParamsModifier:
                         {
                             if (parameter.IsParams())
                             {

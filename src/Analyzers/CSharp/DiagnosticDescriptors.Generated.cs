@@ -2036,15 +2036,15 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1193</summary>
-        public static readonly DiagnosticDescriptor OverridingMemberCannotChangeParamsModifier = Factory.Create(
-            id:                 DiagnosticIdentifiers.OverridingMemberCannotChangeParamsModifier, 
-            title:              "Overriding member cannot change 'params' modifier.", 
-            messageFormat:      "Overriding member cannot change 'params' modifier.", 
+        public static readonly DiagnosticDescriptor OverridingMemberShouldNotChangeParamsModifier = Factory.Create(
+            id:                 DiagnosticIdentifiers.OverridingMemberShouldNotChangeParamsModifier, 
+            title:              "Overriding member should not change 'params' modifier.", 
+            messageFormat:      "Overriding member should not change 'params' modifier.", 
             category:           DiagnosticCategories.Design, 
             defaultSeverity:    DiagnosticSeverity.Warning, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.OverridingMemberCannotChangeParamsModifier, 
+            helpLinkUri:        DiagnosticIdentifiers.OverridingMemberShouldNotChangeParamsModifier, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1194</summary>

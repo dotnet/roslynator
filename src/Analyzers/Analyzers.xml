@@ -3675,9 +3675,9 @@ public enum Foo
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="OverridingMemberCannotChangeParamsModifier">
+  <Analyzer Identifier="OverridingMemberShouldNotChangeParamsModifier">
     <Id>RCS1193</Id>
-    <Title>Overriding member cannot change 'params' modifier.</Title>
+    <Title>Overriding member should not change 'params' modifier.</Title>
     <Category>Design</Category>
     <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>

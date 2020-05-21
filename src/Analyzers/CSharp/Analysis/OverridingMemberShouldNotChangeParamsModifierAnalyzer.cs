@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
@@ -11,11 +10,11 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class OverridingMemberCannotChangeParamsModifierAnalyzer : BaseDiagnosticAnalyzer
+    public class OverridingMemberShouldNotChangeParamsModifierAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.OverridingMemberCannotChangeParamsModifier); }
+            get { return ImmutableArray.Create(DiagnosticDescriptors.OverridingMemberShouldNotChangeParamsModifier); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -46,7 +45,7 @@ namespace Roslynator.CSharp.Analysis
             if (lastParameter.Modifiers.Contains(SyntaxKind.ParamsKeyword) == lastParameterSymbol.IsParams)
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.OverridingMemberCannotChangeParamsModifier, lastParameter);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.OverridingMemberShouldNotChangeParamsModifier, lastParameter);
         }
 
         private static void AnalyzePropertySymbol(SymbolAnalysisContext context)
@@ -72,7 +71,7 @@ namespace Roslynator.CSharp.Analysis
             if (lastParameter.Modifiers.Contains(SyntaxKind.ParamsKeyword) == lastParameterSymbol.IsParams)
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.OverridingMemberCannotChangeParamsModifier, lastParameter);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.OverridingMemberShouldNotChangeParamsModifier, lastParameter);
         }
     }
 }

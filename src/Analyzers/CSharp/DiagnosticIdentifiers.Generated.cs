@@ -173,7 +173,7 @@ namespace Roslynator.CSharp
         public const string JoinStringExpressions = "RCS1190";
         public const string DeclareEnumValueAsCombinationOfNames = "RCS1191";
         public const string UseRegularStringLiteralInsteadOfVerbatimStringLiteral = "RCS1192";
-        public const string OverridingMemberCannotChangeParamsModifier = "RCS1193";
+        public const string OverridingMemberShouldNotChangeParamsModifier = "RCS1193";
         public const string ImplementExceptionConstructors = "RCS1194";
         public const string UseExclusiveOrOperator = "RCS1195";
         public const string CallExtensionMethodAsInstanceMethod = "RCS1196";
