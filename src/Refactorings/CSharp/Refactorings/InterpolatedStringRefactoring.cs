@@ -27,7 +27,7 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertInterpolatedStringToStringLiteral)
-                && ReplaceInterpolatedStringWithStringLiteralAnalysis.IsFixable(interpolatedString))
+                && ConvertInterpolatedStringToStringLiteralAnalysis.IsFixable(interpolatedString))
             {
                 context.RegisterRefactoring("Remove '$'",
                     cancellationToken =>

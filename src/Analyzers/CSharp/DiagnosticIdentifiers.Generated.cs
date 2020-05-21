@@ -65,7 +65,6 @@ namespace Roslynator.CSharp
         public const string AvoidLockingOnPubliclyAccessibleInstance = "RCS1059";
         public const string DeclareEachTypeInSeparateFile = "RCS1060";
         public const string MergeIfWithNestedIf = "RCS1061";
-        public const string AvoidInterpolatedStringWithNoInterpolation = "RCS1062";
         public const string AvoidUsageOfDoStatementToCreateInfiniteLoop = "RCS1063";
         public const string AvoidUsageOfForStatementToCreateInfiniteLoop = "RCS1064";
         public const string AvoidUsageOfWhileStatementToCreateInfiniteLoop = "RCS1065";

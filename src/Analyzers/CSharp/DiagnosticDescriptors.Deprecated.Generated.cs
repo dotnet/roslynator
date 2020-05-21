@@ -55,6 +55,18 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor MergeLocalDeclarationWithReturnStatementFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(MergeLocalDeclarationWithReturnStatement);
 
         [Obsolete("", error: true)]
+        internal static readonly DiagnosticDescriptor AvoidInterpolatedStringWithNoInterpolation = Factory.Create(
+            id:                 DiagnosticIdentifiers.AvoidInterpolatedStringWithNoInterpolation, 
+            title:              "Avoid interpolated string with no interpolation.", 
+            messageFormat:      "Remove '$' from interpolated string with no interpolation.", 
+            category:           DiagnosticCategories.Redundancy, 
+            defaultSeverity:    DiagnosticSeverity.Hidden, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.AvoidInterpolatedStringWithNoInterpolation, 
+            customTags:         WellKnownDiagnosticTags.Unnecessary);
+
+        [Obsolete("", error: true)]
         internal static readonly DiagnosticDescriptor UseCountOrLengthPropertyInsteadOfCountMethod = Factory.Create(
             id:                 DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfCountMethod, 
             title:              "Use 'Count/Length' property instead of 'Count' method.", 

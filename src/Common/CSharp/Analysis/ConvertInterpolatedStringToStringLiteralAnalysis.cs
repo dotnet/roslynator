@@ -6,14 +6,19 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Analysis
 {
-    internal static class ReplaceInterpolatedStringWithStringLiteralAnalysis
+    internal static class ConvertInterpolatedStringToStringLiteralAnalysis
     {
         public static bool IsFixable(InterpolatedStringExpressionSyntax interpolatedString)
         {
             SyntaxList<InterpolatedStringContentSyntax> contents = interpolatedString.Contents;
 
+            return IsFixable(contents);
+        }
+
+        public static bool IsFixable(SyntaxList<InterpolatedStringContentSyntax> contents)
+        {
             return !contents.Any()
-                || (contents.Count == 1 && contents[0].Kind() == SyntaxKind.InterpolatedStringText);
+                || contents.SingleOrDefault(shouldThrow: false)?.Kind() == SyntaxKind.InterpolatedStringText;
         }
     }
 }

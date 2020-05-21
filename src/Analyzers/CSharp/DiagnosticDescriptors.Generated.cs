@@ -721,18 +721,6 @@ namespace Roslynator.CSharp
 
         public static readonly DiagnosticDescriptor MergeIfWithNestedIfFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(MergeIfWithNestedIf);
 
-        /// <summary>RCS1062</summary>
-        public static readonly DiagnosticDescriptor AvoidInterpolatedStringWithNoInterpolation = Factory.Create(
-            id:                 DiagnosticIdentifiers.AvoidInterpolatedStringWithNoInterpolation, 
-            title:              "Avoid interpolated string with no interpolation.", 
-            messageFormat:      "Remove '$' from interpolated string with no interpolation.", 
-            category:           DiagnosticCategories.Redundancy, 
-            defaultSeverity:    DiagnosticSeverity.Hidden, 
-            isEnabledByDefault: true, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AvoidInterpolatedStringWithNoInterpolation, 
-            customTags:         WellKnownDiagnosticTags.Unnecessary);
-
         /// <summary>RCS1063</summary>
         public static readonly DiagnosticDescriptor AvoidUsageOfDoStatementToCreateInfiniteLoop = Factory.Create(
             id:                 DiagnosticIdentifiers.AvoidUsageOfDoStatementToCreateInfiniteLoop, 

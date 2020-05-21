@@ -15,6 +15,8 @@ namespace Roslynator.CSharp
         [Obsolete("", error: true)]
         public const string MergeLocalDeclarationWithReturnStatement = "RCS1054";
         [Obsolete("", error: true)]
+        public const string AvoidInterpolatedStringWithNoInterpolation = "RCS1062";
+        [Obsolete("", error: true)]
         public const string UseCountOrLengthPropertyInsteadOfCountMethod = "RCS1082";
         [Obsolete("", error: true)]
         public const string CallAnyInsteadOfCount = "RCS1083";

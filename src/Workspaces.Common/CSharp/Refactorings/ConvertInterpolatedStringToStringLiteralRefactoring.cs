@@ -15,7 +15,11 @@ namespace Roslynator.CSharp.Refactorings
             InterpolatedStringExpressionSyntax interpolatedString,
             CancellationToken cancellationToken = default)
         {
-            string s = StringUtility.ReplaceDoubleBracesWithSingleBrace(interpolatedString.ToString().Substring(1));
+            string s = interpolatedString.ToString();
+
+            s = s.Remove(interpolatedString.StringStartToken.Text.IndexOf('$'), 1);
+
+            s = StringUtility.ReplaceDoubleBracesWithSingleBrace(s);
 
             var newNode = (LiteralExpressionSyntax)SyntaxFactory.ParseExpression(s)
                 .WithTriviaFrom(interpolatedString);

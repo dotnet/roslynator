@@ -1228,7 +1228,7 @@ public class Bar
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AvoidInterpolatedStringWithNoInterpolation">
+  <Analyzer Identifier="AvoidInterpolatedStringWithNoInterpolation" IsObsolete="true">
     <Id>RCS1062</Id>
     <Title>Avoid interpolated string with no interpolation.</Title>
     <MessageFormat>Remove '$' from interpolated string with no interpolation.</MessageFormat>
@@ -4141,8 +4141,12 @@ x = "";]]></Before>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[$"{y}"]]></Before>
-        <After><![CDATA[y]]></After>
+        <Before><![CDATA[string s = $"abc";]]></Before>
+        <After><![CDATA[string s = "abc";]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[$"{x}"]]></Before>
+        <After><![CDATA[x]]></After>
       </Sample>
     </Samples>
   </Analyzer>

@@ -1,11 +1,12 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Text;
+using static Roslynator.DiagnosticHelpers;
 
 namespace Roslynator.CSharp.Analysis
 {
@@ -37,57 +38,69 @@ namespace Roslynator.CSharp.Analysis
 
         private static void AnalyzeInterpolatedStringExpression(SyntaxNodeAnalysisContext context)
         {
-            if (context.Node.ContainsDiagnostics)
+            SyntaxNode node = context.Node;
+
+            if (node.ContainsDiagnostics)
                 return;
 
-            if (context.Node.ContainsDirectives)
+            if (node.ContainsDirectives)
                 return;
 
-            var interpolatedString = (InterpolatedStringExpressionSyntax)context.Node;
+            var interpolatedString = (InterpolatedStringExpressionSyntax)node;
 
             SyntaxList<InterpolatedStringContentSyntax> contents = interpolatedString.Contents;
 
-            if (!(contents.SingleOrDefault(shouldThrow: false) is InterpolationSyntax interpolation))
-                return;
-
-            if (interpolation.AlignmentClause != null)
-                return;
-
-            if (interpolation.FormatClause != null)
-                return;
-
-            ExpressionSyntax expression = interpolation.Expression?.WalkDownParentheses();
-
-            if (expression == null)
-                return;
-
-            bool isNonNullStringExpression = false;
-
-            if (expression.IsKind(SyntaxKind.StringLiteralExpression, SyntaxKind.InterpolatedStringExpression))
+            if (ConvertInterpolatedStringToStringLiteralAnalysis.IsFixable(contents))
             {
-                isNonNullStringExpression = true;
+                ReportDiagnostic(context,
+                    DiagnosticDescriptors.UnnecessaryInterpolatedString,
+                    Location.Create(interpolatedString.SyntaxTree, GetDollarSpan(interpolatedString)));
             }
             else
             {
-                Optional<object> constantValue = context.SemanticModel.GetConstantValue(expression, context.CancellationToken);
+                if (!(contents.SingleOrDefault(shouldThrow: false) is InterpolationSyntax interpolation))
+                    return;
 
-                if (constantValue.HasValue
-                    && constantValue.Value is string s
-                    && s != null)
-                {
-                    isNonNullStringExpression = true;
-                }
+                if (interpolation.AlignmentClause != null)
+                    return;
+
+                if (interpolation.FormatClause != null)
+                    return;
+
+                ExpressionSyntax expression = interpolation.Expression?.WalkDownParentheses();
+
+                if (expression == null)
+                    return;
+
+                if (!IsNonNullStringExpression(expression))
+                    return;
+
+                ReportDiagnostic(context, DiagnosticDescriptors.UnnecessaryInterpolatedString, interpolatedString);
+
+                ReportToken(context, DiagnosticDescriptors.UnnecessaryInterpolatedStringFadeOut, interpolatedString.StringStartToken);
+                ReportToken(context, DiagnosticDescriptors.UnnecessaryInterpolatedStringFadeOut, interpolation.OpenBraceToken);
+                ReportToken(context, DiagnosticDescriptors.UnnecessaryInterpolatedStringFadeOut, interpolation.CloseBraceToken);
+                ReportToken(context, DiagnosticDescriptors.UnnecessaryInterpolatedStringFadeOut, interpolatedString.StringEndToken);
             }
 
-            if (!isNonNullStringExpression)
-                return;
+            bool IsNonNullStringExpression(ExpressionSyntax expression)
+            {
+                if (expression.IsKind(SyntaxKind.StringLiteralExpression, SyntaxKind.InterpolatedStringExpression))
+                    return true;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UnnecessaryInterpolatedString, interpolatedString);
+                Optional<object> constantValue = context.SemanticModel.GetConstantValue(expression, context.CancellationToken);
 
-            DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.UnnecessaryInterpolatedStringFadeOut, interpolatedString.StringStartToken);
-            DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.UnnecessaryInterpolatedStringFadeOut, interpolation.OpenBraceToken);
-            DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.UnnecessaryInterpolatedStringFadeOut, interpolation.CloseBraceToken);
-            DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.UnnecessaryInterpolatedStringFadeOut, interpolatedString.StringEndToken);
+                return constantValue.HasValue
+                    && constantValue.Value is string value
+                    && value != null;
+            }
+        }
+
+        private static TextSpan GetDollarSpan(InterpolatedStringExpressionSyntax interpolatedString)
+        {
+            SyntaxToken token = interpolatedString.StringStartToken;
+
+            return new TextSpan(token.SpanStart + token.Text.IndexOf('$'), 1);
         }
     }
 }
