@@ -9,15 +9,15 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1123AddParenthesesAccordingToOperatorPrecedenceTests : AbstractCSharpFixVerifier
+    public class RCS1123AddParenthesesWhenNecessaryTests : AbstractCSharpFixVerifier
     {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.AddParenthesesAccordingToOperatorPrecedence;
+        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.AddParenthesesWhenNecessary;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new AddParenthesesAccordingToOperatorPrecedenceAnalyzer();
+        public override DiagnosticAnalyzer Analyzer { get; } = new AddParenthesesWhenNecessaryAnalyzer();
 
-        public override CodeFixProvider FixProvider { get; } = new AddParenthesesCodeFixProvider();
+        public override CodeFixProvider FixProvider { get; } = new AddParenthesesWhenNecessaryCodeFixProvider();
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParenthesesAccordingToOperatorPrecedence)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParenthesesWhenNecessary)]
         public async Task Test()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -55,7 +55,41 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParenthesesAccordingToOperatorPrecedence)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParenthesesWhenNecessary)]
+        public async Task Test_SuppressNullableWarningExpression()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+#nullable enable
+
+class C
+{
+    string? M()
+    {
+        var c = new C();
+        
+        string s = [|c.M()?.ToString()|]!.ToString();
+
+        return null;
+    }
+}
+", @"
+#nullable enable
+
+class C
+{
+    string? M()
+    {
+        var c = new C();
+        
+        string s = (c.M()?.ToString())!.ToString();
+
+        return null;
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParenthesesWhenNecessary)]
         public async Task TestNoDiagnostic_PreprocessorDirectives()
         {
             await VerifyNoDiagnosticAsync(@"

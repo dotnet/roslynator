@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -10,18 +9,39 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class AddParenthesesAccordingToOperatorPrecedenceAnalyzer : BaseDiagnosticAnalyzer
+    public class AddParenthesesWhenNecessaryAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.AddParenthesesAccordingToOperatorPrecedence); }
+            get { return ImmutableArray.Create(DiagnosticDescriptors.AddParenthesesWhenNecessary); }
         }
 
         public override void Initialize(AnalysisContext context)
         {
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(AnalyzeBinaryExpression, SyntaxKind.MultiplyExpression, SyntaxKind.DivideExpression, SyntaxKind.ModuloExpression, SyntaxKind.AddExpression, SyntaxKind.SubtractExpression, SyntaxKind.LeftShiftExpression, SyntaxKind.RightShiftExpression, SyntaxKind.LessThanExpression, SyntaxKind.GreaterThanExpression, SyntaxKind.LessThanOrEqualExpression, SyntaxKind.GreaterThanOrEqualExpression, SyntaxKind.EqualsExpression, SyntaxKind.NotEqualsExpression, SyntaxKind.BitwiseAndExpression, SyntaxKind.ExclusiveOrExpression, SyntaxKind.BitwiseOrExpression, SyntaxKind.LogicalAndExpression, SyntaxKind.LogicalOrExpression);
+            context.RegisterSyntaxNodeAction(
+                AnalyzeBinaryExpression,
+                SyntaxKind.MultiplyExpression,
+                SyntaxKind.DivideExpression,
+                SyntaxKind.ModuloExpression,
+                SyntaxKind.AddExpression,
+                SyntaxKind.SubtractExpression,
+                SyntaxKind.LeftShiftExpression,
+                SyntaxKind.RightShiftExpression,
+                SyntaxKind.LessThanExpression,
+                SyntaxKind.GreaterThanExpression,
+                SyntaxKind.LessThanOrEqualExpression,
+                SyntaxKind.GreaterThanOrEqualExpression,
+                SyntaxKind.EqualsExpression,
+                SyntaxKind.NotEqualsExpression,
+                SyntaxKind.BitwiseAndExpression,
+                SyntaxKind.ExclusiveOrExpression,
+                SyntaxKind.BitwiseOrExpression,
+                SyntaxKind.LogicalAndExpression,
+                SyntaxKind.LogicalOrExpression);
+
+            context.RegisterSyntaxNodeAction(AnalyzeSuppressNullableWarningExpression, SyntaxKind.SuppressNullableWarningExpression);
         }
 
         private static void AnalyzeBinaryExpression(SyntaxNodeAnalysisContext context)
@@ -55,7 +75,7 @@ namespace Roslynator.CSharp.Analysis
             if (IsNestedDiagnostic(expression))
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AddParenthesesAccordingToOperatorPrecedence, expression);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AddParenthesesWhenNecessary, expression);
         }
 
         private static bool IsNestedDiagnostic(SyntaxNode node)
@@ -120,6 +140,19 @@ namespace Roslynator.CSharp.Analysis
                     return 5;
                 default:
                     return 0;
+            }
+        }
+
+        private static void AnalyzeSuppressNullableWarningExpression(SyntaxNodeAnalysisContext context)
+        {
+            var suppressNullable = (PostfixUnaryExpressionSyntax)context.Node;
+
+            if (suppressNullable.Operand.IsKind(SyntaxKind.ConditionalAccessExpression))
+            {
+                DiagnosticHelpers.ReportDiagnostic(
+                    context,
+                    DiagnosticDescriptors.AddParenthesesWhenNecessary,
+                    suppressNullable.Operand);
             }
         }
     }

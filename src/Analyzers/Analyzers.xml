@@ -2366,9 +2366,9 @@ string s2 = s + "b";]]></After>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
   </Analyzer>
-  <Analyzer Identifier="AddParenthesesAccordingToOperatorPrecedence">
+  <Analyzer Identifier="AddParenthesesWhenNecessary">
     <Id>RCS1123</Id>
-    <Title>Add parentheses according to operator precedence.</Title>
+    <Title>Add parentheses when necessary.</Title>
     <Category>Readability</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -2380,6 +2380,10 @@ string s2 = s + "b";]]></After>
         <After><![CDATA[if (x || (y && z))
 {
 }]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[x?.y!.z]]></Before>
+        <After><![CDATA[(x?.y)!.z]]></After>
       </Sample>
     </Samples>
   </Analyzer>

@@ -1324,15 +1324,15 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1123</summary>
-        public static readonly DiagnosticDescriptor AddParenthesesAccordingToOperatorPrecedence = Factory.Create(
-            id:                 DiagnosticIdentifiers.AddParenthesesAccordingToOperatorPrecedence, 
-            title:              "Add parentheses according to operator precedence.", 
-            messageFormat:      "Add parentheses according to operator precedence.", 
+        public static readonly DiagnosticDescriptor AddParenthesesWhenNecessary = Factory.Create(
+            id:                 DiagnosticIdentifiers.AddParenthesesWhenNecessary, 
+            title:              "Add parentheses when necessary.", 
+            messageFormat:      "Add parentheses when necessary.", 
             category:           DiagnosticCategories.Readability, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddParenthesesAccordingToOperatorPrecedence, 
+            helpLinkUri:        DiagnosticIdentifiers.AddParenthesesWhenNecessary, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1124</summary>
