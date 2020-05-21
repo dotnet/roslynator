@@ -9,15 +9,15 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1192UseRegularStringLiteralInsteadOfVerbatimStringLiteralTests : AbstractCSharpFixVerifier
+    public class RCS1192UnnecessaryUsageOfVerbatimStringLiteralTests : AbstractCSharpFixVerifier
     {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.UseRegularStringLiteralInsteadOfVerbatimStringLiteral;
+        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.UnnecessaryUsageOfVerbatimStringLiteral;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new UseRegularStringLiteralInsteadOfVerbatimStringLiteralAnalyzer();
+        public override DiagnosticAnalyzer Analyzer { get; } = new UnnecessaryUsageOfVerbatimStringLiteralAnalyzer();
 
-        public override CodeFixProvider FixProvider { get; } = new UseRegularStringLiteralInsteadOfVerbatimStringLiteralCodeFixProvider();
+        public override CodeFixProvider FixProvider { get; } = new UnnecessaryUsageOfVerbatimStringLiteralCodeFixProvider();
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegularStringLiteralInsteadOfVerbatimStringLiteral)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUsageOfVerbatimStringLiteral)]
         public async Task Test_EmptyStringLiteral()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -39,7 +39,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegularStringLiteralInsteadOfVerbatimStringLiteral)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUsageOfVerbatimStringLiteral)]
         public async Task Test_NonEmptyStringLiteral()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -61,7 +61,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegularStringLiteralInsteadOfVerbatimStringLiteral)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUsageOfVerbatimStringLiteral)]
         public async Task Test_EmptyInterpolatedString()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -83,7 +83,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegularStringLiteralInsteadOfVerbatimStringLiteral)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUsageOfVerbatimStringLiteral)]
         public async Task Test_NonEmptyInterpolatedString()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -105,7 +105,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegularStringLiteralInsteadOfVerbatimStringLiteral)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUsageOfVerbatimStringLiteral)]
         public async Task TestNoDiagnostic_StringLiteral()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -124,7 +124,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegularStringLiteralInsteadOfVerbatimStringLiteral)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUsageOfVerbatimStringLiteral)]
         public async Task TestNoDiagnostic_InterpolatedString()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -146,7 +146,7 @@ s}s"";
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegularStringLiteralInsteadOfVerbatimStringLiteral)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUsageOfVerbatimStringLiteral)]
         public async Task TestNoDiagnostic_InterpolatedString_FormatClauseContainsBackslash()
         {
             await VerifyNoDiagnosticAsync(@"

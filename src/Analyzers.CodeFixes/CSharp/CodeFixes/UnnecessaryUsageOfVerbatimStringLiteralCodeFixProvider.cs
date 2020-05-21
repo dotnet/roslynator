@@ -13,15 +13,15 @@ using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.CodeFixes
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UseRegularStringLiteralInsteadOfVerbatimStringLiteralCodeFixProvider))]
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UnnecessaryUsageOfVerbatimStringLiteralCodeFixProvider))]
     [Shared]
-    public class UseRegularStringLiteralInsteadOfVerbatimStringLiteralCodeFixProvider : BaseCodeFixProvider
+    public class UnnecessaryUsageOfVerbatimStringLiteralCodeFixProvider : BaseCodeFixProvider
     {
         private const string Title = "Remove '@'";
 
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.UseRegularStringLiteralInsteadOfVerbatimStringLiteral); }
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.UnnecessaryUsageOfVerbatimStringLiteral); }
         }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -38,7 +38,7 @@ namespace Roslynator.CSharp.CodeFixes
                         CodeAction codeAction = CodeAction.Create(
                             Title,
                             cancellationToken => UseRegularStringLiteralInsteadOfVerbatimStringLiteralRefactoring.RefactorAsync(context.Document, (LiteralExpressionSyntax)node, cancellationToken),
-                            GetEquivalenceKey(DiagnosticIdentifiers.UseRegularStringLiteralInsteadOfVerbatimStringLiteral));
+                            GetEquivalenceKey(DiagnosticIdentifiers.UnnecessaryUsageOfVerbatimStringLiteral));
 
                         context.RegisterCodeFix(codeAction, context.Diagnostics);
                         break;
@@ -48,7 +48,7 @@ namespace Roslynator.CSharp.CodeFixes
                         CodeAction codeAction = CodeAction.Create(
                             Title,
                             cancellationToken => UseRegularStringLiteralInsteadOfVerbatimStringLiteralRefactoring.RefactorAsync(context.Document, (InterpolatedStringExpressionSyntax)node, cancellationToken),
-                            GetEquivalenceKey(DiagnosticIdentifiers.UseRegularStringLiteralInsteadOfVerbatimStringLiteral));
+                            GetEquivalenceKey(DiagnosticIdentifiers.UnnecessaryUsageOfVerbatimStringLiteral));
 
                         context.RegisterCodeFix(codeAction, context.Diagnostics);
                         break;

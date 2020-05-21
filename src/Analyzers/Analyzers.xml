@@ -3661,17 +3661,17 @@ public enum Foo
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="UseRegularStringLiteralInsteadOfVerbatimStringLiteral">
+  <Analyzer Identifier="UnnecessaryUsageOfVerbatimStringLiteral">
     <Id>RCS1192</Id>
-    <Title>Use regular string literal instead of verbatim string literal.</Title>
+    <Title>Unnecessary usage of verbatim string literal.</Title>
     <Category>Readability</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
     <Samples>
       <Sample>
-        <Before><![CDATA[string s = @"x";]]></Before>
-        <After><![CDATA[string s = "x";]]></After>
+        <Before><![CDATA[string s = @"textWithoutEscapeSequence";]]></Before>
+        <After><![CDATA[string s = "textWithoutEscapeSequence";]]></After>
       </Sample>
     </Samples>
   </Analyzer>

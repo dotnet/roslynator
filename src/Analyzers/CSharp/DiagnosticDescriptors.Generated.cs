@@ -2024,15 +2024,15 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1192</summary>
-        public static readonly DiagnosticDescriptor UseRegularStringLiteralInsteadOfVerbatimStringLiteral = Factory.Create(
-            id:                 DiagnosticIdentifiers.UseRegularStringLiteralInsteadOfVerbatimStringLiteral, 
-            title:              "Use regular string literal instead of verbatim string literal.", 
-            messageFormat:      "Use regular string literal instead of verbatim string literal.", 
+        public static readonly DiagnosticDescriptor UnnecessaryUsageOfVerbatimStringLiteral = Factory.Create(
+            id:                 DiagnosticIdentifiers.UnnecessaryUsageOfVerbatimStringLiteral, 
+            title:              "Unnecessary usage of verbatim string literal.", 
+            messageFormat:      "Unnecessary usage of verbatim string literal.", 
             category:           DiagnosticCategories.Readability, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.UseRegularStringLiteralInsteadOfVerbatimStringLiteral, 
+            helpLinkUri:        DiagnosticIdentifiers.UnnecessaryUsageOfVerbatimStringLiteral, 
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1193</summary>

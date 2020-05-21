@@ -12,11 +12,11 @@ using Microsoft.CodeAnalysis.Text;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class UseRegularStringLiteralInsteadOfVerbatimStringLiteralAnalyzer : BaseDiagnosticAnalyzer
+    public class UnnecessaryUsageOfVerbatimStringLiteralAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.UseRegularStringLiteralInsteadOfVerbatimStringLiteral); }
+            get { return ImmutableArray.Create(DiagnosticDescriptors.UnnecessaryUsageOfVerbatimStringLiteral); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -50,7 +50,7 @@ namespace Roslynator.CSharp.Analysis
             Debug.Assert(string.Compare(text, 2, literalExpression.Token.ValueText, 0, text.Length - 3, StringComparison.Ordinal) == 0, text);
 
             DiagnosticHelpers.ReportDiagnostic(context,
-                DiagnosticDescriptors.UseRegularStringLiteralInsteadOfVerbatimStringLiteral,
+                DiagnosticDescriptors.UnnecessaryUsageOfVerbatimStringLiteral,
                 Location.Create(node.SyntaxTree, new TextSpan(node.SpanStart, 1)));
         }
 
@@ -97,7 +97,7 @@ namespace Roslynator.CSharp.Analysis
             }
 
             DiagnosticHelpers.ReportDiagnostic(context,
-                DiagnosticDescriptors.UseRegularStringLiteralInsteadOfVerbatimStringLiteral,
+                DiagnosticDescriptors.UnnecessaryUsageOfVerbatimStringLiteral,
                 Location.Create(node.SyntaxTree, new TextSpan(node.SpanStart + 1, 1)));
         }
 
