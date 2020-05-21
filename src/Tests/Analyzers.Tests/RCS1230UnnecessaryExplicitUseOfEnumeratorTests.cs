@@ -9,15 +9,15 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1230UnnecessaryUsageOfEnumeratorTests : AbstractCSharpFixVerifier
+    public class RCS1230UnnecessaryExplicitUseOfEnumeratorTests : AbstractCSharpFixVerifier
     {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.UnnecessaryUsageOfEnumerator;
+        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.UnnecessaryExplicitUseOfEnumerator;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new UnnecessaryUsageOfEnumeratorAnalyzer();
+        public override DiagnosticAnalyzer Analyzer { get; } = new UnnecessaryExplicitUseOfEnumeratorAnalyzer();
 
-        public override CodeFixProvider FixProvider { get; } = new UnnecessaryUsageOfEnumeratorCodeFixProvider();
+        public override CodeFixProvider FixProvider { get; } = new UnnecessaryExplicitUseOfEnumeratorCodeFixProvider();
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUsageOfEnumerator)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryExplicitUseOfEnumerator)]
         public async Task Test()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -58,7 +58,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUsageOfEnumerator)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryExplicitUseOfEnumerator)]
         public async Task Test_EmbeddedStatement()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -91,7 +91,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUsageOfEnumerator)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryExplicitUseOfEnumerator)]
         public async Task Test_NestedCurrent()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -130,7 +130,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUsageOfEnumerator)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryExplicitUseOfEnumerator)]
         public async Task TestNoDiagnostic_WhileDoesNotContainCurrent()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -153,7 +153,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUsageOfEnumerator)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryExplicitUseOfEnumerator)]
         public async Task TestNoDiagnostic_UsingContainsMultipleStatements()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -179,7 +179,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUsageOfEnumerator)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryExplicitUseOfEnumerator)]
         public async Task TestNoDiagnostic_IfInsteadOfWhile()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -203,7 +203,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUsageOfEnumerator)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryExplicitUseOfEnumerator)]
         public async Task TestNoDiagnostic_WhileContainsMoveNext()
         {
             await VerifyNoDiagnosticAsync(@"

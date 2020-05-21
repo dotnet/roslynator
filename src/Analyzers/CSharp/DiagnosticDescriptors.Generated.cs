@@ -2478,15 +2478,15 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1230</summary>
-        public static readonly DiagnosticDescriptor UnnecessaryUsageOfEnumerator = Factory.Create(
-            id:                 DiagnosticIdentifiers.UnnecessaryUsageOfEnumerator, 
-            title:              "Unnecessary usage of enumerator.", 
-            messageFormat:      "Unnecessary usage of enumerator.", 
+        public static readonly DiagnosticDescriptor UnnecessaryExplicitUseOfEnumerator = Factory.Create(
+            id:                 DiagnosticIdentifiers.UnnecessaryExplicitUseOfEnumerator, 
+            title:              "Unnecessary explicit use of enumerator.", 
+            messageFormat:      "Unnecessary explicit use of enumerator.", 
             category:           DiagnosticCategories.Readability, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.UnnecessaryUsageOfEnumerator, 
+            helpLinkUri:        DiagnosticIdentifiers.UnnecessaryExplicitUseOfEnumerator, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1231</summary>

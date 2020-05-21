@@ -18,19 +18,16 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.CodeFixes
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UnnecessaryUsageOfEnumeratorCodeFixProvider))]
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UnnecessaryExplicitUseOfEnumeratorCodeFixProvider))]
     [Shared]
-    public class UnnecessaryUsageOfEnumeratorCodeFixProvider : BaseCodeFixProvider
+    public class UnnecessaryExplicitUseOfEnumeratorCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.UnnecessaryUsageOfEnumerator); }
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.UnnecessaryExplicitUseOfEnumerator); }
         }
 
-        public override FixAllProvider GetFixAllProvider()
-        {
-            return null;
-        }
+        public override FixAllProvider GetFixAllProvider() => null;
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {

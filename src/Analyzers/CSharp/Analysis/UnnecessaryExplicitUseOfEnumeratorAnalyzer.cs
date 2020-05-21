@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Immutable;
-using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -12,11 +11,11 @@ using Roslynator.CSharp.Syntax;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class UnnecessaryUsageOfEnumeratorAnalyzer : BaseDiagnosticAnalyzer
+    public class UnnecessaryExplicitUseOfEnumeratorAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.UnnecessaryUsageOfEnumerator); }
+            get { return ImmutableArray.Create(DiagnosticDescriptors.UnnecessaryExplicitUseOfEnumerator); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -75,7 +74,7 @@ namespace Roslynator.CSharp.Analysis
 
             if (isFixable == true)
             {
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UnnecessaryUsageOfEnumerator, usingStatement.UsingKeyword);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UnnecessaryExplicitUseOfEnumerator, usingStatement.UsingKeyword);
             }
         }
     }

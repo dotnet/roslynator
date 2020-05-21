@@ -4593,9 +4593,9 @@ public string Foo()
       </Link>
     </Links>
   </Analyzer>
-  <Analyzer Identifier="UnnecessaryUsageOfEnumerator">
+  <Analyzer Identifier="UnnecessaryExplicitUseOfEnumerator">
     <Id>RCS1230</Id>
-    <Title>Unnecessary usage of enumerator.</Title>
+    <Title>Unnecessary explicit use of enumerator.</Title>
     <Category>Readability</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
