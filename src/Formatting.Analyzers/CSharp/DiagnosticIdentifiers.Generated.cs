@@ -57,5 +57,6 @@ namespace Roslynator.Formatting.CSharp
         public const string RemoveNewlinesFromInitializerWithSingleLineExpression = "RCS0048";
         public const string AddEmptyLineAfterTopComment = "RCS0049";
         public const string AddEmptyLineBeforeTopDeclaration = "RCS0050";
+        public const string AddNewLineBetweenClosingBraceAndWhileKeyword = "RCS0051";
     }
 }

@@ -1068,4 +1068,24 @@ namespace Foo
       </Sample>
     </Samples>
   </Analyzer>
+  <Analyzer Identifier="AddNewLineBetweenClosingBraceAndWhileKeyword">
+    <Id>RCS0051</Id>
+    <Title>Add newline between closing brace and 'while' keyword.</Title>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[do
+{
+    Foo();
+} while (x); // [|Id|]]]></Before>
+        <After><![CDATA[do
+{
+    Foo();
+}
+while (x);]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
 </Analyzers>

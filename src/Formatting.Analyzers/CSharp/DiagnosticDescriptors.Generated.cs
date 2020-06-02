@@ -597,5 +597,17 @@ namespace Roslynator.Formatting.CSharp
             helpLinkUri:        DiagnosticIdentifiers.AddEmptyLineBeforeTopDeclaration, 
             customTags:         Array.Empty<string>());
 
+        /// <summary>RCS0051</summary>
+        public static readonly DiagnosticDescriptor AddNewLineBetweenClosingBraceAndWhileKeyword = Factory.Create(
+            id:                 DiagnosticIdentifiers.AddNewLineBetweenClosingBraceAndWhileKeyword, 
+            title:              "Add newline between closing brace and 'while' keyword.", 
+            messageFormat:      "Add newline between closing brace and 'while' keyword.", 
+            category:           DiagnosticCategories.Formatting, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: false, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.AddNewLineBetweenClosingBraceAndWhileKeyword, 
+            customTags:         Array.Empty<string>());
+
     }
 }

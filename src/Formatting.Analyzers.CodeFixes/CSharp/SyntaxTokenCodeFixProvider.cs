@@ -29,7 +29,8 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                     DiagnosticIdentifiers.AddNewLineAfterConditionalOperatorInsteadOfBeforeIt,
                     DiagnosticIdentifiers.AddNewLineAfterExpressionBodyArrowInsteadOfBeforeIt,
                     DiagnosticIdentifiers.AddNewLineBeforeExpressionBodyArrowInsteadOfAfterIt,
-                    DiagnosticIdentifiers.AddNewLineAfterAttributeList);
+                    DiagnosticIdentifiers.AddNewLineAfterAttributeList,
+                    DiagnosticIdentifiers.AddNewLineBetweenClosingBraceAndWhileKeyword);
             }
         }
 
@@ -134,6 +135,16 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                         break;
                     }
                 case DiagnosticIdentifiers.AddNewLineAfterAttributeList:
+                    {
+                        CodeAction codeAction = CodeAction.Create(
+                            CodeFixTitles.AddNewLine,
+                            ct => CodeFixHelpers.AddNewLineBeforeAsync(document, token, ct),
+                            GetEquivalenceKey(diagnostic));
+
+                        context.RegisterCodeFix(codeAction, diagnostic);
+                        break;
+                    }
+                case DiagnosticIdentifiers.AddNewLineBetweenClosingBraceAndWhileKeyword:
                     {
                         CodeAction codeAction = CodeAction.Create(
                             CodeFixTitles.AddNewLine,

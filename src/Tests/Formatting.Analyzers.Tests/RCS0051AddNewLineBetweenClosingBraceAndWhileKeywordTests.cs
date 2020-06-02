@@ -9,15 +9,15 @@ using Xunit;
 
 namespace Roslynator.Formatting.CSharp.Tests
 {
-    public class RCS0040RemoveNewLineBetweenClosingBraceAndWhileKeywordTests : AbstractCSharpFixVerifier
+    public class RCS0051AddNewLineBetweenClosingBraceAndWhileKeywordTests : AbstractCSharpFixVerifier
     {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.RemoveNewLineBetweenClosingBraceAndWhileKeyword;
+        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.AddNewLineBetweenClosingBraceAndWhileKeyword;
 
         public override DiagnosticAnalyzer Analyzer { get; } = new AddOrRemoveNewLineBetweenClosingBraceAndWhileKeywordAnalyzer();
 
-        public override CodeFixProvider FixProvider { get; } = new SyntaxTriviaCodeFixProvider();
+        public override CodeFixProvider FixProvider { get; } = new SyntaxTokenCodeFixProvider();
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewLineBetweenClosingBraceAndWhileKeyword)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBetweenClosingBraceAndWhileKeyword)]
         public async Task Test()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -30,8 +30,7 @@ class C
         do
         {
             M();
-        }[||]
-        while (x);
+        } [||]while (x);
     }
 }
 ", @"
@@ -44,14 +43,15 @@ class C
         do
         {
             M();
-        } while (x);
+        }
+        while (x);
     }
 }
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewLineBetweenClosingBraceAndWhileKeyword)]
-        public async Task Test_EmptyLine()
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBetweenClosingBraceAndWhileKeyword)]
+        public async Task Test_WithoutTrivia()
         {
             await VerifyDiagnosticAndFixAsync(@"
 class C
@@ -63,9 +63,7 @@ class C
         do
         {
             M();
-        }[||]
-
-        while (x);
+        }[||]while (x);
     }
 }
 ", @"
@@ -78,13 +76,14 @@ class C
         do
         {
             M();
-        } while (x);
+        }
+        while (x);
     }
 }
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewLineBetweenClosingBraceAndWhileKeyword)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBetweenClosingBraceAndWhileKeyword)]
         public async Task TestNoDiagnostic()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -97,13 +96,14 @@ class C
         do
         {
             M();
-        } while (x);
+        }
+        while (x);
     }
 }
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewLineBetweenClosingBraceAndWhileKeyword)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBetweenClosingBraceAndWhileKeyword)]
         public async Task TestNoDiagnostic_EmbeddedStatement()
         {
             await VerifyNoDiagnosticAsync(@"
