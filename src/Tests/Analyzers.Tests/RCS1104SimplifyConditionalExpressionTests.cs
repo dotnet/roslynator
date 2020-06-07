@@ -87,6 +87,58 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyConditionalExpression)]
+        public async Task Test_NegateCondition()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+        bool x = false, y = false;
+
+        bool z = [|x ? false : y|];
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+        bool x = false, y = false;
+
+        bool z = !x && y;
+    }
+}
+", options: Options.WithEnabled(DiagnosticDescriptors.SimplifyConditionalExpressionWhenItIncludesNegationOfCondition));
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyConditionalExpression)]
+        public async Task Test_NegateCondition2()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+        bool x = false, y = false;
+
+        bool z = [|x ? y : true|];
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+        bool x = false, y = false;
+
+        bool z = !x || y;
+    }
+}
+", options: Options.WithEnabled(DiagnosticDescriptors.SimplifyConditionalExpressionWhenItIncludesNegationOfCondition));
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyConditionalExpression)]
         public async Task TestNoDiagnostic()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -122,6 +174,24 @@ class C
         bool x = false;
 
         bool? y = (x) ? default(bool?) : false;
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyConditionalExpression)]
+        public async Task TestNoDiagnostic_NegationOfCondition()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M()
+    {
+        bool x = false, y = false;
+
+        bool z1 = x ? false : y;
+
+        bool z2 = x ? y : true;
     }
 }
 ");

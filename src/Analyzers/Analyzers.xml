@@ -2176,6 +2176,23 @@ else
         <After><![CDATA[bool x = y || z;]]></After>
       </Sample>
     </Samples>
+    <Options>
+      <Option Identifier="SimplifyConditionalExpressionWhenItIncludesNegationOfCondition">
+        <Title>Simplify conditional expression (when it includes negation of condition).</Title>
+        <Id>a</Id>
+        <Kind>Enable</Kind>
+        <Samples>
+          <Sample>
+            <Before><![CDATA[bool x = y ? false : z;]]></Before>
+            <After><![CDATA[bool x = !y && z;]]></After>
+          </Sample>
+          <Sample>
+            <Before><![CDATA[bool x = y ? z : true;]]></Before>
+            <After><![CDATA[bool x = !y || z;]]></After>
+          </Sample>
+        </Samples>
+      </Option>
+    </Options>
   </Analyzer>
   <Analyzer Identifier="UnnecessaryInterpolation">
     <Id>RCS1105</Id>
@@ -5204,7 +5221,7 @@ public class C
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="SimplifyConditionalExpression2">
+  <Analyzer Identifier="SimplifyConditionalExpression2" IsObsolete="true">
     <Id>RCS1245</Id>
     <Title>Simplify conditional expression.</Title>
     <Category>Simplification</Category>

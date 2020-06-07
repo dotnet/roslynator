@@ -30,7 +30,6 @@ namespace Roslynator.CSharp.CodeFixes
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfConditionalExpression,
                     DiagnosticIdentifiers.SimplifyConditionalExpression,
-                    DiagnosticIdentifiers.SimplifyConditionalExpression2,
                     DiagnosticIdentifiers.UseConditionalAccessInsteadOfConditionalExpression,
                     DiagnosticIdentifiers.AvoidNestedConditionalOperators);
             }
@@ -66,7 +65,6 @@ namespace Roslynator.CSharp.CodeFixes
                             break;
                         }
                     case DiagnosticIdentifiers.SimplifyConditionalExpression:
-                    case DiagnosticIdentifiers.SimplifyConditionalExpression2:
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Simplify conditional expression",

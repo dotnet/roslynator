@@ -561,5 +561,17 @@ namespace Roslynator.CSharp
             helpLinkUri:        DiagnosticIdentifiers.FormatSingleLineBlock, 
             customTags:         Array.Empty<string>());
 
+        [Obsolete("", error: true)]
+        internal static readonly DiagnosticDescriptor SimplifyConditionalExpression2 = Factory.Create(
+            id:                 DiagnosticIdentifiers.SimplifyConditionalExpression2, 
+            title:              "Simplify conditional expression.", 
+            messageFormat:      "Simplify conditional expression.", 
+            category:           DiagnosticCategories.Simplification, 
+            defaultSeverity:    DiagnosticSeverity.Hidden, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.SimplifyConditionalExpression2, 
+            customTags:         Array.Empty<string>());
+
     }
 }

@@ -1079,6 +1079,18 @@ namespace Roslynator.CSharp
             helpLinkUri:        DiagnosticIdentifiers.SimplifyConditionalExpression, 
             customTags:         Array.Empty<string>());
 
+        /// <summary>RCS1104a</summary>
+        public static readonly DiagnosticDescriptor SimplifyConditionalExpressionWhenItIncludesNegationOfCondition = Factory.Create(
+            id:                 DiagnosticIdentifiers.SimplifyConditionalExpressionWhenItIncludesNegationOfCondition, 
+            title:              "Simplify conditional expression (when it includes negation of condition).", 
+            messageFormat:      "Simplify conditional expression (when it includes negation of condition).", 
+            category:           DiagnosticCategories.AnalyzerOption, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: false, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.SimplifyConditionalExpressionWhenItIncludesNegationOfCondition, 
+            customTags:         Array.Empty<string>());
+
         /// <summary>RCS1105</summary>
         public static readonly DiagnosticDescriptor UnnecessaryInterpolation = Factory.Create(
             id:                 DiagnosticIdentifiers.UnnecessaryInterpolation, 
@@ -2488,18 +2500,6 @@ namespace Roslynator.CSharp
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.SimplifyDefaultExpression, 
             customTags:         WellKnownDiagnosticTags.Unnecessary);
-
-        /// <summary>RCS1245</summary>
-        public static readonly DiagnosticDescriptor SimplifyConditionalExpression2 = Factory.Create(
-            id:                 DiagnosticIdentifiers.SimplifyConditionalExpression2, 
-            title:              "Simplify conditional expression.", 
-            messageFormat:      "Simplify conditional expression.", 
-            category:           DiagnosticCategories.Simplification, 
-            defaultSeverity:    DiagnosticSeverity.Hidden, 
-            isEnabledByDefault: true, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.SimplifyConditionalExpression2, 
-            customTags:         Array.Empty<string>());
 
         /// <summary>RCS1246</summary>
         public static readonly DiagnosticDescriptor UseElementAccess = Factory.Create(

@@ -94,6 +94,7 @@ namespace Roslynator.CSharp
         public const string MakeClassStatic = "RCS1102";
         public const string ConvertIfToAssignment = "RCS1103";
         public const string SimplifyConditionalExpression = "RCS1104";
+        public const string SimplifyConditionalExpressionWhenItIncludesNegationOfCondition = "RCS1104a";
         public const string UnnecessaryInterpolation = "RCS1105";
         public const string RemoveEmptyDestructor = "RCS1106";
         public const string RemoveRedundantStringToCharArrayCall = "RCS1107";
@@ -210,7 +211,6 @@ namespace Roslynator.CSharp
         public const string DoNotPassNonReadOnlyStructByReadOnlyReference = "RCS1242";
         public const string DuplicateWordInComment = "RCS1243";
         public const string SimplifyDefaultExpression = "RCS1244";
-        public const string SimplifyConditionalExpression2 = "RCS1245";
         public const string UseElementAccess = "RCS1246";
         public const string DoNotUseElementAccessWhenExpressionIsInvocation = "RCS1246a";
     }

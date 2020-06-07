@@ -98,5 +98,7 @@ namespace Roslynator.CSharp
         public const string FormatConditionalExpression = "RCS1184";
         [Obsolete("", error: true)]
         public const string FormatSingleLineBlock = "RCS1185";
+        [Obsolete("", error: true)]
+        public const string SimplifyConditionalExpression2 = "RCS1245";
     }
 }
