@@ -175,6 +175,18 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         [Obsolete("", error: true)]
+        internal static readonly DiagnosticDescriptor RemoveArgumentListFromObjectCreation2 = Factory.Create(
+            id:                 DiagnosticIdentifiers.RemoveArgumentListFromObjectCreation2, 
+            title:              "Remove argument list from object creation expression.", 
+            messageFormat:      "Remove argument list from object creation expression.", 
+            category:           DiagnosticCategories.Style, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: false, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.RemoveArgumentListFromObjectCreation2, 
+            customTags:         WellKnownDiagnosticTags.Unnecessary);
+
+        [Obsolete("", error: true)]
         internal static readonly DiagnosticDescriptor FormatDeclarationBraces = Factory.Create(
             id:                 DiagnosticIdentifiers.FormatDeclarationBraces, 
             title:              "Format declaration braces.", 

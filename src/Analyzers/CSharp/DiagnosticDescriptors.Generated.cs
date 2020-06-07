@@ -526,15 +526,27 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor SimplifyBooleanComparisonFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(SimplifyBooleanComparison);
 
         /// <summary>RCS1050</summary>
-        public static readonly DiagnosticDescriptor AddArgumentListToObjectCreation = Factory.Create(
-            id:                 DiagnosticIdentifiers.AddArgumentListToObjectCreation, 
-            title:              "Add argument list to object creation expression.", 
+        public static readonly DiagnosticDescriptor AddArgumentListToObjectCreationOrViceVersa = Factory.Create(
+            id:                 DiagnosticIdentifiers.AddArgumentListToObjectCreationOrViceVersa, 
+            title:              "Add argument list to object creation expression (or vice versa).", 
             messageFormat:      "Add argument list to object creation expression.", 
             category:           DiagnosticCategories.Style, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddArgumentListToObjectCreation, 
+            helpLinkUri:        DiagnosticIdentifiers.AddArgumentListToObjectCreationOrViceVersa, 
+            customTags:         WellKnownDiagnosticTags.Unnecessary);
+
+        /// <summary>RCS1050i</summary>
+        public static readonly DiagnosticDescriptor RemoveArgumentListFromObjectCreation = Factory.Create(
+            id:                 DiagnosticIdentifiers.RemoveArgumentListFromObjectCreation, 
+            title:              "Remove argument list from object creation expression.", 
+            messageFormat:      "Remove argument list from object creation expression.", 
+            category:           DiagnosticCategories.AnalyzerOption, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: false, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.RemoveArgumentListFromObjectCreation, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1051</summary>
@@ -698,18 +710,6 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         public static readonly DiagnosticDescriptor RemoveEmptyFinallyClauseFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(RemoveEmptyFinallyClause);
-
-        /// <summary>RCS1067</summary>
-        public static readonly DiagnosticDescriptor RemoveArgumentListFromObjectCreation = Factory.Create(
-            id:                 DiagnosticIdentifiers.RemoveArgumentListFromObjectCreation, 
-            title:              "Remove argument list from object creation expression.", 
-            messageFormat:      "Remove argument list from object creation expression.", 
-            category:           DiagnosticCategories.Style, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.RemoveArgumentListFromObjectCreation, 
-            customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1068</summary>
         public static readonly DiagnosticDescriptor SimplifyLogicalNegation = Factory.Create(

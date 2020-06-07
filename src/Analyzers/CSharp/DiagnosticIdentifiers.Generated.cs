@@ -49,7 +49,8 @@ namespace Roslynator.CSharp
         public const string NonAsynchronousMethodNameShouldNotEndWithAsync = "RCS1047";
         public const string UseLambdaExpressionInsteadOfAnonymousMethod = "RCS1048";
         public const string SimplifyBooleanComparison = "RCS1049";
-        public const string AddArgumentListToObjectCreation = "RCS1050";
+        public const string AddArgumentListToObjectCreationOrViceVersa = "RCS1050";
+        public const string RemoveArgumentListFromObjectCreation = "RCS1050i";
         public const string ParenthesizeConditionOfConditionalExpression = "RCS1051";
         public const string RemoveParenthesesFromConditionOfConditionalExpressionWhenExpressionIsSingleToken = "RCS1051a";
         public const string DeclareEachAttributeSeparately = "RCS1052";
@@ -63,7 +64,6 @@ namespace Roslynator.CSharp
         public const string AvoidUsageOfForStatementToCreateInfiniteLoop = "RCS1064";
         public const string AvoidUsageOfWhileStatementToCreateInfiniteLoop = "RCS1065";
         public const string RemoveEmptyFinallyClause = "RCS1066";
-        public const string RemoveArgumentListFromObjectCreation = "RCS1067";
         public const string SimplifyLogicalNegation = "RCS1068";
         public const string RemoveUnnecessaryCaseLabel = "RCS1069";
         public const string RemoveRedundantDefaultSwitchSection = "RCS1070";

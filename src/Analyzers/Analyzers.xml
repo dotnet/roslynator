@@ -1012,18 +1012,33 @@ if (!f)
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AddArgumentListToObjectCreation">
+  <Analyzer Identifier="AddArgumentListToObjectCreationOrViceVersa">
     <Id>RCS1050</Id>
-    <Title>Add argument list to object creation expression.</Title>
+    <Title>Add argument list to object creation expression (or vice versa).</Title>
+    <MessageFormat>Add argument list to object creation expression.</MessageFormat>
     <Category>Style</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>true</SupportsFadeOut>
     <Samples>
       <Sample>
         <Before><![CDATA[var items = new List<string> { "a", "b", "c"  };]]></Before>
         <After><![CDATA[var items = new List<string>() { "a", "b", "c"  };]]></After>
       </Sample>
     </Samples>
+    <Options>
+      <Option Identifier="RemoveArgumentListFromObjectCreation">
+        <Title>Remove argument list from object creation expression.</Title>
+        <Id>i</Id>
+        <Kind>Invert</Kind>
+        <Samples>
+          <Sample>
+            <Before><![CDATA[var items = new List<string>() { "a", "b", "c" };]]></Before>
+            <After><![CDATA[var items = new List<string> { "a", "b", "c" };]]></After>
+          </Sample>
+        </Samples>
+      </Option>
+    </Options>
   </Analyzer>
   <Analyzer Identifier="ParenthesizeConditionOfConditionalExpression">
     <Id>RCS1051</Id>
@@ -1400,7 +1415,7 @@ catch (Exception ex)
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="RemoveArgumentListFromObjectCreation">
+  <Analyzer Identifier="RemoveArgumentListFromObjectCreation2" IsObsolete="true">
     <Id>RCS1067</Id>
     <Title>Remove argument list from object creation expression.</Title>
     <Category>Style</Category>

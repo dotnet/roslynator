@@ -22,6 +22,8 @@
         <Title></Title>
         <Id></Id>
         <Kind></Kind>
+        <IsEnabledByDefault>false</IsEnabledByDefault>
+        <SupportsFadeOut>false</SupportsFadeOut>
         <Samples>
           <Sample>
             <Before><![CDATA[]]></Before>
