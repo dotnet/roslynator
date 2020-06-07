@@ -66,7 +66,7 @@ namespace Roslynator.Formatting.CSharp
             if (!initializer.OpenBraceToken.GetPreviousToken().TrailingTrivia.IsEmptyOrWhitespace())
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.RemoveNewlinesFromInitializerWithSingleLineExpression, initializer);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveNewlinesFromInitializerWithSingleLineExpression, initializer);
         }
     }
 }

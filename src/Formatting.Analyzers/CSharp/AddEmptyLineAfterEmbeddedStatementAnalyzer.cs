@@ -141,7 +141,8 @@ namespace Roslynator.Formatting.CSharp
             if (!trivia.IsEndOfLineTrivia())
                 return;
 
-            context.ReportDiagnostic(
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
                 DiagnosticDescriptors.AddEmptyLineAfterEmbeddedStatement,
                 Location.Create(syntaxTree, trivia.Span.WithLength(0)));
         }

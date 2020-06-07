@@ -86,7 +86,7 @@ namespace Roslynator.Formatting.CSharp
             SyntaxTrivia trivia)
         {
             if (!context.IsAnalyzerSuppressed(descriptor))
-                context.ReportDiagnostic(descriptor, Location.Create(context.Node.SyntaxTree, trivia.Span.WithLength(0)));
+                DiagnosticHelpers.ReportDiagnostic(context, descriptor, Location.Create(context.Node.SyntaxTree, trivia.Span.WithLength(0)));
         }
     }
 }

@@ -35,7 +35,8 @@ namespace Roslynator.Formatting
                 if (textLine.EndIncludingLineBreak - end == 1
                     && textLine.Text[end] == '\n')
                 {
-                    context.ReportDiagnostic(
+                    DiagnosticHelpers.ReportDiagnostic(
+                        context,
                         DiagnosticDescriptors.UseCarriageReturnAndLinefeedAsNewLine,
                         Location.Create(context.Tree, new TextSpan(end, 1)));
                 }

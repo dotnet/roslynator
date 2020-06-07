@@ -128,7 +128,8 @@ namespace Roslynator.CodeAnalysis.CSharp
 
                 TextSpan span = TextSpan.FromBounds(binaryExpression.Left.SpanStart, binaryExpression.OperatorToken.Span.End);
 
-                context.ReportDiagnostic(
+                DiagnosticHelpers.ReportDiagnostic(
+                    context,
                     DiagnosticDescriptors.UnnecessaryNullCheck,
                     Location.Create(invocationInfo.InvocationExpression.SyntaxTree, span));
             }
@@ -150,7 +151,8 @@ namespace Roslynator.CodeAnalysis.CSharp
 
                 TextSpan span = TextSpan.FromBounds(invocationInfo.Name.SpanStart, invocationExpression.Span.End);
 
-                context.ReportDiagnostic(
+                DiagnosticHelpers.ReportDiagnostic(
+                    context,
                     DiagnosticDescriptors.UseElementAccess,
                     Location.Create(invocationExpression.SyntaxTree, span));
             }
@@ -172,7 +174,8 @@ namespace Roslynator.CodeAnalysis.CSharp
 
                 TextSpan span = TextSpan.FromBounds(invocationInfo.Name.SpanStart, invocationExpression.Span.End);
 
-                context.ReportDiagnostic(
+                DiagnosticHelpers.ReportDiagnostic(
+                    context,
                     DiagnosticDescriptors.UseElementAccess,
                     Location.Create(invocationExpression.SyntaxTree, span));
             }
@@ -193,7 +196,7 @@ namespace Roslynator.CodeAnalysis.CSharp
                 if (!RoslynSymbolUtility.IsRoslynType(methodSymbol.ReturnType))
                     return;
 
-                context.ReportDiagnostic(DiagnosticDescriptors.UseReturnValue, invocationExpression);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseReturnValue, invocationExpression);
             }
         }
     }

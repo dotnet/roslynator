@@ -41,7 +41,8 @@ namespace Roslynator.Formatting.CSharp
             if (!switchSection.SyntaxTree.IsSingleLineSpan(TextSpan.FromBounds(label.Span.End, statement.SpanStart)))
                 return;
 
-            context.ReportDiagnostic(
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
                 DiagnosticDescriptors.AddNewLineAfterSwitchLabel,
                 Location.Create(statement.SyntaxTree, statement.Span.WithLength(0)));
         }

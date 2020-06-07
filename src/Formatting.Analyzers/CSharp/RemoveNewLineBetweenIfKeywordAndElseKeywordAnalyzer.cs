@@ -42,7 +42,8 @@ namespace Roslynator.Formatting.CSharp
             if (!statement.GetLeadingTrivia().IsEmptyOrWhitespace())
                 return;
 
-            context.ReportDiagnostic(
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
                 DiagnosticDescriptors.RemoveNewLineBetweenIfKeywordAndElseKeyword,
                 Location.Create(elseClause.SyntaxTree, new TextSpan(trailingTrivia.Last().SpanStart, 0)));
         }

@@ -56,7 +56,8 @@ namespace Roslynator.Formatting.CSharp
 
         private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, SyntaxToken token)
         {
-            context.ReportDiagnostic(
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
                 DiagnosticDescriptors.AddNewLineAfterConditionalOperatorInsteadOfBeforeIt,
                 Location.Create(token.SyntaxTree, token.Span.WithLength(0)));
         }

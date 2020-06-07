@@ -102,9 +102,10 @@ namespace Roslynator.Formatting.CSharp
 
             void ReportDiagnostic(int position)
             {
-                context.ReportDiagnostic(
-                   DiagnosticDescriptors.AddEmptyLineAfterUsingDirectiveList,
-                   Location.Create(usingDirective.SyntaxTree, new TextSpan(position, 0)));
+                DiagnosticHelpers.ReportDiagnostic(
+                    context,
+                    DiagnosticDescriptors.AddEmptyLineAfterUsingDirectiveList,
+                    Location.Create(usingDirective.SyntaxTree, new TextSpan(position, 0)));
             }
         }
     }

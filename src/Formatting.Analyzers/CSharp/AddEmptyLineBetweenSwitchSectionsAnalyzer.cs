@@ -47,7 +47,8 @@ namespace Roslynator.Formatting.CSharp
 
                     if (SyntaxTriviaAnalysis.IsOptionalWhitespaceThenOptionalSingleLineCommentThenEndOfLineTrivia(trailingTrivia))
                     {
-                        context.ReportDiagnostic(
+                        DiagnosticHelpers.ReportDiagnostic(
+                            context,
                             DiagnosticDescriptors.AddEmptyLineBetweenSwitchSections,
                             Location.Create(switchStatement.SyntaxTree, trailingTrivia.Last().Span.WithLength(0)));
                     }

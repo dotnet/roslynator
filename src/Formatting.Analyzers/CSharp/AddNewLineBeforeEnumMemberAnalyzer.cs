@@ -38,7 +38,8 @@ namespace Roslynator.Formatting.CSharp
             {
                 if (members[i].GetSpanStartLine() == previousIndex)
                 {
-                    context.ReportDiagnostic(
+                    DiagnosticHelpers.ReportDiagnostic(
+                        context,
                         DiagnosticDescriptors.AddNewLineBeforeEnumMember,
                         Location.Create(enumDeclaration.SyntaxTree, members[i].Span.WithLength(0)));
 

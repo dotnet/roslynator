@@ -44,7 +44,8 @@ namespace Roslynator.Formatting.CSharp
             if (!accessor.SyntaxTree.IsSingleLineSpan(TextSpan.FromBounds(openBrace.Span.End, openBrace.GetNextToken().SpanStart), context.CancellationToken))
                 return;
 
-            context.ReportDiagnostic(
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
                 DiagnosticDescriptors.AddNewLineAfterOpeningBraceOfAccessor,
                 Location.Create(accessor.SyntaxTree, new TextSpan(openBrace.Span.End, 0)));
         }

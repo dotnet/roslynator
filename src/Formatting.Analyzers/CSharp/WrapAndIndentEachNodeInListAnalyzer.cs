@@ -181,7 +181,8 @@ namespace Roslynator.Formatting.CSharp
 
             void ReportDiagnostic()
             {
-                context.ReportDiagnostic(
+                DiagnosticHelpers.ReportDiagnostic(
+                    context,
                     DiagnosticDescriptors.WrapAndIndentEachNodeInList,
                     Location.Create(syntaxTree, TextSpan.FromBounds(nodes[0].SpanStart, nodes.Last().Span.End)));
             }

@@ -31,7 +31,8 @@ namespace Roslynator.Formatting.CSharp
             if (IsFollowedWithEmptyLineOrEndRegionDirective())
                 return;
 
-            context.ReportDiagnostic(
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
                 DiagnosticDescriptors.AddEmptyLineAfterRegionDirective,
                 Location.Create(regionDirective.SyntaxTree, regionDirective.EndOfDirectiveToken.Span));
 

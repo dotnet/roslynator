@@ -115,7 +115,8 @@ namespace Roslynator.Formatting.CSharp
 
         private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, StatementSyntax statement)
         {
-            context.ReportDiagnostic(
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
                 DiagnosticDescriptors.AddNewLineBeforeEmbeddedStatement,
                 Location.Create(statement.SyntaxTree, statement.Span.WithLength(0)));
         }

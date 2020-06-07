@@ -129,7 +129,8 @@ namespace Roslynator.Formatting.CSharp
 
                 if (endOfLine.IsEndOfLineTrivia())
                 {
-                    context.ReportDiagnostic(
+                    DiagnosticHelpers.ReportDiagnostic(
+                        context,
                         DiagnosticDescriptors.AddEmptyLineBetweenBlockAndStatement,
                         Location.Create(endOfLine.SyntaxTree, endOfLine.Span.WithLength(0)));
                 }

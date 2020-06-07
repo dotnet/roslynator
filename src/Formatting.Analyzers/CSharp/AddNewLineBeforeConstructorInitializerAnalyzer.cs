@@ -39,7 +39,8 @@ namespace Roslynator.Formatting.CSharp
             if (!constructorDeclaration.ParameterList.GetTrailingTrivia().SingleOrDefault(shouldThrow: false).IsWhitespaceTrivia())
                 return;
 
-            context.ReportDiagnostic(
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
                 DiagnosticDescriptors.AddNewLineBeforeConstructorInitializer,
                 Location.Create(colonToken.SyntaxTree, colonToken.Span.WithLength(0)));
         }

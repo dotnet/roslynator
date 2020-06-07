@@ -223,7 +223,8 @@ namespace Roslynator.Formatting.CSharp
         {
             if (attributeList.SyntaxTree.IsSingleLineSpan(TextSpan.FromBounds(attributeList.Span.End, token.SpanStart)))
             {
-                context.ReportDiagnostic(
+                DiagnosticHelpers.ReportDiagnostic(
+                    context,
                     DiagnosticDescriptors.AddNewLineAfterAttributeList,
                     Location.Create(token.SyntaxTree, token.Span.WithLength(0)));
             }

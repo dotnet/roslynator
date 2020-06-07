@@ -53,7 +53,8 @@ namespace Roslynator.Formatting.CSharp
                 if (!statement.IsKind(SyntaxKind.Block, SyntaxKind.EmptyStatement)
                     && statement.GetSpanStartLine() == previousEndLine)
                 {
-                    context.ReportDiagnostic(
+                    DiagnosticHelpers.ReportDiagnostic(
+                        context,
                         DiagnosticDescriptors.AddNewLineBeforeStatement,
                         Location.Create(statement.SyntaxTree, statement.Span.WithLength(0)));
                 }

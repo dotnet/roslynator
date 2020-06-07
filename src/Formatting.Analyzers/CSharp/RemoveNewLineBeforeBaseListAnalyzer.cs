@@ -70,7 +70,8 @@ namespace Roslynator.Formatting.CSharp
             if (!baseList.ColonToken.LeadingTrivia.IsEmptyOrWhitespace())
                 return;
 
-            context.ReportDiagnostic(
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
                 DiagnosticDescriptors.RemoveNewLineBeforeBaseList,
                 Location.Create(baseList.SyntaxTree, new TextSpan(trailingTrivia.Last().SpanStart, 0)));
         }

@@ -85,7 +85,8 @@ namespace Roslynator.Formatting.CSharp
                 if (!constraintClause.GetLeadingTrivia().Any()
                     && previousToken.TrailingTrivia.SingleOrDefault().IsWhitespaceTrivia())
                 {
-                    context.ReportDiagnostic(
+                    DiagnosticHelpers.ReportDiagnostic(
+                        context,
                         DiagnosticDescriptors.AddNewLineBeforeTypeParameterConstraint,
                         Location.Create(constraintClause.SyntaxTree, new TextSpan(constraintClause.SpanStart, 0)));
                 }

@@ -68,7 +68,8 @@ namespace Roslynator.Formatting.CSharp
             if (!trivia.IsEndOfLineTrivia())
                 return;
 
-            context.ReportDiagnostic(
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
                 DiagnosticDescriptors.AddEmptyLineBeforeClosingBraceOfDoStatement,
                 Location.Create(trivia.SyntaxTree, trivia.Span.WithLength(0)));
         }

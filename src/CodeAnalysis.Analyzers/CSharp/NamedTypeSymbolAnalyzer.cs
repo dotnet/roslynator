@@ -188,7 +188,7 @@ namespace Roslynator.CodeAnalysis.CSharp
             {
                 if (argumentIndex == i)
                 {
-                    context.ReportDiagnostic(DiagnosticDescriptors.UnknownLanguageName, arguments[i].Expression);
+                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UnknownLanguageName, arguments[i].Expression);
                     break;
                 }
             }
@@ -198,7 +198,7 @@ namespace Roslynator.CodeAnalysis.CSharp
         {
             var attribute = (AttributeSyntax)attributeData.ApplicationSyntaxReference.GetSyntax(context.CancellationToken);
 
-            context.ReportDiagnostic(descriptor, attribute.Name);
+            DiagnosticHelpers.ReportDiagnostic(context, descriptor, attribute.Name);
         }
     }
 }

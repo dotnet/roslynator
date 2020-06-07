@@ -179,7 +179,7 @@ namespace Roslynator.CodeAnalysis.CSharp
                 return;
             }
 
-            context.ReportDiagnostic(DiagnosticDescriptors.UsePatternMatching, switchStatement.SwitchKeyword);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UsePatternMatching, switchStatement.SwitchKeyword);
 
             string GetName()
             {
@@ -312,7 +312,7 @@ namespace Roslynator.CodeAnalysis.CSharp
                 if (!CSharpFactory.AreEquivalent(isKindExpression.Expression, castExpression.Expression))
                     return;
 
-                context.ReportDiagnostic(DiagnosticDescriptors.UsePatternMatching, ifStatement.IfKeyword);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UsePatternMatching, ifStatement.IfKeyword);
             }
         }
 

@@ -61,7 +61,8 @@ namespace Roslynator.Formatting.CSharp
                 return;
             }
 
-            context.ReportDiagnostic(
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
                 DiagnosticDescriptors.AddEmptyLineAfterTopComment,
                 Location.Create(compilationUnit.SyntaxTree, new TextSpan(node.GetLeadingTrivia().Last().SpanStart, 0)));
         }

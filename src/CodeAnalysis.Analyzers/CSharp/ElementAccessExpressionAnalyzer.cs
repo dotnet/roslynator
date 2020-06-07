@@ -71,7 +71,7 @@ namespace Roslynator.CodeAnalysis.CSharp
                 return;
             }
 
-            context.ReportDiagnostic(DiagnosticDescriptors.CallLastInsteadOfUsingElementAccess, elementAccessExpression.ArgumentList);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.CallLastInsteadOfUsingElementAccess, elementAccessExpression.ArgumentList);
         }
     }
 }

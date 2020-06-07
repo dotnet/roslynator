@@ -50,7 +50,8 @@ namespace Roslynator.Formatting.CSharp
                         if (accessor.BodyOrExpressionBody() != null
                             && accessor.SyntaxTree.IsSingleLineSpan(TextSpan.FromBounds(token.Span.End, accessor.SpanStart)))
                         {
-                            context.ReportDiagnostic(
+                            DiagnosticHelpers.ReportDiagnostic(
+                                context,
                                 DiagnosticDescriptors.AddNewLineBeforeAccessorOfFullProperty,
                                 Location.Create(accessor.SyntaxTree, new TextSpan(accessor.SpanStart, 0)));
 
@@ -69,7 +70,7 @@ namespace Roslynator.Formatting.CSharp
                     foreach (AccessorDeclarationSyntax accessor in accessors)
                     {
                         if (CanRemoveNewLinesFromAccessor(accessor))
-                            context.ReportDiagnostic(DiagnosticDescriptors.RemoveNewLinesFromAccessorWithSingleLineExpression, accessor);
+                            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveNewLinesFromAccessorWithSingleLineExpression, accessor);
                     }
                 }
             }
@@ -99,7 +100,7 @@ namespace Roslynator.Formatting.CSharp
                                             .DescendantTrivia(span)
                                             .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                                         {
-                                            context.ReportDiagnostic(DiagnosticDescriptors.RemoveNewLinesFromAccessorListOfAutoProperty, accessorList);
+                                            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveNewLinesFromAccessorListOfAutoProperty, accessorList);
                                         }
                                     }
                                 }
@@ -132,7 +133,7 @@ namespace Roslynator.Formatting.CSharp
                                                 .DescendantTrivia(span)
                                                 .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                                             {
-                                                context.ReportDiagnostic(DiagnosticDescriptors.RemoveNewLinesFromAccessorListOfAutoProperty, accessorList);
+                                                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveNewLinesFromAccessorListOfAutoProperty, accessorList);
                                             }
                                         }
                                     }
