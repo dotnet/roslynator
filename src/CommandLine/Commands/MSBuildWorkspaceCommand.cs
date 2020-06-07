@@ -70,7 +70,7 @@ namespace Roslynator.CommandLine
 
                     CommandResult result = await ExecuteAsync(path, workspace, ConsoleProgressReporter.Default, cancellationToken);
 
-                    if (result.Kind != CommandResultKind.None)
+                    if (result != CommandResult.None)
                         return result;
 
                     ProjectOrSolution projectOrSolution = await OpenProjectOrSolutionAsync(path, workspace, ConsoleProgressReporter.Default, cancellationToken);

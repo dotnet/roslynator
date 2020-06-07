@@ -259,6 +259,12 @@ namespace Roslynator
             Out?.WriteLine(value, verbosity: verbosity);
         }
 
+        public static void WriteLine(LogMessage message)
+        {
+            ConsoleOut.WriteLine(message);
+            Out?.WriteLine(message);
+        }
+
         public static void WriteLineIf(bool condition, string value)
         {
             ConsoleOut.WriteLineIf(condition, value);

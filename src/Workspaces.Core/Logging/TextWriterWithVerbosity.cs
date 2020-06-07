@@ -202,6 +202,11 @@ namespace Roslynator
             WriteLineIf(ShouldWrite(verbosity), value);
         }
 
+        public virtual void WriteLine(LogMessage message)
+        {
+            WriteLineIf(ShouldWrite(message.Verbosity), message.Text);
+        }
+
         public void WriteLineIf(bool condition, string value)
         {
             if (condition)

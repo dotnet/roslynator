@@ -41,7 +41,19 @@ namespace Roslynator
 
         public void WriteLine(string value, ConsoleColor color, Verbosity verbosity)
         {
-            WriteLineIf(verbosity <= Verbosity, value, color);
+            WriteLineIf(ShouldWrite(verbosity), value, color);
+        }
+
+        public override void WriteLine(LogMessage message)
+        {
+            if (message.ForegroundColor != null)
+            {
+                WriteLineIf(ShouldWrite(message.Verbosity), message.Text, message.ForegroundColor.Value);
+            }
+            else
+            {
+                base.WriteLine(message);
+            }
         }
 
         public void WriteLineIf(bool condition, string value, ConsoleColor color)

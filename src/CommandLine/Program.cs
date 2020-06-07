@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using CommandLine;
 using Microsoft.CodeAnalysis;
@@ -34,6 +35,9 @@ namespace Roslynator.CommandLine
             try
             {
                 ParserResult<object> parserResult = Parser.Default.ParseArguments<
+#if NETCOREAPP3_1
+                    MigrateCommandLineOptions,
+#endif
 #if DEBUG
                     AnalyzeAssemblyCommandLineOptions,
                     FindSymbolsCommandLineOptions,
@@ -48,7 +52,8 @@ namespace Roslynator.CommandLine
                     PhysicalLinesOfCodeCommandLineOptions,
                     LogicalLinesOfCodeCommandLineOptions,
                     GenerateDocCommandLineOptions,
-                    GenerateDocRootCommandLineOptions>(args);
+                    GenerateDocRootCommandLineOptions
+                    >(args);
 
                 bool verbosityParsed = false;
 
@@ -97,6 +102,9 @@ namespace Roslynator.CommandLine
                     (LogicalLinesOfCodeCommandLineOptions options) => LogicalLinesOrCodeAsync(options).Result,
                     (GenerateDocCommandLineOptions options) => GenerateDocAsync(options).Result,
                     (GenerateDocRootCommandLineOptions options) => GenerateDocRootAsync(options).Result,
+#if NETCOREAPP3_1
+                    (MigrateCommandLineOptions options) => Migrate(options),
+#endif
                     _ => 1);
             }
             catch (Exception ex)
@@ -122,10 +130,6 @@ namespace Roslynator.CommandLine
             {
                 Out?.Dispose();
                 Out = null;
-#if DEBUG
-                if (Debugger.IsAttached)
-                    Console.ReadKey();
-#endif
             }
 
             return 1;
@@ -154,7 +158,7 @@ namespace Roslynator.CommandLine
 
             CommandResult result = await command.ExecuteAsync(options.Path, options.MSBuildPath, options.Properties);
 
-            return (result.Kind == CommandResultKind.Success) ? 0 : 1;
+            return (result == CommandResult.Success) ? 0 : 1;
         }
 
         private static async Task<int> AnalyzeAsync(AnalyzeCommandLineOptions options)
@@ -169,7 +173,7 @@ namespace Roslynator.CommandLine
 
             CommandResult result = await command.ExecuteAsync(options.Path, options.MSBuildPath, options.Properties);
 
-            return (result.Kind == CommandResultKind.Success) ? 0 : 1;
+            return (result == CommandResult.Success) ? 0 : 1;
         }
 
         private static int AnalyzeAssembly(AnalyzeAssemblyCommandLineOptions options)
@@ -186,7 +190,7 @@ namespace Roslynator.CommandLine
 
             CommandResult result = command.Execute(options);
 
-            return (result.Kind == CommandResultKind.Success) ? 0 : 1;
+            return (result == CommandResult.Success) ? 0 : 1;
         }
 
         private static async Task<int> FindSymbolsAsync(FindSymbolsCommandLineOptions options)
@@ -240,7 +244,7 @@ namespace Roslynator.CommandLine
 
             CommandResult result = await command.ExecuteAsync(options.Path, options.MSBuildPath, options.Properties);
 
-            return (result.Kind == CommandResultKind.Success) ? 0 : 1;
+            return (result == CommandResult.Success) ? 0 : 1;
         }
 
         private static async Task<int> ListSymbolsAsync(ListSymbolsCommandLineOptions options)
@@ -293,7 +297,7 @@ namespace Roslynator.CommandLine
 
             CommandResult result = await command.ExecuteAsync(options.Path, options.MSBuildPath, options.Properties);
 
-            return (result.Kind == CommandResultKind.Success) ? 0 : 1;
+            return (result == CommandResult.Success) ? 0 : 1;
 
             SymbolGroupFilter GetSymbolGroupFilter()
             {
@@ -332,7 +336,7 @@ namespace Roslynator.CommandLine
 
             CommandResult result = await command.ExecuteAsync(options.Path, options.MSBuildPath, properties);
 
-            return (result.Kind == CommandResultKind.Success) ? 0 : 1;
+            return (result == CommandResult.Success) ? 0 : 1;
         }
 
         private static async Task<int> SlnListAsync(SlnListCommandLineOptions options)
@@ -344,7 +348,7 @@ namespace Roslynator.CommandLine
 
             CommandResult result = await command.ExecuteAsync(options.Path, options.MSBuildPath, options.Properties);
 
-            return (result.Kind == CommandResultKind.Success) ? 0 : 1;
+            return (result == CommandResult.Success) ? 0 : 1;
         }
 
         private static int ListVisualStudio(ListVisualStudioCommandLineOptions options)
@@ -353,7 +357,7 @@ namespace Roslynator.CommandLine
 
             CommandResult result = command.Execute();
 
-            return (result.Kind == CommandResultKind.Success) ? 0 : 1;
+            return (result == CommandResult.Success) ? 0 : 1;
         }
 
         private static async Task<int> PhysicalLinesOfCodeAsync(PhysicalLinesOfCodeCommandLineOptions options)
@@ -365,7 +369,7 @@ namespace Roslynator.CommandLine
 
             CommandResult result = await command.ExecuteAsync(options.Path, options.MSBuildPath, options.Properties);
 
-            return (result.Kind == CommandResultKind.Success) ? 0 : 1;
+            return (result == CommandResult.Success) ? 0 : 1;
         }
 
         private static async Task<int> LogicalLinesOrCodeAsync(LogicalLinesOfCodeCommandLineOptions options)
@@ -377,7 +381,7 @@ namespace Roslynator.CommandLine
 
             CommandResult result = await command.ExecuteAsync(options.Path, options.MSBuildPath, options.Properties);
 
-            return (result.Kind == CommandResultKind.Success) ? 0 : 1;
+            return (result == CommandResult.Success) ? 0 : 1;
         }
 
         private static async Task<int> GenerateDocAsync(GenerateDocCommandLineOptions options)
@@ -429,7 +433,7 @@ namespace Roslynator.CommandLine
 
             CommandResult result = await command.ExecuteAsync(options.Path, options.MSBuildPath, options.Properties);
 
-            return (result.Kind == CommandResultKind.Success) ? 0 : 1;
+            return (result == CommandResult.Success) ? 0 : 1;
         }
 
         private static async Task<int> GenerateDocRootAsync(GenerateDocRootCommandLineOptions options)
@@ -459,7 +463,7 @@ namespace Roslynator.CommandLine
 
             CommandResult result = await command.ExecuteAsync(options.Path, options.MSBuildPath, options.Properties);
 
-            return (result.Kind == CommandResultKind.Success) ? 0 : 1;
+            return (result == CommandResult.Success) ? 0 : 1;
         }
 
         private static async Task<int> GenerateSourceReferencesAsync(GenerateSourceReferencesCommandLineOptions options)
@@ -481,7 +485,43 @@ namespace Roslynator.CommandLine
 
             CommandResult result = await command.ExecuteAsync(options.Path, options.MSBuildPath, options.Properties);
 
-            return (result.Kind == CommandResultKind.Success) ? 0 : 1;
+            return (result == CommandResult.Success) ? 0 : 1;
+        }
+
+        private static int Migrate(MigrateCommandLineOptions options)
+        {
+            if (!string.Equals(options.Identifier, "roslynator.analyzers", StringComparison.Ordinal))
+            {
+                WriteLine($"Unknown identifier '{options.Identifier}'.", Verbosity.Quiet);
+                return 1;
+            }
+
+            if (!TryParsePaths(options.Path, out ImmutableArray<string> paths))
+                return 1;
+
+            if (!TryParseVersion(options.Version, out Version version))
+                return 1;
+
+            version = new Version(
+                version.Major,
+                version.Minor,
+                Math.Max(version.Build, 0));
+
+            if (version != Versions.Version_3_0_0)
+            {
+                WriteLine($"Unknown target version '{version}'.", Verbosity.Quiet);
+                return 1;
+            }
+
+            var command = new MigrateCommand(
+                paths,
+                options.Identifier,
+                version,
+                options.DryRun);
+
+            CommandResult result = command.Execute();
+
+            return (result == CommandResult.Success) ? 0 : 1;
         }
     }
 }

@@ -2,17 +2,11 @@
 
 namespace Roslynator.CommandLine
 {
-    internal readonly struct CommandResult
+    internal enum CommandResult
     {
-        public static CommandResult Success { get; } = new CommandResult(CommandResultKind.Success);
-
-        public static CommandResult Fail { get; } = new CommandResult(CommandResultKind.Fail);
-
-        public CommandResult(CommandResultKind kind)
-        {
-            Kind = kind;
-        }
-
-        public CommandResultKind Kind { get; }
+        None = 0,
+        Success = 1,
+        Fail = 2,
+        Canceled = 3,
     }
 }

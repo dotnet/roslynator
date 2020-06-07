@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -177,6 +178,24 @@ namespace Roslynator.CodeGeneration.Markdown
                 CreateSeeAlso(refactoring.Links.Select(f => CreateLink(f)), Link("Full list of refactorings", "Refactorings.md")));
 
             document.AddFootnote();
+
+            return document.ToString(format);
+        }
+
+        public static string CreateRefactoringMarkdown22(ImmutableArray<AnalyzerMetadata> analyzers, ImmutableArray<AnalyzerMetadata> formattingAnalyzers)
+        {
+            var format = new MarkdownFormat(tableOptions: MarkdownFormat.Default.TableOptions | TableOptions.FormatContent);
+
+            MDocument document = Document(
+                Table(TableRow("Old analyzer", "New analyzer"),
+                    AnalyzersMapping.Mapping
+                    .SelectMany(f => f.Value.Select(f2 => (oldId: f.Key, newId: f2)))
+                    .OrderBy(f => f.oldId).Select(f =>
+                    {
+                        return TableRow(
+                            Inline(Link(Bold(f.oldId), $"analyzers/{f.oldId}.md"), $" ({analyzers.FirstOrDefault(f2 => f2.Id == f.oldId)?.Title})"),
+                            Inline(Link(Bold(f.newId), $"analyzers/{f.newId}.md"), $" ({formattingAnalyzers.FirstOrDefault(f2 => f2.Id == f.newId)?.Title})"));
+                    })));
 
             return document.ToString(format);
         }
