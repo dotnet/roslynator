@@ -96,29 +96,53 @@ namespace Roslynator.CodeGeneration.Markdown
             }
         }
 
-        private static IEnumerable<MElement> GetSamples(IEnumerable<SampleMetadata> samples, MHeading beforeHeader, MHeading afterHeader)
+        private static IEnumerable<MElement> GetSamples(
+            IEnumerable<SampleMetadata> samples,
+            MHeading beforeHeading,
+            MHeading afterHeading)
         {
-            bool isFirst = true;
-
-            foreach (SampleMetadata sample in samples)
+            using (IEnumerator<SampleMetadata> en = samples.GetEnumerator())
             {
-                if (!isFirst)
+                if (en.MoveNext())
                 {
-                    yield return HorizontalRule();
-                }
-                else
-                {
-                    isFirst = false;
-                }
+                    while (true)
+                    {
+                        yield return beforeHeading;
+                        yield return FencedCodeBlock(en.Current.Before, LanguageIdentifiers.CSharp);
 
-                yield return beforeHeader;
-                yield return FencedCodeBlock(sample.Before, LanguageIdentifiers.CSharp);
+                        if (!string.IsNullOrEmpty(en.Current.After))
+                        {
+                            yield return afterHeading;
+                            yield return FencedCodeBlock(en.Current.After, LanguageIdentifiers.CSharp);
+                        }
 
-                if (!string.IsNullOrEmpty(sample.After))
-                {
-                    yield return afterHeader;
-                    yield return FencedCodeBlock(sample.After, LanguageIdentifiers.CSharp);
+                        if (en.MoveNext())
+                        {
+                            yield return HorizontalRule();
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
                 }
+            }
+        }
+
+        private static IEnumerable<MElement> GetAnalyzerSamples(AnalyzerMetadata analyzer)
+        {
+            IReadOnlyList<SampleMetadata> samples = analyzer.Samples;
+
+            if (samples.Count > 0)
+            {
+                yield return Heading2((samples.Count == 1) ? "Example" : "Examples");
+
+                string beforeHeading = (analyzer.Kind == AnalyzerOptionKind.Disable)
+                    ? "Code"
+                    : "Code with Diagnostic";
+
+                foreach (MElement item in GetSamples(samples, Heading3(beforeHeading), Heading3("Code with Fix")))
+                    yield return item;
             }
         }
 
@@ -169,28 +193,38 @@ namespace Roslynator.CodeGeneration.Markdown
                     TableRow("Category", analyzer.Category),
                     TableRow("Severity", (analyzer.IsEnabledByDefault) ? analyzer.DefaultSeverity : "None"),
                     (!string.IsNullOrEmpty(analyzer.MinLanguageVersion)) ? TableRow("Minimal Language Version", analyzer.MinLanguageVersion) : null),
-                CreateSummary(analyzer.Summary),
-                Samples(),
+                CreateSummary(),
+                GetAnalyzerSamples(analyzer),
+                CreateOptions(analyzer),
                 CreateRemarks(analyzer.Remarks),
                 CreateAppliesTo(appliesTo),
                 CreateSeeAlso(
                     analyzer.Links.Select(f => CreateLink(f)),
+                    (analyzer.Options.Count > 0 || analyzer.Kind != AnalyzerOptionKind.None)
+                        ? Link("Analyzer Options", "../AnalyzerOptions.md")
+                        : null,
                     Link("How to Suppress a Diagnostic", "../HowToConfigureAnalyzers.md#how-to-suppress-a-diagnostic")));
 
             document.AddFootnote();
 
             return document.ToString(format);
 
-            IEnumerable<MElement> Samples()
+            IEnumerable<MElement> CreateSummary()
             {
-                IReadOnlyList<SampleMetadata> samples = analyzer.Samples;
-
-                if (samples.Count > 0)
+                if (string.IsNullOrEmpty(analyzer.Summary)
+                    && analyzer.Parent != null)
                 {
-                    yield return Heading2((samples.Count == 1) ? "Example" : "Examples");
-
-                    foreach (MElement item in GetSamples(samples, Heading3("Code with Diagnostic"), Heading3("Code with Fix")))
-                        yield return item;
+                    yield return Inline(
+                        "This option modifies behavior of analyzer ",
+                        Link(analyzer.Parent.Id, analyzer.Parent.Id + ".md"),
+                        ". It requires ",
+                        Link(analyzer.Parent.Id, analyzer.Parent.Id + ".md"),
+                        " to be enabled.");
+                }
+                else
+                {
+                    foreach (MElement element in MarkdownGenerator.CreateSummary(analyzer.Summary))
+                        yield return element;
                 }
             }
         }
@@ -332,6 +366,25 @@ namespace Roslynator.CodeGeneration.Markdown
             {
                 yield return Heading2("Summary");
                 yield return Raw(summary);
+            }
+        }
+
+        private static IEnumerable<MElement> CreateOptions(AnalyzerMetadata analyzer)
+        {
+            using (IEnumerator<AnalyzerMetadata> en = analyzer.OptionAnalyzers.GetEnumerator())
+            {
+                if (en.MoveNext())
+                {
+                    yield return Heading2("Options");
+
+                    do
+                    {
+                        string id = en.Current.Id;
+
+                        yield return BulletItem(Link(id, $"{id}.md"), " - ", en.Current.Title);
+
+                    } while (en.MoveNext());
+                }
             }
         }
 

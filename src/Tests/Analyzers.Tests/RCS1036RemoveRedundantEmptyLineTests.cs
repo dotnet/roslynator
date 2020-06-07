@@ -221,6 +221,62 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantEmptyLine)]
+        public async Task Test_EmptyLineBetweenClosingBraceAndSwitchSection()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+        string x = null;
+
+        switch (x)
+        {
+            case ""a"":
+                {
+                    M();
+                    break;
+                }
+[|
+|]            case ""b"":
+                {
+                    M();
+                    break;
+                }
+[|
+|]            case ""c"":
+                break;
+        }
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+        string x = null;
+
+        switch (x)
+        {
+            case ""a"":
+                {
+                    M();
+                    break;
+                }
+            case ""b"":
+                {
+                    M();
+                    break;
+                }
+            case ""c"":
+                break;
+        }
+    }
+}
+", options: Options.WithEnabled(DiagnosticDescriptors.RemoveEmptyLineBetweenClosingBraceAndSwitchSection));
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantEmptyLine)]
         public async Task TestNoDiagnostic_ObjectInitializer()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -267,6 +323,32 @@ class C
     void M()
     {
         var x = new C() { };
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantEmptyLine)]
+        public async Task TestNoDiagnostic_EmptyLineBetweenClosingBraceAndSwitchSection()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M()
+    {
+        string x = null;
+
+        switch (x)
+        {
+            case ""a"":
+                {
+                    M();
+                    break;
+                }
+
+            case ""b"":
+                break;
+        }
     }
 }
 ");

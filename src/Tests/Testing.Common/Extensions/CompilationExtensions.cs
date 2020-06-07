@@ -11,38 +11,6 @@ namespace Roslynator
 {
     internal static class CompilationExtensions
     {
-        public static Compilation EnableDiagnosticsDisabledByDefault(this Compilation compilation, DiagnosticAnalyzer analyzer)
-        {
-            return EnableDiagnosticsDisabledByDefault(compilation, analyzer.SupportedDiagnostics);
-        }
-
-        public static Compilation EnableDiagnosticsDisabledByDefault(this Compilation compilation, ImmutableArray<DiagnosticDescriptor> diagnosticDescriptors)
-        {
-            CompilationOptions options = compilation.Options;
-            ImmutableDictionary<string, ReportDiagnostic> specificDiagnosticOptions = options.SpecificDiagnosticOptions;
-
-            int count = specificDiagnosticOptions.Count;
-
-            foreach (DiagnosticDescriptor descriptor in diagnosticDescriptors)
-            {
-                if (!descriptor.IsEnabledByDefault)
-                {
-                    specificDiagnosticOptions = specificDiagnosticOptions.Add(
-                        descriptor.Id,
-                        descriptor.DefaultSeverity.ToReportDiagnostic());
-                }
-            }
-
-            if (specificDiagnosticOptions.Count != count)
-            {
-                options = options.WithSpecificDiagnosticOptions(specificDiagnosticOptions);
-
-                compilation = compilation.WithOptions(options);
-            }
-
-            return compilation;
-        }
-
         public static Compilation EnsureEnabled(this Compilation compilation, DiagnosticDescriptor descriptor)
         {
             CompilationOptions compilationOptions = compilation.Options;

@@ -1,14 +1,26 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using Roslynator.Configuration;
+
 namespace Roslynator
 {
-    public sealed class AnalyzerSettings : CodeAnalysisSettings<string>
+    internal sealed class AnalyzerSettings : CodeAnalysisSettings<string>
     {
-        public static AnalyzerSettings Current { get; } = new AnalyzerSettings();
+        public static AnalyzerSettings Current { get; } = LoadSettings();
 
-        public override void Reset()
+        private static AnalyzerSettings LoadSettings()
         {
-            Disabled.Clear();
+            var settings = new AnalyzerSettings();
+
+            settings.Reset();
+
+            return settings;
+        }
+
+        protected override void SetValues(CodeAnalysisConfiguration configuration)
+        {
+            if (configuration == null)
+                return;
         }
     }
 }

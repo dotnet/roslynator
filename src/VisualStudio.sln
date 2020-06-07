@@ -33,6 +33,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Workspaces.Core", "Workspaces.Core\Workspaces.Core.csproj", "{B5B2B192-390F-48F2-9858-5BE753565728}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Formatting.Analyzers", "Formatting.Analyzers\Formatting.Analyzers.csproj", "{DE47C588-C04E-4258-9D3F-A34DE88B42BC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Formatting.Analyzers.CodeFixes", "Formatting.Analyzers.CodeFixes\Formatting.Analyzers.CodeFixes.csproj", "{ABE1570C-9976-4AF5-8525-DD5A2D5AADFF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +91,14 @@ Global
 		{B5B2B192-390F-48F2-9858-5BE753565728}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B5B2B192-390F-48F2-9858-5BE753565728}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B5B2B192-390F-48F2-9858-5BE753565728}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE47C588-C04E-4258-9D3F-A34DE88B42BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE47C588-C04E-4258-9D3F-A34DE88B42BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE47C588-C04E-4258-9D3F-A34DE88B42BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE47C588-C04E-4258-9D3F-A34DE88B42BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ABE1570C-9976-4AF5-8525-DD5A2D5AADFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABE1570C-9976-4AF5-8525-DD5A2D5AADFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABE1570C-9976-4AF5-8525-DD5A2D5AADFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABE1570C-9976-4AF5-8525-DD5A2D5AADFF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

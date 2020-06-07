@@ -1,14 +1,14 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Build.Locator;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.MSBuild;
 using Roslynator.CodeGeneration.Markdown;
 using Roslynator.Metadata;
 using Roslynator.Utilities;
@@ -80,29 +80,13 @@ namespace Roslynator.CodeGeneration
                 MetadataFile.SaveSourceFiles(sourceFiles, @"..\SourceFiles.xml");
             }
 #endif
-            foreach (AnalyzerMetadata analyzer in codeAnalysisAnalyzers)
-            {
-                WriteAllText(
-                    $@"..\docs\analyzers\{analyzer.Id}.md",
-                    MarkdownGenerator.CreateAnalyzerMarkdown(analyzer, new (string, string)[] { ("Roslynator.CodeAnalysis.Analyzers", "https://www.nuget.org/packages/Roslynator.CodeAnalysis.Analyzers") }),
-                    fileMustExists: false);
-            }
+            WriteAnalyzerMarkdowns(codeAnalysisAnalyzers, new (string, string)[] { ("Roslynator.CodeAnalysis.Analyzers", "https://www.nuget.org/packages/Roslynator.CodeAnalysis.Analyzers") });
 
-            foreach (AnalyzerMetadata analyzer in analyzers.Concat(formattingAnalyzers))
-            {
-                WriteAllText(
-                    $@"..\docs\analyzers\{analyzer.Id}.md",
-                    MarkdownGenerator.CreateAnalyzerMarkdown(analyzer, new (string, string)[] { ("Roslynator.Formatting.Analyzers", "https://www.nuget.org/packages/Roslynator.Formatting.Analyzers") }),
-                    fileMustExists: false);
-            }
+            WriteAnalyzerMarkdowns(formattingAnalyzers, new (string, string)[] { ("Roslynator.Formatting.Analyzers", "https://www.nuget.org/packages/Roslynator.Formatting.Analyzers") });
 
-            foreach (AnalyzerMetadata analyzer in analyzers)
-            {
-                WriteAllText(
-                    $@"..\docs\analyzers\{analyzer.Id}.md",
-                    MarkdownGenerator.CreateAnalyzerMarkdown(analyzer),
-                    fileMustExists: false);
-            }
+            WriteAnalyzerMarkdowns(analyzers);
+
+            DeleteInvalidAnalyzerMarkdowns();
 
             foreach (RefactoringMetadata refactoring in refactorings)
             {
@@ -155,6 +139,63 @@ namespace Roslynator.CodeGeneration
                         if (!File.Exists(imagePath))
                             Console.WriteLine($"MISSING SAMPLE: {imagePath}");
                     }
+                }
+            }
+
+            void WriteAnalyzerMarkdowns(IEnumerable<AnalyzerMetadata> analyzers, IEnumerable<(string title, string url)> appliesTo = null)
+            {
+                foreach (AnalyzerMetadata analyzer in analyzers)
+                {
+                    WriteAnalyzerMarkdown(analyzer, appliesTo);
+                }
+
+                foreach (AnalyzerMetadata analyzer in analyzers.SelectMany(a => a.OptionAnalyzers))
+                {
+                    WriteAnalyzerMarkdown(analyzer, appliesTo);
+                }
+            }
+
+            void WriteAnalyzerMarkdown(AnalyzerMetadata analyzer, IEnumerable<(string title, string url)> appliesTo = null)
+            {
+                WriteAllText(
+                    $@"..\docs\analyzers\{analyzer.Id}.md",
+                    MarkdownGenerator.CreateAnalyzerMarkdown(analyzer, appliesTo),
+                    fileMustExists: false);
+
+                foreach (AnalyzerMetadata optionAnalyzer in analyzer.OptionAnalyzers)
+                {
+                    WriteAllText(
+                        $@"..\docs\analyzers\{optionAnalyzer.Id}.md",
+                        MarkdownGenerator.CreateAnalyzerMarkdown(optionAnalyzer),
+                        fileMustExists: false);
+                }
+            }
+
+            void DeleteInvalidAnalyzerMarkdowns()
+            {
+                AnalyzerMetadata[] allAnalyzers = analyzers
+                    .Concat(codeAnalysisAnalyzers)
+                    .Concat(formattingAnalyzers)
+                    .ToArray();
+
+                IEnumerable<string> allIds = allAnalyzers
+                    .Concat(allAnalyzers.SelectMany(f => f.OptionAnalyzers))
+                    .Select(f => f.Id);
+
+                string directoryPath = GetPath(@"..\docs\analyzers");
+
+                foreach (string id in Directory.GetFiles(directoryPath, "*.*", SearchOption.TopDirectoryOnly)
+                    .Select(f => Path.GetFileNameWithoutExtension(f))
+                    .Except(allIds))
+                {
+                    if (id == "RCSXXXX")
+                        break;
+
+                    string filePath = Path.Combine(directoryPath, Path.ChangeExtension(id, ".md"));
+
+                    Console.WriteLine($"Delete file '{filePath}'");
+
+                    File.Delete(filePath);
                 }
             }
 

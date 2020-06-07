@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -121,6 +120,22 @@ namespace Roslynator.CSharp.Analysis
             {
                 AnalyzeStart(context, sections[0], switchStatement.OpenBraceToken);
                 AnalyzeEnd(context, sections.Last(), switchStatement.CloseBraceToken);
+
+                if (sections.Count > 1
+                    && !context.IsAnalyzerSuppressed(DiagnosticDescriptors.RemoveEmptyLineBetweenClosingBraceAndSwitchSection))
+                {
+                    SwitchSectionSyntax prevSection = sections.First();
+
+                    for (int i = 1; i < sections.Count; i++)
+                    {
+                        SwitchSectionSyntax section = sections[i];
+
+                        if (prevSection.Statements.LastOrDefault() is BlockSyntax block)
+                            Analyze(context, block.CloseBraceToken, section);
+
+                        prevSection = section;
+                    }
+                }
             }
         }
 

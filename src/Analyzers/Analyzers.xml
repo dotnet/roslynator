@@ -716,6 +716,40 @@ if (f)
 }]]></After>
       </Sample>
     </Samples>
+    <Options>
+      <Option Identifier="RemoveEmptyLineBetweenClosingBraceAndSwitchSection">
+        <Id>a</Id>
+        <Title>Remove empty line between closing brace and switch section.</Title>
+        <Kind>Enable</Kind>
+        <Samples>
+          <Sample>
+            <Before><![CDATA[switch (x)
+{
+    case "a":
+        {
+            M();
+            break;
+        }
+            
+    case "b":
+        break;
+}
+    ]]></Before>
+            <After><![CDATA[switch (x)
+{
+    case "a":
+        {
+            M();
+            break;
+        }
+    case "b":
+        break;
+}
+    ]]></After>
+          </Sample>
+        </Samples>
+      </Option>
+    </Options>
   </Analyzer>
   <Analyzer Identifier="RemoveTrailingWhitespace">
     <Id>RCS1037</Id>
@@ -876,6 +910,18 @@ catch (Exception ex)
         <After><![CDATA[private string _f;]]></After>
       </Sample>
     </Samples>
+    <Options>
+      <Option Identifier="DoNotRenamePrivateStaticReadOnlyFieldToCamelCaseWithUnderscore">
+        <Title>Do not rename private static read-only field to camel case with underscore.</Title>
+        <Id>a</Id>
+        <Kind>Disable</Kind>
+        <Samples>
+          <Sample>
+            <Before><![CDATA[private static readonly string f;]]></Before>
+          </Sample>
+        </Samples>
+      </Option>
+    </Options>
   </Analyzer>
   <Analyzer Identifier="AsynchronousMethodNameShouldEndWithAsync">
     <Id>RCS1046</Id>
@@ -982,15 +1028,29 @@ if (!f)
   <Analyzer Identifier="ParenthesizeConditionOfConditionalExpression">
     <Id>RCS1051</Id>
     <Title>Parenthesize condition of conditional expression.</Title>
+    <MessageFormat>{0} condition of conditional expression.</MessageFormat>
     <Category>Style</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[object x = condition ? WhenTrue() : WhenFalse();]]></Before>
-        <After><![CDATA[object x = (condition) ? WhenTrue() : WhenFalse();]]></After>
+        <Before><![CDATA[x = y != null ? "true" : "false"]]></Before>
+        <After><![CDATA[x = (y != null) ? "true" : "false"]]></After>
       </Sample>
     </Samples>
+    <Options>
+      <Option Identifier="RemoveParenthesesFromConditionOfConditionalExpressionWhenExpressionIsSingleToken">
+        <Id>a</Id>
+        <Title>Remove parentheses from condition of conditional expression (when condition is a single token).</Title>
+        <Kind>Change</Kind>
+        <Samples>
+          <Sample>
+            <Before><![CDATA[x = (condition) ? "true" : "false";]]></Before>
+            <After><![CDATA[x = condition ? "true" : "false";]]></After>
+          </Sample>
+        </Samples>
+      </Option>
+    </Options>
   </Analyzer>
   <Analyzer Identifier="DeclareEachAttributeSeparately">
     <Id>RCS1052</Id>
@@ -5161,5 +5221,17 @@ public class C
         <After><![CDATA[list[1]]]></After>
       </Sample>
     </Samples>
+    <Options>
+      <Option Identifier="DoNotUseElementAccessWhenExpressionIsInvocation">
+        <Title>Do not use element access when expression is invocation.</Title>
+        <Id>a</Id>
+        <Kind>Disable</Kind>
+        <Samples>
+          <Sample>
+            <Before><![CDATA[M().First()]]></Before>
+          </Sample>
+        </Samples>
+      </Option>
+    </Options>
   </Analyzer>
 </Analyzers>

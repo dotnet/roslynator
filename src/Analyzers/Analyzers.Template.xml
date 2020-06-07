@@ -17,6 +17,19 @@
         <After><![CDATA[]]></After>
       </Sample>
     </Samples>
+    <Options>
+      <Option Identifier="">
+        <Title></Title>
+        <Id></Id>
+        <Kind></Kind>
+        <Samples>
+          <Sample>
+            <Before><![CDATA[]]></Before>
+            <After><![CDATA[]]></After>
+          </Sample>
+        </Samples>
+      </Option>
+    </Options>
     <Remarks></Remarks>
     <Links>
       <Link>

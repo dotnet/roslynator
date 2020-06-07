@@ -16,31 +16,47 @@ namespace Roslynator.CodeGeneration.CSharp
             IEnumerable<AnalyzerMetadata> analyzers,
             bool obsolete,
             IComparer<string> comparer,
-            string @namespace)
+            string @namespace,
+            string className)
         {
             return CompilationUnit(
                 UsingDirectives("System"),
                 NamespaceDeclaration(@namespace,
                     ClassDeclaration(
                         Modifiers.Public_Static_Partial(),
-                        "DiagnosticIdentifiers",
+                        className,
                         analyzers
                             .Where(f => f.IsObsolete == obsolete)
                             .OrderBy(f => f.Id, comparer)
-                            .Select(f =>
-                            {
-                                FieldDeclarationSyntax fieldDeclaration = FieldDeclaration(
-                                    Modifiers.Public_Const(),
-                                    PredefinedStringType(),
-                                    f.Identifier,
-                                    StringLiteralExpression(f.Id));
-
-                                if (f.IsObsolete)
-                                    fieldDeclaration = fieldDeclaration.AddObsoleteAttributeIf(f.IsObsolete, error: true);
-
-                                return fieldDeclaration;
-                            })
+                            .SelectMany(f => CreateMembers(f))
                             .ToSyntaxList<MemberDeclarationSyntax>())));
+        }
+
+        private static IEnumerable<FieldDeclarationSyntax> CreateMembers(AnalyzerMetadata analyzer)
+        {
+            string id = analyzer.Id;
+            string identifier = analyzer.Identifier;
+
+            yield return CreateMember(id, identifier, analyzer.IsObsolete);
+
+            foreach (AnalyzerMetadata optionAnalyzer in analyzer.OptionAnalyzers.OrderBy(f => f.Identifier))
+            {
+                yield return CreateMember(optionAnalyzer.Id, optionAnalyzer.Identifier, optionAnalyzer.IsObsolete);
+            }
+        }
+
+        private static FieldDeclarationSyntax CreateMember(string id, string identifier, bool isObsolete)
+        {
+            FieldDeclarationSyntax fieldDeclaration = FieldDeclaration(
+                Modifiers.Public_Const(),
+                PredefinedStringType(),
+                identifier,
+                StringLiteralExpression(id));
+
+            if (isObsolete)
+                fieldDeclaration = fieldDeclaration.AddObsoleteAttributeIf(isObsolete, error: true);
+
+            return fieldDeclaration;
         }
     }
 }

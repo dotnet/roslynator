@@ -28,7 +28,6 @@ namespace Roslynator.CSharp.CodeFixes
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticIdentifiers.ParenthesizeConditionOfConditionalExpression,
                     DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfConditionalExpression,
                     DiagnosticIdentifiers.SimplifyConditionalExpression,
                     DiagnosticIdentifiers.SimplifyConditionalExpression2,
@@ -50,16 +49,6 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 switch (diagnostic.Id)
                 {
-                    case DiagnosticIdentifiers.ParenthesizeConditionOfConditionalExpression:
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Parenthesize condition",
-                                cancellationToken => ParenthesizeConditionOfConditionalExpressionAsync(document, conditionalExpression, cancellationToken),
-                                GetEquivalenceKey(diagnostic));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
                     case DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfConditionalExpression:
                         {
                             CodeAction codeAction = CodeAction.Create(
@@ -249,20 +238,6 @@ namespace Roslynator.CSharp.CodeFixes
                 .WithLeadingTrivia(conditionalExpression.GetLeadingTrivia())
                 .WithTrailingTrivia(trailingTrivia)
                 .WithSimplifierAnnotation();
-        }
-
-        private static Task<Document> ParenthesizeConditionOfConditionalExpressionAsync(
-            Document document,
-            ConditionalExpressionSyntax conditionalExpression,
-            CancellationToken cancellationToken)
-        {
-            ConditionalExpressionSyntax newNode = conditionalExpression
-                .WithCondition(
-                    ParenthesizedExpression(conditionalExpression.Condition.WithoutTrivia())
-                        .WithTriviaFrom(conditionalExpression.Condition))
-                .WithFormatterAnnotation();
-
-            return document.ReplaceNodeAsync(conditionalExpression, newNode, cancellationToken);
         }
     }
 }

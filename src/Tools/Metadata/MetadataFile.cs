@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
@@ -34,23 +35,40 @@ namespace Roslynator.Metadata
             {
                 string id = element.Element("Id").Value;
                 string title = element.Element("Title").Value;
+                string identifier = element.Attribute("Identifier").Value;
+                string messageFormat = element.Element("MessageFormat")?.Value ?? title;
+                string category = element.Element("Category").Value;
+                string defaultSeverity = element.Element("DefaultSeverity").Value;
+                bool isEnabledByDefault = bool.Parse(element.Element("IsEnabledByDefault").Value);
+                bool isObsolete = element.AttributeValueAsBooleanOrDefault("IsObsolete");
+                bool supportsFadeOut = element.ElementValueAsBooleanOrDefault("SupportsFadeOut");
+                bool supportsFadeOutAnalyzer = element.ElementValueAsBooleanOrDefault("SupportsFadeOutAnalyzer");
+                string minLanguageVersion = element.Element("MinLanguageVersion")?.Value;
+                string summary = element.Element("Summary")?.Value.NormalizeNewLine();
+                string remarks = element.Element("Remarks")?.Value.NormalizeNewLine();
+                IEnumerable<SampleMetadata> samples = LoadSamples(element)?.Select(f => f.WithBefore(f.Before.Replace("[|Id|]", id)));
+                IEnumerable<LinkMetadata> links = LoadLinks(element);
+                IEnumerable<AnalyzerOptionMetadata> options = LoadOptions(element);
 
                 yield return new AnalyzerMetadata(
-                    id,
-                    element.Attribute("Identifier").Value,
-                    title,
-                    element.Element("MessageFormat")?.Value ?? title,
-                    element.Element("Category").Value,
-                    element.Element("DefaultSeverity").Value,
-                    bool.Parse(element.Element("IsEnabledByDefault").Value),
-                    element.AttributeValueAsBooleanOrDefault("IsObsolete"),
-                    bool.Parse(element.Element("SupportsFadeOut")?.Value ?? bool.FalseString),
-                    bool.Parse(element.Element("SupportsFadeOutAnalyzer")?.Value ?? bool.FalseString),
-                    element.Element("MinLanguageVersion")?.Value,
-                    element.Element("Summary")?.Value.NormalizeNewLine(),
-                    element.Element("Remarks")?.Value.NormalizeNewLine(),
-                    LoadSamples(element)?.Select(f => new SampleMetadata(f.Before.Replace("[|Id|]", id), f.After)),
-                    LoadLinks(element));
+                    id: id,
+                    identifier: identifier,
+                    title: title,
+                    messageFormat: messageFormat,
+                    category: category,
+                    defaultSeverity: defaultSeverity,
+                    isEnabledByDefault: isEnabledByDefault,
+                    isObsolete: isObsolete,
+                    supportsFadeOut: supportsFadeOut,
+                    supportsFadeOutAnalyzer: supportsFadeOutAnalyzer,
+                    minLanguageVersion: minLanguageVersion,
+                    summary: summary,
+                    remarks: remarks,
+                    samples: samples,
+                    links: links,
+                    options: options,
+                    kind: AnalyzerOptionKind.None,
+                    parent: null);
             }
         }
 
@@ -96,7 +114,15 @@ namespace Roslynator.Metadata
             return element
                 .Element("Samples")?
                 .Elements("Sample")
-                .Select(f => new SampleMetadata(f.Element("Before").Value.NormalizeNewLine(), f.Element("After")?.Value.NormalizeNewLine()));
+                .Select(f =>
+                {
+                    XElement before = f.Element("Before");
+                    XElement after = f.Element("After");
+
+                    return new SampleMetadata(
+                        before.Value.NormalizeNewLine(),
+                        after?.Value.NormalizeNewLine());
+                });
         }
 
         private static IEnumerable<LinkMetadata> LoadLinks(XElement element)
@@ -105,6 +131,39 @@ namespace Roslynator.Metadata
                 .Element("Links")?
                .Elements("Link")
                .Select(f => new LinkMetadata(f.Element("Url").Value, f.Element("Text")?.Value, f.Element("Title")?.Value));
+        }
+
+        private static IEnumerable<AnalyzerOptionMetadata> LoadOptions(XElement element)
+        {
+            return element
+                .Element("Options")?
+                .Elements("Option")
+                .Select(f => LoadOption(f));
+        }
+
+        private static AnalyzerOptionMetadata LoadOption(XElement element)
+        {
+            string title = element.Element("Title").Value;
+
+            string identifier = element.Attribute("Identifier").Value;
+            string id = element.Element("Id").Value;
+            var kind = (AnalyzerOptionKind)Enum.Parse(typeof(AnalyzerOptionKind), element.Element("Kind").Value);
+            bool isEnabledByDefault = element.ElementValueAsBooleanOrDefault("IsEnabledByDefault");
+            bool supportsFadeOut = element.ElementValueAsBooleanOrDefault("SupportsFadeOut");
+            string summary = element.Element("Summary")?.Value.NormalizeNewLine();
+            IEnumerable<SampleMetadata> samples = LoadSamples(element);
+            bool isObsolete = element.AttributeValueAsBooleanOrDefault("IsObsolete");
+
+            return new AnalyzerOptionMetadata(
+                identifier: identifier,
+                id: id,
+                kind: kind,
+                title: title,
+                isEnabledByDefault: isEnabledByDefault,
+                supportsFadeOut: supportsFadeOut,
+                summary: summary,
+                samples: samples,
+                isObsolete: isObsolete);
         }
 
         public static ImmutableArray<CodeFixMetadata> ReadAllCodeFixes(string filePath)

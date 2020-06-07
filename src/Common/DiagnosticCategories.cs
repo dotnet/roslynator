@@ -6,6 +6,8 @@ namespace Roslynator
 {
     public static class DiagnosticCategories
     {
+        internal const string AnalyzerOption = "AnalyzerOption";
+
         public const string Design = "Design";
         public const string FadeOut = "FadeOut";
         public const string Formatting = "Formatting";

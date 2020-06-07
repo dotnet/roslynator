@@ -4,6 +4,6 @@ namespace Roslynator.CSharp
 {
     public static partial class DiagnosticDescriptors
     {
-        private static DiagnosticDescriptorFactory Factory { get; } = DiagnosticDescriptorFactory.CreateFromAssemblyLocation(typeof(DiagnosticDescriptors).Assembly.Location);
+        private static DiagnosticDescriptorFactory Factory { get; } = new DiagnosticDescriptorFactory(AnalyzerRules.Default);
     }
 }

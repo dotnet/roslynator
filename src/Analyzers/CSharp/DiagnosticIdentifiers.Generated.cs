@@ -34,6 +34,7 @@ namespace Roslynator.CSharp
         public const string RemoveRedundantSealedModifier = "RCS1034";
         public const string RemoveRedundantCommaInInitializer = "RCS1035";
         public const string RemoveRedundantEmptyLine = "RCS1036";
+        public const string RemoveEmptyLineBetweenClosingBraceAndSwitchSection = "RCS1036a";
         public const string RemoveTrailingWhitespace = "RCS1037";
         public const string RemoveEmptyStatement = "RCS1038";
         public const string RemoveArgumentListFromAttribute = "RCS1039";
@@ -43,12 +44,14 @@ namespace Roslynator.CSharp
         public const string RemovePartialModifierFromTypeWithSinglePart = "RCS1043";
         public const string RemoveOriginalExceptionFromThrowStatement = "RCS1044";
         public const string RenamePrivateFieldToCamelCaseWithUnderscore = "RCS1045";
+        public const string DoNotRenamePrivateStaticReadOnlyFieldToCamelCaseWithUnderscore = "RCS1045a";
         public const string AsynchronousMethodNameShouldEndWithAsync = "RCS1046";
         public const string NonAsynchronousMethodNameShouldNotEndWithAsync = "RCS1047";
         public const string UseLambdaExpressionInsteadOfAnonymousMethod = "RCS1048";
         public const string SimplifyBooleanComparison = "RCS1049";
         public const string AddArgumentListToObjectCreation = "RCS1050";
         public const string ParenthesizeConditionOfConditionalExpression = "RCS1051";
+        public const string RemoveParenthesesFromConditionOfConditionalExpressionWhenExpressionIsSingleToken = "RCS1051a";
         public const string DeclareEachAttributeSeparately = "RCS1052";
         public const string AvoidSemicolonAtEndOfDeclaration = "RCS1055";
         public const string AvoidUsageOfUsingAliasDirective = "RCS1056";
@@ -208,5 +211,6 @@ namespace Roslynator.CSharp
         public const string SimplifyDefaultExpression = "RCS1244";
         public const string SimplifyConditionalExpression2 = "RCS1245";
         public const string UseElementAccess = "RCS1246";
+        public const string DoNotUseElementAccessWhenExpressionIsInvocation = "RCS1246a";
     }
 }

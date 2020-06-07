@@ -2,8 +2,12 @@
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
+using System.Text.RegularExpressions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
+
+#pragma warning disable RCS0047
 
 namespace Roslynator
 {
@@ -55,7 +59,7 @@ namespace Roslynator
             Location location,
             params object[] messageArgs)
         {
-            context.ReportDiagnostic(Diagnostic.Create(
+            ReportDiagnostic(context, Diagnostic.Create(
                 descriptor: descriptor,
                 location: location,
                 messageArgs: messageArgs));
@@ -68,7 +72,7 @@ namespace Roslynator
             IEnumerable<Location> additionalLocations,
             params object[] messageArgs)
         {
-            context.ReportDiagnostic(Diagnostic.Create(
+            ReportDiagnostic(context, Diagnostic.Create(
                 descriptor: descriptor,
                 location: location,
                 additionalLocations: additionalLocations,
@@ -82,7 +86,7 @@ namespace Roslynator
             ImmutableDictionary<string, string> properties,
             params object[] messageArgs)
         {
-            context.ReportDiagnostic(Diagnostic.Create(
+            ReportDiagnostic(context, Diagnostic.Create(
                 descriptor: descriptor,
                 location: location,
                 properties: properties,
@@ -97,12 +101,19 @@ namespace Roslynator
             ImmutableDictionary<string, string> properties,
             params object[] messageArgs)
         {
-            context.ReportDiagnostic(Diagnostic.Create(
+            ReportDiagnostic(context, Diagnostic.Create(
                 descriptor: descriptor,
                 location: location,
                 additionalLocations: additionalLocations,
                 properties: properties,
                 messageArgs: messageArgs));
+        }
+
+        private static void ReportDiagnostic(SymbolAnalysisContext context, Diagnostic diagnostic)
+        {
+            VerifyDiagnostic(diagnostic);
+
+            context.ReportDiagnostic(diagnostic);
         }
         #endregion SymbolAnalysisContext
 
@@ -164,7 +175,7 @@ namespace Roslynator
             Location location,
             params object[] messageArgs)
         {
-            context.ReportDiagnostic(Diagnostic.Create(
+            ReportDiagnostic(context, Diagnostic.Create(
                 descriptor: descriptor,
                 location: location,
                 messageArgs: messageArgs));
@@ -177,7 +188,7 @@ namespace Roslynator
             IEnumerable<Location> additionalLocations,
             params object[] messageArgs)
         {
-            context.ReportDiagnostic(Diagnostic.Create(
+            ReportDiagnostic(context, Diagnostic.Create(
                 descriptor: descriptor,
                 location: location,
                 additionalLocations: additionalLocations,
@@ -191,7 +202,7 @@ namespace Roslynator
             ImmutableDictionary<string, string> properties,
             params object[] messageArgs)
         {
-            context.ReportDiagnostic(Diagnostic.Create(
+            ReportDiagnostic(context, Diagnostic.Create(
                 descriptor: descriptor,
                 location: location,
                 properties: properties,
@@ -206,7 +217,7 @@ namespace Roslynator
             ImmutableDictionary<string, string> properties,
             params object[] messageArgs)
         {
-            context.ReportDiagnostic(Diagnostic.Create(
+            ReportDiagnostic(context, Diagnostic.Create(
                 descriptor: descriptor,
                 location: location,
                 additionalLocations: additionalLocations,
@@ -224,6 +235,13 @@ namespace Roslynator
         {
             if (!node.IsMissing)
                 ReportDiagnostic(context, descriptor, node, messageArgs);
+        }
+
+        public static void ReportDiagnostic(SyntaxNodeAnalysisContext context, Diagnostic diagnostic)
+        {
+            VerifyDiagnostic(diagnostic);
+
+            context.ReportDiagnostic(diagnostic);
         }
         #endregion SyntaxNodeAnalysisContext
 
@@ -273,7 +291,7 @@ namespace Roslynator
             Location location,
             params object[] messageArgs)
         {
-            context.ReportDiagnostic(Diagnostic.Create(
+            ReportDiagnostic(context, Diagnostic.Create(
                 descriptor: descriptor,
                 location: location,
                 messageArgs: messageArgs));
@@ -286,7 +304,7 @@ namespace Roslynator
             IEnumerable<Location> additionalLocations,
             params object[] messageArgs)
         {
-            context.ReportDiagnostic(Diagnostic.Create(
+            ReportDiagnostic(context, Diagnostic.Create(
                 descriptor: descriptor,
                 location: location,
                 additionalLocations: additionalLocations,
@@ -300,7 +318,7 @@ namespace Roslynator
             ImmutableDictionary<string, string> properties,
             params object[] messageArgs)
         {
-            context.ReportDiagnostic(Diagnostic.Create(
+            ReportDiagnostic(context, Diagnostic.Create(
                 descriptor: descriptor,
                 location: location,
                 properties: properties,
@@ -315,13 +333,26 @@ namespace Roslynator
             ImmutableDictionary<string, string> properties,
             params object[] messageArgs)
         {
-            context.ReportDiagnostic(Diagnostic.Create(
+            ReportDiagnostic(context, Diagnostic.Create(
                 descriptor: descriptor,
                 location: location,
                 additionalLocations: additionalLocations,
                 properties: properties,
                 messageArgs: messageArgs));
+        }
+
+        private static void ReportDiagnostic(SyntaxTreeAnalysisContext context, Diagnostic diagnostic)
+        {
+            VerifyDiagnostic(diagnostic);
+
+            context.ReportDiagnostic(diagnostic);
         }
         #endregion SyntaxTreeAnalysisContext
+
+        [Conditional("DEBUG")]
+        private static void VerifyDiagnostic(Diagnostic diagnostic)
+        {
+            Debug.Assert(Regex.IsMatch(diagnostic.Id, @"\ARCS[0-9]{4}(FadeOut)?\z"), $"Invalid diagnostic id '{diagnostic.Id}'.");
+        }
     }
 }

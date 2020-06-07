@@ -19,6 +19,11 @@ namespace Roslynator
 
         public CodeAnalysisConfiguration ConfigFile { get; set; }
 
+        internal void ApplyTo(AnalyzerSettings analyzerSettings)
+        {
+            analyzerSettings.Reset(VisualStudio, (UseConfigFile) ? ConfigFile : null);
+        }
+
         internal void ApplyTo(RefactoringSettings refactoringSettings)
         {
             refactoringSettings.Reset(VisualStudio, (UseConfigFile) ? ConfigFile : null);

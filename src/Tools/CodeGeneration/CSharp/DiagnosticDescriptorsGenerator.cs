@@ -19,93 +19,114 @@ namespace Roslynator.CodeGeneration.CSharp
             IEnumerable<AnalyzerMetadata> analyzers,
             bool obsolete,
             IComparer<string> comparer,
-            string @namespace)
+            string @namespace,
+            string className,
+            string identifiersClassName)
         {
             CompilationUnitSyntax compilationUnit = CompilationUnit(
                 UsingDirectives("System", "Microsoft.CodeAnalysis"),
                 NamespaceDeclaration(@namespace,
                     ClassDeclaration(
                         Modifiers.Public_Static_Partial(),
-                        "DiagnosticDescriptors",
+                        className,
                         List(
                             CreateMembers(
                                 analyzers
                                     .Where(f => f.IsObsolete == obsolete)
                                     .OrderBy(f => f.Id, comparer),
-                                obsolete: obsolete)))));
+                                identifiersClassName)))));
 
             compilationUnit = compilationUnit.NormalizeWhitespace();
 
             return (CompilationUnitSyntax)Rewriter.Instance.Visit(compilationUnit);
         }
 
-        private static IEnumerable<MemberDeclarationSyntax> CreateMembers(IEnumerable<AnalyzerMetadata> analyzers, bool obsolete)
+        private static IEnumerable<MemberDeclarationSyntax> CreateMembers(IEnumerable<AnalyzerMetadata> analyzers, string identifiersClassName)
         {
             foreach (AnalyzerMetadata analyzer in analyzers)
             {
-                FieldDeclarationSyntax fieldDeclaration = FieldDeclaration(
-                    (obsolete) ? Modifiers.Internal_Static_ReadOnly() : Modifiers.Public_Static_ReadOnly(),
-                    IdentifierName("DiagnosticDescriptor"),
-                    analyzer.Identifier,
-                    SimpleMemberInvocationExpression(
-                        IdentifierName("Factory"),
-                        IdentifierName("Create"),
-                        ArgumentList(
-                            Argument(
-                                NameColon("id"),
-                                SimpleMemberAccessExpression(IdentifierName("DiagnosticIdentifiers"), IdentifierName(analyzer.Identifier))),
-                            Argument(
-                                NameColon("title"),
-                                StringLiteralExpression(analyzer.Title)),
-                            Argument(
-                                NameColon("messageFormat"),
-                                StringLiteralExpression(analyzer.MessageFormat)),
-                            Argument(
-                                NameColon("category"),
-                                SimpleMemberAccessExpression(IdentifierName("DiagnosticCategories"), IdentifierName(analyzer.Category))),
-                            Argument(
-                                NameColon("defaultSeverity"),
-                                SimpleMemberAccessExpression(IdentifierName("DiagnosticSeverity"), IdentifierName(analyzer.DefaultSeverity))),
-                            Argument(
-                                NameColon("isEnabledByDefault"),
-                                BooleanLiteralExpression(analyzer.IsEnabledByDefault)),
-                            Argument(
-                                NameColon("description"),
-                                NullLiteralExpression()),
-                            Argument(
-                                NameColon("helpLinkUri"),
-                                SimpleMemberAccessExpression(IdentifierName("DiagnosticIdentifiers"), IdentifierName(analyzer.Identifier))),
-                            Argument(
-                                NameColon("customTags"),
-                                (analyzer.SupportsFadeOut)
-                                    ? SimpleMemberAccessExpression(IdentifierName("WellKnownDiagnosticTags"), IdentifierName("Unnecessary"))
-                                    : ParseExpression("Array.Empty<string>()"))
-                            ))).AddObsoleteAttributeIf(analyzer.IsObsolete, error: true);
+                string identifier = analyzer.Identifier;
+                string title = analyzer.Title;
+                string messageFormat = analyzer.MessageFormat;
+                bool isEnabledByDefault = analyzer.IsEnabledByDefault;
 
-                if (!analyzer.IsObsolete)
-                {
-                    var settings = new DocumentationCommentGeneratorSettings(
-                        summary: new string[] { analyzer.Id },
-                        indentation: "        ",
-                        singleLineSummary: true);
-
-                    fieldDeclaration = fieldDeclaration.WithNewSingleLineDocumentationComment(settings);
-                }
-
-                yield return fieldDeclaration;
+                yield return CreateMember(
+                    analyzer,
+                    identifiersClassName);
 
                 if (analyzer.SupportsFadeOutAnalyzer)
                 {
                     yield return FieldDeclaration(
                         Modifiers.Public_Static_ReadOnly(),
                         IdentifierName("DiagnosticDescriptor"),
-                        analyzer.Identifier + "FadeOut",
+                        identifier + "FadeOut",
                         SimpleMemberInvocationExpression(
                             IdentifierName("DiagnosticDescriptorFactory"),
                             IdentifierName("CreateFadeOut"),
-                            ArgumentList(Argument(IdentifierName(analyzer.Identifier))))).AddObsoleteAttributeIf(analyzer.IsObsolete, error: true);
+                            ArgumentList(Argument(IdentifierName(identifier))))).AddObsoleteAttributeIf(analyzer.IsObsolete, error: true);
+                }
+
+                foreach (AnalyzerMetadata optionAnalyzer in analyzer.OptionAnalyzers)
+                {
+                    yield return CreateMember(optionAnalyzer, identifiersClassName);
                 }
             }
+        }
+
+        private static MemberDeclarationSyntax CreateMember(
+            AnalyzerMetadata analyzer,
+            string identifiersClassName)
+        {
+            FieldDeclarationSyntax fieldDeclaration = FieldDeclaration(
+                (analyzer.IsObsolete) ? Modifiers.Internal_Static_ReadOnly() : Modifiers.Public_Static_ReadOnly(),
+                IdentifierName("DiagnosticDescriptor"),
+                analyzer.Identifier,
+                SimpleMemberInvocationExpression(
+                    IdentifierName("Factory"),
+                    IdentifierName("Create"),
+                    ArgumentList(
+                        Argument(
+                            NameColon("id"),
+                            SimpleMemberAccessExpression(IdentifierName(identifiersClassName), IdentifierName(analyzer.Identifier))),
+                        Argument(
+                            NameColon("title"),
+                            StringLiteralExpression(analyzer.Title)),
+                        Argument(
+                            NameColon("messageFormat"),
+                            StringLiteralExpression(analyzer.MessageFormat)),
+                        Argument(
+                            NameColon("category"),
+                            SimpleMemberAccessExpression(IdentifierName("DiagnosticCategories"), IdentifierName(analyzer.Category))),
+                        Argument(
+                            NameColon("defaultSeverity"),
+                            SimpleMemberAccessExpression(IdentifierName("DiagnosticSeverity"), IdentifierName(analyzer.DefaultSeverity))),
+                        Argument(
+                            NameColon("isEnabledByDefault"),
+                            BooleanLiteralExpression(analyzer.IsEnabledByDefault)),
+                        Argument(
+                            NameColon("description"),
+                            NullLiteralExpression()),
+                        Argument(
+                            NameColon("helpLinkUri"),
+                            SimpleMemberAccessExpression(IdentifierName(identifiersClassName), IdentifierName(analyzer.Identifier))),
+                        Argument(
+                            NameColon("customTags"),
+                            (analyzer.SupportsFadeOut)
+                                ? SimpleMemberAccessExpression(IdentifierName("WellKnownDiagnosticTags"), IdentifierName(WellKnownDiagnosticTags.Unnecessary))
+                                : ParseExpression("Array.Empty<string>()"))
+                        ))).AddObsoleteAttributeIf(analyzer.IsObsolete, error: true);
+
+            if (!analyzer.IsObsolete)
+            {
+                var settings = new DocumentationCommentGeneratorSettings(
+                    summary: new string[] { analyzer.Id },
+                    indentation: "        ",
+                    singleLineSummary: true);
+
+                fieldDeclaration = fieldDeclaration.WithNewSingleLineDocumentationComment(settings);
+            }
+
+            return fieldDeclaration;
         }
 
         private class Rewriter : CSharpSyntaxRewriter

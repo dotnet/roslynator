@@ -235,10 +235,7 @@ namespace Roslynator.CSharp.CodeFixes
                                 && expression is ParenthesizedExpressionSyntax parenthesizedExpression
                                 && parenthesizedExpression?.IsMissing == false)
                             {
-                                CodeAction codeAction = CodeAction.Create(
-                                    "Remove parentheses",
-                                    cancellationToken => RemoveRedundantParenthesesRefactoring.RefactorAsync(context.Document, parenthesizedExpression, cancellationToken),
-                                    GetEquivalenceKey(diagnostic));
+                                CodeAction codeAction = CodeActionFactory.RemoveParentheses(context.Document, parenthesizedExpression, equivalenceKey: GetEquivalenceKey(diagnostic));
 
                                 context.RegisterCodeFix(codeAction, diagnostic);
                                 break;

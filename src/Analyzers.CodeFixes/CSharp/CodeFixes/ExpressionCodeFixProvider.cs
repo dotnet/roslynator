@@ -21,7 +21,12 @@ namespace Roslynator.CSharp.CodeFixes
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.ExpressionIsAlwaysEqualToTrueOrFalse); }
+            get
+            {
+                return ImmutableArray.Create(
+                    DiagnosticIdentifiers.ExpressionIsAlwaysEqualToTrueOrFalse,
+                    DiagnosticIdentifiers.ParenthesizeConditionOfConditionalExpression);
+            }
         }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -37,6 +42,26 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 switch (diagnostic.Id)
                 {
+                    case DiagnosticIdentifiers.ParenthesizeConditionOfConditionalExpression:
+                        {
+                            if (expression is ParenthesizedExpressionSyntax parenthesizedExpression)
+                            {
+                                CodeAction codeAction = CodeActionFactory.RemoveParentheses(document, parenthesizedExpression, equivalenceKey: GetEquivalenceKey(diagnostic));
+
+                                context.RegisterCodeFix(codeAction, diagnostic);
+                            }
+                            else
+                            {
+                                CodeAction codeAction = CodeAction.Create(
+                                    "Parenthesize condition",
+                                    ct => ParenthesizeConditionOfConditionalExpressionAsync(document, expression, ct),
+                                    GetEquivalenceKey(diagnostic));
+
+                                context.RegisterCodeFix(codeAction, diagnostic);
+                            }
+
+                            break;
+                        }
                     case DiagnosticIdentifiers.ExpressionIsAlwaysEqualToTrueOrFalse:
                         {
                             if (expression.IsKind(
@@ -94,6 +119,18 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                 }
             }
+        }
+
+        private static Task<Document> ParenthesizeConditionOfConditionalExpressionAsync(
+            Document document,
+            ExpressionSyntax condition,
+            CancellationToken cancellationToken)
+        {
+            ExpressionSyntax newCondition = ParenthesizedExpression(condition.WithoutTrivia())
+                .WithTriviaFrom(condition)
+                .WithFormatterAnnotation();
+
+            return document.ReplaceNodeAsync(condition, newCondition, cancellationToken);
         }
 
         private static Task<Document> RemoveUnnecessaryNullCheckAsync(

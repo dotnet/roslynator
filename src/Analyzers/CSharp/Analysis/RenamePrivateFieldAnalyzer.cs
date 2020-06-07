@@ -31,9 +31,14 @@ namespace Roslynator.CSharp.Analysis
                 && !string.IsNullOrEmpty(fieldSymbol.Name)
                 && !IsValidIdentifier(fieldSymbol.Name))
             {
-                DiagnosticHelpers.ReportDiagnostic(context,
-                    DiagnosticDescriptors.RenamePrivateFieldToCamelCaseWithUnderscore,
-                    fieldSymbol.Locations[0]);
+                if (!fieldSymbol.IsStatic
+                    || !fieldSymbol.IsReadOnly
+                    || context.IsAnalyzerSuppressed(DiagnosticDescriptors.DoNotRenamePrivateStaticReadOnlyFieldToCamelCaseWithUnderscore))
+                {
+                    DiagnosticHelpers.ReportDiagnostic(context,
+                        DiagnosticDescriptors.RenamePrivateFieldToCamelCaseWithUnderscore,
+                        fieldSymbol.Locations[0]);
+                }
             }
         }
 

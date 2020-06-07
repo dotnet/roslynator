@@ -339,6 +339,18 @@ namespace Roslynator.CSharp
             helpLinkUri:        DiagnosticIdentifiers.RemoveRedundantEmptyLine, 
             customTags:         Array.Empty<string>());
 
+        /// <summary>RCS1036a</summary>
+        public static readonly DiagnosticDescriptor RemoveEmptyLineBetweenClosingBraceAndSwitchSection = Factory.Create(
+            id:                 DiagnosticIdentifiers.RemoveEmptyLineBetweenClosingBraceAndSwitchSection, 
+            title:              "Remove empty line between closing brace and switch section.", 
+            messageFormat:      "Remove empty line between closing brace and switch section.", 
+            category:           DiagnosticCategories.AnalyzerOption, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: false, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.RemoveEmptyLineBetweenClosingBraceAndSwitchSection, 
+            customTags:         Array.Empty<string>());
+
         /// <summary>RCS1037</summary>
         public static readonly DiagnosticDescriptor RemoveTrailingWhitespace = Factory.Create(
             id:                 DiagnosticIdentifiers.RemoveTrailingWhitespace, 
@@ -447,6 +459,18 @@ namespace Roslynator.CSharp
             helpLinkUri:        DiagnosticIdentifiers.RenamePrivateFieldToCamelCaseWithUnderscore, 
             customTags:         Array.Empty<string>());
 
+        /// <summary>RCS1045a</summary>
+        public static readonly DiagnosticDescriptor DoNotRenamePrivateStaticReadOnlyFieldToCamelCaseWithUnderscore = Factory.Create(
+            id:                 DiagnosticIdentifiers.DoNotRenamePrivateStaticReadOnlyFieldToCamelCaseWithUnderscore, 
+            title:              "Do not rename private static read-only field to camel case with underscore.", 
+            messageFormat:      "Do not rename private static read-only field to camel case with underscore.", 
+            category:           DiagnosticCategories.AnalyzerOption, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: false, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.DoNotRenamePrivateStaticReadOnlyFieldToCamelCaseWithUnderscore, 
+            customTags:         Array.Empty<string>());
+
         /// <summary>RCS1046</summary>
         public static readonly DiagnosticDescriptor AsynchronousMethodNameShouldEndWithAsync = Factory.Create(
             id:                 DiagnosticIdentifiers.AsynchronousMethodNameShouldEndWithAsync, 
@@ -517,12 +541,24 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor ParenthesizeConditionOfConditionalExpression = Factory.Create(
             id:                 DiagnosticIdentifiers.ParenthesizeConditionOfConditionalExpression, 
             title:              "Parenthesize condition of conditional expression.", 
-            messageFormat:      "Parenthesize condition of conditional expression.", 
+            messageFormat:      "{0} condition of conditional expression.", 
             category:           DiagnosticCategories.Style, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.ParenthesizeConditionOfConditionalExpression, 
+            customTags:         Array.Empty<string>());
+
+        /// <summary>RCS1051a</summary>
+        public static readonly DiagnosticDescriptor RemoveParenthesesFromConditionOfConditionalExpressionWhenExpressionIsSingleToken = Factory.Create(
+            id:                 DiagnosticIdentifiers.RemoveParenthesesFromConditionOfConditionalExpressionWhenExpressionIsSingleToken, 
+            title:              "Remove parentheses from condition of conditional expression (when condition is a single token).", 
+            messageFormat:      "Remove parentheses from condition of conditional expression (when condition is a single token).", 
+            category:           DiagnosticCategories.AnalyzerOption, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: false, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.RemoveParenthesesFromConditionOfConditionalExpressionWhenExpressionIsSingleToken, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1052</summary>
@@ -2463,6 +2499,18 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true, 
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.UseElementAccess, 
+            customTags:         Array.Empty<string>());
+
+        /// <summary>RCS1246a</summary>
+        public static readonly DiagnosticDescriptor DoNotUseElementAccessWhenExpressionIsInvocation = Factory.Create(
+            id:                 DiagnosticIdentifiers.DoNotUseElementAccessWhenExpressionIsInvocation, 
+            title:              "Do not use element access when expression is invocation.", 
+            messageFormat:      "Do not use element access when expression is invocation.", 
+            category:           DiagnosticCategories.AnalyzerOption, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: false, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.DoNotUseElementAccessWhenExpressionIsInvocation, 
             customTags:         Array.Empty<string>());
 
     }

@@ -20,5 +20,20 @@ namespace Roslynator.Metadata
 
             return bool.Parse(attribute.Value);
         }
+
+        public static bool ElementValueAsBoolean(this XElement element, string elementName)
+        {
+            return bool.Parse(element.Element(elementName).Value);
+        }
+
+        public static bool ElementValueAsBooleanOrDefault(this XElement element, string elementName, bool defaultValue = false)
+        {
+            XElement e = element.Element(elementName);
+
+            if (e == null)
+                return defaultValue;
+
+            return bool.Parse(e.Value);
+        }
     }
 }

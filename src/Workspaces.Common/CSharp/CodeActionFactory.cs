@@ -134,5 +134,17 @@ namespace Roslynator.CSharp
                 ct => DocumentRefactorings.RemoveAsyncAwaitAsync(document, asyncKeyword, ct),
                 equivalenceKey);
         }
+
+        public static CodeAction RemoveParentheses(
+            Document document,
+            ParenthesizedExpressionSyntax parenthesizedExpression,
+            string title = null,
+            string equivalenceKey = null)
+        {
+            return CodeAction.Create(
+                title ?? "Remove parentheses",
+                ct => DocumentRefactorings.RemoveParenthesesAsync(document, parenthesizedExpression, ct),
+                equivalenceKey);
+        }
     }
 }

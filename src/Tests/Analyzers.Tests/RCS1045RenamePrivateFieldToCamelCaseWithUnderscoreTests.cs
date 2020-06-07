@@ -84,6 +84,35 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RenamePrivateFieldToCamelCaseWithUnderscore)]
+        public async Task Test_StaticReadOnly()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    private static readonly string _f;
+    private static readonly string [|f|];
+}
+", @"
+class C
+{
+    private static readonly string _f;
+    private static readonly string _f2;
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RenamePrivateFieldToCamelCaseWithUnderscore)]
+        public async Task TestNoDiagnostic_StaticReadOnly()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    private static readonly string f;
+}
+", options: Options.WithEnabled(DiagnosticDescriptors.DoNotRenamePrivateStaticReadOnlyFieldToCamelCaseWithUnderscore));
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RenamePrivateFieldToCamelCaseWithUnderscore)]
         public async Task TestNoDiagnostic_StaticPrefix()
         {
             await VerifyNoDiagnosticAsync(@"

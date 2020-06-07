@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Analysis.Tests
 
         public override DiagnosticAnalyzer Analyzer { get; } = new RemoveRedundantParenthesesAnalyzer();
 
-        public override CodeFixProvider FixProvider { get; } = new RemoveRedundantParenthesesCodeFixProvider();
+        public override CodeFixProvider FixProvider { get; } = new ParenthesizedExpressionCodeFixProvider();
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantParentheses)]
         public async Task Test_Argument()
