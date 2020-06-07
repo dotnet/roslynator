@@ -24,7 +24,6 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.SimplifyLazyInitialization,
-                    DiagnosticIdentifiers.FormatSingleLineBlock,
                     DiagnosticIdentifiers.RemoveUnnecessaryBraces);
             }
         }
@@ -52,16 +51,6 @@ namespace Roslynator.CSharp.CodeFixes
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
-                    case DiagnosticIdentifiers.FormatSingleLineBlock:
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Format block",
-                                ct => FormatSingleLineBlockAsync(document, block, ct),
-                                GetEquivalenceKey(diagnostic));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
                     case DiagnosticIdentifiers.RemoveUnnecessaryBraces:
                         {
                             CodeAction codeAction = CodeAction.Create(
@@ -74,20 +63,6 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                 }
             }
-        }
-
-        private static Task<Document> FormatSingleLineBlockAsync(
-            Document document,
-            BlockSyntax block,
-            CancellationToken cancellationToken)
-        {
-            SyntaxToken closeBrace = block.CloseBraceToken;
-
-            BlockSyntax newBlock = block
-                .WithCloseBraceToken(closeBrace.WithLeadingTrivia(closeBrace.LeadingTrivia.Add(CSharpFactory.NewLine())))
-                .WithFormatterAnnotation();
-
-            return document.ReplaceNodeAsync(block, newBlock, cancellationToken);
         }
 
         private static Task<Document> RemoveBracesAsync(

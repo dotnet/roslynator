@@ -416,7 +416,7 @@ protected internal class Foo
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="FormatEmptyBlock">
+  <Analyzer Identifier="FormatEmptyBlock" IsObsolete="true">
     <Id>RCS1023</Id>
     <Title>Format empty block.</Title>
     <Category>Formatting</Category>
@@ -432,7 +432,7 @@ protected internal class Foo
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="FormatAccessorList">
+  <Analyzer Identifier="FormatAccessorList" IsObsolete="true">
     <Id>RCS1024</Id>
     <Title>Format accessor list.</Title>
     <Category>Formatting</Category>
@@ -449,7 +449,7 @@ protected internal class Foo
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AddNewLineBeforeEnumMember">
+  <Analyzer Identifier="AddNewLineBeforeEnumMember" IsObsolete="true">
     <Id>RCS1025</Id>
     <Title>Add new line before enum member.</Title>
     <Category>Formatting</Category>
@@ -467,7 +467,7 @@ protected internal class Foo
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AddNewLineBeforeStatement">
+  <Analyzer Identifier="AddNewLineBeforeStatement" IsObsolete="true">
     <Id>RCS1026</Id>
     <Title>Add new line before statement.</Title>
     <Category>Formatting</Category>
@@ -481,7 +481,7 @@ Bar();]]></After>
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AddNewLineBeforeEmbeddedStatement">
+  <Analyzer Identifier="AddNewLineBeforeEmbeddedStatement" IsObsolete="true">
     <Id>RCS1027</Id>
     <Title>Add new line before embedded statement.</Title>
     <Category>Formatting</Category>
@@ -497,7 +497,7 @@ Bar();]]></After>
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AddNewLineAfterSwitchLabel">
+  <Analyzer Identifier="AddNewLineAfterSwitchLabel" IsObsolete="true">
     <Id>RCS1028</Id>
     <Title>Add new line after switch label.</Title>
     <Category>Formatting</Category>
@@ -520,7 +520,7 @@ Bar();]]></After>
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="FormatBinaryOperatorOnNextLine">
+  <Analyzer Identifier="FormatBinaryOperatorOnNextLine" IsObsolete="true">
     <Id>RCS1029</Id>
     <Title>Format binary operator on next line.</Title>
     <Category>Formatting</Category>
@@ -541,7 +541,7 @@ Bar();]]></After>
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AddEmptyLineAfterEmbeddedStatement">
+  <Analyzer Identifier="AddEmptyLineAfterEmbeddedStatement" IsObsolete="true">
     <Id>RCS1030</Id>
     <Title>Add empty line after embedded statement.</Title>
     <Category>Formatting</Category>
@@ -1074,7 +1074,7 @@ public class Foo
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AddEmptyLineBetweenDeclarations">
+  <Analyzer Identifier="AddEmptyLineBetweenDeclarations" IsObsolete="true">
     <Id>RCS1057</Id>
     <Title>Add empty line between declarations.</Title>
     <Category>Formatting</Category>
@@ -1540,7 +1540,7 @@ catch (Exception ex) // [|Id|]
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="FormatDeclarationBraces">
+  <Analyzer Identifier="FormatDeclarationBraces" IsObsolete="true">
     <Id>RCS1076</Id>
     <Title>Format declaration braces.</Title>
     <Category>Formatting</Category>
@@ -1768,21 +1768,21 @@ public string Foo // [|Id|]
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="UseLinefeedAsNewLine">
+  <Analyzer Identifier="UseLinefeedAsNewLine" IsObsolete="true">
     <Id>RCS1086</Id>
     <Title>Use linefeed as newline.</Title>
     <Category>General</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
   </Analyzer>
-  <Analyzer Identifier="UseCarriageReturnAndLinefeedAsNewLine">
+  <Analyzer Identifier="UseCarriageReturnAndLinefeedAsNewLine" IsObsolete="true">
     <Id>RCS1087</Id>
     <Title>Use carriage return + linefeed as newline.</Title>
     <Category>General</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
   </Analyzer>
-  <Analyzer Identifier="UseSpacesInsteadOfTab">
+  <Analyzer Identifier="UseSpacesInsteadOfTab" IsObsolete="true">
     <Id>RCS1088</Id>
     <Title>Use space(s) instead of tab.</Title>
     <Category>General</Category>
@@ -1843,7 +1843,7 @@ public string Foo // [|Id|]
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AddEmptyLineBeforeWhileInDoStatement">
+  <Analyzer Identifier="AddEmptyLineBeforeWhileInDoStatement" IsObsolete="true">
     <Id>RCS1092</Id>
     <Title>Add empty line before 'while' keyword in 'do' statement.</Title>
     <Category>Formatting</Category>
@@ -2905,7 +2905,7 @@ string s2 = s as string; // [|Id|]]]></Before>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
   </Analyzer>
-  <Analyzer Identifier="AddEmptyLineAfterClosingBrace">
+  <Analyzer Identifier="AddEmptyLineAfterClosingBrace" IsObsolete="true">
     <Id>RCS1153</Id>
     <Title>Add empty line after closing brace.</Title>
     <Category>Formatting</Category>
@@ -3503,7 +3503,7 @@ public string Value { get; }]]></After>
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="FormatInitializerWithSingleExpressionOnSingleLine">
+  <Analyzer Identifier="FormatInitializerWithSingleExpressionOnSingleLine" IsObsolete="true">
     <Id>RCS1183</Id>
     <Title>Format initializer with single expression on single line.</Title>
     <Category>Formatting</Category>
@@ -3519,7 +3519,7 @@ public string Value { get; }]]></After>
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="FormatConditionalExpression">
+  <Analyzer Identifier="FormatConditionalExpression" IsObsolete="true">
     <Id>RCS1184</Id>
     <Title>Format conditional expression (format ? and : on next line).</Title>
     <MessageFormat>Format conditional expression.</MessageFormat>
@@ -3537,7 +3537,7 @@ Bar();]]></Before>
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="FormatSingleLineBlock">
+  <Analyzer Identifier="FormatSingleLineBlock" IsObsolete="true">
     <Id>RCS1185</Id>
     <Title>Format single-line block.</Title>
     <Category>Formatting</Category>

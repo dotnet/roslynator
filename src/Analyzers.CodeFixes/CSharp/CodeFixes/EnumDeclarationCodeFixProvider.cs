@@ -14,7 +14,6 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 using Roslynator.Comparers;
-using Roslynator.CSharp.Refactorings;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -29,7 +28,6 @@ namespace Roslynator.CSharp.CodeFixes
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticIdentifiers.AddNewLineBeforeEnumMember,
                     DiagnosticIdentifiers.SortEnumMembers,
                     DiagnosticIdentifiers.EnumShouldDeclareExplicitValues,
                     DiagnosticIdentifiers.UseBitShiftOperator);
@@ -49,16 +47,6 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 switch (diagnostic.Id)
                 {
-                    case DiagnosticIdentifiers.AddNewLineBeforeEnumMember:
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Add newline",
-                                cancellationToken => AddNewLineBeforeEnumMemberRefactoring.RefactorAsync(document, enumDeclaration, cancellationToken),
-                                GetEquivalenceKey(diagnostic));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
                     case DiagnosticIdentifiers.SortEnumMembers:
                         {
                             CodeAction codeAction = CodeAction.Create(

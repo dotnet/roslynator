@@ -11,15 +11,43 @@ namespace Roslynator.CSharp
         [Obsolete("", error: true)]
         public const string SimplifyLambdaExpressionParameterList = "RCS1022";
         [Obsolete("", error: true)]
+        public const string FormatEmptyBlock = "RCS1023";
+        [Obsolete("", error: true)]
+        public const string FormatAccessorList = "RCS1024";
+        [Obsolete("", error: true)]
+        public const string AddNewLineBeforeEnumMember = "RCS1025";
+        [Obsolete("", error: true)]
+        public const string AddNewLineBeforeStatement = "RCS1026";
+        [Obsolete("", error: true)]
+        public const string AddNewLineBeforeEmbeddedStatement = "RCS1027";
+        [Obsolete("", error: true)]
+        public const string AddNewLineAfterSwitchLabel = "RCS1028";
+        [Obsolete("", error: true)]
+        public const string FormatBinaryOperatorOnNextLine = "RCS1029";
+        [Obsolete("", error: true)]
+        public const string AddEmptyLineAfterEmbeddedStatement = "RCS1030";
+        [Obsolete("", error: true)]
         public const string ReplaceForEachWithFor = "RCS1053";
         [Obsolete("", error: true)]
         public const string MergeLocalDeclarationWithReturnStatement = "RCS1054";
         [Obsolete("", error: true)]
+        public const string AddEmptyLineBetweenDeclarations = "RCS1057";
+        [Obsolete("", error: true)]
         public const string AvoidInterpolatedStringWithNoInterpolation = "RCS1062";
+        [Obsolete("", error: true)]
+        public const string FormatDeclarationBraces = "RCS1076";
         [Obsolete("", error: true)]
         public const string UseCountOrLengthPropertyInsteadOfCountMethod = "RCS1082";
         [Obsolete("", error: true)]
         public const string CallAnyInsteadOfCount = "RCS1083";
+        [Obsolete("", error: true)]
+        public const string UseLinefeedAsNewLine = "RCS1086";
+        [Obsolete("", error: true)]
+        public const string UseCarriageReturnAndLinefeedAsNewLine = "RCS1087";
+        [Obsolete("", error: true)]
+        public const string UseSpacesInsteadOfTab = "RCS1088";
+        [Obsolete("", error: true)]
+        public const string AddEmptyLineBeforeWhileInDoStatement = "RCS1092";
         [Obsolete("", error: true)]
         public const string UseCSharp6DictionaryInitializer = "RCS1095";
         [Obsolete("", error: true)]
@@ -59,8 +87,16 @@ namespace Roslynator.CSharp
         [Obsolete("", error: true)]
         public const string MemberTypeMustMatchOverriddenMemberType = "RCS1152";
         [Obsolete("", error: true)]
+        public const string AddEmptyLineAfterClosingBrace = "RCS1153";
+        [Obsolete("", error: true)]
         public const string OverridingMemberCannotChangeAccessModifiers = "RCS1167";
         [Obsolete("", error: true)]
         public const string CallDebugFailInsteadOfDebugAssert = "RCS1178";
+        [Obsolete("", error: true)]
+        public const string FormatInitializerWithSingleExpressionOnSingleLine = "RCS1183";
+        [Obsolete("", error: true)]
+        public const string FormatConditionalExpression = "RCS1184";
+        [Obsolete("", error: true)]
+        public const string FormatSingleLineBlock = "RCS1185";
     }
 }

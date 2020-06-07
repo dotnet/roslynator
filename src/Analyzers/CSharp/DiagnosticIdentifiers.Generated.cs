@@ -28,14 +28,6 @@ namespace Roslynator.CSharp
         public const string OrderModifiers = "RCS1019";
         public const string SimplifyNullableOfT = "RCS1020";
         public const string SimplifyLambdaExpression = "RCS1021";
-        public const string FormatEmptyBlock = "RCS1023";
-        public const string FormatAccessorList = "RCS1024";
-        public const string AddNewLineBeforeEnumMember = "RCS1025";
-        public const string AddNewLineBeforeStatement = "RCS1026";
-        public const string AddNewLineBeforeEmbeddedStatement = "RCS1027";
-        public const string AddNewLineAfterSwitchLabel = "RCS1028";
-        public const string FormatBinaryOperatorOnNextLine = "RCS1029";
-        public const string AddEmptyLineAfterEmbeddedStatement = "RCS1030";
         public const string RemoveUnnecessaryBraces = "RCS1031";
         public const string RemoveRedundantParentheses = "RCS1032";
         public const string RemoveRedundantBooleanLiteral = "RCS1033";
@@ -60,7 +52,6 @@ namespace Roslynator.CSharp
         public const string DeclareEachAttributeSeparately = "RCS1052";
         public const string AvoidSemicolonAtEndOfDeclaration = "RCS1055";
         public const string AvoidUsageOfUsingAliasDirective = "RCS1056";
-        public const string AddEmptyLineBetweenDeclarations = "RCS1057";
         public const string UseCompoundAssignment = "RCS1058";
         public const string AvoidLockingOnPubliclyAccessibleInstance = "RCS1059";
         public const string DeclareEachTypeInSeparateFile = "RCS1060";
@@ -78,7 +69,6 @@ namespace Roslynator.CSharp
         public const string ConvertIfToReturnStatement = "RCS1073";
         public const string RemoveRedundantConstructor = "RCS1074";
         public const string AvoidEmptyCatchClauseThatCatchesSystemException = "RCS1075";
-        public const string FormatDeclarationBraces = "RCS1076";
         public const string OptimizeLinqMethodCall = "RCS1077";
         public const string UseEmptyStringLiteralInsteadOfStringEmpty = "RCS1078";
         public const string ThrowingOfNewNotImplementedException = "RCS1079";
@@ -86,13 +76,9 @@ namespace Roslynator.CSharp
         public const string SplitVariableDeclaration = "RCS1081";
         public const string UseCoalesceExpressionInsteadOfConditionalExpression = "RCS1084";
         public const string UseAutoProperty = "RCS1085";
-        public const string UseLinefeedAsNewLine = "RCS1086";
-        public const string UseCarriageReturnAndLinefeedAsNewLine = "RCS1087";
-        public const string UseSpacesInsteadOfTab = "RCS1088";
         public const string UseUnaryOperatorInsteadOfAssignment = "RCS1089";
         public const string CallConfigureAwait = "RCS1090";
         public const string RemoveEmptyRegion = "RCS1091";
-        public const string AddEmptyLineBeforeWhileInDoStatement = "RCS1092";
         public const string RemoveFileWithNoCode = "RCS1093";
         public const string DeclareUsingDirectiveOnTopLevel = "RCS1094";
         public const string UseBitwiseOperationInsteadOfCallingHasFlag = "RCS1096";
@@ -134,7 +120,6 @@ namespace Roslynator.CSharp
         public const string RemoveRedundantAsOperator = "RCS1145";
         public const string UseConditionalAccess = "RCS1146";
         public const string RemoveRedundantCast = "RCS1151";
-        public const string AddEmptyLineAfterClosingBrace = "RCS1153";
         public const string SortEnumMembers = "RCS1154";
         public const string UseStringComparison = "RCS1155";
         public const string UseStringLengthInsteadOfComparisonWithEmptyString = "RCS1156";
@@ -162,9 +147,6 @@ namespace Roslynator.CSharp
         public const string InlineLazyInitialization = "RCS1180";
         public const string ConvertCommentToDocumentationComment = "RCS1181";
         public const string RemoveRedundantBaseInterface = "RCS1182";
-        public const string FormatInitializerWithSingleExpressionOnSingleLine = "RCS1183";
-        public const string FormatConditionalExpression = "RCS1184";
-        public const string FormatSingleLineBlock = "RCS1185";
         public const string UseRegexInstanceInsteadOfStaticMethod = "RCS1186";
         public const string UseConstantInsteadOfField = "RCS1187";
         public const string RemoveRedundantAutoPropertyInitialization = "RCS1188";

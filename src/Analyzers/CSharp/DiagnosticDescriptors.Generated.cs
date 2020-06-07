@@ -263,102 +263,6 @@ namespace Roslynator.CSharp
 
         public static readonly DiagnosticDescriptor SimplifyLambdaExpressionFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(SimplifyLambdaExpression);
 
-        /// <summary>RCS1023</summary>
-        public static readonly DiagnosticDescriptor FormatEmptyBlock = Factory.Create(
-            id:                 DiagnosticIdentifiers.FormatEmptyBlock, 
-            title:              "Format empty block.", 
-            messageFormat:      "Format empty block.", 
-            category:           DiagnosticCategories.Formatting, 
-            defaultSeverity:    DiagnosticSeverity.Hidden, 
-            isEnabledByDefault: true, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.FormatEmptyBlock, 
-            customTags:         Array.Empty<string>());
-
-        /// <summary>RCS1024</summary>
-        public static readonly DiagnosticDescriptor FormatAccessorList = Factory.Create(
-            id:                 DiagnosticIdentifiers.FormatAccessorList, 
-            title:              "Format accessor list.", 
-            messageFormat:      "Format accessor list.", 
-            category:           DiagnosticCategories.Formatting, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.FormatAccessorList, 
-            customTags:         Array.Empty<string>());
-
-        /// <summary>RCS1025</summary>
-        public static readonly DiagnosticDescriptor AddNewLineBeforeEnumMember = Factory.Create(
-            id:                 DiagnosticIdentifiers.AddNewLineBeforeEnumMember, 
-            title:              "Add new line before enum member.", 
-            messageFormat:      "Add new line before enum member.", 
-            category:           DiagnosticCategories.Formatting, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddNewLineBeforeEnumMember, 
-            customTags:         Array.Empty<string>());
-
-        /// <summary>RCS1026</summary>
-        public static readonly DiagnosticDescriptor AddNewLineBeforeStatement = Factory.Create(
-            id:                 DiagnosticIdentifiers.AddNewLineBeforeStatement, 
-            title:              "Add new line before statement.", 
-            messageFormat:      "Add new line before statement.", 
-            category:           DiagnosticCategories.Formatting, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddNewLineBeforeStatement, 
-            customTags:         Array.Empty<string>());
-
-        /// <summary>RCS1027</summary>
-        public static readonly DiagnosticDescriptor AddNewLineBeforeEmbeddedStatement = Factory.Create(
-            id:                 DiagnosticIdentifiers.AddNewLineBeforeEmbeddedStatement, 
-            title:              "Add new line before embedded statement.", 
-            messageFormat:      "Add new line before embedded statement.", 
-            category:           DiagnosticCategories.Formatting, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddNewLineBeforeEmbeddedStatement, 
-            customTags:         Array.Empty<string>());
-
-        /// <summary>RCS1028</summary>
-        public static readonly DiagnosticDescriptor AddNewLineAfterSwitchLabel = Factory.Create(
-            id:                 DiagnosticIdentifiers.AddNewLineAfterSwitchLabel, 
-            title:              "Add new line after switch label.", 
-            messageFormat:      "Add new line after switch label.", 
-            category:           DiagnosticCategories.Formatting, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddNewLineAfterSwitchLabel, 
-            customTags:         Array.Empty<string>());
-
-        /// <summary>RCS1029</summary>
-        public static readonly DiagnosticDescriptor FormatBinaryOperatorOnNextLine = Factory.Create(
-            id:                 DiagnosticIdentifiers.FormatBinaryOperatorOnNextLine, 
-            title:              "Format binary operator on next line.", 
-            messageFormat:      "Format binary operator on next line.", 
-            category:           DiagnosticCategories.Formatting, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.FormatBinaryOperatorOnNextLine, 
-            customTags:         Array.Empty<string>());
-
-        /// <summary>RCS1030</summary>
-        public static readonly DiagnosticDescriptor AddEmptyLineAfterEmbeddedStatement = Factory.Create(
-            id:                 DiagnosticIdentifiers.AddEmptyLineAfterEmbeddedStatement, 
-            title:              "Add empty line after embedded statement.", 
-            messageFormat:      "Add empty line after embedded statement.", 
-            category:           DiagnosticCategories.Formatting, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddEmptyLineAfterEmbeddedStatement, 
-            customTags:         Array.Empty<string>());
-
         /// <summary>RCS1031</summary>
         public static readonly DiagnosticDescriptor RemoveUnnecessaryBraces = Factory.Create(
             id:                 DiagnosticIdentifiers.RemoveUnnecessaryBraces, 
@@ -657,18 +561,6 @@ namespace Roslynator.CSharp
             helpLinkUri:        DiagnosticIdentifiers.AvoidUsageOfUsingAliasDirective, 
             customTags:         Array.Empty<string>());
 
-        /// <summary>RCS1057</summary>
-        public static readonly DiagnosticDescriptor AddEmptyLineBetweenDeclarations = Factory.Create(
-            id:                 DiagnosticIdentifiers.AddEmptyLineBetweenDeclarations, 
-            title:              "Add empty line between declarations.", 
-            messageFormat:      "Add empty line between declarations.", 
-            category:           DiagnosticCategories.Formatting, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddEmptyLineBetweenDeclarations, 
-            customTags:         Array.Empty<string>());
-
         /// <summary>RCS1058</summary>
         public static readonly DiagnosticDescriptor UseCompoundAssignment = Factory.Create(
             id:                 DiagnosticIdentifiers.UseCompoundAssignment, 
@@ -881,18 +773,6 @@ namespace Roslynator.CSharp
             helpLinkUri:        DiagnosticIdentifiers.AvoidEmptyCatchClauseThatCatchesSystemException, 
             customTags:         Array.Empty<string>());
 
-        /// <summary>RCS1076</summary>
-        public static readonly DiagnosticDescriptor FormatDeclarationBraces = Factory.Create(
-            id:                 DiagnosticIdentifiers.FormatDeclarationBraces, 
-            title:              "Format declaration braces.", 
-            messageFormat:      "Format declaration braces.", 
-            category:           DiagnosticCategories.Formatting, 
-            defaultSeverity:    DiagnosticSeverity.Hidden, 
-            isEnabledByDefault: true, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.FormatDeclarationBraces, 
-            customTags:         Array.Empty<string>());
-
         /// <summary>RCS1077</summary>
         public static readonly DiagnosticDescriptor OptimizeLinqMethodCall = Factory.Create(
             id:                 DiagnosticIdentifiers.OptimizeLinqMethodCall, 
@@ -979,42 +859,6 @@ namespace Roslynator.CSharp
 
         public static readonly DiagnosticDescriptor UseAutoPropertyFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(UseAutoProperty);
 
-        /// <summary>RCS1086</summary>
-        public static readonly DiagnosticDescriptor UseLinefeedAsNewLine = Factory.Create(
-            id:                 DiagnosticIdentifiers.UseLinefeedAsNewLine, 
-            title:              "Use linefeed as newline.", 
-            messageFormat:      "Use linefeed as newline.", 
-            category:           DiagnosticCategories.General, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.UseLinefeedAsNewLine, 
-            customTags:         Array.Empty<string>());
-
-        /// <summary>RCS1087</summary>
-        public static readonly DiagnosticDescriptor UseCarriageReturnAndLinefeedAsNewLine = Factory.Create(
-            id:                 DiagnosticIdentifiers.UseCarriageReturnAndLinefeedAsNewLine, 
-            title:              "Use carriage return + linefeed as newline.", 
-            messageFormat:      "Use carriage return + linefeed as newline.", 
-            category:           DiagnosticCategories.General, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.UseCarriageReturnAndLinefeedAsNewLine, 
-            customTags:         Array.Empty<string>());
-
-        /// <summary>RCS1088</summary>
-        public static readonly DiagnosticDescriptor UseSpacesInsteadOfTab = Factory.Create(
-            id:                 DiagnosticIdentifiers.UseSpacesInsteadOfTab, 
-            title:              "Use space(s) instead of tab.", 
-            messageFormat:      "Use space(s) instead of tab.", 
-            category:           DiagnosticCategories.General, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.UseSpacesInsteadOfTab, 
-            customTags:         Array.Empty<string>());
-
         /// <summary>RCS1089</summary>
         public static readonly DiagnosticDescriptor UseUnaryOperatorInsteadOfAssignment = Factory.Create(
             id:                 DiagnosticIdentifiers.UseUnaryOperatorInsteadOfAssignment, 
@@ -1054,18 +898,6 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         public static readonly DiagnosticDescriptor RemoveEmptyRegionFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(RemoveEmptyRegion);
-
-        /// <summary>RCS1092</summary>
-        public static readonly DiagnosticDescriptor AddEmptyLineBeforeWhileInDoStatement = Factory.Create(
-            id:                 DiagnosticIdentifiers.AddEmptyLineBeforeWhileInDoStatement, 
-            title:              "Add empty line before 'while' keyword in 'do' statement.", 
-            messageFormat:      "Add empty line before 'while' keyword in 'do' statement.", 
-            category:           DiagnosticCategories.Formatting, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddEmptyLineBeforeWhileInDoStatement, 
-            customTags:         Array.Empty<string>());
 
         /// <summary>RCS1093</summary>
         public static readonly DiagnosticDescriptor RemoveFileWithNoCode = Factory.Create(
@@ -1565,18 +1397,6 @@ namespace Roslynator.CSharp
             helpLinkUri:        DiagnosticIdentifiers.RemoveRedundantCast, 
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
-        /// <summary>RCS1153</summary>
-        public static readonly DiagnosticDescriptor AddEmptyLineAfterClosingBrace = Factory.Create(
-            id:                 DiagnosticIdentifiers.AddEmptyLineAfterClosingBrace, 
-            title:              "Add empty line after closing brace.", 
-            messageFormat:      "Add empty line after closing brace.", 
-            category:           DiagnosticCategories.Formatting, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddEmptyLineAfterClosingBrace, 
-            customTags:         Array.Empty<string>());
-
         /// <summary>RCS1154</summary>
         public static readonly DiagnosticDescriptor SortEnumMembers = Factory.Create(
             id:                 DiagnosticIdentifiers.SortEnumMembers, 
@@ -1902,42 +1722,6 @@ namespace Roslynator.CSharp
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.RemoveRedundantBaseInterface, 
             customTags:         WellKnownDiagnosticTags.Unnecessary);
-
-        /// <summary>RCS1183</summary>
-        public static readonly DiagnosticDescriptor FormatInitializerWithSingleExpressionOnSingleLine = Factory.Create(
-            id:                 DiagnosticIdentifiers.FormatInitializerWithSingleExpressionOnSingleLine, 
-            title:              "Format initializer with single expression on single line.", 
-            messageFormat:      "Format initializer with single expression on single line.", 
-            category:           DiagnosticCategories.Formatting, 
-            defaultSeverity:    DiagnosticSeverity.Hidden, 
-            isEnabledByDefault: true, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.FormatInitializerWithSingleExpressionOnSingleLine, 
-            customTags:         Array.Empty<string>());
-
-        /// <summary>RCS1184</summary>
-        public static readonly DiagnosticDescriptor FormatConditionalExpression = Factory.Create(
-            id:                 DiagnosticIdentifiers.FormatConditionalExpression, 
-            title:              "Format conditional expression (format ? and : on next line).", 
-            messageFormat:      "Format conditional expression.", 
-            category:           DiagnosticCategories.Formatting, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.FormatConditionalExpression, 
-            customTags:         Array.Empty<string>());
-
-        /// <summary>RCS1185</summary>
-        public static readonly DiagnosticDescriptor FormatSingleLineBlock = Factory.Create(
-            id:                 DiagnosticIdentifiers.FormatSingleLineBlock, 
-            title:              "Format single-line block.", 
-            messageFormat:      "Format single-line block.", 
-            category:           DiagnosticCategories.Formatting, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.FormatSingleLineBlock, 
-            customTags:         Array.Empty<string>());
 
         /// <summary>RCS1186</summary>
         public static readonly DiagnosticDescriptor UseRegexInstanceInsteadOfStaticMethod = Factory.Create(
