@@ -24,13 +24,26 @@ namespace Roslynator
             return compilation.WithOptions(compilationOptions.WithSpecificDiagnosticOptions(specificDiagnosticOptions));
         }
 
-        public static async Task<ImmutableArray<Diagnostic>> GetAnalyzerDiagnosticsAsync(
+        public static Task<ImmutableArray<Diagnostic>> GetAnalyzerDiagnosticsAsync(
             this Compilation compilation,
             DiagnosticAnalyzer analyzer,
             IComparer<Diagnostic> comparer = null,
             CancellationToken cancellationToken = default)
         {
-            CompilationWithAnalyzers compilationWithAnalyzers = compilation.WithAnalyzers(ImmutableArray.Create(analyzer), default(AnalyzerOptions), cancellationToken);
+            return GetAnalyzerDiagnosticsAsync(
+                compilation,
+                ImmutableArray.Create(analyzer),
+                comparer,
+                cancellationToken);
+        }
+
+        public static async Task<ImmutableArray<Diagnostic>> GetAnalyzerDiagnosticsAsync(
+            this Compilation compilation,
+            ImmutableArray<DiagnosticAnalyzer> analyzers,
+            IComparer<Diagnostic> comparer = null,
+            CancellationToken cancellationToken = default)
+        {
+            CompilationWithAnalyzers compilationWithAnalyzers = compilation.WithAnalyzers(analyzers, default(AnalyzerOptions), cancellationToken);
 
             ImmutableArray<Diagnostic> diagnostics = await compilationWithAnalyzers.GetAnalyzerDiagnosticsAsync(cancellationToken).ConfigureAwait(false);
 

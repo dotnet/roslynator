@@ -1,14 +1,16 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Analysis
 {
-    internal static class UseBitwiseOperationInsteadOfCallingHasFlagAnalysis
+    internal static class ConvertHasFlagCallToBitwiseOperationAnalysis
     {
         public static bool IsFixable(
             InvocationExpressionSyntax invocation,
@@ -45,6 +47,25 @@ namespace Roslynator.CSharp.Analysis
                 && methodSymbol.IsContainingType(SpecialType.System_Enum)
                 && !semanticModel.GetTypeSymbol(invocationInfo.Expression, cancellationToken).HasMetadataName(MetadataNames.System_Enum)
                 && !semanticModel.GetTypeSymbol(invocationInfo.Arguments.Single().Expression, cancellationToken).HasMetadataName(MetadataNames.System_Enum);
+        }
+
+        public static bool IsSuitableAsArgumentOfHasFlag(
+            ExpressionSyntax expression,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
+        {
+            expression = expression.WalkDownParentheses();
+
+            if (expression.IsKind(
+                SyntaxKind.BitwiseAndExpression,
+                SyntaxKind.BitwiseOrExpression,
+                SyntaxKind.SimpleMemberAccessExpression,
+                SyntaxKind.IdentifierName))
+            {
+                return semanticModel.GetTypeSymbol(expression, cancellationToken)?.TypeKind == TypeKind.Enum;
+            }
+
+            return false;
         }
     }
 }

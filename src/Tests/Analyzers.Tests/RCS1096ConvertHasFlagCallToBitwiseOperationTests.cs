@@ -9,15 +9,15 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1096UseBitwiseOperationInsteadOfCallingHasFlagTests : AbstractCSharpFixVerifier
+    public class RCS1096ConvertHasFlagCallToBitwiseOperationTests : AbstractCSharpFixVerifier
     {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.UseBitwiseOperationInsteadOfCallingHasFlag;
+        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.ConvertHasFlagCallToBitwiseOperationOrViceVersa;
 
         public override DiagnosticAnalyzer Analyzer { get; } = new InvocationExpressionAnalyzer();
 
-        public override CodeFixProvider FixProvider { get; } = new InvocationExpressionCodeFixProvider();
+        public override CodeFixProvider FixProvider { get; } = new ConvertHasFlagCallToBitwiseOperationCodeFixProvider();
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBitwiseOperationInsteadOfCallingHasFlag)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertHasFlagCallToBitwiseOperationOrViceVersa)]
         public async Task Test_HasFlag()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -47,7 +47,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBitwiseOperationInsteadOfCallingHasFlag)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertHasFlagCallToBitwiseOperationOrViceVersa)]
         public async Task Test_HasFlag_Parentheses()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -77,7 +77,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBitwiseOperationInsteadOfCallingHasFlag)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertHasFlagCallToBitwiseOperationOrViceVersa)]
         public async Task Test_NotHasFlag()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -107,7 +107,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBitwiseOperationInsteadOfCallingHasFlag)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertHasFlagCallToBitwiseOperationOrViceVersa)]
         public async Task Test_HasFlag_EqualsTrue()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -137,7 +137,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBitwiseOperationInsteadOfCallingHasFlag)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertHasFlagCallToBitwiseOperationOrViceVersa)]
         public async Task Test_HasFlag_EqualsFalse()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -167,7 +167,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBitwiseOperationInsteadOfCallingHasFlag)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertHasFlagCallToBitwiseOperationOrViceVersa)]
         public async Task Test_HasFlag_WithTrivia()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -197,7 +197,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBitwiseOperationInsteadOfCallingHasFlag)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertHasFlagCallToBitwiseOperationOrViceVersa)]
         public async Task TestNoDiagnostic_TypeIsSystemEnum()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -218,7 +218,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBitwiseOperationInsteadOfCallingHasFlag)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertHasFlagCallToBitwiseOperationOrViceVersa)]
         public async Task TestNoDiagnostic_ConditionalAccess()
         {
             await VerifyNoDiagnosticAsync(@"

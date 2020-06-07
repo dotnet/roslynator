@@ -1,0 +1,169 @@
+﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+
+using System.Threading.Tasks;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CodeFixes;
+using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.CSharp.CodeFixes;
+using Xunit;
+
+namespace Roslynator.CSharp.Analysis.Tests
+{
+    public class RCS1096ConvertBitwiseOperationToHasFlagCallTests : AbstractCSharpFixVerifier
+    {
+        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.ConvertHasFlagCallToBitwiseOperationOrViceVersa;
+
+        public override DiagnosticAnalyzer Analyzer { get; } = new ConvertBitwiseOperationToHasFlagCallAnalyzer();
+
+        public override CodeFixProvider FixProvider { get; } = new ConvertHasFlagCallToBitwiseOperationCodeFixProvider();
+
+        protected override Compilation UpdateCompilation(Compilation compilation)
+        {
+            compilation = base.UpdateCompilation(compilation);
+
+            return compilation.EnsureEnabled(DiagnosticDescriptors.ConvertBitwiseOperationToHasFlagCall);
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertHasFlagCallToBitwiseOperationOrViceVersa)]
+        public async Task Test_NotEquals()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System;
+
+class C
+{
+    void M()
+    {
+        var options = StringSplitOptions.None;
+
+        if ([|(options & StringSplitOptions.RemoveEmptyEntries) != 0|]) { }
+    }
+}
+", @"
+using System;
+
+class C
+{
+    void M()
+    {
+        var options = StringSplitOptions.None;
+
+        if (options.HasFlag(StringSplitOptions.RemoveEmptyEntries)) { }
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertHasFlagCallToBitwiseOperationOrViceVersa)]
+        public async Task Test_NotEquals_Parentheses()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System;
+
+class C
+{
+    void M()
+    {
+        var options = StringSplitOptions.None;
+
+        if ([|((options) & (StringSplitOptions.None | StringSplitOptions.RemoveEmptyEntries)) != (0)|]) { }
+    }
+}
+", @"
+using System;
+
+class C
+{
+    void M()
+    {
+        var options = StringSplitOptions.None;
+
+        if ((options).HasFlag(StringSplitOptions.None | StringSplitOptions.RemoveEmptyEntries)) { }
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertHasFlagCallToBitwiseOperationOrViceVersa)]
+        public async Task Test_NotEquals_WithTrivia()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System;
+
+class C
+{
+    void M()
+    {
+        var options = StringSplitOptions.None;
+
+        if ( /*lt*/ ([|(options & StringSplitOptions.RemoveEmptyEntries /*tt*/ ) != 0|]).Equals(true)) { }
+    }
+}
+", @"
+using System;
+
+class C
+{
+    void M()
+    {
+        var options = StringSplitOptions.None;
+
+        if ( /*lt*/ (options.HasFlag(StringSplitOptions.RemoveEmptyEntries /*tt*/ )).Equals(true)) { }
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertHasFlagCallToBitwiseOperationOrViceVersa)]
+        public async Task Test_Equals_ZeroOnLeftSide()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System;
+
+class C
+{
+    void M()
+    {
+        var options = StringSplitOptions.None;
+
+        if ([|0 == (options & StringSplitOptions.RemoveEmptyEntries)|]) { }
+    }
+}
+", @"
+using System;
+
+class C
+{
+    void M()
+    {
+        var options = StringSplitOptions.None;
+
+        if (!options.HasFlag(StringSplitOptions.RemoveEmptyEntries)) { }
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertHasFlagCallToBitwiseOperationOrViceVersa)]
+        public async Task Test_NoDiagnostic_ConditionalAccess()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System;
+
+class C
+{
+    void M()
+    {
+        var c = new C();
+
+        if ((c?.P & StringSplitOptions.RemoveEmptyEntries) == 0) { }
+
+        if ((c?.P & StringSplitOptions.RemoveEmptyEntries) != 0) { }
+    }
+
+    StringSplitOptions P { get; }
+}
+");
+        }
+    }
+}

@@ -960,15 +960,27 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1096</summary>
-        public static readonly DiagnosticDescriptor UseBitwiseOperationInsteadOfCallingHasFlag = Factory.Create(
-            id:                 DiagnosticIdentifiers.UseBitwiseOperationInsteadOfCallingHasFlag, 
-            title:              "Use bitwise operation instead of calling 'HasFlag'.", 
-            messageFormat:      "Use bitwise operation instead of calling 'HasFlag'.", 
+        public static readonly DiagnosticDescriptor ConvertHasFlagCallToBitwiseOperationOrViceVersa = Factory.Create(
+            id:                 DiagnosticIdentifiers.ConvertHasFlagCallToBitwiseOperationOrViceVersa, 
+            title:              "Convert 'HasFlag' call to bitwise operation (or vice versa).", 
+            messageFormat:      "Convert 'HasFlag' call to bitwise operation.", 
             category:           DiagnosticCategories.Performance, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.UseBitwiseOperationInsteadOfCallingHasFlag, 
+            helpLinkUri:        DiagnosticIdentifiers.ConvertHasFlagCallToBitwiseOperationOrViceVersa, 
+            customTags:         Array.Empty<string>());
+
+        /// <summary>RCS1096i</summary>
+        public static readonly DiagnosticDescriptor ConvertBitwiseOperationToHasFlagCall = Factory.Create(
+            id:                 DiagnosticIdentifiers.ConvertBitwiseOperationToHasFlagCall, 
+            title:              "Convert bitwise operation to 'HasFlag' call.", 
+            messageFormat:      "Convert bitwise operation to 'HasFlag' call.", 
+            category:           DiagnosticCategories.AnalyzerOption, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: false, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.ConvertBitwiseOperationToHasFlagCall, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1097</summary>

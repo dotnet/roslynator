@@ -48,6 +48,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string ConvertForEachToForAndReverseLoop = Prefix + "0188";
         public const string ConvertForToForEach = Prefix + "0130";
         public const string ConvertForToWhile = Prefix + "0131";
+        public const string ConvertHasFlagCallToBitwiseOperation = Prefix + "0164";
         public const string ConvertHexadecimalLiteralToDecimalLiteral = Prefix + "0132";
         public const string ConvertIfToConditionalOperator = Prefix + "0166";
         public const string ConvertIfToSwitch = Prefix + "0133";
@@ -194,7 +195,6 @@ namespace Roslynator.CSharp.Refactorings
         public const string SwapMemberDeclarations = Prefix + "0161";
         public const string UncommentMultiLineComment = Prefix + "0200";
         public const string UncommentSingleLineComment = Prefix + "0163";
-        public const string UseBitwiseOperationInsteadOfCallingHasFlag = Prefix + "0164";
         public const string UseCoalesceExpressionInsteadOfIf = Prefix + "0165";
         public const string UseConstantInsteadOfField = Prefix + "0128";
         public const string UseCSharp6DictionaryInitializer = Prefix + "0191";

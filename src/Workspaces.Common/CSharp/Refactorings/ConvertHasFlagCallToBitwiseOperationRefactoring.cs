@@ -10,7 +10,7 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class UseBitwiseOperationInsteadOfCallingHasFlagRefactoring
+    internal static class ConvertHasFlagCallToBitwiseOperationRefactoring
     {
         public const string Title = "Use '&' operator";
 

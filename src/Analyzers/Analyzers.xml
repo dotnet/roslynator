@@ -1957,22 +1957,38 @@ namespace Foo
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
   </Analyzer>
-  <Analyzer Identifier="UseBitwiseOperationInsteadOfCallingHasFlag">
+  <Analyzer Identifier="ConvertHasFlagCallToBitwiseOperationOrViceVersa">
     <Id>RCS1096</Id>
-    <Title>Use bitwise operation instead of calling 'HasFlag'.</Title>
+    <Title>Convert 'HasFlag' call to bitwise operation (or vice versa).</Title>
+    <MessageFormat>Convert 'HasFlag' call to bitwise operation.</MessageFormat>
     <Category>Performance</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (options.HasFlag(RegexOptions.IgnoreCase)) // [|Id|]
-{
-}]]></Before>
-        <After><![CDATA[if ((options & RegexOptions.IgnoreCase) != 0)
-{
-}]]></After>
+        <Before><![CDATA[options.HasFlag(RegexOptions.IgnoreCase)]]></Before>
+        <After><![CDATA[(options & RegexOptions.IgnoreCase) != 0]]></After>
       </Sample>
     </Samples>
+    <Options>
+      <Option Identifier="ConvertBitwiseOperationToHasFlagCall">
+        <Title>Convert bitwise operation to 'HasFlag' call.</Title>
+        <Id>i</Id>
+        <Kind>Invert</Kind>
+        <Samples>
+          <Sample>
+            <Before><![CDATA[(options & RegexOptions.IgnoreCase) != 0]]></Before>
+            <After><![CDATA[options.HasFlag(RegexOptions.IgnoreCase)]]></After>
+          </Sample>
+        </Samples>
+        <Links>
+          <Link>
+            <Url>https://devblogs.microsoft.com/dotnet/performance-improvements-in-net-core-2-1/</Url>
+            <Text>Performance Improvements in .NET Core 2.1</Text>
+          </Link>
+        </Links>
+      </Option>
+    </Options>
   </Analyzer>
   <Analyzer Identifier="RemoveRedundantToStringCall">
     <Id>RCS1097</Id>

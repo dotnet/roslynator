@@ -84,7 +84,8 @@ namespace Roslynator.CSharp
         public const string RemoveEmptyRegion = "RCS1091";
         public const string RemoveFileWithNoCode = "RCS1093";
         public const string DeclareUsingDirectiveOnTopLevel = "RCS1094";
-        public const string UseBitwiseOperationInsteadOfCallingHasFlag = "RCS1096";
+        public const string ConvertHasFlagCallToBitwiseOperationOrViceVersa = "RCS1096";
+        public const string ConvertBitwiseOperationToHasFlagCall = "RCS1096i";
         public const string RemoveRedundantToStringCall = "RCS1097";
         public const string AvoidNullLiteralExpressionOnLeftSideOfBinaryExpression = "RCS1098";
         public const string DefaultLabelShouldBeLastLabelInSwitchSection = "RCS1099";

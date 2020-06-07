@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.Analysis
                     DiagnosticDescriptors.OptimizeLinqMethodCall,
                     DiagnosticDescriptors.UseElementAccess,
                     DiagnosticDescriptors.UseCountOrLengthPropertyInsteadOfAnyMethod,
-                    DiagnosticDescriptors.UseBitwiseOperationInsteadOfCallingHasFlag,
+                    DiagnosticDescriptors.ConvertHasFlagCallToBitwiseOperationOrViceVersa,
                     DiagnosticDescriptors.RemoveRedundantToStringCall,
                     DiagnosticDescriptors.RemoveRedundantStringToCharArrayCall,
                     DiagnosticDescriptors.CombineEnumerableWhereMethodChain,
@@ -270,11 +270,11 @@ namespace Roslynator.CSharp.Analysis
                                 }
                             case "HasFlag":
                                 {
-                                    if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.UseBitwiseOperationInsteadOfCallingHasFlag)
+                                    if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.ConvertHasFlagCallToBitwiseOperationOrViceVersa)
                                         && !invocation.SpanContainsDirectives()
-                                        && UseBitwiseOperationInsteadOfCallingHasFlagAnalysis.IsFixable(invocationInfo, context.SemanticModel, context.CancellationToken))
+                                        && ConvertHasFlagCallToBitwiseOperationAnalysis.IsFixable(invocationInfo, context.SemanticModel, context.CancellationToken))
                                     {
-                                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseBitwiseOperationInsteadOfCallingHasFlag, invocation);
+                                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ConvertHasFlagCallToBitwiseOperationOrViceVersa, invocation);
                                     }
 
                                     break;

@@ -1312,7 +1312,7 @@ i--;]]></After>
       <Syntax>single-line comment(s)</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0164" Identifier="UseBitwiseOperationInsteadOfCallingHasFlag" Title="Use bitwise operation instead of calling 'HasFlag'">
+  <Refactoring Id="RR0164" Identifier="ConvertHasFlagCallToBitwiseOperation" Title="Convert 'HasFlag' call to bitwise operation">
     <Syntaxes>
       <Syntax>Enum.HasFlag method invocation</Syntax>
     </Syntaxes>
