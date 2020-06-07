@@ -11,7 +11,7 @@ using Roslynator.CSharp;
 namespace Roslynator.Formatting.CSharp
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class EmptyLineBetweenUsingDirectiveAnalyzer : BaseDiagnosticAnalyzer
+    internal class AddOrRemoveEmptyLineBetweenUsingDirectiveAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
@@ -19,8 +19,7 @@ namespace Roslynator.Formatting.CSharp
             {
                 return ImmutableArray.Create(
                     DiagnosticDescriptors.RemoveEmptyLineBetweenUsingDirectivesWithSameRootNamespace,
-                    DiagnosticDescriptors.RemoveEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace,
-                    DiagnosticDescriptors.AddEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace);
+                    DiagnosticDescriptors.AddEmptyLineBetweenUsingDirectivesWithDifferentRootNamespaceOrViceVersa);
             }
         }
 
@@ -94,36 +93,36 @@ namespace Roslynator.Formatting.CSharp
                 {
                     if (isEmptyLine)
                     {
-                        ReportDiagnostic(
+                        DiagnosticHelpers.ReportDiagnosticIfNotSuppressed(
                             context,
                             DiagnosticDescriptors.RemoveEmptyLineBetweenUsingDirectivesWithSameRootNamespace,
-                            leadingTrivia[0]);
+                            Location.Create(context.Node.SyntaxTree, leadingTrivia[0].Span.WithLength(0)));
                     }
                 }
-                else if (isEmptyLine)
+                else if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.AddEmptyLineBetweenUsingDirectivesWithDifferentRootNamespaceOrViceVersa))
                 {
-                    ReportDiagnostic(
-                        context,
-                        DiagnosticDescriptors.RemoveEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace,
-                        leadingTrivia[0]);
-                }
-                else
-                {
-                    ReportDiagnostic(
-                        context,
-                        DiagnosticDescriptors.AddEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace,
-                        trailingTrivia.Last());
+                    if (isEmptyLine)
+                    {
+                        if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.RemoveEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace))
+                        {
+                            DiagnosticHelpers.ReportDiagnostic(
+                                context,
+                                DiagnosticDescriptors.AddEmptyLineBetweenUsingDirectivesWithDifferentRootNamespaceOrViceVersa,
+                                Location.Create(context.Node.SyntaxTree, leadingTrivia[0].Span.WithLength(0)),
+                                properties: DiagnosticProperties.AnalyzerOption_Invert,
+                                messageArgs: "Remove");
+                        }
+                    }
+                    else if (context.IsAnalyzerSuppressed(DiagnosticDescriptors.RemoveEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace))
+                    {
+                        DiagnosticHelpers.ReportDiagnostic(
+                            context,
+                            DiagnosticDescriptors.AddEmptyLineBetweenUsingDirectivesWithDifferentRootNamespaceOrViceVersa,
+                            Location.Create(context.Node.SyntaxTree, trailingTrivia.Last().Span.WithLength(0)),
+                            messageArgs: "Add");
+                    }
                 }
             }
-        }
-
-        private static void ReportDiagnostic(
-            SyntaxNodeAnalysisContext context,
-            DiagnosticDescriptor descriptor,
-            SyntaxTrivia trivia)
-        {
-            if (!context.IsAnalyzerSuppressed(descriptor))
-                DiagnosticHelpers.ReportDiagnostic(context, descriptor, Location.Create(context.Node.SyntaxTree, trivia.Span.WithLength(0)));
         }
     }
 }

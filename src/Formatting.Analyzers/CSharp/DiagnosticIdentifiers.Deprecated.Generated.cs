@@ -8,5 +8,17 @@ namespace Roslynator.Formatting.CSharp
 {
     public static partial class DiagnosticIdentifiers
     {
+        [Obsolete("", error: true)]
+        public const string AddNewLineAfterBinaryOperatorInsteadOfBeforeIt2 = "RCS0017";
+        [Obsolete("", error: true)]
+        public const string AddNewLineAfterConditionalOperatorInsteadOfBeforeIt2 = "RCS0018";
+        [Obsolete("", error: true)]
+        public const string AddNewLineAfterExpressionBodyArrowInsteadOfBeforeIt2 = "RCS0019";
+        [Obsolete("", error: true)]
+        public const string RemoveEmptyLineBetweenSingleLineAccessors2 = "RCS0035";
+        [Obsolete("", error: true)]
+        public const string RemoveEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace2 = "RCS0037";
+        [Obsolete("", error: true)]
+        public const string RemoveNewLineBetweenClosingBraceAndWhileKeyword2 = "RCS0040";
     }
 }

@@ -12,7 +12,7 @@ namespace Roslynator.Formatting.CSharp
 {
     //TODO: sloučit s AccessorListAnalyzer
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class EmptyLineBetweenAccessorsAnalyzer : BaseDiagnosticAnalyzer
+    internal class AddOrRemoveEmptyLineBetweenAccessorsAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
@@ -20,8 +20,7 @@ namespace Roslynator.Formatting.CSharp
             {
                 return ImmutableArray.Create(
                     DiagnosticDescriptors.AddEmptyLineBetweenAccessors,
-                    DiagnosticDescriptors.AddEmptyLineBetweenSingleLineAccessors,
-                    DiagnosticDescriptors.RemoveEmptyLineBetweenSingleLineAccessors);
+                    DiagnosticDescriptors.AddEmptyLineBetweenSingleLineAccessorsOrViceVersa);
             }
         }
 
@@ -65,28 +64,37 @@ namespace Roslynator.Formatting.CSharp
             if (accessorList.SyntaxTree.IsSingleLineSpan(accessor1.Span, context.CancellationToken)
                 && accessorList.SyntaxTree.IsSingleLineSpan(accessor2.Span, context.CancellationToken))
             {
-                if (isEmptyLine)
+                if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.AddEmptyLineBetweenSingleLineAccessorsOrViceVersa))
                 {
-                    ReportDiagnostic(context, DiagnosticDescriptors.RemoveEmptyLineBetweenSingleLineAccessors, leadingTrivia[0]);
-                }
-                else
-                {
-                    ReportDiagnostic(context, DiagnosticDescriptors.AddEmptyLineBetweenSingleLineAccessors, trailingTrivia.Last());
+                    if (isEmptyLine)
+                    {
+                        if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.RemoveEmptyLineBetweenSingleLineAccessors))
+                        {
+                            DiagnosticHelpers.ReportDiagnostic(
+                                context,
+                                DiagnosticDescriptors.AddEmptyLineBetweenSingleLineAccessorsOrViceVersa,
+                                Location.Create(context.Node.SyntaxTree, leadingTrivia[0].Span.WithLength(0)),
+                                properties: DiagnosticProperties.AnalyzerOption_Invert,
+                                messageArgs: "Remove");
+                        }
+                    }
+                    else if (context.IsAnalyzerSuppressed(DiagnosticDescriptors.RemoveEmptyLineBetweenSingleLineAccessors))
+                    {
+                        DiagnosticHelpers.ReportDiagnostic(
+                            context,
+                            DiagnosticDescriptors.AddEmptyLineBetweenSingleLineAccessorsOrViceVersa,
+                            Location.Create(context.Node.SyntaxTree, trailingTrivia.Last().Span.WithLength(0)),
+                            messageArgs: "Add");
+                    }
                 }
             }
             else if (!isEmptyLine)
             {
-                ReportDiagnostic(context, DiagnosticDescriptors.AddEmptyLineBetweenAccessors, trailingTrivia.Last());
+                DiagnosticHelpers.ReportDiagnosticIfNotSuppressed(
+                    context,
+                    DiagnosticDescriptors.AddEmptyLineBetweenAccessors,
+                    Location.Create(context.Node.SyntaxTree, trailingTrivia.Last().Span.WithLength(0)));
             }
-        }
-
-        private static void ReportDiagnostic(
-            SyntaxNodeAnalysisContext context,
-            DiagnosticDescriptor descriptor,
-            SyntaxTrivia trivia)
-        {
-            if (!context.IsAnalyzerSuppressed(descriptor))
-                DiagnosticHelpers.ReportDiagnostic(context, descriptor, Location.Create(context.Node.SyntaxTree, trivia.Span.WithLength(0)));
         }
     }
 }

@@ -11,14 +11,14 @@ namespace Roslynator.Formatting.CSharp.Tests
 {
     public class RCS0051AddNewLineBetweenClosingBraceAndWhileKeywordTests : AbstractCSharpFixVerifier
     {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.AddNewLineBetweenClosingBraceAndWhileKeyword;
+        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersa;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new AddOrRemoveNewLineBetweenClosingBraceAndWhileKeywordAnalyzer();
+        public override DiagnosticAnalyzer Analyzer { get; } = new AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersaAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new SyntaxTokenCodeFixProvider();
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBetweenClosingBraceAndWhileKeyword)]
-        public async Task Test()
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersa)]
+        public async Task Test_AddNewLine()
         {
             await VerifyDiagnosticAndFixAsync(@"
 class C
@@ -50,8 +50,8 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBetweenClosingBraceAndWhileKeyword)]
-        public async Task Test_WithoutTrivia()
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersa)]
+        public async Task Test_AddNewLine_WithoutTrivia()
         {
             await VerifyDiagnosticAndFixAsync(@"
 class C
@@ -83,8 +83,75 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBetweenClosingBraceAndWhileKeyword)]
-        public async Task TestNoDiagnostic()
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersa)]
+        public async Task Test_RemoveNewLine()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+        bool x = false;
+
+        do
+        {
+            M();
+        }[||]
+        while (x);
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+        bool x = false;
+
+        do
+        {
+            M();
+        } while (x);
+    }
+}
+", options: Options.WithEnabled(DiagnosticDescriptors.RemoveNewLineBetweenClosingBraceAndWhileKeyword));
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersa)]
+        public async Task Test_RemoveNewLine_EmptyLine()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+        bool x = false;
+
+        do
+        {
+            M();
+        }[||]
+
+        while (x);
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+        bool x = false;
+
+        do
+        {
+            M();
+        } while (x);
+    }
+}
+", options: Options.WithEnabled(DiagnosticDescriptors.RemoveNewLineBetweenClosingBraceAndWhileKeyword));
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersa)]
+        public async Task TestNoDiagnostic_AddNewLine()
         {
             await VerifyNoDiagnosticAsync(@"
 class C
@@ -103,8 +170,8 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBetweenClosingBraceAndWhileKeyword)]
-        public async Task TestNoDiagnostic_EmbeddedStatement()
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersa)]
+        public async Task TestNoDiagnostic_AddNewLine_EmbeddedStatement()
         {
             await VerifyNoDiagnosticAsync(@"
 class C
@@ -119,6 +186,43 @@ class C
     }
 }
 ");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersa)]
+        public async Task TestNoDiagnostic_RemoveNewLine()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M()
+    {
+        bool x = false;
+
+        do
+        {
+            M();
+        } while (x);
+    }
+}
+", options: Options.WithEnabled(DiagnosticDescriptors.RemoveNewLineBetweenClosingBraceAndWhileKeyword));
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersa)]
+        public async Task TestNoDiagnostic_RemoveNewLine_EmbeddedStatement()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M()
+    {
+        bool x = false;
+
+        do
+            M();
+        while (x);
+    }
+}
+", options: Options.WithEnabled(DiagnosticDescriptors.RemoveNewLineBetweenClosingBraceAndWhileKeyword));
         }
     }
 }

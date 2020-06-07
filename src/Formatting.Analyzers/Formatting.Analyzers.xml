@@ -308,9 +308,10 @@ enum Bar
 
 This rule does not enforce an empty line between two single-line declaration.</Remarks>
   </Analyzer>
-  <Analyzer Identifier="AddEmptyLineBetweenSingleLineAccessors">
+  <Analyzer Identifier="AddEmptyLineBetweenSingleLineAccessorsOrViceVersa">
     <Id>RCS0011</Id>
-    <Title>Add empty line between single-line accessors.</Title>
+    <Title>Add empty line between single-line accessors (or vice versa).</Title>
+    <MessageFormat>{0} empty line between single-line accessors.</MessageFormat>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -329,6 +330,28 @@ This rule does not enforce an empty line between two single-line declaration.</R
 }]]></After>
       </Sample>
     </Samples>
+    <Options>
+      <Option Identifier="RemoveEmptyLineBetweenSingleLineAccessors">
+        <Title>Remove empty line between single-line accessors.</Title>
+        <Id>i</Id>
+        <Kind>Invert</Kind>
+        <Samples>
+          <Sample>
+            <Before><![CDATA[string P
+{
+    get { return _p; }
+// [|Id|]
+    set { _p = value; }
+}]]></Before>
+            <After><![CDATA[string P
+{
+    get { return _p; }
+    set { _p = value; }
+}]]></After>
+          </Sample>
+        </Samples>
+      </Option>
+    </Options>
   </Analyzer>
   <Analyzer Identifier="AddEmptyLineBetweenSingleLineDeclarations">
     <Id>RCS0012</Id>
@@ -390,9 +413,10 @@ object this[int index] { get; }]]></After>
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AddEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace">
+  <Analyzer Identifier="AddEmptyLineBetweenUsingDirectivesWithDifferentRootNamespaceOrViceVersa">
     <Id>RCS0015</Id>
-    <Title>Add empty line between using directives with different root namespace.</Title>
+    <Title>Add empty line between using directives with different root namespace (or vice versa).</Title>
+    <MessageFormat>{0} empty line between using directives.</MessageFormat>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -413,6 +437,30 @@ namespace N
 }]]></After>
       </Sample>
     </Samples>
+    <Options>
+      <Option Identifier="RemoveEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace">
+        <Title>Remove empty line between using directives with different root namespace.</Title>
+        <Id>i</Id>
+        <Kind>Invert</Kind>
+        <Samples>
+          <Sample>
+            <Before><![CDATA[using System;
+// [|Id|]
+using Microsoft.CodeAnalysis;
+
+namespace N
+{
+}]]></Before>
+            <After><![CDATA[using System;
+using Microsoft.CodeAnalysis;
+
+namespace N
+{
+}]]></After>
+          </Sample>
+        </Samples>
+      </Option>
+    </Options>
   </Analyzer>
   <Analyzer Identifier="AddNewLineAfterAttributeList">
     <Id>RCS0016</Id>
@@ -438,7 +486,7 @@ namespace N
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AddNewLineAfterBinaryOperatorInsteadOfBeforeIt">
+  <Analyzer Identifier="AddNewLineAfterBinaryOperatorInsteadOfBeforeIt2" IsObsolete="true">
     <Id>RCS0017</Id>
     <Title>Add newline after binary operator instead of before it.</Title>
     <Category>Formatting</Category>
@@ -459,7 +507,7 @@ namespace N
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AddNewLineAfterConditionalOperatorInsteadOfBeforeIt">
+  <Analyzer Identifier="AddNewLineAfterConditionalOperatorInsteadOfBeforeIt2" IsObsolete="true">
     <Id>RCS0018</Id>
     <Title>Add newline after conditional operator instead of before it.</Title>
     <Category>Formatting</Category>
@@ -476,7 +524,7 @@ namespace N
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AddNewLineAfterExpressionBodyArrowInsteadOfBeforeIt">
+  <Analyzer Identifier="AddNewLineAfterExpressionBodyArrowInsteadOfBeforeIt2" IsObsolete="true">
     <Id>RCS0019</Id>
     <Title>Add newline after expression-body arrow instead of before it.</Title>
     <Category>Formatting</Category>
@@ -606,9 +654,10 @@ namespace N
     </Samples>
     <Remarks>This rule was derived from [RCS1024](RCS1024.md).</Remarks>
   </Analyzer>
-  <Analyzer Identifier="AddNewLineBeforeBinaryOperatorInsteadOfAfterIt">
+  <Analyzer Identifier="AddNewLineBeforeBinaryOperatorInsteadOfAfterItOrViceVersa">
     <Id>RCS0027</Id>
-    <Title>Add newline before binary operator instead of after it.</Title>
+    <Title>Add newline before binary operator instead of after it (or vice versa).</Title>
+    <MessageFormat>Add newline {0} binary operator instead of {1} it.</MessageFormat>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -626,24 +675,63 @@ namespace N
 }]]></After>
       </Sample>
     </Samples>
+    <Options>
+      <Option Identifier="AddNewLineAfterBinaryOperatorInsteadOfBeforeIt">
+        <Title>Add newline after binary operator instead of before it.</Title>
+        <Id>i</Id>
+        <Kind>Invert</Kind>
+        <Samples>
+          <Sample>
+            <Before><![CDATA[if (x
+    && y // [|Id|]
+    && z)
+{
+}]]></Before>
+            <After><![CDATA[if (x &&
+    y &&
+    z)
+{
+}]]></After>
+          </Sample>
+        </Samples>
+      </Option>
+    </Options>
     <Remarks>This rule was originally introduced as [RCS1029](RCS1029.md)</Remarks>
   </Analyzer>
-  <Analyzer Identifier="AddNewLineBeforeConditionalOperatorInsteadOfAfterIt">
+  <Analyzer Identifier="AddNewLineBeforeConditionalOperatorInsteadOfAfterItOrViceVersa">
     <Id>RCS0028</Id>
-    <Title>Add newline before conditional operator instead of after it.</Title>
+    <Title>Add newline before conditional operator instead of after it (or vice versa).</Title>
+    <MessageFormat>Add newline {0} conditional operator instead of {1} it.</MessageFormat>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[var y = (x) ? // [|Id|]
+        <Before><![CDATA[var y = x ? // [|Id|]
     Foo() :
     Bar();]]></Before>
-        <After><![CDATA[var y = (x)
+        <After><![CDATA[var y = x
     ? Foo()
     : Bar();]]></After>
       </Sample>
     </Samples>
+    <Options>
+      <Option Identifier="AddNewLineAfterConditionalOperatorInsteadOfBeforeIt">
+        <Title>Add newline after conditional operator instead of before it.</Title>
+        <Id>i</Id>
+        <Kind>Invert</Kind>
+        <Samples>
+          <Sample>
+            <Before><![CDATA[var y = x
+    ? Foo() // [|Id|]
+    : Bar();]]></Before>
+            <After><![CDATA[var y = x ?
+    Foo() :
+    Bar();]]></After>
+          </Sample>
+        </Samples>
+      </Option>
+    </Options>
     <Remarks>This rule was originally introduced as [RCS1184](RCS1184.md)</Remarks>
   </Analyzer>
   <Analyzer Identifier="AddNewLineBeforeConstructorInitializer">
@@ -700,9 +788,10 @@ namespace N
     </Samples>
     <Remarks>This rule was originally introduced as [RCS1025](RCS1025.md)</Remarks>
   </Analyzer>
-  <Analyzer Identifier="AddNewLineBeforeExpressionBodyArrowInsteadOfAfterIt">
+  <Analyzer Identifier="AddNewLineBeforeExpressionBodyArrowInsteadOfAfterItOrViceVersa">
     <Id>RCS0032</Id>
-    <Title>Add newline before expression-body arrow instead of after it.</Title>
+    <Title>Add newline before expression-body arrow instead of after it (or vice versa).</Title>
+    <MessageFormat>Add newline {0} expression-body arrow instead of {1} it.</MessageFormat>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -714,6 +803,21 @@ namespace N
     => null;]]></After>
       </Sample>
     </Samples>
+    <Options>
+      <Option Identifier="AddNewLineAfterExpressionBodyArrowInsteadOfBeforeIt">
+        <Title>Add newline after expression-body arrow instead of before it.</Title>
+        <Id>i</Id>
+        <Kind>Invert</Kind>
+        <Samples>
+          <Sample>
+            <Before><![CDATA[object Foo()
+    => null; // [|Id|]]]></Before>
+            <After><![CDATA[object Foo() =>
+    null;]]></After>
+          </Sample>
+        </Samples>
+      </Option>
+    </Options>
   </Analyzer>
   <Analyzer Identifier="AddNewLineBeforeStatement">
     <Id>RCS0033</Id>
@@ -749,7 +853,7 @@ Bar();]]></After>
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="RemoveEmptyLineBetweenSingleLineAccessors">
+  <Analyzer Identifier="RemoveEmptyLineBetweenSingleLineAccessors2" IsObsolete="true">
     <Id>RCS0035</Id>
     <Title>Remove empty line between single-line accessors.</Title>
     <Category>Formatting</Category>
@@ -789,7 +893,7 @@ object P2 { get; }]]></After>
       </Samples>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="RemoveEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace">
+  <Analyzer Identifier="RemoveEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace2" IsObsolete="true">
     <Id>RCS0037</Id>
     <Title>Remove empty line between using directives with different root namespace.</Title>
     <Category>Formatting</Category>
@@ -816,6 +920,7 @@ namespace N
   <Analyzer Identifier="RemoveEmptyLineBetweenUsingDirectivesWithSameRootNamespace">
     <Id>RCS0038</Id>
     <Title>Remove empty line between using directives with same root namespace.</Title>
+    <MessageFormat>Remove empty line between using directives.</MessageFormat>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -855,7 +960,7 @@ namespace N
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="RemoveNewLineBetweenClosingBraceAndWhileKeyword">
+  <Analyzer Identifier="RemoveNewLineBetweenClosingBraceAndWhileKeyword2" IsObsolete="true">
     <Id>RCS0040</Id>
     <Title>Remove newline between closing brace and 'while' keyword.</Title>
     <Category>Formatting</Category>
@@ -1068,9 +1173,10 @@ namespace Foo
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AddNewLineBetweenClosingBraceAndWhileKeyword">
+  <Analyzer Identifier="AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersa">
     <Id>RCS0051</Id>
-    <Title>Add newline between closing brace and 'while' keyword.</Title>
+    <Title>Add newline between closing brace and 'while' keyword (or vice versa).</Title>
+    <MessageFormat>{0} newline between closing brace and 'while' keyword.</MessageFormat>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -1087,5 +1193,25 @@ namespace Foo
 while (x);]]></After>
       </Sample>
     </Samples>
+    <Options>
+      <Option Identifier="RemoveNewLineBetweenClosingBraceAndWhileKeyword">
+        <Title>Remove newline between closing brace and 'while' keyword.</Title>
+        <Id>i</Id>
+        <Kind>Invert</Kind>
+        <Samples>
+          <Sample>
+            <Before><![CDATA[do
+{
+    Foo();
+} // [|Id|]
+while (x);]]></Before>
+            <After><![CDATA[do
+{
+    Foo();
+} while (x);]]></After>
+          </Sample>
+        </Samples>
+      </Option>
+    </Options>
   </Analyzer>
 </Analyzers>

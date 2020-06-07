@@ -10,11 +10,11 @@ using Roslynator.CSharp;
 namespace Roslynator.Formatting.CSharp
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class AddNewLineBeforeBinaryOperatorInsteadOfAfterItAnalyzer : BaseDiagnosticAnalyzer
+    internal class AddNewLineBeforeBinaryOperatorInsteadOfAfterItOrViceVersaAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.AddNewLineBeforeBinaryOperatorInsteadOfAfterIt); }
+            get { return ImmutableArray.Create(DiagnosticDescriptors.AddNewLineBeforeBinaryOperatorInsteadOfAfterItOrViceVersa); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -59,16 +59,29 @@ namespace Roslynator.Formatting.CSharp
             if (right.IsMissing)
                 return;
 
-            if (!SyntaxTriviaAnalysis.IsTokenFollowedWithNewLineAndNotPrecededWithNewLine(left, binaryExpression.OperatorToken, right))
-                return;
+            if (SyntaxTriviaAnalysis.IsTokenFollowedWithNewLineAndNotPrecededWithNewLine(left, binaryExpression.OperatorToken, right))
+            {
+                if (context.IsAnalyzerSuppressed(DiagnosticDescriptors.AddNewLineAfterBinaryOperatorInsteadOfBeforeIt))
+                    ReportDiagnostic(ImmutableDictionary<string, string>.Empty, "before", "after");
+            }
+            else if (SyntaxTriviaAnalysis.IsTokenPrecededWithNewLineAndNotFollowedWithNewLine(left, binaryExpression.OperatorToken, right)
+                && !context.IsAnalyzerSuppressed(DiagnosticDescriptors.AddNewLineAfterBinaryOperatorInsteadOfBeforeIt))
+            {
+                ReportDiagnostic(DiagnosticProperties.AnalyzerOption_Invert, "after", "before");
+            }
 
-            if (CSharpUtility.IsStringConcatenation(binaryExpression, context.SemanticModel, context.CancellationToken))
-                return;
+            void ReportDiagnostic(ImmutableDictionary<string, string> properties, params string[] messageArgs)
+            {
+                if (CSharpUtility.IsStringConcatenation(binaryExpression, context.SemanticModel, context.CancellationToken))
+                    return;
 
-            DiagnosticHelpers.ReportDiagnostic(
-                context,
-                DiagnosticDescriptors.AddNewLineBeforeBinaryOperatorInsteadOfAfterIt,
-                Location.Create(binaryExpression.SyntaxTree, binaryExpression.OperatorToken.Span.WithLength(0)));
+                DiagnosticHelpers.ReportDiagnostic(
+                    context,
+                    DiagnosticDescriptors.AddNewLineBeforeBinaryOperatorInsteadOfAfterItOrViceVersa,
+                    Location.Create(binaryExpression.SyntaxTree, binaryExpression.OperatorToken.Span.WithLength(0)),
+                    properties: properties,
+                    messageArgs: messageArgs);
+            }
         }
     }
 }

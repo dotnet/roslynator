@@ -130,6 +130,18 @@ namespace Roslynator
             ReportDiagnostic(context, descriptor, node, messageArgs);
         }
 
+        public static void ReportDiagnosticIfNotSuppressed(
+            SyntaxNodeAnalysisContext context,
+            DiagnosticDescriptor descriptor,
+            Location location,
+            params object[] messageArgs)
+        {
+            if (context.IsAnalyzerSuppressed(descriptor))
+                return;
+
+            ReportDiagnostic(context, descriptor, location, messageArgs);
+        }
+
         public static void ReportDiagnostic(
             SyntaxNodeAnalysisContext context,
             DiagnosticDescriptor descriptor,

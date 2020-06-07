@@ -23,14 +23,12 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                     DiagnosticIdentifiers.AddEmptyLineAfterTopComment,
                     DiagnosticIdentifiers.AddEmptyLineBeforeTopDeclaration,
                     DiagnosticIdentifiers.AddEmptyLineBetweenAccessors,
-                    DiagnosticIdentifiers.AddEmptyLineBetweenSingleLineAccessors,
-                    DiagnosticIdentifiers.AddEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace,
-                    DiagnosticIdentifiers.RemoveEmptyLineBetweenSingleLineAccessors,
+                    DiagnosticIdentifiers.AddEmptyLineBetweenSingleLineAccessorsOrViceVersa,
+                    DiagnosticIdentifiers.AddEmptyLineBetweenUsingDirectivesWithDifferentRootNamespaceOrViceVersa,
                     DiagnosticIdentifiers.RemoveEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace,
                     DiagnosticIdentifiers.RemoveEmptyLineBetweenUsingDirectivesWithSameRootNamespace,
                     DiagnosticIdentifiers.RemoveNewLineBetweenIfKeywordAndElseKeyword,
-                    DiagnosticIdentifiers.RemoveNewLineBeforeBaseList,
-                    DiagnosticIdentifiers.RemoveNewLineBetweenClosingBraceAndWhileKeyword);
+                    DiagnosticIdentifiers.RemoveNewLineBeforeBaseList);
             }
         }
 
@@ -58,8 +56,6 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                     }
                 case DiagnosticIdentifiers.AddEmptyLineBeforeTopDeclaration:
                 case DiagnosticIdentifiers.AddEmptyLineBetweenAccessors:
-                case DiagnosticIdentifiers.AddEmptyLineBetweenSingleLineAccessors:
-                case DiagnosticIdentifiers.AddEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace:
                     {
                         CodeAction codeAction = CodeAction.Create(
                             CodeFixTitles.AddEmptyLine,
@@ -69,8 +65,30 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                         context.RegisterCodeFix(codeAction, diagnostic);
                         break;
                     }
-                case DiagnosticIdentifiers.RemoveEmptyLineBetweenSingleLineAccessors:
-                case DiagnosticIdentifiers.RemoveEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace:
+                case DiagnosticIdentifiers.AddEmptyLineBetweenSingleLineAccessorsOrViceVersa:
+                case DiagnosticIdentifiers.AddEmptyLineBetweenUsingDirectivesWithDifferentRootNamespaceOrViceVersa:
+                    {
+                        if (DiagnosticProperties.ContainsInvert(diagnostic.Properties))
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                CodeFixTitles.RemoveEmptyLine,
+                                ct => CodeFixHelpers.RemoveEmptyLinesBeforeAsync(document, trivia.Token, ct),
+                                GetEquivalenceKey(diagnostic));
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                        }
+                        else
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                CodeFixTitles.AddEmptyLine,
+                                ct => CodeFixHelpers.AppendEndOfLineAsync(document, trivia.Token, ct),
+                                GetEquivalenceKey(diagnostic));
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                        }
+
+                        break;
+                    }
                 case DiagnosticIdentifiers.RemoveEmptyLineBetweenUsingDirectivesWithSameRootNamespace:
                     {
                         CodeAction codeAction = CodeAction.Create(
@@ -82,7 +100,6 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                         break;
                     }
                 case DiagnosticIdentifiers.RemoveNewLineBeforeBaseList:
-                case DiagnosticIdentifiers.RemoveNewLineBetweenClosingBraceAndWhileKeyword:
                 case DiagnosticIdentifiers.RemoveNewLineBetweenIfKeywordAndElseKeyword:
                     {
                         CodeAction codeAction = CodeAction.Create(

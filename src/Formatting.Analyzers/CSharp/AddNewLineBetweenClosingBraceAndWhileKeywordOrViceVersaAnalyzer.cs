@@ -11,16 +11,11 @@ using Roslynator.CSharp;
 namespace Roslynator.Formatting.CSharp
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class AddOrRemoveNewLineBetweenClosingBraceAndWhileKeywordAnalyzer : BaseDiagnosticAnalyzer
+    internal class AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersaAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get
-            {
-                return ImmutableArray.Create(
-                    DiagnosticDescriptors.AddNewLineBetweenClosingBraceAndWhileKeyword,
-                    DiagnosticDescriptors.RemoveNewLineBetweenClosingBraceAndWhileKeyword);
-            }
+            get { return ImmutableArray.Create(DiagnosticDescriptors.AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersa); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -45,11 +40,12 @@ namespace Roslynator.Formatting.CSharp
                 || trailingTrivia.SingleOrDefault(shouldThrow: false).IsWhitespaceTrivia())
             {
                 if (!doStatement.WhileKeyword.LeadingTrivia.Any()
-                    && !context.IsAnalyzerSuppressed(DiagnosticDescriptors.AddNewLineBetweenClosingBraceAndWhileKeyword))
+                    && context.IsAnalyzerSuppressed(DiagnosticDescriptors.RemoveNewLineBetweenClosingBraceAndWhileKeyword))
                 {
                     context.ReportDiagnostic(
-                        DiagnosticDescriptors.AddNewLineBetweenClosingBraceAndWhileKeyword,
-                        Location.Create(doStatement.SyntaxTree, new TextSpan(statement.FullSpan.End, 0)));
+                        DiagnosticDescriptors.AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersa,
+                        Location.Create(doStatement.SyntaxTree, new TextSpan(statement.FullSpan.End, 0)),
+                        messageArgs: "Add");
                 }
             }
             else if (SyntaxTriviaAnalysis.IsOptionalWhitespaceThenEndOfLineTrivia(trailingTrivia))
@@ -58,8 +54,10 @@ namespace Roslynator.Formatting.CSharp
                     && !context.IsAnalyzerSuppressed(DiagnosticDescriptors.RemoveNewLineBetweenClosingBraceAndWhileKeyword))
                 {
                     context.ReportDiagnostic(
-                        DiagnosticDescriptors.RemoveNewLineBetweenClosingBraceAndWhileKeyword,
-                        Location.Create(doStatement.SyntaxTree, new TextSpan(trailingTrivia.Last().SpanStart, 0)));
+                        DiagnosticDescriptors.AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersa,
+                        Location.Create(doStatement.SyntaxTree, new TextSpan(trailingTrivia.Last().SpanStart, 0)),
+                        properties: DiagnosticProperties.AnalyzerOption_Invert,
+                        messageArgs: "Remove");
                 }
             }
         }
