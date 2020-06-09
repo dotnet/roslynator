@@ -53,41 +53,35 @@ namespace Roslynator.CommandLine
 
         public CommandResult Execute()
         {
+            var cts = new CancellationTokenSource();
+            Console.CancelKeyPress += (sender, e) =>
+            {
+                e.Cancel = true;
+                cts.Cancel();
+            };
+
+            CancellationToken cancellationToken = cts.Token;
+
             try
             {
-                var cts = new CancellationTokenSource();
-                Console.CancelKeyPress += (sender, e) =>
-                {
-                    e.Cancel = true;
-                    cts.Cancel();
-                };
-
-                CancellationToken cancellationToken = cts.Token;
-
-                try
-                {
-                    return Execute(cancellationToken);
-                }
-                catch (OperationCanceledException ex)
-                {
-                    OperationCanceled(ex);
-                }
-                catch (AggregateException ex)
-                {
-                    OperationCanceledException operationCanceledException = ex.GetOperationCanceledException();
-
-                    if (operationCanceledException != null)
-                    {
-                        OperationCanceled(operationCanceledException);
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                return Execute(cancellationToken);
             }
-            finally
+            catch (OperationCanceledException ex)
             {
+                OperationCanceled(ex);
+            }
+            catch (AggregateException ex)
+            {
+                OperationCanceledException operationCanceledException = ex.GetOperationCanceledException();
+
+                if (operationCanceledException != null)
+                {
+                    OperationCanceled(operationCanceledException);
+                }
+                else
+                {
+                    throw;
+                }
             }
 
             return CommandResult.Canceled;

@@ -36,7 +36,7 @@ namespace Roslynator.Formatting.CSharp
 
             SyntaxTriviaList trailingTrivia = statement.GetTrailingTrivia();
 
-            if (trailingTrivia.Count == 0
+            if (!trailingTrivia.Any()
                 || trailingTrivia.SingleOrDefault(shouldThrow: false).IsWhitespaceTrivia())
             {
                 if (!doStatement.WhileKeyword.LeadingTrivia.Any()

@@ -124,7 +124,7 @@ namespace Roslynator.CSharp.Analysis
                 if (sections.Count > 1
                     && !context.IsAnalyzerSuppressed(DiagnosticDescriptors.RemoveEmptyLineBetweenClosingBraceAndSwitchSection))
                 {
-                    SwitchSectionSyntax prevSection = sections.First();
+                    SwitchSectionSyntax prevSection = sections[0];
 
                     for (int i = 1; i < sections.Count; i++)
                     {

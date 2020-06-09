@@ -262,7 +262,7 @@ namespace Roslynator.CodeFixes
                     DiagnosticFixResult result = await FixDiagnosticsAsync(
                         descriptor,
                         (descriptor.CustomTags.Contains(WellKnownDiagnosticTags.Compiler))
-                            ? default(ImmutableArray<DiagnosticAnalyzer>)
+                            ? default
                             : analyzersById[diagnosticId],
                         fixersById[diagnosticId],
                         CurrentSolution.GetProject(project.Id),
