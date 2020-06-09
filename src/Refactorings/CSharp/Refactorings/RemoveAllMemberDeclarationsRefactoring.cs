@@ -38,7 +38,6 @@ namespace Roslynator.CSharp.Refactorings
                             && (declaration.OpenBraceToken.Span.Contains(span)
                                 || declaration.CloseBraceToken.Span.Contains(span));
                     }
-
                 case StructDeclarationSyntax declaration:
                     {
                         return declaration.Members.Any()

@@ -137,7 +137,6 @@ namespace Roslynator.CSharp.Analysis
 
                         break;
                     }
-
                 case SyntaxKind.ElementAccessExpression:
                     {
                         var elementAccess = (ElementAccessExpressionSyntax)parent;

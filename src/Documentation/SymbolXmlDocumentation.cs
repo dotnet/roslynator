@@ -126,7 +126,6 @@ namespace Roslynator.Documentation
                             yield return GetElementXml(element);
                             break;
                         }
-
                     case "exception":
                     case "permission":
                     case "seealso":

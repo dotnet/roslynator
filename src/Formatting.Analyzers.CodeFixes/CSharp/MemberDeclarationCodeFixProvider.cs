@@ -87,12 +87,10 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                         {
                             return classDeclaration.WithOpenBraceToken(classDeclaration.OpenBraceToken.AppendEndOfLineToTrailingTrivia());
                         }
-
                     case StructDeclarationSyntax structDeclaration:
                         {
                             return structDeclaration.WithOpenBraceToken(structDeclaration.OpenBraceToken.AppendEndOfLineToTrailingTrivia());
                         }
-
                     case InterfaceDeclarationSyntax interfaceDeclaration:
                         {
                             return interfaceDeclaration.WithOpenBraceToken(interfaceDeclaration.OpenBraceToken.AppendEndOfLineToTrailingTrivia());

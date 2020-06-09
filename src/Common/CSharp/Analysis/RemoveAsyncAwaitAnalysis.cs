@@ -225,7 +225,6 @@ namespace Roslynator.CSharp.Analysis
 
                         return default;
                     }
-
                 case SyntaxKind.SwitchStatement:
                     {
                         AwaitExpressionWalker walker = VisitStatements();

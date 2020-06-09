@@ -144,7 +144,6 @@ namespace Roslynator.CSharp.Syntax
 
                         return new IsKindExpressionInfo(binaryExpression, invocationInfo.Expression, expression2, (binaryExpressionKind == SyntaxKind.EqualsExpression) ? IsKindExpressionStyle.Kind : IsKindExpressionStyle.NotKind);
                     }
-
                 case ConditionalAccessExpressionSyntax conditionalAccess:
                     {
                         if (!(conditionalAccess.WhenNotNull is InvocationExpressionSyntax invocationExpression))

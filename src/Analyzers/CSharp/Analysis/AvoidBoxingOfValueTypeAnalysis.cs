@@ -63,7 +63,6 @@ namespace Roslynator.CSharp.Analysis
 
                         break;
                     }
-
                 case 2:
                     {
                         if (methodSymbol.IsName("Insert")

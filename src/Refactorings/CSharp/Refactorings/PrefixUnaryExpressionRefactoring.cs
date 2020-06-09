@@ -25,7 +25,6 @@ namespace Roslynator.CSharp.Refactorings
                         ReplacePreIncrementWithPostIncrement(context, prefixUnaryExpression);
                         break;
                     }
-
                 case SyntaxKind.PreDecrementExpression:
                     {
                         InvertPreDecrement(context, prefixUnaryExpression);
