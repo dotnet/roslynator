@@ -314,7 +314,6 @@
     <Rule Id="RCS1045" Action="Warning" />
     <Rule Id="RCS1050" Action="Info" />
     <Rule Id="RCS1051" Action="Info" />
-    <Rule Id="RCS1051a" Action="Info" />
     <Rule Id="RCS1056" Action="Info" />
     <Rule Id="RCS1060" Action="Info" />
     <Rule Id="RCS1061" Action="Info" />
@@ -349,6 +348,7 @@
     <Rule Id="RCS1188" Action="Info" />
     <Rule Id="RCS1189" Action="Info" />
     <Rule Id="RCS1244" Action="Info" />
+    <Rule Id="RCS1246a" Action="Info" />
   </Rules>
   <Rules AnalyzerId="Roslynator.Formatting.Analyzers" RuleNamespace="Roslynator.Formatting.Analyzers">
     <Rule Id="RCS0001" Action="Info" />
