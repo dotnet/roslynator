@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.CodeFixes
     [Shared]
     public class UseReturnInsteadOfAssignmentCodeFixProvider : BaseCodeFixProvider
     {
-        private const string Title = "Use return instead of assignment";
+        private const string Title = "Use 'return' instead of assignment";
 
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {

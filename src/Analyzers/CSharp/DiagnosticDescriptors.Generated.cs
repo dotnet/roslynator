@@ -1738,8 +1738,8 @@ namespace Roslynator.CSharp
         /// <summary>RCS1179</summary>
         public static readonly DiagnosticDescriptor UseReturnInsteadOfAssignment = Factory.Create(
             id:                 DiagnosticIdentifiers.UseReturnInsteadOfAssignment, 
-            title:              "Use return instead of assignment.", 
-            messageFormat:      "Use return instead of assignment.", 
+            title:              "Use 'return' instead of assignment.", 
+            messageFormat:      "Use 'return' instead of assignment.", 
             category:           DiagnosticCategories.Simplification, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 

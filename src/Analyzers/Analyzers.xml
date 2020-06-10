@@ -3515,7 +3515,7 @@ else
   </Analyzer>
   <Analyzer Identifier="UseReturnInsteadOfAssignment">
     <Id>RCS1179</Id>
-    <Title>Use return instead of assignment.</Title>
+    <Title>Use 'return' instead of assignment.</Title>
     <Category>Simplification</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
