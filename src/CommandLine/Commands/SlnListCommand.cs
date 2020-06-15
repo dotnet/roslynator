@@ -47,7 +47,7 @@ namespace Roslynator.CommandLine
 
             WriteLine($"Load solution '{path}'", Verbosity.Minimal);
 
-            SolutionInfo solutionInfo = await loader.LoadSolutionInfoAsync(path, consoleProgress, cancellationToken);
+            SolutionInfo solutionInfo = await loader.LoadSolutionInfoAsync(path, consoleProgress, cancellationToken: cancellationToken);
 
             string solutionDirectory = Path.GetDirectoryName(solutionInfo.FilePath);
 
