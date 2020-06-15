@@ -45,4 +45,4 @@ This option is combination of "Enable" and "Disable" option. Example is [RCS1051
 
 ### "Invert" Option
 
-This option inverts behavior of its parent analyzer.
+This option inverts behavior of its parent analyzer. Example is [RCS1050i](analyzers/RCS1050i.md).
