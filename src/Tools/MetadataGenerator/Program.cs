@@ -45,10 +45,6 @@ namespace Roslynator.CodeGeneration
             ImmutableArray<CodeFixMetadata> codeFixes = metadata.CodeFixes;
             ImmutableArray<CompilerDiagnosticMetadata> compilerDiagnostics = metadata.CompilerDiagnostics;
 
-            FileHelper.WriteAllText("migration.md", MarkdownGenerator.CreateRefactoringMarkdown22(analyzers, formattingAnalyzers), Encoding.UTF8, onlyIfChanges: false, fileMustExists: false);
-
-            Console.ReadKey();
-
             WriteAnalyzersReadMe(@"Analyzers\README.md", analyzers, "Roslynator.Analyzers");
 
             WriteAnalyzersReadMe(@"CodeAnalysis.Analyzers\README.md", codeAnalysisAnalyzers, "Roslynator.CodeAnalysis.Analyzers");

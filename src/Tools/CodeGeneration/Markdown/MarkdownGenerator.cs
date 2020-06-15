@@ -182,24 +182,6 @@ namespace Roslynator.CodeGeneration.Markdown
             return document.ToString(format);
         }
 
-        public static string CreateRefactoringMarkdown22(ImmutableArray<AnalyzerMetadata> analyzers, ImmutableArray<AnalyzerMetadata> formattingAnalyzers)
-        {
-            var format = new MarkdownFormat(tableOptions: MarkdownFormat.Default.TableOptions | TableOptions.FormatContent);
-
-            MDocument document = Document(
-                Table(TableRow("Old analyzer", "New analyzer"),
-                    AnalyzersMapping.Mapping
-                    .SelectMany(f => f.Value.Select(f2 => (oldId: f.Key, newId: f2)))
-                    .OrderBy(f => f.oldId).Select(f =>
-                    {
-                        return TableRow(
-                            Inline(Link(Bold(f.oldId), $"analyzers/{f.oldId}.md"), $" ({analyzers.FirstOrDefault(f2 => f2.Id == f.oldId)?.Title})"),
-                            Inline(Link(Bold(f.newId), $"analyzers/{f.newId}.md"), $" ({formattingAnalyzers.FirstOrDefault(f2 => f2.Id == f.newId)?.Title})"));
-                    })));
-
-            return document.ToString(format);
-        }
-
         public static string CreateAnalyzerMarkdown(AnalyzerMetadata analyzer, IEnumerable<(string title, string url)> appliesTo = null)
         {
             var format = new MarkdownFormat(tableOptions: MarkdownFormat.Default.TableOptions | TableOptions.FormatContent);
