@@ -5,9 +5,7 @@ using CommandLine;
 
 namespace Roslynator.CommandLine
 {
-#if NETCOREAPP3_1
     [Verb("migrate", HelpText = "Migrates analyzers to a new version.")]
-#endif
     internal sealed class MigrateCommandLineOptions : AbstractCommandLineOptions
     {
         [Value(index: 0,

@@ -35,9 +35,7 @@ namespace Roslynator.CommandLine
             try
             {
                 ParserResult<object> parserResult = Parser.Default.ParseArguments<
-#if NETCOREAPP3_1
                     MigrateCommandLineOptions,
-#endif
 #if DEBUG
                     AnalyzeAssemblyCommandLineOptions,
                     FindSymbolsCommandLineOptions,
@@ -102,9 +100,7 @@ namespace Roslynator.CommandLine
                     (LogicalLinesOfCodeCommandLineOptions options) => LogicalLinesOrCodeAsync(options).Result,
                     (GenerateDocCommandLineOptions options) => GenerateDocAsync(options).Result,
                     (GenerateDocRootCommandLineOptions options) => GenerateDocRootAsync(options).Result,
-#if NETCOREAPP3_1
                     (MigrateCommandLineOptions options) => Migrate(options),
-#endif
                     _ => 1);
             }
             catch (Exception ex)
