@@ -1,3 +1,24 @@
+### 3.0.0 (2020-06-16)
+
+* Update references to Roslyn API to 3.5.0
+* Release .NET Core Global Tool [Roslynator.DotNet.Cli](https://www.nuget.org/packages/roslynator.dotnet.cli) 
+* Introduce concept of "[Analyzer Options](https://github.com/JosefPihrt/Roslynator/blob/master/docs/AnalyzerOptions.md)"
+* Reassign ID for some analyzers.
+  * See "[How to: Migrate Analyzers to Version 3.0](https://github.com/JosefPihrt/Roslynator/blob/master/docs/HowToMigrateAnalyzersToVersion3.md)"
+* Remove references to Roslynator assemblies from omnisharp.json on uninstall (VS Code)
+
+#### New Analyzers
+
+* [RCS0048](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS0048.md) (Remove newlines from initializer with single\-line expression).
+* [RCS0049](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS0049.md) (Add empty line after top comment).
+* [RCS0050](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS0050.md) (Add empty line before top declaration).
+* [RCS0051](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS0051.md) (Add newline between closing brace and 'while' keyword \(or vice versa\)).
+* [RCS1246](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1246.md) (Use element access).
+
+#### New Refactorings
+
+* [RR0214](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0214.md) (Convert 'switch' expression to 'switch' statement).
+
 ### 2.9.0 (2020-03-13)
 
 * Switch to Roslyn 3.x libraries

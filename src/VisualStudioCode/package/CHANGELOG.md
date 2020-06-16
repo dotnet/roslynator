@@ -1,3 +1,11 @@
+## 3.0.0 (2020-06-16)
+
+* Update references to Roslyn API to 3.5.0
+* Introduce concept of "[Analyzer Options](https://github.com/JosefPihrt/Roslynator/blob/master/docs/AnalyzerOptions.md)"
+* Reassign ID for some analyzers.
+  * See "[How to: Migrate Analyzers to Version 3.0](https://github.com/JosefPihrt/Roslynator/blob/master/docs/HowToMigrateAnalyzersToVersion3.md)"
+* Remove references to Roslynator assemblies from omnisharp.json on uninstall
+
 ## 2.9.0 (2020-03-13)
 
 * Switch to Roslyn 3.x libraries
