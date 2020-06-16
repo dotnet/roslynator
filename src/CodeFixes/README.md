@@ -142,6 +142,7 @@
 | [CS1717](../../docs/cs/CS1717.md) | Assignment made to same variable; did you mean to assign something else? |
 | [CS1722](../../docs/cs/CS1722.md) | Base class 'class' must come before any interfaces\. |
 | [CS1737](../../docs/cs/CS1737.md) | Optional parameters must appear after all required parameters\. |
+| [CS1741](../../docs/cs/CS1741.md) | A ref or out parameter cannot have a default value\. |
 | [CS1743](../../docs/cs/CS1743.md) | Cannot specify a default value for the 'this' parameter\. |
 | [CS1750](../../docs/cs/CS1750.md) | A value of type 'type1' cannot be used as a default parameter because there are no standard conversions to type 'type2\. |
 | [CS1751](../../docs/cs/CS1751.md) | Cannot specify a default value for a parameter array\. |

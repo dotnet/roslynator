@@ -45,15 +45,18 @@
 | RR0131 | [Convert 'for' to 'while'](../../docs/refactorings/RR0131.md) | &#x2713; |
 | RR0129 | [Convert 'foreach' to 'for'](../../docs/refactorings/RR0129.md) | &#x2713; |
 | RR0188 | [Convert 'foreach' to 'for' and reverse loop](../../docs/refactorings/RR0188.md) | \- |
+| RR0164 | [Convert 'HasFlag' call to bitwise operation](../../docs/refactorings/RR0164.md) | &#x2713; |
 | RR0132 | [Convert hexadecimal literal to decimal literal](../../docs/refactorings/RR0132.md) | &#x2713; |
 | RR0166 | [Convert 'if' to ?:](../../docs/refactorings/RR0166.md) | &#x2713; |
 | RR0133 | [Convert 'if' to 'switch'](../../docs/refactorings/RR0133.md) | &#x2713; |
 | RR0193 | [Convert interpolated string to concatenation](../../docs/refactorings/RR0193.md) | &#x2713; |
 | RR0136 | [Convert interpolated string to string literal](../../docs/refactorings/RR0136.md) | &#x2713; |
 | RR0201 | [Convert interpolated string to 'string.Format'](../../docs/refactorings/RR0201.md) | &#x2713; |
+| RR0139 | [Convert null literal to default expression](../../docs/refactorings/RR0139.md) | &#x2713; |
 | RR0142 | [Convert regular string literal to verbatim string literal](../../docs/refactorings/RR0142.md) | &#x2713; |
 | RR0211 | [Convert statements to if-else](../../docs/refactorings/RR0211.md) | &#x2713; |
 | RR0145 | [Convert 'string.Format' to interpolated string](../../docs/refactorings/RR0145.md) | &#x2713; |
+| RR0214 | [Convert 'switch' expression to 'switch' statement](../../docs/refactorings/RR0214.md) | &#x2713; |
 | RR0147 | [Convert 'switch' to 'if'](../../docs/refactorings/RR0147.md) | &#x2713; |
 | RR0148 | [Convert verbatim string literal to regular string literal](../../docs/refactorings/RR0148.md) | &#x2713; |
 | RR0149 | [Convert verbatim string literal to regular string literals](../../docs/refactorings/RR0149.md) | &#x2713; |
@@ -121,7 +124,7 @@
 | RR0070 | [Make member virtual](../../docs/refactorings/RR0070.md) | &#x2713; |
 | RR0073 | [Merge assignment expression with return statement](../../docs/refactorings/RR0073.md) | &#x2713; |
 | RR0074 | [Merge attributes](../../docs/refactorings/RR0074.md) | &#x2713; |
-| RR0075 | [Merge if statements](../../docs/refactorings/RR0075.md) | &#x2713; |
+| RR0075 | [Merge 'if' statements](../../docs/refactorings/RR0075.md) | &#x2713; |
 | RR0196 | [Merge if with parent if](../../docs/refactorings/RR0196.md) | &#x2713; |
 | RR0077 | [Merge local declarations](../../docs/refactorings/RR0077.md) | &#x2713; |
 | RR0202 | [Move unsafe context to containing declaration](../../docs/refactorings/RR0202.md) | &#x2713; |
@@ -170,7 +173,6 @@
 | RR0135 | [Replace interpolated string with interpolation expression](../../docs/refactorings/RR0135.md) | &#x2713; |
 | RR0137 | [Replace method group with lambda](../../docs/refactorings/RR0137.md) | &#x2713; |
 | RR0138 | [Replace method with property](../../docs/refactorings/RR0138.md) | \- |
-| RR0139 | [Replace null literal expression with default expression](../../docs/refactorings/RR0139.md) | &#x2713; |
 | RR0185 | [Replace object creation with default value](../../docs/refactorings/RR0185.md) | &#x2713; |
 | RR0140 | [Replace prefix operator to postfix operator](../../docs/refactorings/RR0140.md) | &#x2713; |
 | RR0141 | [Replace property with method](../../docs/refactorings/RR0141.md) | &#x2713; |
@@ -190,7 +192,6 @@
 | RR0200 | [Uncomment multi-line comment](../../docs/refactorings/RR0200.md) | &#x2713; |
 | RR0163 | [Uncomment single-line comment](../../docs/refactorings/RR0163.md) | &#x2713; |
 | RR0168 | [Use "" instead of string.Empty](../../docs/refactorings/RR0168.md) | &#x2713; |
-| RR0164 | [Use bitwise operation instead of calling 'HasFlag'](../../docs/refactorings/RR0164.md) | &#x2713; |
 | RR0191 | [Use C# 6.0 dictionary initializer](../../docs/refactorings/RR0191.md) | &#x2713; |
 | RR0165 | [Use coalesce expression instead of if](../../docs/refactorings/RR0165.md) | &#x2713; |
 | RR0128 | [Use constant instead of field](../../docs/refactorings/RR0128.md) | &#x2713; |

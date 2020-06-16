@@ -507,6 +507,11 @@ for (int i = items.Count - 1; i >= 0; i--)
 }
 ```
 
+#### Convert 'HasFlag' call to bitwise operation \(RR0164\)
+
+* **Syntax**: Enum\.HasFlag method invocation
+![Convert 'HasFlag' call to bitwise operation](../../images/refactorings/ConvertHasFlagCallToBitwiseOperation.png)
+
 #### Convert hexadecimal literal to decimal literal \(RR0132\)
 
 * **Syntax**: hexadecimal literal
@@ -596,6 +601,11 @@ $"name: {name,0:f}, value: {value}"
 string.Format("name: {0,0:f} value: {1}", name, value)
 ```
 
+#### Convert null literal to default expression \(RR0139\)
+
+* **Syntax**: argument
+![Convert null literal to default expression](../../images/refactorings/ConvertNullLiteralToDefaultExpression.png)
+
 #### Convert regular string literal to verbatim string literal \(RR0142\)
 
 * **Syntax**: regular string literal
@@ -648,6 +658,45 @@ else
 
 * **Syntax**: string\.Format method
 ![Convert 'string.Format' to interpolated string](../../images/refactorings/ConvertStringFormatToInterpolatedString.png)
+
+#### Convert 'switch' expression to 'switch' statement \(RR0214\)
+
+* **Syntax**: switch expression
+* **Span**: switch keyword
+
+#### Before
+
+```csharp
+return dayOfWeek switch
+{
+    DayOfWeek.Monday => 1,
+    DayOfWeek.Tuesday => 2,
+    DayOfWeek.Wednesday => 3,
+    DayOfWeek.Thursday => 4,
+    DayOfWeek.Friday => 5,
+    _ => throw new Exception(),
+};
+```
+
+#### After
+
+```csharp
+switch (dayOfWeek)
+{
+    case DayOfWeek.Monday:
+        return 1;
+    case DayOfWeek.Tuesday:
+        return 2;
+    case DayOfWeek.Wednesday:
+        return 3;
+    case DayOfWeek.Thursday:
+        return 4;
+    case DayOfWeek.Friday:
+        return 5;
+    default:
+        throw new Exception();
+}
+```
 
 #### Convert 'switch' to 'if' \(RR0147\)
 
@@ -1521,22 +1570,19 @@ int i = 0;
 * **Syntax**: selected attribute lists
 ![Merge attributes](../../images/refactorings/MergeAttributes.png)
 
-#### Merge if statements \(RR0075\)
+#### Merge 'if' statements \(RR0075\)
 
-* **Syntax**: selected if statements
+* **Syntax**: selected 'if' statements
 
 #### Before
 
 ```csharp
-bool condition1 = false;
-bool condition2 = false;
-
-if (condition1)
+if (x)
 {
     return false;
 }
 
-if (condition2)
+if (y)
 {
     return false;
 }
@@ -1547,10 +1593,7 @@ return true;
 #### After
 
 ```csharp
-bool condition1 = false;
-bool condition2 = false;
-
-if (condition1 || condition2)
+if (x || y)
 {
     return false;
 }
@@ -1929,11 +1972,6 @@ Func<object, object, object> func = (f, g) => Foo(f, g)
 * **Span**: method header
 ![Replace method with property](../../images/refactorings/ReplaceMethodWithProperty.png)
 
-#### Replace null literal expression with default expression \(RR0139\)
-
-* **Syntax**: argument
-![Replace null literal expression with default expression](../../images/refactorings/ReplaceNullLiteralExpressionWithDefaultExpression.png)
-
 #### Replace object creation with default value \(RR0185\)
 
 * **Syntax**: object creation expression
@@ -2172,11 +2210,6 @@ string s = null;
 
 * **Syntax**: string\.Empty field
 ![Use "" instead of string.Empty](../../images/refactorings/UseEmptyStringLiteralInsteadOfStringEmpty.png)
-
-#### Use bitwise operation instead of calling 'HasFlag' \(RR0164\)
-
-* **Syntax**: Enum\.HasFlag method invocation
-![Use bitwise operation instead of calling 'HasFlag'](../../images/refactorings/UseBitwiseOperationInsteadOfCallingHasFlag.png)
 
 #### Use C\# 6\.0 dictionary initializer \(RR0191\)
 
