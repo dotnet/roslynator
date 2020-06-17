@@ -41,7 +41,7 @@ If you use any of these analyzers, it is recommended to use command-line tool to
 ### 1) Install .NET Core global tool 'Roslynator.DotNet.Cli'
 
 ```
-dotnet tool install roslynator.dotnet.cli --version 0.1.0-rc3 -g
+dotnet tool install roslynator.dotnet.cli -g
 ```
 
 ### 2) Run command 'roslynator migrate':
@@ -50,11 +50,10 @@ dotnet tool install roslynator.dotnet.cli --version 0.1.0-rc3 -g
 roslynator migrate <PATH> --identifier roslynator.analyzers --target-version 3.0 [-d|--dry-run]
 ```
 
-Argument `<PATH>` can represent directory path, csproj/props file path or ruleset file path. Current directory will be used if the argument is not specified.
+Argument `<PATH>` can represent directory path, ruleset file path or EditorConfig file path. Current directory will be used if the argument is not specified.
 
 It is recommended to run analyzers first with `-d|--dry-run` option to see which files will be updated.
 
 Command will do the following:
-* Add/update package reference to **Roslynator.Formatting.Analyzers** if the csproj/props contains package reference to **Roslynator.Analyzers**
 * Update rules in the ruleset file
 * Update rules in the EditorConfig file

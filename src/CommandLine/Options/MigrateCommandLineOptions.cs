@@ -20,7 +20,7 @@ namespace Roslynator.CommandLine
         [Option(longName: "identifier",
             Required = true,
             HelpText = "Identifier of a package to be migrated.",
-            MetaValue = "<Identifier>")]
+            MetaValue = "<IDENTIFIER>")]
         public string Identifier { get; set; }
 
         [Option(longName: ParameterNames.TargetVersion,

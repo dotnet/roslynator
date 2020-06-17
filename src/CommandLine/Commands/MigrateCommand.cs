@@ -163,13 +163,14 @@ namespace Roslynator.CommandLine
         {
             string extension = Path.GetExtension(path);
 
-            if (string.Equals(extension, ".csproj", StringComparison.OrdinalIgnoreCase)
-                || string.Equals(extension, ".props", StringComparison.OrdinalIgnoreCase))
-            {
-                if (!GeneratedCodeUtility.IsGeneratedCodeFile(path))
-                    return ExecuteProject(path);
-            }
-            else if (string.Equals(extension, ".ruleset", StringComparison.OrdinalIgnoreCase))
+            //if (string.Equals(extension, ".csproj", StringComparison.OrdinalIgnoreCase)
+            //    || string.Equals(extension, ".props", StringComparison.OrdinalIgnoreCase))
+            //{
+            //    if (!GeneratedCodeUtility.IsGeneratedCodeFile(path))
+            //        return ExecuteProject(path);
+            //}
+
+            if (string.Equals(extension, ".ruleset", StringComparison.OrdinalIgnoreCase))
             {
                 if (!GeneratedCodeUtility.IsGeneratedCodeFile(path))
                     return ExecuteRuleSet(path);
@@ -212,7 +213,6 @@ namespace Roslynator.CommandLine
             }
             else
             {
-                //TODO: Migrate old-style project
                 WriteLine($"Project does not support migration: '{path}'", Colors.Message_Warning, Verbosity.Detailed);
 
                 return CommandResult.None;
@@ -552,7 +552,10 @@ namespace Roslynator.CommandLine
 
                 stream.Position = 0;
 
-                using (var reader = new StreamReader(stream, encoding, detectEncodingFromByteOrderMarks: true))
+                using (var reader = new StreamReader(
+                    stream,
+                    encoding ?? Encodings.UTF8NoBom,
+                    detectEncodingFromByteOrderMarks: encodingFromBom == null))
                 {
                     return reader.ReadToEnd();
                 }
