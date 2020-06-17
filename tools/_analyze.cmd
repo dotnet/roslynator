@@ -4,7 +4,7 @@ set _msbuildPath="C:\Program Files\Microsoft Visual Studio\2019\Community\MSBuil
 
 %_msbuildPath%\msbuild "..\src\CommandLine.sln" /t:Build /p:Configuration=Debug /v:m /m
 
-"..\src\CommandLine\bin\Debug\net472\roslynator" analyze "..\src\Roslynator.sln" ^
+"..\src\CommandLine\bin\Debug\net48\roslynator" analyze "..\src\Roslynator.sln" ^
  --msbuild-path %_msbuildPath% ^
  --analyzer-assemblies "..\src\Analyzers\bin\Debug\netstandard2.0\Roslynator.CSharp.Analyzers.dll" ^
  --ignore-analyzer-references ^

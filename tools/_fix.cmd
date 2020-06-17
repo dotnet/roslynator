@@ -5,7 +5,7 @@ set _msbuildPath="%_visualStudioPath%\MSBuild\Current\Bin"
 
 %_msbuildPath%\msbuild "..\src\CommandLine.sln" /t:Build /p:Configuration=Debug /v:m /m
 
-"..\src\CommandLine\bin\Debug\net472\roslynator" fix "..\src\Roslynator.sln" ^
+"..\src\CommandLine\bin\Debug\net48\roslynator" fix "..\src\Roslynator.sln" ^
  --msbuild-path %_msbuildPath% ^
  --analyzer-assemblies ^
   "..\src\Analyzers.CodeFixes\bin\Debug\netstandard2.0\Roslynator.CSharp.Analyzers.dll" ^
