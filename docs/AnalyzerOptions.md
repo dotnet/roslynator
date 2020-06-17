@@ -1,6 +1,6 @@
 ﻿# Analyzer Options
 
-Each analyzer option is represented by an "analyzer" that is is not real analyzer but rather a modification of its parent analyzer.
+Each analyzer option is represented by an "analyzer" that is a modification of its parent analyzer.
 
 ## Properties
 
@@ -28,6 +28,24 @@ Solution to this proposal it to add new "analyzer option" [RCS1051a](analyzers/R
   * `x != null ? y : z` &ensp;>&ensp; `(x != null) ? y : z`
 * Remove parentheses from condition if it is a single token.
   * `(x) ? y : z` &ensp;>&ensp; `x ? y : z`
+
+## How to Configure Analyzer Option in Ruleset
+
+If the parent analyzer is enabled by default it is neccessary to add following line to a ruleset:
+
+```xml
+<Rule Id="RCS1036i" Action="Info" />
+```
+
+Because analyzer option is a yes/no switch it doesn't matter if you set action to Hidden, Info, Warning or Error.
+For readability purposes it is good to specify same action as its parent analyzer which is Info in case of RCS1036.
+
+If the parent analyzer is disabled by default it is neccessary to add following lines to a ruleset:
+
+```xml
+<Rule Id="RCS1051" Action="Info" />
+<Rule Id="RCS1051i" Action="Info" />
+```
 
 ## Types of Analyzer Options
 
