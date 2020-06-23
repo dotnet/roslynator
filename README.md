@@ -64,7 +64,8 @@ Although Roslynator products are free of charge, any [donation](https://www.payp
 
 ## Roslynator Command-Line Interface
 
-* Roslynator CLI is distributed via NuGet package [Roslynator.CommandLine](https://www.nuget.org/packages/Roslynator.CommandLine). &ensp;[![NuGet](https://img.shields.io/nuget/v/Roslynator.CommandLine.svg)](https://www.nuget.org/packages/Roslynator.CommandLine)
+* Roslynator CLI is distributed as NuGet package [Roslynator.CommandLine](https://www.nuget.org/packages/Roslynator.CommandLine). &ensp;[![NuGet](https://img.shields.io/nuget/v/Roslynator.CommandLine.svg)](https://www.nuget.org/packages/Roslynator.CommandLine)
+* Roslynator CLI is also distributed as .NET Core Global Tool [Roslynator.DotNet.Cli](https://www.nuget.org/packages/Roslynator.DotNet.Cli). &ensp;[![NuGet](https://img.shields.io/nuget/v/Roslynator.DotNet.Cli.svg)](https://www.nuget.org/packages/Roslynator.DotNet.Cli)
 * See [documentation](docs/cli/README.md).
 
 ## Documentation
