@@ -10,7 +10,7 @@ namespace Roslynator.Formatting.CSharp
     public static partial class DiagnosticDescriptors
     {
         [Obsolete("", error: true)]
-        internal static readonly DiagnosticDescriptor AddNewLineAfterBinaryOperatorInsteadOfBeforeIt2 = Factory.Create(
+        internal static readonly DiagnosticDescriptor AddNewLineAfterBinaryOperatorInsteadOfBeforeIt2 = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.AddNewLineAfterBinaryOperatorInsteadOfBeforeIt2, 
             title:              "Add newline after binary operator instead of before it.", 
             messageFormat:      "Add newline after binary operator instead of before it.", 
@@ -22,7 +22,7 @@ namespace Roslynator.Formatting.CSharp
             customTags:         Array.Empty<string>());
 
         [Obsolete("", error: true)]
-        internal static readonly DiagnosticDescriptor AddNewLineAfterConditionalOperatorInsteadOfBeforeIt2 = Factory.Create(
+        internal static readonly DiagnosticDescriptor AddNewLineAfterConditionalOperatorInsteadOfBeforeIt2 = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.AddNewLineAfterConditionalOperatorInsteadOfBeforeIt2, 
             title:              "Add newline after conditional operator instead of before it.", 
             messageFormat:      "Add newline after conditional operator instead of before it.", 
@@ -34,7 +34,7 @@ namespace Roslynator.Formatting.CSharp
             customTags:         Array.Empty<string>());
 
         [Obsolete("", error: true)]
-        internal static readonly DiagnosticDescriptor AddNewLineAfterExpressionBodyArrowInsteadOfBeforeIt2 = Factory.Create(
+        internal static readonly DiagnosticDescriptor AddNewLineAfterExpressionBodyArrowInsteadOfBeforeIt2 = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.AddNewLineAfterExpressionBodyArrowInsteadOfBeforeIt2, 
             title:              "Add newline after expression-body arrow instead of before it.", 
             messageFormat:      "Add newline after expression-body arrow instead of before it.", 
@@ -46,7 +46,7 @@ namespace Roslynator.Formatting.CSharp
             customTags:         Array.Empty<string>());
 
         [Obsolete("", error: true)]
-        internal static readonly DiagnosticDescriptor RemoveEmptyLineBetweenSingleLineAccessors2 = Factory.Create(
+        internal static readonly DiagnosticDescriptor RemoveEmptyLineBetweenSingleLineAccessors2 = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.RemoveEmptyLineBetweenSingleLineAccessors2, 
             title:              "Remove empty line between single-line accessors.", 
             messageFormat:      "Remove empty line between single-line accessors.", 
@@ -58,7 +58,7 @@ namespace Roslynator.Formatting.CSharp
             customTags:         Array.Empty<string>());
 
         [Obsolete("", error: true)]
-        internal static readonly DiagnosticDescriptor RemoveEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace2 = Factory.Create(
+        internal static readonly DiagnosticDescriptor RemoveEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace2 = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.RemoveEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace2, 
             title:              "Remove empty line between using directives with different root namespace.", 
             messageFormat:      "Remove empty line between using directives with different root namespace.", 
@@ -70,7 +70,7 @@ namespace Roslynator.Formatting.CSharp
             customTags:         Array.Empty<string>());
 
         [Obsolete("", error: true)]
-        internal static readonly DiagnosticDescriptor RemoveNewLineBetweenClosingBraceAndWhileKeyword2 = Factory.Create(
+        internal static readonly DiagnosticDescriptor RemoveNewLineBetweenClosingBraceAndWhileKeyword2 = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.RemoveNewLineBetweenClosingBraceAndWhileKeyword2, 
             title:              "Remove newline between closing brace and 'while' keyword.", 
             messageFormat:      "Remove newline between closing brace and 'while' keyword.", 

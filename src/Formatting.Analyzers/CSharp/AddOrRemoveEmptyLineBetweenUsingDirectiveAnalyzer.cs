@@ -103,23 +103,21 @@ namespace Roslynator.Formatting.CSharp
                 {
                     if (isEmptyLine)
                     {
-                        if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.RemoveEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace))
+                        if (!context.IsAnalyzerSuppressed(AnalyzerOptions.RemoveEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace))
                         {
                             DiagnosticHelpers.ReportDiagnostic(
                                 context,
-                                DiagnosticDescriptors.AddEmptyLineBetweenUsingDirectivesWithDifferentRootNamespaceOrViceVersa,
+                                DiagnosticDescriptors.ReportOnly.RemoveEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace,
                                 Location.Create(context.Node.SyntaxTree, leadingTrivia[0].Span.WithLength(0)),
-                                properties: DiagnosticProperties.AnalyzerOption_Invert,
-                                messageArgs: "Remove");
+                                properties: DiagnosticProperties.AnalyzerOption_Invert);
                         }
                     }
-                    else if (context.IsAnalyzerSuppressed(DiagnosticDescriptors.RemoveEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace))
+                    else if (context.IsAnalyzerSuppressed(AnalyzerOptions.RemoveEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace))
                     {
                         DiagnosticHelpers.ReportDiagnostic(
                             context,
                             DiagnosticDescriptors.AddEmptyLineBetweenUsingDirectivesWithDifferentRootNamespaceOrViceVersa,
-                            Location.Create(context.Node.SyntaxTree, trailingTrivia.Last().Span.WithLength(0)),
-                            messageArgs: "Add");
+                            Location.Create(context.Node.SyntaxTree, trailingTrivia.Last().Span.WithLength(0)));
                     }
                 }
             }

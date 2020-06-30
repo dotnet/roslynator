@@ -37,13 +37,12 @@ namespace Roslynator.Formatting.CSharp
                 if (!arrowToken.LeadingTrivia.Any()
                     && SyntaxTriviaAnalysis.IsOptionalWhitespaceThenEndOfLineTrivia(arrowToken.TrailingTrivia)
                     && SyntaxTriviaAnalysis.IsEmptyOrSingleWhitespaceTrivia(arrowExpressionClause.Expression.GetLeadingTrivia())
-                    && context.IsAnalyzerSuppressed(DiagnosticDescriptors.AddNewLineAfterExpressionBodyArrowInsteadOfBeforeIt))
+                    && context.IsAnalyzerSuppressed(AnalyzerOptions.AddNewLineAfterExpressionBodyArrowInsteadOfBeforeIt))
                 {
                     DiagnosticHelpers.ReportDiagnostic(
                         context,
                         DiagnosticDescriptors.AddNewLineBeforeExpressionBodyArrowInsteadOfAfterItOrViceVersa,
-                        arrowToken.GetLocation(),
-                        messageArgs: new string[] { "before", "after" });
+                        arrowToken.GetLocation());
                 }
             }
             else if (SyntaxTriviaAnalysis.IsOptionalWhitespaceThenEndOfLineTrivia(previousToken.TrailingTrivia))
@@ -51,14 +50,13 @@ namespace Roslynator.Formatting.CSharp
                 if (SyntaxTriviaAnalysis.IsEmptyOrSingleWhitespaceTrivia(arrowToken.LeadingTrivia)
                     && SyntaxTriviaAnalysis.IsEmptyOrSingleWhitespaceTrivia(arrowToken.TrailingTrivia)
                     && !arrowExpressionClause.Expression.GetLeadingTrivia().Any()
-                    && !context.IsAnalyzerSuppressed(DiagnosticDescriptors.AddNewLineAfterExpressionBodyArrowInsteadOfBeforeIt))
+                    && !context.IsAnalyzerSuppressed(AnalyzerOptions.AddNewLineAfterExpressionBodyArrowInsteadOfBeforeIt))
                 {
                     DiagnosticHelpers.ReportDiagnostic(
                         context,
-                        DiagnosticDescriptors.AddNewLineBeforeExpressionBodyArrowInsteadOfAfterItOrViceVersa,
+                        DiagnosticDescriptors.ReportOnly.AddNewLineAfterExpressionBodyArrowInsteadOfBeforeIt,
                         arrowToken.GetLocation(),
-                        properties: DiagnosticProperties.AnalyzerOption_Invert,
-                        messageArgs: new string[] { "after", "before" });
+                        properties: DiagnosticProperties.AnalyzerOption_Invert);
                 }
             }
         }

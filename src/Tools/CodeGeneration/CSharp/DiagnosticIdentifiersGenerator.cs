@@ -38,11 +38,6 @@ namespace Roslynator.CodeGeneration.CSharp
             string identifier = analyzer.Identifier;
 
             yield return CreateMember(id, identifier, analyzer.IsObsolete);
-
-            foreach (AnalyzerMetadata optionAnalyzer in analyzer.OptionAnalyzers.OrderBy(f => f.Identifier))
-            {
-                yield return CreateMember(optionAnalyzer.Id, optionAnalyzer.Identifier, optionAnalyzer.IsObsolete);
-            }
         }
 
         private static FieldDeclarationSyntax CreateMember(string id, string identifier, bool isObsolete)

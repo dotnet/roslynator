@@ -25,23 +25,21 @@ namespace Roslynator.CodeGeneration.CSharp
         {
             CompilationUnitSyntax compilationUnit = CompilationUnit(
                 UsingDirectives("System", "Microsoft.CodeAnalysis"),
-                NamespaceDeclaration(@namespace,
-                    ClassDeclaration(
-                        Modifiers.Public_Static_Partial(),
+                NamespaceDeclaration(
+                    @namespace,
+                    CreateClassDeclaration(
+                        analyzers
+                            .Where(f => f.IsObsolete == obsolete)
+                            .OrderBy(f => f.Id, comparer),
                         className,
-                        List(
-                            CreateMembers(
-                                analyzers
-                                    .Where(f => f.IsObsolete == obsolete)
-                                    .OrderBy(f => f.Id, comparer),
-                                identifiersClassName)))));
+                        identifiersClassName)));
 
             compilationUnit = compilationUnit.NormalizeWhitespace();
 
             return (CompilationUnitSyntax)Rewriter.Instance.Visit(compilationUnit);
         }
 
-        private static IEnumerable<MemberDeclarationSyntax> CreateMembers(IEnumerable<AnalyzerMetadata> analyzers, string identifiersClassName)
+        private static IEnumerable<MemberDeclarationSyntax> CreateMembers(IEnumerable<AnalyzerMetadata> analyzers, string identifiersClassName, bool useParentProperties = false)
         {
             foreach (AnalyzerMetadata analyzer in analyzers)
             {
@@ -52,7 +50,8 @@ namespace Roslynator.CodeGeneration.CSharp
 
                 yield return CreateMember(
                     analyzer,
-                    identifiersClassName);
+                    identifiersClassName,
+                    useParentProperties);
 
                 if (analyzer.SupportsFadeOutAnalyzer)
                 {
@@ -65,50 +64,73 @@ namespace Roslynator.CodeGeneration.CSharp
                             IdentifierName("CreateFadeOut"),
                             ArgumentList(Argument(IdentifierName(identifier))))).AddObsoleteAttributeIf(analyzer.IsObsolete, error: true);
                 }
-
-                foreach (AnalyzerMetadata optionAnalyzer in analyzer.OptionAnalyzers)
-                {
-                    yield return CreateMember(optionAnalyzer, identifiersClassName);
-                }
             }
+
+            IEnumerable<AnalyzerMetadata> optionAnalyzers = analyzers.SelectMany(f => f.OptionAnalyzers.Where(f => f.Kind == AnalyzerOptionKind.Change || f.Kind == AnalyzerOptionKind.Invert));
+
+            if (optionAnalyzers.Any())
+            {
+                yield return CreateClassDeclaration(optionAnalyzers, "ReportOnly", identifiersClassName, useParentProperties = true);
+            }
+        }
+
+        private static ClassDeclarationSyntax CreateClassDeclaration(
+            IEnumerable<AnalyzerMetadata> analyzers,
+            string className,
+            string identifiersClassName,
+            bool useParentProperties = false)
+        {
+            return ClassDeclaration(
+                Modifiers.Public_Static_Partial(),
+                className,
+                List(
+                    CreateMembers(
+                        analyzers,
+                        identifiersClassName,
+                        useParentProperties)));
         }
 
         private static MemberDeclarationSyntax CreateMember(
             AnalyzerMetadata analyzer,
-            string identifiersClassName)
+            string identifiersClassName,
+            bool useParentProperties = false)
         {
+            AnalyzerMetadata parent = (useParentProperties) ? analyzer.Parent : null;
+
+            MemberAccessExpressionSyntax idExpression = SimpleMemberAccessExpression(IdentifierName(identifiersClassName), IdentifierName(parent?.Identifier ?? analyzer.Identifier));
+
             FieldDeclarationSyntax fieldDeclaration = FieldDeclaration(
                 (analyzer.IsObsolete) ? Modifiers.Internal_Static_ReadOnly() : Modifiers.Public_Static_ReadOnly(),
                 IdentifierName("DiagnosticDescriptor"),
                 analyzer.Identifier,
                 SimpleMemberInvocationExpression(
-                    IdentifierName("Factory"),
+                    SimpleMemberAccessExpression(IdentifierName("DiagnosticDescriptorFactory"), IdentifierName("Default")),
                     IdentifierName("Create"),
                     ArgumentList(
                         Argument(
                             NameColon("id"),
-                            SimpleMemberAccessExpression(IdentifierName(identifiersClassName), IdentifierName(analyzer.Identifier))),
+                            idExpression),
                         Argument(
                             NameColon("title"),
-                            StringLiteralExpression(analyzer.Title)),
+                            StringLiteralExpression(parent?.Title ?? analyzer.Title)),
                         Argument(
                             NameColon("messageFormat"),
                             StringLiteralExpression(analyzer.MessageFormat)),
                         Argument(
                             NameColon("category"),
-                            SimpleMemberAccessExpression(IdentifierName("DiagnosticCategories"), IdentifierName(analyzer.Category))),
+                            SimpleMemberAccessExpression(IdentifierName("DiagnosticCategories"), IdentifierName(parent?.Category ?? analyzer.Category))),
                         Argument(
                             NameColon("defaultSeverity"),
-                            SimpleMemberAccessExpression(IdentifierName("DiagnosticSeverity"), IdentifierName(analyzer.DefaultSeverity))),
+                            SimpleMemberAccessExpression(IdentifierName("DiagnosticSeverity"), IdentifierName(parent?.DefaultSeverity ?? analyzer.DefaultSeverity))),
                         Argument(
                             NameColon("isEnabledByDefault"),
-                            BooleanLiteralExpression(analyzer.IsEnabledByDefault)),
+                            BooleanLiteralExpression(parent?.IsEnabledByDefault ?? analyzer.IsEnabledByDefault)),
                         Argument(
                             NameColon("description"),
                             NullLiteralExpression()),
                         Argument(
                             NameColon("helpLinkUri"),
-                            SimpleMemberAccessExpression(IdentifierName(identifiersClassName), IdentifierName(analyzer.Identifier))),
+                            idExpression),
                         Argument(
                             NameColon("customTags"),
                             (analyzer.SupportsFadeOut)
@@ -131,7 +153,18 @@ namespace Roslynator.CodeGeneration.CSharp
 
         private class Rewriter : CSharpSyntaxRewriter
         {
+            private int _classDeclarationDepth;
+
             public static Rewriter Instance { get; } = new Rewriter();
+
+            public override SyntaxNode VisitClassDeclaration(ClassDeclarationSyntax node)
+            {
+                _classDeclarationDepth++;
+                SyntaxNode result = base.VisitClassDeclaration(node);
+                _classDeclarationDepth--;
+
+                return result;
+            }
 
             public override SyntaxNode VisitFieldDeclaration(FieldDeclarationSyntax node)
             {
@@ -145,7 +178,7 @@ namespace Roslynator.CodeGeneration.CSharp
                 if (node.NameColon != null)
                 {
                     return node
-                        .WithNameColon(node.NameColon.AppendToLeadingTrivia(TriviaList(NewLine(), Whitespace("            "))))
+                        .WithNameColon(node.NameColon.AppendToLeadingTrivia(TriviaList(NewLine(), Whitespace(new string(' ', 4 * (2 + _classDeclarationDepth))))))
                         .WithExpression(node.Expression.PrependToLeadingTrivia(Whitespace(new string(' ', 18 - node.NameColon.Name.Identifier.ValueText.Length))));
                 }
 

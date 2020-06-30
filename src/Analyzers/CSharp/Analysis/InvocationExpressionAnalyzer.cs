@@ -271,10 +271,14 @@ namespace Roslynator.CSharp.Analysis
                             case "HasFlag":
                                 {
                                     if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.ConvertHasFlagCallToBitwiseOperationOrViceVersa)
+                                        && context.IsAnalyzerSuppressed(AnalyzerOptions.ConvertBitwiseOperationToHasFlagCall)
                                         && !invocation.SpanContainsDirectives()
                                         && ConvertHasFlagCallToBitwiseOperationAnalysis.IsFixable(invocationInfo, context.SemanticModel, context.CancellationToken))
                                     {
-                                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ConvertHasFlagCallToBitwiseOperationOrViceVersa, invocation);
+                                        DiagnosticHelpers.ReportDiagnostic(
+                                            context,
+                                            DiagnosticDescriptors.ConvertHasFlagCallToBitwiseOperationOrViceVersa,
+                                            invocation);
                                     }
 
                                     break;
@@ -453,7 +457,7 @@ namespace Roslynator.CSharp.Analysis
         {
             return !invocationInfo.Expression.IsKind(SyntaxKind.ElementAccessExpression)
                 && (!invocationInfo.Expression.IsKind(SyntaxKind.InvocationExpression)
-                    || context.IsAnalyzerSuppressed(DiagnosticDescriptors.DoNotUseElementAccessWhenExpressionIsInvocation));
+                    || context.IsAnalyzerSuppressed(AnalyzerOptions.DoNotUseElementAccessWhenExpressionIsInvocation));
         }
     }
 }

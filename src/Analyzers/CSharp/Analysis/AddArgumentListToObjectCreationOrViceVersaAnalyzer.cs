@@ -38,17 +38,18 @@ namespace Roslynator.CSharp.Analysis
 
             if (argumentList == null)
             {
-                if (context.IsAnalyzerSuppressed(DiagnosticDescriptors.RemoveArgumentListFromObjectCreation))
+                if (context.IsAnalyzerSuppressed(AnalyzerOptions.RemoveArgumentListFromObjectCreation))
                 {
                     var span = new TextSpan(objectCreationExpression.Type.Span.End, 0);
 
-                    DiagnosticHelpers.ReportDiagnostic(context,
+                    DiagnosticHelpers.ReportDiagnostic(
+                        context,
                         DiagnosticDescriptors.AddArgumentListToObjectCreationOrViceVersa,
                         Location.Create(objectCreationExpression.SyntaxTree, span));
                 }
             }
             else if (!argumentList.Arguments.Any()
-                && !context.IsAnalyzerSuppressed(DiagnosticDescriptors.RemoveArgumentListFromObjectCreation))
+                && !context.IsAnalyzerSuppressed(AnalyzerOptions.RemoveArgumentListFromObjectCreation))
             {
                 SyntaxToken openParen = argumentList.OpenParenToken;
                 SyntaxToken closeParen = argumentList.CloseParenToken;
@@ -58,7 +59,10 @@ namespace Roslynator.CSharp.Analysis
                     && openParen.TrailingTrivia.IsEmptyOrWhitespace()
                     && closeParen.LeadingTrivia.IsEmptyOrWhitespace())
                 {
-                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AddArgumentListToObjectCreationOrViceVersa, argumentList);
+                    DiagnosticHelpers.ReportDiagnostic(
+                        context,
+                        DiagnosticDescriptors.ReportOnly.RemoveArgumentListFromObjectCreation,
+                        argumentList);
                 }
             }
         }

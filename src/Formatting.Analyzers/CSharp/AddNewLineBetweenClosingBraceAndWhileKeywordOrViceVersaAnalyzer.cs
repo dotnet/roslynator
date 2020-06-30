@@ -40,24 +40,22 @@ namespace Roslynator.Formatting.CSharp
                 || trailingTrivia.SingleOrDefault(shouldThrow: false).IsWhitespaceTrivia())
             {
                 if (!doStatement.WhileKeyword.LeadingTrivia.Any()
-                    && context.IsAnalyzerSuppressed(DiagnosticDescriptors.RemoveNewLineBetweenClosingBraceAndWhileKeyword))
+                    && context.IsAnalyzerSuppressed(AnalyzerOptions.RemoveNewLineBetweenClosingBraceAndWhileKeyword))
                 {
                     context.ReportDiagnostic(
                         DiagnosticDescriptors.AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersa,
-                        Location.Create(doStatement.SyntaxTree, new TextSpan(statement.FullSpan.End, 0)),
-                        messageArgs: "Add");
+                        Location.Create(doStatement.SyntaxTree, new TextSpan(statement.FullSpan.End, 0)));
                 }
             }
             else if (SyntaxTriviaAnalysis.IsOptionalWhitespaceThenEndOfLineTrivia(trailingTrivia))
             {
                 if (doStatement.WhileKeyword.LeadingTrivia.IsEmptyOrWhitespace()
-                    && !context.IsAnalyzerSuppressed(DiagnosticDescriptors.RemoveNewLineBetweenClosingBraceAndWhileKeyword))
+                    && !context.IsAnalyzerSuppressed(AnalyzerOptions.RemoveNewLineBetweenClosingBraceAndWhileKeyword))
                 {
                     context.ReportDiagnostic(
-                        DiagnosticDescriptors.AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersa,
+                        DiagnosticDescriptors.ReportOnly.RemoveNewLineBetweenClosingBraceAndWhileKeyword,
                         Location.Create(doStatement.SyntaxTree, new TextSpan(trailingTrivia.Last().SpanStart, 0)),
-                        properties: DiagnosticProperties.AnalyzerOption_Invert,
-                        messageArgs: "Remove");
+                        properties: DiagnosticProperties.AnalyzerOption_Invert);
                 }
             }
         }

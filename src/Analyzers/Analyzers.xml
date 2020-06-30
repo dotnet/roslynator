@@ -1043,7 +1043,6 @@ if (!f)
   <Analyzer Identifier="ParenthesizeConditionOfConditionalExpression">
     <Id>RCS1051</Id>
     <Title>Parenthesize condition of conditional expression.</Title>
-    <MessageFormat>{0} condition of conditional expression.</MessageFormat>
     <Category>Style</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -1057,6 +1056,7 @@ if (!f)
       <Option Identifier="RemoveParenthesesFromConditionOfConditionalExpressionWhenExpressionIsSingleToken">
         <Id>a</Id>
         <Title>Remove parentheses from condition of conditional expression (when condition is a single token).</Title>
+        <MessageFormat>Remove parentheses from condition of conditional expression.</MessageFormat>
         <Kind>Change</Kind>
         <Samples>
           <Sample>

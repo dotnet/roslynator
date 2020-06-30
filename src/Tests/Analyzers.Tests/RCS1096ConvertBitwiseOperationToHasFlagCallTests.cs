@@ -21,7 +21,7 @@ namespace Roslynator.CSharp.Analysis.Tests
         {
             compilation = base.UpdateCompilation(compilation);
 
-            return compilation.EnsureEnabled(DiagnosticDescriptors.ConvertBitwiseOperationToHasFlagCall);
+            return compilation.EnsureEnabled(AnalyzerOptions.ConvertBitwiseOperationToHasFlagCall);
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertHasFlagCallToBitwiseOperationOrViceVersa)]
@@ -162,6 +162,24 @@ class C
     }
 
     StringSplitOptions P { get; }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertHasFlagCallToBitwiseOperationOrViceVersa)]
+        public async Task TestNoDiagnostic_HasFlag()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System;
+
+class C
+{
+    void M()
+    {
+        var options = StringSplitOptions.None;
+
+        if (options.HasFlag(StringSplitOptions.RemoveEmptyEntries)) { }
+    }
 }
 ");
         }

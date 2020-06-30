@@ -237,5 +237,23 @@ class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertHasFlagCallToBitwiseOperationOrViceVersa)]
+        public async Task TestNoDiagnostic_ConvertBitwiseOperationToHasFlagCall()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System;
+
+class C
+{
+    void M()
+    {
+        var options = StringSplitOptions.None;
+
+        if (options.HasFlag(StringSplitOptions.RemoveEmptyEntries)) { }
+    }
+}
+", options: Options.WithEnabled(AnalyzerOptions.ConvertBitwiseOperationToHasFlagCall));
+        }
     }
 }

@@ -19,12 +19,10 @@ namespace Roslynator.Formatting.CSharp
         public const string AddEmptyLineBetweenDeclarationAndDocumentationComment = "RCS0009";
         public const string AddEmptyLineBetweenDeclarations = "RCS0010";
         public const string AddEmptyLineBetweenSingleLineAccessorsOrViceVersa = "RCS0011";
-        public const string RemoveEmptyLineBetweenSingleLineAccessors = "RCS0011i";
         public const string AddEmptyLineBetweenSingleLineDeclarations = "RCS0012";
         public const string AddEmptyLineBetweenSingleLineDeclarationsOfDifferentKind = "RCS0013";
         public const string AddEmptyLineBetweenSwitchSections = "RCS0014";
         public const string AddEmptyLineBetweenUsingDirectivesWithDifferentRootNamespaceOrViceVersa = "RCS0015";
-        public const string RemoveEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace = "RCS0015i";
         public const string AddNewLineAfterAttributeList = "RCS0016";
         public const string AddNewLineAfterOpeningBraceOfAccessor = "RCS0020";
         public const string AddNewLineAfterOpeningBraceOfBlock = "RCS0021";
@@ -33,14 +31,11 @@ namespace Roslynator.Formatting.CSharp
         public const string AddNewLineAfterSwitchLabel = "RCS0024";
         public const string AddNewLineBeforeAccessorOfFullProperty = "RCS0025";
         public const string AddNewLineBeforeBinaryOperatorInsteadOfAfterItOrViceVersa = "RCS0027";
-        public const string AddNewLineAfterBinaryOperatorInsteadOfBeforeIt = "RCS0027i";
         public const string AddNewLineBeforeConditionalOperatorInsteadOfAfterItOrViceVersa = "RCS0028";
-        public const string AddNewLineAfterConditionalOperatorInsteadOfBeforeIt = "RCS0028i";
         public const string AddNewLineBeforeConstructorInitializer = "RCS0029";
         public const string AddNewLineBeforeEmbeddedStatement = "RCS0030";
         public const string AddNewLineBeforeEnumMember = "RCS0031";
         public const string AddNewLineBeforeExpressionBodyArrowInsteadOfAfterItOrViceVersa = "RCS0032";
-        public const string AddNewLineAfterExpressionBodyArrowInsteadOfBeforeIt = "RCS0032i";
         public const string AddNewLineBeforeStatement = "RCS0033";
         public const string AddNewLineBeforeTypeParameterConstraint = "RCS0034";
         public const string RemoveEmptyLineBetweenSingleLineDeclarationsOfSameKind = "RCS0036";
@@ -57,6 +52,5 @@ namespace Roslynator.Formatting.CSharp
         public const string AddEmptyLineAfterTopComment = "RCS0049";
         public const string AddEmptyLineBeforeTopDeclaration = "RCS0050";
         public const string AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersa = "RCS0051";
-        public const string RemoveNewLineBetweenClosingBraceAndWhileKeyword = "RCS0051i";
     }
 }

@@ -9,6 +9,8 @@ namespace Roslynator
         private const string IdSuffix = "FadeOut";
         private const string HelpLinkUriRoot = "http://pihrt.net/roslynator/analyzer?id=";
 
+        public static DiagnosticDescriptorFactory Default { get; } = new DiagnosticDescriptorFactory(AnalyzerRules.Default);
+
         public AnalyzerRules Rules { get; }
 
         public DiagnosticDescriptorFactory(AnalyzerRules rules)

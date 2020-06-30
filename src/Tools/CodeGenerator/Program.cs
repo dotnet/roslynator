@@ -9,6 +9,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeGeneration.CSharp;
 using Roslynator.Metadata;
 using System.Collections.Generic;
+using Microsoft.CodeAnalysis;
 
 namespace Roslynator.CodeGeneration
 {
@@ -147,13 +148,29 @@ namespace Roslynator.CodeGeneration
                     Path.Combine(dirPath, $"{identifiersClassName}.Deprecated.Generated.cs"),
                     DiagnosticIdentifiersGenerator.Generate(analyzers, obsolete: true, comparer: comparer, @namespace: @namespace, className: identifiersClassName));
 
-                IEnumerable<string> identifiers = analyzers
+                IEnumerable<AnalyzerMetadata> optionAnalyzers = analyzers.SelectMany(f => f.OptionAnalyzers);
+
+                if (optionAnalyzers.Any())
+                {
+                    WriteCompilationUnit(
+                        Path.Combine(dirPath, "AnalyzerOptions.Generated.cs"),
+                        DiagnosticDescriptorsGenerator.Generate(optionAnalyzers, obsolete: false, comparer: comparer, @namespace: @namespace, className: "AnalyzerOptions", identifiersClassName: "AnalyzerOptionIdentifiers"),
+                        normalizeWhitespace: false,
+                        fileMustExist: false);
+
+                    WriteCompilationUnit(
+                        Path.Combine(dirPath, "AnalyzerOptionIdentifiers.Generated.cs"),
+                        DiagnosticIdentifiersGenerator.Generate(optionAnalyzers, obsolete: false, comparer: comparer, @namespace: @namespace, className: "AnalyzerOptionIdentifiers"),
+                        fileMustExist: false);
+                }
+
+                IEnumerable<string> analyzerOptionIdentifiers = analyzers
                     .SelectMany(f => f.OptionAnalyzers)
                     .Select(f => f.Identifier);
 
                 WriteCompilationUnit(
                     Path.Combine(dirPath, "AnalyzerOptionsAnalyzer.Generated.cs"),
-                    AnalyzerOptionsAnalyzerGenerator.Generate(identifiers, @namespace: @namespace),
+                    AnalyzerOptionsAnalyzerGenerator.Generate(analyzerOptionIdentifiers, @namespace: @namespace),
                     fileMustExist: false);
             }
 

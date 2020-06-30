@@ -40,17 +40,17 @@ namespace Roslynator.Formatting.CSharp
 
             if (SyntaxTriviaAnalysis.IsTokenFollowedWithNewLineAndNotPrecededWithNewLine(condition, conditionalExpression.QuestionToken, whenTrue))
             {
-                if (context.IsAnalyzerSuppressed(DiagnosticDescriptors.AddNewLineAfterConditionalOperatorInsteadOfBeforeIt))
+                if (context.IsAnalyzerSuppressed(AnalyzerOptions.AddNewLineAfterConditionalOperatorInsteadOfBeforeIt))
                 {
-                    ReportDiagnostic(conditionalExpression.QuestionToken, ImmutableDictionary<string, string>.Empty, "before", "after");
+                    ReportDiagnostic(DiagnosticDescriptors.AddNewLineBeforeConditionalOperatorInsteadOfAfterItOrViceVersa, conditionalExpression.QuestionToken, ImmutableDictionary<string, string>.Empty);
                     return;
                 }
             }
             else if (SyntaxTriviaAnalysis.IsTokenPrecededWithNewLineAndNotFollowedWithNewLine(condition, conditionalExpression.QuestionToken, whenTrue))
             {
-                if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.AddNewLineAfterConditionalOperatorInsteadOfBeforeIt))
+                if (!context.IsAnalyzerSuppressed(AnalyzerOptions.AddNewLineAfterConditionalOperatorInsteadOfBeforeIt))
                 {
-                    ReportDiagnostic(conditionalExpression.QuestionToken, DiagnosticProperties.AnalyzerOption_Invert, "after", "before");
+                    ReportDiagnostic(DiagnosticDescriptors.ReportOnly.AddNewLineAfterConditionalOperatorInsteadOfBeforeIt, conditionalExpression.QuestionToken, DiagnosticProperties.AnalyzerOption_Invert);
                     return;
                 }
             }
@@ -61,24 +61,23 @@ namespace Roslynator.Formatting.CSharp
             {
                 if (SyntaxTriviaAnalysis.IsTokenFollowedWithNewLineAndNotPrecededWithNewLine(whenTrue, conditionalExpression.ColonToken, whenFalse))
                 {
-                    if (context.IsAnalyzerSuppressed(DiagnosticDescriptors.AddNewLineAfterConditionalOperatorInsteadOfBeforeIt))
-                        ReportDiagnostic(conditionalExpression.ColonToken, ImmutableDictionary<string, string>.Empty, "before", "after");
+                    if (context.IsAnalyzerSuppressed(AnalyzerOptions.AddNewLineAfterConditionalOperatorInsteadOfBeforeIt))
+                        ReportDiagnostic(DiagnosticDescriptors.AddNewLineBeforeConditionalOperatorInsteadOfAfterItOrViceVersa, conditionalExpression.ColonToken, ImmutableDictionary<string, string>.Empty);
                 }
                 else if (SyntaxTriviaAnalysis.IsTokenPrecededWithNewLineAndNotFollowedWithNewLine(whenTrue, conditionalExpression.ColonToken, whenFalse))
                 {
-                    if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.AddNewLineAfterConditionalOperatorInsteadOfBeforeIt))
-                        ReportDiagnostic(conditionalExpression.ColonToken, DiagnosticProperties.AnalyzerOption_Invert, "after", "before");
+                    if (!context.IsAnalyzerSuppressed(AnalyzerOptions.AddNewLineAfterConditionalOperatorInsteadOfBeforeIt))
+                        ReportDiagnostic(DiagnosticDescriptors.ReportOnly.AddNewLineAfterConditionalOperatorInsteadOfBeforeIt, conditionalExpression.ColonToken, DiagnosticProperties.AnalyzerOption_Invert);
                 }
             }
 
-            void ReportDiagnostic(SyntaxToken token, ImmutableDictionary<string, string> properties, params string[] messageArgs)
+            void ReportDiagnostic(DiagnosticDescriptor descriptor, SyntaxToken token, ImmutableDictionary<string, string> properties)
             {
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
-                    DiagnosticDescriptors.AddNewLineBeforeConditionalOperatorInsteadOfAfterItOrViceVersa,
+                    descriptor,
                     Location.Create(token.SyntaxTree, token.Span.WithLength(0)),
-                    properties: properties,
-                    messageArgs: messageArgs);
+                    properties: properties);
             }
         }
     }

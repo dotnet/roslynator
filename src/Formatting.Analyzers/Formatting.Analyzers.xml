@@ -311,7 +311,7 @@ This rule does not enforce an empty line between two single-line declaration.</R
   <Analyzer Identifier="AddEmptyLineBetweenSingleLineAccessorsOrViceVersa">
     <Id>RCS0011</Id>
     <Title>Add empty line between single-line accessors (or vice versa).</Title>
-    <MessageFormat>{0} empty line between single-line accessors.</MessageFormat>
+    <MessageFormat>Add empty line between single-line accessors.</MessageFormat>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -416,7 +416,7 @@ object this[int index] { get; }]]></After>
   <Analyzer Identifier="AddEmptyLineBetweenUsingDirectivesWithDifferentRootNamespaceOrViceVersa">
     <Id>RCS0015</Id>
     <Title>Add empty line between using directives with different root namespace (or vice versa).</Title>
-    <MessageFormat>{0} empty line between using directives.</MessageFormat>
+    <MessageFormat>Add empty line between using directives.</MessageFormat>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -440,6 +440,7 @@ namespace N
     <Options>
       <Option Identifier="RemoveEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace">
         <Title>Remove empty line between using directives with different root namespace.</Title>
+        <MessageFormat>Remove empty line between using directives.</MessageFormat>
         <Id>i</Id>
         <Kind>Invert</Kind>
         <Samples>
@@ -657,7 +658,7 @@ namespace N
   <Analyzer Identifier="AddNewLineBeforeBinaryOperatorInsteadOfAfterItOrViceVersa">
     <Id>RCS0027</Id>
     <Title>Add newline before binary operator instead of after it (or vice versa).</Title>
-    <MessageFormat>Add newline {0} binary operator instead of {1} it.</MessageFormat>
+    <MessageFormat>Add newline before binary operator instead of after it.</MessageFormat>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -701,7 +702,7 @@ namespace N
   <Analyzer Identifier="AddNewLineBeforeConditionalOperatorInsteadOfAfterItOrViceVersa">
     <Id>RCS0028</Id>
     <Title>Add newline before conditional operator instead of after it (or vice versa).</Title>
-    <MessageFormat>Add newline {0} conditional operator instead of {1} it.</MessageFormat>
+    <MessageFormat>Add newline before conditional operator instead of after it.</MessageFormat>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -791,7 +792,7 @@ namespace N
   <Analyzer Identifier="AddNewLineBeforeExpressionBodyArrowInsteadOfAfterItOrViceVersa">
     <Id>RCS0032</Id>
     <Title>Add newline before expression-body arrow instead of after it (or vice versa).</Title>
-    <MessageFormat>Add newline {0} expression-body arrow instead of {1} it.</MessageFormat>
+    <MessageFormat>Add newline before expression-body arrow instead of after it.</MessageFormat>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -1176,7 +1177,7 @@ namespace Foo
   <Analyzer Identifier="AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersa">
     <Id>RCS0051</Id>
     <Title>Add newline between closing brace and 'while' keyword (or vice versa).</Title>
-    <MessageFormat>{0} newline between closing brace and 'while' keyword.</MessageFormat>
+    <MessageFormat>Add newline between closing brace and 'while' keyword.</MessageFormat>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>

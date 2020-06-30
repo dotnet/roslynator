@@ -68,23 +68,21 @@ namespace Roslynator.Formatting.CSharp
                 {
                     if (isEmptyLine)
                     {
-                        if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.RemoveEmptyLineBetweenSingleLineAccessors))
+                        if (!context.IsAnalyzerSuppressed(AnalyzerOptions.RemoveEmptyLineBetweenSingleLineAccessors))
                         {
                             DiagnosticHelpers.ReportDiagnostic(
                                 context,
-                                DiagnosticDescriptors.AddEmptyLineBetweenSingleLineAccessorsOrViceVersa,
+                                DiagnosticDescriptors.ReportOnly.RemoveEmptyLineBetweenSingleLineAccessors,
                                 Location.Create(context.Node.SyntaxTree, leadingTrivia[0].Span.WithLength(0)),
-                                properties: DiagnosticProperties.AnalyzerOption_Invert,
-                                messageArgs: "Remove");
+                                properties: DiagnosticProperties.AnalyzerOption_Invert);
                         }
                     }
-                    else if (context.IsAnalyzerSuppressed(DiagnosticDescriptors.RemoveEmptyLineBetweenSingleLineAccessors))
+                    else if (context.IsAnalyzerSuppressed(AnalyzerOptions.RemoveEmptyLineBetweenSingleLineAccessors))
                     {
                         DiagnosticHelpers.ReportDiagnostic(
                             context,
                             DiagnosticDescriptors.AddEmptyLineBetweenSingleLineAccessorsOrViceVersa,
-                            Location.Create(context.Node.SyntaxTree, trailingTrivia.Last().Span.WithLength(0)),
-                            messageArgs: "Add");
+                            Location.Create(context.Node.SyntaxTree, trailingTrivia.Last().Span.WithLength(0)));
                     }
                 }
             }

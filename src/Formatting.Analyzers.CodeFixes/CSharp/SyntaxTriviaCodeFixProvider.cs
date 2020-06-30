@@ -25,7 +25,6 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                     DiagnosticIdentifiers.AddEmptyLineBetweenAccessors,
                     DiagnosticIdentifiers.AddEmptyLineBetweenSingleLineAccessorsOrViceVersa,
                     DiagnosticIdentifiers.AddEmptyLineBetweenUsingDirectivesWithDifferentRootNamespaceOrViceVersa,
-                    DiagnosticIdentifiers.RemoveEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace,
                     DiagnosticIdentifiers.RemoveEmptyLineBetweenUsingDirectivesWithSameRootNamespace,
                     DiagnosticIdentifiers.RemoveNewLineBetweenIfKeywordAndElseKeyword,
                     DiagnosticIdentifiers.RemoveNewLineBeforeBaseList);

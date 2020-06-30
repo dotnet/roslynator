@@ -15,12 +15,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get
-            {
-                return ImmutableArray.Create(
-                    DiagnosticDescriptors.ConvertHasFlagCallToBitwiseOperationOrViceVersa,
-                    DiagnosticDescriptors.ConvertBitwiseOperationToHasFlagCall);
-            }
+            get { return ImmutableArray.Create(DiagnosticDescriptors.ConvertHasFlagCallToBitwiseOperationOrViceVersa); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -29,7 +24,7 @@ namespace Roslynator.CSharp.Analysis
 
             context.RegisterCompilationStartAction(startContext =>
             {
-                if (!startContext.IsAnalyzerSuppressed(DiagnosticDescriptors.ConvertBitwiseOperationToHasFlagCall))
+                if (!startContext.IsAnalyzerSuppressed(AnalyzerOptions.ConvertBitwiseOperationToHasFlagCall))
                 {
                     startContext.RegisterSyntaxNodeAction(AnalyzeBitwiseAndExpression, SyntaxKind.BitwiseAndExpression);
                 }
@@ -82,7 +77,7 @@ namespace Roslynator.CSharp.Analysis
 
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticDescriptors.ConvertHasFlagCallToBitwiseOperationOrViceVersa,
+                DiagnosticDescriptors.ReportOnly.ConvertBitwiseOperationToHasFlagCall,
                 equalsOrNotEquals);
 
             bool IsSuitableAsExpressionOfHasFlag(ExpressionSyntax expression)

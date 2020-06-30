@@ -39,7 +39,7 @@ namespace Roslynator.CSharp.Analysis
 
             if (kind == SyntaxKind.ParenthesizedExpression)
             {
-                if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.RemoveParenthesesFromConditionOfConditionalExpressionWhenExpressionIsSingleToken))
+                if (!context.IsAnalyzerSuppressed(AnalyzerOptions.RemoveParenthesesFromConditionOfConditionalExpressionWhenExpressionIsSingleToken))
                 {
                     var parenthesizedExpression = (ParenthesizedExpressionSyntax)condition;
 
@@ -48,23 +48,14 @@ namespace Roslynator.CSharp.Analysis
                     if (!expression.IsMissing
                         && CSharpFacts.IsSingleTokenExpression(expression.Kind()))
                     {
-                        ReportDiagnostic("Remove parentheses from");
+                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ReportOnly.RemoveParenthesesFromConditionOfConditionalExpressionWhenExpressionIsSingleToken, condition);
                     }
                 }
             }
             else if (!CSharpFacts.IsSingleTokenExpression(kind)
-                || context.IsAnalyzerSuppressed(DiagnosticDescriptors.RemoveParenthesesFromConditionOfConditionalExpressionWhenExpressionIsSingleToken))
+                || context.IsAnalyzerSuppressed(AnalyzerOptions.RemoveParenthesesFromConditionOfConditionalExpressionWhenExpressionIsSingleToken))
             {
-                ReportDiagnostic("Parenthesize");
-            }
-
-            void ReportDiagnostic(params string[] messageArgs)
-            {
-                DiagnosticHelpers.ReportDiagnostic(
-                    context,
-                    DiagnosticDescriptors.ParenthesizeConditionOfConditionalExpression,
-                    condition,
-                    messageArgs: messageArgs);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ParenthesizeConditionOfConditionalExpression, condition);
             }
         }
     }

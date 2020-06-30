@@ -10,7 +10,7 @@ namespace Roslynator.CSharp
     public static partial class DiagnosticDescriptors
     {
         /// <summary>RCS1001</summary>
-        public static readonly DiagnosticDescriptor AddBracesWhenExpressionSpansOverMultipleLines = Factory.Create(
+        public static readonly DiagnosticDescriptor AddBracesWhenExpressionSpansOverMultipleLines = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.AddBracesWhenExpressionSpansOverMultipleLines, 
             title:              "Add braces (when expression spans over multiple lines).", 
             messageFormat:      "Add braces to {0} (when expression spans over multiple lines).", 
@@ -22,7 +22,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1002</summary>
-        public static readonly DiagnosticDescriptor RemoveBraces = Factory.Create(
+        public static readonly DiagnosticDescriptor RemoveBraces = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.RemoveBraces, 
             title:              "Remove braces.", 
             messageFormat:      "Remove braces from {0}.", 
@@ -36,7 +36,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor RemoveBracesFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(RemoveBraces);
 
         /// <summary>RCS1003</summary>
-        public static readonly DiagnosticDescriptor AddBracesToIfElseWhenExpressionSpansOverMultipleLines = Factory.Create(
+        public static readonly DiagnosticDescriptor AddBracesToIfElseWhenExpressionSpansOverMultipleLines = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.AddBracesToIfElseWhenExpressionSpansOverMultipleLines, 
             title:              "Add braces to if-else (when expression spans over multiple lines).", 
             messageFormat:      "Add braces to if-else (when expression spans over multiple lines).", 
@@ -48,7 +48,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1004</summary>
-        public static readonly DiagnosticDescriptor RemoveBracesFromIfElse = Factory.Create(
+        public static readonly DiagnosticDescriptor RemoveBracesFromIfElse = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.RemoveBracesFromIfElse, 
             title:              "Remove braces from if-else.", 
             messageFormat:      "Remove braces from if-else.", 
@@ -62,7 +62,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor RemoveBracesFromIfElseFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(RemoveBracesFromIfElse);
 
         /// <summary>RCS1005</summary>
-        public static readonly DiagnosticDescriptor SimplifyNestedUsingStatement = Factory.Create(
+        public static readonly DiagnosticDescriptor SimplifyNestedUsingStatement = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.SimplifyNestedUsingStatement, 
             title:              "Simplify nested using statement.", 
             messageFormat:      "Simplify nested using statement.", 
@@ -76,7 +76,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor SimplifyNestedUsingStatementFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(SimplifyNestedUsingStatement);
 
         /// <summary>RCS1006</summary>
-        public static readonly DiagnosticDescriptor MergeElseWithNestedIf = Factory.Create(
+        public static readonly DiagnosticDescriptor MergeElseWithNestedIf = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.MergeElseWithNestedIf, 
             title:              "Merge 'else' with nested 'if'.", 
             messageFormat:      "Merge 'else' with nested 'if'.", 
@@ -90,7 +90,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor MergeElseWithNestedIfFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(MergeElseWithNestedIf);
 
         /// <summary>RCS1007</summary>
-        public static readonly DiagnosticDescriptor AddBraces = Factory.Create(
+        public static readonly DiagnosticDescriptor AddBraces = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.AddBraces, 
             title:              "Add braces.", 
             messageFormat:      "Add braces to {0}.", 
@@ -102,7 +102,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1008</summary>
-        public static readonly DiagnosticDescriptor UseExplicitTypeInsteadOfVarWhenTypeIsNotObvious = Factory.Create(
+        public static readonly DiagnosticDescriptor UseExplicitTypeInsteadOfVarWhenTypeIsNotObvious = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarWhenTypeIsNotObvious, 
             title:              "Use explicit type instead of 'var' (when the type is not obvious).", 
             messageFormat:      "Use explicit type instead of 'var'.", 
@@ -114,7 +114,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1009</summary>
-        public static readonly DiagnosticDescriptor UseExplicitTypeInsteadOfVarInForEach = Factory.Create(
+        public static readonly DiagnosticDescriptor UseExplicitTypeInsteadOfVarInForEach = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarInForEach, 
             title:              "Use explicit type instead of 'var' (foreach variable).", 
             messageFormat:      "Use explicit type instead of 'var'.", 
@@ -126,7 +126,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1010</summary>
-        public static readonly DiagnosticDescriptor UseVarInsteadOfExplicitTypeWhenTypeIsObvious = Factory.Create(
+        public static readonly DiagnosticDescriptor UseVarInsteadOfExplicitTypeWhenTypeIsObvious = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeWhenTypeIsObvious, 
             title:              "Use 'var' instead of explicit type (when the type is obvious).", 
             messageFormat:      "Use 'var' instead of explicit type.", 
@@ -138,7 +138,7 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1012</summary>
-        public static readonly DiagnosticDescriptor UseExplicitTypeInsteadOfVarWhenTypeIsObvious = Factory.Create(
+        public static readonly DiagnosticDescriptor UseExplicitTypeInsteadOfVarWhenTypeIsObvious = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarWhenTypeIsObvious, 
             title:              "Use explicit type instead of 'var' (when the type is obvious).", 
             messageFormat:      "Use explicit type instead of 'var'.", 
@@ -150,7 +150,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1013</summary>
-        public static readonly DiagnosticDescriptor UsePredefinedType = Factory.Create(
+        public static readonly DiagnosticDescriptor UsePredefinedType = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.UsePredefinedType, 
             title:              "Use predefined type.", 
             messageFormat:      "Use predefined type.", 
@@ -162,7 +162,7 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1014</summary>
-        public static readonly DiagnosticDescriptor AvoidImplicitlyTypedArray = Factory.Create(
+        public static readonly DiagnosticDescriptor AvoidImplicitlyTypedArray = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.AvoidImplicitlyTypedArray, 
             title:              "Avoid implicitly-typed array.", 
             messageFormat:      "Declare explicit type when creating an array.", 
@@ -174,7 +174,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1015</summary>
-        public static readonly DiagnosticDescriptor UseNameOfOperator = Factory.Create(
+        public static readonly DiagnosticDescriptor UseNameOfOperator = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.UseNameOfOperator, 
             title:              "Use nameof operator.", 
             messageFormat:      "Use nameof operator.", 
@@ -188,7 +188,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor UseNameOfOperatorFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(UseNameOfOperator);
 
         /// <summary>RCS1016</summary>
-        public static readonly DiagnosticDescriptor UseExpressionBodiedMember = Factory.Create(
+        public static readonly DiagnosticDescriptor UseExpressionBodiedMember = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.UseExpressionBodiedMember, 
             title:              "Use expression-bodied member.", 
             messageFormat:      "Use expression bodied member.", 
@@ -202,7 +202,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor UseExpressionBodiedMemberFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(UseExpressionBodiedMember);
 
         /// <summary>RCS1017</summary>
-        public static readonly DiagnosticDescriptor AvoidMultilineExpressionBody = Factory.Create(
+        public static readonly DiagnosticDescriptor AvoidMultilineExpressionBody = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.AvoidMultilineExpressionBody, 
             title:              "Avoid multiline expression body.", 
             messageFormat:      "Expand expression body with multiline expression.", 
@@ -214,7 +214,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1018</summary>
-        public static readonly DiagnosticDescriptor AddAccessibilityModifiers = Factory.Create(
+        public static readonly DiagnosticDescriptor AddAccessibilityModifiers = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.AddAccessibilityModifiers, 
             title:              "Add accessibility modifiers.", 
             messageFormat:      "Add accessibility modifiers.", 
@@ -226,7 +226,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1019</summary>
-        public static readonly DiagnosticDescriptor OrderModifiers = Factory.Create(
+        public static readonly DiagnosticDescriptor OrderModifiers = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.OrderModifiers, 
             title:              "Order modifiers.", 
             messageFormat:      "Order modifiers.", 
@@ -238,7 +238,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1020</summary>
-        public static readonly DiagnosticDescriptor SimplifyNullableOfT = Factory.Create(
+        public static readonly DiagnosticDescriptor SimplifyNullableOfT = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.SimplifyNullableOfT, 
             title:              "Simplify Nullable<T> to T?.", 
             messageFormat:      "Simplify Nullable<T> to T?.", 
@@ -250,7 +250,7 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1021</summary>
-        public static readonly DiagnosticDescriptor SimplifyLambdaExpression = Factory.Create(
+        public static readonly DiagnosticDescriptor SimplifyLambdaExpression = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.SimplifyLambdaExpression, 
             title:              "Simplify lambda expression.", 
             messageFormat:      "Simplify lambda expression.", 
@@ -264,7 +264,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor SimplifyLambdaExpressionFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(SimplifyLambdaExpression);
 
         /// <summary>RCS1031</summary>
-        public static readonly DiagnosticDescriptor RemoveUnnecessaryBraces = Factory.Create(
+        public static readonly DiagnosticDescriptor RemoveUnnecessaryBraces = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.RemoveUnnecessaryBraces, 
             title:              "Remove unnecessary braces.", 
             messageFormat:      "Remove unnecessary braces.", 
@@ -278,7 +278,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor RemoveUnnecessaryBracesFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(RemoveUnnecessaryBraces);
 
         /// <summary>RCS1032</summary>
-        public static readonly DiagnosticDescriptor RemoveRedundantParentheses = Factory.Create(
+        public static readonly DiagnosticDescriptor RemoveRedundantParentheses = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.RemoveRedundantParentheses, 
             title:              "Remove redundant parentheses.", 
             messageFormat:      "Remove redundant parentheses.", 
@@ -292,7 +292,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor RemoveRedundantParenthesesFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(RemoveRedundantParentheses);
 
         /// <summary>RCS1033</summary>
-        public static readonly DiagnosticDescriptor RemoveRedundantBooleanLiteral = Factory.Create(
+        public static readonly DiagnosticDescriptor RemoveRedundantBooleanLiteral = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.RemoveRedundantBooleanLiteral, 
             title:              "Remove redundant boolean literal.", 
             messageFormat:      "Remove redundant '{0}'.", 
@@ -304,7 +304,7 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1034</summary>
-        public static readonly DiagnosticDescriptor RemoveRedundantSealedModifier = Factory.Create(
+        public static readonly DiagnosticDescriptor RemoveRedundantSealedModifier = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.RemoveRedundantSealedModifier, 
             title:              "Remove redundant 'sealed' modifier.", 
             messageFormat:      "Remove redundant 'sealed' modifier.", 
@@ -316,7 +316,7 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1035</summary>
-        public static readonly DiagnosticDescriptor RemoveRedundantCommaInInitializer = Factory.Create(
+        public static readonly DiagnosticDescriptor RemoveRedundantCommaInInitializer = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.RemoveRedundantCommaInInitializer, 
             title:              "Remove redundant comma in initializer.", 
             messageFormat:      "Remove redundant comma in initializer.", 
@@ -328,7 +328,7 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1036</summary>
-        public static readonly DiagnosticDescriptor RemoveRedundantEmptyLine = Factory.Create(
+        public static readonly DiagnosticDescriptor RemoveRedundantEmptyLine = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.RemoveRedundantEmptyLine, 
             title:              "Remove redundant empty line.", 
             messageFormat:      "Remove redundant empty line.", 
@@ -339,20 +339,8 @@ namespace Roslynator.CSharp
             helpLinkUri:        DiagnosticIdentifiers.RemoveRedundantEmptyLine, 
             customTags:         Array.Empty<string>());
 
-        /// <summary>RCS1036a</summary>
-        public static readonly DiagnosticDescriptor RemoveEmptyLineBetweenClosingBraceAndSwitchSection = Factory.Create(
-            id:                 DiagnosticIdentifiers.RemoveEmptyLineBetweenClosingBraceAndSwitchSection, 
-            title:              "Remove empty line between closing brace and switch section.", 
-            messageFormat:      "Remove empty line between closing brace and switch section.", 
-            category:           DiagnosticCategories.AnalyzerOption, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.RemoveEmptyLineBetweenClosingBraceAndSwitchSection, 
-            customTags:         Array.Empty<string>());
-
         /// <summary>RCS1037</summary>
-        public static readonly DiagnosticDescriptor RemoveTrailingWhitespace = Factory.Create(
+        public static readonly DiagnosticDescriptor RemoveTrailingWhitespace = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.RemoveTrailingWhitespace, 
             title:              "Remove trailing white-space.", 
             messageFormat:      "Remove trailing white-space.", 
@@ -364,7 +352,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1038</summary>
-        public static readonly DiagnosticDescriptor RemoveEmptyStatement = Factory.Create(
+        public static readonly DiagnosticDescriptor RemoveEmptyStatement = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.RemoveEmptyStatement, 
             title:              "Remove empty statement.", 
             messageFormat:      "Remove empty statement.", 
@@ -376,7 +364,7 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1039</summary>
-        public static readonly DiagnosticDescriptor RemoveArgumentListFromAttribute = Factory.Create(
+        public static readonly DiagnosticDescriptor RemoveArgumentListFromAttribute = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.RemoveArgumentListFromAttribute, 
             title:              "Remove argument list from attribute.", 
             messageFormat:      "Remove argument list from attribute.", 
@@ -388,7 +376,7 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1040</summary>
-        public static readonly DiagnosticDescriptor RemoveEmptyElseClause = Factory.Create(
+        public static readonly DiagnosticDescriptor RemoveEmptyElseClause = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.RemoveEmptyElseClause, 
             title:              "Remove empty 'else' clause.", 
             messageFormat:      "Remove empty 'else' clause.", 
@@ -400,7 +388,7 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1041</summary>
-        public static readonly DiagnosticDescriptor RemoveEmptyInitializer = Factory.Create(
+        public static readonly DiagnosticDescriptor RemoveEmptyInitializer = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.RemoveEmptyInitializer, 
             title:              "Remove empty initializer.", 
             messageFormat:      "Remove empty initializer.", 
@@ -412,7 +400,7 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1042</summary>
-        public static readonly DiagnosticDescriptor RemoveEnumDefaultUnderlyingType = Factory.Create(
+        public static readonly DiagnosticDescriptor RemoveEnumDefaultUnderlyingType = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.RemoveEnumDefaultUnderlyingType, 
             title:              "Remove enum default underlying type.", 
             messageFormat:      "Remove enum default underlying type.", 
@@ -424,7 +412,7 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1043</summary>
-        public static readonly DiagnosticDescriptor RemovePartialModifierFromTypeWithSinglePart = Factory.Create(
+        public static readonly DiagnosticDescriptor RemovePartialModifierFromTypeWithSinglePart = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.RemovePartialModifierFromTypeWithSinglePart, 
             title:              "Remove 'partial' modifier from type with a single part.", 
             messageFormat:      "Remove 'partial' modifier from type with a single part.", 
@@ -436,7 +424,7 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1044</summary>
-        public static readonly DiagnosticDescriptor RemoveOriginalExceptionFromThrowStatement = Factory.Create(
+        public static readonly DiagnosticDescriptor RemoveOriginalExceptionFromThrowStatement = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.RemoveOriginalExceptionFromThrowStatement, 
             title:              "Remove original exception from throw statement.", 
             messageFormat:      "Remove original exception from throw statement.", 
@@ -448,7 +436,7 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1045</summary>
-        public static readonly DiagnosticDescriptor RenamePrivateFieldToCamelCaseWithUnderscore = Factory.Create(
+        public static readonly DiagnosticDescriptor RenamePrivateFieldToCamelCaseWithUnderscore = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.RenamePrivateFieldToCamelCaseWithUnderscore, 
             title:              "Rename private field to camel case with underscore.", 
             messageFormat:      "Rename private field to camel case with underscore.", 
@@ -459,20 +447,8 @@ namespace Roslynator.CSharp
             helpLinkUri:        DiagnosticIdentifiers.RenamePrivateFieldToCamelCaseWithUnderscore, 
             customTags:         Array.Empty<string>());
 
-        /// <summary>RCS1045a</summary>
-        public static readonly DiagnosticDescriptor DoNotRenamePrivateStaticReadOnlyFieldToCamelCaseWithUnderscore = Factory.Create(
-            id:                 DiagnosticIdentifiers.DoNotRenamePrivateStaticReadOnlyFieldToCamelCaseWithUnderscore, 
-            title:              "Do not rename private static read-only field to camel case with underscore.", 
-            messageFormat:      "Do not rename private static read-only field to camel case with underscore.", 
-            category:           DiagnosticCategories.AnalyzerOption, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.DoNotRenamePrivateStaticReadOnlyFieldToCamelCaseWithUnderscore, 
-            customTags:         Array.Empty<string>());
-
         /// <summary>RCS1046</summary>
-        public static readonly DiagnosticDescriptor AsynchronousMethodNameShouldEndWithAsync = Factory.Create(
+        public static readonly DiagnosticDescriptor AsynchronousMethodNameShouldEndWithAsync = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.AsynchronousMethodNameShouldEndWithAsync, 
             title:              "Asynchronous method name should end with 'Async'.", 
             messageFormat:      "Add suffix 'Async' to asynchronous method name.", 
@@ -484,7 +460,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1047</summary>
-        public static readonly DiagnosticDescriptor NonAsynchronousMethodNameShouldNotEndWithAsync = Factory.Create(
+        public static readonly DiagnosticDescriptor NonAsynchronousMethodNameShouldNotEndWithAsync = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.NonAsynchronousMethodNameShouldNotEndWithAsync, 
             title:              "Non-asynchronous method name should not end with 'Async'.", 
             messageFormat:      "Remove suffix 'Async' from non-asynchronous method name.", 
@@ -498,7 +474,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor NonAsynchronousMethodNameShouldNotEndWithAsyncFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(NonAsynchronousMethodNameShouldNotEndWithAsync);
 
         /// <summary>RCS1048</summary>
-        public static readonly DiagnosticDescriptor UseLambdaExpressionInsteadOfAnonymousMethod = Factory.Create(
+        public static readonly DiagnosticDescriptor UseLambdaExpressionInsteadOfAnonymousMethod = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.UseLambdaExpressionInsteadOfAnonymousMethod, 
             title:              "Use lambda expression instead of anonymous method.", 
             messageFormat:      "Use lambda expression instead of anonymous method.", 
@@ -512,7 +488,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor UseLambdaExpressionInsteadOfAnonymousMethodFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(UseLambdaExpressionInsteadOfAnonymousMethod);
 
         /// <summary>RCS1049</summary>
-        public static readonly DiagnosticDescriptor SimplifyBooleanComparison = Factory.Create(
+        public static readonly DiagnosticDescriptor SimplifyBooleanComparison = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.SimplifyBooleanComparison, 
             title:              "Simplify boolean comparison.", 
             messageFormat:      "Simplify boolean comparison.", 
@@ -526,7 +502,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor SimplifyBooleanComparisonFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(SimplifyBooleanComparison);
 
         /// <summary>RCS1050</summary>
-        public static readonly DiagnosticDescriptor AddArgumentListToObjectCreationOrViceVersa = Factory.Create(
+        public static readonly DiagnosticDescriptor AddArgumentListToObjectCreationOrViceVersa = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.AddArgumentListToObjectCreationOrViceVersa, 
             title:              "Add argument list to object creation expression (or vice versa).", 
             messageFormat:      "Add argument list to object creation expression.", 
@@ -537,23 +513,11 @@ namespace Roslynator.CSharp
             helpLinkUri:        DiagnosticIdentifiers.AddArgumentListToObjectCreationOrViceVersa, 
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
-        /// <summary>RCS1050i</summary>
-        public static readonly DiagnosticDescriptor RemoveArgumentListFromObjectCreation = Factory.Create(
-            id:                 DiagnosticIdentifiers.RemoveArgumentListFromObjectCreation, 
-            title:              "Remove argument list from object creation expression.", 
-            messageFormat:      "Remove argument list from object creation expression.", 
-            category:           DiagnosticCategories.AnalyzerOption, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.RemoveArgumentListFromObjectCreation, 
-            customTags:         Array.Empty<string>());
-
         /// <summary>RCS1051</summary>
-        public static readonly DiagnosticDescriptor ParenthesizeConditionOfConditionalExpression = Factory.Create(
+        public static readonly DiagnosticDescriptor ParenthesizeConditionOfConditionalExpression = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.ParenthesizeConditionOfConditionalExpression, 
             title:              "Parenthesize condition of conditional expression.", 
-            messageFormat:      "{0} condition of conditional expression.", 
+            messageFormat:      "Parenthesize condition of conditional expression.", 
             category:           DiagnosticCategories.Style, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
@@ -561,20 +525,8 @@ namespace Roslynator.CSharp
             helpLinkUri:        DiagnosticIdentifiers.ParenthesizeConditionOfConditionalExpression, 
             customTags:         Array.Empty<string>());
 
-        /// <summary>RCS1051a</summary>
-        public static readonly DiagnosticDescriptor RemoveParenthesesFromConditionOfConditionalExpressionWhenExpressionIsSingleToken = Factory.Create(
-            id:                 DiagnosticIdentifiers.RemoveParenthesesFromConditionOfConditionalExpressionWhenExpressionIsSingleToken, 
-            title:              "Remove parentheses from condition of conditional expression (when condition is a single token).", 
-            messageFormat:      "Remove parentheses from condition of conditional expression (when condition is a single token).", 
-            category:           DiagnosticCategories.AnalyzerOption, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.RemoveParenthesesFromConditionOfConditionalExpressionWhenExpressionIsSingleToken, 
-            customTags:         Array.Empty<string>());
-
         /// <summary>RCS1052</summary>
-        public static readonly DiagnosticDescriptor DeclareEachAttributeSeparately = Factory.Create(
+        public static readonly DiagnosticDescriptor DeclareEachAttributeSeparately = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.DeclareEachAttributeSeparately, 
             title:              "Declare each attribute separately.", 
             messageFormat:      "Declare each attribute separately.", 
@@ -586,7 +538,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1055</summary>
-        public static readonly DiagnosticDescriptor AvoidSemicolonAtEndOfDeclaration = Factory.Create(
+        public static readonly DiagnosticDescriptor AvoidSemicolonAtEndOfDeclaration = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.AvoidSemicolonAtEndOfDeclaration, 
             title:              "Avoid semicolon at the end of declaration.", 
             messageFormat:      "Remove semicolon from the end of declaration.", 
@@ -598,7 +550,7 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1056</summary>
-        public static readonly DiagnosticDescriptor AvoidUsageOfUsingAliasDirective = Factory.Create(
+        public static readonly DiagnosticDescriptor AvoidUsageOfUsingAliasDirective = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.AvoidUsageOfUsingAliasDirective, 
             title:              "Avoid usage of using alias directive.", 
             messageFormat:      "Avoid usage of using alias directive.", 
@@ -610,7 +562,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1058</summary>
-        public static readonly DiagnosticDescriptor UseCompoundAssignment = Factory.Create(
+        public static readonly DiagnosticDescriptor UseCompoundAssignment = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.UseCompoundAssignment, 
             title:              "Use compound assignment.", 
             messageFormat:      "Use compound assignment.", 
@@ -624,7 +576,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor UseCompoundAssignmentFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(UseCompoundAssignment);
 
         /// <summary>RCS1059</summary>
-        public static readonly DiagnosticDescriptor AvoidLockingOnPubliclyAccessibleInstance = Factory.Create(
+        public static readonly DiagnosticDescriptor AvoidLockingOnPubliclyAccessibleInstance = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.AvoidLockingOnPubliclyAccessibleInstance, 
             title:              "Avoid locking on publicly accessible instance.", 
             messageFormat:      "Lock on private field instead of locking on '{0}'.", 
@@ -636,7 +588,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1060</summary>
-        public static readonly DiagnosticDescriptor DeclareEachTypeInSeparateFile = Factory.Create(
+        public static readonly DiagnosticDescriptor DeclareEachTypeInSeparateFile = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.DeclareEachTypeInSeparateFile, 
             title:              "Declare each type in separate file.", 
             messageFormat:      "Declare each type in separate file.", 
@@ -648,7 +600,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1061</summary>
-        public static readonly DiagnosticDescriptor MergeIfWithNestedIf = Factory.Create(
+        public static readonly DiagnosticDescriptor MergeIfWithNestedIf = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.MergeIfWithNestedIf, 
             title:              "Merge 'if' with nested 'if'.", 
             messageFormat:      "Merge 'if' with nested 'if'.", 
@@ -662,7 +614,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor MergeIfWithNestedIfFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(MergeIfWithNestedIf);
 
         /// <summary>RCS1063</summary>
-        public static readonly DiagnosticDescriptor AvoidUsageOfDoStatementToCreateInfiniteLoop = Factory.Create(
+        public static readonly DiagnosticDescriptor AvoidUsageOfDoStatementToCreateInfiniteLoop = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.AvoidUsageOfDoStatementToCreateInfiniteLoop, 
             title:              "Avoid usage of do statement to create an infinite loop.", 
             messageFormat:      "Use while statement to create an infinite loop.", 
@@ -674,7 +626,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1064</summary>
-        public static readonly DiagnosticDescriptor AvoidUsageOfForStatementToCreateInfiniteLoop = Factory.Create(
+        public static readonly DiagnosticDescriptor AvoidUsageOfForStatementToCreateInfiniteLoop = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.AvoidUsageOfForStatementToCreateInfiniteLoop, 
             title:              "Avoid usage of for statement to create an infinite loop.", 
             messageFormat:      "Use while statement to create an infinite loop.", 
@@ -686,7 +638,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1065</summary>
-        public static readonly DiagnosticDescriptor AvoidUsageOfWhileStatementToCreateInfiniteLoop = Factory.Create(
+        public static readonly DiagnosticDescriptor AvoidUsageOfWhileStatementToCreateInfiniteLoop = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.AvoidUsageOfWhileStatementToCreateInfiniteLoop, 
             title:              "Avoid usage of while statement to create an inifinite loop.", 
             messageFormat:      "Use for statement to create an infinite loop.", 
@@ -698,7 +650,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1066</summary>
-        public static readonly DiagnosticDescriptor RemoveEmptyFinallyClause = Factory.Create(
+        public static readonly DiagnosticDescriptor RemoveEmptyFinallyClause = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.RemoveEmptyFinallyClause, 
             title:              "Remove empty 'finally' clause.", 
             messageFormat:      "Remove empty 'finally' clause.", 
@@ -712,7 +664,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor RemoveEmptyFinallyClauseFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(RemoveEmptyFinallyClause);
 
         /// <summary>RCS1068</summary>
-        public static readonly DiagnosticDescriptor SimplifyLogicalNegation = Factory.Create(
+        public static readonly DiagnosticDescriptor SimplifyLogicalNegation = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.SimplifyLogicalNegation, 
             title:              "Simplify logical negation.", 
             messageFormat:      "Simplify logical negation.", 
@@ -724,7 +676,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1069</summary>
-        public static readonly DiagnosticDescriptor RemoveUnnecessaryCaseLabel = Factory.Create(
+        public static readonly DiagnosticDescriptor RemoveUnnecessaryCaseLabel = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.RemoveUnnecessaryCaseLabel, 
             title:              "Remove unnecessary case label.", 
             messageFormat:      "Remove unnecessary case label.", 
@@ -736,7 +688,7 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1070</summary>
-        public static readonly DiagnosticDescriptor RemoveRedundantDefaultSwitchSection = Factory.Create(
+        public static readonly DiagnosticDescriptor RemoveRedundantDefaultSwitchSection = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.RemoveRedundantDefaultSwitchSection, 
             title:              "Remove redundant default switch section.", 
             messageFormat:      "Remove redundant default switch section.", 
@@ -748,7 +700,7 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1071</summary>
-        public static readonly DiagnosticDescriptor RemoveRedundantBaseConstructorCall = Factory.Create(
+        public static readonly DiagnosticDescriptor RemoveRedundantBaseConstructorCall = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.RemoveRedundantBaseConstructorCall, 
             title:              "Remove redundant base constructor call.", 
             messageFormat:      "Remove redundant base constructor call.", 
@@ -760,7 +712,7 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1072</summary>
-        public static readonly DiagnosticDescriptor RemoveEmptyNamespaceDeclaration = Factory.Create(
+        public static readonly DiagnosticDescriptor RemoveEmptyNamespaceDeclaration = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.RemoveEmptyNamespaceDeclaration, 
             title:              "Remove empty namespace declaration.", 
             messageFormat:      "Remove empty namespace declaration.", 
@@ -772,7 +724,7 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1073</summary>
-        public static readonly DiagnosticDescriptor ConvertIfToReturnStatement = Factory.Create(
+        public static readonly DiagnosticDescriptor ConvertIfToReturnStatement = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.ConvertIfToReturnStatement, 
             title:              "Convert 'if' to 'return' statement.", 
             messageFormat:      "Convert 'if' to 'return' statement.", 
@@ -786,7 +738,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor ConvertIfToReturnStatementFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(ConvertIfToReturnStatement);
 
         /// <summary>RCS1074</summary>
-        public static readonly DiagnosticDescriptor RemoveRedundantConstructor = Factory.Create(
+        public static readonly DiagnosticDescriptor RemoveRedundantConstructor = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.RemoveRedundantConstructor, 
             title:              "Remove redundant constructor.", 
             messageFormat:      "Remove redundant constructor.", 
@@ -798,7 +750,7 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1075</summary>
-        public static readonly DiagnosticDescriptor AvoidEmptyCatchClauseThatCatchesSystemException = Factory.Create(
+        public static readonly DiagnosticDescriptor AvoidEmptyCatchClauseThatCatchesSystemException = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.AvoidEmptyCatchClauseThatCatchesSystemException, 
             title:              "Avoid empty catch clause that catches System.Exception.", 
             messageFormat:      "Avoid empty catch clause that catches System.Exception.", 
@@ -810,7 +762,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1077</summary>
-        public static readonly DiagnosticDescriptor OptimizeLinqMethodCall = Factory.Create(
+        public static readonly DiagnosticDescriptor OptimizeLinqMethodCall = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.OptimizeLinqMethodCall, 
             title:              "Optimize LINQ method call.", 
             messageFormat:      "Optimize LINQ method call.", 
@@ -822,7 +774,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1078</summary>
-        public static readonly DiagnosticDescriptor UseEmptyStringLiteralInsteadOfStringEmpty = Factory.Create(
+        public static readonly DiagnosticDescriptor UseEmptyStringLiteralInsteadOfStringEmpty = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.UseEmptyStringLiteralInsteadOfStringEmpty, 
             title:              "Use \"\" instead of string.Empty.", 
             messageFormat:      "Use \"\" instead of string.Empty", 
@@ -834,7 +786,7 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1079</summary>
-        public static readonly DiagnosticDescriptor ThrowingOfNewNotImplementedException = Factory.Create(
+        public static readonly DiagnosticDescriptor ThrowingOfNewNotImplementedException = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.ThrowingOfNewNotImplementedException, 
             title:              "Throwing of new NotImplementedException.", 
             messageFormat:      "Implement the functionality instead of throwing new NotImplementedException.", 
@@ -846,7 +798,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1080</summary>
-        public static readonly DiagnosticDescriptor UseCountOrLengthPropertyInsteadOfAnyMethod = Factory.Create(
+        public static readonly DiagnosticDescriptor UseCountOrLengthPropertyInsteadOfAnyMethod = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod, 
             title:              "Use 'Count/Length' property instead of 'Any' method.", 
             messageFormat:      "Use '{0}' property instead of 'Any' method.", 
@@ -858,7 +810,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1081</summary>
-        public static readonly DiagnosticDescriptor SplitVariableDeclaration = Factory.Create(
+        public static readonly DiagnosticDescriptor SplitVariableDeclaration = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.SplitVariableDeclaration, 
             title:              "Split variable declaration.", 
             messageFormat:      "Split variable declaration.", 
@@ -870,7 +822,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1084</summary>
-        public static readonly DiagnosticDescriptor UseCoalesceExpressionInsteadOfConditionalExpression = Factory.Create(
+        public static readonly DiagnosticDescriptor UseCoalesceExpressionInsteadOfConditionalExpression = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfConditionalExpression, 
             title:              "Use coalesce expression instead of conditional expression.", 
             messageFormat:      "Use coalesce expression instead of conditional expression.", 
@@ -882,7 +834,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1085</summary>
-        public static readonly DiagnosticDescriptor UseAutoProperty = Factory.Create(
+        public static readonly DiagnosticDescriptor UseAutoProperty = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.UseAutoProperty, 
             title:              "Use auto-implemented property.", 
             messageFormat:      "Use auto-implemented property.", 
@@ -896,7 +848,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor UseAutoPropertyFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(UseAutoProperty);
 
         /// <summary>RCS1089</summary>
-        public static readonly DiagnosticDescriptor UseUnaryOperatorInsteadOfAssignment = Factory.Create(
+        public static readonly DiagnosticDescriptor UseUnaryOperatorInsteadOfAssignment = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.UseUnaryOperatorInsteadOfAssignment, 
             title:              "Use --/++ operator instead of assignment.", 
             messageFormat:      "Use {0} operator instead of assignment.", 
@@ -910,7 +862,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor UseUnaryOperatorInsteadOfAssignmentFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(UseUnaryOperatorInsteadOfAssignment);
 
         /// <summary>RCS1090</summary>
-        public static readonly DiagnosticDescriptor CallConfigureAwait = Factory.Create(
+        public static readonly DiagnosticDescriptor CallConfigureAwait = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.CallConfigureAwait, 
             title:              "Call 'ConfigureAwait(false)'.", 
             messageFormat:      "Call 'ConfigureAwait(false).", 
@@ -922,7 +874,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1091</summary>
-        public static readonly DiagnosticDescriptor RemoveEmptyRegion = Factory.Create(
+        public static readonly DiagnosticDescriptor RemoveEmptyRegion = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.RemoveEmptyRegion, 
             title:              "Remove empty region.", 
             messageFormat:      "Remove empty region.", 
@@ -936,7 +888,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor RemoveEmptyRegionFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(RemoveEmptyRegion);
 
         /// <summary>RCS1093</summary>
-        public static readonly DiagnosticDescriptor RemoveFileWithNoCode = Factory.Create(
+        public static readonly DiagnosticDescriptor RemoveFileWithNoCode = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.RemoveFileWithNoCode, 
             title:              "Remove file with no code.", 
             messageFormat:      "Remove file with no code.", 
@@ -948,7 +900,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1094</summary>
-        public static readonly DiagnosticDescriptor DeclareUsingDirectiveOnTopLevel = Factory.Create(
+        public static readonly DiagnosticDescriptor DeclareUsingDirectiveOnTopLevel = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.DeclareUsingDirectiveOnTopLevel, 
             title:              "Declare using directive on top level.", 
             messageFormat:      "Declare using directive on top level.", 
@@ -960,7 +912,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1096</summary>
-        public static readonly DiagnosticDescriptor ConvertHasFlagCallToBitwiseOperationOrViceVersa = Factory.Create(
+        public static readonly DiagnosticDescriptor ConvertHasFlagCallToBitwiseOperationOrViceVersa = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.ConvertHasFlagCallToBitwiseOperationOrViceVersa, 
             title:              "Convert 'HasFlag' call to bitwise operation (or vice versa).", 
             messageFormat:      "Convert 'HasFlag' call to bitwise operation.", 
@@ -971,20 +923,8 @@ namespace Roslynator.CSharp
             helpLinkUri:        DiagnosticIdentifiers.ConvertHasFlagCallToBitwiseOperationOrViceVersa, 
             customTags:         Array.Empty<string>());
 
-        /// <summary>RCS1096i</summary>
-        public static readonly DiagnosticDescriptor ConvertBitwiseOperationToHasFlagCall = Factory.Create(
-            id:                 DiagnosticIdentifiers.ConvertBitwiseOperationToHasFlagCall, 
-            title:              "Convert bitwise operation to 'HasFlag' call.", 
-            messageFormat:      "Convert bitwise operation to 'HasFlag' call.", 
-            category:           DiagnosticCategories.AnalyzerOption, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.ConvertBitwiseOperationToHasFlagCall, 
-            customTags:         Array.Empty<string>());
-
         /// <summary>RCS1097</summary>
-        public static readonly DiagnosticDescriptor RemoveRedundantToStringCall = Factory.Create(
+        public static readonly DiagnosticDescriptor RemoveRedundantToStringCall = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.RemoveRedundantToStringCall, 
             title:              "Remove redundant 'ToString' call.", 
             messageFormat:      "Remove redundant 'ToString' call.", 
@@ -996,7 +936,7 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1098</summary>
-        public static readonly DiagnosticDescriptor AvoidNullLiteralExpressionOnLeftSideOfBinaryExpression = Factory.Create(
+        public static readonly DiagnosticDescriptor AvoidNullLiteralExpressionOnLeftSideOfBinaryExpression = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.AvoidNullLiteralExpressionOnLeftSideOfBinaryExpression, 
             title:              "Avoid 'null' on the left side of a binary expression.", 
             messageFormat:      "'null' should be on the right side of a binary expression.", 
@@ -1008,7 +948,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1099</summary>
-        public static readonly DiagnosticDescriptor DefaultLabelShouldBeLastLabelInSwitchSection = Factory.Create(
+        public static readonly DiagnosticDescriptor DefaultLabelShouldBeLastLabelInSwitchSection = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.DefaultLabelShouldBeLastLabelInSwitchSection, 
             title:              "Default label should be the last label in a switch section.", 
             messageFormat:      "Move default label to the last position in a switch section.", 
@@ -1020,7 +960,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1100</summary>
-        public static readonly DiagnosticDescriptor FormatDocumentationSummaryOnSingleLine = Factory.Create(
+        public static readonly DiagnosticDescriptor FormatDocumentationSummaryOnSingleLine = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.FormatDocumentationSummaryOnSingleLine, 
             title:              "Format documentation summary on a single line.", 
             messageFormat:      "Format documentation summary on a single line.", 
@@ -1032,7 +972,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1101</summary>
-        public static readonly DiagnosticDescriptor FormatDocumentationSummaryOnMultipleLines = Factory.Create(
+        public static readonly DiagnosticDescriptor FormatDocumentationSummaryOnMultipleLines = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.FormatDocumentationSummaryOnMultipleLines, 
             title:              "Format documentation summary on multiple lines.", 
             messageFormat:      "Format documentation summary on multiple lines.", 
@@ -1044,7 +984,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1102</summary>
-        public static readonly DiagnosticDescriptor MakeClassStatic = Factory.Create(
+        public static readonly DiagnosticDescriptor MakeClassStatic = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.MakeClassStatic, 
             title:              "Make class static.", 
             messageFormat:      "Make class static.", 
@@ -1056,7 +996,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1103</summary>
-        public static readonly DiagnosticDescriptor ConvertIfToAssignment = Factory.Create(
+        public static readonly DiagnosticDescriptor ConvertIfToAssignment = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.ConvertIfToAssignment, 
             title:              "Convert 'if' to assignment.", 
             messageFormat:      "Convert 'if' to assignment.", 
@@ -1068,7 +1008,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1104</summary>
-        public static readonly DiagnosticDescriptor SimplifyConditionalExpression = Factory.Create(
+        public static readonly DiagnosticDescriptor SimplifyConditionalExpression = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.SimplifyConditionalExpression, 
             title:              "Simplify conditional expression.", 
             messageFormat:      "Simplify conditional expression.", 
@@ -1079,20 +1019,8 @@ namespace Roslynator.CSharp
             helpLinkUri:        DiagnosticIdentifiers.SimplifyConditionalExpression, 
             customTags:         Array.Empty<string>());
 
-        /// <summary>RCS1104a</summary>
-        public static readonly DiagnosticDescriptor SimplifyConditionalExpressionWhenItIncludesNegationOfCondition = Factory.Create(
-            id:                 DiagnosticIdentifiers.SimplifyConditionalExpressionWhenItIncludesNegationOfCondition, 
-            title:              "Simplify conditional expression (when it includes negation of condition).", 
-            messageFormat:      "Simplify conditional expression (when it includes negation of condition).", 
-            category:           DiagnosticCategories.AnalyzerOption, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.SimplifyConditionalExpressionWhenItIncludesNegationOfCondition, 
-            customTags:         Array.Empty<string>());
-
         /// <summary>RCS1105</summary>
-        public static readonly DiagnosticDescriptor UnnecessaryInterpolation = Factory.Create(
+        public static readonly DiagnosticDescriptor UnnecessaryInterpolation = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.UnnecessaryInterpolation, 
             title:              "Unncessary interpolation.", 
             messageFormat:      "Unncessary interpolation.", 
@@ -1104,7 +1032,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1106</summary>
-        public static readonly DiagnosticDescriptor RemoveEmptyDestructor = Factory.Create(
+        public static readonly DiagnosticDescriptor RemoveEmptyDestructor = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.RemoveEmptyDestructor, 
             title:              "Remove empty destructor.", 
             messageFormat:      "Remove empty destructor.", 
@@ -1116,7 +1044,7 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1107</summary>
-        public static readonly DiagnosticDescriptor RemoveRedundantStringToCharArrayCall = Factory.Create(
+        public static readonly DiagnosticDescriptor RemoveRedundantStringToCharArrayCall = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.RemoveRedundantStringToCharArrayCall, 
             title:              "Remove redundant 'ToCharArray' call.", 
             messageFormat:      "Remove redundant 'ToCharArray' call.", 
@@ -1128,7 +1056,7 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1108</summary>
-        public static readonly DiagnosticDescriptor AddStaticModifierToAllPartialClassDeclarations = Factory.Create(
+        public static readonly DiagnosticDescriptor AddStaticModifierToAllPartialClassDeclarations = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.AddStaticModifierToAllPartialClassDeclarations, 
             title:              "Add 'static' modifier to all partial class declarations.", 
             messageFormat:      "Add 'static' modifier to all partial class declarations.", 
@@ -1140,7 +1068,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1110</summary>
-        public static readonly DiagnosticDescriptor DeclareTypeInsideNamespace = Factory.Create(
+        public static readonly DiagnosticDescriptor DeclareTypeInsideNamespace = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.DeclareTypeInsideNamespace, 
             title:              "Declare type inside namespace.", 
             messageFormat:      "Declare '{0}' inside namespace.", 
@@ -1152,7 +1080,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1111</summary>
-        public static readonly DiagnosticDescriptor AddBracesToSwitchSectionWithMultipleStatements = Factory.Create(
+        public static readonly DiagnosticDescriptor AddBracesToSwitchSectionWithMultipleStatements = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.AddBracesToSwitchSectionWithMultipleStatements, 
             title:              "Add braces to switch section with multiple statements.", 
             messageFormat:      "Add braces to switch section with multiple statements.", 
@@ -1164,7 +1092,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1112</summary>
-        public static readonly DiagnosticDescriptor CombineEnumerableWhereMethodChain = Factory.Create(
+        public static readonly DiagnosticDescriptor CombineEnumerableWhereMethodChain = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.CombineEnumerableWhereMethodChain, 
             title:              "Combine 'Enumerable.Where' method chain.", 
             messageFormat:      "Combine 'Enumerable.Where' method chain.", 
@@ -1178,7 +1106,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor CombineEnumerableWhereMethodChainFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(CombineEnumerableWhereMethodChain);
 
         /// <summary>RCS1113</summary>
-        public static readonly DiagnosticDescriptor UseStringIsNullOrEmptyMethod = Factory.Create(
+        public static readonly DiagnosticDescriptor UseStringIsNullOrEmptyMethod = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.UseStringIsNullOrEmptyMethod, 
             title:              "Use 'string.IsNullOrEmpty' method.", 
             messageFormat:      "Use 'string.IsNullOrEmpty' method.", 
@@ -1190,7 +1118,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1114</summary>
-        public static readonly DiagnosticDescriptor RemoveRedundantDelegateCreation = Factory.Create(
+        public static readonly DiagnosticDescriptor RemoveRedundantDelegateCreation = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.RemoveRedundantDelegateCreation, 
             title:              "Remove redundant delegate creation.", 
             messageFormat:      "Remove redundant delegate creation.", 
@@ -1204,7 +1132,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor RemoveRedundantDelegateCreationFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(RemoveRedundantDelegateCreation);
 
         /// <summary>RCS1118</summary>
-        public static readonly DiagnosticDescriptor MarkLocalVariableAsConst = Factory.Create(
+        public static readonly DiagnosticDescriptor MarkLocalVariableAsConst = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.MarkLocalVariableAsConst, 
             title:              "Mark local variable as const.", 
             messageFormat:      "Mark local variable as const.", 
@@ -1216,7 +1144,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1123</summary>
-        public static readonly DiagnosticDescriptor AddParenthesesWhenNecessary = Factory.Create(
+        public static readonly DiagnosticDescriptor AddParenthesesWhenNecessary = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.AddParenthesesWhenNecessary, 
             title:              "Add parentheses when necessary.", 
             messageFormat:      "Add parentheses when necessary.", 
@@ -1228,7 +1156,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1124</summary>
-        public static readonly DiagnosticDescriptor InlineLocalVariable = Factory.Create(
+        public static readonly DiagnosticDescriptor InlineLocalVariable = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.InlineLocalVariable, 
             title:              "Inline local variable.", 
             messageFormat:      "Inline local variable.", 
@@ -1242,7 +1170,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor InlineLocalVariableFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(InlineLocalVariable);
 
         /// <summary>RCS1126</summary>
-        public static readonly DiagnosticDescriptor AddBracesToIfElse = Factory.Create(
+        public static readonly DiagnosticDescriptor AddBracesToIfElse = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.AddBracesToIfElse, 
             title:              "Add braces to if-else.", 
             messageFormat:      "Add braces to {0}.", 
@@ -1254,7 +1182,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1128</summary>
-        public static readonly DiagnosticDescriptor UseCoalesceExpression = Factory.Create(
+        public static readonly DiagnosticDescriptor UseCoalesceExpression = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.UseCoalesceExpression, 
             title:              "Use coalesce expression.", 
             messageFormat:      "Use coalesce expression.", 
@@ -1266,7 +1194,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1129</summary>
-        public static readonly DiagnosticDescriptor RemoveRedundantFieldInitialization = Factory.Create(
+        public static readonly DiagnosticDescriptor RemoveRedundantFieldInitialization = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.RemoveRedundantFieldInitialization, 
             title:              "Remove redundant field initalization.", 
             messageFormat:      "Remove redundant field initialization.", 
@@ -1278,7 +1206,7 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1130</summary>
-        public static readonly DiagnosticDescriptor BitwiseOperationOnEnumWithoutFlagsAttribute = Factory.Create(
+        public static readonly DiagnosticDescriptor BitwiseOperationOnEnumWithoutFlagsAttribute = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.BitwiseOperationOnEnumWithoutFlagsAttribute, 
             title:              "Bitwise operation on enum without Flags attribute.", 
             messageFormat:      "Bitwise operation on enum without Flags attribute.", 
@@ -1290,7 +1218,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1132</summary>
-        public static readonly DiagnosticDescriptor RemoveRedundantOverridingMember = Factory.Create(
+        public static readonly DiagnosticDescriptor RemoveRedundantOverridingMember = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.RemoveRedundantOverridingMember, 
             title:              "Remove redundant overriding member.", 
             messageFormat:      "Remove redundant overriding {0}.", 
@@ -1302,7 +1230,7 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1133</summary>
-        public static readonly DiagnosticDescriptor RemoveRedundantDisposeOrCloseCall = Factory.Create(
+        public static readonly DiagnosticDescriptor RemoveRedundantDisposeOrCloseCall = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.RemoveRedundantDisposeOrCloseCall, 
             title:              "Remove redundant Dispose/Close call.", 
             messageFormat:      "Remove redundant '{0}' call.", 
@@ -1314,7 +1242,7 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1134</summary>
-        public static readonly DiagnosticDescriptor RemoveRedundantStatement = Factory.Create(
+        public static readonly DiagnosticDescriptor RemoveRedundantStatement = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.RemoveRedundantStatement, 
             title:              "Remove redundant statement.", 
             messageFormat:      "Remove redundant statement.", 
@@ -1326,7 +1254,7 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1135</summary>
-        public static readonly DiagnosticDescriptor DeclareEnumMemberWithZeroValue = Factory.Create(
+        public static readonly DiagnosticDescriptor DeclareEnumMemberWithZeroValue = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.DeclareEnumMemberWithZeroValue, 
             title:              "Declare enum member with zero value (when enum has FlagsAttribute).", 
             messageFormat:      "Declare enum member with zero value (when enum has FlagsAttribute).", 
@@ -1338,7 +1266,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1136</summary>
-        public static readonly DiagnosticDescriptor MergeSwitchSectionsWithEquivalentContent = Factory.Create(
+        public static readonly DiagnosticDescriptor MergeSwitchSectionsWithEquivalentContent = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.MergeSwitchSectionsWithEquivalentContent, 
             title:              "Merge switch sections with equivalent content.", 
             messageFormat:      "Merge switch sections with equivalent content.", 
@@ -1350,7 +1278,7 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1138</summary>
-        public static readonly DiagnosticDescriptor AddSummaryToDocumentationComment = Factory.Create(
+        public static readonly DiagnosticDescriptor AddSummaryToDocumentationComment = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.AddSummaryToDocumentationComment, 
             title:              "Add summary to documentation comment.", 
             messageFormat:      "Add summary to documentation comment.", 
@@ -1362,7 +1290,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1139</summary>
-        public static readonly DiagnosticDescriptor AddSummaryElementToDocumentationComment = Factory.Create(
+        public static readonly DiagnosticDescriptor AddSummaryElementToDocumentationComment = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.AddSummaryElementToDocumentationComment, 
             title:              "Add summary element to documentation comment.", 
             messageFormat:      "Add summary element to documentation comment.", 
@@ -1374,7 +1302,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1140</summary>
-        public static readonly DiagnosticDescriptor AddExceptionToDocumentationComment = Factory.Create(
+        public static readonly DiagnosticDescriptor AddExceptionToDocumentationComment = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.AddExceptionToDocumentationComment, 
             title:              "Add exception to documentation comment.", 
             messageFormat:      "Add exception to documentation comment.", 
@@ -1386,7 +1314,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1141</summary>
-        public static readonly DiagnosticDescriptor AddParamElementToDocumentationComment = Factory.Create(
+        public static readonly DiagnosticDescriptor AddParamElementToDocumentationComment = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.AddParamElementToDocumentationComment, 
             title:              "Add 'param' element to documentation comment.", 
             messageFormat:      "Add 'param' element to documentation comment.", 
@@ -1398,7 +1326,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1142</summary>
-        public static readonly DiagnosticDescriptor AddTypeParamElementToDocumentationComment = Factory.Create(
+        public static readonly DiagnosticDescriptor AddTypeParamElementToDocumentationComment = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.AddTypeParamElementToDocumentationComment, 
             title:              "Add 'typeparam' element to documentation comment.", 
             messageFormat:      "Add 'typeparam' element to documentation comment.", 
@@ -1410,7 +1338,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1143</summary>
-        public static readonly DiagnosticDescriptor SimplifyCoalesceExpression = Factory.Create(
+        public static readonly DiagnosticDescriptor SimplifyCoalesceExpression = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.SimplifyCoalesceExpression, 
             title:              "Simplify coalesce expression.", 
             messageFormat:      "Simplify coalesce expression.", 
@@ -1422,7 +1350,7 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1145</summary>
-        public static readonly DiagnosticDescriptor RemoveRedundantAsOperator = Factory.Create(
+        public static readonly DiagnosticDescriptor RemoveRedundantAsOperator = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.RemoveRedundantAsOperator, 
             title:              "Remove redundant 'as' operator.", 
             messageFormat:      "Remove redundant 'as' operator.", 
@@ -1434,7 +1362,7 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1146</summary>
-        public static readonly DiagnosticDescriptor UseConditionalAccess = Factory.Create(
+        public static readonly DiagnosticDescriptor UseConditionalAccess = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.UseConditionalAccess, 
             title:              "Use conditional access.", 
             messageFormat:      "Use conditional access.", 
@@ -1446,7 +1374,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1151</summary>
-        public static readonly DiagnosticDescriptor RemoveRedundantCast = Factory.Create(
+        public static readonly DiagnosticDescriptor RemoveRedundantCast = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.RemoveRedundantCast, 
             title:              "Remove redundant cast.", 
             messageFormat:      "Remove redundant cast.", 
@@ -1458,7 +1386,7 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1154</summary>
-        public static readonly DiagnosticDescriptor SortEnumMembers = Factory.Create(
+        public static readonly DiagnosticDescriptor SortEnumMembers = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.SortEnumMembers, 
             title:              "Sort enum members.", 
             messageFormat:      "Sort '{0}' members.", 
@@ -1470,7 +1398,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1155</summary>
-        public static readonly DiagnosticDescriptor UseStringComparison = Factory.Create(
+        public static readonly DiagnosticDescriptor UseStringComparison = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.UseStringComparison, 
             title:              "Use StringComparison when comparing strings.", 
             messageFormat:      "Use StringComparison when comparing strings.", 
@@ -1482,7 +1410,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1156</summary>
-        public static readonly DiagnosticDescriptor UseStringLengthInsteadOfComparisonWithEmptyString = Factory.Create(
+        public static readonly DiagnosticDescriptor UseStringLengthInsteadOfComparisonWithEmptyString = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.UseStringLengthInsteadOfComparisonWithEmptyString, 
             title:              "Use string.Length instead of comparison with empty string.", 
             messageFormat:      "Use string.Length instead of comparison with empty string.", 
@@ -1494,7 +1422,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1157</summary>
-        public static readonly DiagnosticDescriptor CompositeEnumValueContainsUndefinedFlag = Factory.Create(
+        public static readonly DiagnosticDescriptor CompositeEnumValueContainsUndefinedFlag = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.CompositeEnumValueContainsUndefinedFlag, 
             title:              "Composite enum value contains undefined flag.", 
             messageFormat:      "Composite enum value contains undefined flag {0}.", 
@@ -1506,7 +1434,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1158</summary>
-        public static readonly DiagnosticDescriptor StaticMemberInGenericTypeShouldUseTypeParameter = Factory.Create(
+        public static readonly DiagnosticDescriptor StaticMemberInGenericTypeShouldUseTypeParameter = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.StaticMemberInGenericTypeShouldUseTypeParameter, 
             title:              "Static member in generic type should use a type parameter.", 
             messageFormat:      "Static member in generic type should use a type parameter.", 
@@ -1518,7 +1446,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1159</summary>
-        public static readonly DiagnosticDescriptor UseGenericEventHandler = Factory.Create(
+        public static readonly DiagnosticDescriptor UseGenericEventHandler = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.UseGenericEventHandler, 
             title:              "Use EventHandler<T>.", 
             messageFormat:      "Use EventHandler<T>.", 
@@ -1530,7 +1458,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1160</summary>
-        public static readonly DiagnosticDescriptor AbstractTypeShouldNotHavePublicConstructors = Factory.Create(
+        public static readonly DiagnosticDescriptor AbstractTypeShouldNotHavePublicConstructors = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.AbstractTypeShouldNotHavePublicConstructors, 
             title:              "Abstract type should not have public constructors.", 
             messageFormat:      "Abstract type should not have public constructors.", 
@@ -1542,7 +1470,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1161</summary>
-        public static readonly DiagnosticDescriptor EnumShouldDeclareExplicitValues = Factory.Create(
+        public static readonly DiagnosticDescriptor EnumShouldDeclareExplicitValues = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.EnumShouldDeclareExplicitValues, 
             title:              "Enum should declare explicit values.", 
             messageFormat:      "Enum should declare explicit values.", 
@@ -1554,7 +1482,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1162</summary>
-        public static readonly DiagnosticDescriptor AvoidChainOfAssignments = Factory.Create(
+        public static readonly DiagnosticDescriptor AvoidChainOfAssignments = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.AvoidChainOfAssignments, 
             title:              "Avoid chain of assignments.", 
             messageFormat:      "Avoid chain of assignments.", 
@@ -1566,7 +1494,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1163</summary>
-        public static readonly DiagnosticDescriptor UnusedParameter = Factory.Create(
+        public static readonly DiagnosticDescriptor UnusedParameter = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.UnusedParameter, 
             title:              "Unused parameter.", 
             messageFormat:      "Unused parameter '{0}'.", 
@@ -1578,7 +1506,7 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1164</summary>
-        public static readonly DiagnosticDescriptor UnusedTypeParameter = Factory.Create(
+        public static readonly DiagnosticDescriptor UnusedTypeParameter = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.UnusedTypeParameter, 
             title:              "Unused type parameter.", 
             messageFormat:      "Unused type parameter '{0}'.", 
@@ -1590,7 +1518,7 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1165</summary>
-        public static readonly DiagnosticDescriptor UnconstrainedTypeParameterCheckedForNull = Factory.Create(
+        public static readonly DiagnosticDescriptor UnconstrainedTypeParameterCheckedForNull = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.UnconstrainedTypeParameterCheckedForNull, 
             title:              "Unconstrained type parameter checked for null.", 
             messageFormat:      "Unconstrained type parameter checked for null.", 
@@ -1602,7 +1530,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1166</summary>
-        public static readonly DiagnosticDescriptor ValueTypeObjectIsNeverEqualToNull = Factory.Create(
+        public static readonly DiagnosticDescriptor ValueTypeObjectIsNeverEqualToNull = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.ValueTypeObjectIsNeverEqualToNull, 
             title:              "Value type object is never equal to null.", 
             messageFormat:      "Value type object is never equal to null.", 
@@ -1614,7 +1542,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1168</summary>
-        public static readonly DiagnosticDescriptor ParameterNameDiffersFromBase = Factory.Create(
+        public static readonly DiagnosticDescriptor ParameterNameDiffersFromBase = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.ParameterNameDiffersFromBase, 
             title:              "Parameter name differs from base name.", 
             messageFormat:      "Parameter name '{0}' differs from base name '{1}'.", 
@@ -1626,7 +1554,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1169</summary>
-        public static readonly DiagnosticDescriptor MakeFieldReadOnly = Factory.Create(
+        public static readonly DiagnosticDescriptor MakeFieldReadOnly = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.MakeFieldReadOnly, 
             title:              "Make field read-only.", 
             messageFormat:      "Make field read-only.", 
@@ -1638,7 +1566,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1170</summary>
-        public static readonly DiagnosticDescriptor UseReadOnlyAutoProperty = Factory.Create(
+        public static readonly DiagnosticDescriptor UseReadOnlyAutoProperty = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.UseReadOnlyAutoProperty, 
             title:              "Use read-only auto-implemented property.", 
             messageFormat:      "Use read-only auto-implemented property.", 
@@ -1650,7 +1578,7 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1171</summary>
-        public static readonly DiagnosticDescriptor SimplifyLazyInitialization = Factory.Create(
+        public static readonly DiagnosticDescriptor SimplifyLazyInitialization = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.SimplifyLazyInitialization, 
             title:              "Simplify lazy initialization.", 
             messageFormat:      "Simplify lazy initialization.", 
@@ -1662,7 +1590,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1172</summary>
-        public static readonly DiagnosticDescriptor UseIsOperatorInsteadOfAsOperator = Factory.Create(
+        public static readonly DiagnosticDescriptor UseIsOperatorInsteadOfAsOperator = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.UseIsOperatorInsteadOfAsOperator, 
             title:              "Use 'is' operator instead of 'as' operator.", 
             messageFormat:      "Use 'is' operator instead of 'as' operator.", 
@@ -1674,7 +1602,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1173</summary>
-        public static readonly DiagnosticDescriptor UseCoalesceExpressionInsteadOfIf = Factory.Create(
+        public static readonly DiagnosticDescriptor UseCoalesceExpressionInsteadOfIf = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfIf, 
             title:              "Use coalesce expression instead of 'if'.", 
             messageFormat:      "Use coalesce expression instead of 'if'.", 
@@ -1686,7 +1614,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1174</summary>
-        public static readonly DiagnosticDescriptor RemoveRedundantAsyncAwait = Factory.Create(
+        public static readonly DiagnosticDescriptor RemoveRedundantAsyncAwait = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.RemoveRedundantAsyncAwait, 
             title:              "Remove redundant async/await.", 
             messageFormat:      "Remove redundant async/await.", 
@@ -1700,7 +1628,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor RemoveRedundantAsyncAwaitFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(RemoveRedundantAsyncAwait);
 
         /// <summary>RCS1175</summary>
-        public static readonly DiagnosticDescriptor UnusedThisParameter = Factory.Create(
+        public static readonly DiagnosticDescriptor UnusedThisParameter = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.UnusedThisParameter, 
             title:              "Unused this parameter.", 
             messageFormat:      "Unused this parameter '{0}'.", 
@@ -1712,7 +1640,7 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1176</summary>
-        public static readonly DiagnosticDescriptor UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious = Factory.Create(
+        public static readonly DiagnosticDescriptor UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious, 
             title:              "Use 'var' instead of explicit type (when the type is not obvious).", 
             messageFormat:      "Use 'var' instead of explicit type.", 
@@ -1724,7 +1652,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1177</summary>
-        public static readonly DiagnosticDescriptor UseVarInsteadOfExplicitTypeInForEach = Factory.Create(
+        public static readonly DiagnosticDescriptor UseVarInsteadOfExplicitTypeInForEach = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeInForEach, 
             title:              "Use 'var' instead of explicit type (in foreach).", 
             messageFormat:      "Use 'var' instead of explicit type.", 
@@ -1736,7 +1664,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1179</summary>
-        public static readonly DiagnosticDescriptor UseReturnInsteadOfAssignment = Factory.Create(
+        public static readonly DiagnosticDescriptor UseReturnInsteadOfAssignment = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.UseReturnInsteadOfAssignment, 
             title:              "Use 'return' instead of assignment.", 
             messageFormat:      "Use 'return' instead of assignment.", 
@@ -1748,7 +1676,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1180</summary>
-        public static readonly DiagnosticDescriptor InlineLazyInitialization = Factory.Create(
+        public static readonly DiagnosticDescriptor InlineLazyInitialization = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.InlineLazyInitialization, 
             title:              "Inline lazy initialization.", 
             messageFormat:      "Inline lazy initialization.", 
@@ -1760,7 +1688,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1181</summary>
-        public static readonly DiagnosticDescriptor ConvertCommentToDocumentationComment = Factory.Create(
+        public static readonly DiagnosticDescriptor ConvertCommentToDocumentationComment = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.ConvertCommentToDocumentationComment, 
             title:              "Convert comment to documentation comment.", 
             messageFormat:      "Convert comment to documentation comment.", 
@@ -1772,7 +1700,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1182</summary>
-        public static readonly DiagnosticDescriptor RemoveRedundantBaseInterface = Factory.Create(
+        public static readonly DiagnosticDescriptor RemoveRedundantBaseInterface = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.RemoveRedundantBaseInterface, 
             title:              "Remove redundant base interface.", 
             messageFormat:      "Interface '{0}' is already implemented by '{1}'.", 
@@ -1784,7 +1712,7 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1186</summary>
-        public static readonly DiagnosticDescriptor UseRegexInstanceInsteadOfStaticMethod = Factory.Create(
+        public static readonly DiagnosticDescriptor UseRegexInstanceInsteadOfStaticMethod = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod, 
             title:              "Use Regex instance instead of static method.", 
             messageFormat:      "Use Regex instance instead of static method.", 
@@ -1796,7 +1724,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1187</summary>
-        public static readonly DiagnosticDescriptor UseConstantInsteadOfField = Factory.Create(
+        public static readonly DiagnosticDescriptor UseConstantInsteadOfField = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.UseConstantInsteadOfField, 
             title:              "Use constant instead of field.", 
             messageFormat:      "Use constant instead of field.", 
@@ -1808,7 +1736,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1188</summary>
-        public static readonly DiagnosticDescriptor RemoveRedundantAutoPropertyInitialization = Factory.Create(
+        public static readonly DiagnosticDescriptor RemoveRedundantAutoPropertyInitialization = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.RemoveRedundantAutoPropertyInitialization, 
             title:              "Remove redundant auto-property initialization.", 
             messageFormat:      "Remove redundant auto-property initialization.", 
@@ -1820,7 +1748,7 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1189</summary>
-        public static readonly DiagnosticDescriptor AddOrRemoveRegionName = Factory.Create(
+        public static readonly DiagnosticDescriptor AddOrRemoveRegionName = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.AddOrRemoveRegionName, 
             title:              "Add or remove region name.", 
             messageFormat:      "{0} region name {1} #endregion.", 
@@ -1832,7 +1760,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1190</summary>
-        public static readonly DiagnosticDescriptor JoinStringExpressions = Factory.Create(
+        public static readonly DiagnosticDescriptor JoinStringExpressions = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.JoinStringExpressions, 
             title:              "Join string expressions.", 
             messageFormat:      "Join string expressions.", 
@@ -1844,7 +1772,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1191</summary>
-        public static readonly DiagnosticDescriptor DeclareEnumValueAsCombinationOfNames = Factory.Create(
+        public static readonly DiagnosticDescriptor DeclareEnumValueAsCombinationOfNames = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.DeclareEnumValueAsCombinationOfNames, 
             title:              "Declare enum value as combination of names.", 
             messageFormat:      "Declare enum value as combination of names.", 
@@ -1856,7 +1784,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1192</summary>
-        public static readonly DiagnosticDescriptor UnnecessaryUsageOfVerbatimStringLiteral = Factory.Create(
+        public static readonly DiagnosticDescriptor UnnecessaryUsageOfVerbatimStringLiteral = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.UnnecessaryUsageOfVerbatimStringLiteral, 
             title:              "Unnecessary usage of verbatim string literal.", 
             messageFormat:      "Unnecessary usage of verbatim string literal.", 
@@ -1868,7 +1796,7 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1193</summary>
-        public static readonly DiagnosticDescriptor OverridingMemberShouldNotChangeParamsModifier = Factory.Create(
+        public static readonly DiagnosticDescriptor OverridingMemberShouldNotChangeParamsModifier = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.OverridingMemberShouldNotChangeParamsModifier, 
             title:              "Overriding member should not change 'params' modifier.", 
             messageFormat:      "Overriding member should not change 'params' modifier.", 
@@ -1880,7 +1808,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1194</summary>
-        public static readonly DiagnosticDescriptor ImplementExceptionConstructors = Factory.Create(
+        public static readonly DiagnosticDescriptor ImplementExceptionConstructors = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.ImplementExceptionConstructors, 
             title:              "Implement exception constructors.", 
             messageFormat:      "Implement exception constructors.", 
@@ -1892,7 +1820,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1195</summary>
-        public static readonly DiagnosticDescriptor UseExclusiveOrOperator = Factory.Create(
+        public static readonly DiagnosticDescriptor UseExclusiveOrOperator = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.UseExclusiveOrOperator, 
             title:              "Use ^ operator.", 
             messageFormat:      "Use ^ operator.", 
@@ -1904,7 +1832,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1196</summary>
-        public static readonly DiagnosticDescriptor CallExtensionMethodAsInstanceMethod = Factory.Create(
+        public static readonly DiagnosticDescriptor CallExtensionMethodAsInstanceMethod = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.CallExtensionMethodAsInstanceMethod, 
             title:              "Call extension method as instance method.", 
             messageFormat:      "Call extension method as instance method.", 
@@ -1916,7 +1844,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1197</summary>
-        public static readonly DiagnosticDescriptor OptimizeStringBuilderAppendCall = Factory.Create(
+        public static readonly DiagnosticDescriptor OptimizeStringBuilderAppendCall = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.OptimizeStringBuilderAppendCall, 
             title:              "Optimize StringBuilder.Append/AppendLine call.", 
             messageFormat:      "Optimize StringBuilder.{0} call.", 
@@ -1928,7 +1856,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1198</summary>
-        public static readonly DiagnosticDescriptor AvoidBoxingOfValueType = Factory.Create(
+        public static readonly DiagnosticDescriptor AvoidBoxingOfValueType = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.AvoidBoxingOfValueType, 
             title:              "Avoid unnecessary boxing of value type.", 
             messageFormat:      "Avoid unnecessary boxing of value type.", 
@@ -1940,7 +1868,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1199</summary>
-        public static readonly DiagnosticDescriptor SimplifyBooleanExpression = Factory.Create(
+        public static readonly DiagnosticDescriptor SimplifyBooleanExpression = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.SimplifyBooleanExpression, 
             title:              "Simplify boolean expression.", 
             messageFormat:      "Simplify boolean expression.", 
@@ -1952,7 +1880,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1200</summary>
-        public static readonly DiagnosticDescriptor CallThenByInsteadOfOrderBy = Factory.Create(
+        public static readonly DiagnosticDescriptor CallThenByInsteadOfOrderBy = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.CallThenByInsteadOfOrderBy, 
             title:              "Call 'Enumerable.ThenBy' instead of 'Enumerable.OrderBy'.", 
             messageFormat:      "Call 'Enumerable.ThenBy{0}' instead of 'Enumerable.OrderBy{0}'.", 
@@ -1964,7 +1892,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1201</summary>
-        public static readonly DiagnosticDescriptor UseMethodChaining = Factory.Create(
+        public static readonly DiagnosticDescriptor UseMethodChaining = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.UseMethodChaining, 
             title:              "Use method chaining.", 
             messageFormat:      "Use method chaining.", 
@@ -1976,7 +1904,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1202</summary>
-        public static readonly DiagnosticDescriptor AvoidNullReferenceException = Factory.Create(
+        public static readonly DiagnosticDescriptor AvoidNullReferenceException = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.AvoidNullReferenceException, 
             title:              "Avoid NullReferenceException.", 
             messageFormat:      "Avoid NullReferenceException.", 
@@ -1988,7 +1916,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1203</summary>
-        public static readonly DiagnosticDescriptor UseAttributeUsageAttribute = Factory.Create(
+        public static readonly DiagnosticDescriptor UseAttributeUsageAttribute = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.UseAttributeUsageAttribute, 
             title:              "Use AttributeUsageAttribute.", 
             messageFormat:      "Use AttributeUsageAttribute.", 
@@ -2000,7 +1928,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1204</summary>
-        public static readonly DiagnosticDescriptor UseEventArgsEmpty = Factory.Create(
+        public static readonly DiagnosticDescriptor UseEventArgsEmpty = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.UseEventArgsEmpty, 
             title:              "Use EventArgs.Empty.", 
             messageFormat:      "Use EventArgs.Empty.", 
@@ -2012,7 +1940,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1205</summary>
-        public static readonly DiagnosticDescriptor OrderNamedArguments = Factory.Create(
+        public static readonly DiagnosticDescriptor OrderNamedArguments = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.OrderNamedArguments, 
             title:              "Order named arguments according to the order of parameters.", 
             messageFormat:      "Order named arguments according to the order of parameters.", 
@@ -2024,7 +1952,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1206</summary>
-        public static readonly DiagnosticDescriptor UseConditionalAccessInsteadOfConditionalExpression = Factory.Create(
+        public static readonly DiagnosticDescriptor UseConditionalAccessInsteadOfConditionalExpression = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.UseConditionalAccessInsteadOfConditionalExpression, 
             title:              "Use conditional access instead of conditional expression.", 
             messageFormat:      "Use conditional access instead of conditional expression.", 
@@ -2036,7 +1964,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1207</summary>
-        public static readonly DiagnosticDescriptor ConvertAnonymousFunctionToMethodGroup = Factory.Create(
+        public static readonly DiagnosticDescriptor ConvertAnonymousFunctionToMethodGroup = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.ConvertAnonymousFunctionToMethodGroup, 
             title:              "Convert anonymous function to method group.", 
             messageFormat:      "Convert anonymous function to method group.", 
@@ -2050,7 +1978,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor ConvertAnonymousFunctionToMethodGroupFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(ConvertAnonymousFunctionToMethodGroup);
 
         /// <summary>RCS1208</summary>
-        public static readonly DiagnosticDescriptor ReduceIfNesting = Factory.Create(
+        public static readonly DiagnosticDescriptor ReduceIfNesting = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.ReduceIfNesting, 
             title:              "Reduce 'if' nesting.", 
             messageFormat:      "Reduce 'if' nesting.", 
@@ -2062,7 +1990,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1209</summary>
-        public static readonly DiagnosticDescriptor OrderTypeParameterConstraints = Factory.Create(
+        public static readonly DiagnosticDescriptor OrderTypeParameterConstraints = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.OrderTypeParameterConstraints, 
             title:              "Order type parameter constraints.", 
             messageFormat:      "Order type parameter constraints.", 
@@ -2074,7 +2002,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1210</summary>
-        public static readonly DiagnosticDescriptor ReturnTaskInsteadOfNull = Factory.Create(
+        public static readonly DiagnosticDescriptor ReturnTaskInsteadOfNull = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.ReturnTaskInsteadOfNull, 
             title:              "Return Task.FromResult instead of returning null.", 
             messageFormat:      "Return Task.FromResult instead of returning null.", 
@@ -2086,7 +2014,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1211</summary>
-        public static readonly DiagnosticDescriptor RemoveUnnecessaryElse = Factory.Create(
+        public static readonly DiagnosticDescriptor RemoveUnnecessaryElse = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.RemoveUnnecessaryElse, 
             title:              "Remove unnecessary 'else'.", 
             messageFormat:      "Remove unnecessary else clause.", 
@@ -2098,7 +2026,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1212</summary>
-        public static readonly DiagnosticDescriptor RemoveRedundantAssignment = Factory.Create(
+        public static readonly DiagnosticDescriptor RemoveRedundantAssignment = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.RemoveRedundantAssignment, 
             title:              "Remove redundant assignment.", 
             messageFormat:      "Remove redundant assignment.", 
@@ -2112,7 +2040,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor RemoveRedundantAssignmentFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(RemoveRedundantAssignment);
 
         /// <summary>RCS1213</summary>
-        public static readonly DiagnosticDescriptor RemoveUnusedMemberDeclaration = Factory.Create(
+        public static readonly DiagnosticDescriptor RemoveUnusedMemberDeclaration = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.RemoveUnusedMemberDeclaration, 
             title:              "Remove unused member declaration.", 
             messageFormat:      "Remove unused {0} declaration.", 
@@ -2124,7 +2052,7 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1214</summary>
-        public static readonly DiagnosticDescriptor UnnecessaryInterpolatedString = Factory.Create(
+        public static readonly DiagnosticDescriptor UnnecessaryInterpolatedString = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.UnnecessaryInterpolatedString, 
             title:              "Unnecessary interpolated string.", 
             messageFormat:      "Unnecessary interpolated string.", 
@@ -2138,7 +2066,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor UnnecessaryInterpolatedStringFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(UnnecessaryInterpolatedString);
 
         /// <summary>RCS1215</summary>
-        public static readonly DiagnosticDescriptor ExpressionIsAlwaysEqualToTrueOrFalse = Factory.Create(
+        public static readonly DiagnosticDescriptor ExpressionIsAlwaysEqualToTrueOrFalse = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.ExpressionIsAlwaysEqualToTrueOrFalse, 
             title:              "Expression is always equal to true/false.", 
             messageFormat:      "Expression is always equal to '{0}'.", 
@@ -2150,7 +2078,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1216</summary>
-        public static readonly DiagnosticDescriptor UnnecessaryUnsafeContext = Factory.Create(
+        public static readonly DiagnosticDescriptor UnnecessaryUnsafeContext = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.UnnecessaryUnsafeContext, 
             title:              "Unnecessary unsafe context.", 
             messageFormat:      "Unnecessary unsafe context.", 
@@ -2162,7 +2090,7 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1217</summary>
-        public static readonly DiagnosticDescriptor ConvertInterpolatedStringToConcatenation = Factory.Create(
+        public static readonly DiagnosticDescriptor ConvertInterpolatedStringToConcatenation = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.ConvertInterpolatedStringToConcatenation, 
             title:              "Convert interpolated string to concatenation.", 
             messageFormat:      "Convert interpolated string to concatenation.", 
@@ -2176,7 +2104,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor ConvertInterpolatedStringToConcatenationFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(ConvertInterpolatedStringToConcatenation);
 
         /// <summary>RCS1218</summary>
-        public static readonly DiagnosticDescriptor SimplifyCodeBranching = Factory.Create(
+        public static readonly DiagnosticDescriptor SimplifyCodeBranching = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.SimplifyCodeBranching, 
             title:              "Simplify code branching.", 
             messageFormat:      "Simplify code branching.", 
@@ -2188,7 +2116,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1219</summary>
-        public static readonly DiagnosticDescriptor CallSkipAndAnyInsteadOfCount = Factory.Create(
+        public static readonly DiagnosticDescriptor CallSkipAndAnyInsteadOfCount = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.CallSkipAndAnyInsteadOfCount, 
             title:              "Call 'Enumerable.Skip' and 'Enumerable.Any' instead of 'Enumerable.Count'.", 
             messageFormat:      "Call 'Enumerable.Skip' and 'Enumerable.Any' instead of 'Enumerable.Count'.", 
@@ -2200,7 +2128,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1220</summary>
-        public static readonly DiagnosticDescriptor UsePatternMatchingInsteadOfIsAndCast = Factory.Create(
+        public static readonly DiagnosticDescriptor UsePatternMatchingInsteadOfIsAndCast = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast, 
             title:              "Use pattern matching instead of combination of 'is' operator and cast operator.", 
             messageFormat:      "Use pattern matching instead of combination of 'is' operator and cast operator.", 
@@ -2212,7 +2140,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1221</summary>
-        public static readonly DiagnosticDescriptor UsePatternMatchingInsteadOfAsAndNullCheck = Factory.Create(
+        public static readonly DiagnosticDescriptor UsePatternMatchingInsteadOfAsAndNullCheck = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.UsePatternMatchingInsteadOfAsAndNullCheck, 
             title:              "Use pattern matching instead of combination of 'as' operator and null check.", 
             messageFormat:      "Use pattern matching instead of combination of 'as' operator and null check.", 
@@ -2224,7 +2152,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1222</summary>
-        public static readonly DiagnosticDescriptor MergePreprocessorDirectives = Factory.Create(
+        public static readonly DiagnosticDescriptor MergePreprocessorDirectives = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.MergePreprocessorDirectives, 
             title:              "Merge preprocessor directives.", 
             messageFormat:      "Merge preprocessor directives.", 
@@ -2236,7 +2164,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1223</summary>
-        public static readonly DiagnosticDescriptor MarkTypeWithDebuggerDisplayAttribute = Factory.Create(
+        public static readonly DiagnosticDescriptor MarkTypeWithDebuggerDisplayAttribute = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute, 
             title:              "Mark publicly visible type with DebuggerDisplay attribute.", 
             messageFormat:      "Mark '{0}' with DebuggerDisplay attribute.", 
@@ -2248,7 +2176,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1224</summary>
-        public static readonly DiagnosticDescriptor MakeMethodExtensionMethod = Factory.Create(
+        public static readonly DiagnosticDescriptor MakeMethodExtensionMethod = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.MakeMethodExtensionMethod, 
             title:              "Make method an extension method.", 
             messageFormat:      "Make method an extension method.", 
@@ -2260,7 +2188,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1225</summary>
-        public static readonly DiagnosticDescriptor MakeClassSealed = Factory.Create(
+        public static readonly DiagnosticDescriptor MakeClassSealed = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.MakeClassSealed, 
             title:              "Make class sealed.", 
             messageFormat:      "Make class sealed.", 
@@ -2272,7 +2200,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1226</summary>
-        public static readonly DiagnosticDescriptor AddParagraphToDocumentationComment = Factory.Create(
+        public static readonly DiagnosticDescriptor AddParagraphToDocumentationComment = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.AddParagraphToDocumentationComment, 
             title:              "Add paragraph to documentation comment.", 
             messageFormat:      "Add paragraph to documentation comment.", 
@@ -2284,7 +2212,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1227</summary>
-        public static readonly DiagnosticDescriptor ValidateArgumentsCorrectly = Factory.Create(
+        public static readonly DiagnosticDescriptor ValidateArgumentsCorrectly = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.ValidateArgumentsCorrectly, 
             title:              "Validate arguments correctly.", 
             messageFormat:      "Validate arguments correctly.", 
@@ -2296,7 +2224,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1228</summary>
-        public static readonly DiagnosticDescriptor UnusedElementInDocumentationComment = Factory.Create(
+        public static readonly DiagnosticDescriptor UnusedElementInDocumentationComment = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.UnusedElementInDocumentationComment, 
             title:              "Unused element in documentation comment.", 
             messageFormat:      "Unused element in documentation comment.", 
@@ -2310,7 +2238,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor UnusedElementInDocumentationCommentFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(UnusedElementInDocumentationComment);
 
         /// <summary>RCS1229</summary>
-        public static readonly DiagnosticDescriptor UseAsyncAwait = Factory.Create(
+        public static readonly DiagnosticDescriptor UseAsyncAwait = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.UseAsyncAwait, 
             title:              "Use async/await when necessary.", 
             messageFormat:      "Use async/await when necessary.", 
@@ -2322,7 +2250,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1230</summary>
-        public static readonly DiagnosticDescriptor UnnecessaryExplicitUseOfEnumerator = Factory.Create(
+        public static readonly DiagnosticDescriptor UnnecessaryExplicitUseOfEnumerator = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.UnnecessaryExplicitUseOfEnumerator, 
             title:              "Unnecessary explicit use of enumerator.", 
             messageFormat:      "Unnecessary explicit use of enumerator.", 
@@ -2334,7 +2262,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1231</summary>
-        public static readonly DiagnosticDescriptor MakeParameterRefReadOnly = Factory.Create(
+        public static readonly DiagnosticDescriptor MakeParameterRefReadOnly = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.MakeParameterRefReadOnly, 
             title:              "Make parameter ref read-only.", 
             messageFormat:      "Make parameter ref read-only.", 
@@ -2346,7 +2274,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1232</summary>
-        public static readonly DiagnosticDescriptor OrderElementsInDocumentationComment = Factory.Create(
+        public static readonly DiagnosticDescriptor OrderElementsInDocumentationComment = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.OrderElementsInDocumentationComment, 
             title:              "Order elements in documentation comment.", 
             messageFormat:      "Order elements in documentation comment.", 
@@ -2358,7 +2286,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1233</summary>
-        public static readonly DiagnosticDescriptor UseShortCircuitingOperator = Factory.Create(
+        public static readonly DiagnosticDescriptor UseShortCircuitingOperator = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.UseShortCircuitingOperator, 
             title:              "Use short-circuiting operator.", 
             messageFormat:      "Use short-circuiting operator.", 
@@ -2370,7 +2298,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1234</summary>
-        public static readonly DiagnosticDescriptor DuplicateEnumValue = Factory.Create(
+        public static readonly DiagnosticDescriptor DuplicateEnumValue = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.DuplicateEnumValue, 
             title:              "Duplicate enum value.", 
             messageFormat:      "Duplicate enum value.", 
@@ -2382,7 +2310,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1235</summary>
-        public static readonly DiagnosticDescriptor OptimizeMethodCall = Factory.Create(
+        public static readonly DiagnosticDescriptor OptimizeMethodCall = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.OptimizeMethodCall, 
             title:              "Optimize method call.", 
             messageFormat:      "Optimize '{0}' call.", 
@@ -2394,7 +2322,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1236</summary>
-        public static readonly DiagnosticDescriptor UseExceptionFilter = Factory.Create(
+        public static readonly DiagnosticDescriptor UseExceptionFilter = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.UseExceptionFilter, 
             title:              "Use exception filter.", 
             messageFormat:      "Use exception filter.", 
@@ -2406,7 +2334,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1237</summary>
-        public static readonly DiagnosticDescriptor UseBitShiftOperator = Factory.Create(
+        public static readonly DiagnosticDescriptor UseBitShiftOperator = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.UseBitShiftOperator, 
             title:              "Use bit shift operator.", 
             messageFormat:      "Use bit shift operator.", 
@@ -2418,7 +2346,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1238</summary>
-        public static readonly DiagnosticDescriptor AvoidNestedConditionalOperators = Factory.Create(
+        public static readonly DiagnosticDescriptor AvoidNestedConditionalOperators = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.AvoidNestedConditionalOperators, 
             title:              "Avoid nested ?: operators.", 
             messageFormat:      "Avoid nested ?: operators.", 
@@ -2430,7 +2358,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1239</summary>
-        public static readonly DiagnosticDescriptor UseForStatementInsteadOfWhileStatement = Factory.Create(
+        public static readonly DiagnosticDescriptor UseForStatementInsteadOfWhileStatement = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.UseForStatementInsteadOfWhileStatement, 
             title:              "Use 'for' statement instead of 'while' statement.", 
             messageFormat:      "Use 'for' statement instead of 'while' statement.", 
@@ -2442,7 +2370,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1240</summary>
-        public static readonly DiagnosticDescriptor UnnecessaryOperator = Factory.Create(
+        public static readonly DiagnosticDescriptor UnnecessaryOperator = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.UnnecessaryOperator, 
             title:              "Operator is unnecessary.", 
             messageFormat:      "The '{0}' operator is unnecessary.", 
@@ -2454,7 +2382,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1241</summary>
-        public static readonly DiagnosticDescriptor ImplementNonGenericCounterpart = Factory.Create(
+        public static readonly DiagnosticDescriptor ImplementNonGenericCounterpart = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.ImplementNonGenericCounterpart, 
             title:              "Implement non-generic counterpart.", 
             messageFormat:      "Implement {0} when implementing {0}<T>.", 
@@ -2466,7 +2394,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1242</summary>
-        public static readonly DiagnosticDescriptor DoNotPassNonReadOnlyStructByReadOnlyReference = Factory.Create(
+        public static readonly DiagnosticDescriptor DoNotPassNonReadOnlyStructByReadOnlyReference = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.DoNotPassNonReadOnlyStructByReadOnlyReference, 
             title:              "Do not pass non-read-only struct by read-only reference.", 
             messageFormat:      "Do not pass non-read-only struct by read-only reference.", 
@@ -2478,7 +2406,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1243</summary>
-        public static readonly DiagnosticDescriptor DuplicateWordInComment = Factory.Create(
+        public static readonly DiagnosticDescriptor DuplicateWordInComment = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.DuplicateWordInComment, 
             title:              "Duplicate word in a comment.", 
             messageFormat:      "Duplicate word in a comment.", 
@@ -2490,7 +2418,7 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1244</summary>
-        public static readonly DiagnosticDescriptor SimplifyDefaultExpression = Factory.Create(
+        public static readonly DiagnosticDescriptor SimplifyDefaultExpression = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.SimplifyDefaultExpression, 
             title:              "Simplify 'default' expression.", 
             messageFormat:      "Simplify 'default' expression.", 
@@ -2502,7 +2430,7 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1246</summary>
-        public static readonly DiagnosticDescriptor UseElementAccess = Factory.Create(
+        public static readonly DiagnosticDescriptor UseElementAccess = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.UseElementAccess, 
             title:              "Use element access.", 
             messageFormat:      "Use element access.", 
@@ -2513,17 +2441,44 @@ namespace Roslynator.CSharp
             helpLinkUri:        DiagnosticIdentifiers.UseElementAccess, 
             customTags:         Array.Empty<string>());
 
-        /// <summary>RCS1246a</summary>
-        public static readonly DiagnosticDescriptor DoNotUseElementAccessWhenExpressionIsInvocation = Factory.Create(
-            id:                 DiagnosticIdentifiers.DoNotUseElementAccessWhenExpressionIsInvocation, 
-            title:              "Do not use element access when expression is invocation.", 
-            messageFormat:      "Do not use element access when expression is invocation.", 
-            category:           DiagnosticCategories.AnalyzerOption, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.DoNotUseElementAccessWhenExpressionIsInvocation, 
-            customTags:         Array.Empty<string>());
+        public static partial class ReportOnly
+        {
+            /// <summary>RCS1050i</summary>
+            public static readonly DiagnosticDescriptor RemoveArgumentListFromObjectCreation = DiagnosticDescriptorFactory.Default.Create(
+                id:                 DiagnosticIdentifiers.AddArgumentListToObjectCreationOrViceVersa, 
+                title:              "Add argument list to object creation expression (or vice versa).", 
+                messageFormat:      "Remove argument list from object creation expression.", 
+                category:           DiagnosticCategories.Style, 
+                defaultSeverity:    DiagnosticSeverity.Info, 
+                isEnabledByDefault: false, 
+                description:        null, 
+                helpLinkUri:        DiagnosticIdentifiers.AddArgumentListToObjectCreationOrViceVersa, 
+                customTags:         Array.Empty<string>());
 
+            /// <summary>RCS1051a</summary>
+            public static readonly DiagnosticDescriptor RemoveParenthesesFromConditionOfConditionalExpressionWhenExpressionIsSingleToken = DiagnosticDescriptorFactory.Default.Create(
+                id:                 DiagnosticIdentifiers.ParenthesizeConditionOfConditionalExpression, 
+                title:              "Parenthesize condition of conditional expression.", 
+                messageFormat:      "Remove parentheses from condition of conditional expression (when condition is a single token).", 
+                category:           DiagnosticCategories.Style, 
+                defaultSeverity:    DiagnosticSeverity.Info, 
+                isEnabledByDefault: false, 
+                description:        null, 
+                helpLinkUri:        DiagnosticIdentifiers.ParenthesizeConditionOfConditionalExpression, 
+                customTags:         Array.Empty<string>());
+
+            /// <summary>RCS1096i</summary>
+            public static readonly DiagnosticDescriptor ConvertBitwiseOperationToHasFlagCall = DiagnosticDescriptorFactory.Default.Create(
+                id:                 DiagnosticIdentifiers.ConvertHasFlagCallToBitwiseOperationOrViceVersa, 
+                title:              "Convert 'HasFlag' call to bitwise operation (or vice versa).", 
+                messageFormat:      "Convert bitwise operation to 'HasFlag' call.", 
+                category:           DiagnosticCategories.Performance, 
+                defaultSeverity:    DiagnosticSeverity.Info, 
+                isEnabledByDefault: true, 
+                description:        null, 
+                helpLinkUri:        DiagnosticIdentifiers.ConvertHasFlagCallToBitwiseOperationOrViceVersa, 
+                customTags:         Array.Empty<string>());
+
+        }
     }
 }

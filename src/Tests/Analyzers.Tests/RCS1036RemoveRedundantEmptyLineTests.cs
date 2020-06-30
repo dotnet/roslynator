@@ -273,7 +273,7 @@ class C
         }
     }
 }
-", options: Options.WithEnabled(DiagnosticDescriptors.RemoveEmptyLineBetweenClosingBraceAndSwitchSection));
+", options: Options.WithEnabled(AnalyzerOptions.RemoveEmptyLineBetweenClosingBraceAndSwitchSection));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantEmptyLine)]

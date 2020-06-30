@@ -204,7 +204,7 @@ class C
         x = ((string)x).ToString().ElementAt(1);
     }
 }
-", options: Options.WithEnabled(DiagnosticDescriptors.DoNotUseElementAccessWhenExpressionIsInvocation));
+", options: Options.WithEnabled(AnalyzerOptions.DoNotUseElementAccessWhenExpressionIsInvocation));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]

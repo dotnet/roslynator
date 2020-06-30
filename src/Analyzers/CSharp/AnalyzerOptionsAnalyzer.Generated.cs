@@ -15,7 +15,7 @@ namespace Roslynator.CSharp
         {
             get
             {
-                return ImmutableArray.Create(DiagnosticDescriptors.RemoveEmptyLineBetweenClosingBraceAndSwitchSection, DiagnosticDescriptors.DoNotRenamePrivateStaticReadOnlyFieldToCamelCaseWithUnderscore, DiagnosticDescriptors.RemoveArgumentListFromObjectCreation, DiagnosticDescriptors.RemoveParenthesesFromConditionOfConditionalExpressionWhenExpressionIsSingleToken, DiagnosticDescriptors.ConvertBitwiseOperationToHasFlagCall, DiagnosticDescriptors.SimplifyConditionalExpressionWhenItIncludesNegationOfCondition, DiagnosticDescriptors.DoNotUseElementAccessWhenExpressionIsInvocation);
+                return ImmutableArray.Create(AnalyzerOptions.RemoveEmptyLineBetweenClosingBraceAndSwitchSection, AnalyzerOptions.DoNotRenamePrivateStaticReadOnlyFieldToCamelCaseWithUnderscore, AnalyzerOptions.RemoveArgumentListFromObjectCreation, AnalyzerOptions.RemoveParenthesesFromConditionOfConditionalExpressionWhenExpressionIsSingleToken, AnalyzerOptions.ConvertBitwiseOperationToHasFlagCall, AnalyzerOptions.SimplifyConditionalExpressionWhenItIncludesNegationOfCondition, AnalyzerOptions.DoNotUseElementAccessWhenExpressionIsInvocation);
             }
         }
 

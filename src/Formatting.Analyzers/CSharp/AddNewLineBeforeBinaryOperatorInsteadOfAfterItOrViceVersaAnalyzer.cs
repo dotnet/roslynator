@@ -61,26 +61,25 @@ namespace Roslynator.Formatting.CSharp
 
             if (SyntaxTriviaAnalysis.IsTokenFollowedWithNewLineAndNotPrecededWithNewLine(left, binaryExpression.OperatorToken, right))
             {
-                if (context.IsAnalyzerSuppressed(DiagnosticDescriptors.AddNewLineAfterBinaryOperatorInsteadOfBeforeIt))
-                    ReportDiagnostic(ImmutableDictionary<string, string>.Empty, "before", "after");
+                if (context.IsAnalyzerSuppressed(AnalyzerOptions.AddNewLineAfterBinaryOperatorInsteadOfBeforeIt))
+                    ReportDiagnostic(DiagnosticDescriptors.AddNewLineBeforeBinaryOperatorInsteadOfAfterItOrViceVersa, ImmutableDictionary<string, string>.Empty);
             }
             else if (SyntaxTriviaAnalysis.IsTokenPrecededWithNewLineAndNotFollowedWithNewLine(left, binaryExpression.OperatorToken, right)
-                && !context.IsAnalyzerSuppressed(DiagnosticDescriptors.AddNewLineAfterBinaryOperatorInsteadOfBeforeIt))
+                && !context.IsAnalyzerSuppressed(AnalyzerOptions.AddNewLineAfterBinaryOperatorInsteadOfBeforeIt))
             {
-                ReportDiagnostic(DiagnosticProperties.AnalyzerOption_Invert, "after", "before");
+                ReportDiagnostic(DiagnosticDescriptors.ReportOnly.AddNewLineAfterBinaryOperatorInsteadOfBeforeIt, DiagnosticProperties.AnalyzerOption_Invert);
             }
 
-            void ReportDiagnostic(ImmutableDictionary<string, string> properties, params string[] messageArgs)
+            void ReportDiagnostic(DiagnosticDescriptor descriptor, ImmutableDictionary<string, string> properties)
             {
                 if (CSharpUtility.IsStringConcatenation(binaryExpression, context.SemanticModel, context.CancellationToken))
                     return;
 
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
-                    DiagnosticDescriptors.AddNewLineBeforeBinaryOperatorInsteadOfAfterItOrViceVersa,
+                    descriptor,
                     Location.Create(binaryExpression.SyntaxTree, binaryExpression.OperatorToken.Span.WithLength(0)),
-                    properties: properties,
-                    messageArgs: messageArgs);
+                    properties: properties);
             }
         }
     }
