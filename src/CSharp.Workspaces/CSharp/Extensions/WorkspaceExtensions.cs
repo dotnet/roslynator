@@ -32,6 +32,8 @@ namespace Roslynator.CSharp
                 case CSharpLanguageFeature.InferredTupleElementNames:
                 case CSharpLanguageFeature.PatternMatchingWithGenerics:
                     return SupportsLanguageVersion(document, LanguageVersion.CSharp7_1);
+                case CSharpLanguageFeature.NullCoalescingAssignmentOperator:
+                    return SupportsLanguageVersion(document, LanguageVersion.CSharp8);
             }
 
             throw new ArgumentException($"Unknown enum value '{feature}'.", nameof(feature));

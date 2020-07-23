@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Immutable;
 using System.Composition;
 using System.Threading;
@@ -10,7 +11,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
-using Roslynator.CSharp.Refactorings;
+using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.CodeFixes
 {
@@ -45,7 +46,7 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Simplify lazy initialization",
-                                ct => SimplifyLazyInitializationRefactoring.RefactorAsync(document, block, ct),
+                                ct => SimplifyLazyInitializationAsync(document, block, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -108,6 +109,68 @@ namespace Roslynator.CSharp.CodeFixes
 
                 return trivia;
             }
+        }
+
+        private static Task<Document> SimplifyLazyInitializationAsync(
+            Document document,
+            BlockSyntax block,
+            CancellationToken cancellationToken)
+        {
+            SyntaxList<StatementSyntax> statements = block.Statements;
+
+            var ifStatement = (IfStatementSyntax)statements[0];
+
+            var returnStatement = (ReturnStatementSyntax)statements[1];
+
+            var expressionStatement = (ExpressionStatementSyntax)ifStatement.SingleNonBlockStatementOrDefault();
+
+            var assignment = (AssignmentExpressionSyntax)expressionStatement.Expression;
+
+            ExpressionSyntax expression = returnStatement.Expression;
+
+            IdentifierNameSyntax valueName = null;
+
+            if (expression.IsKind(SyntaxKind.SimpleMemberAccessExpression))
+            {
+                var memberAccess = (MemberAccessExpressionSyntax)expression;
+
+                if ((memberAccess.Name is IdentifierNameSyntax identifierName)
+                    && string.Equals(identifierName.Identifier.ValueText, "Value", StringComparison.Ordinal))
+                {
+                    expression = memberAccess.Expression;
+                    valueName = identifierName;
+                }
+            }
+
+            expression = expression.WithoutTrivia();
+
+            ExpressionSyntax coalesceExpression;
+
+            if (document.SupportsLanguageFeature(CSharpLanguageFeature.NullCoalescingAssignmentOperator))
+            {
+                coalesceExpression = CoalesceAssignmentExpression(expression, assignment.Right.WithoutTrivia());
+            }
+            else
+            {
+                ExpressionSyntax right = SimpleAssignmentExpression(expression, assignment.Right.WithoutTrivia()).Parenthesize();
+
+                if (valueName != null)
+                    right = SimpleMemberAccessExpression(right.Parenthesize(), valueName);
+
+                coalesceExpression = CoalesceExpression(expression, right);
+            }
+
+            ReturnStatementSyntax newReturnStatement = returnStatement
+                .WithExpression(coalesceExpression)
+                .WithLeadingTrivia(ifStatement.GetLeadingTrivia());
+
+            SyntaxList<StatementSyntax> newStatements = statements
+                .Replace(returnStatement, newReturnStatement)
+                .RemoveAt(0);
+
+            BlockSyntax newBlock = block.WithStatements(newStatements);
+
+            return document.ReplaceNodeAsync(block, newBlock, cancellationToken);
         }
     }
 }

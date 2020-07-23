@@ -1556,6 +1556,16 @@ namespace Roslynator.CSharp
         {
             return AssignmentExpression(SyntaxKind.RightShiftAssignmentExpression, left, operatorToken, right);
         }
+
+        public static AssignmentExpressionSyntax CoalesceAssignmentExpression(ExpressionSyntax left, ExpressionSyntax right)
+        {
+            return AssignmentExpression(SyntaxKind.CoalesceAssignmentExpression, left, right);
+        }
+
+        public static AssignmentExpressionSyntax CoalesceAssignmentExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
+        {
+            return AssignmentExpression(SyntaxKind.CoalesceAssignmentExpression, left, operatorToken, right);
+        }
         #endregion AssignmentExpression
 
         #region LiteralExpression

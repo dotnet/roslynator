@@ -10,5 +10,6 @@ namespace Roslynator.CSharp
         DefaultLiteral,
         InferredTupleElementNames,
         PatternMatchingWithGenerics,
+        NullCoalescingAssignmentOperator,
     }
 }
