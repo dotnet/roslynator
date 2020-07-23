@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Composition;
@@ -59,6 +58,8 @@ namespace Roslynator.CSharp.CodeFixes
 
             var methodDeclaration = (MethodDeclarationSyntax)statementsInfo.Parent.Parent;
 
+            SyntaxToken asyncKeyword = methodDeclaration.Modifiers.Find(SyntaxKind.AsyncKeyword);
+
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
             string name = methodDeclaration.Identifier.ValueText;
@@ -74,7 +75,7 @@ namespace Roslynator.CSharp.CodeFixes
             localFunctionStatements[0] = localFunctionStatements[0].TrimLeadingTrivia();
 
             LocalFunctionStatementSyntax localFunction = LocalFunctionStatement(
-                default(SyntaxTokenList),
+                (asyncKeyword.IsKind(SyntaxKind.AsyncKeyword)) ? TokenList(SyntaxKind.AsyncKeyword) : default,
                 methodDeclaration.ReturnType.WithoutTrivia(),
                 Identifier(name).WithRenameAnnotation(),
                 ParameterList(),
@@ -90,7 +91,18 @@ namespace Roslynator.CSharp.CodeFixes
                 statements.Count - index,
                 new StatementSyntax[] { returnStatement.WithFormatterAnnotation(), localFunction.WithFormatterAnnotation() });
 
-            return await document.ReplaceStatementsAsync(statementsInfo, newStatements, cancellationToken).ConfigureAwait(false);
+            if (asyncKeyword.IsKind(SyntaxKind.AsyncKeyword))
+            {
+                MethodDeclarationSyntax newMethodDeclaration = methodDeclaration.RemoveModifier(SyntaxKind.AsyncKeyword);
+
+                newMethodDeclaration = newMethodDeclaration.WithBody(newMethodDeclaration.Body.WithStatements(newStatements));
+
+                return await document.ReplaceNodeAsync(methodDeclaration, newMethodDeclaration, cancellationToken).ConfigureAwait(false);
+            }
+            else
+            {
+                return await document.ReplaceStatementsAsync(statementsInfo, newStatements, cancellationToken).ConfigureAwait(false);
+            }
         }
     }
 }

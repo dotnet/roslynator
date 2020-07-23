@@ -118,6 +118,49 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ValidateArgumentsCorrectly)]
+        public async Task Test_IAsyncEnumerable()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+class C
+{
+    /// x
+    async IAsyncEnumerable<int> M(object arg)
+    {
+        if (arg is null)
+            throw new ArgumentNullException();
+
+        [||]yield return await Task.FromResult(0);
+    }
+}
+", @"
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+class C
+{
+    /// x
+    IAsyncEnumerable<int> M(object arg)
+    {
+        if (arg is null)
+            throw new ArgumentNullException();
+
+        return M2();
+
+        async IAsyncEnumerable<int> M2()
+        {
+            yield return await Task.FromResult(0);
+        }
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ValidateArgumentsCorrectly)]
         public async Task TestNoDiagnostic_NoStatement()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -190,7 +233,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ValidateArgumentsCorrectly)]
+       [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ValidateArgumentsCorrectly)]
         public async Task TestNoDiagnostic_NoParameters()
         {
             await VerifyNoDiagnosticAsync(@"
