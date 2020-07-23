@@ -342,5 +342,26 @@ class Foo
 }
 ", options: CSharpCodeVerificationOptions.Default_CSharp5);
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccessInsteadOfConditionalExpression)]
+        public async Task TestNoDiagnostic_ExpressionTree()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System;
+using System.Linq.Expressions;
+
+class C
+{
+    void M()
+    {
+        M2(a => (a.HasValue) ? (DateTime?)a.Value.ToUniversalTime() : null);
+    }
+
+    void M2(Expression<Func<DateTime?, DateTime?>> p)
+    {
+    }
+}
+");
+        }
     }
 }

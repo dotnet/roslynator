@@ -139,7 +139,8 @@ namespace Roslynator.CSharp.Analysis
                     {
                         ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(nullCheck.Expression, cancellationToken);
 
-                        if (typeSymbol?.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T)
+                        if (typeSymbol?.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T
+                            && !conditionalExpression.IsInExpressionTree(semanticModel, cancellationToken))
                         {
                             DiagnosticHelpers.ReportDiagnostic(context,
                                 DiagnosticDescriptors.UseConditionalAccessInsteadOfConditionalExpression,
