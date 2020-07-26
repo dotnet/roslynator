@@ -209,6 +209,9 @@ namespace Roslynator.CSharp.Analysis
                     }
             }
 
+            if (IsAssignedInsideAnonymousFunctionButDeclaredOutsideOfIt())
+                return;
+
             RemoveRedundantAssignmentWalker walker = RemoveRedundantAssignmentWalker.GetInstance();
 
             walker.Symbol = symbol;
@@ -226,6 +229,55 @@ namespace Roslynator.CSharp.Analysis
                 return;
 
             DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveRedundantAssignment, assignment);
+
+            bool IsAssignedInsideAnonymousFunctionButDeclaredOutsideOfIt()
+            {
+                SyntaxNode declaringSyntax = null;
+                SyntaxNode n = assignment.Parent;
+
+                do
+                {
+                    if (CSharpFacts.IsAnonymousFunctionExpression(n.Kind()))
+                    {
+                        if (declaringSyntax == null)
+                        {
+                            declaringSyntax = symbol.GetSyntaxOrDefault();
+
+                            Debug.Assert(declaringSyntax != null, "");
+
+                            if (declaringSyntax == null)
+                                break;
+
+                            Debug.Assert(declaringSyntax.IsKind(SyntaxKind.VariableDeclarator, SyntaxKind.Parameter), declaringSyntax.Kind().ToString());
+                        }
+
+                        SyntaxNode n2 = declaringSyntax.Parent;
+
+                        do
+                        {
+                            if (CSharpFacts.IsAnonymousFunctionExpression(n2.Kind()))
+                                return !object.ReferenceEquals(n, n2);
+
+                            if (n2 is MemberDeclarationSyntax)
+                                break;
+
+                            n2 = n2.Parent;
+
+                        } while (n2 != null);
+
+                        return true;
+                    }
+                    else if (n is MemberDeclarationSyntax)
+                    {
+                        break;
+                    }
+
+                    n = n.Parent;
+
+                } while (n != null);
+
+                return false;
+            }
         }
 
         private class RemoveRedundantAssignmentWalker : LocalOrParameterReferenceWalker

@@ -154,6 +154,86 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
+        public async Task Test_LocalInsideLambda()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System;
+
+class C
+{
+    void M()
+    {
+        M2(() =>
+        {
+            int x = 0;
+            M();
+
+            [|x = 1|];
+            return x;
+        });
+    }
+
+    int M2(Func<int> p) => 0;
+}
+", @"
+using System;
+
+class C
+{
+    void M()
+    {
+        M2(() =>
+        {
+            int x = 0;
+            M();
+
+            return 1;
+        });
+    }
+
+    int M2(Func<int> p) => 0;
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
+        public async Task Test_ParameterInsideLambda()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System;
+
+class C
+{
+    void M()
+    {
+        M2((x) =>
+        {
+            [|x = 1|];
+            return x;
+        });
+    }
+
+    int M2(Func<int, int> p) => 0;
+}
+", @"
+using System;
+
+class C
+{
+    void M()
+    {
+        M2((x) =>
+        {
+            return 1;
+        });
+    }
+
+    int M2(Func<int, int> p) => 0;
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
         public async Task TestNoDiagnostic_OutParameter()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -214,6 +294,52 @@ class C
     }
 
     Action<int> _a;
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
+        public async Task TestNoDiagnostic_LocalAssignedInsideLambda()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System;
+
+class C
+{
+    void M()
+    {
+        int x = 0;
+
+        M2(() =>
+        {
+            x = 1;
+            return x;
+        });
+    }
+
+    int M2(Func<int> p) => 0;
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
+        public async Task TestNoDiagnostic_ParameterAssignedInsideLambda()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System;
+
+class C
+{
+    void M(int x)
+    {
+        M2(() =>
+        {
+            x = 1;
+            return x;
+        });
+    }
+
+    int M2(Func<int> p) => 0;
 }
 ");
         }
