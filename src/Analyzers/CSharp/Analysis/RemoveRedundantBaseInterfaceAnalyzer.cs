@@ -129,8 +129,8 @@ namespace Roslynator.CSharp.Analysis
                         DiagnosticHelpers.ReportDiagnostic(context,
                             DiagnosticDescriptors.RemoveRedundantBaseInterface,
                             baseType,
-                            SymbolDisplay.ToMinimalDisplayString(interfaceInfo.Symbol, context.SemanticModel, baseType.SpanStart, SymbolDisplayFormats.Default),
-                            SymbolDisplay.ToMinimalDisplayString(interfaceInfo2.Symbol, context.SemanticModel, baseType.SpanStart, SymbolDisplayFormats.Default));
+                            SymbolDisplay.ToMinimalDisplayString(interfaceInfo.Symbol, context.SemanticModel, baseType.SpanStart, SymbolDisplayFormats.DisplayName),
+                            SymbolDisplay.ToMinimalDisplayString(interfaceInfo2.Symbol, context.SemanticModel, baseType.SpanStart, SymbolDisplayFormats.DisplayName));
 
                         return;
                     }

@@ -249,16 +249,14 @@ namespace Roslynator.CSharp.CodeFixes
                                 break;
 
                             CodeAction codeAction = CodeAction.Create(
-                                $"Add type '{SymbolDisplay.ToMinimalDisplayString(convertedType, semanticModel, defaultExpression.SpanStart, SymbolDisplayFormats.Default)}'",
-                                cancellationToken =>
+                                $"Add type '{SymbolDisplay.ToMinimalDisplayString(convertedType, semanticModel, defaultExpression.SpanStart, SymbolDisplayFormats.DisplayName)}'",
+                                ct =>
                                 {
-                                    TypeSyntax newNode = convertedType.ToMinimalTypeSyntax(semanticModel, defaultExpression.SpanStart);
-
-                                    newNode = newNode
+                                    TypeSyntax newType = convertedType.ToTypeSyntax()
                                         .WithTriviaFrom(identifierName)
-                                        .WithFormatterAnnotation();
+                                        .WithFormatterAndSimplifierAnnotation();
 
-                                    return context.Document.ReplaceNodeAsync(identifierName, newNode, cancellationToken);
+                                    return context.Document.ReplaceNodeAsync(identifierName, newType, ct);
                                 },
                                 GetEquivalenceKey(diagnostic));
 

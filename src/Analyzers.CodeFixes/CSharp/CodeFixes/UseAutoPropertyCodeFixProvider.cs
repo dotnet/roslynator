@@ -93,7 +93,7 @@ namespace Roslynator.CSharp.CodeFixes
                         SyntaxNode newNode = null;
 
                         if (node.IsParentKind(SyntaxKind.SimpleMemberAccessExpression)
-                        && ((MemberAccessExpressionSyntax)node.Parent).Name == node)
+                            && ((MemberAccessExpressionSyntax)node.Parent).Name == node)
                         {
                             newNode = IdentifierName(propertyIdentifier);
                         }
@@ -105,7 +105,7 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             newNode = SimpleMemberAccessExpression(
                                 propertySymbol.ContainingType.ToTypeSyntax(),
-                                (SimpleNameSyntax)ParseName(propertySymbol.ToDisplayString(SymbolDisplayFormats.Default))).WithSimplifierAnnotation();
+                                (SimpleNameSyntax)ParseName(propertySymbol.ToDisplayString(SymbolDisplayFormats.DisplayName))).WithSimplifierAnnotation();
                         }
                         else
                         {

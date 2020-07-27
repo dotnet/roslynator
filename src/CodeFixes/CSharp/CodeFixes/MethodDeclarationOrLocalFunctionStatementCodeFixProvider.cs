@@ -90,7 +90,7 @@ namespace Roslynator.CSharp.CodeFixes
                     node,
                     ienumerableOfTSymbol.Construct(namedTypeSymbol),
                     semanticModel,
-                    additionalKey: SymbolDisplay.ToMinimalDisplayString(namedTypeSymbol, semanticModel, node.SpanStart, SymbolDisplayFormats.Default));
+                    additionalKey: SymbolDisplay.ToMinimalDisplayString(namedTypeSymbol, semanticModel, node.SpanStart, SymbolDisplayFormats.DisplayName));
             }
         }
     }

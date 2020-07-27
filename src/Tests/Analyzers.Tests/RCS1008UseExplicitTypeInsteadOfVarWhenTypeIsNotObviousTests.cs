@@ -5,6 +5,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.CodeFixes;
+using Roslynator.CSharp.Testing;
 using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
@@ -99,6 +100,28 @@ class C
     }
 }
 ");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarWhenTypeIsNotObvious)]
+        public async Task Test_Parameter_NullableReferenceType()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M(string? p)
+    {
+        [|var|] s = p;
+    }
+}
+", @"
+class C
+{
+    void M(string? p)
+    {
+        string? s = p;
+    }
+}
+", options: CSharpCodeVerificationOptions.Default_NullableReferenceTypes);
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarWhenTypeIsNotObvious)]

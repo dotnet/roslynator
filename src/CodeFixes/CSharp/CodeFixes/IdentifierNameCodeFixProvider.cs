@@ -110,14 +110,14 @@ namespace Roslynator.CSharp.CodeFixes
                                 if (typeSymbol.Kind == SymbolKind.TypeParameter)
                                     continue;
 
-                                string typeName = SymbolDisplay.ToMinimalDisplayString(typeSymbol, semanticModel, identifierName.SpanStart, SymbolDisplayFormats.Default);
+                                string typeName = SymbolDisplay.ToMinimalDisplayString(typeSymbol, semanticModel, identifierName.SpanStart, SymbolDisplayFormats.DisplayName);
 
                                 CodeAction codeAction = CodeAction.Create(
                                     $"Add variable type '{typeName}'",
                                     ct =>
                                     {
                                         DeclarationExpressionSyntax newNode = DeclarationExpression(
-                                            ParseName(typeName),
+                                            typeSymbol.ToTypeSyntax(),
                                             SingleVariableDesignation(identifierName.Identifier.WithoutTrivia()).WithLeadingTrivia(Space));
 
                                         newNode = newNode

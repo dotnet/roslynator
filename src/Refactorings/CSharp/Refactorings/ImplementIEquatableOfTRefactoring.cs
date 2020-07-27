@@ -122,7 +122,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static string GetTitle(INamedTypeSymbol equatableSymbol, SemanticModel semanticModel, int position)
         {
-            return $"Implement {SymbolDisplay.ToMinimalDisplayString(equatableSymbol, semanticModel, position, SymbolDisplayFormats.Default)}";
+            return $"Implement {SymbolDisplay.ToMinimalDisplayString(equatableSymbol, semanticModel, position, SymbolDisplayFormats.DisplayName)}";
         }
 
         private static Task<Document> RefactorAsync(

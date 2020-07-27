@@ -17,6 +17,7 @@ namespace Roslynator.CSharp.Testing
         private static CSharpCodeVerificationOptions _default_CSharp6;
         private static CSharpCodeVerificationOptions _default_CSharp7;
         private static CSharpCodeVerificationOptions _default_CSharp7_3;
+        private static CSharpCodeVerificationOptions _default_NullableReferenceTypes;
 
         public CSharpCodeVerificationOptions(
             CSharpParseOptions parseOptions,
@@ -129,6 +130,19 @@ namespace Roslynator.CSharp.Testing
                 return _default_CSharp7_3;
 
                 static CSharpCodeVerificationOptions Create() => Default.WithParseOptions(Default.ParseOptions.WithLanguageVersion(LanguageVersion.CSharp7_3));
+            }
+        }
+
+        internal static CSharpCodeVerificationOptions Default_NullableReferenceTypes
+        {
+            get
+            {
+                if (_default_NullableReferenceTypes == null)
+                    Interlocked.CompareExchange(ref _default_NullableReferenceTypes, Create(), null);
+
+                return _default_NullableReferenceTypes;
+
+                static CSharpCodeVerificationOptions Create() => Default.WithCompilationOptions(Default.CompilationOptions.WithNullableContextOptions(NullableContextOptions.Enable));
             }
         }
 

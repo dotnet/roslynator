@@ -91,11 +91,13 @@ namespace Roslynator.CSharp.CodeFixes
                             if (typeSymbol?.SupportsExplicitDeclaration() != true)
                                 break;
 
-                            TypeSyntax newType = typeSymbol.ToMinimalTypeSyntax(semanticModel, simpleName.SpanStart);
+                            TypeSyntax newType = typeSymbol.ToTypeSyntax()
+                                .WithSimplifierAnnotation()
+                                .WithTriviaFrom(simpleName);
 
                             CodeAction codeAction = CodeAction.Create(
-                                $"Change element type to '{SymbolDisplay.ToMinimalDisplayString(typeSymbol, semanticModel, simpleName.SpanStart, SymbolDisplayFormats.Default)}'",
-                                cancellationToken => context.Document.ReplaceNodeAsync(simpleName, newType.WithTriviaFrom(simpleName), cancellationToken),
+                                $"Change element type to '{SymbolDisplay.ToMinimalDisplayString(typeSymbol, semanticModel, simpleName.SpanStart, SymbolDisplayFormats.DisplayName)}'",
+                                cancellationToken => context.Document.ReplaceNodeAsync(simpleName, newType, cancellationToken),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);

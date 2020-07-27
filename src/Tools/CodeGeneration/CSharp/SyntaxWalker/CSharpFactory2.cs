@@ -99,7 +99,7 @@ namespace Roslynator.CodeGeneration.CSharp
             string propertyName)
         {
             return CSharpFactory.LocalDeclarationStatement(
-                typeSymbol.ToTypeSyntax(SymbolDisplayFormats.Default),
+                typeSymbol.ToTypeSyntax(SymbolDisplayFormats.DisplayName),
                 name,
                 SimpleMemberAccessExpression(
                     IdentifierName(parameterName),

@@ -16,7 +16,7 @@ namespace Roslynator.CodeGeneration.CSharp
 {
     public partial class CSharpSyntaxWalkerGenerator
     {
-        private static readonly SymbolDisplayFormat _parameterSymbolDisplayFormat = SymbolDisplayFormats.Default.WithParameterOptions(
+        private static readonly SymbolDisplayFormat _parameterSymbolDisplayFormat = SymbolDisplayFormats.DisplayName.WithParameterOptions(
             SymbolDisplayParameterOptions.IncludeDefaultValue
                 | SymbolDisplayParameterOptions.IncludeExtensionThis
                 | SymbolDisplayParameterOptions.IncludeName

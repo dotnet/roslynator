@@ -124,9 +124,9 @@ namespace Roslynator.CSharp.Refactorings
         {
             Document document = context.Document;
 
-            string typeName = SymbolDisplay.ToMinimalDisplayString(newTypeSymbol, semanticModel, type.SpanStart, SymbolDisplayFormats.Default);
+            string displayName = SymbolDisplay.ToMinimalDisplayString(newTypeSymbol, semanticModel, type.SpanStart, SymbolDisplayFormats.DisplayName);
 
-            string title = $"Change {GetText(node)} type to '{typeName}'";
+            string title = $"Change {GetText(node)} type to '{displayName}'";
 
             if (insertAwait)
                 title += " and insert 'await'";
@@ -137,7 +137,10 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     SyntaxNode newNode = null;
 
-                    TypeSyntax newType = ParseTypeName(typeName).WithTriviaFrom(type);
+                    TypeSyntax newType = newTypeSymbol
+                        .ToTypeSyntax()
+                        .WithSimplifierAnnotation()
+                        .WithTriviaFrom(type);
 
                     if (insertAwait)
                     {

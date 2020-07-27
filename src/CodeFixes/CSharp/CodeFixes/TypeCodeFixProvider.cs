@@ -62,7 +62,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                                 return context.Document.ReplaceNodeAsync(type, newNode, cancellationToken);
                             },
-                            GetEquivalenceKey(diagnostic, SymbolDisplay.ToDisplayString(namedTypeSymbol, SymbolDisplayFormats.Default)));
+                            GetEquivalenceKey(diagnostic, SymbolDisplay.ToDisplayString(namedTypeSymbol, SymbolDisplayFormats.DisplayName)));
 
                         context.RegisterCodeFix(codeAction, diagnostic);
                     }

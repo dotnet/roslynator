@@ -6,9 +6,27 @@ namespace Roslynator
 {
     internal static class SymbolDisplayFormats
     {
-        public static SymbolDisplayFormat Default { get; } = new SymbolDisplayFormat(
+        public static SymbolDisplayFormat FullName { get; } = new SymbolDisplayFormat(
+            globalNamespaceStyle: SymbolDisplayGlobalNamespaceStyle.Included,
+            genericsOptions: SymbolDisplayGenericsOptions.IncludeTypeParameters,
+            typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces,
+            miscellaneousOptions: SymbolDisplayMiscellaneousOptions.UseSpecialTypes
+                | SymbolDisplayMiscellaneousOptions.EscapeKeywordIdentifiers
+                | SymbolDisplayMiscellaneousOptions.IncludeNullableReferenceTypeModifier);
+
+        public static SymbolDisplayFormat FullName_WithoutNullableReferenceTypeModifier { get; } = FullName.Update(
+            miscellaneousOptions: SymbolDisplayMiscellaneousOptions.UseSpecialTypes
+                | SymbolDisplayMiscellaneousOptions.EscapeKeywordIdentifiers);
+
+        public static SymbolDisplayFormat DisplayName { get; } = new SymbolDisplayFormat(
             genericsOptions: SymbolDisplayGenericsOptions.IncludeTypeParameters,
             typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypes,
+            miscellaneousOptions: SymbolDisplayMiscellaneousOptions.UseSpecialTypes
+                | SymbolDisplayMiscellaneousOptions.EscapeKeywordIdentifiers
+                | SymbolDisplayMiscellaneousOptions.RemoveAttributeSuffix
+                | SymbolDisplayMiscellaneousOptions.IncludeNullableReferenceTypeModifier);
+
+        public static SymbolDisplayFormat DisplayName_WithoutNullableReferenceTypeModifier { get; } = DisplayName.Update(
             miscellaneousOptions: SymbolDisplayMiscellaneousOptions.UseSpecialTypes
                 | SymbolDisplayMiscellaneousOptions.EscapeKeywordIdentifiers
                 | SymbolDisplayMiscellaneousOptions.RemoveAttributeSuffix);
@@ -33,6 +51,7 @@ namespace Roslynator
                 | SymbolDisplayParameterOptions.IncludeType
                 | SymbolDisplayParameterOptions.IncludeName,
             miscellaneousOptions: SymbolDisplayMiscellaneousOptions.EscapeKeywordIdentifiers
-                | SymbolDisplayMiscellaneousOptions.UseErrorTypeSymbolName);
+                | SymbolDisplayMiscellaneousOptions.UseErrorTypeSymbolName
+                | SymbolDisplayMiscellaneousOptions.IncludeNullableReferenceTypeModifier);
     }
 }

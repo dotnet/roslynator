@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
-using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.CodeFixes
 {
@@ -28,16 +28,31 @@ namespace Roslynator.CSharp.CodeFixes
             if (!TryFindFirstAncestorOrSelf(root, context.Span, out TypeSyntax type))
                 return;
 
+            Diagnostic diagnostic = context.Diagnostics[0];
+
             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-            GenericNameSyntax newType = UseGenericEventHandlerRefactoring.CreateGenericEventHandler(type, semanticModel, context.CancellationToken);
+            var delegateSymbol = (INamedTypeSymbol)semanticModel.GetTypeSymbol(type, context.CancellationToken);
+
+            ITypeSymbol typeSymbol = delegateSymbol.DelegateInvokeMethod.Parameters[1].Type;
+
+            INamedTypeSymbol eventHandlerSymbol = semanticModel
+                .GetTypeByMetadataName("System.EventHandler`1")
+                .Construct(typeSymbol);
 
             CodeAction codeAction = CodeAction.Create(
-                $"Use '{newType}'",
-                cancellationToken => UseGenericEventHandlerRefactoring.RefactorAsync(context.Document, type, cancellationToken),
-                GetEquivalenceKey(DiagnosticIdentifiers.UseGenericEventHandler));
+                $"Use '{SymbolDisplay.ToMinimalDisplayString(eventHandlerSymbol, semanticModel, type.SpanStart, SymbolDisplayFormats.DisplayName)}'",
+                ct =>
+                {
+                    TypeSyntax newType = eventHandlerSymbol.ToTypeSyntax()
+                        .WithSimplifierAnnotation()
+                        .WithTriviaFrom(type);
 
-            context.RegisterCodeFix(codeAction, context.Diagnostics);
+                    return context.Document.ReplaceNodeAsync(type, newType, ct);
+                },
+                GetEquivalenceKey(diagnostic));
+
+            context.RegisterCodeFix(codeAction, diagnostic);
         }
     }
 }

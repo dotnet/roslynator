@@ -167,7 +167,7 @@ namespace Roslynator.CSharp.CodeFixes
                             }
                             else
                             {
-                                title = $"Use EqualityComparer<{SymbolDisplay.ToMinimalDisplayString(typeSymbol, semanticModel, binaryExpression.Right.SpanStart, SymbolDisplayFormats.Default)}>.Default";
+                                title = $"Use EqualityComparer<{SymbolDisplay.ToMinimalDisplayString(typeSymbol, semanticModel, binaryExpression.Right.SpanStart, SymbolDisplayFormats.DisplayName)}>.Default";
                             }
 
                             CodeAction codeAction = CodeAction.Create(
