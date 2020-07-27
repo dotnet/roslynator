@@ -111,7 +111,16 @@ namespace Roslynator.CSharp.Refactorings
 
                 INamedTypeSymbol containingType = propertySymbol.ContainingType;
 
-                MemberAccessExpressionSyntax fieldExpression = IdentifierName(fieldName).QualifyWithThis();
+                ExpressionSyntax fieldExpression;
+                if (propertySymbol.IsStatic)
+                {
+                    fieldExpression = IdentifierName(fieldName);
+                }
+                else
+                {
+                    fieldExpression = IdentifierName(fieldName).QualifyWithThis();
+                }
+
                 IdentifierNameSyntax valueName = IdentifierName("value");
 
                 if (containingType?.Implements(MetadataNames.System_ComponentModel_INotifyPropertyChanged, allInterfaces: true) == true)

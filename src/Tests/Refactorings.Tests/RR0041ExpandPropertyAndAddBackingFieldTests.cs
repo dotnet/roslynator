@@ -35,6 +35,31 @@ class C
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ExpandPropertyAndAddBackingField)]
+        public async Task Test_StaticProperty()
+        {
+            await VerifyRefactoringAsync(@"
+static class C
+{
+    private static string value;
+
+    public static string [||]Value { get; set; } = null;
+}
+", @"
+static class C
+{
+    private static string value;
+    private static string value2 = null;
+
+    public static string Value
+    {
+        get { return value2; }
+        set { value2 = value; }
+    }
+}
+", equivalenceKey: RefactoringId);
+        }
+
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ExpandPropertyAndAddBackingField)]
         public async Task Test_ReadOnlyProperty()
         {
             await VerifyRefactoringAsync(@"
