@@ -16,8 +16,6 @@ namespace Roslynator.CSharp
     /// </summary>
     public static class SymbolExtensions
     {
-        private static SymbolDisplayFormat IsReadOnlyStructSymbolDisplayFormat { get; } = new SymbolDisplayFormat(kindOptions: SymbolDisplayKindOptions.IncludeTypeKeyword);
-
         #region INamedTypeSymbol
         internal static string ToDisplayString(this INamedTypeSymbol typeSymbol, SymbolDisplayFormat format, SymbolDisplayTypeDeclarationOptions typeDeclarationOptions)
         {
@@ -346,10 +344,8 @@ namespace Roslynator.CSharp
 
         internal static bool IsReadOnlyStruct(this ITypeSymbol type)
         {
-            return type.TypeKind == TypeKind.Struct
-                && type
-                    .ToDisplayParts(IsReadOnlyStructSymbolDisplayFormat)
-                    .Any(f => f.Kind == SymbolDisplayPartKind.Keyword && f.ToString() == "readonly");
+            return type.IsReadOnly
+                && type.TypeKind == TypeKind.Struct;
         }
         #endregion ITypeSymbol
     }

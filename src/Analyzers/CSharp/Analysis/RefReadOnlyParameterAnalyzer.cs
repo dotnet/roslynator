@@ -119,7 +119,6 @@ namespace Roslynator.CSharp.Analysis
                 if (CSharpFacts.IsSimpleType(type.SpecialType))
                     continue;
 
-                //TODO: ITypeSymbol.IsReadOnly, https://github.com/dotnet/roslyn/issues/23792
                 if (!type.IsReadOnlyStruct())
                 {
                     if (parameter.RefKind == RefKind.In
