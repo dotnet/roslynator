@@ -168,7 +168,7 @@ namespace Roslynator.CSharp.Analysis
                     && (typeSymbol.IsReferenceType || typeSymbol.IsValueType)
                     && (semanticModel.IsDefaultValue(typeSymbol, whenNull, cancellationToken)
                         || IsDefaultOfNullableStruct(typeSymbol, whenNull, semanticModel, cancellationToken))
-                    && !CSharpUtility.ContainsOutArgumentWithLocal(whenNotNull, semanticModel, cancellationToken)
+                    && !CSharpUtility.ContainsOutArgumentWithLocalOrParameter(whenNotNull, semanticModel, cancellationToken)
                     && !conditionalExpressionInfo.ConditionalExpression.IsInExpressionTree(semanticModel, cancellationToken))
                 {
                     DiagnosticHelpers.ReportDiagnostic(

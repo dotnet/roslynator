@@ -626,7 +626,7 @@ namespace Roslynator.CSharp
             }
         }
 
-        public static bool ContainsOutArgumentWithLocal(
+        public static bool ContainsOutArgumentWithLocalOrParameter(
             ExpressionSyntax expression,
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default)
@@ -639,7 +639,7 @@ namespace Roslynator.CSharp
                     ExpressionSyntax argumentExpression = argument.Expression;
 
                     if (argumentExpression?.IsMissing == false
-                        && semanticModel.GetSymbol(argumentExpression, cancellationToken)?.Kind == SymbolKind.Local)
+                        && semanticModel.GetSymbol(argumentExpression, cancellationToken)?.IsKind(SymbolKind.Local, SymbolKind.Parameter) == true)
                     {
                         return true;
                     }

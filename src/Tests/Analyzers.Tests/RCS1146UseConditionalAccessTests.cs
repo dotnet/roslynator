@@ -672,6 +672,30 @@ if (dic != null && dic.TryGetValue(0, out value)) { }
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
+        public async Task TestNoDiagnostic_LogicalAnd_OutParameter2()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System.Collections.Generic;
+
+class C
+{
+    Dictionary<string, string> _dic;
+
+    bool TryGetValue(string key, out string value)
+    {
+        if (this._dic != null && this._dic.TryGetValue(key, out value))
+        {
+            return true;
+        }
+
+        value = null;
+        return false;
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
         public async Task TestNoDiagnostic_LogicalOr_OutParameter()
         {
             await VerifyNoDiagnosticAsync(@"
