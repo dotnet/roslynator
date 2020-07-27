@@ -1664,15 +1664,15 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1179</summary>
-        public static readonly DiagnosticDescriptor UseReturnInsteadOfAssignment = DiagnosticDescriptorFactory.Default.Create(
-            id:                 DiagnosticIdentifiers.UseReturnInsteadOfAssignment, 
-            title:              "Use 'return' instead of assignment.", 
-            messageFormat:      "Use 'return' instead of assignment.", 
+        public static readonly DiagnosticDescriptor UnnecessaryAssignment = DiagnosticDescriptorFactory.Default.Create(
+            id:                 DiagnosticIdentifiers.UnnecessaryAssignment, 
+            title:              "Unnecessary assignment.", 
+            messageFormat:      "Unnecessary assignment.", 
             category:           DiagnosticCategories.Simplification, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.UseReturnInsteadOfAssignment, 
+            helpLinkUri:        DiagnosticIdentifiers.UnnecessaryAssignment, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1180</summary>

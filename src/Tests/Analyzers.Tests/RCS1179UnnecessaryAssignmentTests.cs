@@ -9,15 +9,15 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1179UseReturnInsteadOfAssignmentTests : AbstractCSharpFixVerifier
+    public class RCS1179UnnecessaryAssignmentTests   : AbstractCSharpFixVerifier
     {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.UseReturnInsteadOfAssignment;
+        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.UnnecessaryAssignment;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new UseReturnInsteadOfAssignmentAnalyzer();
+        public override DiagnosticAnalyzer Analyzer { get; } = new UnnecessaryAssignmentAnalyzer();
 
-        public override CodeFixProvider FixProvider { get; } = new UseReturnInsteadOfAssignmentCodeFixProvider();
+        public override CodeFixProvider FixProvider { get; } = new UnnecessaryAssignmentCodeFixProvider();
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReturnInsteadOfAssignment)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryAssignment)]
         public async Task Test_IfStatement()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -60,7 +60,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReturnInsteadOfAssignment)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryAssignment)]
         public async Task Test_IfStatement2()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -107,7 +107,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReturnInsteadOfAssignment)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryAssignment)]
         public async Task Test_IfStatement_Throw()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -163,7 +163,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReturnInsteadOfAssignment)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryAssignment)]
         public async Task Test_SwitchStatement()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -210,7 +210,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReturnInsteadOfAssignment)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryAssignment)]
         public async Task Test_SwitchStatement2()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -261,7 +261,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReturnInsteadOfAssignment)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryAssignment)]
         public async Task Test_SwitchStatement_Throw()
         {
             await VerifyDiagnosticAndFixAsync(@"

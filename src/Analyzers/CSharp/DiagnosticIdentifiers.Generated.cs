@@ -142,7 +142,7 @@ namespace Roslynator.CSharp
         public const string UnusedThisParameter = "RCS1175";
         public const string UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious = "RCS1176";
         public const string UseVarInsteadOfExplicitTypeInForEach = "RCS1177";
-        public const string UseReturnInsteadOfAssignment = "RCS1179";
+        public const string UnnecessaryAssignment = "RCS1179";
         public const string InlineLazyInitialization = "RCS1180";
         public const string ConvertCommentToDocumentationComment = "RCS1181";
         public const string RemoveRedundantBaseInterface = "RCS1182";

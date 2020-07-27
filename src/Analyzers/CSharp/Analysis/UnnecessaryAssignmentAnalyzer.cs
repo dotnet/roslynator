@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Immutable;
 using System.Threading;
 using Microsoft.CodeAnalysis;
@@ -12,11 +11,11 @@ using Roslynator.CSharp.Syntax;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class UseReturnInsteadOfAssignmentAnalyzer : BaseDiagnosticAnalyzer
+    public class UnnecessaryAssignmentAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.UseReturnInsteadOfAssignment); }
+            get { return ImmutableArray.Create(DiagnosticDescriptors.UnnecessaryAssignment); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -77,7 +76,7 @@ namespace Roslynator.CSharp.Analysis
                 }
             }
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseReturnInsteadOfAssignment, ifStatement);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UnnecessaryAssignment, ifStatement);
         }
 
         private static void AnalyzeSwitchStatement(SyntaxNodeAnalysisContext context)
@@ -143,7 +142,7 @@ namespace Roslynator.CSharp.Analysis
                 }
             }
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseReturnInsteadOfAssignment, switchStatement);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UnnecessaryAssignment, switchStatement);
         }
 
         internal static ReturnStatementSyntax FindReturnStatementBelow(SyntaxList<StatementSyntax> statements, StatementSyntax statement)

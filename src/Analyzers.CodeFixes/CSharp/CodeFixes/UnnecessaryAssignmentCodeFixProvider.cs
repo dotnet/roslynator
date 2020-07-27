@@ -19,15 +19,15 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.CodeFixes
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UseReturnInsteadOfAssignmentCodeFixProvider))]
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UnnecessaryAssignmentCodeFixProvider))]
     [Shared]
-    public class UseReturnInsteadOfAssignmentCodeFixProvider : BaseCodeFixProvider
+    public class UnnecessaryAssignmentCodeFixProvider : BaseCodeFixProvider
     {
-        private const string Title = "Use 'return' instead of assignment";
+        private const string Title = "Remove unnecessary assignment";
 
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.UseReturnInsteadOfAssignment); }
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.UnnecessaryAssignment); }
         }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
