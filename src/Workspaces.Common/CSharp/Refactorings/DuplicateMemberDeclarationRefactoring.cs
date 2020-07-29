@@ -1,5 +1,9 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
+using System.Collections.Immutable;
+using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -12,12 +16,63 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class DuplicateMemberDeclarationRefactoring
     {
-        public static Task<Document> RefactorAsync(
+        public static async Task<Document> RefactorAsync(
             Document document,
             MemberDeclarationSyntax member,
             CancellationToken cancellationToken = default)
         {
-            return document.ReplaceNodeAsync(member.Parent, Refactor(member), cancellationToken);
+            MemberDeclarationSyntax newMember = member;
+
+            SyntaxToken identifier = GetIdentifier(member);
+
+            if (identifier != default)
+            {
+                SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
+                string newName = NameGenerator.Default.EnsureUniqueName(identifier.ValueText, semanticModel, member.SpanStart);
+
+                ISymbol symbol = semanticModel.GetDeclaredSymbol(member, cancellationToken);
+
+                ImmutableArray<SyntaxNode> references = await SyntaxFinder.FindReferencesAsync(symbol, document.Solution(), documents: ImmutableHashSet.Create(document), cancellationToken: cancellationToken).ConfigureAwait(false);
+
+                SyntaxToken newIdentifier = SyntaxFactory.Identifier(newName);
+
+                newMember = member.ReplaceNodes(references.Where(n => member.Contains(n)), (n, _) =>
+                {
+                    if (n is IdentifierNameSyntax identifierName)
+                    {
+                        return identifierName.WithIdentifier(newIdentifier.WithTriviaFrom(identifierName.Identifier));
+                    }
+                    else
+                    {
+                        Debug.Fail(n.Kind().ToString());
+                        return n;
+                    }
+                });
+
+                newMember = SetIdentifier(newMember, newIdentifier.WithRenameAnnotation());
+            }
+            else
+            {
+                newMember = newMember.WithNavigationAnnotation();
+            }
+
+            MemberDeclarationListInfo memberList = SyntaxInfo.MemberDeclarationListInfo(member.Parent);
+
+            int index = memberList.IndexOf(member);
+
+            if (index == 0)
+            {
+                SyntaxToken? openBrace = memberList.OpenBraceToken;
+
+                if (openBrace != null
+                    && openBrace.Value.GetFullSpanEndLine() == member.GetFullSpanStartLine())
+                {
+                    newMember = newMember.WithLeadingTrivia(member.GetLeadingTrivia().Insert(0, NewLine()));
+                }
+            }
+
+            return await document.ReplaceMembersAsync(memberList, memberList.Members.Insert(index + 1, newMember), cancellationToken).ConfigureAwait(false);
         }
 
         public static Task<Document> RefactorAsync(
@@ -41,77 +96,58 @@ namespace Roslynator.CSharp.Refactorings
             return document.ReplaceStatementsAsync(statementsInfos, newStatements, cancellationToken);
         }
 
-        private static SyntaxNode Refactor(MemberDeclarationSyntax member)
+        private static SyntaxToken GetIdentifier(SyntaxNode node)
         {
-            switch (member.Parent.Kind())
+            switch (node.Kind())
             {
-                case SyntaxKind.CompilationUnit:
-                    {
-                        var parent = (CompilationUnitSyntax)member.Parent;
-                        SyntaxList<MemberDeclarationSyntax> members = parent.Members;
-                        int index = members.IndexOf(member);
-
-                        return parent.WithMembers(members.Insert(index + 1, member.WithNavigationAnnotation()));
-                    }
-                case SyntaxKind.NamespaceDeclaration:
-                    {
-                        var parent = (NamespaceDeclarationSyntax)member.Parent;
-                        SyntaxList<MemberDeclarationSyntax> members = parent.Members;
-                        int index = members.IndexOf(member);
-
-                        if (index == 0
-                            && parent.OpenBraceToken.GetFullSpanEndLine() == member.GetFullSpanStartLine())
-                        {
-                            member = member.WithLeadingTrivia(member.GetLeadingTrivia().Insert(0, NewLine()));
-                        }
-
-                        return parent.WithMembers(members.Insert(index + 1, member.WithNavigationAnnotation()));
-                    }
                 case SyntaxKind.ClassDeclaration:
-                    {
-                        var parent = (ClassDeclarationSyntax)member.Parent;
-                        SyntaxList<MemberDeclarationSyntax> members = parent.Members;
-                        int index = members.IndexOf(member);
-
-                        if (index == 0
-                            && parent.OpenBraceToken.GetFullSpanEndLine() == member.GetFullSpanStartLine())
-                        {
-                            member = member.WithLeadingTrivia(member.GetLeadingTrivia().Insert(0, NewLine()));
-                        }
-
-                        return parent.WithMembers(members.Insert(index + 1, member.WithNavigationAnnotation()));
-                    }
+                    return ((ClassDeclarationSyntax)node).Identifier;
                 case SyntaxKind.StructDeclaration:
-                    {
-                        var parent = (StructDeclarationSyntax)member.Parent;
-                        SyntaxList<MemberDeclarationSyntax> members = parent.Members;
-                        int index = members.IndexOf(member);
-
-                        if (index == 0
-                            && parent.OpenBraceToken.GetFullSpanEndLine() == member.GetFullSpanStartLine())
-                        {
-                            member = member.WithLeadingTrivia(member.GetLeadingTrivia().Insert(0, NewLine()));
-                        }
-
-                        return parent.WithMembers(members.Insert(index + 1, member.WithNavigationAnnotation()));
-                    }
+                    return ((StructDeclarationSyntax)node).Identifier;
                 case SyntaxKind.InterfaceDeclaration:
-                    {
-                        var parent = (InterfaceDeclarationSyntax)member.Parent;
-                        SyntaxList<MemberDeclarationSyntax> members = parent.Members;
-                        int index = members.IndexOf(member);
-
-                        if (index == 0
-                            && parent.OpenBraceToken.GetFullSpanEndLine() == member.GetFullSpanStartLine())
-                        {
-                            member = member.WithLeadingTrivia(member.GetLeadingTrivia().Insert(0, NewLine()));
-                        }
-
-                        return parent.WithMembers(members.Insert(index + 1, member.WithNavigationAnnotation()));
-                    }
+                    return ((InterfaceDeclarationSyntax)node).Identifier;
+                case SyntaxKind.EnumDeclaration:
+                    return ((EnumDeclarationSyntax)node).Identifier;
+                case SyntaxKind.DelegateDeclaration:
+                    return ((DelegateDeclarationSyntax)node).Identifier;
+                case SyntaxKind.MethodDeclaration:
+                    return ((MethodDeclarationSyntax)node).Identifier;
+                case SyntaxKind.ConstructorDeclaration:
+                    return ((ConstructorDeclarationSyntax)node).Identifier;
+                case SyntaxKind.PropertyDeclaration:
+                    return ((PropertyDeclarationSyntax)node).Identifier;
+                case SyntaxKind.EventDeclaration:
+                    return ((EventDeclarationSyntax)node).Identifier;
             }
 
-            return null;
+            return default;
+        }
+
+        private static MemberDeclarationSyntax SetIdentifier(MemberDeclarationSyntax member, SyntaxToken identifier)
+        {
+            switch (member.Kind())
+            {
+                case SyntaxKind.ClassDeclaration:
+                    return ((ClassDeclarationSyntax)member).WithIdentifier(identifier);
+                case SyntaxKind.StructDeclaration:
+                    return ((StructDeclarationSyntax)member).WithIdentifier(identifier);
+                case SyntaxKind.InterfaceDeclaration:
+                    return ((InterfaceDeclarationSyntax)member).WithIdentifier(identifier);
+                case SyntaxKind.EnumDeclaration:
+                    return ((EnumDeclarationSyntax)member).WithIdentifier(identifier);
+                case SyntaxKind.DelegateDeclaration:
+                    return ((DelegateDeclarationSyntax)member).WithIdentifier(identifier);
+                case SyntaxKind.MethodDeclaration:
+                    return ((MethodDeclarationSyntax)member).WithIdentifier(identifier);
+                case SyntaxKind.ConstructorDeclaration:
+                    return ((ConstructorDeclarationSyntax)member).WithIdentifier(identifier);
+                case SyntaxKind.PropertyDeclaration:
+                    return ((PropertyDeclarationSyntax)member).WithIdentifier(identifier);
+                case SyntaxKind.EventDeclaration:
+                    return ((EventDeclarationSyntax)member).WithIdentifier(identifier);
+            }
+
+            throw new InvalidOperationException();
         }
     }
 }

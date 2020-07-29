@@ -49,6 +49,33 @@ namespace Roslynator.CSharp.Syntax
             get { return Members.Count; }
         }
 
+        //TODO: make public
+        internal SyntaxToken? OpenBraceToken
+        {
+            get
+            {
+                return Parent switch
+                {
+                    NamespaceDeclarationSyntax namespaceDeclaration => namespaceDeclaration.OpenBraceToken,
+                    TypeDeclarationSyntax typeDeclaration => typeDeclaration.OpenBraceToken,
+                    _ => null,
+                };
+            }
+        }
+
+        internal SyntaxToken? CloseBraceToken
+        {
+            get
+            {
+                return Parent switch
+                {
+                    NamespaceDeclarationSyntax namespaceDeclaration => namespaceDeclaration.CloseBraceToken,
+                    TypeDeclarationSyntax typeDeclaration => typeDeclaration.CloseBraceToken,
+                    _ => null,
+                };
+            }
+        }
+
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string DebuggerDisplay
         {
