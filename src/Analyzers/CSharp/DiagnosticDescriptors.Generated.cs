@@ -1970,7 +1970,7 @@ namespace Roslynator.CSharp
             messageFormat:      "Convert anonymous function to method group.", 
             category:           DiagnosticCategories.Simplification, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
-            isEnabledByDefault: true, 
+            isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.ConvertAnonymousFunctionToMethodGroup, 
             customTags:         Array.Empty<string>());

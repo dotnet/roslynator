@@ -4065,7 +4065,7 @@ int i = (x != null) ? x.Value.GetHashCode() : 0; // [|Id|]]]></Before>
     <Title>Convert anonymous function to method group.</Title>
     <Category>Simplification</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
-    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
