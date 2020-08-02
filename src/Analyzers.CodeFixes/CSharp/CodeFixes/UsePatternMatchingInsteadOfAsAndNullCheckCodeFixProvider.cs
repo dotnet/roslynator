@@ -22,8 +22,6 @@ namespace Roslynator.CSharp.CodeFixes
     [Shared]
     public class UsePatternMatchingInsteadOfAsAndNullCheckCodeFixProvider : BaseCodeFixProvider
     {
-        private const string Title = "Use pattern matching";
-
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
             get { return ImmutableArray.Create(DiagnosticIdentifiers.UsePatternMatchingInsteadOfAsAndNullCheck); }
@@ -39,8 +37,8 @@ namespace Roslynator.CSharp.CodeFixes
             Diagnostic diagnostic = context.Diagnostics[0];
 
             CodeAction codeAction = CodeAction.Create(
-                Title,
-                cancellationToken => RefactorAsync(context.Document, localDeclaration, cancellationToken),
+                "Use pattern matching",
+                ct => RefactorAsync(context.Document, localDeclaration, ct),
                 GetEquivalenceKey(diagnostic));
 
             context.RegisterCodeFix(codeAction, diagnostic);
@@ -71,13 +69,13 @@ namespace Roslynator.CSharp.CodeFixes
                             asExpressionInfo.Type,
                             SingleVariableDesignation(variableDeclarator.Identifier)))));
 
-            StatementListInfo statements = SyntaxInfo.StatementListInfo(localDeclaration);
+            StatementListInfo statementsInfo = SyntaxInfo.StatementListInfo(localDeclaration);
 
-            int index = statements.IndexOf(localDeclaration);
+            int index = statementsInfo.IndexOf(localDeclaration);
 
-            var ifStatement = (IfStatementSyntax)statements[index + 1];
+            var ifStatement = (IfStatementSyntax)statementsInfo[index + 1];
 
-            SyntaxTriviaList leadingTrivia = localDeclaration
+            SyntaxTriviaList leadingTrivia = statementsInfo.Parent
                 .DescendantTrivia(TextSpan.FromBounds(localDeclaration.SpanStart, ifStatement.SpanStart))
                 .ToSyntaxTriviaList()
                 .EmptyIfWhitespace();
@@ -99,9 +97,9 @@ namespace Roslynator.CSharp.CodeFixes
                 .WithLeadingTrivia(leadingTrivia)
                 .WithFormatterAnnotation();
 
-            StatementListInfo newStatements = statements.RemoveAt(index).ReplaceAt(index, newIfStatement);
+            SyntaxList<StatementSyntax> newStatements = statementsInfo.Statements.ReplaceRange(index, 2, newIfStatement);
 
-            return document.ReplaceStatementsAsync(statements, newStatements, cancellationToken);
+            return document.ReplaceStatementsAsync(statementsInfo, newStatements, cancellationToken);
         }
     }
 }

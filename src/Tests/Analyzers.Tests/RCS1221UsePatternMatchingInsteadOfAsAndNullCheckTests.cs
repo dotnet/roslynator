@@ -30,6 +30,7 @@ class C
         object x = null;
 
         [|var s = x as string;|]
+
         if (s == null)
         {
             return;

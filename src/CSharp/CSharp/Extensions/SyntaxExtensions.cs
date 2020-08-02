@@ -1601,6 +1601,27 @@ namespace Roslynator.CSharp
             return tree.IsMultiLineSpan(span, cancellationToken);
         }
 
+        //TODO: make public
+        /// <summary>
+        /// Creates a new list with the elements in the specified range replaced with new node.
+        /// </summary>
+        /// <typeparam name="TNode"></typeparam>
+        /// <param name="list"></param>
+        /// <param name="index"></param>
+        /// <param name="count"></param>
+        /// <param name="newNode"></param>
+        internal static SeparatedSyntaxList<TNode> ReplaceRange<TNode>(
+            this SeparatedSyntaxList<TNode> list,
+            int index,
+            int count,
+            TNode newNode) where TNode : SyntaxNode
+        {
+            if (newNode == null)
+                throw new ArgumentNullException(nameof(newNode));
+
+            return ReplaceRange(list, index, count, new TNode[] { newNode });
+        }
+
         /// <summary>
         /// Creates a new list with the elements in the specified range replaced with new nodes.
         /// </summary>
@@ -2096,6 +2117,27 @@ namespace Roslynator.CSharp
             }
 
             return statements.Insert(index, statement);
+        }
+
+        //TODO: make public
+        /// <summary>
+        /// Creates a new list with the elements in the specified range replaced with new node.
+        /// </summary>
+        /// <typeparam name="TNode"></typeparam>
+        /// <param name="list"></param>
+        /// <param name="index"></param>
+        /// <param name="count"></param>
+        /// <param name="newNode"></param>
+        internal static SyntaxList<TNode> ReplaceRange<TNode>(
+            this SyntaxList<TNode> list,
+            int index,
+            int count,
+            TNode newNode) where TNode : SyntaxNode
+        {
+            if (newNode == null)
+                throw new ArgumentNullException(nameof(newNode));
+
+            return ReplaceRange(list, index, count, new TNode[] { newNode });
         }
 
         /// <summary>
