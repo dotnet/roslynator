@@ -3285,13 +3285,22 @@ Unused parameter is not reported when its name consists of underscore(s).</Remar
     <Samples>
       <Sample>
         <Before><![CDATA[int x = 0;
+IntPtr y = IntPtr.Zero
 
 // ...
 
 if (x == null) // [|Id|]
 {
+}
+
+if (y == null) // [|Id|]
+{
 }]]></Before>
         <After><![CDATA[if (x == 0)
+{
+}
+
+if (y == default)
 {
 }]]></After>
       </Sample>
