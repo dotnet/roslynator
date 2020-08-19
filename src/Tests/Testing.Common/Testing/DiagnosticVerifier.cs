@@ -17,6 +17,7 @@ namespace Roslynator.Testing
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public abstract class DiagnosticVerifier : CodeVerifier
     {
+        private ImmutableArray<DiagnosticAnalyzer> _analyzers;
         private ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 
         internal DiagnosticVerifier(WorkspaceFactory workspaceFactory) : base(workspaceFactory)
@@ -25,7 +26,37 @@ namespace Roslynator.Testing
 
         public abstract DiagnosticDescriptor Descriptor { get; }
 
-        public abstract ImmutableArray<DiagnosticAnalyzer> Analyzers { get; }
+        public abstract DiagnosticAnalyzer Analyzer { get; }
+
+        public virtual ImmutableArray<DiagnosticAnalyzer> AdditionalAnalyzers { get; } = ImmutableArray<DiagnosticAnalyzer>.Empty;
+
+        public ImmutableArray<DiagnosticAnalyzer> Analyzers
+        {
+            get
+            {
+                if (_analyzers.IsDefault)
+                    ImmutableInterlocked.InterlockedInitialize(ref _analyzers, CreateAnalyzers());
+
+                return _analyzers;
+
+                ImmutableArray<DiagnosticAnalyzer> CreateAnalyzers()
+                {
+                    if (AdditionalAnalyzers.IsDefaultOrEmpty)
+                    {
+                        return ImmutableArray.Create(Analyzer);
+                    }
+                    else
+                    {
+                        ImmutableArray<DiagnosticAnalyzer>.Builder builder = ImmutableArray.CreateBuilder<DiagnosticAnalyzer>(AdditionalAnalyzers.Length + 1);
+
+                        builder.Add(Analyzer);
+                        builder.AddRange(AdditionalAnalyzers);
+
+                        return builder.ToImmutable();
+                    }
+                }
+            }
+        }
 
         internal ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
