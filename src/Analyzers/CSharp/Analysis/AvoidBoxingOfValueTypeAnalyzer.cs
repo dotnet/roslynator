@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -21,54 +20,7 @@ namespace Roslynator.CSharp.Analysis
         {
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(AnalyzeAddExpression, SyntaxKind.AddExpression);
             context.RegisterSyntaxNodeAction(AnalyzeInterpolation, SyntaxKind.Interpolation);
-        }
-
-        private static void AnalyzeAddExpression(SyntaxNodeAnalysisContext context)
-        {
-            var addExpression = (BinaryExpressionSyntax)context.Node;
-
-            if (addExpression.ContainsDiagnostics)
-                return;
-
-            IMethodSymbol methodSymbol = context.SemanticModel.GetMethodSymbol(addExpression, context.CancellationToken);
-
-            if (!SymbolUtility.IsStringAdditionOperator(methodSymbol))
-                return;
-
-            ExpressionSyntax expression = GetObjectExpression()?.WalkDownParentheses();
-
-            if (expression == null)
-                return;
-
-            if (expression.Kind() == SyntaxKind.AddExpression)
-                return;
-
-            ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(expression, context.CancellationToken);
-
-            if (typeSymbol?.IsValueType != true)
-                return;
-
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AvoidBoxingOfValueType, expression);
-
-            ExpressionSyntax GetObjectExpression()
-            {
-                ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
-
-                if (parameters[0].Type.SpecialType == SpecialType.System_Object)
-                {
-                    return addExpression.Left;
-                }
-                else if (parameters[1].Type.SpecialType == SpecialType.System_Object)
-                {
-                    return addExpression.Right;
-                }
-                else
-                {
-                    return null;
-                }
-            }
         }
 
         private static void AnalyzeInterpolation(SyntaxNodeAnalysisContext context)

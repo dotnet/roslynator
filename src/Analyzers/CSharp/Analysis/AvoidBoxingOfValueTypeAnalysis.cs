@@ -30,7 +30,7 @@ namespace Roslynator.CSharp.Analysis
             {
                 case 1:
                     {
-                        if (methodSymbol.IsName("Append", "AppendLine"))
+                        if (methodSymbol.IsName("Append"))
                         {
                             ArgumentSyntax argument = invocationInfo.Arguments.SingleOrDefault(shouldThrow: false);
 
@@ -38,25 +38,12 @@ namespace Roslynator.CSharp.Analysis
                             {
                                 ExpressionSyntax expression = argument.Expression;
 
-                                switch (expression.Kind())
+                                if (!expression.IsKind(SyntaxKind.InterpolatedStringExpression, SyntaxKind.AddExpression)
+                                    && parameters[0].Type.IsObject()
+                                    && context.SemanticModel.GetTypeSymbol(expression, context.CancellationToken).IsValueType)
                                 {
-                                    case SyntaxKind.InterpolatedStringExpression:
-                                    case SyntaxKind.AddExpression:
-                                        {
-                                            return;
-                                        }
-                                    default:
-                                        {
-                                            if (methodSymbol.IsName("Append")
-                                                && parameters[0].Type.IsObject()
-                                                && context.SemanticModel.GetTypeSymbol(expression, context.CancellationToken).IsValueType)
-                                            {
-                                                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AvoidBoxingOfValueType, argument);
-                                                return;
-                                            }
-
-                                            break;
-                                        }
+                                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AvoidBoxingOfValueType, argument);
+                                    return;
                                 }
                             }
                         }
