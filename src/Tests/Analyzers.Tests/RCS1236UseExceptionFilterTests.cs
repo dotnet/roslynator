@@ -369,5 +369,135 @@ class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExceptionFilter)]
+        public async Task TestNoDiagnostic_ContainsMethodThatCanThrow()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System;
+
+class C
+{
+    void M()
+    {
+        try
+        {
+        }
+        catch (Exception ex)
+        {
+            if (ex != null && ThrowIf(ex))
+                throw;
+        }
+    }
+
+    bool ThrowIf(Exception ex) => throw new Exception();
+}
+");
+            }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExceptionFilter)]
+        public async Task TestNoDiagnostic_ContainsMethodThatCanThrow2()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System;
+
+class C
+{
+    void M()
+    {
+        try
+        {
+        }
+        catch (Exception ex)
+        {
+            if (ex != null && ThrowIf<object>(ex))
+                throw;
+        }
+    }
+
+    bool ThrowIf<T>(Exception ex) => throw new Exception();
+}
+");
+            }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExceptionFilter)]
+        public async Task TestNoDiagnostic_ContainsMethodThatCanThrow3()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System;
+
+static class C
+{
+    static void M()
+    {
+        try
+        {
+        }
+        catch (Exception ex)
+        {
+            if (ex?.ThrowIf() == true)
+                throw;
+        }
+    }
+
+    static bool ThrowIf(this Exception ex) => false;
+}
+");
+            }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExceptionFilter)]
+        public async Task TestNoDiagnostic_ContainsMethodThatCanThrow_XmlCommentContainsException()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System;
+
+class C
+{
+    void M()
+    {
+        try
+        {
+        }
+        catch (Exception ex)
+        {
+            if (ex != null && M2(ex))
+                throw;
+        }
+    }
+
+    /// <summary></summary>
+    /// <exception cref=""Exception""></exception>
+    bool M2(Exception ex)
+    {
+        return false;
+    }
+}
+");
+            }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExceptionFilter)]
+        public async Task TestNoDiagnostic_ContainsThrowExpression()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System;
+
+class C
+{
+    void M()
+    {
+        try
+        {
+        }
+        catch (Exception ex)
+        {
+            if (M2(ex ?? throw new Exception()))
+                throw;
+        }
+    }
+
+    bool M2(Exception ex) => false;
+}
+");
+            }
     }
 }

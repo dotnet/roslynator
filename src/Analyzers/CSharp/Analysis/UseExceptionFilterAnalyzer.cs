@@ -2,6 +2,9 @@
 
 using System;
 using System.Collections.Immutable;
+using System.Diagnostics;
+using System.Text.RegularExpressions;
+using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -44,7 +47,18 @@ namespace Roslynator.CSharp.Analysis
             if (IsThrowStatementWithoutExpression(ifStatement.Statement.SingleNonBlockStatementOrDefault())
                 ^ IsThrowStatementWithoutExpression(ifStatement.Else?.Statement.SingleNonBlockStatementOrDefault()))
             {
-                if (AwaitExpressionWalker.ContainsAwaitExpression(ifStatement.Condition))
+                UseExceptionFilterWalker walker = UseExceptionFilterWalker.GetInstance();
+
+                walker.SemanticModel = context.SemanticModel;
+                walker.CancellationToken = context.CancellationToken;
+
+                walker.Visit(ifStatement.Condition);
+
+                bool canUseExceptionFilter = walker.CanUseExceptionFilter;
+
+                UseExceptionFilterWalker.Free(walker);
+
+                if (!canUseExceptionFilter)
                     return;
 
                 if (ifStatement.ContainsUnbalancedIfElseDirectives())
@@ -58,6 +72,110 @@ namespace Roslynator.CSharp.Analysis
         {
             return (statement is ThrowStatementSyntax throwStatement)
                 && throwStatement.Expression == null;
+        }
+
+        private class UseExceptionFilterWalker : CSharpSyntaxNodeWalker
+        {
+            [ThreadStatic]
+            private static UseExceptionFilterWalker _cachedInstance;
+
+            private static readonly Regex _exceptionElementRegex = new Regex(@"\<(?i:exception)\ +cref=(?:""|')");
+
+            public bool CanUseExceptionFilter { get; set; } = true;
+
+            public SemanticModel SemanticModel { get; set; }
+
+            public CancellationToken CancellationToken { get; set; }
+
+            protected override bool ShouldVisit => CanUseExceptionFilter;
+
+            public override void VisitInvocationExpression(InvocationExpressionSyntax node)
+            {
+                switch (node.Expression)
+                {
+                    case SimpleNameSyntax simpleName:
+                        {
+                            AnalyzeSimpleName(simpleName);
+                            break;
+                        }
+                    case MemberBindingExpressionSyntax memberBindingExpression:
+                        {
+                            AnalyzeSimpleName(memberBindingExpression.Name);
+                            break;
+                        }
+                    default:
+                        {
+                            Debug.Fail(node.Kind().ToString());
+                            break;
+                        }
+                }
+
+                base.VisitInvocationExpression(node);
+            }
+
+            private void AnalyzeSimpleName(SimpleNameSyntax simpleName)
+            {
+                if (simpleName.Identifier.ValueText.StartsWith("ThrowIf", StringComparison.Ordinal))
+                    CanUseExceptionFilter = false;
+
+                ISymbol symbol = SemanticModel.GetSymbol(simpleName, CancellationToken);
+
+                string xml = symbol?.GetDocumentationCommentXml(cancellationToken: CancellationToken);
+
+                if (xml != null
+                    && _exceptionElementRegex.IsMatch(xml))
+                {
+                    CanUseExceptionFilter = false;
+                }
+            }
+
+            public override void VisitAwaitExpression(AwaitExpressionSyntax node)
+            {
+                CanUseExceptionFilter = false;
+            }
+
+            public override void VisitThrowExpression(ThrowExpressionSyntax node)
+            {
+                CanUseExceptionFilter = false;
+            }
+
+            public override void VisitAnonymousMethodExpression(AnonymousMethodExpressionSyntax node)
+            {
+            }
+
+            public override void VisitSimpleLambdaExpression(SimpleLambdaExpressionSyntax node)
+            {
+            }
+
+            public override void VisitParenthesizedLambdaExpression(ParenthesizedLambdaExpressionSyntax node)
+            {
+            }
+
+            public static UseExceptionFilterWalker GetInstance()
+            {
+                UseExceptionFilterWalker walker = _cachedInstance;
+
+                if (walker != null)
+                {
+                    Debug.Assert(walker.CanUseExceptionFilter = true);
+                    Debug.Assert(walker.SemanticModel == null);
+                    Debug.Assert(walker.CancellationToken == default);
+
+                    _cachedInstance = null;
+                    return walker;
+                }
+
+                return new UseExceptionFilterWalker();
+            }
+
+            public static void Free(UseExceptionFilterWalker walker)
+            {
+                walker.CanUseExceptionFilter = true;
+                walker.SemanticModel = null;
+                walker.CancellationToken = default;
+
+                _cachedInstance = walker;
+            }
         }
     }
 }
