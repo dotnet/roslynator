@@ -233,7 +233,7 @@ class C
 ");
         }
 
-       [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ValidateArgumentsCorrectly)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ValidateArgumentsCorrectly)]
         public async Task TestNoDiagnostic_NoParameters()
         {
             await VerifyNoDiagnosticAsync(@"

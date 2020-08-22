@@ -393,7 +393,7 @@ class C
     bool ThrowIf(Exception ex) => throw new Exception();
 }
 ");
-            }
+        }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExceptionFilter)]
         public async Task TestNoDiagnostic_ContainsMethodThatCanThrow2()
@@ -418,7 +418,7 @@ class C
     bool ThrowIf<T>(Exception ex) => throw new Exception();
 }
 ");
-            }
+        }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExceptionFilter)]
         public async Task TestNoDiagnostic_ContainsMethodThatCanThrow3()
@@ -443,7 +443,7 @@ static class C
     static bool ThrowIf(this Exception ex) => false;
 }
 ");
-            }
+        }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExceptionFilter)]
         public async Task TestNoDiagnostic_ContainsMethodThatCanThrow_XmlCommentContainsException()
@@ -473,7 +473,7 @@ class C
     }
 }
 ");
-            }
+        }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExceptionFilter)]
         public async Task TestNoDiagnostic_ContainsThrowExpression()
@@ -498,6 +498,6 @@ class C
     bool M2(Exception ex) => false;
 }
 ");
-            }
+        }
     }
 }
