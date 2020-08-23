@@ -4771,7 +4771,7 @@ public string Foo()
         <Before><![CDATA[class C
 {
     /// <summary></summary>
-    /// <param name="p3"></param> [|Id|]
+    /// <param name="p3"></param> // [|Id|]
     /// <param name="p2"></param>
     /// <param name="p1"></param>
     void M(object p1, object p2, object p3)
@@ -4799,11 +4799,11 @@ public string Foo()
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[boolExpr1 & boolExpr2 [|Id|]]]></Before>
+        <Before><![CDATA[boolExpr1 & boolExpr2]]></Before>
         <After><![CDATA[boolExpr1 && boolExpr2]]></After>
       </Sample>
       <Sample>
-        <Before><![CDATA[boolExpr1 | boolExpr2 [|Id|]]]></Before>
+        <Before><![CDATA[boolExpr1 | boolExpr2]]></Before>
         <After><![CDATA[boolExpr1 || boolExpr2]]></After>
       </Sample>
     </Samples>
@@ -4820,7 +4820,7 @@ public string Foo()
 {
     A = 1,
     B = 2,
-    C = 2, [|Id|]
+    C = 2, // [|Id|]
 }]]></Before>
         <After><![CDATA[enum E
 {
@@ -5000,7 +5000,7 @@ while (x) // [|Id|]
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[array.Length <= 0 [|Id|]]]></Before>
+        <Before><![CDATA[array.Length <= 0]]></Before>
         <After><![CDATA[array.Length == 0]]></After>
       </Sample>
     </Samples>
@@ -5022,7 +5022,7 @@ public class C
 {
 }
 
-public abstract class Comparable : IComparable<C> [|Id|]
+public abstract class Comparable : IComparable<C> // [|Id|]
 {
     public abstract int CompareTo(C other);
 }]]></Before>
@@ -5062,7 +5062,7 @@ public class C
 {
 }
 
-public abstract class Comparer : IComparer<C> [|Id|]
+public abstract class Comparer : IComparer<C> // [|Id|]
 {
     public abstract int Compare(C x, C y);
 }]]></Before>
@@ -5119,7 +5119,7 @@ public class C
 {
 }
 
-public abstract class EqualityComparer : IEqualityComparer<C> [|Id|]
+public abstract class EqualityComparer : IEqualityComparer<C> // [|Id|]
 {
     public abstract bool Equals(C x, C y);
 
@@ -5247,9 +5247,9 @@ public class C
     <Summary>This analyzer is similar to [IDE0034](https://docs.microsoft.com/visualstudio/ide/common-quick-actions#remove-type-from-default-value-expression) but there are some differences. For example this analyzer does not simplify 'default' expression passed as an argument expression.</Summary>
     <Samples>
       <Sample>
-        <Before><![CDATA[Foo M(Foo foo = default(Foo)) [|Id|]
+        <Before><![CDATA[Foo M(Foo foo = default(Foo)) // [|Id|]
 {
-    return default(Foo); [|Id|]
+    return default(Foo); // [|Id|]
 }]]></Before>
         <After><![CDATA[Foo M(Foo foo = default)
 {
