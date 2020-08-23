@@ -2,4 +2,6 @@
 
 dotnet build "..\src\Tools\EditorConfigGenerator\EditorConfigGenerator.csproj" -c Release
 
-"..\src\Tools\EditorConfigGenerator\bin\Release\net461\Roslynator.EditorConfigGenerator.exe" "..\src"
+dotnet "..\src\Tools\EditorConfigGenerator\bin\Release\netcoreapp3.0\Roslynator.EditorConfigGenerator.dll" "..\src"
+
+pause

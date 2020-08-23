@@ -2,4 +2,6 @@
 
 dotnet build "..\src\Tools\ConfigFileGenerator\ConfigFileGenerator.csproj" -c Release
 
-"..\src\Tools\ConfigFileGenerator\bin\Release\net461\Roslynator.ConfigFileGenerator.exe" "..\src"
+dotnet "..\src\Tools\ConfigFileGenerator\bin\Release\netcoreapp3.0\Roslynator.ConfigFileGenerator.dll" "..\src"
+
+pause
