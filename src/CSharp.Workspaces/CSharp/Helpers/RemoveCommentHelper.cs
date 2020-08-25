@@ -56,12 +56,23 @@ namespace Roslynator.CSharp.Helpers
 
             while (index > 0)
             {
-                if (IsAllowedTrivia(triviaList[index - 1]))
+                SyntaxKind kind = triviaList[index - 1].Kind();
+
+                if (kind == SyntaxKind.SingleLineCommentTrivia)
+                {
+                    index--;
+                    firstIndex = index;
+                }
+                else if (kind == SyntaxKind.WhitespaceTrivia)
                 {
                     index--;
 
-                    if (triviaList[index].IsKind(SyntaxKind.SingleLineCommentTrivia))
-                        firstIndex = index;
+                    if (index == 0)
+                        return index;
+                }
+                else if (kind == SyntaxKind.EndOfLineTrivia)
+                {
+                    index--;
                 }
                 else
                 {
@@ -78,7 +89,10 @@ namespace Roslynator.CSharp.Helpers
 
             while (index < triviaList.Count - 1)
             {
-                if (IsAllowedTrivia(triviaList[index + 1]))
+                if (triviaList[index + 1].Kind().Is(
+                    SyntaxKind.WhitespaceTrivia,
+                    SyntaxKind.EndOfLineTrivia,
+                    SyntaxKind.SingleLineCommentTrivia))
                 {
                     index++;
 
@@ -92,14 +106,6 @@ namespace Roslynator.CSharp.Helpers
             }
 
             return lastIndex;
-        }
-
-        private static bool IsAllowedTrivia(SyntaxTrivia trivia)
-        {
-            return trivia.Kind().Is(
-                SyntaxKind.WhitespaceTrivia,
-                SyntaxKind.EndOfLineTrivia,
-                SyntaxKind.SingleLineCommentTrivia);
         }
     }
 }
