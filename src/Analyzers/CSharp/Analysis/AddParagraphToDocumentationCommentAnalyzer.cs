@@ -95,8 +95,13 @@ namespace Roslynator.CSharp.Analysis
 
                             string name = xmlElement.StartTag?.Name?.LocalName.ValueText;
 
-                            if (string.Equals(name, "para", StringComparison.OrdinalIgnoreCase))
+                            if (string.Equals(name, "code", StringComparison.OrdinalIgnoreCase)
+                                || string.Equals(name, "inheritdoc", StringComparison.OrdinalIgnoreCase)
+                                || string.Equals(name, "list", StringComparison.OrdinalIgnoreCase)
+                                || string.Equals(name, "para", StringComparison.OrdinalIgnoreCase))
+                            {
                                 return (default, default, spans);
+                            }
 
                             if (!string.Equals(
                                 name,
@@ -142,8 +147,15 @@ namespace Roslynator.CSharp.Analysis
                         {
                             var xmlEmptyElement = (XmlEmptyElementSyntax)node;
 
-                            if (xmlEmptyElement.IsLocalName("para", StringComparison.OrdinalIgnoreCase))
+                            string name = xmlEmptyElement.Name?.LocalName.ValueText;
+
+                            if (string.Equals(name, "code", StringComparison.OrdinalIgnoreCase)
+                                || string.Equals(name, "inheritdoc", StringComparison.OrdinalIgnoreCase)
+                                || string.Equals(name, "list", StringComparison.OrdinalIgnoreCase)
+                                || string.Equals(name, "para", StringComparison.OrdinalIgnoreCase))
+                            {
                                 return (default, default, spans);
+                            }
 
                             switch (state)
                             {
