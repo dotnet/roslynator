@@ -108,5 +108,20 @@ class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantToStringCall)]
+        public async Task TestNoDiagnostic_ValueType()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M()
+    {
+        int i = 10;
+        string s = $""'{i.ToString()}'"";
+    }
+}
+");
+        }
     }
 }
