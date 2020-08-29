@@ -2,6 +2,7 @@
 
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp.Helpers;
 
 namespace Roslynator.CSharp.Refactorings
@@ -11,20 +12,22 @@ namespace Roslynator.CSharp.Refactorings
         public static void ComputeRefactorings(RefactoringContext context, SyntaxTrivia trivia)
         {
             SyntaxKind kind = trivia.Kind();
+            Document document = context.Document;
+            TextSpan span = context.Span;
 
             if (context.IsRootCompilationUnit
-                && trivia.FullSpan.Contains(context.Span)
+                && trivia.FullSpan.Contains(span)
                 && CSharpFacts.IsCommentTrivia(kind))
             {
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveComment))
                 {
                     context.RegisterRefactoring(
                         "Remove comment",
-                        cancellationToken =>
+                        ct =>
                         {
                             SyntaxToken newToken = RemoveCommentHelper.GetReplacementToken(trivia).WithFormatterAnnotation();
 
-                            return context.Document.ReplaceTokenAsync(trivia.Token, newToken, cancellationToken);
+                            return document.ReplaceTokenAsync(trivia.Token, newToken, ct);
                         },
                         RefactoringIdentifiers.RemoveComment);
                 }
@@ -33,7 +36,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     context.RegisterRefactoring(
                         "Remove all comments",
-                        cancellationToken => context.Document.RemoveCommentsAsync(CommentFilter.All, cancellationToken),
+                        ct => document.RemoveCommentsAsync(CommentFilter.All, ct),
                         RefactoringIdentifiers.RemoveAllComments);
                 }
 
@@ -42,7 +45,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     context.RegisterRefactoring(
                         "Remove all comments (except documentation comments)",
-                        cancellationToken => context.Document.RemoveCommentsAsync(CommentFilter.NonDocumentation, cancellationToken),
+                        ct => document.RemoveCommentsAsync(CommentFilter.NonDocumentation, ct),
                         RefactoringIdentifiers.RemoveAllCommentsExceptDocumentationComments);
                 }
 
@@ -51,7 +54,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     context.RegisterRefactoring(
                         "Remove all documentation comments",
-                        cancellationToken => context.Document.RemoveCommentsAsync(CommentFilter.Documentation, cancellationToken),
+                        ct => document.RemoveCommentsAsync(CommentFilter.Documentation, ct),
                         RefactoringIdentifiers.RemoveAllDocumentationComments);
                 }
             }
@@ -59,6 +62,8 @@ namespace Roslynator.CSharp.Refactorings
 
         public static void ComputeRefactorings(RefactoringContext context, SyntaxNode node)
         {
+            TextSpan span = context.Span;
+
             if (context.IsAnyRefactoringEnabled(
                 RefactoringIdentifiers.RemoveAllComments,
                 RefactoringIdentifiers.RemoveAllCommentsExceptDocumentationComments,
@@ -67,12 +72,12 @@ namespace Roslynator.CSharp.Refactorings
                 bool fComment = false;
                 bool fDocComment = false;
 
-                foreach (SyntaxTrivia trivia in node.DescendantTrivia(context.Span, descendIntoTrivia: true))
+                foreach (SyntaxTrivia trivia in node.DescendantTrivia(span, descendIntoTrivia: true))
                 {
                     if (fComment && fDocComment)
                         break;
 
-                    if (context.Span.Contains(trivia.Span))
+                    if (span.Contains(trivia.Span))
                     {
                         switch (trivia.Kind())
                         {
@@ -92,12 +97,14 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 }
 
-                if (fComment
+                Document document = context.Document;
+
+                if ((fComment || fDocComment)
                     && context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveAllComments))
                 {
                     context.RegisterRefactoring(
                         "Remove comments",
-                        cancellationToken => context.Document.RemoveCommentsAsync(context.Span, CommentFilter.All, cancellationToken),
+                        ct => document.RemoveCommentsAsync(span, CommentFilter.All, ct),
                         RefactoringIdentifiers.RemoveAllComments);
                 }
 
@@ -107,7 +114,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     context.RegisterRefactoring(
                         "Remove comments (except documentation comments)",
-                        cancellationToken => context.Document.RemoveCommentsAsync(context.Span, CommentFilter.NonDocumentation, cancellationToken),
+                        ct => document.RemoveCommentsAsync(span, CommentFilter.NonDocumentation, ct),
                         RefactoringIdentifiers.RemoveAllCommentsExceptDocumentationComments);
                 }
 
@@ -116,7 +123,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     context.RegisterRefactoring(
                         "Remove documentation comments",
-                        c => context.Document.RemoveCommentsAsync(context.Span, CommentFilter.Documentation, c),
+                        ct => document.RemoveCommentsAsync(span, CommentFilter.Documentation, ct),
                         RefactoringIdentifiers.RemoveAllDocumentationComments);
                 }
             }
