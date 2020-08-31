@@ -339,12 +339,6 @@ class C
     static void M()
     {
         var e1 = ((IEnumerable<string>)new EnumerableOfString()).GetEnumerator();
-        var e2 = ((IEnumerable<string>)new DerivedEnumerableOfString()).GetEnumerator();
-
-        var e3 = ((IEnumerable)new EnumerableOfString()).GetEnumerator();
-        var e4 = ((IEnumerable)new DerivedEnumerableOfString()).GetEnumerator();
-
-        ((IDisposable)default(ExplicitDisposable)).Dispose();
     }
 }
 
@@ -370,6 +364,27 @@ class ExplicitDisposable : IDisposable
     void IDisposable.Dispose()
     {
         throw new NotImplementedException();
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantCast)]
+        public async Task TestNoDiagnostic_ExplicitImplementationOfGenericMethod()
+        {
+            await VerifyNoDiagnosticAsync(@"
+interface IC
+{
+    void M<T>(T t);
+}
+
+class C : IC
+{
+    void IC.M<T>(T t)
+    {
+        var c = new C();
+
+        ((IC)c).M(c);
     }
 }
 ");

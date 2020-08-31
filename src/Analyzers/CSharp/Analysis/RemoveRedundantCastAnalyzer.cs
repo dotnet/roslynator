@@ -118,7 +118,7 @@ namespace Roslynator.CSharp.Analysis
                     {
                         foreach (IPropertySymbol propertySymbol in ((IPropertySymbol)implementation).ExplicitInterfaceImplementations)
                         {
-                            if (SymbolEqualityComparer.Default.Equals(propertySymbol, symbol))
+                            if (SymbolEqualityComparer.Default.Equals(propertySymbol.OriginalDefinition, symbol.OriginalDefinition))
                                 return false;
                         }
 
@@ -128,7 +128,7 @@ namespace Roslynator.CSharp.Analysis
                     {
                         foreach (IMethodSymbol methodSymbol in ((IMethodSymbol)implementation).ExplicitInterfaceImplementations)
                         {
-                            if (SymbolEqualityComparer.Default.Equals(methodSymbol, symbol))
+                            if (SymbolEqualityComparer.Default.Equals(methodSymbol.OriginalDefinition, symbol.OriginalDefinition))
                                 return false;
                         }
 
