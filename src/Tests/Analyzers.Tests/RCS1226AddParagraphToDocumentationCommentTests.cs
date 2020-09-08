@@ -360,6 +360,135 @@ namespace N
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
+        public async Task Test_StartsWithParaElement()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+namespace N
+{
+    /// <summary>
+    /// <para>a</para>
+    ///[| b
+    /// 
+    /// c|]
+    /// </summary>
+    class C
+    {
+    }
+}
+", @"
+namespace N
+{
+    /// <summary>
+    /// <para>a</para>
+    /// <para>b</para>
+    /// <para>c</para>
+    /// </summary>
+    class C
+    {
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
+        public async Task Test_ContainsParaElement()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+namespace N
+{
+    /// <summary>
+    /// a
+    /// <para>b</para>
+    ///[| c
+    ///
+    /// d|]
+    /// </summary>
+    class C
+    {
+    }
+}
+", @"
+namespace N
+{
+    /// <summary>
+    /// a
+    /// <para>b</para>
+    /// <para>c</para>
+    /// <para>d</para>
+    /// </summary>
+    class C
+    {
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
+        public async Task Test_EndsWithhParaElement()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+namespace N
+{
+    /// <summary>
+    ///[| a
+    /// 
+    /// b|]
+    /// <para>c</para>
+    /// </summary>
+    class C
+    {
+    }
+}
+", @"
+namespace N
+{
+    /// <summary>
+    /// <para>a</para>
+    /// <para>b</para>
+    /// <para>c</para>
+    /// </summary>
+    class C
+    {
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
+        public async Task Test_EndsWithhParaElement2()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+namespace N
+{
+    /// <summary>
+    ///[| a
+    /// 
+    /// b|]
+    /// 
+    /// c
+    /// <para>d</para>
+    /// </summary>
+    class C
+    {
+    }
+}
+", @"
+namespace N
+{
+    /// <summary>
+    /// <para>a</para>
+    /// <para>b</para>
+    /// <para>c</para>
+    /// <para>d</para>
+    /// </summary>
+    class C
+    {
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
         public async Task TestNoDiagnostic_SimpleComment()
         {
             await VerifyNoDiagnosticAsync(@"

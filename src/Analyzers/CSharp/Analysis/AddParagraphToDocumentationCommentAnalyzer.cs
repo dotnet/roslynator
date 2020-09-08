@@ -87,249 +87,226 @@ namespace Roslynator.CSharp.Analysis
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                switch (node.Kind())
+                string name = null;
+
+                SyntaxKind kind = node.Kind();
+
+                if (kind == SyntaxKind.XmlElement)
                 {
-                    case SyntaxKind.XmlElement:
+                    var xmlElement = (XmlElementSyntax)node;
+
+                    name = xmlElement.StartTag?.Name?.LocalName.ValueText;
+
+                    if (!string.Equals(
+                        name,
+                        xmlElement.EndTag?.Name?.LocalName.ValueText,
+                        StringComparison.OrdinalIgnoreCase))
+                    {
+                        return (default, default, spans);
+                    }
+                }
+                else if (kind == SyntaxKind.XmlEmptyElement)
+                {
+                    var xmlEmptyElement = (XmlEmptyElementSyntax)node;
+
+                    name = xmlEmptyElement.Name?.LocalName.ValueText;
+                }
+
+                if (name != null)
+                {
+                    if (string.Equals(name, "code", StringComparison.OrdinalIgnoreCase)
+                        || string.Equals(name, "inheritdoc", StringComparison.OrdinalIgnoreCase)
+                        || string.Equals(name, "list", StringComparison.OrdinalIgnoreCase)
+                        || string.Equals(name, "para", StringComparison.OrdinalIgnoreCase))
+                    {
+                        (TextSpan span1, TextSpan span2, List<TextSpan> spans) result = CreateResult();
+
+                        if (result != default)
+                            return result;
+
+                        index = -1;
+                        endIndex = -1;
+                        index2 = -1;
+                        spans = null;
+                        last = default;
+                        state = State.BeforeParagraph;
+
+                        continue;
+                    }
+
+                    switch (state)
+                    {
+                        case State.BeforeParagraph:
+                            {
+                                state = State.Paragraph;
+                                index = node.SpanStart;
+                                last = node;
+                                break;
+                            }
+                        case State.Paragraph:
+                            {
+                                last = node;
+                                break;
+                            }
+                        case State.NewLine:
+                        case State.WhiteSpaceAfterNewLine:
+                            {
+                                state = State.Paragraph;
+                                last = node;
+                                break;
+                            }
+                        case State.WhiteSpaceBetweenParagraphs:
+                            {
+                                state = State.Paragraph;
+                                index2 = node.SpanStart;
+                                last = node;
+                                break;
+                            }
+                    }
+                }
+                else if (kind == SyntaxKind.XmlText)
+                {
+                    var xmlText = (XmlTextSyntax)node;
+
+                    foreach (SyntaxToken token in xmlText.TextTokens)
+                    {
+                        cancellationToken.ThrowIfCancellationRequested();
+
+                        switch (token.Kind())
                         {
-                            var xmlElement = (XmlElementSyntax)node;
-
-                            string name = xmlElement.StartTag?.Name?.LocalName.ValueText;
-
-                            if (string.Equals(name, "code", StringComparison.OrdinalIgnoreCase)
-                                || string.Equals(name, "inheritdoc", StringComparison.OrdinalIgnoreCase)
-                                || string.Equals(name, "list", StringComparison.OrdinalIgnoreCase)
-                                || string.Equals(name, "para", StringComparison.OrdinalIgnoreCase))
-                            {
-                                return (default, default, spans);
-                            }
-
-                            if (!string.Equals(
-                                name,
-                                xmlElement.EndTag?.Name?.LocalName.ValueText,
-                                StringComparison.OrdinalIgnoreCase))
-                            {
-                                return (default, default, spans);
-                            }
-
-                            switch (state)
-                            {
-                                case State.BeforeParagraph:
-                                    {
-                                        state = State.Paragraph;
-                                        index = node.SpanStart;
-                                        last = node;
-                                        break;
-                                    }
-                                case State.Paragraph:
-                                    {
-                                        last = node;
-                                        break;
-                                    }
-                                case State.NewLine:
-                                case State.WhiteSpaceAfterNewLine:
-                                    {
-                                        state = State.Paragraph;
-                                        last = node;
-                                        break;
-                                    }
-                                case State.WhiteSpaceBetweenParagraphs:
-                                    {
-                                        state = State.Paragraph;
-                                        index2 = node.SpanStart;
-                                        last = node;
-                                        break;
-                                    }
-                            }
-
-                            break;
-                        }
-                    case SyntaxKind.XmlEmptyElement:
-                        {
-                            var xmlEmptyElement = (XmlEmptyElementSyntax)node;
-
-                            string name = xmlEmptyElement.Name?.LocalName.ValueText;
-
-                            if (string.Equals(name, "code", StringComparison.OrdinalIgnoreCase)
-                                || string.Equals(name, "inheritdoc", StringComparison.OrdinalIgnoreCase)
-                                || string.Equals(name, "list", StringComparison.OrdinalIgnoreCase)
-                                || string.Equals(name, "para", StringComparison.OrdinalIgnoreCase))
-                            {
-                                return (default, default, spans);
-                            }
-
-                            switch (state)
-                            {
-                                case State.BeforeParagraph:
-                                    {
-                                        state = State.Paragraph;
-                                        index = node.SpanStart;
-                                        last = node;
-                                        break;
-                                    }
-                                case State.Paragraph:
-                                    {
-                                        last = node;
-                                        break;
-                                    }
-                                case State.NewLine:
-                                case State.WhiteSpaceAfterNewLine:
-                                    {
-                                        state = State.Paragraph;
-                                        last = node;
-                                        break;
-                                    }
-                                case State.WhiteSpaceBetweenParagraphs:
-                                    {
-                                        state = State.Paragraph;
-                                        index2 = node.SpanStart;
-                                        last = node;
-                                        break;
-                                    }
-                            }
-
-                            break;
-                        }
-                    case SyntaxKind.XmlText:
-                        {
-                            var xmlText = (XmlTextSyntax)node;
-
-                            foreach (SyntaxToken token in xmlText.TextTokens)
-                            {
-                                cancellationToken.ThrowIfCancellationRequested();
-
-                                switch (token.Kind())
+                            case SyntaxKind.XmlTextLiteralToken:
                                 {
-                                    case SyntaxKind.XmlTextLiteralToken:
-                                        {
-                                            switch (state)
+                                    switch (state)
+                                    {
+                                        case State.BeforeParagraph:
                                             {
-                                                case State.BeforeParagraph:
-                                                    {
-                                                        if (!StringUtility.IsEmptyOrWhitespace(token.ValueText))
-                                                        {
-                                                            state = State.Paragraph;
-                                                            index = token.SpanStart;
-                                                            last = token;
-                                                        }
+                                                if (!StringUtility.IsEmptyOrWhitespace(token.ValueText))
+                                                {
+                                                    state = State.Paragraph;
+                                                    index = token.SpanStart;
+                                                    last = token;
+                                                }
 
-                                                        break;
-                                                    }
-                                                case State.Paragraph:
-                                                    {
-                                                        last = token;
-                                                        break;
-                                                    }
-                                                case State.NewLine:
-                                                    {
-                                                        if (StringUtility.IsEmptyOrWhitespace(token.ValueText))
-                                                        {
-                                                            state = State.WhiteSpaceAfterNewLine;
-                                                        }
-                                                        else
-                                                        {
-                                                            state = State.Paragraph;
-                                                            last = token;
-                                                        }
-
-                                                        break;
-                                                    }
-                                                case State.WhiteSpaceAfterNewLine:
-                                                    {
-                                                        if (!StringUtility.IsEmptyOrWhitespace(token.ValueText))
-                                                        {
-                                                            state = State.Paragraph;
-                                                            last = token;
-                                                        }
-
-                                                        break;
-                                                    }
-                                                case State.WhiteSpaceBetweenParagraphs:
-                                                    {
-                                                        if (!StringUtility.IsEmptyOrWhitespace(token.ValueText))
-                                                        {
-                                                            state = State.Paragraph;
-                                                            index2 = token.SpanStart;
-                                                            last = token;
-                                                        }
-
-                                                        break;
-                                                    }
+                                                break;
                                             }
-
-                                            break;
-                                        }
-                                    case SyntaxKind.XmlTextLiteralNewLineToken:
-                                        {
-                                            switch (state)
+                                        case State.Paragraph:
                                             {
-                                                case State.BeforeParagraph:
-                                                    {
-                                                        break;
-                                                    }
-                                                case State.Paragraph:
-                                                    {
-                                                        state = State.NewLine;
-                                                        break;
-                                                    }
-                                                case State.NewLine:
-                                                case State.WhiteSpaceAfterNewLine:
-                                                    {
-                                                        if (index2 != -1)
-                                                        {
-                                                            endIndex2 = last.Span.End;
-
-                                                            if (!stopOnFirstMatch)
-                                                            {
-                                                                if (spans == null)
-                                                                    spans = new List<TextSpan>() { TextSpan.FromBounds(index, endIndex) };
-
-                                                                spans.Add(TextSpan.FromBounds(index2, endIndex2));
-                                                                index = index2;
-                                                                index2 = -1;
-                                                            }
-                                                            else
-                                                            {
-                                                                return (TextSpan.FromBounds(index, endIndex), TextSpan.FromBounds(index2, endIndex2), default);
-                                                            }
-                                                        }
-
-                                                        endIndex = last.Span.End;
-                                                        last = default;
-                                                        state = State.WhiteSpaceBetweenParagraphs;
-                                                        break;
-                                                    }
-                                                case State.WhiteSpaceBetweenParagraphs:
-                                                    {
-                                                        break;
-                                                    }
+                                                last = token;
+                                                break;
                                             }
+                                        case State.NewLine:
+                                            {
+                                                if (StringUtility.IsEmptyOrWhitespace(token.ValueText))
+                                                {
+                                                    state = State.WhiteSpaceAfterNewLine;
+                                                }
+                                                else
+                                                {
+                                                    state = State.Paragraph;
+                                                    last = token;
+                                                }
 
-                                            break;
-                                        }
+                                                break;
+                                            }
+                                        case State.WhiteSpaceAfterNewLine:
+                                            {
+                                                if (!StringUtility.IsEmptyOrWhitespace(token.ValueText))
+                                                {
+                                                    state = State.Paragraph;
+                                                    last = token;
+                                                }
+
+                                                break;
+                                            }
+                                        case State.WhiteSpaceBetweenParagraphs:
+                                            {
+                                                if (!StringUtility.IsEmptyOrWhitespace(token.ValueText))
+                                                {
+                                                    state = State.Paragraph;
+                                                    index2 = token.SpanStart;
+                                                    last = token;
+                                                }
+
+                                                break;
+                                            }
+                                    }
+
+                                    break;
                                 }
-                            }
+                            case SyntaxKind.XmlTextLiteralNewLineToken:
+                                {
+                                    switch (state)
+                                    {
+                                        case State.BeforeParagraph:
+                                            {
+                                                break;
+                                            }
+                                        case State.Paragraph:
+                                            {
+                                                state = State.NewLine;
+                                                break;
+                                            }
+                                        case State.NewLine:
+                                        case State.WhiteSpaceAfterNewLine:
+                                            {
+                                                if (index2 != -1)
+                                                {
+                                                    endIndex2 = last.Span.End;
 
-                            break;
+                                                    if (!stopOnFirstMatch)
+                                                    {
+                                                        if (spans == null)
+                                                            spans = new List<TextSpan>() { TextSpan.FromBounds(index, endIndex) };
+
+                                                        spans.Add(TextSpan.FromBounds(index2, endIndex2));
+                                                        index = index2;
+                                                        index2 = -1;
+                                                    }
+                                                    else
+                                                    {
+                                                        return (TextSpan.FromBounds(index, endIndex), TextSpan.FromBounds(index2, endIndex2), default);
+                                                    }
+                                                }
+
+                                                endIndex = last.Span.End;
+                                                last = default;
+                                                state = State.WhiteSpaceBetweenParagraphs;
+                                                break;
+                                            }
+                                        case State.WhiteSpaceBetweenParagraphs:
+                                            {
+                                                break;
+                                            }
+                                    }
+
+                                    break;
+                                }
                         }
+                    }
                 }
             }
 
-            if (index2 == -1)
+            return CreateResult();
+
+            (TextSpan span1, TextSpan span2, List<TextSpan> spans) CreateResult()
+            {
+                if (index2 == -1)
+                    return (default, default, spans);
+
+                Debug.Assert(last != default);
+
+                endIndex2 = last.Span.End;
+
+                if (stopOnFirstMatch)
+                    return (TextSpan.FromBounds(index, endIndex), TextSpan.FromBounds(index2, endIndex2), default);
+
+                if (spans == null)
+                    spans = new List<TextSpan>() { TextSpan.FromBounds(index, endIndex) };
+
+                spans.Add(TextSpan.FromBounds(index2, endIndex2));
+
                 return (default, default, spans);
-
-            Debug.Assert(last != default);
-
-            endIndex2 = last.Span.End;
-
-            if (stopOnFirstMatch)
-                return (TextSpan.FromBounds(index, endIndex), TextSpan.FromBounds(index2, endIndex2), default);
-
-            if (spans == null)
-                spans = new List<TextSpan>() { TextSpan.FromBounds(index, endIndex) };
-
-            spans.Add(TextSpan.FromBounds(index2, endIndex2));
-
-            return (default, default, spans);
+            }
         }
 
         private enum State
