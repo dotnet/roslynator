@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata minClientVersion="2.8">
     <id>Roslynator.Analyzers</id>
-    <version>3.0.0-rc</version>
+    <version>3.0.0</version>
     <authors>Josef Pihrt</authors>
     <owners>Josef Pihrt</owners>
     <license type="expression">Apache-2.0</license>
@@ -11,7 +11,6 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A collection of 200+ analyzers for C#, powered by Roslyn.
 
-  - This package cannot be used with Visual Studio 2017.
   - This package is dependent on Microsoft.CodeAnalysis.CSharp.Workspaces 3.5.0.</description>
     <summary>A collection of 200+ analyzers for C#, powered by Roslyn.</summary>
     <copyright>Copyright (c) 2016-2020 Josef Pihrt</copyright>

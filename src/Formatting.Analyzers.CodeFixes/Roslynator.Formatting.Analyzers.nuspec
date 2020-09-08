@@ -2,14 +2,17 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata minClientVersion="2.8">
     <id>Roslynator.Formatting.Analyzers</id>
-    <version>1.0.0-rc2</version>
+    <version>1.0.0</version>
     <authors>Josef Pihrt</authors>
     <owners>Josef Pihrt</owners>
     <license type="expression">Apache-2.0</license>
     <projectUrl>http://github.com/JosefPihrt/Roslynator</projectUrl>
     <icon>icon.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>A collection of formatting analyzers, powered by Roslyn.</description>
+    <description>A collection of formatting analyzers, powered by Roslyn.
+
+  - This package is dependent on Microsoft.CodeAnalysis.CSharp.Workspaces 3.5.0.
+  - All analyzers are disabled by default.</description>
     <summary>A collection of formatting analyzers, powered by Roslyn.</summary>
     <copyright>Copyright (c) 2016-2020 Josef Pihrt</copyright>
     <tags>Roslyn Analyzer Formatting Productivity CodeAnalysis C# CSharp</tags>
