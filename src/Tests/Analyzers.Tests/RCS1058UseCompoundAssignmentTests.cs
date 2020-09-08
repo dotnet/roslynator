@@ -16,7 +16,7 @@ namespace Roslynator.CSharp.Analysis.Tests
 
         public override DiagnosticAnalyzer Analyzer { get; } = new UseCompoundAssignmentAnalyzer();
 
-        public override CodeFixProvider FixProvider { get; } = new AssignmentExpressionCodeFixProvider();
+        public override CodeFixProvider FixProvider { get; } = new UseCompoundAssignmentCodeFixProvider();
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCompoundAssignment)]
         public async Task Test_Property()
@@ -92,6 +92,32 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCompoundAssignment)]
+        public async Task Test_LazyInitialization()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    string M()
+    {
+        string x = null;
+
+        return [|x ?? (x = M())|]; // x
+    }
+}
+", @"
+class C
+{
+    string M()
+    {
+        string x = null;
+
+        return x ??= M(); // x
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCompoundAssignment)]
         public async Task TestNoDiagnostic_ObjectInitializer()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -119,6 +145,39 @@ class C
     }
 }
 ", options: CSharpCodeVerificationOptions.Default_CSharp6);
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCompoundAssignment)]
+        public async Task TestNoDiagnostic_LazyInitialization_ExpressionsAreNotEquivalent()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    string M()
+    {
+        string x = null;
+        string x2 = null;
+
+        return x ?? (x2 = M());
+    }
+}
+", options: CSharpCodeVerificationOptions.Default_CSharp7_3);
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCompoundAssignment)]
+        public async Task TestNoDiagnostic_LazyInitialization_CSharp7_3()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    string M()
+    {
+        string x = null;
+
+        return x ?? (x = M());
+    }
+}
+", options: CSharpCodeVerificationOptions.Default_CSharp7_3);
         }
     }
 }

@@ -1231,12 +1231,27 @@ enum Bar
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
+    <MinLanguageVersion>8.0 (??= operator)</MinLanguageVersion>
     <Samples>
       <Sample>
-        <Before><![CDATA[i = i + 2;]]></Before>
-        <After><![CDATA[i += 2;]]></After>
+        <Before><![CDATA[x = x + 2;]]></Before>
+        <After><![CDATA[x += 2;]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[x ?? (x = M())]]></Before>
+        <After><![CDATA[x ??= M()]]></After>
       </Sample>
     </Samples>
+    <Links>
+      <Link>
+        <Url>https://docs.microsoft.com/cs-cz/dotnet/csharp/language-reference/operators/arithmetic-operators#compound-assignment</Url>
+        <Text>Compound assignment</Text>
+      </Link>
+      <Link>
+        <Url>https://docs.microsoft.com/dotnet/csharp/language-reference/operators/null-coalescing-operator</Url>
+        <Text>?? and ??= operators</Text>
+      </Link>
+    </Links>
   </Analyzer>
   <Analyzer Identifier="AvoidLockingOnPubliclyAccessibleInstance">
     <Id>RCS1059</Id>

@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -33,6 +32,9 @@ namespace Roslynator.CSharp.Analysis
                     return;
 
                 startContext.RegisterSyntaxNodeAction(AnalyzeSimpleAssignment, SyntaxKind.SimpleAssignmentExpression);
+
+                if (((CSharpCompilation)startContext.Compilation).LanguageVersion >= LanguageVersion.CSharp8)
+                    startContext.RegisterSyntaxNodeAction(AnalyzeCoalesceExpression, SyntaxKind.CoalesceExpression);
             });
         }
 
@@ -96,6 +98,42 @@ namespace Roslynator.CSharp.Analysis
             SyntaxKind compoundAssignmentOperatorKind = CSharpFacts.GetCompoundAssignmentOperatorKind(compoundAssignmentKind);
 
             return SyntaxFacts.GetText(compoundAssignmentOperatorKind);
+        }
+
+        private static void AnalyzeCoalesceExpression(SyntaxNodeAnalysisContext context)
+        {
+            var coalesceExpression = (BinaryExpressionSyntax)context.Node;
+
+            BinaryExpressionInfo binaryExpressionInfo = SyntaxInfo.BinaryExpressionInfo(coalesceExpression, walkDownParentheses: false);
+
+            if (!binaryExpressionInfo.Success)
+                return;
+
+            ExpressionSyntax right = binaryExpressionInfo.Right;
+
+            if (!right.IsKind(SyntaxKind.ParenthesizedExpression))
+                return;
+
+            var parenthesizedExpression = (ParenthesizedExpressionSyntax)right;
+
+            ExpressionSyntax expression = parenthesizedExpression.Expression;
+
+            if (!expression.IsKind(SyntaxKind.SimpleAssignmentExpression))
+                return;
+
+            SimpleAssignmentExpressionInfo assignmentInfo = SyntaxInfo.SimpleAssignmentExpressionInfo((AssignmentExpressionSyntax)expression);
+
+            if (!assignmentInfo.Success)
+                return;
+
+            if (!CSharpFactory.AreEquivalent(binaryExpressionInfo.Left, assignmentInfo.Left))
+                return;
+
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseCompoundAssignment, coalesceExpression);
+
+            DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.UseCompoundAssignmentFadeOut, parenthesizedExpression.OpenParenToken);
+            DiagnosticHelpers.ReportNode(context, DiagnosticDescriptors.UseCompoundAssignmentFadeOut, assignmentInfo.Left);
+            DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.UseCompoundAssignmentFadeOut, parenthesizedExpression.CloseParenToken);
         }
     }
 }
