@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -400,14 +401,7 @@ namespace Roslynator.CSharp.Analysis
                 case "SingleOrDefault":
                     {
                         if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.AvoidNullReferenceException))
-                        {
-                            if (argumentCount == 0
-                                || argumentCount == 1
-                                || argumentCount == 2)
-                            {
-                                AvoidNullReferenceExceptionAnalyzer.Analyze(context, invocationInfo);
-                            }
-                        }
+                            AvoidNullReferenceExceptionAnalyzer.Analyze(context, invocationInfo);
 
                         break;
                     }
@@ -440,6 +434,17 @@ namespace Roslynator.CSharp.Analysis
                             && argumentCount >= 2)
                         {
                             OptimizeMethodCallAnalysis.OptimizeStringJoin(context, invocationInfo);
+                        }
+
+                        break;
+                    }
+                default:
+                    {
+                        if (methodName.Length > "OrDefault".Length
+                            && methodName.EndsWith("OrDefault", StringComparison.Ordinal)
+                            && !context.IsAnalyzerSuppressed(DiagnosticDescriptors.AvoidNullReferenceException))
+                        {
+                            AvoidNullReferenceExceptionAnalyzer.Analyze(context, invocationInfo);
                         }
 
                         break;
