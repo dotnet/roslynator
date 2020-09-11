@@ -60,7 +60,7 @@ namespace Roslynator.CSharp.CodeFixes
                 .First(f => f.IsKind(SyntaxKind.XmlTextLiteralNewLineToken))
                 .ValueText;
 
-            string indentation = xmlElement.GetIndentation(cancellationToken).ToString();
+            string indentation = SyntaxTriviaAnalysis.DetermineIndentation(xmlElement, cancellationToken).ToString();
 
             string s = $"{newLine}{indentation}/// ";
 

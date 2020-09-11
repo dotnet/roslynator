@@ -2936,58 +2936,6 @@ namespace Roslynator.CSharp
             return false;
         }
 
-        internal static SyntaxTrivia GetIndentation(this SyntaxNode node, CancellationToken cancellationToken = default)
-        {
-            SyntaxTree tree = node.SyntaxTree;
-
-            if (tree != null)
-            {
-                TextSpan span = node.Span;
-
-                int lineStartIndex = span.Start - tree.GetLineSpan(span, cancellationToken).StartLinePosition.Character;
-
-                while (!node.FullSpan.Contains(lineStartIndex))
-                    node = node.GetParent(ascendOutOfTrivia: true);
-
-                if (node.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia))
-                {
-                    if (((DocumentationCommentTriviaSyntax)node)
-                        .ParentTrivia
-                        .TryGetContainingList(out SyntaxTriviaList leading, allowTrailing: false))
-                    {
-                        SyntaxTrivia trivia = leading.Last();
-
-                        if (trivia.IsWhitespaceTrivia())
-                            return trivia;
-                    }
-                }
-                else
-                {
-                    SyntaxToken token = node.FindToken(lineStartIndex);
-
-                    SyntaxTriviaList leading = token.LeadingTrivia;
-
-                    if (leading.Any()
-                        && leading.FullSpan.Contains(lineStartIndex))
-                    {
-                        SyntaxTrivia trivia = leading.Last();
-
-                        if (trivia.IsWhitespaceTrivia())
-                            return trivia;
-                    }
-                }
-            }
-
-            return EmptyWhitespace();
-        }
-
-        internal static SyntaxTriviaList GetIncreasedIndentation(this SyntaxNode node, CancellationToken cancellationToken = default)
-        {
-            SyntaxTrivia trivia = GetIndentation(node, cancellationToken);
-
-            return IncreaseIndentation(trivia);
-        }
-
         internal static bool ContainsUnbalancedIfElseDirectives(this SyntaxNode node)
         {
             return ContainsUnbalancedIfElseDirectives(node, node.FullSpan);

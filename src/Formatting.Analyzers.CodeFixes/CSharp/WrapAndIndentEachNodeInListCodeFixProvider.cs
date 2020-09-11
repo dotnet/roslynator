@@ -127,7 +127,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
 
             IEnumerable<TextChange> GetTextChanges()
             {
-                string newText = SyntaxTriviaAnalysis.GetEndOfLine(nodes[0]).ToString() + GetIndentation();
+                string newText = SyntaxTriviaAnalysis.DetermineEndOfLine(nodes[0]).ToString() + GetIndentation();
 
                 yield return GetTextChange(nodes[0].GetFirstToken().GetPreviousToken(), nodes[0]);
 
@@ -165,7 +165,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                     }
                 }
 
-                return nodes[0].GetIndentation(cancellationToken).ToString() + nodes[0].SyntaxTree.GetFirstIndentation(cancellationToken);
+                return SyntaxTriviaAnalysis.GetIncreasedIndentation(nodes[0], cancellationToken);
             }
         }
     }

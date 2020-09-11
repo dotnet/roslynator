@@ -35,44 +35,6 @@ namespace Roslynator.CSharp
                     return CarriageReturnLineFeed;
             }
         }
-
-        internal static SyntaxTriviaList IncreaseIndentation(SyntaxTrivia trivia)
-        {
-            return TriviaList(trivia, SingleIndentation(trivia));
-        }
-
-        internal static SyntaxTrivia SingleIndentation(SyntaxTrivia trivia)
-        {
-            if (trivia.IsWhitespaceTrivia())
-            {
-                string s = trivia.ToString();
-
-                int length = s.Length;
-
-                if (length > 0)
-                {
-                    if (s.All(f => f == '\t'))
-                    {
-                        return Tab;
-                    }
-                    else if (s.All(f => f == ' '))
-                    {
-                        if (length % 4 == 0)
-                            return Whitespace("    ");
-
-                        if (length % 3 == 0)
-                            return Whitespace("   ");
-
-                        if (length % 2 == 0)
-                            return Whitespace("  ");
-                    }
-                }
-            }
-
-            return DefaultIndentation;
-        }
-
-        internal static SyntaxTrivia DefaultIndentation { get; } = Whitespace("    ");
         #endregion Trivia
 
         #region Token

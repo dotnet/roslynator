@@ -36,7 +36,7 @@ namespace Roslynator.CSharp.Refactorings
 
             int index = statements.IndexOf(expressionStatement);
 
-            string indentation = expressionStatement.GetIncreasedIndentation(cancellationToken).ToString();
+            string indentation = SyntaxTriviaAnalysis.GetIncreasedIndentation(expressionStatement, cancellationToken);
 
             var sb = new StringBuilder(invocationExpression.ToString());
 

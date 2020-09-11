@@ -93,11 +93,7 @@ namespace Roslynator.CSharp.Refactorings
 
             declaration = declaration.ReplaceToken(previousToken, previousToken.WithTrailingTrivia(TriviaList(NewLine())));
 
-            SyntaxTriviaList leadingTrivia = declaration
-                .FindToken(declaration.SpanStart)
-                .LeadingTrivia;
-
-            SyntaxTriviaList trivia = IncreaseIndentation(leadingTrivia.LastOrDefault());
+            SyntaxTrivia trivia = SyntaxTriviaAnalysis.GetIncreasedIndentationTrivia(declaration);
 
             int count = constraintClauses.Count;
 

@@ -59,7 +59,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                                 return CodeFixHelpers.AddNewLineBeforeAndIncreaseIndentationAsync(
                                     document,
                                     ((ConstructorDeclarationSyntax)memberDeclaration).Initializer.ColonToken,
-                                    memberDeclaration.GetIndentation(ct),
+                                    SyntaxTriviaAnalysis.AnalyzeIndentation(memberDeclaration, ct),
                                     ct);
                             },
                             GetEquivalenceKey(diagnostic));

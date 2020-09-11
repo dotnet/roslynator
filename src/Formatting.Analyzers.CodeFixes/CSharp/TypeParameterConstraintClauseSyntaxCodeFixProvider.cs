@@ -38,7 +38,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                     return CodeFixHelpers.AddNewLineBeforeAndIncreaseIndentationAsync(
                         document,
                         constraintClause.WhereKeyword,
-                        constraintClause.Parent.GetIndentation(ct),
+                        SyntaxTriviaAnalysis.AnalyzeIndentation(constraintClause.Parent, ct),
                         ct);
                 },
                 GetEquivalenceKey(diagnostic));

@@ -182,7 +182,7 @@ namespace Roslynator.CSharp
 
         public static ConditionalExpressionSyntax ToMultiLine(ConditionalExpressionSyntax conditionalExpression, CancellationToken cancellationToken = default)
         {
-            SyntaxTriviaList leadingTrivia = conditionalExpression.GetIncreasedIndentation(cancellationToken);
+            SyntaxTriviaList leadingTrivia = SyntaxTriviaAnalysis.GetIncreasedIndentationTriviaList(conditionalExpression, cancellationToken);
 
             leadingTrivia = leadingTrivia.Insert(0, NewLine());
 
@@ -206,7 +206,7 @@ namespace Roslynator.CSharp
 
         public static ParameterListSyntax ToMultiLine(ParameterListSyntax parameterList, CancellationToken cancellationToken = default)
         {
-            SyntaxTriviaList leadingTrivia = parameterList.GetIncreasedIndentation(cancellationToken);
+            SyntaxTriviaList leadingTrivia = SyntaxTriviaAnalysis.GetIncreasedIndentationTriviaList(parameterList, cancellationToken);
 
             var nodesAndTokens = new List<SyntaxNodeOrToken>();
 
@@ -255,10 +255,10 @@ namespace Roslynator.CSharp
             }
             else
             {
-                SyntaxTrivia trivia = initializer.GetIndentation(cancellationToken);
+                IndentationAnalysis indentationAnalysis = SyntaxTriviaAnalysis.AnalyzeIndentation(initializer, cancellationToken);
 
-                SyntaxTriviaList braceTrivia = TriviaList(NewLine(), trivia);
-                SyntaxTriviaList expressionTrivia = TriviaList(NewLine(), trivia, SingleIndentation(trivia));
+                SyntaxTriviaList braceTrivia = TriviaList(NewLine(), indentationAnalysis.Indentation);
+                SyntaxTriviaList expressionTrivia = TriviaList(NewLine(), indentationAnalysis.GetIncreasedIndentationTrivia());
 
                 return initializer
                     .WithExpressions(
@@ -281,7 +281,7 @@ namespace Roslynator.CSharp
 
         public static ArgumentListSyntax ToMultiLine(ArgumentListSyntax argumentList, CancellationToken cancellationToken = default)
         {
-            SyntaxTriviaList leadingTrivia = argumentList.GetIncreasedIndentation(cancellationToken);
+            SyntaxTriviaList leadingTrivia = SyntaxTriviaAnalysis.GetIncreasedIndentationTriviaList(argumentList, cancellationToken);
 
             var nodesAndTokens = new List<SyntaxNodeOrToken>();
 
@@ -315,9 +315,9 @@ namespace Roslynator.CSharp
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default)
         {
-            SyntaxTrivia trivia = expression.GetIndentation(cancellationToken);
+            IndentationAnalysis indentationAnalysis = SyntaxTriviaAnalysis.AnalyzeIndentation(expression, cancellationToken);
 
-            string indentation = Environment.NewLine + trivia.ToString() + SingleIndentation(trivia).ToString();
+            string indentation = Environment.NewLine + indentationAnalysis.GetIncreasedIndentation();
 
             TextChange? textChange = null;
             List<TextChange> textChanges = null;
@@ -391,7 +391,7 @@ namespace Roslynator.CSharp
 
         private static AttributeArgumentListSyntax ToMultiLine(AttributeArgumentListSyntax argumentList, CancellationToken cancellationToken = default)
         {
-            SyntaxTriviaList leadingTrivia = argumentList.GetIncreasedIndentation(cancellationToken);
+            SyntaxTriviaList leadingTrivia = SyntaxTriviaAnalysis.GetIncreasedIndentationTriviaList(argumentList, cancellationToken);
 
             var nodesAndTokens = new List<SyntaxNodeOrToken>();
 
@@ -424,7 +424,7 @@ namespace Roslynator.CSharp
             BinaryExpressionSyntax condition,
             CancellationToken cancellationToken = default)
         {
-            SyntaxTriviaList leadingTrivia = condition.GetIncreasedIndentation(cancellationToken);
+            SyntaxTriviaList leadingTrivia = SyntaxTriviaAnalysis.GetIncreasedIndentationTriviaList(condition, cancellationToken);
 
             leadingTrivia = leadingTrivia.Insert(0, NewLine());
 
