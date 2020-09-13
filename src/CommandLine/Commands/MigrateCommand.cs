@@ -285,7 +285,7 @@ namespace Roslynator.CommandLine
                 {
                     var message = new LogMessage("Update package 'Roslynator.Formatting.Analyzers' to '1.0.0'", Colors.Message_OK, Verbosity.Normal);
 
-                    (messages ?? (messages = new List<LogMessage>())).Add(message);
+                    (messages ??= new List<LogMessage>()).Add(message);
 
                     formattingAnalyzers.SetAttributeValue("Version", "1.0.0");
                 }
@@ -293,7 +293,7 @@ namespace Roslynator.CommandLine
                 {
                     var message = new LogMessage("Add package 'Roslynator.Formatting.Analyzers 1.0.0'", Colors.Message_OK, Verbosity.Normal);
 
-                    (messages ?? (messages = new List<LogMessage>())).Add(message);
+                    (messages ??= new List<LogMessage>()).Add(message);
 
                     XText whitespace = null;
 
@@ -393,7 +393,7 @@ namespace Roslynator.CommandLine
 
                     var message = new LogMessage($"Update rule '{kvp.Key}' to '{newId}' ({action})", Colors.Message_OK, Verbosity.Normal);
 
-                    (messages ?? (messages = new List<LogMessage>())).Add(message);
+                    (messages ??= new List<LogMessage>()).Add(message);
 
                     formattingAnalyzers.Add(newRule);
 
@@ -470,7 +470,7 @@ namespace Roslynator.CommandLine
 
                 var message = new LogMessage($"Update rule '{id}' to '{en.Current}' ({severity})", Colors.Message_OK, Verbosity.Normal);
 
-                (messages ?? (messages = new List<LogMessage>())).Add(message);
+                (messages ??= new List<LogMessage>()).Add(message);
 
                 if (en.MoveNext())
                 {

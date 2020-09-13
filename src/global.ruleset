@@ -250,11 +250,14 @@
     <Rule Id="IDE0046WithoutSuggestion" Action="None" />
     <Rule Id="IDE0047" Action="None" />
     <Rule Id="IDE0047WithoutSuggestion" Action="None" />
+    <Rule Id="IDE0054" Action="None" />
+    <Rule Id="IDE0054WithoutSuggestion" Action="None" />
     <Rule Id="IDE0063" Action="None" />
     <Rule Id="IDE0063WithoutSuggestion" Action="None" />
-    <Rule Id="IDE0066" Action="Hidden" />
     <Rule Id="IDE0066WithoutSuggestion" Action="None" />
     <Rule Id="IDE0071WithoutSuggestion" Action="None" />
+    <Rule Id="IDE0074" Action="None" />
+    <Rule Id="IDE0074WithoutSuggestion" Action="None" />
     <Rule Id="IDE1005" Action="Info" />
     <Rule Id="IDE1006" Action="Info" />
   </Rules>

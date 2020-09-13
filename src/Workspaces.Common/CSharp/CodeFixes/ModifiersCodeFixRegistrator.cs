@@ -248,7 +248,7 @@ namespace Roslynator.CSharp.CodeFixes
             for (int i = 0; i < modifiers.Count; i++)
             {
                 if (predicate(modifiers[i]))
-                    (indexes ?? (indexes = new List<int>())).Add(i);
+                    (indexes ??= new List<int>()).Add(i);
             }
 
             if (indexes != null)

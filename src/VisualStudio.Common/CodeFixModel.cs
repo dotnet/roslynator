@@ -23,7 +23,7 @@ namespace Roslynator.VisualStudio
 
         public string CodeFixTitle { get; }
 
-        public override string Id => _id ?? (_id = $"{CompilerDiagnosticId}.{CodeFixId}");
+        public override string Id => _id ??= $"{CompilerDiagnosticId}.{CodeFixId}";
 
         public override string NameToolTip => CompilerDiagnosticTitle;
     }

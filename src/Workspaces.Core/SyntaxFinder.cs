@@ -101,7 +101,7 @@ namespace Roslynator
                     {
                         var info = new DocumentReferenceInfo(document, root, nodes.ToImmutableArray());
 
-                        (infos ?? (infos = new List<DocumentReferenceInfo>())).Add(info);
+                        (infos ??= new List<DocumentReferenceInfo>()).Add(info);
                     }
                 }
             }
@@ -156,7 +156,7 @@ namespace Roslynator
 
                         Debug.Assert(node != null);
 
-                        (nodes ?? (nodes = new List<SyntaxNode>())).Add(node);
+                        (nodes ??= new List<SyntaxNode>()).Add(node);
                     }
                 }
             }

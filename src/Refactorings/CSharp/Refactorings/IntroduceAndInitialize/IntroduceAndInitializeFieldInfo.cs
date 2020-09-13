@@ -21,7 +21,7 @@ namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
 
         public override string Name
         {
-            get { return _name ?? (_name = StringUtility.ToCamelCase(ParameterName, PrefixFieldIdentifierWithUnderscore)); }
+            get { return _name ??= StringUtility.ToCamelCase(ParameterName, PrefixFieldIdentifierWithUnderscore); }
         }
 
         public override MemberDeclarationSyntax CreateDeclaration()

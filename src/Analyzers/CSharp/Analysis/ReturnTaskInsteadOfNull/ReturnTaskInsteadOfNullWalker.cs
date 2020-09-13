@@ -26,7 +26,7 @@ namespace Roslynator.CSharp.Analysis.ReturnTaskInsteadOfNull
                 SyntaxKind.DefaultLiteralExpression,
                 SyntaxKind.ConditionalAccessExpression) == true)
             {
-                (Expressions ?? (Expressions = new List<ExpressionSyntax>())).Add(expression);
+                (Expressions ??= new List<ExpressionSyntax>()).Add(expression);
             }
         }
 

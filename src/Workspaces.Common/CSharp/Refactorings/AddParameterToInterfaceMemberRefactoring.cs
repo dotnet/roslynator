@@ -180,7 +180,7 @@ namespace Roslynator.CSharp.Refactorings
                     }
                     else
                     {
-                        (codeActions ?? (codeActions = new List<CodeAction>() { singleCodeAction })).Add(codeAction);
+                        (codeActions ??= new List<CodeAction>() { singleCodeAction }).Add(codeAction);
                     }
 
                     count++;

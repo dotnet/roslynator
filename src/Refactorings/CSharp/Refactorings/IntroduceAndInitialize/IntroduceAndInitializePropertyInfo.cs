@@ -20,7 +20,7 @@ namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
 
         public override string Name
         {
-            get { return _name ?? (_name = StringUtility.FirstCharToUpper(ParameterName)); }
+            get { return _name ??= StringUtility.FirstCharToUpper(ParameterName); }
         }
 
         public override MemberDeclarationSyntax CreateDeclaration()

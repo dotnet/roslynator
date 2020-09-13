@@ -58,7 +58,7 @@ namespace Roslynator
 
                 if ((value & value2) == value2)
                 {
-                    (values ?? (values = new List<EnumFieldSymbolInfo>())).Add(Fields[i]);
+                    (values ??= new List<EnumFieldSymbolInfo>()).Add(Fields[i]);
 
                     value &= ~value2;
 

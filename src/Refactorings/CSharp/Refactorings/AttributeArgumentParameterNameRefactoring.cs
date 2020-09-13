@@ -37,7 +37,7 @@ namespace Roslynator.CSharp.Refactorings
                 if (argument.Expression != null
                     && context.Span.Contains(argument.Expression.Span))
                 {
-                    (list ?? (list = new List<AttributeArgumentSyntax>())).Add(argument);
+                    (list ??= new List<AttributeArgumentSyntax>()).Add(argument);
                 }
             }
 

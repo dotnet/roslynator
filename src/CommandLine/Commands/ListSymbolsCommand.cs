@@ -100,7 +100,7 @@ namespace Roslynator.CommandLine
                     return CommandResult.Fail;
                 }
 
-                (externalAssemblies ?? (externalAssemblies = new HashSet<IAssemblySymbol>())).Add(externalAssembly);
+                (externalAssemblies ??= new HashSet<IAssemblySymbol>()).Add(externalAssembly);
             }
 
             if (externalAssemblies != null)

@@ -27,12 +27,12 @@ namespace Roslynator.CodeGeneration.CSharp
         private static INamedTypeSymbol _syntaxTokenSymbol;
         private static INamedTypeSymbol _syntaxTokenListSymbol;
 
-        public static INamedTypeSymbol CSharpSyntaxWalkerSymbol => _csharpSyntaxWalkerSymbol ?? (_csharpSyntaxWalkerSymbol = Compilation.GetTypeByMetadataName("Microsoft.CodeAnalysis.CSharp.CSharpSyntaxWalker"));
-        public static INamedTypeSymbol SyntaxNodeSymbol => _syntaxNodeSymbol ?? (_syntaxNodeSymbol = Compilation.GetTypeByMetadataName("Microsoft.CodeAnalysis.CSharp.CSharpSyntaxNode"));
-        public static INamedTypeSymbol SyntaxListSymbol => _syntaxListSymbol ?? (_syntaxListSymbol = Compilation.GetTypeByMetadataName("Microsoft.CodeAnalysis.SyntaxList`1"));
-        public static INamedTypeSymbol SeparatedSyntaxListSymbol => _separatedSyntaxListSymbol ?? (_separatedSyntaxListSymbol = Compilation.GetTypeByMetadataName("Microsoft.CodeAnalysis.SeparatedSyntaxList`1"));
-        public static INamedTypeSymbol SyntaxTokenSymbol => _syntaxTokenSymbol ?? (_syntaxTokenSymbol = Compilation.GetTypeByMetadataName("Microsoft.CodeAnalysis.SyntaxToken"));
-        public static INamedTypeSymbol SyntaxTokenListSymbol => _syntaxTokenListSymbol ?? (_syntaxTokenListSymbol = Compilation.GetTypeByMetadataName("Microsoft.CodeAnalysis.SyntaxTokenList"));
+        public static INamedTypeSymbol CSharpSyntaxWalkerSymbol => _csharpSyntaxWalkerSymbol ??= Compilation.GetTypeByMetadataName("Microsoft.CodeAnalysis.CSharp.CSharpSyntaxWalker");
+        public static INamedTypeSymbol SyntaxNodeSymbol => _syntaxNodeSymbol ??= Compilation.GetTypeByMetadataName("Microsoft.CodeAnalysis.CSharp.CSharpSyntaxNode");
+        public static INamedTypeSymbol SyntaxListSymbol => _syntaxListSymbol ??= Compilation.GetTypeByMetadataName("Microsoft.CodeAnalysis.SyntaxList`1");
+        public static INamedTypeSymbol SeparatedSyntaxListSymbol => _separatedSyntaxListSymbol ??= Compilation.GetTypeByMetadataName("Microsoft.CodeAnalysis.SeparatedSyntaxList`1");
+        public static INamedTypeSymbol SyntaxTokenSymbol => _syntaxTokenSymbol ??= Compilation.GetTypeByMetadataName("Microsoft.CodeAnalysis.SyntaxToken");
+        public static INamedTypeSymbol SyntaxTokenListSymbol => _syntaxTokenListSymbol ??= Compilation.GetTypeByMetadataName("Microsoft.CodeAnalysis.SyntaxTokenList");
 
         public static ImmutableArray<IMethodSymbol> VisitMethodSymbols
         {
@@ -82,7 +82,7 @@ namespace Roslynator.CodeGeneration.CSharp
         {
             get
             {
-                return _compilation ?? (_compilation = CSharpCompilation.Create(
+                return _compilation ??= CSharpCompilation.Create(
                     assemblyName: "Temp",
                     syntaxTrees: null,
                     references: new MetadataReference[]
@@ -90,7 +90,7 @@ namespace Roslynator.CodeGeneration.CSharp
                         CorLibReference,
                         CreateFromAssemblyName("Microsoft.CodeAnalysis.dll"),
                         CreateFromAssemblyName("Microsoft.CodeAnalysis.CSharp.dll")
-                    }));
+                    });
             }
         }
 

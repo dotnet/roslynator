@@ -374,7 +374,7 @@ namespace Roslynator.CSharp
                 }
                 else
                 {
-                    (textChanges ?? (textChanges = new List<TextChange>() { textChange.Value })).Add(tc);
+                    (textChanges ??= new List<TextChange>() { textChange.Value }).Add(tc);
                 }
             }
         }

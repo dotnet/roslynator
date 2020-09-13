@@ -171,7 +171,7 @@ namespace Roslynator.Testing.Text
 
                     var span = new LinePositionSpanInfo(start, end);
 
-                    (spans ?? (spans = new List<LinePositionSpanInfo>())).Add(span);
+                    (spans ??= new List<LinePositionSpanInfo>()).Add(span);
 
                     sb.Append(s, lastPos, i - lastPos);
                 }

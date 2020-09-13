@@ -109,7 +109,7 @@ namespace Roslynator.CommandLine
                         WriteSymbol(symbol, Verbosity.Normal, indentation: "    ", addCommentId: true, padding: maxKindLength);
                     }
 
-                    (symbols ?? (symbols = ImmutableArray.CreateBuilder<ISymbol>())).AddRange(projectSymbols);
+                    (symbols ??= ImmutableArray.CreateBuilder<ISymbol>()).AddRange(projectSymbols);
                 }
 
                 stopwatch.Stop();

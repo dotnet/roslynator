@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.Analysis
                 if (IsAccessibleFromDerivedClass(baseConstructor)
                     && constructors.IndexOf(baseConstructor, ParametersComparer.Instance) == -1)
                 {
-                    (missing ?? (missing = new List<IMethodSymbol>())).Add(baseConstructor);
+                    (missing ??= new List<IMethodSymbol>()).Add(baseConstructor);
                 }
             }
 

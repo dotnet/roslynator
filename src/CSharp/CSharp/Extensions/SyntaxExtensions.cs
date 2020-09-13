@@ -292,7 +292,7 @@ namespace Roslynator.CSharp
                         if (en.MoveNext()
                             && en.Current.IsEndOfLineTrivia())
                         {
-                            (topTrivia ?? (topTrivia = new List<SyntaxTrivia>())).Add(trivia);
+                            (topTrivia ??= new List<SyntaxTrivia>()).Add(trivia);
                             topTrivia.Add(en.Current);
                         }
                         else

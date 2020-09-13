@@ -45,7 +45,7 @@ namespace Roslynator.CSharp.Helpers
 
                             if (typeSymbol?.IsErrorType() == false)
                             {
-                                (typeSymbols ?? (typeSymbols = new HashSet<ITypeSymbol>())).Add(typeSymbol);
+                                (typeSymbols ??= new HashSet<ITypeSymbol>()).Add(typeSymbol);
                             }
                         }
 

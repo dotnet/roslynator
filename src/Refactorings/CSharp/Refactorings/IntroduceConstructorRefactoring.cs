@@ -50,7 +50,7 @@ namespace Roslynator.CSharp.Refactorings
 
                         if (CanBeAssignedFromConstructor(member, context.Span, semanticModel, context.CancellationToken))
                         {
-                            (members ?? (members = new List<MemberDeclarationSyntax>())).Add(member);
+                            (members ??= new List<MemberDeclarationSyntax>()).Add(member);
                         }
                     }
                 }

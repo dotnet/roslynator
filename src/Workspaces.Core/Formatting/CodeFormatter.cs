@@ -75,7 +75,7 @@ namespace Roslynator.Formatting
 #if DEBUG
                     bool success = await VerifySyntaxEquivalenceAsync(project.GetDocument(document.Id), document, syntaxFacts).ConfigureAwait(false);
 #endif
-                    (builder ?? (builder = ImmutableArray.CreateBuilder<DocumentId>())).Add(document.Id);
+                    (builder ??= ImmutableArray.CreateBuilder<DocumentId>()).Add(document.Id);
                 }
             }
 

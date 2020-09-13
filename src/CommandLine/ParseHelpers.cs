@@ -65,7 +65,7 @@ namespace Roslynator.CommandLine
                 string key = property.Substring(0, index);
                 string value = property.Substring(index + 1);
 
-                (properties ?? (properties = new List<KeyValuePair<string, string>>())).Add(new KeyValuePair<string, string>(key, value));
+                (properties ??= new List<KeyValuePair<string, string>>()).Add(new KeyValuePair<string, string>(key, value));
             }
 
             return true;
@@ -228,7 +228,7 @@ namespace Roslynator.CommandLine
                     return false;
                 }
 
-                (builder ?? (builder = ImmutableArray.CreateBuilder<MetadataName>())).Add(metadataName);
+                (builder ??= ImmutableArray.CreateBuilder<MetadataName>()).Add(metadataName);
             }
 
             metadataNames = builder?.ToImmutableArray() ?? ImmutableArray<MetadataName>.Empty;

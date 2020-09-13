@@ -539,7 +539,7 @@ namespace Roslynator.Documentation.Html
 
         internal override void WriteTypeHierarchyItem(TypeHierarchyItem item, CancellationToken cancellationToken = default)
         {
-            (_typeHierarchy ?? (_typeHierarchy = new List<TypeHierarchyItem>())).Add(item);
+            (_typeHierarchy ??= new List<TypeHierarchyItem>()).Add(item);
             base.WriteTypeHierarchyItem(item, cancellationToken);
             _typeHierarchy.RemoveAt(_typeHierarchy.Count - 1);
         }

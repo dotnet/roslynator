@@ -119,7 +119,7 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
                 {
                     var parameterInfo = new ParameterInfo(parameterSymbol, argument.Expression);
 
-                    (parameterInfos ?? (parameterInfos = new List<ParameterInfo>())).Add(parameterInfo);
+                    (parameterInfos ??= new List<ParameterInfo>()).Add(parameterInfo);
                 }
                 else
                 {
@@ -136,7 +136,7 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
                     {
                         var parameterInfo = new ParameterInfo(parameterSymbol, null);
 
-                        (parameterInfos ?? (parameterInfos = new List<ParameterInfo>())).Add(parameterInfo);
+                        (parameterInfos ??= new List<ParameterInfo>()).Add(parameterInfo);
                     }
                     else
                     {
@@ -161,7 +161,7 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
 
                 var parameterInfo = new ParameterInfo(symbol.ReducedFrom.Parameters[0], expression.TrimTrivia(), isThis: true);
 
-                (parameterInfos ?? (parameterInfos = new List<ParameterInfo>())).Add(parameterInfo);
+                (parameterInfos ??= new List<ParameterInfo>()).Add(parameterInfo);
             }
 
             return (parameterInfos != null)

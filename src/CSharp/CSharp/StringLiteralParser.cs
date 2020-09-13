@@ -233,7 +233,7 @@ namespace Roslynator.CSharp
                     }
                 }
 
-                (sb ?? (sb = StringBuilderCache.GetInstance(text.Length))).Append(ch);
+                (sb ??= StringBuilderCache.GetInstance(text.Length)).Append(ch);
             }
 
             return new StringLiteralParserResult((sb != null)
@@ -285,7 +285,7 @@ namespace Roslynator.CSharp
                     }
                 }
 
-                (sb ?? (sb = StringBuilderCache.GetInstance(text.Length))).Append(ch);
+                (sb ??= StringBuilderCache.GetInstance(text.Length)).Append(ch);
             }
 
             return new StringLiteralParserResult((sb != null)

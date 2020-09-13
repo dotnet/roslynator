@@ -114,12 +114,12 @@ namespace Roslynator.CodeFixes
         {
             get
             {
-                return _compilationWithAnalyzersOptions ?? (_compilationWithAnalyzersOptions = new CompilationWithAnalyzersOptions(
+                return _compilationWithAnalyzersOptions ??= new CompilationWithAnalyzersOptions(
                     options: default(AnalyzerOptions),
                     onAnalyzerException: default(Action<Exception, DiagnosticAnalyzer, Diagnostic>),
                     concurrentAnalysis: ConcurrentAnalysis,
                     logAnalyzerExecutionTime: false,
-                    reportSuppressedDiagnostics: false));
+                    reportSuppressedDiagnostics: false);
             }
         }
     }

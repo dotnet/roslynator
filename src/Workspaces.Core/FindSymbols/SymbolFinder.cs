@@ -76,7 +76,7 @@ namespace Roslynator.FindSymbols
                                     {
                                         progress?.OnSymbolFound(symbol);
 
-                                        (symbols ?? (symbols = ImmutableArray.CreateBuilder<ISymbol>())).Add(symbol);
+                                        (symbols ??= ImmutableArray.CreateBuilder<ISymbol>()).Add(symbol);
                                     }
 
                                     break;

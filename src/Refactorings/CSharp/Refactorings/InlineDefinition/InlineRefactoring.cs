@@ -358,7 +358,7 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
             foreach (ISymbol symbol in declarationSymbols)
             {
                 if (reservedNames.Contains(symbol.Name))
-                    (symbols ?? (symbols = new List<ISymbol>())).Add(symbol);
+                    (symbols ??= new List<ISymbol>()).Add(symbol);
             }
 
             if (symbols == null)

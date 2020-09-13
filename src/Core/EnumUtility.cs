@@ -95,7 +95,7 @@ namespace Roslynator
                     && val != value
                     && (result & val) == val)
                 {
-                    (builder ?? (builder = ImmutableArray.CreateBuilder<EnumFieldSymbolInfo>())).Add(fields[i]);
+                    (builder ??= ImmutableArray.CreateBuilder<EnumFieldSymbolInfo>()).Add(fields[i]);
 
                     result -= val;
 

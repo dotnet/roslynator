@@ -194,7 +194,7 @@ namespace Roslynator
                     if (!excludeAnonymousTypeProperty
                         || !symbol.IsPropertyOfAnonymousType())
                     {
-                        (symbols ?? (symbols = new HashSet<ISymbol>())).Add(symbol);
+                        (symbols ??= new HashSet<ISymbol>()).Add(symbol);
                     }
                 }
             }

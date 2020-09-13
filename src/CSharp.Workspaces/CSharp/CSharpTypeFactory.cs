@@ -17,37 +17,37 @@ namespace Roslynator.CSharp
 
         public static TypeSyntax BoolType()
         {
-            return _boolType ?? (_boolType = Parse("System.Boolean"));
+            return _boolType ??= Parse("System.Boolean");
         }
 
         public static TypeSyntax IntType()
         {
-            return _intType ?? (_intType = Parse("System.Int32"));
+            return _intType ??= Parse("System.Int32");
         }
 
         public static TypeSyntax DoubleType()
         {
-            return _doubleType ?? (_doubleType = Parse("System.Double"));
+            return _doubleType ??= Parse("System.Double");
         }
 
         public static TypeSyntax StringType()
         {
-            return _stringType ?? (_stringType = Parse("System.String"));
+            return _stringType ??= Parse("System.String");
         }
 
         public static TypeSyntax ObjectType()
         {
-            return _objectType ?? (_objectType = Parse("System.Object"));
+            return _objectType ??= Parse("System.Object");
         }
 
         public static TypeSyntax NotImplementedException()
         {
-            return _notImplementedException ?? (_notImplementedException = Parse("System.NotImplementedException"));
+            return _notImplementedException ??= Parse("System.NotImplementedException");
         }
 
         public static TypeSyntax NotSupportedException()
         {
-            return _notSupportedException ?? (_notSupportedException = Parse("System.NotSupportedException"));
+            return _notSupportedException ??= Parse("System.NotSupportedException");
         }
 
         private static TypeSyntax Parse(string typeName)

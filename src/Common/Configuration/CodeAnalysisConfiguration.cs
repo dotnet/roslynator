@@ -205,7 +205,7 @@ namespace Roslynator.Configuration
                                 string path = LoadPath(attribute, directoryPath);
 
                                 if (path != null)
-                                    (includes ?? (includes = new Queue<string>())).Enqueue(path);
+                                    (includes ??= new Queue<string>()).Enqueue(path);
                             }
                             else
                             {
@@ -533,22 +533,22 @@ namespace Roslynator.Configuration
 
             public ImmutableDictionary<string, bool>.Builder Analyzers
             {
-                get { return _analyzers ?? (_analyzers = ImmutableDictionary.CreateBuilder<string, bool>()); }
+                get { return _analyzers ??= ImmutableDictionary.CreateBuilder<string, bool>(); }
             }
 
             public ImmutableDictionary<string, bool>.Builder CodeFixes
             {
-                get { return _codeFixes ?? (_codeFixes = ImmutableDictionary.CreateBuilder<string, bool>()); }
+                get { return _codeFixes ??= ImmutableDictionary.CreateBuilder<string, bool>(); }
             }
 
             public ImmutableDictionary<string, bool>.Builder Refactorings
             {
-                get { return _refactorings ?? (_refactorings = ImmutableDictionary.CreateBuilder<string, bool>()); }
+                get { return _refactorings ??= ImmutableDictionary.CreateBuilder<string, bool>(); }
             }
 
             public ImmutableArray<string>.Builder RuleSets
             {
-                get { return _ruleSets ?? (_ruleSets = ImmutableArray.CreateBuilder<string>()); }
+                get { return _ruleSets ??= ImmutableArray.CreateBuilder<string>(); }
             }
 
             public bool PrefixFieldIdentifierWithUnderscore { get; set; } = Empty.PrefixFieldIdentifierWithUnderscore;
