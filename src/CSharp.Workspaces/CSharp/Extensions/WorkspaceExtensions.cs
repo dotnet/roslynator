@@ -415,6 +415,15 @@ namespace Roslynator.CSharp
             return document.ReplaceNodeAsync(statementsInfo.Parent, statementsInfo.WithStatements(newStatements).Parent, cancellationToken);
         }
 
+        internal static Task<Document> ReplaceStatementsAsync(
+            this Document document,
+            in StatementListInfo statementsInfo,
+            in StatementListInfo newStatementsInfo,
+            CancellationToken cancellationToken = default)
+        {
+            return document.ReplaceNodeAsync(statementsInfo.Parent, newStatementsInfo.Parent, cancellationToken);
+        }
+
         internal static Task<Document> ReplaceMembersAsync(
             this Document document,
             in MemberDeclarationListInfo info,
