@@ -5332,4 +5332,53 @@ public class C
       </Option>
     </Options>
   </Analyzer>
+  <Analyzer Identifier="FixDocumentationCommentTag">
+    <Id>RCS1247</Id>
+    <Title>Fix documentation comment tag.</Title>
+    <Category>Readability</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[/// <summary>
+/// <code>null</code> // [|Id|]
+/// </summary>
+void M()
+{
+}]]></Before>
+        <After><![CDATA[/// <summary>
+/// <c>null<c>
+/// </summary>
+void M()
+{
+}]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[/// <summary>
+/// <c> // [|Id|]
+/// if (x == null)
+///     x = new object();
+/// </c>
+/// </summary>
+void M()
+{
+}]]></Before>
+        <After><![CDATA[/// <summary>
+/// <code>
+/// if (x == null)
+///     x = new object();
+/// </code>
+/// </summary>
+void M()
+{
+}]]></After>
+      </Sample>
+    </Samples>
+    <Links>
+      <Link>
+        <Url>https://docs.microsoft.com/dotnet/csharp/programming-guide/xmldoc/recommended-tags-for-documentation-comments</Url>
+        <Text>Recommended tags for documentation comments (C# programming guide)</Text>
+      </Link>
+    </Links>
+  </Analyzer>
 </Analyzers>

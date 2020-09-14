@@ -3959,6 +3959,19 @@ namespace Roslynator.CSharp
 
             return null;
         }
+
+        //TODO: make public
+        internal static XmlElementSyntax UpdateName(this XmlElementSyntax element, string newName)
+        {
+            XmlElementStartTagSyntax startTag = element.StartTag;
+            XmlElementEndTagSyntax endTag = element.EndTag;
+
+            SyntaxToken localName = Identifier(newName);
+
+            return element
+                .WithStartTag(startTag.WithName(startTag.Name.WithLocalName(localName.WithTriviaFrom(startTag.Name))))
+                .WithEndTag(endTag.WithName(endTag.Name.WithLocalName(localName.WithTriviaFrom(endTag.Name))));
+        }
         #endregion XmlElementSyntax
 
         #region XmlEmptyElementSyntax

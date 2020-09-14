@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -21,7 +22,8 @@ namespace Roslynator.CSharp.Analysis
             DiagnosticDescriptors.AddParamElementToDocumentationComment,
             DiagnosticDescriptors.AddTypeParamElementToDocumentationComment,
             DiagnosticDescriptors.UnusedElementInDocumentationComment,
-            DiagnosticDescriptors.OrderElementsInDocumentationComment);
+            DiagnosticDescriptors.OrderElementsInDocumentationComment,
+            DiagnosticDescriptors.FixDocumentationCommentTag);
 
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
@@ -48,6 +50,7 @@ namespace Roslynator.CSharp.Analysis
             if (!documentationComment.IsPartOfMemberDeclaration())
                 return;
 
+            bool? useCorrectDocumentationTagEnabled = null;
             bool containsInheritDoc = false;
             bool containsIncludeOrExclude = false;
             bool containsSummaryElement = false;
@@ -92,9 +95,12 @@ namespace Roslynator.CSharp.Analysis
                                     ReportDiagnosticIfNotSuppressed(context, DiagnosticDescriptors.AddSummaryToDocumentationComment, info.Element);
 
                                 containsSummaryElement = true;
+
+                                if (useCorrectDocumentationTagEnabled ??= !context.IsAnalyzerSuppressed(DiagnosticDescriptors.FixDocumentationCommentTag))
+                                    FixDocumentationCommentTagAnalysis.Analyze(context, info);
+
                                 break;
                             }
-                        case XmlTag.Code:
                         case XmlTag.Example:
                         case XmlTag.Remarks:
                         case XmlTag.Returns:
@@ -103,6 +109,35 @@ namespace Roslynator.CSharp.Analysis
                                 if (info.IsContentEmptyOrWhitespace)
                                     ReportUnusedElement(context, info.Element, i, content);
 
+                                if (useCorrectDocumentationTagEnabled ??= !context.IsAnalyzerSuppressed(DiagnosticDescriptors.FixDocumentationCommentTag))
+                                    FixDocumentationCommentTagAnalysis.Analyze(context, info);
+
+                                break;
+                            }
+                        case XmlTag.Exception:
+                        case XmlTag.List:
+                        case XmlTag.Param:
+                        case XmlTag.Permission:
+                        case XmlTag.TypeParam:
+                            {
+                                if (useCorrectDocumentationTagEnabled ??= !context.IsAnalyzerSuppressed(DiagnosticDescriptors.FixDocumentationCommentTag))
+                                    FixDocumentationCommentTagAnalysis.Analyze(context, info);
+
+                                break;
+                            }
+                        case XmlTag.C:
+                        case XmlTag.Code:
+                        case XmlTag.Para:
+                        case XmlTag.ParamRef:
+                        case XmlTag.See:
+                        case XmlTag.SeeAlso:
+                        case XmlTag.TypeParamRef:
+                            {
+                                break;
+                            }
+                        default:
+                            {
+                                Debug.Fail(info.GetTag().ToString());
                                 break;
                             }
                     }
