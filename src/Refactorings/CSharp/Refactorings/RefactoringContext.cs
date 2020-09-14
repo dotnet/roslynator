@@ -478,7 +478,7 @@ namespace Roslynator.CSharp.Refactorings
                             if (flags.IsSet(Flag.VariableDeclarator))
                                 continue;
 
-                            await VariableDeclaratorRefactoring.ComputeRefactoringsAsync(this, (VariableDeclaratorSyntax)node).ConfigureAwait(false);
+                            VariableDeclaratorRefactoring.ComputeRefactorings(this, (VariableDeclaratorSyntax)node);
                             flags.Set(Flag.VariableDeclarator);
                             continue;
                         }
