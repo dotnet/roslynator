@@ -191,5 +191,27 @@ class BaseClass2 : INotifyPropertyChangedEx
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseGenericEventHandler)]
+        public async Task TestNoDiagnostic_NonVoidDelegate()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    public delegate object FooEventHandler(object sender, FooEventArgs e);
+
+    public event FooEventHandler OnFoo;
+
+    void M()
+    {
+        object x = OnFoo?.Invoke(this, new FooEventArgs());
+    }
+}
+
+class FooEventArgs
+{
+}
+");
+        }
     }
 }
