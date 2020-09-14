@@ -2038,17 +2038,16 @@ namespace Foo
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AvoidNullLiteralExpressionOnLeftSideOfBinaryExpression">
+  <Analyzer Identifier="ConstantValuesShouldBePlacedOnRightSideOfComparisons">
     <Id>RCS1098</Id>
-    <Title>Avoid 'null' on the left side of a binary expression.</Title>
-    <MessageFormat>'null' should be on the right side of a binary expression.</MessageFormat>
+    <Title>Constant values should be placed on right side of comparisons.</Title>
     <Category>Readability</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
       <Sample>
         <Before><![CDATA[if (null == x) // [|Id|]
-{
+{ 
 }]]></Before>
         <After><![CDATA[if (x == null)
 {

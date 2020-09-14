@@ -29,7 +29,7 @@ namespace Roslynator.CSharp.CodeFixes
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.SimplifyBooleanComparison,
                     DiagnosticIdentifiers.CallSkipAndAnyInsteadOfCount,
-                    DiagnosticIdentifiers.AvoidNullLiteralExpressionOnLeftSideOfBinaryExpression,
+                    DiagnosticIdentifiers.ConstantValuesShouldBePlacedOnRightSideOfComparisons,
                     DiagnosticIdentifiers.UseStringIsNullOrEmptyMethod,
                     DiagnosticIdentifiers.SimplifyCoalesceExpression,
                     DiagnosticIdentifiers.RemoveRedundantAsOperator,
@@ -78,7 +78,7 @@ namespace Roslynator.CSharp.CodeFixes
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
-                    case DiagnosticIdentifiers.AvoidNullLiteralExpressionOnLeftSideOfBinaryExpression:
+                    case DiagnosticIdentifiers.ConstantValuesShouldBePlacedOnRightSideOfComparisons:
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Swap operands",

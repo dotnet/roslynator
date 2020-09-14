@@ -936,15 +936,15 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1098</summary>
-        public static readonly DiagnosticDescriptor AvoidNullLiteralExpressionOnLeftSideOfBinaryExpression = DiagnosticDescriptorFactory.Default.Create(
-            id:                 DiagnosticIdentifiers.AvoidNullLiteralExpressionOnLeftSideOfBinaryExpression, 
-            title:              "Avoid 'null' on the left side of a binary expression.", 
-            messageFormat:      "'null' should be on the right side of a binary expression.", 
+        public static readonly DiagnosticDescriptor ConstantValuesShouldBePlacedOnRightSideOfComparisons = DiagnosticDescriptorFactory.Default.Create(
+            id:                 DiagnosticIdentifiers.ConstantValuesShouldBePlacedOnRightSideOfComparisons, 
+            title:              "Constant values should be placed on right side of comparisons.", 
+            messageFormat:      "Constant values should be placed on right side of comparisons.", 
             category:           DiagnosticCategories.Readability, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AvoidNullLiteralExpressionOnLeftSideOfBinaryExpression, 
+            helpLinkUri:        DiagnosticIdentifiers.ConstantValuesShouldBePlacedOnRightSideOfComparisons, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1099</summary>

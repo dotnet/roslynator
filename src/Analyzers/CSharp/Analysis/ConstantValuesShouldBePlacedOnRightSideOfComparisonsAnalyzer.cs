@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -11,11 +10,11 @@ using Roslynator.CSharp.Syntax;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class AvoidNullLiteralOnLeftOfBinaryExpressionAnalyzer : BaseDiagnosticAnalyzer
+    public class ConstantValuesShouldBePlacedOnRightSideOfComparisonsAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.AvoidNullLiteralExpressionOnLeftSideOfBinaryExpression); }
+            get { return ImmutableArray.Create(DiagnosticDescriptors.ConstantValuesShouldBePlacedOnRightSideOfComparisons); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -39,15 +38,20 @@ namespace Roslynator.CSharp.Analysis
             if (!info.Success)
                 return;
 
-            if (info.Right.Kind() == SyntaxKind.NullLiteralExpression)
-                return;
+            SyntaxKind leftKind = info.Left.Kind();
 
-            if (info.Left.Kind() != SyntaxKind.NullLiteralExpression)
-                return;
+            if (leftKind == SyntaxKind.DefaultExpression || CSharpFacts.IsLiteralExpression(leftKind))
+            {
+                SyntaxKind rightKind = info.Right.Kind();
 
-            DiagnosticHelpers.ReportDiagnostic(context,
-                DiagnosticDescriptors.AvoidNullLiteralExpressionOnLeftSideOfBinaryExpression,
-                info.Left);
+                if (rightKind != SyntaxKind.DefaultExpression && !CSharpFacts.IsLiteralExpression(rightKind))
+                {
+                    DiagnosticHelpers.ReportDiagnostic(
+                        context,
+                        DiagnosticDescriptors.ConstantValuesShouldBePlacedOnRightSideOfComparisons,
+                        info.Left);
+                }
+            }
         }
     }
 }
