@@ -26,7 +26,7 @@ namespace Roslynator.CSharp.Analysis
             {
                 if (!startContext.IsAnalyzerSuppressed(AnalyzerOptions.ConvertBitwiseOperationToHasFlagCall))
                 {
-                    startContext.RegisterSyntaxNodeAction(AnalyzeBitwiseAndExpression, SyntaxKind.BitwiseAndExpression);
+                    startContext.RegisterSyntaxNodeAction(f => AnalyzeBitwiseAndExpression(f), SyntaxKind.BitwiseAndExpression);
                 }
             });
         }

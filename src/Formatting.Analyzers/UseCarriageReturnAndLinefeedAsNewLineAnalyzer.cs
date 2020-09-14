@@ -20,7 +20,7 @@ namespace Roslynator.Formatting
         {
             base.Initialize(context);
 
-            context.RegisterSyntaxTreeAction(Analyze);
+            context.RegisterSyntaxTreeAction(f => Analyze(f));
         }
 
         private static void Analyze(SyntaxTreeAnalysisContext context)

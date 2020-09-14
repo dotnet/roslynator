@@ -26,7 +26,7 @@ namespace Roslynator.CSharp.Analysis
                 if (startContext.Compilation.GetTypeByMetadataName("System.Runtime.CompilerServices.ConfiguredTaskAwaitable`1") == null)
                     return;
 
-                startContext.RegisterSyntaxNodeAction(AnalyzeAwaitExpression, SyntaxKind.AwaitExpression);
+                startContext.RegisterSyntaxNodeAction(f => AnalyzeAwaitExpression(f), SyntaxKind.AwaitExpression);
             });
         }
 

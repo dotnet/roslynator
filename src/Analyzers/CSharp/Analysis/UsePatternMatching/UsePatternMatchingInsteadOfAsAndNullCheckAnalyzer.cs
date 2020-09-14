@@ -28,7 +28,7 @@ namespace Roslynator.CSharp.Analysis.UsePatternMatching
                 if (((CSharpCompilation)startContext.Compilation).LanguageVersion < LanguageVersion.CSharp7)
                     return;
 
-                startContext.RegisterSyntaxNodeAction(AnalyzeAsExpression, SyntaxKind.AsExpression);
+                startContext.RegisterSyntaxNodeAction(f => AnalyzeAsExpression(f), SyntaxKind.AsExpression);
             });
         }
 

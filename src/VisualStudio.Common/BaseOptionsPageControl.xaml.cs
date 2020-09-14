@@ -135,7 +135,7 @@ namespace Roslynator.VisualStudio
         {
             var view = (CollectionView)CollectionViewSource.GetDefaultView(lsvItems.ItemsSource);
 
-            view.Filter ??= FilterItems;
+            view.Filter ??= f => FilterItems(f);
 
             view.Refresh();
         }

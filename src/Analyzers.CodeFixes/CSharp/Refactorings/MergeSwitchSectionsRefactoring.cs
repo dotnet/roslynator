@@ -35,7 +35,7 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             SyntaxList<SwitchSectionSyntax> newSections = sections
-                .ModifyRange(index, i - index, CreateSectionWithoutStatements)
+                .ModifyRange(index, i - index, f => CreateSectionWithoutStatements(f))
                 .ToSyntaxList();
 
             SwitchStatementSyntax newSwitchStatement = switchStatement.WithSections(newSections);

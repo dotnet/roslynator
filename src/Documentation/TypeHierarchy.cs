@@ -112,7 +112,7 @@ namespace Roslynator.Documentation
                         rootInterfaces.Add(Interfaces[i]);
                 }
 
-                FillHierarchyItems(rootInterfaces, interfaceRoot, FillHierarchyItem);
+                FillHierarchyItems(rootInterfaces, interfaceRoot, (f, g) => FillHierarchyItem(f, g));
             }
 
             return interfaceRoot;
@@ -144,7 +144,7 @@ namespace Roslynator.Documentation
                 if (derivedInterfaces.Length > 0)
                 {
                     Array.Reverse(derivedInterfaces);
-                    FillHierarchyItems(derivedInterfaces, item, FillHierarchyItem);
+                    FillHierarchyItems(derivedInterfaces, item, (f, g) => FillHierarchyItem(f, g));
                 }
 
                 return item;
@@ -248,10 +248,10 @@ namespace Roslynator.Documentation
                     }
                     else
                     {
-                        Array.Sort(derivedTypes, Compare);
+                        Array.Sort(derivedTypes, (x, y) => Compare(x, y));
                     }
 
-                    FillHierarchyItems(derivedTypes, item, FillHierarchyItem);
+                    FillHierarchyItems(derivedTypes, item, (f, g) => FillHierarchyItem(f, g));
                 }
 
                 return item;

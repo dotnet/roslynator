@@ -334,7 +334,7 @@ namespace Roslynator
                 return default;
 
             if (!options.IncludeGeneratedCode
-                && GeneratedCodeUtility.IsGeneratedCode(tree, service.SyntaxFacts.IsComment, cancellationToken))
+                && GeneratedCodeUtility.IsGeneratedCode(tree, f => service.SyntaxFacts.IsComment(f), cancellationToken))
             {
                 return default;
             }

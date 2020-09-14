@@ -99,7 +99,7 @@ namespace Roslynator.CommandLine
 
                 CodeFixer codeFixer = GetCodeFixer(solution);
 
-                await codeFixer.FixSolutionAsync(projectFilter.IsMatch, cancellationToken);
+                await codeFixer.FixSolutionAsync(f => projectFilter.IsMatch(f), cancellationToken);
             }
 
             return CommandResult.Success;

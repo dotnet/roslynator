@@ -38,7 +38,7 @@ namespace Roslynator.CSharp.Analysis
                 if (((CSharpCompilation)startContext.Compilation).LanguageVersion < LanguageVersion.CSharp6)
                     return;
 
-                startContext.RegisterSyntaxNodeAction(AnalyzeArgument, SyntaxKind.Argument);
+                startContext.RegisterSyntaxNodeAction(f => AnalyzeArgument(f), SyntaxKind.Argument);
             });
         }
 

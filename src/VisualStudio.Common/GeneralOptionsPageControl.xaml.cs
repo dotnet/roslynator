@@ -140,7 +140,7 @@ namespace Roslynator.VisualStudio
             if (dialog.ShowDialog() != true)
                 return;
 
-            CodeAnalysisConfiguration configuration = CodeAnalysisConfiguration.LoadAndCatchIfThrows(dialog.FileName, ShowErrorMessage);
+            CodeAnalysisConfiguration configuration = CodeAnalysisConfiguration.LoadAndCatchIfThrows(dialog.FileName, f => ShowErrorMessage(f));
 
             AbstractPackage package = AbstractPackage.Instance;
 

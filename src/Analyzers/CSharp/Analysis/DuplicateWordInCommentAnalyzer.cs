@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.Analysis
         {
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(AnalyzeXmlText, SyntaxKind.XmlText);
+            context.RegisterSyntaxNodeAction(f => AnalyzeXmlText(f), SyntaxKind.XmlText);
         }
 
         private static void AnalyzeXmlText(SyntaxNodeAnalysisContext context)

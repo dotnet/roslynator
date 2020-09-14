@@ -38,7 +38,7 @@ namespace Roslynator.CSharp.Analysis
             {
                 if (!startContext.AreAnalyzersSuppressed(_supportedDiagnosticsWithoutFadeOut))
                 {
-                    startContext.RegisterSyntaxNodeAction(AnalyzeSingleLineDocumentationCommentTrivia, SyntaxKind.SingleLineDocumentationCommentTrivia);
+                    startContext.RegisterSyntaxNodeAction(f => AnalyzeSingleLineDocumentationCommentTrivia(f), SyntaxKind.SingleLineDocumentationCommentTrivia);
                 }
             });
         }

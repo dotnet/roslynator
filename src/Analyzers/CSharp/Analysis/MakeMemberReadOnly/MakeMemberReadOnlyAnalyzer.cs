@@ -28,8 +28,8 @@ namespace Roslynator.CSharp.Analysis.MakeMemberReadOnly
         {
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(AnalyzeTypeDeclaration, SyntaxKind.ClassDeclaration);
-            context.RegisterSyntaxNodeAction(AnalyzeTypeDeclaration, SyntaxKind.StructDeclaration);
+            context.RegisterSyntaxNodeAction(f => AnalyzeTypeDeclaration(f), SyntaxKind.ClassDeclaration);
+            context.RegisterSyntaxNodeAction(f => AnalyzeTypeDeclaration(f), SyntaxKind.StructDeclaration);
         }
 
         private static void AnalyzeTypeDeclaration(SyntaxNodeAnalysisContext context)

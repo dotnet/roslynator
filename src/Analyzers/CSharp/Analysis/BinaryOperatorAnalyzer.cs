@@ -34,17 +34,17 @@ namespace Roslynator.CSharp.Analysis
             {
                 if (!startContext.IsAnalyzerSuppressed(DiagnosticDescriptors.UnnecessaryOperator))
                 {
-                    startContext.RegisterSyntaxNodeAction(AnalyzeLessThanExpression, SyntaxKind.LessThanExpression);
-                    startContext.RegisterSyntaxNodeAction(AnalyzeGreaterThanExpression, SyntaxKind.GreaterThanExpression);
+                    startContext.RegisterSyntaxNodeAction(f => AnalyzeLessThanExpression(f), SyntaxKind.LessThanExpression);
+                    startContext.RegisterSyntaxNodeAction(f => AnalyzeGreaterThanExpression(f), SyntaxKind.GreaterThanExpression);
                 }
 
-                startContext.RegisterSyntaxNodeAction(AnalyzeLessThanOrEqualExpression, SyntaxKind.LessThanOrEqualExpression);
-                startContext.RegisterSyntaxNodeAction(AnalyzeGreaterThanOrEqualExpression, SyntaxKind.GreaterThanOrEqualExpression);
-                startContext.RegisterSyntaxNodeAction(AnalyzeLogicalOrExpression, SyntaxKind.LogicalOrExpression);
+                startContext.RegisterSyntaxNodeAction(f => AnalyzeLessThanOrEqualExpression(f), SyntaxKind.LessThanOrEqualExpression);
+                startContext.RegisterSyntaxNodeAction(f => AnalyzeGreaterThanOrEqualExpression(f), SyntaxKind.GreaterThanOrEqualExpression);
+                startContext.RegisterSyntaxNodeAction(f => AnalyzeLogicalOrExpression(f), SyntaxKind.LogicalOrExpression);
 
                 if (!startContext.IsAnalyzerSuppressed(DiagnosticDescriptors.ExpressionIsAlwaysEqualToTrueOrFalse))
                 {
-                    startContext.RegisterSyntaxNodeAction(AnalyzeSimpleMemberAccessExpression, SyntaxKind.SimpleMemberAccessExpression);
+                    startContext.RegisterSyntaxNodeAction(f => AnalyzeSimpleMemberAccessExpression(f), SyntaxKind.SimpleMemberAccessExpression);
                 }
             });
         }

@@ -25,7 +25,7 @@ namespace Roslynator.CSharp.Analysis
         {
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(AnalyzeFinallyClause, SyntaxKind.FinallyClause);
+            context.RegisterSyntaxNodeAction(f => AnalyzeFinallyClause(f), SyntaxKind.FinallyClause);
         }
 
         private static void AnalyzeFinallyClause(SyntaxNodeAnalysisContext context)

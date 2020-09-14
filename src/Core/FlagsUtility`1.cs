@@ -160,7 +160,7 @@ namespace Roslynator
                 if (reservedValues == null)
                     throw new ArgumentNullException(nameof(reservedValues));
 
-                byte[] values = reservedValues.Where(IsZeroOrPowerOfTwo).ToArray();
+                byte[] values = reservedValues.Where(f => IsZeroOrPowerOfTwo(f)).ToArray();
 
                 if (values.Length == 0)
                     return 0;
@@ -344,7 +344,7 @@ namespace Roslynator
                 if (reservedValues == null)
                     throw new ArgumentNullException(nameof(reservedValues));
 
-                ushort[] values = reservedValues.Where(IsZeroOrPowerOfTwo).ToArray();
+                ushort[] values = reservedValues.Where(f => IsZeroOrPowerOfTwo(f)).ToArray();
 
                 if (values.Length == 0)
                     return 0;
@@ -528,7 +528,7 @@ namespace Roslynator
                 if (reservedValues == null)
                     throw new ArgumentNullException(nameof(reservedValues));
 
-                uint[] values = reservedValues.Where(IsZeroOrPowerOfTwo).ToArray();
+                uint[] values = reservedValues.Where(f => IsZeroOrPowerOfTwo(f)).ToArray();
 
                 if (values.Length == 0)
                     return 0;
@@ -712,7 +712,7 @@ namespace Roslynator
                 if (reservedValues == null)
                     throw new ArgumentNullException(nameof(reservedValues));
 
-                ulong[] values = reservedValues.Where(IsZeroOrPowerOfTwo).ToArray();
+                ulong[] values = reservedValues.Where(f => IsZeroOrPowerOfTwo(f)).ToArray();
 
                 if (values.Length == 0)
                     return 0;

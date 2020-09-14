@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.Analysis.MarkLocalVariableAsConst
         {
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(AnalyzeLocalDeclarationStatement, SyntaxKind.LocalDeclarationStatement);
+            context.RegisterSyntaxNodeAction(f => AnalyzeLocalDeclarationStatement(f), SyntaxKind.LocalDeclarationStatement);
         }
 
         private static void AnalyzeLocalDeclarationStatement(SyntaxNodeAnalysisContext context)

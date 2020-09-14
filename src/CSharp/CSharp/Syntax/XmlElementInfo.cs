@@ -66,7 +66,7 @@ namespace Roslynator.CSharp.Syntax
                     return true;
 
                 if (content.SingleOrDefault(shouldThrow: false) is XmlTextSyntax xmlText)
-                    return xmlText.TextTokens.All(IsWhitespaceOrNewLine);
+                    return xmlText.TextTokens.All(f => IsWhitespaceOrNewLine(f));
 
                 return false;
 

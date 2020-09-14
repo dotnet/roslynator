@@ -21,8 +21,8 @@ namespace Roslynator.Formatting.CSharp
         {
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(AnalyzeConstructorInitializer, SyntaxKind.ThisConstructorInitializer);
-            context.RegisterSyntaxNodeAction(AnalyzeConstructorInitializer, SyntaxKind.BaseConstructorInitializer);
+            context.RegisterSyntaxNodeAction(f => AnalyzeConstructorInitializer(f), SyntaxKind.ThisConstructorInitializer);
+            context.RegisterSyntaxNodeAction(f => AnalyzeConstructorInitializer(f), SyntaxKind.BaseConstructorInitializer);
         }
 
         private static void AnalyzeConstructorInitializer(SyntaxNodeAnalysisContext context)

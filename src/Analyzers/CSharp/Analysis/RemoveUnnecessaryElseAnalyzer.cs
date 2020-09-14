@@ -21,7 +21,7 @@ namespace Roslynator.CSharp.Analysis
         {
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(Analyze, SyntaxKind.ElseClause);
+            context.RegisterSyntaxNodeAction(f => Analyze(f), SyntaxKind.ElseClause);
         }
 
         public static void Analyze(SyntaxNodeAnalysisContext context)

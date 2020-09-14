@@ -101,7 +101,7 @@ namespace Roslynator.CodeGeneration
             foreach (string filePath in filePaths)
                 MetadataFile.CleanAnalyzers(filePath);
 
-            return filePaths.SelectMany(MetadataFile.ReadAnalyzers).ToImmutableArray();
+            return filePaths.SelectMany(f => MetadataFile.ReadAnalyzers(f)).ToImmutableArray();
         }
 
         private static ImmutableArray<RefactoringMetadata> LoadRefactorings(string directoryPath)

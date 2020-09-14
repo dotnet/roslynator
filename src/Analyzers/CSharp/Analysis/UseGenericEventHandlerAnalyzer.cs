@@ -22,7 +22,7 @@ namespace Roslynator.CSharp.Analysis
         {
             base.Initialize(context);
 
-            context.RegisterSymbolAction(AnalyzeEvent, SymbolKind.Event);
+            context.RegisterSymbolAction(f => AnalyzeEvent(f), SymbolKind.Event);
         }
 
         private static void AnalyzeEvent(SymbolAnalysisContext context)

@@ -1232,7 +1232,7 @@ namespace Roslynator.CSharp
 
             return member
                 .GetLeadingTrivia()
-                .Any(IsDocumentationCommentTrivia);
+                .Any(f => IsDocumentationCommentTrivia(f));
         }
 
         internal static TMember WithNewSingleLineDocumentationComment<TMember>(

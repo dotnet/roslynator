@@ -69,7 +69,7 @@ namespace Roslynator.CommandLine
 
                 var projectFilter = new ProjectFilter(Options.Projects, Options.IgnoredProjects, Language);
 
-                ImmutableArray<ProjectAnalysisResult> results = await codeAnalyzer.AnalyzeSolutionAsync(solution, projectFilter.IsMatch, cancellationToken);
+                ImmutableArray<ProjectAnalysisResult> results = await codeAnalyzer.AnalyzeSolutionAsync(solution, f => projectFilter.IsMatch(f), cancellationToken);
 
                 if (Options.Output != null
                     && results.Any(f => f.Diagnostics.Any()))

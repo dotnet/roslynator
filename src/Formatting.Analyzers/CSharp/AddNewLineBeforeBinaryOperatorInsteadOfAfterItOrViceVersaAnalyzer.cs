@@ -22,7 +22,7 @@ namespace Roslynator.Formatting.CSharp
             base.Initialize(context);
 
             context.RegisterSyntaxNodeAction(
-                AnalyzeBinaryExpression,
+                f => AnalyzeBinaryExpression(f),
                 SyntaxKind.AddExpression,
                 SyntaxKind.SubtractExpression,
                 SyntaxKind.MultiplyExpression,

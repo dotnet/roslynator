@@ -21,8 +21,8 @@ namespace Roslynator.CSharp.Analysis
         {
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(Analyze, SyntaxKind.BitwiseAndExpression);
-            context.RegisterSyntaxNodeAction(Analyze, SyntaxKind.BitwiseOrExpression);
+            context.RegisterSyntaxNodeAction(f => Analyze(f), SyntaxKind.BitwiseAndExpression);
+            context.RegisterSyntaxNodeAction(f => Analyze(f), SyntaxKind.BitwiseOrExpression);
         }
 
         public static void Analyze(SyntaxNodeAnalysisContext context)

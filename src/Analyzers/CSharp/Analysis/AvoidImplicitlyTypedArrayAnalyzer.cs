@@ -22,7 +22,7 @@ namespace Roslynator.CSharp.Analysis
         {
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(AnalyzeImplicitArrayCreationExpression, SyntaxKind.ImplicitArrayCreationExpression);
+            context.RegisterSyntaxNodeAction(f => AnalyzeImplicitArrayCreationExpression(f), SyntaxKind.ImplicitArrayCreationExpression);
         }
 
         private static void AnalyzeImplicitArrayCreationExpression(SyntaxNodeAnalysisContext context)

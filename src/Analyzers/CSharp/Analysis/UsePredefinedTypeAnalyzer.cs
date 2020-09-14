@@ -21,10 +21,10 @@ namespace Roslynator.CSharp.Analysis
         {
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(AnalyzeQualifiedName, SyntaxKind.QualifiedName);
-            context.RegisterSyntaxNodeAction(AnalyzeIdentifierName, SyntaxKind.IdentifierName);
-            context.RegisterSyntaxNodeAction(AnalyzeXmlCrefAttribute, SyntaxKind.XmlCrefAttribute);
-            context.RegisterSyntaxNodeAction(AnalyzeSimpleMemberAccessExpression, SyntaxKind.SimpleMemberAccessExpression);
+            context.RegisterSyntaxNodeAction(f => AnalyzeQualifiedName(f), SyntaxKind.QualifiedName);
+            context.RegisterSyntaxNodeAction(f => AnalyzeIdentifierName(f), SyntaxKind.IdentifierName);
+            context.RegisterSyntaxNodeAction(f => AnalyzeXmlCrefAttribute(f), SyntaxKind.XmlCrefAttribute);
+            context.RegisterSyntaxNodeAction(f => AnalyzeSimpleMemberAccessExpression(f), SyntaxKind.SimpleMemberAccessExpression);
         }
 
         private static void AnalyzeIdentifierName(SyntaxNodeAnalysisContext context)

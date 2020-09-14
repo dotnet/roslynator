@@ -42,7 +42,7 @@ namespace Roslynator.CommandLine
                 if (workspace == null)
                     return CommandResult.Fail;
 
-                workspace.WorkspaceFailed += WorkspaceFailed;
+                workspace.WorkspaceFailed += (sender, args) => WorkspaceFailed(sender, args);
 
                 var cts = new CancellationTokenSource();
                 Console.CancelKeyPress += (sender, e) =>

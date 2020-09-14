@@ -21,7 +21,7 @@ namespace Roslynator.CSharp.Analysis
             base.Initialize(context);
 
             context.RegisterSyntaxNodeAction(
-                AnalyzeBinaryExpression,
+                f => AnalyzeBinaryExpression(f),
                 SyntaxKind.MultiplyExpression,
                 SyntaxKind.DivideExpression,
                 SyntaxKind.ModuloExpression,
@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.Analysis
                 SyntaxKind.LogicalAndExpression,
                 SyntaxKind.LogicalOrExpression);
 
-            context.RegisterSyntaxNodeAction(AnalyzeSuppressNullableWarningExpression, SyntaxKind.SuppressNullableWarningExpression);
+            context.RegisterSyntaxNodeAction(f => AnalyzeSuppressNullableWarningExpression(f), SyntaxKind.SuppressNullableWarningExpression);
         }
 
         private static void AnalyzeBinaryExpression(SyntaxNodeAnalysisContext context)

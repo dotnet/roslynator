@@ -22,7 +22,7 @@ namespace Roslynator.CodeAnalysis.CSharp
         {
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(AnalyzeElementAccessExpression, SyntaxKind.ElementAccessExpression);
+            context.RegisterSyntaxNodeAction(f => AnalyzeElementAccessExpression(f), SyntaxKind.ElementAccessExpression);
         }
 
         private static void AnalyzeElementAccessExpression(SyntaxNodeAnalysisContext context)

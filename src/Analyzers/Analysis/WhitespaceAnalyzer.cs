@@ -26,7 +26,7 @@ namespace Roslynator.CSharp.Analysis
         {
             base.Initialize(context);
 
-            context.RegisterSyntaxTreeAction(AnalyzeTrailingTrivia);
+            context.RegisterSyntaxTreeAction(f => AnalyzeTrailingTrivia(f));
         }
 
         private static void AnalyzeTrailingTrivia(SyntaxTreeAnalysisContext context)

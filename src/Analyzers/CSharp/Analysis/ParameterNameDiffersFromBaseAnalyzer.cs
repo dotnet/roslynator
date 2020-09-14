@@ -22,8 +22,8 @@ namespace Roslynator.CSharp.Analysis
         {
             base.Initialize(context);
 
-            context.RegisterSymbolAction(AnalyzeMethodSymbol, SymbolKind.Method);
-            context.RegisterSymbolAction(AnalyzePropertySymbol, SymbolKind.Property);
+            context.RegisterSymbolAction(f => AnalyzeMethodSymbol(f), SymbolKind.Method);
+            context.RegisterSymbolAction(f => AnalyzePropertySymbol(f), SymbolKind.Property);
         }
 
         private static void AnalyzeMethodSymbol(SymbolAnalysisContext context)

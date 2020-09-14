@@ -25,7 +25,7 @@ namespace Roslynator.CSharp.Analysis
         {
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(AnalyzeBaseList, SyntaxKind.BaseList);
+            context.RegisterSyntaxNodeAction(f => AnalyzeBaseList(f), SyntaxKind.BaseList);
         }
 
         private static void AnalyzeBaseList(SyntaxNodeAnalysisContext context)

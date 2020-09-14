@@ -10,7 +10,7 @@ namespace Roslynator.CommandLine
     {
         static AssemblyResolver()
         {
-            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+            AppDomain.CurrentDomain.AssemblyResolve += (sender, args) => CurrentDomain_AssemblyResolve(sender, args);
         }
 
         internal static void Register()

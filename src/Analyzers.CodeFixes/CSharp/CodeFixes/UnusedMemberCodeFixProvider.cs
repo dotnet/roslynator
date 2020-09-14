@@ -26,7 +26,7 @@ namespace Roslynator.CSharp.CodeFixes
         {
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            if (!TryFindNode(root, context.Span, out SyntaxNode node, predicate: Predicate))
+            if (!TryFindNode(root, context.Span, out SyntaxNode node, predicate: f => Predicate(f)))
             {
                 return;
             }

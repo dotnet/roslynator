@@ -57,7 +57,7 @@ namespace Roslynator.CSharp.Refactorings
             for (int i = 0; i < index; i++)
                 newLists.Add(lists[i]);
 
-            newLists.AddRange(attributeLists.SelectMany(SyntaxRefactorings.SplitAttributeList).Select(f => f.WithFormatterAnnotation()));
+            newLists.AddRange(attributeLists.SelectMany(f => SyntaxRefactorings.SplitAttributeList(f)).Select(f => f.WithFormatterAnnotation()));
 
             for (int i = index + attributeLists.Length; i < lists.Count; i++)
                 newLists.Add(lists[i]);

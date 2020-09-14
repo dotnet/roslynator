@@ -25,7 +25,7 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterCompilationStartAction(startContext =>
             {
                 if (((CSharpCompilation)startContext.Compilation).LanguageVersion >= LanguageVersion.CSharp7_1)
-                    startContext.RegisterSyntaxNodeAction(AnalyzeDefaultExpression, SyntaxKind.DefaultExpression);
+                    startContext.RegisterSyntaxNodeAction(f => AnalyzeDefaultExpression(f), SyntaxKind.DefaultExpression);
             });
         }
 

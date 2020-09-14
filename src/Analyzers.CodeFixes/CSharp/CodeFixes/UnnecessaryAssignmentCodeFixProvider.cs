@@ -79,7 +79,7 @@ namespace Roslynator.CSharp.CodeFixes
                 document,
                 ifStatement,
                 statementsInfo,
-                CreateNewIfStatement,
+                f => CreateNewIfStatement(f),
                 ifCascadeInfo.Count,
                 ifCascadeInfo.EndsWithElse,
                 cancellationToken).ConfigureAwait(false);
@@ -127,7 +127,7 @@ namespace Roslynator.CSharp.CodeFixes
                 document,
                 switchStatement,
                 statementsInfo,
-                CreateNewSwitchStatement,
+                f => CreateNewSwitchStatement(f),
                 switchStatement.Sections.Count,
                 switchStatement.Sections.Any(f => f.ContainsDefaultLabel()),
                 cancellationToken).ConfigureAwait(false);
@@ -139,7 +139,7 @@ namespace Roslynator.CSharp.CodeFixes
         {
             SyntaxList<SwitchSectionSyntax> newSections = switchStatement
                 .Sections
-                .Select(CreateNewSection)
+                .Select(f => CreateNewSection(f))
                 .ToSyntaxList();
 
             return switchStatement.WithSections(newSections);

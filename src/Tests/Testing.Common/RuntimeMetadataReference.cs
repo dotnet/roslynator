@@ -61,7 +61,7 @@ namespace Roslynator
                         .GetData("TRUSTED_PLATFORM_ASSEMBLIES")
                         .ToString()
                         .Split(';')
-                        .ToImmutableDictionary(Path.GetFileName);
+                        .ToImmutableDictionary(f => Path.GetFileName(f));
                 }
             }
         }

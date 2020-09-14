@@ -21,7 +21,7 @@ namespace Roslynator.CSharp.Analysis
         {
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(AnalyzePragmaWarningDirectiveTrivia, SyntaxKind.PragmaWarningDirectiveTrivia);
+            context.RegisterSyntaxNodeAction(f => AnalyzePragmaWarningDirectiveTrivia(f), SyntaxKind.PragmaWarningDirectiveTrivia);
         }
 
         private static void AnalyzePragmaWarningDirectiveTrivia(SyntaxNodeAnalysisContext context)

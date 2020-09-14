@@ -94,8 +94,8 @@ namespace Roslynator.CSharp.Refactorings
             SpecialType numericType = enumSymbol.EnumUnderlyingType.SpecialType;
 
             IEnumerable<EnumMemberDeclarationSyntax> newMembers = (enumSymbol.HasAttribute(MetadataNames.System_FlagsAttribute))
-                ? enumDeclaration.Members.Select(CreateNewFlagsMember)
-                : enumDeclaration.Members.Select(CreateNewMember);
+                ? enumDeclaration.Members.Select(f => CreateNewFlagsMember(f))
+                : enumDeclaration.Members.Select(f => CreateNewMember(f));
 
             EnumDeclarationSyntax newEnumDeclaration = enumDeclaration.WithMembers(newMembers.ToSeparatedSyntaxList());
 

@@ -36,23 +36,23 @@ namespace Roslynator.CSharp.Analysis
 
                 if (startContext.IsAnalyzerSuppressed(AnalyzerOptions.ConvertMethodGroupToAnonymousFunction))
                 {
-                    startContext.RegisterSyntaxNodeAction(AnalyzeSimpleLambdaExpression, SyntaxKind.SimpleLambdaExpression);
-                    startContext.RegisterSyntaxNodeAction(AnalyzeParenthesizedLambdaExpression, SyntaxKind.ParenthesizedLambdaExpression);
-                    startContext.RegisterSyntaxNodeAction(AnalyzeAnonymousMethodExpression, SyntaxKind.AnonymousMethodExpression);
+                    startContext.RegisterSyntaxNodeAction(f => AnalyzeSimpleLambdaExpression(f), SyntaxKind.SimpleLambdaExpression);
+                    startContext.RegisterSyntaxNodeAction(f => AnalyzeParenthesizedLambdaExpression(f), SyntaxKind.ParenthesizedLambdaExpression);
+                    startContext.RegisterSyntaxNodeAction(f => AnalyzeAnonymousMethodExpression(f), SyntaxKind.AnonymousMethodExpression);
                 }
                 else
                 {
-                    startContext.RegisterSyntaxNodeAction(AnalyzeArgument, SyntaxKind.Argument);
-                    startContext.RegisterSyntaxNodeAction(AnalyzeEqualsValueClause, SyntaxKind.EqualsValueClause);
-                    startContext.RegisterSyntaxNodeAction(AnalyzeAssignment, SyntaxKind.SimpleAssignmentExpression, SyntaxKind.AddAssignmentExpression, SyntaxKind.SubtractAssignmentExpression, SyntaxKind.CoalesceAssignmentExpression);
-                    startContext.RegisterSyntaxNodeAction(AnalyzeReturnStatement, SyntaxKind.ReturnStatement);
-                    startContext.RegisterSyntaxNodeAction(AnalyzeYieldReturnStatement, SyntaxKind.YieldReturnStatement);
-                    startContext.RegisterSyntaxNodeAction(AnalyzeArrowExpressionClause, SyntaxKind.ArrowExpressionClause);
-                    startContext.RegisterSyntaxNodeAction(AnalyzeSwitchExpressionArm, SyntaxKind.SwitchExpressionArm);
-                    startContext.RegisterSyntaxNodeAction(AnalyzeArrayInitializer, SyntaxKind.ArrayInitializerExpression, SyntaxKind.CollectionInitializerExpression);
+                    startContext.RegisterSyntaxNodeAction(f => AnalyzeArgument(f), SyntaxKind.Argument);
+                    startContext.RegisterSyntaxNodeAction(f => AnalyzeEqualsValueClause(f), SyntaxKind.EqualsValueClause);
+                    startContext.RegisterSyntaxNodeAction(f => AnalyzeAssignment(f), SyntaxKind.SimpleAssignmentExpression, SyntaxKind.AddAssignmentExpression, SyntaxKind.SubtractAssignmentExpression, SyntaxKind.CoalesceAssignmentExpression);
+                    startContext.RegisterSyntaxNodeAction(f => AnalyzeReturnStatement(f), SyntaxKind.ReturnStatement);
+                    startContext.RegisterSyntaxNodeAction(f => AnalyzeYieldReturnStatement(f), SyntaxKind.YieldReturnStatement);
+                    startContext.RegisterSyntaxNodeAction(f => AnalyzeArrowExpressionClause(f), SyntaxKind.ArrowExpressionClause);
+                    startContext.RegisterSyntaxNodeAction(f => AnalyzeSwitchExpressionArm(f), SyntaxKind.SwitchExpressionArm);
+                    startContext.RegisterSyntaxNodeAction(f => AnalyzeArrayInitializer(f), SyntaxKind.ArrayInitializerExpression, SyntaxKind.CollectionInitializerExpression);
 #if DEBUG
-                    startContext.RegisterSyntaxNodeAction(AnalyzeIdentifierName, SyntaxKind.IdentifierName);
-                    startContext.RegisterSyntaxNodeAction(AnalyzeSimpleMemberAccessExpression, SyntaxKind.SimpleMemberAccessExpression);
+                    startContext.RegisterSyntaxNodeAction(f => AnalyzeIdentifierName(f), SyntaxKind.IdentifierName);
+                    startContext.RegisterSyntaxNodeAction(f => AnalyzeSimpleMemberAccessExpression(f), SyntaxKind.SimpleMemberAccessExpression);
 #endif
                 }
             });

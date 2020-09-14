@@ -27,7 +27,7 @@ namespace Roslynator.CodeAnalysis.CSharp
         {
             base.Initialize(context);
 
-            context.RegisterSymbolAction(AnalyzeNamedTypeSymbol, SymbolKind.NamedType);
+            context.RegisterSymbolAction(f => AnalyzeNamedTypeSymbol(f), SymbolKind.NamedType);
         }
 
         private static void AnalyzeNamedTypeSymbol(SymbolAnalysisContext context)

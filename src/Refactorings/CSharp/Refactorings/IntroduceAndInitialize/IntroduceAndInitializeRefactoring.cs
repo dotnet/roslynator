@@ -72,7 +72,7 @@ namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
                 return;
 
             ImmutableArray<ParameterSyntax> parameters = selection
-                .Where(IsValid)
+                .Where(f => IsValid(f))
                 .ToImmutableArray();
 
             if (!parameters.Any())

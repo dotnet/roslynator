@@ -23,7 +23,7 @@ namespace Roslynator.Formatting.CSharp
         {
             base.Initialize(context);
 
-            context.RegisterSyntaxTreeAction(AnalyzeSyntaxTree);
+            context.RegisterSyntaxTreeAction(f => AnalyzeSyntaxTree(f));
         }
 
         private static void AnalyzeSyntaxTree(SyntaxTreeAnalysisContext context)

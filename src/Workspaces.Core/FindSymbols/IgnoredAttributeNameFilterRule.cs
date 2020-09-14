@@ -75,7 +75,7 @@ namespace Roslynator.FindSymbols
             });
 #endif
 
-            public static DefaultIgnoredAttributeNameFilterRule Instance { get; } = new DefaultIgnoredAttributeNameFilterRule(GetIgnoredAttributes().Select(MetadataName.Parse).ToImmutableArray());
+            public static DefaultIgnoredAttributeNameFilterRule Instance { get; } = new DefaultIgnoredAttributeNameFilterRule(GetIgnoredAttributes().Select(f => MetadataName.Parse(f)).ToImmutableArray());
 
             public DefaultIgnoredAttributeNameFilterRule(IEnumerable<MetadataName> values)
                 : base(values)

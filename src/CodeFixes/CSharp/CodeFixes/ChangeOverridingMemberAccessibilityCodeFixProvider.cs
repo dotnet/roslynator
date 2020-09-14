@@ -34,7 +34,7 @@ namespace Roslynator.CSharp.CodeFixes
                 root,
                 context.Span,
                 out SyntaxNode node,
-                predicate: CSharpOverriddenSymbolInfo.CanCreate))
+                predicate: f => CSharpOverriddenSymbolInfo.CanCreate(f)))
             {
                 return;
             }

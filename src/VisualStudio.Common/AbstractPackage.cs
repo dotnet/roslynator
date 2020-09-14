@@ -69,8 +69,8 @@ namespace Roslynator.VisualStudio
                 AfterOpenSolution();
             }
 
-            SolutionEvents.OnAfterOpenSolution += AfterOpenSolution;
-            SolutionEvents.OnAfterCloseSolution += AfterCloseSolution;
+            SolutionEvents.OnAfterOpenSolution += (sender, args) => AfterOpenSolution(sender, args);
+            SolutionEvents.OnAfterCloseSolution += (sender, args) => AfterCloseSolution(sender, args);
         }
 
         public void InitializeSettings()

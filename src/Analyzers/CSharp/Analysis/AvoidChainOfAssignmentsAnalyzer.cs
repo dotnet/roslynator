@@ -21,8 +21,8 @@ namespace Roslynator.CSharp.Analysis
         {
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(AnalyzeAssignment, CSharpFacts.AssignmentExpressionKinds);
-            context.RegisterSyntaxNodeAction(AnalyzeEqualsValueClause, SyntaxKind.EqualsValueClause);
+            context.RegisterSyntaxNodeAction(f => AnalyzeAssignment(f), CSharpFacts.AssignmentExpressionKinds);
+            context.RegisterSyntaxNodeAction(f => AnalyzeEqualsValueClause(f), SyntaxKind.EqualsValueClause);
         }
 
         private static void AnalyzeAssignment(SyntaxNodeAnalysisContext context)

@@ -68,7 +68,7 @@ namespace Roslynator
 
         public IEnumerable<DiagnosticAnalyzer> GetOrAddAnalyzers(IEnumerable<Assembly> assemblies, string language)
         {
-            return GetAnalyzers(assemblies.Select(GetOrAdd), language);
+            return GetAnalyzers(assemblies.Select(f => GetOrAdd(f)), language);
         }
 
         private static IEnumerable<DiagnosticAnalyzer> GetAnalyzers(IEnumerable<AnalyzerAssembly> analyzerAssemblies, string language)
@@ -86,7 +86,7 @@ namespace Roslynator
 
         public IEnumerable<CodeFixProvider> GetOrAddFixers(IEnumerable<Assembly> assemblies, string language)
         {
-            return GetFixers(assemblies.Select(GetOrAdd), language);
+            return GetFixers(assemblies.Select(f => GetOrAdd(f)), language);
         }
 
         private static IEnumerable<CodeFixProvider> GetFixers(IEnumerable<AnalyzerAssembly> analyzerAssemblies, string language)

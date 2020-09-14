@@ -25,7 +25,7 @@ namespace Roslynator.CSharp.Analysis
         {
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(AnalyzeAddExpression, SyntaxKind.AddExpression);
+            context.RegisterSyntaxNodeAction(f => AnalyzeAddExpression(f), SyntaxKind.AddExpression);
         }
 
         private static void AnalyzeAddExpression(SyntaxNodeAnalysisContext context)

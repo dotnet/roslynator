@@ -22,7 +22,7 @@ namespace Roslynator.CSharp.Analysis
             base.Initialize(context);
 
             context.RegisterSyntaxNodeAction(
-                AnalyzeSingleLineDocumentationCommentTrivia,
+                f => AnalyzeSingleLineDocumentationCommentTrivia(f),
                 SyntaxKind.SingleLineDocumentationCommentTrivia);
         }
 

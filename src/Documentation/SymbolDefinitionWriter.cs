@@ -268,7 +268,7 @@ namespace Roslynator.Documentation
             {
                 if (Layout == SymbolDefinitionListLayout.TypeHierarchy)
                 {
-                    WriteTypeHierarchy(assemblies.SelectMany(a => a.GetTypes(Filter.IsMatch)), cancellationToken);
+                    WriteTypeHierarchy(assemblies.SelectMany(a => a.GetTypes(f => Filter.IsMatch(f))), cancellationToken);
                 }
                 else
                 {
@@ -303,7 +303,7 @@ namespace Roslynator.Documentation
                         {
                             if (Layout == SymbolDefinitionListLayout.TypeHierarchy)
                             {
-                                WriteTypeHierarchy(assembly.GetTypes(Filter.IsMatch), cancellationToken);
+                                WriteTypeHierarchy(assembly.GetTypes(f => Filter.IsMatch(f)), cancellationToken);
                             }
                             else
                             {

@@ -77,8 +77,8 @@ namespace Roslynator.CodeAnalysis.CSharp
                     Interlocked.CompareExchange(ref _syntaxKindValuesToNames, syntaxKindValuesToNames.ToImmutable(), null);
                 }
 
-                startContext.RegisterSyntaxNodeAction(AnalyzeSwitchStatement, SyntaxKind.SwitchStatement);
-                startContext.RegisterSyntaxNodeAction(AnalyzeIfStatement, SyntaxKind.IfStatement);
+                startContext.RegisterSyntaxNodeAction(f => AnalyzeSwitchStatement(f), SyntaxKind.SwitchStatement);
+                startContext.RegisterSyntaxNodeAction(f => AnalyzeIfStatement(f), SyntaxKind.IfStatement);
             });
         }
 

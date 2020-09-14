@@ -31,7 +31,7 @@ namespace Roslynator.CSharp.Analysis
                 if (startContext.IsAnalyzerSuppressed(DiagnosticDescriptors.RemoveUnnecessaryBraces))
                     return;
 
-                startContext.RegisterSyntaxNodeAction(AnalyzerSwitchSection, SyntaxKind.SwitchSection);
+                startContext.RegisterSyntaxNodeAction(f => AnalyzerSwitchSection(f), SyntaxKind.SwitchSection);
             });
         }
 

@@ -46,7 +46,7 @@ namespace Roslynator.CSharp.Analysis
                     return;
                 }
 
-                startContext.RegisterSyntaxNodeAction(AnalyzeIfStatement, SyntaxKind.IfStatement);
+                startContext.RegisterSyntaxNodeAction(f => AnalyzeIfStatement(f), SyntaxKind.IfStatement);
             });
         }
 

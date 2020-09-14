@@ -60,7 +60,7 @@ namespace Roslynator.FindSymbols
                             case SymbolFilterReason.None:
                                 {
                                     if (options.IgnoreGeneratedCode
-                                        && GeneratedCodeUtility.IsGeneratedCode(symbol, generatedCodeAttribute, MefWorkspaceServices.Default.GetService<ISyntaxFactsService>(compilation.Language).IsComment, cancellationToken))
+                                        && GeneratedCodeUtility.IsGeneratedCode(symbol, generatedCodeAttribute, f => MefWorkspaceServices.Default.GetService<ISyntaxFactsService>(compilation.Language).IsComment(f), cancellationToken))
                                     {
                                         continue;
                                     }
