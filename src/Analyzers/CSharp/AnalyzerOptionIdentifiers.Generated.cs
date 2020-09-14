@@ -14,6 +14,7 @@ namespace Roslynator.CSharp
         public const string RemoveParenthesesFromConditionOfConditionalExpressionWhenExpressionIsSingleToken = "RCS1051a";
         public const string ConvertBitwiseOperationToHasFlagCall = "RCS1096i";
         public const string SimplifyConditionalExpressionWhenItIncludesNegationOfCondition = "RCS1104a";
+        public const string ConvertMethodGroupToAnonymousFunction = "RCS1207i";
         public const string DoNotUseElementAccessWhenExpressionIsInvocation = "RCS1246a";
     }
 }

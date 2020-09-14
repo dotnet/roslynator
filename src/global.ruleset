@@ -351,6 +351,8 @@
     <Rule Id="RCS1162" Action="Info" />
     <Rule Id="RCS1188" Action="Info" />
     <Rule Id="RCS1189" Action="Info" />
+    <Rule Id="RCS1207" Action="Info" />
+    <Rule Id="RCS1207i" Action="Info" />
     <Rule Id="RCS1244" Action="Info" />
     <Rule Id="RCS1246a" Action="Info" />
   </Rules>

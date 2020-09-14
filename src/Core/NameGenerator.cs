@@ -3,8 +3,8 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Roslynator.Helpers;
@@ -102,11 +102,59 @@ namespace Roslynator
             if (semanticModel == null)
                 throw new ArgumentNullException(nameof(semanticModel));
 
-            ImmutableArray<ISymbol> symbols = semanticModel
-                .GetSymbolsDeclaredInEnclosingSymbol(position, excludeAnonymousTypeProperty: true, cancellationToken: cancellationToken)
-                .AddRange(semanticModel.LookupSymbols(position));
+            ImmutableArray<ISymbol> symbols = GetSymbolsForUniqueLocalName(semanticModel, position, cancellationToken);
 
             return EnsureUniqueName(baseName, symbols, isCaseSensitive);
+        }
+
+        //TODO: make public
+        internal ImmutableArray<string> EnsureUniqueLocalNames(
+            string baseName,
+            SemanticModel semanticModel,
+            int position,
+            int count,
+            bool isCaseSensitive = true,
+            CancellationToken cancellationToken = default)
+        {
+            if (semanticModel == null)
+                throw new ArgumentNullException(nameof(semanticModel));
+
+            if (count < 1)
+                throw new ArgumentOutOfRangeException(nameof(count), count, "");
+
+            if (count == 1)
+            {
+                string name = EnsureUniqueLocalName(baseName, semanticModel, position, isCaseSensitive, cancellationToken);
+
+                return ImmutableArray.Create(name);
+            }
+
+            List<string> reservedNames = GetSymbolsForUniqueLocalName(semanticModel, position, cancellationToken)
+                .Select(f => f.Name)
+                .ToList();
+
+            ImmutableArray<string>.Builder names = ImmutableArray.CreateBuilder<string>(count);
+
+            for (int i = 0; i < count; i++)
+            {
+                string name = EnsureUniqueName(baseName, reservedNames, isCaseSensitive);
+
+                names.Add(name);
+
+                reservedNames.Add(name);
+            }
+
+            return names.ToImmutable();
+        }
+
+        private static ImmutableArray<ISymbol> GetSymbolsForUniqueLocalName(
+            SemanticModel semanticModel,
+            int position,
+            CancellationToken cancellationToken)
+        {
+            return semanticModel
+                .GetSymbolsDeclaredInEnclosingSymbol(position, excludeAnonymousTypeProperty: true, cancellationToken: cancellationToken)
+                .AddRange(semanticModel.LookupSymbols(position));
         }
 
         internal string EnsureUniqueParameterName(

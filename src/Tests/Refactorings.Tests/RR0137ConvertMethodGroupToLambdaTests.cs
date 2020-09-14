@@ -5,11 +5,11 @@ using Xunit;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public class RR0137ReplaceMethodGroupWithLambdaTests : AbstractCSharpRefactoringVerifier
+    public class RR0137ConvertMethodGroupToLambdaTests : AbstractCSharpRefactoringVerifier
     {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.ReplaceMethodGroupWithLambda;
+        public override string RefactoringId { get; } = RefactoringIdentifiers.ConvertMethodGroupToLambda;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceMethodGroupWithLambda)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertMethodGroupToLambda)]
         public async Task Test_VariableDeclaration_Action()
         {
             await VerifyRefactoringAsync(@"
@@ -35,7 +35,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceMethodGroupWithLambda)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertMethodGroupToLambda)]
         public async Task Test_VariableDeclaration_Action1()
         {
             await VerifyRefactoringAsync(@"
@@ -61,7 +61,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceMethodGroupWithLambda)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertMethodGroupToLambda)]
         public async Task Test_VariableDeclaration_Action2()
         {
             await VerifyRefactoringAsync(@"
@@ -81,13 +81,13 @@ class C
 {
     void M(string s1, string s2)
     {
-        Action<string, string> action = (f, g) => M(f, g);
+        Action<string, string> action = (f, f2) => M(f, f2);
     }
 }
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceMethodGroupWithLambda)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertMethodGroupToLambda)]
         public async Task Test_VariableDeclaration_Func()
         {
             await VerifyRefactoringAsync(@"
@@ -115,7 +115,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceMethodGroupWithLambda)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertMethodGroupToLambda)]
         public async Task Test_VariableDeclaration_Func2()
         {
             await VerifyRefactoringAsync(@"
@@ -143,7 +143,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceMethodGroupWithLambda)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertMethodGroupToLambda)]
         public async Task Test_VariableDeclaration_Func3()
         {
             await VerifyRefactoringAsync(@"
@@ -164,14 +164,14 @@ class C
 {
     string M(string s1, string s2)
     {
-        Func<string, string, string> func = (f, g) => M(f, g);
+        Func<string, string, string> func = (f, f2) => M(f, f2);
         return null;
     }
 }
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceMethodGroupWithLambda)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertMethodGroupToLambda)]
         public async Task Test_SimpleAssignment_Action()
         {
             await VerifyRefactoringAsync(@"
@@ -201,7 +201,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceMethodGroupWithLambda)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertMethodGroupToLambda)]
         public async Task Test_SimpleAssignment_Action1()
         {
             await VerifyRefactoringAsync(@"
@@ -231,7 +231,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceMethodGroupWithLambda)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertMethodGroupToLambda)]
         public async Task Test_SimpleAssignment_Action2()
         {
             await VerifyRefactoringAsync(@"
@@ -255,13 +255,13 @@ class C
     {
         Action<string, string> action = null;
 
-        action = (f, g) => M(f, g);
+        action = (f, f2) => M(f, f2);
     }
 }
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceMethodGroupWithLambda)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertMethodGroupToLambda)]
         public async Task Test_SimpleAssignment_Func()
         {
             await VerifyRefactoringAsync(@"
@@ -295,7 +295,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceMethodGroupWithLambda)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertMethodGroupToLambda)]
         public async Task Test_SimpleAssignment_Func1()
         {
             await VerifyRefactoringAsync(@"
@@ -329,7 +329,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceMethodGroupWithLambda)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertMethodGroupToLambda)]
         public async Task Test_SimpleAssignment_Func2()
         {
             await VerifyRefactoringAsync(@"
@@ -355,7 +355,7 @@ class C
     {
         Func<string, string, string> func = null;
 
-        func = (f, g) => M(f, g);
+        func = (f, f2) => M(f, f2);
 
         return null;
     }
@@ -363,7 +363,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceMethodGroupWithLambda)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertMethodGroupToLambda)]
         public async Task Test_Argument_Action()
         {
             await VerifyRefactoringAsync(@"
@@ -393,7 +393,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceMethodGroupWithLambda)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertMethodGroupToLambda)]
         public async Task Test_Argument_Action1()
         {
             await VerifyRefactoringAsync(@"
@@ -423,7 +423,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceMethodGroupWithLambda)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertMethodGroupToLambda)]
         public async Task Test_Argument_Action2()
         {
             await VerifyRefactoringAsync(@"
@@ -445,7 +445,7 @@ class C
 {
     void M(Action<string, string> action)
     {
-        M((f, g) => M2(f, g));
+        M((f, f2) => M2(f, f2));
     }
 
     void M2(string s1, string s2) { }
@@ -453,7 +453,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceMethodGroupWithLambda)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertMethodGroupToLambda)]
         public async Task Test_Argument_Func()
         {
             await VerifyRefactoringAsync(@"
@@ -483,7 +483,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceMethodGroupWithLambda)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertMethodGroupToLambda)]
         public async Task Test_Argument_Func1()
         {
             await VerifyRefactoringAsync(@"
@@ -513,7 +513,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceMethodGroupWithLambda)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertMethodGroupToLambda)]
         public async Task Test_Argument_Func2()
         {
             await VerifyRefactoringAsync(@"
@@ -535,7 +535,7 @@ class C
 {
     void M(Func<string, string, string> func)
     {
-        M((f, g) => M2(f, g));
+        M((f, f2) => M2(f, f2));
     }
 
     string M2(string s1, string s2) => null;

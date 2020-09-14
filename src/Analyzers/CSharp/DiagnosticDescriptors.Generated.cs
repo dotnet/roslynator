@@ -1964,18 +1964,18 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1207</summary>
-        public static readonly DiagnosticDescriptor ConvertAnonymousFunctionToMethodGroup = DiagnosticDescriptorFactory.Default.Create(
-            id:                 DiagnosticIdentifiers.ConvertAnonymousFunctionToMethodGroup, 
-            title:              "Convert anonymous function to method group.", 
+        public static readonly DiagnosticDescriptor ConvertAnonymousFunctionToMethodGroupOrViceVersa = DiagnosticDescriptorFactory.Default.Create(
+            id:                 DiagnosticIdentifiers.ConvertAnonymousFunctionToMethodGroupOrViceVersa, 
+            title:              "Convert anonymous function to method group (or vice versa).", 
             messageFormat:      "Convert anonymous function to method group.", 
             category:           DiagnosticCategories.Simplification, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.ConvertAnonymousFunctionToMethodGroup, 
+            helpLinkUri:        DiagnosticIdentifiers.ConvertAnonymousFunctionToMethodGroupOrViceVersa, 
             customTags:         Array.Empty<string>());
 
-        public static readonly DiagnosticDescriptor ConvertAnonymousFunctionToMethodGroupFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(ConvertAnonymousFunctionToMethodGroup);
+        public static readonly DiagnosticDescriptor ConvertAnonymousFunctionToMethodGroupOrViceVersaFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(ConvertAnonymousFunctionToMethodGroupOrViceVersa);
 
         /// <summary>RCS1208</summary>
         public static readonly DiagnosticDescriptor ReduceIfNesting = DiagnosticDescriptorFactory.Default.Create(
@@ -2477,6 +2477,18 @@ namespace Roslynator.CSharp
                 isEnabledByDefault: true, 
                 description:        null, 
                 helpLinkUri:        DiagnosticIdentifiers.ConvertHasFlagCallToBitwiseOperationOrViceVersa, 
+                customTags:         Array.Empty<string>());
+
+            /// <summary>RCS1207i</summary>
+            public static readonly DiagnosticDescriptor ConvertMethodGroupToAnonymousFunction = DiagnosticDescriptorFactory.Default.Create(
+                id:                 DiagnosticIdentifiers.ConvertAnonymousFunctionToMethodGroupOrViceVersa, 
+                title:              "Convert anonymous function to method group (or vice versa).", 
+                messageFormat:      "Convert method group to anonymous function.", 
+                category:           DiagnosticCategories.Simplification, 
+                defaultSeverity:    DiagnosticSeverity.Hidden, 
+                isEnabledByDefault: false, 
+                description:        null, 
+                helpLinkUri:        DiagnosticIdentifiers.ConvertAnonymousFunctionToMethodGroupOrViceVersa, 
                 customTags:         Array.Empty<string>());
 
         }

@@ -4084,9 +4084,10 @@ int i = (x != null) ? x.Value.GetHashCode() : 0; // [|Id|]]]></Before>
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="ConvertAnonymousFunctionToMethodGroup">
+  <Analyzer Identifier="ConvertAnonymousFunctionToMethodGroupOrViceVersa">
     <Id>RCS1207</Id>
-    <Title>Convert anonymous function to method group.</Title>
+    <Title>Convert anonymous function to method group (or vice versa).</Title>
+    <MessageFormat>Convert anonymous function to method group.</MessageFormat>
     <Category>Simplification</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -4097,6 +4098,19 @@ int i = (x != null) ? x.Value.GetHashCode() : 0; // [|Id|]]]></Before>
         <After><![CDATA[var x = items.Select(Foo);]]></After>
       </Sample>
     </Samples>
+    <Options>
+      <Option Identifier="ConvertMethodGroupToAnonymousFunction">
+        <Title>Convert method group to anonymous function.</Title>
+        <Id>i</Id>
+        <Kind>Invert</Kind>
+        <Samples>
+          <Sample>
+            <Before><![CDATA[var x = items.Select(Foo);]]></Before>
+            <After><![CDATA[var x = items.Select(f => Foo(f));]]></After>
+          </Sample>
+        </Samples>
+      </Option>
+    </Options>
   </Analyzer>
   <Analyzer Identifier="ReduceIfNesting">
     <Id>RCS1208</Id>

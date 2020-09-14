@@ -81,6 +81,18 @@ namespace Roslynator.CSharp
             helpLinkUri:        AnalyzerOptionIdentifiers.SimplifyConditionalExpressionWhenItIncludesNegationOfCondition, 
             customTags:         Array.Empty<string>());
 
+        /// <summary>RCS1207i</summary>
+        public static readonly DiagnosticDescriptor ConvertMethodGroupToAnonymousFunction = DiagnosticDescriptorFactory.Default.Create(
+            id:                 AnalyzerOptionIdentifiers.ConvertMethodGroupToAnonymousFunction, 
+            title:              "Convert method group to anonymous function.", 
+            messageFormat:      "Convert method group to anonymous function.", 
+            category:           DiagnosticCategories.AnalyzerOption, 
+            defaultSeverity:    DiagnosticSeverity.Hidden, 
+            isEnabledByDefault: false, 
+            description:        null, 
+            helpLinkUri:        AnalyzerOptionIdentifiers.ConvertMethodGroupToAnonymousFunction, 
+            customTags:         Array.Empty<string>());
+
         /// <summary>RCS1246a</summary>
         public static readonly DiagnosticDescriptor DoNotUseElementAccessWhenExpressionIsInvocation = DiagnosticDescriptorFactory.Default.Create(
             id:                 AnalyzerOptionIdentifiers.DoNotUseElementAccessWhenExpressionIsInvocation, 

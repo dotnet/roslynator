@@ -24,6 +24,9 @@ namespace Roslynator.CSharp.Refactorings
 
                 UseEmptyStringLiteralInsteadOfStringEmpty(context, semanticModel, memberAccess);
             }
+
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertMethodGroupToLambda))
+                await ConvertMethodGroupToLambdaRefactoring.ComputeRefactoringAsync(context, memberAccess).ConfigureAwait(false);
         }
 
         private static void UseEmptyStringLiteralInsteadOfStringEmpty(RefactoringContext context, SemanticModel semanticModel, MemberAccessExpressionSyntax memberAccess)

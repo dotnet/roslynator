@@ -1107,7 +1107,7 @@ i--;]]></After>
       <Syntax>Interpolated string without any interpolation</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0137" Identifier="ReplaceMethodGroupWithLambda" Title="Replace method group with lambda">
+  <Refactoring Id="RR0137" Identifier="ConvertMethodGroupToLambda" Title="Convert method group to lambda">
     <Syntaxes>
       <Syntax>method group</Syntax>
     </Syntaxes>
