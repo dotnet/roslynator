@@ -51,7 +51,21 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 case SyntaxKind.QualifiedName:
                     {
-                        return !node.IsParentKind(SyntaxKind.NamespaceDeclaration, SyntaxKind.UsingDirective, SyntaxKind.QualifiedName);
+                        switch (node.Parent?.Kind())
+                        {
+                            case SyntaxKind.NamespaceDeclaration:
+                            case SyntaxKind.UsingDirective:
+                            case SyntaxKind.QualifiedName:
+                            case SyntaxKind.VariableDeclaration:
+                            case SyntaxKind.TupleElement:
+                                {
+                                    return false;
+                                }
+                            default:
+                                {
+                                    return true;
+                                }
+                        }
                     }
                 case SyntaxKind.TupleType:
                 case SyntaxKind.GenericName:
