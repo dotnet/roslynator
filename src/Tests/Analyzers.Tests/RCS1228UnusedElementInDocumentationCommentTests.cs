@@ -114,25 +114,6 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
-        public async Task Test_CodeElement()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
-class C
-{
-    /// <summary></summary>
-    /// [|<code></code>|]
-    void M() => M();
-}
-", @"
-class C
-{
-    /// <summary></summary>
-    void M() => M();
-}
-");
-        }
-
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
         public async Task Test_ExampleElement()
         {
             await VerifyDiagnosticAndFixAsync(@"
