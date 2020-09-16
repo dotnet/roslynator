@@ -39,6 +39,10 @@ namespace Roslynator
                         {
                             return BC;
                         }
+                        else if (HasPrefix(BL))
+                        {
+                            return BL;
+                        }
 
                         break;
                     }

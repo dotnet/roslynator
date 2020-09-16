@@ -7,6 +7,7 @@ namespace Roslynator
         public const string AD = nameof(AD);
         public const string Async = nameof(Async);
         public const string BC = nameof(BC);
+        public const string BL = nameof(BL);
         public const string CA = nameof(CA);
         public const string CC = nameof(CC);
         public const string CS = nameof(CS);
