@@ -344,6 +344,8 @@ namespace Roslynator.CSharp
                         return (directiveFilter & PreprocessorDirectiveFilter.Shebang) != 0;
                     case SyntaxKind.LoadDirectiveTrivia:
                         return (directiveFilter & PreprocessorDirectiveFilter.Load) != 0;
+                    case SyntaxKind.NullableDirectiveTrivia:
+                        return (directiveFilter & PreprocessorDirectiveFilter.Nullable) != 0;
                 }
 
                 Debug.Fail(directive.Kind().ToString());

@@ -23,62 +23,62 @@ namespace Roslynator.CSharp
         /// <summary>
         /// #elif preprocessor directive.
         /// </summary>
-        Elif = 2,
+        Elif = 1 << 1,
 
         /// <summary>
         /// #else preprocessor directive.
         /// </summary>
-        Else = 4,
+        Else = 1 << 2,
 
         /// <summary>
         /// #endif preprocessor directive.
         /// </summary>
-        EndIf = 8,
+        EndIf = 1 << 3,
 
         /// <summary>
         /// #region preprocessor directive.
         /// </summary>
-        Region = 16,
+        Region = 1 << 4,
 
         /// <summary>
         /// #endregion preprocessor directive.
         /// </summary>
-        EndRegion = 32,
+        EndRegion = 1 << 5,
 
         /// <summary>
         /// #define preprocessor directive.
         /// </summary>
-        Define = 64,
+        Define = 1 << 6,
 
         /// <summary>
         /// #undef preprocessor directive.
         /// </summary>
-        Undef = 128,
+        Undef = 1 << 7,
 
         /// <summary>
         /// #error preprocessor directive.
         /// </summary>
-        Error = 256,
+        Error = 1 << 8,
 
         /// <summary>
         /// #warning preprocessor directive.
         /// </summary>
-        Warning = 512,
+        Warning = 1 << 9,
 
         /// <summary>
         /// #line preprocessor directive.
         /// </summary>
-        Line = 1024,
+        Line = 1 << 10,
 
         /// <summary>
         /// #pragma warning preprocessor directive.
         /// </summary>
-        PragmaWarning = 2048,
+        PragmaWarning = 1 << 11,
 
         /// <summary>
         /// #pragma checksum preprocessor directive.
         /// </summary>
-        PragmaChecksum = 4096,
+        PragmaChecksum = 1 << 12,
 
         /// <summary>
         /// #pragma preprocessor directive.
@@ -88,22 +88,27 @@ namespace Roslynator.CSharp
         /// <summary>
         /// #r preprocessor directive.
         /// </summary>
-        Reference = 8192,
+        Reference = 1 << 13,
 
         /// <summary>
         /// #load preprocessor directive.
         /// </summary>
-        Load = 16384,
+        Load = 1 << 14,
 
         /// <summary>
         /// Bad preprocessor directive.
         /// </summary>
-        Bad = 32768,
+        Bad = 1 << 15,
 
         /// <summary>
         /// Shebang preprocessor directive.
         /// </summary>
-        Shebang = 65536,
+        Shebang = 1 << 16,
+
+        /// <summary>
+        /// Nullable preprocessor directive.
+        /// </summary>
+        Nullable = 1 << 17,
 
         /// <summary>
         /// All preprocessor directives.
@@ -124,6 +129,7 @@ namespace Roslynator.CSharp
             | Reference
             | Load
             | Bad
-            | Shebang,
+            | Shebang
+            | Nullable,
     }
 }
