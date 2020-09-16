@@ -87,6 +87,7 @@ namespace Roslynator.CSharp.Refactorings
                             return ConvertHasFlagCallToBitwiseOperationRefactoring.RefactorAsync(
                                 context.Document,
                                 invocationExpression,
+                                semanticModel,
                                 cancellationToken);
                         },
                         RefactoringIdentifiers.ConvertHasFlagCallToBitwiseOperation);

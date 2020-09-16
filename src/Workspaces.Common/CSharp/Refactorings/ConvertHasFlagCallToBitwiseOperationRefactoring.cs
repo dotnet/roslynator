@@ -14,54 +14,87 @@ namespace Roslynator.CSharp.Refactorings
     {
         public const string Title = "Use '&' operator";
 
-        public static Task<Document> RefactorAsync(
+        public static async Task<Document> RefactorAsync(
             Document document,
             InvocationExpressionSyntax invocation,
             CancellationToken cancellationToken = default)
         {
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
+            return await RefactorAsync(document, invocation, semanticModel, cancellationToken).ConfigureAwait(false);
+        }
+
+        public static Task<Document> RefactorAsync(
+            Document document,
+            InvocationExpressionSyntax invocation,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken = default)
+        {
+            ExpressionSyntax expression = invocation.ArgumentList.Arguments[0].Expression;
+
+            var enumTypeSymbol = (INamedTypeSymbol)semanticModel.GetTypeSymbol(expression, cancellationToken);
+
+            Optional<object> constantValue = semanticModel.GetConstantValue(expression, cancellationToken);
+
+            ulong value = SymbolUtility.GetEnumValueAsUInt64(constantValue.Value, enumTypeSymbol);
+
+            bool isComposite = FlagsUtility<ulong>.Instance.IsComposite(value);
+
             ParenthesizedExpressionSyntax parenthesizedExpression = ParenthesizedExpression(
                 BitwiseAndExpression(
                     ((MemberAccessExpressionSyntax)invocation.Expression).Expression.Parenthesize(),
-                    invocation.ArgumentList.Arguments[0].Expression.Parenthesize()).Parenthesize());
+                    expression.Parenthesize()).Parenthesize());
 
-            var binaryExpressionKind = SyntaxKind.NotEqualsExpression;
+            SyntaxKind binaryExpressionKind = (isComposite) ? SyntaxKind.EqualsExpression : SyntaxKind.NotEqualsExpression;
+
             SyntaxNode nodeToReplace = invocation;
 
             SyntaxNode parent = invocation.Parent;
 
             if (!parent.SpanContainsDirectives())
             {
-                SyntaxKind parentKind = parent.Kind();
-
-                if (parentKind == SyntaxKind.LogicalNotExpression)
+                switch (parent.Kind())
                 {
-                    binaryExpressionKind = SyntaxKind.EqualsExpression;
-                    nodeToReplace = parent;
-                }
-                else if (parentKind == SyntaxKind.EqualsExpression)
-                {
-                    ExpressionSyntax right = ((BinaryExpressionSyntax)parent).Right;
-
-                    if (right != null)
-                    {
-                        SyntaxKind rightKind = right.Kind();
-
-                        if (rightKind == SyntaxKind.TrueLiteralExpression)
+                    case SyntaxKind.LogicalNotExpression:
                         {
-                            binaryExpressionKind = SyntaxKind.NotEqualsExpression;
+                            binaryExpressionKind = (isComposite) ? SyntaxKind.NotEqualsExpression : SyntaxKind.EqualsExpression;
                             nodeToReplace = parent;
+                            break;
                         }
-                        else if (rightKind == SyntaxKind.FalseLiteralExpression)
+                    case SyntaxKind.EqualsExpression:
                         {
-                            binaryExpressionKind = SyntaxKind.EqualsExpression;
-                            nodeToReplace = parent;
+                            switch (((BinaryExpressionSyntax)parent).Right?.Kind())
+                            {
+                                case SyntaxKind.TrueLiteralExpression:
+                                    {
+                                        binaryExpressionKind = (isComposite) ? SyntaxKind.EqualsExpression : SyntaxKind.NotEqualsExpression;
+                                        nodeToReplace = parent;
+                                        break;
+                                    }
+                                case SyntaxKind.FalseLiteralExpression:
+                                    {
+                                        binaryExpressionKind = (isComposite) ? SyntaxKind.NotEqualsExpression : SyntaxKind.EqualsExpression;
+                                        nodeToReplace = parent;
+                                        break;
+                                    }
+                            }
+
+                            break;
                         }
-                    }
                 }
             }
 
-            ParenthesizedExpressionSyntax newNode = BinaryExpression(binaryExpressionKind, parenthesizedExpression, NumericLiteralExpression(0))
-                .WithTriviaFrom(nodeToReplace)
+            ExpressionSyntax right;
+            if (isComposite)
+            {
+                right = expression.Parenthesize();
+            }
+            else
+            {
+                right = NumericLiteralExpression(0);
+            }
+
+            ParenthesizedExpressionSyntax newNode = BinaryExpression(binaryExpressionKind, parenthesizedExpression, right).WithTriviaFrom(nodeToReplace)
                 .Parenthesize()
                 .WithFormatterAnnotation();
 

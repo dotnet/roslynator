@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis;
@@ -41,12 +40,22 @@ namespace Roslynator.CSharp.Analysis
 
             IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(invocationInfo.InvocationExpression, cancellationToken);
 
-            return methodSymbol?.IsStatic == false
+            if (methodSymbol?.IsStatic == false
                 && methodSymbol.IsReturnType(SpecialType.System_Boolean)
                 && methodSymbol.HasSingleParameter(SpecialType.System_Enum)
                 && methodSymbol.IsContainingType(SpecialType.System_Enum)
-                && !semanticModel.GetTypeSymbol(invocationInfo.Expression, cancellationToken).HasMetadataName(MetadataNames.System_Enum)
-                && !semanticModel.GetTypeSymbol(invocationInfo.Arguments.Single().Expression, cancellationToken).HasMetadataName(MetadataNames.System_Enum);
+                && !semanticModel.GetTypeSymbol(invocationInfo.Expression, cancellationToken).HasMetadataName(MetadataNames.System_Enum))
+            {
+                ExpressionSyntax expression = invocationInfo.Arguments.Single().Expression;
+
+                if (!semanticModel.GetTypeSymbol(expression, cancellationToken).HasMetadataName(MetadataNames.System_Enum)
+                    && semanticModel.HasConstantValue(expression, cancellationToken))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public static bool IsSuitableAsArgumentOfHasFlag(
