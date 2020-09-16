@@ -54,7 +54,9 @@ namespace Roslynator.CSharp.CodeFixes
 
                 var localSymbol = semanticModel.GetDeclaredSymbol(declarationExpression.Designation, context.CancellationToken) as ILocalSymbol;
 
-                RegisterCodeFix(context, type, localSymbol.Type, semanticModel);
+                ITypeSymbol typeSymbol = (localSymbol?.Type) ?? semanticModel.GetTypeSymbol(declarationExpression, context.CancellationToken);
+
+                RegisterCodeFix(context, type, typeSymbol, semanticModel);
             }
         }
 

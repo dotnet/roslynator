@@ -22,6 +22,18 @@ namespace Roslynator.CSharp
                 equivalenceKey);
         }
 
+        public static CodeAction ChangeTypeToVar(
+            Document document,
+            TupleExpressionSyntax tupleExpression,
+            string title = null,
+            string equivalenceKey = null)
+        {
+            return CodeAction.Create(
+                title ?? "Change type to 'var'",
+                ct => DocumentRefactorings.ChangeTypeToVarAsync(document, tupleExpression, ct),
+                equivalenceKey);
+        }
+
         public static CodeAction ChangeType(
             Document document,
             TypeSyntax type,
