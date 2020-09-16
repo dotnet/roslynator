@@ -193,7 +193,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
 
             if (SyntaxTriviaAnalysis.IsTokenFollowedWithNewLineAndNotPrecededWithNewLine(condition, questionToken, whenTrue))
             {
-                var (left, token, right) = CodeFixHelpers.AddNewLineBeforeTokenInsteadOfAfterIt(condition, questionToken, whenTrue);
+                (ExpressionSyntax left, SyntaxToken token, ExpressionSyntax right) = CodeFixHelpers.AddNewLineBeforeTokenInsteadOfAfterIt(condition, questionToken, whenTrue);
 
                 newCondition = left;
                 newQuestionToken = token;
@@ -202,7 +202,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
 
             if (SyntaxTriviaAnalysis.IsTokenFollowedWithNewLineAndNotPrecededWithNewLine(whenTrue, colonToken, whenFalse))
             {
-                var (left, token, right) = CodeFixHelpers.AddNewLineBeforeTokenInsteadOfAfterIt(newWhenTrue, colonToken, whenFalse);
+                (ExpressionSyntax left, SyntaxToken token, ExpressionSyntax right) = CodeFixHelpers.AddNewLineBeforeTokenInsteadOfAfterIt(newWhenTrue, colonToken, whenFalse);
 
                 newWhenTrue = left;
                 newColonToken = token;
@@ -238,7 +238,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
 
             if (SyntaxTriviaAnalysis.IsTokenPrecededWithNewLineAndNotFollowedWithNewLine(condition, questionToken, whenTrue))
             {
-                var (left, token, right) = CodeFixHelpers.AddNewLineAfterTokenInsteadOfBeforeIt(condition, questionToken, whenTrue);
+                (ExpressionSyntax left, SyntaxToken token, ExpressionSyntax right) = CodeFixHelpers.AddNewLineAfterTokenInsteadOfBeforeIt(condition, questionToken, whenTrue);
 
                 newCondition = left;
                 newQuestionToken = token;
@@ -247,7 +247,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
 
             if (SyntaxTriviaAnalysis.IsTokenPrecededWithNewLineAndNotFollowedWithNewLine(whenTrue, colonToken, whenFalse))
             {
-                var (left, token, right) = CodeFixHelpers.AddNewLineAfterTokenInsteadOfBeforeIt(newWhenTrue, colonToken, whenFalse);
+                (ExpressionSyntax left, SyntaxToken token, ExpressionSyntax right) = CodeFixHelpers.AddNewLineAfterTokenInsteadOfBeforeIt(newWhenTrue, colonToken, whenFalse);
 
                 newWhenTrue = left;
                 newColonToken = token;
