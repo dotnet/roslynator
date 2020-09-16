@@ -589,7 +589,7 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertAnonymousFunctionToMethodGroupOrViceVersa)]
-            public async Task TestNoDiagnostic_AnalyzerOptionDisabled()
+        public async Task TestNoDiagnostic_AnalyzerOptionDisabled()
         {
             await VerifyNoDiagnosticAsync(@"
 using System;

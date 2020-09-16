@@ -104,7 +104,7 @@ namespace Roslynator.CSharp
                 })
                 .ToSeparatedSyntaxList();
 
-            return   tupleExpression.WithArguments(newArguments);
+            return tupleExpression.WithArguments(newArguments);
         }
 
         public static Task<Document> ChangeTypeToVarAsync(

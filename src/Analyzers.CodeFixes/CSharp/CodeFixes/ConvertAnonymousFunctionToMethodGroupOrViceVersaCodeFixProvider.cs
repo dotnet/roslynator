@@ -88,7 +88,7 @@ namespace Roslynator.CSharp.CodeFixes
         {
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            LambdaExpressionSyntax lambda = ConvertMethodGroupToAnonymousFunctionRefactoring.ConvertMethodGroupToAnonymousFunction(expression, semanticModel , cancellationToken);
+            LambdaExpressionSyntax lambda = ConvertMethodGroupToAnonymousFunctionRefactoring.ConvertMethodGroupToAnonymousFunction(expression, semanticModel, cancellationToken);
 
             return await document.ReplaceNodeAsync(expression, lambda, cancellationToken).ConfigureAwait(false);
         }

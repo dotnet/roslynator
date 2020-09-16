@@ -10,7 +10,7 @@ namespace Roslynator.CSharp.Analysis
 {
     public static class ConvertMethodGroupToAnonymousFunctionAnalysis
     {
-        public static bool IsFixable(IdentifierNameSyntax identifierName, SemanticModel semanticModel , CancellationToken cancellationToken)
+        public static bool IsFixable(IdentifierNameSyntax identifierName, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
             if (CanBeMethodGroup(identifierName))
             {
@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.Analysis
             return false;
         }
 
-        public static bool IsFixable(MemberAccessExpressionSyntax memberAccessExpression, SemanticModel semanticModel , CancellationToken cancellationToken)
+        public static bool IsFixable(MemberAccessExpressionSyntax memberAccessExpression, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
             if (CanBeMethodGroup(memberAccessExpression))
             {
