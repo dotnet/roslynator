@@ -1,10 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Immutable;
-using System.Diagnostics;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace Roslynator.CSharp.Analysis
@@ -26,47 +23,32 @@ namespace Roslynator.CSharp.Analysis
 
         private static void AnalyzeNamedType(SymbolAnalysisContext context)
         {
-            var symbol = (INamedTypeSymbol)context.Symbol;
+            ISymbol symbol = context.Symbol;
 
             if (symbol.ContainingNamespace?.IsGlobalNamespace != true)
                 return;
 
-            foreach (SyntaxReference syntaxReference in symbol.DeclaringSyntaxReferences)
-            {
-                SyntaxNode node = syntaxReference.GetSyntax(context.CancellationToken);
+            if (symbol.ContainingType != null)
+                return;
 
-                SyntaxToken identifier = GetDeclarationIdentifier(symbol, node);
+            SyntaxNode node = symbol
+                .DeclaringSyntaxReferences
+                .SingleOrDefault(shouldThrow: false)?
+                .GetSyntax(context.CancellationToken);
 
-                if (identifier != default)
-                {
-                    DiagnosticHelpers.ReportDiagnostic(context,
-                        DiagnosticDescriptors.DeclareTypeInsideNamespace,
-                        identifier,
-                        identifier.ValueText);
-                }
-            }
-        }
+            if (node == null)
+                return;
 
-        private static SyntaxToken GetDeclarationIdentifier(INamedTypeSymbol symbol, SyntaxNode node)
-        {
-            switch (symbol.TypeKind)
-            {
-                case TypeKind.Class:
-                    return ((ClassDeclarationSyntax)node).Identifier;
-                case TypeKind.Struct:
-                    return ((StructDeclarationSyntax)node).Identifier;
-                case TypeKind.Interface:
-                    return ((InterfaceDeclarationSyntax)node).Identifier;
-                case TypeKind.Delegate:
-                    return ((DelegateDeclarationSyntax)node).Identifier;
-                case TypeKind.Enum:
-                    return ((EnumDeclarationSyntax)node).Identifier;
-                default:
-                    {
-                        Debug.Fail(symbol.TypeKind.ToString());
-                        return default;
-                    }
-            }
+            SyntaxToken identifier = CSharpUtility.GetIdentifier(node);
+
+            if (identifier == default)
+                return;
+
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
+                DiagnosticDescriptors.DeclareTypeInsideNamespace,
+                identifier,
+                identifier.ValueText);
         }
     }
 }
