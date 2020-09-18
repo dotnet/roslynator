@@ -16,6 +16,7 @@ namespace Roslynator.Metadata
             string title,
             bool isEnabledByDefault,
             bool supportsFadeOut,
+            string minLanguageVersion,
             string summary,
             IEnumerable<SampleMetadata> samples,
             bool isObsolete)
@@ -26,6 +27,7 @@ namespace Roslynator.Metadata
             Title = title;
             IsEnabledByDefault = isEnabledByDefault;
             SupportsFadeOut = supportsFadeOut;
+            MinLanguageVersion = minLanguageVersion;
             Summary = summary;
             Samples = new ReadOnlyCollection<SampleMetadata>(samples?.ToArray() ?? Array.Empty<SampleMetadata>());
             IsObsolete = isObsolete;
@@ -42,9 +44,9 @@ namespace Roslynator.Metadata
                 defaultSeverity: parent.DefaultSeverity,
                 isEnabledByDefault: IsEnabledByDefault,
                 isObsolete: parent.IsObsolete || IsObsolete,
-                supportsFadeOut: false,
+                supportsFadeOut: SupportsFadeOut,
                 supportsFadeOutAnalyzer: false,
-                minLanguageVersion: parent.MinLanguageVersion,
+                minLanguageVersion: MinLanguageVersion ?? parent.MinLanguageVersion,
                 summary: Summary,
                 remarks: null,
                 samples: Samples,
@@ -65,6 +67,8 @@ namespace Roslynator.Metadata
         public bool IsEnabledByDefault { get; }
 
         public bool SupportsFadeOut { get; }
+
+        public string MinLanguageVersion { get; }
 
         public string Summary { get; }
 

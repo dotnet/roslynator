@@ -4,20 +4,45 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp;
 
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class AddAccessibilityModifiersAnalyzer : BaseDiagnosticAnalyzer
+    public class AddAccessibilityModifiersOrViceVersaAnalyzer : BaseDiagnosticAnalyzer
     {
+        private static ImmutableDictionary<Accessibility, ImmutableDictionary<string, string>> _properties;
+
+        private static ImmutableDictionary<Accessibility, ImmutableDictionary<string, string>> Properties
+        {
+            get
+            {
+                if (_properties == null)
+                    Interlocked.CompareExchange(ref _properties, CreateProperties(), null);
+
+                return _properties;
+
+                static ImmutableDictionary<Accessibility, ImmutableDictionary<string, string>> CreateProperties()
+                {
+                    return Enum.GetValues(typeof(Accessibility)).Cast<Accessibility>()
+                        .Distinct()
+                        .Where(f => f != Accessibility.NotApplicable)
+                        .ToImmutableDictionary(
+                            f => f,
+                            f => ImmutableDictionary.CreateRange(new KeyValuePair<string, string>[] { new KeyValuePair<string, string>(nameof(Microsoft.CodeAnalysis.Accessibility), f.ToString()) }));
+                }
+            }
+        }
+
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.AddAccessibilityModifiers); }
+            get { return ImmutableArray.Create(DiagnosticDescriptors.AddAccessibilityModifiersOrViceVersa); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -140,104 +165,126 @@ namespace Roslynator.CSharp.Analysis
 
         private static void Analyze(SyntaxNodeAnalysisContext context, MemberDeclarationSyntax declaration, SyntaxTokenList modifiers)
         {
-            Accessibility accessibility = GetAccessibility(context, declaration, modifiers);
+            Accessibility explicitAccessibility = SyntaxAccessibility.GetExplicitAccessibility(modifiers);
 
-            if (accessibility == Accessibility.NotApplicable)
-                return;
+            if (explicitAccessibility == Accessibility.NotApplicable)
+            {
+                if (!context.IsAnalyzerSuppressed(AnalyzerOptions.RemoveAccessibilityModifiers))
+                    return;
 
-            Location location = GetLocation(declaration);
+                Accessibility accessibility = GetAccessibility(context, declaration, modifiers);
 
-            if (location == null)
-                return;
+                if (accessibility == Accessibility.NotApplicable)
+                    return;
 
-            DiagnosticHelpers.ReportDiagnostic(context,
-                DiagnosticDescriptors.AddAccessibilityModifiers,
-                location,
-                ImmutableDictionary.CreateRange(new KeyValuePair<string, string>[] { new KeyValuePair<string, string>(nameof(Accessibility), accessibility.ToString()) }));
+                Location location = GetLocation(declaration);
+
+                if (location == null)
+                    return;
+
+                DiagnosticHelpers.ReportDiagnostic(
+                    context,
+                    DiagnosticDescriptors.AddAccessibilityModifiersOrViceVersa,
+                    location,
+                    Properties[accessibility]);
+            }
+            else if (!context.IsAnalyzerSuppressed(AnalyzerOptions.RemoveAccessibilityModifiers)
+                && !declaration.IsKind(SyntaxKind.OperatorDeclaration, SyntaxKind.ConversionOperatorDeclaration))
+            {
+                Accessibility accessibility = SyntaxAccessibility.GetDefaultAccessibility(declaration);
+
+                if (explicitAccessibility != accessibility)
+                    return;
+
+                SyntaxToken first = modifiers.First(f => SyntaxFacts.IsAccessibilityModifier(f.Kind()));
+                SyntaxToken last = modifiers.Last(f => SyntaxFacts.IsAccessibilityModifier(f.Kind()));
+
+                DiagnosticHelpers.ReportDiagnostic(
+                    context,
+                    DiagnosticDescriptors.ReportOnly.RemoveAccessibilityModifiers,
+                    Location.Create(declaration.SyntaxTree, TextSpan.FromBounds(first.SpanStart, last.Span.End)));
+            }
         }
 
         private static Accessibility GetAccessibility(SyntaxNodeAnalysisContext context, MemberDeclarationSyntax declaration, SyntaxTokenList modifiers)
         {
-            if (!modifiers.Any(f => SyntaxFacts.IsAccessibilityModifier(f.Kind())))
+            if (modifiers.Any(SyntaxKind.PartialKeyword))
             {
-                if (modifiers.Any(SyntaxKind.PartialKeyword))
+                if (!declaration.IsKind(SyntaxKind.MethodDeclaration))
                 {
-                    if (!declaration.IsKind(SyntaxKind.MethodDeclaration))
-                    {
-                        Accessibility? accessibility = GetPartialAccessModifier(context, declaration);
+                    Accessibility? accessibility = GetPartialAccessibility(context, declaration);
 
-                        if (accessibility != null)
+                    if (accessibility != null)
+                    {
+                        if (accessibility == Accessibility.NotApplicable)
                         {
-                            if (accessibility == Accessibility.NotApplicable)
-                            {
-                                return SyntaxAccessibility.GetDefaultExplicitAccessibility(declaration);
-                            }
-                            else
-                            {
-                                return accessibility.Value;
-                            }
+                            return SyntaxAccessibility.GetDefaultExplicitAccessibility(declaration);
+                        }
+                        else
+                        {
+                            return accessibility.Value;
                         }
                     }
                 }
-                else
-                {
-                    return SyntaxAccessibility.GetDefaultExplicitAccessibility(declaration);
-                }
+            }
+            else
+            {
+                return SyntaxAccessibility.GetDefaultExplicitAccessibility(declaration);
             }
 
             return Accessibility.NotApplicable;
         }
 
-        private static Accessibility? GetPartialAccessModifier(
-            SyntaxNodeAnalysisContext context,
-            MemberDeclarationSyntax declaration)
+    private static Accessibility? GetPartialAccessibility(
+        SyntaxNodeAnalysisContext context,
+        MemberDeclarationSyntax declaration)
+    {
+        var accessibility = Accessibility.NotApplicable;
+
+        ISymbol symbol = context.SemanticModel.GetDeclaredSymbol(declaration, context.CancellationToken);
+
+        if (symbol != null)
         {
-            var accessibility = Accessibility.NotApplicable;
-
-            ISymbol symbol = context.SemanticModel.GetDeclaredSymbol(declaration, context.CancellationToken);
-
-            if (symbol != null)
+            foreach (SyntaxReference syntaxReference in symbol.DeclaringSyntaxReferences)
             {
-                foreach (SyntaxReference syntaxReference in symbol.DeclaringSyntaxReferences)
+                if (syntaxReference.GetSyntax(context.CancellationToken) is MemberDeclarationSyntax declaration2)
                 {
-                    if (syntaxReference.GetSyntax(context.CancellationToken) is MemberDeclarationSyntax declaration2)
-                    {
-                        Accessibility accessibility2 = SyntaxAccessibility.GetExplicitAccessibility(declaration2);
+                    Accessibility accessibility2 = SyntaxAccessibility.GetExplicitAccessibility(declaration2);
 
-                        if (accessibility2 != Accessibility.NotApplicable)
+                    if (accessibility2 != Accessibility.NotApplicable)
+                    {
+                        if (accessibility == Accessibility.NotApplicable || accessibility == accessibility2)
                         {
-                            if (accessibility == Accessibility.NotApplicable || accessibility == accessibility2)
-                            {
-                                accessibility = accessibility2;
-                            }
-                            else
-                            {
-                                return null;
-                            }
+                            accessibility = accessibility2;
+                        }
+                        else
+                        {
+                            return null;
                         }
                     }
                 }
             }
-
-            return accessibility;
         }
 
-        private static Location GetLocation(SyntaxNode node)
-        {
-            SyntaxKind kind = node.Kind();
-
-            if (kind == SyntaxKind.OperatorDeclaration)
-                return ((OperatorDeclarationSyntax)node).OperatorToken.GetLocation();
-
-            if (kind == SyntaxKind.ConversionOperatorDeclaration)
-                return ((ConversionOperatorDeclarationSyntax)node).Type?.GetLocation();
-
-            SyntaxToken token = CSharpUtility.GetIdentifier(node);
-
-            if (!token.IsKind(SyntaxKind.None))
-                return token.GetLocation();
-
-            return null;
-        }
+        return accessibility;
     }
+
+    private static Location GetLocation(SyntaxNode node)
+    {
+        SyntaxKind kind = node.Kind();
+
+        if (kind == SyntaxKind.OperatorDeclaration)
+            return ((OperatorDeclarationSyntax)node).OperatorToken.GetLocation();
+
+        if (kind == SyntaxKind.ConversionOperatorDeclaration)
+            return ((ConversionOperatorDeclarationSyntax)node).Type?.GetLocation();
+
+        SyntaxToken token = CSharpUtility.GetIdentifier(node);
+
+        if (!token.IsKind(SyntaxKind.None))
+            return token.GetLocation();
+
+        return null;
+    }
+}
 }

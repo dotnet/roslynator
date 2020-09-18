@@ -9,6 +9,18 @@ namespace Roslynator.CSharp
 {
     public static partial class AnalyzerOptions
     {
+        /// <summary>RCS1018i</summary>
+        public static readonly DiagnosticDescriptor RemoveAccessibilityModifiers = DiagnosticDescriptorFactory.Default.Create(
+            id:                 AnalyzerOptionIdentifiers.RemoveAccessibilityModifiers, 
+            title:              "Remove accessibility modifiers.", 
+            messageFormat:      "Remove accessibility modifiers.", 
+            category:           DiagnosticCategories.AnalyzerOption, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: false, 
+            description:        null, 
+            helpLinkUri:        AnalyzerOptionIdentifiers.RemoveAccessibilityModifiers, 
+            customTags:         WellKnownDiagnosticTags.Unnecessary);
+
         /// <summary>RCS1036a</summary>
         public static readonly DiagnosticDescriptor RemoveEmptyLineBetweenClosingBraceAndSwitchSection = DiagnosticDescriptorFactory.Default.Create(
             id:                 AnalyzerOptionIdentifiers.RemoveEmptyLineBetweenClosingBraceAndSwitchSection, 

@@ -333,9 +333,10 @@ foreach (var item in items) // [|Id|]
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AddAccessibilityModifiers">
+  <Analyzer Identifier="AddAccessibilityModifiersOrViceVersa">
     <Id>RCS1018</Id>
-    <Title>Add accessibility modifiers.</Title>
+    <Title>Add accessibility modifiers (or vice versa).</Title>
+    <MessageFormat>Add accessibility modifiers.</MessageFormat>
     <Category>Readability</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -355,6 +356,30 @@ foreach (var item in items) // [|Id|]
 }]]></After>
       </Sample>
     </Samples>
+    <Options>
+      <Option Identifier="RemoveAccessibilityModifiers">
+        <Title>Remove accessibility modifiers.</Title>
+        <Id>i</Id>
+        <Kind>Invert</Kind>
+        <SupportsFadeOut>true</SupportsFadeOut>
+        <Samples>
+          <Sample>
+            <Before><![CDATA[internal class Foo // [|Id|]
+{
+    private void Bar() // [|Id|]
+    {
+    }
+}]]></Before>
+            <After><![CDATA[class Foo
+{
+    void Bar()
+    {
+    }
+}]]></After>
+          </Sample>
+        </Samples>
+      </Option>
+    </Options>
   </Analyzer>
   <Analyzer Identifier="OrderModifiers">
     <Id>RCS1019</Id>

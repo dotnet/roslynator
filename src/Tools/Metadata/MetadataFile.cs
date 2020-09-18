@@ -150,6 +150,7 @@ namespace Roslynator.Metadata
             var kind = (AnalyzerOptionKind)Enum.Parse(typeof(AnalyzerOptionKind), element.Element("Kind").Value);
             bool isEnabledByDefault = element.ElementValueAsBooleanOrDefault("IsEnabledByDefault");
             bool supportsFadeOut = element.ElementValueAsBooleanOrDefault("SupportsFadeOut");
+            string minLanguageVersion = element.Element("MinLanguageVersion")?.Value;
             string summary = element.Element("Summary")?.Value.NormalizeNewLine();
             IEnumerable<SampleMetadata> samples = LoadSamples(element);
             bool isObsolete = element.AttributeValueAsBooleanOrDefault("IsObsolete");
@@ -161,6 +162,7 @@ namespace Roslynator.Metadata
                 title: title,
                 isEnabledByDefault: isEnabledByDefault,
                 supportsFadeOut: supportsFadeOut,
+                minLanguageVersion: minLanguageVersion,
                 summary: summary,
                 samples: samples,
                 isObsolete: isObsolete);

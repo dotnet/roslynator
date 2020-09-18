@@ -214,15 +214,15 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1018</summary>
-        public static readonly DiagnosticDescriptor AddAccessibilityModifiers = DiagnosticDescriptorFactory.Default.Create(
-            id:                 DiagnosticIdentifiers.AddAccessibilityModifiers, 
-            title:              "Add accessibility modifiers.", 
+        public static readonly DiagnosticDescriptor AddAccessibilityModifiersOrViceVersa = DiagnosticDescriptorFactory.Default.Create(
+            id:                 DiagnosticIdentifiers.AddAccessibilityModifiersOrViceVersa, 
+            title:              "Add accessibility modifiers (or vice versa).", 
             messageFormat:      "Add accessibility modifiers.", 
             category:           DiagnosticCategories.Readability, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddAccessibilityModifiers, 
+            helpLinkUri:        DiagnosticIdentifiers.AddAccessibilityModifiersOrViceVersa, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1019</summary>
@@ -2467,6 +2467,18 @@ namespace Roslynator.CSharp
 
         public static partial class ReportOnly
         {
+            /// <summary>RCS1018i</summary>
+            public static readonly DiagnosticDescriptor RemoveAccessibilityModifiers = DiagnosticDescriptorFactory.Default.Create(
+                id:                 DiagnosticIdentifiers.AddAccessibilityModifiersOrViceVersa, 
+                title:              "Add accessibility modifiers (or vice versa).", 
+                messageFormat:      "Remove accessibility modifiers.", 
+                category:           DiagnosticCategories.Readability, 
+                defaultSeverity:    DiagnosticSeverity.Info, 
+                isEnabledByDefault: true, 
+                description:        null, 
+                helpLinkUri:        DiagnosticIdentifiers.AddAccessibilityModifiersOrViceVersa, 
+                customTags:         WellKnownDiagnosticTags.Unnecessary);
+
             /// <summary>RCS1050i</summary>
             public static readonly DiagnosticDescriptor RemoveArgumentListFromObjectCreation = DiagnosticDescriptorFactory.Default.Create(
                 id:                 DiagnosticIdentifiers.AddArgumentListToObjectCreationOrViceVersa, 
