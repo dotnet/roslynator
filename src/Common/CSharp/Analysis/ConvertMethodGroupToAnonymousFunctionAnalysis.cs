@@ -141,6 +141,8 @@ namespace Roslynator.CSharp.Analysis
                 case SyntaxKind.VariableDeclaration:
                 case SyntaxKind.WhileStatement:
                 case SyntaxKind.XmlNameAttribute:
+                case SyntaxKind.ExpressionStatement:
+                case SyntaxKind.RecursivePattern:
                     {
                         return false;
                     }
