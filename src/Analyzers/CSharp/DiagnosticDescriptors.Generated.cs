@@ -1868,15 +1868,15 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1199</summary>
-        public static readonly DiagnosticDescriptor SimplifyBooleanExpression = DiagnosticDescriptorFactory.Default.Create(
-            id:                 DiagnosticIdentifiers.SimplifyBooleanExpression, 
-            title:              "Simplify boolean expression.", 
-            messageFormat:      "Simplify boolean expression.", 
-            category:           DiagnosticCategories.Simplification, 
+        public static readonly DiagnosticDescriptor UnnecessaryNullCheck = DiagnosticDescriptorFactory.Default.Create(
+            id:                 DiagnosticIdentifiers.UnnecessaryNullCheck, 
+            title:              "Unncessary null check.", 
+            messageFormat:      "Unncessary null check.", 
+            category:           DiagnosticCategories.Redundancy, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.SimplifyBooleanExpression, 
+            helpLinkUri:        DiagnosticIdentifiers.UnnecessaryNullCheck, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1200</summary>

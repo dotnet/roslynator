@@ -3930,10 +3930,10 @@ string x = s + i; // [|Id|]]]></Before>
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="SimplifyBooleanExpression">
+  <Analyzer Identifier="UnnecessaryNullCheck">
     <Id>RCS1199</Id>
-    <Title>Simplify boolean expression.</Title>
-    <Category>Simplification</Category>
+    <Title>Unncessary null check.</Title>
+    <Category>Redundancy</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <Samples>
@@ -3946,6 +3946,19 @@ if (x.HasValue && x.Value) // [|Id|]
 {
 }]]></Before>
         <After><![CDATA[if (x == true)
+{
+}]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[bool? x = null;
+bool y = false;
+
+// ...
+
+if (x != null && x.Value == y) // [|Id|]
+{
+}]]></Before>
+        <After><![CDATA[if (x == y)
 {
 }]]></After>
       </Sample>

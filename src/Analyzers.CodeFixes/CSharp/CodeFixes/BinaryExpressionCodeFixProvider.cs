@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Text;
 using Roslynator.CodeFixes;
 using Roslynator.CSharp.Refactorings;
 using Roslynator.CSharp.Syntax;
@@ -38,7 +39,7 @@ namespace Roslynator.CSharp.CodeFixes
                     DiagnosticIdentifiers.ValueTypeObjectIsNeverEqualToNull,
                     DiagnosticIdentifiers.JoinStringExpressions,
                     DiagnosticIdentifiers.UseExclusiveOrOperator,
-                    DiagnosticIdentifiers.SimplifyBooleanExpression,
+                    DiagnosticIdentifiers.UnnecessaryNullCheck,
                     DiagnosticIdentifiers.UseShortCircuitingOperator,
                     DiagnosticIdentifiers.UnnecessaryOperator);
             }
@@ -198,11 +199,11 @@ namespace Roslynator.CSharp.CodeFixes
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
-                    case DiagnosticIdentifiers.SimplifyBooleanExpression:
+                    case DiagnosticIdentifiers.UnnecessaryNullCheck:
                         {
                             CodeAction codeAction = CodeAction.Create(
-                                "Simplify boolean expression",
-                                cancellationToken => SimplifyBooleanExpressionRefactoring.RefactorAsync(document, binaryExpression, cancellationToken),
+                                "Remove unnecessary null check",
+                                ct => RemoveUnnecessaryNullCheckAsync(document, binaryExpression, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -334,6 +335,54 @@ namespace Roslynator.CSharp.CodeFixes
             return ConditionalAccessExpression(
                 expression.Parenthesize(),
                 MemberBindingExpression(IdentifierName("Length")));
+        }
+
+        private static async Task<Document> RemoveUnnecessaryNullCheckAsync(
+            Document document,
+            BinaryExpressionSyntax logicalAnd,
+            CancellationToken cancellationToken)
+        {
+            BinaryExpressionInfo binaryExpressionInfo = SyntaxInfo.BinaryExpressionInfo(logicalAnd);
+
+            ExpressionSyntax right = binaryExpressionInfo.Right;
+
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
+            NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(binaryExpressionInfo.Left, semanticModel, NullCheckStyles.HasValue | NullCheckStyles.NotEqualsToNull);
+
+            var binaryExpression = right as BinaryExpressionSyntax;
+
+            ExpressionSyntax newRight;
+            switch (right.Kind())
+            {
+                case SyntaxKind.SimpleMemberAccessExpression:
+                    {
+                        newRight = TrueLiteralExpression().WithTriviaFrom(right);
+                        break;
+                    }
+                case SyntaxKind.LogicalNotExpression:
+                    {
+                        newRight = FalseLiteralExpression().WithTriviaFrom(right);
+                        break;
+                    }
+                default:
+                    {
+                        newRight = binaryExpression.Right;
+                        break;
+                    }
+            }
+
+            BinaryExpressionSyntax newBinaryExpression = BinaryExpression(
+                (binaryExpression != null)
+                    ? right.Kind()
+                    : SyntaxKind.EqualsExpression,
+                nullCheck.Expression.WithLeadingTrivia(logicalAnd.GetLeadingTrivia()),
+                (binaryExpression != null)
+                    ? ((BinaryExpressionSyntax)right).OperatorToken
+                    : Token(SyntaxKind.EqualsEqualsToken).WithTriviaFrom(logicalAnd.OperatorToken),
+                newRight).WithFormatterAnnotation();
+
+            return await document.ReplaceNodeAsync(logicalAnd, newBinaryExpression, cancellationToken).ConfigureAwait(false);
         }
     }
 }
