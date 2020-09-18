@@ -5381,4 +5381,47 @@ void M()
       </Link>
     </Links>
   </Analyzer>
+  <Analyzer Identifier="UseIsNullPatternInsteadOfComparisonOrViceVersa">
+    <Id>RCS1248</Id>
+    <Title>Use 'is null' pattern instead of comparison (or vice versa).</Title>
+    <MessageFormat>Use 'is null' pattern instead '{0}' operator.</MessageFormat>
+    <Category>Style</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <MinLanguageVersion>7.0</MinLanguageVersion>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[x == null]]></Before>
+        <After><![CDATA[x is null]]></After>
+      </Sample>
+    </Samples>
+    <Options>
+      <Option Identifier="UseIsNullPatternInsteadOfInequalityOperator">
+        <Id>a</Id>
+        <Title>Use 'is null' pattern instead of '!=' operator.</Title>
+        <Kind>Enable</Kind>
+        <Samples>
+          <Sample>
+            <Before><![CDATA[x != null]]></Before>
+            <After><![CDATA[!(x is null)]]></After>
+          </Sample>
+        </Samples>
+      </Option>
+      <Option Identifier="UseComparisonInsteadOfIsNullPattern">
+        <Id>i</Id>
+        <Title>Use comparison instead of 'is null' pattern.</Title>
+        <Kind>Invert</Kind>
+        <Samples>
+          <Sample>
+            <Before><![CDATA[x is null]]></Before>
+            <After><![CDATA[x == null]]></After>
+          </Sample>
+          <Sample>
+            <Before><![CDATA[!(x is null)]]></Before>
+            <After><![CDATA[x != null]]></After>
+          </Sample>
+        </Samples>
+      </Option>
+    </Options>
+  </Analyzer>
 </Analyzers>

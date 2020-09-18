@@ -105,5 +105,29 @@ namespace Roslynator.CSharp
             helpLinkUri:        AnalyzerOptionIdentifiers.DoNotUseElementAccessWhenExpressionIsInvocation, 
             customTags:         Array.Empty<string>());
 
+        /// <summary>RCS1248a</summary>
+        public static readonly DiagnosticDescriptor UseIsNullPatternInsteadOfInequalityOperator = DiagnosticDescriptorFactory.Default.Create(
+            id:                 AnalyzerOptionIdentifiers.UseIsNullPatternInsteadOfInequalityOperator, 
+            title:              "Use 'is null' pattern instead of '!=' operator.", 
+            messageFormat:      "Use 'is null' pattern instead of '!=' operator.", 
+            category:           DiagnosticCategories.AnalyzerOption, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: false, 
+            description:        null, 
+            helpLinkUri:        AnalyzerOptionIdentifiers.UseIsNullPatternInsteadOfInequalityOperator, 
+            customTags:         Array.Empty<string>());
+
+        /// <summary>RCS1248i</summary>
+        public static readonly DiagnosticDescriptor UseComparisonInsteadOfIsNullPattern = DiagnosticDescriptorFactory.Default.Create(
+            id:                 AnalyzerOptionIdentifiers.UseComparisonInsteadOfIsNullPattern, 
+            title:              "Use comparison instead of 'is null' pattern.", 
+            messageFormat:      "Use comparison instead of 'is null' pattern.", 
+            category:           DiagnosticCategories.AnalyzerOption, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: false, 
+            description:        null, 
+            helpLinkUri:        AnalyzerOptionIdentifiers.UseComparisonInsteadOfIsNullPattern, 
+            customTags:         Array.Empty<string>());
+
     }
 }
