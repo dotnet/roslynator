@@ -262,6 +262,27 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
             VisitParameterList(node.ParameterList);
         }
 
+        public override void VisitEventDeclaration(EventDeclarationSyntax node)
+        {
+            VisitAttributeLists(node.AttributeLists);
+
+            if (!ShouldVisit)
+                return;
+
+            TypeSyntax type = node.Type;
+
+            if (type != null)
+                VisitType(type);
+
+            if (!ShouldVisit)
+                return;
+
+            AccessorListSyntax accessorList = node.AccessorList;
+
+            if (accessorList != null)
+                VisitAccessorList(accessorList);
+        }
+
         public override void VisitEventFieldDeclaration(EventFieldDeclarationSyntax node)
         {
             VisitAttributeLists(node.AttributeLists);
