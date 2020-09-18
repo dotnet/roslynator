@@ -143,6 +143,11 @@ namespace Roslynator.CSharp.Analysis
                 case SyntaxKind.XmlNameAttribute:
                 case SyntaxKind.ExpressionStatement:
                 case SyntaxKind.RecursivePattern:
+                case SyntaxKind.EventDeclaration:
+                case SyntaxKind.OperatorDeclaration:
+                case SyntaxKind.RangeExpression:
+                case SyntaxKind.SuppressNullableWarningExpression:
+                case SyntaxKind.IncompleteMember:
                     {
                         return false;
                     }
