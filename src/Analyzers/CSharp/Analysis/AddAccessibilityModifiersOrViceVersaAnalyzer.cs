@@ -235,56 +235,56 @@ namespace Roslynator.CSharp.Analysis
             return Accessibility.NotApplicable;
         }
 
-    private static Accessibility? GetPartialAccessibility(
-        SyntaxNodeAnalysisContext context,
-        MemberDeclarationSyntax declaration)
-    {
-        var accessibility = Accessibility.NotApplicable;
-
-        ISymbol symbol = context.SemanticModel.GetDeclaredSymbol(declaration, context.CancellationToken);
-
-        if (symbol != null)
+        private static Accessibility? GetPartialAccessibility(
+            SyntaxNodeAnalysisContext context,
+            MemberDeclarationSyntax declaration)
         {
-            foreach (SyntaxReference syntaxReference in symbol.DeclaringSyntaxReferences)
-            {
-                if (syntaxReference.GetSyntax(context.CancellationToken) is MemberDeclarationSyntax declaration2)
-                {
-                    Accessibility accessibility2 = SyntaxAccessibility.GetExplicitAccessibility(declaration2);
+            var accessibility = Accessibility.NotApplicable;
 
-                    if (accessibility2 != Accessibility.NotApplicable)
+            ISymbol symbol = context.SemanticModel.GetDeclaredSymbol(declaration, context.CancellationToken);
+
+            if (symbol != null)
+            {
+                foreach (SyntaxReference syntaxReference in symbol.DeclaringSyntaxReferences)
+                {
+                    if (syntaxReference.GetSyntax(context.CancellationToken) is MemberDeclarationSyntax declaration2)
                     {
-                        if (accessibility == Accessibility.NotApplicable || accessibility == accessibility2)
+                        Accessibility accessibility2 = SyntaxAccessibility.GetExplicitAccessibility(declaration2);
+
+                        if (accessibility2 != Accessibility.NotApplicable)
                         {
-                            accessibility = accessibility2;
-                        }
-                        else
-                        {
-                            return null;
+                            if (accessibility == Accessibility.NotApplicable || accessibility == accessibility2)
+                            {
+                                accessibility = accessibility2;
+                            }
+                            else
+                            {
+                                return null;
+                            }
                         }
                     }
                 }
             }
+
+            return accessibility;
         }
 
-        return accessibility;
+        private static Location GetLocation(SyntaxNode node)
+        {
+            SyntaxKind kind = node.Kind();
+
+            if (kind == SyntaxKind.OperatorDeclaration)
+                return ((OperatorDeclarationSyntax)node).OperatorToken.GetLocation();
+
+            if (kind == SyntaxKind.ConversionOperatorDeclaration)
+                return ((ConversionOperatorDeclarationSyntax)node).Type?.GetLocation();
+
+            SyntaxToken token = CSharpUtility.GetIdentifier(node);
+
+            if (!token.IsKind(SyntaxKind.None))
+                return token.GetLocation();
+
+            return null;
+        }
     }
-
-    private static Location GetLocation(SyntaxNode node)
-    {
-        SyntaxKind kind = node.Kind();
-
-        if (kind == SyntaxKind.OperatorDeclaration)
-            return ((OperatorDeclarationSyntax)node).OperatorToken.GetLocation();
-
-        if (kind == SyntaxKind.ConversionOperatorDeclaration)
-            return ((ConversionOperatorDeclarationSyntax)node).Type?.GetLocation();
-
-        SyntaxToken token = CSharpUtility.GetIdentifier(node);
-
-        if (!token.IsKind(SyntaxKind.None))
-            return token.GetLocation();
-
-        return null;
-    }
-}
 }
