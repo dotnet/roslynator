@@ -914,7 +914,7 @@ namespace Roslynator.Documentation
             {
                 if (en.MoveNext())
                 {
-                    bool hasCombinedValue = false;
+                    var hasCombinedValue = false;
 
                     EnumSymbolInfo enumInfo = default;
 
@@ -1181,7 +1181,7 @@ namespace Roslynator.Documentation
 
             var baseTypes = new List<INamedTypeSymbol>();
             int count = 0;
-            bool isMaxReached = false;
+            var isMaxReached = false;
 
             WriteStartBulletList();
             WriteClassHierarchy(ImmutableHashSet<INamedTypeSymbol>.Empty);
@@ -1795,7 +1795,7 @@ namespace Roslynator.Documentation
                         WriteContainingNamespacePrefix(symbol);
                     }
 
-                    bool includeTypeParameters = false;
+                    var includeTypeParameters = false;
 
                     if (Peek(i).IsPunctuation("<")
                         && symbol.IsDefinition

@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public static void AnalyzeAny(SyntaxNodeAnalysisContext context, in SimpleMemberInvocationExpressionInfo invocationInfo)
         {
-            bool isLogicalNot = false;
+            var isLogicalNot = false;
 
             InvocationExpressionSyntax invocationExpression = invocationInfo.InvocationExpression;
 
@@ -195,7 +195,7 @@ namespace Roslynator.CSharp.Analysis
             if (containingType == null)
                 return;
 
-            bool success = false;
+            var success = false;
 
             if (containingType.HasMetadataName(MetadataNames.System_Linq_Enumerable))
             {
@@ -818,21 +818,21 @@ namespace Roslynator.CSharp.Analysis
                 }
             }
 
-            public static ImmutableDictionary<string, string> Peek { get; } = ImmutableDictionary.CreateRange(new KeyValuePair<string, string>[] { new KeyValuePair<string, string>("MethodName", "Peek") });
+            public static ImmutableDictionary<string, string> Peek { get; } = ImmutableDictionary.CreateRange(new[] { new KeyValuePair<string, string>("MethodName", "Peek") });
 
-            public static ImmutableDictionary<string, string> SimplifyLinqMethodChain { get; } = ImmutableDictionary.CreateRange(new KeyValuePair<string, string>[] { new KeyValuePair<string, string>("Name", "SimplifyLinqMethodChain") });
+            public static ImmutableDictionary<string, string> SimplifyLinqMethodChain { get; } = ImmutableDictionary.CreateRange(new[] { new KeyValuePair<string, string>("Name", "SimplifyLinqMethodChain") });
 
-            public static ImmutableDictionary<string, string> Count { get; } = ImmutableDictionary.CreateRange(new KeyValuePair<string, string>[] { new KeyValuePair<string, string>("PropertyName", "Count") });
+            public static ImmutableDictionary<string, string> Count { get; } = ImmutableDictionary.CreateRange(new[] { new KeyValuePair<string, string>("PropertyName", "Count") });
 
-            public static ImmutableDictionary<string, string> Length { get; } = ImmutableDictionary.CreateRange(new KeyValuePair<string, string>[] { new KeyValuePair<string, string>("PropertyName", "Length") });
+            public static ImmutableDictionary<string, string> Length { get; } = ImmutableDictionary.CreateRange(new[] { new KeyValuePair<string, string>("PropertyName", "Length") });
 
-            public static ImmutableDictionary<string, string> Sum_Count { get; } = ImmutableDictionary.CreateRange(new KeyValuePair<string, string>[]
+            public static ImmutableDictionary<string, string> Sum_Count { get; } = ImmutableDictionary.CreateRange(new[]
             {
                 new KeyValuePair<string, string>("PropertyName", "Count"),
                 new KeyValuePair<string, string>("MethodName", "Sum")
             });
 
-            public static ImmutableDictionary<string, string> Sum_Length { get; } = ImmutableDictionary.CreateRange(new KeyValuePair<string, string>[]
+            public static ImmutableDictionary<string, string> Sum_Length { get; } = ImmutableDictionary.CreateRange(new[]
             {
                 new KeyValuePair<string, string>("PropertyName", "Length"),
                 new KeyValuePair<string, string>("MethodName", "Sum")

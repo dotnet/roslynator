@@ -12,7 +12,7 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class SelectedMemberDeclarationsRefactoring
     {
-        public static ImmutableDictionary<Accessibility, string> _accessiblityIdentifierMap = ImmutableDictionary.CreateRange(new KeyValuePair<Accessibility, string>[]
+        public static ImmutableDictionary<Accessibility, string> _accessiblityIdentifierMap = ImmutableDictionary.CreateRange(new[]
         {
             new KeyValuePair<Accessibility, string>(Accessibility.Public, EquivalenceKey.Join(RefactoringIdentifiers.ChangeAccessibility, nameof(Accessibility.Public))),
             new KeyValuePair<Accessibility, string>(Accessibility.Internal, EquivalenceKey.Join(RefactoringIdentifiers.ChangeAccessibility, nameof(Accessibility.Internal))),

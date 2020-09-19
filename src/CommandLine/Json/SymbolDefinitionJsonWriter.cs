@@ -319,7 +319,7 @@ namespace Roslynator.Documentation.Json
 
         private void WriteParameters(ImmutableArray<IParameterSymbol> parameters)
         {
-            bool isOpen = false;
+            var isOpen = false;
 
             foreach (IParameterSymbol parameter in parameters)
             {
@@ -344,7 +344,7 @@ namespace Roslynator.Documentation.Json
 
         private void WriteAccessors(IMethodSymbol accessor1, IMethodSymbol accessor2)
         {
-            bool isOpen = false;
+            var isOpen = false;
 
             if (ShouldWriteAccessor(accessor1))
             {

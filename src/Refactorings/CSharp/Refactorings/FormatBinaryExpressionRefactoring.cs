@@ -60,7 +60,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static BinaryExpressionSyntax GetTopmostBinaryExpression(BinaryExpressionSyntax binaryExpression)
         {
-            bool success = true;
+            var success = true;
 
             while (success)
             {

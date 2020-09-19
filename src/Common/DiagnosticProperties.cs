@@ -22,7 +22,7 @@ namespace Roslynator
                 {
                     Interlocked.CompareExchange(
                         ref _analyzerOption_Invert,
-                        ImmutableDictionary.CreateRange(new KeyValuePair<string, string>[] { new KeyValuePair<string, string>(AnalyzerOptionKey, InvertValue) }),
+                        ImmutableDictionary.CreateRange(new[] { new KeyValuePair<string, string>(AnalyzerOptionKey, InvertValue) }),
                         null);
                 }
 

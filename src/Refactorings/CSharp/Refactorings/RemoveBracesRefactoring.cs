@@ -67,7 +67,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static bool CanRefactorIfElse(BlockSyntax selectedBlock, IfStatementSyntax topmostIf)
         {
-            bool success = false;
+            var success = false;
 
             foreach (BlockSyntax block in GetBlockStatements(topmostIf))
             {

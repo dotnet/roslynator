@@ -748,7 +748,7 @@ namespace Roslynator.CSharp
             ForEachVariableStatementSyntax forEachStatement,
             SemanticModel semanticModel)
         {
-            bool isAllVar = true;
+            var isAllVar = true;
 
             foreach (ArgumentSyntax argument in tupleExpression.Arguments)
             {

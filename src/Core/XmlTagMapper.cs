@@ -14,7 +14,7 @@ namespace Roslynator
         {
             return ImmutableDictionary.CreateRange(
                 StringComparer.OrdinalIgnoreCase,
-                new KeyValuePair<string, XmlTag>[]
+                new[]
                 {
                     new KeyValuePair<string, XmlTag>(WellKnownXmlTags.C, XmlTag.C),
                     new KeyValuePair<string, XmlTag>(WellKnownXmlTags.Code, XmlTag.Code),

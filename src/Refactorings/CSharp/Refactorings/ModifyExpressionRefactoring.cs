@@ -48,7 +48,7 @@ namespace Roslynator.CSharp.Refactorings
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.CallToMethod))
             {
-                bool fString = false;
+                var fString = false;
 
                 foreach (ITypeSymbol destinationType in convertibleDestinationTypes)
                 {

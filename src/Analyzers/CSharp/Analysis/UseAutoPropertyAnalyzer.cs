@@ -195,7 +195,7 @@ namespace Roslynator.CSharp.Analysis
 
             UseAutoPropertyWalker walker = UseAutoPropertyWalker.GetInstance();
 
-            bool isFixable = false;
+            var isFixable = false;
 
             ImmutableArray<SyntaxReference> syntaxReferences = containingType.DeclaringSyntaxReferences;
 

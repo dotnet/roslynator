@@ -31,7 +31,7 @@ namespace Roslynator.CSharp.Analysis.RemoveRedundantStatement
 
             ContainsYieldWalker walker = ContainsYieldWalker.GetInstance();
 
-            bool success = false;
+            var success = false;
 
             int index = statements.IndexOf(containingStatement);
 

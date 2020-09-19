@@ -10,7 +10,7 @@ namespace Roslynator
     {
         public override string EnsureUniqueName(string baseName, IEnumerable<string> reservedNames, bool isCaseSensitive = true)
         {
-            string suffix = "";
+            var suffix = "";
 
             string name = baseName;
 
@@ -25,7 +25,7 @@ namespace Roslynator
 
         public override string EnsureUniqueName(string baseName, ImmutableArray<ISymbol> symbols, bool isCaseSensitive = true)
         {
-            string suffix = "";
+            var suffix = "";
 
             string name = baseName;
 

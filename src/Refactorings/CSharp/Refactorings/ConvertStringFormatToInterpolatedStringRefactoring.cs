@@ -121,7 +121,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static bool CanReplaceInterpolationWithStringLiteralInnerText(SeparatedSyntaxList<ArgumentSyntax> arguments, bool isVerbatim)
         {
-            bool result = false;
+            var result = false;
 
             for (int i = 1; i < arguments.Count; i++)
             {

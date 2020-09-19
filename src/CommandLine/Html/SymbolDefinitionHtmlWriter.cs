@@ -765,7 +765,7 @@ namespace Roslynator.Documentation.Html
                 WriteDocumentationCommentToolTip(summaryElement);
             }
 
-            bool hasExceptions = false;
+            var hasExceptions = false;
 
             using (IEnumerator<XElement> en = xmlDocumentation.Elements(WellKnownXmlTags.Exception).GetEnumerator())
             {
@@ -822,7 +822,7 @@ namespace Roslynator.Documentation.Html
                 if (en.MoveNext())
                 {
                     XNode node;
-                    bool isFirst = true;
+                    var isFirst = true;
                     bool isLast;
 
                     do

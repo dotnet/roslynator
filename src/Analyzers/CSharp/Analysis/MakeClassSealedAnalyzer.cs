@@ -51,7 +51,7 @@ namespace Roslynator.CSharp.Analysis
             if (namedTypeSymbol.TypeKind != TypeKind.Class)
                 return;
 
-            bool isAnyExplicit = false;
+            var isAnyExplicit = false;
 
             foreach (IMethodSymbol constructor in namedTypeSymbol.InstanceConstructors)
             {

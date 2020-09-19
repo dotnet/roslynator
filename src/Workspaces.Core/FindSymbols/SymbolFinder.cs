@@ -48,7 +48,7 @@ namespace Roslynator.FindSymbols
                         continue;
                     }
 
-                    bool isUnused = false;
+                    var isUnused = false;
 
                     if (!options.UnusedOnly
                         || UnusedSymbolUtility.CanBeUnusedSymbol(symbol))

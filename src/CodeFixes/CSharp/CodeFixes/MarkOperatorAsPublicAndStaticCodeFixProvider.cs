@@ -36,7 +36,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             ModifierListInfo info = SyntaxInfo.ModifierListInfo(memberDeclaration);
 
-            string title = "Add ";
+            var title = "Add ";
 
             if (info.ExplicitAccessibility == Accessibility.Public)
             {

@@ -34,8 +34,8 @@ namespace Roslynator.CSharp.CodeFixes
                 {
                     case CompilerDiagnosticIdentifiers.PointersAndFixedSizeBuffersMayOnlyBeUsedInUnsafeContext:
                         {
-                            bool fStatement = false;
-                            bool fMemberDeclaration = false;
+                            var fStatement = false;
+                            var fMemberDeclaration = false;
 
                             foreach (SyntaxNode ancestor in node.AncestorsAndSelf())
                             {

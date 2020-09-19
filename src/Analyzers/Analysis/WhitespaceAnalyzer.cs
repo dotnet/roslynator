@@ -38,12 +38,12 @@ namespace Roslynator.CSharp.Analysis
                 return;
 
             var emptyLines = default(TextSpan);
-            bool previousLineIsEmpty = false;
+            var previousLineIsEmpty = false;
             int i = 0;
 
             foreach (TextLine textLine in sourceText.Lines)
             {
-                bool lineIsEmpty = false;
+                var lineIsEmpty = false;
 
                 if (textLine.Span.Length == 0)
                 {

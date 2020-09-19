@@ -24,7 +24,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (directives.Count > 1)
                 {
-                    string title = "Remove directive and related directive";
+                    var title = "Remove directive and related directive";
 
                     if (directives.Count > 2)
                         title += "s";

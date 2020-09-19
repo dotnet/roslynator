@@ -87,7 +87,7 @@ namespace Roslynator.CSharp.CodeFixes
             int position,
             SemanticModel semanticModel)
         {
-            bool isFirst = true;
+            var isFirst = true;
 
             ImmutableArray<ISymbol> symbols = semanticModel.LookupSymbols(position);
 

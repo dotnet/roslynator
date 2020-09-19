@@ -69,8 +69,8 @@ namespace Roslynator.CSharp.Refactorings
                 RefactoringIdentifiers.RemoveAllCommentsExceptDocumentationComments,
                 RefactoringIdentifiers.RemoveAllDocumentationComments))
             {
-                bool fComment = false;
-                bool fDocComment = false;
+                var fComment = false;
+                var fDocComment = false;
 
                 foreach (SyntaxTrivia trivia in node.DescendantTrivia(span, descendIntoTrivia: true))
                 {

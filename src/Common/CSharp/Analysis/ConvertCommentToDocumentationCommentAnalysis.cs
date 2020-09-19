@@ -39,8 +39,8 @@ namespace Roslynator.CSharp.Analysis
             SyntaxTriviaList.Reversed.Enumerator en = leadingTrivia.Reverse().GetEnumerator();
 
             TextSpan span = default;
-            bool containsTaskListItem = false;
-            bool containsNonTaskListItem = false;
+            var containsTaskListItem = false;
+            var containsNonTaskListItem = false;
 
             while (en.MoveNext())
             {

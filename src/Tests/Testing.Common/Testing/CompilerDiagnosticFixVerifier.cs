@@ -93,7 +93,7 @@ namespace Roslynator.Testing
 
                 ImmutableArray<Diagnostic> previousDiagnostics = ImmutableArray<Diagnostic>.Empty;
 
-                bool fixRegistered = false;
+                var fixRegistered = false;
 
                 while (true)
                 {

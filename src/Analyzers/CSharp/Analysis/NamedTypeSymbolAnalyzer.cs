@@ -43,12 +43,12 @@ namespace Roslynator.CSharp.Analysis
 
                     if (interfaces.Any())
                     {
-                        bool fIComparable = false;
-                        bool fIComparableOfT = false;
-                        bool fIComparer = false;
-                        bool fIComparerOfT = false;
-                        bool fIEqualityComparer = false;
-                        bool fIEqualityComparerOfT = false;
+                        var fIComparable = false;
+                        var fIComparableOfT = false;
+                        var fIComparer = false;
+                        var fIComparerOfT = false;
+                        var fIEqualityComparer = false;
+                        var fIEqualityComparerOfT = false;
 
                         foreach (INamedTypeSymbol interfaceSymbol in interfaces)
                         {
@@ -142,7 +142,7 @@ namespace Roslynator.CSharp.Analysis
                 context,
                 DiagnosticDescriptors.ImplementNonGenericCounterpart,
                 identifier.GetLocation(),
-                ImmutableDictionary.CreateRange(new KeyValuePair<string, string>[] { new KeyValuePair<string, string>("InterfaceName", interfaceName) }),
+                ImmutableDictionary.CreateRange(new[] { new KeyValuePair<string, string>("InterfaceName", interfaceName) }),
                 interfaceName);
         }
     }

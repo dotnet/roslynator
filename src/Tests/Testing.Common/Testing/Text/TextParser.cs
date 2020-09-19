@@ -30,7 +30,7 @@ namespace Roslynator.Testing.Text
             {
                 StringBuilder sb = StringBuilderCache.GetInstance(s.Length - TokensLength);
 
-                bool startPending = false;
+                var startPending = false;
                 LinePositionInfo start = default;
                 Stack<LinePositionInfo> stack = null;
                 List<LinePositionSpanInfo> spans = null;

@@ -42,7 +42,7 @@ namespace Roslynator.CSharp.Analysis
             DiagnosticHelpers.ReportDiagnostic(context,
                 DiagnosticDescriptors.ReduceIfNesting,
                 ifStatement.IfKeyword.GetLocation(),
-                ImmutableDictionary.CreateRange(new KeyValuePair<string, string>[] { new KeyValuePair<string, string>("JumpKind", analysis.JumpKind.ToString()) }));
+                ImmutableDictionary.CreateRange(new[] { new KeyValuePair<string, string>("JumpKind", analysis.JumpKind.ToString()) }));
         }
     }
 }

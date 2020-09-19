@@ -7,6 +7,7 @@ set _msbuildPath="%_visualStudioPath%\MSBuild\Current\Bin"
 
 "..\src\CommandLine\bin\Debug\net48\roslynator" fix "..\src\Roslynator.sln" ^
  --msbuild-path %_msbuildPath% ^
+ --supported-diagnostics RCS1010 ^
  --analyzer-assemblies ^
   "..\src\Analyzers.CodeFixes\bin\Debug\netstandard2.0\Roslynator.CSharp.Analyzers.dll" ^
   "..\src\Analyzers.CodeFixes\bin\Debug\netstandard2.0\Roslynator.CSharp.Analyzers.CodeFixes.dll" ^

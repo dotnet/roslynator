@@ -51,11 +51,11 @@ namespace Roslynator.CSharp.Analysis
                 return;
 
             bool? useCorrectDocumentationTagEnabled = null;
-            bool containsInheritDoc = false;
-            bool containsIncludeOrExclude = false;
-            bool containsSummaryElement = false;
-            bool containsContentElement = false;
-            bool isFirst = true;
+            var containsInheritDoc = false;
+            var containsIncludeOrExclude = false;
+            var containsSummaryElement = false;
+            var containsContentElement = false;
+            var isFirst = true;
 
             CancellationToken cancellationToken = context.CancellationToken;
 

@@ -37,7 +37,7 @@ namespace Roslynator.CSharp.Analysis
                 return;
 
             MemberDeclarationSyntax firstTypeDeclaration = null;
-            bool isFirstReported = false;
+            var isFirstReported = false;
 
             Analyze(compilationUnitMembers);
 

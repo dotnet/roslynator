@@ -65,9 +65,9 @@ namespace Roslynator.CSharp.Analysis
                 if (parameter.Modifiers.Contains(SyntaxKind.ParamsKeyword))
                     continue;
 
-                bool isThis = false;
-                bool isIn = false;
-                bool isRef = false;
+                var isThis = false;
+                var isIn = false;
+                var isRef = false;
 
                 foreach (SyntaxToken modifier in parameter.Modifiers)
                 {

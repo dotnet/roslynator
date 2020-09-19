@@ -35,7 +35,7 @@ namespace Roslynator.CSharp.Analysis
                         .Where(f => f != Accessibility.NotApplicable)
                         .ToImmutableDictionary(
                             f => f,
-                            f => ImmutableDictionary.CreateRange(new KeyValuePair<string, string>[] { new KeyValuePair<string, string>(nameof(Microsoft.CodeAnalysis.Accessibility), f.ToString()) }));
+                            f => ImmutableDictionary.CreateRange(new[] { new KeyValuePair<string, string>(nameof(Microsoft.CodeAnalysis.Accessibility), f.ToString()) }));
                 }
             }
         }

@@ -42,7 +42,7 @@ namespace Roslynator.VisualStudio
 
         public void CheckNewItemsDisabledByDefault(IEnumerable<string> itemsDisabledByDefault)
         {
-            bool shouldSave = false;
+            var shouldSave = false;
 
             if (string.IsNullOrEmpty(LastMaxId))
             {

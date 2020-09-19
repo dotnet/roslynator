@@ -85,9 +85,9 @@ namespace Roslynator.CSharp.Analysis.AddExceptionToDocumentationComment
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            bool containsException = false;
-            bool containsIncludeOrExclude = false;
-            bool isFirst = true;
+            var containsException = false;
+            var containsIncludeOrExclude = false;
+            var isFirst = true;
 
             foreach (XmlNodeSyntax node in comment.Content)
             {

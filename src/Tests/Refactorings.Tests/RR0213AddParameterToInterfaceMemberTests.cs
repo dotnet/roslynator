@@ -12,7 +12,7 @@ namespace Roslynator.CSharp.Refactorings.Tests
 
         protected override CSharpCodeVerificationOptions UpdateOptions(CSharpCodeVerificationOptions options)
         {
-            return options.AddAllowedCompilerDiagnosticIds(new string[] { "CS0535", "CS0539" });
+            return options.AddAllowedCompilerDiagnosticIds(new[] { "CS0535", "CS0539" });
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddParameterToInterfaceMember)]

@@ -47,9 +47,9 @@ namespace Roslynator.CSharp
 
         public static BracesAnalysis AnalyzeBraces(IfStatementSyntax ifStatement)
         {
-            bool anyHasEmbedded = false;
-            bool anyHasBlock = false;
-            bool allSupportsEmbedded = true;
+            var anyHasEmbedded = false;
+            var anyHasBlock = false;
+            var allSupportsEmbedded = true;
 
             int cnt = 0;
 

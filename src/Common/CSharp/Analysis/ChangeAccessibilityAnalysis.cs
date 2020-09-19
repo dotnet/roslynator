@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis
 {
     internal static class ChangeAccessibilityAnalysis
     {
-        private static readonly ImmutableDictionary<Accessibility, ImmutableArray<Accessibility>> _accessibilityArrayMap = ImmutableDictionary.CreateRange(new KeyValuePair<Accessibility, ImmutableArray<Accessibility>>[]
+        private static readonly ImmutableDictionary<Accessibility, ImmutableArray<Accessibility>> _accessibilityArrayMap = ImmutableDictionary.CreateRange(new[]
         {
             new KeyValuePair<Accessibility, ImmutableArray<Accessibility>>(Accessibility.Public, ImmutableArray.Create(Accessibility.Public)),
             new KeyValuePair<Accessibility, ImmutableArray<Accessibility>>(Accessibility.Internal, ImmutableArray.Create(Accessibility.Internal)),
@@ -38,7 +38,7 @@ namespace Roslynator.CSharp.Analysis
 
             ImmutableArray<Accessibility> avaiableAccessibilities = AvailableAccessibilities;
 
-            bool isAllExplicit = true;
+            var isAllExplicit = true;
             var all = AccessibilityFilter.None;
 
             AccessibilityFilter valid = AccessibilityFilter.Public

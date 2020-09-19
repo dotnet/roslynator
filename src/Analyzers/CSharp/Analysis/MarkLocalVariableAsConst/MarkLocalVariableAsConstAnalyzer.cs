@@ -86,7 +86,7 @@ namespace Roslynator.CSharp.Analysis.MarkLocalVariableAsConst
             foreach (VariableDeclaratorSyntax variable in variables)
                 walker.Identifiers.Add(variable.Identifier.ValueText);
 
-            bool result = true;
+            var result = true;
 
             for (int i = startIndex; i < statements.Count; i++)
             {

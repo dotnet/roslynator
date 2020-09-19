@@ -37,7 +37,7 @@ namespace Roslynator.Documentation
 
         public static string Unindent(string rawXml)
         {
-            string s = "";
+            var s = "";
 
             using (var sr = new StringReader(rawXml))
             using (XmlReader xr = XmlReader.Create(sr))

@@ -74,7 +74,7 @@ namespace Roslynator.CodeGeneration.Markdown
             }
             else if (refactoring.Images.Count > 0)
             {
-                bool isFirst = true;
+                var isFirst = true;
 
                 foreach (ImageMetadata image in refactoring.Images)
                 {

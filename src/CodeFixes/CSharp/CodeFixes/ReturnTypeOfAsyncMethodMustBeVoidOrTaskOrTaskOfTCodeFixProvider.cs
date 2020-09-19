@@ -89,8 +89,8 @@ namespace Roslynator.CSharp.CodeFixes
             if (node == null)
                 return (false, false);
 
-            bool containsReturnAwait = false;
-            bool containsAwaitStatement = false;
+            var containsReturnAwait = false;
+            var containsAwaitStatement = false;
 
             foreach (SyntaxNode descendant in node.DescendantNodes(node.Span, f => !CSharpFacts.IsFunction(f.Kind())))
             {

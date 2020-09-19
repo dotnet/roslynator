@@ -11,7 +11,7 @@ namespace Roslynator.CSharp
 {
     public static class CSharpFacts
     {
-        internal static ImmutableArray<SyntaxKind> AssignmentExpressionKinds { get; } = ImmutableArray.CreateRange(new SyntaxKind[]
+        internal static ImmutableArray<SyntaxKind> AssignmentExpressionKinds { get; } = ImmutableArray.CreateRange(new[]
         {
             SyntaxKind.SimpleAssignmentExpression,
             SyntaxKind.AddAssignmentExpression,

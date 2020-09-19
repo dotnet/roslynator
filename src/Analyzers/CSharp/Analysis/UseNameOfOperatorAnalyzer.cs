@@ -193,7 +193,7 @@ namespace Roslynator.CSharp.Analysis
             DiagnosticHelpers.ReportDiagnostic(context,
                 DiagnosticDescriptors.UseNameOfOperator,
                 literalExpression.GetLocation(),
-                ImmutableDictionary.CreateRange(new KeyValuePair<string, string>[] { new KeyValuePair<string, string>("Identifier", identifier) }));
+                ImmutableDictionary.CreateRange(new[] { new KeyValuePair<string, string>("Identifier", identifier) }));
 
             string text = literalExpression.Token.Text;
 

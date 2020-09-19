@@ -108,7 +108,7 @@ namespace Roslynator.CSharp.Analysis
                 ContainsContinueStatementWalker walker = ContainsContinueStatementWalker.GetInstance();
                 walker.ContainsContinueStatement = false;
 
-                bool containsContinueStatement = false;
+                var containsContinueStatement = false;
 
                 foreach (StatementSyntax innerStatement in innerStatements)
                 {

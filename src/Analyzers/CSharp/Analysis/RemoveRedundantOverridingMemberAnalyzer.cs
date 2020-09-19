@@ -95,7 +95,7 @@ namespace Roslynator.CSharp.Analysis
 
         private static bool CheckModifiers(SyntaxTokenList modifiers)
         {
-            bool isOverride = false;
+            var isOverride = false;
 
             foreach (SyntaxToken modifier in modifiers)
             {

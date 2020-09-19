@@ -105,7 +105,7 @@ namespace Roslynator.Formatting.CSharp
 
             SyntaxTree syntaxTree = nodes[0].SyntaxTree;
 
-            bool isSingleLine = true;
+            var isSingleLine = true;
 
             for (int i = 1; i < count; i++)
             {

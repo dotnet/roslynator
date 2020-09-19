@@ -174,7 +174,7 @@ namespace Roslynator.FindSymbols
 
         public virtual SymbolFilterReason GetReason(IMethodSymbol symbol)
         {
-            bool canBeImplicitlyDeclared = false;
+            var canBeImplicitlyDeclared = false;
 
             if (!Includes(SymbolGroupFilter.Method))
                 return SymbolFilterReason.SymbolGroup;

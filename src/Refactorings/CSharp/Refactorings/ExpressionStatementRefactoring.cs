@@ -33,7 +33,7 @@ namespace Roslynator.CSharp.Refactorings
                             && !typeSymbol.HasMetadataName(MetadataNames.System_Threading_Tasks_Task)
                             && !typeSymbol.IsVoid())
                         {
-                            bool addAwait = false;
+                            var addAwait = false;
 
                             if (typeSymbol.OriginalDefinition.EqualsOrInheritsFromTaskOfT())
                             {

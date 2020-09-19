@@ -18,8 +18,8 @@ namespace Roslynator.CSharp.Analysis
             bool onlyPrivate = false,
             CancellationToken cancellationToken = default)
         {
-            bool isStatic = false;
-            bool isReadOnly = false;
+            var isStatic = false;
+            var isReadOnly = false;
 
             foreach (SyntaxToken modifier in fieldDeclaration.Modifiers)
             {

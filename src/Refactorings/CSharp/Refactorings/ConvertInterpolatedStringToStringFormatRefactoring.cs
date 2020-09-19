@@ -18,8 +18,8 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void ComputeRefactoring(RefactoringContext context, InterpolatedStringExpressionSyntax interpolatedString)
         {
-            bool containsInterpolation = false;
-            bool containsInterpolatedText = false;
+            var containsInterpolation = false;
+            var containsInterpolatedText = false;
 
             Analyze();
 

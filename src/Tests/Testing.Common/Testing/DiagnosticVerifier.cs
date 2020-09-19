@@ -193,7 +193,7 @@ namespace Roslynator.Testing
             {
                 foreach (Diagnostic diagnostic in diagnostics)
                 {
-                    bool success = false;
+                    var success = false;
                     foreach (Diagnostic expectedDiagnostic in expectedDiagnostics)
                     {
                         if (DiagnosticComparer.Id.Equals(diagnostic, expectedDiagnostic))

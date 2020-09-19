@@ -46,7 +46,7 @@ namespace Roslynator.CSharp.Analysis
             if (baseTypes.Count <= 1)
                 return;
 
-            bool isFirst = true;
+            var isFirst = true;
             INamedTypeSymbol typeSymbol = null;
             SymbolInterfaceInfo baseClassInfo = default;
             List<SymbolInterfaceInfo> baseInterfaceInfos = null;

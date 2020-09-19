@@ -309,7 +309,7 @@ namespace Roslynator.CSharp.Analysis
                 context,
                 DiagnosticDescriptors.CompositeEnumValueContainsUndefinedFlag,
                 enumMember.GetLocation(),
-                ImmutableDictionary.CreateRange(new KeyValuePair<string, string>[] { new KeyValuePair<string, string>("Value", value) }),
+                ImmutableDictionary.CreateRange(new[] { new KeyValuePair<string, string>("Value", value) }),
                 value);
         }
 

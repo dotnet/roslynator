@@ -220,7 +220,7 @@ namespace Roslynator.CSharp.Refactorings
             SeparatedSyntaxList<ParameterSyntax> parameters,
             ref HashSet<string> reservedNames)
         {
-            bool isConflict = false;
+            var isConflict = false;
 
             foreach (ParameterSyntax parameter in parameters)
             {

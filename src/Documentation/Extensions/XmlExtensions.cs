@@ -18,7 +18,7 @@ namespace Roslynator.Documentation
                 {
                     XNode node;
 
-                    bool isFirst = true;
+                    var isFirst = true;
                     bool isLast;
 
                     do

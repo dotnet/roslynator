@@ -52,7 +52,7 @@ class C
 
                 parseOptions = parseOptions
                     .WithLanguageVersion(LanguageVersion.CSharp8)
-                    .WithPreprocessorSymbols(parseOptions.PreprocessorSymbolNames.Concat(new string[] { "DEBUG" }));
+                    .WithPreprocessorSymbols(parseOptions.PreprocessorSymbolNames.Concat(new[] { "DEBUG" }));
 
                 project = project
                     .WithCompilationOptions(compilationOptions)

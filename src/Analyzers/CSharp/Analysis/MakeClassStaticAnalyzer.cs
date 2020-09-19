@@ -79,7 +79,7 @@ namespace Roslynator.CSharp.Analysis
 
         public static bool AnalyzeMembers(ImmutableArray<ISymbol> members)
         {
-            bool areAllImplicitlyDeclared = true;
+            var areAllImplicitlyDeclared = true;
 
             foreach (ISymbol memberSymbol in members)
             {

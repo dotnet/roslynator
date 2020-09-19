@@ -71,7 +71,7 @@ namespace Roslynator
 
                     if (options.SupportedDiagnosticIds.Count > 0)
                     {
-                        bool success = false;
+                        var success = false;
 
                         foreach (DiagnosticDescriptor supportedDiagnostic in supportedDiagnostics)
                         {
@@ -87,7 +87,7 @@ namespace Roslynator
                     }
                     else if (options.IgnoredDiagnosticIds.Count > 0)
                     {
-                        bool success = false;
+                        var success = false;
 
                         foreach (DiagnosticDescriptor supportedDiagnostic in supportedDiagnostics)
                         {

@@ -750,8 +750,8 @@ namespace Roslynator.Documentation
             if (!Format.Includes(SymbolDefinitionPartFilter.AttributeArguments))
                 return;
 
-            bool hasConstructorArgument = false;
-            bool hasNamedArgument = false;
+            var hasConstructorArgument = false;
+            var hasNamedArgument = false;
 
             WriteConstructorArguments();
             WriteNamedArguments();

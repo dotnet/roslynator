@@ -77,7 +77,7 @@ namespace Roslynator.CSharp.Analysis
                 context,
                 DiagnosticDescriptors.ExpressionIsAlwaysEqualToTrueOrFalse,
                 binaryExpression.GetLocation(),
-                ImmutableDictionary.CreateRange(new KeyValuePair<string, string>[] { new KeyValuePair<string, string>("DoubleNaN", (((BinaryExpressionSyntax)binaryExpression).Left == expression) ? "Right" : "Left") }),
+                ImmutableDictionary.CreateRange(new[] { new KeyValuePair<string, string>("DoubleNaN", (((BinaryExpressionSyntax)binaryExpression).Left == expression) ? "Right" : "Left") }),
                 (binaryExpression.IsKind(SyntaxKind.EqualsExpression)) ? "false" : "true");
         }
 

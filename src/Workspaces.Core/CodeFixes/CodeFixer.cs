@@ -499,7 +499,7 @@ namespace Roslynator.CodeFixes
 
                     count = 0;
 
-                    bool plus = false;
+                    var plus = false;
 
                     while (en.MoveNext())
                     {

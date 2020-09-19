@@ -48,7 +48,7 @@ extern alias x;
 class C
 {
 }
-", options: Options.AddAllowedCompilerDiagnosticIds(new string[] { "CS0430", "CS8020" }));
+", options: Options.AddAllowedCompilerDiagnosticIds(new[] { "CS0430", "CS8020" }));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddEmptyLineAfterTopComment)]

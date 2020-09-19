@@ -78,7 +78,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                 bool isMultiline = xmlElement.SyntaxTree.IsMultiLineSpan(span, cancellationToken);
 
-                string text = "<para>";
+                var text = "<para>";
 
                 if (isMultiline)
                     text += s;

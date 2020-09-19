@@ -197,7 +197,7 @@ namespace Roslynator.Documentation
                 builder.AddRange(parts);
             }
 
-            bool hasEventAccessorList = false;
+            var hasEventAccessorList = false;
 
             if (additionalOptions.HasOption(SymbolDisplayAdditionalOptions.IncludeAccessorAttributes))
             {
@@ -405,8 +405,8 @@ namespace Roslynator.Documentation
 
             void AddAttributeArguments()
             {
-                bool hasConstructorArgument = false;
-                bool hasNamedArgument = false;
+                var hasConstructorArgument = false;
+                var hasNamedArgument = false;
 
                 AppendConstructorArguments();
                 AppendNamedArguments();

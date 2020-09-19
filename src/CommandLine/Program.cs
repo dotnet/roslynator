@@ -53,7 +53,7 @@ namespace Roslynator.CommandLine
                     GenerateDocRootCommandLineOptions
                     >(args);
 
-                bool verbosityParsed = false;
+                var verbosityParsed = false;
 
                 parserResult.WithParsed<AbstractCommandLineOptions>(options =>
                 {

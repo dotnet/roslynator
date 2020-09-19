@@ -150,7 +150,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             XmlElementSyntax summaryElement = documentationComment.SummaryElement();
 
-            string indentation = "";
+            var indentation = "";
 
             SyntaxTrivia parentTrivia = documentationComment.ParentTrivia;
 

@@ -200,7 +200,7 @@ namespace Roslynator.CSharp.Analysis
         {
             InvocationExpressionSyntax invocationExpression = invocationInfo.InvocationExpression;
 
-            bool isNegation = false;
+            var isNegation = false;
 
             IfStatementSyntax ifStatement = GetIfStatement();
 

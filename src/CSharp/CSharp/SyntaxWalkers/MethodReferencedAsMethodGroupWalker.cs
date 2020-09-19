@@ -87,7 +87,7 @@ namespace Roslynator.CSharp.SyntaxWalkers
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            bool result = false;
+            var result = false;
 
             MethodReferencedAsMethodGroupWalker walker = null;
 

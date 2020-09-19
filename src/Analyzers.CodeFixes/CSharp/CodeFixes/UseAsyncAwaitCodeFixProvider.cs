@@ -22,7 +22,7 @@ namespace Roslynator.CSharp.CodeFixes
     [Shared]
     public class UseAsyncAwaitCodeFixProvider : BaseCodeFixProvider
     {
-        private static readonly SyntaxAnnotation[] _asyncAwaitAnnotation = new SyntaxAnnotation[] { new SyntaxAnnotation() };
+        private static readonly SyntaxAnnotation[] _asyncAwaitAnnotation = new[] { new SyntaxAnnotation() };
 
         private static readonly SyntaxAnnotation[] _asyncAwaitAnnotationAndFormatterAnnotation = new SyntaxAnnotation[] { _asyncAwaitAnnotation[0], Formatter.Annotation };
 
@@ -150,7 +150,7 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 ITypeSymbol returnType = methodSymbol.ReturnType.OriginalDefinition;
 
-                bool keepReturnStatement = false;
+                var keepReturnStatement = false;
 
                 if (returnType.EqualsOrInheritsFrom(MetadataNames.System_Threading_Tasks_ValueTask_T)
                     || returnType.EqualsOrInheritsFrom(MetadataNames.System_Threading_Tasks_Task_T))

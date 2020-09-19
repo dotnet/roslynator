@@ -89,7 +89,7 @@ namespace Roslynator.CSharp.Refactorings
 
             if (fRemoveStatements)
             {
-                string title = "Remove statements from section";
+                var title = "Remove statements from section";
 
                 if (selectedSections.Count > 1)
                     title += "s";

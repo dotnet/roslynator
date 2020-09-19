@@ -310,7 +310,7 @@ namespace A.B
         }
     }
 }
-", additionalSources: new string[] { @"
+", additionalSources: new[] { @"
 namespace A.B
 {
     class C2

@@ -429,7 +429,7 @@ partial class C
         _f = null;
     }
 }
-", additionalSources: new string[]
+", additionalSources: new[]
 { @"
 partial class C
 {

@@ -19,12 +19,12 @@ namespace Roslynator.CSharp.Refactorings
         {
             SyntaxList<SwitchSectionSyntax> sections = switchStatement.Sections;
 
-            bool containsSectionWithoutDefault = false;
+            var containsSectionWithoutDefault = false;
 
             foreach (SwitchSectionSyntax section in sections)
             {
-                bool containsPattern = false;
-                bool containsDefault = false;
+                var containsPattern = false;
+                var containsDefault = false;
 
                 foreach (SwitchLabelSyntax label in section.Labels)
                 {

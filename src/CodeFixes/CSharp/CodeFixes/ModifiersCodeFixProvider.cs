@@ -18,20 +18,20 @@ namespace Roslynator.CSharp.CodeFixes
     [Shared]
     public class ModifiersCodeFixProvider : BaseCodeFixProvider
     {
-        private static readonly Accessibility[] _publicOrInternal = new Accessibility[]
+        private static readonly Accessibility[] _publicOrInternal = new[]
         {
             Accessibility.Public,
             Accessibility.Internal
         };
 
-        private static readonly Accessibility[] _publicOrInternalOrProtected = new Accessibility[]
+        private static readonly Accessibility[] _publicOrInternalOrProtected = new[]
         {
             Accessibility.Public,
             Accessibility.Internal,
             Accessibility.Protected
         };
 
-        private static readonly Accessibility[] _publicOrInternalOrPrivate = new Accessibility[]
+        private static readonly Accessibility[] _publicOrInternalOrPrivate = new[]
         {
             Accessibility.Public,
             Accessibility.Internal,

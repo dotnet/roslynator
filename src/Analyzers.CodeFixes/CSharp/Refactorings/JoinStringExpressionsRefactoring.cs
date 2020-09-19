@@ -27,7 +27,7 @@ namespace Roslynator.CSharp.Refactorings
             ExpressionSyntax firstExpression = expressions[0];
 
             bool isVerbatim;
-            bool isInterpolated = false;
+            var isInterpolated = false;
 
             if (firstExpression is InterpolatedStringExpressionSyntax interpolatedString)
             {

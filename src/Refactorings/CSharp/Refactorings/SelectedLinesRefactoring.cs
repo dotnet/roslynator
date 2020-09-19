@@ -71,7 +71,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveEmptyLines))
                 {
-                    bool containsEmptyLine = false;
+                    var containsEmptyLine = false;
 
                     foreach (TextLine line in selectedLines)
                     {

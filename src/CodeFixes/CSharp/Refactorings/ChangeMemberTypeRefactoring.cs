@@ -57,9 +57,9 @@ namespace Roslynator.CSharp.Refactorings
 
             string additionalKey = null;
 
-            bool isAsyncMethod = false;
-            bool insertAwait = false;
-            bool isYield = false;
+            var isAsyncMethod = false;
+            var insertAwait = false;
+            var isYield = false;
 
             if (symbol.IsAsyncMethod())
             {
