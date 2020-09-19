@@ -148,6 +148,7 @@ namespace Roslynator.CSharp.Analysis
                 case SyntaxKind.RangeExpression:
                 case SyntaxKind.SuppressNullableWarningExpression:
                 case SyntaxKind.IncompleteMember:
+                case SyntaxKind.AwaitExpression:
                     {
                         return false;
                     }
