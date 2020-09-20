@@ -44,27 +44,31 @@ namespace Roslynator.CSharp.Analysis
 
             switch (parent.Kind())
             {
-                case SyntaxKind.AddAssignmentExpression:
                 case SyntaxKind.Argument:
                 case SyntaxKind.ArrayInitializerExpression:
                 case SyntaxKind.ArrowExpressionClause:
-                case SyntaxKind.CoalesceAssignmentExpression:
                 case SyntaxKind.CollectionInitializerExpression:
                 case SyntaxKind.EqualsValueClause:
                 case SyntaxKind.ReturnStatement:
-                case SyntaxKind.SimpleAssignmentExpression:
-                case SyntaxKind.SubtractAssignmentExpression:
-                case SyntaxKind.SwitchExpressionArm:
                 case SyntaxKind.YieldReturnStatement:
                     return true;
+                case SyntaxKind.AddAssignmentExpression:
+                case SyntaxKind.CoalesceAssignmentExpression:
+                case SyntaxKind.SimpleAssignmentExpression:
+                case SyntaxKind.SubtractAssignmentExpression:
+                    return object.ReferenceEquals(((AssignmentExpressionSyntax)parent).Right, expression);
+                case SyntaxKind.SwitchExpressionArm:
+                    return object.ReferenceEquals(((SwitchExpressionArmSyntax)parent).Expression, expression);
                 case SyntaxKind.AddExpression:
                 case SyntaxKind.AliasQualifiedName:
                 case SyntaxKind.AndAssignmentExpression:
+                case SyntaxKind.AnonymousObjectMemberDeclarator:
                 case SyntaxKind.ArrayRankSpecifier:
                 case SyntaxKind.ArrayType:
                 case SyntaxKind.AsExpression:
                 case SyntaxKind.Attribute:
                 case SyntaxKind.AttributeArgument:
+                case SyntaxKind.AwaitExpression:
                 case SyntaxKind.BitwiseAndExpression:
                 case SyntaxKind.BitwiseNotExpression:
                 case SyntaxKind.BitwiseOrExpression:
@@ -83,13 +87,16 @@ namespace Roslynator.CSharp.Analysis
                 case SyntaxKind.DoStatement:
                 case SyntaxKind.ElementAccessExpression:
                 case SyntaxKind.EqualsExpression:
+                case SyntaxKind.EventDeclaration:
                 case SyntaxKind.ExplicitInterfaceSpecifier:
+                case SyntaxKind.ExpressionStatement:
                 case SyntaxKind.ForEachStatement:
                 case SyntaxKind.ForEachVariableStatement:
                 case SyntaxKind.GreaterThanExpression:
                 case SyntaxKind.GreaterThanOrEqualExpression:
                 case SyntaxKind.IfDirectiveTrivia:
                 case SyntaxKind.IfStatement:
+                case SyntaxKind.IncompleteMember:
                 case SyntaxKind.IndexerDeclaration:
                 case SyntaxKind.Interpolation:
                 case SyntaxKind.InvocationExpression:
@@ -99,6 +106,7 @@ namespace Roslynator.CSharp.Analysis
                 case SyntaxKind.LessThanExpression:
                 case SyntaxKind.LessThanOrEqualExpression:
                 case SyntaxKind.LocalFunctionStatement:
+                case SyntaxKind.LockStatement:
                 case SyntaxKind.LogicalAndExpression:
                 case SyntaxKind.LogicalNotExpression:
                 case SyntaxKind.LogicalOrExpression:
@@ -113,9 +121,11 @@ namespace Roslynator.CSharp.Analysis
                 case SyntaxKind.NotEqualsExpression:
                 case SyntaxKind.NullableType:
                 case SyntaxKind.ObjectCreationExpression:
+                case SyntaxKind.OperatorDeclaration:
                 case SyntaxKind.OrAssignmentExpression:
                 case SyntaxKind.Parameter:
                 case SyntaxKind.ParenthesizedLambdaExpression:
+                case SyntaxKind.PointerIndirectionExpression:
                 case SyntaxKind.PostDecrementExpression:
                 case SyntaxKind.PostIncrementExpression:
                 case SyntaxKind.PragmaWarningDirectiveTrivia:
@@ -124,11 +134,15 @@ namespace Roslynator.CSharp.Analysis
                 case SyntaxKind.PropertyDeclaration:
                 case SyntaxKind.QualifiedCref:
                 case SyntaxKind.QualifiedName:
+                case SyntaxKind.RangeExpression:
+                case SyntaxKind.RecursivePattern:
+                case SyntaxKind.RefType:
                 case SyntaxKind.RightShiftExpression:
                 case SyntaxKind.SimpleBaseType:
                 case SyntaxKind.SimpleLambdaExpression:
                 case SyntaxKind.SimpleMemberAccessExpression:
                 case SyntaxKind.SubtractExpression:
+                case SyntaxKind.SuppressNullableWarningExpression:
                 case SyntaxKind.SwitchExpression:
                 case SyntaxKind.SwitchStatement:
                 case SyntaxKind.TupleElement:
@@ -138,17 +152,10 @@ namespace Roslynator.CSharp.Analysis
                 case SyntaxKind.TypeParameterConstraintClause:
                 case SyntaxKind.UnaryMinusExpression:
                 case SyntaxKind.UsingDirective:
+                case SyntaxKind.UsingStatement:
                 case SyntaxKind.VariableDeclaration:
                 case SyntaxKind.WhileStatement:
                 case SyntaxKind.XmlNameAttribute:
-                case SyntaxKind.ExpressionStatement:
-                case SyntaxKind.RecursivePattern:
-                case SyntaxKind.EventDeclaration:
-                case SyntaxKind.OperatorDeclaration:
-                case SyntaxKind.RangeExpression:
-                case SyntaxKind.SuppressNullableWarningExpression:
-                case SyntaxKind.IncompleteMember:
-                case SyntaxKind.AwaitExpression:
                     {
                         return false;
                     }
