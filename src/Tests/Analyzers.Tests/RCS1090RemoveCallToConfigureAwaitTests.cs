@@ -5,19 +5,25 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.CodeFixes;
+using Roslynator.CSharp.Testing;
 using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1090CallConfigureAwaitTests : AbstractCSharpFixVerifier
+    public class RCS1090RemoveCallToConfigureAwaitTests : AbstractCSharpFixVerifier
     {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.CallConfigureAwait;
+        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.AddCallToConfigureAwaitOrViceVersa;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new AwaitExpressionAnalyzer();
+        public override DiagnosticAnalyzer Analyzer { get; } = new AddCallToConfigureAwaitOrViceVersaAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new AwaitExpressionCodeFixProvider();
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallConfigureAwait)]
+        protected override CSharpCodeVerificationOptions UpdateOptions(CSharpCodeVerificationOptions options)
+        {
+            return base.UpdateOptions(options).WithEnabled(AnalyzerOptions.RemoveCallToConfigureAwait);
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddCallToConfigureAwaitOrViceVersa)]
         public async Task Test_Task_Field()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -29,7 +35,7 @@ class C
 
     async Task M()
     {
-        await [|_task|];
+        await _task[|.ConfigureAwait(false)|];
     }
 }
 ", @"
@@ -41,13 +47,13 @@ class C
 
     async Task M()
     {
-        await _task.ConfigureAwait(false);
+        await _task;
     }
 }
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallConfigureAwait)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddCallToConfigureAwaitOrViceVersa)]
         public async Task Test_Task_Local()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -58,7 +64,7 @@ class C
     async Task M()
     {
         Task task = default;
-        await [|task|];
+        await task[|.ConfigureAwait(false)|];
     }
 }
 ", @"
@@ -69,13 +75,13 @@ class C
     async Task M()
     {
         Task task = default;
-        await task.ConfigureAwait(false);
+        await task;
     }
 }
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallConfigureAwait)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddCallToConfigureAwaitOrViceVersa)]
         public async Task Test_Task_Method()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -85,7 +91,7 @@ class C
 {
     async Task M()
     {
-        await [|M()|];
+        await M()[|.ConfigureAwait(false)|];
     }
 }
 ", @"
@@ -95,13 +101,13 @@ class C
 {
     async Task M()
     {
-        await M().ConfigureAwait(false);
+        await M();
     }
 }
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallConfigureAwait)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddCallToConfigureAwaitOrViceVersa)]
         public async Task Test_Task_Parameter()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -111,7 +117,7 @@ class C
 {
     async Task M(Task task)
     {
-        await [|task|];
+        await task[|.ConfigureAwait(false)|];
     }
 }
 ", @"
@@ -121,13 +127,13 @@ class C
 {
     async Task M(Task task)
     {
-        await task.ConfigureAwait(false);
+        await task;
     }
 }
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallConfigureAwait)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddCallToConfigureAwaitOrViceVersa)]
         public async Task Test_Task_Property()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -139,7 +145,7 @@ class C
 
     async Task M()
     {
-        await [|P|];
+        await P[|.ConfigureAwait(false)|];
     }
 }
 ", @"
@@ -151,13 +157,13 @@ class C
 
     async Task M()
     {
-        await P.ConfigureAwait(false);
+        await P;
     }
 }
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallConfigureAwait)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddCallToConfigureAwaitOrViceVersa)]
         public async Task Test_TaskOfT()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -167,7 +173,7 @@ class C
 {
     async Task<object> M()
     {
-        return await [|M()|];
+        return await M()[|.ConfigureAwait(false)|];
     }
 }
 ", @"
@@ -177,13 +183,43 @@ class C
 {
     async Task<object> M()
     {
-        return await M().ConfigureAwait(false);
+        return await M();
     }
 }
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallConfigureAwait)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddCallToConfigureAwaitOrViceVersa)]
+        public async Task Test_ValueTask()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System.Threading.Tasks;
+
+class C
+{
+    async Task M()
+    {
+        await M2()[|.ConfigureAwait(false)|];
+    }
+
+    ValueTask M2() => default;
+}
+", @"
+using System.Threading.Tasks;
+
+class C
+{
+    async Task M()
+    {
+        await M2();
+    }
+
+    ValueTask M2() => default;
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddCallToConfigureAwaitOrViceVersa)]
         public async Task Test_ValueTaskOfT()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -193,7 +229,7 @@ class C
 {
     async Task<object> M()
     {
-        var result = await [|M2()|];
+        var result = await M2()[|.ConfigureAwait(false)|];
         return Task.FromResult(default(object));
     }
 
@@ -206,7 +242,7 @@ class C
 {
     async Task<object> M()
     {
-        var result = await M2().ConfigureAwait(false);
+        var result = await M2();
         return Task.FromResult(default(object));
     }
 
@@ -215,7 +251,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallConfigureAwait)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddCallToConfigureAwaitOrViceVersa)]
         public async Task TestNoDiagnostic_Task()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -225,13 +261,29 @@ class C
 {
     async Task M()
     {
-        await M().ConfigureAwait(false);
+        await M();
     }
 }
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallConfigureAwait)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddCallToConfigureAwaitOrViceVersa)]
+        public async Task TestNoDiagnostic_TaskOfT()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System.Threading.Tasks;
+
+class C
+{
+    async Task<object> M()
+    {
+        return await M();
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddCallToConfigureAwaitOrViceVersa)]
         public async Task TestNoDiagnostic_ValueTaskOfT()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -241,7 +293,25 @@ class C
 {
     async Task M()
     {
-        await M2().ConfigureAwait(false);
+        await M2();
+    }
+
+    ValueTask<object> M2() => default;
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddCallToConfigureAwaitOrViceVersa)]
+        public async Task TestNoDiagnostic_ValueTask()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System.Threading.Tasks;
+
+class C
+{
+    async Task M()
+    {
+        await M2();
     }
 
     ValueTask<object> M2() => default;

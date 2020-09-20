@@ -90,7 +90,7 @@
     </Syntaxes>
     <Span>selected class name</Span>
   </Refactoring>
-  <Refactoring Id="RR0015" Identifier="CallConfigureAwait" Title="Call 'ConfigureAwait(false)'">
+  <Refactoring Id="RR0015" Identifier="CallConfigureAwait" Title="Call 'ConfigureAwait(false)'" IsObsolete="true">
     <Syntaxes>
       <Syntax>awaitable method invocation</Syntax>
     </Syntaxes>

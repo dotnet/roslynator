@@ -76,7 +76,7 @@ namespace Roslynator.CSharp
         public const string UseCoalesceExpressionInsteadOfConditionalExpression = "RCS1084";
         public const string UseAutoProperty = "RCS1085";
         public const string UseUnaryOperatorInsteadOfAssignment = "RCS1089";
-        public const string CallConfigureAwait = "RCS1090";
+        public const string AddCallToConfigureAwaitOrViceVersa = "RCS1090";
         public const string RemoveEmptyRegion = "RCS1091";
         public const string RemoveFileWithNoCode = "RCS1093";
         public const string DeclareUsingDirectiveOnTopLevel = "RCS1094";

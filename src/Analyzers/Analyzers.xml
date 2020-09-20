@@ -1948,10 +1948,10 @@ public string Foo // [|Id|]
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="CallConfigureAwait">
+  <Analyzer Identifier="AddCallToConfigureAwaitOrViceVersa">
     <Id>RCS1090</Id>
-    <Title>Call 'ConfigureAwait(false)'.</Title>
-    <MessageFormat>Call 'ConfigureAwait(false).</MessageFormat>
+    <Title>Add call to 'ConfigureAwait' (or vice versa).</Title>
+    <MessageFormat>Add call to 'ConfigureAwait'.</MessageFormat>
     <Category>Design</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -1967,6 +1967,26 @@ public string Foo // [|Id|]
 }]]></After>
       </Sample>
     </Samples>
+    <Options>
+      <Option Identifier="RemoveCallToConfigureAwait">
+        <Title>Remove call to 'ConfigureAwait'.</Title>
+        <Id>i</Id>
+        <Kind>Invert</Kind>
+        <SupportsFadeOut>true</SupportsFadeOut>
+        <Samples>
+          <Sample>
+            <Before><![CDATA[public async Task FooAsync()
+{
+    await GetValueAsync().ConfigureAwait(false); // [|Id|]
+}]]></Before>
+            <After><![CDATA[public async Task FooAsync()
+{
+    await GetValueAsync();
+}]]></After>
+          </Sample>
+        </Samples>
+      </Option>
+    </Options>
   </Analyzer>
   <Analyzer Identifier="RemoveEmptyRegion">
     <Id>RCS1091</Id>

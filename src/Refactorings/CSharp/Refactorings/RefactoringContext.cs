@@ -760,7 +760,6 @@ namespace Roslynator.CSharp.Refactorings
                             if (flags.IsSet(Flag.AwaitExpression))
                                 continue;
 
-                            await AwaitExpressionRefactoring.ComputeRefactoringsAsync(this, (AwaitExpressionSyntax)node).ConfigureAwait(false);
                             flags.Set(Flag.AwaitExpression);
                             continue;
                         }

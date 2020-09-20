@@ -862,15 +862,15 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor UseUnaryOperatorInsteadOfAssignmentFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(UseUnaryOperatorInsteadOfAssignment);
 
         /// <summary>RCS1090</summary>
-        public static readonly DiagnosticDescriptor CallConfigureAwait = DiagnosticDescriptorFactory.Default.Create(
-            id:                 DiagnosticIdentifiers.CallConfigureAwait, 
-            title:              "Call 'ConfigureAwait(false)'.", 
-            messageFormat:      "Call 'ConfigureAwait(false).", 
+        public static readonly DiagnosticDescriptor AddCallToConfigureAwaitOrViceVersa = DiagnosticDescriptorFactory.Default.Create(
+            id:                 DiagnosticIdentifiers.AddCallToConfigureAwaitOrViceVersa, 
+            title:              "Add call to 'ConfigureAwait' (or vice versa).", 
+            messageFormat:      "Add call to 'ConfigureAwait'.", 
             category:           DiagnosticCategories.Design, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.CallConfigureAwait, 
+            helpLinkUri:        DiagnosticIdentifiers.AddCallToConfigureAwaitOrViceVersa, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1091</summary>
@@ -2526,6 +2526,18 @@ namespace Roslynator.CSharp
                 description:        null, 
                 helpLinkUri:        DiagnosticIdentifiers.ParenthesizeConditionOfConditionalExpression, 
                 customTags:         Array.Empty<string>());
+
+            /// <summary>RCS1090i</summary>
+            public static readonly DiagnosticDescriptor RemoveCallToConfigureAwait = DiagnosticDescriptorFactory.Default.Create(
+                id:                 DiagnosticIdentifiers.AddCallToConfigureAwaitOrViceVersa, 
+                title:              "Add call to 'ConfigureAwait' (or vice versa).", 
+                messageFormat:      "Remove call to 'ConfigureAwait'.", 
+                category:           DiagnosticCategories.Design, 
+                defaultSeverity:    DiagnosticSeverity.Info, 
+                isEnabledByDefault: true, 
+                description:        null, 
+                helpLinkUri:        DiagnosticIdentifiers.AddCallToConfigureAwaitOrViceVersa, 
+                customTags:         WellKnownDiagnosticTags.Unnecessary);
 
             /// <summary>RCS1096i</summary>
             public static readonly DiagnosticDescriptor ConvertBitwiseOperationToHasFlagCall = DiagnosticDescriptorFactory.Default.Create(

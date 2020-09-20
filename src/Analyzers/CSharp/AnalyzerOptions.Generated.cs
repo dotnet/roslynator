@@ -93,6 +93,18 @@ namespace Roslynator.CSharp
             helpLinkUri:        AnalyzerOptionIdentifiers.RemoveParenthesesFromConditionOfConditionalExpressionWhenExpressionIsSingleToken, 
             customTags:         Array.Empty<string>());
 
+        /// <summary>RCS1090i</summary>
+        public static readonly DiagnosticDescriptor RemoveCallToConfigureAwait = DiagnosticDescriptorFactory.Default.Create(
+            id:                 AnalyzerOptionIdentifiers.RemoveCallToConfigureAwait, 
+            title:              "Remove call to 'ConfigureAwait'.", 
+            messageFormat:      "Remove call to 'ConfigureAwait'.", 
+            category:           DiagnosticCategories.AnalyzerOption, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: false, 
+            description:        null, 
+            helpLinkUri:        AnalyzerOptionIdentifiers.RemoveCallToConfigureAwait, 
+            customTags:         WellKnownDiagnosticTags.Unnecessary);
+
         /// <summary>RCS1096i</summary>
         public static readonly DiagnosticDescriptor ConvertBitwiseOperationToHasFlagCall = DiagnosticDescriptorFactory.Default.Create(
             id:                 AnalyzerOptionIdentifiers.ConvertBitwiseOperationToHasFlagCall, 

@@ -26,7 +26,6 @@ namespace Roslynator.CSharp.Refactorings
         public const string AddTypeParameter = Prefix + "0178";
         public const string AddUsingDirective = Prefix + "0013";
         public const string AddUsingStaticDirective = Prefix + "0014";
-        public const string CallConfigureAwait = Prefix + "0015";
         public const string CallExtensionMethodAsInstanceMethod = Prefix + "0016";
         public const string CallIndexOfInsteadOfContains = Prefix + "0144";
         public const string CallToMethod = Prefix + "0017";
