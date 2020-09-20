@@ -24,7 +24,6 @@ namespace Roslynator.CSharp.Analysis
                     DiagnosticDescriptors.OptimizeLinqMethodCall,
                     DiagnosticDescriptors.UseElementAccess,
                     DiagnosticDescriptors.UseCountOrLengthPropertyInsteadOfAnyMethod,
-                    DiagnosticDescriptors.ConvertHasFlagCallToBitwiseOperationOrViceVersa,
                     DiagnosticDescriptors.RemoveRedundantToStringCall,
                     DiagnosticDescriptors.RemoveRedundantStringToCharArrayCall,
                     DiagnosticDescriptors.CombineEnumerableWhereMethodChain,
@@ -266,21 +265,6 @@ namespace Roslynator.CSharp.Analysis
                                 {
                                     if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.CombineEnumerableWhereMethodChain))
                                         CombineEnumerableWhereMethodChainAnalysis.Analyze(context, invocationInfo);
-
-                                    break;
-                                }
-                            case "HasFlag":
-                                {
-                                    if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.ConvertHasFlagCallToBitwiseOperationOrViceVersa)
-                                        && context.IsAnalyzerSuppressed(AnalyzerOptions.ConvertBitwiseOperationToHasFlagCall)
-                                        && !invocation.SpanContainsDirectives()
-                                        && ConvertHasFlagCallToBitwiseOperationAnalysis.IsFixable(invocationInfo, context.SemanticModel, context.CancellationToken))
-                                    {
-                                        DiagnosticHelpers.ReportDiagnostic(
-                                            context,
-                                            DiagnosticDescriptors.ConvertHasFlagCallToBitwiseOperationOrViceVersa,
-                                            invocation);
-                                    }
 
                                     break;
                                 }

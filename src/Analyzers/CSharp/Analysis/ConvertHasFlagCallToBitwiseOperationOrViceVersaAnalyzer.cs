@@ -6,12 +6,13 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.CSharp.Syntax;
 using static Roslynator.CSharp.Analysis.ConvertHasFlagCallToBitwiseOperationAnalysis;
 
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class ConvertBitwiseOperationToHasFlagCallAnalyzer : BaseDiagnosticAnalyzer
+    public class ConvertHasFlagCallToBitwiseOperationOrViceVersaAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
@@ -27,6 +28,10 @@ namespace Roslynator.CSharp.Analysis
                 if (!startContext.IsAnalyzerSuppressed(AnalyzerOptions.ConvertBitwiseOperationToHasFlagCall))
                 {
                     startContext.RegisterSyntaxNodeAction(f => AnalyzeBitwiseAndExpression(f), SyntaxKind.BitwiseAndExpression);
+                }
+                else
+                {
+                    context.RegisterSyntaxNodeAction(f => AnalyzeInvocationExpression(f), SyntaxKind.InvocationExpression);
                 }
             });
         }
@@ -46,11 +51,21 @@ namespace Roslynator.CSharp.Analysis
                 ? equalsOrNotEquals.Right
                 : equalsOrNotEquals.Left;
 
-            if (!otherExpression.WalkDownParentheses().IsNumericLiteralExpression("0"))
-                return;
+            otherExpression = otherExpression.WalkDownParentheses();
 
             SemanticModel semanticModel = context.SemanticModel;
             CancellationToken cancellationToken = context.CancellationToken;
+
+            if (otherExpression.IsNumericLiteralExpression("0"))
+            {
+                if (SyntaxUtility.IsCompositeEnumValue(bitwiseAnd.Right, semanticModel, cancellationToken))
+                    return;
+            }
+            else if (!CSharpFactory.AreEquivalent(bitwiseAnd.Right, otherExpression))
+            {
+                return;
+            }
+
             IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(bitwiseAnd, cancellationToken);
 
             if (methodSymbol?.MethodKind != MethodKind.BuiltinOperator
@@ -95,6 +110,36 @@ namespace Roslynator.CSharp.Analysis
 
                 return false;
             }
+        }
+
+        private static void AnalyzeInvocationExpression(SyntaxNodeAnalysisContext context)
+        {
+            var invocation = (InvocationExpressionSyntax)context.Node;
+
+            if (invocation.ContainsDiagnostics)
+                return;
+
+            if (invocation.SpanContainsDirectives())
+                return;
+
+            SimpleMemberInvocationExpressionInfo invocationInfo = SyntaxInfo.SimpleMemberInvocationExpressionInfo(invocation);
+
+            if (invocationInfo.Arguments.Count != 1)
+                return;
+
+            if (!invocationInfo.Name.IsKind(SyntaxKind.IdentifierName))
+                return;
+
+            if (invocationInfo.NameText != "HasFlag")
+                return;
+
+            if (!IsFixable(invocationInfo, context.SemanticModel, context.CancellationToken))
+                return;
+
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
+                DiagnosticDescriptors.ConvertHasFlagCallToBitwiseOperationOrViceVersa,
+                invocation);
         }
     }
 }

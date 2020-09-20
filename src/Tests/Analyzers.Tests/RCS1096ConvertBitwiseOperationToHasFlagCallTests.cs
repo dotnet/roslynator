@@ -13,9 +13,9 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.ConvertHasFlagCallToBitwiseOperationOrViceVersa;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new ConvertBitwiseOperationToHasFlagCallAnalyzer();
+        public override DiagnosticAnalyzer Analyzer { get; } = new ConvertHasFlagCallToBitwiseOperationOrViceVersaAnalyzer();
 
-        public override CodeFixProvider FixProvider { get; } = new ConvertHasFlagCallToBitwiseOperationCodeFixProvider();
+        public override CodeFixProvider FixProvider { get; } = new ConvertHasFlagCallToBitwiseOperationOrViceVersaCodeFixProvider();
 
         protected override Compilation UpdateCompilation(Compilation compilation)
         {
@@ -25,7 +25,7 @@ namespace Roslynator.CSharp.Analysis.Tests
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertHasFlagCallToBitwiseOperationOrViceVersa)]
-        public async Task Test_NotEquals()
+        public async Task Test_NotEquals_Zero()
         {
             await VerifyDiagnosticAndFixAsync(@"
 using System;
@@ -49,6 +49,36 @@ class C
         var options = StringSplitOptions.None;
 
         if (options.HasFlag(StringSplitOptions.RemoveEmptyEntries)) { }
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertHasFlagCallToBitwiseOperationOrViceVersa)]
+        public async Task Test_NotEquals_Value()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System.Text.RegularExpressions;
+
+class C
+{
+    void M()
+    {
+        var x = RegexOptions.Singleline | RegexOptions.Multiline;
+
+        if ([|x & (RegexOptions.Singleline | RegexOptions.IgnoreCase)|] != RegexOptions.Singleline | RegexOptions.IgnoreCase) { }
+    }
+}
+", @"
+using System.Text.RegularExpressions;
+
+class C
+{
+    void M()
+    {
+        var options = StringSplitOptions.None;
+
+        if (!options.HasFlag(RegexOptions.Singleline | RegexOptions.IgnoreCase)) { }
     }
 }
 ");
@@ -145,6 +175,36 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertHasFlagCallToBitwiseOperationOrViceVersa)]
+        public async Task Test_Equals_Value()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System.Text.RegularExpressions;
+
+class C
+{
+    void M()
+    {
+        var x = RegexOptions.Singleline | RegexOptions.Multiline;
+
+        if ([|x & (RegexOptions.Singleline | RegexOptions.IgnoreCase)|] == RegexOptions.Singleline | RegexOptions.IgnoreCase) { }
+    }
+}
+", @"
+using System.Text.RegularExpressions;
+
+class C
+{
+    void M()
+    {
+        var options = StringSplitOptions.None;
+
+        if (options.HasFlag(RegexOptions.Singleline | RegexOptions.IgnoreCase)) { }
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertHasFlagCallToBitwiseOperationOrViceVersa)]
         public async Task Test_NoDiagnostic_ConditionalAccess()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -179,6 +239,25 @@ class C
         var options = StringSplitOptions.None;
 
         if (options.HasFlag(StringSplitOptions.RemoveEmptyEntries)) { }
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertHasFlagCallToBitwiseOperationOrViceVersa)]
+        public async Task TestNoDiagnostic_Equals_CompositeValue()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System.Text.RegularExpressions;
+
+class C
+{
+    void M()
+    {
+        var x = RegexOptions.Singleline | RegexOptions.Multiline;
+
+        if (x & (RegexOptions.Singleline | RegexOptions.IgnoreCase) == 0) { }
+        if (x & (RegexOptions.Singleline | RegexOptions.IgnoreCase) != 0) { }
     }
 }
 ");

@@ -17,5 +17,19 @@ namespace Roslynator
 
             return SymbolUtility.IsPropertyOfNullableOfT(symbol, name);
         }
+
+        public static bool IsCompositeEnumValue(
+            SyntaxNode node,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken = default)
+        {
+            var enumTypeSymbol = (INamedTypeSymbol)semanticModel.GetTypeSymbol(node, cancellationToken);
+
+            Optional<object> constantValue = semanticModel.GetConstantValue(node, cancellationToken);
+
+            ulong value = SymbolUtility.GetEnumValueAsUInt64(constantValue.Value, enumTypeSymbol);
+
+            return FlagsUtility<ulong>.Instance.IsComposite(value);
+        }
     }
 }

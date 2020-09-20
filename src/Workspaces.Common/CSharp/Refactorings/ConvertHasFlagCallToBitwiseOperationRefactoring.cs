@@ -32,13 +32,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             ExpressionSyntax expression = invocation.ArgumentList.Arguments[0].Expression;
 
-            var enumTypeSymbol = (INamedTypeSymbol)semanticModel.GetTypeSymbol(expression, cancellationToken);
-
-            Optional<object> constantValue = semanticModel.GetConstantValue(expression, cancellationToken);
-
-            ulong value = SymbolUtility.GetEnumValueAsUInt64(constantValue.Value, enumTypeSymbol);
-
-            bool isComposite = FlagsUtility<ulong>.Instance.IsComposite(value);
+            bool isComposite = SyntaxUtility.IsCompositeEnumValue(expression, semanticModel, cancellationToken);
 
             ParenthesizedExpressionSyntax parenthesizedExpression = ParenthesizedExpression(
                 BitwiseAndExpression(
