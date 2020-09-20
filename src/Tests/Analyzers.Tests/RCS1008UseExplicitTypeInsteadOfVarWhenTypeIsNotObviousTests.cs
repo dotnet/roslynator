@@ -26,7 +26,7 @@ class C
 {
     void M()
     {
-        [|var|] a = ""a"";
+        var a = ""a"";
         [|var|] s = a;
     }
 }
@@ -35,7 +35,7 @@ class C
 {
     void M()
     {
-        string a = ""a"";
+        var a = ""a"";
         string s = a;
     }
 }

@@ -95,7 +95,7 @@ class C
 {
     void M()
     {
-        [|string[]|] = new[] { ""a"", ""b"" };
+        [|string[]|] x = new[] { ""a"", ""b"" };
     }
 }
 ", @"
@@ -103,7 +103,7 @@ class C
 {
     void M()
     {
-        var = new[] { ""a"", ""b"" };
+        var x = new[] { ""a"", ""b"" };
     }
 }
 ");

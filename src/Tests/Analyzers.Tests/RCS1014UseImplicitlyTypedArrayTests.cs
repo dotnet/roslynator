@@ -46,6 +46,32 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyTypedArrayOrViceVersa)]
+        public async Task Test_TypeIsNotObvious()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+        var x = new [|string|][] { M2() };
+    }
+
+    string M2() => default;
+}
+", @"
+class C
+{
+    void M()
+    {
+        var x = new[] { M2() };
+    }
+
+    string M2() => default;
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyTypedArrayOrViceVersa)]
         public async Task Test_TypeIsObvious()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -136,14 +162,19 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyTypedArrayOrViceVersa)]
-        public async Task TestNoDiagnostic_TypeIsNotObvious()
+        public async Task TestNoDiagnostic_TypeIsObvious()
         {
             await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
     {
-        var x = new[] { M2() };
+        var x = new[]
+        {
+            """",
+            new string('a', 1),
+            new[] { """", new string('a', 1) }
+        };
     }
 
     string M2() => null;
