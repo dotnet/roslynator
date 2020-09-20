@@ -59,7 +59,7 @@ namespace Roslynator.Testing
                 expected: expected,
                 equivalenceKey: equivalenceKey,
                 options: options,
-                cancellationToken: cancellationToken).ConfigureAwait(false);
+                cancellationToken: cancellationToken);
         }
 
         public async Task VerifyFixAsync(
@@ -99,7 +99,7 @@ namespace Roslynator.Testing
                 {
                     cancellationToken.ThrowIfCancellationRequested();
 
-                    Compilation compilation = await document.Project.GetCompilationAsync(cancellationToken).ConfigureAwait(false);
+                    Compilation compilation = await document.Project.GetCompilationAsync(cancellationToken);
 
                     ImmutableArray<Diagnostic> diagnostics = compilation.GetDiagnostics(cancellationToken: cancellationToken);
 
@@ -145,26 +145,26 @@ namespace Roslynator.Testing
                         },
                         CancellationToken.None);
 
-                    await FixProvider.RegisterCodeFixesAsync(context).ConfigureAwait(false);
+                    await FixProvider.RegisterCodeFixesAsync(context);
 
                     if (action == null)
                         break;
 
                     fixRegistered = true;
 
-                    document = await document.ApplyCodeActionAsync(action).ConfigureAwait(false);
+                    document = await document.ApplyCodeActionAsync(action);
 
                     previousDiagnostics = diagnostics;
                 }
 
                 Assert.True(fixRegistered, "No code fix has been registered.");
 
-                string actual = await document.ToFullStringAsync(simplify: true, format: true, cancellationToken).ConfigureAwait(false);
+                string actual = await document.ToFullStringAsync(simplify: true, format: true, cancellationToken);
 
                 Assert.Equal(expected, actual);
 
                 if (expectedDocuments.Any())
-                    await VerifyAdditionalDocumentsAsync(document.Project, expectedDocuments, cancellationToken).ConfigureAwait(false);
+                    await VerifyAdditionalDocumentsAsync(document.Project, expectedDocuments, cancellationToken);
             }
 
             Diagnostic FindDiagnostic(ImmutableArray<Diagnostic> diagnostics)
@@ -204,7 +204,7 @@ namespace Roslynator.Testing
 
                 Document document = WorkspaceFactory.AddDocument(project, source);
 
-                Compilation compilation = await document.Project.GetCompilationAsync(cancellationToken).ConfigureAwait(false);
+                Compilation compilation = await document.Project.GetCompilationAsync(cancellationToken);
 
                 foreach (Diagnostic diagnostic in compilation.GetDiagnostics(cancellationToken: cancellationToken))
                 {
@@ -231,7 +231,7 @@ namespace Roslynator.Testing
                         },
                         CancellationToken.None);
 
-                    await FixProvider.RegisterCodeFixesAsync(context).ConfigureAwait(false);
+                    await FixProvider.RegisterCodeFixesAsync(context);
                 }
             }
         }

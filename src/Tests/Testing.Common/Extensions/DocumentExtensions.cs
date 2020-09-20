@@ -20,9 +20,9 @@ namespace Roslynator
             CancellationToken cancellationToken = default)
         {
             if (simplify)
-                document = await Simplifier.ReduceAsync(document, Simplifier.Annotation, cancellationToken: cancellationToken).ConfigureAwait(false);
+                document = await Simplifier.ReduceAsync(document, Simplifier.Annotation, cancellationToken: cancellationToken);
 
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken);
 
             if (format)
                 root = Formatter.Format(root, Formatter.Annotation, document.Project.Solution.Workspace);
@@ -32,7 +32,7 @@ namespace Roslynator
 
         public static async Task<Document> ApplyCodeActionAsync(this Document document, CodeAction codeAction)
         {
-            ImmutableArray<CodeActionOperation> operations = await codeAction.GetOperationsAsync(CancellationToken.None).ConfigureAwait(false);
+            ImmutableArray<CodeActionOperation> operations = await codeAction.GetOperationsAsync(CancellationToken.None);
 
             return operations
                 .OfType<ApplyChangesOperation>()

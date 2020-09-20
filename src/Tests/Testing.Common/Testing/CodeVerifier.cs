@@ -134,7 +134,7 @@ namespace Roslynator.Testing
             {
                 Document document = project.GetDocument(expectedDocument.Id);
 
-                string actual = await document.ToFullStringAsync(simplify: true, format: true, cancellationToken).ConfigureAwait(false);
+                string actual = await document.ToFullStringAsync(simplify: true, format: true, cancellationToken);
 
                 Assert.Equal(expectedDocument.Text, actual);
             }

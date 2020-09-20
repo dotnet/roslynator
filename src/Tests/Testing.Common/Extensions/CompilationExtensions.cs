@@ -45,7 +45,7 @@ namespace Roslynator
         {
             CompilationWithAnalyzers compilationWithAnalyzers = compilation.WithAnalyzers(analyzers, default(AnalyzerOptions), cancellationToken);
 
-            ImmutableArray<Diagnostic> diagnostics = await compilationWithAnalyzers.GetAnalyzerDiagnosticsAsync(cancellationToken).ConfigureAwait(false);
+            ImmutableArray<Diagnostic> diagnostics = await compilationWithAnalyzers.GetAnalyzerDiagnosticsAsync(cancellationToken);
 
             if (comparer != null)
                 diagnostics = diagnostics.Sort(comparer);

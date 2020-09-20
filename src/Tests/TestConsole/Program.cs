@@ -59,9 +59,9 @@ class C
                     .WithParseOptions(parseOptions);
 
                 Document document = project.AddDocument("Document", SourceText.From(source));
-                SemanticModel semanticModel = await document.GetSemanticModelAsync().ConfigureAwait(false);
-                SyntaxTree tree = await document.GetSyntaxTreeAsync().ConfigureAwait(false);
-                SyntaxNode root = await tree.GetRootAsync().ConfigureAwait(false);
+                SemanticModel semanticModel = await document.GetSemanticModelAsync();
+                SyntaxTree tree = await document.GetSyntaxTreeAsync();
+                SyntaxNode root = await tree.GetRootAsync();
 
                 string s = document.GetSyntaxRootAsync().Result.ToFullString();
                 Console.WriteLine(s);

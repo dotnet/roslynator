@@ -87,7 +87,7 @@ namespace Roslynator.Testing
                 result.Spans.Select(f => CreateDiagnostic(f.Span, f.LineSpan)),
                 additionalSources: null,
                 options: options,
-                cancellationToken).ConfigureAwait(false);
+                cancellationToken);
         }
 
         public async Task VerifyDiagnosticAsync(
@@ -102,11 +102,11 @@ namespace Roslynator.Testing
 
             if (result.Spans.Any())
             {
-                await VerifyDiagnosticAsync(result.Text, result.Spans.Select(f => f.Span), options, cancellationToken).ConfigureAwait(false);
+                await VerifyDiagnosticAsync(result.Text, result.Spans.Select(f => f.Span), options, cancellationToken);
             }
             else
             {
-                await VerifyDiagnosticAsync(text, span, options, cancellationToken).ConfigureAwait(false);
+                await VerifyDiagnosticAsync(text, span, options, cancellationToken);
             }
         }
 
@@ -120,7 +120,7 @@ namespace Roslynator.Testing
                 source,
                 CreateDiagnostic(source, span),
                 options,
-                cancellationToken).ConfigureAwait(false);
+                cancellationToken);
         }
 
         public async Task VerifyDiagnosticAsync(
@@ -134,7 +134,7 @@ namespace Roslynator.Testing
                 spans.Select(span => CreateDiagnostic(source, span)),
                 additionalSources: null,
                 options: options,
-                cancellationToken).ConfigureAwait(false);
+                cancellationToken);
         }
 
         public async Task VerifyDiagnosticAsync(
@@ -148,7 +148,7 @@ namespace Roslynator.Testing
                 new Diagnostic[] { expectedDiagnostic },
                 additionalSources: null,
                 options: options,
-                cancellationToken).ConfigureAwait(false);
+                cancellationToken);
         }
 
         public async Task VerifyDiagnosticAsync(
@@ -168,7 +168,7 @@ namespace Roslynator.Testing
 
                 Document document = WorkspaceFactory.AddDocument(project, source, additionalSources);
 
-                Compilation compilation = await document.Project.GetCompilationAsync(cancellationToken).ConfigureAwait(false);
+                Compilation compilation = await document.Project.GetCompilationAsync(cancellationToken);
 
                 ImmutableArray<Diagnostic> compilerDiagnostics = compilation.GetDiagnostics(cancellationToken);
 
@@ -176,7 +176,7 @@ namespace Roslynator.Testing
 
                 compilation = UpdateCompilation(compilation);
 
-                ImmutableArray<Diagnostic> diagnostics = await compilation.GetAnalyzerDiagnosticsAsync(Analyzers, DiagnosticComparer.SpanStart, cancellationToken).ConfigureAwait(false);
+                ImmutableArray<Diagnostic> diagnostics = await compilation.GetAnalyzerDiagnosticsAsync(Analyzers, DiagnosticComparer.SpanStart, cancellationToken);
 
                 if (diagnostics.Length > 0
                     && SupportedDiagnostics.Length > 1)
@@ -229,7 +229,7 @@ namespace Roslynator.Testing
                 source: text,
                 additionalSources: null,
                 options: options,
-                cancellationToken).ConfigureAwait(false);
+                cancellationToken);
         }
 
         public async Task VerifyNoDiagnosticAsync(
@@ -251,7 +251,7 @@ namespace Roslynator.Testing
 
                 Document document = WorkspaceFactory.AddDocument(project, source, additionalSources);
 
-                Compilation compilation = await document.Project.GetCompilationAsync(cancellationToken).ConfigureAwait(false);
+                Compilation compilation = await document.Project.GetCompilationAsync(cancellationToken);
 
                 ImmutableArray<Diagnostic> compilerDiagnostics = compilation.GetDiagnostics(cancellationToken);
 
@@ -259,7 +259,7 @@ namespace Roslynator.Testing
 
                 compilation = UpdateCompilation(compilation);
 
-                ImmutableArray<Diagnostic> analyzerDiagnostics = await compilation.GetAnalyzerDiagnosticsAsync(Analyzers, DiagnosticComparer.SpanStart, cancellationToken).ConfigureAwait(false);
+                ImmutableArray<Diagnostic> analyzerDiagnostics = await compilation.GetAnalyzerDiagnosticsAsync(Analyzers, DiagnosticComparer.SpanStart, cancellationToken);
 
                 foreach (Diagnostic diagnostic in analyzerDiagnostics)
                 {

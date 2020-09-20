@@ -54,7 +54,7 @@ namespace Roslynator.Testing
                 additionalSources: additionalSources,
                 equivalenceKey: equivalenceKey,
                 options: options,
-                cancellationToken: cancellationToken).ConfigureAwait(false);
+                cancellationToken: cancellationToken);
         }
 
         public async Task VerifyRefactoringAsync(
@@ -77,7 +77,7 @@ namespace Roslynator.Testing
                     spans: result.Spans.Select(f => f.Span),
                     equivalenceKey: equivalenceKey,
                     options: options,
-                    cancellationToken: cancellationToken).ConfigureAwait(false);
+                    cancellationToken: cancellationToken);
             }
             else
             {
@@ -87,7 +87,7 @@ namespace Roslynator.Testing
                     span: span,
                     equivalenceKey: equivalenceKey,
                     options: options,
-                    cancellationToken: cancellationToken).ConfigureAwait(false);
+                    cancellationToken: cancellationToken);
             }
         }
 
@@ -116,7 +116,7 @@ namespace Roslynator.Testing
                         additionalSources: additionalSources,
                         equivalenceKey: equivalenceKey,
                         options: options,
-                        cancellationToken: cancellationToken).ConfigureAwait(false);
+                        cancellationToken: cancellationToken);
 
                 } while (en.MoveNext());
             }
@@ -141,7 +141,7 @@ namespace Roslynator.Testing
 
                 Document document = WorkspaceFactory.AddDocument(project, source, additionalSources);
 
-                SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+                SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken);
 
                 ImmutableArray<Diagnostic> compilerDiagnostics = semanticModel.GetDiagnostics(cancellationToken: cancellationToken);
 
@@ -162,13 +162,13 @@ namespace Roslynator.Testing
                     },
                     CancellationToken.None);
 
-                await RefactoringProvider.ComputeRefactoringsAsync(context).ConfigureAwait(false);
+                await RefactoringProvider.ComputeRefactoringsAsync(context);
 
                 Assert.True(action != null, "No code refactoring has been registered.");
 
-                document = await document.ApplyCodeActionAsync(action).ConfigureAwait(false);
+                document = await document.ApplyCodeActionAsync(action);
 
-                semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+                semanticModel = await document.GetSemanticModelAsync(cancellationToken);
 
                 ImmutableArray<Diagnostic> newCompilerDiagnostics = semanticModel.GetDiagnostics(cancellationToken: cancellationToken);
 
@@ -176,7 +176,7 @@ namespace Roslynator.Testing
 
                 VerifyNoNewCompilerDiagnostics(compilerDiagnostics, newCompilerDiagnostics, options);
 
-                string actual = await document.ToFullStringAsync(simplify: true, format: true, cancellationToken).ConfigureAwait(false);
+                string actual = await document.ToFullStringAsync(simplify: true, format: true, cancellationToken);
 
                 Assert.Equal(expected, actual);
             }
@@ -195,7 +195,7 @@ namespace Roslynator.Testing
                 spans: result.Spans.Select(f => f.Span),
                 equivalenceKey: equivalenceKey,
                 options: options,
-                cancellationToken: cancellationToken).ConfigureAwait(false);
+                cancellationToken: cancellationToken);
         }
 
         public async Task VerifyNoRefactoringAsync(
@@ -210,7 +210,7 @@ namespace Roslynator.Testing
                 ImmutableArray.Create(span),
                 equivalenceKey,
                 options,
-                cancellationToken).ConfigureAwait(false);
+                cancellationToken);
         }
 
         public async Task VerifyNoRefactoringAsync(
@@ -230,7 +230,7 @@ namespace Roslynator.Testing
 
                 Document document = WorkspaceFactory.AddDocument(project, source);
 
-                SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+                SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken);
 
                 ImmutableArray<Diagnostic> compilerDiagnostics = semanticModel.GetDiagnostics(cancellationToken: cancellationToken);
 
@@ -258,7 +258,7 @@ namespace Roslynator.Testing
                             },
                             CancellationToken.None);
 
-                        await RefactoringProvider.ComputeRefactoringsAsync(context).ConfigureAwait(false);
+                        await RefactoringProvider.ComputeRefactoringsAsync(context);
 
                     } while (en.MoveNext());
                 }
