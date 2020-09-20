@@ -8,6 +8,8 @@ namespace Roslynator.CSharp
 {
     public static partial class AnalyzerOptionIdentifiers
     {
+        public const string UseImplicitlyTypedArrayWhenTypeIsObvious = "RCS1014a";
+        public const string UseImplicitlyTypedArray = "RCS1014i";
         public const string RemoveAccessibilityModifiers = "RCS1018i";
         public const string RemoveEmptyLineBetweenClosingBraceAndSwitchSection = "RCS1036a";
         public const string DoNotRenamePrivateStaticReadOnlyFieldToCamelCaseWithUnderscore = "RCS1045a";

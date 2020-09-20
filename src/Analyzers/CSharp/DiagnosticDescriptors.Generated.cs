@@ -162,15 +162,15 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1014</summary>
-        public static readonly DiagnosticDescriptor AvoidImplicitlyTypedArray = DiagnosticDescriptorFactory.Default.Create(
-            id:                 DiagnosticIdentifiers.AvoidImplicitlyTypedArray, 
-            title:              "Avoid implicitly-typed array.", 
-            messageFormat:      "Declare explicit type when creating an array.", 
+        public static readonly DiagnosticDescriptor UseExplicitlyTypedArrayOrViceVersa = DiagnosticDescriptorFactory.Default.Create(
+            id:                 DiagnosticIdentifiers.UseExplicitlyTypedArrayOrViceVersa, 
+            title:              "Use explicitly typed array (or vice versa).", 
+            messageFormat:      "Use explicitly typed array.", 
             category:           DiagnosticCategories.Readability, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AvoidImplicitlyTypedArray, 
+            helpLinkUri:        DiagnosticIdentifiers.UseExplicitlyTypedArrayOrViceVersa, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1015</summary>
@@ -2467,6 +2467,30 @@ namespace Roslynator.CSharp
 
         public static partial class ReportOnly
         {
+            /// <summary>RCS1014a</summary>
+            public static readonly DiagnosticDescriptor UseImplicitlyTypedArrayWhenTypeIsObvious = DiagnosticDescriptorFactory.Default.Create(
+                id:                 DiagnosticIdentifiers.UseExplicitlyTypedArrayOrViceVersa, 
+                title:              "Use explicitly typed array (or vice versa).", 
+                messageFormat:      "Use implicitly typed array (when type is obvious).", 
+                category:           DiagnosticCategories.Readability, 
+                defaultSeverity:    DiagnosticSeverity.Info, 
+                isEnabledByDefault: false, 
+                description:        null, 
+                helpLinkUri:        DiagnosticIdentifiers.UseExplicitlyTypedArrayOrViceVersa, 
+                customTags:         WellKnownDiagnosticTags.Unnecessary);
+
+            /// <summary>RCS1014i</summary>
+            public static readonly DiagnosticDescriptor UseImplicitlyTypedArray = DiagnosticDescriptorFactory.Default.Create(
+                id:                 DiagnosticIdentifiers.UseExplicitlyTypedArrayOrViceVersa, 
+                title:              "Use explicitly typed array (or vice versa).", 
+                messageFormat:      "Use implicitly typed array.", 
+                category:           DiagnosticCategories.Readability, 
+                defaultSeverity:    DiagnosticSeverity.Info, 
+                isEnabledByDefault: false, 
+                description:        null, 
+                helpLinkUri:        DiagnosticIdentifiers.UseExplicitlyTypedArrayOrViceVersa, 
+                customTags:         Array.Empty<string>());
+
             /// <summary>RCS1018i</summary>
             public static readonly DiagnosticDescriptor RemoveAccessibilityModifiers = DiagnosticDescriptorFactory.Default.Create(
                 id:                 DiagnosticIdentifiers.AddAccessibilityModifiersOrViceVersa, 

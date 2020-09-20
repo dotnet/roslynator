@@ -20,7 +20,7 @@ namespace Roslynator.CSharp
         public const string UseVarInsteadOfExplicitTypeWhenTypeIsObvious = "RCS1010";
         public const string UseExplicitTypeInsteadOfVarWhenTypeIsObvious = "RCS1012";
         public const string UsePredefinedType = "RCS1013";
-        public const string AvoidImplicitlyTypedArray = "RCS1014";
+        public const string UseExplicitlyTypedArrayOrViceVersa = "RCS1014";
         public const string UseNameOfOperator = "RCS1015";
         public const string UseExpressionBodiedMember = "RCS1016";
         public const string AvoidMultilineExpressionBody = "RCS1017";

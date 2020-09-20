@@ -246,19 +246,44 @@ foreach (var item in items) // [|Id|]
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AvoidImplicitlyTypedArray">
+  <Analyzer Identifier="UseExplicitlyTypedArrayOrViceVersa">
     <Id>RCS1014</Id>
-    <Title>Avoid implicitly-typed array.</Title>
-    <MessageFormat>Declare explicit type when creating an array.</MessageFormat>
+    <Title>Use explicitly typed array (or vice versa).</Title>
+    <MessageFormat>Use explicitly typed array.</MessageFormat>
     <Category>Readability</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
       <Sample>
-        <Before><![CDATA[var items = new[] { "" };]]></Before>
-        <After><![CDATA[var items = new string[] { "" };]]></After>
+        <Before><![CDATA[var items = new[] { "a", B };]]></Before>
+        <After><![CDATA[var items = new string[] { "a", B };]]></After>
       </Sample>
     </Samples>
+    <Options>
+      <Option Identifier="UseImplicitlyTypedArrayWhenTypeIsObvious">
+        <Title>Use implicitly typed array (when type is obvious).</Title>
+        <Id>a</Id>
+        <Kind>Change</Kind>
+        <SupportsFadeOut>true</SupportsFadeOut>
+        <Samples>
+          <Sample>
+            <Before><![CDATA[var items = new string[] { "a", "b" };]]></Before>
+            <After><![CDATA[var items = new[] { "a", "b" };]]></After>
+          </Sample>
+        </Samples>
+      </Option>
+      <Option Identifier="UseImplicitlyTypedArray">
+        <Title>Use implicitly typed array.</Title>
+        <Id>i</Id>
+        <Kind>Invert</Kind>
+        <Samples>
+          <Sample>
+            <Before><![CDATA[var items = new string[] { A, B };]]></Before>
+            <After><![CDATA[var items = new[] { A, B };]]></After>
+          </Sample>
+        </Samples>
+      </Option>
+    </Options>
   </Analyzer>
   <Analyzer Identifier="UseNameOfOperator">
     <Id>RCS1015</Id>

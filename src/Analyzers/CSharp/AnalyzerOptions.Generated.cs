@@ -9,6 +9,30 @@ namespace Roslynator.CSharp
 {
     public static partial class AnalyzerOptions
     {
+        /// <summary>RCS1014a</summary>
+        public static readonly DiagnosticDescriptor UseImplicitlyTypedArrayWhenTypeIsObvious = DiagnosticDescriptorFactory.Default.Create(
+            id:                 AnalyzerOptionIdentifiers.UseImplicitlyTypedArrayWhenTypeIsObvious, 
+            title:              "Use implicitly typed array (when type is obvious).", 
+            messageFormat:      "Use implicitly typed array (when type is obvious).", 
+            category:           DiagnosticCategories.AnalyzerOption, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: false, 
+            description:        null, 
+            helpLinkUri:        AnalyzerOptionIdentifiers.UseImplicitlyTypedArrayWhenTypeIsObvious, 
+            customTags:         WellKnownDiagnosticTags.Unnecessary);
+
+        /// <summary>RCS1014i</summary>
+        public static readonly DiagnosticDescriptor UseImplicitlyTypedArray = DiagnosticDescriptorFactory.Default.Create(
+            id:                 AnalyzerOptionIdentifiers.UseImplicitlyTypedArray, 
+            title:              "Use implicitly typed array.", 
+            messageFormat:      "Use implicitly typed array.", 
+            category:           DiagnosticCategories.AnalyzerOption, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: false, 
+            description:        null, 
+            helpLinkUri:        AnalyzerOptionIdentifiers.UseImplicitlyTypedArray, 
+            customTags:         Array.Empty<string>());
+
         /// <summary>RCS1018i</summary>
         public static readonly DiagnosticDescriptor RemoveAccessibilityModifiers = DiagnosticDescriptorFactory.Default.Create(
             id:                 AnalyzerOptionIdentifiers.RemoveAccessibilityModifiers, 

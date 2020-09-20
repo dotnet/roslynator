@@ -305,6 +305,7 @@
     <Rule Id="RCS1010" Action="Info" />
     <Rule Id="RCS1013" Action="Info" />
     <Rule Id="RCS1014" Action="Info" />
+    <Rule Id="RCS1014a" Action="Info" />
     <Rule Id="RCS1017" Action="Info" />
     <Rule Id="RCS1018" Action="Warning" />
     <Rule Id="RCS1019" Action="Info" />
