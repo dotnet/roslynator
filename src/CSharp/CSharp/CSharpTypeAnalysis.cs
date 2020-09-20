@@ -259,6 +259,23 @@ namespace Roslynator.CSharp
                     {
                         return true;
                     }
+                case SyntaxKind.ImplicitArrayCreationExpression:
+                    {
+                        var implicitArrayCreation = (ImplicitArrayCreationExpressionSyntax)expression;
+
+                        var expressions = implicitArrayCreation.Initializer?.Expressions ?? default;
+
+                        if (!expressions.Any())
+                            return false;
+
+                        foreach (ExpressionSyntax expression2 in expressions)
+                        {
+                            if (!IsTypeObvious(expression2, semanticModel, cancellationToken))
+                                return false;
+                        }
+
+                        return true;
+                    }
                 case SyntaxKind.SimpleMemberAccessExpression:
                     {
                         ISymbol symbol = semanticModel.GetSymbol(expression, cancellationToken);

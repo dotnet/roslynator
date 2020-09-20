@@ -66,7 +66,7 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeWhenTypeIsObvious)]
-        public async Task Test_DefaultExpression_TupleExpression_var()
+        public async Task Test_DefaultExpression_TupleExpression_Var()
         {
             await VerifyDiagnosticAndFixAsync(@"
 class C
@@ -82,6 +82,28 @@ class C
     void M()
     {
         var (x, y) = default((object, string));
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeWhenTypeIsObvious)]
+        public async Task Test_ImplicitArrayCreation()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+        [|string[]|] = new[] { ""a"", ""b"" };
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+        var = new[] { ""a"", ""b"" };
     }
 }
 ");
