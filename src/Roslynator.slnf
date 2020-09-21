@@ -1,0 +1,28 @@
+{
+  "solution": {
+    "path": "Roslynator.sln",
+    "projects": [
+      "Analyzers.CodeFixes\\Analyzers.CodeFixes.csproj",
+      "Analyzers\\Analyzers.csproj",
+      "CSharp.Workspaces\\CSharp.Workspaces.csproj",
+      "CSharp\\CSharp.csproj",
+      "CodeFixes\\CodeFixes.csproj",
+      "CommandLine\\CommandLine.csproj",
+      "Common\\Common.csproj",
+      "Core\\Core.csproj",
+      "Documentation\\Documentation.csproj",
+      "Refactorings\\Refactorings.csproj",
+      "Tests\\Analyzers.Tests\\Analyzers.Tests.csproj",
+      "Tests\\CodeFixes.Tests\\CodeFixes.Tests.csproj",
+      "Tests\\Refactorings.Tests\\Refactorings.Tests.csproj",
+      "Tests\\TestConsole\\TestConsole.csproj",
+      "Tests\\TestLibrary\\TestLibrary.csproj",
+      "Tests\\Testing.CSharp\\Testing.CSharp.csproj",
+      "Tests\\Testing.Common\\Testing.Common.csproj",
+      "Tests\\Testing.Xunit\\Testing.Xunit.csproj",
+      "Tools\\CodeGeneration\\CodeGeneration.csproj",
+      "Workspaces.Common\\Workspaces.Common.csproj",
+      "Workspaces.Core\\Workspaces.Core.csproj"
+    ]
+  }
+}
