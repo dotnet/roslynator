@@ -16,6 +16,7 @@ namespace Roslynator.CodeGeneration
         {
 #if DEBUG
             string rootPath = @"..\..\..\..\..";
+            string action = null;
 #else
             string rootPath = System.Environment.CurrentDirectory;
 #endif
@@ -26,12 +27,12 @@ namespace Roslynator.CodeGeneration
 
             string path = Path.Combine(rootPath, "default.ruleset");
 
-            string content = CreateDefaultRuleSet(metadata.Analyzers);
+            string content = CreateDefaultRuleSet(metadata, action);
 
             FileHelper.WriteAllText(path, content, Encoding.UTF8, onlyIfChanges: false, fileMustExists: false);
         }
 
-        private static string CreateDefaultRuleSet(IEnumerable<AnalyzerMetadata> analyzers)
+        private static string CreateDefaultRuleSet(RoslynatorMetadata metadata, string action = null)
         {
             using (var stringWriter = new Utf8StringWriter())
             {
@@ -46,45 +47,51 @@ namespace Roslynator.CodeGeneration
                     writer.WriteAttributeString("Name", "Default Rules");
                     writer.WriteAttributeString("ToolsVersion", "15.0");
 
-                    writer.WriteStartElement("Rules");
-                    writer.WriteAttributeString("AnalyzerId", "Roslynator.CSharp.Analyzers");
-                    writer.WriteAttributeString("RuleNamespace", "Roslynator.CSharp.Analyzers");
-
-                    foreach (AnalyzerMetadata analyzer in analyzers
-                        .Where(f => !f.IsObsolete)
-                        .OrderBy(f => f.Id))
-                    {
-                        writer.WriteWhitespace(newLineChars);
-                        writer.WriteWhitespace(indentChars);
-                        writer.WriteWhitespace(indentChars);
-                        writer.WriteStartElement("Rule");
-                        writer.WriteAttributeString("Id", analyzer.Id);
-                        writer.WriteAttributeString("Action", GetAction(analyzer));
-                        writer.WriteEndElement();
-
-                        string title = analyzer.Title;
-
-                        if (!string.IsNullOrEmpty(title))
-                        {
-                            writer.WriteWhitespace(" ");
-                            writer.WriteComment($" {title} ");
-                        }
-                    }
-
-                    writer.WriteWhitespace(newLineChars);
-                    writer.WriteWhitespace(indentChars);
-                    writer.WriteEndElement();
+                    WriteRules(writer, metadata.Analyzers, "Roslynator.CSharp.Analyzers", action);
+                    WriteRules(writer, metadata.FormattingAnalyzers, "Roslynator.Formatting.Analyzers", action);
+                    WriteRules(writer, metadata.CodeAnalysisAnalyzers, "Roslynator.CodeAnalysis.Analyzers", action);
                 }
 
                 return stringWriter.ToString();
             }
+        }
 
-            static string GetAction(AnalyzerMetadata analyzer)
+        private static void WriteRules(XmlWriter writer, IEnumerable<AnalyzerMetadata> analyzers, string analyzerId, string action = null)
+        {
+            string newLineChars = writer.Settings.NewLineChars;
+            string indentChars = writer.Settings.IndentChars;
+
+            writer.WriteStartElement("Rules");
+            writer.WriteAttributeString("AnalyzerId", analyzerId);
+            writer.WriteAttributeString("RuleNamespace", analyzerId);
+
+            foreach (AnalyzerMetadata analyzer in analyzers
+                .Where(f => !f.IsObsolete)
+                .OrderBy(f => f.Id))
             {
-                return (analyzer.IsEnabledByDefault)
-                    ? analyzer.DefaultSeverity
-                    : "None";
+                writer.WriteWhitespace(newLineChars);
+                writer.WriteWhitespace(indentChars);
+                writer.WriteWhitespace(indentChars);
+                writer.WriteStartElement("Rule");
+                writer.WriteAttributeString("Id", analyzer.Id);
+
+                action ??= (analyzer.IsEnabledByDefault) ? analyzer.DefaultSeverity : "None";
+
+                writer.WriteAttributeString("Action", action);
+                writer.WriteEndElement();
+
+                string title = analyzer.Title;
+
+                if (!string.IsNullOrEmpty(title))
+                {
+                    writer.WriteWhitespace(" ");
+                    writer.WriteComment($" {title} ");
+                }
             }
+
+            writer.WriteWhitespace(newLineChars);
+            writer.WriteWhitespace(indentChars);
+            writer.WriteEndElement();
         }
     }
 }
