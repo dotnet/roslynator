@@ -2457,7 +2457,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor UseIsNullPatternInsteadOfComparisonOrViceVersa = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.UseIsNullPatternInsteadOfComparisonOrViceVersa, 
             title:              "Use 'is null' pattern instead of comparison (or vice versa).", 
-            messageFormat:      "Use 'is null' pattern instead '{0}' operator.", 
+            messageFormat:      "Use 'is null' pattern instead of '{0}' operator.", 
             category:           DiagnosticCategories.Style, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
