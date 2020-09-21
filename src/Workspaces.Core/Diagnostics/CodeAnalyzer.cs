@@ -169,8 +169,17 @@ namespace Roslynator.Diagnostics
 
             string projectDirectoryPath = Path.GetDirectoryName(project.FilePath);
 
-            LogHelpers.WriteDiagnostics(FilterDiagnostics(diagnostics.Where(f => f.IsAnalyzerExceptionDiagnostic()), cancellationToken).ToImmutableArray(), baseDirectoryPath: projectDirectoryPath, formatProvider: FormatProvider, indentation: "  ", verbosity: Verbosity.Diagnostic);
+            LogHelpers.WriteDiagnostics(FilterDiagnostics(diagnostics.Where(f => f.IsAnalyzerExceptionDiagnostic()), cancellationToken).ToImmutableArray(), baseDirectoryPath: projectDirectoryPath, formatProvider: FormatProvider, indentation: "  ", verbosity: Verbosity.Detailed);
+#if DEBUG
+            if (ConsoleOut.Verbosity >= Verbosity.Detailed
+                && diagnostics.Any(f => f.IsAnalyzerExceptionDiagnostic()))
+            {
+                Console.Write("Stop (Y/N)? ");
 
+                if (char.ToUpperInvariant((char)Console.Read()) == 'Y')
+                    throw new OperationCanceledException();
+            }
+#endif
             diagnostics = FilterDiagnostics(diagnostics.Where(f => !f.IsAnalyzerExceptionDiagnostic()), cancellationToken).ToImmutableArray();
 
             LogHelpers.WriteDiagnostics(compilerDiagnostics, baseDirectoryPath: projectDirectoryPath, formatProvider: FormatProvider, indentation: "  ", verbosity: Verbosity.Normal);
