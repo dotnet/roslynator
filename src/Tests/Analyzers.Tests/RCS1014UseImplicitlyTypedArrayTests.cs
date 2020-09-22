@@ -171,9 +171,8 @@ class C
     {
         var x = new[]
         {
-            """",
-            new string('a', 1),
-            new[] { """", new string('a', 1) }
+            new[] { """", new string('a', 1) },
+            new[] { new string('a', 1), """" }
         };
     }
 
