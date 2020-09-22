@@ -66,7 +66,7 @@ class C
     {
         var x = RegexOptions.Singleline | RegexOptions.Multiline;
 
-        if ([|x & (RegexOptions.Singleline | RegexOptions.IgnoreCase)|] != RegexOptions.Singleline | RegexOptions.IgnoreCase) { }
+        if ([|(x & (RegexOptions.Singleline | RegexOptions.IgnoreCase)) != (RegexOptions.Singleline | RegexOptions.IgnoreCase)|]) { }
     }
 }
 ", @"
@@ -76,9 +76,9 @@ class C
 {
     void M()
     {
-        var options = StringSplitOptions.None;
+        var x = RegexOptions.Singleline | RegexOptions.Multiline;
 
-        if (!options.HasFlag(RegexOptions.Singleline | RegexOptions.IgnoreCase)) { }
+        if (!x.HasFlag(RegexOptions.Singleline | RegexOptions.IgnoreCase)) { }
     }
 }
 ");
@@ -186,7 +186,7 @@ class C
     {
         var x = RegexOptions.Singleline | RegexOptions.Multiline;
 
-        if ([|x & (RegexOptions.Singleline | RegexOptions.IgnoreCase)|] == RegexOptions.Singleline | RegexOptions.IgnoreCase) { }
+        if ([|(x & (RegexOptions.Singleline | RegexOptions.IgnoreCase)) == (RegexOptions.Singleline | RegexOptions.IgnoreCase)|]) { }
     }
 }
 ", @"
@@ -196,9 +196,9 @@ class C
 {
     void M()
     {
-        var options = StringSplitOptions.None;
+        var x = RegexOptions.Singleline | RegexOptions.Multiline;
 
-        if (options.HasFlag(RegexOptions.Singleline | RegexOptions.IgnoreCase)) { }
+        if (x.HasFlag(RegexOptions.Singleline | RegexOptions.IgnoreCase)) { }
     }
 }
 ");
@@ -256,8 +256,8 @@ class C
     {
         var x = RegexOptions.Singleline | RegexOptions.Multiline;
 
-        if (x & (RegexOptions.Singleline | RegexOptions.IgnoreCase) == 0) { }
-        if (x & (RegexOptions.Singleline | RegexOptions.IgnoreCase) != 0) { }
+        if ((x & (RegexOptions.Singleline | RegexOptions.IgnoreCase)) == 0) { }
+        if ((x & (RegexOptions.Singleline | RegexOptions.IgnoreCase)) != 0) { }
     }
 }
 ");

@@ -3,7 +3,6 @@
 using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Syntax;
 
@@ -53,25 +52,6 @@ namespace Roslynator.CSharp.Analysis
                 {
                     return true;
                 }
-            }
-
-            return false;
-        }
-
-        public static bool IsSuitableAsArgumentOfHasFlag(
-            ExpressionSyntax expression,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
-        {
-            expression = expression.WalkDownParentheses();
-
-            if (expression.IsKind(
-                SyntaxKind.BitwiseAndExpression,
-                SyntaxKind.BitwiseOrExpression,
-                SyntaxKind.SimpleMemberAccessExpression,
-                SyntaxKind.IdentifierName))
-            {
-                return semanticModel.GetTypeSymbol(expression, cancellationToken)?.TypeKind == TypeKind.Enum;
             }
 
             return false;

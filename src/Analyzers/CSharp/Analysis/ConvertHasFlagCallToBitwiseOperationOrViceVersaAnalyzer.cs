@@ -53,15 +53,17 @@ namespace Roslynator.CSharp.Analysis
 
             otherExpression = otherExpression.WalkDownParentheses();
 
+            ExpressionSyntax right = bitwiseAnd.Right.WalkDownParentheses();
+
             SemanticModel semanticModel = context.SemanticModel;
             CancellationToken cancellationToken = context.CancellationToken;
 
             if (otherExpression.IsNumericLiteralExpression("0"))
             {
-                if (SyntaxUtility.IsCompositeEnumValue(bitwiseAnd.Right, semanticModel, cancellationToken))
+                if (SyntaxUtility.IsCompositeEnumValue(right, semanticModel, cancellationToken))
                     return;
             }
-            else if (!CSharpFactory.AreEquivalent(bitwiseAnd.Right, otherExpression))
+            else if (!CSharpFactory.AreEquivalent(right, otherExpression))
             {
                 return;
             }
@@ -75,20 +77,13 @@ namespace Roslynator.CSharp.Analysis
                 return;
             }
 
-            if (IsSuitableAsArgumentOfHasFlag(bitwiseAnd.Right, semanticModel, cancellationToken))
-            {
-                if (!IsSuitableAsExpressionOfHasFlag(bitwiseAnd.Left))
-                    return;
-            }
-            else if (IsSuitableAsArgumentOfHasFlag(bitwiseAnd.Left, semanticModel, cancellationToken))
-            {
-                if (!IsSuitableAsExpressionOfHasFlag(bitwiseAnd.Right))
-                    return;
-            }
-            else
-            {
+            ExpressionSyntax left = bitwiseAnd.Left.WalkDownParentheses();
+
+            if (!IsSuitableAsExpressionOfHasFlag(left))
                 return;
-            }
+
+            if (!IsSuitableAsArgumentOfHasFlag(right))
+                return;
 
             DiagnosticHelpers.ReportDiagnostic(
                 context,
@@ -97,13 +92,27 @@ namespace Roslynator.CSharp.Analysis
 
             bool IsSuitableAsExpressionOfHasFlag(ExpressionSyntax expression)
             {
-                expression = expression.WalkDownParentheses();
-
                 if (expression.IsKind(
                     SyntaxKind.IdentifierName,
                     SyntaxKind.SimpleMemberAccessExpression,
                     SyntaxKind.InvocationExpression,
                     SyntaxKind.ElementAccessExpression))
+                {
+                    return semanticModel.GetTypeSymbol(expression, cancellationToken)?.TypeKind == TypeKind.Enum;
+                }
+
+                return false;
+            }
+
+            bool IsSuitableAsArgumentOfHasFlag(ExpressionSyntax expression)
+            {
+                expression = expression.WalkDownParentheses();
+
+                if (expression.IsKind(
+                    SyntaxKind.BitwiseAndExpression,
+                    SyntaxKind.BitwiseOrExpression,
+                    SyntaxKind.SimpleMemberAccessExpression,
+                    SyntaxKind.IdentifierName))
                 {
                     return semanticModel.GetTypeSymbol(expression, cancellationToken)?.TypeKind == TypeKind.Enum;
                 }
