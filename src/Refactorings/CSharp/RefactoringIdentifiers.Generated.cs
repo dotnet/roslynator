@@ -39,10 +39,12 @@ namespace Roslynator.CSharp.Refactorings
         public const string CollapseToInitializer = Prefix + "0026";
         public const string CommentOutMember = Prefix + "0027";
         public const string CommentOutStatement = Prefix + "0028";
+        public const string ConvertBlockBodyToExpressionBody = Prefix + "0169";
         public const string ConvertCommentToDocumentationComment = Prefix + "0192";
         public const string ConvertConditionalOperatorToIfElse = Prefix + "0120";
         public const string ConvertDoToWhile = Prefix + "0123";
         public const string ConvertEmptyStringToStringEmpty = Prefix + "0171";
+        public const string ConvertExpressionBodyToBlockBody = Prefix + "0037";
         public const string ConvertForEachToFor = Prefix + "0129";
         public const string ConvertForEachToForAndReverseLoop = Prefix + "0188";
         public const string ConvertForToForEach = Prefix + "0130";
@@ -54,6 +56,8 @@ namespace Roslynator.CSharp.Refactorings
         public const string ConvertInterpolatedStringToConcatenation = Prefix + "0193";
         public const string ConvertInterpolatedStringToStringFormat = Prefix + "0201";
         public const string ConvertInterpolatedStringToStringLiteral = Prefix + "0136";
+        public const string ConvertLambdaExpressionBodyToBlockBody = Prefix + "0039";
+        public const string ConvertLambdaExpressionBodyToExpressionBody = Prefix + "0154";
         public const string ConvertMethodGroupToLambda = Prefix + "0137";
         public const string ConvertNullLiteralToDefaultExpression = Prefix + "0139";
         public const string ConvertRegularStringLiteralToVerbatimStringLiteral = Prefix + "0142";
@@ -75,9 +79,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string ExpandCoalesceExpression = Prefix + "0035";
         public const string ExpandCompoundAssignmentOperator = Prefix + "0034";
         public const string ExpandEvent = Prefix + "0036";
-        public const string ExpandExpressionBody = Prefix + "0037";
         public const string ExpandInitializer = Prefix + "0038";
-        public const string ExpandLambdaExpressionBody = Prefix + "0039";
         public const string ExpandProperty = Prefix + "0040";
         public const string ExpandPropertyAndAddBackingField = Prefix + "0041";
         public const string ExtractEventHandlerMethod = Prefix + "0203";
@@ -181,7 +183,6 @@ namespace Roslynator.CSharp.Refactorings
         public const string ReplacePropertyWithMethod = Prefix + "0141";
         public const string ReverseForLoop = Prefix + "0152";
         public const string SimplifyIf = Prefix + "0153";
-        public const string SimplifyLambdaExpression = Prefix + "0154";
         public const string SortCaseLabels = Prefix + "0207";
         public const string SortMemberDeclarations = Prefix + "0155";
         public const string SplitAttributes = Prefix + "0156";
@@ -200,7 +201,6 @@ namespace Roslynator.CSharp.Refactorings
         public const string UseElementAccessInsteadOfEnumerableMethod = Prefix + "0167";
         public const string UseEmptyStringLiteralInsteadOfStringEmpty = Prefix + "0168";
         public const string UseEnumeratorExplicitly = Prefix + "0206";
-        public const string UseExpressionBodiedMember = Prefix + "0169";
         public const string UseLambdaExpressionInsteadOfAnonymousMethod = Prefix + "0170";
         public const string UseListInsteadOfYield = Prefix + "0183";
         public const string UseStringBuilderInsteadOfConcatenation = Prefix + "0182";

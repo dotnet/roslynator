@@ -12,26 +12,26 @@ using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.CodeFixes
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ArrowExpressionClauseCodeFixProvider))]
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ConvertLambdaExpressionBodyToExpressionBodyCodeFixProvider))]
     [Shared]
-    public class ArrowExpressionClauseCodeFixProvider : BaseCodeFixProvider
+    public class ConvertLambdaExpressionBodyToExpressionBodyCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.AvoidMultilineExpressionBody); }
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.ConvertLambdaExpressionBodyToExpressionBody); }
         }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out ArrowExpressionClauseSyntax arrowExpressionClause))
+            if (!TryFindFirstAncestorOrSelf(root, context.Span, out BlockSyntax block))
                 return;
 
             CodeAction codeAction = CodeAction.Create(
-                ExpandExpressionBodyRefactoring.Title,
-                cancellationToken => ExpandExpressionBodyRefactoring.RefactorAsync(context.Document, arrowExpressionClause, cancellationToken),
-                GetEquivalenceKey(DiagnosticIdentifiers.AvoidMultilineExpressionBody));
+                ConvertLambdaExpressionBodyToExpressionBodyRefactoring.Title,
+                ct => ConvertLambdaExpressionBodyToExpressionBodyRefactoring.RefactorAsync(context.Document, (LambdaExpressionSyntax)block.Parent, ct),
+                GetEquivalenceKey(DiagnosticIdentifiers.ConvertLambdaExpressionBodyToExpressionBody));
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }

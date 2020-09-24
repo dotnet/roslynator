@@ -23,20 +23,20 @@ namespace Roslynator.CSharp.Refactorings
             if (refactoringId != GetRefactoringId(selectedMembers.Last()))
                 return;
 
-            if (refactoringId == RefactoringIdentifiers.UseExpressionBodiedMember
-                && context.IsRefactoringEnabled(RefactoringIdentifiers.UseExpressionBodiedMember))
+            if (refactoringId == RefactoringIdentifiers.ConvertBlockBodyToExpressionBody
+                && context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertBlockBodyToExpressionBody))
             {
                 context.RegisterRefactoring(
-                    UseExpressionBodiedMemberRefactoring.Title,
-                    ct => UseExpressionBodiedMemberRefactoring.RefactorAsync(context.Document, selectedMembers, ct),
-                    RefactoringIdentifiers.UseExpressionBodiedMember);
+                    ConvertBlockBodyToExpressionBodyRefactoring.Title,
+                    ct => ConvertBlockBodyToExpressionBodyRefactoring.RefactorAsync(context.Document, selectedMembers, ct),
+                    RefactoringIdentifiers.ConvertBlockBodyToExpressionBody);
             }
-            else if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExpandExpressionBody))
+            else if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertExpressionBodyToBlockBody))
             {
                 context.RegisterRefactoring(
-                    ExpandExpressionBodyRefactoring.Title,
-                    ct => ExpandExpressionBodyRefactoring.RefactorAsync(context.Document, selectedMembers, ct),
-                    RefactoringIdentifiers.ExpandExpressionBody);
+                    ConvertExpressionBodyToBlockBodyRefactoring.Title,
+                    ct => ConvertExpressionBodyToBlockBodyRefactoring.RefactorAsync(context.Document, selectedMembers, ct),
+                    RefactoringIdentifiers.ConvertExpressionBodyToBlockBody);
             }
         }
 
@@ -51,11 +51,11 @@ namespace Roslynator.CSharp.Refactorings
                         if (expressionBody != null)
                         {
                             if (ExpandExpressionBodyAnalysis.IsFixable(expressionBody))
-                                return RefactoringIdentifiers.ExpandExpressionBody;
+                                return RefactoringIdentifiers.ConvertExpressionBodyToBlockBody;
                         }
-                        else if (UseExpressionBodiedMemberRefactoring.CanRefactor(methodDeclaration))
+                        else if (ConvertBlockBodyToExpressionBodyRefactoring.CanRefactor(methodDeclaration))
                         {
-                            return RefactoringIdentifiers.UseExpressionBodiedMember;
+                            return RefactoringIdentifiers.ConvertBlockBodyToExpressionBody;
                         }
 
                         return null;
@@ -67,11 +67,11 @@ namespace Roslynator.CSharp.Refactorings
                         if (expressionBody != null)
                         {
                             if (ExpandExpressionBodyAnalysis.IsFixable(expressionBody))
-                                return RefactoringIdentifiers.ExpandExpressionBody;
+                                return RefactoringIdentifiers.ConvertExpressionBodyToBlockBody;
                         }
-                        else if (UseExpressionBodiedMemberRefactoring.CanRefactor(propertyDeclaration))
+                        else if (ConvertBlockBodyToExpressionBodyRefactoring.CanRefactor(propertyDeclaration))
                         {
-                            return RefactoringIdentifiers.UseExpressionBodiedMember;
+                            return RefactoringIdentifiers.ConvertBlockBodyToExpressionBody;
                         }
 
                         return null;
@@ -83,11 +83,11 @@ namespace Roslynator.CSharp.Refactorings
                         if (expressionBody != null)
                         {
                             if (ExpandExpressionBodyAnalysis.IsFixable(expressionBody))
-                                return RefactoringIdentifiers.ExpandExpressionBody;
+                                return RefactoringIdentifiers.ConvertExpressionBodyToBlockBody;
                         }
-                        else if (UseExpressionBodiedMemberRefactoring.CanRefactor(indexerDeclaration))
+                        else if (ConvertBlockBodyToExpressionBodyRefactoring.CanRefactor(indexerDeclaration))
                         {
-                            return RefactoringIdentifiers.UseExpressionBodiedMember;
+                            return RefactoringIdentifiers.ConvertBlockBodyToExpressionBody;
                         }
 
                         return null;
@@ -99,11 +99,11 @@ namespace Roslynator.CSharp.Refactorings
                         if (expressionBody != null)
                         {
                             if (ExpandExpressionBodyAnalysis.IsFixable(expressionBody))
-                                return RefactoringIdentifiers.ExpandExpressionBody;
+                                return RefactoringIdentifiers.ConvertExpressionBodyToBlockBody;
                         }
-                        else if (UseExpressionBodiedMemberRefactoring.CanRefactor(operatorDeclaration))
+                        else if (ConvertBlockBodyToExpressionBodyRefactoring.CanRefactor(operatorDeclaration))
                         {
-                            return RefactoringIdentifiers.UseExpressionBodiedMember;
+                            return RefactoringIdentifiers.ConvertBlockBodyToExpressionBody;
                         }
 
                         return null;
@@ -115,11 +115,11 @@ namespace Roslynator.CSharp.Refactorings
                         if (expressionBody != null)
                         {
                             if (ExpandExpressionBodyAnalysis.IsFixable(expressionBody))
-                                return RefactoringIdentifiers.ExpandExpressionBody;
+                                return RefactoringIdentifiers.ConvertExpressionBodyToBlockBody;
                         }
-                        else if (UseExpressionBodiedMemberRefactoring.CanRefactor(conversionOperatorDeclaration))
+                        else if (ConvertBlockBodyToExpressionBodyRefactoring.CanRefactor(conversionOperatorDeclaration))
                         {
-                            return RefactoringIdentifiers.UseExpressionBodiedMember;
+                            return RefactoringIdentifiers.ConvertBlockBodyToExpressionBody;
                         }
 
                         return null;
@@ -131,11 +131,11 @@ namespace Roslynator.CSharp.Refactorings
                         if (expressionBody != null)
                         {
                             if (ExpandExpressionBodyAnalysis.IsFixable(expressionBody))
-                                return RefactoringIdentifiers.ExpandExpressionBody;
+                                return RefactoringIdentifiers.ConvertExpressionBodyToBlockBody;
                         }
-                        else if (UseExpressionBodiedMemberRefactoring.CanRefactor(constructorDeclaration))
+                        else if (ConvertBlockBodyToExpressionBodyRefactoring.CanRefactor(constructorDeclaration))
                         {
-                            return RefactoringIdentifiers.UseExpressionBodiedMember;
+                            return RefactoringIdentifiers.ConvertBlockBodyToExpressionBody;
                         }
 
                         return null;
@@ -147,11 +147,11 @@ namespace Roslynator.CSharp.Refactorings
                         if (expressionBody != null)
                         {
                             if (ExpandExpressionBodyAnalysis.IsFixable(expressionBody))
-                                return RefactoringIdentifiers.ExpandExpressionBody;
+                                return RefactoringIdentifiers.ConvertExpressionBodyToBlockBody;
                         }
-                        else if (UseExpressionBodiedMemberRefactoring.CanRefactor(destructorDeclaration))
+                        else if (ConvertBlockBodyToExpressionBodyRefactoring.CanRefactor(destructorDeclaration))
                         {
-                            return RefactoringIdentifiers.UseExpressionBodiedMember;
+                            return RefactoringIdentifiers.ConvertBlockBodyToExpressionBody;
                         }
 
                         return null;

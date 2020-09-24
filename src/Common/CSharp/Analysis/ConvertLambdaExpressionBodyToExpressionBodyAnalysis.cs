@@ -8,7 +8,7 @@ using Microsoft.CodeAnalysis.Text;
 
 namespace Roslynator.CSharp.Analysis
 {
-    internal static class SimplifyLambdaExpressionAnalysis
+    internal static class ConvertLambdaExpressionBodyToExpressionBodyAnalysis
     {
         public static bool IsFixable(LambdaExpressionSyntax lambda)
         {

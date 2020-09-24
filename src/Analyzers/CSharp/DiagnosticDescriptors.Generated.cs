@@ -188,24 +188,24 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor UseNameOfOperatorFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(UseNameOfOperator);
 
         /// <summary>RCS1016</summary>
-        public static readonly DiagnosticDescriptor UseExpressionBodiedMember = DiagnosticDescriptorFactory.Default.Create(
-            id:                 DiagnosticIdentifiers.UseExpressionBodiedMember, 
-            title:              "Use expression-bodied member.", 
-            messageFormat:      "Use expression bodied member.", 
+        public static readonly DiagnosticDescriptor ConvertBlockBodyToExpressionBodyOrViceVersa = DiagnosticDescriptorFactory.Default.Create(
+            id:                 DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa, 
+            title:              "Convert block body to expression-body (or vice versa).", 
+            messageFormat:      "Use expression-bodied member.", 
             category:           DiagnosticCategories.Usage, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.UseExpressionBodiedMember, 
+            helpLinkUri:        DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa, 
             customTags:         Array.Empty<string>());
 
-        public static readonly DiagnosticDescriptor UseExpressionBodiedMemberFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(UseExpressionBodiedMember);
+        public static readonly DiagnosticDescriptor ConvertBlockBodyToExpressionBodyOrViceVersaFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(ConvertBlockBodyToExpressionBodyOrViceVersa);
 
         /// <summary>RCS1017</summary>
         public static readonly DiagnosticDescriptor AvoidMultilineExpressionBody = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.AvoidMultilineExpressionBody, 
             title:              "Avoid multiline expression body.", 
-            messageFormat:      "Expand expression body with multiline expression.", 
+            messageFormat:      "[deprecated] Use analyzer RCS1016a instead.", 
             category:           DiagnosticCategories.Style, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
@@ -250,18 +250,18 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1021</summary>
-        public static readonly DiagnosticDescriptor SimplifyLambdaExpression = DiagnosticDescriptorFactory.Default.Create(
-            id:                 DiagnosticIdentifiers.SimplifyLambdaExpression, 
-            title:              "Simplify lambda expression.", 
-            messageFormat:      "Simplify lambda expression.", 
+        public static readonly DiagnosticDescriptor ConvertLambdaExpressionBodyToExpressionBody = DiagnosticDescriptorFactory.Default.Create(
+            id:                 DiagnosticIdentifiers.ConvertLambdaExpressionBodyToExpressionBody, 
+            title:              "Convert lambda expression body to expression-body.", 
+            messageFormat:      "Use expression-bodied lambda.", 
             category:           DiagnosticCategories.Simplification, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.SimplifyLambdaExpression, 
+            helpLinkUri:        DiagnosticIdentifiers.ConvertLambdaExpressionBodyToExpressionBody, 
             customTags:         Array.Empty<string>());
 
-        public static readonly DiagnosticDescriptor SimplifyLambdaExpressionFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(SimplifyLambdaExpression);
+        public static readonly DiagnosticDescriptor ConvertLambdaExpressionBodyToExpressionBodyFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(ConvertLambdaExpressionBodyToExpressionBody);
 
         /// <summary>RCS1031</summary>
         public static readonly DiagnosticDescriptor RemoveUnnecessaryBraces = DiagnosticDescriptorFactory.Default.Create(
@@ -2489,6 +2489,30 @@ namespace Roslynator.CSharp
                 isEnabledByDefault: false, 
                 description:        null, 
                 helpLinkUri:        DiagnosticIdentifiers.UseExplicitlyTypedArrayOrViceVersa, 
+                customTags:         Array.Empty<string>());
+
+            /// <summary>RCS1016a</summary>
+            public static readonly DiagnosticDescriptor ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine = DiagnosticDescriptorFactory.Default.Create(
+                id:                 DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa, 
+                title:              "Convert block body to expression-body (or vice versa).", 
+                messageFormat:      "Convert expression-body to block body when expression is multi-line.", 
+                category:           DiagnosticCategories.Usage, 
+                defaultSeverity:    DiagnosticSeverity.Hidden, 
+                isEnabledByDefault: false, 
+                description:        null, 
+                helpLinkUri:        DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa, 
+                customTags:         Array.Empty<string>());
+
+            /// <summary>RCS1016b</summary>
+            public static readonly DiagnosticDescriptor ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine = DiagnosticDescriptorFactory.Default.Create(
+                id:                 DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa, 
+                title:              "Convert block body to expression-body (or vice versa).", 
+                messageFormat:      "Convert expression-body to block body when declaration is multi-line.", 
+                category:           DiagnosticCategories.Usage, 
+                defaultSeverity:    DiagnosticSeverity.Hidden, 
+                isEnabledByDefault: false, 
+                description:        null, 
+                helpLinkUri:        DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa, 
                 customTags:         Array.Empty<string>());
 
             /// <summary>RCS1018i</summary>

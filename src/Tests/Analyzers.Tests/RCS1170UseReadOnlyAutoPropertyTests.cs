@@ -450,7 +450,7 @@ class C2
 ", options: Options.AddAllowedCompilerDiagnosticId("CS1061"));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExpressionBodiedMember)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
         public async Task TestNoDiagnostic_ReadOnlyAutoPropertyNotAvailableInCSharp5()
         {
             await VerifyNoDiagnosticAsync(@"

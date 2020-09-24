@@ -1,13 +1,17 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp
 {
@@ -442,6 +446,63 @@ namespace Roslynator.CSharp
         public static SyntaxTriviaList GetIncreasedIndentationTriviaList(SyntaxNode node, CancellationToken cancellationToken = default)
         {
             return AnalyzeIndentation(node, cancellationToken).GetIncreasedIndentationTriviaList();
+        }
+
+        public static IEnumerable<SyntaxTrivia> FindIndentationTrivia(SyntaxNode node)
+        {
+            return FindIndentationTrivia(node, node.FullSpan);
+        }
+
+        public static IEnumerable<SyntaxTrivia> FindIndentationTrivia(SyntaxNode node, TextSpan span)
+        {
+            foreach (SyntaxTrivia trivia in node.DescendantTrivia(span))
+            {
+                if (trivia.IsEndOfLineTrivia())
+                {
+                    int position = trivia.Span.End + 1;
+
+                    if (span.Contains(position))
+                    {
+                        SyntaxTrivia trivia2 = node.FindTrivia(position);
+
+                        if (trivia2.IsWhitespaceTrivia()
+                            && trivia.Span.End == trivia2.SpanStart
+                            && span.Contains(trivia2.Span))
+                        {
+                            yield return trivia2;
+                        }
+                    }
+                }
+            }
+        }
+
+        public static TNode SetIndentation<TNode>(TNode expression, SyntaxNode containingDeclaration, int increaseCount = 0) where TNode : SyntaxNode
+        {
+            ImmutableArray<SyntaxTrivia> triviaToReplace = FindIndentationTrivia(expression, expression.Span).ToImmutableArray();
+
+            if (!triviaToReplace.Any())
+                return expression;
+
+            int length = triviaToReplace[0].Span.Length;
+
+            IndentationAnalysis analysis = AnalyzeIndentation(containingDeclaration);
+
+            string increasedIndentation = analysis.GetIncreasedIndentation();
+
+            string replacement = (increaseCount > 0)
+                ? string.Concat(Enumerable.Repeat(analysis.GetSingleIndentation(), increaseCount))
+                : "";
+
+            replacement = increasedIndentation + replacement;
+
+            SyntaxTrivia replacementTrivia = Whitespace(replacement);
+
+            return expression.ReplaceTrivia(triviaToReplace, (trivia, _) =>
+            {
+                return (trivia.Span.Length > length)
+                    ? Whitespace(replacement + trivia.ToString().Substring(length))
+                    : replacementTrivia;
+            });
         }
     }
 }

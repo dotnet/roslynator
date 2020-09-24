@@ -33,6 +33,30 @@ namespace Roslynator.CSharp
             helpLinkUri:        AnalyzerOptionIdentifiers.UseImplicitlyTypedArray, 
             customTags:         Array.Empty<string>());
 
+        /// <summary>RCS1016a</summary>
+        public static readonly DiagnosticDescriptor ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine = DiagnosticDescriptorFactory.Default.Create(
+            id:                 AnalyzerOptionIdentifiers.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine, 
+            title:              "Convert expression-body to block body when expression is multi-line.", 
+            messageFormat:      "Convert expression-body to block body when expression is multi-line.", 
+            category:           DiagnosticCategories.AnalyzerOption, 
+            defaultSeverity:    DiagnosticSeverity.Hidden, 
+            isEnabledByDefault: false, 
+            description:        null, 
+            helpLinkUri:        AnalyzerOptionIdentifiers.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine, 
+            customTags:         Array.Empty<string>());
+
+        /// <summary>RCS1016b</summary>
+        public static readonly DiagnosticDescriptor ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine = DiagnosticDescriptorFactory.Default.Create(
+            id:                 AnalyzerOptionIdentifiers.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine, 
+            title:              "Convert expression-body to block body when declaration is multi-line.", 
+            messageFormat:      "Convert expression-body to block body when declaration is multi-line.", 
+            category:           DiagnosticCategories.AnalyzerOption, 
+            defaultSeverity:    DiagnosticSeverity.Hidden, 
+            isEnabledByDefault: false, 
+            description:        null, 
+            helpLinkUri:        AnalyzerOptionIdentifiers.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine, 
+            customTags:         Array.Empty<string>());
+
         /// <summary>RCS1018i</summary>
         public static readonly DiagnosticDescriptor RemoveAccessibilityModifiers = DiagnosticDescriptorFactory.Default.Create(
             id:                 AnalyzerOptionIdentifiers.RemoveAccessibilityModifiers, 

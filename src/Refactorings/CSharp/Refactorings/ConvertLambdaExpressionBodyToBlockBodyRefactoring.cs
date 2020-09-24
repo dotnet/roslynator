@@ -10,7 +10,7 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class ExpandLambdaExpressionBodyRefactoring
+    internal static class ConvertLambdaExpressionBodyToBlockBodyRefactoring
     {
         public static bool CanRefactor(RefactoringContext context, LambdaExpressionSyntax lambda)
         {

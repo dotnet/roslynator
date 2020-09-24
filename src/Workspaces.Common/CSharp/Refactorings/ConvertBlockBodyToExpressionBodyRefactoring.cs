@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -11,11 +11,10 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp.Analysis;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
-using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class UseExpressionBodiedMemberRefactoring
+    internal static class ConvertBlockBodyToExpressionBodyRefactoring
     {
         public const string Title = "Use expression-bodied member";
 
@@ -61,7 +60,7 @@ namespace Roslynator.CSharp.Refactorings
                 if (accessor?.AttributeLists.Any() == false
                         && accessor.IsKind(SyntaxKind.GetAccessorDeclaration)
                         && accessor.Body != null
-                        && (UseExpressionBodiedMemberAnalysis.GetReturnExpression(accessor.Body) != null))
+                        && BlockExpressionAnalysis.SupportsExpressionBody(accessor.Body, allowExpressionStatement: false))
                 {
                     return true;
                 }
@@ -74,28 +73,28 @@ namespace Roslynator.CSharp.Refactorings
         {
             return methodDeclaration.Body != null
                 && span?.IsEmptyAndContainedInSpanOrBetweenSpans(methodDeclaration.Body) != false
-                && UseExpressionBodiedMemberAnalysis.GetExpression(methodDeclaration.Body) != null;
+                && BlockExpressionAnalysis.SupportsExpressionBody(methodDeclaration.Body);
         }
 
         public static bool CanRefactor(OperatorDeclarationSyntax operatorDeclaration, TextSpan? span = null)
         {
             return operatorDeclaration.Body != null
                 && span?.IsEmptyAndContainedInSpanOrBetweenSpans(operatorDeclaration.Body) != false
-                && UseExpressionBodiedMemberAnalysis.GetReturnExpression(operatorDeclaration.Body) != null;
+                && BlockExpressionAnalysis.SupportsExpressionBody(operatorDeclaration.Body, allowExpressionStatement: false);
         }
 
         public static bool CanRefactor(ConversionOperatorDeclarationSyntax operatorDeclaration, TextSpan? span = null)
         {
             return operatorDeclaration.Body != null
                 && span?.IsEmptyAndContainedInSpanOrBetweenSpans(operatorDeclaration.Body) != false
-                && UseExpressionBodiedMemberAnalysis.GetReturnExpression(operatorDeclaration.Body) != null;
+                && BlockExpressionAnalysis.SupportsExpressionBody(operatorDeclaration.Body, allowExpressionStatement: false);
         }
 
         public static bool CanRefactor(LocalFunctionStatementSyntax localFunctionStatement, TextSpan? span = null)
         {
             return localFunctionStatement.Body != null
                 && span?.IsEmptyAndContainedInSpanOrBetweenSpans(localFunctionStatement.Body) != false
-                && UseExpressionBodiedMemberAnalysis.GetExpression(localFunctionStatement.Body) != null;
+                && BlockExpressionAnalysis.SupportsExpressionBody(localFunctionStatement.Body);
         }
 
         public static bool CanRefactor(IndexerDeclarationSyntax indexerDeclaration, TextSpan? span = null)
@@ -113,7 +112,7 @@ namespace Roslynator.CSharp.Refactorings
                 if (accessor?.AttributeLists.Any() == false
                         && accessor.IsKind(SyntaxKind.GetAccessorDeclaration)
                         && accessor.Body != null
-                        && (UseExpressionBodiedMemberAnalysis.GetReturnExpression(accessor.Body) != null))
+                        && BlockExpressionAnalysis.SupportsExpressionBody(accessor.Body, allowExpressionStatement: false))
                 {
                     return true;
                 }
@@ -126,14 +125,14 @@ namespace Roslynator.CSharp.Refactorings
         {
             return destructorDeclaration.Body != null
                 && span?.IsEmptyAndContainedInSpanOrBetweenSpans(destructorDeclaration.Body) != false
-                && UseExpressionBodiedMemberAnalysis.GetExpression(destructorDeclaration.Body) != null;
+                && BlockExpressionAnalysis.SupportsExpressionBody(destructorDeclaration.Body);
         }
 
         public static bool CanRefactor(ConstructorDeclarationSyntax constructorDeclaration, TextSpan? span = null)
         {
             return constructorDeclaration.Body != null
                 && span?.IsEmptyAndContainedInSpanOrBetweenSpans(constructorDeclaration.Body) != false
-                && UseExpressionBodiedMemberAnalysis.GetExpression(constructorDeclaration.Body) != null;
+                && BlockExpressionAnalysis.SupportsExpressionBody(constructorDeclaration.Body);
         }
 
         public static bool CanRefactor(AccessorDeclarationSyntax accessorDeclaration, TextSpan? span = null)
@@ -144,9 +143,7 @@ namespace Roslynator.CSharp.Refactorings
                 && (span?.IsEmptyAndContainedInSpanOrBetweenSpans(accessorDeclaration) != false
                     || span.Value.IsEmptyAndContainedInSpanOrBetweenSpans(body))
                 && !accessorDeclaration.AttributeLists.Any()
-                && ((accessorDeclaration.IsKind(SyntaxKind.GetAccessorDeclaration))
-                    ? UseExpressionBodiedMemberAnalysis.GetReturnExpression(body) != null
-                    : UseExpressionBodiedMemberAnalysis.GetExpression(body) != null)
+                && BlockExpressionAnalysis.SupportsExpressionBody(body, allowExpressionStatement: !accessorDeclaration.IsKind(SyntaxKind.GetAccessorDeclaration))
                 && (accessorDeclaration.Parent as AccessorListSyntax)?
                     .Accessors
                     .SingleOrDefault(shouldThrow: false)?
@@ -185,9 +182,7 @@ namespace Roslynator.CSharp.Refactorings
             SyntaxNode node,
             CancellationToken cancellationToken = default)
         {
-            SyntaxNode newNode = Refactor(node)
-                .WithTrailingTrivia(node.GetTrailingTrivia())
-                .WithFormatterAnnotation();
+            SyntaxNode newNode = Refactor(node).WithFormatterAnnotation();
 
             return document.ReplaceNodeAsync(node, newNode, cancellationToken);
         }
@@ -199,82 +194,82 @@ namespace Roslynator.CSharp.Refactorings
                 case SyntaxKind.MethodDeclaration:
                     {
                         var methodDeclaration = (MethodDeclarationSyntax)node;
-                        ExpressionSyntax expression = GetExpression(methodDeclaration.Body);
+                        BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(methodDeclaration.Body);
 
                         return methodDeclaration
-                            .WithExpressionBody(ArrowExpressionClause(expression))
-                            .WithBody(null)
-                            .WithSemicolonToken(SemicolonToken());
+                            .WithExpressionBody(CreateExpressionBody(analysis, methodDeclaration))
+                            .WithSemicolonToken(CreateSemicolonToken(methodDeclaration.Body, analysis))
+                            .WithBody(null);
                     }
                 case SyntaxKind.ConstructorDeclaration:
                     {
                         var constructorDeclaration = (ConstructorDeclarationSyntax)node;
-                        ExpressionSyntax expression = GetExpression(constructorDeclaration.Body);
+                        BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(constructorDeclaration.Body);
 
                         return constructorDeclaration
-                            .WithExpressionBody(ArrowExpressionClause(expression))
-                            .WithBody(null)
-                            .WithSemicolonToken(SemicolonToken());
+                            .WithExpressionBody(CreateExpressionBody(analysis, constructorDeclaration))
+                            .WithSemicolonToken(CreateSemicolonToken(constructorDeclaration.Body, analysis))
+                            .WithBody(null);
                     }
                 case SyntaxKind.DestructorDeclaration:
                     {
                         var destructorDeclaration = (DestructorDeclarationSyntax)node;
-                        ExpressionSyntax expression = GetExpression(destructorDeclaration.Body);
+                        BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(destructorDeclaration.Body);
 
                         return destructorDeclaration
-                            .WithExpressionBody(ArrowExpressionClause(expression))
-                            .WithBody(null)
-                            .WithSemicolonToken(SemicolonToken());
+                            .WithExpressionBody(CreateExpressionBody(analysis, destructorDeclaration))
+                            .WithSemicolonToken(CreateSemicolonToken(destructorDeclaration.Body, analysis))
+                            .WithBody(null);
                     }
                 case SyntaxKind.LocalFunctionStatement:
                     {
-                        var local = (LocalFunctionStatementSyntax)node;
-                        ExpressionSyntax expression = GetExpression(local.Body);
+                        var localFunction = (LocalFunctionStatementSyntax)node;
+                        BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(localFunction.Body);
 
-                        return local
-                            .WithExpressionBody(ArrowExpressionClause(expression))
-                            .WithBody(null)
-                            .WithSemicolonToken(SemicolonToken());
+                        return localFunction
+                            .WithExpressionBody(CreateExpressionBody(analysis, localFunction))
+                            .WithSemicolonToken(CreateSemicolonToken(localFunction.Body, analysis))
+                            .WithBody(null);
                     }
                 case SyntaxKind.OperatorDeclaration:
                     {
                         var operatorDeclaration = (OperatorDeclarationSyntax)node;
-                        ExpressionSyntax expression = GetExpression(operatorDeclaration.Body);
+                        BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(operatorDeclaration.Body);
 
                         return operatorDeclaration
-                            .WithExpressionBody(ArrowExpressionClause(expression))
-                            .WithBody(null)
-                            .WithSemicolonToken(SemicolonToken());
+                            .WithExpressionBody(CreateExpressionBody(analysis, operatorDeclaration))
+                            .WithSemicolonToken(CreateSemicolonToken(operatorDeclaration.Body, analysis))
+                            .WithBody(null);
                     }
                 case SyntaxKind.ConversionOperatorDeclaration:
                     {
                         var operatorDeclaration = (ConversionOperatorDeclarationSyntax)node;
-                        ExpressionSyntax expression = GetExpression(operatorDeclaration.Body);
+                        BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(operatorDeclaration.Body);
 
                         return operatorDeclaration
-                            .WithExpressionBody(ArrowExpressionClause(expression))
-                            .WithBody(null)
-                            .WithSemicolonToken(SemicolonToken());
+                            .WithExpressionBody(CreateExpressionBody(analysis, operatorDeclaration))
+                            .WithSemicolonToken(CreateSemicolonToken(operatorDeclaration.Body, analysis))
+                            .WithBody(null);
                     }
                 case SyntaxKind.PropertyDeclaration:
                     {
                         var propertyDeclaration = (PropertyDeclarationSyntax)node;
-                        ExpressionSyntax expression = GetExpressionOrThrowExpression(propertyDeclaration.AccessorList);
+                        BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(propertyDeclaration.AccessorList);
 
                         return propertyDeclaration
-                            .WithExpressionBody(ArrowExpressionClause(expression))
-                            .WithAccessorList(null)
-                            .WithSemicolonToken(SemicolonToken());
+                            .WithExpressionBody(CreateExpressionBody(analysis, propertyDeclaration))
+                            .WithSemicolonToken(CreateSemicolonToken(analysis.Block, analysis))
+                            .WithAccessorList(null);
                     }
                 case SyntaxKind.IndexerDeclaration:
                     {
                         var indexerDeclaration = (IndexerDeclarationSyntax)node;
-                        ExpressionSyntax expression = GetExpressionOrThrowExpression(indexerDeclaration.AccessorList);
+                        BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(indexerDeclaration.AccessorList);
 
                         return indexerDeclaration
-                            .WithExpressionBody(ArrowExpressionClause(expression))
-                            .WithAccessorList(null)
-                            .WithSemicolonToken(SemicolonToken());
+                            .WithExpressionBody(CreateExpressionBody(analysis, indexerDeclaration))
+                            .WithSemicolonToken(CreateSemicolonToken(analysis.Block, analysis))
+                            .WithAccessorList(null);
                     }
                 case SyntaxKind.GetAccessorDeclaration:
                 case SyntaxKind.SetAccessorDeclaration:
@@ -282,13 +277,12 @@ namespace Roslynator.CSharp.Refactorings
                 case SyntaxKind.RemoveAccessorDeclaration:
                     {
                         var accessor = (AccessorDeclarationSyntax)node;
-
-                        ExpressionSyntax expression = GetExpressionOrThrowExpression(accessor);
+                        BlockExpressionAnalysis analysis = BlockExpressionAnalysis.Create(accessor);
 
                         return accessor
-                            .WithExpressionBody(ArrowExpressionClause(expression))
-                            .WithBody(null)
-                            .WithSemicolonToken(SemicolonToken());
+                            .WithExpressionBody(CreateExpressionBody(analysis, accessor))
+                            .WithSemicolonToken(CreateSemicolonToken(analysis.Block, analysis))
+                            .WithBody(null);
                     }
                 default:
                     {
@@ -298,31 +292,60 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        private static ExpressionSyntax GetExpressionOrThrowExpression(AccessorListSyntax accessorList)
+        private static ArrowExpressionClauseSyntax CreateExpressionBody(BlockExpressionAnalysis analysis, SyntaxNode declaration)
         {
-            return GetExpressionOrThrowExpression(accessorList.Accessors[0]);
-        }
+            SyntaxToken arrowToken = Token(SyntaxKind.EqualsGreaterThanToken);
 
-        private static ExpressionSyntax GetExpressionOrThrowExpression(AccessorDeclarationSyntax accessor)
-        {
-            return GetExpression(accessor.Body);
-        }
+            ExpressionSyntax expression = analysis.Expression;
 
-        private static ExpressionSyntax GetExpression(BlockSyntax block)
-        {
-            StatementSyntax statement = block.Statements[0];
+            SyntaxToken keyword = analysis.ReturnOrThrowKeyword;
 
-            switch (statement.Kind())
+            switch (keyword.Kind())
             {
-                case SyntaxKind.ReturnStatement:
-                    return ((ReturnStatementSyntax)statement).Expression;
-                case SyntaxKind.ExpressionStatement:
-                    return ((ExpressionStatementSyntax)statement).Expression;
-                case SyntaxKind.ThrowStatement:
-                    return ThrowExpression(((ThrowStatementSyntax)statement).Expression);
-                default:
-                    throw new InvalidOperationException();
+                case SyntaxKind.ThrowKeyword:
+                    {
+                        expression = ThrowExpression(keyword, expression);
+                        break;
+                    }
+                case SyntaxKind.ReturnKeyword:
+                    {
+                        SyntaxTriviaList leading = keyword.LeadingTrivia;
+
+                        if (!leading.IsEmptyOrWhitespace())
+                            arrowToken = arrowToken.WithLeadingTrivia(leading);
+
+                        SyntaxTriviaList trailing = keyword.TrailingTrivia;
+
+                        if (!trailing.IsEmptyOrWhitespace())
+                            arrowToken = arrowToken.WithTrailingTrivia(trailing);
+
+                        break;
+                    }
             }
+
+            expression = SyntaxTriviaAnalysis.SetIndentation(expression, declaration);
+
+            return ArrowExpressionClause(arrowToken, expression);
+        }
+
+        private static SyntaxToken CreateSemicolonToken(BlockSyntax block, BlockExpressionAnalysis analysis)
+        {
+            SyntaxTriviaList trivia = analysis.SemicolonToken.TrailingTrivia;
+
+            SyntaxTriviaList leading = block.CloseBraceToken.LeadingTrivia;
+
+            if (!leading.IsEmptyOrWhitespace())
+                trivia = trivia.AddRange(leading);
+
+            SyntaxTriviaList trailing = block.CloseBraceToken.TrailingTrivia;
+
+            if (!trailing.IsEmptyOrWhitespace()
+                || !analysis.SemicolonToken.TrailingTrivia.LastOrDefault().IsEndOfLineTrivia())
+            {
+                trivia = trivia.AddRange(trailing);
+            }
+
+            return analysis.SemicolonToken.WithTrailingTrivia(trivia);
         }
     }
 }

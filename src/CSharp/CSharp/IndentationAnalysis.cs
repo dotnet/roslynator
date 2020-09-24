@@ -28,14 +28,27 @@ namespace Roslynator.CSharp
 
         public string GetIncreasedIndentation()
         {
-            int length1 = Indentation.Span.Length;
+            string indentation = Indentation.ToString();
 
-            if (length1 == 0)
+            string singleIndentation = GetSingleIndentation(indentation);
+
+            return indentation + singleIndentation;
+        }
+
+        public string GetSingleIndentation()
+        {
+            return GetSingleIndentation(Indentation.ToString());
+        }
+
+        private string GetSingleIndentation(string indentation)
+        {
+            if (indentation.Length == 0)
                 return "";
 
-            string s = Indentation.ToString();
+            if (indentation[indentation.Length - 1] == '\t')
+                return "\t";
 
-            return s + new string(s[0], IndentSize);
+            return new string(indentation[0], IndentSize);
         }
 
         public SyntaxTrivia GetIncreasedIndentationTrivia()

@@ -9,15 +9,15 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1021SimplifyLambdaExpressionTests : AbstractCSharpFixVerifier
+    public class RCS1021ConvertLambdaExpressionBodyToExpressionBodyTests : AbstractCSharpFixVerifier
     {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.SimplifyLambdaExpression;
+        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.ConvertLambdaExpressionBodyToExpressionBody;
 
         public override DiagnosticAnalyzer Analyzer { get; } = new LambdaExpressionAnalyzer();
 
-        public override CodeFixProvider FixProvider { get; } = new SimplifyLambdaExpressionCodeFixProvider();
+        public override CodeFixProvider FixProvider { get; } = new ConvertLambdaExpressionBodyToExpressionBodyCodeFixProvider();
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyLambdaExpression)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertLambdaExpressionBodyToExpressionBody)]
         public async Task Test()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -53,7 +53,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyLambdaExpression)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertLambdaExpressionBodyToExpressionBody)]
         public async Task Test2()
         {
             await VerifyDiagnosticAndFixAsync(@"

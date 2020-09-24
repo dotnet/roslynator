@@ -22,12 +22,12 @@ namespace Roslynator.CSharp
         public const string UsePredefinedType = "RCS1013";
         public const string UseExplicitlyTypedArrayOrViceVersa = "RCS1014";
         public const string UseNameOfOperator = "RCS1015";
-        public const string UseExpressionBodiedMember = "RCS1016";
+        public const string ConvertBlockBodyToExpressionBodyOrViceVersa = "RCS1016";
         public const string AvoidMultilineExpressionBody = "RCS1017";
         public const string AddAccessibilityModifiersOrViceVersa = "RCS1018";
         public const string OrderModifiers = "RCS1019";
         public const string SimplifyNullableOfT = "RCS1020";
-        public const string SimplifyLambdaExpression = "RCS1021";
+        public const string ConvertLambdaExpressionBodyToExpressionBody = "RCS1021";
         public const string RemoveUnnecessaryBraces = "RCS1031";
         public const string RemoveRedundantParentheses = "RCS1032";
         public const string RemoveRedundantBooleanLiteral = "RCS1033";

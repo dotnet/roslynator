@@ -312,10 +312,10 @@ foreach (var item in items) // [|Id|]
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="UseExpressionBodiedMember">
+  <Analyzer Identifier="ConvertBlockBodyToExpressionBodyOrViceVersa">
     <Id>RCS1016</Id>
-    <Title>Use expression-bodied member.</Title>
-    <MessageFormat>Use expression bodied member.</MessageFormat>
+    <Title>Convert block body to expression-body (or vice versa).</Title>
+    <MessageFormat>Use expression-bodied member.</MessageFormat>
     <Category>Usage</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -323,18 +323,64 @@ foreach (var item in items) // [|Id|]
     <MinLanguageVersion>6.0</MinLanguageVersion>
     <Samples>
       <Sample>
-        <Before><![CDATA[public object Foo()
+        <Before><![CDATA[public string Foo()
 { // [|Id|]
-    return null;
+    return "";
 }]]></Before>
-        <After><![CDATA[public object Foo() => null;]]></After>
+        <After><![CDATA[public string Foo() => "";]]></After>
       </Sample>
     </Samples>
+    <Options>
+      <Option Identifier="ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine">
+        <Title>Convert expression-body to block body when expression is multi-line.</Title>
+        <Id>a</Id>
+        <Kind>Change</Kind>
+        <Samples>
+          <Sample>
+            <Before><![CDATA[public string[] Foo() => new string[] // [|Id|]
+{
+    "a",
+    "b",
+    "c"
+};]]></Before>
+            <After><![CDATA[public string[] Foo()
+{
+    return new string[]
+    {
+        "a",
+        "b",
+        "c"
+    };
+}]]></After>
+          </Sample>
+        </Samples>
+      </Option>
+      <Option Identifier="ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine">
+        <Title>Convert expression-body to block body when declaration is multi-line.</Title>
+        <Id>b</Id>
+        <Kind>Change</Kind>
+        <Samples>
+          <Sample>
+            <Before><![CDATA[public string[] Foo(
+    string a,
+    string b,
+    string c) => new string[] { a, b, c }; // [|Id|]]]></Before>
+            <After><![CDATA[public string[] Foo(
+    string a,
+    string b,
+    string c)
+{
+    return new string[] { a, b, c };
+}]]></After>
+          </Sample>
+        </Samples>
+      </Option>
+    </Options>
   </Analyzer>
   <Analyzer Identifier="AvoidMultilineExpressionBody">
     <Id>RCS1017</Id>
     <Title>Avoid multiline expression body.</Title>
-    <MessageFormat>Expand expression body with multiline expression.</MessageFormat>
+    <MessageFormat>[deprecated] Use analyzer RCS1016a instead.</MessageFormat>
     <Category>Style</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -441,9 +487,10 @@ protected internal class Foo
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="SimplifyLambdaExpression">
+  <Analyzer Identifier="ConvertLambdaExpressionBodyToExpressionBody">
     <Id>RCS1021</Id>
-    <Title>Simplify lambda expression.</Title>
+    <Title>Convert lambda expression body to expression-body.</Title>
+    <MessageFormat>Use expression-bodied lambda.</MessageFormat>
     <Category>Simplification</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>

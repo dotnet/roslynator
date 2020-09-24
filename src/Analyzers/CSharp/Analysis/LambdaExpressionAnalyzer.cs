@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -17,8 +16,8 @@ namespace Roslynator.CSharp.Analysis
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticDescriptors.SimplifyLambdaExpression,
-                    DiagnosticDescriptors.SimplifyLambdaExpressionFadeOut);
+                    DiagnosticDescriptors.ConvertLambdaExpressionBodyToExpressionBody,
+                    DiagnosticDescriptors.ConvertLambdaExpressionBodyToExpressionBodyFadeOut);
             }
         }
 
@@ -28,7 +27,7 @@ namespace Roslynator.CSharp.Analysis
 
             context.RegisterCompilationStartAction(startContext =>
             {
-                if (startContext.IsAnalyzerSuppressed(DiagnosticDescriptors.SimplifyLambdaExpression))
+                if (startContext.IsAnalyzerSuppressed(DiagnosticDescriptors.ConvertLambdaExpressionBodyToExpressionBody))
                     return;
 
                 startContext.RegisterSyntaxNodeAction(f => AnalyzeLambdaExpression(f), SyntaxKind.SimpleLambdaExpression);
@@ -43,21 +42,21 @@ namespace Roslynator.CSharp.Analysis
             if (lambda.ContainsDiagnostics)
                 return;
 
-            if (!SimplifyLambdaExpressionAnalysis.IsFixable(lambda))
+            if (!ConvertLambdaExpressionBodyToExpressionBodyAnalysis.IsFixable(lambda))
                 return;
 
             CSharpSyntaxNode body = lambda.Body;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.SimplifyLambdaExpression, body);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ConvertLambdaExpressionBodyToExpressionBody, body);
 
             var block = (BlockSyntax)body;
 
-            CSharpDiagnosticHelpers.ReportBraces(context, DiagnosticDescriptors.SimplifyLambdaExpressionFadeOut, block);
+            CSharpDiagnosticHelpers.ReportBraces(context, DiagnosticDescriptors.ConvertLambdaExpressionBodyToExpressionBodyFadeOut, block);
 
             StatementSyntax statement = block.Statements[0];
 
             if (statement.Kind() == SyntaxKind.ReturnStatement)
-                DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.SimplifyLambdaExpressionFadeOut, ((ReturnStatementSyntax)statement).ReturnKeyword);
+                DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.ConvertLambdaExpressionBodyToExpressionBodyFadeOut, ((ReturnStatementSyntax)statement).ReturnKeyword);
         }
     }
 }

@@ -60,9 +60,9 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ExpandCompoundAssignmentOperator, "Expand compound assignment operator", IsEnabled(RefactoringIdentifiers.ExpandCompoundAssignmentOperator)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ExpandCoalesceExpression, "Expand coalesce expression", IsEnabled(RefactoringIdentifiers.ExpandCoalesceExpression)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ExpandEvent, "Expand event", IsEnabled(RefactoringIdentifiers.ExpandEvent)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.ExpandExpressionBody, "Expand expression body", IsEnabled(RefactoringIdentifiers.ExpandExpressionBody)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertExpressionBodyToBlockBody, "Convert expression-body to block body", IsEnabled(RefactoringIdentifiers.ConvertExpressionBodyToBlockBody)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ExpandInitializer, "Expand initializer", IsEnabled(RefactoringIdentifiers.ExpandInitializer)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.ExpandLambdaExpressionBody, "Expand lambda expression body", IsEnabled(RefactoringIdentifiers.ExpandLambdaExpressionBody)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertLambdaExpressionBodyToBlockBody, "Convert lambda expression body to block body", IsEnabled(RefactoringIdentifiers.ConvertLambdaExpressionBodyToBlockBody)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ExpandProperty, "Expand property", IsEnabled(RefactoringIdentifiers.ExpandProperty)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ExpandPropertyAndAddBackingField, "Expand property and add backing field", IsEnabled(RefactoringIdentifiers.ExpandPropertyAndAddBackingField)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ExtractExpressionFromCondition, "Extract expression from condition", IsEnabled(RefactoringIdentifiers.ExtractExpressionFromCondition)));
@@ -170,7 +170,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertWhileToFor, "Convert 'while' statement to 'for' statement", IsEnabled(RefactoringIdentifiers.ConvertWhileToFor)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReverseForLoop, "Reverse 'for' loop", IsEnabled(RefactoringIdentifiers.ReverseForLoop)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.SimplifyIf, "Simplify if", IsEnabled(RefactoringIdentifiers.SimplifyIf)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.SimplifyLambdaExpression, "Simplify lambda expression", IsEnabled(RefactoringIdentifiers.SimplifyLambdaExpression)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertLambdaExpressionBodyToExpressionBody, "Convert lambda expression body to expression-body", IsEnabled(RefactoringIdentifiers.ConvertLambdaExpressionBodyToExpressionBody)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.SortMemberDeclarations, "Sort member declarations", IsEnabled(RefactoringIdentifiers.SortMemberDeclarations)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.SplitAttributes, "Split attributes", IsEnabled(RefactoringIdentifiers.SplitAttributes)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.SplitSwitchLabels, "Split switch labels", IsEnabled(RefactoringIdentifiers.SplitSwitchLabels)));
@@ -185,7 +185,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertIfToConditionalOperator, "Convert 'if' to ?:", IsEnabled(RefactoringIdentifiers.ConvertIfToConditionalOperator)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.UseElementAccessInsteadOfEnumerableMethod, "Use element access instead of 'First/Last'ElementAt' method", IsEnabled(RefactoringIdentifiers.UseElementAccessInsteadOfEnumerableMethod)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.UseEmptyStringLiteralInsteadOfStringEmpty, "Use \"\" instead of string.Empty", IsEnabled(RefactoringIdentifiers.UseEmptyStringLiteralInsteadOfStringEmpty)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.UseExpressionBodiedMember, "Use expression-bodied member", IsEnabled(RefactoringIdentifiers.UseExpressionBodiedMember)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertBlockBodyToExpressionBody, "Convert block body to expression-body", IsEnabled(RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.UseLambdaExpressionInsteadOfAnonymousMethod, "Use lambda expression instead of anonymous method", IsEnabled(RefactoringIdentifiers.UseLambdaExpressionInsteadOfAnonymousMethod)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertEmptyStringToStringEmpty, "Convert \"\" to string.Empty", IsEnabled(RefactoringIdentifiers.ConvertEmptyStringToStringEmpty)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.WrapInCondition, "Wrap in condition", IsEnabled(RefactoringIdentifiers.WrapInCondition)));

@@ -17,7 +17,7 @@ namespace Roslynator.CSharp.Refactorings
             if (semicolonToken.IsMissing)
                 return;
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExpandExpressionBody))
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertExpressionBodyToBlockBody))
             {
                 ArrowExpressionClauseSyntax arrowExpressionClause = GetArrowExpressionClause(semicolonToken);
 
@@ -25,9 +25,9 @@ namespace Roslynator.CSharp.Refactorings
                     && ExpandExpressionBodyAnalysis.IsFixable(arrowExpressionClause))
                 {
                     context.RegisterRefactoring(
-                        ExpandExpressionBodyRefactoring.Title,
-                        cancellationToken => ExpandExpressionBodyRefactoring.RefactorAsync(context.Document, arrowExpressionClause, cancellationToken),
-                        RefactoringIdentifiers.ExpandExpressionBody);
+                        ConvertExpressionBodyToBlockBodyRefactoring.Title,
+                        cancellationToken => ConvertExpressionBodyToBlockBodyRefactoring.RefactorAsync(context.Document, arrowExpressionClause, cancellationToken),
+                        RefactoringIdentifiers.ConvertExpressionBodyToBlockBody);
                 }
             }
         }

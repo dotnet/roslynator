@@ -10,35 +10,35 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, LambdaExpressionSyntax lambda)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExpandLambdaExpressionBody)
-                && ExpandLambdaExpressionBodyRefactoring.CanRefactor(context, lambda))
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertLambdaExpressionBodyToBlockBody)
+                && ConvertLambdaExpressionBodyToBlockBodyRefactoring.CanRefactor(context, lambda))
             {
                 context.RegisterRefactoring(
-                    "Expand lambda expression body",
-                    cancellationToken =>
+                    "Use block body for lambda expressions",
+                    ct =>
                     {
-                        return ExpandLambdaExpressionBodyRefactoring.RefactorAsync(
+                        return ConvertLambdaExpressionBodyToBlockBodyRefactoring.RefactorAsync(
                             context.Document,
                             lambda,
                             (ExpressionSyntax)lambda.Body,
-                            cancellationToken);
+                            ct);
                     },
-                    RefactoringIdentifiers.ExpandLambdaExpressionBody);
+                    RefactoringIdentifiers.ConvertLambdaExpressionBodyToBlockBody);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.SimplifyLambdaExpression)
-                && SimplifyLambdaExpressionAnalysis.IsFixable(lambda))
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertLambdaExpressionBodyToExpressionBody)
+                && ConvertLambdaExpressionBodyToExpressionBodyAnalysis.IsFixable(lambda))
             {
                 context.RegisterRefactoring(
-                    "Simplify lambda expression",
-                    cancellationToken =>
+                    ConvertLambdaExpressionBodyToExpressionBodyRefactoring.Title,
+                    ct =>
                     {
-                        return SimplifyLambdaExpressionRefactoring.RefactorAsync(
+                        return ConvertLambdaExpressionBodyToExpressionBodyRefactoring.RefactorAsync(
                             context.Document,
                             lambda,
-                            cancellationToken);
+                            ct);
                     },
-                    RefactoringIdentifiers.SimplifyLambdaExpression);
+                    RefactoringIdentifiers.ConvertLambdaExpressionBodyToExpressionBody);
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExtractEventHandlerMethod)

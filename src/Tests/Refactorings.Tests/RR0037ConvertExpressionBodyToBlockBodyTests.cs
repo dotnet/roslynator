@@ -5,11 +5,11 @@ using Xunit;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public class RR0037ExpandExpressionBodyTests : AbstractCSharpRefactoringVerifier
+    public class RR0037ConvertExpressionBodyToBlockBodyTests : AbstractCSharpRefactoringVerifier
     {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.ExpandExpressionBody;
+        public override string RefactoringId { get; } = RefactoringIdentifiers.ConvertExpressionBodyToBlockBody;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ExpandExpressionBody)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertExpressionBodyToBlockBody)]
         public async Task Test_MultipleMembers()
         {
             await VerifyRefactoringAsync(@"
@@ -75,7 +75,7 @@ class C
 }", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ExpandExpressionBody)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertExpressionBodyToBlockBody)]
         public async Task Test_MultipleMembers_FirstAndLast()
         {
             await VerifyRefactoringAsync(@"

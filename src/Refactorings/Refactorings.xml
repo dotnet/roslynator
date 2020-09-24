@@ -275,7 +275,7 @@
       <Syntax>event field declaration</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0037" Identifier="ExpandExpressionBody" Title="Expand expression body">
+  <Refactoring Id="RR0037" Identifier="ConvertExpressionBodyToBlockBody" Title="Convert expression-body to block body">
     <Syntaxes>
       <Syntax>expression body</Syntax>
     </Syntaxes>
@@ -285,9 +285,9 @@
       <Syntax>initializer</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0039" Identifier="ExpandLambdaExpressionBody" Title="Expand lambda expression body">
+  <Refactoring Id="RR0039" Identifier="ConvertLambdaExpressionBodyToBlockBody" Title="Convert lambda expression body to block body">
     <Syntaxes>
-      <Syntax>lambda expression</Syntax>
+      <Syntax>lambda expression's expression body</Syntax>
     </Syntaxes>
     <Span>body</Span>
   </Refactoring>
@@ -1228,9 +1228,9 @@ i--;]]></After>
     </Syntaxes>
     <Span>top if keyword or selected if statement</Span>
   </Refactoring>
-  <Refactoring Id="RR0154" Identifier="SimplifyLambdaExpression" Title="Simplify lambda expression">
+  <Refactoring Id="RR0154" Identifier="ConvertLambdaExpressionBodyToExpressionBody" Title="Convert lambda expression body to expression-body">
     <Syntaxes>
-      <Syntax>lambda expression with block with single single-line statement</Syntax>
+      <Syntax>lambda expression with block body with single single-line statement</Syntax>
     </Syntaxes>
     <Span>body</Span>
   </Refactoring>
@@ -1340,7 +1340,7 @@ i--;]]></After>
       <Syntax>string.Empty field</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0169" Identifier="UseExpressionBodiedMember" Title="Use expression-bodied member">
+  <Refactoring Id="RR0169" Identifier="ConvertBlockBodyToExpressionBody" Title="Convert block body to expression-body">
     <Syntaxes>
       <Syntax>method</Syntax>
       <Syntax>property</Syntax>
