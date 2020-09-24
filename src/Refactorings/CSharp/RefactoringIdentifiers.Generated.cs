@@ -199,7 +199,6 @@ namespace Roslynator.CSharp.Refactorings
         public const string UseConstantInsteadOfField = Prefix + "0128";
         public const string UseCSharp6DictionaryInitializer = Prefix + "0191";
         public const string UseElementAccessInsteadOfEnumerableMethod = Prefix + "0167";
-        public const string UseEmptyStringLiteralInsteadOfStringEmpty = Prefix + "0168";
         public const string UseEnumeratorExplicitly = Prefix + "0206";
         public const string UseLambdaExpressionInsteadOfAnonymousMethod = Prefix + "0170";
         public const string UseListInsteadOfYield = Prefix + "0183";

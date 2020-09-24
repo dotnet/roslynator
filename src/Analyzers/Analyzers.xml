@@ -1824,9 +1824,9 @@ object x = items.Peek();]]></After>
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="UseEmptyStringLiteralInsteadOfStringEmpty">
+  <Analyzer Identifier="UseEmptyStringLiteralInsteadOfStringEmptyOrViceVersa">
     <Id>RCS1078</Id>
-    <Title>Use "" instead of string.Empty.</Title>
+    <Title>Use "" instead of string.Empty (or vice versa).</Title>
     <MessageFormat>Use "" instead of string.Empty</MessageFormat>
     <Category>General</Category>
     <DefaultSeverity>Info</DefaultSeverity>
@@ -1838,6 +1838,19 @@ object x = items.Peek();]]></After>
         <After><![CDATA[string s = "";]]></After>
       </Sample>
     </Samples>
+    <Options>
+      <Option Identifier="UseStringEmptyInsteadOfEmptyStringLiteral">
+        <Title>Use string.Empty instead of "".</Title>
+        <Id>i</Id>
+        <Kind>Invert</Kind>
+        <Samples>
+          <Sample>
+            <Before><![CDATA[string s = "";]]></Before>
+            <After><![CDATA[string s = string.Empty;]]></After>
+          </Sample>
+        </Samples>
+      </Option>
+    </Options>
   </Analyzer>
   <Analyzer Identifier="ThrowingOfNewNotImplementedException">
     <Id>RCS1079</Id>

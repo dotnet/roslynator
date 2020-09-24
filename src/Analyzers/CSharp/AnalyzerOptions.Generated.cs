@@ -117,6 +117,18 @@ namespace Roslynator.CSharp
             helpLinkUri:        AnalyzerOptionIdentifiers.RemoveParenthesesFromConditionOfConditionalExpressionWhenExpressionIsSingleToken, 
             customTags:         Array.Empty<string>());
 
+        /// <summary>RCS1078i</summary>
+        public static readonly DiagnosticDescriptor UseStringEmptyInsteadOfEmptyStringLiteral = DiagnosticDescriptorFactory.Default.Create(
+            id:                 AnalyzerOptionIdentifiers.UseStringEmptyInsteadOfEmptyStringLiteral, 
+            title:              "Use string.Empty instead of \"\".", 
+            messageFormat:      "Use string.Empty instead of \"\".", 
+            category:           DiagnosticCategories.AnalyzerOption, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: false, 
+            description:        null, 
+            helpLinkUri:        AnalyzerOptionIdentifiers.UseStringEmptyInsteadOfEmptyStringLiteral, 
+            customTags:         Array.Empty<string>());
+
         /// <summary>RCS1090i</summary>
         public static readonly DiagnosticDescriptor RemoveCallToConfigureAwait = DiagnosticDescriptorFactory.Default.Create(
             id:                 AnalyzerOptionIdentifiers.RemoveCallToConfigureAwait, 

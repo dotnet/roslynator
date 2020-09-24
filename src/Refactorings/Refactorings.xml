@@ -1335,7 +1335,7 @@ i--;]]></After>
     </Syntaxes>
     <Span>method name</Span>
   </Refactoring>
-  <Refactoring Id="RR0168" Identifier="UseEmptyStringLiteralInsteadOfStringEmpty" Title="Use &quot;&quot; instead of string.Empty">
+  <Refactoring Id="RR0168" Identifier="UseEmptyStringLiteralInsteadOfStringEmpty" Title="Use &quot;&quot; instead of string.Empty" IsObsolete="true">
     <Syntaxes>
       <Syntax>string.Empty field</Syntax>
     </Syntaxes>

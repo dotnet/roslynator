@@ -17,6 +17,7 @@ namespace Roslynator.CSharp
         public const string DoNotRenamePrivateStaticReadOnlyFieldToCamelCaseWithUnderscore = "RCS1045a";
         public const string RemoveArgumentListFromObjectCreation = "RCS1050i";
         public const string RemoveParenthesesFromConditionOfConditionalExpressionWhenExpressionIsSingleToken = "RCS1051a";
+        public const string UseStringEmptyInsteadOfEmptyStringLiteral = "RCS1078i";
         public const string RemoveCallToConfigureAwait = "RCS1090i";
         public const string ConvertBitwiseOperationToHasFlagCall = "RCS1096i";
         public const string SimplifyConditionalExpressionWhenItIncludesNegationOfCondition = "RCS1104a";

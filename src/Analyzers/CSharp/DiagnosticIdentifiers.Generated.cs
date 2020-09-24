@@ -69,7 +69,7 @@ namespace Roslynator.CSharp
         public const string RemoveRedundantConstructor = "RCS1074";
         public const string AvoidEmptyCatchClauseThatCatchesSystemException = "RCS1075";
         public const string OptimizeLinqMethodCall = "RCS1077";
-        public const string UseEmptyStringLiteralInsteadOfStringEmpty = "RCS1078";
+        public const string UseEmptyStringLiteralInsteadOfStringEmptyOrViceVersa = "RCS1078";
         public const string ThrowingOfNewNotImplementedException = "RCS1079";
         public const string UseCountOrLengthPropertyInsteadOfAnyMethod = "RCS1080";
         public const string SplitVariableDeclaration = "RCS1081";

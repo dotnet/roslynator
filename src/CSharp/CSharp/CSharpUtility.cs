@@ -332,9 +332,9 @@ namespace Roslynator.CSharp
             return default;
         }
 
-        public static bool IsPartOfExpressionThatMustBeConstant(LiteralExpressionSyntax literalExpression)
+        public static bool IsPartOfExpressionThatMustBeConstant(ExpressionSyntax expression)
         {
-            for (SyntaxNode parent = literalExpression.Parent; parent != null; parent = parent.Parent)
+            for (SyntaxNode parent = expression.Parent; parent != null; parent = parent.Parent)
             {
                 switch (parent.Kind())
                 {
@@ -398,6 +398,33 @@ namespace Roslynator.CSharp
                     case SyntaxKind.UnknownAccessorDeclaration:
                     case SyntaxKind.IncompleteMember:
                         return false;
+#if DEBUG
+                    default:
+                        {
+                            if (parent is ExpressionSyntax)
+                                break;
+
+                            switch (parent.Kind())
+                            {
+                                case SyntaxKind.Argument:
+                                case SyntaxKind.ArgumentList:
+                                case SyntaxKind.EqualsValueClause:
+                                case SyntaxKind.Interpolation:
+                                case SyntaxKind.VariableDeclaration:
+                                case SyntaxKind.VariableDeclarator:
+                                    {
+                                        break;
+                                    }
+                                default:
+                                    {
+                                        Debug.Fail(parent.Kind().ToString());
+                                        break;
+                                    }
+                            }
+
+                            break;
+                        }
+#endif
                 }
             }
 
