@@ -168,7 +168,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertVerbatimStringLiteralToRegularStringLiterals, "Convert verbatim string literal to regular string literals", IsEnabled(RefactoringIdentifiers.ConvertVerbatimStringLiteralToRegularStringLiterals)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertWhileToDo, "Convert 'while' statement to 'do' statement", IsEnabled(RefactoringIdentifiers.ConvertWhileToDo)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertWhileToFor, "Convert 'while' statement to 'for' statement", IsEnabled(RefactoringIdentifiers.ConvertWhileToFor)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.ReverseForLoop, "Reverse 'for' loop", IsEnabled(RefactoringIdentifiers.ReverseForLoop)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.ReverseForStatement, "Reverse 'for' statement", IsEnabled(RefactoringIdentifiers.ReverseForStatement)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.SimplifyIf, "Simplify if", IsEnabled(RefactoringIdentifiers.SimplifyIf)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertLambdaExpressionBodyToExpressionBody, "Convert lambda expression body to expression-body", IsEnabled(RefactoringIdentifiers.ConvertLambdaExpressionBodyToExpressionBody)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.SortMemberDeclarations, "Sort member declarations", IsEnabled(RefactoringIdentifiers.SortMemberDeclarations)));

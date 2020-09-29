@@ -28,22 +28,22 @@ namespace Roslynator.CSharp.Refactorings
                     RefactoringIdentifiers.ConvertForToWhile);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReverseForLoop)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReverseForStatement)
                 && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(forStatement))
             {
-                if (ReverseForLoopRefactoring.CanRefactor(forStatement))
+                if (ReverseForStatementRefactoring.CanRefactor(forStatement))
                 {
                     context.RegisterRefactoring(
-                        "Reverse 'for' loop",
-                        cancellationToken => ReverseForLoopRefactoring.RefactorAsync(context.Document, forStatement, cancellationToken),
-                        RefactoringIdentifiers.ReverseForLoop);
+                        "Reverse 'for' statement",
+                        cancellationToken => ReverseForStatementRefactoring.RefactorAsync(context.Document, forStatement, cancellationToken),
+                        RefactoringIdentifiers.ReverseForStatement);
                 }
-                else if (ReverseReversedForLoopRefactoring.CanRefactor(forStatement))
+                else if (ReverseReversedForStatementRefactoring.CanRefactor(forStatement))
                 {
                     context.RegisterRefactoring(
-                        "Reverse 'for' loop",
-                        cancellationToken => ReverseReversedForLoopRefactoring.RefactorAsync(context.Document, forStatement, cancellationToken),
-                        RefactoringIdentifiers.ReverseForLoop);
+                        "Reverse 'for' statement",
+                        cancellationToken => ReverseReversedForStatementRefactoring.RefactorAsync(context.Document, forStatement, cancellationToken),
+                        RefactoringIdentifiers.ReverseForStatement);
                 }
             }
         }

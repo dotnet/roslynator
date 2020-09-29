@@ -10,7 +10,7 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class ReverseReversedForLoopRefactoring
+    internal static class ReverseReversedForStatementRefactoring
     {
         public static bool CanRefactor(ForStatementSyntax forStatement)
         {

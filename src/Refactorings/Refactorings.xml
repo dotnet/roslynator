@@ -1217,7 +1217,7 @@ i--;]]></After>
     </Syntaxes>
     <Span>while keyword or selected statement(s)</Span>
   </Refactoring>
-  <Refactoring Id="RR0152" Identifier="ReverseForLoop" Title="Reverse 'for' loop">
+  <Refactoring Id="RR0152" Identifier="ReverseForStatement" Title="Reverse 'for' statement">
     <Syntaxes>
       <Syntax>for statement</Syntax>
     </Syntaxes>

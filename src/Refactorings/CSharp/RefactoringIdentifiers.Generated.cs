@@ -181,7 +181,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string ReplaceObjectCreationWithDefaultValue = Prefix + "0185";
         public const string ReplacePrefixOperatorWithPostfixOperator = Prefix + "0140";
         public const string ReplacePropertyWithMethod = Prefix + "0141";
-        public const string ReverseForLoop = Prefix + "0152";
+        public const string ReverseForStatement = Prefix + "0152";
         public const string SimplifyIf = Prefix + "0153";
         public const string SortCaseLabels = Prefix + "0207";
         public const string SortMemberDeclarations = Prefix + "0155";
