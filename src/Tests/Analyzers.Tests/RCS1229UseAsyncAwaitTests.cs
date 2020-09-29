@@ -329,5 +329,110 @@ class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
+        public async Task Test_UsingLocalDeclaration()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System;
+using System.Threading.Tasks;
+
+public class C
+{
+    public Task<string> [|M|]()
+    {
+        using var disposable = default(IDisposable);
+        return GetAsync();
+    }
+
+    Task<string> GetAsync() => Task.FromResult(default(string));
+}
+", @"
+using System;
+using System.Threading.Tasks;
+
+public class C
+{
+    public async Task<string> M()
+    {
+        using var disposable = default(IDisposable);
+        return await GetAsync();
+    }
+
+    Task<string> GetAsync() => Task.FromResult(default(string));
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
+        public async Task Test_UsingLocalDeclaration2()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System;
+using System.Threading.Tasks;
+
+public class C
+{
+    public Task<string> [|M|]()
+    {
+        {
+            using var disposable = default(IDisposable);
+
+            {
+            }
+
+            return GetAsync();
+        }
+    }
+
+    Task<string> GetAsync() => Task.FromResult(default(string));
+}
+", @"
+using System;
+using System.Threading.Tasks;
+
+public class C
+{
+    public async Task<string> M()
+    {
+        {
+            using var disposable = default(IDisposable);
+
+            {
+            }
+
+            return await GetAsync();
+        }
+    }
+
+    Task<string> GetAsync() => Task.FromResult(default(string));
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
+        public async Task TestNoDiagnostic_UsingLocalDeclaration()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System;
+using System.Threading.Tasks;
+
+public class C
+{
+    public Task<string> M()
+    {
+        {
+            {
+                using var disposable = default(IDisposable);
+            }
+
+            return GetAsync();
+        }
+    }
+
+    Task<string> GetAsync() => Task.FromResult(default(string));
+}
+");
+        }
     }
 }
