@@ -125,6 +125,32 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarWhenTypeIsNotObvious)]
+        public async Task Test_Parameter_NullableReferenceType_Disable()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+#nullable disable
+
+class C
+{
+    void M(string? p)
+    {
+        [|var|] s = p;
+    }
+}
+", @"
+#nullable disable
+
+class C
+{
+    void M(string? p)
+    {
+        string s = p;
+    }
+}
+", options: CSharpCodeVerificationOptions.Default_NullableReferenceTypes.AddAllowedCompilerDiagnosticId("CS8632"));
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarWhenTypeIsNotObvious)]
         public async Task Test_Tuple_DeclarationExpression()
         {
             await VerifyDiagnosticAndFixAsync(@"

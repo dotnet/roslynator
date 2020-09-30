@@ -44,7 +44,11 @@ namespace Roslynator.CSharp
         {
             if (title == null)
             {
-                string newTypeName = SymbolDisplay.ToMinimalDisplayString(newTypeSymbol, semanticModel, type.SpanStart);
+                SymbolDisplayFormat format = (semanticModel.GetNullableContext(type.SpanStart) == NullableContext.Disabled)
+                    ? SymbolDisplayFormats.FullName_WithoutNullableReferenceTypeModifier
+                    : SymbolDisplayFormats.FullName;
+
+                string newTypeName = SymbolDisplay.ToMinimalDisplayString(newTypeSymbol, semanticModel, type.SpanStart, format);
 
                 if ((type.Parent is MethodDeclarationSyntax methodDeclaration && methodDeclaration.ReturnType == type)
                     || (type.Parent is LocalFunctionStatementSyntax localFunction && localFunction.ReturnType == type))
@@ -81,7 +85,11 @@ namespace Roslynator.CSharp
             string title = null,
             string equivalenceKey = null)
         {
-            string typeName = SymbolDisplay.ToMinimalDisplayString(destinationType, semanticModel, expression.SpanStart);
+            SymbolDisplayFormat format = (semanticModel.GetNullableContext(expression.SpanStart) == NullableContext.Disabled)
+                ? SymbolDisplayFormats.FullName_WithoutNullableReferenceTypeModifier
+                : SymbolDisplayFormats.FullName;
+
+            string typeName = SymbolDisplay.ToMinimalDisplayString(destinationType, semanticModel, expression.SpanStart, format);
 
             TypeSyntax newType = ParseTypeName(typeName);
 
