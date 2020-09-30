@@ -1215,4 +1215,35 @@ while (x);]]></Before>
       </Option>
     </Options>
   </Analyzer>
+  <Analyzer Identifier="AddNewLineBeforeEqualsSignInsteadOfAfterItOrViceVersa">
+    <Id>RCS0052</Id>
+    <Title>Add newline before equals sign instead of after it (or vice versa).</Title>
+    <MessageFormat>Add newline before equals sign instead of after it.</MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[string s = // [|Id|]
+    new string(' ', 4);]]></Before>
+        <After><![CDATA[string s
+    = new string(' ', 4);]]></After>
+      </Sample>
+    </Samples>
+    <Options>
+      <Option Identifier="AddNewLineAfterEqualsSignInsteadOfBeforeIt">
+        <Title>Add newline after equals sign instead of before it.</Title>
+        <Id>i</Id>
+        <Kind>Invert</Kind>
+        <Samples>
+          <Sample>
+            <Before><![CDATA[string s // [|Id|]
+    = new string(' ', 4);]]></Before>
+            <After><![CDATA[string s =
+    new string(' ', 4);]]></After>
+          </Sample>
+        </Samples>
+      </Option>
+    </Options>
+  </Analyzer>
 </Analyzers>

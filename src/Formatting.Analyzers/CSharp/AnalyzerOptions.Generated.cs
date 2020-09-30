@@ -81,5 +81,17 @@ namespace Roslynator.Formatting.CSharp
             helpLinkUri:        AnalyzerOptionIdentifiers.RemoveNewLineBetweenClosingBraceAndWhileKeyword, 
             customTags:         Array.Empty<string>());
 
+        /// <summary>RCS0052i</summary>
+        public static readonly DiagnosticDescriptor AddNewLineAfterEqualsSignInsteadOfBeforeIt = DiagnosticDescriptorFactory.Default.Create(
+            id:                 AnalyzerOptionIdentifiers.AddNewLineAfterEqualsSignInsteadOfBeforeIt, 
+            title:              "Add newline after equals sign instead of before it.", 
+            messageFormat:      "Add newline after equals sign instead of before it.", 
+            category:           DiagnosticCategories.AnalyzerOption, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: false, 
+            description:        null, 
+            helpLinkUri:        AnalyzerOptionIdentifiers.AddNewLineAfterEqualsSignInsteadOfBeforeIt, 
+            customTags:         Array.Empty<string>());
+
     }
 }

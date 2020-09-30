@@ -27,6 +27,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                     DiagnosticIdentifiers.AddEmptyLineBetweenBlockAndStatement,
                     DiagnosticIdentifiers.AddNewLineBeforeConditionalOperatorInsteadOfAfterItOrViceVersa,
                     DiagnosticIdentifiers.AddNewLineBeforeExpressionBodyArrowInsteadOfAfterItOrViceVersa,
+                    DiagnosticIdentifiers.AddNewLineBeforeEqualsSignInsteadOfAfterItOrViceVersa,
                     DiagnosticIdentifiers.AddNewLineAfterAttributeList,
                     DiagnosticIdentifiers.AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersa);
             }
@@ -106,36 +107,9 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                         break;
                     }
                 case DiagnosticIdentifiers.AddNewLineBeforeExpressionBodyArrowInsteadOfAfterItOrViceVersa:
+                case DiagnosticIdentifiers.AddNewLineBeforeEqualsSignInsteadOfAfterItOrViceVersa:
                     {
-                        if (DiagnosticProperties.ContainsInvert(diagnostic.Properties))
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Add newline after '=>' instead of before it",
-                                ct =>
-                                {
-                                    var expressionBody = (ArrowExpressionClauseSyntax)token.Parent;
-
-                                    return CodeFixHelpers.AddNewLineAfterInsteadOfBeforeAsync(document, token.GetPreviousToken(), token, expressionBody.Expression, ct);
-                                },
-                                GetEquivalenceKey(diagnostic));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                        }
-                        else
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Add newline before '=>' instead of after it",
-                                ct =>
-                                {
-                                    var expressionBody = (ArrowExpressionClauseSyntax)token.Parent;
-
-                                    return CodeFixHelpers.AddNewLineBeforeInsteadOfAfterAsync(document, token.GetPreviousToken(), token, expressionBody.Expression, ct);
-                                },
-                                GetEquivalenceKey(diagnostic));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                        }
-
+                        AddNewLineBeforeOrAfter();
                         break;
                     }
                 case DiagnosticIdentifiers.AddNewLineAfterAttributeList:
@@ -171,6 +145,28 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
 
                         break;
                     }
+            }
+
+            void AddNewLineBeforeOrAfter()
+            {
+                if (DiagnosticProperties.ContainsInvert(diagnostic.Properties))
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        $"Add newline after '{token}' instead of before it",
+                        ct => CodeFixHelpers.AddNewLineAfterInsteadOfBeforeAsync(document, token, ct),
+                        GetEquivalenceKey(diagnostic));
+
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                }
+                else
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        $"Add newline before '{token}' instead of after it",
+                        ct => CodeFixHelpers.AddNewLineBeforeInsteadOfAfterAsync(document, token, ct),
+                        GetEquivalenceKey(diagnostic));
+
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                }
             }
         }
 

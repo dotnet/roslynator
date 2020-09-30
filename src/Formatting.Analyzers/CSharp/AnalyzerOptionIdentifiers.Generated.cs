@@ -14,5 +14,6 @@ namespace Roslynator.Formatting.CSharp
         public const string AddNewLineAfterConditionalOperatorInsteadOfBeforeIt = "RCS0028i";
         public const string AddNewLineAfterExpressionBodyArrowInsteadOfBeforeIt = "RCS0032i";
         public const string RemoveNewLineBetweenClosingBraceAndWhileKeyword = "RCS0051i";
+        public const string AddNewLineAfterEqualsSignInsteadOfBeforeIt = "RCS0052i";
     }
 }

@@ -5,7 +5,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp;
 
 namespace Roslynator.Formatting.CSharp
 {
@@ -30,34 +29,22 @@ namespace Roslynator.Formatting.CSharp
 
             SyntaxToken arrowToken = arrowExpressionClause.ArrowToken;
 
-            SyntaxToken previousToken = arrowToken.GetPreviousToken();
+            FormattingSuggestion suggestion = FormattingAnalysis.AnalyzeNewLineBeforeOrAfter(context, arrowToken, arrowExpressionClause.Expression, AnalyzerOptions.AddNewLineAfterExpressionBodyArrowInsteadOfBeforeIt);
 
-            if (SyntaxTriviaAnalysis.IsEmptyOrSingleWhitespaceTrivia(previousToken.TrailingTrivia))
+            if (suggestion == FormattingSuggestion.AddNewLineBefore)
             {
-                if (!arrowToken.LeadingTrivia.Any()
-                    && SyntaxTriviaAnalysis.IsOptionalWhitespaceThenEndOfLineTrivia(arrowToken.TrailingTrivia)
-                    && SyntaxTriviaAnalysis.IsEmptyOrSingleWhitespaceTrivia(arrowExpressionClause.Expression.GetLeadingTrivia())
-                    && context.IsAnalyzerSuppressed(AnalyzerOptions.AddNewLineAfterExpressionBodyArrowInsteadOfBeforeIt))
-                {
-                    DiagnosticHelpers.ReportDiagnostic(
-                        context,
-                        DiagnosticDescriptors.AddNewLineBeforeExpressionBodyArrowInsteadOfAfterItOrViceVersa,
-                        arrowToken.GetLocation());
-                }
+                DiagnosticHelpers.ReportDiagnostic(
+                    context,
+                    DiagnosticDescriptors.AddNewLineBeforeExpressionBodyArrowInsteadOfAfterItOrViceVersa,
+                    arrowToken.GetLocation());
             }
-            else if (SyntaxTriviaAnalysis.IsOptionalWhitespaceThenEndOfLineTrivia(previousToken.TrailingTrivia))
+            else if (suggestion == FormattingSuggestion.AddNewLineAfter)
             {
-                if (SyntaxTriviaAnalysis.IsEmptyOrSingleWhitespaceTrivia(arrowToken.LeadingTrivia)
-                    && SyntaxTriviaAnalysis.IsEmptyOrSingleWhitespaceTrivia(arrowToken.TrailingTrivia)
-                    && !arrowExpressionClause.Expression.GetLeadingTrivia().Any()
-                    && !context.IsAnalyzerSuppressed(AnalyzerOptions.AddNewLineAfterExpressionBodyArrowInsteadOfBeforeIt))
-                {
-                    DiagnosticHelpers.ReportDiagnostic(
-                        context,
-                        DiagnosticDescriptors.ReportOnly.AddNewLineAfterExpressionBodyArrowInsteadOfBeforeIt,
-                        arrowToken.GetLocation(),
-                        properties: DiagnosticProperties.AnalyzerOption_Invert);
-                }
+                DiagnosticHelpers.ReportDiagnostic(
+                    context,
+                    DiagnosticDescriptors.ReportOnly.AddNewLineAfterExpressionBodyArrowInsteadOfBeforeIt,
+                    arrowToken.GetLocation(),
+                    properties: DiagnosticProperties.AnalyzerOption_Invert);
             }
         }
     }
