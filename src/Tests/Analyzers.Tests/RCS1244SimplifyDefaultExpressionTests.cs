@@ -307,5 +307,21 @@ class C
 }
 ", options: CSharpCodeVerificationOptions.Default_CSharp7);
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
+        public async Task TestNoDiagnostic_Nullable()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M()
+    {
+            int? x = null;
+
+            if (x == default(int)) { }
+    }
+}
+");
+        }
     }
 }

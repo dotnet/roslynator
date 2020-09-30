@@ -108,6 +108,11 @@ namespace Roslynator.CSharp.Analysis
                 case SyntaxKind.EqualsExpression:
                 case SyntaxKind.NotEqualsExpression:
                     {
+                        TypeInfo typeInfo = context.SemanticModel.GetTypeInfo(expression, context.CancellationToken);
+
+                        if (!SymbolEqualityComparer.Default.Equals(typeInfo.Type, typeInfo.ConvertedType))
+                            return;
+
                         ReportDiagnostic();
                         return;
                     }
