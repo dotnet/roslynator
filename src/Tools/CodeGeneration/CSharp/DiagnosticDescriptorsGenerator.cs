@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.CodeAnalysis;
@@ -23,16 +24,29 @@ namespace Roslynator.CodeGeneration.CSharp
             string className,
             string identifiersClassName)
         {
+            analyzers = analyzers
+                .Where(f => f.IsObsolete == obsolete)
+                .OrderBy(f => f.Id, comparer);
+
+            ClassDeclarationSyntax classDeclaration = CreateClassDeclaration(
+                analyzers,
+                className,
+                identifiersClassName);
+
+            analyzers = analyzers.Where(f => f.Parent != null);
+
+            if (analyzers.Any())
+            {
+                MemberDeclarationSyntax methodDeclaration = CreateIsEnabledMethod(analyzers);
+
+                classDeclaration = classDeclaration.AddMembers(methodDeclaration);
+            }
+
             CompilationUnitSyntax compilationUnit = CompilationUnit(
                 UsingDirectives("System", "Microsoft.CodeAnalysis"),
                 NamespaceDeclaration(
                     @namespace,
-                    CreateClassDeclaration(
-                        analyzers
-                            .Where(f => f.IsObsolete == obsolete)
-                            .OrderBy(f => f.Id, comparer),
-                        className,
-                        identifiersClassName)));
+                    classDeclaration));
 
             compilationUnit = compilationUnit.NormalizeWhitespace();
 
@@ -189,6 +203,41 @@ namespace Roslynator.CodeGeneration.CSharp
             {
                 return node;
             }
+        }
+
+        private static MemberDeclarationSyntax CreateIsEnabledMethod(IEnumerable<AnalyzerMetadata> analyzers)
+        {
+            var methodDeclaration = @"
+public static bool IsEnabled(CompilationOptions compilationOptions, DiagnosticDescriptor analyzerOption)
+{
+    switch (analyzerOption.Id)
+    {
+$SwitchSection$    default:
+        {
+            throw new ArgumentException("""", nameof(analyzerOption));
+        }
+    }
+}
+
+
+";
+            const string switchSection = @"        case AnalyzerOptionIdentifiers.$AnalyzerOptionIdentifier$:
+            {
+                return !compilationOptions.IsAnalyzerSuppressed(DiagnosticDescriptors.$DiagnosticDescriptorIdentifier$)
+                    && !compilationOptions.IsAnalyzerSuppressed(AnalyzerOptions.$AnalyzerOptionIdentifier$);
+            }
+";
+
+            string switchSections = string.Concat(analyzers.Select(f =>
+            {
+                return switchSection
+                    .Replace("$AnalyzerOptionIdentifier$", f.Identifier)
+                    .Replace("$DiagnosticDescriptorIdentifier$", f.Parent.Identifier);
+            }));
+
+            methodDeclaration = methodDeclaration.Replace("$SwitchSection$", switchSections);
+
+            return ParseMemberDeclaration(methodDeclaration);
         }
     }
 }

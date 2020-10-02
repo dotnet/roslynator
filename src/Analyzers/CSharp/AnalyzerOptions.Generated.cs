@@ -213,5 +213,100 @@ namespace Roslynator.CSharp
             helpLinkUri:        AnalyzerOptionIdentifiers.UseComparisonInsteadOfIsNullPattern, 
             customTags:         Array.Empty<string>());
 
+        public static bool IsEnabled(CompilationOptions compilationOptions, DiagnosticDescriptor analyzerOption)
+        {
+            switch (analyzerOption.Id)
+            {
+                case AnalyzerOptionIdentifiers.UseImplicitlyTypedArrayWhenTypeIsObvious:
+                {
+                    return !compilationOptions.IsAnalyzerSuppressed(DiagnosticDescriptors.UseExplicitlyTypedArrayOrViceVersa) && !compilationOptions.IsAnalyzerSuppressed(AnalyzerOptions.UseImplicitlyTypedArrayWhenTypeIsObvious);
+                }
+
+                case AnalyzerOptionIdentifiers.UseImplicitlyTypedArray:
+                {
+                    return !compilationOptions.IsAnalyzerSuppressed(DiagnosticDescriptors.UseExplicitlyTypedArrayOrViceVersa) && !compilationOptions.IsAnalyzerSuppressed(AnalyzerOptions.UseImplicitlyTypedArray);
+                }
+
+                case AnalyzerOptionIdentifiers.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine:
+                {
+                    return !compilationOptions.IsAnalyzerSuppressed(DiagnosticDescriptors.ConvertBlockBodyToExpressionBodyOrViceVersa) && !compilationOptions.IsAnalyzerSuppressed(AnalyzerOptions.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine);
+                }
+
+                case AnalyzerOptionIdentifiers.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine:
+                {
+                    return !compilationOptions.IsAnalyzerSuppressed(DiagnosticDescriptors.ConvertBlockBodyToExpressionBodyOrViceVersa) && !compilationOptions.IsAnalyzerSuppressed(AnalyzerOptions.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine);
+                }
+
+                case AnalyzerOptionIdentifiers.RemoveAccessibilityModifiers:
+                {
+                    return !compilationOptions.IsAnalyzerSuppressed(DiagnosticDescriptors.AddAccessibilityModifiersOrViceVersa) && !compilationOptions.IsAnalyzerSuppressed(AnalyzerOptions.RemoveAccessibilityModifiers);
+                }
+
+                case AnalyzerOptionIdentifiers.RemoveEmptyLineBetweenClosingBraceAndSwitchSection:
+                {
+                    return !compilationOptions.IsAnalyzerSuppressed(DiagnosticDescriptors.RemoveRedundantEmptyLine) && !compilationOptions.IsAnalyzerSuppressed(AnalyzerOptions.RemoveEmptyLineBetweenClosingBraceAndSwitchSection);
+                }
+
+                case AnalyzerOptionIdentifiers.DoNotRenamePrivateStaticReadOnlyFieldToCamelCaseWithUnderscore:
+                {
+                    return !compilationOptions.IsAnalyzerSuppressed(DiagnosticDescriptors.RenamePrivateFieldToCamelCaseWithUnderscore) && !compilationOptions.IsAnalyzerSuppressed(AnalyzerOptions.DoNotRenamePrivateStaticReadOnlyFieldToCamelCaseWithUnderscore);
+                }
+
+                case AnalyzerOptionIdentifiers.RemoveArgumentListFromObjectCreation:
+                {
+                    return !compilationOptions.IsAnalyzerSuppressed(DiagnosticDescriptors.AddArgumentListToObjectCreationOrViceVersa) && !compilationOptions.IsAnalyzerSuppressed(AnalyzerOptions.RemoveArgumentListFromObjectCreation);
+                }
+
+                case AnalyzerOptionIdentifiers.RemoveParenthesesFromConditionOfConditionalExpressionWhenExpressionIsSingleToken:
+                {
+                    return !compilationOptions.IsAnalyzerSuppressed(DiagnosticDescriptors.ParenthesizeConditionOfConditionalExpression) && !compilationOptions.IsAnalyzerSuppressed(AnalyzerOptions.RemoveParenthesesFromConditionOfConditionalExpressionWhenExpressionIsSingleToken);
+                }
+
+                case AnalyzerOptionIdentifiers.UseStringEmptyInsteadOfEmptyStringLiteral:
+                {
+                    return !compilationOptions.IsAnalyzerSuppressed(DiagnosticDescriptors.UseEmptyStringLiteralInsteadOfStringEmptyOrViceVersa) && !compilationOptions.IsAnalyzerSuppressed(AnalyzerOptions.UseStringEmptyInsteadOfEmptyStringLiteral);
+                }
+
+                case AnalyzerOptionIdentifiers.RemoveCallToConfigureAwait:
+                {
+                    return !compilationOptions.IsAnalyzerSuppressed(DiagnosticDescriptors.AddCallToConfigureAwaitOrViceVersa) && !compilationOptions.IsAnalyzerSuppressed(AnalyzerOptions.RemoveCallToConfigureAwait);
+                }
+
+                case AnalyzerOptionIdentifiers.ConvertBitwiseOperationToHasFlagCall:
+                {
+                    return !compilationOptions.IsAnalyzerSuppressed(DiagnosticDescriptors.ConvertHasFlagCallToBitwiseOperationOrViceVersa) && !compilationOptions.IsAnalyzerSuppressed(AnalyzerOptions.ConvertBitwiseOperationToHasFlagCall);
+                }
+
+                case AnalyzerOptionIdentifiers.SimplifyConditionalExpressionWhenItIncludesNegationOfCondition:
+                {
+                    return !compilationOptions.IsAnalyzerSuppressed(DiagnosticDescriptors.SimplifyConditionalExpression) && !compilationOptions.IsAnalyzerSuppressed(AnalyzerOptions.SimplifyConditionalExpressionWhenItIncludesNegationOfCondition);
+                }
+
+                case AnalyzerOptionIdentifiers.ConvertMethodGroupToAnonymousFunction:
+                {
+                    return !compilationOptions.IsAnalyzerSuppressed(DiagnosticDescriptors.ConvertAnonymousFunctionToMethodGroupOrViceVersa) && !compilationOptions.IsAnalyzerSuppressed(AnalyzerOptions.ConvertMethodGroupToAnonymousFunction);
+                }
+
+                case AnalyzerOptionIdentifiers.DoNotUseElementAccessWhenExpressionIsInvocation:
+                {
+                    return !compilationOptions.IsAnalyzerSuppressed(DiagnosticDescriptors.UseElementAccess) && !compilationOptions.IsAnalyzerSuppressed(AnalyzerOptions.DoNotUseElementAccessWhenExpressionIsInvocation);
+                }
+
+                case AnalyzerOptionIdentifiers.UseIsNullPatternInsteadOfInequalityOperator:
+                {
+                    return !compilationOptions.IsAnalyzerSuppressed(DiagnosticDescriptors.UseIsNullPatternInsteadOfComparisonOrViceVersa) && !compilationOptions.IsAnalyzerSuppressed(AnalyzerOptions.UseIsNullPatternInsteadOfInequalityOperator);
+                }
+
+                case AnalyzerOptionIdentifiers.UseComparisonInsteadOfIsNullPattern:
+                {
+                    return !compilationOptions.IsAnalyzerSuppressed(DiagnosticDescriptors.UseIsNullPatternInsteadOfComparisonOrViceVersa) && !compilationOptions.IsAnalyzerSuppressed(AnalyzerOptions.UseComparisonInsteadOfIsNullPattern);
+                }
+
+                default:
+                {
+                    throw new ArgumentException("", nameof(analyzerOption));
+                }
+            }
+        }
     }
 }

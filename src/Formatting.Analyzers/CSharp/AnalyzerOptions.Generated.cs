@@ -93,5 +93,50 @@ namespace Roslynator.Formatting.CSharp
             helpLinkUri:        AnalyzerOptionIdentifiers.AddNewLineAfterEqualsSignInsteadOfBeforeIt, 
             customTags:         Array.Empty<string>());
 
+        public static bool IsEnabled(CompilationOptions compilationOptions, DiagnosticDescriptor analyzerOption)
+        {
+            switch (analyzerOption.Id)
+            {
+                case AnalyzerOptionIdentifiers.RemoveEmptyLineBetweenSingleLineAccessors:
+                {
+                    return !compilationOptions.IsAnalyzerSuppressed(DiagnosticDescriptors.AddEmptyLineBetweenSingleLineAccessorsOrViceVersa) && !compilationOptions.IsAnalyzerSuppressed(AnalyzerOptions.RemoveEmptyLineBetweenSingleLineAccessors);
+                }
+
+                case AnalyzerOptionIdentifiers.RemoveEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace:
+                {
+                    return !compilationOptions.IsAnalyzerSuppressed(DiagnosticDescriptors.AddEmptyLineBetweenUsingDirectivesWithDifferentRootNamespaceOrViceVersa) && !compilationOptions.IsAnalyzerSuppressed(AnalyzerOptions.RemoveEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace);
+                }
+
+                case AnalyzerOptionIdentifiers.AddNewLineAfterBinaryOperatorInsteadOfBeforeIt:
+                {
+                    return !compilationOptions.IsAnalyzerSuppressed(DiagnosticDescriptors.AddNewLineBeforeBinaryOperatorInsteadOfAfterItOrViceVersa) && !compilationOptions.IsAnalyzerSuppressed(AnalyzerOptions.AddNewLineAfterBinaryOperatorInsteadOfBeforeIt);
+                }
+
+                case AnalyzerOptionIdentifiers.AddNewLineAfterConditionalOperatorInsteadOfBeforeIt:
+                {
+                    return !compilationOptions.IsAnalyzerSuppressed(DiagnosticDescriptors.AddNewLineBeforeConditionalOperatorInsteadOfAfterItOrViceVersa) && !compilationOptions.IsAnalyzerSuppressed(AnalyzerOptions.AddNewLineAfterConditionalOperatorInsteadOfBeforeIt);
+                }
+
+                case AnalyzerOptionIdentifiers.AddNewLineAfterExpressionBodyArrowInsteadOfBeforeIt:
+                {
+                    return !compilationOptions.IsAnalyzerSuppressed(DiagnosticDescriptors.AddNewLineBeforeExpressionBodyArrowInsteadOfAfterItOrViceVersa) && !compilationOptions.IsAnalyzerSuppressed(AnalyzerOptions.AddNewLineAfterExpressionBodyArrowInsteadOfBeforeIt);
+                }
+
+                case AnalyzerOptionIdentifiers.RemoveNewLineBetweenClosingBraceAndWhileKeyword:
+                {
+                    return !compilationOptions.IsAnalyzerSuppressed(DiagnosticDescriptors.AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersa) && !compilationOptions.IsAnalyzerSuppressed(AnalyzerOptions.RemoveNewLineBetweenClosingBraceAndWhileKeyword);
+                }
+
+                case AnalyzerOptionIdentifiers.AddNewLineAfterEqualsSignInsteadOfBeforeIt:
+                {
+                    return !compilationOptions.IsAnalyzerSuppressed(DiagnosticDescriptors.AddNewLineBeforeEqualsSignInsteadOfAfterItOrViceVersa) && !compilationOptions.IsAnalyzerSuppressed(AnalyzerOptions.AddNewLineAfterEqualsSignInsteadOfBeforeIt);
+                }
+
+                default:
+                {
+                    throw new ArgumentException("", nameof(analyzerOption));
+                }
+            }
+        }
     }
 }
