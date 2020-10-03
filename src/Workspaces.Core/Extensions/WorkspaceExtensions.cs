@@ -16,25 +16,28 @@ namespace Roslynator
     public static class WorkspaceExtensions
     {
         #region Document
+        //TODO: make public
+        internal static Task<Document> WithTextChangeAsync(
+            this Document document,
+            TextSpan span,
+            string newText,
+            CancellationToken cancellationToken = default)
+        {
+            return WithTextChangeAsync(document, new TextChange(span, newText), cancellationToken);
+        }
+
         /// <summary>
         /// Creates a new document updated with the specified text change.
         /// </summary>
         /// <param name="document"></param>
         /// <param name="textChange"></param>
         /// <param name="cancellationToken"></param>
-        public static async Task<Document> WithTextChangeAsync(
+        public static Task<Document> WithTextChangeAsync(
             this Document document,
             TextChange textChange,
             CancellationToken cancellationToken = default)
         {
-            if (document == null)
-                throw new ArgumentNullException(nameof(document));
-
-            SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
-
-            SourceText newSourceText = sourceText.WithChanges(new TextChange[] { textChange });
-
-            return document.WithText(newSourceText);
+            return WithTextChangesAsync(document, new TextChange[] { textChange }, cancellationToken);
         }
 
         /// <summary>

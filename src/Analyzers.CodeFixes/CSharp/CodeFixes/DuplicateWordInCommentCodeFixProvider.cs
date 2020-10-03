@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             CodeAction codeAction = CodeAction.Create(
                 "Remove duplicate word",
-                ct => context.Document.WithTextChangeAsync(new TextChange(TextSpan.FromBounds(start, context.Span.End), ""), ct),
+                ct => context.Document.WithTextChangeAsync(TextSpan.FromBounds(start, context.Span.End), "", ct),
                 GetEquivalenceKey(DiagnosticIdentifiers.DuplicateWordInComment));
 
             context.RegisterCodeFix(codeAction, context.Diagnostics[0]);

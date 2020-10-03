@@ -217,7 +217,7 @@ namespace Roslynator.CSharp.Refactorings
                                     {
                                         RegisterRefactoring(
                                             "Add tag 'c'",
-                                            ct => Document.WithTextChangeAsync(new TextChange(Span, $"<c>{token.ToString(Span)}</c>"), ct),
+                                            ct => Document.WithTextChangeAsync(Span, $"<c>{token.ToString(Span)}</c>", ct),
                                             RefactoringIdentifiers.AddTagToDocumentationComment);
                                     }
                                 }

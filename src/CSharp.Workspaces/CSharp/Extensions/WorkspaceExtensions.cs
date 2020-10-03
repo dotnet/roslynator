@@ -381,9 +381,7 @@ namespace Roslynator.CSharp
                 lines[startLine].Start,
                 lines[endLine].EndIncludingLineBreak);
 
-            var textChange = new TextChange(span, "");
-
-            SourceText newSourceText = sourceText.WithChanges(textChange);
+            SourceText newSourceText = sourceText.WithChange(span, "");
 
             return document.WithText(newSourceText);
         }

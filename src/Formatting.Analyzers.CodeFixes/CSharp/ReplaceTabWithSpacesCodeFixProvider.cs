@@ -53,15 +53,16 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
             return Task.CompletedTask;
         }
 
-        private static async Task<Document> UseSpacesInsteadOfTabAsync(
+        private static Task<Document> UseSpacesInsteadOfTabAsync(
             Document document,
             TextSpan span,
             int numberOfSpaces,
             CancellationToken cancellationToken = default)
         {
-            var textChange = new TextChange(span, new string(' ', span.Length * numberOfSpaces));
-
-            return await document.WithTextChangeAsync(textChange, cancellationToken).ConfigureAwait(false);
+            return document.WithTextChangeAsync(
+                span,
+                new string(' ', span.Length * numberOfSpaces),
+                cancellationToken);
         }
     }
 }

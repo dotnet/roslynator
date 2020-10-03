@@ -9,18 +9,12 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class UseSpacesInsteadOfTabRefactoring
     {
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             TextSpan span,
             CancellationToken cancellationToken = default)
         {
-            SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
-
-            var textChange = new TextChange(span, new string(' ', span.Length * 4));
-
-            SourceText newSourceText = sourceText.WithChanges(textChange);
-
-            return document.WithText(newSourceText);
+            return document.WithTextChangeAsync(span, new string(' ', span.Length * 4), cancellationToken);
         }
     }
 }

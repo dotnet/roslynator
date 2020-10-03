@@ -85,9 +85,7 @@ namespace Roslynator.CSharp.CodeFixes
         {
             var span = new TextSpan(expression.Span.End, 0);
 
-            var textChange = new TextChange(span, "?");
-
-            Document newDocument = await document.WithTextChangeAsync(textChange, cancellationToken).ConfigureAwait(false);
+            Document newDocument = await document.WithTextChangeAsync(span, "?", cancellationToken).ConfigureAwait(false);
 
             SyntaxNode root = await newDocument.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 

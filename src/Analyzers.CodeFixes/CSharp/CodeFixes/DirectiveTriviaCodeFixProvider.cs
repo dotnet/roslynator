@@ -94,9 +94,10 @@ namespace Roslynator.CSharp.CodeFixes
                 i++;
             }
 
-            var textChange = new TextChange(TextSpan.FromBounds(start, end), StringBuilderCache.GetStringAndFree(sb));
-
-            return document.WithTextChangeAsync(textChange, cancellationToken);
+            return document.WithTextChangeAsync(
+                TextSpan.FromBounds(start, end),
+                StringBuilderCache.GetStringAndFree(sb),
+                cancellationToken);
         }
     }
 }

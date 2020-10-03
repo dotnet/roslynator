@@ -269,7 +269,7 @@ namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
                 cancellationToken).ConfigureAwait(false);
         }
 
-        private static async Task<Document> RefactorAsync(
+        private static Task<Document> RefactorAsync(
             Document document,
             SyntaxTrivia trivia,
             ThrowInfo throwInfo,
@@ -278,8 +278,6 @@ namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
-
             var throwInfos = new List<ThrowInfo>() { throwInfo };
 
             INamedTypeSymbol exceptionSymbol = semanticModel.GetTypeByMetadataName("System.Exception");
@@ -303,13 +301,10 @@ namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
                 AppendExceptionDocumentation(trivia, info.ExceptionSymbol, parameterSymbol, semanticModel, ref sb);
             }
 
-            string newText = StringBuilderCache.GetStringAndFree(sb);
-
-            var textChange = new TextChange(new TextSpan(trivia.FullSpan.End, 0), newText);
-
-            SourceText newSourceText = sourceText.WithChanges(textChange);
-
-            return document.WithText(newSourceText);
+            return document.WithTextChangeAsync(
+                new TextSpan(trivia.FullSpan.End, 0),
+                StringBuilderCache.GetStringAndFree(sb),
+                cancellationToken);
         }
 
         private static string GetIndent(SyntaxTriviaList leadingTrivia)

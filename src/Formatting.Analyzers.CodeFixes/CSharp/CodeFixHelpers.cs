@@ -121,11 +121,10 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
             string indentation,
             CancellationToken cancellationToken = default)
         {
-            var textChange = new TextChange(
+            return document.WithTextChangeAsync(
                 TextSpan.FromBounds(token.GetPreviousToken().Span.End, token.SpanStart),
-                SyntaxTriviaAnalysis.DetermineEndOfLine(token).ToString() + indentation);
-
-            return document.WithTextChangeAsync(textChange, cancellationToken);
+                SyntaxTriviaAnalysis.DetermineEndOfLine(token).ToString() + indentation,
+                cancellationToken);
         }
 
         public static Task<Document> AddNewLineAfterAsync(
@@ -134,11 +133,10 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
             string indentation,
             CancellationToken cancellationToken = default)
         {
-            var textChange = new TextChange(
+            return document.WithTextChangeAsync(
                 TextSpan.FromBounds(token.Span.End, token.GetNextToken().SpanStart),
-                SyntaxTriviaAnalysis.DetermineEndOfLine(token).ToString() + indentation);
-
-            return document.WithTextChangeAsync(textChange, cancellationToken);
+                SyntaxTriviaAnalysis.DetermineEndOfLine(token).ToString() + indentation,
+                cancellationToken);
         }
 
         public static (ExpressionSyntax left, SyntaxToken token, ExpressionSyntax right) AddNewLineBeforeTokenInsteadOfAfterIt(
@@ -246,13 +244,10 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
 
             sb.Append(middle.GetLeadingTrivia().ToString());
 
-            string newText = StringBuilderCache.GetStringAndFree(sb);
-
-            var textChange = new TextChange(
+            return document.WithTextChangeAsync(
                 TextSpan.FromBounds(left.Span.End, right.SpanStart),
-                newText);
-
-            return document.WithTextChangeAsync(textChange, cancellationToken);
+                StringBuilderCache.GetStringAndFree(sb),
+                cancellationToken);
         }
 
         public static Task<Document> AddNewLineBeforeInsteadOfAfterAsync(
@@ -289,13 +284,10 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
             sb.Append(middle.ToString());
             sb.Append(" ");
 
-            string newText = StringBuilderCache.GetStringAndFree(sb);
-
-            var textChange = new TextChange(
+            return document.WithTextChangeAsync(
                 TextSpan.FromBounds(left.Span.End, right.SpanStart),
-                newText);
-
-            return document.WithTextChangeAsync(textChange, cancellationToken);
+                StringBuilderCache.GetStringAndFree(sb),
+                cancellationToken);
         }
 
         private static ExpressionSyntax FindNextExpression(SyntaxToken token)
@@ -388,11 +380,10 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
             string replacement = " ",
             CancellationToken cancellationToken = default)
         {
-            TextSpan span = TextSpan.FromBounds(token1.Span.End, token2.SpanStart);
-
-            var textChange = new TextChange(span, replacement);
-
-            return document.WithTextChangeAsync(textChange, cancellationToken);
+            return document.WithTextChangeAsync(
+                TextSpan.FromBounds(token1.Span.End, token2.SpanStart),
+                replacement,
+                cancellationToken);
         }
     }
 }

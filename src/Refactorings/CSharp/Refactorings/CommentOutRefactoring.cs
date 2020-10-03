@@ -56,15 +56,11 @@ namespace Roslynator.CSharp.Refactorings
 
             if (minIndentLength >= 0)
             {
-                string newText = CommentOutLines(sourceText, startLine, endLine, minIndentLength);
-
-                TextSpan span = TextSpan.FromBounds(
-                    sourceText.Lines[startLine].Span.Start,
-                    sourceText.Lines[endLine].SpanIncludingLineBreak.End);
-
-                var textChange = new TextChange(span, newText);
-
-                SourceText newSourceText = sourceText.WithChanges(textChange);
+                SourceText newSourceText = sourceText.WithChange(
+                    TextSpan.FromBounds(
+                        sourceText.Lines[startLine].Span.Start,
+                        sourceText.Lines[endLine].SpanIncludingLineBreak.End),
+                    CommentOutLines(sourceText, startLine, endLine, minIndentLength));
 
                 return document.WithText(newSourceText);
             }

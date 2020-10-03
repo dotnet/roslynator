@@ -70,11 +70,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             CodeAction codeAction = CodeAction.Create(
                 "Add missing comma",
-                ct =>
-                {
-                    var textChange = new TextChange(new TextSpan(position, 0), ",");
-                    return context.Document.WithTextChangeAsync(textChange, ct);
-                },
+                ct => context.Document.WithTextChangeAsync(new TextSpan(position, 0), ",", ct),
                 GetEquivalenceKey(diagnostic));
 
             context.RegisterCodeFix(codeAction, diagnostic);

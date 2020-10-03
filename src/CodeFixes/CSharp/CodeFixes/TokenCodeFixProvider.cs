@@ -67,11 +67,7 @@ namespace Roslynator.CSharp.CodeFixes
                                         {
                                             CodeAction codeAction = CodeAction.Create(
                                                 "Remove '?' operator",
-                                                cancellationToken =>
-                                                {
-                                                    var textChange = new TextChange(token.Span, "");
-                                                    return context.Document.WithTextChangeAsync(textChange, cancellationToken);
-                                                },
+                                                ct => context.Document.WithTextChangeAsync(token.Span, "", ct),
                                                 GetEquivalenceKey(diagnostic));
 
                                             context.RegisterCodeFix(codeAction, diagnostic);

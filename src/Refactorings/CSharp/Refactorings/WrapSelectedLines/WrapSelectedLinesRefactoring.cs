@@ -38,20 +38,20 @@ namespace Roslynator.CSharp.Refactorings.WrapSelectedLines
 
                 if (en.MoveNext())
                 {
-                    textChanges.Add(new TextChange(firstLine.SpanIncludingLineBreak, newText));
+                    textChanges.Add(firstLine.SpanIncludingLineBreak, newText);
 
                     TextLine lastLine = en.Current;
 
                     while (en.MoveNext())
                         lastLine = en.Current;
 
-                    textChanges.Add(new TextChange(lastLine.SpanIncludingLineBreak, lastLine.ToString() + Environment.NewLine + indent + GetLastLineText() + Environment.NewLine));
+                    textChanges.Add(lastLine.SpanIncludingLineBreak, lastLine.ToString() + Environment.NewLine + indent + GetLastLineText() + Environment.NewLine);
                 }
                 else
                 {
                     newText += indent + GetLastLineText() + Environment.NewLine;
 
-                    textChanges.Add(new TextChange(firstLine.SpanIncludingLineBreak, newText));
+                    textChanges.Add(firstLine.SpanIncludingLineBreak, newText);
                 }
             }
 

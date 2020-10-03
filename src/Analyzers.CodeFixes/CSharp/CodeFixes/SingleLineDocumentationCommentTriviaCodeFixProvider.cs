@@ -115,13 +115,11 @@ namespace Roslynator.CSharp.CodeFixes
             }
         }
 
-        private static async Task<Document> FormatSummaryOnSingleLineAsync(
+        private static Task<Document> FormatSummaryOnSingleLineAsync(
             Document document,
             DocumentationCommentTriviaSyntax documentationComment,
             CancellationToken cancellationToken)
         {
-            SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
-
             XmlElementSyntax summaryElement = documentationComment.SummaryElement();
 
             XmlElementStartTagSyntax startTag = summaryElement.StartTag;
@@ -132,22 +130,17 @@ namespace Roslynator.CSharp.CodeFixes
                 startTag.Span.End - summaryElement.SpanStart,
                 endTag.SpanStart - startTag.Span.End);
 
-            var textChange = new TextChange(
+            return document.WithTextChangeAsync(
                 new TextSpan(startTag.Span.End, match.Length),
-                match.Groups[1].Value);
-
-            SourceText newSourceText = sourceText.WithChanges(textChange);
-
-            return document.WithText(newSourceText);
+                match.Groups[1].Value,
+                cancellationToken);
         }
 
-        private static async Task<Document> FormatSummaryOnMultipleLinesAsync(
+        private static Task<Document> FormatSummaryOnMultipleLinesAsync(
             Document document,
             DocumentationCommentTriviaSyntax documentationComment,
             CancellationToken cancellationToken)
         {
-            SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
-
             XmlElementSyntax summaryElement = documentationComment.SummaryElement();
 
             var indentation = "";
@@ -175,11 +168,13 @@ namespace Roslynator.CSharp.CodeFixes
 
             string startOfLine = endOfLine + indentation + "/// ";
 
-            SourceText newSourceText = sourceText.WithChanges(
-                new TextChange(new TextSpan(summaryElement.StartTag.Span.End, 0), startOfLine),
-                new TextChange(new TextSpan(summaryElement.EndTag.SpanStart, 0), startOfLine));
-
-            return document.WithText(newSourceText);
+            return document.WithTextChangesAsync(
+                new[]
+                {
+                    new TextChange(new TextSpan(summaryElement.StartTag.Span.End, 0), startOfLine),
+                    new TextChange(new TextSpan(summaryElement.EndTag.SpanStart, 0), startOfLine)
+                },
+                cancellationToken);
         }
     }
 }
