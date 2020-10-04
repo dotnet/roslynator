@@ -161,22 +161,49 @@ namespace Roslynator.CSharp.Analysis
                 walker.SemanticModel = semanticModel;
                 walker.CancellationToken = cancellationToken;
 
-                if (bodyOrExpressionBody is BlockSyntax body)
+                if (bodyOrExpressionBody.IsKind(SyntaxKind.Block))
                 {
-                    walker.VisitBlock(body);
+                    walker.VisitBlock((BlockSyntax)bodyOrExpressionBody);
                 }
                 else
                 {
                     walker.VisitArrowExpressionClause((ArrowExpressionClauseSyntax)bodyOrExpressionBody);
                 }
 
-                if (walker.Parameters.Count > 0
-                    && !IsReferencedAsMethodGroup())
+                if (walker.Parameters.Count > 0)
                 {
+                    DataFlowAnalysis analysis = (bodyOrExpressionBody.IsKind(SyntaxKind.Block))
+                        ? semanticModel.AnalyzeDataFlow((BlockSyntax)bodyOrExpressionBody)
+                        : semanticModel.AnalyzeDataFlow(((ArrowExpressionClauseSyntax)bodyOrExpressionBody).Expression);
+
+                    bool? isReferencedAsMethodGroup = null;
+
                     foreach (KeyValuePair<string, IParameterSymbol> kvp in walker.Parameters)
                     {
+                        var isAssigned = false;
+
+                        foreach (ISymbol assignedSymbol in analysis.AlwaysAssigned)
+                        {
+                            if (SymbolEqualityComparer.Default.Equals(assignedSymbol, kvp.Value))
+                            {
+                                isAssigned = true;
+                                break;
+                            }
+                        }
+
+                        if (isAssigned)
+                            continue;
+
+                        if (isReferencedAsMethodGroup ??= IsReferencedAsMethodGroup())
+                            break;
+
                         if (kvp.Value.GetSyntaxOrDefault(cancellationToken) is ParameterSyntax parameter)
-                            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.MakeParameterRefReadOnly, parameter.Identifier);
+                        {
+                            DiagnosticHelpers.ReportDiagnostic(
+                                context,
+                                DiagnosticDescriptors.MakeParameterRefReadOnly,
+                                parameter.Identifier);
+                        }
                     }
                 }
             }
@@ -197,12 +224,11 @@ namespace Roslynator.CSharp.Analysis
             }
         }
 
-        private class SyntaxWalker : AssignedExpressionWalker
+        private class SyntaxWalker : CSharpSyntaxNodeWalker
         {
             [ThreadStatic]
             private static SyntaxWalker _cachedInstance;
 
-            private bool _isInAssignedExpression;
             private int _localFunctionDepth;
             private int _anonymousFunctionDepth;
 
@@ -217,15 +243,11 @@ namespace Roslynator.CSharp.Analysis
                 Parameters.Clear();
                 SemanticModel = null;
                 CancellationToken = default;
-                _isInAssignedExpression = false;
                 _localFunctionDepth = 0;
                 _anonymousFunctionDepth = 0;
             }
 
-            protected override bool ShouldVisit
-            {
-                get { return Parameters.Count > 0; }
-            }
+            protected override bool ShouldVisit => Parameters.Count > 0;
 
             public override void VisitIdentifierName(IdentifierNameSyntax node)
             {
@@ -236,8 +258,7 @@ namespace Roslynator.CSharp.Analysis
                 if (Parameters.TryGetValue(name, out IParameterSymbol parameterSymbol)
                     && SymbolEqualityComparer.Default.Equals(parameterSymbol, SemanticModel.GetSymbol(node, CancellationToken)))
                 {
-                    if (_isInAssignedExpression
-                        || _localFunctionDepth > 0
+                    if (_localFunctionDepth > 0
                         || _anonymousFunctionDepth > 0)
                     {
                         Parameters.Remove(name);
@@ -245,15 +266,6 @@ namespace Roslynator.CSharp.Analysis
                 }
 
                 base.VisitIdentifierName(node);
-            }
-
-            public override void VisitAssignedExpression(ExpressionSyntax expression)
-            {
-                Debug.Assert(!_isInAssignedExpression);
-
-                _isInAssignedExpression = true;
-                Visit(expression);
-                _isInAssignedExpression = false;
             }
 
             public override void VisitYieldStatement(YieldStatementSyntax node)
