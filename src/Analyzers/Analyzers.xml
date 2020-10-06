@@ -379,11 +379,12 @@ foreach (var item in items) // [|Id|]
   </Analyzer>
   <Analyzer Identifier="AvoidMultilineExpressionBody">
     <Id>RCS1017</Id>
-    <Title>Avoid multiline expression body.</Title>
+    <Title>[deprecated] Avoid multiline expression body.</Title>
     <MessageFormat>[deprecated] Use analyzer RCS1016a instead.</MessageFormat>
     <Category>Style</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
+    <Summary>This analyzer has been deprecated. Use analyzer [RCS1016a](RCS1016a.md) instead.</Summary>
     <Samples>
       <Sample>
         <Before><![CDATA[public string[] Foo() => new string[] // [|Id|]

@@ -204,7 +204,7 @@ namespace Roslynator.CSharp
         /// <summary>RCS1017</summary>
         public static readonly DiagnosticDescriptor AvoidMultilineExpressionBody = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.AvoidMultilineExpressionBody, 
-            title:              "Avoid multiline expression body.", 
+            title:              "[deprecated] Avoid multiline expression body.", 
             messageFormat:      "[deprecated] Use analyzer RCS1016a instead.", 
             category:           DiagnosticCategories.Style, 
             defaultSeverity:    DiagnosticSeverity.Info, 

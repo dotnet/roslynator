@@ -56,7 +56,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             int levels = 0;
 
-            foreach (SyntaxNode node in CSharpUtility.EnumerateExpressionChain(expression))
+            foreach (SyntaxNode node in new MethodChain(expression))
             {
                 switch (node.Kind())
                 {

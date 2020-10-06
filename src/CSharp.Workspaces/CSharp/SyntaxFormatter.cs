@@ -322,7 +322,7 @@ namespace Roslynator.CSharp
             TextChange? textChange = null;
             List<TextChange> textChanges = null;
 
-            foreach (SyntaxNode node in CSharpUtility.EnumerateExpressionChain(expression))
+            foreach (SyntaxNode node in new MethodChain(expression))
             {
                 switch (node.Kind())
                 {

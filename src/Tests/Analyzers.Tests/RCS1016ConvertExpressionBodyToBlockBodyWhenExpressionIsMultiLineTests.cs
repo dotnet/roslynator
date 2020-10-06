@@ -56,7 +56,7 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
-        public async Task Test_Method2_MultilineExpression()
+        public async Task Test_Method_MultilineExpression2()
         {
             await VerifyDiagnosticAndFixAsync(@"
 class C
@@ -65,6 +65,30 @@ class C
         M(
             x,
             y)|];
+}
+", @"
+class C
+{
+    string M(object x, object y)
+    {
+        return M(
+            x,
+            y);
+    }
+}
+", options: Options_ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine);
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
+        public async Task Test_Method_MultilineExpression_NoIndentation()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    string M(object x, object y) [|=>
+M(
+x,
+y)|];
 }
 ", @"
 class C

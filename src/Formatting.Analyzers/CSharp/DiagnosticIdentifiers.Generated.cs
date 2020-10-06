@@ -53,5 +53,8 @@ namespace Roslynator.Formatting.CSharp
         public const string AddEmptyLineBeforeTopDeclaration = "RCS0050";
         public const string AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersa = "RCS0051";
         public const string AddNewLineBeforeEqualsSignInsteadOfAfterItOrViceVersa = "RCS0052";
+        public const string FixFormattingOfList = "RCS0053";
+        public const string FixFormattingOfCallChain = "RCS0054";
+        public const string FixFormattingOfBinaryExpressionChain = "RCS0055";
     }
 }

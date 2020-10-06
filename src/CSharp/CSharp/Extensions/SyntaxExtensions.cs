@@ -1694,26 +1694,17 @@ namespace Roslynator.CSharp
             bool trim = true,
             CancellationToken cancellationToken = default) where TNode : SyntaxNode
         {
-            int count = list.Count;
+            TextSpan span = GetSpan(list, includeExteriorTrivia, trim);
 
-            if (count == 0)
+            if (span.IsEmpty)
                 return false;
 
-            TNode firstNode = list[0];
-
-            if (count == 1)
-                return IsSingleLine(firstNode, includeExteriorTrivia, trim, cancellationToken);
-
-            SyntaxTree tree = firstNode.SyntaxTree;
+            SyntaxTree tree = list.First().SyntaxTree;
 
             if (tree == null)
                 return false;
 
-            TextSpan span = TextSpan.FromBounds(
-                GetStartIndex(firstNode, includeExteriorTrivia, trim),
-                GetEndIndex(list.Last(), includeExteriorTrivia, trim));
-
-            return tree.IsSingleLineSpan(span, cancellationToken);
+            return span.IsSingleLine(tree, cancellationToken);
         }
 
         internal static bool IsMultiLine<TNode>(
@@ -1722,26 +1713,30 @@ namespace Roslynator.CSharp
             bool trim = true,
             CancellationToken cancellationToken = default) where TNode : SyntaxNode
         {
-            int count = list.Count;
+            TextSpan span = GetSpan(list, includeExteriorTrivia, trim);
 
-            if (count == 0)
+            if (span.IsEmpty)
                 return false;
 
-            TNode firstNode = list[0];
-
-            if (count == 1)
-                return IsMultiLine(firstNode, includeExteriorTrivia, trim, cancellationToken);
-
-            SyntaxTree tree = firstNode.SyntaxTree;
+            SyntaxTree tree = list.First().SyntaxTree;
 
             if (tree == null)
                 return false;
 
-            TextSpan span = TextSpan.FromBounds(
-                GetStartIndex(firstNode, includeExteriorTrivia, trim),
-                GetEndIndex(list.Last(), includeExteriorTrivia, trim));
+            return span.IsMultiLine(tree, cancellationToken);
+        }
 
-            return tree.IsMultiLineSpan(span, cancellationToken);
+        internal static TextSpan GetSpan<TNode>(
+            this SeparatedSyntaxList<TNode> list,
+            bool includeExteriorTrivia = true,
+            bool trim = true) where TNode : SyntaxNode
+        {
+            if (!list.Any())
+                return default;
+
+            return TextSpan.FromBounds(
+                GetStartIndex(list.First(), includeExteriorTrivia, trim),
+                GetEndIndex(list.Last(), includeExteriorTrivia, trim));
         }
 
         //TODO: make public
@@ -2150,26 +2145,17 @@ namespace Roslynator.CSharp
             bool trim = true,
             CancellationToken cancellationToken = default) where TNode : SyntaxNode
         {
-            int count = list.Count;
+            TextSpan span = GetSpan(list, includeExteriorTrivia, trim);
 
-            if (count == 0)
+            if (span.IsEmpty)
                 return false;
 
-            TNode firstNode = list[0];
-
-            if (count == 1)
-                return IsSingleLine(firstNode, includeExteriorTrivia, trim, cancellationToken);
-
-            SyntaxTree tree = firstNode.SyntaxTree;
+            SyntaxTree tree = list.First().SyntaxTree;
 
             if (tree == null)
                 return false;
 
-            TextSpan span = TextSpan.FromBounds(
-                GetStartIndex(firstNode, includeExteriorTrivia, trim),
-                GetEndIndex(list.Last(), includeExteriorTrivia, trim));
-
-            return tree.IsSingleLineSpan(span, cancellationToken);
+            return span.IsSingleLine(tree, cancellationToken);
         }
 
         internal static bool IsMultiLine<TNode>(
@@ -2178,26 +2164,30 @@ namespace Roslynator.CSharp
             bool trim = true,
             CancellationToken cancellationToken = default) where TNode : SyntaxNode
         {
-            int count = list.Count;
+            TextSpan span = GetSpan(list, includeExteriorTrivia, trim);
 
-            if (count == 0)
+            if (span.IsEmpty)
                 return false;
 
-            TNode firstNode = list[0];
-
-            if (count == 1)
-                return IsMultiLine(firstNode, includeExteriorTrivia, trim, cancellationToken);
-
-            SyntaxTree tree = firstNode.SyntaxTree;
+            SyntaxTree tree = list.First().SyntaxTree;
 
             if (tree == null)
                 return false;
 
-            TextSpan span = TextSpan.FromBounds(
-                GetStartIndex(firstNode, includeExteriorTrivia, trim),
-                GetEndIndex(list.Last(), includeExteriorTrivia, trim));
+            return span.IsMultiLine(tree, cancellationToken);
+        }
 
-            return tree.IsMultiLineSpan(span, cancellationToken);
+        internal static TextSpan GetSpan<TNode>(
+            this SyntaxList<TNode> list,
+            bool includeExteriorTrivia = true,
+            bool trim = true) where TNode : SyntaxNode
+        {
+            if (!list.Any())
+                return default;
+
+            return TextSpan.FromBounds(
+                GetStartIndex(list.First(), includeExteriorTrivia, trim),
+                GetEndIndex(list.Last(), includeExteriorTrivia, trim));
         }
 
         internal static StatementSyntax SingleOrDefault(this SyntaxList<StatementSyntax> statements, bool ignoreLocalFunctions, bool shouldThrow)
@@ -2657,7 +2647,10 @@ namespace Roslynator.CSharp
             }
         }
 
-        private static TextSpan GetSpan(SyntaxNode node, bool includeExteriorTrivia, bool trim)
+        internal static TextSpan GetSpan(
+            this SyntaxNode node,
+            bool includeExteriorTrivia = true,
+            bool trim = true)
         {
             return TextSpan.FromBounds(
                 GetStartIndex(node, includeExteriorTrivia, trim),

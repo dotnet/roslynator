@@ -1081,10 +1081,12 @@ else if (y)
   </Analyzer>
   <Analyzer Identifier="WrapAndIndentEachNodeInList">
     <Id>RCS0047</Id>
-    <Title>Wrap and indent each node in list.</Title>
+    <Title>[deprecated] Wrap and indent each node in list.</Title>
+    <MessageFormat>[deprecated] Use analyzer RCS0053 instead.</MessageFormat>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
+    <Summary>This analyzer has been deprecated. Use analyzer [RCS0053](RCS0053.md) instead.</Summary>
     <Samples>
       <Sample>
         <Before><![CDATA[void M(object p1, // [|Id|]
@@ -1245,5 +1247,151 @@ while (x);]]></Before>
         </Samples>
       </Option>
     </Options>
+  </Analyzer>
+  <Analyzer Identifier="FixFormattingOfList">
+    <Id>RCS0053</Id>
+    <Title>Fix formatting of a list.</Title>
+    <MessageFormat>Fix formatting of {0}.</MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <Summary>
+      This analyzer:
+* fixes indentation of argument/parameter list and similar lists
+* formats each item in a multi-line list on a separate line
+
+Following formats are considered as valid (for a parameter list):
+```cs
+void M(object x, object y)
+{
+}
+```
+```cs
+void M(
+    object x, object y)
+{
+}
+```
+```cs
+void M(
+    object x,
+    object y)
+{
+}
+```
+</Summary>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[void M(
+    object x,
+        object y)
+{
+}]]></Before>
+        <After><![CDATA[void M(
+    object x,
+    object y)
+{
+}]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[void M(object x,
+    object y)
+{
+}]]></Before>
+        <After><![CDATA[void M(
+    object x,
+    object y)
+{
+}]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[void M(object x,
+       object y)
+{
+}]]></Before>
+        <After><![CDATA[void M(
+    object x,
+    object y)
+{
+}]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[void M(
+    object x,
+    object y, object z)
+{
+}]]></Before>
+        <After><![CDATA[void M(
+    object x,
+    object y,
+    object z)
+{
+}]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer Identifier="FixFormattingOfCallChain">
+    <Id>RCS0054</Id>
+    <Title>Fix formatting of a call chain.</Title>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <Summary>This analyzer:
+* fixes indentation of multi-line call chain
+* formats each call on a separate line
+</Summary>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[return [|x.M1() // [|Id|]
+    .M2().M3()|];]]></Before>
+        <After><![CDATA[return [|x.M1()
+    .M2()
+    .M3()|];]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[return [|x.M1() // [|Id|]
+.M2()
+.M3()|];]]></Before>
+        <After><![CDATA[return [|x.M1()
+    .M2()
+    .M3()|];]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer Identifier="FixFormattingOfBinaryExpressionChain">
+    <Id>RCS0055</Id>
+    <Title>Fix formatting of a binary expression chain.</Title>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <Summary>This analyzer:
+ * fixes indentation of multi-line binary expression chain
+ * formats each expression on a separate line
+ </Summary>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[if (x && y // [|Id|]
+    && z)
+{
+}]]></Before>
+        <After><![CDATA[if (x
+    && y
+    && z)
+{
+}]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[if (x // [|Id|]
+&& y
+&& z)
+{
+}]]></Before>
+        <After><![CDATA[if (x
+    && y
+    && z)
+{
+}]]></After>
+      </Sample>
+    </Samples>
   </Analyzer>
 </Analyzers>

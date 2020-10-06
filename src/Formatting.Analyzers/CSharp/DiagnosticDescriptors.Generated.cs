@@ -480,8 +480,8 @@ namespace Roslynator.Formatting.CSharp
         /// <summary>RCS0047</summary>
         public static readonly DiagnosticDescriptor WrapAndIndentEachNodeInList = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.WrapAndIndentEachNodeInList, 
-            title:              "Wrap and indent each node in list.", 
-            messageFormat:      "Wrap and indent each node in list.", 
+            title:              "[deprecated] Wrap and indent each node in list.", 
+            messageFormat:      "[deprecated] Use analyzer RCS0053 instead.", 
             category:           DiagnosticCategories.Formatting, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
@@ -547,6 +547,42 @@ namespace Roslynator.Formatting.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.AddNewLineBeforeEqualsSignInsteadOfAfterItOrViceVersa, 
+            customTags:         Array.Empty<string>());
+
+        /// <summary>RCS0053</summary>
+        public static readonly DiagnosticDescriptor FixFormattingOfList = DiagnosticDescriptorFactory.Default.Create(
+            id:                 DiagnosticIdentifiers.FixFormattingOfList, 
+            title:              "Fix formatting of a list.", 
+            messageFormat:      "Fix formatting of {0}.", 
+            category:           DiagnosticCategories.Formatting, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: false, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.FixFormattingOfList, 
+            customTags:         Array.Empty<string>());
+
+        /// <summary>RCS0054</summary>
+        public static readonly DiagnosticDescriptor FixFormattingOfCallChain = DiagnosticDescriptorFactory.Default.Create(
+            id:                 DiagnosticIdentifiers.FixFormattingOfCallChain, 
+            title:              "Fix formatting of a call chain.", 
+            messageFormat:      "Fix formatting of a call chain.", 
+            category:           DiagnosticCategories.Formatting, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: false, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.FixFormattingOfCallChain, 
+            customTags:         Array.Empty<string>());
+
+        /// <summary>RCS0055</summary>
+        public static readonly DiagnosticDescriptor FixFormattingOfBinaryExpressionChain = DiagnosticDescriptorFactory.Default.Create(
+            id:                 DiagnosticIdentifiers.FixFormattingOfBinaryExpressionChain, 
+            title:              "Fix formatting of a binary expression chain.", 
+            messageFormat:      "Fix formatting of a binary expression chain.", 
+            category:           DiagnosticCategories.Formatting, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: false, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.FixFormattingOfBinaryExpressionChain, 
             customTags:         Array.Empty<string>());
 
         public static partial class ReportOnly
