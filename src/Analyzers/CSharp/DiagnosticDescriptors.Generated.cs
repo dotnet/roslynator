@@ -2002,15 +2002,15 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1210</summary>
-        public static readonly DiagnosticDescriptor ReturnTaskInsteadOfNull = DiagnosticDescriptorFactory.Default.Create(
-            id:                 DiagnosticIdentifiers.ReturnTaskInsteadOfNull, 
-            title:              "Return Task.FromResult instead of returning null.", 
-            messageFormat:      "Return Task.FromResult instead of returning null.", 
+        public static readonly DiagnosticDescriptor ReturnCompletedTaskInsteadOfNull = DiagnosticDescriptorFactory.Default.Create(
+            id:                 DiagnosticIdentifiers.ReturnCompletedTaskInsteadOfNull, 
+            title:              "Return completed task instead of returning null.", 
+            messageFormat:      "Return '{0}' instead of returning null.", 
             category:           DiagnosticCategories.Usage, 
             defaultSeverity:    DiagnosticSeverity.Warning, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.ReturnTaskInsteadOfNull, 
+            helpLinkUri:        DiagnosticIdentifiers.ReturnCompletedTaskInsteadOfNull, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1211</summary>

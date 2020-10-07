@@ -603,23 +603,7 @@ namespace Roslynator
 
         public static bool IsAwaitable(ITypeSymbol typeSymbol, bool shouldCheckWindowsRuntimeTypes = false)
         {
-            if (typeSymbol.Kind == SymbolKind.TypeParameter)
-            {
-                var typeParameterSymbol = (ITypeParameterSymbol)typeSymbol;
-
-                typeSymbol = typeParameterSymbol.ConstraintTypes.SingleOrDefault(f => f.TypeKind == TypeKind.Class, shouldThrow: false);
-
-                if (typeSymbol == null)
-                    return false;
-            }
-
-            if (typeSymbol.IsTupleType)
-                return false;
-
-            if (typeSymbol.SpecialType != SpecialType.None)
-                return false;
-
-            if (!typeSymbol.TypeKind.Is(TypeKind.Class, TypeKind.Struct, TypeKind.Interface))
+            if (!CanPossiblyBeAwaitable(typeSymbol))
                 return false;
 
             if (!(typeSymbol is INamedTypeSymbol namedTypeSymbol))
@@ -662,6 +646,23 @@ namespace Roslynator
             }
 
             return false;
+        }
+
+        internal static bool CanPossiblyBeAwaitable(ITypeSymbol typeSymbol)
+        {
+            if (typeSymbol.Kind == SymbolKind.TypeParameter)
+            {
+                var typeParameterSymbol = (ITypeParameterSymbol)typeSymbol;
+
+                typeSymbol = typeParameterSymbol.ConstraintTypes.SingleOrDefault(f => f.TypeKind == TypeKind.Class, shouldThrow: false);
+
+                if (typeSymbol == null)
+                    return false;
+            }
+
+            return !typeSymbol.IsTupleType
+                && typeSymbol.SpecialType == SpecialType.None
+                && typeSymbol.TypeKind.Is(TypeKind.Class, TypeKind.Struct, TypeKind.Interface);
         }
     }
 }

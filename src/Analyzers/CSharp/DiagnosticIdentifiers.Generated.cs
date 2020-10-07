@@ -170,7 +170,7 @@ namespace Roslynator.CSharp
         public const string ConvertAnonymousFunctionToMethodGroupOrViceVersa = "RCS1207";
         public const string ReduceIfNesting = "RCS1208";
         public const string OrderTypeParameterConstraints = "RCS1209";
-        public const string ReturnTaskInsteadOfNull = "RCS1210";
+        public const string ReturnCompletedTaskInsteadOfNull = "RCS1210";
         public const string RemoveUnnecessaryElse = "RCS1211";
         public const string RemoveRedundantAssignment = "RCS1212";
         public const string RemoveUnusedMemberDeclaration = "RCS1213";

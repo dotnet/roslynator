@@ -4323,9 +4323,10 @@ Foo3();]]></After>
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="ReturnTaskInsteadOfNull">
+  <Analyzer Identifier="ReturnCompletedTaskInsteadOfNull">
     <Id>RCS1210</Id>
-    <Title>Return Task.FromResult instead of returning null.</Title>
+    <Title>Return completed task instead of returning null.</Title>
+    <MessageFormat>Return '{0}' instead of returning null.</MessageFormat>
     <Category>Usage</Category>
     <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>

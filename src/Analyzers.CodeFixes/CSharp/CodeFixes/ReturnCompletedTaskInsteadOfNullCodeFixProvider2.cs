@@ -1,19 +1,53 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Collections.Immutable;
+using System.Composition;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CodeActions;
+using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CodeFixes;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.CodeFixes
 {
-    internal static class ReturnTaskInsteadOfReturningNullRefactoring
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ReturnCompletedTaskInsteadOfNullCodeFixProvider2))]
+    [Shared]
+    public class ReturnCompletedTaskInsteadOfNullCodeFixProvider2 : BaseCodeFixProvider
     {
-        public static async Task<Document> RefactorAsync(
+        public sealed override ImmutableArray<string> FixableDiagnosticIds
+        {
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.ReturnCompletedTaskInsteadOfNull); }
+        }
+
+        public override FixAllProvider GetFixAllProvider() => null;
+
+        public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
+        {
+            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+            if (!TryFindNode(root, context.Span, out ExpressionSyntax expression))
+                return;
+
+            if (!(expression.WalkUpParentheses() is ConditionalAccessExpressionSyntax conditionalAccess))
+                return;
+
+            Diagnostic diagnostic = context.Diagnostics[0];
+
+            CodeAction codeAction = CodeAction.Create(
+                "Use completed task",
+                ct => RefactorAsync(context.Document, conditionalAccess, ct),
+                GetEquivalenceKey(diagnostic));
+
+            context.RegisterCodeFix(codeAction, diagnostic);
+        }
+
+        private static async Task<Document> RefactorAsync(
             Document document,
             ConditionalAccessExpressionSyntax conditionalAccess,
             CancellationToken cancellationToken)
@@ -37,11 +71,13 @@ namespace Roslynator.CSharp.Refactorings
                 Identifier(localName).WithRenameAnnotation(),
                 expression);
 
-            InvocationExpressionSyntax newExpression = CreateTaskFromResultExpression(document, conditionalAccess, semanticModel, cancellationToken);
+            ExpressionSyntax newExpression = ReturnCompletedTaskInsteadOfNullCodeFixProvider.CreateCompletedTaskExpression(document, conditionalAccess, semanticModel, cancellationToken);
 
             IfStatementSyntax ifStatement = IfStatement(
                 NotEqualsExpression(IdentifierName(localName), NullLiteralExpression()),
-                Block(ReturnStatement(conditionalAccess.RemoveOperatorToken())),
+                Block(ReturnStatement(conditionalAccess
+                    .WithExpression(IdentifierName(localName).WithTriviaFrom(conditionalAccess.Expression))
+                    .RemoveOperatorToken())),
                 ElseClause(Block(ReturnStatement(newExpression))));
 
             SyntaxList<StatementSyntax> statements = List(new StatementSyntax[] { localStatement, ifStatement });
@@ -132,56 +168,6 @@ namespace Roslynator.CSharp.Refactorings
                         }
                 }
             }
-        }
-
-        public static async Task<Document> RefactorAsync(
-            Document document,
-            ExpressionSyntax expression,
-            CancellationToken cancellationToken)
-        {
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
-
-            ExpressionSyntax newExpression = CreateTaskFromResultExpression(document, expression, semanticModel, cancellationToken);
-
-            return await document.ReplaceNodeAsync(expression, newExpression, cancellationToken).ConfigureAwait(false);
-        }
-
-        private static InvocationExpressionSyntax CreateTaskFromResultExpression(
-            Document document,
-            ExpressionSyntax expression,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
-        {
-            var typeSymbol = (INamedTypeSymbol)semanticModel.GetTypeInfo(expression, cancellationToken).ConvertedType;
-
-            ITypeSymbol typeArgument = typeSymbol.TypeArguments[0];
-
-            TypeSyntax type = typeArgument.ToTypeSyntax().WithSimplifierAnnotation();
-
-            ExpressionSyntax defaultValue = typeArgument.GetDefaultValueSyntax(document.GetDefaultSyntaxOptions(), type);
-
-            SimpleNameSyntax name;
-
-            if (defaultValue.IsKind(
-                SyntaxKind.TrueLiteralExpression,
-                SyntaxKind.FalseLiteralExpression,
-                SyntaxKind.CharacterLiteralExpression,
-                SyntaxKind.SimpleMemberAccessExpression,
-                SyntaxKind.DefaultExpression))
-            {
-                name = IdentifierName("FromResult");
-            }
-            else
-            {
-                name = GenericName("FromResult", type);
-            }
-
-            InvocationExpressionSyntax newNode = SimpleMemberInvocationExpression(
-                ParseTypeName("System.Threading.Tasks.Task").WithSimplifierAnnotation(),
-                name,
-                Argument(defaultValue));
-
-            return newNode.WithTriviaFrom(expression);
         }
     }
 }
