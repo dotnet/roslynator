@@ -29,7 +29,6 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.SimplifyBooleanComparison,
-                    DiagnosticIdentifiers.CallSkipAndAnyInsteadOfCount,
                     DiagnosticIdentifiers.ConstantValuesShouldBePlacedOnRightSideOfComparisons,
                     DiagnosticIdentifiers.UseStringIsNullOrEmptyMethod,
                     DiagnosticIdentifiers.SimplifyCoalesceExpression,
@@ -67,16 +66,6 @@ namespace Roslynator.CSharp.CodeFixes
 
                             context.RegisterCodeFix(codeAction, diagnostic);
 
-                            break;
-                        }
-                    case DiagnosticIdentifiers.CallSkipAndAnyInsteadOfCount:
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Call 'Skip' and 'Any' instead of 'Count'",
-                                cancellationToken => CallSkipAndAnyInsteadOfCountRefactoring.RefactorAsync(document, binaryExpression, cancellationToken),
-                                GetEquivalenceKey(diagnostic));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
                     case DiagnosticIdentifiers.ConstantValuesShouldBePlacedOnRightSideOfComparisons:

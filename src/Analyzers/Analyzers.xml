@@ -4613,7 +4613,7 @@ else
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="CallSkipAndAnyInsteadOfCount">
+  <Analyzer Identifier="CallSkipAndAnyInsteadOfCount" IsObsolete="true">
     <Id>RCS1219</Id>
     <Title>Call 'Enumerable.Skip' and 'Enumerable.Any' instead of 'Enumerable.Count'.</Title>
     <Category>Performance</Category>

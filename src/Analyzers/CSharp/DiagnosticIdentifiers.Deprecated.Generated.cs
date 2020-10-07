@@ -101,6 +101,8 @@ namespace Roslynator.CSharp
         [Obsolete("", error: true)]
         public const string FormatSingleLineBlock = "RCS1185";
         [Obsolete("", error: true)]
+        public const string CallSkipAndAnyInsteadOfCount = "RCS1219";
+        [Obsolete("", error: true)]
         public const string SimplifyConditionalExpression2 = "RCS1245";
     }
 }

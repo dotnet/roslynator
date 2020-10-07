@@ -2115,18 +2115,6 @@ namespace Roslynator.CSharp
             helpLinkUri:        DiagnosticIdentifiers.SimplifyCodeBranching, 
             customTags:         Array.Empty<string>());
 
-        /// <summary>RCS1219</summary>
-        public static readonly DiagnosticDescriptor CallSkipAndAnyInsteadOfCount = DiagnosticDescriptorFactory.Default.Create(
-            id:                 DiagnosticIdentifiers.CallSkipAndAnyInsteadOfCount, 
-            title:              "Call 'Enumerable.Skip' and 'Enumerable.Any' instead of 'Enumerable.Count'.", 
-            messageFormat:      "Call 'Enumerable.Skip' and 'Enumerable.Any' instead of 'Enumerable.Count'.", 
-            category:           DiagnosticCategories.Performance, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.CallSkipAndAnyInsteadOfCount, 
-            customTags:         Array.Empty<string>());
-
         /// <summary>RCS1220</summary>
         public static readonly DiagnosticDescriptor UsePatternMatchingInsteadOfIsAndCast = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast, 
