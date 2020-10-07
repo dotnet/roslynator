@@ -37,8 +37,8 @@ namespace Roslynator.CSharp.CodeFixes
                 cancellationToken =>
                 {
                     ExpressionSyntax newNode = invocationExpression.Expression
-                            .AppendToTrailingTrivia(invocationExpression.ArgumentList.GetTrailingTrivia())
-                            .WithFormatterAnnotation();
+                        .AppendToTrailingTrivia(invocationExpression.ArgumentList.GetTrailingTrivia())
+                        .WithFormatterAnnotation();
 
                     return context.Document.ReplaceNodeAsync(invocationExpression, newNode, cancellationToken);
                 },

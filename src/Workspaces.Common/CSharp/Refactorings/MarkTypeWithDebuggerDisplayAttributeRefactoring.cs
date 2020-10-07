@@ -59,7 +59,8 @@ namespace Roslynator.CSharp.Refactorings
                                     ParseName("System.Diagnostics.DebuggerBrowsableState").WithSimplifierAnnotation(),
                                     IdentifierName("Never"))
                             )
-                        ).WithSimplifierAnnotation()
+                        )
+                            .WithSimplifierAnnotation()
                     )
                 ),
                 Modifiers.Private(),
@@ -72,7 +73,8 @@ namespace Roslynator.CSharp.Refactorings
                             ReturnStatement(returnExpression))
                         )
                     )
-                ).WithFormatterAnnotation();
+                )
+                .WithFormatterAnnotation();
         }
     }
 }

@@ -529,7 +529,8 @@ namespace Roslynator.CSharp.Analysis.If
                 ifStatement,
                 whenTrue,
                 whenFalse,
-                semanticModel).ToImmutableArray();
+                semanticModel)
+                .ToImmutableArray();
         }
 
         private static ImmutableArray<IfAnalysis> Analyze(

@@ -69,7 +69,8 @@ namespace Roslynator.CSharp.Analysis
                                         if (len == len2
                                             && string.Compare(s, index1, s, index2, len, StringComparison.Ordinal) == 0)
                                         {
-                                            ReportDiagnostic(context,
+                                            ReportDiagnostic(
+                                                context,
                                                 DiagnosticDescriptors.DuplicateWordInComment,
                                                 Location.Create(context.Node.SyntaxTree, TextSpan.FromBounds(token.SpanStart + index2, token.SpanStart + index2 + len2)));
                                         }

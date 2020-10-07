@@ -279,18 +279,18 @@ namespace Roslynator.CSharp.Refactorings
                     if (left.IsKind(SyntaxKind.ImplicitElementAccess))
                     {
                         yield return SimpleAssignmentStatement(
-                                ElementAccessExpression(
-                                    initializedExpression,
-                                    ((ImplicitElementAccessSyntax)left).ArgumentList),
-                                right);
+                            ElementAccessExpression(
+                                initializedExpression,
+                                ((ImplicitElementAccessSyntax)left).ArgumentList),
+                            right);
                     }
                     else
                     {
                         yield return SimpleAssignmentStatement(
-                                SimpleMemberAccessExpression(
-                                    initializedExpression,
-                                    (IdentifierNameSyntax)left),
-                                right);
+                            SimpleMemberAccessExpression(
+                                initializedExpression,
+                                (IdentifierNameSyntax)left),
+                            right);
                     }
                 }
                 else if (kind == SyntaxKind.ComplexElementInitializerExpression)
@@ -298,10 +298,10 @@ namespace Roslynator.CSharp.Refactorings
                     var elementInitializer = (InitializerExpressionSyntax)expression;
 
                     yield return SimpleAssignmentStatement(
-                            ElementAccessExpression(
-                                initializedExpression,
-                                BracketedArgumentList(SingletonSeparatedList(Argument(elementInitializer.Expressions[0])))),
-                            elementInitializer.Expressions[1]);
+                        ElementAccessExpression(
+                            initializedExpression,
+                            BracketedArgumentList(SingletonSeparatedList(Argument(elementInitializer.Expressions[0])))),
+                        elementInitializer.Expressions[1]);
                 }
                 else
                 {

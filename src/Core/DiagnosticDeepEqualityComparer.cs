@@ -44,9 +44,11 @@ namespace Roslynator
             if (obj == null)
                 return 0;
 
-            return Hash.Combine(obj.Descriptor,
-                Hash.Combine(obj.Location.GetLineSpan().GetHashCode(),
-                Hash.Combine((int)obj.Severity, obj.WarningLevel)));
+            return Hash.Combine(
+                obj.Descriptor,
+                Hash.Combine(
+                    obj.Location.GetLineSpan().GetHashCode(),
+                    Hash.Combine((int)obj.Severity, obj.WarningLevel)));
         }
     }
 }

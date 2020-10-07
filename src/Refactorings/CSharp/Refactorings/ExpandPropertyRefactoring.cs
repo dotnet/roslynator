@@ -18,7 +18,8 @@ namespace Roslynator.CSharp.Refactorings
             return propertyDeclaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration)
                 && propertyDeclaration
                     .AccessorList?
-                    .Accessors.All(f => f.BodyOrExpressionBody() == null) == true;
+                    .Accessors
+                    .All(f => f.BodyOrExpressionBody() == null) == true;
         }
 
         public static Task<Document> RefactorAsync(

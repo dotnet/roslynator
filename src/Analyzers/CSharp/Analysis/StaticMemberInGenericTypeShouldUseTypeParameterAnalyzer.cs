@@ -203,9 +203,10 @@ namespace Roslynator.CSharp.Analysis
             if (identifier.Kind() == SyntaxKind.None)
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context,
-               DiagnosticDescriptors.StaticMemberInGenericTypeShouldUseTypeParameter,
-               identifier);
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
+                DiagnosticDescriptors.StaticMemberInGenericTypeShouldUseTypeParameter,
+                identifier);
         }
     }
 }

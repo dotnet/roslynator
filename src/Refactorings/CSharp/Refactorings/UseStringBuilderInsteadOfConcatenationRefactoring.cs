@@ -65,7 +65,8 @@ namespace Roslynator.CSharp.Refactorings
                     Identifier(name).WithRenameAnnotation(),
                     ObjectCreationExpression(
                         ParseTypeName("System.Text.StringBuilder").WithSimplifierAnnotation(),
-                        ArgumentList())).WithLeadingTrivia(statement.GetLeadingTrivia())
+                        ArgumentList()))
+                    .WithLeadingTrivia(statement.GetLeadingTrivia())
             };
 
             ExpressionSyntax newInvocation = null;

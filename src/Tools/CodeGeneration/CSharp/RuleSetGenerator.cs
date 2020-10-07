@@ -14,7 +14,8 @@ namespace Roslynator.CodeGeneration.CSharp
         public static CompilationUnitSyntax Generate(string xml)
         {
             CompilationUnitSyntax compilationUnit = CompilationUnit(
-                NamespaceDeclaration("Roslynator.VisualStudio",
+                NamespaceDeclaration(
+                    "Roslynator.VisualStudio",
                     ClassDeclaration(
                         Modifiers.Internal_Static_Partial(),
                         "RuleSetHelpers",

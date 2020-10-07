@@ -394,6 +394,9 @@
     <Rule Id="RCS0050" Action="Info" />
     <Rule Id="RCS0051" Action="Info" />
     <Rule Id="RCS0051i" Action="Info" />
+    <Rule Id="RCS0053" Action="Info" />
+    <Rule Id="RCS0054" Action="Info" />
+    <Rule Id="RCS0055" Action="Info" />
   </Rules>
   <Rules AnalyzerId="SonarAnalyzer.CSharp" RuleNamespace="SonarAnalyzer.CSharp">
     <Rule Id="S101" Action="None" />

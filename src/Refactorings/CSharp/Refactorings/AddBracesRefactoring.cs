@@ -15,8 +15,8 @@ namespace Roslynator.CSharp.Refactorings
         public static void ComputeRefactoring(RefactoringContext context, StatementSyntax statement)
         {
             if (context.IsAnyRefactoringEnabled(
-                    RefactoringIdentifiers.AddBraces,
-                    RefactoringIdentifiers.AddBracesToIfElse)
+                RefactoringIdentifiers.AddBraces,
+                RefactoringIdentifiers.AddBracesToIfElse)
                 && CanRefactor(context, statement))
             {
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddBraces))

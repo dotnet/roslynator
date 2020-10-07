@@ -13,8 +13,8 @@ namespace Roslynator.CSharp.Refactorings
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, SyntaxToken token)
         {
             if (context.IsAnyRefactoringEnabled(
-                    RefactoringIdentifiers.JoinStringExpressions,
-                    RefactoringIdentifiers.UseStringBuilderInsteadOfConcatenation)
+                RefactoringIdentifiers.JoinStringExpressions,
+                RefactoringIdentifiers.UseStringBuilderInsteadOfConcatenation)
                 && context.Span.IsEmptyAndContainedInSpan(token)
                 && token.IsParentKind(SyntaxKind.AddExpression))
             {

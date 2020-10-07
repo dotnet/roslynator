@@ -83,7 +83,8 @@ namespace Roslynator.CSharp.Analysis
             if (invocation.ContainsDirectives(span))
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context,
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
                 DiagnosticDescriptors.CombineEnumerableWhereMethodChain,
                 Location.Create(invocation.SyntaxTree, span));
 

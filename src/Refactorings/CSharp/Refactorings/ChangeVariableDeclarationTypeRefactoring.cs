@@ -74,10 +74,10 @@ namespace Roslynator.CSharp.Refactorings
         }
 
         private static void ChangeTypeAccordingToExpression(
-           RefactoringContext context,
-           VariableDeclarationSyntax variableDeclaration,
-           ITypeSymbol typeSymbol,
-           SemanticModel semanticModel)
+            RefactoringContext context,
+            VariableDeclarationSyntax variableDeclaration,
+            ITypeSymbol typeSymbol,
+            SemanticModel semanticModel)
         {
             foreach (VariableDeclaratorSyntax variableDeclarator in variableDeclaration.Variables)
             {

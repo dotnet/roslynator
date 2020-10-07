@@ -76,7 +76,8 @@ namespace Roslynator.CodeGeneration.CSharp
                         SimpleMemberInvocationExpression(
                             IdentifierName("DiagnosticDescriptorFactory"),
                             IdentifierName("CreateFadeOut"),
-                            ArgumentList(Argument(IdentifierName(identifier))))).AddObsoleteAttributeIf(analyzer.IsObsolete, error: true);
+                            ArgumentList(Argument(IdentifierName(identifier)))))
+                        .AddObsoleteAttributeIf(analyzer.IsObsolete, error: true);
                 }
             }
 
@@ -150,7 +151,8 @@ namespace Roslynator.CodeGeneration.CSharp
                             (analyzer.SupportsFadeOut)
                                 ? SimpleMemberAccessExpression(IdentifierName("WellKnownDiagnosticTags"), IdentifierName(WellKnownDiagnosticTags.Unnecessary))
                                 : ParseExpression("Array.Empty<string>()"))
-                        ))).AddObsoleteAttributeIf(analyzer.IsObsolete, error: true);
+                        )))
+                .AddObsoleteAttributeIf(analyzer.IsObsolete, error: true);
 
             if (!analyzer.IsObsolete)
             {

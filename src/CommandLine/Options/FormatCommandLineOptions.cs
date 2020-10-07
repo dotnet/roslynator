@@ -7,17 +7,20 @@ namespace Roslynator.CommandLine
     [Verb("format", HelpText = "Formats documents in the specified project or solution.")]
     public class FormatCommandLineOptions : MSBuildCommandLineOptions
     {
-        [Option(longName: "culture",
+        [Option(
+            longName: "culture",
             HelpText = "Defines culture that should be used to display diagnostic message.",
             MetaValue = "<CULTURE_ID>")]
         public string Culture { get; set; }
 
-        [Option(longName: "end-of-line",
+        [Option(
+            longName: "end-of-line",
             HelpText = "Defines end of line character(s). Allowed values are lf or crlf.",
             MetaValue = "<END_OF_LINE>")]
         public string EndOfLine { get; set; }
 
-        [Option(longName: "include-generated-code",
+        [Option(
+            longName: "include-generated-code",
             HelpText = "Indicates whether generated code should be formatted.")]
         public bool IncludeGeneratedCode { get; set; }
     }

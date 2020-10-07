@@ -37,7 +37,8 @@ namespace Roslynator.CSharp.Refactorings
             ParenthesizedExpressionSyntax parenthesizedExpression = ParenthesizedExpression(
                 BitwiseAndExpression(
                     ((MemberAccessExpressionSyntax)invocation.Expression).Expression.Parenthesize(),
-                    expression.Parenthesize()).Parenthesize());
+                    expression.Parenthesize())
+                    .Parenthesize());
 
             SyntaxKind binaryExpressionKind = (isComposite) ? SyntaxKind.EqualsExpression : SyntaxKind.NotEqualsExpression;
 

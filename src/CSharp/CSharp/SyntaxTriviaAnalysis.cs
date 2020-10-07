@@ -579,7 +579,9 @@ namespace Roslynator.CSharp
 
             SyntaxTrivia replacementTrivia = Whitespace(replacement);
 
-            return expression.ReplaceTokens(indentations.Select(f => f.Key), (token, _) =>
+            return expression.ReplaceTokens(
+                indentations.Select(f => f.Key),
+                (token, _) =>
                 {
                     IndentationInfo indentationInfo = indentations[token];
 

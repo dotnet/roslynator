@@ -87,7 +87,8 @@ namespace Roslynator.CSharp.Analysis
             if (yieldStatement.SpanStart < statements[index].Span.End)
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context,
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
                 DiagnosticDescriptors.ValidateArgumentsCorrectly,
                 Location.Create(body.SyntaxTree, new TextSpan(statements[index + 1].SpanStart, 0)));
         }

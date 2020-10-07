@@ -50,8 +50,8 @@ namespace Roslynator.CSharp.Refactorings
                 .Where(f => f != memberDeclaration);
 
             CompilationUnitSyntax newCompilationUnit = compilationUnit.RemoveNodes(
-                 membersToRemove,
-                 SyntaxRemoveOptions.KeepUnbalancedDirectives);
+                membersToRemove,
+                SyntaxRemoveOptions.KeepUnbalancedDirectives);
 
             SyntaxList<AttributeListSyntax> attributeLists = newCompilationUnit.AttributeLists;
 

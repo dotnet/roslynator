@@ -114,7 +114,8 @@ namespace Roslynator.CSharp.CodeFixes
                                 IdentifierName(parameterName),
                                 DeclarationPattern(
                                     type,
-                                    SingleVariableDesignation(Identifier(localName)))).Parenthesize()),
+                                    SingleVariableDesignation(Identifier(localName))))
+                                .Parenthesize()),
                         Block(ReturnStatement(FalseLiteralExpression()))),
                     ThrowNewStatement(NotImplementedException())));
         }

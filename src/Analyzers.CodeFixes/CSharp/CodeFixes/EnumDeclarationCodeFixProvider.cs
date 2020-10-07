@@ -270,16 +270,18 @@ namespace Roslynator.CSharp.CodeFixes
         {
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            EnumDeclarationSyntax newEnumDeclaration = enumDeclaration.ReplaceNodes(GetExpressionsToRewrite(), (expression, _) =>
-            {
-                Optional<object> constantValue = semanticModel.GetConstantValue(expression, cancellationToken);
+            EnumDeclarationSyntax newEnumDeclaration = enumDeclaration.ReplaceNodes(
+                GetExpressionsToRewrite(),
+                (expression, _) =>
+                {
+                    Optional<object> constantValue = semanticModel.GetConstantValue(expression, cancellationToken);
 
-                var power = (int)Math.Log(Convert.ToDouble(constantValue.Value), 2);
+                    var power = (int)Math.Log(Convert.ToDouble(constantValue.Value), 2);
 
-                BinaryExpressionSyntax leftShift = LeftShiftExpression(NumericLiteralExpression(1), NumericLiteralExpression(power));
+                    BinaryExpressionSyntax leftShift = LeftShiftExpression(NumericLiteralExpression(1), NumericLiteralExpression(power));
 
-                return leftShift.WithTriviaFrom(expression);
-            });
+                    return leftShift.WithTriviaFrom(expression);
+                });
 
             return await document.ReplaceNodeAsync(enumDeclaration, newEnumDeclaration, cancellationToken).ConfigureAwait(false);
 

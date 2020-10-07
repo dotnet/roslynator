@@ -76,7 +76,8 @@ namespace Roslynator.CSharp.Analysis
                         && !string.Equals(name, parameters2[i].Name, StringComparison.Ordinal)
                         && (parameters[i].GetSyntaxOrDefault(context.CancellationToken) is ParameterSyntax parameterSyntax))
                     {
-                        DiagnosticHelpers.ReportDiagnostic(context,
+                        DiagnosticHelpers.ReportDiagnostic(
+                            context,
                             DiagnosticDescriptors.ParameterNameDiffersFromBase,
                             parameterSyntax.Identifier,
                             name,

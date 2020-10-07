@@ -114,25 +114,30 @@ namespace Roslynator.CSharp.CodeFixes
                             }
                             else if (IsInterfaceMemberOrExplicitInterfaceImplementation(node))
                             {
-                                ModifiersCodeFixRegistrator.RemoveModifiers(context, diagnostic, node, modifiers, f =>
-                                {
-                                    switch (f.Kind())
+                                ModifiersCodeFixRegistrator.RemoveModifiers(
+                                    context,
+                                    diagnostic,
+                                    node,
+                                    modifiers,
+                                    f =>
                                     {
-                                        case SyntaxKind.PublicKeyword:
-                                        case SyntaxKind.ProtectedKeyword:
-                                        case SyntaxKind.InternalKeyword:
-                                        case SyntaxKind.PrivateKeyword:
-                                        case SyntaxKind.StaticKeyword:
-                                        case SyntaxKind.VirtualKeyword:
-                                        case SyntaxKind.OverrideKeyword:
-                                        case SyntaxKind.AbstractKeyword:
-                                            {
-                                                return true;
-                                            }
-                                    }
+                                        switch (f.Kind())
+                                        {
+                                            case SyntaxKind.PublicKeyword:
+                                            case SyntaxKind.ProtectedKeyword:
+                                            case SyntaxKind.InternalKeyword:
+                                            case SyntaxKind.PrivateKeyword:
+                                            case SyntaxKind.StaticKeyword:
+                                            case SyntaxKind.VirtualKeyword:
+                                            case SyntaxKind.OverrideKeyword:
+                                            case SyntaxKind.AbstractKeyword:
+                                                {
+                                                    return true;
+                                                }
+                                        }
 
-                                    return false;
-                                });
+                                        return false;
+                                    });
                             }
                             else if (node.IsKind(SyntaxKind.MethodDeclaration, SyntaxKind.PropertyDeclaration, SyntaxKind.IndexerDeclaration, SyntaxKind.EventDeclaration, SyntaxKind.EventFieldDeclaration)
                                 && node.IsParentKind(SyntaxKind.StructDeclaration)
@@ -258,27 +263,31 @@ namespace Roslynator.CSharp.CodeFixes
                             if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveInvalidModifier))
                                 break;
 
-                            ModifiersCodeFixRegistrator.RemoveModifiers(context, diagnostic, node, f =>
-                            {
-                                switch (f.Kind())
+                            ModifiersCodeFixRegistrator.RemoveModifiers(
+                                context,
+                                diagnostic,
+                                node,
+                                f =>
                                 {
-                                    case SyntaxKind.PublicKeyword:
-                                    case SyntaxKind.ProtectedKeyword:
-                                    case SyntaxKind.InternalKeyword:
-                                    case SyntaxKind.PrivateKeyword:
-                                    case SyntaxKind.VirtualKeyword:
-                                    case SyntaxKind.AbstractKeyword:
-                                    case SyntaxKind.OverrideKeyword:
-                                    case SyntaxKind.NewKeyword:
-                                    case SyntaxKind.SealedKeyword:
-                                    case SyntaxKind.ExternKeyword:
-                                        {
-                                            return true;
-                                        }
-                                }
+                                    switch (f.Kind())
+                                    {
+                                        case SyntaxKind.PublicKeyword:
+                                        case SyntaxKind.ProtectedKeyword:
+                                        case SyntaxKind.InternalKeyword:
+                                        case SyntaxKind.PrivateKeyword:
+                                        case SyntaxKind.VirtualKeyword:
+                                        case SyntaxKind.AbstractKeyword:
+                                        case SyntaxKind.OverrideKeyword:
+                                        case SyntaxKind.NewKeyword:
+                                        case SyntaxKind.SealedKeyword:
+                                        case SyntaxKind.ExternKeyword:
+                                            {
+                                                return true;
+                                            }
+                                    }
 
-                                return false;
-                            });
+                                    return false;
+                                });
 
                             break;
                         }

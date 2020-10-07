@@ -14,10 +14,10 @@ namespace Roslynator.CSharp.Refactorings
     internal static class ReplaceYieldReturnWithForEachRefactoring
     {
         public static void ComputeCodeFix(
-             CodeFixContext context,
-             Diagnostic diagnostic,
-             ExpressionSyntax expression,
-             SemanticModel semanticModel)
+            CodeFixContext context,
+            Diagnostic diagnostic,
+            ExpressionSyntax expression,
+            SemanticModel semanticModel)
         {
             TypeInfo typeInfo = semanticModel.GetTypeInfo(expression, context.CancellationToken);
 

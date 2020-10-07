@@ -119,9 +119,12 @@ namespace Roslynator.CommandLine
             string totalPreprocessorDirectiveLines = totalPreprocessorDirectiveLineCount.ToString("n0");
             string totalLines = totalLineCount.ToString("n0");
 
-            int maxDigits = Math.Max(totalCodeLines.Length,
-                Math.Max(totalWhitespaceLines.Length,
-                    Math.Max(totalCommentLines.Length,
+            int maxDigits = Math.Max(
+                totalCodeLines.Length,
+                Math.Max(
+                    totalWhitespaceLines.Length,
+                    Math.Max(
+                        totalCommentLines.Length,
                         Math.Max(totalPreprocessorDirectiveLines.Length, totalLines.Length))));
 
             WriteLine($"{totalCodeLines.PadLeft(maxDigits)} {totalCodeLineCount / (double)totalLineCount,4:P0} logical lines of code", ConsoleColor.Green, Verbosity.Minimal);

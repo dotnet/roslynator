@@ -30,12 +30,16 @@ namespace Roslynator.CSharp.CodeFixes
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out SyntaxNode node, predicate: f => f.IsKind(
-                SyntaxKind.Parameter,
-                SyntaxKind.VariableDeclaration,
-                SyntaxKind.ForEachStatement,
-                SyntaxKind.DeclarationPattern,
-                SyntaxKind.DeclarationExpression)))
+            if (!TryFindFirstAncestorOrSelf(
+                root,
+                context.Span,
+                out SyntaxNode node,
+                predicate: f => f.IsKind(
+                    SyntaxKind.Parameter,
+                    SyntaxKind.VariableDeclaration,
+                    SyntaxKind.ForEachStatement,
+                    SyntaxKind.DeclarationPattern,
+                    SyntaxKind.DeclarationExpression)))
             {
                 return;
             }

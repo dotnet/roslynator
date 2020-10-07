@@ -42,7 +42,8 @@ namespace Roslynator.CSharp.Analysis
             if (section == null)
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context,
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
                 DiagnosticDescriptors.MergeSwitchSectionsWithEquivalentContent,
                 Location.Create(switchStatement.SyntaxTree, section.Statements.Span));
         }

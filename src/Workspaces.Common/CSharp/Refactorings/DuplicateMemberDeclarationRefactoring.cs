@@ -37,18 +37,20 @@ namespace Roslynator.CSharp.Refactorings
 
                 SyntaxToken newIdentifier = SyntaxFactory.Identifier(newName);
 
-                newMember = member.ReplaceNodes(references.Where(n => member.Contains(n)), (n, _) =>
-                {
-                    if (n is IdentifierNameSyntax identifierName)
+                newMember = member.ReplaceNodes(
+                    references.Where(n => member.Contains(n)),
+                    (n, _) =>
                     {
-                        return identifierName.WithIdentifier(newIdentifier.WithTriviaFrom(identifierName.Identifier));
-                    }
-                    else
-                    {
-                        Debug.Fail(n.Kind().ToString());
-                        return n;
-                    }
-                });
+                        if (n is IdentifierNameSyntax identifierName)
+                        {
+                            return identifierName.WithIdentifier(newIdentifier.WithTriviaFrom(identifierName.Identifier));
+                        }
+                        else
+                        {
+                            Debug.Fail(n.Kind().ToString());
+                            return n;
+                        }
+                    });
 
                 newMember = SetIdentifier(newMember, newIdentifier.WithRenameAnnotation());
             }

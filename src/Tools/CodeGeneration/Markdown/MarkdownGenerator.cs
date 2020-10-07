@@ -165,7 +165,8 @@ namespace Roslynator.CodeGeneration.Markdown
 
             MDocument document = Document(
                 Heading2(refactoring.Title),
-                Table(TableRow("Property", "Value"),
+                Table(
+                    TableRow("Property", "Value"),
                     TableRow("Id", refactoring.Id),
                     TableRow("Title", refactoring.Title),
                     TableRow("Syntax", string.Join(", ", refactoring.Syntaxes.Select(f => f.Name))),
@@ -297,9 +298,9 @@ namespace Roslynator.CodeGeneration.Markdown
                     refactorings.OrderBy(f => f.Title, comparer).Select(f =>
                     {
                         return TableRow(
-                        f.Id,
-                        Link(f.Title.TrimEnd('.'), $"../../docs/refactorings/{f.Id}.md"),
-                        CheckboxOrHyphen(f.IsEnabledByDefault));
+                            f.Id,
+                            Link(f.Title.TrimEnd('.'), $"../../docs/refactorings/{f.Id}.md"),
+                            CheckboxOrHyphen(f.IsEnabledByDefault));
                     })));
 
             document.AddFootnote();

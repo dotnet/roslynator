@@ -19,7 +19,8 @@ namespace Roslynator.CodeGeneration.CSharp
         {
             CompilationUnitSyntax compilationUnit = CompilationUnit(
                 UsingDirectives("System.Collections.Immutable", "Microsoft.CodeAnalysis", "Microsoft.CodeAnalysis.Diagnostics"),
-                NamespaceDeclaration(@namespace,
+                NamespaceDeclaration(
+                    @namespace,
                     ClassDeclaration(
                         SingletonList(
                             AttributeList(

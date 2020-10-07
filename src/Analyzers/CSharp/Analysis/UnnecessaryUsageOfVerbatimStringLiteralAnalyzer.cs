@@ -49,7 +49,8 @@ namespace Roslynator.CSharp.Analysis
 
             Debug.Assert(string.Compare(text, 2, literalExpression.Token.ValueText, 0, text.Length - 3, StringComparison.Ordinal) == 0, text);
 
-            DiagnosticHelpers.ReportDiagnostic(context,
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
                 DiagnosticDescriptors.UnnecessaryUsageOfVerbatimStringLiteral,
                 Location.Create(node.SyntaxTree, new TextSpan(node.SpanStart, 1)));
         }
@@ -96,7 +97,8 @@ namespace Roslynator.CSharp.Analysis
                 }
             }
 
-            DiagnosticHelpers.ReportDiagnostic(context,
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
                 DiagnosticDescriptors.UnnecessaryUsageOfVerbatimStringLiteral,
                 Location.Create(node.SyntaxTree, new TextSpan(node.SpanStart + 1, 1)));
         }

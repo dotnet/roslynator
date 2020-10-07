@@ -63,11 +63,13 @@ namespace Roslynator.CSharp.Analysis
 
                 SyntaxToken identifier = methodDeclaration.Identifier;
 
-                DiagnosticHelpers.ReportDiagnostic(context,
+                DiagnosticHelpers.ReportDiagnostic(
+                    context,
                     DiagnosticDescriptors.NonAsynchronousMethodNameShouldNotEndWithAsync,
                     identifier);
 
-                DiagnosticHelpers.ReportDiagnostic(context,
+                DiagnosticHelpers.ReportDiagnostic(
+                    context,
                     DiagnosticDescriptors.NonAsynchronousMethodNameShouldNotEndWithAsyncFadeOut,
                     Location.Create(identifier.SyntaxTree, TextSpan.FromBounds(identifier.Span.End - 5, identifier.Span.End)));
             }

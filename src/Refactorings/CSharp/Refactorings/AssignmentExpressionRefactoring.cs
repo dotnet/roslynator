@@ -20,7 +20,7 @@ namespace Roslynator.CSharp.Refactorings
                 context.RegisterRefactoring(
                     $"Expand {assignmentExpression.OperatorToken}",
                     ct => ExpandCompoundAssignmentOperatorRefactoring.RefactorAsync(context.Document, assignmentExpression, ct),
-                        RefactoringIdentifiers.ExpandCompoundAssignmentOperator);
+                    RefactoringIdentifiers.ExpandCompoundAssignmentOperator);
             }
 
             if (context.IsAnyRefactoringEnabled(RefactoringIdentifiers.AddCastExpression, RefactoringIdentifiers.CallToMethod)

@@ -170,7 +170,8 @@ namespace Roslynator.CSharp.CodeFixes
                     ExpressionSyntax newCondition = SyntaxInverter.LogicallyInvert(conditionalExpression.Condition, semanticModel, cancellationToken);
 
                     SyntaxTriviaList trailingTrivia = info
-                        .QuestionToken.LeadingAndTrailingTrivia()
+                        .QuestionToken
+                        .LeadingAndTrailingTrivia()
                         .AddRange(whenTrue.GetLeadingAndTrailingTrivia())
                         .EmptyIfWhitespace();
 

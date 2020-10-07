@@ -73,7 +73,8 @@ namespace Roslynator.CSharp.Refactorings
                 newName,
                 fieldSymbol,
                 context.Solution,
-                cancellationToken: context.CancellationToken).ConfigureAwait(false))
+                cancellationToken: context.CancellationToken)
+                .ConfigureAwait(false))
             {
                 return;
             }

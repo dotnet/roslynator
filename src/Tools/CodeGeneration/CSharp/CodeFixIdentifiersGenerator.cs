@@ -28,10 +28,10 @@ namespace Roslynator.CodeGeneration.CSharp
                             .Select(f =>
                             {
                                 return FieldDeclaration(
-                                   Modifiers.Public_Const(),
-                                   PredefinedStringType(),
-                                   f.Identifier,
-                                   AddExpression(SimpleMemberAccessExpression(IdentifierName("CodeFixIdentifier"), IdentifierName("CodeFixIdPrefix")), StringLiteralExpression(f.Id.Substring(CodeFixIdentifier.CodeFixIdPrefix.Length))));
+                                    Modifiers.Public_Const(),
+                                    PredefinedStringType(),
+                                    f.Identifier,
+                                    AddExpression(SimpleMemberAccessExpression(IdentifierName("CodeFixIdentifier"), IdentifierName("CodeFixIdPrefix")), StringLiteralExpression(f.Id.Substring(CodeFixIdentifier.CodeFixIdPrefix.Length))));
                             })
                             .ToSyntaxList<MemberDeclarationSyntax>())));
         }

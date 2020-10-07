@@ -26,12 +26,17 @@ namespace Roslynator.CSharp.CodeFixes
         {
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            if (!TryFindNode(root, context.Span, out SyntaxNode node, findInsideTrivia: true, predicate: f => f.IsKind(
-                SyntaxKind.QualifiedName,
-                SyntaxKind.IdentifierName,
-                SyntaxKind.SimpleMemberAccessExpression,
-                SyntaxKind.NameMemberCref,
-                SyntaxKind.QualifiedCref)))
+            if (!TryFindNode(
+                root,
+                context.Span,
+                out SyntaxNode node,
+                findInsideTrivia: true,
+                predicate: f => f.IsKind(
+                    SyntaxKind.QualifiedName,
+                    SyntaxKind.IdentifierName,
+                    SyntaxKind.SimpleMemberAccessExpression,
+                    SyntaxKind.NameMemberCref,
+                    SyntaxKind.QualifiedCref)))
             {
                 return;
             }

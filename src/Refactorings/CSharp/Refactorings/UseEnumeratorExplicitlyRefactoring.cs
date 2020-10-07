@@ -49,10 +49,10 @@ namespace Roslynator.CSharp.Refactorings
             StatementSyntax statement = forEachStatement.Statement;
 
             StatementSyntax newStatement = statement.ReplaceNodes(
-            statement
-                .DescendantNodes()
-                .Where(node => node.Kind() == SyntaxKind.IdentifierName && SymbolEqualityComparer.Default.Equals(localSymbol, semanticModel.GetSymbol(node, cancellationToken))),
-            (node, _) => currentExpression.WithTriviaFrom(node));
+                statement
+                    .DescendantNodes()
+                    .Where(node => node.Kind() == SyntaxKind.IdentifierName && SymbolEqualityComparer.Default.Equals(localSymbol, semanticModel.GetSymbol(node, cancellationToken))),
+                (node, _) => currentExpression.WithTriviaFrom(node));
 
             WhileStatementSyntax whileStatement = WhileStatement(
                 SimpleMemberInvocationExpression(IdentifierName(name), IdentifierName("MoveNext")),

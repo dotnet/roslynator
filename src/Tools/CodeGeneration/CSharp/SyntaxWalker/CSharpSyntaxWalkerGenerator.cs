@@ -593,32 +593,32 @@ namespace Roslynator.CodeGeneration.CSharp
                     yield return SwitchSection(
                         labels,
                         List(new StatementSyntax[]
-                        {
-                            ExpressionStatement(
-                                InvocationExpression(
-                                    IdentifierName("Visit" + name2.Remove(name2.Length - 6)),
-                                    ArgumentList(Argument(CastExpression(IdentifierName(name2), IdentifierName("node")))))),
-                            BreakStatement()
-                        }));
+                            {
+                                ExpressionStatement(
+                                    InvocationExpression(
+                                        IdentifierName("Visit" + name2.Remove(name2.Length - 6)),
+                                        ArgumentList(Argument(CastExpression(IdentifierName(name2), IdentifierName("node")))))),
+                                BreakStatement()
+                            }));
                 }
 
                 yield return DefaultSwitchSection(
                     List(new StatementSyntax[]
-                    {
-                        ExpressionStatement(
-                            SimpleMemberInvocationExpression(
-                                IdentifierName("Debug"),
-                                IdentifierName("Fail"),
-                                ArgumentList(
-                                    Argument(
-                                        ParseExpression(@"$""Unrecognized kind '{node.Kind()}'."""))))),
-                        ExpressionStatement(
-                            SimpleMemberInvocationExpression(
-                                BaseExpression(),
-                                IdentifierName("Visit"),
-                                ArgumentList(Argument(IdentifierName("node"))))),
-                        BreakStatement()
-                    }));
+                        {
+                            ExpressionStatement(
+                                SimpleMemberInvocationExpression(
+                                    IdentifierName("Debug"),
+                                    IdentifierName("Fail"),
+                                    ArgumentList(
+                                        Argument(
+                                            ParseExpression(@"$""Unrecognized kind '{node.Kind()}'."""))))),
+                            ExpressionStatement(
+                                SimpleMemberInvocationExpression(
+                                    BaseExpression(),
+                                    IdentifierName("Visit"),
+                                    ArgumentList(Argument(IdentifierName("node"))))),
+                            BreakStatement()
+                        }));
             }
         }
     }

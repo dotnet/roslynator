@@ -44,7 +44,8 @@ namespace Roslynator.CSharp.Analysis
             if (span == default)
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context,
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
                 DiagnosticDescriptors.SimplifyCoalesceExpression,
                 Location.Create(coalesceExpression.SyntaxTree, span));
         }

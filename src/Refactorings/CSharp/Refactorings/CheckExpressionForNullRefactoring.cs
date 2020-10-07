@@ -248,7 +248,8 @@ namespace Roslynator.CSharp.Refactorings
                         statementsInfo,
                         statementIndex,
                         lastStatementIndex,
-                        cancellationToken).ConfigureAwait(false);
+                        cancellationToken)
+                        .ConfigureAwait(false);
                 }
             }
 

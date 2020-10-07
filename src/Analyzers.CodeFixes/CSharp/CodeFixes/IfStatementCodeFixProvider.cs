@@ -68,7 +68,8 @@ namespace Roslynator.CSharp.CodeFixes
                                 ifStatement,
                                 IfStatementAnalyzer.AnalysisOptions,
                                 semanticModel,
-                                context.CancellationToken).First();
+                                context.CancellationToken)
+                                .First();
 
                             CodeAction codeAction = CodeAction.Create(
                                 analysis.Title,

@@ -71,9 +71,9 @@ namespace Roslynator.CodeAnalysis.CSharp
         }
 
         private static Task<Document> CallAnyInsteadOfUsingCountAsync(
-        Document document,
-        BinaryExpressionSyntax binaryExpression,
-        CancellationToken cancellationToken)
+            Document document,
+            BinaryExpressionSyntax binaryExpression,
+            CancellationToken cancellationToken)
         {
             BinaryExpressionInfo binaryExpressionInfo = SyntaxInfo.BinaryExpressionInfo(binaryExpression);
 

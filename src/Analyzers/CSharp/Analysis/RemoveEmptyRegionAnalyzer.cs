@@ -48,7 +48,8 @@ namespace Roslynator.CSharp.Analysis
             if (!region.IsEmpty)
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context,
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
                 DiagnosticDescriptors.RemoveEmptyRegion,
                 regionDirective.GetLocation(),
                 additionalLocations: ImmutableArray.Create(region.EndDirective.GetLocation()));

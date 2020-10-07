@@ -122,7 +122,7 @@ namespace Roslynator.VisualStudio
                 configuration.Save(dialog.FileName);
             }
             catch (Exception ex) when (ex is IOException
-                    || ex is UnauthorizedAccessException)
+                || ex is UnauthorizedAccessException)
             {
                 ShowErrorMessage(ex);
             }

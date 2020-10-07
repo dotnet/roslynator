@@ -27,8 +27,8 @@ namespace Roslynator.CSharp.Analysis
                 if (debuggerDisplayAttributeSymbol != null)
                 {
                     startContext.RegisterSymbolAction(
-                       nodeContext => AnalyzerNamedTypeSymbol(nodeContext, debuggerDisplayAttributeSymbol),
-                       SymbolKind.NamedType);
+                        nodeContext => AnalyzerNamedTypeSymbol(nodeContext, debuggerDisplayAttributeSymbol),
+                        SymbolKind.NamedType);
                 }
             });
         }

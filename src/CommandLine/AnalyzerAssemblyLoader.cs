@@ -60,8 +60,8 @@ namespace Roslynator.CommandLine
                             }
                         }
                         catch (Exception ex) when (ex is IOException
-                                || ex is SecurityException
-                                || ex is UnauthorizedAccessException)
+                            || ex is SecurityException
+                            || ex is UnauthorizedAccessException)
                         {
                             WriteError(ex, ConsoleColor.DarkGray, Verbosity.Diagnostic);
                             continue;
@@ -84,8 +84,8 @@ namespace Roslynator.CommandLine
                     return LoadFile(filePath, loadAnalyzers, loadFixers, language);
                 }
                 catch (Exception ex) when (ex is FileLoadException
-                        || ex is BadImageFormatException
-                        || ex is SecurityException)
+                    || ex is BadImageFormatException
+                    || ex is SecurityException)
                 {
                     WriteLine($"Cannot load assembly '{filePath}'", ConsoleColor.DarkGray, Verbosity.Diagnostic);
 

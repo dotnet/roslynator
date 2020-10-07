@@ -58,20 +58,21 @@ namespace Roslynator.FindSymbols
         public static PredicateSymbolFilterRule IsAbstract { get; } = new PredicateSymbolFilterRule(f => f.IsAbstract, f => !f.IsKind(SymbolKind.Namespace), SymbolFilterReason.Other);
         public static PredicateSymbolFilterRule IsNotAbstract { get; } = IsAbstract.Invert();
 
-        public static PredicateSymbolFilterRule IsReadOnly { get; } = new PredicateSymbolFilterRule(symbol =>
-        {
-            switch (symbol.Kind)
+        public static PredicateSymbolFilterRule IsReadOnly { get; } = new PredicateSymbolFilterRule(
+            symbol =>
             {
-                case SymbolKind.Field:
-                    return ((IFieldSymbol)symbol).IsReadOnly;
-                case SymbolKind.Property:
-                    return ((IPropertySymbol)symbol).IsReadOnly;
-                default:
-                    return false;
-            }
-        },
-        f => f.IsKind(SymbolKind.Field, SymbolKind.Property),
-        SymbolFilterReason.Other);
+                switch (symbol.Kind)
+                {
+                    case SymbolKind.Field:
+                        return ((IFieldSymbol)symbol).IsReadOnly;
+                    case SymbolKind.Property:
+                        return ((IPropertySymbol)symbol).IsReadOnly;
+                    default:
+                        return false;
+                }
+            },
+            f => f.IsKind(SymbolKind.Field, SymbolKind.Property),
+            SymbolFilterReason.Other);
 
         public static PredicateSymbolFilterRule IsNotReadOnly { get; } = IsReadOnly.Invert();
 

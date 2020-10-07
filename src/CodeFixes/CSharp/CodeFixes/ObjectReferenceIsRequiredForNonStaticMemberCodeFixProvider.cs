@@ -48,12 +48,12 @@ namespace Roslynator.CSharp.CodeFixes
                         if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.MakeMemberNonStatic))
                         {
                             ModifiersCodeFixRegistrator.RemoveModifier(
-                            context,
-                            diagnostic,
-                            memberDeclaration,
-                            SyntaxKind.StaticKeyword,
-                            title: $"Make containing {CSharpFacts.GetTitle(memberDeclaration)} non-static",
-                            additionalKey: CodeFixIdentifiers.MakeMemberNonStatic);
+                                context,
+                                diagnostic,
+                                memberDeclaration,
+                                SyntaxKind.StaticKeyword,
+                                title: $"Make containing {CSharpFacts.GetTitle(memberDeclaration)} non-static",
+                                additionalKey: CodeFixIdentifiers.MakeMemberNonStatic);
                         }
 
                         if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddStaticModifier))

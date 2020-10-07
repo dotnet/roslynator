@@ -44,8 +44,8 @@ namespace Roslynator.CSharp.Refactorings
                     case SyntaxKind.ThrowStatement:
                         {
                             return ThrowExpression(
-                               Token(SyntaxTriviaList.Empty, SyntaxKind.ThrowKeyword, TriviaList(Space)),
-                               ((ThrowStatementSyntax)statement).Expression);
+                                Token(SyntaxTriviaList.Empty, SyntaxKind.ThrowKeyword, TriviaList(Space)),
+                                ((ThrowStatementSyntax)statement).Expression);
                         }
                 }
 

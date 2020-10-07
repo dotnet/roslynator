@@ -135,7 +135,8 @@ namespace Roslynator.CSharp.Refactorings
                 newName,
                 methodSymbol,
                 context.Solution,
-                cancellationToken: context.CancellationToken).ConfigureAwait(false))
+                cancellationToken: context.CancellationToken)
+                .ConfigureAwait(false))
             {
                 return;
             }

@@ -15,10 +15,10 @@ namespace Roslynator.CSharp.Refactorings
     internal static class ChangeMemberTypeRefactoring
     {
         public static void ComputeCodeFix(
-             CodeFixContext context,
-             Diagnostic diagnostic,
-             ExpressionSyntax expression,
-             SemanticModel semanticModel)
+            CodeFixContext context,
+            Diagnostic diagnostic,
+            ExpressionSyntax expression,
+            SemanticModel semanticModel)
         {
             TypeInfo typeInfo = semanticModel.GetTypeInfo(expression, context.CancellationToken);
 
@@ -146,19 +146,21 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         var nodes = new SyntaxNode[] { type, expression };
 
-                        newNode = node.ReplaceNodes(nodes, (f, _) =>
-                        {
-                            if (f == type)
+                        newNode = node.ReplaceNodes(
+                            nodes,
+                            (f, _) =>
                             {
-                                return newType;
-                            }
-                            else
-                            {
-                                return AwaitExpression(
-                                    Token(expression.GetLeadingTrivia(), SyntaxKind.AwaitKeyword, TriviaList(Space)),
-                                    expression.WithoutLeadingTrivia());
-                            }
-                        });
+                                if (f == type)
+                                {
+                                    return newType;
+                                }
+                                else
+                                {
+                                    return AwaitExpression(
+                                        Token(expression.GetLeadingTrivia(), SyntaxKind.AwaitKeyword, TriviaList(Space)),
+                                        expression.WithoutLeadingTrivia());
+                                }
+                            });
 
                         return document.ReplaceNodeAsync(node, newNode, cancellationToken);
                     }

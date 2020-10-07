@@ -158,10 +158,10 @@ namespace Roslynator.CSharp.Analysis.ReduceIfNesting
                         }
 
                         if (semanticModel
-                                .GetDeclaredSymbol(methodDeclaration, cancellationToken)?
-                                .ReturnType
-                                .OriginalDefinition
-                                .IsIEnumerableOrIEnumerableOfT() == true
+                            .GetDeclaredSymbol(methodDeclaration, cancellationToken)?
+                            .ReturnType
+                            .OriginalDefinition
+                            .IsIEnumerableOrIEnumerableOfT() == true
                             && methodDeclaration.ContainsYield())
                         {
                             return Success(SyntaxKind.YieldBreakStatement, parent);
@@ -188,9 +188,9 @@ namespace Roslynator.CSharp.Analysis.ReduceIfNesting
                         }
 
                         if (semanticModel.GetDeclaredSymbol(localFunction, cancellationToken)?
-                                .ReturnType
-                                .OriginalDefinition
-                                .IsIEnumerableOrIEnumerableOfT() == true
+                            .ReturnType
+                            .OriginalDefinition
+                            .IsIEnumerableOrIEnumerableOfT() == true
                             && localFunction.ContainsYield())
                         {
                             return Success(SyntaxKind.YieldBreakStatement, parent);

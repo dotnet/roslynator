@@ -465,14 +465,17 @@ namespace Roslynator.Configuration
 
         internal void Save(string path)
         {
-            var settings = new XElement("Settings",
-                new XElement("General",
+            var settings = new XElement(
+                "Settings",
+                new XElement(
+                    "General",
                     new XElement("PrefixFieldIdentifierWithUnderscore", PrefixFieldIdentifierWithUnderscore)));
 
             if (Analyzers.Count > 0)
             {
                 settings.Add(
-                    new XElement("Analyzers",
+                    new XElement(
+                        "Analyzers",
                         Analyzers
                             .OrderBy(f => f.Key)
                             .Select(f => new XElement("Analyzer", new XAttribute("Id", f.Key), new XAttribute("Value", f.Value)))
@@ -482,7 +485,8 @@ namespace Roslynator.Configuration
             if (Refactorings.Any(f => !f.Value))
             {
                 settings.Add(
-                    new XElement("Refactorings",
+                    new XElement(
+                        "Refactorings",
                         Refactorings
                             .Where(f => !f.Value)
                             .OrderBy(f => f.Key)
@@ -493,7 +497,8 @@ namespace Roslynator.Configuration
             if (CodeFixes.Any(f => !f.Value))
             {
                 settings.Add(
-                    new XElement("CodeFixes",
+                    new XElement(
+                        "CodeFixes",
                         CodeFixes
                             .Where(f => !f.Value)
                             .OrderBy(f => f.Key)
@@ -504,7 +509,8 @@ namespace Roslynator.Configuration
             if (RuleSets.Any())
             {
                 settings.Add(
-                    new XElement("RuleSets",
+                    new XElement(
+                        "RuleSets",
                         RuleSets.Select(f => new XElement("RuleSet", new XAttribute("Path", f)))));
             }
 

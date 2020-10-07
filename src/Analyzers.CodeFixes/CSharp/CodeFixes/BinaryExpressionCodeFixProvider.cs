@@ -369,7 +369,8 @@ namespace Roslynator.CSharp.CodeFixes
                 (binaryExpression != null)
                     ? ((BinaryExpressionSyntax)right).OperatorToken
                     : Token(SyntaxKind.EqualsEqualsToken).WithTriviaFrom(logicalAnd.OperatorToken),
-                newRight).WithFormatterAnnotation();
+                newRight)
+                .WithFormatterAnnotation();
 
             return await document.ReplaceNodeAsync(logicalAnd, newBinaryExpression, cancellationToken).ConfigureAwait(false);
         }

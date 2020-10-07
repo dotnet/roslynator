@@ -65,7 +65,8 @@ namespace Roslynator.CSharp.Analysis
             if (semanticModel.GetMethodSymbol(castExpression, cancellationToken)?.MethodKind == MethodKind.Conversion)
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context,
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
                 DiagnosticDescriptors.OptimizeLinqMethodCall,
                 Location.Create(invocationExpression.SyntaxTree, TextSpan.FromBounds(invocationInfo.Name.SpanStart, invocationExpression.Span.End)));
         }

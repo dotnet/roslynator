@@ -69,9 +69,9 @@ namespace Roslynator.CSharp.Refactorings
                 .ToMinimalTypeSyntax(semanticModel, position);
 
             LocalDeclarationStatementSyntax localDeclarationStatement = LocalDeclarationStatement(
-                    VarType(),
-                    name,
-                    EqualsValueClause(ObjectCreationExpression(listType, ArgumentList())));
+                VarType(),
+                name,
+                EqualsValueClause(ObjectCreationExpression(listType, ArgumentList())));
 
             localDeclarationStatement = localDeclarationStatement.WithFormatterAnnotation();
 

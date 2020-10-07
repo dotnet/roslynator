@@ -27,16 +27,18 @@ namespace Roslynator.CommandLine
         {
             var codeMetrics = new ConcurrentBag<(ProjectId projectId, CodeMetricsInfo codeMetrics)>();
 
-            Parallel.ForEach(projects, project =>
-            {
-                ICodeMetricsService service = MefWorkspaceServices.Default.GetService<ICodeMetricsService>(project.Language);
+            Parallel.ForEach(
+                projects,
+                project =>
+                {
+                    ICodeMetricsService service = MefWorkspaceServices.Default.GetService<ICodeMetricsService>(project.Language);
 
-                CodeMetricsInfo projectMetrics = (service != null)
-                    ? service.CountLinesAsync(project, kind, options, cancellationToken).Result
-                    : CodeMetricsInfo.NotAvailable;
+                    CodeMetricsInfo projectMetrics = (service != null)
+                        ? service.CountLinesAsync(project, kind, options, cancellationToken).Result
+                        : CodeMetricsInfo.NotAvailable;
 
-                codeMetrics.Add((project.Id, codeMetrics: projectMetrics));
-            });
+                    codeMetrics.Add((project.Id, codeMetrics: projectMetrics));
+                });
 
             return codeMetrics.ToImmutableDictionary(f => f.projectId, f => f.codeMetrics);
         }

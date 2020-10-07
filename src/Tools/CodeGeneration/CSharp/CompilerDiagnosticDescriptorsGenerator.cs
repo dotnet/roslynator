@@ -22,7 +22,8 @@ namespace Roslynator.CodeGeneration.CSharp
         {
             CompilationUnitSyntax compilationUnit = CompilationUnit(
                 UsingDirectives("Microsoft.CodeAnalysis"),
-                NamespaceDeclaration(@namespace,
+                NamespaceDeclaration(
+                    @namespace,
                     ClassDeclaration(
                         Modifiers.Public_Static_Partial(),
                         "CompilerDiagnosticDescriptors",

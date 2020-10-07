@@ -166,7 +166,8 @@ namespace Roslynator.CSharp.Refactorings
                             {
                                 expression = LogicalAndExpression(
                                     expression,
-                                    patternLabel.WhenClause.Condition.Parenthesize()).Parenthesize();
+                                    patternLabel.WhenClause.Condition.Parenthesize())
+                                    .Parenthesize();
                             }
 
                             break;

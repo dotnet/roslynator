@@ -64,11 +64,15 @@ namespace Roslynator.CodeMetrics
 
         public override int GetHashCode()
         {
-            return Hash.Combine(TotalLineCount,
-                Hash.Combine(CodeLineCount,
-                Hash.Combine(WhitespaceLineCount,
-                Hash.Combine(CommentLineCount,
-                Hash.Combine(PreprocessorDirectiveLineCount, Hash.Create(BlockBoundaryLineCount))))));
+            return Hash.Combine(
+                TotalLineCount,
+                Hash.Combine(
+                    CodeLineCount,
+                    Hash.Combine(
+                        WhitespaceLineCount,
+                        Hash.Combine(
+                            CommentLineCount,
+                            Hash.Combine(PreprocessorDirectiveLineCount, Hash.Create(BlockBoundaryLineCount))))));
         }
 
         public static bool operator ==(in CodeMetricsInfo metrics1, in CodeMetricsInfo metrics2)

@@ -300,10 +300,12 @@ namespace Roslynator.CommandLine
 
                 Stopwatch stopwatch = Stopwatch.StartNew();
 
-                foreach (Project project in FilterProjects(solution, s => s
-                    .GetProjectDependencyGraph()
-                    .GetTopologicallySortedProjects(cancellationToken)
-                    .ToImmutableArray()))
+                foreach (Project project in FilterProjects(
+                    solution,
+                    s => s
+                        .GetProjectDependencyGraph()
+                        .GetTopologicallySortedProjects(cancellationToken)
+                        .ToImmutableArray()))
                 {
                     cancellationToken.ThrowIfCancellationRequested();
 

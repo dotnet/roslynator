@@ -29,7 +29,8 @@ namespace Roslynator.CSharp.Analysis
             if (IsOrderByOrOrderByDescending(invocationInfo.InvocationExpression, context.SemanticModel, context.CancellationToken)
                 && IsOrderByOrOrderByDescending(invocationInfo2.InvocationExpression, context.SemanticModel, context.CancellationToken))
             {
-                DiagnosticHelpers.ReportDiagnostic(context,
+                DiagnosticHelpers.ReportDiagnostic(
+                    context,
                     DiagnosticDescriptors.CallThenByInsteadOfOrderBy,
                     invocationInfo.Name,
                     (invocationInfo.NameText == "OrderByDescending") ? "Descending" : null);

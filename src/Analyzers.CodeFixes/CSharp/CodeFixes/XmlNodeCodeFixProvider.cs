@@ -108,7 +108,7 @@ namespace Roslynator.CSharp.CodeFixes
             else if (index == 1)
             {
                 if (count == 3
-                   && content[0] is XmlTextSyntax xmlText
+                    && content[0] is XmlTextSyntax xmlText
                     && IsWhitespace(xmlText)
                     && content[2] is XmlTextSyntax xmlText2
                     && IsNewLine(xmlText2))

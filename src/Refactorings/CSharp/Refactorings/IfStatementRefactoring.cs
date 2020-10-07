@@ -79,9 +79,9 @@ namespace Roslynator.CSharp.Refactorings
             {
                 if (isTopmostIf
                     && context.IsAnyRefactoringEnabled(
-                    RefactoringIdentifiers.UseCoalesceExpressionInsteadOfIf,
-                    RefactoringIdentifiers.ConvertIfToConditionalOperator,
-                    RefactoringIdentifiers.SimplifyIf))
+                        RefactoringIdentifiers.UseCoalesceExpressionInsteadOfIf,
+                        RefactoringIdentifiers.ConvertIfToConditionalOperator,
+                        RefactoringIdentifiers.SimplifyIf))
                 {
                     SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 

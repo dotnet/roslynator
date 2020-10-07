@@ -343,8 +343,8 @@ namespace Roslynator.CSharp.Refactorings
                 string parameterName = StringUtility.ToCamelCase(name);
 
                 statements.Add(SimpleAssignmentStatement(
-                        IdentifierName(name).QualifyWithThis(),
-                        IdentifierName(parameterName)));
+                    IdentifierName(name).QualifyWithThis(),
+                    IdentifierName(parameterName)));
 
                 parameters.Add(Parameter(
                     default(SyntaxList<AttributeListSyntax>),

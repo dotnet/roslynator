@@ -48,7 +48,8 @@ namespace Roslynator.CSharp.Analysis
 
                     if (!switchSection.ContainsDirectives(span))
                     {
-                        DiagnosticHelpers.ReportDiagnostic(context,
+                        DiagnosticHelpers.ReportDiagnostic(
+                            context,
                             DiagnosticDescriptors.DefaultLabelShouldBeLastLabelInSwitchSection,
                             label);
 

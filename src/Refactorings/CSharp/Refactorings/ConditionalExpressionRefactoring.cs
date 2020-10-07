@@ -63,7 +63,7 @@ namespace Roslynator.CSharp.Refactorings
                 context.RegisterRefactoring(
                     "Invert ?:",
                     ct => InvertConditionalExpressionRefactoring.RefactorAsync(context.Document, conditionalExpression, ct),
-                RefactoringIdentifiers.InvertConditionalExpression);
+                    RefactoringIdentifiers.InvertConditionalExpression);
             }
         }
     }

@@ -114,7 +114,7 @@ namespace Roslynator
             ISymbol containingSymbol = symbol.ContainingSymbol;
 
             return containingSymbol != null
-               && IsMarkedWithGeneratedCodeAttribute(containingSymbol, generatedCodeAttribute);
+                && IsMarkedWithGeneratedCodeAttribute(containingSymbol, generatedCodeAttribute);
         }
     }
 }

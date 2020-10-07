@@ -52,7 +52,8 @@ namespace Roslynator.CSharp.Analysis
 
             if (ConvertInterpolatedStringToStringLiteralAnalysis.IsFixable(contents))
             {
-                ReportDiagnostic(context,
+                ReportDiagnostic(
+                    context,
                     DiagnosticDescriptors.UnnecessaryInterpolatedString,
                     Location.Create(interpolatedString.SyntaxTree, GetDollarSpan(interpolatedString)));
             }

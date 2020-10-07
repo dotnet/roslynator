@@ -90,9 +90,9 @@ namespace Roslynator.CSharp.CodeFixes
             }
 
             ExpressionSyntax newExpression = IsPatternExpression(
-                    expression,
-                    Token(binaryExpression.OperatorToken.LeadingTrivia, SyntaxKind.IsKeyword, binaryExpression.OperatorToken.TrailingTrivia),
-                    ConstantPattern(nullLiteral));
+                expression,
+                Token(binaryExpression.OperatorToken.LeadingTrivia, SyntaxKind.IsKeyword, binaryExpression.OperatorToken.TrailingTrivia),
+                ConstantPattern(nullLiteral));
 
             if (binaryExpression.IsKind(SyntaxKind.NotEqualsExpression))
                 newExpression = LogicalNotExpression(ParenthesizedExpression(newExpression.WithoutTrivia()));

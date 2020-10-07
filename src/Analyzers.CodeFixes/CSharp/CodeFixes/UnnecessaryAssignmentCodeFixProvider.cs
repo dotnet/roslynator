@@ -82,7 +82,8 @@ namespace Roslynator.CSharp.CodeFixes
                 f => CreateNewIfStatement(f),
                 ifCascadeInfo.Count,
                 ifCascadeInfo.EndsWithElse,
-                cancellationToken).ConfigureAwait(false);
+                cancellationToken)
+                .ConfigureAwait(false);
 
             return await document.ReplaceNodeAsync(statementsInfo.Parent, newStatementsInfo.Parent, cancellationToken).ConfigureAwait(false);
         }
@@ -130,7 +131,8 @@ namespace Roslynator.CSharp.CodeFixes
                 f => CreateNewSwitchStatement(f),
                 switchStatement.Sections.Count,
                 switchStatement.Sections.Any(f => f.ContainsDefaultLabel()),
-                cancellationToken).ConfigureAwait(false);
+                cancellationToken)
+                .ConfigureAwait(false);
 
             return await document.ReplaceNodeAsync(statementsInfo.Parent, newStatementsInfo.Parent, cancellationToken).ConfigureAwait(false);
         }

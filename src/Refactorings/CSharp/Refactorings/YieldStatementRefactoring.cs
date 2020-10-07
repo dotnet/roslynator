@@ -37,11 +37,11 @@ namespace Roslynator.CSharp.Refactorings
                         if (!SymbolEqualityComparer.Default.Equals(argumentSymbol, expressionTypeSymbol))
                         {
                             ModifyExpressionRefactoring.ComputeRefactoring(
-                               context,
-                               expression,
-                               argumentSymbol,
-                               semanticModel,
-                               addCastExpression: false);
+                                context,
+                                expression,
+                                argumentSymbol,
+                                semanticModel,
+                                addCastExpression: false);
                         }
                     }
                 }

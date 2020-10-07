@@ -289,7 +289,8 @@ namespace Roslynator.CSharp.Analysis
             if (!leadingTrivia.IsEmptyOrWhitespace())
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context,
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
                 DiagnosticDescriptors.RemoveRedundantEmptyLine,
                 Location.Create(node1.SyntaxTree, TextSpan.FromBounds(node2.FullSpan.Start, trivia.Span.End)));
         }
@@ -333,7 +334,8 @@ namespace Roslynator.CSharp.Analysis
             if (!leadingTrivia.IsEmptyOrWhitespace())
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context,
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
                 DiagnosticDescriptors.RemoveRedundantEmptyLine,
                 Location.Create(token.SyntaxTree, TextSpan.FromBounds(node.FullSpan.Start, trivia.Span.End)));
         }
@@ -387,7 +389,8 @@ namespace Roslynator.CSharp.Analysis
                     && index < leadingTrivia.Count - 1
                     && leadingTrivia[index + 1].IsEndOfLineTrivia())
                 {
-                    DiagnosticHelpers.ReportDiagnostic(context,
+                    DiagnosticHelpers.ReportDiagnostic(
+                        context,
                         DiagnosticDescriptors.RemoveRedundantEmptyLine,
                         leadingTrivia[index + 1].GetLocation());
                 }
@@ -479,7 +482,8 @@ namespace Roslynator.CSharp.Analysis
             if (span == null)
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context,
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
                 DiagnosticDescriptors.RemoveRedundantEmptyLine,
                 Location.Create(context.Node.SyntaxTree, span.Value));
         }
@@ -505,7 +509,8 @@ namespace Roslynator.CSharp.Analysis
             if (IsEmptyLastLineInDoStatement(node, braceLine, span.Value))
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context,
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
                 DiagnosticDescriptors.RemoveRedundantEmptyLine,
                 Location.Create(context.Node.SyntaxTree, span.Value));
         }
@@ -531,7 +536,8 @@ namespace Roslynator.CSharp.Analysis
             if (span == null)
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context,
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
                 DiagnosticDescriptors.RemoveRedundantEmptyLine,
                 Location.Create(tree, span.Value));
         }
@@ -623,7 +629,8 @@ namespace Roslynator.CSharp.Analysis
 
         private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, TextSpan span)
         {
-            DiagnosticHelpers.ReportDiagnostic(context,
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
                 DiagnosticDescriptors.RemoveRedundantEmptyLine,
                 Location.Create(context.Node.SyntaxTree, span));
         }

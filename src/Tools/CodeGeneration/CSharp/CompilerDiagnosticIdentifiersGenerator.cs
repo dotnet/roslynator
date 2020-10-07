@@ -26,10 +26,10 @@ namespace Roslynator.CodeGeneration.CSharp
                             .Select(f =>
                             {
                                 return FieldDeclaration(
-                                   Modifiers.Public_Const(),
-                                   PredefinedStringType(),
-                                   f.Identifier,
-                                   StringLiteralExpression(f.Id));
+                                    Modifiers.Public_Const(),
+                                    PredefinedStringType(),
+                                    f.Identifier,
+                                    StringLiteralExpression(f.Id));
                             })
                             .ToSyntaxList<MemberDeclarationSyntax>())));
         }

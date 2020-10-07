@@ -34,8 +34,8 @@ namespace Roslynator.Testing.Text
         public bool Equals(LinePositionInfo other)
         {
             return Index == other.Index
-                   && LineIndex == other.LineIndex
-                   && ColumnIndex == other.ColumnIndex;
+                && LineIndex == other.LineIndex
+                && ColumnIndex == other.ColumnIndex;
         }
 
         public override int GetHashCode()

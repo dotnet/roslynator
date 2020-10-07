@@ -187,11 +187,11 @@ namespace Roslynator.CSharp
             leadingTrivia = leadingTrivia.Insert(0, NewLine());
 
             return ConditionalExpression(
-                    conditionalExpression.Condition.WithoutTrailingTrivia(),
-                    Token(leadingTrivia, SyntaxKind.QuestionToken, TriviaList(Space)),
-                    conditionalExpression.WhenTrue.WithoutTrailingTrivia(),
-                    Token(leadingTrivia, SyntaxKind.ColonToken, TriviaList(Space)),
-                    conditionalExpression.WhenFalse.WithoutTrailingTrivia());
+                conditionalExpression.Condition.WithoutTrailingTrivia(),
+                Token(leadingTrivia, SyntaxKind.QuestionToken, TriviaList(Space)),
+                conditionalExpression.WhenTrue.WithoutTrailingTrivia(),
+                Token(leadingTrivia, SyntaxKind.ColonToken, TriviaList(Space)),
+                conditionalExpression.WhenFalse.WithoutTrailingTrivia());
         }
 
         public static Task<Document> ToMultiLineAsync(
@@ -456,10 +456,10 @@ namespace Roslynator.CSharp
                 if (!closeBrace.IsMissing)
                 {
                     AccessorDeclarationSyntax newAccessor = accessor
-                   .WithBody(
-                       body.WithCloseBraceToken(
-                           closeBrace.WithLeadingTrivia(
-                               closeBrace.LeadingTrivia.Add(NewLine()))));
+                        .WithBody(
+                            body.WithCloseBraceToken(
+                                closeBrace.WithLeadingTrivia(
+                                    closeBrace.LeadingTrivia.Add(NewLine()))));
 
                     return newAccessor.WithFormatterAnnotation();
                 }

@@ -21,7 +21,8 @@ namespace Roslynator.CodeGeneration.CSharp
         {
             return CompilationUnit(
                 UsingDirectives("System"),
-                NamespaceDeclaration(@namespace,
+                NamespaceDeclaration(
+                    @namespace,
                     ClassDeclaration(
                         Modifiers.Public_Static_Partial(),
                         className,

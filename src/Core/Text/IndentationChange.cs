@@ -41,7 +41,7 @@ namespace Roslynator.Text
         public bool Equals(IndentationChange other)
         {
             return Replacement == other.Replacement
-                   && Indentations.Equals(other.Indentations);
+                && Indentations.Equals(other.Indentations);
         }
 
         public override int GetHashCode()

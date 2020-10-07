@@ -89,7 +89,8 @@ namespace Roslynator.CSharp.Analysis
 
         private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, ExpressionStatementSyntax expressionStatement, string methodName)
         {
-            DiagnosticHelpers.ReportDiagnostic(context,
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
                 DiagnosticDescriptors.RemoveRedundantDisposeOrCloseCall,
                 expressionStatement,
                 methodName);

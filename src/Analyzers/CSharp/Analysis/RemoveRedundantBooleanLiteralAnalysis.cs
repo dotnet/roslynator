@@ -24,7 +24,8 @@ namespace Roslynator.CSharp.Analysis
 
             TextSpan span = GetSpanToRemove(binaryExpression, left, right);
 
-            DiagnosticHelpers.ReportDiagnostic(context,
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
                 DiagnosticDescriptors.RemoveRedundantBooleanLiteral,
                 Location.Create(binaryExpression.SyntaxTree, span),
                 binaryExpression.ToString(span));

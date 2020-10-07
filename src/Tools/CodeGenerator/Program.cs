@@ -96,7 +96,9 @@ namespace Roslynator.CodeGeneration
             File.WriteAllText(
                 Path.Combine(rootPath, @"VisualStudioCode\package\src\configurationFiles.generated.ts"),
                 @"export const configurationFileContent = {
-	ruleset: `" + ruleSetXml + @"`,
+	ruleset: `"
+                    + ruleSetXml
+                    + @"`,
 	config: `<?xml version=""1.0"" encoding=""utf-8""?>
 <Roslynator>
   <Settings>

@@ -48,7 +48,8 @@ namespace Roslynator.CSharp.Analysis
 
             TextSpan span = TextSpan.FromBounds(invocationInfo.MemberAccessExpression.OperatorToken.SpanStart, invocationExpression.Span.End);
 
-            DiagnosticHelpers.ReportDiagnostic(context,
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
                 DiagnosticDescriptors.RemoveRedundantStringToCharArrayCall,
                 Location.Create(invocationExpression.SyntaxTree, span));
         }

@@ -74,7 +74,8 @@ namespace Roslynator.CSharp.Analysis
                 {
                     if (!emptyLines.IsEmpty)
                     {
-                        DiagnosticHelpers.ReportDiagnostic(context,
+                        DiagnosticHelpers.ReportDiagnostic(
+                            context,
                             DiagnosticDescriptors.RemoveRedundantEmptyLine,
                             Location.Create(context.Tree, emptyLines));
                     }
@@ -102,7 +103,8 @@ namespace Roslynator.CSharp.Analysis
                                     whitespace.End);
                             }
 
-                            DiagnosticHelpers.ReportDiagnostic(context,
+                            DiagnosticHelpers.ReportDiagnostic(
+                                context,
                                 DiagnosticDescriptors.RemoveTrailingWhitespace,
                                 Location.Create(context.Tree, whitespace));
                         }

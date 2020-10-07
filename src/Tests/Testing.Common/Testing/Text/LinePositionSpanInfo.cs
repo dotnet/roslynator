@@ -36,7 +36,7 @@ namespace Roslynator.Testing.Text
         public bool Equals(LinePositionSpanInfo other)
         {
             return Start.Equals(other.Start)
-                   && End.Equals(other.End);
+                && End.Equals(other.End);
         }
 
         public override int GetHashCode()

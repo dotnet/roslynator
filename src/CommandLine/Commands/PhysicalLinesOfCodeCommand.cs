@@ -122,10 +122,14 @@ namespace Roslynator.CommandLine
             string totalPreprocessorDirectiveLines = totalPreprocessorDirectiveLineCount.ToString("n0");
             string totalLines = totalLineCount.ToString("n0");
 
-            int maxDigits = Math.Max(totalCodeLines.Length,
-                Math.Max(totalBlockBoundaryLines.Length,
-                    Math.Max(totalWhitespaceLines.Length,
-                        Math.Max(totalCommentLines.Length,
+            int maxDigits = Math.Max(
+                totalCodeLines.Length,
+                Math.Max(
+                    totalBlockBoundaryLines.Length,
+                    Math.Max(
+                        totalWhitespaceLines.Length,
+                        Math.Max(
+                            totalCommentLines.Length,
                             Math.Max(totalPreprocessorDirectiveLines.Length, totalLines.Length)))));
 
             if (Options.IgnoreBlockBoundary

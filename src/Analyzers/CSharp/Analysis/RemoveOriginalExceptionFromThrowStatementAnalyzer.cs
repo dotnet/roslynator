@@ -58,7 +58,8 @@ namespace Roslynator.CSharp.Analysis
 
             if (expression != null)
             {
-                DiagnosticHelpers.ReportDiagnostic(context,
+                DiagnosticHelpers.ReportDiagnostic(
+                    context,
                     DiagnosticDescriptors.RemoveOriginalExceptionFromThrowStatement,
                     expression);
             }

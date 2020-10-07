@@ -86,7 +86,8 @@ namespace Roslynator.CSharp.CodeFixes
             ExpressionSyntax newExpression = SimpleMemberInvocationExpression(
                 expression,
                 IdentifierName("HasFlag"),
-                ArgumentList(Argument(argumentExpression.WalkDownParentheses()))).Parenthesize();
+                ArgumentList(Argument(argumentExpression.WalkDownParentheses())))
+                .Parenthesize();
 
             if (!(equalsOrNotEquals.IsKind(SyntaxKind.EqualsExpression)
                 ^ valueExpression.IsNumericLiteralExpression("0")))

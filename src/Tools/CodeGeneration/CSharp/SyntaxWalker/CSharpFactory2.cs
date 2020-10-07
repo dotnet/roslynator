@@ -27,10 +27,10 @@ namespace Roslynator.CodeGeneration.CSharp
 
             return ExpressionStatement(
                 InvocationExpression(
-                IdentifierName(methodName),
-                ArgumentList(
-                Argument(
-                expression))));
+                    IdentifierName(methodName),
+                    ArgumentList(
+                        Argument(
+                            expression))));
         }
 
         public static ForEachStatementSyntax ForEachVisitStatement(
@@ -78,7 +78,7 @@ namespace Roslynator.CodeGeneration.CSharp
 
             return ThrowStatement(
                 ObjectCreationExpression(
-                IdentifierName("InvalidOperationException"), argumentList));
+                    IdentifierName("InvalidOperationException"), argumentList));
         }
 
         public static ThrowStatementSyntax ThrowNewArgumentException(ExpressionSyntax messageExpression, string parameterName)
@@ -89,7 +89,7 @@ namespace Roslynator.CodeGeneration.CSharp
 
             return ThrowStatement(
                 ObjectCreationExpression(
-                IdentifierName("ArgumentException"), argumentList));
+                    IdentifierName("ArgumentException"), argumentList));
         }
 
         public static LocalDeclarationStatementSyntax LocalDeclarationStatement(

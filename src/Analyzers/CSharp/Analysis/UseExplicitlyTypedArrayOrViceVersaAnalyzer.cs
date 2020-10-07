@@ -77,7 +77,8 @@ namespace Roslynator.CSharp.Analysis
             if (!arrayTypeSymbol.ElementType.SupportsExplicitDeclaration())
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context,
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
                 DiagnosticDescriptors.UseExplicitlyTypedArrayOrViceVersa,
                 Location.Create(expression.SyntaxTree, TextSpan.FromBounds(expression.NewKeyword.SpanStart, expression.CloseBracketToken.Span.End)));
         }

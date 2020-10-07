@@ -136,14 +136,16 @@ namespace Roslynator.CodeFixes
                 fixResult.FixedDiagnostics,
                 compilation,
                 f => !fixersById.TryGetValue(f.id, out ImmutableArray<CodeFixProvider> fixers2),
-                cancellationToken).ConfigureAwait(false);
+                cancellationToken)
+                .ConfigureAwait(false);
 
             ImmutableArray<Diagnostic> unfixedDiagnostics = await GetDiagnosticsAsync(
                 analyzers,
                 fixResult.FixedDiagnostics.Concat(unfixableDiagnostics),
                 compilation,
                 f => fixersById.TryGetValue(f.id, out ImmutableArray<CodeFixProvider> fixers2),
-                cancellationToken).ConfigureAwait(false);
+                cancellationToken)
+                .ConfigureAwait(false);
 
             int numberOfAddedFileBanners = 0;
 
@@ -266,7 +268,8 @@ namespace Roslynator.CodeFixes
                             : analyzersById[diagnosticId],
                         fixersById[diagnosticId],
                         CurrentSolution.GetProject(project.Id),
-                        cancellationToken).ConfigureAwait(false);
+                        cancellationToken)
+                        .ConfigureAwait(false);
 
                     if (result.Kind == DiagnosticFixKind.Success)
                     {
@@ -429,7 +432,8 @@ namespace Roslynator.CodeFixes
                 project,
                 Options,
                 FormatProvider,
-                cancellationToken).ConfigureAwait(false);
+                cancellationToken)
+                .ConfigureAwait(false);
 
             if (diagnosticFix.FixProvider2 != null)
                 return DiagnosticFixKind.MultipleFixers;

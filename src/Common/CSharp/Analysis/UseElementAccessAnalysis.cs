@@ -88,7 +88,7 @@ namespace Roslynator.CSharp.Analysis
         }
 
         private static bool CheckInfiniteRecursion(
-        IPropertySymbol indexerSymbol,
+            IPropertySymbol indexerSymbol,
             int position,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)

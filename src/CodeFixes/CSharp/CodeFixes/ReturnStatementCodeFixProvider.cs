@@ -149,12 +149,12 @@ namespace Roslynator.CSharp.CodeFixes
                                 ExpressionSyntax expression = returnStatement.Expression;
 
                                 if (expression.IsKind(
-                                        SyntaxKind.InvocationExpression,
-                                        SyntaxKind.ObjectCreationExpression,
-                                        SyntaxKind.PreDecrementExpression,
-                                        SyntaxKind.PreIncrementExpression,
-                                        SyntaxKind.PostDecrementExpression,
-                                        SyntaxKind.PostIncrementExpression)
+                                    SyntaxKind.InvocationExpression,
+                                    SyntaxKind.ObjectCreationExpression,
+                                    SyntaxKind.PreDecrementExpression,
+                                    SyntaxKind.PreIncrementExpression,
+                                    SyntaxKind.PostDecrementExpression,
+                                    SyntaxKind.PostIncrementExpression)
                                     || expression is AssignmentExpressionSyntax)
                                 {
                                     CodeAction codeAction = CodeAction.Create(

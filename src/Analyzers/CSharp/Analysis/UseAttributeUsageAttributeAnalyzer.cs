@@ -29,8 +29,8 @@ namespace Roslynator.CSharp.Analysis
                     && attributeUsageAttributeSymbol != null)
                 {
                     startContext.RegisterSymbolAction(
-                       nodeContext => AnalyzerNamedTypeSymbol(nodeContext, attributeSymbol, attributeUsageAttributeSymbol),
-                       SymbolKind.NamedType);
+                        nodeContext => AnalyzerNamedTypeSymbol(nodeContext, attributeSymbol, attributeUsageAttributeSymbol),
+                        SymbolKind.NamedType);
                 }
             });
         }

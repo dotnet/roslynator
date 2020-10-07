@@ -70,9 +70,9 @@ namespace Roslynator.CSharp.Refactorings
                     case SyntaxKind.ConstantPattern:
                         {
                             CaseSwitchLabelSyntax label = CaseSwitchLabel(
-                            Token(SyntaxKind.CaseKeyword).WithLeadingTrivia(pattern.GetLeadingTrivia()),
-                            ((ConstantPatternSyntax)pattern).Expression.WithoutLeadingTrivia(),
-                            Token(SyntaxKind.ColonToken).WithTriviaFrom(arm.EqualsGreaterThanToken));
+                                Token(SyntaxKind.CaseKeyword).WithLeadingTrivia(pattern.GetLeadingTrivia()),
+                                ((ConstantPatternSyntax)pattern).Expression.WithoutLeadingTrivia(),
+                                Token(SyntaxKind.ColonToken).WithTriviaFrom(arm.EqualsGreaterThanToken));
 
                             return SwitchSection(label, CreateStatement(arm.Expression, semicolon));
                         }

@@ -38,9 +38,10 @@ namespace Roslynator.Documentation.Xml
 
         protected override SymbolDisplayAdditionalOptions GetAdditionalOptions()
         {
-            return base.GetAdditionalOptions() & ~(SymbolDisplayAdditionalOptions.IncludeAccessorAttributes
-                | SymbolDisplayAdditionalOptions.IncludeParameterAttributes
-                | SymbolDisplayAdditionalOptions.IncludeTrailingSemicolon);
+            return base.GetAdditionalOptions()
+                & ~(SymbolDisplayAdditionalOptions.IncludeAccessorAttributes
+                    | SymbolDisplayAdditionalOptions.IncludeParameterAttributes
+                    | SymbolDisplayAdditionalOptions.IncludeTrailingSemicolon);
         }
 
         public override void WriteStartDocument()

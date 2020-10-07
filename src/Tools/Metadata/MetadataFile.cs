@@ -129,8 +129,8 @@ namespace Roslynator.Metadata
         {
             return element
                 .Element("Links")?
-               .Elements("Link")
-               .Select(f => new LinkMetadata(f.Element("Url").Value, f.Element("Text")?.Value, f.Element("Title")?.Value));
+                .Elements("Link")
+                .Select(f => new LinkMetadata(f.Element("Url").Value, f.Element("Text")?.Value, f.Element("Title")?.Value));
         }
 
         private static IEnumerable<AnalyzerOptionMetadata> LoadOptions(XElement element)
@@ -215,7 +215,8 @@ namespace Roslynator.Metadata
         public static void SaveCompilerDiagnostics(IEnumerable<CompilerDiagnosticMetadata> diagnostics, string path)
         {
             var doc = new XDocument(
-                new XElement("Diagnostics",
+                new XElement(
+                    "Diagnostics",
                     diagnostics.Select(f =>
                     {
                         return new XElement(
@@ -254,7 +255,8 @@ namespace Roslynator.Metadata
         public static void SaveSourceFiles(IEnumerable<SourceFile> sourceFiles, string path)
         {
             var doc = new XDocument(
-                new XElement("SourceFiles",
+                new XElement(
+                    "SourceFiles",
                     sourceFiles.Select(sourceFile =>
                     {
                         return new XElement(

@@ -199,7 +199,8 @@ namespace Roslynator.CSharp.Refactorings
             return await document.ReplaceNodeAsync(
                 whileStatement,
                 SyntaxRefactorings.ConvertWhileStatementToForStatement(whileStatement),
-                cancellationToken).ConfigureAwait(false);
+                cancellationToken)
+                .ConfigureAwait(false);
         }
 
         private static Task<Document> RefactorAsync(

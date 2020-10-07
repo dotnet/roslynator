@@ -35,7 +35,8 @@ namespace Roslynator.CSharp.Refactorings
                 (propertyDeclaration.Modifiers.Contains(SyntaxKind.StaticKeyword)) ? Modifiers.Private_Static() : Modifiers.Private(),
                 propertyDeclaration.Type,
                 fieldName,
-                propertyDeclaration.Initializer).WithFormatterAnnotation();
+                propertyDeclaration.Initializer)
+                .WithFormatterAnnotation();
 
             IPropertySymbol propertySymbol = semanticModel.GetDeclaredSymbol(propertyDeclaration, cancellationToken);
 

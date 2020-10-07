@@ -134,7 +134,8 @@ namespace Roslynator.CSharp.Refactorings
             return await solution.ReplaceNodesAsync(
                 members,
                 (node, _) => SyntaxAccessibility.WithExplicitAccessibility(node, newAccessibility),
-                cancellationToken).ConfigureAwait(false);
+                cancellationToken)
+                .ConfigureAwait(false);
         }
 
         public static Task<Document> RefactorAsync(

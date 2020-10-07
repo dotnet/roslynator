@@ -18,7 +18,8 @@ namespace Roslynator.CodeGeneration.CSharp
                 UsingDirectives(
                     "System",
                     "Microsoft.CodeAnalysis"),
-                NamespaceDeclaration("Roslynator.CodeGeneration.CSharp",
+                NamespaceDeclaration(
+                    "Roslynator.CodeGeneration.CSharp",
                     ClassDeclaration(
                         default(SyntaxList<AttributeListSyntax>),
                         Modifiers.Internal_Static(),

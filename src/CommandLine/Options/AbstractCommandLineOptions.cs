@@ -9,12 +9,15 @@ namespace Roslynator.CommandLine
         [Option(longName: "file-log")]
         public string FileLog { get; set; }
 
-        [Option(longName: "file-log-verbosity",
+        [Option(
+            longName: "file-log-verbosity",
             HelpText = "Defines the amount of information to display in the file log. Allowed values are q [quiet], m [minimal], n [normal], d [detailed] and diag [diagnostic].",
             MetaValue = "<LEVEL>")]
         public string FileLogVerbosity { get; set; }
 
-        [Option(shortName: 'v', longName: "verbosity",
+        [Option(
+            shortName: 'v',
+            longName: "verbosity",
             HelpText = "Defines the amount of information to display in the log. Allowed values are q [quiet], m [minimal], n [normal], d [detailed] and diag [diagnostic].",
             MetaValue = "<LEVEL>")]
         public string Verbosity { get; set; }

@@ -124,7 +124,8 @@ namespace Roslynator.CSharp.Analysis
             if (!ExpressionEquals(expression, returnExpression))
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context,
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
                 DiagnosticDescriptors.SimplifyLazyInitialization,
                 Location.Create(node.SyntaxTree, TextSpan.FromBounds(ifStatement.SpanStart, returnStatement.Span.End)));
         }

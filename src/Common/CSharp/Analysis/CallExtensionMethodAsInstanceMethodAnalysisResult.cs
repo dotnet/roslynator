@@ -43,8 +43,8 @@ namespace Roslynator.CSharp.Analysis
         public bool Equals(CallExtensionMethodAsInstanceMethodAnalysisResult other)
         {
             return EqualityComparer<InvocationExpressionSyntax>.Default.Equals(InvocationExpression, other.InvocationExpression)
-                   && EqualityComparer<InvocationExpressionSyntax>.Default.Equals(NewInvocationExpression, other.NewInvocationExpression)
-                   && EqualityComparer<IMethodSymbol>.Default.Equals(MethodSymbol, other.MethodSymbol);
+                && EqualityComparer<InvocationExpressionSyntax>.Default.Equals(NewInvocationExpression, other.NewInvocationExpression)
+                && EqualityComparer<IMethodSymbol>.Default.Equals(MethodSymbol, other.MethodSymbol);
         }
 
         public override int GetHashCode()

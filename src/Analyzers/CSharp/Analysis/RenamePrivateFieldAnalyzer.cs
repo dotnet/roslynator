@@ -35,7 +35,8 @@ namespace Roslynator.CSharp.Analysis
                     || !fieldSymbol.IsReadOnly
                     || context.IsAnalyzerSuppressed(AnalyzerOptions.DoNotRenamePrivateStaticReadOnlyFieldToCamelCaseWithUnderscore))
                 {
-                    DiagnosticHelpers.ReportDiagnostic(context,
+                    DiagnosticHelpers.ReportDiagnostic(
+                        context,
                         DiagnosticDescriptors.RenamePrivateFieldToCamelCaseWithUnderscore,
                         fieldSymbol.Locations[0]);
                 }

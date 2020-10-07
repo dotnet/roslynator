@@ -33,8 +33,8 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             if (context.IsAnyRefactoringEnabled(
-                    RefactoringIdentifiers.ExpandProperty,
-                    RefactoringIdentifiers.ExpandPropertyAndAddBackingField)
+                RefactoringIdentifiers.ExpandProperty,
+                RefactoringIdentifiers.ExpandPropertyAndAddBackingField)
                 && propertyDeclaration.Span.Contains(context.Span)
                 && ExpandPropertyRefactoring.CanRefactor(propertyDeclaration))
             {
@@ -137,7 +137,8 @@ namespace Roslynator.CSharp.Refactorings
                 newName,
                 symbol,
                 context.Solution,
-                cancellationToken: context.CancellationToken).ConfigureAwait(false))
+                cancellationToken: context.CancellationToken)
+                .ConfigureAwait(false))
             {
                 return;
             }

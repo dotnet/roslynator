@@ -48,7 +48,7 @@ namespace Roslynator.Text
         public bool Equals(IndentationInfo other)
         {
             return Span.Equals(other.Span)
-                   && Token.Equals(other.Token);
+                && Token.Equals(other.Token);
         }
 
         public override int GetHashCode()

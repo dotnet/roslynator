@@ -56,7 +56,8 @@ namespace Roslynator.CSharp.Analysis
                 }
             }
 
-            DiagnosticHelpers.ReportDiagnostic(context,
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
                 DiagnosticDescriptors.DeclareUsingDirectiveOnTopLevel,
                 Location.Create(namespaceDeclaration.SyntaxTree, usings.Span));
         }

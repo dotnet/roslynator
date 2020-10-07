@@ -89,8 +89,8 @@ namespace Roslynator.CSharp.Refactorings
             CancellationToken cancellationToken = default)
         {
             MemberAccessExpressionSyntax newNode = SimpleMemberAccessExpression(
-                    StringType(),
-                    IdentifierName("Empty"))
+                StringType(),
+                IdentifierName("Empty"))
                 .WithTriviaFrom(literalExpression)
                 .WithFormatterAnnotation();
 

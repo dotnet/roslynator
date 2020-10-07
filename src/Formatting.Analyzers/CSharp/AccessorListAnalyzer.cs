@@ -159,8 +159,8 @@ namespace Roslynator.Formatting.CSharp
                     && (!statements.Any() || statements[0].IsSingleLine()))
                 {
                     return accessor
-                       .DescendantTrivia(accessor.Span, descendIntoTrivia: true)
-                       .All(f => f.IsWhitespaceOrEndOfLineTrivia());
+                        .DescendantTrivia(accessor.Span, descendIntoTrivia: true)
+                        .All(f => f.IsWhitespaceOrEndOfLineTrivia());
                 }
             }
             else
@@ -172,8 +172,8 @@ namespace Roslynator.Formatting.CSharp
                     && expressionBody.Expression?.IsSingleLine() == true)
                 {
                     return accessor
-                       .DescendantTrivia(accessor.Span, descendIntoTrivia: true)
-                       .All(f => f.IsWhitespaceOrEndOfLineTrivia());
+                        .DescendantTrivia(accessor.Span, descendIntoTrivia: true)
+                        .All(f => f.IsWhitespaceOrEndOfLineTrivia());
                 }
             }
 

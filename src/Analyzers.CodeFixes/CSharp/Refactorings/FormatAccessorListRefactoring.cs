@@ -100,17 +100,19 @@ namespace Roslynator.CSharp.Refactorings
             }
             else
             {
-                return accessorList.ReplaceNodes(accessorList.Accessors, (f, g) =>
-                {
-                    if (ShouldBeFormatted(f))
+                return accessorList.ReplaceNodes(
+                    accessorList.Accessors,
+                    (f, g) =>
                     {
-                        return f.RemoveWhitespace(f.Span);
-                    }
-                    else
-                    {
-                        return g;
-                    }
-                });
+                        if (ShouldBeFormatted(f))
+                        {
+                            return f.RemoveWhitespace(f.Span);
+                        }
+                        else
+                        {
+                            return g;
+                        }
+                    });
             }
         }
 
@@ -127,8 +129,8 @@ namespace Roslynator.CSharp.Refactorings
                     && (!statements.Any() || statements[0].IsSingleLine()))
                 {
                     return accessor
-                       .DescendantTrivia(accessor.Span, descendIntoTrivia: true)
-                       .All(f => f.IsWhitespaceOrEndOfLineTrivia());
+                        .DescendantTrivia(accessor.Span, descendIntoTrivia: true)
+                        .All(f => f.IsWhitespaceOrEndOfLineTrivia());
                 }
             }
             else
@@ -140,8 +142,8 @@ namespace Roslynator.CSharp.Refactorings
                     && expressionBody.Expression?.IsSingleLine() == true)
                 {
                     return accessor
-                       .DescendantTrivia(accessor.Span, descendIntoTrivia: true)
-                       .All(f => f.IsWhitespaceOrEndOfLineTrivia());
+                        .DescendantTrivia(accessor.Span, descendIntoTrivia: true)
+                        .All(f => f.IsWhitespaceOrEndOfLineTrivia());
                 }
             }
 

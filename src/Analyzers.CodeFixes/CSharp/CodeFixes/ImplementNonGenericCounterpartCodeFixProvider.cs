@@ -207,7 +207,8 @@ public int global::System.Collections.IEqualityComparer.GetHashCode(object obj)
                         TypeSyntax type = interfaces
                             .First(f => f.HasMetadataName(MetadataNames.System_IComparable_T))
                             .TypeArguments
-                            .Single().ToTypeSyntax()
+                            .Single()
+                            .ToTypeSyntax()
                             .WithSimplifierAnnotation();
 
                         var rewriter = new AddTypeNameRewriter(type);

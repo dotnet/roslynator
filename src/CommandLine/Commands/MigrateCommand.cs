@@ -19,7 +19,8 @@ namespace Roslynator.CommandLine
     {
         private static readonly Regex _versionRegex = new Regex(@"\A(?<version>\d+\.\d+\.\d+)(?<suffix>-.*)?\z");
 
-        private static readonly Regex _editorConfigRegex = new Regex(@"
+        private static readonly Regex _editorConfigRegex = new Regex(
+            @"
             dotnet_diagnostic\.
             (?<id>
                 RCS[0-9]{4}[a-z]?
@@ -453,46 +454,48 @@ namespace Roslynator.CommandLine
 
             List<LogMessage> messages = null;
 
-            content = _editorConfigRegex.Replace(content, match =>
-            {
-                string id = match.Groups["id"].Value;
-                string severity = match.Groups["severity"].Value;
-
-                if (!AnalyzersMapping.Mapping.TryGetValue(id, out ImmutableArray<string> newIds))
-                    return match.Value;
-
-                ImmutableArray<string>.Enumerator en = newIds.GetEnumerator();
-
-                if (!en.MoveNext())
-                    return match.Value;
-
-                string newValue = match.Result($"dotnet_diagnostic.{en.Current}.severity = ${{severity}}${{trailing}}");
-
-                var message = new LogMessage($"Update rule '{id}' to '{en.Current}' ({severity})", Colors.Message_OK, Verbosity.Normal);
-
-                (messages ??= new List<LogMessage>()).Add(message);
-
-                if (en.MoveNext())
+            content = _editorConfigRegex.Replace(
+                content,
+                match =>
                 {
-                    Group eolGroup = match.Groups["eol"];
-                    string eolBefore = (eolGroup.Success) ? "" : fileEol;
-                    string eolAfter = (eolGroup.Success) ? fileEol : "";
+                    string id = match.Groups["id"].Value;
+                    string severity = match.Groups["severity"].Value;
 
-                    do
+                    if (!AnalyzersMapping.Mapping.TryGetValue(id, out ImmutableArray<string> newIds))
+                        return match.Value;
+
+                    ImmutableArray<string>.Enumerator en = newIds.GetEnumerator();
+
+                    if (!en.MoveNext())
+                        return match.Value;
+
+                    string newValue = match.Result($"dotnet_diagnostic.{en.Current}.severity = ${{severity}}${{trailing}}");
+
+                    var message = new LogMessage($"Update rule '{id}' to '{en.Current}' ({severity})", Colors.Message_OK, Verbosity.Normal);
+
+                    (messages ??= new List<LogMessage>()).Add(message);
+
+                    if (en.MoveNext())
                     {
-                        newValue += eolBefore
-                            + $"dotnet_diagnostic.{en.Current}.severity = {severity}"
-                            + eolAfter;
+                        Group eolGroup = match.Groups["eol"];
+                        string eolBefore = (eolGroup.Success) ? "" : fileEol;
+                        string eolAfter = (eolGroup.Success) ? fileEol : "";
 
-                        message = new LogMessage($"Update rule '{id}' to '{en.Current}' ({severity})", Colors.Message_OK, Verbosity.Normal);
+                        do
+                        {
+                            newValue += eolBefore
+                                + $"dotnet_diagnostic.{en.Current}.severity = {severity}"
+                                + eolAfter;
 
-                        messages.Add(message);
+                            message = new LogMessage($"Update rule '{id}' to '{en.Current}' ({severity})", Colors.Message_OK, Verbosity.Normal);
 
-                    } while (en.MoveNext());
-                }
+                            messages.Add(message);
 
-                return newValue;
-            });
+                        } while (en.MoveNext());
+                    }
+
+                    return newValue;
+                });
 
             if (messages != null)
             {

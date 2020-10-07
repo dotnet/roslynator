@@ -1933,15 +1933,15 @@ namespace Roslynator.CSharp
         }
 
         public static TypeParameterConstraintClauseSyntax TypeParameterConstraintClause(
-    string name,
-    TypeParameterConstraintSyntax typeParameterConstraint)
+            string name,
+            TypeParameterConstraintSyntax typeParameterConstraint)
         {
             return TypeParameterConstraintClause(IdentifierName(name), typeParameterConstraint);
         }
 
         public static TypeParameterConstraintClauseSyntax TypeParameterConstraintClause(
-    IdentifierNameSyntax identifierName,
-    TypeParameterConstraintSyntax typeParameterConstraint)
+            IdentifierNameSyntax identifierName,
+            TypeParameterConstraintSyntax typeParameterConstraint)
         {
             return SyntaxFactory.TypeParameterConstraintClause(identifierName, SingletonSeparatedList(typeParameterConstraint));
         }

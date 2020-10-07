@@ -35,12 +35,16 @@ namespace Roslynator.CSharp.CodeFixes
         {
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out SyntaxNode node, predicate: f => f.IsKind(
-                SyntaxKind.MethodDeclaration,
-                SyntaxKind.LocalFunctionStatement,
-                SyntaxKind.SimpleLambdaExpression,
-                SyntaxKind.ParenthesizedLambdaExpression,
-                SyntaxKind.AnonymousMethodExpression)))
+            if (!TryFindFirstAncestorOrSelf(
+                root,
+                context.Span,
+                out SyntaxNode node,
+                predicate: f => f.IsKind(
+                    SyntaxKind.MethodDeclaration,
+                    SyntaxKind.LocalFunctionStatement,
+                    SyntaxKind.SimpleLambdaExpression,
+                    SyntaxKind.ParenthesizedLambdaExpression,
+                    SyntaxKind.AnonymousMethodExpression)))
             {
                 return;
             }
@@ -174,8 +178,8 @@ namespace Roslynator.CSharp.CodeFixes
                     else
                     {
                         return ExpressionStatement(AwaitExpression(expression.WithoutTrivia().Parenthesize()).WithTriviaFrom(expression))
-                                .WithLeadingTrivia(node.GetLeadingTrivia())
-                                .WithAdditionalAnnotations(_asyncAwaitAnnotationAndFormatterAnnotation);
+                            .WithLeadingTrivia(node.GetLeadingTrivia())
+                            .WithAdditionalAnnotations(_asyncAwaitAnnotationAndFormatterAnnotation);
                     }
                 }
 

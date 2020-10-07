@@ -42,9 +42,10 @@ namespace Roslynator.Documentation.Json
 
         protected override SymbolDisplayAdditionalOptions GetAdditionalOptions()
         {
-            return base.GetAdditionalOptions() & ~(SymbolDisplayAdditionalOptions.IncludeAccessorAttributes
-                | SymbolDisplayAdditionalOptions.IncludeParameterAttributes
-                | SymbolDisplayAdditionalOptions.IncludeTrailingSemicolon);
+            return base.GetAdditionalOptions()
+                & ~(SymbolDisplayAdditionalOptions.IncludeAccessorAttributes
+                    | SymbolDisplayAdditionalOptions.IncludeParameterAttributes
+                    | SymbolDisplayAdditionalOptions.IncludeTrailingSemicolon);
         }
 
         public override void WriteStartDocument()

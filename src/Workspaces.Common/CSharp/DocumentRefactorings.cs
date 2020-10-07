@@ -19,10 +19,10 @@ namespace Roslynator.CSharp
     internal static class DocumentRefactorings
     {
         public static Task<Document> ChangeTypeAsync(
-           Document document,
-           TypeSyntax type,
-           ITypeSymbol typeSymbol,
-           CancellationToken cancellationToken = default)
+            Document document,
+            TypeSyntax type,
+            ITypeSymbol typeSymbol,
+            CancellationToken cancellationToken = default)
         {
             if (type.IsVar
                 && type.Parent is DeclarationExpressionSyntax declarationExpression
@@ -129,8 +129,8 @@ namespace Roslynator.CSharp
                 .ToSeparatedSyntaxList();
 
             DeclarationExpressionSyntax declarationExpression = DeclarationExpression(
-                    VarType(),
-                    ParenthesizedVariableDesignation(variables))
+                VarType(),
+                ParenthesizedVariableDesignation(variables))
                 .WithTriviaFrom(tupleExpression)
                 .WithFormatterAnnotation();
 

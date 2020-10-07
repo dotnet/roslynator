@@ -41,12 +41,16 @@ namespace Roslynator.CSharp.CodeFixes
         {
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out SyntaxNode node, predicate: f => f.IsKind(
-                SyntaxKind.InvocationExpression,
-                SyntaxKind.EqualsExpression,
-                SyntaxKind.NotEqualsExpression,
-                SyntaxKind.IsPatternExpression,
-                SyntaxKind.ConditionalExpression)))
+            if (!TryFindFirstAncestorOrSelf(
+                root,
+                context.Span,
+                out SyntaxNode node,
+                predicate: f => f.IsKind(
+                    SyntaxKind.InvocationExpression,
+                    SyntaxKind.EqualsExpression,
+                    SyntaxKind.NotEqualsExpression,
+                    SyntaxKind.IsPatternExpression,
+                    SyntaxKind.ConditionalExpression)))
             {
                 return;
             }
@@ -355,9 +359,8 @@ namespace Roslynator.CSharp.CodeFixes
                             Parameter(Identifier(DefaultNames.LambdaParameter)),
                             NotEqualsExpression(
                                 IdentifierName(DefaultNames.LambdaParameter),
-                                NullLiteralExpression()
-                            )
-                        ).WithFormatterAnnotation()
+                                NullLiteralExpression()))
+                            .WithFormatterAnnotation()
                     )
                 );
 
@@ -411,8 +414,8 @@ namespace Roslynator.CSharp.CodeFixes
                     newMemberAccess,
                     ArgumentList(
                         Argument(invocationInfo.Expression.WithoutTrivia()),
-                        argumentList.Arguments[0]
-                    ).WithTriviaFrom(argumentList));
+                        argumentList.Arguments[0])
+                        .WithTriviaFrom(argumentList));
 
                 return document.ReplaceNodeAsync(invocationInfo.InvocationExpression, newInvocation, cancellationToken);
             }
@@ -579,7 +582,8 @@ namespace Roslynator.CSharp.CodeFixes
 
             MemberAccessExpressionSyntax memberAccessExpression = SimpleMemberAccessExpression(
                 expression.WithoutTrivia(),
-                IdentifierName(propertyName)).WithTriviaFrom(expression);
+                IdentifierName(propertyName))
+                .WithTriviaFrom(expression);
 
             LambdaExpressionSyntax newLambdaExpression = lambdaExpression.ReplaceNode(expression, memberAccessExpression);
 

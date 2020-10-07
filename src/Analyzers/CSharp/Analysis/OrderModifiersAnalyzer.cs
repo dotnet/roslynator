@@ -146,7 +146,8 @@ namespace Roslynator.CSharp.Analysis
             if (modifiers.SpanContainsDirectives())
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context,
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
                 DiagnosticDescriptors.OrderModifiers,
                 Location.Create(context.Node.SyntaxTree, modifiers.Span));
         }

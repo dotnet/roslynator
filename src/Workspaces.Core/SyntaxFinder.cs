@@ -42,7 +42,8 @@ namespace Roslynator
                 symbol,
                 solution,
                 documents,
-                cancellationToken).ConfigureAwait(false))
+                cancellationToken)
+                .ConfigureAwait(false))
             {
                 foreach (IGrouping<Document, ReferenceLocation> grouping in referencedSymbol.Locations.GroupBy(f => f.Document))
                 {
@@ -85,7 +86,8 @@ namespace Roslynator
                 symbol,
                 solution,
                 documents,
-                cancellationToken).ConfigureAwait(false))
+                cancellationToken)
+                .ConfigureAwait(false))
             {
                 foreach (IGrouping<Document, ReferenceLocation> grouping in referencedSymbol.Locations.GroupBy(f => f.Document))
                 {
@@ -129,7 +131,8 @@ namespace Roslynator
                 symbol,
                 document.Solution(),
                 ImmutableHashSet.Create(document),
-                cancellationToken).ConfigureAwait(false))
+                cancellationToken)
+                .ConfigureAwait(false))
             {
                 FindReferences(referencedSymbol.Locations, root, allowCandidate, ref nodes);
             }

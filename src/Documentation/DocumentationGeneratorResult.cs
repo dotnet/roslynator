@@ -46,7 +46,8 @@ namespace Roslynator.Documentation
 
         public override int GetHashCode()
         {
-            return Hash.Combine(StringComparer.Ordinal.GetHashCode(Content),
+            return Hash.Combine(
+                StringComparer.Ordinal.GetHashCode(Content),
                 Hash.Combine(StringComparer.OrdinalIgnoreCase.GetHashCode(FilePath), (int)Kind));
         }
 

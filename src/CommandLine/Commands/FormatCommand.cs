@@ -57,24 +57,26 @@ namespace Roslynator.CommandLine
 
             var changedDocuments = new ConcurrentBag<ImmutableArray<DocumentId>>();
 
-            Parallel.ForEach(FilterProjects(solution), project =>
-            {
-                WriteLine($"  Analyze '{project.Name}'", Verbosity.Minimal);
-
-                ISyntaxFactsService syntaxFacts = MefWorkspaceServices.Default.GetService<ISyntaxFactsService>(project.Language);
-
-                Project newProject = CodeFormatter.FormatProjectAsync(project, syntaxFacts, options, cancellationToken).Result;
-
-                ImmutableArray<DocumentId> formattedDocuments = CodeFormatter.GetFormattedDocumentsAsync(project, newProject, syntaxFacts).Result;
-
-                if (formattedDocuments.Any())
+            Parallel.ForEach(
+                FilterProjects(solution),
+                project =>
                 {
-                    changedDocuments.Add(formattedDocuments);
-                    LogHelpers.WriteFormattedDocuments(formattedDocuments, project, solutionDirectory);
-                }
+                    WriteLine($"  Analyze '{project.Name}'", Verbosity.Minimal);
 
-                WriteLine($"  Done analyzing '{project.Name}'", Verbosity.Normal);
-            });
+                    ISyntaxFactsService syntaxFacts = MefWorkspaceServices.Default.GetService<ISyntaxFactsService>(project.Language);
+
+                    Project newProject = CodeFormatter.FormatProjectAsync(project, syntaxFacts, options, cancellationToken).Result;
+
+                    ImmutableArray<DocumentId> formattedDocuments = CodeFormatter.GetFormattedDocumentsAsync(project, newProject, syntaxFacts).Result;
+
+                    if (formattedDocuments.Any())
+                    {
+                        changedDocuments.Add(formattedDocuments);
+                        LogHelpers.WriteFormattedDocuments(formattedDocuments, project, solutionDirectory);
+                    }
+
+                    WriteLine($"  Done analyzing '{project.Name}'", Verbosity.Normal);
+                });
 
             if (changedDocuments.Count > 0)
             {

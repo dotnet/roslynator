@@ -76,9 +76,9 @@ namespace Roslynator.CSharp.CodeFixes
                                 break;
 
                             CodeAction codeAction = CodeAction.Create(
-                           "Add documentation comment",
-                           cancellationToken => AddDocumentationCommentRefactoring.RefactorAsync(context.Document, memberDeclaration, false, cancellationToken),
-                           GetEquivalenceKey(diagnostic));
+                                "Add documentation comment",
+                                cancellationToken => AddDocumentationCommentRefactoring.RefactorAsync(context.Document, memberDeclaration, false, cancellationToken),
+                                GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
 
@@ -498,7 +498,8 @@ namespace Roslynator.CSharp.CodeFixes
             AttributeListSyntax attributeList = AttributeList(
                 Attribute(
                     ParseName("global::System.CLSCompliantAttribute").WithSimplifierAnnotation(),
-                    AttributeArgument(FalseLiteralExpression()))).WithFormatterAnnotation();
+                    AttributeArgument(FalseLiteralExpression())))
+                .WithFormatterAnnotation();
 
             MemberDeclarationSyntax newMemberDeclaration = SyntaxRefactorings.AddAttributeLists(memberDeclaration, keepDocumentationCommentOnTop: true, attributeList);
 

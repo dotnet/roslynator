@@ -200,7 +200,8 @@ namespace Roslynator.CSharp.Refactorings
             TypeDeclarationSyntax newTypeDeclaration = typeDeclaration.ReplaceNode(
                 argument,
                 argument.WithExpression(
-                    StringLiteralExpression($"{{{propertyName},nq}}")).WithTriviaFrom(argument.Expression));
+                    StringLiteralExpression($"{{{propertyName},nq}}"))
+                    .WithTriviaFrom(argument.Expression));
 
             string value = semanticModel
                 .GetDeclaredSymbol(typeDeclaration, cancellationToken)

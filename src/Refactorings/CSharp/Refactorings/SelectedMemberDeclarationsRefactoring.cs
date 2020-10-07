@@ -13,12 +13,12 @@ namespace Roslynator.CSharp.Refactorings
     internal static class SelectedMemberDeclarationsRefactoring
     {
         public static ImmutableDictionary<Accessibility, string> _accessiblityIdentifierMap = ImmutableDictionary.CreateRange(new[]
-        {
-            new KeyValuePair<Accessibility, string>(Accessibility.Public, EquivalenceKey.Join(RefactoringIdentifiers.ChangeAccessibility, nameof(Accessibility.Public))),
-            new KeyValuePair<Accessibility, string>(Accessibility.Internal, EquivalenceKey.Join(RefactoringIdentifiers.ChangeAccessibility, nameof(Accessibility.Internal))),
-            new KeyValuePair<Accessibility, string>(Accessibility.Protected, EquivalenceKey.Join(RefactoringIdentifiers.ChangeAccessibility, nameof(Accessibility.Protected))),
-            new KeyValuePair<Accessibility, string>(Accessibility.Private, EquivalenceKey.Join(RefactoringIdentifiers.ChangeAccessibility, nameof(Accessibility.Private)))
-        });
+            {
+                new KeyValuePair<Accessibility, string>(Accessibility.Public, EquivalenceKey.Join(RefactoringIdentifiers.ChangeAccessibility, nameof(Accessibility.Public))),
+                new KeyValuePair<Accessibility, string>(Accessibility.Internal, EquivalenceKey.Join(RefactoringIdentifiers.ChangeAccessibility, nameof(Accessibility.Internal))),
+                new KeyValuePair<Accessibility, string>(Accessibility.Protected, EquivalenceKey.Join(RefactoringIdentifiers.ChangeAccessibility, nameof(Accessibility.Protected))),
+                new KeyValuePair<Accessibility, string>(Accessibility.Private, EquivalenceKey.Join(RefactoringIdentifiers.ChangeAccessibility, nameof(Accessibility.Private)))
+            });
 
         public static async Task ComputeRefactoringAsync(RefactoringContext context, MemberDeclarationListSelection selectedMembers)
         {

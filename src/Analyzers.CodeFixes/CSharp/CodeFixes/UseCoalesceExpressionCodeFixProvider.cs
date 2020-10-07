@@ -182,7 +182,8 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 right = CastExpression(
                     targetType.ToTypeSyntax().WithSimplifierAnnotation(),
-                    right.Parenthesize()).WithSimplifierAnnotation();
+                    right.Parenthesize())
+                    .WithSimplifierAnnotation();
             }
 
             return CoalesceExpression(

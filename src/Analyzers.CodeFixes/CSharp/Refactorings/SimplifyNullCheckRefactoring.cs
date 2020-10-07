@@ -69,8 +69,8 @@ namespace Roslynator.CSharp.Refactorings
                             if (castExpression != null)
                             {
                                 newNode = castExpression
-                                   .WithExpression(newNode.Parenthesize())
-                                   .WithSimplifierAnnotation();
+                                    .WithExpression(newNode.Parenthesize())
+                                    .WithSimplifierAnnotation();
                             }
                         }
                     }

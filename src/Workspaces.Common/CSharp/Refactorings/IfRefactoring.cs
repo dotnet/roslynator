@@ -539,7 +539,8 @@ namespace Roslynator.CSharp.Refactorings
             {
                 right = CastExpression(
                     targetType.ToMinimalTypeSyntax(semanticModel, position),
-                    right.Parenthesize()).WithSimplifierAnnotation();
+                    right.Parenthesize())
+                    .WithSimplifierAnnotation();
             }
 
             return CoalesceExpression(left.Parenthesize(), right.Parenthesize());

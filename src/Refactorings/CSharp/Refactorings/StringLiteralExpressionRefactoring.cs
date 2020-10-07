@@ -116,7 +116,7 @@ namespace Roslynator.CSharp.Refactorings
                 context.RegisterRefactoring(
                     "Convert to 'string.Empty'",
                     ct => ConvertToStringEmptyAsync(context.Document, literalExpression, ct),
-                RefactoringIdentifiers.ConvertEmptyStringToStringEmpty);
+                    RefactoringIdentifiers.ConvertEmptyStringToStringEmpty);
             }
         }
 

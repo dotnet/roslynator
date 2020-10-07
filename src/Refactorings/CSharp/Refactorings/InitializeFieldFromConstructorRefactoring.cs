@@ -184,7 +184,8 @@ namespace Roslynator.CSharp.Refactorings
                     statements = statements.Add(
                         SimpleAssignmentStatement(
                             SimpleMemberAccessExpression(ThisExpression(), IdentifierName(fieldInfo.Name)).WithSimplifierAnnotation(),
-                            IdentifierName(parameterName)).WithFormatterAnnotation());
+                            IdentifierName(parameterName))
+                            .WithFormatterAnnotation());
                 }
 
                 parameterList = parameterList.WithParameters(parameters).WithFormatterAnnotation();

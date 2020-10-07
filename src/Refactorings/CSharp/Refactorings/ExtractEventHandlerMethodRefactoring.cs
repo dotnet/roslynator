@@ -87,7 +87,8 @@ namespace Roslynator.CSharp.Refactorings
                 VoidType(),
                 Identifier(methodName).WithRenameAnnotation(),
                 parameterList.WithParameters(parameters),
-                CreateMethodBody(parenthesizedLambda.Body)).WithFormatterAnnotation();
+                CreateMethodBody(parenthesizedLambda.Body))
+                .WithFormatterAnnotation();
 
             SyntaxList<MemberDeclarationSyntax> newMembers = typeDeclaration.Members.Replace(memberDeclaration, newMemberDeclaration);
 

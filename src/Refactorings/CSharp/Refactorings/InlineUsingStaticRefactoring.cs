@@ -32,12 +32,14 @@ namespace Roslynator.CSharp.Refactorings
 
             TypeSyntax type = classSymbol.ToTypeSyntax();
 
-            SyntaxNode newNode = parent.ReplaceNodes(names, (node, _) =>
-            {
-                return SimpleMemberAccessExpression(type, node.WithoutTrivia())
-                    .WithTriviaFrom(node)
-                    .WithSimplifierAnnotation();
-            });
+            SyntaxNode newNode = parent.ReplaceNodes(
+                names,
+                (node, _) =>
+                {
+                    return SimpleMemberAccessExpression(type, node.WithoutTrivia())
+                        .WithTriviaFrom(node)
+                        .WithSimplifierAnnotation();
+                });
 
             newNode = RemoveUsingDirective(newNode, index);
 

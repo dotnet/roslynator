@@ -29,9 +29,9 @@ namespace Roslynator.CSharp.Refactorings
                 case SyntaxKind.EnumDeclaration:
                     {
                         if (context.IsAnyRefactoringEnabled(
-                                RefactoringIdentifiers.RemoveMember,
-                                RefactoringIdentifiers.DuplicateMember,
-                                RefactoringIdentifiers.CommentOutMember)
+                            RefactoringIdentifiers.RemoveMember,
+                            RefactoringIdentifiers.DuplicateMember,
+                            RefactoringIdentifiers.CommentOutMember)
                             && BraceContainsSpan(member, context.Span))
                         {
                             if (member.IsParentKind(
@@ -70,8 +70,8 @@ namespace Roslynator.CSharp.Refactorings
                 RemoveAllMemberDeclarationsRefactoring.ComputeRefactoring(context, member);
 
             if (context.IsAnyRefactoringEnabled(
-                    RefactoringIdentifiers.SwapMemberDeclarations,
-                    RefactoringIdentifiers.RemoveMemberDeclarations)
+                RefactoringIdentifiers.SwapMemberDeclarations,
+                RefactoringIdentifiers.RemoveMemberDeclarations)
                 && !member.Span.IntersectsWith(context.Span))
             {
                 MemberDeclarationsRefactoring.ComputeRefactoring(context, member);

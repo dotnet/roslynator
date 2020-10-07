@@ -62,7 +62,8 @@ namespace Roslynator.CSharp.Analysis
                         .GetTypeSymbol(nullCheck.Expression, cancellationToken)?
                         .IsReferenceTypeOrNullableType() == true)
                 {
-                    DiagnosticHelpers.ReportDiagnostic(context,
+                    DiagnosticHelpers.ReportDiagnostic(
+                        context,
                         DiagnosticDescriptors.UseCoalesceExpressionInsteadOfConditionalExpression,
                         conditionalExpression);
                 }
@@ -142,7 +143,8 @@ namespace Roslynator.CSharp.Analysis
                         if (typeSymbol?.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T
                             && !conditionalExpression.IsInExpressionTree(semanticModel, cancellationToken))
                         {
-                            DiagnosticHelpers.ReportDiagnostic(context,
+                            DiagnosticHelpers.ReportDiagnostic(
+                                context,
                                 DiagnosticDescriptors.UseConditionalAccessInsteadOfConditionalExpression,
                                 conditionalExpression);
                         }

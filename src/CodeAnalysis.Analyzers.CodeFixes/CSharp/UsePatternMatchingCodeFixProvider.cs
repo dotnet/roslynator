@@ -97,7 +97,7 @@ namespace Roslynator.CodeAnalysis.CSharp
 
                 return newSection.WithFormatterAnnotation();
             })
-            .ToSyntaxList();
+                .ToSyntaxList();
 
             ExpressionSyntax expression = switchStatement.Expression;
 

@@ -17,7 +17,8 @@ namespace Roslynator.CodeGeneration.CSharp
         {
             return CompilationUnit(
                 UsingDirectives("System"),
-                NamespaceDeclaration("Roslynator.CSharp.Refactorings",
+                NamespaceDeclaration(
+                    "Roslynator.CSharp.Refactorings",
                     ClassDeclaration(
                         Modifiers.Public_Static_Partial(),
                         "RefactoringIdentifiers",

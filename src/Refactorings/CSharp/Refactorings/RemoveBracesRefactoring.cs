@@ -31,8 +31,8 @@ namespace Roslynator.CSharp.Refactorings
         private static void ComputeRefactoring(RefactoringContext context, BlockSyntax block)
         {
             if (context.IsAnyRefactoringEnabled(
-                    RefactoringIdentifiers.RemoveBraces,
-                    RefactoringIdentifiers.RemoveBracesFromIfElse)
+                RefactoringIdentifiers.RemoveBraces,
+                RefactoringIdentifiers.RemoveBracesFromIfElse)
                 && CanRefactor(context, block))
             {
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveBraces))

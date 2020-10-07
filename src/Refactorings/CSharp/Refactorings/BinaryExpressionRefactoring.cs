@@ -46,9 +46,9 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             if (context.IsAnyRefactoringEnabled(
-                    RefactoringIdentifiers.ExtractExpressionFromCondition,
-                    RefactoringIdentifiers.JoinStringExpressions,
-                    RefactoringIdentifiers.UseStringBuilderInsteadOfConcatenation)
+                RefactoringIdentifiers.ExtractExpressionFromCondition,
+                RefactoringIdentifiers.JoinStringExpressions,
+                RefactoringIdentifiers.UseStringBuilderInsteadOfConcatenation)
                 && !context.Span.IsEmpty
                 && binaryExpression.IsKind(SyntaxKind.AddExpression, SyntaxKind.LogicalAndExpression, SyntaxKind.LogicalOrExpression))
             {

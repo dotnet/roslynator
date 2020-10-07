@@ -17,11 +17,11 @@ namespace Roslynator.CSharp.Refactorings
                 return;
 
             if (context.IsAnyRefactoringEnabled(
-                    RefactoringIdentifiers.AddIdentifierToParameter,
-                    RefactoringIdentifiers.RenameParameterAccordingToTypeName,
-                    RefactoringIdentifiers.CheckParameterForNull,
-                    RefactoringIdentifiers.IntroduceAndInitializeField,
-                    RefactoringIdentifiers.IntroduceAndInitializeProperty)
+                RefactoringIdentifiers.AddIdentifierToParameter,
+                RefactoringIdentifiers.RenameParameterAccordingToTypeName,
+                RefactoringIdentifiers.CheckParameterForNull,
+                RefactoringIdentifiers.IntroduceAndInitializeField,
+                RefactoringIdentifiers.IntroduceAndInitializeProperty)
                 && closeParen.IsParentKind(SyntaxKind.ParameterList)
                 && context.Span.Start > 0)
             {

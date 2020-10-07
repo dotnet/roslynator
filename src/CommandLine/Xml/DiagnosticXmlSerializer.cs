@@ -53,7 +53,8 @@ namespace Roslynator.CommandLine.Xml
                 "Project",
                 new XAttribute("Name", project.Name),
                 new XAttribute("FilePath", project.FilePath),
-                new XElement("Diagnostics",
+                new XElement(
+                    "Diagnostics",
                     result.Diagnostics
                         .OrderBy(f => f.Location.SourceTree?.FilePath)
                         .ThenBy(f => f.Id)
@@ -76,7 +77,8 @@ namespace Roslynator.CommandLine.Xml
 
                 LinePosition linePosition = span.Span.Start;
 
-                locationElement = new XElement("Location",
+                locationElement = new XElement(
+                    "Location",
                     new XAttribute("Line", linePosition.Line + 1),
                     new XAttribute("Character", linePosition.Character + 1));
             }
@@ -92,11 +94,13 @@ namespace Roslynator.CommandLine.Xml
 
         private static XElement CreateSummary(IEnumerable<Diagnostic> diagnostics, IFormatProvider formatProvider)
         {
-            return new XElement("Summary",
+            return new XElement(
+                "Summary",
                 diagnostics
                     .GroupBy(f => f.Descriptor, DiagnosticDescriptorComparer.Id)
                     .OrderBy(f => f.Key, DiagnosticDescriptorComparer.Id)
-                    .Select(f => new XElement("Diagnostic",
+                    .Select(f => new XElement(
+                        "Diagnostic",
                         new XAttribute("Id", f.Key.Id),
                         new XAttribute("Title", f.Key.Title.ToString(formatProvider)),
                         new XAttribute("Count", f.Count()))));
@@ -105,10 +109,12 @@ namespace Roslynator.CommandLine.Xml
         private static void SerializeDocument(string filePath, XElement summary, params object[] projects)
         {
             var document = new XDocument(
-                new XElement("Roslynator",
-                new XElement("CodeAnalysis",
-                    summary,
-                    new XElement("Projects", projects))));
+                new XElement(
+                    "Roslynator",
+                    new XElement(
+                        "CodeAnalysis",
+                        summary,
+                        new XElement("Projects", projects))));
 
             WriteLine($"Save code analysis to '{filePath}'", ConsoleColor.DarkGray, Verbosity.Diagnostic);
 

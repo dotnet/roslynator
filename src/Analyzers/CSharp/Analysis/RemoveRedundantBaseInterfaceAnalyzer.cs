@@ -126,7 +126,8 @@ namespace Roslynator.CSharp.Analysis
 
                         BaseTypeSyntax baseType = interfaceInfo.BaseType;
 
-                        DiagnosticHelpers.ReportDiagnostic(context,
+                        DiagnosticHelpers.ReportDiagnostic(
+                            context,
                             DiagnosticDescriptors.RemoveRedundantBaseInterface,
                             baseType,
                             SymbolDisplay.ToMinimalDisplayString(interfaceInfo.Symbol, context.SemanticModel, baseType.SpanStart, SymbolDisplayFormats.DisplayName),

@@ -47,16 +47,16 @@ namespace Roslynator.CSharp.Refactorings.MakeMemberAbstract
                 if (getter != null)
                 {
                     accessorList = accessorList.AddAccessors(getter
-                       .WithBody(null)
-                       .WithSemicolonToken(SemicolonToken()));
+                        .WithBody(null)
+                        .WithSemicolonToken(SemicolonToken()));
                 }
 
                 AccessorDeclarationSyntax setter = indexerDeclaration.Setter();
                 if (setter != null)
                 {
                     accessorList = accessorList.AddAccessors(setter
-                       .WithBody(null)
-                       .WithSemicolonToken(SemicolonToken()));
+                        .WithBody(null)
+                        .WithSemicolonToken(SemicolonToken()));
                 }
             }
 

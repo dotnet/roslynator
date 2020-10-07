@@ -43,7 +43,8 @@ namespace Roslynator.CSharp.Refactorings
             ExpressionStatementSyntax newExpressionStatement = ExpressionStatement(
                 SimpleAssignmentExpression(
                     IdentifierName(Identifier(name).WithRenameAnnotation()),
-                    expression.WithoutTrivia()).WithTriviaFrom(expression));
+                    expression.WithoutTrivia())
+                    .WithTriviaFrom(expression));
 
             newExpressionStatement = newExpressionStatement
                 .WithTriviaFrom(expressionStatement)

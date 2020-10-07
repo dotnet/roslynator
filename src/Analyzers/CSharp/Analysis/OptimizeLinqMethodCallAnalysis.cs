@@ -783,7 +783,8 @@ namespace Roslynator.CSharp.Analysis
                 return;
             }
 
-            DiagnosticHelpers.ReportDiagnostic(context,
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
                 descriptor: DiagnosticDescriptors.OptimizeLinqMethodCall,
                 location: Location.Create(node.SyntaxTree, span),
                 properties: properties ?? ImmutableDictionary<string, string>.Empty,
@@ -827,16 +828,16 @@ namespace Roslynator.CSharp.Analysis
             public static ImmutableDictionary<string, string> Length { get; } = ImmutableDictionary.CreateRange(new[] { new KeyValuePair<string, string>("PropertyName", "Length") });
 
             public static ImmutableDictionary<string, string> Sum_Count { get; } = ImmutableDictionary.CreateRange(new[]
-            {
-                new KeyValuePair<string, string>("PropertyName", "Count"),
-                new KeyValuePair<string, string>("MethodName", "Sum")
-            });
+                {
+                    new KeyValuePair<string, string>("PropertyName", "Count"),
+                    new KeyValuePair<string, string>("MethodName", "Sum")
+                });
 
             public static ImmutableDictionary<string, string> Sum_Length { get; } = ImmutableDictionary.CreateRange(new[]
-            {
-                new KeyValuePair<string, string>("PropertyName", "Length"),
-                new KeyValuePair<string, string>("MethodName", "Sum")
-            });
+                {
+                    new KeyValuePair<string, string>("PropertyName", "Length"),
+                    new KeyValuePair<string, string>("MethodName", "Sum")
+                });
         }
     }
 }

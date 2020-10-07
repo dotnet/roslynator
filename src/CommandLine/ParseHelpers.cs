@@ -260,8 +260,8 @@ namespace Roslynator.CommandLine
             if (Console.IsInputRedirected)
             {
                 ImmutableArray<string> pathsFromInput = ConsoleHelpers.ReadRedirectedInputAsLines()
-                   .Where(f => !string.IsNullOrEmpty(f))
-                   .ToImmutableArray();
+                    .Where(f => !string.IsNullOrEmpty(f))
+                    .ToImmutableArray();
 
                 paths = paths.AddRange(pathsFromInput);
             }

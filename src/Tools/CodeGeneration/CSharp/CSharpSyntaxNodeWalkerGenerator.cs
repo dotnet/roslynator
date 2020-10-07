@@ -24,7 +24,8 @@ namespace Roslynator.CodeGeneration.CSharp
                     "Microsoft.CodeAnalysis",
                     "Microsoft.CodeAnalysis.CSharp",
                     "Microsoft.CodeAnalysis.CSharp.Syntax"),
-                NamespaceDeclaration("Roslynator.CSharp.SyntaxWalkers",
+                NamespaceDeclaration(
+                    "Roslynator.CSharp.SyntaxWalkers",
                     ClassDeclaration(
                         default(SyntaxList<AttributeListSyntax>),
                         Modifiers.Internal_Abstract(),

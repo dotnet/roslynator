@@ -229,22 +229,24 @@ namespace Roslynator.Documentation
                 {
                     if (symbol.SpecialType == SpecialType.System_Object)
                     {
-                        Array.Sort(derivedTypes, (x, y) =>
-                        {
-                            if (x.Symbol.IsStatic)
+                        Array.Sort(
+                            derivedTypes,
+                            (x, y) =>
                             {
-                                if (!y.Symbol.IsStatic)
+                                if (x.Symbol.IsStatic)
                                 {
-                                    return -1;
+                                    if (!y.Symbol.IsStatic)
+                                    {
+                                        return -1;
+                                    }
                                 }
-                            }
-                            else if (y.Symbol.IsStatic)
-                            {
-                                return 1;
-                            }
+                                else if (y.Symbol.IsStatic)
+                                {
+                                    return 1;
+                                }
 
-                            return Compare(x, y);
-                        });
+                                return Compare(x, y);
+                            });
                     }
                     else
                     {

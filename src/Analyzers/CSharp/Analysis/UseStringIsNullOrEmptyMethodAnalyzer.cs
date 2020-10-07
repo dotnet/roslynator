@@ -24,7 +24,8 @@ namespace Roslynator.CSharp.Analysis
         {
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeBinaryExpression(f),
+            context.RegisterSyntaxNodeAction(
+                f => AnalyzeBinaryExpression(f),
                 SyntaxKind.LogicalOrExpression,
                 SyntaxKind.LogicalAndExpression);
         }

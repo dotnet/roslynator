@@ -26,7 +26,7 @@ namespace Roslynator.Testing.Text
         public bool Equals(TextParserResult other)
         {
             return Text == other.Text
-                   && Spans.Equals(other.Spans);
+                && Spans.Equals(other.Spans);
         }
 
         public override int GetHashCode()

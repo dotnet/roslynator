@@ -59,10 +59,12 @@ namespace Roslynator
             Location location,
             params object[] messageArgs)
         {
-            ReportDiagnostic(context, Diagnostic.Create(
-                descriptor: descriptor,
-                location: location,
-                messageArgs: messageArgs));
+            ReportDiagnostic(
+                context,
+                Diagnostic.Create(
+                    descriptor: descriptor,
+                    location: location,
+                    messageArgs: messageArgs));
         }
 
         public static void ReportDiagnostic(
@@ -72,11 +74,13 @@ namespace Roslynator
             IEnumerable<Location> additionalLocations,
             params object[] messageArgs)
         {
-            ReportDiagnostic(context, Diagnostic.Create(
-                descriptor: descriptor,
-                location: location,
-                additionalLocations: additionalLocations,
-                messageArgs: messageArgs));
+            ReportDiagnostic(
+                context,
+                Diagnostic.Create(
+                    descriptor: descriptor,
+                    location: location,
+                    additionalLocations: additionalLocations,
+                    messageArgs: messageArgs));
         }
 
         public static void ReportDiagnostic(
@@ -86,11 +90,13 @@ namespace Roslynator
             ImmutableDictionary<string, string> properties,
             params object[] messageArgs)
         {
-            ReportDiagnostic(context, Diagnostic.Create(
-                descriptor: descriptor,
-                location: location,
-                properties: properties,
-                messageArgs: messageArgs));
+            ReportDiagnostic(
+                context,
+                Diagnostic.Create(
+                    descriptor: descriptor,
+                    location: location,
+                    properties: properties,
+                    messageArgs: messageArgs));
         }
 
         public static void ReportDiagnostic(
@@ -101,12 +107,14 @@ namespace Roslynator
             ImmutableDictionary<string, string> properties,
             params object[] messageArgs)
         {
-            ReportDiagnostic(context, Diagnostic.Create(
-                descriptor: descriptor,
-                location: location,
-                additionalLocations: additionalLocations,
-                properties: properties,
-                messageArgs: messageArgs));
+            ReportDiagnostic(
+                context,
+                Diagnostic.Create(
+                    descriptor: descriptor,
+                    location: location,
+                    additionalLocations: additionalLocations,
+                    properties: properties,
+                    messageArgs: messageArgs));
         }
 
         private static void ReportDiagnostic(SymbolAnalysisContext context, Diagnostic diagnostic)
@@ -187,10 +195,12 @@ namespace Roslynator
             Location location,
             params object[] messageArgs)
         {
-            ReportDiagnostic(context, Diagnostic.Create(
-                descriptor: descriptor,
-                location: location,
-                messageArgs: messageArgs));
+            ReportDiagnostic(
+                context,
+                Diagnostic.Create(
+                    descriptor: descriptor,
+                    location: location,
+                    messageArgs: messageArgs));
         }
 
         public static void ReportDiagnostic(
@@ -200,11 +210,13 @@ namespace Roslynator
             IEnumerable<Location> additionalLocations,
             params object[] messageArgs)
         {
-            ReportDiagnostic(context, Diagnostic.Create(
-                descriptor: descriptor,
-                location: location,
-                additionalLocations: additionalLocations,
-                messageArgs: messageArgs));
+            ReportDiagnostic(
+                context,
+                Diagnostic.Create(
+                    descriptor: descriptor,
+                    location: location,
+                    additionalLocations: additionalLocations,
+                    messageArgs: messageArgs));
         }
 
         public static void ReportDiagnostic(
@@ -214,11 +226,13 @@ namespace Roslynator
             ImmutableDictionary<string, string> properties,
             params object[] messageArgs)
         {
-            ReportDiagnostic(context, Diagnostic.Create(
-                descriptor: descriptor,
-                location: location,
-                properties: properties,
-                messageArgs: messageArgs));
+            ReportDiagnostic(
+                context,
+                Diagnostic.Create(
+                    descriptor: descriptor,
+                    location: location,
+                    properties: properties,
+                    messageArgs: messageArgs));
         }
 
         public static void ReportDiagnostic(
@@ -229,12 +243,14 @@ namespace Roslynator
             ImmutableDictionary<string, string> properties,
             params object[] messageArgs)
         {
-            ReportDiagnostic(context, Diagnostic.Create(
-                descriptor: descriptor,
-                location: location,
-                additionalLocations: additionalLocations,
-                properties: properties,
-                messageArgs: messageArgs));
+            ReportDiagnostic(
+                context,
+                Diagnostic.Create(
+                    descriptor: descriptor,
+                    location: location,
+                    additionalLocations: additionalLocations,
+                    properties: properties,
+                    messageArgs: messageArgs));
         }
 
         public static void ReportToken(SyntaxNodeAnalysisContext context, DiagnosticDescriptor descriptor, SyntaxToken token, params object[] messageArgs)
@@ -303,10 +319,12 @@ namespace Roslynator
             Location location,
             params object[] messageArgs)
         {
-            ReportDiagnostic(context, Diagnostic.Create(
-                descriptor: descriptor,
-                location: location,
-                messageArgs: messageArgs));
+            ReportDiagnostic(
+                context,
+                Diagnostic.Create(
+                    descriptor: descriptor,
+                    location: location,
+                    messageArgs: messageArgs));
         }
 
         public static void ReportDiagnostic(
@@ -316,11 +334,13 @@ namespace Roslynator
             IEnumerable<Location> additionalLocations,
             params object[] messageArgs)
         {
-            ReportDiagnostic(context, Diagnostic.Create(
-                descriptor: descriptor,
-                location: location,
-                additionalLocations: additionalLocations,
-                messageArgs: messageArgs));
+            ReportDiagnostic(
+                context,
+                Diagnostic.Create(
+                    descriptor: descriptor,
+                    location: location,
+                    additionalLocations: additionalLocations,
+                    messageArgs: messageArgs));
         }
 
         public static void ReportDiagnostic(
@@ -330,11 +350,13 @@ namespace Roslynator
             ImmutableDictionary<string, string> properties,
             params object[] messageArgs)
         {
-            ReportDiagnostic(context, Diagnostic.Create(
-                descriptor: descriptor,
-                location: location,
-                properties: properties,
-                messageArgs: messageArgs));
+            ReportDiagnostic(
+                context,
+                Diagnostic.Create(
+                    descriptor: descriptor,
+                    location: location,
+                    properties: properties,
+                    messageArgs: messageArgs));
         }
 
         public static void ReportDiagnostic(
@@ -345,12 +367,14 @@ namespace Roslynator
             ImmutableDictionary<string, string> properties,
             params object[] messageArgs)
         {
-            ReportDiagnostic(context, Diagnostic.Create(
-                descriptor: descriptor,
-                location: location,
-                additionalLocations: additionalLocations,
-                properties: properties,
-                messageArgs: messageArgs));
+            ReportDiagnostic(
+                context,
+                Diagnostic.Create(
+                    descriptor: descriptor,
+                    location: location,
+                    additionalLocations: additionalLocations,
+                    properties: properties,
+                    messageArgs: messageArgs));
         }
 
         private static void ReportDiagnostic(SyntaxTreeAnalysisContext context, Diagnostic diagnostic)

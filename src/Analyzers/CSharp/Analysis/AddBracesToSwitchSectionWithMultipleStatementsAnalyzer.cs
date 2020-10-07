@@ -32,7 +32,8 @@ namespace Roslynator.CSharp.Analysis
 
             if (statements.Count > 1)
             {
-                DiagnosticHelpers.ReportDiagnostic(context,
+                DiagnosticHelpers.ReportDiagnostic(
+                    context,
                     DiagnosticDescriptors.AddBracesToSwitchSectionWithMultipleStatements,
                     Location.Create(switchSection.SyntaxTree, statements.Span));
             }

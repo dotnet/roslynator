@@ -45,8 +45,8 @@ namespace Roslynator.Formatting.CSharp
                         ReportDiagnostic(usingDirective.SpanStart);
                 }
                 else if (en.Current.IsEndOfLineTrivia()
-                     && en.MoveNext()
-                     && en.Current.IsKind(SyntaxKind.SingleLineCommentTrivia))
+                    && en.MoveNext()
+                    && en.Current.IsKind(SyntaxKind.SingleLineCommentTrivia))
                 {
                     ReportDiagnostic(usingDirective.SpanStart);
                 }

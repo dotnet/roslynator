@@ -58,9 +58,9 @@ namespace Roslynator.CSharp.Refactorings
                     .SingleOrDefault(shouldThrow: false);
 
                 if (accessor?.AttributeLists.Any() == false
-                        && accessor.IsKind(SyntaxKind.GetAccessorDeclaration)
-                        && accessor.Body != null
-                        && BlockExpressionAnalysis.SupportsExpressionBody(accessor.Body, allowExpressionStatement: false))
+                    && accessor.IsKind(SyntaxKind.GetAccessorDeclaration)
+                    && accessor.Body != null
+                    && BlockExpressionAnalysis.SupportsExpressionBody(accessor.Body, allowExpressionStatement: false))
                 {
                     return true;
                 }
@@ -110,9 +110,9 @@ namespace Roslynator.CSharp.Refactorings
                     .SingleOrDefault(shouldThrow: false);
 
                 if (accessor?.AttributeLists.Any() == false
-                        && accessor.IsKind(SyntaxKind.GetAccessorDeclaration)
-                        && accessor.Body != null
-                        && BlockExpressionAnalysis.SupportsExpressionBody(accessor.Body, allowExpressionStatement: false))
+                    && accessor.IsKind(SyntaxKind.GetAccessorDeclaration)
+                    && accessor.Body != null
+                    && BlockExpressionAnalysis.SupportsExpressionBody(accessor.Body, allowExpressionStatement: false))
                 {
                     return true;
                 }

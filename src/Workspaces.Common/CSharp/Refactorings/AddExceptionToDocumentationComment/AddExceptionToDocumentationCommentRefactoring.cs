@@ -62,13 +62,13 @@ namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
         }
 
         private static ThrowInfo GetUndocumentedExceptionInfo(
-        SyntaxNode node,
-        ExpressionSyntax expression,
-        MemberDeclarationSyntax declaration,
-        ISymbol declarationSymbol,
-        INamedTypeSymbol exceptionSymbol,
-        SemanticModel semanticModel,
-        CancellationToken cancellationToken)
+            SyntaxNode node,
+            ExpressionSyntax expression,
+            MemberDeclarationSyntax declaration,
+            ISymbol declarationSymbol,
+            INamedTypeSymbol exceptionSymbol,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
         {
             if (expression == null)
                 return null;
@@ -245,7 +245,8 @@ namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
                 memberDeclaration,
                 declarationSymbol,
                 semanticModel,
-                cancellationToken).ConfigureAwait(false);
+                cancellationToken)
+                .ConfigureAwait(false);
         }
 
         public static async Task<Document> RefactorAsync(
@@ -266,7 +267,8 @@ namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
                 memberDeclaration,
                 analysis.DeclarationSymbol,
                 semanticModel,
-                cancellationToken).ConfigureAwait(false);
+                cancellationToken)
+                .ConfigureAwait(false);
         }
 
         private static Task<Document> RefactorAsync(

@@ -276,7 +276,8 @@ namespace Roslynator.Diagnostics
 
                 using (IEnumerator<KeyValuePair<DiagnosticAnalyzer, AnalyzerTelemetryInfo>> en = telemetryInfos
                     .Where(f => f.Value.ExecutionTime >= MinimalExecutionTime)
-                    .OrderByDescending(f => f.Value.ExecutionTime).GetEnumerator())
+                    .OrderByDescending(f => f.Value.ExecutionTime)
+                    .GetEnumerator())
                 {
                     if (en.MoveNext())
                     {

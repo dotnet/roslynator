@@ -73,16 +73,16 @@ namespace Roslynator.CSharp.CodeFixes
                             }
 
                             CodeAction codeAction = CodeAction.Create(
-                           $"Add '{SyntaxFacts.GetText(refOrOutKeyword.Kind())}' modifier",
-                           cancellationToken =>
-                           {
-                               ArgumentSyntax newArgument = argument
-                                   .WithRefOrOutKeyword(refOrOutKeyword)
-                                   .WithFormatterAnnotation();
+                                $"Add '{SyntaxFacts.GetText(refOrOutKeyword.Kind())}' modifier",
+                                cancellationToken =>
+                                {
+                                    ArgumentSyntax newArgument = argument
+                                        .WithRefOrOutKeyword(refOrOutKeyword)
+                                        .WithFormatterAnnotation();
 
-                               return context.Document.ReplaceNodeAsync(argument, newArgument, cancellationToken);
-                           },
-                           GetEquivalenceKey(diagnostic));
+                                    return context.Document.ReplaceNodeAsync(argument, newArgument, cancellationToken);
+                                },
+                                GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;

@@ -43,9 +43,9 @@ namespace Roslynator.CSharp.CodeFixes
         }
 
         private static Task<Document> RefactorAsync(
-        Document document,
-        SyntaxNode node,
-        CancellationToken cancellationToken)
+            Document document,
+            SyntaxNode node,
+            CancellationToken cancellationToken)
         {
             GenericInfo genericInfo = SyntaxInfo.GenericInfo(node);
 

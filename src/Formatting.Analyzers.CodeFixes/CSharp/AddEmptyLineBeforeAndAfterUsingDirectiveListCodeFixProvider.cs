@@ -103,7 +103,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
             int index = leadingTrivia.Count;
 
             if (index > 0
-            && leadingTrivia.Last().IsWhitespaceTrivia())
+                && leadingTrivia.Last().IsWhitespaceTrivia())
             {
                 index--;
             }
