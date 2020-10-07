@@ -100,11 +100,24 @@ namespace Roslynator.CSharp.Analysis
             SimplifyLinqMethodChain(
                 context,
                 invocationInfo,
-                "Where");
+                "Where",
+                Properties.SimplifyLinqMethodChain);
         }
 
         // items.Select(selector).Min/Max() >>> items.Min/Max(selector)
         public static void AnalyzeSelectAndMinOrMax(
+            SyntaxNodeAnalysisContext context,
+            in SimpleMemberInvocationExpressionInfo invocationInfo)
+        {
+            SimplifyLinqMethodChain(
+                context,
+                invocationInfo,
+                "Select",
+                Properties.SimplifyLinqMethodChain);
+        }
+
+        // list.Select(selector).ToList() >>> list.ConvertAll(selector)
+        public static void AnalyzeSelectAndToList(
             SyntaxNodeAnalysisContext context,
             in SimpleMemberInvocationExpressionInfo invocationInfo)
         {
@@ -117,7 +130,8 @@ namespace Roslynator.CSharp.Analysis
         private static void SimplifyLinqMethodChain(
             SyntaxNodeAnalysisContext context,
             in SimpleMemberInvocationExpressionInfo invocationInfo,
-            string methodName)
+            string methodName,
+            ImmutableDictionary<string, string> properties = null)
         {
             SimpleMemberInvocationExpressionInfo invocationInfo2 = SyntaxInfo.SimpleMemberInvocationExpressionInfo(invocationInfo.Expression);
 
@@ -162,6 +176,15 @@ namespace Roslynator.CSharp.Analysis
                         if (!SymbolUtility.IsLinqSelect(methodSymbol2, allowImmutableArrayExtension: true))
                             return;
 
+                        if (invocationInfo.NameText == "ToList"
+                            && semanticModel
+                                .GetTypeSymbol(invocationInfo2.Expression, cancellationToken)?
+                                .OriginalDefinition
+                                .HasMetadataName(MetadataNames.System_Collections_Generic_List_T) != true)
+                        {
+                            return;
+                        }
+
                         break;
                     }
                 default:
@@ -173,7 +196,7 @@ namespace Roslynator.CSharp.Analysis
 
             TextSpan span = TextSpan.FromBounds(invocationInfo2.Name.SpanStart, invocation.Span.End);
 
-            Report(context, invocation, span, checkDirectives: true, properties: Properties.SimplifyLinqMethodChain);
+            Report(context, invocation, span, checkDirectives: true, properties: properties);
         }
 
         public static void AnalyzeFirstOrDefault(SyntaxNodeAnalysisContext context, in SimpleMemberInvocationExpressionInfo invocationInfo)

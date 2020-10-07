@@ -103,6 +103,17 @@ namespace Roslynator.CSharp.CodeFixes
                             context.RegisterCodeFix(codeAction, diagnostic);
                             return;
                         }
+                    case "ToList":
+                    case "ToImmutableArray":
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Call 'ConvertAll'",
+                                ct => CallConvertAllInsteadOfSelectAsync(document, invocationInfo, ct),
+                                GetEquivalenceKey(diagnostic, "CallConvertAllInsteadOfSelect"));
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            return;
+                        }
                     case "OfType":
                         {
                             TypeSyntax typeArgument = ((GenericNameSyntax)invocationInfo.Name).TypeArgumentList.Arguments.Single();
@@ -552,6 +563,18 @@ namespace Roslynator.CSharp.CodeFixes
             InvocationExpressionSyntax invocationExpression2 = SimpleMemberInvocationExpressionInfo(invocationInfo.Expression).InvocationExpression;
 
             InvocationExpressionSyntax newInvocationExpression = ChangeInvokedMethodName(invocationExpression2, "OrderByDescending");
+
+            return document.ReplaceNodeAsync(invocationInfo.InvocationExpression, newInvocationExpression, cancellationToken);
+        }
+
+        private static Task<Document> CallConvertAllInsteadOfSelectAsync(
+            Document document,
+            in SimpleMemberInvocationExpressionInfo invocationInfo,
+            CancellationToken cancellationToken)
+        {
+            InvocationExpressionSyntax invocationExpression2 = SimpleMemberInvocationExpressionInfo(invocationInfo.Expression).InvocationExpression;
+
+            InvocationExpressionSyntax newInvocationExpression = ChangeInvokedMethodName(invocationExpression2, "ConvertAll");
 
             return document.ReplaceNodeAsync(invocationInfo.InvocationExpression, newInvocationExpression, cancellationToken);
         }

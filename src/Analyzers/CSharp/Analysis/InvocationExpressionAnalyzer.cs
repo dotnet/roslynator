@@ -150,6 +150,13 @@ namespace Roslynator.CSharp.Analysis
 
                                     break;
                                 }
+                            case "ToList":
+                                {
+                                    if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.OptimizeLinqMethodCall))
+                                        OptimizeLinqMethodCallAnalysis.AnalyzeSelectAndToList(context, invocationInfo);
+
+                                    break;
+                                }
                             case "ToLower":
                             case "ToLowerInvariant":
                             case "ToUpper":

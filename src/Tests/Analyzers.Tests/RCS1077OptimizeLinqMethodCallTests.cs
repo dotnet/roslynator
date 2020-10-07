@@ -970,6 +970,38 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+        public async Task Test_CallConvertAllInsteadOfSelectAndToList_List()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System.Collections.Generic;
+using System.Linq;
+
+class C
+{
+    void M()
+    {
+        List<object> x = null;
+
+        List<string> x2 = x.[|Select(f => f.ToString()).ToList()|];
+    }
+}
+", @"
+using System.Collections.Generic;
+using System.Linq;
+
+class C
+{
+    void M()
+    {
+        List<object> x = null;
+
+        List<string> x2 = x.ConvertAll(f => f.ToString());
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
         public async Task TestNoDiagnostic_CallOfTypeInsteadOfWhereAndCast()
         {
             await VerifyNoDiagnosticAsync(@"

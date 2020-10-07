@@ -1823,6 +1823,10 @@ object x = items.Peek();]]></After>
         <Before><![CDATA[enumerable.SelectMany(f => f.Items).Count()]]></Before>
         <After><![CDATA[enumerable.Sum(f => f.Items.Count)]]></After>
       </Sample>
+      <Sample>
+        <Before><![CDATA[listOfT.Select(f => M(f)).ToList()]]></Before>
+        <After><![CDATA[listOfT.ConvertAll(f => M(f))]]></After>
+      </Sample>
     </Samples>
   </Analyzer>
   <Analyzer Identifier="UseEmptyStringLiteralInsteadOfStringEmptyOrViceVersa">
