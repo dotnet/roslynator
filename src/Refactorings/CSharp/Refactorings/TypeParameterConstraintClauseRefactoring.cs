@@ -8,10 +8,10 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void ComputeRefactoring(RefactoringContext context, TypeParameterConstraintClauseSyntax constraintClause)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.FormatConstraintClauses)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapConstraintClauses)
                 && (context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(constraintClause)))
             {
-                FormatConstraintClausesRefactoring.ComputeRefactoring(context, constraintClause);
+                WrapConstraintClausesRefactoring.ComputeRefactoring(context, constraintClause);
             }
         }
     }

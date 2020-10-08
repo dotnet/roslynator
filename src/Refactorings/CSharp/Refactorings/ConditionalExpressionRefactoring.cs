@@ -17,21 +17,21 @@ namespace Roslynator.CSharp.Refactorings
         {
             if (context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(conditionalExpression))
             {
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.FormatConditionalExpression))
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapConditionalExpression))
                 {
                     if (conditionalExpression.IsSingleLine())
                     {
                         context.RegisterRefactoring(
-                            "Format ?: on separate lines",
-                            ct => SyntaxFormatter.ToMultiLineAsync(context.Document, conditionalExpression, ct),
-                            RefactoringIdentifiers.FormatConditionalExpression);
+                            "Wrap ?:",
+                            ct => SyntaxFormatter.WrapConditionalExpressionAsync(context.Document, conditionalExpression, ct),
+                            RefactoringIdentifiers.WrapConditionalExpression);
                     }
                     else if (conditionalExpression.DescendantTrivia(conditionalExpression.Span).All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                     {
                         context.RegisterRefactoring(
-                            "Format ?: on a single line",
-                            ct => SyntaxFormatter.ToSingleLineAsync(context.Document, conditionalExpression, ct),
-                            RefactoringIdentifiers.FormatConditionalExpression);
+                            "Unwrap ?:",
+                            ct => SyntaxFormatter.UnwrapExpressionAsync(context.Document, conditionalExpression, ct),
+                            RefactoringIdentifiers.WrapConditionalExpression);
                     }
                 }
 

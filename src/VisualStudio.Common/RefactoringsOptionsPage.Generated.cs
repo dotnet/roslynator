@@ -69,12 +69,12 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ExtractGenericType, "Extract generic type", IsEnabled(RefactoringIdentifiers.ExtractGenericType)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ExtractStatement, "Extract statement(s)", IsEnabled(RefactoringIdentifiers.ExtractStatement)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ExtractTypeDeclarationToNewFile, "Extract type declaration to a new file", IsEnabled(RefactoringIdentifiers.ExtractTypeDeclarationToNewFile)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.FormatArgumentList, "Format argument list", IsEnabled(RefactoringIdentifiers.FormatArgumentList)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.FormatBinaryExpression, "Format binary expression", IsEnabled(RefactoringIdentifiers.FormatBinaryExpression)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.FormatConditionalExpression, "Format conditional expression", IsEnabled(RefactoringIdentifiers.FormatConditionalExpression)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.FormatExpressionChain, "Format expression chain", IsEnabled(RefactoringIdentifiers.FormatExpressionChain)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.FormatInitializer, "Format initializer", IsEnabled(RefactoringIdentifiers.FormatInitializer)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.FormatParameterList, "Format parameter list", IsEnabled(RefactoringIdentifiers.FormatParameterList)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.WrapArguments, "Wrap arguments", IsEnabled(RefactoringIdentifiers.WrapArguments)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.WrapBinaryExpression, "Wrap binary expression", IsEnabled(RefactoringIdentifiers.WrapBinaryExpression)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.WrapConditionalExpression, "Wrap conditional expression", IsEnabled(RefactoringIdentifiers.WrapConditionalExpression)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.WrapCallChain, "Wrap call chain", IsEnabled(RefactoringIdentifiers.WrapCallChain)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.WrapInitializerExpressions, "Wrap initializer expressions", IsEnabled(RefactoringIdentifiers.WrapInitializerExpressions)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.WrapParameters, "Wrap parameters", IsEnabled(RefactoringIdentifiers.WrapParameters)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.GenerateBaseConstructors, "Generate base constructors", IsEnabled(RefactoringIdentifiers.GenerateBaseConstructors)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.GenerateCombinedEnumMember, "Generate combined enum member", IsEnabled(RefactoringIdentifiers.GenerateCombinedEnumMember)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.GenerateEnumMember, "Generate enum member", IsEnabled(RefactoringIdentifiers.GenerateEnumMember)));
@@ -201,7 +201,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.SplitIfStatement, "Split if statement", IsEnabled(RefactoringIdentifiers.SplitIfStatement)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceObjectCreationWithDefaultValue, "Replace object creation with default value", IsEnabled(RefactoringIdentifiers.ReplaceObjectCreationWithDefaultValue)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ChangeAccessibility, "Change accessibility", IsEnabled(RefactoringIdentifiers.ChangeAccessibility)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.FormatConstraintClauses, "Format constraint clauses", IsEnabled(RefactoringIdentifiers.FormatConstraintClauses)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.WrapConstraintClauses, "Wrap constraint clauses", IsEnabled(RefactoringIdentifiers.WrapConstraintClauses)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertForEachToForAndReverseLoop, "Convert 'foreach' to 'for' and reverse loop", IsEnabled(RefactoringIdentifiers.ConvertForEachToForAndReverseLoop)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.InvertIf, "Invert if", IsEnabled(RefactoringIdentifiers.InvertIf)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.SplitIfElse, "Split if-else", IsEnabled(RefactoringIdentifiers.SplitIfElse)));

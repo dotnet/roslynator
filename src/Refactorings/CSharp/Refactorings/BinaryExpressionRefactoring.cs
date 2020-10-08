@@ -36,8 +36,8 @@ namespace Roslynator.CSharp.Refactorings
                     SwapBinaryOperandsRefactoring.ComputeRefactoring(context, binaryExpression);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.FormatBinaryExpression))
-                FormatBinaryExpressionRefactoring.ComputeRefactorings(context, binaryExpression);
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapBinaryExpression))
+                WrapBinaryExpressionRefactoring.ComputeRefactorings(context, binaryExpression);
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExpandCoalesceExpression)
                 && operatorToken.Span.Contains(context.Span))

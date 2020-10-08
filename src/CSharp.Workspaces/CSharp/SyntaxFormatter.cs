@@ -18,7 +18,7 @@ namespace Roslynator.CSharp
 {
     internal static class SyntaxFormatter
     {
-        public static Task<Document> ToSingleLineAsync<TNode>(
+        public static Task<Document> UnwrapExpressionAsync<TNode>(
             Document document,
             TNode node,
             CancellationToken cancellationToken = default) where TNode : SyntaxNode
@@ -170,7 +170,7 @@ namespace Roslynator.CSharp
             return document.ReplaceNodeAsync(parent, newParent, cancellationToken);
         }
 
-        public static Task<Document> ToMultiLineAsync(
+        public static Task<Document> WrapConditionalExpressionAsync(
             Document document,
             ConditionalExpressionSyntax conditionalExpression,
             CancellationToken cancellationToken = default)
@@ -194,7 +194,7 @@ namespace Roslynator.CSharp
                 conditionalExpression.WhenFalse.WithoutTrailingTrivia());
         }
 
-        public static Task<Document> ToMultiLineAsync(
+        public static Task<Document> WrapParametersAsync(
             Document document,
             ParameterListSyntax parameterList,
             CancellationToken cancellationToken = default)
@@ -269,7 +269,7 @@ namespace Roslynator.CSharp
             }
         }
 
-        public static Task<Document> ToMultiLineAsync(
+        public static Task<Document> WrapArgumentsAsync(
             Document document,
             ArgumentListSyntax argumentList,
             CancellationToken cancellationToken = default)
@@ -309,7 +309,7 @@ namespace Roslynator.CSharp
                 argumentList.CloseParenToken.WithoutLeadingTrivia());
         }
 
-        public static Task<Document> ToMultiLineAsync(
+        public static Task<Document> WrapCallChainAsync(
             Document document,
             ExpressionSyntax expression,
             SemanticModel semanticModel,
@@ -379,7 +379,7 @@ namespace Roslynator.CSharp
             }
         }
 
-        public static Task<Document> ToMultiLineAsync(
+        public static Task<Document> WrapArgumentsAsync(
             Document document,
             AttributeArgumentListSyntax argumentList,
             CancellationToken cancellationToken = default)
@@ -419,7 +419,7 @@ namespace Roslynator.CSharp
                 argumentList.CloseParenToken.WithoutLeadingTrivia());
         }
 
-        public static Task<Document> ToMultiLineAsync(
+        public static Task<Document> WrapBinaryExpressionAsync(
             Document document,
             BinaryExpressionSyntax condition,
             CancellationToken cancellationToken = default)

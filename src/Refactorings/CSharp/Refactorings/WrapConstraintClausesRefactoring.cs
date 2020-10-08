@@ -10,7 +10,7 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class FormatConstraintClausesRefactoring
+    internal static class WrapConstraintClausesRefactoring
     {
         public static void ComputeRefactoring(RefactoringContext context, TypeParameterConstraintClauseSyntax constraintClause)
         {
@@ -26,32 +26,32 @@ namespace Roslynator.CSharp.Refactorings
                 if (constraintClauses.Count > 1)
                 {
                     context.RegisterRefactoring(
-                        "Format constraints on separate lines",
-                        cancellationToken =>
+                        "Wrap constraints",
+                        ct =>
                         {
-                            GenericInfo newInfo = ToMultiLine(genericInfo);
+                            GenericInfo newInfo = WrapConstraints(genericInfo);
 
-                            return context.Document.ReplaceNodeAsync(genericInfo.Node, newInfo.Node, cancellationToken);
+                            return context.Document.ReplaceNodeAsync(genericInfo.Node, newInfo.Node, ct);
                         },
-                        RefactoringIdentifiers.FormatConstraintClauses);
+                        RefactoringIdentifiers.WrapConstraintClauses);
                 }
             }
             else if (constraintClause.DescendantTrivia(constraintClause.Span).All(f => f.IsWhitespaceOrEndOfLineTrivia())
                 && constraintClauses[0].GetFirstToken().GetPreviousToken().TrailingTrivia.IsEmptyOrWhitespace())
             {
                 context.RegisterRefactoring(
-                    "Format constraints on a single line",
-                    cancellationToken =>
+                    "Unwrap constraints",
+                    ct =>
                     {
-                        GenericInfo newInfo = ToSingleLine(genericInfo);
+                        GenericInfo newInfo = UnwrapConstraints(genericInfo);
 
-                        return context.Document.ReplaceNodeAsync(genericInfo.Node, newInfo.Node, cancellationToken);
+                        return context.Document.ReplaceNodeAsync(genericInfo.Node, newInfo.Node, ct);
                     },
-                    RefactoringIdentifiers.FormatConstraintClauses);
+                    RefactoringIdentifiers.WrapConstraintClauses);
             }
         }
 
-        private static GenericInfo ToSingleLine(in GenericInfo info)
+        private static GenericInfo UnwrapConstraints(in GenericInfo info)
         {
             SyntaxNode declaration = info.Node;
 
@@ -82,7 +82,7 @@ namespace Roslynator.CSharp.Refactorings
             return SyntaxInfo.GenericInfo(declaration).WithConstraintClauses(constraintClauses);
         }
 
-        private static GenericInfo ToMultiLine(in GenericInfo info)
+        private static GenericInfo WrapConstraints(in GenericInfo info)
         {
             SyntaxNode declaration = info.Node;
             SyntaxList<TypeParameterConstraintClauseSyntax> constraintClauses = info.ConstraintClauses;

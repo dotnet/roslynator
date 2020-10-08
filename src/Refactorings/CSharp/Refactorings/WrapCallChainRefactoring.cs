@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class FormatExpressionChainRefactoring
+    internal static class WrapCallChainRefactoring
     {
         public static Task ComputeRefactoringsAsync(RefactoringContext context, ConditionalAccessExpressionSyntax conditionalAccessExpression)
         {
@@ -36,16 +36,16 @@ namespace Roslynator.CSharp.Refactorings
             if (expression.IsSingleLine(includeExteriorTrivia: false))
             {
                 context.RegisterRefactoring(
-                    "Format expression chain on multiple lines",
-                    ct => SyntaxFormatter.ToMultiLineAsync(context.Document, expression, semanticModel, ct),
-                    RefactoringIdentifiers.FormatExpressionChain);
+                    "Wrap call chain",
+                    ct => SyntaxFormatter.WrapCallChainAsync(context.Document, expression, semanticModel, ct),
+                    RefactoringIdentifiers.WrapCallChain);
             }
             else if (expression.DescendantTrivia(expression.Span).All(f => f.IsWhitespaceOrEndOfLineTrivia()))
             {
                 context.RegisterRefactoring(
-                    "Format expression chain on a single line",
-                    ct => SyntaxFormatter.ToSingleLineAsync(context.Document, expression, ct),
-                    RefactoringIdentifiers.FormatExpressionChain);
+                    "Unwrap call chain",
+                    ct => SyntaxFormatter.UnwrapExpressionAsync(context.Document, expression, ct),
+                    RefactoringIdentifiers.WrapCallChain);
             }
         }
 

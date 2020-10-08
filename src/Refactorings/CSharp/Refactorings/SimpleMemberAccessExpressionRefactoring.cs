@@ -12,8 +12,8 @@ namespace Roslynator.CSharp.Refactorings
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddUsingStaticDirective))
                 await AddUsingStaticDirectiveRefactoring.ComputeRefactoringsAsync(context, memberAccess).ConfigureAwait(false);
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.FormatExpressionChain))
-                await FormatExpressionChainRefactoring.ComputeRefactoringsAsync(context, memberAccess).ConfigureAwait(false);
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapCallChain))
+                await WrapCallChainRefactoring.ComputeRefactoringsAsync(context, memberAccess).ConfigureAwait(false);
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertMethodGroupToLambda))
                 await ConvertMethodGroupToLambdaRefactoring.ComputeRefactoringAsync(context, memberAccess).ConfigureAwait(false);

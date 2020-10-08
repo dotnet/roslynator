@@ -87,13 +87,6 @@ namespace Roslynator.CSharp.Refactorings
         public const string ExtractGenericType = Prefix + "0044";
         public const string ExtractStatement = Prefix + "0045";
         public const string ExtractTypeDeclarationToNewFile = Prefix + "0046";
-        public const string FormatArgumentList = Prefix + "0048";
-        public const string FormatBinaryExpression = Prefix + "0049";
-        public const string FormatConditionalExpression = Prefix + "0050";
-        public const string FormatConstraintClauses = Prefix + "0187";
-        public const string FormatExpressionChain = Prefix + "0051";
-        public const string FormatInitializer = Prefix + "0052";
-        public const string FormatParameterList = Prefix + "0053";
         public const string GenerateBaseConstructors = Prefix + "0054";
         public const string GenerateCombinedEnumMember = Prefix + "0055";
         public const string GenerateEnumMember = Prefix + "0056";
@@ -203,10 +196,17 @@ namespace Roslynator.CSharp.Refactorings
         public const string UseLambdaExpressionInsteadOfAnonymousMethod = Prefix + "0170";
         public const string UseListInsteadOfYield = Prefix + "0183";
         public const string UseStringBuilderInsteadOfConcatenation = Prefix + "0182";
+        public const string WrapArguments = Prefix + "0048";
+        public const string WrapBinaryExpression = Prefix + "0049";
+        public const string WrapCallChain = Prefix + "0051";
+        public const string WrapConditionalExpression = Prefix + "0050";
+        public const string WrapConstraintClauses = Prefix + "0187";
         public const string WrapInCondition = Prefix + "0172";
         public const string WrapInIfDirective = Prefix + "0174";
+        public const string WrapInitializerExpressions = Prefix + "0052";
         public const string WrapInRegion = Prefix + "0175";
         public const string WrapInTryCatch = Prefix + "0176";
         public const string WrapInUsingStatement = Prefix + "0177";
+        public const string WrapParameters = Prefix + "0053";
     }
 }

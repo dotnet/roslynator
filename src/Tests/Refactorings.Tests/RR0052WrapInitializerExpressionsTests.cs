@@ -5,11 +5,11 @@ using Xunit;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public class RR0052FormatInitializerTests : AbstractCSharpRefactoringVerifier
+    public class RR0052WrapInitializerExpressionsTests : AbstractCSharpRefactoringVerifier
     {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.FormatInitializer;
+        public override string RefactoringId { get; } = RefactoringIdentifiers.WrapInitializerExpressions;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.FormatInitializer)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapInitializerExpressions)]
         public async Task Test_ToMultiLine()
         {
             await VerifyRefactoringAsync(@"
@@ -41,7 +41,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.FormatInitializer)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapInitializerExpressions)]
         public async Task Test_ToSingleLine()
         {
             await VerifyRefactoringAsync(@"
@@ -73,7 +73,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.FormatInitializer)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapInitializerExpressions)]
         public async Task TestNoRefactoring_ToSingleLine_ContainsSingleLineComment()
         {
             await VerifyNoRefactoringAsync(@"

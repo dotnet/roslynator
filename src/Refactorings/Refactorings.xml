@@ -377,59 +377,164 @@ if (y)
       <Image>FormatAccessorBracesOnSingleLine</Image>
     </Images>
   </Refactoring>
-  <Refactoring Id="RR0048" Identifier="FormatArgumentList" Title="Format argument list">
+  <Refactoring Id="RR0048" Identifier="WrapArguments" Title="Wrap arguments">
     <Syntaxes>
       <Syntax>argument list</Syntax>
     </Syntaxes>
-    <Images>
-      <Image>FormatEachArgumentOnSeparateLine</Image>
-      <Image>FormatAllArgumentsOnSingleLine</Image>
-    </Images>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[M(x, y, z);]]></Before>
+        <After>
+          <![CDATA[M(
+    x,
+    y,
+    z);]]></After>
+      </Sample>
+      <Sample>
+        <Before>
+          <![CDATA[void M(
+    x,
+    y,
+    z);]]>
+        </Before>
+        <After>
+          <![CDATA[void M(x, y, z);]]>
+        </After>
+      </Sample>
+    </Samples>
   </Refactoring>
-  <Refactoring Id="RR0049" Identifier="FormatBinaryExpression" Title="Format binary expression">
+  <Refactoring Id="RR0049" Identifier="WrapBinaryExpression" Title="Wrap binary expression">
     <Syntaxes>
       <Syntax>logical and/or expression</Syntax>
       <Syntax>bitwise and/or expression</Syntax>
     </Syntaxes>
-    <Images>
-      <Image>FormatBinaryExpression</Image>
-    </Images>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[if (x && y && z)
+{
+}]]></Before>
+        <After><![CDATA[if (x
+    && y
+    && z)
+{
+}]]></After>
+      </Sample>
+      <Sample>
+        <Before>
+          <![CDATA[if (x
+    && y
+    && z)
+{
+}]]>
+        </Before>
+        <After>
+          <![CDATA[if (x && y && z)
+{
+}]]>
+        </After>
+      </Sample>
+    </Samples>
   </Refactoring>
-  <Refactoring Id="RR0050" Identifier="FormatConditionalExpression" Title="Format conditional expression">
+  <Refactoring Id="RR0050" Identifier="WrapConditionalExpression" Title="Wrap conditional expression">
     <Syntaxes>
       <Syntax>conditional expression</Syntax>
     </Syntaxes>
-    <Images>
-      <Image>FormatConditionalExpressionOnMultipleLines</Image>
-      <Image>FormatConditionalExpressionOnSingleLine</Image>
-    </Images>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[x ? y : z]]></Before>
+        <After><![CDATA[x
+    ? y
+    : z]]></After>
+      </Sample>
+    </Samples>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[x
+    ? y
+    : z]]></Before>
+        <After><![CDATA[x ? y : z]]></After>
+      </Sample>
+    </Samples>
   </Refactoring>
-  <Refactoring Id="RR0051" Identifier="FormatExpressionChain" Title="Format expression chain">
+  <Refactoring Id="RR0051" Identifier="WrapCallChain" Title="Wrap call chain">
     <Syntaxes>
-      <Syntax>expression chain</Syntax>
+      <Syntax>call chain</Syntax>
     </Syntaxes>
-    <Images>
-      <Image>FormatExpressionChainOnMultipleLines</Image>
-      <Image>FormatExpressionChainOnSingleLine</Image>
-    </Images>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[x.M().N().O()]]></Before>
+        <After><![CDATA[x
+    .M()
+    .N()
+    .O()]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[x
+    .M()
+    .N()
+    .O()]]></Before>
+        <After><![CDATA[x.M().N().O()]]></After>
+      </Sample>
+    </Samples>
   </Refactoring>
-  <Refactoring Id="RR0052" Identifier="FormatInitializer" Title="Format initializer">
+  <Refactoring Id="RR0052" Identifier="WrapInitializerExpressions" Title="Wrap initializer expressions">
     <Syntaxes>
       <Syntax>initializer</Syntax>
     </Syntaxes>
-    <Images>
-      <Image>FormatInitializerOnMultipleLines</Image>
-      <Image>FormatInitializerOnSingleLine</Image>
-    </Images>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[var x = new string[] { "a", "b", "c" }]]></Before>
+        <After><![CDATA[var x = new string[]
+{
+    "a",
+    "b",
+    "c"
+}]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[var x = new string[]
+{
+    "a",
+    "b",
+    "c"
+}]]></Before>
+        <After><![CDATA[var x = new string[] { "a", "b", "c" }]]></After>
+      </Sample>
+    </Samples>
   </Refactoring>
-  <Refactoring Id="RR0053" Identifier="FormatParameterList" Title="Format parameter list">
+  <Refactoring Id="RR0053" Identifier="WrapParameters" Title="Wrap parameters">
     <Syntaxes>
       <Syntax>parameter list</Syntax>
     </Syntaxes>
-    <Images>
-      <Image>FormatEachParameterOnSeparateLine</Image>
-      <Image>FormatAllParametersOnSingleLine</Image>
-    </Images>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[void M(object x, object y, object z)
+{
+}]]></Before>
+        <After>
+          <![CDATA[void M(
+    object x,
+    object y,
+    object z)
+{
+}]]></After>
+      </Sample>
+      <Sample>
+        <Before>
+          <![CDATA[void M(
+    object x,
+    object y,
+    object z)
+{
+}]]>
+        </Before>
+        <After>
+          <![CDATA[void M(object x, object y, object z)
+{
+}]]>
+        </After>
+      </Sample>
+    </Samples>
   </Refactoring>
   <Refactoring Id="RR0054" Identifier="GenerateBaseConstructors" Title="Generate base constructors">
     <Syntaxes>
@@ -1455,7 +1560,7 @@ i--;]]></After>
       <Syntax>access modifier</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0187" Identifier="FormatConstraintClauses" Title="Format constraint clauses">
+  <Refactoring Id="RR0187" Identifier="WrapConstraintClauses" Title="Wrap constraint clauses">
     <Syntaxes>
       <Syntax>type parameter constraint clause</Syntax>
     </Syntaxes>

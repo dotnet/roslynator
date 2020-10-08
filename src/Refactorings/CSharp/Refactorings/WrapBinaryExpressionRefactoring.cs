@@ -7,7 +7,7 @@ using Microsoft.CodeAnalysis.Text;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class FormatBinaryExpressionRefactoring
+    internal static class WrapBinaryExpressionRefactoring
     {
         public static void ComputeRefactorings(RefactoringContext context, BinaryExpressionSyntax binaryExpression)
         {
@@ -22,16 +22,16 @@ namespace Roslynator.CSharp.Refactorings
             if (binaryExpression.IsSingleLine())
             {
                 context.RegisterRefactoring(
-                    "Format binary expression on multiple lines",
-                    cancellationToken => SyntaxFormatter.ToMultiLineAsync(context.Document, binaryExpression, cancellationToken),
-                    RefactoringIdentifiers.FormatBinaryExpression);
+                    "Wrap binary expression",
+                    ct => SyntaxFormatter.WrapBinaryExpressionAsync(context.Document, binaryExpression, ct),
+                    RefactoringIdentifiers.WrapBinaryExpression);
             }
             else if (binaryExpression.DescendantTrivia(binaryExpression.Span).All(f => f.IsWhitespaceOrEndOfLineTrivia()))
             {
                 context.RegisterRefactoring(
-                    "Format binary expression on a single line",
-                    cancellationToken => SyntaxFormatter.ToSingleLineAsync(context.Document, binaryExpression, cancellationToken),
-                    RefactoringIdentifiers.FormatBinaryExpression);
+                    "Unwrap binary expression",
+                    ct => SyntaxFormatter.UnwrapExpressionAsync(context.Document, binaryExpression, ct),
+                    RefactoringIdentifiers.WrapBinaryExpression);
             }
         }
 

@@ -5,11 +5,11 @@ using Xunit;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public class RR0048FormatArgumentListTests : AbstractCSharpRefactoringVerifier
+    public class RR0048WrapArgumentsTests : AbstractCSharpRefactoringVerifier
     {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.FormatArgumentList;
+        public override string RefactoringId { get; } = RefactoringIdentifiers.WrapArguments;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.FormatArgumentList)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapArguments)]
         public async Task Test_ToMultiLine()
         {
             await VerifyRefactoringAsync(@"
@@ -34,7 +34,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.FormatArgumentList)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapArguments)]
         public async Task Test_ToMultiLine2()
         {
             await VerifyRefactoringAsync(@"
@@ -59,7 +59,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.FormatArgumentList)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapArguments)]
         public async Task Test_ToSingleLine()
         {
             await VerifyRefactoringAsync(@"
@@ -84,7 +84,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.FormatArgumentList)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapArguments)]
         public async Task Test_ToSingleLine2()
         {
             await VerifyRefactoringAsync(@"
@@ -109,7 +109,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.FormatArgumentList)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapArguments)]
         public async Task Test_ToSingleLine3()
         {
             await VerifyRefactoringAsync(@"
@@ -144,7 +144,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.FormatArgumentList)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapArguments)]
         public async Task TestNoRefactoring()
         {
             await VerifyNoRefactoringAsync(@"

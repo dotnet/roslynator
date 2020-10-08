@@ -37,7 +37,7 @@ namespace Roslynator.CSharp.Refactorings
                     IntroduceAndInitializeRefactoring.ComputeRefactoring(context, parameterList);
                 }
 
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.FormatParameterList)
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapParameters)
                     && (context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(parameterList)))
                 {
                     if (parameterList.IsSingleLine())
@@ -45,17 +45,17 @@ namespace Roslynator.CSharp.Refactorings
                         if (parameters.Count > 1)
                         {
                             context.RegisterRefactoring(
-                                "Format parameters on separate lines",
-                                cancellationToken => SyntaxFormatter.ToMultiLineAsync(context.Document, parameterList, cancellationToken),
-                                RefactoringIdentifiers.FormatParameterList);
+                                "Wrap parameters",
+                                ct => SyntaxFormatter.WrapParametersAsync(context.Document, parameterList, ct),
+                                RefactoringIdentifiers.WrapParameters);
                         }
                     }
                     else if (parameterList.DescendantTrivia(parameterList.Span).All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                     {
                         context.RegisterRefactoring(
-                            "Format parameters on a single line",
-                            cancellationToken => SyntaxFormatter.ToSingleLineAsync(context.Document, parameterList, cancellationToken),
-                            RefactoringIdentifiers.FormatParameterList);
+                            "Unwrap parameters",
+                            ct => SyntaxFormatter.UnwrapExpressionAsync(context.Document, parameterList, ct),
+                            RefactoringIdentifiers.WrapParameters);
                     }
                 }
             }
