@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Microsoft.CodeAnalysis;
 
 namespace Roslynator
@@ -603,52 +604,60 @@ namespace Roslynator
 
         public static bool IsAwaitable(ITypeSymbol typeSymbol, bool shouldCheckWindowsRuntimeTypes = false)
         {
-            if (!CanPossiblyBeAwaitable(typeSymbol))
-                return false;
+            INamedTypeSymbol namedTypeSymbol = GetPossiblyAwaitableType(typeSymbol);
 
-            if (!(typeSymbol is INamedTypeSymbol namedTypeSymbol))
+            if (namedTypeSymbol == null)
                 return false;
 
             INamedTypeSymbol originalDefinition = namedTypeSymbol.OriginalDefinition;
+            TypeKind typeKind = originalDefinition.TypeKind;
 
-            if (originalDefinition.HasMetadataName(MetadataNames.System_Threading_Tasks_ValueTask))
-                return true;
+            if (typeKind == TypeKind.Struct
+                && originalDefinition.ContainingNamespace.HasMetadataName(MetadataNames.System_Threading_Tasks))
+            {
+                switch (originalDefinition.MetadataName)
+                {
+                    case "ValueTask":
+                    case "ValueTask`1":
+                        return true;
+                }
+            }
 
-            if (originalDefinition.HasMetadataName(MetadataNames.System_Threading_Tasks_ValueTask_T))
+            if (typeKind == TypeKind.Interface
+                && originalDefinition.HasMetadataName(MetadataNames.System_Collections_Generic_IAsyncEnumerable_T))
+            {
                 return true;
+            }
 
-            if (originalDefinition.HasMetadataName(MetadataNames.System_Collections_Generic_IAsyncEnumerable_T))
+            if (typeKind == TypeKind.Class
+                && namedTypeSymbol.EqualsOrInheritsFrom(MetadataNames.System_Threading_Tasks_Task))
+            {
                 return true;
-
-            if (namedTypeSymbol.EqualsOrInheritsFrom(MetadataNames.System_Threading_Tasks_Task))
-                return true;
+            }
 
             if (shouldCheckWindowsRuntimeTypes)
             {
-                if (namedTypeSymbol.HasMetadataName(MetadataNames.WinRT.Windows_Foundation_IAsyncAction))
-                    return true;
+                if (typeKind == TypeKind.Interface
+                    && originalDefinition.ContainingNamespace.HasMetadataName(MetadataNames.WinRT.Windows_Foundation))
+                {
+                    switch (originalDefinition.MetadataName)
+                    {
+                        case "IAsyncAction":
+                        case "IAsyncActionWithProgress`1":
+                        case "IAsyncOperation`1":
+                        case "IAsyncOperationWithProgress`2":
+                            return true;
+                    }
+                }
 
                 if (namedTypeSymbol.Implements(MetadataNames.WinRT.Windows_Foundation_IAsyncAction, allInterfaces: true))
                     return true;
-
-                if (namedTypeSymbol.Arity > 0
-                    && namedTypeSymbol.TypeKind == TypeKind.Interface)
-                {
-                    if (originalDefinition.HasMetadataName(MetadataNames.WinRT.Windows_Foundation_IAsyncActionWithProgress_1))
-                        return true;
-
-                    if (originalDefinition.HasMetadataName(MetadataNames.WinRT.Windows_Foundation_IAsyncOperation_1))
-                        return true;
-
-                    if (originalDefinition.HasMetadataName(MetadataNames.WinRT.Windows_Foundation_IAsyncOperationWithProgress_2))
-                        return true;
-                }
             }
 
             return false;
         }
 
-        internal static bool CanPossiblyBeAwaitable(ITypeSymbol typeSymbol)
+        internal static INamedTypeSymbol GetPossiblyAwaitableType(ITypeSymbol typeSymbol)
         {
             if (typeSymbol.Kind == SymbolKind.TypeParameter)
             {
@@ -657,12 +666,19 @@ namespace Roslynator
                 typeSymbol = typeParameterSymbol.ConstraintTypes.SingleOrDefault(f => f.TypeKind == TypeKind.Class, shouldThrow: false);
 
                 if (typeSymbol == null)
-                    return false;
+                    return null;
             }
 
-            return !typeSymbol.IsTupleType
-                && typeSymbol.SpecialType == SpecialType.None
-                && typeSymbol.TypeKind.Is(TypeKind.Class, TypeKind.Struct, TypeKind.Interface);
+            if (typeSymbol.IsTupleType)
+                return null;
+
+            if (typeSymbol.SpecialType != SpecialType.None)
+                return null;
+
+            if (!typeSymbol.TypeKind.Is(TypeKind.Class, TypeKind.Struct, TypeKind.Interface))
+                return null;
+
+            return typeSymbol as INamedTypeSymbol;
         }
     }
 }

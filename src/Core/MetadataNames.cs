@@ -65,10 +65,8 @@ namespace Roslynator
 
         public static class WinRT
         {
+            public static readonly MetadataName Windows_Foundation = MetadataName.Parse("Windows.Foundation");
             public static readonly MetadataName Windows_Foundation_IAsyncAction = MetadataName.Parse("Windows.Foundation.IAsyncAction");
-            public static readonly MetadataName Windows_Foundation_IAsyncActionWithProgress_1 = MetadataName.Parse("Windows.Foundation.IAsyncActionWithProgress`1");
-            public static readonly MetadataName Windows_Foundation_IAsyncOperation_1 = MetadataName.Parse("Windows.Foundation.IAsyncOperation`1");
-            public static readonly MetadataName Windows_Foundation_IAsyncOperationWithProgress_2 = MetadataName.Parse("Windows.Foundation.IAsyncOperationWithProgress`2");
         }
 
         public static class CodeAnalysis

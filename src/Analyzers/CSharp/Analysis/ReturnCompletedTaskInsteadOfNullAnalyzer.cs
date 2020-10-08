@@ -325,11 +325,16 @@ namespace Roslynator.CSharp.Analysis.ReturnTaskInsteadOfNull
 
         public static bool IsTaskOrTaskOfT(ITypeSymbol typeSymbol)
         {
-            return typeSymbol != null
-                && SymbolUtility.CanPossiblyBeAwaitable(typeSymbol)
-                && (typeSymbol is INamedTypeSymbol namedTypeSymbol)
-                && (namedTypeSymbol.HasMetadataName(MetadataNames.System_Threading_Tasks_Task)
-                    || namedTypeSymbol.OriginalDefinition.EqualsOrInheritsFrom(MetadataNames.System_Threading_Tasks_Task_T));
+            if (typeSymbol == null)
+                return false;
+
+            INamedTypeSymbol namedTypeSymbol = SymbolUtility.GetPossiblyAwaitableType(typeSymbol);
+
+            if (namedTypeSymbol == null)
+                return false;
+
+            return namedTypeSymbol.HasMetadataName(MetadataNames.System_Threading_Tasks_Task)
+                || namedTypeSymbol.OriginalDefinition.EqualsOrInheritsFrom(MetadataNames.System_Threading_Tasks_Task_T);
         }
 
         private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, ExpressionSyntax expression)
