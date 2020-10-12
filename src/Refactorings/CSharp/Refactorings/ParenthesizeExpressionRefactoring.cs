@@ -82,6 +82,7 @@ namespace Roslynator.CSharp.Refactorings
                             case SyntaxKind.PropertyDeclaration:
                             case SyntaxKind.EventDeclaration:
                             case SyntaxKind.IndexerDeclaration:
+                            case SyntaxKind.Parameter:
                                 return false;
                         }
 
