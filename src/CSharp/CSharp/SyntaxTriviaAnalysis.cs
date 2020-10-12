@@ -338,7 +338,6 @@ namespace Roslynator.CSharp
                                     }
                                 default:
                                     {
-                                        Debug.Fail(node.Parent.Kind().ToString());
                                         return 0;
                                     }
                             }
@@ -360,11 +359,14 @@ namespace Roslynator.CSharp
                                     }
                                 default:
                                     {
-                                        Debug.Fail(node.Parent.Kind().ToString());
                                         return 0;
                                     }
                             }
 
+                            break;
+                        }
+                    case BlockSyntax _:
+                        {
                             break;
                         }
                     case StatementSyntax statement:
@@ -409,7 +411,6 @@ namespace Roslynator.CSharp
                                     }
                                 default:
                                     {
-                                        Debug.Fail(node.Parent.Kind().ToString());
                                         return 0;
                                     }
                             }
@@ -425,8 +426,6 @@ namespace Roslynator.CSharp
                 node = node.Parent;
 
             } while (node != null);
-
-            Debug.Fail("");
 
             return 0;
 
