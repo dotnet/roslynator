@@ -1243,5 +1243,27 @@ class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+        public async Task TestNoDiagnostic_CallSumInsteadOfSelectManyAndCount()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+class C
+{
+    void M()
+    {
+        _ = Enumerable.Empty<string>()
+            .SelectMany(M2())
+            .Count();
+    }
+
+    Func<string, IEnumerable<string>> M2() => null;
+}
+");
+        }
     }
 }

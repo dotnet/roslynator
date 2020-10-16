@@ -686,6 +686,9 @@ namespace Roslynator.CSharp.Analysis
 
             ExpressionSyntax expression = GetLambdaExpression(argument.Expression);
 
+            if (expression == null)
+                return false;
+
             ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken);
 
             if (typeSymbol == null)
