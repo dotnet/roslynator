@@ -345,6 +345,10 @@ namespace Roslynator.Formatting.CSharp
             TextLine line = lines.GetLineFromPosition(node.SpanStart);
 
             int startIndex = line.End;
+
+            if (!node.FullSpan.Contains(startIndex))
+                return default;
+
             SyntaxToken openBrace = node.FindToken(startIndex);
             BlockSyntax block = null;
             var isOpenBraceAtEndOfLine = false;
