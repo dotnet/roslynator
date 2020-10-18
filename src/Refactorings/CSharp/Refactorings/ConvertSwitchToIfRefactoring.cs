@@ -19,6 +19,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             SyntaxList<SwitchSectionSyntax> sections = switchStatement.Sections;
 
+            var containsNonDefaultSection = false;
             var containsSectionWithoutDefault = false;
 
             foreach (SwitchSectionSyntax section in sections)
@@ -61,7 +62,13 @@ namespace Roslynator.CSharp.Refactorings
                         containsSectionWithoutDefault = true;
                     }
                 }
+
+                if (!containsDefault)
+                    containsNonDefaultSection = true;
             }
+
+            if (!containsNonDefaultSection)
+                return;
 
             if (!containsSectionWithoutDefault)
                 return;

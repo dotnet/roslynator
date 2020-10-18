@@ -53,5 +53,29 @@ class C
 }
 ", equivalenceKey: RefactoringId);
         }
+
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertSwitchToIf)]
+        public async Task TestNoRefactoring()
+        {
+            await VerifyNoRefactoringAsync(@"
+using System;
+
+class C
+{
+    void M()
+    {
+        StringSplitOptions x = StringSplitOptions.None;
+
+        [||]switch (x)
+        {
+            case StringSplitOptions.None:
+            case StringSplitOptions.RemoveEmptyEntries:
+            default:
+                break;
+        }
+    }
+}
+", equivalenceKey: RefactoringId);
+        }
     }
 }
