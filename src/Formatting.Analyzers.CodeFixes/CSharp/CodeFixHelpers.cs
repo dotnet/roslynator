@@ -984,7 +984,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                     }
 
                     if ((nodes.Count > 1 || fixMode == ListFixMode.Wrap)
-                        && (i > 0 || !containingNode.IsKind(SyntaxKind.AttributeList)))
+                        && ShouldWrapAndIndent(containingNode, i))
                     {
                         textChanges.Add(
                             (trailing.Any() && trailing.Last().IsWhitespaceTrivia())

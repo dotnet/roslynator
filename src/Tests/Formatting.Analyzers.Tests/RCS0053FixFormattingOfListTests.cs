@@ -1063,6 +1063,31 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfList)]
+        public async Task Test_Multiline_TupleExpression_LocalDeclaration()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+        ([|string x,
+            string y, string z|]) = default((string, string, string));
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+        (string x,
+            string y,
+            string z) = default((string, string, string));
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfList)]
         public async Task Test_Multiline_ArrayInitializer()
         {
             await VerifyDiagnosticAndFixAsync(@"

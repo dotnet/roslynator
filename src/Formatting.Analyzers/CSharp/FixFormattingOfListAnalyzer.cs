@@ -185,8 +185,7 @@ namespace Roslynator.Formatting.CSharp
                     else
                     {
                         if (nodes.Count > 1
-                            && (i > 0
-                                || !context.Node.IsKind(SyntaxKind.AttributeList)))
+                            && ShouldWrapAndIndent(context.Node, i))
                         {
                             ReportDiagnostic();
                             break;
@@ -411,6 +410,25 @@ namespace Roslynator.Formatting.CSharp
                     && token.IsParentKind(SyntaxKind.Block)
                     && CSharpFacts.IsAnonymousFunctionExpression(token.Parent.Parent.Kind());
             }
+        }
+
+        internal static bool ShouldWrapAndIndent(SyntaxNode node, int index)
+        {
+            if (index == 0)
+            {
+                if (node.IsKind(SyntaxKind.AttributeList))
+                {
+                    return false;
+                }
+                else if (node.IsKind(SyntaxKind.TupleExpression)
+                    && node.Parent is AssignmentExpressionSyntax assignmentExpression
+                    && object.ReferenceEquals(node, assignmentExpression.Left))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         internal readonly struct LambdaBlock
