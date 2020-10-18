@@ -1699,7 +1699,7 @@ namespace Roslynator.CSharp
             if (span.IsEmpty)
                 return false;
 
-            SyntaxTree tree = list.First().SyntaxTree;
+            SyntaxTree tree = list[0].SyntaxTree;
 
             if (tree == null)
                 return false;
@@ -1718,7 +1718,7 @@ namespace Roslynator.CSharp
             if (span.IsEmpty)
                 return false;
 
-            SyntaxTree tree = list.First().SyntaxTree;
+            SyntaxTree tree = list[0].SyntaxTree;
 
             if (tree == null)
                 return false;
@@ -1735,7 +1735,7 @@ namespace Roslynator.CSharp
                 return default;
 
             return TextSpan.FromBounds(
-                GetStartIndex(list.First(), includeExteriorTrivia, trim),
+                GetStartIndex(list[0], includeExteriorTrivia, trim),
                 GetEndIndex(list.Last(), includeExteriorTrivia, trim));
         }
 
@@ -2150,7 +2150,7 @@ namespace Roslynator.CSharp
             if (span.IsEmpty)
                 return false;
 
-            SyntaxTree tree = list.First().SyntaxTree;
+            SyntaxTree tree = list[0].SyntaxTree;
 
             if (tree == null)
                 return false;
@@ -2169,7 +2169,7 @@ namespace Roslynator.CSharp
             if (span.IsEmpty)
                 return false;
 
-            SyntaxTree tree = list.First().SyntaxTree;
+            SyntaxTree tree = list[0].SyntaxTree;
 
             if (tree == null)
                 return false;
@@ -2186,7 +2186,7 @@ namespace Roslynator.CSharp
                 return default;
 
             return TextSpan.FromBounds(
-                GetStartIndex(list.First(), includeExteriorTrivia, trim),
+                GetStartIndex(list[0], includeExteriorTrivia, trim),
                 GetEndIndex(list.Last(), includeExteriorTrivia, trim));
         }
 

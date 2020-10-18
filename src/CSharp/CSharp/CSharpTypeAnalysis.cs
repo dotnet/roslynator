@@ -263,7 +263,7 @@ namespace Roslynator.CSharp
                     {
                         var implicitArrayCreation = (ImplicitArrayCreationExpressionSyntax)expression;
 
-                        var expressions = implicitArrayCreation.Initializer?.Expressions ?? default;
+                        SeparatedSyntaxList<ExpressionSyntax> expressions = implicitArrayCreation.Initializer?.Expressions ?? default;
 
                         if (!expressions.Any())
                             return false;
