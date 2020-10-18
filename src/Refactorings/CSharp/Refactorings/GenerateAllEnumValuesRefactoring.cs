@@ -97,7 +97,14 @@ namespace Roslynator.CSharp.Refactorings
                 ? enumDeclaration.Members.Select(f => CreateNewFlagsMember(f))
                 : enumDeclaration.Members.Select(f => CreateNewMember(f));
 
-            EnumDeclarationSyntax newEnumDeclaration = enumDeclaration.WithMembers(newMembers.ToSeparatedSyntaxList());
+            EnumDeclarationSyntax newEnumDeclaration = enumDeclaration.ReplaceNodes(
+                enumDeclaration.Members,
+                (f, _) =>
+                {
+                    return (enumSymbol.HasAttribute(MetadataNames.System_FlagsAttribute))
+                        ? CreateNewFlagsMember(f)
+                        : CreateNewMember(f);
+                });
 
             return document.ReplaceNodeAsync(enumDeclaration, newEnumDeclaration, cancellationToken);
 
@@ -142,6 +149,9 @@ namespace Roslynator.CSharp.Refactorings
             EqualsValueClauseSyntax equalsValue = EqualsValueClause(
                 Token(TriviaList(ElasticSpace), SyntaxKind.EqualsToken, TriviaList(ElasticSpace)),
                 NumericLiteralExpression(value, numericType));
+
+            if (enumMember.EqualsValue != null)
+                equalsValue = equalsValue.WithTriviaFrom(enumMember.EqualsValue);
 
             return enumMember.WithEqualsValue(equalsValue);
         }
