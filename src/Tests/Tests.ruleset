@@ -6,5 +6,6 @@
   </Rules>
   <Rules AnalyzerId="Roslynator.Formatting.Analyzers" RuleNamespace="Roslynator.Formatting.Analyzers">
     <Rule Id="RCS0047" Action="None" />
+    <Rule Id="RCS0053" Action="None" />
   </Rules>
 </RuleSet>
