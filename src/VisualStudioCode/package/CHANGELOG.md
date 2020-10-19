@@ -1,3 +1,30 @@
+## 3.0.1 (2020-10-19)
+
+* Add analyzer [RCS0055](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS0055.md) (Fix formatting of a binary expression chain)
+* Add analyzer [RCS0054](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS0054.md) (Fix formatting of a call chain)
+* Add analyzer [RCS0053](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS0053.md) (Fix formatting of a list)
+* Add analyzer [RCS0052](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS0052.md) (Add newline before equals sign instead of after it (or vice versa))
+* Add analyzer [RCS1248](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1248.md) (Use 'is null' pattern instead of comparison (or vice versa)) ([issue](https://github.com/JosefPihrt/Roslynator/issues/458))
+* Add analyzer [RCS1247](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1247.md) (Fix documentation comment tag)
+* Add analyzer option [RCS1207i](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1207i.md) (Convert method group to anonymous function)
+* Add analyzer option [RCS1090i](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1090i.md) (Remove call to 'ConfigureAwait')
+* Add analyzer option [RCS1018i](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1018i.md) (Remove accessibility modifiers) ([issue](https://github.com/JosefPihrt/Roslynator/issues/260))
+* Add analyzer option [RCS1014i](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1014i.md) (Use implicitly typed array)
+* Add analyzer option [RCS1014a](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1014a.md) (Use implicitly typed array (when type is obvious))
+* Add analyzer option [RCS1078i](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1078i.md) (Use string.Empty instead of "")
+* Add analyzer option [RCS1016a](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1016a.md) (Convert expression-body to block body when expression is multi-line)
+* Add analyzer option [RCS1016b](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1016b.md) (Convert expression-body to block body when declaration is multi-line)
+* Disable by default analyzer [RCS1207i](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1207i.md) (Convert method group to anonymous function)
+* Remove analyzer [RCS1219](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1219.md) (Call 'Enumerable.Skip' and 'Enumerable.Any' instead of 'Enumerable.Count')
+* Rename analyzer "Avoid 'null' on left side of binary expression" to "Constant values should be placed on right side of comparisons" [RCS1098](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1098.md)
+* Rename analyzer "Simplify boolean expression" to "Unncessary null check" [RCS1199](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1199.md) ([issue](https://github.com/JosefPihrt/Roslynator/issues/373))
+
+* More syntax is considered as having obvious type:
+  * string literal
+  * character literal
+  * boolean literal
+  * implicit array creation that contains only expressions whose type is obvious
+
 ## 3.0.0 (2020-06-16)
 
 * Update references to Roslyn API to 3.5.0

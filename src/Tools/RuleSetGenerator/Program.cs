@@ -14,9 +14,9 @@ namespace Roslynator.CodeGeneration
     {
         private static void Main(string[] args)
         {
+            string action = null;
 #if DEBUG
             string rootPath = @"..\..\..\..\..";
-            string action = null;
 #else
             string rootPath = System.Environment.CurrentDirectory;
 #endif

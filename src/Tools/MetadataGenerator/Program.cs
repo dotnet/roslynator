@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.Build.Locator;
 using Microsoft.CodeAnalysis;
@@ -144,6 +145,8 @@ namespace Roslynator.CodeGeneration
                 }
             }
 
+            UpdateChangeLog();
+
             void WriteAnalyzerMarkdowns(IEnumerable<AnalyzerMetadata> analyzers, IEnumerable<(string title, string url)> appliesTo = null)
             {
                 foreach (AnalyzerMetadata analyzer in analyzers)
@@ -206,6 +209,41 @@ namespace Roslynator.CodeGeneration
                 WriteAllText(
                     path,
                     MarkdownGenerator.CreateAnalyzersReadMe(descriptors.Where(f => !f.IsObsolete), title, comparer));
+            }
+
+            void UpdateChangeLog()
+            {
+                var issueRegex = new Regex(@"\(\#(?<issue>\d+)\)");
+                var analyzerRegex = new Regex(@"(\p{Lu}\p{Ll}+){2,}\ +\((?<id>RCS\d{4}[a-z]?)\)");
+
+                string path = GetPath(@"..\ChangeLog.md");
+                string s = File.ReadAllText(path, _utf8NoBom);
+
+                List<AnalyzerMetadata> allAnalyzers = analyzers
+                    .Concat(formattingAnalyzers)
+                    .Concat(codeAnalysisAnalyzers)
+                    .ToList();
+
+                ImmutableDictionary<string, AnalyzerMetadata> dic = allAnalyzers
+                    .Concat(allAnalyzers.SelectMany(f => f.OptionAnalyzers))
+                    .ToImmutableDictionary(f => f.Id, f => f);
+
+                s = issueRegex.Replace(s, "([issue](https://github.com/JosefPihrt/Roslynator/issues/${issue}))");
+
+                s = analyzerRegex.Replace(
+                    s,
+                    m =>
+                    {
+                        string id = m.Groups["id"].Value;
+
+                        Debug.Assert(dic.ContainsKey(id), id);
+
+                        AnalyzerMetadata analyzer = dic[id];
+
+                        return $"[{id}](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/{id}.md) ({analyzer.Title.TrimEnd('.')})";
+                    });
+
+                File.WriteAllText(path, s, _utf8NoBom);
             }
 
             void WriteAllText(string relativePath, string content, bool onlyIfChanges = true, bool fileMustExists = true)

@@ -424,6 +424,12 @@ else
 }
 ```
 
+#### Convert block body to expression\-body \(RR0169\)
+
+* **Syntax**: method, property, indexer, operator
+* **Span**: body or accessor list
+![Convert block body to expression-body](../../images/refactorings/ConvertBlockBodyToExpressionBody.png)
+
 #### Convert comment to documentation comment \(RR0192\)
 
 * **Syntax**: single\-line comment
@@ -468,6 +474,11 @@ while (condition)
 {
 }
 ```
+
+#### Convert expression\-body to block body \(RR0037\)
+
+* **Syntax**: expression body
+![Convert expression-body to block body](../../images/refactorings/ConvertExpressionBodyToBlockBody.png)
 
 #### Convert 'for' to 'foreach' \(RR0130\)
 
@@ -599,6 +610,34 @@ $"name: {name,0:f}, value: {value}"
 
 ```csharp
 string.Format("name: {0,0:f} value: {1}", name, value)
+```
+
+#### Convert lambda expression body to block body \(RR0039\)
+
+* **Syntax**: lambda expression's expression body
+* **Span**: body
+![Convert lambda expression body to block body](../../images/refactorings/ConvertLambdaExpressionBodyToBlockBody.png)
+
+#### Convert lambda expression body to expression\-body \(RR0154\)
+
+* **Syntax**: lambda expression with block body with single single\-line statement
+* **Span**: body
+![Convert lambda expression body to expression-body](../../images/refactorings/ConvertLambdaExpressionBodyToExpressionBody.png)
+
+#### Convert method group to lambda \(RR0137\)
+
+* **Syntax**: method group
+
+#### Before
+
+```csharp
+Func<object, object, object> func = Foo;
+```
+
+#### After
+
+```csharp
+Func<object, object, object> func = (f, g) => Foo(f, g)
 ```
 
 #### Convert null literal to default expression \(RR0139\)
@@ -837,21 +876,10 @@ switch (s)
 * **Syntax**: event field declaration
 ![Expand event](../../images/refactorings/ExpandEvent.png)
 
-#### Expand expression body \(RR0037\)
-
-* **Syntax**: expression body
-![Expand expression body](../../images/refactorings/ExpandExpressionBody.png)
-
 #### Expand initializer \(RR0038\)
 
 * **Syntax**: initializer
 ![Expand initializer](../../images/refactorings/ExpandInitializer.png)
-
-#### Expand lambda expression body \(RR0039\)
-
-* **Syntax**: lambda expression
-* **Span**: body
-![Expand lambda expression body](../../images/refactorings/ExpandLambdaExpressionBody.png)
 
 #### Expand property \(RR0040\)
 
@@ -960,69 +988,6 @@ if (y)
 ![Format accessor braces](../../images/refactorings/FormatAccessorBracesOnMultipleLines.png)
 
 ![Format accessor braces](../../images/refactorings/FormatAccessorBracesOnSingleLine.png)
-
-#### Format argument list \(RR0048\)
-
-* **Syntax**: argument list
-![Format argument list](../../images/refactorings/FormatEachArgumentOnSeparateLine.png)
-
-![Format argument list](../../images/refactorings/FormatAllArgumentsOnSingleLine.png)
-
-#### Format binary expression \(RR0049\)
-
-* **Syntax**: logical and/or expression, bitwise and/or expression
-![Format binary expression](../../images/refactorings/FormatBinaryExpression.png)
-
-#### Format conditional expression \(RR0050\)
-
-* **Syntax**: conditional expression
-![Format conditional expression](../../images/refactorings/FormatConditionalExpressionOnMultipleLines.png)
-
-![Format conditional expression](../../images/refactorings/FormatConditionalExpressionOnSingleLine.png)
-
-#### Format constraint clauses \(RR0187\)
-
-* **Syntax**: type parameter constraint clause
-
-#### Before
-
-```csharp
-private void Foo<T1, T2, T3>() where T1 : class where T2 : class where T3 : class
-{
-}
-```
-
-#### After
-
-```csharp
-private void Foo<T1, T2, T3>()
-    where T1 : class
-    where T2 : class
-    where T3 : class
-{
-}
-```
-
-#### Format expression chain \(RR0051\)
-
-* **Syntax**: expression chain
-![Format expression chain](../../images/refactorings/FormatExpressionChainOnMultipleLines.png)
-
-![Format expression chain](../../images/refactorings/FormatExpressionChainOnSingleLine.png)
-
-#### Format initializer \(RR0052\)
-
-* **Syntax**: initializer
-![Format initializer](../../images/refactorings/FormatInitializerOnMultipleLines.png)
-
-![Format initializer](../../images/refactorings/FormatInitializerOnSingleLine.png)
-
-#### Format parameter list \(RR0053\)
-
-* **Syntax**: parameter list
-![Format parameter list](../../images/refactorings/FormatEachParameterOnSeparateLine.png)
-
-![Format parameter list](../../images/refactorings/FormatAllParametersOnSingleLine.png)
 
 #### Generate base constructors \(RR0054\)
 
@@ -1950,22 +1915,6 @@ public enum Foo
 * **Span**: interpolation
 ![Replace interpolated string with interpolation expression](../../images/refactorings/ReplaceInterpolatedStringWithInterpolationExpression.png)
 
-#### Replace method group with lambda \(RR0137\)
-
-* **Syntax**: method group
-
-#### Before
-
-```csharp
-Func<object, object, object> func = Foo;
-```
-
-#### After
-
-```csharp
-Func<object, object, object> func = (f, g) => Foo(f, g)
-```
-
 #### Replace method with property \(RR0138\)
 
 * **Syntax**: method
@@ -2013,22 +1962,16 @@ object[] arr = null;
 * **Span**: property header
 ![Replace property with method](../../images/refactorings/ReplacePropertyWithMethod.png)
 
-#### Reverse 'for' loop \(RR0152\)
+#### Reverse 'for' statement \(RR0152\)
 
 * **Syntax**: for statement
-![Reverse 'for' loop](../../images/refactorings/ReverseForLoop.png)
+![Reverse 'for' statement](../../images/refactorings/ReverseForStatement.png)
 
 #### Simplify if \(RR0153\)
 
 * **Syntax**: if statement
 * **Span**: top if keyword or selected if statement
 ![Simplify if](../../images/refactorings/SimplifyIf.png)
-
-#### Simplify lambda expression \(RR0154\)
-
-* **Syntax**: lambda expression with block with single single\-line statement
-* **Span**: body
-![Simplify lambda expression](../../images/refactorings/SimplifyLambdaExpression.png)
 
 #### Sort case labels \(RR0207\)
 
@@ -2270,12 +2213,6 @@ using (var en = items.GetEnumerator())
 }
 ```
 
-#### Use expression\-bodied member \(RR0169\)
-
-* **Syntax**: method, property, indexer, operator
-* **Span**: body or accessor list
-![Use expression-bodied member](../../images/refactorings/UseExpressionBodiedMember.png)
-
 #### Use lambda expression instead of anonymous method \(RR0170\)
 
 * **Syntax**: anonymous method
@@ -2291,6 +2228,161 @@ using (var en = items.GetEnumerator())
 
 * **Syntax**: string concatenation
 ![Use StringBuilder instead of concatenation](../../images/refactorings/UseStringBuilderInsteadOfConcatenation.png)
+
+#### Wrap arguments \(RR0048\)
+
+* **Syntax**: argument list
+
+#### Before
+
+```csharp
+M(x, y, z);
+```
+
+#### After
+
+```csharp
+M(
+    x,
+    y,
+    z);
+```
+
+- - -
+
+#### Before
+
+```csharp
+void M(
+    x,
+    y,
+    z);
+```
+
+#### After
+
+```csharp
+void M(x, y, z);
+```
+
+#### Wrap binary expression \(RR0049\)
+
+* **Syntax**: logical and/or expression, bitwise and/or expression
+
+#### Before
+
+```csharp
+if (x && y && z)
+{
+}
+```
+
+#### After
+
+```csharp
+if (x
+    && y
+    && z)
+{
+}
+```
+
+- - -
+
+#### Before
+
+```csharp
+if (x
+    && y
+    && z)
+{
+}
+```
+
+#### After
+
+```csharp
+if (x && y && z)
+{
+}
+```
+
+#### Wrap call chain \(RR0051\)
+
+* **Syntax**: call chain
+
+#### Before
+
+```csharp
+x.M().N().O()
+```
+
+#### After
+
+```csharp
+x
+    .M()
+    .N()
+    .O()
+```
+
+- - -
+
+#### Before
+
+```csharp
+x
+    .M()
+    .N()
+    .O()
+```
+
+#### After
+
+```csharp
+x.M().N().O()
+```
+
+#### Wrap conditional expression \(RR0050\)
+
+* **Syntax**: conditional expression
+
+#### Before
+
+```csharp
+x ? y : z
+```
+
+#### After
+
+```csharp
+x
+    ? y
+    : z
+```
+
+#### Wrap constraint clauses \(RR0187\)
+
+* **Syntax**: type parameter constraint clause
+
+#### Before
+
+```csharp
+private void Foo<T1, T2, T3>() where T1 : class where T2 : class where T3 : class
+{
+}
+```
+
+#### After
+
+```csharp
+private void Foo<T1, T2, T3>()
+    where T1 : class
+    where T2 : class
+    where T3 : class
+{
+}
+```
 
 #### Wrap in \#if directive \(RR0174\)
 
@@ -2321,6 +2413,90 @@ using (var en = items.GetEnumerator())
 
 * **Syntax**: local declaration of type that implements IDisposable
 ![Wrap in using statement](../../images/refactorings/WrapInUsingStatement.png)
+
+#### Wrap initializer expressions \(RR0052\)
+
+* **Syntax**: initializer
+
+#### Before
+
+```csharp
+var x = new string[] { "a", "b", "c" }
+```
+
+#### After
+
+```csharp
+var x = new string[]
+{
+    "a",
+    "b",
+    "c"
+}
+```
+
+- - -
+
+#### Before
+
+```csharp
+var x = new string[]
+{
+    "a",
+    "b",
+    "c"
+}
+```
+
+#### After
+
+```csharp
+var x = new string[] { "a", "b", "c" }
+```
+
+#### Wrap parameters \(RR0053\)
+
+* **Syntax**: parameter list
+
+#### Before
+
+```csharp
+void M(object x, object y, object z)
+{
+}
+```
+
+#### After
+
+```csharp
+void M(
+    object x,
+    object y,
+    object z)
+{
+}
+```
+
+- - -
+
+#### Before
+
+```csharp
+void M(
+    object x,
+    object y,
+    object z)
+{
+}
+```
+
+#### After
+
+```csharp
+void M(object x, object y, object z)
+{
+}
+```
 
 
 *\(Generated with [DotMarkdown](http://github.com/JosefPihrt/DotMarkdown)\)*

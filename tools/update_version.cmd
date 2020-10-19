@@ -2,9 +2,10 @@
 
 rem dotnet install tool -g orang.dotnet.cli
 
-set _apiVersion=1.0.0.27
-set _version=3.0.0.3
-set _version3=3.0.0
+set _apiVersion=1.0.0.28
+set _formattingVersion=1.0.0.3
+set _version=3.0.1.0
+set _version3=3.0.1
 set _root=..\src
 set _options=from-file -t m r -y trim-line -v n -o "orang.log" v=di
 
@@ -34,6 +35,15 @@ orang replace ^
  -c "patterns\csproj_version.txt" ^
   %_options% ^
  -r %_apiVersion%
+
+echo.
+
+orang replace ^
+  "%_root%\Formatting.Analyzers\Formatting.Analyzers.csproj" ^
+  "%_root%\Formatting.Analyzers.CodeFixes\Formatting.Analyzers.CodeFixes.csproj" ^
+ -c "patterns\csproj_version.txt" ^
+  %_options% ^
+ -r %_formattingVersion%
 
 echo.
 

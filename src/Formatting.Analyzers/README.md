@@ -43,11 +43,15 @@
 | RCS0044 | [Use carriage return + linefeed as newline](../../docs/analyzers/RCS0044.md) | Formatting | None |
 | RCS0045 | [Use linefeed as newline](../../docs/analyzers/RCS0045.md) | Formatting | None |
 | RCS0046 | [Use spaces instead of tab](../../docs/analyzers/RCS0046.md) | Formatting | None |
-| RCS0047 | [Wrap and indent each node in list](../../docs/analyzers/RCS0047.md) | Formatting | None |
+| RCS0047 | [\[deprecated\] Wrap and indent each node in list](../../docs/analyzers/RCS0047.md) | Formatting | None |
 | RCS0048 | [Remove newlines from initializer with single-line expression](../../docs/analyzers/RCS0048.md) | Formatting | None |
 | RCS0049 | [Add empty line after top comment](../../docs/analyzers/RCS0049.md) | Formatting | None |
 | RCS0050 | [Add empty line before top declaration](../../docs/analyzers/RCS0050.md) | Formatting | None |
 | RCS0051 | [Add newline between closing brace and 'while' keyword (or vice versa)](../../docs/analyzers/RCS0051.md) | Formatting | None |
+| RCS0052 | [Add newline before equals sign instead of after it (or vice versa)](../../docs/analyzers/RCS0052.md) | Formatting | None |
+| RCS0053 | [Fix formatting of a list](../../docs/analyzers/RCS0053.md) | Formatting | None |
+| RCS0054 | [Fix formatting of a call chain](../../docs/analyzers/RCS0054.md) | Formatting | None |
+| RCS0055 | [Fix formatting of a binary expression chain](../../docs/analyzers/RCS0055.md) | Formatting | None |
 
 
 *\(Generated with [DotMarkdown](http://github.com/JosefPihrt/DotMarkdown)\)*
