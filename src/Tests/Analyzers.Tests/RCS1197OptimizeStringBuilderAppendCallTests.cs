@@ -784,6 +784,46 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+        public async Task Test_Join()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System.Text;
+
+class C
+{
+    void M()
+    {
+        var sb = new StringBuilder();
+
+        sb.Append([|string.Join('x', """", """")|]);
+        sb.Append([|string.Join('x', default(object), default(object))|]);
+        sb.Append([|string.Join(""x"", """", """")|]);
+        sb.Append([|string.Join(""x"", default(object), default(object))|]);
+        sb.Append([|string.Join('x', new[] { """" })|]);
+        sb.Append([|string.Join(""x"", new[] { default(object) })|]);
+    }
+}
+", @"
+using System.Text;
+
+class C
+{
+    void M()
+    {
+        var sb = new StringBuilder();
+
+        sb.AppendJoin('x', """", """");
+        sb.AppendJoin('x', default(object), default(object));
+        sb.AppendJoin(""x"", """", """");
+        sb.AppendJoin(""x"", default(object), default(object));
+        sb.AppendJoin('x', new[] { """" });
+        sb.AppendJoin(""x"", new[] { default(object) });
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
         public async Task TestNoDiagnostic_Const()
         {
             await VerifyNoDiagnosticAsync(@"

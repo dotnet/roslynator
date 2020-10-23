@@ -154,6 +154,13 @@ namespace Roslynator.CSharp.Analysis
                             ReportDiagnostic(argument);
                             break;
                         }
+                    case "Join":
+                        {
+                            if (methodSymbol.ContainingType.ContainsMember<IMethodSymbol>("AppendJoin"))
+                                ReportDiagnostic(argument);
+
+                            break;
+                        }
                 }
             }
 

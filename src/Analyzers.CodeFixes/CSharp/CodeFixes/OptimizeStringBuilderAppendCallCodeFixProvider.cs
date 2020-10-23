@@ -43,6 +43,7 @@ namespace Roslynator.CSharp.CodeFixes
             }
 
             Diagnostic diagnostic = context.Diagnostics[0];
+            Document document = context.Document;
 
             if (node is ArgumentSyntax argument)
             {
@@ -50,7 +51,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                 CodeAction codeAction = CodeAction.Create(
                     $"Optimize '{invocationInfo.NameText}' call",
-                    cancellationToken => RefactorAsync(context.Document, argument, invocationInfo, cancellationToken),
+                    ct => RefactorAsync(document, argument, invocationInfo, ct),
                     GetEquivalenceKey(diagnostic));
 
                 context.RegisterCodeFix(codeAction, diagnostic);
@@ -61,7 +62,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                 CodeAction codeAction = CodeAction.Create(
                     $"Optimize '{invocationInfo.NameText}' call",
-                    cancellationToken => RefactorAsync(context.Document, invocationInfo, cancellationToken),
+                    ct => RefactorAsync(document, invocationInfo, ct),
                     GetEquivalenceKey(diagnostic));
 
                 context.RegisterCodeFix(codeAction, diagnostic);
@@ -298,6 +299,10 @@ namespace Roslynator.CSharp.CodeFixes
                 case "Format":
                     {
                         return CreateNewInvocationExpression(outerInvocationExpression, "AppendFormat", invocationInfo.ArgumentList);
+                    }
+                case "Join":
+                    {
+                        return CreateNewInvocationExpression(outerInvocationExpression, "AppendJoin", invocationInfo.ArgumentList);
                     }
             }
 
