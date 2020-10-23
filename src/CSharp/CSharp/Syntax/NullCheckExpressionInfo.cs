@@ -167,12 +167,12 @@ namespace Roslynator.CSharp.Syntax
                         if (!(isPatternExpression.Pattern is ConstantPatternSyntax constantPattern))
                             break;
 
-                        if (constantPattern.Expression?.IsKind(SyntaxKind.NullLiteralExpression) != true)
-                            break;
-
                         ExpressionSyntax e = WalkAndCheck(isPatternExpression.Expression, walkDownParentheses, allowMissing);
 
                         if (e == null)
+                            break;
+
+                        if (!IsNullOrDefault(e, constantPattern.Expression, semanticModel, cancellationToken))
                             break;
 
                         return new NullCheckExpressionInfo(expression, e, NullCheckStyles.IsNull);
@@ -216,12 +216,12 @@ namespace Roslynator.CSharp.Syntax
                                     if (!(isPatternExpression.Pattern is ConstantPatternSyntax constantPattern))
                                         break;
 
-                                    if (constantPattern.Expression?.IsKind(SyntaxKind.NullLiteralExpression) != true)
-                                        break;
-
                                     ExpressionSyntax e = WalkAndCheck(isPatternExpression.Expression, walkDownParentheses, allowMissing);
 
                                     if (e == null)
+                                        break;
+
+                                    if (!IsNullOrDefault(e, constantPattern.Expression, semanticModel, cancellationToken))
                                         break;
 
                                     return new NullCheckExpressionInfo(expression, e, NullCheckStyles.NotIsNull);
@@ -248,10 +248,15 @@ namespace Roslynator.CSharp.Syntax
             switch (expression1.Kind())
             {
                 case SyntaxKind.NullLiteralExpression:
+                case SyntaxKind.DefaultLiteralExpression:
+                case SyntaxKind.DefaultExpression:
                     {
                         NullCheckStyles style = (binaryExpressionKind == SyntaxKind.EqualsExpression) ? NullCheckStyles.EqualsToNull : NullCheckStyles.NotEqualsToNull;
 
                         if ((allowedStyles & style) == 0)
+                            break;
+
+                        if (!IsNullOrDefault(expression2, expression1, semanticModel, cancellationToken))
                             break;
 
                         return new NullCheckExpressionInfo(
@@ -331,6 +336,45 @@ namespace Roslynator.CSharp.Syntax
             return expression?.Kind() == SyntaxKind.IdentifierName
                 && string.Equals(((IdentifierNameSyntax)expression).Identifier.ValueText, name, StringComparison.Ordinal)
                 && SyntaxUtility.IsPropertyOfNullableOfT(expression, name, semanticModel, cancellationToken);
+        }
+
+        private static bool IsNullOrDefault(
+            ExpressionSyntax left,
+            ExpressionSyntax right,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
+        {
+            switch (right?.Kind())
+            {
+                case SyntaxKind.NullLiteralExpression:
+                    {
+                        return true;
+                    }
+                case SyntaxKind.DefaultExpression:
+                    {
+                        if (semanticModel == null)
+                            return false;
+
+                        ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(left, cancellationToken);
+
+                        if (!typeSymbol.IsReferenceType)
+                            return false;
+
+                        ITypeSymbol typeSymbol2 = semanticModel.GetTypeSymbol(right, cancellationToken);
+
+                        return SymbolEqualityComparer.Default.Equals(typeSymbol, typeSymbol2);
+                    }
+                case SyntaxKind.DefaultLiteralExpression:
+                    {
+                        return semanticModel?
+                            .GetTypeSymbol(left, cancellationToken)
+                            .IsReferenceType == true;
+                    }
+                default:
+                    {
+                        return false;
+                    }
+            }
         }
     }
 }

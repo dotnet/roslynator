@@ -160,7 +160,7 @@ namespace Roslynator.CSharp.Analysis
                 ? NullCheckStyles.NotEqualsToNull
                 : NullCheckStyles.EqualsToNull;
 
-            NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(left, allowedStyles: allowedStyles);
+            NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(left, semanticModel, allowedStyles: allowedStyles, cancellationToken: cancellationToken);
 
             ExpressionSyntax expression = nullCheck.Expression;
 

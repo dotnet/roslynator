@@ -104,6 +104,10 @@ class Foo
 
         if ([|x != null && x.Equals(x)|]) { }
 
+        if ([|x != default(Foo) && x.Equals(x)|]) { }
+
+        if ([|x != default && x.Equals(x)|]) { }
+
         if ([|null != x && x.Equals(x)|]) { }
 
         if ([|x != null && (x.Equals(x)|])) { }
@@ -151,6 +155,10 @@ class Foo
 
         if (x?.Equals(x) == true) { }
 
+        if (x?.Equals(x) == true) { }
+
+        if (x?.Equals(x) == true) { }
+
         if ((x?.Equals(x) == true)) { }
 
         if (x?.Equals(x) == true && f) { }
@@ -193,6 +201,10 @@ class Foo
 
         if ([|x == null || x.Equals(x)|]) { }
 
+        if ([|x == default(Foo) || x.Equals(x)|]) { }
+
+        if ([|x == default || x.Equals(x)|]) { }
+
         if ([|x == null || (x.Equals(x)|])) { }
 
         if ([|x == null || !x.Equals(x)|]) { }
@@ -206,6 +218,10 @@ class Foo
     void M()
     {
         Foo x = null;
+
+        if (x?.Equals(x) != false) { }
+
+        if (x?.Equals(x) != false) { }
 
         if (x?.Equals(x) != false) { }
 
