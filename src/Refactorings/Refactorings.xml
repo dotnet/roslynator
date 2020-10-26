@@ -984,18 +984,18 @@ return true;]]></After>
     <Span>method name</Span>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (items.Any(predicate)
+        <Before><![CDATA[if (items.Any(predicate))
 {
 }]]></Before>
-        <After><![CDATA[if (items.All(!predicate)
+        <After><![CDATA[if (items.All(!predicate))
 {
 }]]></After>
       </Sample>
       <Sample>
-        <Before><![CDATA[if (items.All(predicate)
+        <Before><![CDATA[if (items.All(predicate))
 {
 }]]></Before>
-        <After><![CDATA[if (items.Any(!predicate)
+        <After><![CDATA[if (items.Any(!predicate))
 {
 }]]></After>
       </Sample>
