@@ -14,7 +14,7 @@ namespace Roslynator.CSharp
     /// Represents a list of modifiers.
     /// </summary>
     /// <typeparam name="TNode"></typeparam>
-    [SuppressMessage("Usage", "RCS1223:Use DebuggerDisplay attribute for publicly visible type.", Justification = "<Pending>")]
+    [SuppressMessage("Usage", "RCS1223:Use DebuggerDisplay attribute for publicly visible type.")]
     public abstract class ModifierList<TNode> where TNode : SyntaxNode
     {
         internal ModifierList()

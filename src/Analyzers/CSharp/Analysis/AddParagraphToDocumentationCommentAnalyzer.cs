@@ -67,7 +67,7 @@ namespace Roslynator.CSharp.Analysis
             }
         }
 
-        [SuppressMessage("Simplification", "RCS1180:Inline lazy initialization.", Justification = "<Pending>")]
+        [SuppressMessage("Simplification", "RCS1180:Inline lazy initialization.")]
         internal static (TextSpan span1, TextSpan span2, List<TextSpan> spans) FindFixableSpan(
             SyntaxList<XmlNodeSyntax> nodes,
             bool stopOnFirstMatch = false,

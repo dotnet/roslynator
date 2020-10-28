@@ -14,7 +14,7 @@ namespace Roslynator
     /// <summary>
     /// Provides methods to obtain an unique identifier.
     /// </summary>
-    [SuppressMessage("Usage", "RCS1223:Mark publicly visible type with DebuggerDisplay attribute.", Justification = "<Pending>")]
+    [SuppressMessage("Usage", "RCS1223:Mark publicly visible type with DebuggerDisplay attribute.")]
     public abstract class NameGenerator
     {
         internal static StringComparer OrdinalComparer { get; } = StringComparer.Ordinal;

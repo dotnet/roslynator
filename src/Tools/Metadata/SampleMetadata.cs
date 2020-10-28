@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Roslynator.Metadata
 {
-    [SuppressMessage("Performance", "CA1815:Override equals and operator equals on value types", Justification = "<Pending>")]
+    [SuppressMessage("Performance", "CA1815:Override equals and operator equals on value types")]
     public readonly struct SampleMetadata
     {
         public SampleMetadata(string before, string after)

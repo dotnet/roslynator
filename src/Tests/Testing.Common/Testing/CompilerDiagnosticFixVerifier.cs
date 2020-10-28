@@ -187,7 +187,7 @@ namespace Roslynator.Testing
             }
         }
 
-        [SuppressMessage("Redundancy", "RCS1163:Unused parameter.", Justification = "<Pending>")]
+        [SuppressMessage("Redundancy", "RCS1163:Unused parameter.")]
         public async Task VerifyNoFixAsync(
             string source,
             string equivalenceKey = null,

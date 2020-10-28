@@ -7,7 +7,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace Roslynator.Diagnostics
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    [SuppressMessage("Performance", "CA1815:Override equals and operator equals on value types", Justification = "<Pending>")]
+    [SuppressMessage("Performance", "CA1815:Override equals and operator equals on value types")]
     public readonly struct ProjectDiagnosticInfo
     {
         public ProjectDiagnosticInfo(int total, ImmutableArray<AnalyzerDiagnosticInfo> analyzerDiagnostics)

@@ -19,7 +19,7 @@ namespace Roslynator.Collections
             get { throw new InvalidOperationException(); }
         }
 
-        [SuppressMessage("Design", "CA1063:Implement IDisposable Correctly", Justification = "<Pending>")]
+        [SuppressMessage("Design", "CA1063:Implement IDisposable Correctly")]
         public void Dispose()
         {
         }

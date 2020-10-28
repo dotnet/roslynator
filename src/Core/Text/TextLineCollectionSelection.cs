@@ -180,10 +180,10 @@ namespace Roslynator.Text
             return new EnumeratorImpl(this);
         }
 
-        [SuppressMessage("Design", "CA1034:Nested types should not be visible", Justification = "<Pending>")]
-        [SuppressMessage("Performance", "CA1815:Override equals and operator equals on value types", Justification = "<Pending>")]
-        [SuppressMessage("Usage", "CA2231:Overload operator equals on overriding value type Equals", Justification = "<Pending>")]
-        [SuppressMessage("Usage", "RCS1223:Mark publicly visible type with DebuggerDisplay attribute.", Justification = "<Pending>")]
+        [SuppressMessage("Design", "CA1034:Nested types should not be visible")]
+        [SuppressMessage("Performance", "CA1815:Override equals and operator equals on value types")]
+        [SuppressMessage("Usage", "CA2231:Overload operator equals on overriding value type Equals")]
+        [SuppressMessage("Usage", "RCS1223:Mark publicly visible type with DebuggerDisplay attribute.")]
         public struct Enumerator
         {
             private readonly TextLineCollectionSelection _selection;

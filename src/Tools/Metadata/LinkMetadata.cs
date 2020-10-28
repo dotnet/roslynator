@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Roslynator.Metadata
 {
-    [SuppressMessage("Performance", "CA1815:Override equals and operator equals on value types", Justification = "<Pending>")]
+    [SuppressMessage("Performance", "CA1815:Override equals and operator equals on value types")]
     public readonly struct LinkMetadata
     {
         public LinkMetadata(string url, string text = null, string title = null)
