@@ -83,11 +83,14 @@ namespace Roslynator.CSharp.Analysis
                 case SyntaxKind.DeclarationExpression:
                 case SyntaxKind.DeclarationPattern:
                 case SyntaxKind.DefaultExpression:
+                case SyntaxKind.DivideAssignmentExpression:
                 case SyntaxKind.DivideExpression:
                 case SyntaxKind.DoStatement:
                 case SyntaxKind.ElementAccessExpression:
                 case SyntaxKind.EqualsExpression:
                 case SyntaxKind.EventDeclaration:
+                case SyntaxKind.ExclusiveOrAssignmentExpression:
+                case SyntaxKind.ExclusiveOrExpression:
                 case SyntaxKind.ExplicitInterfaceSpecifier:
                 case SyntaxKind.ExpressionStatement:
                 case SyntaxKind.ForEachStatement:
@@ -102,6 +105,7 @@ namespace Roslynator.CSharp.Analysis
                 case SyntaxKind.InvocationExpression:
                 case SyntaxKind.IsExpression:
                 case SyntaxKind.IsPatternExpression:
+                case SyntaxKind.LeftShiftAssignmentExpression:
                 case SyntaxKind.LeftShiftExpression:
                 case SyntaxKind.LessThanExpression:
                 case SyntaxKind.LessThanOrEqualExpression:
@@ -112,6 +116,8 @@ namespace Roslynator.CSharp.Analysis
                 case SyntaxKind.LogicalOrExpression:
                 case SyntaxKind.MemberBindingExpression:
                 case SyntaxKind.MethodDeclaration:
+                case SyntaxKind.ModuloAssignmentExpression:
+                case SyntaxKind.ModuloExpression:
                 case SyntaxKind.MultiplyAssignmentExpression:
                 case SyntaxKind.MultiplyExpression:
                 case SyntaxKind.NameColon:
@@ -137,6 +143,7 @@ namespace Roslynator.CSharp.Analysis
                 case SyntaxKind.RangeExpression:
                 case SyntaxKind.RecursivePattern:
                 case SyntaxKind.RefType:
+                case SyntaxKind.RightShiftAssignmentExpression:
                 case SyntaxKind.RightShiftExpression:
                 case SyntaxKind.SimpleBaseType:
                 case SyntaxKind.SimpleLambdaExpression:
