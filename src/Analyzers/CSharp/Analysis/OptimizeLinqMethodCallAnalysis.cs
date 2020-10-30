@@ -605,6 +605,55 @@ namespace Roslynator.CSharp.Analysis
             }
         }
 
+        // x.OrderBy          (f => f).Where(func) >>> x.Where(func).OrderBy          (f => f)
+        // x.OrderByDescending(f => f).Where(func) >>> x.Where(func).OrderByDescending(f => f)
+        public static void AnalyzeOrderByAndWhere(SyntaxNodeAnalysisContext context, in SimpleMemberInvocationExpressionInfo invocationInfo)
+        {
+            SimpleMemberInvocationExpressionInfo invocationInfo2 = SyntaxInfo.SimpleMemberInvocationExpressionInfo(invocationInfo.Expression);
+
+            if (!invocationInfo2.Success)
+                return;
+
+            if (invocationInfo2.Arguments.Count < 1
+                && invocationInfo2.Arguments.Count > 2)
+            {
+                return;
+            }
+
+            string name2 = invocationInfo2.NameText;
+
+            if (!string.Equals(name2, "OrderBy", StringComparison.Ordinal)
+                && !string.Equals(name2, "OrderByDescending", StringComparison.Ordinal))
+            {
+                return;
+            }
+
+            InvocationExpressionSyntax invocationExpression = invocationInfo.InvocationExpression;
+
+            SemanticModel semanticModel = context.SemanticModel;
+            CancellationToken cancellationToken = context.CancellationToken;
+
+            IMethodSymbol methodSymbol = semanticModel.GetReducedExtensionMethodInfo(invocationExpression, cancellationToken).Symbol;
+
+            if (methodSymbol == null)
+                return;
+
+            if (!SymbolUtility.IsLinqExtensionOfIEnumerableOfT(methodSymbol, "Where", parameterCount: 2))
+                return;
+
+            IMethodSymbol methodSymbol2 = semanticModel.GetReducedExtensionMethodInfo(invocationInfo2.InvocationExpression, cancellationToken).Symbol;
+
+            if (methodSymbol2 == null)
+                return;
+
+            if (!SymbolUtility.IsLinqExtensionOfIEnumerableOfT(methodSymbol2, name2, new Interval(2, 3)))
+                return;
+
+            TextSpan span = TextSpan.FromBounds(invocationInfo2.Name.SpanStart, invocationExpression.Span.End);
+
+            Report(context, invocationExpression, span, checkDirectives: true);
+        }
+
         // x.OrderBy(f => f).Reverse() >>> x.OrderByDescending(f => f)
         public static void AnalyzeOrderByAndReverse(SyntaxNodeAnalysisContext context, in SimpleMemberInvocationExpressionInfo invocationInfo)
         {

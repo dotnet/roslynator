@@ -372,9 +372,28 @@ namespace Roslynator
         internal static bool IsLinqExtensionOfIEnumerableOfT(
             IMethodSymbol methodSymbol,
             string name = null,
-            int parameterCount = -1,
+            int parameterCount = 1,
             bool allowImmutableArrayExtension = false)
         {
+            if (parameterCount < 1)
+                throw new ArgumentOutOfRangeException(nameof(parameterCount), parameterCount, "");
+
+            return IsLinqExtensionOfIEnumerableOfT(
+                methodSymbol: methodSymbol,
+                name: name,
+                interval: new Interval(parameterCount, parameterCount),
+                allowImmutableArrayExtension: allowImmutableArrayExtension);
+        }
+
+        internal static bool IsLinqExtensionOfIEnumerableOfT(
+            IMethodSymbol methodSymbol,
+            string name,
+            Interval interval,
+            bool allowImmutableArrayExtension = false)
+        {
+            if (interval.Min < 1)
+                throw new ArgumentOutOfRangeException(nameof(interval), interval, "");
+
             if (methodSymbol.DeclaredAccessibility != Accessibility.Public)
                 return false;
 
@@ -390,7 +409,7 @@ namespace Roslynator
             {
                 ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
 
-                return (parameterCount == -1 || parameters.Length == parameterCount)
+                return interval.Contains(parameters)
                     && parameters[0].Type.OriginalDefinition.SpecialType == SpecialType.System_Collections_Generic_IEnumerable_T;
             }
             else if (allowImmutableArrayExtension
@@ -398,7 +417,7 @@ namespace Roslynator
             {
                 ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
 
-                return (parameterCount == -1 || parameters.Length == parameterCount)
+                return interval.Contains(parameters)
                     && IsImmutableArrayOfT(parameters[0].Type);
             }
 

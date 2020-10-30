@@ -273,6 +273,9 @@ namespace Roslynator.CSharp.Analysis
                                     if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.CombineEnumerableWhereMethodChain))
                                         CombineEnumerableWhereMethodChainAnalysis.Analyze(context, invocationInfo);
 
+                                    if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.OptimizeLinqMethodCall))
+                                        OptimizeLinqMethodCallAnalysis.AnalyzeOrderByAndWhere(context, invocationInfo);
+
                                     break;
                                 }
                             case "Select":

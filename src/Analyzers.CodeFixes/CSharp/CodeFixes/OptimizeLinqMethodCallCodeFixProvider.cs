@@ -148,9 +148,22 @@ namespace Roslynator.CSharp.CodeFixes
                     case "Reverse":
                         {
                             CodeAction codeAction = CodeAction.Create(
-                                "Call 'OrderByDescending",
+                                "Call 'OrderByDescending'",
                                 ct => CallOrderByDescendingInsteadOfOrderByAndReverseAsync(document, invocationInfo, ct),
                                 GetEquivalenceKey(diagnostic, "CallOrderByDescendingInsteadOfOrderByAndReverse"));
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            return;
+                        }
+                    case "Where":
+                        {
+                            SimpleMemberInvocationExpressionInfo invocationInfo2 = SimpleMemberInvocationExpressionInfo(
+                                invocationInfo.Expression);
+
+                            CodeAction codeAction = CodeAction.Create(
+                                $"Call '{invocationInfo2.NameText}' and 'Where' in reverse order",
+                                ct => CallOrderByAndWhereInReverseOrderAsync(document, invocationInfo, invocationInfo2, ct),
+                                GetEquivalenceKey(diagnostic, "CallOrderByAndWhereInReverseOrder"));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
                             return;
@@ -565,6 +578,23 @@ namespace Roslynator.CSharp.CodeFixes
             InvocationExpressionSyntax newInvocationExpression = ChangeInvokedMethodName(invocationExpression2, "OrderByDescending");
 
             return document.ReplaceNodeAsync(invocationInfo.InvocationExpression, newInvocationExpression, cancellationToken);
+        }
+
+        private static Task<Document> CallOrderByAndWhereInReverseOrderAsync(
+            Document document,
+            in SimpleMemberInvocationExpressionInfo invocationInfo,
+            in SimpleMemberInvocationExpressionInfo invocationInfo2,
+            CancellationToken cancellationToken)
+        {
+            TextSpan span1 = TextSpan.FromBounds(invocationInfo2.OperatorToken.SpanStart, invocationInfo2.ArgumentList.Span.End);
+
+            TextSpan span2 = TextSpan.FromBounds(invocationInfo.OperatorToken.SpanStart, invocationInfo.ArgumentList.Span.End);
+
+            var textChange1 = new TextChange(span1, invocationInfo.InvocationExpression.ToString(span2));
+
+            var textChange2 = new TextChange(span2, invocationInfo.InvocationExpression.ToString(span1));
+
+            return document.WithTextChangesAsync(new TextChange[] { textChange1, textChange2 }, cancellationToken);
         }
 
         private static Task<Document> CallConvertAllInsteadOfSelectAsync(
