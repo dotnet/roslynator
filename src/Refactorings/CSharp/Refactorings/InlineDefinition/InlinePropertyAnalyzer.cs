@@ -79,12 +79,13 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
 
             if (syntaxReference != null)
             {
-                return (PropertyDeclarationSyntax)await syntaxReference.GetSyntaxAsync(cancellationToken).ConfigureAwait(false);
+                SyntaxNode node = await syntaxReference.GetSyntaxAsync(cancellationToken).ConfigureAwait(false);
+
+                if (node is PropertyDeclarationSyntax propertyDeclaration)
+                    return propertyDeclaration;
             }
-            else
-            {
-                return null;
-            }
+
+            return null;
         }
 
         protected override ImmutableArray<ParameterInfo> GetParameterInfos(IdentifierNameSyntax node, IPropertySymbol symbol)

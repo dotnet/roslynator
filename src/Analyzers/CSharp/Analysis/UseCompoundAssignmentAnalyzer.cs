@@ -47,8 +47,15 @@ namespace Roslynator.CSharp.Analysis
             if (!assignmentInfo.Success)
                 return;
 
-            if (assignmentExpression.IsParentKind(SyntaxKind.ObjectInitializerExpression))
+            //TODO: SyntaxKind.WithInitializerExpression
+            if (assignmentExpression.Parent is InitializerExpressionSyntax
+                && !assignmentExpression.IsParentKind(
+                    SyntaxKind.CollectionInitializerExpression,
+                    SyntaxKind.ArrayInitializerExpression,
+                    SyntaxKind.ComplexElementInitializerExpression))
+            {
                 return;
+            }
 
             ExpressionSyntax right = assignmentInfo.Right;
 

@@ -45,8 +45,15 @@ namespace Roslynator.CSharp.Analysis
 
             var assignment = (AssignmentExpressionSyntax)context.Node;
 
-            if (assignment.IsParentKind(SyntaxKind.ObjectInitializerExpression))
+            //TODO: SyntaxKind.WithInitializerExpression
+            if (assignment.Parent is InitializerExpressionSyntax
+                && !assignment.IsParentKind(
+                    SyntaxKind.CollectionInitializerExpression,
+                    SyntaxKind.ArrayInitializerExpression,
+                    SyntaxKind.ComplexElementInitializerExpression))
+            {
                 return;
+            }
 
             ExpressionSyntax left = assignment.Left;
             ExpressionSyntax right = assignment.Right;
