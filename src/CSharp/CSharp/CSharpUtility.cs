@@ -341,6 +341,7 @@ namespace Roslynator.CSharp
                     case SyntaxKind.AttributeArgument:
                     case SyntaxKind.Parameter:
                     case SyntaxKind.CaseSwitchLabel:
+                    case SyntaxKind.ConstantPattern:
                         return true;
                     case SyntaxKind.FieldDeclaration:
                         return ((FieldDeclarationSyntax)parent).Modifiers.Contains(SyntaxKind.ConstKeyword);
