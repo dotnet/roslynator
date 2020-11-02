@@ -48,7 +48,7 @@ namespace Roslynator.Metadata
                 string remarks = element.Element("Remarks")?.Value.NormalizeNewLine();
                 IEnumerable<SampleMetadata> samples = LoadSamples(element)?.Select(f => f.WithBefore(f.Before.Replace("[|Id|]", id)));
                 IEnumerable<LinkMetadata> links = LoadLinks(element);
-                IEnumerable<AnalyzerOptionMetadata> options = LoadOptions(element);
+                IEnumerable<AnalyzerOptionMetadata> options = LoadOptions(element, id);
 
                 yield return new AnalyzerMetadata(
                     id: id,
@@ -133,15 +133,15 @@ namespace Roslynator.Metadata
                 .Select(f => new LinkMetadata(f.Element("Url").Value, f.Element("Text")?.Value, f.Element("Title")?.Value));
         }
 
-        private static IEnumerable<AnalyzerOptionMetadata> LoadOptions(XElement element)
+        private static IEnumerable<AnalyzerOptionMetadata> LoadOptions(XElement element, string parentId)
         {
             return element
                 .Element("Options")?
                 .Elements("Option")
-                .Select(f => LoadOption(f));
+                .Select(f => LoadOption(f, parentId));
         }
 
-        private static AnalyzerOptionMetadata LoadOption(XElement element)
+        private static AnalyzerOptionMetadata LoadOption(XElement element, string parentId)
         {
             string title = element.Element("Title").Value;
 
@@ -152,7 +152,7 @@ namespace Roslynator.Metadata
             bool supportsFadeOut = element.ElementValueAsBooleanOrDefault("SupportsFadeOut");
             string minLanguageVersion = element.Element("MinLanguageVersion")?.Value;
             string summary = element.Element("Summary")?.Value.NormalizeNewLine();
-            IEnumerable<SampleMetadata> samples = LoadSamples(element);
+            IEnumerable<SampleMetadata> samples = LoadSamples(element)?.Select(f => f.WithBefore(f.Before.Replace("[|Id|]", parentId)));
             bool isObsolete = element.AttributeValueAsBooleanOrDefault("IsObsolete");
 
             return new AnalyzerOptionMetadata(
