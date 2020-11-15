@@ -2005,7 +2005,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor ReturnCompletedTaskInsteadOfNull = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.ReturnCompletedTaskInsteadOfNull, 
             title:              "Return completed task instead of returning null.", 
-            messageFormat:      "Return '{0}' instead of returning null.", 
+            messageFormat:      "Return completed task instead of returning null.", 
             category:           DiagnosticCategories.Usage, 
             defaultSeverity:    DiagnosticSeverity.Warning, 
             isEnabledByDefault: true, 

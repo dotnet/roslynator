@@ -4330,7 +4330,6 @@ Foo3();]]></After>
   <Analyzer Identifier="ReturnCompletedTaskInsteadOfNull">
     <Id>RCS1210</Id>
     <Title>Return completed task instead of returning null.</Title>
-    <MessageFormat>Return '{0}' instead of returning null.</MessageFormat>
     <Category>Usage</Category>
     <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
