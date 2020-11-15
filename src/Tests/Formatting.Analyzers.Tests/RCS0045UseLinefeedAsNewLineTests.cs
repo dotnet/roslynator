@@ -21,37 +21,37 @@ namespace Roslynator.Formatting.CSharp.Tests
         public async Task Test()
         {
             await VerifyDiagnosticAndFixAsync("\n"
-+ "class C[|\r\n|]"
-+ "{[|\r\n|]"
-+ "    /// <summary>[|\r\n|]"
-+ "    /// [|\r\n|]"
-+ "    /// </summary>[|\r\n|]"
-+ "    void M()[|\r\n|]"
-+ "    {[|\r\n|]"
-+ "    }[|\r\n|]"
-+ "}\n",
-"\n"
-+ "class C\n"
-+ "{\n"
-+ "    /// <summary>\n"
-+ "    /// \n"
-+ "    /// </summary>\n"
-+ "    void M()\n"
-+ "    {\n"
-+ "    }\n"
-+ "}\n");
+                + "class C[|\r\n|]"
+                + "{[|\r\n|]"
+                + "    /// <summary>[|\r\n|]"
+                + "    /// [|\r\n|]"
+                + "    /// </summary>[|\r\n|]"
+                + "    void M()[|\r\n|]"
+                + "    {[|\r\n|]"
+                + "    }[|\r\n|]"
+                + "}\n",
+                "\n"
+                    + "class C\n"
+                    + "{\n"
+                    + "    /// <summary>\n"
+                    + "    /// \n"
+                    + "    /// </summary>\n"
+                    + "    void M()\n"
+                    + "    {\n"
+                    + "    }\n"
+                    + "}\n");
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseLinefeedAsNewLine)]
         public async Task TestNoDiagnostic()
         {
             await VerifyNoDiagnosticAsync("\n"
-+ "class C\n"
-+ "{\n"
-+ "    void M()\n"
-+ "    {\n"
-+ "    }\n"
-+ "}\n");
+                + "class C\n"
+                + "{\n"
+                + "    void M()\n"
+                + "    {\n"
+                + "    }\n"
+                + "}\n");
         }
     }
 }

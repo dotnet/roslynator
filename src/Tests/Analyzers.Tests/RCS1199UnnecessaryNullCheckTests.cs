@@ -338,6 +338,7 @@ class C
 }
 ");
         }
+
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullCheck)]
         public async Task TestNoDiagnostic()
         {
