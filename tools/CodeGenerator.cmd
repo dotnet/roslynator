@@ -6,6 +6,6 @@
  /v:minimal ^
  /m
 
-dotnet "..\src\Tools\CodeGenerator\bin\Debug\netcoreapp2.0\CodeGenerator.dll" "..\src"
+dotnet "..\src\Tools\CodeGenerator\bin\Debug\netcoreapp2.1\CodeGenerator.dll" "..\src"
 
 pause

@@ -25,7 +25,7 @@ if errorlevel 1 (
 )
 
 "..\src\Tools\MetadataGenerator\bin\Release\net48\Roslynator.MetadataGenerator.exe" "..\src"
-dotnet "..\src\Tools\CodeGenerator\bin\Release\netcoreapp2.0\CodeGenerator.dll" "..\src"
+dotnet "..\src\Tools\CodeGenerator\bin\Release\netcoreapp2.1\CodeGenerator.dll" "..\src"
 
 %_msbuildPath% "..\src\Roslynator.sln" ^
  /t:Clean ^

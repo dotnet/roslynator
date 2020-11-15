@@ -6,7 +6,7 @@
  /v:minimal ^
  /m
 
-dotnet "..\src\Tools\Cleaner\bin\Release\netcoreapp2.0\Cleaner.dll" "..\src"
-dotnet "..\src\Tools\Cleaner\bin\Release\netcoreapp2.0\Cleaner.dll" "..\src\tools"
+dotnet "..\src\Tools\Cleaner\bin\Release\netcoreapp2.1\Cleaner.dll" "..\src"
+dotnet "..\src\Tools\Cleaner\bin\Release\netcoreapp2.1\Cleaner.dll" "..\src\tools"
 
 pause
