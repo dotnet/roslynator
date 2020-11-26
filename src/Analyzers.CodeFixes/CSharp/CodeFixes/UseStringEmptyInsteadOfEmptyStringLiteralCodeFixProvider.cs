@@ -28,7 +28,7 @@ namespace Roslynator.CSharp.CSharp.CodeFixes {
             Diagnostic diagnostic = context.Diagnostics[0];
 
             var codeAction = CodeAction.Create(
-                "Use StringюEmpty instead of \"\"",
+                "Use String.Empty instead of \"\"",
                 cancellationToken => UseStringEmptyInsteadOfEmptyStringLiteralRefactoring.RefactorAsync(context.Document, (LiteralExpressionSyntax)node, cancellationToken));
             context.RegisterCodeFix(codeAction, diagnostic);
         }
