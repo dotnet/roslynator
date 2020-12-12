@@ -19,5 +19,10 @@ del /Q "..\src\CommandLine\bin\Release\Roslynator.CommandLine.*.nupkg"
 
 dotnet pack -c Release --no-build -v normal /p:RoslynatorCommandLine=true "..\src\CommandLine\CommandLine.csproj"
 
+set _outDir=..\out\Release
+md "%_outDir%"
+del /Q "%_outDir%\Release\Roslynator.CommandLine.*.nupkg"
+copy "..\src\CommandLine\bin\Release\Roslynator.CommandLine.*.nupkg" "%_outDir%"
+
 echo OK
 pause

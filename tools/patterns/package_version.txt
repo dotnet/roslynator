@@ -1,0 +1,4 @@
+(?x)
+(?<=<(PackageVersion|version)>)
+\d+\.\d+\.\d+
+(?=</(PackageVersion|version)>)
