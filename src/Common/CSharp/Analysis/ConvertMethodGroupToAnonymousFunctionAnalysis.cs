@@ -60,6 +60,7 @@ namespace Roslynator.CSharp.Analysis
                 case SyntaxKind.SwitchExpressionArm:
                     return object.ReferenceEquals(((SwitchExpressionArmSyntax)parent).Expression, expression);
                 case SyntaxKind.AddExpression:
+                case SyntaxKind.AddressOfExpression:
                 case SyntaxKind.AliasQualifiedName:
                 case SyntaxKind.AndAssignmentExpression:
                 case SyntaxKind.AnonymousObjectMemberDeclarator:
@@ -95,6 +96,8 @@ namespace Roslynator.CSharp.Analysis
                 case SyntaxKind.ExpressionStatement:
                 case SyntaxKind.ForEachStatement:
                 case SyntaxKind.ForEachVariableStatement:
+                case SyntaxKind.ForStatement:
+                case SyntaxKind.FromClause:
                 case SyntaxKind.GreaterThanExpression:
                 case SyntaxKind.GreaterThanOrEqualExpression:
                 case SyntaxKind.IfDirectiveTrivia:
@@ -145,6 +148,7 @@ namespace Roslynator.CSharp.Analysis
                 case SyntaxKind.RefType:
                 case SyntaxKind.RightShiftAssignmentExpression:
                 case SyntaxKind.RightShiftExpression:
+                case SyntaxKind.SelectClause:
                 case SyntaxKind.SimpleBaseType:
                 case SyntaxKind.SimpleLambdaExpression:
                 case SyntaxKind.SimpleMemberAccessExpression:
