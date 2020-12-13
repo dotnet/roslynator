@@ -6,6 +6,7 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace Roslynator.CodeFixes
@@ -29,6 +30,7 @@ namespace Roslynator.CodeFixes
             IEnumerable<string> diagnosticIdsFixableOneByOne = null,
             IEnumerable<KeyValuePair<string, string>> diagnosticFixMap = null,
             IEnumerable<KeyValuePair<string, string>> diagnosticFixerMap = null,
+            FixAllScope fixAllScope = FixAllScope.Project,
             string fileBanner = null,
             int maxIterations = -1,
             int batchSize = -1,
@@ -55,6 +57,14 @@ namespace Roslynator.CodeFixes
             }
 
             DiagnosticFixerMap = diagnosticFixerMap?.ToImmutableDictionary() ?? ImmutableDictionary<string, string>.Empty;
+
+            if (FixAllScope != FixAllScope.Document
+                && FixAllScope != FixAllScope.Project)
+            {
+                throw new ArgumentException("", nameof(fixAllScope));
+            }
+
+            FixAllScope = fixAllScope;
             FileBanner = fileBanner;
             MaxIterations = maxIterations;
             BatchSize = batchSize;
@@ -109,6 +119,8 @@ namespace Roslynator.CodeFixes
         public ImmutableDictionary<string, ImmutableArray<string>> DiagnosticFixMap { get; }
 
         public ImmutableDictionary<string, string> DiagnosticFixerMap { get; }
+
+        public FixAllScope FixAllScope { get; }
 
         internal CompilationWithAnalyzersOptions CompilationWithAnalyzersOptions
         {

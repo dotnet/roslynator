@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CodeFixes;
 using Roslynator.CodeFixes;
 using static Roslynator.Logger;
 
@@ -20,12 +21,14 @@ namespace Roslynator.CommandLine
             DiagnosticSeverity severityLevel,
             IEnumerable<KeyValuePair<string, string>> diagnosticFixMap,
             IEnumerable<KeyValuePair<string, string>> diagnosticFixerMap,
+            FixAllScope fixAllScope,
             in ProjectFilter projectFilter) : base(projectFilter)
         {
             Options = options;
             SeverityLevel = severityLevel;
             DiagnosticFixMap = diagnosticFixMap;
             DiagnosticFixerMap = diagnosticFixerMap;
+            FixAllScope = fixAllScope;
         }
 
         public FixCommandLineOptions Options { get; }
@@ -35,6 +38,8 @@ namespace Roslynator.CommandLine
         public IEnumerable<KeyValuePair<string, string>> DiagnosticFixMap { get; }
 
         public IEnumerable<KeyValuePair<string, string>> DiagnosticFixerMap { get; }
+
+        public FixAllScope FixAllScope { get; }
 
         public override async Task<CommandResult> ExecuteAsync(ProjectOrSolution projectOrSolution, CancellationToken cancellationToken = default)
         {
@@ -50,6 +55,7 @@ namespace Roslynator.CommandLine
                 diagnosticIdsFixableOneByOne: Options.DiagnosticsFixableOneByOne,
                 diagnosticFixMap: DiagnosticFixMap,
                 diagnosticFixerMap: DiagnosticFixerMap,
+                fixAllScope: FixAllScope,
                 fileBanner: Options.FileBanner,
                 maxIterations: Options.MaxIterations,
                 batchSize: Options.BatchSize,

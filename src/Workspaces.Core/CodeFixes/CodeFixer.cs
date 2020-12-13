@@ -327,7 +327,7 @@ namespace Roslynator.CodeFixes
             Project project,
             CancellationToken cancellationToken)
         {
-            ImmutableArray<Diagnostic>.Builder fixedDiagostics = ImmutableArray.CreateBuilder<Diagnostic>();
+            ImmutableArray<Diagnostic>.Builder fixedDiagnostics = ImmutableArray.CreateBuilder<Diagnostic>();
 
             ImmutableArray<Diagnostic> diagnostics = ImmutableArray<Diagnostic>.Empty;
             ImmutableArray<Diagnostic> previousDiagnostics = ImmutableArray<Diagnostic>.Empty;
@@ -392,26 +392,53 @@ namespace Roslynator.CodeFixes
                     break;
                 }
 
-                fixedDiagostics.AddRange(previousDiagnosticsToFix.Except(diagnostics, DiagnosticDeepEqualityComparer.Instance));
+                fixedDiagnostics.AddRange(previousDiagnosticsToFix.Except(diagnostics, DiagnosticDeepEqualityComparer.Instance));
 
                 previousDiagnostics = diagnostics;
 
-                if (Options.BatchSize > 0
-                    && length > Options.BatchSize)
+                if (Options.FixAllScope == FixAllScope.Document)
                 {
-                    diagnostics = ImmutableArray.CreateRange(diagnostics, 0, Options.BatchSize, f => f);
-                }
+                    foreach (IGrouping<SyntaxTree, Diagnostic> grouping in diagnostics
+                        .GroupBy(f => f.Location.SourceTree)
+                        .OrderByDescending(f => f.Count()))
+                    {
+                        IEnumerable<Diagnostic> syntaxTreeDiagnostics = grouping.AsEnumerable();
 
-                fixKind = await FixDiagnosticsAsync(diagnostics, descriptor, fixers, project, cancellationToken).ConfigureAwait(false);
+                        if (Options.BatchSize > 0)
+                            syntaxTreeDiagnostics = syntaxTreeDiagnostics.Take(Options.BatchSize);
+
+                        ImmutableArray<Diagnostic> diagnosticsCandidate = syntaxTreeDiagnostics.ToImmutableArray();
+
+                        DiagnosticFixKind fixKindCandidate = await FixDiagnosticsAsync(diagnosticsCandidate, descriptor, fixers, project, cancellationToken).ConfigureAwait(false);
+
+                        if (fixKindCandidate == DiagnosticFixKind.Success
+                            || fixKindCandidate == DiagnosticFixKind.PartiallyFixed)
+                        {
+                            diagnostics = diagnosticsCandidate;
+                            fixKind = fixKindCandidate;
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    if (Options.BatchSize > 0
+                        && length > Options.BatchSize)
+                    {
+                        diagnostics = ImmutableArray.CreateRange(diagnostics, 0, Options.BatchSize, f => f);
+                    }
+
+                    fixKind = await FixDiagnosticsAsync(diagnostics, descriptor, fixers, project, cancellationToken).ConfigureAwait(false);
+                }
 
                 previousDiagnosticsToFix = diagnostics;
 
                 project = CurrentSolution.GetProject(project.Id);
             }
 
-            fixedDiagostics.AddRange(previousDiagnosticsToFix.Except(diagnostics, DiagnosticDeepEqualityComparer.Instance));
+            fixedDiagnostics.AddRange(previousDiagnosticsToFix.Except(diagnostics, DiagnosticDeepEqualityComparer.Instance));
 
-            return new DiagnosticFixResult(fixKind, fixedDiagostics.ToImmutableArray());
+            return new DiagnosticFixResult(fixKind, fixedDiagnostics.ToImmutableArray());
         }
 
         private async Task<DiagnosticFixKind> FixDiagnosticsAsync(

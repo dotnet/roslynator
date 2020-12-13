@@ -41,6 +41,12 @@ namespace Roslynator.CommandLine
         public string FileBanner { get; set; }
 
         [Option(
+            longName: ParameterNames.FixScope,
+            HelpText = "Defines fix scope. Allowed values are project or document. Default value is project.",
+            MetaValue = "<FIX_SCOPE>")]
+        public string FixScope { get; set; }
+
+        [Option(
             longName: "format",
             HelpText = "Indicates whether each document should be formatted.")]
         public bool Format { get; set; }
