@@ -72,9 +72,6 @@ namespace Roslynator.Formatting.CSharp
 
             void ReportDiagnostic(DiagnosticDescriptor descriptor, ImmutableDictionary<string, string> properties)
             {
-                if (CSharpUtility.IsStringConcatenation(binaryExpression, context.SemanticModel, context.CancellationToken))
-                    return;
-
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
                     descriptor,
