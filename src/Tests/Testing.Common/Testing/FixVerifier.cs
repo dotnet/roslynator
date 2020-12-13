@@ -73,6 +73,34 @@ namespace Roslynator.Testing
                 cancellationToken);
         }
 
+        public async Task VerifyDiagnosticAndNoFixAsync(
+            string source,
+            IEnumerable<(string source, string expected)> additionalData = null,
+            string equivalenceKey = null,
+            CodeVerificationOptions options = null,
+            CancellationToken cancellationToken = default)
+        {
+            TextParserResult result = TextParser.GetSpans(source);
+
+            IEnumerable<Diagnostic> diagnostics = result.Spans.Select(f => CreateDiagnostic(f.Span, f.LineSpan));
+
+            string[] additionalSources = additionalData?.Select(f => f.source).ToArray() ?? Array.Empty<string>();
+
+            await VerifyDiagnosticAsync(
+                result.Text,
+                diagnostics,
+                additionalSources: additionalSources,
+                options: options,
+                cancellationToken: cancellationToken);
+
+            await VerifyNoFixAsync(
+                source: result.Text,
+                additionalSources: additionalSources,
+                equivalenceKey: equivalenceKey,
+                options: options,
+                cancellationToken: cancellationToken);
+        }
+
         public async Task VerifyDiagnosticAndFixAsync(
             string source,
             string inlineSource,
