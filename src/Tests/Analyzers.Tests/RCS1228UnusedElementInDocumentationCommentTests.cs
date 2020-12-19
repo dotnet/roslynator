@@ -314,5 +314,17 @@ class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
+        public async Task TestNoDiagnostic_Record()
+        {
+            await VerifyNoDiagnosticAsync(@"
+/// <summary>
+/// x
+/// </summary>
+/// <param name=""Bar"">bar</param>
+public record Foo(string Bar);
+", options: Options.AddAllowedCompilerDiagnosticId("CS0518"));
+        }
     }
 }
