@@ -144,6 +144,8 @@ namespace Roslynator.CSharp.Refactorings
                 case SyntaxKind.AddAccessorDeclaration:
                 case SyntaxKind.RemoveAccessorDeclaration:
                     return ((AccessorDeclarationSyntax)node).AttributeLists;
+                case SyntaxKind.RecordDeclaration:
+                    return ((RecordDeclarationSyntax)node).AttributeLists;
                 default:
                     {
                         Debug.Assert(node.Kind() == SyntaxKind.GlobalStatement, node.Kind().ToString());
@@ -202,6 +204,8 @@ namespace Roslynator.CSharp.Refactorings
                 case SyntaxKind.AddAccessorDeclaration:
                 case SyntaxKind.RemoveAccessorDeclaration:
                     return ((AccessorDeclarationSyntax)node).WithAttributeLists(attributeLists);
+                case SyntaxKind.RecordDeclaration:
+                    return ((RecordDeclarationSyntax)node).WithAttributeLists(attributeLists);
                 default:
                     {
                         Debug.Fail(node.Kind().ToString());

@@ -59,7 +59,7 @@ namespace Roslynator.CSharp.Testing
                 parseOptions = ((CSharpParseOptions)project.ParseOptions);
 
                 parseOptions = parseOptions
-                    .WithLanguageVersion(LanguageVersion.CSharp8)
+                    .WithLanguageVersion(LanguageVersion.CSharp9)
                     .WithPreprocessorSymbols(parseOptions.PreprocessorSymbolNames.Concat(new[] { "DEBUG" }));
             }
 

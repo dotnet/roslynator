@@ -21,6 +21,7 @@ namespace Roslynator.CodeGeneration.CSharp
                     yield return SyntaxKind.AddAccessorDeclaration;
                     yield return SyntaxKind.RemoveAccessorDeclaration;
                     yield return SyntaxKind.UnknownAccessorDeclaration;
+                    yield return SyntaxKind.InitAccessorDeclaration;
                     break;
                 }
 
@@ -184,6 +185,13 @@ namespace Roslynator.CodeGeneration.CSharp
                     yield return SyntaxKind.IsExpression;
                     yield return SyntaxKind.AsExpression;
                     yield return SyntaxKind.CoalesceExpression;
+                    break;
+                }
+
+                case "BinaryPatternSyntax":
+                {
+                    yield return SyntaxKind.AndPattern;
+                    yield return SyntaxKind.OrPattern;
                     break;
                 }
 
@@ -550,6 +558,12 @@ namespace Roslynator.CodeGeneration.CSharp
                     break;
                 }
 
+                case "FunctionPointerTypeSyntax":
+                {
+                    yield return SyntaxKind.FunctionPointerType;
+                    break;
+                }
+
                 case "GenericNameSyntax":
                 {
                     yield return SyntaxKind.GenericName;
@@ -620,6 +634,12 @@ namespace Roslynator.CodeGeneration.CSharp
                     break;
                 }
 
+                case "ImplicitObjectCreationExpressionSyntax":
+                {
+                    yield return SyntaxKind.ImplicitObjectCreationExpression;
+                    break;
+                }
+
                 case "ImplicitStackAllocArrayCreationExpressionSyntax":
                 {
                     yield return SyntaxKind.ImplicitStackAllocArrayCreationExpression;
@@ -650,6 +670,7 @@ namespace Roslynator.CodeGeneration.CSharp
                     yield return SyntaxKind.CollectionInitializerExpression;
                     yield return SyntaxKind.ComplexElementInitializerExpression;
                     yield return SyntaxKind.ObjectInitializerExpression;
+                    yield return SyntaxKind.WithInitializerExpression;
                     break;
                 }
 
@@ -896,6 +917,12 @@ namespace Roslynator.CodeGeneration.CSharp
                     break;
                 }
 
+                case "ParenthesizedPatternSyntax":
+                {
+                    yield return SyntaxKind.ParenthesizedPattern;
+                    break;
+                }
+
                 case "ParenthesizedVariableDesignationSyntax":
                 {
                     yield return SyntaxKind.ParenthesizedVariableDesignation;
@@ -954,6 +981,12 @@ namespace Roslynator.CodeGeneration.CSharp
                     break;
                 }
 
+                case "PrimaryConstructorBaseTypeSyntax":
+                {
+                    yield return SyntaxKind.PrimaryConstructorBaseType;
+                    break;
+                }
+
                 case "PropertyDeclarationSyntax":
                 {
                     yield return SyntaxKind.PropertyDeclaration;
@@ -1002,6 +1035,12 @@ namespace Roslynator.CodeGeneration.CSharp
                     break;
                 }
 
+                case "RecordDeclarationSyntax":
+                {
+                    yield return SyntaxKind.RecordDeclaration;
+                    break;
+                }
+
                 case "RecursivePatternSyntax":
                 {
                     yield return SyntaxKind.RecursivePattern;
@@ -1041,6 +1080,12 @@ namespace Roslynator.CodeGeneration.CSharp
                 case "RegionDirectiveTriviaSyntax":
                 {
                     yield return SyntaxKind.RegionDirectiveTrivia;
+                    break;
+                }
+
+                case "RelationalPatternSyntax":
+                {
+                    yield return SyntaxKind.RelationalPattern;
                     break;
                 }
 
@@ -1218,6 +1263,18 @@ namespace Roslynator.CodeGeneration.CSharp
                     break;
                 }
 
+                case "TypePatternSyntax":
+                {
+                    yield return SyntaxKind.TypePattern;
+                    break;
+                }
+
+                case "UnaryPatternSyntax":
+                {
+                    yield return SyntaxKind.NotPattern;
+                    break;
+                }
+
                 case "UndefDirectiveTriviaSyntax":
                 {
                     yield return SyntaxKind.UndefDirectiveTrivia;
@@ -1281,6 +1338,12 @@ namespace Roslynator.CodeGeneration.CSharp
                 case "WhileStatementSyntax":
                 {
                     yield return SyntaxKind.WhileStatement;
+                    break;
+                }
+
+                case "WithExpressionSyntax":
+                {
+                    yield return SyntaxKind.WithExpression;
                     break;
                 }
 

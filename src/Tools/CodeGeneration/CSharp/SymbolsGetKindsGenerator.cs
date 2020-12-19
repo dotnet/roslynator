@@ -121,6 +121,7 @@ namespace Roslynator.CodeGeneration.CSharp
                                 yield return SyntaxKind.AddAccessorDeclaration;
                                 yield return SyntaxKind.RemoveAccessorDeclaration;
                                 yield return SyntaxKind.UnknownAccessorDeclaration;
+                                yield return SyntaxKind.InitAccessorDeclaration;
                                 break;
                             }
                         case "AccessorListSyntax":
@@ -652,6 +653,7 @@ namespace Roslynator.CodeGeneration.CSharp
                                 yield return SyntaxKind.CollectionInitializerExpression;
                                 yield return SyntaxKind.ComplexElementInitializerExpression;
                                 yield return SyntaxKind.ObjectInitializerExpression;
+                                yield return SyntaxKind.WithInitializerExpression;
                                 break;
                             }
                         case "InterfaceDeclarationSyntax":
@@ -1252,6 +1254,29 @@ namespace Roslynator.CodeGeneration.CSharp
                             {
                                 yield return SyntaxKind.YieldBreakStatement;
                                 yield return SyntaxKind.YieldReturnStatement;
+                                break;
+                            }
+                        case "UnaryPatternSyntax":
+                            {
+                                yield return SyntaxKind.NotPattern;
+                                break;
+                            }
+                        case "BinaryPatternSyntax":
+                            {
+                                yield return SyntaxKind.AndPattern;
+                                yield return SyntaxKind.OrPattern;
+                                break;
+                            }
+                        case "RelationalPatternSyntax":
+                        case "ParenthesizedPatternSyntax":
+                        case "TypePatternSyntax":
+                        case "RecordDeclarationSyntax":
+                        case "WithExpressionSyntax":
+                        case "ImplicitObjectCreationExpressionSyntax":
+                        case "PrimaryConstructorBaseTypeSyntax":
+                        case "FunctionPointerTypeSyntax":
+                            {
+                                yield return (SyntaxKind)Enum.Parse(typeof(SyntaxKind), syntaxSymbol.Name.Remove(syntaxSymbol.Name.Length - 6));
                                 break;
                             }
                     }

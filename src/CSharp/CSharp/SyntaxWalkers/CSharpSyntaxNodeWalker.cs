@@ -471,6 +471,31 @@ namespace Roslynator.CSharp.SyntaxWalkers
             }
         }
 
+        public override void VisitBinaryPattern(BinaryPatternSyntax node)
+        {
+            if (!ShouldVisit)
+            {
+                return;
+            }
+
+            PatternSyntax left = node.Left;
+            if (left != null)
+            {
+                VisitPattern(left);
+            }
+
+            if (!ShouldVisit)
+            {
+                return;
+            }
+
+            PatternSyntax right = node.Right;
+            if (right != null)
+            {
+                VisitPattern(right);
+            }
+        }
+
         public override void VisitBlock(BlockSyntax node)
         {
             foreach (StatementSyntax statement in node.Statements)
@@ -1717,6 +1742,19 @@ namespace Roslynator.CSharp.SyntaxWalkers
             }
         }
 
+        public override void VisitFunctionPointerType(FunctionPointerTypeSyntax node)
+        {
+            foreach (ParameterSyntax parameter in node.Parameters)
+            {
+                if (!ShouldVisit)
+                {
+                    return;
+                }
+
+                VisitParameter(parameter);
+            }
+        }
+
         public override void VisitGenericName(GenericNameSyntax node)
         {
             if (!ShouldVisit)
@@ -1901,6 +1939,31 @@ namespace Roslynator.CSharp.SyntaxWalkers
             if (argumentList != null)
             {
                 VisitBracketedArgumentList(argumentList);
+            }
+        }
+
+        public override void VisitImplicitObjectCreationExpression(ImplicitObjectCreationExpressionSyntax node)
+        {
+            if (!ShouldVisit)
+            {
+                return;
+            }
+
+            ArgumentListSyntax argumentList = node.ArgumentList;
+            if (argumentList != null)
+            {
+                VisitArgumentList(argumentList);
+            }
+
+            if (!ShouldVisit)
+            {
+                return;
+            }
+
+            InitializerExpressionSyntax initializer = node.Initializer;
+            if (initializer != null)
+            {
+                VisitInitializerExpression(initializer);
             }
         }
 
@@ -2929,6 +2992,20 @@ namespace Roslynator.CSharp.SyntaxWalkers
             }
         }
 
+        public override void VisitParenthesizedPattern(ParenthesizedPatternSyntax node)
+        {
+            if (!ShouldVisit)
+            {
+                return;
+            }
+
+            PatternSyntax pattern = node.Pattern;
+            if (pattern != null)
+            {
+                VisitPattern(pattern);
+            }
+        }
+
         public override void VisitParenthesizedVariableDesignation(ParenthesizedVariableDesignationSyntax node)
         {
             foreach (VariableDesignationSyntax variableDesignation in node.Variables)
@@ -3015,6 +3092,31 @@ namespace Roslynator.CSharp.SyntaxWalkers
             if (operand != null)
             {
                 VisitExpression(operand);
+            }
+        }
+
+        public override void VisitPrimaryConstructorBaseType(PrimaryConstructorBaseTypeSyntax node)
+        {
+            if (!ShouldVisit)
+            {
+                return;
+            }
+
+            TypeSyntax type = node.Type;
+            if (type != null)
+            {
+                VisitType(type);
+            }
+
+            if (!ShouldVisit)
+            {
+                return;
+            }
+
+            ArgumentListSyntax argumentList = node.ArgumentList;
+            if (argumentList != null)
+            {
+                VisitArgumentList(argumentList);
             }
         }
 
@@ -3248,6 +3350,72 @@ namespace Roslynator.CSharp.SyntaxWalkers
             }
         }
 
+        public override void VisitRecordDeclaration(RecordDeclarationSyntax node)
+        {
+            foreach (AttributeListSyntax attributeList in node.AttributeLists)
+            {
+                if (!ShouldVisit)
+                {
+                    return;
+                }
+
+                VisitAttributeList(attributeList);
+            }
+
+            if (!ShouldVisit)
+            {
+                return;
+            }
+
+            TypeParameterListSyntax typeParameterList = node.TypeParameterList;
+            if (typeParameterList != null)
+            {
+                VisitTypeParameterList(typeParameterList);
+            }
+
+            if (!ShouldVisit)
+            {
+                return;
+            }
+
+            ParameterListSyntax parameterList = node.ParameterList;
+            if (parameterList != null)
+            {
+                VisitParameterList(parameterList);
+            }
+
+            if (!ShouldVisit)
+            {
+                return;
+            }
+
+            BaseListSyntax baseList = node.BaseList;
+            if (baseList != null)
+            {
+                VisitBaseList(baseList);
+            }
+
+            foreach (TypeParameterConstraintClauseSyntax typeParameterConstraintClause in node.ConstraintClauses)
+            {
+                if (!ShouldVisit)
+                {
+                    return;
+                }
+
+                VisitTypeParameterConstraintClause(typeParameterConstraintClause);
+            }
+
+            foreach (MemberDeclarationSyntax memberDeclaration in node.Members)
+            {
+                if (!ShouldVisit)
+                {
+                    return;
+                }
+
+                VisitMemberDeclaration(memberDeclaration);
+            }
+        }
+
         public override void VisitRecursivePattern(RecursivePatternSyntax node)
         {
             if (!ShouldVisit)
@@ -3368,6 +3536,20 @@ namespace Roslynator.CSharp.SyntaxWalkers
 
         public override void VisitRegionDirectiveTrivia(RegionDirectiveTriviaSyntax node)
         {
+        }
+
+        public override void VisitRelationalPattern(RelationalPatternSyntax node)
+        {
+            if (!ShouldVisit)
+            {
+                return;
+            }
+
+            ExpressionSyntax expression = node.Expression;
+            if (expression != null)
+            {
+                VisitExpression(expression);
+            }
         }
 
         public override void VisitReturnStatement(ReturnStatementSyntax node)
@@ -3898,6 +4080,34 @@ namespace Roslynator.CSharp.SyntaxWalkers
             }
         }
 
+        public override void VisitTypePattern(TypePatternSyntax node)
+        {
+            if (!ShouldVisit)
+            {
+                return;
+            }
+
+            TypeSyntax type = node.Type;
+            if (type != null)
+            {
+                VisitType(type);
+            }
+        }
+
+        public override void VisitUnaryPattern(UnaryPatternSyntax node)
+        {
+            if (!ShouldVisit)
+            {
+                return;
+            }
+
+            PatternSyntax pattern = node.Pattern;
+            if (pattern != null)
+            {
+                VisitPattern(pattern);
+            }
+        }
+
         public override void VisitUndefDirectiveTrivia(UndefDirectiveTriviaSyntax node)
         {
         }
@@ -4094,6 +4304,31 @@ namespace Roslynator.CSharp.SyntaxWalkers
             if (statement != null)
             {
                 VisitStatement(statement);
+            }
+        }
+
+        public override void VisitWithExpression(WithExpressionSyntax node)
+        {
+            if (!ShouldVisit)
+            {
+                return;
+            }
+
+            ExpressionSyntax expression = node.Expression;
+            if (expression != null)
+            {
+                VisitExpression(expression);
+            }
+
+            if (!ShouldVisit)
+            {
+                return;
+            }
+
+            InitializerExpressionSyntax initializer = node.Initializer;
+            if (initializer != null)
+            {
+                VisitInitializerExpression(initializer);
             }
         }
 
@@ -4320,6 +4555,9 @@ namespace Roslynator.CSharp.SyntaxWalkers
         {
             switch (node.Kind())
             {
+                case SyntaxKind.PrimaryConstructorBaseType:
+                    VisitPrimaryConstructorBaseType((PrimaryConstructorBaseTypeSyntax)node);
+                    break;
                 case SyntaxKind.SimpleBaseType:
                     VisitSimpleBaseType((SimpleBaseTypeSyntax)node);
                     break;
@@ -4442,6 +4680,9 @@ namespace Roslynator.CSharp.SyntaxWalkers
                 case SyntaxKind.ElementBindingExpression:
                     VisitElementBindingExpression((ElementBindingExpressionSyntax)node);
                     break;
+                case SyntaxKind.FunctionPointerType:
+                    VisitFunctionPointerType((FunctionPointerTypeSyntax)node);
+                    break;
                 case SyntaxKind.GenericName:
                     VisitGenericName((GenericNameSyntax)node);
                     break;
@@ -4458,6 +4699,9 @@ namespace Roslynator.CSharp.SyntaxWalkers
                 case SyntaxKind.ImplicitElementAccess:
                     VisitImplicitElementAccess((ImplicitElementAccessSyntax)node);
                     break;
+                case SyntaxKind.ImplicitObjectCreationExpression:
+                    VisitImplicitObjectCreationExpression((ImplicitObjectCreationExpressionSyntax)node);
+                    break;
                 case SyntaxKind.ImplicitStackAllocArrayCreationExpression:
                     VisitImplicitStackAllocArrayCreationExpression((ImplicitStackAllocArrayCreationExpressionSyntax)node);
                     break;
@@ -4465,6 +4709,7 @@ namespace Roslynator.CSharp.SyntaxWalkers
                 case SyntaxKind.CollectionInitializerExpression:
                 case SyntaxKind.ComplexElementInitializerExpression:
                 case SyntaxKind.ObjectInitializerExpression:
+                case SyntaxKind.WithInitializerExpression:
                     VisitInitializerExpression((InitializerExpressionSyntax)node);
                     break;
                 case SyntaxKind.InterpolatedStringExpression:
@@ -4584,6 +4829,9 @@ namespace Roslynator.CSharp.SyntaxWalkers
                 case SyntaxKind.TypeOfExpression:
                     VisitTypeOfExpression((TypeOfExpressionSyntax)node);
                     break;
+                case SyntaxKind.WithExpression:
+                    VisitWithExpression((WithExpressionSyntax)node);
+                    break;
                 default:
                     Debug.Fail($"Unrecognized kind '{node.Kind()}'.");
                     base.Visit(node);
@@ -4689,6 +4937,9 @@ namespace Roslynator.CSharp.SyntaxWalkers
                 case SyntaxKind.PropertyDeclaration:
                     VisitPropertyDeclaration((PropertyDeclarationSyntax)node);
                     break;
+                case SyntaxKind.RecordDeclaration:
+                    VisitRecordDeclaration((RecordDeclarationSyntax)node);
+                    break;
                 case SyntaxKind.StructDeclaration:
                     VisitStructDeclaration((StructDeclarationSyntax)node);
                     break;
@@ -4703,6 +4954,10 @@ namespace Roslynator.CSharp.SyntaxWalkers
         {
             switch (node.Kind())
             {
+                case SyntaxKind.AndPattern:
+                case SyntaxKind.OrPattern:
+                    VisitBinaryPattern((BinaryPatternSyntax)node);
+                    break;
                 case SyntaxKind.ConstantPattern:
                     VisitConstantPattern((ConstantPatternSyntax)node);
                     break;
@@ -4712,8 +4967,20 @@ namespace Roslynator.CSharp.SyntaxWalkers
                 case SyntaxKind.DiscardPattern:
                     VisitDiscardPattern((DiscardPatternSyntax)node);
                     break;
+                case SyntaxKind.ParenthesizedPattern:
+                    VisitParenthesizedPattern((ParenthesizedPatternSyntax)node);
+                    break;
                 case SyntaxKind.RecursivePattern:
                     VisitRecursivePattern((RecursivePatternSyntax)node);
+                    break;
+                case SyntaxKind.RelationalPattern:
+                    VisitRelationalPattern((RelationalPatternSyntax)node);
+                    break;
+                case SyntaxKind.TypePattern:
+                    VisitTypePattern((TypePatternSyntax)node);
+                    break;
+                case SyntaxKind.NotPattern:
+                    VisitUnaryPattern((UnaryPatternSyntax)node);
                     break;
                 case SyntaxKind.VarPattern:
                     VisitVarPattern((VarPatternSyntax)node);
@@ -4925,6 +5192,9 @@ namespace Roslynator.CSharp.SyntaxWalkers
                     break;
                 case SyntaxKind.ArrayType:
                     VisitArrayType((ArrayTypeSyntax)node);
+                    break;
+                case SyntaxKind.FunctionPointerType:
+                    VisitFunctionPointerType((FunctionPointerTypeSyntax)node);
                     break;
                 case SyntaxKind.GenericName:
                     VisitGenericName((GenericNameSyntax)node);

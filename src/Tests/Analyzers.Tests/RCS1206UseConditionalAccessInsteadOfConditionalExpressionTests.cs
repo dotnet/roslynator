@@ -42,13 +42,13 @@ class Foo
         }
 
         [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccessInsteadOfConditionalExpression)]
-        [InlineData("(x != null) ? x.Value : 0", "x?.Value ?? 0")]
-        [InlineData("(x != null) ? x.Value : default", "x?.Value ?? (default)")]
-        [InlineData("(x != null) ? x.Value : default(int)", "x?.Value ?? default(int)")]
+        [InlineData("(x != null) ? x.Value : 0", "(x?.Value) ?? 0")]
+        [InlineData("(x != null) ? x.Value : default", "(x?.Value) ?? (default)")]
+        [InlineData("(x != null) ? x.Value : default(int)", "(x?.Value) ?? default(int)")]
 
-        [InlineData("(x == null) ? 0 : x.Value", "x?.Value ?? 0")]
-        [InlineData("(x == null) ? default : x.Value", "x?.Value ?? (default)")]
-        [InlineData("(x == null) ? default(int) : x.Value", "x?.Value ?? default(int)")]
+        [InlineData("(x == null) ? 0 : x.Value", "(x?.Value) ?? 0")]
+        [InlineData("(x == null) ? default : x.Value", "(x?.Value) ?? (default)")]
+        [InlineData("(x == null) ? default(int) : x.Value", "(x?.Value) ?? default(int)")]
         public async Task Test_ReferenceTypeToValueType(string source, string expected)
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -112,10 +112,10 @@ class C
         }
 
         [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccessInsteadOfConditionalExpression)]
-        [InlineData("(ni != null) ? ni.Value.GetHashCode() : 0", "ni?.GetHashCode() ?? 0")]
-        [InlineData("(ni == null) ? 0 : ni.Value.GetHashCode()", "ni?.GetHashCode() ?? 0")]
-        [InlineData("(ni.HasValue) ? ni.Value.GetHashCode() : 0", "ni?.GetHashCode() ?? 0")]
-        [InlineData("(!ni.HasValue) ? 0 : ni.Value.GetHashCode()", "ni?.GetHashCode() ?? 0")]
+        [InlineData("(ni != null) ? ni.Value.GetHashCode() : 0", "(ni?.GetHashCode()) ?? 0")]
+        [InlineData("(ni == null) ? 0 : ni.Value.GetHashCode()", "(ni?.GetHashCode()) ?? 0")]
+        [InlineData("(ni.HasValue) ? ni.Value.GetHashCode() : 0", "(ni?.GetHashCode()) ?? 0")]
+        [InlineData("(!ni.HasValue) ? 0 : ni.Value.GetHashCode()", "(ni?.GetHashCode()) ?? 0")]
         public async Task Test_NullableTypeToValueType(string source, string expected)
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -207,7 +207,7 @@ class C
 
     void M()
     {
-        int? x = (int?)P?.TotalSeconds;
+        int? x = (int?)(P?.TotalSeconds);
     }
 }
 ");

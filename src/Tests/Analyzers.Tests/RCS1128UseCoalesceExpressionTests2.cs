@@ -67,7 +67,7 @@ class C
     {
         var x = new C();
 
-        int? i = x.P1?.P2 ?? 0;
+        int? i = (x.P1?.P2) ?? 0;
     }
 
     public C P1 { get; }

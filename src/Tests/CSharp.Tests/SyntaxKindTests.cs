@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Linq;
+using System.Collections.Generic;
 using Microsoft.CodeAnalysis.CSharp;
 using Xunit;
 
@@ -11,6 +13,8 @@ namespace Roslynator.CSharp.Testing
         [Fact]
         public static void DetectNewSyntaxKinds()
         {
+            List<SyntaxKind> unknownKinds = null;
+
             foreach (SyntaxKind value in Enum.GetValues(typeof(SyntaxKind)))
             {
                 switch (value)
@@ -524,15 +528,43 @@ namespace Roslynator.CSharp.Testing
                     // new in 3.5.0
                     case SyntaxKind.WarningsKeyword:
                     case SyntaxKind.AnnotationsKeyword:
+                    // new in 3.7.0
+                    case SyntaxKind.OrKeyword:
+                    case SyntaxKind.AndKeyword:
+                    case SyntaxKind.NotKeyword:
+                    case SyntaxKind.DataKeyword:
+                    case SyntaxKind.WithKeyword:
+                    case SyntaxKind.InitKeyword:
+                    case SyntaxKind.RecordKeyword:
+                    case SyntaxKind.ParenthesizedPattern:
+                    case SyntaxKind.RelationalPattern:
+                    case SyntaxKind.TypePattern:
+                    case SyntaxKind.OrPattern:
+                    case SyntaxKind.AndPattern:
+                    case SyntaxKind.NotPattern:
+                    case SyntaxKind.InitAccessorDeclaration:
+                    case SyntaxKind.RecordDeclaration:
+                    case SyntaxKind.WithExpression:
+                    case SyntaxKind.WithInitializerExpression:
+                    case SyntaxKind.ImplicitObjectCreationExpression:
+                    case SyntaxKind.PrimaryConstructorBaseType:
+                    case SyntaxKind.FunctionPointerType:
                         {
                             break;
                         }
                     default:
                         {
-                            Assert.True(false, $"Unknown enum value '{value}'.");
+                            (unknownKinds ??= new List<SyntaxKind>()).Add(value);
                             break;
                         }
                 }
+            }
+
+            if (unknownKinds != null)
+            {
+                Assert.True(
+                    false,
+                    $"Unknown enum value(s) {string.Join(", ", unknownKinds.Select(f => $"'{f}'"))}.");
             }
         }
     }

@@ -324,6 +324,8 @@ namespace Roslynator.CodeGeneration.CSharp
                         case "Statements":
                         case "CloseBraceToken":
                             return true;
+                        case "AttributeLists":
+                            return false;
                         default:
                             throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
                     }
@@ -362,6 +364,8 @@ namespace Roslynator.CodeGeneration.CSharp
                         case "BreakKeyword":
                         case "SemicolonToken":
                             return true;
+                        case "AttributeLists":
+                            return false;
                         default:
                             throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
                     }
@@ -588,6 +592,8 @@ namespace Roslynator.CodeGeneration.CSharp
                         case "ContinueKeyword":
                         case "SemicolonToken":
                             return true;
+                        case "AttributeLists":
+                            return false;
                         default:
                             throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
                     }
@@ -804,6 +810,8 @@ namespace Roslynator.CodeGeneration.CSharp
                         case "CloseParenToken":
                         case "SemicolonToken":
                             return true;
+                        case "AttributeLists":
+                            return false;
                         default:
                             throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
                     }
@@ -882,6 +890,8 @@ namespace Roslynator.CodeGeneration.CSharp
                     {
                         case "SemicolonToken":
                             return true;
+                        case "AttributeLists":
+                            return false;
                         default:
                             throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
                     }
@@ -1027,6 +1037,8 @@ namespace Roslynator.CodeGeneration.CSharp
                         case "Expression":
                         case "SemicolonToken":
                             return true;
+                        case "AttributeLists":
+                            return false;
                         default:
                             throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
                     }
@@ -1082,6 +1094,8 @@ namespace Roslynator.CodeGeneration.CSharp
                         case "CloseParenToken":
                         case "Statement":
                             return true;
+                        case "AttributeLists":
+                            return false;
                         default:
                             throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
                     }
@@ -1101,6 +1115,8 @@ namespace Roslynator.CodeGeneration.CSharp
                         case "CloseParenToken":
                         case "Statement":
                             return true;
+                        case "AttributeLists":
+                            return false;
                         default:
                             throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
                     }
@@ -1119,6 +1135,8 @@ namespace Roslynator.CodeGeneration.CSharp
                         case "CloseParenToken":
                         case "Statement":
                             return true;
+                        case "AttributeLists":
+                            return false;
                         default:
                             throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
                     }
@@ -1139,6 +1157,8 @@ namespace Roslynator.CodeGeneration.CSharp
                         case "CloseParenToken":
                         case "Statement":
                             return true;
+                        case "AttributeLists":
+                            return false;
                         default:
                             throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
                     }
@@ -1194,6 +1214,8 @@ namespace Roslynator.CodeGeneration.CSharp
                         case "Expression":
                         case "SemicolonToken":
                             return true;
+                        case "AttributeLists":
+                            return false;
                         default:
                             throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
                     }
@@ -1234,6 +1256,8 @@ namespace Roslynator.CodeGeneration.CSharp
                         case "Keyword":
                         case "Block":
                             return true;
+                        case "AttributeLists":
+                            return false;
                         default:
                             throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
                     }
@@ -1278,6 +1302,8 @@ namespace Roslynator.CodeGeneration.CSharp
                         case "Statement":
                         case "Else":
                             return true;
+                        case "AttributeLists":
+                            return false;
                         default:
                             throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
                     }
@@ -1517,6 +1543,8 @@ namespace Roslynator.CodeGeneration.CSharp
                         case "ColonToken":
                         case "Statement":
                             return true;
+                        case "AttributeLists":
+                            return false;
                         default:
                             throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
                     }
@@ -1589,6 +1617,8 @@ namespace Roslynator.CodeGeneration.CSharp
                         case "Declaration":
                         case "SemicolonToken":
                             return true;
+                        case "AttributeLists":
+                            return false;
                         default:
                             throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
                     }
@@ -1608,6 +1638,8 @@ namespace Roslynator.CodeGeneration.CSharp
                         case "ExpressionBody":
                         case "SemicolonToken":
                             return true;
+                        case "AttributeLists":
+                            return false;
                         default:
                             throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
                     }
@@ -1623,6 +1655,8 @@ namespace Roslynator.CodeGeneration.CSharp
                         case "CloseParenToken":
                         case "Statement":
                             return true;
+                        case "AttributeLists":
+                            return false;
                         default:
                             throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
                     }
@@ -2180,6 +2214,8 @@ namespace Roslynator.CodeGeneration.CSharp
                         case "Expression":
                         case "SemicolonToken":
                             return true;
+                        case "AttributeLists":
+                            return false;
                         default:
                             throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
                     }
@@ -2333,6 +2369,8 @@ namespace Roslynator.CodeGeneration.CSharp
                         case "Sections":
                         case "CloseBraceToken":
                             return true;
+                        case "AttributeLists":
+                            return false;
                         default:
                             throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
                     }
@@ -2369,6 +2407,8 @@ namespace Roslynator.CodeGeneration.CSharp
                         case "Expression":
                         case "SemicolonToken":
                             return true;
+                        case "AttributeLists":
+                            return false;
                         default:
                             throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
                     }
@@ -2383,6 +2423,8 @@ namespace Roslynator.CodeGeneration.CSharp
                         case "Catches":
                         case "Finally":
                             return true;
+                        case "AttributeLists":
+                            return false;
                         default:
                             throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
                     }
@@ -2537,6 +2579,8 @@ namespace Roslynator.CodeGeneration.CSharp
                         case "UnsafeKeyword":
                         case "Block":
                             return true;
+                        case "AttributeLists":
+                            return false;
                         default:
                             throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
                     }
@@ -2569,6 +2613,8 @@ namespace Roslynator.CodeGeneration.CSharp
                         case "CloseParenToken":
                         case "Statement":
                             return true;
+                        case "AttributeLists":
+                            return false;
                         default:
                             throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
                     }
@@ -2647,6 +2693,8 @@ namespace Roslynator.CodeGeneration.CSharp
                         case "CloseParenToken":
                         case "Statement":
                             return true;
+                        case "AttributeLists":
+                            return false;
                         default:
                             throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
                     }
@@ -2835,6 +2883,8 @@ namespace Roslynator.CodeGeneration.CSharp
                         case "Expression":
                         case "SemicolonToken":
                             return true;
+                        case "AttributeLists":
+                            return false;
                         default:
                             throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
                     }
@@ -2986,6 +3036,144 @@ namespace Roslynator.CodeGeneration.CSharp
                             throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
                     }
                 }
+
+                case "UnaryPatternSyntax":
+                {
+                    switch (propertySymbol.Name)
+                    {
+                        case "OperatorToken":
+                        case "Pattern":
+                            return true;
+                        default:
+                            throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
+                    }
+                }
+
+                case "BinaryPatternSyntax":
+                {
+                    switch (propertySymbol.Name)
+                    {
+                        case "Left":
+                        case "OperatorToken":
+                        case "Right":
+                                return true;
+                        default:
+                            throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
+                    }
+                }
+
+                case "RelationalPatternSyntax":
+                {
+                    switch (propertySymbol.Name)
+                    {
+                        case "OperatorToken":
+                        case "Expression":
+                            return true;
+                        default:
+                            throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
+                    }
+                }
+
+                case "ParenthesizedPatternSyntax":
+                {
+                    switch (propertySymbol.Name)
+                    {
+                        case "OpenParenToken":
+                        case "Pattern":
+                        case "CloseParenToken":
+                            return true;
+                        default:
+                            throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
+                    }
+                }
+
+                case "TypePatternSyntax":
+                {
+                    switch (propertySymbol.Name)
+                    {
+                        case "Type":
+                            return true;
+                        default:
+                            throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
+                    }
+                }
+
+                case "RecordDeclarationSyntax":
+                {
+                    switch (propertySymbol.Name)
+                    {
+                        case "AttributeLists":
+                        case "Modifiers":
+                        case "Keyword":
+                        case "Identifier":
+                        case "ParameterList":
+                        case "TypeParameterList":
+                        case "BaseList":
+                        case "ConstraintClauses":
+                        case "OpenBraceToken":
+                        case "Members":
+                        case "CloseBraceToken":
+                        case "SemicolonToken":
+                            return true;
+                        default:
+                            throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
+                    }
+                }
+
+                case "WithExpressionSyntax":
+                {
+                    switch (propertySymbol.Name)
+                    {
+                        case "Expression":
+                        case "WithKeyword":
+                        case "Initializer":
+                            return true;
+                        default:
+                            throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
+                    }
+                }
+
+                case "ImplicitObjectCreationExpressionSyntax":
+                {
+                    switch (propertySymbol.Name)
+                    {
+                        case "NewKeyword":
+                        case "ArgumentList":
+                        case "Initializer":
+                            return true;
+                        default:
+                            throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
+                    }
+                }
+
+                case "PrimaryConstructorBaseTypeSyntax":
+                {
+                    switch (propertySymbol.Name)
+                    {
+                        case "Type":
+                        case "ArgumentList":
+                            return true;
+                        default:
+                            throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
+                    }
+                }
+
+                case "FunctionPointerTypeSyntax":
+                {
+                    switch (propertySymbol.Name)
+                    {
+                        case "DelegateKeyword":
+                        case "AsteriskToken":
+                        case "CallingConvention":
+                        case "LessThanToken":
+                        case "Parameters":
+                        case "GreaterThanToken":
+                            return true;
+                        default:
+                            throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
+                    }
+                }
+
 
                 default:
                 {
