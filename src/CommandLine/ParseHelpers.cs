@@ -123,7 +123,7 @@ namespace Roslynator.CommandLine
             {
                 if (!TryParseOptionValueAsEnum(value, optionName, out TEnum result2))
                 {
-                    result = ImmutableArray<TEnum>.Empty;
+                    result = default;
                     return false;
                 }
 
@@ -228,7 +228,7 @@ namespace Roslynator.CommandLine
                 if (!MetadataName.TryParse(value, out MetadataName metadataName))
                 {
                     WriteLine($"Unable to parse metadata name '{value}'.", Verbosity.Quiet);
-                    metadataNames = ImmutableArray<MetadataName>.Empty;
+                    metadataNames = default;
                     return false;
                 }
 
@@ -284,7 +284,7 @@ namespace Roslynator.CommandLine
             {
                 if (!TryEnsureFullPath(path, out string fullPath))
                 {
-                    fullPaths = ImmutableArray<string>.Empty;
+                    fullPaths = default;
                     return false;
                 }
 
