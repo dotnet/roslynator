@@ -263,6 +263,41 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
+        public async Task Test_PropertyWithGetterAndInitSetter()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    string _f;
+
+    public string P
+    {
+        get => _f;
+
+        init [|=> _f
+            = value|];
+    }
+}
+", @"
+class C
+{
+    string _f;
+
+    public string P
+    {
+        get => _f;
+
+        init
+        {
+            _f
+                = value;
+        }
+    }
+}
+", options: Options_ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine.AddAllowedCompilerDiagnosticId("CS0518"));
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
         public async Task Test_Method_MultilineDeclaration()
         {
             await VerifyDiagnosticAndFixAsync(@"

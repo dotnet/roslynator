@@ -22,6 +22,9 @@ namespace Roslynator.CSharp.Refactorings
             if (setter == null)
                 return;
 
+            if (setter.IsKind(SyntaxKind.InitAccessorDeclaration))
+                return;
+
             ExpressionSyntax expression = GetExpression();
 
             if (expression == null)

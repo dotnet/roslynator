@@ -65,7 +65,7 @@ namespace Roslynator.CSharp
         /// <param name="accessorList"></param>
         public static AccessorDeclarationSyntax Setter(this AccessorListSyntax accessorList)
         {
-            return Accessor(accessorList, SyntaxKind.SetAccessorDeclaration);
+            return Accessor(accessorList, SyntaxKind.SetAccessorDeclaration, SyntaxKind.InitAccessorDeclaration);
         }
 
         private static AccessorDeclarationSyntax Accessor(this AccessorListSyntax accessorList, SyntaxKind kind)
@@ -73,9 +73,27 @@ namespace Roslynator.CSharp
             if (accessorList == null)
                 throw new ArgumentNullException(nameof(accessorList));
 
-            return accessorList
-                .Accessors
-                .FirstOrDefault(accessor => accessor.IsKind(kind));
+            foreach (AccessorDeclarationSyntax accessor in accessorList.Accessors)
+            {
+                if (accessor.IsKind(kind))
+                    return accessor;
+            }
+
+            return null;
+        }
+
+        private static AccessorDeclarationSyntax Accessor(this AccessorListSyntax accessorList, SyntaxKind kind1, SyntaxKind kind2)
+        {
+            if (accessorList == null)
+                throw new ArgumentNullException(nameof(accessorList));
+
+            foreach (AccessorDeclarationSyntax accessor in accessorList.Accessors)
+            {
+                if (accessor.IsKind(kind1, kind2))
+                    return accessor;
+            }
+
+            return null;
         }
         #endregion AccessorListSyntax
 

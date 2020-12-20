@@ -151,6 +151,7 @@ namespace Roslynator.CSharp.Refactorings
                             .WithBody(CreateBlock(accessor, expression, accessor.SemicolonToken));
                     }
                 case SyntaxKind.SetAccessorDeclaration:
+                case SyntaxKind.InitAccessorDeclaration:
                 case SyntaxKind.AddAccessorDeclaration:
                 case SyntaxKind.RemoveAccessorDeclaration:
                     {

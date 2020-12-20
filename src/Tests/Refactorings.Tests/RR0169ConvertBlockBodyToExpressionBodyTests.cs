@@ -219,6 +219,34 @@ class C
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
+        public async Task Test_PropertyWithGetterAndInitSetter_InitSetter()
+        {
+            await VerifyRefactoringAsync(@"
+class C
+{
+    string _f;
+
+    public string P
+    {
+        get { return _f; }
+        [|init [|{ [||]_f = value; }|]|]
+    }
+}
+", @"
+class C
+{
+    string _f;
+
+    public string P
+    {
+        get { return _f; }
+        init => _f = value;
+    }
+}
+", equivalenceKey: RefactoringId, options: Options.AddAllowedCompilerDiagnosticId("CS0518"));
+        }
+
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
         public async Task Test_IndexerWithGetter()
         {
             await VerifyRefactoringAsync(@"

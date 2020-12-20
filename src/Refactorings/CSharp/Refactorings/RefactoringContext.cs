@@ -392,6 +392,7 @@ namespace Roslynator.CSharp.Refactorings
                     case SyntaxKind.RemoveAccessorDeclaration:
                     case SyntaxKind.GetAccessorDeclaration:
                     case SyntaxKind.SetAccessorDeclaration:
+                    case SyntaxKind.InitAccessorDeclaration:
                     case SyntaxKind.UnknownAccessorDeclaration:
                         {
                             if (flags.IsSet(Flag.Accessor))

@@ -324,6 +324,47 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
+        public async Task Test_PropertyWithGetterAndInitSetter()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    string _f;
+
+    public string P
+    {
+        get
+        [|{
+            return M(
+                null,
+                null);
+        }|]
+
+        init [|{ _f = value; }|]
+    }
+
+    string M(string x, string y) => null;
+}
+", @"
+class C
+{
+    string _f;
+
+    public string P
+    {
+        get => M(
+            null,
+            null);
+
+        init => _f = value;
+    }
+
+    string M(string x, string y) => null;
+}
+", options: Options.AddAllowedCompilerDiagnosticId("CS0518"));
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
         public async Task Test_IndexerWithGetter()
         {
             await VerifyDiagnosticAndFixAsync(@"

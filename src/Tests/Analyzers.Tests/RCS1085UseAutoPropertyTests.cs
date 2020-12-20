@@ -408,6 +408,29 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
+        public async Task Test_InitSetter()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    private readonly double _p;
+
+    public double [|P|]
+    {
+        get { return _p; }
+        init { _p = value; }
+    }
+}
+", @"
+class C
+{
+
+    public double P { get; init; }
+}
+", options: Options.AddAllowedCompilerDiagnosticId("CS0518"));
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
         public async Task TestNoDiagnostic_PartialClassInMultipleDocuments()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -859,6 +882,29 @@ class C
     }
 }
 ");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
+        public async Task TestNoDiagnostic_InitAccessor()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System;
+
+class C
+{
+    private readonly double _p;
+
+    public double P
+    {
+        get { return _p; }
+
+        init
+        {
+            _p = Math.Min(Math.Max(0.0, value), 1.0);
+        }
+    }
+}
+", options: Options.AddAllowedCompilerDiagnosticId("CS0518"));
         }
     }
 }

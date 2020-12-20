@@ -460,5 +460,16 @@ class C
 }
 ", options: CSharpCodeVerificationOptions.Default_CSharp5);
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
+        public async Task TestNoDiagnostic_InitSetter()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    public string P { get; private init; }
+}
+", options: Options.AddAllowedCompilerDiagnosticId("CS0518"));
+        }
     }
 }

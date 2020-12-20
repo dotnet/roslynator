@@ -144,7 +144,7 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Use read-only auto-property",
-                                cancellationToken => UseReadOnlyAutoPropertyRefactoring.RefactorAsync(context.Document, (PropertyDeclarationSyntax)memberDeclaration, cancellationToken),
+                                cancellationToken => UseReadOnlyAutoPropertyAsync(context.Document, (PropertyDeclarationSyntax)memberDeclaration, cancellationToken),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -198,6 +198,18 @@ namespace Roslynator.CSharp.CodeFixes
                 newModifiers[i] = newModifiers[i].WithTriviaFrom(modifiers[i]);
 
             return document.ReplaceModifiersAsync(info, newModifiers, cancellationToken);
+        }
+
+        private static Task<Document> UseReadOnlyAutoPropertyAsync(
+            Document document,
+            PropertyDeclarationSyntax propertyDeclaration,
+            CancellationToken cancellationToken)
+        {
+            PropertyDeclarationSyntax newNode = propertyDeclaration
+                .RemoveNode(propertyDeclaration.Setter(), SyntaxRemoveOptions.KeepExteriorTrivia)
+                .WithFormatterAnnotation();
+
+            return document.ReplaceNodeAsync(propertyDeclaration, newNode, cancellationToken);
         }
     }
 }

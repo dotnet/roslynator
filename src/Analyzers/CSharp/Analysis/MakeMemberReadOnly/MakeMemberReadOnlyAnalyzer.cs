@@ -64,7 +64,7 @@ namespace Roslynator.CSharp.Analysis.MakeMemberReadOnly
 
                             AccessorDeclarationSyntax setter = propertyDeclaration.Setter();
 
-                            if (setter != null
+                            if (setter?.IsKind(SyntaxKind.InitAccessorDeclaration) == false
                                 && setter.BodyOrExpressionBody() == null
                                 && !setter.AttributeLists.Any()
                                 && !setter.SpanContainsDirectives())

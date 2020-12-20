@@ -577,6 +577,49 @@ public sealed class FooAttribute : Attribute
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterAttributeList)]
+        public async Task Test_InitSetter()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System;
+
+class C
+{
+    private string _f;
+
+    string P
+    {
+        get { return _f; }
+        [Foo] [||]init { _f = value; }
+    }
+}
+
+[AttributeUsage(AttributeTargets.All)]
+public sealed class FooAttribute : Attribute
+{
+}
+", @"
+using System;
+
+class C
+{
+    private string _f;
+
+    string P
+    {
+        get { return _f; }
+        [Foo]
+        init { _f = value; }
+    }
+}
+
+[AttributeUsage(AttributeTargets.All)]
+public sealed class FooAttribute : Attribute
+{
+}
+", options: Options.AddAllowedCompilerDiagnosticId("CS0518"));
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterAttributeList)]
         public async Task Test_AddRemoveAccessor()
         {
             await VerifyDiagnosticAndFixAsync(@"

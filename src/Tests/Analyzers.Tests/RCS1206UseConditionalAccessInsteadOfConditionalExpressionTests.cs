@@ -43,11 +43,11 @@ class Foo
 
         [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccessInsteadOfConditionalExpression)]
         [InlineData("(x != null) ? x.Value : 0", "(x?.Value) ?? 0")]
-        [InlineData("(x != null) ? x.Value : default", "(x?.Value) ?? (default)")]
+        [InlineData("(x != null) ? x.Value : default", "(x?.Value) ?? default")]
         [InlineData("(x != null) ? x.Value : default(int)", "(x?.Value) ?? default(int)")]
 
         [InlineData("(x == null) ? 0 : x.Value", "(x?.Value) ?? 0")]
-        [InlineData("(x == null) ? default : x.Value", "(x?.Value) ?? (default)")]
+        [InlineData("(x == null) ? default : x.Value", "(x?.Value) ?? default")]
         [InlineData("(x == null) ? default(int) : x.Value", "(x?.Value) ?? default(int)")]
         public async Task Test_ReferenceTypeToValueType(string source, string expected)
         {

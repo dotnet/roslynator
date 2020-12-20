@@ -108,5 +108,38 @@ class C
     }
 }", equivalenceKey: RefactoringId);
         }
+
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertExpressionBodyToBlockBody)]
+        public async Task Test_InitSetter()
+        {
+            await VerifyRefactoringAsync(@"
+class C
+{
+    string _f;
+
+    public string P
+    {
+        get => _f;
+
+        init =>[||] _f = value;
+    }
+}
+", @"
+class C
+{
+    string _f;
+
+    public string P
+    {
+        get => _f;
+
+        init
+        {
+            _f = value;
+        }
+    }
+}
+", equivalenceKey: RefactoringId, options: Options.AddAllowedCompilerDiagnosticId("CS0518"));
+        }
     }
 }

@@ -35,6 +35,31 @@ class C
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ExpandPropertyAndAddBackingField)]
+        public async Task Test_Property_InitSetter()
+        {
+            await VerifyRefactoringAsync(@"
+class C
+{
+    private string value;
+
+    public string [||]Value { get; init; }
+}
+", @"
+class C
+{
+    private string value;
+    private string value2;
+
+    public string Value
+    {
+        get { return value2; }
+        init { value2 = value; }
+    }
+}
+", equivalenceKey: RefactoringId, options: Options.AddAllowedCompilerDiagnosticId("CS0518"));
+        }
+
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ExpandPropertyAndAddBackingField)]
         public async Task Test_StaticProperty()
         {
             await VerifyRefactoringAsync(@"

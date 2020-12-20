@@ -76,6 +76,45 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterOpeningBraceOfAccessor)]
+        public async Task Test_InitSetter()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    string _p;
+
+    string P
+    {
+        get
+        {
+            return _p;
+        }
+
+        init {[||] _p = value; }
+    }
+}
+", @"
+class C
+{
+    string _p;
+
+    string P
+    {
+        get
+        {
+            return _p;
+        }
+
+        init
+        {
+            _p = value;
+        }
+    }
+}
+", options: Options.AddAllowedCompilerDiagnosticId("CS0518"));
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterOpeningBraceOfAccessor)]
         public async Task Test_AddRemove()
         {
             await VerifyDiagnosticAndFixAsync(@"
