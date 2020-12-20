@@ -134,5 +134,21 @@ class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious)]
+        public async Task TestNoDiagnostic_ParseMethod()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System;
+
+class C
+{
+    void M()
+    {
+        TimeSpan timeSpan = TimeSpan.Parse(null);
+    }
+}
+");
+        }
     }
 }

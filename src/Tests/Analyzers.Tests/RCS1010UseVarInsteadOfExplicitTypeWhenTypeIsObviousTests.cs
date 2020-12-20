@@ -110,6 +110,32 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeWhenTypeIsObvious)]
+        public async Task Test_ParseMethod()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System;
+
+class C
+{
+    void M()
+    {
+        [|TimeSpan|] timeSpan = TimeSpan.Parse(null);
+    }
+}
+", @"
+using System;
+
+class C
+{
+    void M()
+    {
+        var timeSpan = TimeSpan.Parse(null);
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeWhenTypeIsObvious)]
         public async Task TestNoDiagnostic()
         {
             await VerifyNoDiagnosticAsync(@"
