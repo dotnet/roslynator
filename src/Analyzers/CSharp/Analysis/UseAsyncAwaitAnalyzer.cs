@@ -195,7 +195,7 @@ namespace Roslynator.CSharp.Analysis
             [ThreadStatic]
             private static UseAsyncAwaitWalker _cachedInstance;
 
-            private int _usingStatementDepth;
+            private int _usingOrTryStatementDepth;
             private bool _shouldVisit = true;
             private readonly List<int> _usingDeclarations = new List<int>();
 
@@ -212,9 +212,29 @@ namespace Roslynator.CSharp.Analysis
 
             public override void VisitUsingStatement(UsingStatementSyntax node)
             {
-                _usingStatementDepth++;
+                _usingOrTryStatementDepth++;
                 base.VisitUsingStatement(node);
-                _usingStatementDepth--;
+                _usingOrTryStatementDepth--;
+            }
+
+            public override void VisitTryStatement(TryStatementSyntax node)
+            {
+                BlockSyntax block = node.Block;
+
+                if (block != null)
+                {
+                    _usingOrTryStatementDepth++;
+                    VisitBlock(block);
+                    _usingOrTryStatementDepth--;
+                }
+
+                foreach (CatchClauseSyntax catchClause in node.Catches)
+                    VisitCatchClause(catchClause);
+
+                FinallyClauseSyntax finallyClause = node.Finally;
+
+                if (finallyClause != null)
+                    VisitFinallyClause(finallyClause);
             }
 
             public override void VisitBlock(BlockSyntax node)
@@ -241,21 +261,21 @@ namespace Roslynator.CSharp.Analysis
 
             public override void VisitReturnStatement(ReturnStatementSyntax node)
             {
-                bool isInsideUsing = _usingStatementDepth > 0;
+                bool isInsideUsingOrTry = _usingOrTryStatementDepth > 0;
 
-                if (!isInsideUsing)
+                if (!isInsideUsingOrTry)
                 {
                     foreach (int count in _usingDeclarations)
                     {
                         if (count > 0)
                         {
-                            isInsideUsing = true;
+                            isInsideUsingOrTry = true;
                             break;
                         }
                     }
                 }
 
-                if (isInsideUsing)
+                if (isInsideUsingOrTry)
                 {
                     ExpressionSyntax expression = node.Expression;
 

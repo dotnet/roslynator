@@ -410,6 +410,54 @@ public class C
 ");
         }
 
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
+        public async Task Test_TryCatch()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System;
+using System.Threading.Tasks;
+
+class C
+{
+    Task<int> [|M|]()
+    {
+        var x = new C();
+
+        try
+        {
+            return x.GetAsync();
+        }
+        finally
+        {
+        }
+    }
+
+    Task<int> GetAsync() => Task.FromResult(0);
+}
+", @"
+using System;
+using System.Threading.Tasks;
+
+class C
+{
+    async Task<int> M()
+    {
+        var x = new C();
+
+        try
+        {
+            return await x.GetAsync();
+        }
+        finally
+        {
+        }
+    }
+
+    Task<int> GetAsync() => Task.FromResult(0);
+}
+");
+        }
+
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
         public async Task TestNoDiagnostic_UsingLocalDeclaration()
         {
