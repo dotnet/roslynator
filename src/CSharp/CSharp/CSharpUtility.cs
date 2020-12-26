@@ -400,6 +400,7 @@ namespace Roslynator.CSharp
                     case SyntaxKind.RemoveAccessorDeclaration:
                     case SyntaxKind.UnknownAccessorDeclaration:
                     case SyntaxKind.IncompleteMember:
+                    case SyntaxKind.ArrowExpressionClause:
                         return false;
 #if DEBUG
                     default:
