@@ -38,7 +38,7 @@ namespace Roslynator.CSharp.Refactorings
 
             string name = NameGenerator.Default.EnsureUniqueLocalName(DefaultNames.EnumeratorVariable, semanticModel, position, cancellationToken: cancellationToken);
 
-            InvocationExpressionSyntax expression = SimpleMemberInvocationExpression(forEachStatement.Expression, IdentifierName(WellKnownMemberNames.GetEnumeratorMethodName));
+            InvocationExpressionSyntax expression = SimpleMemberInvocationExpression(forEachStatement.Expression.Parenthesize(), IdentifierName(WellKnownMemberNames.GetEnumeratorMethodName));
 
             VariableDeclarationSyntax variableDeclaration = VariableDeclaration(VarType(), Identifier(name).WithRenameAnnotation(), expression);
 
