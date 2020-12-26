@@ -96,6 +96,32 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious)]
+        public async Task Test_DiscardDesignation()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+        if (int.TryParse("""", out [|int|] result))
+        {
+        }
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+        if (int.TryParse("""", out var result))
+        {
+        }
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious)]
         public async Task TestNoDiagnostic_ForEach_DeclarationExpression()
         {
             await VerifyNoDiagnosticAsync(@"

@@ -378,6 +378,10 @@ namespace Roslynator.CSharp
                     {
                         return IsLocalThatSupportsExplicitDeclaration(singleVariableDesignation);
                     }
+                case DiscardDesignationSyntax discardDesignation:
+                    {
+                        return IsLocalThatSupportsExplicitDeclaration(discardDesignation);
+                    }
                 case ParenthesizedVariableDesignationSyntax parenthesizedVariableDesignation:
                     {
                         foreach (VariableDesignationSyntax variableDesignation in parenthesizedVariableDesignation.Variables)
@@ -398,9 +402,9 @@ namespace Roslynator.CSharp
                     }
             }
 
-            bool IsLocalThatSupportsExplicitDeclaration(SingleVariableDesignationSyntax singleVariableDesignation)
+            bool IsLocalThatSupportsExplicitDeclaration(VariableDesignationSyntax variableDesignation)
             {
-                if (!(semanticModel.GetDeclaredSymbol(singleVariableDesignation, cancellationToken) is ILocalSymbol localSymbol))
+                if (!(semanticModel.GetDeclaredSymbol(variableDesignation, cancellationToken) is ILocalSymbol localSymbol))
                     return false;
 
                 ITypeSymbol typeSymbol = localSymbol.Type;
@@ -479,6 +483,7 @@ namespace Roslynator.CSharp
                 case SyntaxKind.ArrowExpressionClause:
                 case SyntaxKind.SimpleLambdaExpression:
                 case SyntaxKind.ParenthesizedLambdaExpression:
+                case SyntaxKind.CollectionInitializerExpression:
                     {
                         Debug.Assert(!tupleExpression.Arguments.Any(f => f.Expression.IsKind(SyntaxKind.DeclarationExpression)), tupleExpression.ToString());
                         return false;

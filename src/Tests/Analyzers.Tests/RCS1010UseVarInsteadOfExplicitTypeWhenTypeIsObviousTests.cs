@@ -199,5 +199,21 @@ class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeWhenTypeIsObvious)]
+        public async Task TestNoDiagnostic_DiscardDesignation()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M()
+    {
+        if (int.TryParse("""", out int result))
+        {
+        }
+    }
+}
+");
+        }
     }
 }
