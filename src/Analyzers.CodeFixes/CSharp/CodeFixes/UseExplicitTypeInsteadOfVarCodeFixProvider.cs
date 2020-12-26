@@ -40,7 +40,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, context.CancellationToken);
+                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(variableDeclaration.Variables[0].Initializer.Value, context.CancellationToken);
 
                 RegisterCodeFix(context, type, typeSymbol, semanticModel);
             }

@@ -44,9 +44,7 @@ namespace Roslynator.CSharp
         {
             if (title == null)
             {
-                SymbolDisplayFormat format = (semanticModel.GetNullableContext(type.SpanStart) == NullableContext.Disabled)
-                    ? SymbolDisplayFormats.FullName_WithoutNullableReferenceTypeModifier
-                    : SymbolDisplayFormats.FullName;
+                SymbolDisplayFormat format = GetSymbolDisplayFormat(type, newTypeSymbol, semanticModel);
 
                 string newTypeName = SymbolDisplay.ToMinimalDisplayString(newTypeSymbol, semanticModel, type.SpanStart, format);
 
@@ -62,6 +60,22 @@ namespace Roslynator.CSharp
             }
 
             return ChangeType(document, type, newTypeSymbol, title, equivalenceKey);
+        }
+
+        private static SymbolDisplayFormat GetSymbolDisplayFormat(
+            ExpressionSyntax expression,
+            ITypeSymbol newTypeSymbol,
+            SemanticModel semanticModel)
+        {
+            if (newTypeSymbol.NullableAnnotation == NullableAnnotation.Annotated
+                && semanticModel.GetNullableContext(expression.SpanStart) == NullableContext.WarningsEnabled)
+            {
+                return SymbolDisplayFormats.FullName;
+            }
+            else
+            {
+                return SymbolDisplayFormats.FullName_WithoutNullableReferenceTypeModifier;
+            }
         }
 
         public static CodeAction ChangeType(
@@ -85,9 +99,7 @@ namespace Roslynator.CSharp
             string title = null,
             string equivalenceKey = null)
         {
-            SymbolDisplayFormat format = (semanticModel.GetNullableContext(expression.SpanStart) == NullableContext.Disabled)
-                ? SymbolDisplayFormats.FullName_WithoutNullableReferenceTypeModifier
-                : SymbolDisplayFormats.FullName;
+            SymbolDisplayFormat format = GetSymbolDisplayFormat(expression, destinationType, semanticModel);
 
             string typeName = SymbolDisplay.ToMinimalDisplayString(destinationType, semanticModel, expression.SpanStart, format);
 

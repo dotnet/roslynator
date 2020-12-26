@@ -49,7 +49,7 @@ namespace Roslynator.CSharp.CodeFixes
                     {
                         type = forEachStatement.Type;
 
-                        typeSymbol = semanticModel.GetTypeSymbol(type, context.CancellationToken);
+                        typeSymbol = semanticModel.GetForEachStatementInfo((CommonForEachStatementSyntax)node).ElementType;
                         break;
                     }
                 case ForEachVariableStatementSyntax forEachVariableStatement:
@@ -58,7 +58,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                         type = declarationExpression.Type;
 
-                        typeSymbol = semanticModel.GetTypeSymbol(declarationExpression, context.CancellationToken);
+                        typeSymbol = semanticModel.GetForEachStatementInfo((CommonForEachStatementSyntax)node).ElementType;
                         break;
                     }
                 case DeclarationExpressionSyntax declarationExpression:

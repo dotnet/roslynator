@@ -88,9 +88,7 @@ namespace Roslynator.CSharp.Refactorings
             else if (analysis.SupportsExplicit
                 && context.IsRefactoringEnabled(RefactoringIdentifiers.ChangeVarToExplicitType))
             {
-                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, context.CancellationToken);
-
-                context.RegisterRefactoring(CodeActionFactory.ChangeType(context.Document, type, typeSymbol, semanticModel, equivalenceKey: RefactoringIdentifiers.ChangeVarToExplicitType));
+                context.RegisterRefactoring(CodeActionFactory.ChangeType(context.Document, type, analysis.Symbol, semanticModel, equivalenceKey: RefactoringIdentifiers.ChangeVarToExplicitType));
             }
         }
 
