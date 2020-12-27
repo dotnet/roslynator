@@ -286,18 +286,29 @@ namespace Roslynator.CSharp
                     }
                 case SyntaxKind.InvocationExpression:
                     {
-                        if (typeSymbol != null
-                            && ((InvocationExpressionSyntax)expression).Expression.IsKind(SyntaxKind.SimpleMemberAccessExpression))
+                        if (typeSymbol != null)
                         {
-                            ISymbol symbol = semanticModel.GetSymbol(expression, cancellationToken);
-
-                            if (symbol?.IsStatic == true
-                                && string.Equals(symbol.Name, "Parse", StringComparison.Ordinal)
-                                && SymbolEqualityComparer.IncludeNullability.Equals(
-                                    ((IMethodSymbol)symbol).ReturnType,
-                                    typeSymbol))
+                            var invocationExpression = (InvocationExpressionSyntax)expression;
+                            if (invocationExpression.Expression.IsKind(SyntaxKind.SimpleMemberAccessExpression))
                             {
-                                return true;
+                                ISymbol symbol = semanticModel.GetSymbol(expression, cancellationToken);
+
+                                if (symbol?.IsStatic == true
+                                    && string.Equals(symbol.Name, "Parse", StringComparison.Ordinal)
+                                    && SymbolEqualityComparer.IncludeNullability.Equals(
+                                        ((IMethodSymbol)symbol).ReturnType,
+                                        typeSymbol))
+                                {
+                                    var simpleMemberAccess = (MemberAccessExpressionSyntax)invocationExpression.Expression;
+
+                                    ISymbol symbol2 = semanticModel.GetSymbol(simpleMemberAccess.Expression, cancellationToken);
+
+                                    if (SymbolEqualityComparer.Default.Equals(symbol2, typeSymbol)
+                                        && semanticModel.GetAliasInfo(simpleMemberAccess.Expression, cancellationToken) == null)
+                                    {
+                                        return true;
+                                    }
+                                }
                             }
                         }
 

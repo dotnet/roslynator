@@ -215,5 +215,37 @@ class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeWhenTypeIsObvious)]
+        public async Task TestNoDiagnostic_ParseMethod()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M()
+    {
+        string x = C.Parse("""");
+    }
+
+    static string Parse(string value) => null;
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeWhenTypeIsObvious)]
+        public async Task TestNoDiagnostic_ParseMethod2()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using I = System.Int32;
+
+class C
+{
+    void M()
+    {
+        int x = I.Parse("""");
+    }
+}
+");
+        }
     }
 }
