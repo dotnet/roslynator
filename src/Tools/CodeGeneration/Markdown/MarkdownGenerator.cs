@@ -197,6 +197,7 @@ namespace Roslynator.CodeGeneration.Markdown
                     (!string.IsNullOrEmpty(analyzer.MinLanguageVersion)) ? TableRow("Minimal Language Version", analyzer.MinLanguageVersion) : null),
                 CreateSummary(),
                 GetAnalyzerSamples(analyzer),
+                CreateConfiguration(analyzer.Configuration),
                 CreateOptions(analyzer),
                 CreateRemarks(analyzer.Remarks),
                 CreateAppliesTo(appliesTo),
@@ -368,6 +369,15 @@ namespace Roslynator.CodeGeneration.Markdown
             {
                 yield return Heading2("Summary");
                 yield return Raw(summary);
+            }
+        }
+
+        private static IEnumerable<MElement> CreateConfiguration(string configuration)
+        {
+            if (!string.IsNullOrEmpty(configuration))
+            {
+                yield return Heading2("Configuration");
+                yield return Raw(configuration);
             }
         }
 

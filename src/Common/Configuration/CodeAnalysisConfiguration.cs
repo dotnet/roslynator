@@ -40,7 +40,8 @@ namespace Roslynator.Configuration
             IEnumerable<KeyValuePair<string, bool>> codeFixes = null,
             IEnumerable<KeyValuePair<string, bool>> refactorings = null,
             IEnumerable<string> ruleSets = null,
-            bool prefixFieldIdentifierWithUnderscore = false)
+            bool prefixFieldIdentifierWithUnderscore = false,
+            int maxLineLength = 125)
         {
             Includes = includes?.ToImmutableArray() ?? ImmutableArray<string>.Empty;
             Analyzers = analyzers?.ToImmutableDictionary(_keyComparer) ?? ImmutableDictionary<string, bool>.Empty;
@@ -48,6 +49,7 @@ namespace Roslynator.Configuration
             Refactorings = refactorings?.ToImmutableDictionary(_keyComparer) ?? ImmutableDictionary<string, bool>.Empty;
             RuleSets = ruleSets?.ToImmutableArray() ?? ImmutableArray<string>.Empty;
             PrefixFieldIdentifierWithUnderscore = prefixFieldIdentifierWithUnderscore;
+            MaxLineLength = maxLineLength;
         }
 
         public ImmutableArray<string> Includes { get; }
@@ -61,6 +63,8 @@ namespace Roslynator.Configuration
         public ImmutableArray<string> RuleSets { get; }
 
         public bool PrefixFieldIdentifierWithUnderscore { get; }
+
+        public int MaxLineLength { get; }
 
         internal IEnumerable<string> GetDisabledRefactorings()
         {
@@ -167,7 +171,8 @@ namespace Roslynator.Configuration
                 codeFixes: builder.CodeFixes?.ToImmutable() ?? ImmutableDictionary<string, bool>.Empty,
                 refactorings: builder.Refactorings?.ToImmutable() ?? ImmutableDictionary<string, bool>.Empty,
                 ruleSets: builder.RuleSets?.ToImmutable() ?? ImmutableArray<string>.Empty,
-                prefixFieldIdentifierWithUnderscore: builder.PrefixFieldIdentifierWithUnderscore);
+                prefixFieldIdentifierWithUnderscore: builder.PrefixFieldIdentifierWithUnderscore,
+                maxLineLength: builder.MaxLineLength);
         }
 
         private static void Load(
@@ -229,6 +234,10 @@ namespace Roslynator.Configuration
                 {
                     LoadGeneral(e, builder);
                 }
+                else if (e.HasName("Formatting"))
+                {
+                    LoadFormatting(e, builder);
+                }
                 else if (e.HasName("Analyzers"))
                 {
                     LoadAnalyzers(e, builder);
@@ -261,6 +270,28 @@ namespace Roslynator.Configuration
                     if (bool.TryParse(e.Value, out bool result))
                     {
                         builder.PrefixFieldIdentifierWithUnderscore = result;
+                    }
+                    else
+                    {
+                        Debug.Fail(e.Value);
+                    }
+                }
+                else
+                {
+                    Debug.Fail(e.Name.LocalName);
+                }
+            }
+        }
+
+        private static void LoadFormatting(XElement element, Builder builder)
+        {
+            foreach (XElement e in element.Elements())
+            {
+                if (e.HasName("MaxLineLength"))
+                {
+                    if (int.TryParse(e.Value, out int result))
+                    {
+                        builder.MaxLineLength = result;
                     }
                     else
                     {
@@ -427,7 +458,8 @@ namespace Roslynator.Configuration
                 codeFixes: CodeFixes,
                 refactorings: Refactorings,
                 ruleSets: RuleSets,
-                prefixFieldIdentifierWithUnderscore: prefixFieldIdentifierWithUnderscore);
+                prefixFieldIdentifierWithUnderscore: prefixFieldIdentifierWithUnderscore,
+                maxLineLength: MaxLineLength);
         }
 
         public CodeAnalysisConfiguration WithAnalyzers(IEnumerable<KeyValuePair<string, bool>> analyzers)
@@ -438,7 +470,8 @@ namespace Roslynator.Configuration
                 codeFixes: CodeFixes,
                 refactorings: Refactorings,
                 ruleSets: RuleSets,
-                prefixFieldIdentifierWithUnderscore: PrefixFieldIdentifierWithUnderscore);
+                prefixFieldIdentifierWithUnderscore: PrefixFieldIdentifierWithUnderscore,
+                maxLineLength: MaxLineLength);
         }
 
         public CodeAnalysisConfiguration WithRefactorings(IEnumerable<KeyValuePair<string, bool>> refactorings)
@@ -449,7 +482,8 @@ namespace Roslynator.Configuration
                 codeFixes: CodeFixes,
                 refactorings: refactorings,
                 ruleSets: RuleSets,
-                prefixFieldIdentifierWithUnderscore: PrefixFieldIdentifierWithUnderscore);
+                prefixFieldIdentifierWithUnderscore: PrefixFieldIdentifierWithUnderscore,
+                maxLineLength: MaxLineLength);
         }
 
         public CodeAnalysisConfiguration WithCodeFixes(IEnumerable<KeyValuePair<string, bool>> codeFixes)
@@ -460,7 +494,8 @@ namespace Roslynator.Configuration
                 codeFixes: codeFixes,
                 refactorings: Refactorings,
                 ruleSets: RuleSets,
-                prefixFieldIdentifierWithUnderscore: PrefixFieldIdentifierWithUnderscore);
+                prefixFieldIdentifierWithUnderscore: PrefixFieldIdentifierWithUnderscore,
+                maxLineLength: MaxLineLength);
         }
 
         internal void Save(string path)
@@ -469,7 +504,10 @@ namespace Roslynator.Configuration
                 "Settings",
                 new XElement(
                     "General",
-                    new XElement("PrefixFieldIdentifierWithUnderscore", PrefixFieldIdentifierWithUnderscore)));
+                    new XElement("PrefixFieldIdentifierWithUnderscore", PrefixFieldIdentifierWithUnderscore)),
+                new XElement(
+                    "Formatting",
+                    new XElement("MaxLineLength", MaxLineLength)));
 
             if (Analyzers.Count > 0)
             {
@@ -558,6 +596,8 @@ namespace Roslynator.Configuration
             }
 
             public bool PrefixFieldIdentifierWithUnderscore { get; set; } = Empty.PrefixFieldIdentifierWithUnderscore;
+
+            public int MaxLineLength { get; set; } = Empty.MaxLineLength;
         }
 
         private static bool TryGetNormalizedFullPath(string path, out string result)

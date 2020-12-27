@@ -4,7 +4,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
 {
     internal enum ListFixMode
     {
-        Fix,
-        Wrap,
+        Fix = 0,
+        Wrap = 1,
     }
 }

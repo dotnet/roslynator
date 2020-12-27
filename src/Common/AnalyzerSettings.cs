@@ -8,6 +8,8 @@ namespace Roslynator
     {
         public static AnalyzerSettings Current { get; } = LoadSettings();
 
+        public int MaxLineLength { get; set; }
+
         private static AnalyzerSettings LoadSettings()
         {
             var settings = new AnalyzerSettings();
@@ -21,6 +23,8 @@ namespace Roslynator
         {
             if (configuration == null)
                 return;
+
+            MaxLineLength = configuration.MaxLineLength;
         }
     }
 }

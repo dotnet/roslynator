@@ -56,5 +56,6 @@ namespace Roslynator.Formatting.CSharp
         public const string FixFormattingOfList = "RCS0053";
         public const string FixFormattingOfCallChain = "RCS0054";
         public const string FixFormattingOfBinaryExpressionChain = "RCS0055";
+        public const string LineIsTooLong = "RCS0056";
     }
 }

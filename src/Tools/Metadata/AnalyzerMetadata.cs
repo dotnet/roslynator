@@ -26,6 +26,7 @@ namespace Roslynator.Metadata
             string minLanguageVersion,
             string summary,
             string remarks,
+            string configuration,
             IEnumerable<SampleMetadata> samples,
             IEnumerable<LinkMetadata> links,
             IEnumerable<AnalyzerOptionMetadata> options,
@@ -45,6 +46,7 @@ namespace Roslynator.Metadata
             MinLanguageVersion = minLanguageVersion;
             Summary = summary;
             Remarks = remarks;
+            Configuration = configuration;
             Samples = new ReadOnlyCollection<SampleMetadata>(samples?.ToArray() ?? Array.Empty<SampleMetadata>());
             Links = new ReadOnlyCollection<LinkMetadata>(links?.ToArray() ?? Array.Empty<LinkMetadata>());
             Options = new ReadOnlyCollection<AnalyzerOptionMetadata>(options?.ToArray() ?? Array.Empty<AnalyzerOptionMetadata>());
@@ -80,6 +82,8 @@ namespace Roslynator.Metadata
         public string Summary { get; }
 
         public string Remarks { get; }
+
+        public string Configuration { get; }
 
         public IReadOnlyList<SampleMetadata> Samples { get; }
 

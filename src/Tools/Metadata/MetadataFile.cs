@@ -46,6 +46,7 @@ namespace Roslynator.Metadata
                 string minLanguageVersion = element.Element("MinLanguageVersion")?.Value;
                 string summary = element.Element("Summary")?.Value.NormalizeNewLine();
                 string remarks = element.Element("Remarks")?.Value.NormalizeNewLine();
+                string configuration = element.Element("Configuration")?.Value.NormalizeNewLine();
                 IEnumerable<SampleMetadata> samples = LoadSamples(element)?.Select(f => f.WithBefore(f.Before.Replace("[|Id|]", id)));
                 IEnumerable<LinkMetadata> links = LoadLinks(element);
                 IEnumerable<AnalyzerOptionMetadata> options = LoadOptions(element, id);
@@ -64,6 +65,7 @@ namespace Roslynator.Metadata
                     minLanguageVersion: minLanguageVersion,
                     summary: summary,
                     remarks: remarks,
+                    configuration: configuration,
                     samples: samples,
                     links: links,
                     options: options,
@@ -333,6 +335,14 @@ namespace Roslynator.Metadata
                     && string.IsNullOrWhiteSpace(remarksElement.Value))
                 {
                     remarksElement.Remove();
+                }
+
+                XElement configurationElement = element.Element("Configuration");
+
+                if (configurationElement != null
+                    && string.IsNullOrWhiteSpace(configurationElement.Value))
+                {
+                    configurationElement.Remove();
                 }
 
                 XElement samplesElement = element.Element("Samples");

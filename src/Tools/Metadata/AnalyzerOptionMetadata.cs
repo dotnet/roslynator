@@ -49,6 +49,7 @@ namespace Roslynator.Metadata
                 minLanguageVersion: MinLanguageVersion ?? parent.MinLanguageVersion,
                 summary: Summary,
                 remarks: null,
+                configuration: null,
                 samples: Samples,
                 links: null,
                 options: null,

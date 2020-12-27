@@ -233,6 +233,44 @@ namespace Roslynator.CSharp
                 parameterList.CloseParenToken);
         }
 
+        public static Task<Document> WrapParametersAsync(
+            Document document,
+            BracketedParameterListSyntax parameterList,
+            CancellationToken cancellationToken = default)
+        {
+            BracketedParameterListSyntax newNode = WrapParameters(parameterList);
+
+            return document.ReplaceNodeAsync(parameterList, newNode, cancellationToken);
+        }
+
+        public static BracketedParameterListSyntax WrapParameters(BracketedParameterListSyntax parameterList, CancellationToken cancellationToken = default)
+        {
+            SyntaxTriviaList leadingTrivia = GetIncreasedIndentationTriviaList(parameterList, cancellationToken);
+
+            var nodesAndTokens = new List<SyntaxNodeOrToken>();
+
+            SeparatedSyntaxList<ParameterSyntax>.Enumerator en = parameterList.Parameters.GetEnumerator();
+
+            SyntaxTrivia endOfLine = DetermineEndOfLine(parameterList);
+
+            if (en.MoveNext())
+            {
+                nodesAndTokens.Add(en.Current.WithLeadingTrivia(leadingTrivia));
+
+                while (en.MoveNext())
+                {
+                    nodesAndTokens.Add(CommaToken().WithTrailingTrivia(endOfLine));
+
+                    nodesAndTokens.Add(en.Current.WithLeadingTrivia(leadingTrivia));
+                }
+            }
+
+            return BracketedParameterList(
+                OpenParenToken().WithTrailingTrivia(endOfLine),
+                SeparatedList<ParameterSyntax>(nodesAndTokens),
+                parameterList.CloseBracketToken);
+        }
+
         public static Task<Document> ToMultiLineAsync(
             Document document,
             InitializerExpressionSyntax initializer,
@@ -314,6 +352,16 @@ namespace Roslynator.CSharp
                 OpenParenToken().WithTrailingTrivia(endOfLine),
                 SeparatedList<ArgumentSyntax>(nodesAndTokens),
                 argumentList.CloseParenToken.WithoutLeadingTrivia());
+        }
+
+        public static async Task<Document> WrapCallChainAsync(
+            Document document,
+            ExpressionSyntax expression,
+            CancellationToken cancellationToken = default)
+        {
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
+            return await WrapCallChainAsync(document, expression, semanticModel, cancellationToken).ConfigureAwait(false);
         }
 
         public static Task<Document> WrapCallChainAsync(

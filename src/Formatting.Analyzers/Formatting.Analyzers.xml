@@ -1394,4 +1394,20 @@ void M(
       </Sample>
     </Samples>
   </Analyzer>
+  <Analyzer Identifier="LineIsTooLong">
+    <Id>RCS0056</Id>
+    <Title>A line is too long.</Title>
+    <MessageFormat>A line is too long ({0} characters).</MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <Summary>This analyzer reports any line that is longer than maximal length.
+    
+Default maximal length is 125. Use EditorConfig to change maximal length \(See [Configuration](#configuration)\).</Summary>
+    <Configuration><![CDATA[### EditorConfig File
+
+```editorconfig
+roslynator.max_line_length = <MAX_LINE_LENGTH>
+```]]></Configuration>
+  </Analyzer>
 </Analyzers>
