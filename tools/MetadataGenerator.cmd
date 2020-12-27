@@ -6,6 +6,6 @@
  /v:minimal ^
  /m
 
-"..\src\Tools\MetadataGenerator\bin\Debug\net472\Roslynator.MetadataGenerator.exe" "..\src"
+"..\src\Tools\MetadataGenerator\bin\Debug\net48\Roslynator.MetadataGenerator.exe" "..\src"
 
 pause
