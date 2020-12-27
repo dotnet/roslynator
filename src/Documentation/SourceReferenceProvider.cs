@@ -73,7 +73,7 @@ namespace Roslynator
 
                 var url = new Uri(urlString);
 
-                Version version = Version.Parse(repositoryElement.Attribute("version").Value);
+                var version = Version.Parse(repositoryElement.Attribute("version").Value);
 
                 string branch = repositoryElement.Attribute("branch")?.Value;
                 string commit = repositoryElement.Attribute("commit").Value;

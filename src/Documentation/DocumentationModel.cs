@@ -312,7 +312,7 @@ namespace Roslynator.Documentation
                 {
                     xml = XmlDocumentation.Unindent(xml);
 
-                    XElement element = XElement.Parse(xml, LoadOptions.PreserveWhitespace);
+                    var element = XElement.Parse(xml, LoadOptions.PreserveWhitespace);
 
                     xmlDocumentation = new SymbolXmlDocumentation(symbol, element);
 

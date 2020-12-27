@@ -619,7 +619,7 @@ namespace Roslynator.Documentation.Html
 
             foreach (string elementText in elementsText)
             {
-                XElement element = XElement.Parse(elementText, LoadOptions.PreserveWhitespace | LoadOptions.SetLineInfo);
+                var element = XElement.Parse(elementText, LoadOptions.PreserveWhitespace | LoadOptions.SetLineInfo);
 
                 Dictionary<int, List<XElement>> elementsByLine = null;
 

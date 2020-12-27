@@ -11,7 +11,7 @@ namespace Roslynator.CSharp.Testing
         {
             const string x = "a";
 
-            MetadataName name = MetadataName.Parse(x);
+            var name = MetadataName.Parse(x);
 
             Assert.Equal(x, name.ToString());
         }
@@ -21,7 +21,7 @@ namespace Roslynator.CSharp.Testing
         {
             const string x = "a.b";
 
-            MetadataName name = MetadataName.Parse(x);
+            var name = MetadataName.Parse(x);
 
             Assert.Equal(x, name.ToString());
         }
@@ -31,7 +31,7 @@ namespace Roslynator.CSharp.Testing
         {
             const string x = "a.b.c";
 
-            MetadataName name = MetadataName.Parse(x);
+            var name = MetadataName.Parse(x);
 
             Assert.Equal(x, name.ToString());
         }
@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.Testing
         {
             const string x = "a+b";
 
-            MetadataName name = MetadataName.Parse(x);
+            var name = MetadataName.Parse(x);
 
             Assert.Equal(x, name.ToString());
         }
@@ -51,7 +51,7 @@ namespace Roslynator.CSharp.Testing
         {
             const string x = "a.b+c+d";
 
-            MetadataName name = MetadataName.Parse(x);
+            var name = MetadataName.Parse(x);
 
             Assert.Equal(x, name.ToString());
         }
@@ -61,7 +61,7 @@ namespace Roslynator.CSharp.Testing
         {
             const string x = "a.b.c+d+e+f";
 
-            MetadataName name = MetadataName.Parse(x);
+            var name = MetadataName.Parse(x);
 
             Assert.Equal(x, name.ToString());
         }

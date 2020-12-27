@@ -30,7 +30,7 @@ namespace Roslynator.Documentation
 
             rawXml = Unindent(rawXml);
 
-            XDocument document = XDocument.Parse(rawXml, LoadOptions.PreserveWhitespace);
+            var document = XDocument.Parse(rawXml, LoadOptions.PreserveWhitespace);
 
             return new XmlDocumentation(document);
         }

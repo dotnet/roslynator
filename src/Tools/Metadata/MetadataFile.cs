@@ -39,7 +39,7 @@ namespace Roslynator.Metadata
                 string messageFormat = element.Element("MessageFormat")?.Value ?? title;
                 string category = element.Element("Category").Value;
                 string defaultSeverity = element.Element("DefaultSeverity").Value;
-                bool isEnabledByDefault = bool.Parse(element.Element("IsEnabledByDefault").Value);
+                var isEnabledByDefault = bool.Parse(element.Element("IsEnabledByDefault").Value);
                 bool isObsolete = element.AttributeValueAsBooleanOrDefault("IsObsolete");
                 bool supportsFadeOut = element.ElementValueAsBooleanOrDefault("SupportsFadeOut");
                 bool supportsFadeOutAnalyzer = element.ElementValueAsBooleanOrDefault("SupportsFadeOutAnalyzer");
