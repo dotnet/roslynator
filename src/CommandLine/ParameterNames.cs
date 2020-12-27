@@ -5,8 +5,8 @@ namespace Roslynator.CommandLine
     internal static class ParameterNames
     {
         public const string Depth = "depth";
+        public const string Display = "display";
         public const string FixScope = "fix-scope";
-        public const string WrapList = "wrap-list";
         public const string IgnoredMemberParts = "ignored-member-parts";
         public const string IgnoredNamespaceParts = "ignored-namespace-parts";
         public const string IgnoredParts = "ignored-parts";
@@ -23,8 +23,10 @@ namespace Roslynator.CommandLine
         public const string SeverityLevel = "severity-level";
         public const string SymbolGroups = "symbol-groups";
         public const string TargetVersion = "target-version";
+        public const string Type = "type";
         public const string Visibility = "visibility";
         public const string WithFlags = "with-flags";
         public const string WithoutFlags = "without-flags";
+        public const string WrapList = "wrap-list";
     }
 }
