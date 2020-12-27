@@ -18,7 +18,12 @@ namespace Roslynator.CSharp
             {
                 if (!VerifyTextChange(textChange))
                 {
-                    Debug.Fail($"Cannot find matching trivia for TextChange {textChange}\r\n\r\n{node}");
+                    Debug.Fail("Cannot find matching trivia for TextChange.\r\n"
+                        + $"span: {textChange.Span}\r\n"
+                        + $"new text: {textChange.NewText}\r\n"
+                        + $"new text length: {textChange.NewText.Length}\r\n"
+                        + $"node:\r\n{node}");
+
                     break;
                 }
             }
