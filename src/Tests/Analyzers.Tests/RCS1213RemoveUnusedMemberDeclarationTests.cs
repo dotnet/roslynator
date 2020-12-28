@@ -350,5 +350,28 @@ class C
 }
 ");
         }
+
+        //TODO: how to enable EditorConfig options in tests
+        //[Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]
+        public async Task TestNoDiagnostic_UnityScriptMethods()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using UnityEngine;
+
+class C : MonoBehaviour
+{
+    private void Awake()
+    {
+    }
+}
+
+namespace UnityEngine
+{
+    class MonoBehaviour
+    {
+    }
+}
+");
+        }
     }
 }

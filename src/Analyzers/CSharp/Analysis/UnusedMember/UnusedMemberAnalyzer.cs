@@ -40,17 +40,20 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
             SemanticModel semanticModel = context.SemanticModel;
             CancellationToken cancellationToken = context.CancellationToken;
 
+            INamedTypeSymbol declarationSymbol = null;
             ImmutableArray<AttributeData> attributes = default;
 
             if (typeDeclaration.IsKind(SyntaxKind.StructDeclaration))
             {
-                INamedTypeSymbol declarationSymbol = semanticModel.GetDeclaredSymbol(typeDeclaration, cancellationToken);
+                declarationSymbol = semanticModel.GetDeclaredSymbol(typeDeclaration, cancellationToken);
 
                 attributes = declarationSymbol.GetAttributes();
 
                 if (attributes.Any(f => f.AttributeClass.HasMetadataName(MetadataNames.System_Runtime_InteropServices_StructLayoutAttribute)))
                     return;
             }
+
+            bool? canContainUnityScriptMethods = null;
 
             SyntaxList<MemberDeclarationSyntax> members = typeDeclaration.Members;
 
@@ -125,28 +128,51 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
                             break;
                         }
                     case SyntaxKind.MethodDeclaration:
-                        {
+                                {
                             var declaration = (MethodDeclarationSyntax)member;
 
                             SyntaxTokenList modifiers = declaration.Modifiers;
 
-                            if (declaration.ExplicitInterfaceSpecifier == null
-                                && !declaration.AttributeLists.Any()
-                                && SyntaxAccessibility<MethodDeclarationSyntax>.Instance.GetAccessibility(declaration) == Accessibility.Private)
+                            if (declaration.ExplicitInterfaceSpecifier != null
+                                || declaration.AttributeLists.Any()
+                                || SyntaxAccessibility<MethodDeclarationSyntax>.Instance.GetAccessibility(declaration) != Accessibility.Private)
                             {
-                                string methodName = declaration.Identifier.ValueText;
+                                break;
+                            }
 
-                                if (!IsMainMethod(declaration, modifiers, methodName))
+                            string methodName = declaration.Identifier.ValueText;
+
+                            if (IsMainMethod(declaration, modifiers, methodName))
+                                break;
+
+                            if (declaration.ReturnsVoid()
+                                && EditorConfigOptions.IsTrue(
+                                    context,
+                                    declaration.SyntaxTree,
+                                    EditorConfigIdentifiers.SuppressUnityScriptMethods))
+                            {
+                                if (canContainUnityScriptMethods == null)
                                 {
-                                    if (walker == null)
-                                        walker = UnusedMemberWalker.GetInstance();
+                                    if (declarationSymbol == null)
+                                        declarationSymbol = semanticModel.GetDeclaredSymbol(typeDeclaration, context.CancellationToken);
 
-                                    walker.AddNode(methodName, declaration);
+                                    canContainUnityScriptMethods = declarationSymbol.InheritsFrom(UnityScriptMethods.MonoBehaviourClassName);
+                                }
+
+                                if (canContainUnityScriptMethods == true
+                                    && UnityScriptMethods.MethodNames.Contains(methodName))
+                                {
+                                    break;
                                 }
                             }
 
+                            if (walker == null)
+                                walker = UnusedMemberWalker.GetInstance();
+
+                            walker.AddNode(methodName, declaration);
+
                             break;
-                        }
+                                }
                     case SyntaxKind.PropertyDeclaration:
                         {
                             var declaration = (PropertyDeclarationSyntax)member;
