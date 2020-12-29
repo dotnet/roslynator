@@ -57,6 +57,8 @@ namespace Roslynator.Formatting.CSharp
 
             while (true)
             {
+                context.CancellationToken.ThrowIfCancellationRequested();
+
                 ExpressionSyntax left = binaryExpression.Left;
                 SyntaxToken token = binaryExpression.OperatorToken;
 

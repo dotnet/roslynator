@@ -170,6 +170,8 @@ namespace Roslynator.Formatting.CSharp
 
                 for (int i = nodes.Count - 1; i >= 0; i--)
                 {
+                    context.CancellationToken.ThrowIfCancellationRequested();
+
                     SyntaxTriviaList trailing = (i == 0)
                         ? openNodeOrToken.GetTrailingTrivia()
                         : nodes.GetSeparator(i - 1).TrailingTrivia;

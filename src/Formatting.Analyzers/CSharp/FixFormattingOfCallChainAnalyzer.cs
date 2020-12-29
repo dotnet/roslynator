@@ -53,6 +53,8 @@ namespace Roslynator.Formatting.CSharp
 
             do
             {
+                context.CancellationToken.ThrowIfCancellationRequested();
+
                 SyntaxKind kind = en.Current.Kind();
 
                 if (kind == SyntaxKind.SimpleMemberAccessExpression)
