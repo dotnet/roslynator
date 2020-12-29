@@ -431,28 +431,23 @@ namespace Roslynator.CSharp
 
             int DetermineIndentationSize(CompilationUnitSyntax compilationUnit)
             {
-                foreach (MemberDeclarationSyntax member in compilationUnit.Members)
+                MemberDeclarationSyntax member = compilationUnit.Members.FirstOrDefault();
+
+                if (member != null)
                 {
-                    switch (member)
+                    if (member is NamespaceDeclarationSyntax namespaceDeclaration)
                     {
-                        case NamespaceDeclarationSyntax namespaceDeclaration:
-                            {
-                                MemberDeclarationSyntax member2 = namespaceDeclaration.Members.FirstOrDefault();
+                        MemberDeclarationSyntax member2 = namespaceDeclaration.Members.FirstOrDefault();
 
-                                if (member2 != null)
-                                    return GetIndentationSize(member2, namespaceDeclaration.CloseBraceToken);
+                        if (member2 != null)
+                            return GetIndentationSize(member2, namespaceDeclaration.CloseBraceToken);
+                    }
+                    else if (member is TypeDeclarationSyntax typeDeclaration)
+                    {
+                        MemberDeclarationSyntax member2 = typeDeclaration.Members.FirstOrDefault();
 
-                                break;
-                            }
-                        case TypeDeclarationSyntax typeDeclaration:
-                            {
-                                MemberDeclarationSyntax member2 = typeDeclaration.Members.FirstOrDefault();
-
-                                if (member2 != null)
-                                    return GetIndentationSize(member2, typeDeclaration.CloseBraceToken);
-
-                                break;
-                            }
+                        if (member2 != null)
+                            return GetIndentationSize(member2, typeDeclaration.CloseBraceToken);
                     }
                 }
 
