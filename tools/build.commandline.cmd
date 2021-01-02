@@ -1,10 +1,13 @@
 @echo off
 
+set _programFiles=%ProgramFiles(x86)%
+if not defined _programFiles set _programFiles=%ProgramFiles%
+
 dotnet restore --force "..\src\CommandLine.sln"
 
 rd /S /Q "..\src\CommandLine\bin\Release\publish"
 
-"C:\Program Files\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\MSBuild" "..\src\CommandLine.sln" ^
+"%_programFiles%\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\MSBuild" "..\src\CommandLine.sln" ^
  /t:Clean,Publish ^
  /p:Configuration=Release,RoslynatorCommandLine=true,Deterministic=true,TreatWarningsAsErrors=true,WarningsNotAsErrors="1591" ^
  /v:normal ^

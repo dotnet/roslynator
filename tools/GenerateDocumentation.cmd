@@ -1,7 +1,10 @@
 @echo off
 
+set _programFiles=%ProgramFiles(x86)%
+if not defined _programFiles set _programFiles=%ProgramFiles%
+
 set _roslynatorExe="..\src\CommandLine\bin\Debug\net48\roslynator"
-set _msbuildPath="C:\Program Files\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin"
+set _msbuildPath="%_programFiles%\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin"
 set _msbuildProperties="Configuration=Release"
 set _rootDirectoryUrl="../../docs/api/"
 

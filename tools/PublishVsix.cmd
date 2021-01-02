@@ -1,6 +1,9 @@
 @echo off
 
-set _vsixPublisherExe="C:\Program Files\Microsoft Visual Studio\2019\Community\VSSDK\VisualStudioIntegration\Tools\Bin\VsixPublisher.exe"
+set _programFiles=%ProgramFiles(x86)%
+if not defined _programFiles set _programFiles=%ProgramFiles%
+
+set _vsixPublisherExe="%_programFiles%\Microsoft Visual Studio\2019\Community\VSSDK\VisualStudioIntegration\Tools\Bin\VsixPublisher.exe"
 
 set /p _version=Enter version:
 
