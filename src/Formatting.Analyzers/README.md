@@ -52,6 +52,7 @@
 | RCS0053 | [Fix formatting of a list](../../docs/analyzers/RCS0053.md) | Formatting | None |
 | RCS0054 | [Fix formatting of a call chain](../../docs/analyzers/RCS0054.md) | Formatting | None |
 | RCS0055 | [Fix formatting of a binary expression chain](../../docs/analyzers/RCS0055.md) | Formatting | None |
+| RCS0056 | [A line is too long](../../docs/analyzers/RCS0056.md) | Formatting | None |
 
 
 *\(Generated with [DotMarkdown](http://github.com/JosefPihrt/DotMarkdown)\)*

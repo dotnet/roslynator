@@ -1430,7 +1430,7 @@ if (condition1)
 #### Before
 
 ```csharp
-if (items.Any(predicate)
+if (items.Any(predicate))
 {
 }
 ```
@@ -1438,7 +1438,7 @@ if (items.Any(predicate)
 #### After
 
 ```csharp
-if (items.All(!predicate)
+if (items.All(!predicate))
 {
 }
 ```
@@ -1448,7 +1448,7 @@ if (items.All(!predicate)
 #### Before
 
 ```csharp
-if (items.All(predicate)
+if (items.All(predicate))
 {
 }
 ```
@@ -1456,7 +1456,7 @@ if (items.All(predicate)
 #### After
 
 ```csharp
-if (items.Any(!predicate)
+if (items.Any(!predicate))
 {
 }
 ```

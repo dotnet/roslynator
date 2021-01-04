@@ -1,3 +1,10 @@
+### 3.1.0 (2021-01-04)
+
+* Add analyzer [RCS0056](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS0056.md) (Line is too long)
+* Add option to suppress diagnostic from Unity script methods (RCS1213)
+* Consider syntax `var foo = Foo.Parse(value)` as having obvious type `Foo`
+* Update references to Roslyn API to 3.7.0
+
 ### 3.0.1 (2020-10-19)
 
 * Add analyzer [RCS0055](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS0055.md) (Fix formatting of a binary expression chain)
