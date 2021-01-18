@@ -13,6 +13,7 @@
     <IsPackable>false</IsPackable>
     <Company></Company>
     <Description></Description>
+    <IsTestProject>false</IsTestProject>
   </PropertyGroup>
 
   <ItemGroup>
