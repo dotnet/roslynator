@@ -5,7 +5,7 @@ Searches file or directory for analyzer assemblies.
 
 ## Synopsis
 
-```
+```shell
 roslynator analyze-assembly <PATH>
 [--additional-paths]
 [--language]

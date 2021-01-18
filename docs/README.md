@@ -11,8 +11,10 @@
 * [Configure Refactorings](HowToConfigureRefactorings.md)
 * [Configure Ruleset File](HowToConfigureRulesetFile.md)
 * [Customize Rules for a Project](HowToCustomizeRulesForProject.md)
+* [Debug Roslynator](HowToDebugRoslynator)
 * [Fix All Diagnostics in a Solution](HowToFixAllDiagnostics.md)
 * [Generate API Documentation](HowToGenerateDocumentation.md)
+* [Migrate Analyzers to Version 3](HowToMigrateAnalyzersToVersion3.md)
 * [Update Documentation](HowToUpdateDocumentation.md)
 * [Use Both Visual Studio Extension and NuGet](HowToUseBothVsixAndNuGet.md)
 
