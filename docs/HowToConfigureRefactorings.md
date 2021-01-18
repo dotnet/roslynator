@@ -1,4 +1,6 @@
-﻿# How to: Configure Refactorings
+# How to: Configure Refactorings
+
+Refactoring represents a single operation for a given span of text.
 
 > Note: There is a difference between analyzers and refactorings (Please see [Analyzers vs. Refactorings](AnalyzersVsRefactorings.md)). If you want to configure analyzers please see [How to Configure Analyzers](HowToConfigureAnalyzers.md).
 

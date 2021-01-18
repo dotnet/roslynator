@@ -23,14 +23,14 @@ If there are multiple instances of MSBuild on a machine it is neccesary to use p
 If you are using [Roslynator.CommandLine](https://nuget.org/packages/Roslynator.CommandLine) you should specify MSBuild
 instance that is part of Visual Studio installation. It should be similar to:
 
-```
+```shell
 C:/Program Files/Microsoft Visual Studio/2019/Community/MSBuild/Current/Bin
 ```
 
 If you are using [Roslynator.DotNet.Cli](https://nuget.org/packages/Roslynator.DotNet.Cli) you should specify MSBuild
 instance that is part of .NET Core SDK installation. It should be similar to:
 
-```
+```shell
 C:/Program Files/dotnet/sdk/3.1.200
 ```
 

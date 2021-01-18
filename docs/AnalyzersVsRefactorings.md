@@ -1,17 +1,17 @@
-﻿# Analyzers vs. Refactorings
+# Analyzers vs. Refactorings
 
 There are two basic concepts in code analysis:
 
 * **Analyzer** (+ **Code Fix**)
 * **Refactoring**
 
-Unfortunately, some developers do not distiguish between these two concepts which causes a confusion.
+Unfortunately, some developers do not distinguish between these two concepts which causes confusion.
 
 ## Basic Terms
 
 Term        | Description
 ----------- | ----------------------------------------------------------------------------------
-Analyzer    | Represents a general rule (code style) that should be followed.
+Analyzer    | Represents a general rule (code style) that should be followed. 
 Diagnostic  | Represents a specific issue reported by the analyzer.
 Code Fix    | Represents an operation that will fix reported issue.
 Refactoring | Represents a single operation that is provided on demand for a given span of text.

@@ -5,7 +5,7 @@ Counts logical lines of code in the specified project or solution.
 
 ## Synopsis
 
-```
+```shell
 roslynator lloc <PROJECT|SOLUTION>
 [--ignored-projects]
 [--include-comments]

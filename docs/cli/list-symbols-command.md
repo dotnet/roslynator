@@ -5,7 +5,7 @@ List symbols from the specified project or solution.
 
 ## Synopsis
 
-```
+```shell
 roslynator list-symbols <PROJECT|SOLUTION>
 [--depth]
 [--empty-line-between-members]

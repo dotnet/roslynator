@@ -5,7 +5,7 @@ Formats documents in the specified project or solution.
 
 ## Synopsis
 
-```
+```shell
 roslynator format <PROJECT|SOLUTION>
 [--culture]
 [--end-of-line]
