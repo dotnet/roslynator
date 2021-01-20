@@ -21,7 +21,7 @@
   <Exec Command="$(RoslynatorExe) list-symbols &quot;$(SolutionPath)&quot; ^
     --msbuild-path &quot;$(MSBuildBinPath)&quot; ^
     --output &quot;$(SolutionDir)docs\api.cs&quot; ^
-  --visibility public"
+    --visibility public"
         LogStandardErrorAsError="true" ConsoleToMSBuild="true">
     <Output TaskParameter="ConsoleOutput" PropertyName="OutputOfExec" />
   </Exec>
