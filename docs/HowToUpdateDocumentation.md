@@ -8,7 +8,7 @@ The documentation in the following folders can be edited and updated:
 /docs/cli/*.md
 ```
 
-Documentation for project api in /docs/api is generated and should not be edited directly.
+Documentation for project api in `/docs/api` is generated and should not be edited directly.
 
 Documentation for [analyzers](analyzers) and [refactorings](refactorings) cannot be edited directly.
 It is generated from following metadata files:
