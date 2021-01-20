@@ -8,7 +8,7 @@ It is also common that you want to enable/disable certain analyzer in one or sev
 
 Let's say you would like to disable analyzer **RCS1090** in a project **AspNetCoreProject** which uses rule set **global.ruleset**.
 
-1. Create a new rule set file custom.ruleset with following content:
+1. Create a new rule set file **custom.ruleset** with following content:
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
