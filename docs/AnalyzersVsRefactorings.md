@@ -11,7 +11,7 @@ Unfortunately, some developers do not distinguish between these two concepts whi
 
 Term        | Description
 ----------- | ----------------------------------------------------------------------------------
-Analyzer    | Represents a general rule (code style) that should be followed. 
+Analyzer    | Represents a general rule (code style) that should be followed.
 Diagnostic  | Represents a specific issue reported by the analyzer.
 Code Fix    | Represents an operation that will fix reported issue.
 Refactoring | Represents a single operation that is provided on demand for a given span of text.
