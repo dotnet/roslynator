@@ -5,7 +5,7 @@ Fixes diagnostics in the specified project or solution.
 
 ## Synopsis
 
-```
+```shell
 roslynator fix <PROJECT|SOLUTION>
 [-a|--analyzer-assemblies]
 [--batch-size]

@@ -4,7 +4,7 @@ If you use both VSIX and NuGet package **Roslynator.Analyzers** it is necessary 
 
 ## Roslynator 2019
 
-Add following content to file `%LOCALAPPDATA%\JosefPihrt\Roslynator\VisualStudio\2019\roslynator.ruleset`:
+For Visual Studio 2019, add following content to file `%LOCALAPPDATA%\JosefPihrt\Roslynator\VisualStudio\2019\roslynator.ruleset`:
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -27,4 +27,4 @@ Usually VSIX contains more analyzers than NuGet. It's because new version of NuG
 
 ## Roslynator 2017
 
-Use VSIX [Roslynator Refactorings 2017](https://marketplace.visualstudio.com/items?itemName=josefpihrt.RoslynatorRefactorings2017) which does not contain analyzers.
+For Visual Studio 2017, use VSIX [Roslynator Refactorings 2017](https://marketplace.visualstudio.com/items?itemName=josefpihrt.RoslynatorRefactorings2017) which does not contain analyzers.

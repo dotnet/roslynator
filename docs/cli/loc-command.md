@@ -5,7 +5,7 @@ Counts physical lines of code in the specified project or solution.
 
 ## Synopsis
 
-```
+```shell
 roslynator loc <PROJECT|SOLUTION>
 [--ignore-block-boundary]
 [--ignored-projects]

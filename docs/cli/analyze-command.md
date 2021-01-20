@@ -5,7 +5,7 @@ Analyzes specified project or solution and reports diagnostics.
 
 ## Synopsis
 
-```
+```shell
 roslynator analyze <PROJECT|SOLUTION>
 [-a|--analyzer-assemblies]
 [--culture]
@@ -73,7 +73,7 @@ Defines project language.
 
 **`--msbuild-path`** <MSBUILD_PATH>
 
-Defines a path to MSBuild. This option must be specified if there are multiple locations of MSBuild (usually multiple installations of Visual Studio).
+Defines a path to MSBuild. This option must be specified if there are multiple locations of MSBuild. This is usually required when multiple versions of Visual Studio are installed.
 
 **`--output`** <OUTPUT_FILE>
 

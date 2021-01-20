@@ -5,7 +5,7 @@ Gets an information about specified solution and its projects.
 
 ## Synopsis
 
-```
+```shell
 roslynator sln-list <SOLUTION>
 [--ignored-projects]
 [--language]

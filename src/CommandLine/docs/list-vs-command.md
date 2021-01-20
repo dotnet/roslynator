@@ -5,7 +5,7 @@ Lists Visual Studio installations.
 
 ## Synopsis
 
-```
+```shell
 roslynator list-vs
 [--file-log]
 [--file-log-verbosity]

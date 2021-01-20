@@ -49,7 +49,7 @@ If the parent analyzer is disabled by default it is neccessary to add following 
 
 ## Types of Analyzer Options
 
-### "Enable" Option 
+### "Enable" Option
 
 This option will cause additional case(s) to be reported by its parent analyzer. Example is [RCS1036a](analyzers/RCS1036a.md).
 

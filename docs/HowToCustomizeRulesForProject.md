@@ -8,7 +8,7 @@ It is also common that you want to enable/disable certain analyzer in one or sev
 
 Let's say you would like to disable analyzer **RCS1090** in a project **AspNetCoreProject** which uses rule set **global.ruleset**.
 
-1) Create a new rule set file with following content:
+1. Create a new rule set file **custom.ruleset** with following content:
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -20,6 +20,13 @@ Let's say you would like to disable analyzer **RCS1090** in a project **AspNetCo
 </RuleSet>
 ```
 
-2) Update **AspNetCoreProject.csproj** so it uses newly created rule set instead of **global.ruleset**.
+2. Update **AspNetCoreProject.csproj** so it uses newly created rule set **custom.ruleset** instead of **global.ruleset**.
+
+```xml
+<PropertyGroup>
+  ...
+  <CodeAnalysisRuleSet>..\custom.ruleset</CodeAnalysisRuleSet>
+</PropertyGroup>
+```
 
 Analyzer **RCS1090** is now disabled in **AspNetCoreProject** and all other rules are inherited from **global.ruleset**.

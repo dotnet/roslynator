@@ -3,7 +3,7 @@
 
 1) Install package [Roslynator.CommandLine](http://www.nuget.org/packages/Roslynator.CommandLine/)&ensp;[![NuGet](https://img.shields.io/nuget/v/Roslynator.CommandLine.svg)](https://nuget.org/packages/Roslynator.CommandLine)
 
-2) Add MSBuild Target to your csproj (vbproj) file
+2) Add MSBuild Target to your csproj or vbproj file:
 
 ```xml
 <Target Name="GenerateDocumentation" AfterTargets="RoslynatorInitialize" Condition=" '$(Configuration)' == 'Release'">
@@ -21,7 +21,7 @@
   <Exec Command="$(RoslynatorExe) list-symbols &quot;$(SolutionPath)&quot; ^
     --msbuild-path &quot;$(MSBuildBinPath)&quot; ^
     --output &quot;$(SolutionDir)docs\api.cs&quot; ^
-	--visibility public"
+    --visibility public"
         LogStandardErrorAsError="true" ConsoleToMSBuild="true">
     <Output TaskParameter="ConsoleOutput" PropertyName="OutputOfExec" />
   </Exec>
