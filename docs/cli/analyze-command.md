@@ -73,7 +73,7 @@ Defines project language.
 
 **`--msbuild-path`** <MSBUILD_PATH>
 
-Defines a path to MSBuild. This option must be specified if there are multiple locations of MSBuild.  This is usually required when multiple versions of Visual Studio are installed.
+Defines a path to MSBuild. This option must be specified if there are multiple locations of MSBuild. This is usually required when multiple versions of Visual Studio are installed.
 
 **`--output`** <OUTPUT_FILE>
 
