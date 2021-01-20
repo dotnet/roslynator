@@ -20,7 +20,7 @@ Let's say you would like to disable analyzer **RCS1090** in a project **AspNetCo
 </RuleSet>
 ```
 
-2. Update **AspNetCoreProject.csproj** so it uses newly created **rule set custom.ruleset** instead of **global.ruleset**.
+2. Update **AspNetCoreProject.csproj** so it uses newly created rule set **custom.ruleset** instead of **global.ruleset**.
 
 ```xml
 <PropertyGroup>
