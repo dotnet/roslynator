@@ -1,7 +1,7 @@
 ﻿
 # How to: Update Documentation
 
-The following documentation for project in can be updated:
+The documentation in the following folders can be edited and updated:
 
 ```shell
 /docs/*.md
