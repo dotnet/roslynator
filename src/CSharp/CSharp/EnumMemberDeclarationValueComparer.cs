@@ -6,9 +6,8 @@ using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.Comparers;
 
-namespace Roslynator.CSharp.Comparers
+namespace Roslynator.CSharp
 {
     internal class EnumMemberDeclarationValueComparer : IComparer<EnumMemberDeclarationSyntax>
     {

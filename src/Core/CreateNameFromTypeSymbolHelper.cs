@@ -5,7 +5,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 
-namespace Roslynator.Helpers
+namespace Roslynator
 {
     internal static class CreateNameFromTypeSymbolHelper
     {
