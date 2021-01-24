@@ -561,27 +561,7 @@ namespace Roslynator
 
         public static ulong GetEnumValueAsUInt64(object value, INamedTypeSymbol enumType)
         {
-            switch (enumType.EnumUnderlyingType.SpecialType)
-            {
-                case SpecialType.System_SByte:
-                    return (ulong)(sbyte)value;
-                case SpecialType.System_Byte:
-                    return (byte)value;
-                case SpecialType.System_Int16:
-                    return (ulong)(short)value;
-                case SpecialType.System_UInt16:
-                    return (ushort)value;
-                case SpecialType.System_Int32:
-                    return (ulong)(int)value;
-                case SpecialType.System_UInt32:
-                    return (uint)value;
-                case SpecialType.System_Int64:
-                    return (ulong)(long)value;
-                case SpecialType.System_UInt64:
-                    return (ulong)value;
-                default:
-                    throw new InvalidOperationException();
-            }
+            return ConvertHelpers.ConvertToUInt64(value, enumType.EnumUnderlyingType.SpecialType);
         }
 
         public static IMethodSymbol FindMethodThatRaisePropertyChanged(INamedTypeSymbol typeSymbol, int position, SemanticModel semanticModel)

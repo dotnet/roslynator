@@ -109,7 +109,7 @@ namespace Roslynator.CSharp.Syntax
 
             StringBuilder sb = StringBuilderCache.GetInstance();
 
-            var builder = new StringTextBuilder(sb, isVerbatim: !Analyze().ContainsNonVerbatimExpression, isInterpolated: true);
+            var builder = new StringLiteralTextBuilder(sb, isVerbatim: !Analyze().ContainsNonVerbatimExpression, isInterpolated: true);
 
             builder.AppendStart();
 
@@ -152,7 +152,7 @@ namespace Roslynator.CSharp.Syntax
 
             StringBuilder sb = StringBuilderCache.GetInstance();
 
-            var builder = new StringTextBuilder(sb, isVerbatim: !analysis.ContainsNonVerbatimExpression);
+            var builder = new StringLiteralTextBuilder(sb, isVerbatim: !analysis.ContainsNonVerbatimExpression);
 
             builder.AppendStart();
 
@@ -172,7 +172,7 @@ namespace Roslynator.CSharp.Syntax
 
             StringBuilder sb = StringBuilderCache.GetInstance();
 
-            var builder = new StringTextBuilder(sb, isVerbatim: true);
+            var builder = new StringLiteralTextBuilder(sb, isVerbatim: true);
 
             builder.AppendStart();
 

@@ -101,14 +101,14 @@ namespace Roslynator.CSharp.Refactorings
             {
                 ModifierFilter filter = SyntaxInfo.ModifierListInfo(member).GetFilter();
 
-                if (filter.Any(ModifierFilter.Partial))
+                if (filter.HasAnyFlag(ModifierFilter.Partial))
                 {
                     ISymbol symbol = semanticModel.GetDeclaredSymbol(member, cancellationToken);
 
                     foreach (SyntaxReference reference in symbol.DeclaringSyntaxReferences)
                         members.Add((MemberDeclarationSyntax)reference.GetSyntax(cancellationToken));
                 }
-                else if (filter.Any(ModifierFilter.AbstractVirtualOverride))
+                else if (filter.HasAnyFlag(ModifierFilter.AbstractVirtualOverride))
                 {
                     ISymbol symbol = GetBaseSymbolOrDefault(member, semanticModel, cancellationToken);
 

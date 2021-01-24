@@ -429,8 +429,8 @@ namespace Roslynator.CSharp
 
                         ModifierFilter filter = SyntaxInfo.ModifierListInfo(eventDeclaration).GetFilter();
 
-                        return (ignoreOverride || !filter.Any(ModifierFilter.Override))
-                            && (accessibility != Accessibility.Private || !filter.Any(ModifierFilter.AbstractVirtualOverride))
+                        return (ignoreOverride || !filter.HasAnyFlag(ModifierFilter.Override))
+                            && (accessibility != Accessibility.Private || !filter.HasAnyFlag(ModifierFilter.AbstractVirtualOverride))
                             && CheckProtectedInStaticOrSealedClass(node)
                             && CheckAccessorAccessibility(eventDeclaration.AccessorList);
                     }
@@ -440,8 +440,8 @@ namespace Roslynator.CSharp
 
                         ModifierFilter filter = SyntaxInfo.ModifierListInfo(indexerDeclaration).GetFilter();
 
-                        return (ignoreOverride || !filter.Any(ModifierFilter.Override))
-                            && (accessibility != Accessibility.Private || !filter.Any(ModifierFilter.AbstractVirtualOverride))
+                        return (ignoreOverride || !filter.HasAnyFlag(ModifierFilter.Override))
+                            && (accessibility != Accessibility.Private || !filter.HasAnyFlag(ModifierFilter.AbstractVirtualOverride))
                             && CheckProtectedInStaticOrSealedClass(node)
                             && CheckAccessorAccessibility(indexerDeclaration.AccessorList);
                     }
@@ -451,8 +451,8 @@ namespace Roslynator.CSharp
 
                         ModifierFilter filter = SyntaxInfo.ModifierListInfo(propertyDeclaration).GetFilter();
 
-                        return (ignoreOverride || !filter.Any(ModifierFilter.Override))
-                            && (accessibility != Accessibility.Private || !filter.Any(ModifierFilter.AbstractVirtualOverride))
+                        return (ignoreOverride || !filter.HasAnyFlag(ModifierFilter.Override))
+                            && (accessibility != Accessibility.Private || !filter.HasAnyFlag(ModifierFilter.AbstractVirtualOverride))
                             && CheckProtectedInStaticOrSealedClass(node)
                             && CheckAccessorAccessibility(propertyDeclaration.AccessorList);
                     }
@@ -462,8 +462,8 @@ namespace Roslynator.CSharp
 
                         ModifierFilter filter = SyntaxInfo.ModifierListInfo(methodDeclaration).GetFilter();
 
-                        return (ignoreOverride || !filter.Any(ModifierFilter.Override))
-                            && (accessibility != Accessibility.Private || !filter.Any(ModifierFilter.AbstractVirtualOverride))
+                        return (ignoreOverride || !filter.HasAnyFlag(ModifierFilter.Override))
+                            && (accessibility != Accessibility.Private || !filter.HasAnyFlag(ModifierFilter.AbstractVirtualOverride))
                             && CheckProtectedInStaticOrSealedClass(node);
                     }
                 case SyntaxKind.EventFieldDeclaration:
@@ -472,8 +472,8 @@ namespace Roslynator.CSharp
 
                         ModifierFilter filter = SyntaxInfo.ModifierListInfo(eventFieldDeclaration).GetFilter();
 
-                        return (ignoreOverride || !filter.Any(ModifierFilter.Override))
-                            && (accessibility != Accessibility.Private || !filter.Any(ModifierFilter.AbstractVirtualOverride))
+                        return (ignoreOverride || !filter.HasAnyFlag(ModifierFilter.Override))
+                            && (accessibility != Accessibility.Private || !filter.HasAnyFlag(ModifierFilter.AbstractVirtualOverride))
                             && CheckProtectedInStaticOrSealedClass(node);
                     }
                 case SyntaxKind.ConstructorDeclaration:

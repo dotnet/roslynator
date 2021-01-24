@@ -32,7 +32,7 @@ namespace Roslynator.CSharp.Refactorings
                 Optional<ulong> optional = FlagsUtility<ulong>.Instance.GetUniquePowerOfTwo(values);
 
                 if (optional.HasValue
-                    && ConvertHelpers.CanConvert(optional.Value, enumSymbol.EnumUnderlyingType.SpecialType))
+                    && ConvertHelpers.CanConvertFromUInt64(optional.Value, enumSymbol.EnumUnderlyingType.SpecialType))
                 {
                     context.RegisterRefactoring(
                         "Generate enum member",
@@ -42,7 +42,7 @@ namespace Roslynator.CSharp.Refactorings
                     Optional<ulong> optional2 = FlagsUtility<ulong>.Instance.GetUniquePowerOfTwo(values, startFromHighestExistingValue: true);
 
                     if (optional2.HasValue
-                        && ConvertHelpers.CanConvert(optional2.Value, enumSymbol.EnumUnderlyingType.SpecialType)
+                        && ConvertHelpers.CanConvertFromUInt64(optional2.Value, enumSymbol.EnumUnderlyingType.SpecialType)
                         && optional.Value != optional2.Value)
                     {
                         context.RegisterRefactoring(

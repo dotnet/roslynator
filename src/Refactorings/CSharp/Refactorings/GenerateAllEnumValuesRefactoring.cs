@@ -74,7 +74,7 @@ namespace Roslynator.CSharp.Refactorings
                         value++;
                     }
 
-                    if (!ConvertHelpers.CanConvert(value, enumSymbol.EnumUnderlyingType.SpecialType))
+                    if (!ConvertHelpers.CanConvertFromUInt64(value, enumSymbol.EnumUnderlyingType.SpecialType))
                         return false;
                 }
 
@@ -110,7 +110,7 @@ namespace Roslynator.CSharp.Refactorings
 
             EnumMemberDeclarationSyntax CreateNewFlagsMember(EnumMemberDeclarationSyntax enumMember)
             {
-                if (!ConvertHelpers.CanConvert(value, numericType))
+                if (!ConvertHelpers.CanConvertFromUInt64(value, numericType))
                     return enumMember;
 
                 IFieldSymbol fieldSymbol = semanticModel.GetDeclaredSymbol(enumMember, cancellationToken);
@@ -130,7 +130,7 @@ namespace Roslynator.CSharp.Refactorings
 
             EnumMemberDeclarationSyntax CreateNewMember(EnumMemberDeclarationSyntax enumMember)
             {
-                if (!ConvertHelpers.CanConvert(value, numericType))
+                if (!ConvertHelpers.CanConvertFromUInt64(value, numericType))
                     return enumMember;
 
                 EnumMemberDeclarationSyntax newEnumMember = CreateNewEnumMember(enumMember, value, numericType);

@@ -73,7 +73,7 @@ namespace Roslynator.CSharp.CodeFixes
                             Optional<ulong> optional = FlagsUtility<ulong>.Instance.GetUniquePowerOfTwo(values);
 
                             if (!optional.HasValue
-                                || !ConvertHelpers.CanConvert(optional.Value, enumSymbol.EnumUnderlyingType.SpecialType))
+                                || !ConvertHelpers.CanConvertFromUInt64(optional.Value, enumSymbol.EnumUnderlyingType.SpecialType))
                             {
                                 return;
                             }
@@ -220,7 +220,7 @@ namespace Roslynator.CSharp.CodeFixes
                         Optional<ulong> optional = FlagsUtility<ulong>.Instance.GetUniquePowerOfTwo(reservedValues);
 
                         if (optional.HasValue
-                            && ConvertHelpers.CanConvert(optional.Value, enumSymbol.EnumUnderlyingType.SpecialType))
+                            && ConvertHelpers.CanConvertFromUInt64(optional.Value, enumSymbol.EnumUnderlyingType.SpecialType))
                         {
                             value = optional.Value;
                         }

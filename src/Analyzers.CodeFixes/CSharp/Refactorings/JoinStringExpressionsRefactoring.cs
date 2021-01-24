@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.Refactorings
 
             StringBuilder sb = StringBuilderCache.GetInstance();
 
-            var builder = new StringTextBuilder(sb, isVerbatim: isVerbatim, isInterpolated: isInterpolated);
+            var builder = new StringLiteralTextBuilder(sb, isVerbatim: isVerbatim, isInterpolated: isInterpolated);
 
             builder.AppendStart();
 

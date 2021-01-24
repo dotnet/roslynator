@@ -7,38 +7,38 @@ namespace Roslynator
 {
     internal static class ConvertHelpers
     {
-        public static object Convert(ulong value, SpecialType numericType)
+        public static object ConvertFromUInt64(ulong value, SpecialType numericType)
         {
             switch (numericType)
             {
                 case SpecialType.System_SByte:
-                    return System.Convert.ToSByte(value);
+                    return Convert.ToSByte(value);
                 case SpecialType.System_Byte:
-                    return System.Convert.ToByte(value);
+                    return Convert.ToByte(value);
                 case SpecialType.System_Int16:
-                    return System.Convert.ToInt16(value);
+                    return Convert.ToInt16(value);
                 case SpecialType.System_UInt16:
-                    return System.Convert.ToUInt16(value);
+                    return Convert.ToUInt16(value);
                 case SpecialType.System_Int32:
-                    return System.Convert.ToInt32(value);
+                    return Convert.ToInt32(value);
                 case SpecialType.System_UInt32:
-                    return System.Convert.ToUInt32(value);
+                    return Convert.ToUInt32(value);
                 case SpecialType.System_Int64:
-                    return System.Convert.ToInt64(value);
+                    return Convert.ToInt64(value);
                 case SpecialType.System_UInt64:
                     return value;
                 case SpecialType.System_Decimal:
-                    return System.Convert.ToDecimal(value);
+                    return Convert.ToDecimal(value);
                 case SpecialType.System_Single:
-                    return System.Convert.ToSingle(value);
+                    return Convert.ToSingle(value);
                 case SpecialType.System_Double:
-                    return System.Convert.ToDouble(value);
+                    return Convert.ToDouble(value);
                 default:
                     throw new ArgumentException("", nameof(numericType));
             }
         }
 
-        public static bool CanConvert(ulong value, SpecialType specialType)
+        public static bool CanConvertFromUInt64(ulong value, SpecialType specialType)
         {
             switch (specialType)
             {
@@ -66,6 +66,37 @@ namespace Roslynator
                     return value <= double.MaxValue;
                 default:
                     throw new ArgumentException("", nameof(specialType));
+            }
+        }
+
+        public static ulong ConvertToUInt64(object value, SpecialType numericType)
+        {
+            switch (numericType)
+            {
+                case SpecialType.System_SByte:
+                    return (ulong)(sbyte)value;
+                case SpecialType.System_Byte:
+                    return (byte)value;
+                case SpecialType.System_Int16:
+                    return (ulong)(short)value;
+                case SpecialType.System_UInt16:
+                    return (ushort)value;
+                case SpecialType.System_Int32:
+                    return (ulong)(int)value;
+                case SpecialType.System_UInt32:
+                    return (uint)value;
+                case SpecialType.System_Int64:
+                    return (ulong)(long)value;
+                case SpecialType.System_UInt64:
+                    return (ulong)value;
+                case SpecialType.System_Decimal:
+                    return (ulong)(decimal)value;
+                case SpecialType.System_Single:
+                    return (ulong)(float)value;
+                case SpecialType.System_Double:
+                    return (ulong)(double)value;
+                default:
+                    throw new ArgumentException("", nameof(numericType));
             }
         }
     }

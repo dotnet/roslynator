@@ -11,9 +11,9 @@ using Roslynator.CSharp.Syntax;
 
 namespace Roslynator.CSharp
 {
-    internal class StringTextBuilder
+    internal class StringLiteralTextBuilder
     {
-        public StringTextBuilder(StringBuilder stringBuilder = null, bool isVerbatim = false, bool isInterpolated = false)
+        public StringLiteralTextBuilder(StringBuilder stringBuilder = null, bool isVerbatim = false, bool isInterpolated = false)
         {
             StringBuilder = stringBuilder ?? new StringBuilder();
             IsVerbatim = isVerbatim;

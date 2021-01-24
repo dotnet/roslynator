@@ -68,5 +68,10 @@ namespace Roslynator.CSharp
                 || kind == kind4
                 || kind == kind5;
         }
+
+        public static bool HasAnyFlag(this ModifierFilter modifierFilter, ModifierFilter value)
+        {
+            return (modifierFilter & value) != 0;
+        }
     }
 }

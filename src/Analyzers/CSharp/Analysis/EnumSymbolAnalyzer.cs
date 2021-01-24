@@ -71,7 +71,7 @@ namespace Roslynator.CSharp.Analysis
                 foreach (EnumFieldSymbolInfo field in enumInfo.Fields)
                 {
                     if (field.HasValue
-                        && ConvertHelpers.CanConvert(field.Value, typeSymbol.EnumUnderlyingType.SpecialType)
+                        && ConvertHelpers.CanConvertFromUInt64(field.Value, typeSymbol.EnumUnderlyingType.SpecialType)
                         && !IsMaxValue(field.Value, typeSymbol.EnumUnderlyingType.SpecialType)
                         && field.HasCompositeValue())
                     {

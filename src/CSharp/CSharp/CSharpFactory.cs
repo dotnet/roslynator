@@ -1603,7 +1603,7 @@ namespace Roslynator.CSharp
 
         internal static LiteralExpressionSyntax NumericLiteralExpression(ulong value, SpecialType numericType)
         {
-            return LiteralExpression(ConvertHelpers.Convert(value, numericType));
+            return LiteralExpression(ConvertHelpers.ConvertFromUInt64(value, numericType));
         }
 
         public static LiteralExpressionSyntax TrueLiteralExpression()

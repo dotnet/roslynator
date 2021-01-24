@@ -43,5 +43,10 @@ namespace Roslynator
 
             return true;
         }
+
+        public static int GetLineCount(this LinePositionSpan linePositionSpan)
+        {
+            return linePositionSpan.End.Line - linePositionSpan.Start.Line + 1;
+        }
     }
 }
