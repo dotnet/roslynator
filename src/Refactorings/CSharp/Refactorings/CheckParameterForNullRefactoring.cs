@@ -255,17 +255,26 @@ namespace Roslynator.CSharp.Refactorings
                 case SyntaxKind.ConstructorDeclaration:
                     return ((ConstructorDeclarationSyntax)parent).Body;
             }
-
-            Debug.Assert(
-                parent.IsKind(
-                    SyntaxKind.ParenthesizedLambdaExpression,
-                    SyntaxKind.AnonymousMethodExpression,
-                    SyntaxKind.LocalFunctionStatement,
-                    SyntaxKind.DelegateDeclaration,
-                    SyntaxKind.OperatorDeclaration,
-                    SyntaxKind.ConversionOperatorDeclaration),
-                parent.Kind().ToString());
-
+#if DEBUG
+            switch (parent.Kind())
+            {
+                case SyntaxKind.ParenthesizedLambdaExpression:
+                case SyntaxKind.AnonymousMethodExpression:
+                case SyntaxKind.LocalFunctionStatement:
+                case SyntaxKind.DelegateDeclaration:
+                case SyntaxKind.OperatorDeclaration:
+                case SyntaxKind.ConversionOperatorDeclaration:
+                case SyntaxKind.RecordDeclaration:
+                    {
+                        break;
+                    }
+                default:
+                    {
+                        Debug.Fail(parent.Kind().ToString());
+                        break;
+                    }
+            }
+#endif
             return null;
         }
 

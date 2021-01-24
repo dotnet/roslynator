@@ -178,6 +178,8 @@ namespace Roslynator.CSharp.Syntax
                     return new ModifierListInfo(node, ((OperatorDeclarationSyntax)node).Modifiers);
                 case SyntaxKind.PropertyDeclaration:
                     return new ModifierListInfo(node, ((PropertyDeclarationSyntax)node).Modifiers);
+                case SyntaxKind.RecordDeclaration:
+                    return new ModifierListInfo(node, ((RecordDeclarationSyntax)node).Modifiers);
                 case SyntaxKind.StructDeclaration:
                     return new ModifierListInfo(node, ((StructDeclarationSyntax)node).Modifiers);
                 case SyntaxKind.IncompleteMember:
@@ -592,6 +594,12 @@ namespace Roslynator.CSharp.Syntax
                     {
                         var propertyDeclaration = (PropertyDeclarationSyntax)Parent;
                         PropertyDeclarationSyntax newNode = propertyDeclaration.WithModifiers(modifiers);
+                        return new ModifierListInfo(newNode, newNode.Modifiers);
+                    }
+                case SyntaxKind.RecordDeclaration:
+                    {
+                        var recordDeclaration = (RecordDeclarationSyntax)Parent;
+                        RecordDeclarationSyntax newNode = recordDeclaration.WithModifiers(modifiers);
                         return new ModifierListInfo(newNode, newNode.Modifiers);
                     }
                 case SyntaxKind.StructDeclaration:

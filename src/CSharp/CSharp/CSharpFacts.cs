@@ -92,6 +92,8 @@ namespace Roslynator.CSharp
                     return "interface";
                 case SyntaxKind.EnumDeclaration:
                     return "enum";
+                case SyntaxKind.RecordDeclaration:
+                    return "record";
                 case SyntaxKind.IncompleteMember:
                     return "member";
                 case SyntaxKind.GetAccessorDeclaration:
@@ -305,6 +307,7 @@ namespace Roslynator.CSharp
                 case SyntaxKind.MethodDeclaration:
                 case SyntaxKind.OperatorDeclaration:
                 case SyntaxKind.PropertyDeclaration:
+                case SyntaxKind.RecordDeclaration:
                 case SyntaxKind.StructDeclaration:
                 case SyntaxKind.IncompleteMember:
                 case SyntaxKind.GetAccessorDeclaration:
@@ -1058,6 +1061,7 @@ namespace Roslynator.CSharp
                 case SyntaxKind.ClassDeclaration:
                 case SyntaxKind.InterfaceDeclaration:
                 case SyntaxKind.StructDeclaration:
+                case SyntaxKind.RecordDeclaration:
                 case SyntaxKind.MethodDeclaration:
                 case SyntaxKind.DelegateDeclaration:
                 case SyntaxKind.LocalFunctionStatement:

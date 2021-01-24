@@ -24,6 +24,7 @@ namespace Roslynator.CSharp.Refactorings
                 case SyntaxKind.EventDeclaration:
                 case SyntaxKind.NamespaceDeclaration:
                 case SyntaxKind.ClassDeclaration:
+                case SyntaxKind.RecordDeclaration:
                 case SyntaxKind.StructDeclaration:
                 case SyntaxKind.InterfaceDeclaration:
                 case SyntaxKind.EnumDeclaration:
@@ -95,6 +96,16 @@ namespace Roslynator.CSharp.Refactorings
                         await ClassDeclarationRefactoring.ComputeRefactoringsAsync(context, classDeclaration).ConfigureAwait(false);
 
                         if (MemberDeclarationListSelection.TryCreate(classDeclaration, context.Span, out MemberDeclarationListSelection selectedMembers))
+                            await SelectedMemberDeclarationsRefactoring.ComputeRefactoringAsync(context, selectedMembers).ConfigureAwait(false);
+
+                        break;
+                    }
+                case SyntaxKind.RecordDeclaration:
+                    {
+                        var recordDeclaration = (RecordDeclarationSyntax)member;
+                        await RecordDeclarationRefactoring.ComputeRefactoringsAsync(context, recordDeclaration).ConfigureAwait(false);
+
+                        if (MemberDeclarationListSelection.TryCreate(recordDeclaration, context.Span, out MemberDeclarationListSelection selectedMembers))
                             await SelectedMemberDeclarationsRefactoring.ComputeRefactoringAsync(context, selectedMembers).ConfigureAwait(false);
 
                         break;
@@ -238,6 +249,8 @@ namespace Roslynator.CSharp.Refactorings
                     return ((NamespaceDeclarationSyntax)member).BraceContainsSpan(span);
                 case SyntaxKind.ClassDeclaration:
                     return ((ClassDeclarationSyntax)member).BraceContainsSpan(span);
+                case SyntaxKind.RecordDeclaration:
+                    return ((RecordDeclarationSyntax)member).BraceContainsSpan(span);
                 case SyntaxKind.StructDeclaration:
                     return ((StructDeclarationSyntax)member).BraceContainsSpan(span);
                 case SyntaxKind.InterfaceDeclaration:
@@ -256,6 +269,12 @@ namespace Roslynator.CSharp.Refactorings
         }
 
         private static bool BraceContainsSpan(this ClassDeclarationSyntax declaration, TextSpan span)
+        {
+            return declaration.OpenBraceToken.Span.Contains(span)
+                || declaration.CloseBraceToken.Span.Contains(span);
+        }
+
+        private static bool BraceContainsSpan(this RecordDeclarationSyntax declaration, TextSpan span)
         {
             return declaration.OpenBraceToken.Span.Contains(span)
                 || declaration.CloseBraceToken.Span.Contains(span);

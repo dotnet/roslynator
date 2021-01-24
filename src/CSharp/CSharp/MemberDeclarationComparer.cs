@@ -53,6 +53,7 @@ namespace Roslynator.CSharp
                 case SyntaxKind.InterfaceDeclaration:
                 case SyntaxKind.StructDeclaration:
                 case SyntaxKind.ClassDeclaration:
+                case SyntaxKind.RecordDeclaration:
                 case SyntaxKind.NamespaceDeclaration:
                     return true;
                 case SyntaxKind.DestructorDeclaration:
@@ -130,6 +131,8 @@ namespace Roslynator.CSharp
                         return ((StructDeclarationSyntax)member).Identifier.ValueText;
                     case SyntaxKind.ClassDeclaration:
                         return ((ClassDeclarationSyntax)member).Identifier.ValueText;
+                    case SyntaxKind.RecordDeclaration:
+                        return ((RecordDeclarationSyntax)member).Identifier.ValueText;
                     case SyntaxKind.NamespaceDeclaration:
                         return ((NamespaceDeclarationSyntax)member).Name.ToString();
                     case SyntaxKind.DestructorDeclaration:

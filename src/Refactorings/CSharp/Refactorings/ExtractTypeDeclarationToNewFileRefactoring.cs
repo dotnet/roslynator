@@ -15,6 +15,12 @@ namespace Roslynator.CSharp.Refactorings
             ComputeRefactorings(context, classDeclaration, identifier);
         }
 
+        public static void ComputeRefactorings(RefactoringContext context, RecordDeclarationSyntax recordDeclaration)
+        {
+            SyntaxToken identifier = recordDeclaration.Identifier;
+            ComputeRefactorings(context, recordDeclaration, identifier);
+        }
+
         public static void ComputeRefactorings(RefactoringContext context, StructDeclarationSyntax structDeclaration)
         {
             SyntaxToken identifier = structDeclaration.Identifier;

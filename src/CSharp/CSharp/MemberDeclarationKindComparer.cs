@@ -49,10 +49,12 @@ namespace Roslynator.CSharp
                     return 14;
                 case SyntaxKind.ClassDeclaration:
                     return 15;
-                case SyntaxKind.NamespaceDeclaration:
+                case SyntaxKind.RecordDeclaration:
                     return 16;
-                case SyntaxKind.IncompleteMember:
+                case SyntaxKind.NamespaceDeclaration:
                     return 17;
+                case SyntaxKind.IncompleteMember:
+                    return 18;
                 default:
                     {
                         Debug.Fail($"unknown member '{kind}'");

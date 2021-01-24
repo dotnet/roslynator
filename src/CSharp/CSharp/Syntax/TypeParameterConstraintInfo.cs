@@ -173,6 +173,17 @@ namespace Roslynator.CSharp.Syntax
 
                         return new TypeParameterConstraintInfo(constraint, constraintClause);
                     }
+                case SyntaxKind.RecordDeclaration:
+                    {
+                        var recordDeclaration = (RecordDeclarationSyntax)parent;
+
+                        TypeParameterListSyntax typeParameterList = recordDeclaration.TypeParameterList;
+
+                        if (!Check(typeParameterList, allowMissing))
+                            return default;
+
+                        return new TypeParameterConstraintInfo(constraint, constraintClause);
+                    }
                 case SyntaxKind.StructDeclaration:
                     {
                         var structDeclaration = (StructDeclarationSyntax)parent;

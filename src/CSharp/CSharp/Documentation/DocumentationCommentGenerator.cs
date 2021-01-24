@@ -62,6 +62,8 @@ namespace Roslynator.CSharp.Documentation
                     return Generate((EventDeclarationSyntax)memberDeclaration, settings);
                 case SyntaxKind.IndexerDeclaration:
                     return Generate((IndexerDeclarationSyntax)memberDeclaration, settings);
+                case SyntaxKind.RecordDeclaration:
+                    return Generate((RecordDeclarationSyntax)memberDeclaration, settings);
                 default:
                     throw new ArgumentException("", nameof(memberDeclaration));
             }
@@ -83,6 +85,18 @@ namespace Roslynator.CSharp.Documentation
             return Generate(
                 classDeclaration.TypeParameterList,
                 default(ParameterListSyntax),
+                canGenerateReturns: false,
+                settings: settings);
+        }
+
+        public static SyntaxTriviaList Generate(RecordDeclarationSyntax recordDeclaration, DocumentationCommentGeneratorSettings settings = null)
+        {
+            if (recordDeclaration == null)
+                throw new ArgumentNullException(nameof(recordDeclaration));
+
+            return Generate(
+                recordDeclaration.TypeParameterList,
+                recordDeclaration.ParameterList,
                 canGenerateReturns: false,
                 settings: settings);
         }
@@ -611,6 +625,8 @@ namespace Roslynator.CSharp.Documentation
             {
                 case SyntaxKind.ClassDeclaration:
                     return ((ClassDeclarationSyntax)parent).BaseList?.Types.Any() == true;
+                case SyntaxKind.RecordDeclaration:
+                    return ((RecordDeclarationSyntax)parent).BaseList?.Types.Any() == true;
                 case SyntaxKind.StructDeclaration:
                     return ((StructDeclarationSyntax)parent).BaseList?.Types.Any() == true;
             }

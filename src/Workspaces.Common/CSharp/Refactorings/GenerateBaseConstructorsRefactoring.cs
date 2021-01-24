@@ -43,6 +43,34 @@ namespace Roslynator.CSharp.Refactorings
             return document.ReplaceNodeAsync(classDeclaration, newClassDeclaration, cancellationToken);
         }
 
+        public static Task<Document> RefactorAsync(
+            Document document,
+            RecordDeclarationSyntax recordDeclaration,
+            IMethodSymbol[] constructorSymbols,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken = default)
+        {
+            SyntaxList<MemberDeclarationSyntax> members = recordDeclaration.Members;
+
+            string recordName = recordDeclaration.Identifier.ValueText;
+
+            bool isSealedClass = recordDeclaration.Modifiers.Contains(SyntaxKind.SealedKeyword);
+
+            int insertIndex = MemberDeclarationInserter.Default.GetInsertIndex(members, SyntaxKind.ConstructorDeclaration);
+
+            int position = (insertIndex == 0)
+                ? recordDeclaration.OpenBraceToken.FullSpan.End
+                : members[insertIndex - 1].FullSpan.End;
+
+            IEnumerable<ConstructorDeclarationSyntax> constructors = constructorSymbols
+                .Select(symbol => CreateConstructor(symbol, recordName, isSealedClass, semanticModel, position));
+
+            RecordDeclarationSyntax newRecordDeclaration = recordDeclaration
+                .WithMembers(members.InsertRange(insertIndex, constructors));
+
+            return document.ReplaceNodeAsync(recordDeclaration, newRecordDeclaration, cancellationToken);
+        }
+
         private static ConstructorDeclarationSyntax CreateConstructor(
             IMethodSymbol methodSymbol,
             string className,

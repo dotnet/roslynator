@@ -71,6 +71,9 @@ namespace Roslynator.CSharp
             if (typeof(TNode) == typeof(StructDeclarationSyntax))
                 return new StructAccessibility();
 
+            if (typeof(TNode) == typeof(RecordDeclarationSyntax))
+                return new RecordAccessibility();
+
             throw new InvalidOperationException();
         }
 
@@ -882,6 +885,39 @@ namespace Roslynator.CSharp
             }
 
             public override Accessibility GetExplicitAccessibility(StructDeclarationSyntax declaration)
+            {
+                if (declaration == null)
+                    throw new ArgumentNullException(nameof(declaration));
+
+                return SyntaxAccessibility.GetExplicitAccessibility(declaration.Modifiers);
+            }
+        }
+
+        private class RecordAccessibility : SyntaxAccessibility<RecordDeclarationSyntax>
+        {
+            public override Accessibility GetDefaultAccessibility(RecordDeclarationSyntax declaration)
+            {
+                return BaseTypeAccessibility.GetDefaultAccessibility(declaration);
+            }
+
+            public override Accessibility GetDefaultExplicitAccessibility(RecordDeclarationSyntax declaration)
+            {
+                return BaseTypeAccessibility.GetDefaultExplicitAccessibility(declaration);
+            }
+
+            public override Accessibility GetAccessibility(RecordDeclarationSyntax declaration)
+            {
+                if (declaration == null)
+                    throw new ArgumentNullException(nameof(declaration));
+
+                Accessibility accessibility = SyntaxAccessibility.GetExplicitAccessibility(declaration.Modifiers);
+
+                return (accessibility != Accessibility.NotApplicable)
+                    ? accessibility
+                    : GetDefaultAccessibility(declaration);
+            }
+
+            public override Accessibility GetExplicitAccessibility(RecordDeclarationSyntax declaration)
             {
                 if (declaration == null)
                     throw new ArgumentNullException(nameof(declaration));

@@ -48,6 +48,8 @@ namespace Roslynator.CSharp
                     return SyntaxAccessibility<ConversionOperatorDeclarationSyntax>.Instance.GetDefaultAccessibility((ConversionOperatorDeclarationSyntax)declaration);
                 case SyntaxKind.ClassDeclaration:
                     return SyntaxAccessibility<ClassDeclarationSyntax>.Instance.GetDefaultAccessibility((ClassDeclarationSyntax)declaration);
+                case SyntaxKind.RecordDeclaration:
+                    return SyntaxAccessibility<RecordDeclarationSyntax>.Instance.GetDefaultAccessibility((RecordDeclarationSyntax)declaration);
                 case SyntaxKind.StructDeclaration:
                     return SyntaxAccessibility<StructDeclarationSyntax>.Instance.GetDefaultAccessibility((StructDeclarationSyntax)declaration);
                 case SyntaxKind.InterfaceDeclaration:
@@ -106,6 +108,8 @@ namespace Roslynator.CSharp
                     return SyntaxAccessibility<ConversionOperatorDeclarationSyntax>.Instance.GetDefaultExplicitAccessibility((ConversionOperatorDeclarationSyntax)declaration);
                 case SyntaxKind.ClassDeclaration:
                     return SyntaxAccessibility<ClassDeclarationSyntax>.Instance.GetDefaultExplicitAccessibility((ClassDeclarationSyntax)declaration);
+                case SyntaxKind.RecordDeclaration:
+                    return SyntaxAccessibility<RecordDeclarationSyntax>.Instance.GetDefaultExplicitAccessibility((RecordDeclarationSyntax)declaration);
                 case SyntaxKind.StructDeclaration:
                     return SyntaxAccessibility<StructDeclarationSyntax>.Instance.GetDefaultExplicitAccessibility((StructDeclarationSyntax)declaration);
                 case SyntaxKind.InterfaceDeclaration:
@@ -164,6 +168,8 @@ namespace Roslynator.CSharp
                     return SyntaxAccessibility<ConversionOperatorDeclarationSyntax>.Instance.GetAccessibility((ConversionOperatorDeclarationSyntax)declaration);
                 case SyntaxKind.ClassDeclaration:
                     return SyntaxAccessibility<ClassDeclarationSyntax>.Instance.GetAccessibility((ClassDeclarationSyntax)declaration);
+                case SyntaxKind.RecordDeclaration:
+                    return SyntaxAccessibility<RecordDeclarationSyntax>.Instance.GetAccessibility((RecordDeclarationSyntax)declaration);
                 case SyntaxKind.StructDeclaration:
                     return SyntaxAccessibility<StructDeclarationSyntax>.Instance.GetAccessibility((StructDeclarationSyntax)declaration);
                 case SyntaxKind.InterfaceDeclaration:
@@ -222,6 +228,8 @@ namespace Roslynator.CSharp
                     return SyntaxAccessibility<ConversionOperatorDeclarationSyntax>.Instance.GetExplicitAccessibility((ConversionOperatorDeclarationSyntax)declaration);
                 case SyntaxKind.ClassDeclaration:
                     return SyntaxAccessibility<ClassDeclarationSyntax>.Instance.GetExplicitAccessibility((ClassDeclarationSyntax)declaration);
+                case SyntaxKind.RecordDeclaration:
+                    return SyntaxAccessibility<RecordDeclarationSyntax>.Instance.GetExplicitAccessibility((RecordDeclarationSyntax)declaration);
                 case SyntaxKind.StructDeclaration:
                     return SyntaxAccessibility<StructDeclarationSyntax>.Instance.GetExplicitAccessibility((StructDeclarationSyntax)declaration);
                 case SyntaxKind.InterfaceDeclaration:
@@ -409,6 +417,7 @@ namespace Roslynator.CSharp
             {
                 case SyntaxKind.ClassDeclaration:
                 case SyntaxKind.InterfaceDeclaration:
+                case SyntaxKind.RecordDeclaration:
                 case SyntaxKind.StructDeclaration:
                 case SyntaxKind.EnumDeclaration:
                     {

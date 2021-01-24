@@ -103,6 +103,13 @@ namespace Roslynator.CSharp.Refactorings
 
                                 break;
                             }
+                        case SyntaxKind.RecordDeclaration:
+                            {
+                                if (((RecordDeclarationSyntax)member).Modifiers.Contains(SyntaxKind.PartialKeyword))
+                                    return true;
+
+                                break;
+                            }
                         case SyntaxKind.StructDeclaration:
                             {
                                 if (((StructDeclarationSyntax)member).Modifiers.Contains(SyntaxKind.PartialKeyword))

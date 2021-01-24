@@ -49,6 +49,8 @@ namespace Roslynator.CSharp
                     return (T)(SyntaxNode)AddAttributeLists((ClassDeclarationSyntax)(SyntaxNode)node, keepDocumentationCommentOnTop, attributeLists, f => f.AttributeLists.Any(), (f, g) => f.WithAttributeLists(g), (f, g) => f.AddAttributeLists(g));
                 case SyntaxKind.TypeParameter:
                     return (T)(SyntaxNode)AddAttributeLists((TypeParameterSyntax)(SyntaxNode)node, keepDocumentationCommentOnTop, attributeLists, f => f.AttributeLists.Any(), (f, g) => f.WithAttributeLists(g), (f, g) => f.AddAttributeLists(g));
+                case SyntaxKind.RecordDeclaration:
+                    return (T)(SyntaxNode)AddAttributeLists((RecordDeclarationSyntax)(SyntaxNode)node, keepDocumentationCommentOnTop, attributeLists, f => f.AttributeLists.Any(), (f, g) => f.WithAttributeLists(g), (f, g) => f.AddAttributeLists(g));
                 case SyntaxKind.StructDeclaration:
                     return (T)(SyntaxNode)AddAttributeLists((StructDeclarationSyntax)(SyntaxNode)node, keepDocumentationCommentOnTop, attributeLists, f => f.AttributeLists.Any(), (f, g) => f.WithAttributeLists(g), (f, g) => f.AddAttributeLists(g));
                 case SyntaxKind.PropertyDeclaration:
@@ -446,6 +448,23 @@ namespace Roslynator.CSharp
             structDeclaration = structDeclaration.WithMembers(structDeclaration.Members.ReplaceAt(index, newMember));
 
             return structDeclaration.RemoveNode(structDeclaration.Members[index], GetRemoveOptions(newMember));
+        }
+
+        public static RecordDeclarationSyntax RemoveMember(RecordDeclarationSyntax recordDeclaration, MemberDeclarationSyntax member)
+        {
+            if (recordDeclaration == null)
+                throw new ArgumentNullException(nameof(recordDeclaration));
+
+            if (member == null)
+                throw new ArgumentNullException(nameof(member));
+
+            int index = recordDeclaration.Members.IndexOf(member);
+
+            MemberDeclarationSyntax newMember = RemoveSingleLineDocumentationComment(member);
+
+            recordDeclaration = recordDeclaration.WithMembers(recordDeclaration.Members.ReplaceAt(index, newMember));
+
+            return recordDeclaration.RemoveNode(recordDeclaration.Members[index], GetRemoveOptions(newMember));
         }
 
         public static TypeDeclarationSyntax RemoveMember(TypeDeclarationSyntax typeDeclaration, MemberDeclarationSyntax member)

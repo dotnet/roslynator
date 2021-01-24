@@ -26,6 +26,12 @@ namespace Roslynator.CSharp.Refactorings.SortMemberDeclarations
                 ComputeRefactoring(context, selectedMembers);
         }
 
+        public static void ComputeRefactoring(RefactoringContext context, RecordDeclarationSyntax recordDeclaration)
+        {
+            if (MemberDeclarationListSelection.TryCreate(recordDeclaration, context.Span, out MemberDeclarationListSelection selectedMembers))
+                ComputeRefactoring(context, selectedMembers);
+        }
+
         public static void ComputeRefactoring(RefactoringContext context, StructDeclarationSyntax structDeclaration)
         {
             if (MemberDeclarationListSelection.TryCreate(structDeclaration, context.Span, out MemberDeclarationListSelection selectedMembers))

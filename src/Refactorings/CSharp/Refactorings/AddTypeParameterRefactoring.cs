@@ -37,6 +37,29 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
+        public static void ComputeRefactoring(RefactoringContext context, RecordDeclarationSyntax recordDeclaration)
+        {
+            TypeParameterListSyntax typeParameterList = recordDeclaration.TypeParameterList;
+
+            if (typeParameterList != null)
+            {
+                if (context.Span.IsEmptyAndContainedInSpan(typeParameterList))
+                    RegisterRefactoring(context, recordDeclaration);
+            }
+            else
+            {
+                TextSpan span = context.Span;
+
+                SyntaxToken identifier = recordDeclaration.Identifier;
+
+                if (CheckIdentifierAndSpan(identifier, span)
+                    && span.End <= identifier.GetNextToken().SpanStart)
+                {
+                    RegisterRefactoring(context, recordDeclaration);
+                }
+            }
+        }
+
         public static void ComputeRefactoring(RefactoringContext context, StructDeclarationSyntax structDeclaration)
         {
             TypeParameterListSyntax typeParameterList = structDeclaration.TypeParameterList;
@@ -235,6 +258,11 @@ namespace Roslynator.CSharp.Refactorings
                         newNode = GetNewNode((ClassDeclarationSyntax)node, constraint, semanticModel);
                         break;
                     }
+                case SyntaxKind.RecordDeclaration:
+                    {
+                        newNode = GetNewNode((RecordDeclarationSyntax)node, constraint, semanticModel);
+                        break;
+                    }
                 case SyntaxKind.StructDeclaration:
                     {
                         newNode = GetNewNode((StructDeclarationSyntax)node, constraint, semanticModel);
@@ -284,6 +312,25 @@ namespace Roslynator.CSharp.Refactorings
             string name = GetTypeParameterName(classDeclaration.OpenBraceToken.SpanStart, semanticModel);
 
             ClassDeclarationSyntax newNode = classDeclaration.AddTypeParameterListParameters(TypeParameter(Identifier(name).WithRenameAnnotation()));
+
+            if (constraint != null)
+                newNode = newNode.AddConstraintClauses(TypeParameterConstraintClause(name, constraint));
+
+            return newNode;
+        }
+
+        private static RecordDeclarationSyntax GetNewNode(
+            RecordDeclarationSyntax recordDeclaration,
+            TypeParameterConstraintSyntax constraint,
+            SemanticModel semanticModel)
+        {
+            int position = (recordDeclaration.OpenBraceToken != default)
+                ? recordDeclaration.OpenBraceToken.SpanStart
+                : recordDeclaration.SemicolonToken.SpanStart;
+
+            string name = GetTypeParameterName(position, semanticModel);
+
+            RecordDeclarationSyntax newNode = recordDeclaration.AddTypeParameterListParameters(TypeParameter(Identifier(name).WithRenameAnnotation()));
 
             if (constraint != null)
                 newNode = newNode.AddConstraintClauses(TypeParameterConstraintClause(name, constraint));

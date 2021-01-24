@@ -94,6 +94,9 @@ namespace Roslynator.CSharp
             if (typeof(TNode) == typeof(IncompleteMemberSyntax))
                 return new IncompleteMemberModifierList();
 
+            if (typeof(TNode) == typeof(RecordDeclarationSyntax))
+                return new RecordDeclarationModifierList();
+
             throw new InvalidOperationException();
         }
 
@@ -750,6 +753,24 @@ namespace Roslynator.CSharp
             }
 
             internal override StructDeclarationSyntax WithModifiers(StructDeclarationSyntax node, SyntaxTokenList modifiers)
+            {
+                return node.WithModifiers(modifiers);
+            }
+        }
+
+        private class RecordDeclarationModifierList : ModifierList<RecordDeclarationSyntax>
+        {
+            internal override SyntaxList<AttributeListSyntax> GetAttributeLists(RecordDeclarationSyntax node)
+            {
+                return node.AttributeLists;
+            }
+
+            internal override SyntaxTokenList GetModifiers(RecordDeclarationSyntax node)
+            {
+                return node.Modifiers;
+            }
+
+            internal override RecordDeclarationSyntax WithModifiers(RecordDeclarationSyntax node, SyntaxTokenList modifiers)
             {
                 return node.WithModifiers(modifiers);
             }

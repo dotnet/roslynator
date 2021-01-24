@@ -109,6 +109,8 @@ namespace Roslynator.CSharp.Refactorings
                     return ((ClassDeclarationSyntax)node).AttributeLists;
                 case SyntaxKind.TypeParameter:
                     return ((TypeParameterSyntax)node).AttributeLists;
+                case SyntaxKind.RecordDeclaration:
+                    return ((RecordDeclarationSyntax)node).AttributeLists;
                 case SyntaxKind.StructDeclaration:
                     return ((StructDeclarationSyntax)node).AttributeLists;
                 case SyntaxKind.PropertyDeclaration:
@@ -144,8 +146,6 @@ namespace Roslynator.CSharp.Refactorings
                 case SyntaxKind.AddAccessorDeclaration:
                 case SyntaxKind.RemoveAccessorDeclaration:
                     return ((AccessorDeclarationSyntax)node).AttributeLists;
-                case SyntaxKind.RecordDeclaration:
-                    return ((RecordDeclarationSyntax)node).AttributeLists;
                 default:
                     {
                         Debug.Assert(node.Kind() == SyntaxKind.GlobalStatement, node.Kind().ToString());
@@ -169,6 +169,8 @@ namespace Roslynator.CSharp.Refactorings
                     return ((ClassDeclarationSyntax)node).WithAttributeLists(attributeLists);
                 case SyntaxKind.TypeParameter:
                     return ((TypeParameterSyntax)node).WithAttributeLists(attributeLists);
+                case SyntaxKind.RecordDeclaration:
+                    return ((RecordDeclarationSyntax)node).WithAttributeLists(attributeLists);
                 case SyntaxKind.StructDeclaration:
                     return ((StructDeclarationSyntax)node).WithAttributeLists(attributeLists);
                 case SyntaxKind.PropertyDeclaration:
@@ -204,8 +206,6 @@ namespace Roslynator.CSharp.Refactorings
                 case SyntaxKind.AddAccessorDeclaration:
                 case SyntaxKind.RemoveAccessorDeclaration:
                     return ((AccessorDeclarationSyntax)node).WithAttributeLists(attributeLists);
-                case SyntaxKind.RecordDeclaration:
-                    return ((RecordDeclarationSyntax)node).WithAttributeLists(attributeLists);
                 default:
                     {
                         Debug.Fail(node.Kind().ToString());

@@ -1618,6 +1618,52 @@ namespace Roslynator.CSharp
         }
         #endregion PropertyDeclarationSyntax
 
+        #region RecordDeclarationSyntax
+        /// <summary>
+        /// Creates a new <see cref="RecordDeclarationSyntax"/> with the members updated.
+        /// </summary>
+        /// <param name="recordDeclaration"></param>
+        /// <param name="member"></param>
+        public static RecordDeclarationSyntax WithMembers(
+            this RecordDeclarationSyntax recordDeclaration,
+            MemberDeclarationSyntax member)
+        {
+            if (recordDeclaration == null)
+                throw new ArgumentNullException(nameof(recordDeclaration));
+
+            return recordDeclaration.WithMembers(SingletonList(member));
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="RecordDeclarationSyntax"/> with the members updated.
+        /// </summary>
+        /// <param name="recordDeclaration"></param>
+        /// <param name="members"></param>
+        public static RecordDeclarationSyntax WithMembers(
+            this RecordDeclarationSyntax recordDeclaration,
+            IEnumerable<MemberDeclarationSyntax> members)
+        {
+            if (recordDeclaration == null)
+                throw new ArgumentNullException(nameof(recordDeclaration));
+
+            return recordDeclaration.WithMembers(List(members));
+        }
+
+        /// <summary>
+        /// The absolute span of the braces, not including its leading and trailing trivia.
+        /// </summary>
+        /// <param name="recordDeclaration"></param>
+        public static TextSpan BracesSpan(this RecordDeclarationSyntax recordDeclaration)
+        {
+            if (recordDeclaration == null)
+                throw new ArgumentNullException(nameof(recordDeclaration));
+
+            return TextSpan.FromBounds(
+                recordDeclaration.OpenBraceToken.SpanStart,
+                recordDeclaration.CloseBraceToken.Span.End);
+        }
+        #endregion RecordDeclarationSyntax
+
         #region RegionDirectiveTriviaSyntax
         /// <summary>
         /// Returns endregion directive that is related to the specified region directive. Returns null if no matching endregion directive is found.
@@ -3975,6 +4021,8 @@ namespace Roslynator.CSharp
             {
                 case SyntaxKind.ClassDeclaration:
                     return ((ClassDeclarationSyntax)typeDeclaration).WithMembers(newMembers);
+                case SyntaxKind.RecordDeclaration:
+                    return ((RecordDeclarationSyntax)typeDeclaration).WithMembers(newMembers);
                 case SyntaxKind.StructDeclaration:
                     return ((StructDeclarationSyntax)typeDeclaration).WithMembers(newMembers);
                 case SyntaxKind.InterfaceDeclaration:

@@ -104,6 +104,8 @@ namespace Roslynator.CSharp.Refactorings
             {
                 case SyntaxKind.ClassDeclaration:
                     return ((ClassDeclarationSyntax)node).Identifier;
+                case SyntaxKind.RecordDeclaration:
+                    return ((RecordDeclarationSyntax)node).Identifier;
                 case SyntaxKind.StructDeclaration:
                     return ((StructDeclarationSyntax)node).Identifier;
                 case SyntaxKind.InterfaceDeclaration:
@@ -131,6 +133,8 @@ namespace Roslynator.CSharp.Refactorings
             {
                 case SyntaxKind.ClassDeclaration:
                     return ((ClassDeclarationSyntax)member).WithIdentifier(identifier);
+                case SyntaxKind.RecordDeclaration:
+                    return ((RecordDeclarationSyntax)member).WithIdentifier(identifier);
                 case SyntaxKind.StructDeclaration:
                     return ((StructDeclarationSyntax)member).WithIdentifier(identifier);
                 case SyntaxKind.InterfaceDeclaration:

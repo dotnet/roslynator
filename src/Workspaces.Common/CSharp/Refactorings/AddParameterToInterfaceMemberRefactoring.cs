@@ -388,6 +388,8 @@ namespace Roslynator.CSharp.Refactorings
             {
                 case SyntaxKind.ClassDeclaration:
                     return ((ClassDeclarationSyntax)node).BaseList;
+                case SyntaxKind.RecordDeclaration:
+                    return ((RecordDeclarationSyntax)node).BaseList;
                 case SyntaxKind.InterfaceDeclaration:
                     return ((InterfaceDeclarationSyntax)node).BaseList;
                 default:

@@ -116,6 +116,12 @@ namespace Roslynator.CSharp
 
                         return document.ReplaceNodeAsync(interfaceDeclaration, SyntaxRefactorings.RemoveMember(interfaceDeclaration, member), cancellationToken);
                     }
+                case SyntaxKind.RecordDeclaration:
+                    {
+                        var recordDeclaration = (RecordDeclarationSyntax)parent;
+
+                        return document.ReplaceNodeAsync(recordDeclaration, SyntaxRefactorings.RemoveMember(recordDeclaration, member), cancellationToken);
+                    }
                 default:
                     {
                         Debug.Assert(parent == null, parent.Kind().ToString());

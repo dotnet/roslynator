@@ -30,6 +30,21 @@ namespace Roslynator.CSharp.Analysis
             return null;
         }
 
+        public static List<IMethodSymbol> GetMissingBaseConstructors(
+            RecordDeclarationSyntax recordDeclaration,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
+        {
+            INamedTypeSymbol symbol = semanticModel.GetDeclaredSymbol(recordDeclaration, cancellationToken);
+
+            INamedTypeSymbol baseSymbol = symbol?.BaseType;
+
+            if (baseSymbol?.IsObject() == false)
+                return GetMissingBaseConstructors(symbol, baseSymbol);
+
+            return null;
+        }
+
         private static List<IMethodSymbol> GetMissingBaseConstructors(INamedTypeSymbol symbol, INamedTypeSymbol baseSymbol)
         {
             ImmutableArray<IMethodSymbol> constructors = symbol.InstanceConstructors.RemoveAll(f => f.IsImplicitlyDeclared);

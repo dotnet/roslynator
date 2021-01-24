@@ -194,6 +194,7 @@ namespace Roslynator.CSharp.CodeFixes
                                 case SyntaxKind.ClassDeclaration:
                                 case SyntaxKind.StructDeclaration:
                                 case SyntaxKind.InterfaceDeclaration:
+                                case SyntaxKind.RecordDeclaration:
                                     {
                                         node = memberDeclaration;
                                         break;

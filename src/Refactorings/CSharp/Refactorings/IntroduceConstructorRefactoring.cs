@@ -310,6 +310,8 @@ namespace Roslynator.CSharp.Refactorings
             {
                 case SyntaxKind.ClassDeclaration:
                     return ((ClassDeclarationSyntax)declaration).Identifier.Text;
+                case SyntaxKind.RecordDeclaration:
+                    return ((RecordDeclarationSyntax)declaration).Identifier.Text;
                 case SyntaxKind.StructDeclaration:
                     return ((StructDeclarationSyntax)declaration).Identifier.Text;
             }
@@ -322,6 +324,7 @@ namespace Roslynator.CSharp.Refactorings
             switch (declaration.Kind())
             {
                 case SyntaxKind.ClassDeclaration:
+                case SyntaxKind.RecordDeclaration:
                 case SyntaxKind.StructDeclaration:
                     return declaration;
                 default:
