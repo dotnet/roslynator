@@ -50,8 +50,8 @@ namespace Roslynator.CSharp.CodeFixes
                     SyntaxKind.EqualsExpression,
                     SyntaxKind.NotEqualsExpression,
                     SyntaxKind.IsPatternExpression,
-                    SyntaxKind.ConditionalExpression
-                    ,SyntaxKind.SimpleMemberAccessExpression
+                    SyntaxKind.ConditionalExpression,
+                    SyntaxKind.SimpleMemberAccessExpression
                     )))
             {
                 
@@ -312,19 +312,15 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 var invocation = (MemberAccessExpressionSyntax)node;
 
-
                 if (diagnostic.Properties.TryGetValue("MethodName", out methodName1)
                                 && methodName1 == "IdenitifierKeyValue")
                 {
-
                     CodeAction codeAction = CodeAction.Create(
                     "Call 'Method' after the identifier Keys/Values",
                   ct => CallMethodAndIndentifierInReverseOrderAsync(document, invocation, ct),
                     GetEquivalenceKey(diagnostic, "CallMethodAfterIdentifiers"));
 
                     context.RegisterCodeFix(codeAction, diagnostic);
-
-
                 }
             }
         }
