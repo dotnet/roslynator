@@ -156,6 +156,11 @@ namespace Roslynator.CSharp.Testing
             return WithAllowedCompilerDiagnosticIds(AllowedCompilerDiagnosticIds.AddRange(diagnosticIds));
         }
 
+        public CSharpCodeVerificationOptions AddAssemblyName(string assemblyName)
+        {
+            return WithAssemblyNames(AssemblyNames.Add(assemblyName));
+        }
+
         public CSharpCodeVerificationOptions WithAllowedCompilerDiagnosticIds(IEnumerable<string> allowedCompilerDiagnosticIds)
         {
             return new CSharpCodeVerificationOptions(
@@ -209,6 +214,16 @@ namespace Roslynator.CSharp.Testing
                 parseOptions: ParseOptions,
                 compilationOptions: compilationOptions,
                 assemblyNames: AssemblyNames,
+                allowedCompilerDiagnosticSeverity: AllowedCompilerDiagnosticSeverity,
+                allowedCompilerDiagnosticIds: AllowedCompilerDiagnosticIds);
+        }
+
+        public CSharpCodeVerificationOptions WithAssemblyNames(IEnumerable<string> assemblyNames)
+        {
+            return new CSharpCodeVerificationOptions(
+                parseOptions: ParseOptions,
+                compilationOptions: CompilationOptions,
+                assemblyNames: assemblyNames,
                 allowedCompilerDiagnosticSeverity: AllowedCompilerDiagnosticSeverity,
                 allowedCompilerDiagnosticIds: AllowedCompilerDiagnosticIds);
         }
