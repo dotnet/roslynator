@@ -20,7 +20,7 @@ namespace Roslynator.Testing
     {
         private ImmutableArray<string> _fixableDiagnosticIds;
 
-        internal FixVerifier(WorkspaceFactory workspaceFactory) : base(workspaceFactory)
+        internal FixVerifier(WorkspaceFactory workspaceFactory, IAssert assert) : base(workspaceFactory, assert)
         {
         }
 

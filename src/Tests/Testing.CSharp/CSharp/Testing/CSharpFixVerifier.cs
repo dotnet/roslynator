@@ -9,7 +9,7 @@ namespace Roslynator.CSharp.Testing
     {
         private CSharpCodeVerificationOptions _options;
 
-        protected CSharpFixVerifier() : base(CSharpWorkspaceFactory.Instance)
+        protected CSharpFixVerifier(IAssert assert) : base(CSharpWorkspaceFactory.Instance, assert)
         {
         }
 

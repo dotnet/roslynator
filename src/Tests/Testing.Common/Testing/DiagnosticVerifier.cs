@@ -20,7 +20,7 @@ namespace Roslynator.Testing
         private ImmutableArray<DiagnosticAnalyzer> _analyzers;
         private ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 
-        internal DiagnosticVerifier(WorkspaceFactory workspaceFactory) : base(workspaceFactory)
+        internal DiagnosticVerifier(WorkspaceFactory workspaceFactory, IAssert assert) : base(workspaceFactory, assert)
         {
         }
 

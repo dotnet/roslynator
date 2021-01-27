@@ -12,9 +12,10 @@ namespace Roslynator.Testing
 {
     public abstract class CodeVerifier
     {
-        internal CodeVerifier(WorkspaceFactory workspaceFactory)
+        internal CodeVerifier(WorkspaceFactory workspaceFactory, IAssert assert)
         {
             WorkspaceFactory = workspaceFactory;
+            Assert = assert;
         }
 
         protected abstract CodeVerificationOptions CommonOptions { get; }
@@ -23,9 +24,9 @@ namespace Roslynator.Testing
 
         internal WorkspaceFactory WorkspaceFactory { get; }
 
-        internal virtual TextParser TextParser { get; } = TextParser.Default;
+        protected IAssert Assert { get; }
 
-        protected abstract IAssert Assert { get; }
+        internal virtual TextParser TextParser { get; } = TextParser.Default;
 
         internal void VerifyCompilerDiagnostics(
             ImmutableArray<Diagnostic> diagnostics,

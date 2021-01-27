@@ -9,7 +9,7 @@ namespace Roslynator.VisualBasic.Testing
     {
         private VisualBasicCodeVerificationOptions _options;
 
-        protected VisualBasicRefactoringVerifier() : base(VisualBasicWorkspaceFactory.Instance)
+        protected VisualBasicRefactoringVerifier(IAssert assert) : base(VisualBasicWorkspaceFactory.Instance, assert)
         {
         }
 
