@@ -137,9 +137,7 @@ namespace Roslynator.Testing
 
             using (Workspace workspace = new AdhocWorkspace())
             {
-                Project project = WorkspaceFactory.AddProject(workspace.CurrentSolution, options);
-
-                Document document = WorkspaceFactory.AddDocument(project, source, additionalSources);
+                Document document = WorkspaceFactory.CreateDocument(workspace.CurrentSolution, source, additionalSources, options);
 
                 SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken);
 
@@ -226,9 +224,7 @@ namespace Roslynator.Testing
 
             using (Workspace workspace = new AdhocWorkspace())
             {
-                Project project = WorkspaceFactory.AddProject(workspace.CurrentSolution, options);
-
-                Document document = WorkspaceFactory.AddDocument(project, source);
+                Document document = WorkspaceFactory.CreateDocument(workspace.CurrentSolution, source, options);
 
                 SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken);
 

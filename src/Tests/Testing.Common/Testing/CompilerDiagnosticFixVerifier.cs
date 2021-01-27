@@ -79,11 +79,9 @@ namespace Roslynator.Testing
 
             using (Workspace workspace = new AdhocWorkspace())
             {
-                Project project = WorkspaceFactory.AddProject(workspace.CurrentSolution, options);
+                Document document = WorkspaceFactory.CreateDocument(workspace.CurrentSolution, source, options);
 
-                Document document = WorkspaceFactory.AddDocument(project, source);
-
-                project = document.Project;
+                Project project = document.Project;
 
                 ImmutableArray<ExpectedDocument> expectedDocuments = (additionalData != null)
                     ? WorkspaceFactory.AddAdditionalDocuments(additionalData, ref project)
@@ -200,9 +198,7 @@ namespace Roslynator.Testing
 
             using (Workspace workspace = new AdhocWorkspace())
             {
-                Project project = WorkspaceFactory.AddProject(workspace.CurrentSolution, options);
-
-                Document document = WorkspaceFactory.AddDocument(project, source);
+                Document document = WorkspaceFactory.CreateDocument(workspace.CurrentSolution, source, options);
 
                 Compilation compilation = await document.Project.GetCompilationAsync(cancellationToken);
 

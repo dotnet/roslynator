@@ -164,9 +164,7 @@ namespace Roslynator.Testing
 
             using (Workspace workspace = new AdhocWorkspace())
             {
-                Project project = WorkspaceFactory.AddProject(workspace.CurrentSolution, options);
-
-                Document document = WorkspaceFactory.AddDocument(project, source, additionalSources);
+                Document document = WorkspaceFactory.CreateDocument(workspace.CurrentSolution, source, additionalSources, options);
 
                 Compilation compilation = await document.Project.GetCompilationAsync(cancellationToken);
 
@@ -247,9 +245,7 @@ namespace Roslynator.Testing
 
             using (Workspace workspace = new AdhocWorkspace())
             {
-                Project project = WorkspaceFactory.AddProject(workspace.CurrentSolution, options);
-
-                Document document = WorkspaceFactory.AddDocument(project, source, additionalSources);
+                Document document = WorkspaceFactory.CreateDocument(workspace.CurrentSolution, source, additionalSources, options);
 
                 Compilation compilation = await document.Project.GetCompilationAsync(cancellationToken);
 

@@ -16,6 +16,18 @@ namespace Roslynator.Testing
 
         public virtual string DefaultProjectName => "TestProject";
 
+        public Document CreateDocument(Solution solution, string source, CodeVerificationOptions options)
+        {
+            return CreateDocument(solution, source, additionalSource: null, options);
+        }
+
+        public Document CreateDocument(Solution solution, string source, IEnumerable<string> additionalSource, CodeVerificationOptions options)
+        {
+            Project project = AddProject(solution, options);
+
+            return AddDocument(project, source, additionalSource);
+        }
+
         public virtual Project AddProject(Solution solution, CodeVerificationOptions options)
         {
             return solution
