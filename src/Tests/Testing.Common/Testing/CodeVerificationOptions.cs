@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -17,7 +18,10 @@ namespace Roslynator.Testing
             DiagnosticSeverity allowedCompilerDiagnosticSeverity = DiagnosticSeverity.Info,
             IEnumerable<string> allowedCompilerDiagnosticIds = null)
         {
-            AssemblyNames = assemblyNames;
+            if (assemblyNames == null)
+                throw new ArgumentNullException(nameof(assemblyNames));
+
+            AssemblyNames = assemblyNames.ToImmutableArray();
             AllowedCompilerDiagnosticSeverity = allowedCompilerDiagnosticSeverity;
             AllowedCompilerDiagnosticIds = allowedCompilerDiagnosticIds?.ToImmutableArray() ?? ImmutableArray<string>.Empty;
         }
@@ -30,7 +34,7 @@ namespace Roslynator.Testing
 
         public CompilationOptions CompilationOptions => CommonCompilationOptions;
 
-        public IEnumerable<string> AssemblyNames { get; }
+        public ImmutableArray<string> AssemblyNames { get; }
 
         public DiagnosticSeverity AllowedCompilerDiagnosticSeverity { get; }
 
@@ -52,7 +56,7 @@ namespace Roslynator.Testing
                     builder.Add(CorLibReference);
 
                     IEnumerable<MetadataReference> metadataReferences;
-                    if (AssemblyNames != null)
+                    if (!AssemblyNames.IsEmpty)
                     {
                         metadataReferences = AssemblyNames.Select(f => MetadataReference.CreateFromFile(TrustedPlatformAssemblyMap[f]));
                     }
