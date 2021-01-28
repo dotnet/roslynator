@@ -116,12 +116,50 @@ namespace Roslynator
 
             ImmutableArray<CodeFixProvider> fixers = ImmutableArray<CodeFixProvider>.Empty;
 
-            if (analyzers.Any()
-                && loadFixers)
+            if (loadFixers)
             {
                 fixers = analyzerAssemblies
                     .GetFixers(language)
                     .Concat(analyzerReferences.GetOrAddFixers(assemblies, language))
+                    .Where(fixProvider =>
+                    {
+                        ImmutableArray<string> fixableDiagnosticIds = fixProvider.FixableDiagnosticIds;
+
+                        if (options.SupportedDiagnosticIds.Count > 0)
+                        {
+                            var success = false;
+
+                            foreach (string fixableDiagnosticId in fixableDiagnosticIds)
+                            {
+                                if (options.SupportedDiagnosticIds.Contains(fixableDiagnosticId))
+                                {
+                                    success = true;
+                                    break;
+                                }
+                            }
+
+                            if (!success)
+                                return false;
+                        }
+                        else if (options.IgnoredDiagnosticIds.Count > 0)
+                        {
+                            var success = false;
+
+                            foreach (string fixableDiagnosticId in fixableDiagnosticIds)
+                            {
+                                if (!options.IgnoredDiagnosticIds.Contains(fixableDiagnosticId))
+                                {
+                                    success = true;
+                                    break;
+                                }
+                            }
+
+                            if (!success)
+                                return false;
+                        }
+
+                        return true;
+                    })
                     .ToImmutableArray();
             }
 

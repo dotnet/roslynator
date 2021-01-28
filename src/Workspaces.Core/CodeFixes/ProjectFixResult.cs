@@ -12,8 +12,6 @@ namespace Roslynator.CodeFixes
     {
         internal static ProjectFixResult Skipped { get; } = new ProjectFixResult(ProjectFixKind.Skipped);
 
-        internal static ProjectFixResult NoAnalyzers { get; } = new ProjectFixResult(ProjectFixKind.NoAnalyzers);
-
         internal ProjectFixResult(
             ProjectFixKind kind,
             IEnumerable<Diagnostic> fixedDiagnostics = default,

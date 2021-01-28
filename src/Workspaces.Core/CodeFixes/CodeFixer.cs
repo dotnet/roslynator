@@ -174,12 +174,6 @@ namespace Roslynator.CodeFixes
             ImmutableArray<CodeFixProvider> fixers,
             CancellationToken cancellationToken)
         {
-            if (!analyzers.Any())
-            {
-                WriteLine($"  No analyzers found to analyze '{project.Name}'", ConsoleColor.DarkGray, Verbosity.Normal);
-                return ProjectFixResult.NoAnalyzers;
-            }
-
             if (!fixers.Any())
             {
                 WriteLine($"  No fixers found to fix '{project.Name}'", ConsoleColor.DarkGray, Verbosity.Normal);
@@ -191,12 +185,6 @@ namespace Roslynator.CodeFixes
             analyzers = analyzers
                 .Where(analyzer => analyzer.SupportedDiagnostics.Any(descriptor => fixersById.ContainsKey(descriptor.Id)))
                 .ToImmutableArray();
-
-            if (!analyzers.Any())
-            {
-                WriteLine($"  No fixable analyzers found to analyze '{project.Name}'", ConsoleColor.DarkGray, Verbosity.Normal);
-                return new ProjectFixResult(ProjectFixKind.NoFixableAnalyzers, analyzers: analyzers, fixers: fixers);
-            }
 
             Dictionary<string, ImmutableArray<DiagnosticAnalyzer>> analyzersById = GetAnalyzersById(analyzers);
 
@@ -227,9 +215,13 @@ namespace Roslynator.CodeFixes
 
                 WriteLine($"  Analyze '{project.Name}'", Verbosity.Normal);
 
-                ImmutableArray<Diagnostic> diagnostics = await compilation.GetAnalyzerDiagnosticsAsync(analyzers, Options.CompilationWithAnalyzersOptions, cancellationToken).ConfigureAwait(false);
+                ImmutableArray<Diagnostic> diagnostics = ImmutableArray<Diagnostic>.Empty;
 
-                LogHelpers.WriteAnalyzerExceptionDiagnostics(diagnostics);
+                if (analyzers.Any())
+                {
+                    diagnostics = await compilation.GetAnalyzerDiagnosticsAsync(analyzers, Options.CompilationWithAnalyzersOptions, cancellationToken).ConfigureAwait(false);
+                    LogHelpers.WriteAnalyzerExceptionDiagnostics(diagnostics);
+                }
 
                 diagnostics = GetFixableDiagnostics(diagnostics, compilerDiagnostics);
 
