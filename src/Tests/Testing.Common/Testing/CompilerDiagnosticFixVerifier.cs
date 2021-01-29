@@ -48,6 +48,7 @@ namespace Roslynator.Testing
             string source,
             string sourceData,
             string expectedData,
+            string title = null,
             string equivalenceKey = null,
             CodeVerificationOptions options = null,
             CancellationToken cancellationToken = default)
@@ -57,6 +58,7 @@ namespace Roslynator.Testing
             await VerifyFixAsync(
                 source: source2,
                 expected: expected,
+                title: title,
                 equivalenceKey: equivalenceKey,
                 options: options,
                 cancellationToken: cancellationToken);
@@ -66,6 +68,7 @@ namespace Roslynator.Testing
             string source,
             string expected,
             IEnumerable<(string source, string expected)> additionalData = null,
+            string title = null,
             string equivalenceKey = null,
             CodeVerificationOptions options = null,
             CancellationToken cancellationToken = default)
@@ -150,7 +153,7 @@ namespace Roslynator.Testing
 
                     fixRegistered = true;
 
-                    document = await document.ApplyCodeActionAsync(action);
+                    document = await VerifyAndApplyCodeActionAsync(document, action, title);
 
                     previousDiagnostics = diagnostics;
                 }

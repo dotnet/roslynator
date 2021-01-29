@@ -1,11 +1,13 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CodeActions;
 using Roslynator.Testing.Text;
 
 namespace Roslynator.Testing
@@ -140,6 +142,23 @@ namespace Roslynator.Testing
 
                 Assert.Equal(expectedDocument.Text, actual);
             }
+        }
+
+        public async Task<Document> VerifyAndApplyCodeActionAsync(Document document, CodeAction codeAction, string expectedTitle)
+        {
+            if (expectedTitle != null
+                && !string.Equals(expectedTitle, codeAction.Title, StringComparison.Ordinal))
+            {
+                Assert.True(false, $"Code action title is invalid.\r\nexpected: {expectedTitle}\r\nactual: {codeAction.Title}");
+            }
+
+            ImmutableArray<CodeActionOperation> operations = await codeAction.GetOperationsAsync(CancellationToken.None);
+
+            return operations
+                .OfType<ApplyChangesOperation>()
+                .Single()
+                .ChangedSolution
+                .GetDocument(document.Id);
         }
     }
 }

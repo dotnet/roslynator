@@ -29,16 +29,5 @@ namespace Roslynator
 
             return root.ToFullString();
         }
-
-        public static async Task<Document> ApplyCodeActionAsync(this Document document, CodeAction codeAction)
-        {
-            ImmutableArray<CodeActionOperation> operations = await codeAction.GetOperationsAsync(CancellationToken.None);
-
-            return operations
-                .OfType<ApplyChangesOperation>()
-                .Single()
-                .ChangedSolution
-                .GetDocument(document.Id);
-        }
     }
 }
