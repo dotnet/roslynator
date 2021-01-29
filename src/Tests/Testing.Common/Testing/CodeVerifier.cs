@@ -87,7 +87,7 @@ namespace Roslynator.Testing
                     .Where(diagnostic => !allowedDiagnosticIds.Any(id => id == diagnostic.Id))
                     .Except(diagnostics, DiagnosticDeepEqualityComparer.Instance);
 
-                Assert.True(false, $"Code fix introduced new compiler diagnostics.{diff.ToDebugString()}");
+                Assert.True(false, $"Code fix introduced new compiler diagnostic(s).{diff.ToDebugString()}");
             }
 
             bool IsAnyNewCompilerDiagnostic()

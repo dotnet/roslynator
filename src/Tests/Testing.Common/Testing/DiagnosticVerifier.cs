@@ -286,7 +286,7 @@ namespace Roslynator.Testing
             using (IEnumerator<Diagnostic> actualEnumerator = actualDiagnostics.OrderBy(f => f, DiagnosticComparer.SpanStart).GetEnumerator())
             {
                 if (!expectedEnumerator.MoveNext())
-                    throw new InvalidOperationException($"'{nameof(expectedDiagnostics)}' contains no elements.");
+                    Assert.True(false, "Diagnostic's location not found in a source text.");
 
                 do
                 {
@@ -310,7 +310,7 @@ namespace Roslynator.Testing
                         while (expectedEnumerator.MoveNext())
                             expectedCount++;
 
-                        Assert.True(false, $"Mismatch between number of diagnostics returned, expected: {expectedCount} actual: {actualCount}{actualDiagnostics.ToDebugString()}");
+                        ReportMismatch(actualDiagnostics, actualCount, expectedCount);
                     }
 
                 } while (expectedEnumerator.MoveNext());
@@ -322,7 +322,19 @@ namespace Roslynator.Testing
                     while (actualEnumerator.MoveNext())
                         actualCount++;
 
-                    Assert.True(false, $"Mismatch between number of diagnostics returned, expected: {expectedCount} actual: {actualCount}{actualDiagnostics.ToDebugString()}");
+                    ReportMismatch(actualDiagnostics, actualCount, expectedCount);
+                }
+            }
+
+            void ReportMismatch(IEnumerable<Diagnostic> actualDiagnostics, int actualCount, int expectedCount)
+            {
+                if (actualCount == 0)
+                {
+                    Assert.True(false, $"No diagnostic found, expected: {expectedCount}.");
+                }
+                else
+                {
+                    Assert.True(false, $"Mismatch between number of diagnostics, expected: {expectedCount} actual: {actualCount}{actualDiagnostics.ToDebugString()}");
                 }
             }
         }

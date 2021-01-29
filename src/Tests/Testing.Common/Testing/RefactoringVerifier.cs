@@ -103,7 +103,7 @@ namespace Roslynator.Testing
             using (IEnumerator<TextSpan> en = spans.GetEnumerator())
             {
                 if (!en.MoveNext())
-                    throw new InvalidOperationException($"'{nameof(spans)}' contains no elements.");
+                    Assert.True(false, "Span on which a refactoring should be invoked was not found.");
 
                 do
                 {
@@ -235,7 +235,7 @@ namespace Roslynator.Testing
                 using (IEnumerator<TextSpan> en = spans.GetEnumerator())
                 {
                     if (!en.MoveNext())
-                        throw new InvalidOperationException($"'{nameof(spans)}' contains no elements.");
+                        Assert.True(false, "Span on which a refactoring should be invoked was not found.");
 
                     do
                     {
