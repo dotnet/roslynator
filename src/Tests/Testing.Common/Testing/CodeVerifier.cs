@@ -16,6 +16,7 @@ namespace Roslynator.Testing
         {
             WorkspaceFactory = workspaceFactory;
             Assert = assert;
+            TextParser = new DefaultTextParser(Assert);
         }
 
         protected abstract CodeVerificationOptions CommonOptions { get; }
@@ -26,7 +27,7 @@ namespace Roslynator.Testing
 
         protected IAssert Assert { get; }
 
-        internal virtual TextParser TextParser { get; } = TextParser.Default;
+        internal TextParser TextParser { get; }
 
         internal void VerifyCompilerDiagnostics(
             ImmutableArray<Diagnostic> diagnostics,

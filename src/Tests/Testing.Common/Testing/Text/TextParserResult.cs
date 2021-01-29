@@ -17,6 +17,8 @@ namespace Roslynator.Testing.Text
 
         public ImmutableArray<LinePositionSpanInfo> Spans { get; }
 
+        public bool Success => Text != null;
+
         public override bool Equals(object obj)
         {
             return obj is TextParserResult other
