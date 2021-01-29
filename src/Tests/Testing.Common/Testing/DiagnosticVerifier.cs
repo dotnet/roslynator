@@ -14,6 +14,9 @@ using Roslynator.Testing.Text;
 
 namespace Roslynator.Testing
 {
+    /// <summary>
+    /// Represents verifier for a diagnostic that is produced by <see cref="DiagnosticAnalyzer"/>.
+    /// </summary>
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public abstract class DiagnosticVerifier : CodeVerifier
     {
@@ -24,12 +27,25 @@ namespace Roslynator.Testing
         {
         }
 
+        /// <summary>
+        /// Gets a <see cref="DiagnosticDescriptor"/> that describes diagnostic that should be verified.
+        /// </summary>
         public abstract DiagnosticDescriptor Descriptor { get; }
 
+        /// <summary>
+        /// Gets an analyzer that can produce a diagnostic that should be verified.
+        /// </summary>
         protected abstract DiagnosticAnalyzer Analyzer { get; }
 
+        /// <summary>
+        /// Gets a collection of additional analyzers that can produce a diagnostic that should be verified.
+        /// Override this property if a diagnostic that should be verified can be produced by more than one analyzer.
+        /// </summary>
         protected virtual ImmutableArray<DiagnosticAnalyzer> AdditionalAnalyzers { get; } = ImmutableArray<DiagnosticAnalyzer>.Empty;
 
+        /// <summary>
+        /// A collection of analyzers that can produce a diagnostic that should be verified.
+        /// </summary>
         public ImmutableArray<DiagnosticAnalyzer> Analyzers
         {
             get
@@ -75,6 +91,12 @@ namespace Roslynator.Testing
             get { return $"{Descriptor.Id} {string.Join(", ", Analyzers.Select(f => f.GetType().Name))}"; }
         }
 
+        /// <summary>
+        /// Verifies that specified source will produce diagnostic described with see <see cref="Descriptor"/>
+        /// </summary>
+        /// <param name="source">A source code that should be tested. Tokens [| and |] represents start and end of selection respectively.</param>
+        /// <param name="options"></param>
+        /// <param name="cancellationToken"></param>
         public async Task VerifyDiagnosticAsync(
             string source,
             CodeVerificationOptions options = null,
@@ -90,6 +112,13 @@ namespace Roslynator.Testing
                 cancellationToken);
         }
 
+        /// <summary>
+        /// Verifies that specified source will produce diagnostic described with see <see cref="Descriptor"/>
+        /// </summary>
+        /// <param name="source">Source text that contains placeholder [||] to be replaced with <paramref name="sourceData"/>.</param>
+        /// <param name="sourceData"></param>
+        /// <param name="options"></param>
+        /// <param name="cancellationToken"></param>
         public async Task VerifyDiagnosticAsync(
             string source,
             string sourceData,
@@ -207,6 +236,10 @@ namespace Roslynator.Testing
             }
         }
 
+        /// <summary>
+        /// Updates compilation that will be used during verification.
+        /// </summary>
+        /// <param name="compilation"></param>
         protected virtual Compilation UpdateCompilation(Compilation compilation)
         {
             if (!Descriptor.IsEnabledByDefault)
@@ -215,6 +248,13 @@ namespace Roslynator.Testing
             return compilation;
         }
 
+        /// <summary>
+        /// Verifies that specified source will not produce diagnostic described with see <see cref="Descriptor"/>
+        /// </summary>
+        /// <param name="source">Source text that contains placeholder [||] to be replaced with <paramref name="sourceData"/>.</param>
+        /// <param name="sourceData"></param>
+        /// <param name="options"></param>
+        /// <param name="cancellationToken"></param>
         public async Task VerifyNoDiagnosticAsync(
             string source,
             string sourceData,
@@ -230,6 +270,13 @@ namespace Roslynator.Testing
                 cancellationToken);
         }
 
+        /// <summary>
+        /// Verifies that specified source will not produce diagnostic described with see <see cref="Descriptor"/>
+        /// </summary>
+        /// <param name="source">A source code that should be tested. Tokens [| and |] represents start and end of selection respectively.</param>
+        /// <param name="additionalSources"></param>
+        /// <param name="options"></param>
+        /// <param name="cancellationToken"></param>
         public async Task VerifyNoDiagnosticAsync(
             string source,
             IEnumerable<string> additionalSources = null,
@@ -241,7 +288,7 @@ namespace Roslynator.Testing
             options ??= Options;
 
             if (SupportedDiagnostics.IndexOf(Descriptor, DiagnosticDescriptorComparer.Id) == -1)
-                Assert.True(false, $"Diagnostic \"{Descriptor.Id}\" is not supported by analyzer(s) {string.Join(", ", Analyzers.Select(f => f.GetType().Name))}.");
+                  Assert.True(false, $"Diagnostic \"{Descriptor.Id}\" is not supported by analyzer(s) {string.Join(", ", Analyzers.Select(f => f.GetType().Name))}.");
 
             using (Workspace workspace = new AdhocWorkspace())
             {

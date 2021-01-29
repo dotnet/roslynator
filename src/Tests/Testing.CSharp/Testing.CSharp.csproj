@@ -14,7 +14,7 @@
     <Deterministic>true</Deterministic>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsNotAsErrors>1591</WarningsNotAsErrors>
-    <DocumentationFile>bin\Release\netstandard1.3\Roslynator.Testing.CSharp.xml</DocumentationFile>
+    <DocumentationFile>bin\$(Configuration)\netstandard2.0\Roslynator.Testing.CSharp.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup>

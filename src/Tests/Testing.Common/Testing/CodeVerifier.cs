@@ -10,8 +10,13 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Roslynator.Testing.Text;
 
+#pragma warning disable RCS1223
+
 namespace Roslynator.Testing
 {
+    /// <summary>
+    /// Represents base type for verifying diagnostics, code fixes and refactorings.
+    /// </summary>
     public abstract class CodeVerifier
     {
         internal CodeVerifier(WorkspaceFactory workspaceFactory, IAssert assert)
@@ -21,12 +26,21 @@ namespace Roslynator.Testing
             TextParser = new DefaultTextParser(Assert);
         }
 
+        /// <summary>
+        /// Gets a common code verification options.
+        /// </summary>
         protected abstract CodeVerificationOptions CommonOptions { get; }
 
+        /// <summary>
+        /// Gets a code verification options.
+        /// </summary>
         public CodeVerificationOptions Options => CommonOptions;
 
         internal WorkspaceFactory WorkspaceFactory { get; }
 
+        /// <summary>
+        /// Gets a test assertions.
+        /// </summary>
         protected IAssert Assert { get; }
 
         internal TextParser TextParser { get; }
@@ -144,7 +158,7 @@ namespace Roslynator.Testing
             }
         }
 
-        public async Task<Document> VerifyAndApplyCodeActionAsync(Document document, CodeAction codeAction, string expectedTitle)
+        internal async Task<Document> VerifyAndApplyCodeActionAsync(Document document, CodeAction codeAction, string expectedTitle)
         {
             if (expectedTitle != null
                 && !string.Equals(expectedTitle, codeAction.Title, StringComparison.Ordinal))

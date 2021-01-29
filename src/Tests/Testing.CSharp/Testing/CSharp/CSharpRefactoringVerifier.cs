@@ -5,14 +5,24 @@ using Roslynator.Testing;
 
 namespace Roslynator.Testing.CSharp
 {
+    /// <summary>
+    /// Represents verifier for a C# refactoring that is provided by <see cref="RefactoringVerifier.RefactoringProvider"/>
+    /// </summary>
     public abstract class CSharpRefactoringVerifier : RefactoringVerifier
     {
         private CSharpCodeVerificationOptions _options;
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="CSharpRefactoringVerifier"/>.
+        /// </summary>
+        /// <param name="assert"></param>
         protected CSharpRefactoringVerifier(IAssert assert) : base(CSharpWorkspaceFactory.Instance, assert)
         {
         }
 
+        /// <summary>
+        /// Gets a code verification options.
+        /// </summary>
         new public CSharpCodeVerificationOptions Options
         {
             get
@@ -24,6 +34,9 @@ namespace Roslynator.Testing.CSharp
             }
         }
 
+        /// <summary>
+        /// Gets a common code verification options.
+        /// </summary>
         protected override CodeVerificationOptions CommonOptions => Options;
 
         private CSharpCodeVerificationOptions CreateAndUpdateOptions()
@@ -33,11 +46,18 @@ namespace Roslynator.Testing.CSharp
             return UpdateOptions(options);
         }
 
+        /// <summary>
+        /// Creates a new code verification options.
+        /// </summary>
         protected virtual CSharpCodeVerificationOptions CreateOptions()
         {
             return CSharpCodeVerificationOptions.Default;
         }
 
+        /// <summary>
+        /// Updates a code verification options.
+        /// </summary>
+        /// <param name="options"></param>
         protected virtual CSharpCodeVerificationOptions UpdateOptions(CSharpCodeVerificationOptions options)
         {
             return options;

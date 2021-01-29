@@ -14,6 +14,9 @@ using Microsoft.CodeAnalysis.CodeFixes;
 
 namespace Roslynator.Testing
 {
+    /// <summary>
+    /// Represents a verifier for compiler diagnostics (i.e CS1234 for C#).
+    /// </summary>
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public abstract class CompilerDiagnosticFixVerifier : CodeVerifier
     {
@@ -23,8 +26,14 @@ namespace Roslynator.Testing
         {
         }
 
+        /// <summary>
+        /// Gets an ID of a diagnostic to verify.
+        /// </summary>
         public abstract string DiagnosticId { get; }
 
+        /// <summary>
+        /// Gets an <see cref="CodeFixProvider"/> that should fix a diagnostic.
+        /// </summary>
         public abstract CodeFixProvider FixProvider { get; }
 
         internal ImmutableArray<string> FixableDiagnosticIds
@@ -44,6 +53,16 @@ namespace Roslynator.Testing
             get { return $"{DiagnosticId} {FixProvider.GetType().Name}"; }
         }
 
+        /// <summary>
+        /// Verifies that specified source will produce compiler diagnostic with ID specified in <see cref="DiagnosticId"/>.
+        /// </summary>
+        /// <param name="source">Source text that contains placeholder [||] to be replaced with <paramref name="sourceData"/> and <paramref name="expectedData"/>.</param>
+        /// <param name="sourceData"></param>
+        /// <param name="expectedData"></param>
+        /// <param name="title">Code action's title.</param>
+        /// <param name="equivalenceKey">Code action's equivalence key.</param>
+        /// <param name="options"></param>
+        /// <param name="cancellationToken"></param>
         public async Task VerifyFixAsync(
             string source,
             string sourceData,
@@ -64,6 +83,16 @@ namespace Roslynator.Testing
                 cancellationToken: cancellationToken);
         }
 
+        /// <summary>
+        /// Verifies that specified source will produce compiler diagnostic with ID specified in <see cref="DiagnosticId"/>.
+        /// </summary>
+        /// <param name="source">A source code that should be tested. Tokens [| and |] represents start and end of selection respectively.</param>
+        /// <param name="expected"></param>
+        /// <param name="additionalData"></param>
+        /// <param name="title">Code action's title.</param>
+        /// <param name="equivalenceKey">Code action's equivalence key.</param>
+        /// <param name="options"></param>
+        /// <param name="cancellationToken"></param>
         public async Task VerifyFixAsync(
             string source,
             string expected,
@@ -188,7 +217,13 @@ namespace Roslynator.Testing
             }
         }
 
-        [SuppressMessage("Redundancy", "RCS1163:Unused parameter.")]
+        /// <summary>
+        /// Verifies that specified source will not produce compiler diagnostic with ID specified in <see cref="DiagnosticId"/>.
+        /// </summary>
+        /// <param name="source">A source code that should be tested. Tokens [| and |] represents start and end of selection respectively.</param>
+        /// <param name="equivalenceKey">Code action's equivalence key.</param>
+        /// <param name="options"></param>
+        /// <param name="cancellationToken"></param>
         public async Task VerifyNoFixAsync(
             string source,
             string equivalenceKey = null,

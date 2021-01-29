@@ -15,6 +15,9 @@ using Roslynator.Testing.Text;
 
 namespace Roslynator.Testing
 {
+    /// <summary>
+    /// Represents verifier for a refactoring that is provided by <see cref="RefactoringProvider"/>
+    /// </summary>
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public abstract class RefactoringVerifier : CodeVerifier
     {
@@ -22,8 +25,14 @@ namespace Roslynator.Testing
         {
         }
 
+        /// <summary>
+        /// ID of a refactoring that should be applied.
+        /// </summary>
         public abstract string RefactoringId { get; }
 
+        /// <summary>
+        /// <see cref="CodeRefactoringProvider"/> that provides a refactoring that should be applied.
+        /// </summary>
         public abstract CodeRefactoringProvider RefactoringProvider { get; }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -37,6 +46,16 @@ namespace Roslynator.Testing
             }
         }
 
+        /// <summary>
+        /// Verifies that a refactoring can be applied on a specified source code.
+        /// </summary>
+        /// <param name="source">A source code that should be tested. Tokens [| and |] represents start and end of selection respectively.</param>
+        /// <param name="expected"></param>
+        /// <param name="additionalSources"></param>
+        /// <param name="title">Code action's title.</param>
+        /// <param name="equivalenceKey">Code action's equivalence key.</param>
+        /// <param name="options"></param>
+        /// <param name="cancellationToken"></param>
         public async Task VerifyRefactoringAsync(
             string source,
             string expected,
@@ -59,6 +78,16 @@ namespace Roslynator.Testing
                 cancellationToken: cancellationToken);
         }
 
+        /// <summary>
+        /// Verifies that a refactoring can be applied on a specified source code.
+        /// </summary>
+        /// <param name="source">Source text that contains placeholder [||] to be replaced with <paramref name="sourceData"/> and <paramref name="expectedData"/>.</param>
+        /// <param name="sourceData"></param>
+        /// <param name="expectedData"></param>
+        /// <param name="title">Code action's title.</param>
+        /// <param name="equivalenceKey">Code action's equivalence key.</param>
+        /// <param name="options"></param>
+        /// <param name="cancellationToken"></param>
         public async Task VerifyRefactoringAsync(
             string source,
             string sourceData,
@@ -188,6 +217,13 @@ namespace Roslynator.Testing
             }
         }
 
+        /// <summary>
+        /// Verifies that a refactoring cannot be applied on a specified source code.
+        /// </summary>
+        /// <param name="source">A source code that should be tested. Tokens [| and |] represents start and end of selection respectively.</param>
+        /// <param name="equivalenceKey">Code action's equivalence key.</param>
+        /// <param name="options"></param>
+        /// <param name="cancellationToken"></param>
         public async Task VerifyNoRefactoringAsync(
             string source,
             string equivalenceKey = null,
