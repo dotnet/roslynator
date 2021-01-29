@@ -7,9 +7,8 @@ using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Roslynator.Testing;
 
-namespace Roslynator.CSharp.Testing
+namespace Roslynator.Testing.CSharp
 {
     public class CSharpCodeVerificationOptions : CodeVerificationOptions
     {

@@ -1,6 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-namespace Roslynator.Testing.Xunit
+namespace Roslynator.Testing.CSharp
 {
     public class XunitAssert : IAssert
     {
@@ -8,12 +8,12 @@ namespace Roslynator.Testing.Xunit
 
         public void Equal(string expected, string actual)
         {
-            global::Xunit.Assert.Equal(expected, actual);
+            Xunit.Assert.Equal(expected, actual);
         }
 
         public void True(bool condition, string userMessage)
         {
-            global::Xunit.Assert.True(condition, userMessage);
+            Xunit.Assert.True(condition, userMessage);
         }
     }
 }

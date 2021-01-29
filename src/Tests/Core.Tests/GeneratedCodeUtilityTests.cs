@@ -3,7 +3,7 @@
 using Xunit;
 using static Roslynator.GeneratedCodeUtility;
 
-namespace Roslynator.CSharp.Testing
+namespace Roslynator.Testing.CSharp
 {
     public static class GeneratedCodeUtilityTests
     {

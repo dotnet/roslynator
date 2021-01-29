@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using Microsoft.CodeAnalysis.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Testing
+namespace Roslynator.Testing.CSharp
 {
     public static class SyntaxKindTests
     {

@@ -3,7 +3,7 @@
 using Microsoft.CodeAnalysis;
 using Roslynator.Testing;
 
-namespace Roslynator.CSharp.Testing
+namespace Roslynator.Testing.CSharp
 {
     internal class CSharpWorkspaceFactory : WorkspaceFactory
     {

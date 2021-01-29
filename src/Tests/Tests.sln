@@ -55,7 +55,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeAnalysis.Analyzers.Test
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Formatting.Analyzers.Tests", "Formatting.Analyzers.Tests\Formatting.Analyzers.Tests.csproj", "{9DC478DB-29BA-4E65-A90B-DED7360D4DCB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Testing.Xunit", "Testing.Xunit\Testing.Xunit.csproj", "{78F79E77-71CE-409A-9027-17C93FE93D98}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Testing.CSharp.Xunit", "Testing.CSharp.Xunit\Testing.CSharp.Xunit.csproj", "{78F79E77-71CE-409A-9027-17C93FE93D98}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeAnalysis.Analyzers", "..\CodeAnalysis.Analyzers\CodeAnalysis.Analyzers.csproj", "{023E891D-06BE-445E-8A8D-AE48C9393A4B}"
 EndProject

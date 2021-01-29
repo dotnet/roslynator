@@ -3,13 +3,13 @@
 using System.Threading;
 using Roslynator.Testing;
 
-namespace Roslynator.CSharp.Testing
+namespace Roslynator.Testing.CSharp
 {
-    public abstract class CSharpRefactoringVerifier : RefactoringVerifier
+    public abstract class CSharpDiagnosticVerifier : DiagnosticVerifier
     {
         private CSharpCodeVerificationOptions _options;
 
-        protected CSharpRefactoringVerifier(IAssert assert) : base(CSharpWorkspaceFactory.Instance, assert)
+        protected CSharpDiagnosticVerifier(IAssert assert) : base(CSharpWorkspaceFactory.Instance, assert)
         {
         }
 

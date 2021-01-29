@@ -3,7 +3,7 @@
 using System.Threading;
 using Roslynator.Testing;
 
-namespace Roslynator.CSharp.Testing
+namespace Roslynator.Testing.CSharp
 {
     public abstract class CSharpFixVerifier : FixVerifier
     {
