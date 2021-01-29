@@ -92,11 +92,11 @@ namespace Roslynator.Testing
 
         public async Task VerifyDiagnosticAsync(
             string source,
-            string inlineSource,
+            string sourceData,
             CodeVerificationOptions options = null,
             CancellationToken cancellationToken = default)
         {
-            (TextSpan span, string text) = TextParser.ReplaceEmptySpan(source, inlineSource);
+            (TextSpan span, string text) = TextParser.ReplaceEmptySpan(source, sourceData);
 
             TextParserResult result = TextParser.GetSpans(text);
 
@@ -217,11 +217,11 @@ namespace Roslynator.Testing
 
         public async Task VerifyNoDiagnosticAsync(
             string source,
-            string inlineSource,
+            string sourceData,
             CodeVerificationOptions options = null,
             CancellationToken cancellationToken = default)
         {
-            (_, string text) = TextParser.ReplaceEmptySpan(source, inlineSource);
+            (_, string text) = TextParser.ReplaceEmptySpan(source, sourceData);
 
             await VerifyNoDiagnosticAsync(
                 source: text,

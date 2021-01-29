@@ -46,13 +46,13 @@ namespace Roslynator.Testing
 
         public async Task VerifyFixAsync(
             string source,
-            string inlineSource,
-            string inlineExpected,
+            string sourceData,
+            string expectedData,
             string equivalenceKey = null,
             CodeVerificationOptions options = null,
             CancellationToken cancellationToken = default)
         {
-            (_, string source2, string expected) = TextParser.ReplaceEmptySpan(source, inlineSource, inlineExpected);
+            (_, string source2, string expected) = TextParser.ReplaceEmptySpan(source, sourceData, expectedData);
 
             await VerifyFixAsync(
                 source: source2,
