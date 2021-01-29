@@ -120,16 +120,10 @@ namespace Roslynator.CodeFixes
                 if (document == null)
                     continue;
 
-                CodeAction fix = await GetFixAsync(diagnostic, fixer, document, multipleFixesInfos, options, cancellationToken).ConfigureAwait(false);
+                CodeAction fix = await GetFixAsync(diagnostic, fixer, document, multipleFixesInfos, equivalenceKeys, cancellationToken).ConfigureAwait(false);
 
                 if (fix == null)
                     continue;
-
-                if (!equivalenceKeys.IsDefault
-                    && !equivalenceKeys.Contains(fix.EquivalenceKey, StringComparer.Ordinal))
-                {
-                    continue;
-                }
 
                 var fixAllContext = new FixAllContext(
                     document,
@@ -179,7 +173,9 @@ namespace Roslynator.CodeFixes
             if (document == null)
                 return default;
 
-            CodeAction action = await GetFixAsync(diagnostic, fixer, document, multipleFixesInfos: default, options, cancellationToken).ConfigureAwait(false);
+            options.DiagnosticFixMap.TryGetValue(diagnostic.Id, out ImmutableArray<string> equivalenceKeys);
+
+            CodeAction action = await GetFixAsync(diagnostic, fixer, document, multipleFixesInfos: default, equivalenceKeys, cancellationToken).ConfigureAwait(false);
 
             if (action == null)
             {
@@ -195,7 +191,7 @@ namespace Roslynator.CodeFixes
             CodeFixProvider fixer,
             Document document,
             HashSet<MultipleFixesInfo> multipleFixesInfos,
-            CodeFixerOptions options,
+            ImmutableArray<string> equivalenceKeys,
             CancellationToken cancellationToken)
         {
             CodeAction action = null;
@@ -205,12 +201,17 @@ namespace Roslynator.CodeFixes
                 diagnostic,
                 (a, _) =>
                 {
+                    if (!equivalenceKeys.IsDefaultOrEmpty
+                        && !equivalenceKeys.Contains(a.EquivalenceKey, StringComparer.Ordinal))
+                    {
+                        return;
+                    }
+
                     if (action == null)
                     {
                         action = a;
                     }
-                    else if (!string.Equals(a.EquivalenceKey, action.EquivalenceKey, StringComparison.Ordinal)
-                        && (options.DiagnosticFixMap.IsEmpty || !options.DiagnosticFixMap.ContainsKey(diagnostic.Id)))
+                    else
                     {
                         var multipleFixesInfo = new MultipleFixesInfo(diagnostic.Id, fixer, action.EquivalenceKey, a.EquivalenceKey);
 
@@ -218,9 +219,7 @@ namespace Roslynator.CodeFixes
                             multipleFixesInfos = new HashSet<MultipleFixesInfo>();
 
                         if (multipleFixesInfos.Add(multipleFixesInfo))
-                        {
                             WriteMultipleActionsSummary(multipleFixesInfo);
-                        }
 
                         action = null;
                     }
