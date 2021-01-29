@@ -603,7 +603,7 @@ class C
         M2(M);
     }
 }
-", options: Options.WithSuppressed(AnalyzerOptions.ConvertMethodGroupToAnonymousFunction));
+", options: Options.WithDisabled(AnalyzerOptions.ConvertMethodGroupToAnonymousFunction));
         }
     }
 }
