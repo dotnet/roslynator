@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.SortEnumMembers;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new SortEnumMembersAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new SortEnumMembersAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new EnumDeclarationCodeFixProvider();
 

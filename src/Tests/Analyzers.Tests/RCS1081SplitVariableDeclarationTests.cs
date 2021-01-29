@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.SplitVariableDeclaration;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new SplitVariableDeclarationAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new SplitVariableDeclarationAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new VariableDeclarationCodeFixProvider();
 

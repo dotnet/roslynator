@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.UseExplicitlyTypedArrayOrViceVersa;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new UseExplicitlyTypedArrayOrViceVersaAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new UseExplicitlyTypedArrayOrViceVersaAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new UseExplicitlyTypedArrayOrViceVersaCodeFixProvider();
 

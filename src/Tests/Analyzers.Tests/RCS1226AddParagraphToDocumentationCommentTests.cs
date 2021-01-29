@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.AddParagraphToDocumentationComment;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new AddParagraphToDocumentationCommentAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new AddParagraphToDocumentationCommentAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new AddParagraphToDocumentationCommentCodeFixProvider();
 

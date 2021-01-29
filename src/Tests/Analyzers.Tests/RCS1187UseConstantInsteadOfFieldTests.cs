@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.UseConstantInsteadOfField;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new UseConstantInsteadOfFieldAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new UseConstantInsteadOfFieldAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new MemberDeclarationCodeFixProvider();
 

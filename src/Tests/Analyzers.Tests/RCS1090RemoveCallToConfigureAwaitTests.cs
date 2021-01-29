@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.AddCallToConfigureAwaitOrViceVersa;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new AddCallToConfigureAwaitOrViceVersaAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new AddCallToConfigureAwaitOrViceVersaAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new AwaitExpressionCodeFixProvider();
 

@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.RemoveRedundantCast;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new RemoveRedundantCastAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new RemoveRedundantCastAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new RemoveRedundantCastCodeFixProvider();
 

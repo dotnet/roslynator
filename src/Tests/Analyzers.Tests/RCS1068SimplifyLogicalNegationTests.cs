@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.SimplifyLogicalNegation;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new SimplifyLogicalNegationAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new SimplifyLogicalNegationAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new SimplifyLogicalNegationCodeFixProvider();
 

@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.UsePredefinedType;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new UsePredefinedTypeAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new UsePredefinedTypeAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new UsePredefinedTypeCodeFixProvider();
 

@@ -13,7 +13,7 @@ namespace Roslynator.Formatting.CSharp.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.FixFormattingOfCallChain;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new FixFormattingOfCallChainAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new FixFormattingOfCallChainAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new FixFormattingOfCallChainCodeFixProvider();
 

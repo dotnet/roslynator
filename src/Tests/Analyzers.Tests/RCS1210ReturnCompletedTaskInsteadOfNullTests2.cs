@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.ReturnCompletedTaskInsteadOfNull;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new ReturnCompletedTaskInsteadOfNullAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new ReturnCompletedTaskInsteadOfNullAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new ReturnCompletedTaskInsteadOfNullCodeFixProvider2();
 

@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.SimplifyNestedUsingStatement;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new SimplifyNestedUsingStatementAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new SimplifyNestedUsingStatementAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new SimplifyNestedUsingStatementCodeFixProvider();
 

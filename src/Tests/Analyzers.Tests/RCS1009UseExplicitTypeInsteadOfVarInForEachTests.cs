@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.UseExplicitTypeInsteadOfVarInForEach;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new UseExplicitTypeInsteadOfVarInForEachAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new UseExplicitTypeInsteadOfVarInForEachAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new UseExplicitTypeInsteadOfVarInForEachCodeFixProvider();
 

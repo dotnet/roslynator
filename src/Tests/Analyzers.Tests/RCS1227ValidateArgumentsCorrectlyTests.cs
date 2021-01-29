@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.ValidateArgumentsCorrectly;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new ValidateArgumentsCorrectlyAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new ValidateArgumentsCorrectlyAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new ValidateArgumentsCorrectlyCodeFixProvider();
 

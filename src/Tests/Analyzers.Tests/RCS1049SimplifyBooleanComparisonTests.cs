@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.SimplifyBooleanComparison;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new BooleanLiteralAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new BooleanLiteralAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new BinaryExpressionCodeFixProvider();
 

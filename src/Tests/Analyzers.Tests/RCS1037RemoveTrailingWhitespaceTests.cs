@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.RemoveTrailingWhitespace;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new WhitespaceAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new WhitespaceAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new WhitespaceTriviaCodeFixProvider();
 

@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.MakeFieldReadOnly;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new MakeMemberReadOnlyAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new MakeMemberReadOnlyAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new MemberDeclarationCodeFixProvider();
 

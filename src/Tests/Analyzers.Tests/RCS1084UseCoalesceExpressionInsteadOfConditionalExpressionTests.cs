@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.UseCoalesceExpressionInsteadOfConditionalExpression;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new SimplifyNullCheckAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new SimplifyNullCheckAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new ConditionalExpressionCodeFixProvider();
 

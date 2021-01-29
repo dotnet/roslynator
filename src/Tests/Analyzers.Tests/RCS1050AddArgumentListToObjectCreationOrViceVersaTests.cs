@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.AddArgumentListToObjectCreationOrViceVersa;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new AddArgumentListToObjectCreationOrViceVersaAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new AddArgumentListToObjectCreationOrViceVersaAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new AddArgumentListToObjectCreationOrViceVersaCodeFixProvider();
 

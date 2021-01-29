@@ -12,7 +12,7 @@ namespace Roslynator.CodeAnalysis.CSharp.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.CallLastInsteadOfUsingElementAccess;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new ElementAccessExpressionAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new ElementAccessExpressionAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new ElementAccessExpressionCodeFixProvider();
 

@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.UnnecessaryNullCheck;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new UnnecessaryNullCheckAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new UnnecessaryNullCheckAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new BinaryExpressionCodeFixProvider();
 

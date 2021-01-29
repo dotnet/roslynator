@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.OverridingMemberShouldNotChangeParamsModifier;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new OverridingMemberShouldNotChangeParamsModifierAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new OverridingMemberShouldNotChangeParamsModifierAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new ParameterCodeFixProvider();
 

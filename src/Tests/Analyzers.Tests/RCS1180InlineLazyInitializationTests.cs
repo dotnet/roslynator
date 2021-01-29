@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.InlineLazyInitialization;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new UseCoalesceExpressionAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new UseCoalesceExpressionAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new StatementCodeFixProvider();
 

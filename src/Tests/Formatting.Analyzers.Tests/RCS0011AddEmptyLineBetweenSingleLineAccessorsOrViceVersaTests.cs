@@ -13,7 +13,7 @@ namespace Roslynator.Formatting.CSharp.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.AddEmptyLineBetweenSingleLineAccessorsOrViceVersa;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new AddOrRemoveEmptyLineBetweenAccessorsAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new AddOrRemoveEmptyLineBetweenAccessorsAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new SyntaxTriviaCodeFixProvider();
 

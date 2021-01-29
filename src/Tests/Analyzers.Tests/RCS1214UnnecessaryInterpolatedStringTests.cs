@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.UnnecessaryInterpolatedString;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new UnnecessaryInterpolatedStringAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new UnnecessaryInterpolatedStringAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new InterpolatedStringCodeFixProvider();
 

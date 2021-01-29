@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.UsePatternMatchingInsteadOfIsAndCast;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new UsePatternMatchingInsteadOfIsAndCastAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new UsePatternMatchingInsteadOfIsAndCastAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new UsePatternMatchingInsteadOfIsAndCastCodeFixProvider();
 

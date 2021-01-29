@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.ConvertAnonymousFunctionToMethodGroupOrViceVersa;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new ConvertAnonymousFunctionToMethodGroupOrViceVersaAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new ConvertAnonymousFunctionToMethodGroupOrViceVersaAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new ConvertAnonymousFunctionToMethodGroupOrViceVersaCodeFixProvider();
 

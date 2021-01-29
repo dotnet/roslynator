@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.RemoveUnusedMemberDeclaration;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new UnusedMemberAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new UnusedMemberAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new UnusedMemberCodeFixProvider();
 

@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.ConvertLambdaExpressionBodyToExpressionBody;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new LambdaExpressionAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new LambdaExpressionAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new ConvertLambdaExpressionBodyToExpressionBodyCodeFixProvider();
 

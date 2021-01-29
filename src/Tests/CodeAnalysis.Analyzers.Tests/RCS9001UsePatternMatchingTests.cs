@@ -12,7 +12,7 @@ namespace Roslynator.CodeAnalysis.CSharp.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.UsePatternMatching;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new UsePatternMatchingAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new UsePatternMatchingAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new UsePatternMatchingCodeFixProvider();
 

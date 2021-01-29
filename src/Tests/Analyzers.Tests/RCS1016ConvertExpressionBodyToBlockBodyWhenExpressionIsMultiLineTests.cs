@@ -17,7 +17,7 @@ namespace Roslynator.CSharp.Analysis.Tests
 
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.ConvertBlockBodyToExpressionBodyOrViceVersa;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new ConvertBlockBodyToExpressionBodyOrViceVersaAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new ConvertBlockBodyToExpressionBodyOrViceVersaAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new ConvertBlockBodyToExpressionBodyOrViceVersaCodeFixProvider();
 

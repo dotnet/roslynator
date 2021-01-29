@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.ConvertHasFlagCallToBitwiseOperationOrViceVersa;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new ConvertHasFlagCallToBitwiseOperationOrViceVersaAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new ConvertHasFlagCallToBitwiseOperationOrViceVersaAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new ConvertHasFlagCallToBitwiseOperationOrViceVersaCodeFixProvider();
 

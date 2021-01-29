@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.InlineLocalVariable;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new InlineLocalVariableAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new InlineLocalVariableAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new LocalDeclarationStatementCodeFixProvider();
 

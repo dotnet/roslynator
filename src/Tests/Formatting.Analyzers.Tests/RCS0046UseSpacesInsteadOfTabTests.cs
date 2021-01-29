@@ -15,7 +15,7 @@ namespace Roslynator.Formatting.CSharp.Tests
 
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.UseSpacesInsteadOfTab;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new UseSpacesInsteadOfTabAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new UseSpacesInsteadOfTabAnalyzer();
 
         public override CodeFixProvider FixProvider
         {

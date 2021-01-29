@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.ParenthesizeConditionOfConditionalExpression;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new ParenthesizeConditionOfConditionalExpressionAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new ParenthesizeConditionOfConditionalExpressionAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new ExpressionCodeFixProvider();
 

@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.DuplicateWordInComment;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new DuplicateWordInCommentAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new DuplicateWordInCommentAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new DuplicateWordInCommentCodeFixProvider();
 

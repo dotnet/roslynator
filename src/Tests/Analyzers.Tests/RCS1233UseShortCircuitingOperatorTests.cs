@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.UseShortCircuitingOperator;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new UseShortCircuitingOperatorAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new UseShortCircuitingOperatorAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new BinaryExpressionCodeFixProvider();
 

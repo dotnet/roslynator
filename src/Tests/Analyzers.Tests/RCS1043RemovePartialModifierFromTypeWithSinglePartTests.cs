@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.RemovePartialModifierFromTypeWithSinglePart;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new RemovePartialModifierFromTypeWithSinglePartAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new RemovePartialModifierFromTypeWithSinglePartAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new RemovePartialModifierFromTypeWithSinglePartCodeFixProvider();
 

@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.UnusedParameter;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new UnusedParameter.UnusedParameterAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new UnusedParameter.UnusedParameterAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new UnusedParameterCodeFixProvider();
 

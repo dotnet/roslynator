@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.UseGenericEventHandler;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new UseGenericEventHandlerAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new UseGenericEventHandlerAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new TypeCodeFixProvider();
 

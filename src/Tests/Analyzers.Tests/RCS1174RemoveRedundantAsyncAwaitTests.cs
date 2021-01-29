@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.RemoveRedundantAsyncAwait;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new RemoveRedundantAsyncAwaitAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new RemoveRedundantAsyncAwaitAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new RemoveRedundantAsyncAwaitCodeFixProvider();
 

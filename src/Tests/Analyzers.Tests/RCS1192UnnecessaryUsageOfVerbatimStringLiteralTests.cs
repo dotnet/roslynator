@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.UnnecessaryUsageOfVerbatimStringLiteral;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new UnnecessaryUsageOfVerbatimStringLiteralAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new UnnecessaryUsageOfVerbatimStringLiteralAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new UnnecessaryUsageOfVerbatimStringLiteralCodeFixProvider();
 

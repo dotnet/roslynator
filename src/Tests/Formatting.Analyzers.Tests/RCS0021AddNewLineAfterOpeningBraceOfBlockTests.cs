@@ -13,7 +13,7 @@ namespace Roslynator.Formatting.CSharp.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.AddNewLineAfterOpeningBraceOfBlock;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new AddNewLineAfterOpeningBraceOfBlockAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new AddNewLineAfterOpeningBraceOfBlockAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new BlockCodeFixProvider();
 

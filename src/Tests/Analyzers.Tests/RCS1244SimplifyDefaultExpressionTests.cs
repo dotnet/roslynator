@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.SimplifyDefaultExpression;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new DefaultExpressionAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new DefaultExpressionAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new DefaultExpressionCodeFixProvider();
 

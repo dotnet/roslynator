@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.RemoveBracesFromIfElse;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new RemoveBracesFromIfElseAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new RemoveBracesFromIfElseAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new RemoveBracesFromIfElseCodeFixProvider();
 

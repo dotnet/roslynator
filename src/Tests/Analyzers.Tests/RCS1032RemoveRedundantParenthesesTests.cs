@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.RemoveRedundantParentheses;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new RemoveRedundantParenthesesAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new RemoveRedundantParenthesesAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new ParenthesizedExpressionCodeFixProvider();
 

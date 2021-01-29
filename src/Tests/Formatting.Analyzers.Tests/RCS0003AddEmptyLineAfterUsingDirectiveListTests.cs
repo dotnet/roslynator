@@ -15,7 +15,7 @@ namespace Roslynator.Formatting.CSharp.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.AddEmptyLineAfterUsingDirectiveList;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new AddEmptyLineAfterUsingDirectiveListAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new AddEmptyLineAfterUsingDirectiveListAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new AddEmptyLineBeforeAndAfterUsingDirectiveListCodeFixProvider();
 

@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.UseNameOfOperator;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new UseNameOfOperatorAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new UseNameOfOperatorAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new UseNameOfOperatorCodeFixProvider();
 

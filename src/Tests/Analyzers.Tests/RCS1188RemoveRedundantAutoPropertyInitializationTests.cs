@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.RemoveRedundantAutoPropertyInitialization;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new RemoveRedundantAutoPropertyInitializationAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new RemoveRedundantAutoPropertyInitializationAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new PropertyDeclarationCodeFixProvider();
 

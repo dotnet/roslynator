@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.MakeClassStatic;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new MakeClassStaticAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new MakeClassStaticAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new ClassDeclarationCodeFixProvider();
 

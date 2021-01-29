@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.UseForStatementInsteadOfWhileStatement;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new UseForStatementInsteadOfWhileStatementAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new UseForStatementInsteadOfWhileStatementAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new WhileStatementCodeFixProvider();
 

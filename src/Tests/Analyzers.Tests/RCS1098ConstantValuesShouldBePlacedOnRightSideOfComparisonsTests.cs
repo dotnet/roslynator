@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.ConstantValuesShouldBePlacedOnRightSideOfComparisons;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new ConstantValuesShouldBePlacedOnRightSideOfComparisonsAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new ConstantValuesShouldBePlacedOnRightSideOfComparisonsAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new BinaryExpressionCodeFixProvider();
 

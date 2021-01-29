@@ -14,9 +14,9 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.AvoidBoxingOfValueType;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new AvoidBoxingOfValueTypeAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new AvoidBoxingOfValueTypeAnalyzer();
 
-        public override ImmutableArray<DiagnosticAnalyzer> AdditionalAnalyzers => ImmutableArray.Create<DiagnosticAnalyzer>(new InvocationExpressionAnalyzer());
+        protected override ImmutableArray<DiagnosticAnalyzer> AdditionalAnalyzers => ImmutableArray.Create<DiagnosticAnalyzer>(new InvocationExpressionAnalyzer());
 
         public override CodeFixProvider FixProvider { get; } = new AvoidBoxingOfValueTypeCodeFixProvider();
 

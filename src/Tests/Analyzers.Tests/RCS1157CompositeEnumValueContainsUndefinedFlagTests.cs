@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.CompositeEnumValueContainsUndefinedFlag;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new EnumSymbolAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new EnumSymbolAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new CompositeEnumValueContainsUndefinedFlagCodeFixProvider();
 

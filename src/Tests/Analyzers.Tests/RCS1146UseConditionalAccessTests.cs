@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.UseConditionalAccess;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new UseConditionalAccessAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new UseConditionalAccessAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new UseConditionalAccessCodeFixProvider();
 

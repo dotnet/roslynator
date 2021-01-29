@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Analysis.Tests
 
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.ImplementNonGenericCounterpart;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new NamedTypeSymbolAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new NamedTypeSymbolAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = _fixProvider;
 

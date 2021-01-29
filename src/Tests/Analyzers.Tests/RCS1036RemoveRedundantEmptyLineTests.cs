@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.RemoveRedundantEmptyLine;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new RemoveRedundantEmptyLineAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new RemoveRedundantEmptyLineAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new WhitespaceTriviaCodeFixProvider();
 

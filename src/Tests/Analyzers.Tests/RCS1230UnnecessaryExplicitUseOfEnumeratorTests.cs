@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.UnnecessaryExplicitUseOfEnumerator;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new UnnecessaryExplicitUseOfEnumeratorAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new UnnecessaryExplicitUseOfEnumeratorAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new UnnecessaryExplicitUseOfEnumeratorCodeFixProvider();
 

@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.SimplifyCoalesceExpression;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new SimplifyCoalesceExpressionAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new SimplifyCoalesceExpressionAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new BinaryExpressionCodeFixProvider();
 

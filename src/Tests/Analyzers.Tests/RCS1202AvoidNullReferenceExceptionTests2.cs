@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Analysis.Tests
 
         public override CodeFixProvider FixProvider { get; } = new AvoidNullReferenceExceptionCodeFixProvider();
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new AvoidNullReferenceExceptionAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new AvoidNullReferenceExceptionAnalyzer();
 
         [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
         [InlineData("(x as string)[|.|]ToString()", "(x as string)?.ToString()")]

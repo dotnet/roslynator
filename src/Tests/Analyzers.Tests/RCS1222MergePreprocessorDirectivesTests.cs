@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.MergePreprocessorDirectives;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new MergePreprocessorDirectivesAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new MergePreprocessorDirectivesAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new DirectiveTriviaCodeFixProvider();
 

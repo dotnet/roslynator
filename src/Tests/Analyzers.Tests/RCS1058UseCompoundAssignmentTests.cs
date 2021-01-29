@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.UseCompoundAssignment;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new UseCompoundAssignmentAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new UseCompoundAssignmentAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new UseCompoundAssignmentCodeFixProvider();
 

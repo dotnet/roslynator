@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.AvoidUsageOfUsingAliasDirective;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new AvoidUsageOfUsingAliasDirectiveAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new AvoidUsageOfUsingAliasDirectiveAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new UsingDirectiveCodeFixProvider();
 

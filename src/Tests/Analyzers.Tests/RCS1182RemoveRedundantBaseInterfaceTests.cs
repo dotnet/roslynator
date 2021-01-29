@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.RemoveRedundantBaseInterface;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new RemoveRedundantBaseInterfaceAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new RemoveRedundantBaseInterfaceAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new BaseTypeCodeFixProvider();
 

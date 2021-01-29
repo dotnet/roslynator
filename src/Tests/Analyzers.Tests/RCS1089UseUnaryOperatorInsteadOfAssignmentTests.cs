@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.UseUnaryOperatorInsteadOfAssignment;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new UseUnaryOperatorInsteadOfAssignmentAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new UseUnaryOperatorInsteadOfAssignmentAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new AssignmentExpressionCodeFixProvider();
 

@@ -91,7 +91,7 @@ namespace Roslynator.Testing
             }
         }
 
-        public async Task VerifyRefactoringAsync(
+        internal async Task VerifyRefactoringAsync(
             string source,
             string expected,
             IEnumerable<TextSpan> spans,
@@ -122,7 +122,7 @@ namespace Roslynator.Testing
             }
         }
 
-        public async Task VerifyRefactoringAsync(
+        internal async Task VerifyRefactoringAsync(
             string source,
             string expected,
             TextSpan span,
@@ -198,7 +198,7 @@ namespace Roslynator.Testing
                 cancellationToken: cancellationToken);
         }
 
-        public async Task VerifyNoRefactoringAsync(
+        internal async Task VerifyNoRefactoringAsync(
             string source,
             TextSpan span,
             string equivalenceKey = null,
@@ -213,7 +213,7 @@ namespace Roslynator.Testing
                 cancellationToken);
         }
 
-        public async Task VerifyNoRefactoringAsync(
+        internal async Task VerifyNoRefactoringAsync(
             string source,
             IEnumerable<TextSpan> spans,
             string equivalenceKey = null,

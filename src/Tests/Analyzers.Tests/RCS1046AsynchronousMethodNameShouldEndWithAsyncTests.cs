@@ -12,7 +12,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.AsynchronousMethodNameShouldEndWithAsync;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new AsyncSuffixAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new AsyncSuffixAnalyzer();
 
         public override CodeFixProvider FixProvider { get; }
 

@@ -13,7 +13,7 @@ namespace Roslynator.Formatting.CSharp.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.RemoveNewLineBetweenIfKeywordAndElseKeyword;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new RemoveNewLineBetweenIfKeywordAndElseKeywordAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new RemoveNewLineBetweenIfKeywordAndElseKeywordAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new SyntaxTriviaCodeFixProvider();
 

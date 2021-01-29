@@ -26,9 +26,9 @@ namespace Roslynator.Testing
 
         public abstract DiagnosticDescriptor Descriptor { get; }
 
-        public abstract DiagnosticAnalyzer Analyzer { get; }
+        protected abstract DiagnosticAnalyzer Analyzer { get; }
 
-        public virtual ImmutableArray<DiagnosticAnalyzer> AdditionalAnalyzers { get; } = ImmutableArray<DiagnosticAnalyzer>.Empty;
+        protected virtual ImmutableArray<DiagnosticAnalyzer> AdditionalAnalyzers { get; } = ImmutableArray<DiagnosticAnalyzer>.Empty;
 
         public ImmutableArray<DiagnosticAnalyzer> Analyzers
         {
@@ -110,7 +110,7 @@ namespace Roslynator.Testing
             }
         }
 
-        public async Task VerifyDiagnosticAsync(
+        internal async Task VerifyDiagnosticAsync(
             string source,
             TextSpan span,
             CodeVerificationOptions options = null,
@@ -123,7 +123,7 @@ namespace Roslynator.Testing
                 cancellationToken);
         }
 
-        public async Task VerifyDiagnosticAsync(
+        internal async Task VerifyDiagnosticAsync(
             string source,
             IEnumerable<TextSpan> spans,
             CodeVerificationOptions options = null,
@@ -137,7 +137,7 @@ namespace Roslynator.Testing
                 cancellationToken);
         }
 
-        public async Task VerifyDiagnosticAsync(
+        internal async Task VerifyDiagnosticAsync(
             string source,
             Diagnostic expectedDiagnostic,
             CodeVerificationOptions options = null,
@@ -151,7 +151,7 @@ namespace Roslynator.Testing
                 cancellationToken);
         }
 
-        public async Task VerifyDiagnosticAsync(
+        internal async Task VerifyDiagnosticAsync(
             string source,
             IEnumerable<Diagnostic> expectedDiagnostics,
             IEnumerable<string> additionalSources = null,

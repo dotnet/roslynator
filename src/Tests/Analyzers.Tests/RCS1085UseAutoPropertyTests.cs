@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.UseAutoProperty;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new UseAutoPropertyAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new UseAutoPropertyAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new UseAutoPropertyCodeFixProvider();
 

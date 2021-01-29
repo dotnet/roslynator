@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.RenamePrivateFieldToCamelCaseWithUnderscore;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new RenamePrivateFieldAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new RenamePrivateFieldAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new RenamePrivateFieldToCamelCaseWithUnderscoreCodeFixProvider();
 

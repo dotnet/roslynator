@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.RemoveEmptyFinallyClause;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new RemoveEmptyFinallyClauseAnalyzer();
+        protected override DiagnosticAnalyzer Analyzer { get; } = new RemoveEmptyFinallyClauseAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new FinallyClauseCodeFixProvider();
 
