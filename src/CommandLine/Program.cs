@@ -29,7 +29,11 @@ namespace Roslynator.CommandLine
     {
         private static int Main(string[] args)
         {
-            WriteLine($"Roslynator Command Line Tool version {typeof(Program).GetTypeInfo().Assembly.GetName().Version}", Verbosity.Quiet);
+            WriteLine(
+                $"Roslynator Command Line Tool version {typeof(Program).GetTypeInfo().Assembly.GetName().Version} "
+                    + $"(Roslyn version {typeof(Accessibility).GetTypeInfo().Assembly.GetName().Version})",
+                Verbosity.Quiet);
+
             WriteLine("Copyright (c) Josef Pihrt. All rights reserved.", Verbosity.Quiet);
             WriteLine(Verbosity.Quiet);
 
