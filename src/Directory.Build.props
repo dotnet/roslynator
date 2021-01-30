@@ -6,7 +6,7 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)Roslynator.snk</AssemblyOriginatorKeyFile>
     <Authors>Josef Pihrt</Authors>
-    <Copyright>Copyright (c) 2017-2020 Josef Pihrt</Copyright>
+    <Copyright>Copyright (c) 2017-2021 Josef Pihrt</Copyright>
   </PropertyGroup>
 
 </Project>
