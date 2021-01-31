@@ -53,12 +53,12 @@ namespace Roslynator
         }
 
         /// <summary>
-        /// Gets a maximal number of flags a <see cref="T"/> can store.
+        /// Gets a maximal number of flags a <typeparamref name="T"/> can store.
         /// </summary>
         public abstract int FlagCount { get; }
 
         /// <summary>
-        /// Gets a maximal value that <see cref="T"/> can store.
+        /// Gets a maximal value that <typeparamref name="T"/> can store.
         /// </summary>
         public abstract T MaxValue { get; }
 
