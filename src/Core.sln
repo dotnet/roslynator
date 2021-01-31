@@ -15,8 +15,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Workspaces.Core", "Workspaces.Core\Workspaces.Core.csproj", "{A6AA72AA-5313-4718-AEFE-3D2E68B9145B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestLibrary", "Tests\TestLibrary\TestLibrary.csproj", "{EE3080DE-92B2-43A6-A311-3B828623F617}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,10 +37,6 @@ Global
 		{A6AA72AA-5313-4718-AEFE-3D2E68B9145B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A6AA72AA-5313-4718-AEFE-3D2E68B9145B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A6AA72AA-5313-4718-AEFE-3D2E68B9145B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EE3080DE-92B2-43A6-A311-3B828623F617}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EE3080DE-92B2-43A6-A311-3B828623F617}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EE3080DE-92B2-43A6-A311-3B828623F617}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EE3080DE-92B2-43A6-A311-3B828623F617}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
