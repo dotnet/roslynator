@@ -2,7 +2,7 @@
 
 rem dotnet install tool -g orang.dotnet.cli
 
-set _apiVersion=1.0.0.31
+set _apiVersion=2.0.0.0
 set _formattingVersion=1.1.0.1
 set _version=3.1.0.1
 set _version3=3.1.0

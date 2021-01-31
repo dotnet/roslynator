@@ -45,5 +45,6 @@ public enum PreprocessorDirectiveFilter
 | Load | 16384 | | \#load preprocessor directive\. |
 | Bad | 32768 | | Bad preprocessor directive\. |
 | Shebang | 65536 | | Shebang preprocessor directive\. |
-| All | 131071 | If \| Elif \| Else \| EndIf \| Region \| EndRegion \| Define \| Undef \| Error \| Warning \| Line \| Pragma \| Reference \| Load \| Bad \| Shebang | All preprocessor directives\. |
+| Nullable | 131072 | | Nullable preprocessor directive\. |
+| All | 262143 | If \| Elif \| Else \| EndIf \| Region \| EndRegion \| Define \| Undef \| Error \| Warning \| Line \| Pragma \| Reference \| Load \| Bad \| Shebang \| Nullable | All preprocessor directives\. |
 

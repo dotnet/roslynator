@@ -15,6 +15,7 @@
 * &ensp; [&bull;](#class-hierarchy-System_Object "Object") &ensp; [NameGenerator](../../docs/api/Roslynator/NameGenerator/README.md)<a id="class-hierarchy-Roslynator_NameGenerator"></a>
 * &ensp; [&bull;](#class-hierarchy-System_Object "Object") &ensp; [SeparatedSyntaxListSelection\<TNode>](../../docs/api/Roslynator/SeparatedSyntaxListSelection-1/README.md)<a id="class-hierarchy-Roslynator_SeparatedSyntaxListSelection_1"></a>
 * &ensp; [&bull;](#class-hierarchy-System_Object "Object") &ensp; [SyntaxListSelection\<TNode>](../../docs/api/Roslynator/SyntaxListSelection-1/README.md)<a id="class-hierarchy-Roslynator_SyntaxListSelection_1"></a>
+* &ensp; [&bull;](#class-hierarchy-System_Object "Object") &ensp; [SyntaxNodeTextBuilder](../../docs/api/Roslynator/Text/SyntaxNodeTextBuilder/README.md)<a id="class-hierarchy-Roslynator_Text_SyntaxNodeTextBuilder"></a>
 * &ensp; [&bull;](#class-hierarchy-System_Object "Object") &ensp; [TextLineCollectionSelection](../../docs/api/Roslynator/Text/TextLineCollectionSelection/README.md)<a id="class-hierarchy-Roslynator_Text_TextLineCollectionSelection"></a>
 
 ## [Roslynator](../../docs/api/Roslynator/README.md) Namespace
@@ -52,6 +53,7 @@
 
 ### Classes
 
+* [SyntaxNodeTextBuilder](../../docs/api/Roslynator/Text/SyntaxNodeTextBuilder/README.md)
 * [TextLineCollectionSelection](../../docs/api/Roslynator/Text/TextLineCollectionSelection/README.md)
 
 ### Structs

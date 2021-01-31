@@ -10,13 +10,13 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [IndexOf(Func\<StatementSyntax, Boolean>)](#Roslynator_CSharp_Syntax_StatementListInfo_IndexOf_System_Func_Microsoft_CodeAnalysis_CSharp_Syntax_StatementSyntax_System_Boolean__) | Searches for a statement that matches the predicate and returns returns zero\-based index of the first occurrence in the list\. |
+| [IndexOf(Func\<StatementSyntax, Boolean>)](#Roslynator_CSharp_Syntax_StatementListInfo_IndexOf_System_Func_Microsoft_CodeAnalysis_CSharp_Syntax_StatementSyntax_System_Boolean__) | Searches for a statement that matches the predicate and returns zero\-based index of the first occurrence in the list\. |
 | [IndexOf(StatementSyntax)](#Roslynator_CSharp_Syntax_StatementListInfo_IndexOf_Microsoft_CodeAnalysis_CSharp_Syntax_StatementSyntax_) | The index of the statement in the list\. |
 
 ## IndexOf\(Func\<StatementSyntax, Boolean>\) <a id="Roslynator_CSharp_Syntax_StatementListInfo_IndexOf_System_Func_Microsoft_CodeAnalysis_CSharp_Syntax_StatementSyntax_System_Boolean__"></a>
 
 \
-Searches for a statement that matches the predicate and returns returns zero\-based index of the first occurrence in the list\.
+Searches for a statement that matches the predicate and returns zero\-based index of the first occurrence in the list\.
 
 ```csharp
 public int IndexOf(Func<Microsoft.CodeAnalysis.CSharp.Syntax.StatementSyntax, bool> predicate)

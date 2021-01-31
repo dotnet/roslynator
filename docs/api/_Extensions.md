@@ -85,6 +85,7 @@
 * [OperatorDeclarationSyntax](Microsoft/CodeAnalysis/CSharp/Syntax/OperatorDeclarationSyntax/README.md)
 * [ParameterSyntax](Microsoft/CodeAnalysis/CSharp/Syntax/ParameterSyntax/README.md)
 * [PropertyDeclarationSyntax](Microsoft/CodeAnalysis/CSharp/Syntax/PropertyDeclarationSyntax/README.md)
+* [RecordDeclarationSyntax](Microsoft/CodeAnalysis/CSharp/Syntax/RecordDeclarationSyntax/README.md)
 * [RegionDirectiveTriviaSyntax](Microsoft/CodeAnalysis/CSharp/Syntax/RegionDirectiveTriviaSyntax/README.md)
 * [StatementSyntax](Microsoft/CodeAnalysis/CSharp/Syntax/StatementSyntax/README.md)
 * [StructDeclarationSyntax](Microsoft/CodeAnalysis/CSharp/Syntax/StructDeclarationSyntax/README.md)

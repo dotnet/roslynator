@@ -20,6 +20,7 @@
 * &ensp; [&bull;](#class-hierarchy-System_Object "Object") &ensp; [SyntaxListSelection\<TNode>](Roslynator/SyntaxListSelection-1/README.md)<a id="class-hierarchy-Roslynator_SyntaxListSelection_1"></a>
 * &ensp; [&bull;](#class-hierarchy-System_Object "Object") &ensp; [&bull;](#class-hierarchy-Roslynator_SyntaxListSelection_1 "SyntaxListSelection<TNode>") &ensp; [MemberDeclarationListSelection](Roslynator/CSharp/MemberDeclarationListSelection/README.md)<a id="class-hierarchy-Roslynator_CSharp_MemberDeclarationListSelection"></a>
 * &ensp; [&bull;](#class-hierarchy-System_Object "Object") &ensp; [&bull;](#class-hierarchy-Roslynator_SyntaxListSelection_1 "SyntaxListSelection<TNode>") &ensp; [StatementListSelection](Roslynator/CSharp/StatementListSelection/README.md)<a id="class-hierarchy-Roslynator_CSharp_StatementListSelection"></a>
+* &ensp; [&bull;](#class-hierarchy-System_Object "Object") &ensp; [SyntaxNodeTextBuilder](Roslynator/Text/SyntaxNodeTextBuilder/README.md)<a id="class-hierarchy-Roslynator_Text_SyntaxNodeTextBuilder"></a>
 * &ensp; [&bull;](#class-hierarchy-System_Object "Object") &ensp; [TextLineCollectionSelection](Roslynator/Text/TextLineCollectionSelection/README.md)<a id="class-hierarchy-Roslynator_Text_TextLineCollectionSelection"></a>
 
 ## [Roslynator](Roslynator/README.md) Namespace
@@ -72,6 +73,7 @@
 * [SyntaxInfo](Roslynator/CSharp/SyntaxInfo/README.md)
 * [SyntaxInverter](Roslynator/CSharp/SyntaxInverter/README.md)
 * [WorkspaceExtensions](Roslynator/CSharp/WorkspaceExtensions/README.md)
+* [WorkspaceSymbolExtensions](Roslynator/CSharp/WorkspaceSymbolExtensions/README.md)
 * [WorkspaceSyntaxExtensions](Roslynator/CSharp/WorkspaceSyntaxExtensions/README.md)
 
 ### Structs
@@ -88,6 +90,7 @@
 ### Enums
 
 * [CommentFilter](Roslynator/CSharp/CommentFilter/README.md)
+* [DefaultSyntaxOptions](Roslynator/CSharp/DefaultSyntaxOptions/README.md)
 * [ModifierFilter](Roslynator/CSharp/ModifierFilter/README.md)
 * [NullCheckStyles](Roslynator/CSharp/NullCheckStyles/README.md)
 * [PreprocessorDirectiveFilter](Roslynator/CSharp/PreprocessorDirectiveFilter/README.md)
@@ -124,6 +127,7 @@
 
 ### Classes
 
+* [SyntaxNodeTextBuilder](Roslynator/Text/SyntaxNodeTextBuilder/README.md)
 * [TextLineCollectionSelection](Roslynator/Text/TextLineCollectionSelection/README.md)
 
 ### Structs

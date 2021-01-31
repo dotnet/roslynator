@@ -22,6 +22,7 @@
 | [SyntaxInfo](SyntaxInfo/README.md) | Serves as a factory for types in Roslynator\.CSharp\.Syntax namespace\. |
 | [SyntaxInverter](SyntaxInverter/README.md) | Provides static methods for syntax inversion\. |
 | [WorkspaceExtensions](WorkspaceExtensions/README.md) | A set of extension methods for the workspace layer\. |
+| [WorkspaceSymbolExtensions](WorkspaceSymbolExtensions/README.md) | |
 | [WorkspaceSyntaxExtensions](WorkspaceSyntaxExtensions/README.md) | A set of extension methods for syntax\. These methods are dependent on the workspace layer\. |
 
 ## Structs
@@ -42,6 +43,7 @@
 | Enum | Summary |
 | ---- | ------- |
 | [CommentFilter](CommentFilter/README.md) | Specifies C\# comments\. |
+| [DefaultSyntaxOptions](DefaultSyntaxOptions/README.md) | Defines how a syntax representing a default value of a type should look like\. |
 | [ModifierFilter](ModifierFilter/README.md) | Specifies C\# modifier\. |
 | [NullCheckStyles](NullCheckStyles/README.md) | Specifies a null check\. |
 | [PreprocessorDirectiveFilter](PreprocessorDirectiveFilter/README.md) | Specifies C\# preprocessor directives\. |

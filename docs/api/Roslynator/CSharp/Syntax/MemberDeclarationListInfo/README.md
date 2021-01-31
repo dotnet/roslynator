@@ -33,8 +33,10 @@ public readonly struct MemberDeclarationListInfo : System.Collections.Generic.IR
 
 | Property | Summary |
 | -------- | ------- |
+| [CloseBraceToken](CloseBraceToken/README.md) | Gets a close brace token\. |
 | [Count](Count/README.md) | A number of members in the list\. |
 | [Members](Members/README.md) | A list of members\. |
+| [OpenBraceToken](OpenBraceToken/README.md) | Gets a open brace token\. |
 | [Parent](Parent/README.md) | The declaration that contains the members\. |
 | [Success](Success/README.md) | Determines whether this struct was initialized with an actual syntax\. |
 
@@ -51,12 +53,12 @@ public readonly struct MemberDeclarationListInfo : System.Collections.Generic.IR
 | [GetEnumerator()](GetEnumerator/README.md) | Gets the enumerator for the list of members\. |
 | [GetHashCode()](https://docs.microsoft.com/en-us/dotnet/api/system.valuetype.gethashcode) |  \(Inherited from [ValueType](https://docs.microsoft.com/en-us/dotnet/api/system.valuetype)\) |
 | [GetType()](https://docs.microsoft.com/en-us/dotnet/api/system.object.gettype) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
-| [IndexOf(Func\<MemberDeclarationSyntax, Boolean>)](IndexOf/README.md#Roslynator_CSharp_Syntax_MemberDeclarationListInfo_IndexOf_System_Func_Microsoft_CodeAnalysis_CSharp_Syntax_MemberDeclarationSyntax_System_Boolean__) | Searches for a member that matches the predicate and returns returns zero\-based index of the first occurrence in the list\. |
+| [IndexOf(Func\<MemberDeclarationSyntax, Boolean>)](IndexOf/README.md#Roslynator_CSharp_Syntax_MemberDeclarationListInfo_IndexOf_System_Func_Microsoft_CodeAnalysis_CSharp_Syntax_MemberDeclarationSyntax_System_Boolean__) | Searches for a member that matches the predicate and returns zero\-based index of the first occurrence in the list\. |
 | [IndexOf(MemberDeclarationSyntax)](IndexOf/README.md#Roslynator_CSharp_Syntax_MemberDeclarationListInfo_IndexOf_Microsoft_CodeAnalysis_CSharp_Syntax_MemberDeclarationSyntax_) | The index of the member in the list\. |
 | [Insert(Int32, MemberDeclarationSyntax)](Insert/README.md) | Creates a new [MemberDeclarationListInfo](./README.md) with the specified member inserted at the index\. |
 | [InsertRange(Int32, IEnumerable\<MemberDeclarationSyntax>)](InsertRange/README.md) | Creates a new [MemberDeclarationListInfo](./README.md) with the specified members inserted at the index\. |
 | [Last()](Last/README.md) | The last member in the list\. |
-| [LastIndexOf(Func\<MemberDeclarationSyntax, Boolean>)](LastIndexOf/README.md#Roslynator_CSharp_Syntax_MemberDeclarationListInfo_LastIndexOf_System_Func_Microsoft_CodeAnalysis_CSharp_Syntax_MemberDeclarationSyntax_System_Boolean__) | Searches for a member that matches the predicate and returns returns zero\-based index of the last occurrence in the list\. |
+| [LastIndexOf(Func\<MemberDeclarationSyntax, Boolean>)](LastIndexOf/README.md#Roslynator_CSharp_Syntax_MemberDeclarationListInfo_LastIndexOf_System_Func_Microsoft_CodeAnalysis_CSharp_Syntax_MemberDeclarationSyntax_System_Boolean__) | Searches for a member that matches the predicate and returns zero\-based index of the last occurrence in the list\. |
 | [LastIndexOf(MemberDeclarationSyntax)](LastIndexOf/README.md#Roslynator_CSharp_Syntax_MemberDeclarationListInfo_LastIndexOf_Microsoft_CodeAnalysis_CSharp_Syntax_MemberDeclarationSyntax_) | Searches for a member and returns zero\-based index of the last occurrence in the list\. |
 | [LastOrDefault()](LastOrDefault/README.md) | The last member in the list or null if the list is empty\. |
 | [MemberwiseClone()](https://docs.microsoft.com/en-us/dotnet/api/system.object.memberwiseclone) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
