@@ -55,9 +55,9 @@ namespace Roslynator
             return FlagsUtility<ulong>.Instance.IsComposite(Value);
         }
 
-        public IEnumerable<ulong> DecomposeValue()
+        public IEnumerable<ulong> GetFlags()
         {
-            return FlagsUtility<ulong>.Instance.Decompose(Value);
+            return FlagsUtility<ulong>.Instance.GetFlags(Value);
         }
     }
 }

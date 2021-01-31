@@ -75,7 +75,7 @@ namespace Roslynator.CSharp.Analysis
                         && !IsMaxValue(field.Value, typeSymbol.EnumUnderlyingType.SpecialType)
                         && field.HasCompositeValue())
                     {
-                        foreach (ulong value in (field.DecomposeValue()))
+                        foreach (ulong value in (field.GetFlags()))
                         {
                             if (!enumInfo.Contains(value))
                                 ReportUndefinedFlag(context, field.Symbol, value.ToString());

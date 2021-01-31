@@ -8,8 +8,19 @@ using Microsoft.CodeAnalysis;
 
 namespace Roslynator
 {
+    /// <summary>
+    /// Provides methods to analyze numeric value that acts like a set of flags.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     internal abstract class FlagsUtility<T> where T : struct
     {
+        private FlagsUtility()
+        {
+        }
+
+        /// <summary>
+        /// Gets an instance for a concrete type.
+        /// </summary>
         public static FlagsUtility<T> Instance { get; } = (FlagsUtility<T>)GetInstance();
 
         private static object GetInstance()
@@ -41,29 +52,51 @@ namespace Roslynator
             throw new InvalidOperationException();
         }
 
-        public abstract int ByteCount { get; }
+        /// <summary>
+        /// Gets a maximal number of flags a <see cref="T"/> can store.
+        /// </summary>
+        public abstract int FlagCount { get; }
 
+        /// <summary>
+        /// Gets a maximal value that <see cref="T"/> can store.
+        /// </summary>
         public abstract T MaxValue { get; }
 
-        public abstract Optional<T> GetUniquePowerOfTwo(IEnumerable<T> reservedValues, bool startFromHighestExistingValue = false);
+        internal abstract Optional<T> GetUniquePowerOfTwo(IEnumerable<T> reservedValues, bool startFromHighestExistingValue = false);
 
+        /// <summary>
+        /// Returns true if the specified value is zero or power of two.
+        /// </summary>
+        /// <param name="value"></param>
         public abstract bool IsZeroOrPowerOfTwo(T value);
 
+        /// <summary>
+        /// Returns true if the specified value is power of two.
+        /// </summary>
+        /// <param name="value"></param>
         public abstract bool IsPowerOfTwo(T value);
 
+        /// <summary>
+        /// Returns true if the multiple bits are set in the specified value.
+        /// </summary>
+        /// <param name="value"></param>
         public abstract bool IsComposite(T value);
 
-        public abstract IEnumerable<T> Decompose(T value);
+        public abstract IEnumerable<T> GetFlags(T value);
 
-        public abstract Optional<T> TryCompose(ImmutableArray<T> values);
+        /// <summary>
+        /// Returns composed value if the specified value can be composed into a single value.
+        /// </summary>
+        /// <param name="values"></param>
+        public abstract Optional<T> Combine(ImmutableArray<T> values);
 
         private class SByteFlagsUtility : FlagsUtility<sbyte>
         {
-            public override int ByteCount => (sizeof(sbyte) * 8) - 1;
+            public override int FlagCount => (sizeof(sbyte) * 8) - 1;
 
             public override sbyte MaxValue => sbyte.MaxValue;
 
-            public override Optional<sbyte> GetUniquePowerOfTwo(IEnumerable<sbyte> reservedValues, bool startFromHighestExistingValue = false)
+            internal override Optional<sbyte> GetUniquePowerOfTwo(IEnumerable<sbyte> reservedValues, bool startFromHighestExistingValue = false)
             {
                 if (reservedValues == null)
                     throw new ArgumentNullException(nameof(reservedValues));
@@ -117,9 +150,9 @@ namespace Roslynator
                     && (value & (value - 1)) != 0;
             }
 
-            public override IEnumerable<sbyte> Decompose(sbyte value)
+            public override IEnumerable<sbyte> GetFlags(sbyte value)
             {
-                for (int i = 0; i < ByteCount; i++)
+                for (int i = 0; i < FlagCount; i++)
                 {
                     var x = (sbyte)(1 << i);
 
@@ -131,7 +164,7 @@ namespace Roslynator
                 }
             }
 
-            public override Optional<sbyte> TryCompose(ImmutableArray<sbyte> values)
+            public override Optional<sbyte> Combine(ImmutableArray<sbyte> values)
             {
                 for (int i = 0; i < values.Length; i++)
                 {
@@ -151,11 +184,11 @@ namespace Roslynator
 
         private class ByteFlagsUtility : FlagsUtility<byte>
         {
-            public override int ByteCount => (sizeof(byte) * 8) - 1;
+            public override int FlagCount => sizeof(byte) * 8;
 
             public override byte MaxValue => byte.MaxValue;
 
-            public override Optional<byte> GetUniquePowerOfTwo(IEnumerable<byte> reservedValues, bool startFromHighestExistingValue = false)
+            internal override Optional<byte> GetUniquePowerOfTwo(IEnumerable<byte> reservedValues, bool startFromHighestExistingValue = false)
             {
                 if (reservedValues == null)
                     throw new ArgumentNullException(nameof(reservedValues));
@@ -209,9 +242,9 @@ namespace Roslynator
                     && (value & (value - 1)) != 0;
             }
 
-            public override IEnumerable<byte> Decompose(byte value)
+            public override IEnumerable<byte> GetFlags(byte value)
             {
-                for (int i = 0; i < ByteCount; i++)
+                for (int i = 0; i < FlagCount; i++)
                 {
                     var x = (byte)(1 << i);
 
@@ -223,7 +256,7 @@ namespace Roslynator
                 }
             }
 
-            public override Optional<byte> TryCompose(ImmutableArray<byte> values)
+            public override Optional<byte> Combine(ImmutableArray<byte> values)
             {
                 for (int i = 0; i < values.Length; i++)
                 {
@@ -243,11 +276,11 @@ namespace Roslynator
 
         private class ShortFlagsUtility : FlagsUtility<short>
         {
-            public override int ByteCount => (sizeof(short) * 8) - 1;
+            public override int FlagCount => (sizeof(short) * 8) - 1;
 
             public override short MaxValue => short.MaxValue;
 
-            public override Optional<short> GetUniquePowerOfTwo(IEnumerable<short> reservedValues, bool startFromHighestExistingValue = false)
+            internal override Optional<short> GetUniquePowerOfTwo(IEnumerable<short> reservedValues, bool startFromHighestExistingValue = false)
             {
                 if (reservedValues == null)
                     throw new ArgumentNullException(nameof(reservedValues));
@@ -301,9 +334,9 @@ namespace Roslynator
                     && (value & (value - 1)) != 0;
             }
 
-            public override IEnumerable<short> Decompose(short value)
+            public override IEnumerable<short> GetFlags(short value)
             {
-                for (int i = 0; i < ByteCount; i++)
+                for (int i = 0; i < FlagCount; i++)
                 {
                     var x = (short)(1 << i);
 
@@ -315,7 +348,7 @@ namespace Roslynator
                 }
             }
 
-            public override Optional<short> TryCompose(ImmutableArray<short> values)
+            public override Optional<short> Combine(ImmutableArray<short> values)
             {
                 for (int i = 0; i < values.Length; i++)
                 {
@@ -335,11 +368,11 @@ namespace Roslynator
 
         private class UShortFlagsUtility : FlagsUtility<ushort>
         {
-            public override int ByteCount => (sizeof(ushort) * 8) - 1;
+            public override int FlagCount => sizeof(ushort) * 8;
 
             public override ushort MaxValue => ushort.MaxValue;
 
-            public override Optional<ushort> GetUniquePowerOfTwo(IEnumerable<ushort> reservedValues, bool startFromHighestExistingValue = false)
+            internal override Optional<ushort> GetUniquePowerOfTwo(IEnumerable<ushort> reservedValues, bool startFromHighestExistingValue = false)
             {
                 if (reservedValues == null)
                     throw new ArgumentNullException(nameof(reservedValues));
@@ -393,9 +426,9 @@ namespace Roslynator
                     && (value & (value - 1)) != 0;
             }
 
-            public override IEnumerable<ushort> Decompose(ushort value)
+            public override IEnumerable<ushort> GetFlags(ushort value)
             {
-                for (int i = 0; i < ByteCount; i++)
+                for (int i = 0; i < FlagCount; i++)
                 {
                     var x = (ushort)(1 << i);
 
@@ -407,7 +440,7 @@ namespace Roslynator
                 }
             }
 
-            public override Optional<ushort> TryCompose(ImmutableArray<ushort> values)
+            public override Optional<ushort> Combine(ImmutableArray<ushort> values)
             {
                 for (int i = 0; i < values.Length; i++)
                 {
@@ -427,11 +460,11 @@ namespace Roslynator
 
         private class IntFlagsUtility : FlagsUtility<int>
         {
-            public override int ByteCount => (sizeof(int) * 8) - 1;
+            public override int FlagCount => (sizeof(int) * 8) - 1;
 
             public override int MaxValue => int.MaxValue;
 
-            public override Optional<int> GetUniquePowerOfTwo(IEnumerable<int> reservedValues, bool startFromHighestExistingValue = false)
+            internal override Optional<int> GetUniquePowerOfTwo(IEnumerable<int> reservedValues, bool startFromHighestExistingValue = false)
             {
                 if (reservedValues == null)
                     throw new ArgumentNullException(nameof(reservedValues));
@@ -485,9 +518,9 @@ namespace Roslynator
                     && (value & (value - 1)) != 0;
             }
 
-            public override IEnumerable<int> Decompose(int value)
+            public override IEnumerable<int> GetFlags(int value)
             {
-                for (int i = 0; i < ByteCount; i++)
+                for (int i = 0; i < FlagCount; i++)
                 {
                     int x = 1 << i;
 
@@ -499,7 +532,7 @@ namespace Roslynator
                 }
             }
 
-            public override Optional<int> TryCompose(ImmutableArray<int> values)
+            public override Optional<int> Combine(ImmutableArray<int> values)
             {
                 for (int i = 0; i < values.Length; i++)
                 {
@@ -519,11 +552,11 @@ namespace Roslynator
 
         private class UIntFlagsUtility : FlagsUtility<uint>
         {
-            public override int ByteCount => (sizeof(uint) * 8) - 1;
+            public override int FlagCount => sizeof(uint) * 8;
 
             public override uint MaxValue => uint.MaxValue;
 
-            public override Optional<uint> GetUniquePowerOfTwo(IEnumerable<uint> reservedValues, bool startFromHighestExistingValue = false)
+            internal override Optional<uint> GetUniquePowerOfTwo(IEnumerable<uint> reservedValues, bool startFromHighestExistingValue = false)
             {
                 if (reservedValues == null)
                     throw new ArgumentNullException(nameof(reservedValues));
@@ -577,9 +610,9 @@ namespace Roslynator
                     && (value & (value - 1)) != 0;
             }
 
-            public override IEnumerable<uint> Decompose(uint value)
+            public override IEnumerable<uint> GetFlags(uint value)
             {
-                for (int i = 0; i < ByteCount; i++)
+                for (int i = 0; i < FlagCount; i++)
                 {
                     var x = (uint)(1 << i);
 
@@ -591,7 +624,7 @@ namespace Roslynator
                 }
             }
 
-            public override Optional<uint> TryCompose(ImmutableArray<uint> values)
+            public override Optional<uint> Combine(ImmutableArray<uint> values)
             {
                 for (int i = 0; i < values.Length; i++)
                 {
@@ -611,11 +644,11 @@ namespace Roslynator
 
         private class LongFlagsUtility : FlagsUtility<long>
         {
-            public override int ByteCount => (sizeof(long) * 8) - 1;
+            public override int FlagCount => (sizeof(long) * 8) - 1;
 
             public override long MaxValue => long.MaxValue;
 
-            public override Optional<long> GetUniquePowerOfTwo(IEnumerable<long> reservedValues, bool startFromHighestExistingValue = false)
+            internal override Optional<long> GetUniquePowerOfTwo(IEnumerable<long> reservedValues, bool startFromHighestExistingValue = false)
             {
                 if (reservedValues == null)
                     throw new ArgumentNullException(nameof(reservedValues));
@@ -669,9 +702,9 @@ namespace Roslynator
                     && (value & (value - 1)) != 0;
             }
 
-            public override IEnumerable<long> Decompose(long value)
+            public override IEnumerable<long> GetFlags(long value)
             {
-                for (int i = 0; i < ByteCount; i++)
+                for (int i = 0; i < FlagCount; i++)
                 {
                     long x = 1L << i;
 
@@ -683,7 +716,7 @@ namespace Roslynator
                 }
             }
 
-            public override Optional<long> TryCompose(ImmutableArray<long> values)
+            public override Optional<long> Combine(ImmutableArray<long> values)
             {
                 for (int i = 0; i < values.Length; i++)
                 {
@@ -703,11 +736,11 @@ namespace Roslynator
 
         private class ULongFlagsUtility : FlagsUtility<ulong>
         {
-            public override int ByteCount => (sizeof(ulong) * 8) - 1;
+            public override int FlagCount => sizeof(ulong) * 8;
 
             public override ulong MaxValue => ulong.MaxValue;
 
-            public override Optional<ulong> GetUniquePowerOfTwo(IEnumerable<ulong> reservedValues, bool startFromHighestExistingValue = false)
+            internal override Optional<ulong> GetUniquePowerOfTwo(IEnumerable<ulong> reservedValues, bool startFromHighestExistingValue = false)
             {
                 if (reservedValues == null)
                     throw new ArgumentNullException(nameof(reservedValues));
@@ -761,9 +794,9 @@ namespace Roslynator
                     && (value & (value - 1)) != 0;
             }
 
-            public override IEnumerable<ulong> Decompose(ulong value)
+            public override IEnumerable<ulong> GetFlags(ulong value)
             {
-                for (int i = 0; i < ByteCount; i++)
+                for (int i = 0; i < FlagCount; i++)
                 {
                     ulong x = 1UL << i;
 
@@ -775,7 +808,7 @@ namespace Roslynator
                 }
             }
 
-            public override Optional<ulong> TryCompose(ImmutableArray<ulong> values)
+            public override Optional<ulong> Combine(ImmutableArray<ulong> values)
             {
                 for (int i = 0; i < values.Length; i++)
                 {

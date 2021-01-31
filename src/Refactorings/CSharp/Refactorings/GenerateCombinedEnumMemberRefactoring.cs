@@ -40,7 +40,7 @@ namespace Roslynator.CSharp.Refactorings
             if (constantValues.Length <= 1)
                 return;
 
-            Optional<ulong> optionalValue = FlagsUtility<ulong>.Instance.TryCompose(constantValues);
+            Optional<ulong> optionalValue = FlagsUtility<ulong>.Instance.Combine(constantValues);
 
             if (!optionalValue.HasValue)
                 return;
