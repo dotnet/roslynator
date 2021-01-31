@@ -106,8 +106,16 @@ namespace Roslynator
             return EnsureUniqueName(baseName, symbols, isCaseSensitive);
         }
 
-        //TODO: make public
-        internal ImmutableArray<string> EnsureUniqueLocalNames(
+        /// <summary>
+        /// Return a local names that will be unique at the specified position.
+        /// </summary>
+        /// <param name="baseName"></param>
+        /// <param name="semanticModel"></param>
+        /// <param name="position"></param>
+        /// <param name="count"></param>
+        /// <param name="isCaseSensitive"></param>
+        /// <param name="cancellationToken"></param>
+        public ImmutableArray<string> EnsureUniqueLocalNames(
             string baseName,
             SemanticModel semanticModel,
             int position,
@@ -156,7 +164,15 @@ namespace Roslynator
                 .AddRange(semanticModel.LookupSymbols(position));
         }
 
-        internal string EnsureUniqueParameterName(
+        /// <summary>
+        /// Return a parameter name that will be unique at the specified position.
+        /// </summary>
+        /// <param name="baseName"></param>
+        /// <param name="containingSymbol"></param>
+        /// <param name="semanticModel"></param>
+        /// <param name="isCaseSensitive"></param>
+        /// <param name="cancellationToken"></param>
+        public string EnsureUniqueParameterName(
             string baseName,
             ISymbol containingSymbol,
             SemanticModel semanticModel,

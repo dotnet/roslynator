@@ -150,7 +150,12 @@ namespace Roslynator.CSharp
             return token.WithAdditionalAnnotations(_simplifierAnnotationArray);
         }
 
-        internal static SyntaxToken WithNavigationAnnotation(this SyntaxToken token)
+        /// <summary>
+        /// Adds navigation annotation to the specified token, creating a new token of the same type with the navigation annotation on it.
+        /// Navigation annotation allows to mark a token that should be selected after the code action is applied.
+        /// </summary>
+        /// <param name="token"></param>
+        public static SyntaxToken WithNavigationAnnotation(this SyntaxToken token)
         {
             return token.WithAdditionalAnnotations(_navigationAnnotationArray);
         }

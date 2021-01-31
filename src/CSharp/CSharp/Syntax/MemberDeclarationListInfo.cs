@@ -49,8 +49,10 @@ namespace Roslynator.CSharp.Syntax
             get { return Members.Count; }
         }
 
-        //TODO: make public
-        internal SyntaxToken? OpenBraceToken
+        /// <summary>
+        /// Gets a open brace token.
+        /// </summary>
+        public SyntaxToken? OpenBraceToken
         {
             get
             {
@@ -63,7 +65,10 @@ namespace Roslynator.CSharp.Syntax
             }
         }
 
-        internal SyntaxToken? CloseBraceToken
+        /// <summary>
+        /// Gets a close brace token.
+        /// </summary>
+        public SyntaxToken? CloseBraceToken
         {
             get
             {

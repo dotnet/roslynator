@@ -87,7 +87,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                 TypeSyntax type = typeArgument.ToTypeSyntax().WithSimplifierAnnotation();
 
-                ExpressionSyntax defaultValue = typeArgument.GetDefaultValueSyntax(document.GetDefaultSyntaxOptions(), type);
+                ExpressionSyntax defaultValue = typeArgument.GetDefaultValueSyntax(type, document.GetDefaultSyntaxOptions());
 
                 SimpleNameSyntax name;
                 if (defaultValue.IsKind(

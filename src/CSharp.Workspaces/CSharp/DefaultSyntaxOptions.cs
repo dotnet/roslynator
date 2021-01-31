@@ -5,8 +5,11 @@ using Microsoft.CodeAnalysis.CSharp;
 
 namespace Roslynator.CSharp
 {
+    /// <summary>
+    /// Defines how a syntax representing a default value of a type should look like.
+    /// </summary>
     [Flags]
-    internal enum DefaultSyntaxOptions
+    public enum DefaultSyntaxOptions
     {
         /// <summary>
         /// No option specified.

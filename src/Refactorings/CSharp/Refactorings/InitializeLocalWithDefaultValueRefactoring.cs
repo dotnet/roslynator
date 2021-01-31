@@ -68,7 +68,7 @@ namespace Roslynator.CSharp.Refactorings
 
             VariableDeclaratorSyntax GetNewDeclarator(TypeSyntax type)
             {
-                ExpressionSyntax value = typeSymbol.GetDefaultValueSyntax(document.GetDefaultSyntaxOptions(), type);
+                ExpressionSyntax value = typeSymbol.GetDefaultValueSyntax(type, document.GetDefaultSyntaxOptions());
 
                 EqualsValueClauseSyntax initializer = declarator.Initializer;
                 EqualsValueClauseSyntax newInitializer = EqualsValueClause(value);

@@ -211,7 +211,6 @@ namespace Roslynator.CSharp.CodeFixes
                 GetEquivalenceKey(diagnostic));
         }
 
-        //TODO: move to API
         private SyntaxList<TNode> RemoveRange<TNode>(
             SyntaxList<TNode> list,
             int index,

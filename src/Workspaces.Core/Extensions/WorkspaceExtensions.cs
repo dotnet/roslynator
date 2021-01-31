@@ -16,7 +16,6 @@ namespace Roslynator
     public static class WorkspaceExtensions
     {
         #region Document
-        //TODO: make public
         internal static Task<Document> WithTextChangeAsync(
             this Document document,
             TextSpan span,

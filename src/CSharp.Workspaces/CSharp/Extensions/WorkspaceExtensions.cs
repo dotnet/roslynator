@@ -403,72 +403,129 @@ namespace Roslynator.CSharp
             return document.ReplaceNodeAsync(node, newNode, cancellationToken);
         }
 
-        internal static Task<Document> ReplaceStatementsAsync(
+        /// <summary>
+        /// Creates a new document with the specified statements replaced with new statements.
+        /// </summary>
+        /// <param name="document"></param>
+        /// <param name="statementsInfo"></param>
+        /// <param name="newStatements"></param>
+        /// <param name="cancellationToken"></param>
+        public static Task<Document> ReplaceStatementsAsync(
             this Document document,
-            in StatementListInfo statementsInfo,
+            StatementListInfo statementsInfo,
             IEnumerable<StatementSyntax> newStatements,
             CancellationToken cancellationToken = default)
         {
             return ReplaceStatementsAsync(document, statementsInfo, List(newStatements), cancellationToken);
         }
 
-        internal static Task<Document> ReplaceStatementsAsync(
+        /// <summary>
+        /// Creates a new document with the specified statements replaced with new statements.
+        /// </summary>
+        /// <param name="document"></param>
+        /// <param name="statementsInfo"></param>
+        /// <param name="newStatements"></param>
+        /// <param name="cancellationToken"></param>
+        public static Task<Document> ReplaceStatementsAsync(
             this Document document,
-            in StatementListInfo statementsInfo,
+            StatementListInfo statementsInfo,
             SyntaxList<StatementSyntax> newStatements,
             CancellationToken cancellationToken = default)
         {
+            if (document == null)
+                throw new ArgumentNullException(nameof(document));
+
             return document.ReplaceNodeAsync(statementsInfo.Parent, statementsInfo.WithStatements(newStatements).Parent, cancellationToken);
         }
 
         internal static Task<Document> ReplaceStatementsAsync(
             this Document document,
-            in StatementListInfo statementsInfo,
-            in StatementListInfo newStatementsInfo,
+            StatementListInfo statementsInfo,
+            StatementListInfo newStatementsInfo,
             CancellationToken cancellationToken = default)
         {
             return document.ReplaceNodeAsync(statementsInfo.Parent, newStatementsInfo.Parent, cancellationToken);
         }
 
-        internal static Task<Document> ReplaceMembersAsync(
+        /// <summary>
+        /// Creates a new document with the specified members replaced with new members.
+        /// </summary>
+        /// <param name="document"></param>
+        /// <param name="info"></param>
+        /// <param name="newMembers"></param>
+        /// <param name="cancellationToken"></param>
+        public static Task<Document> ReplaceMembersAsync(
             this Document document,
-            in MemberDeclarationListInfo info,
+            MemberDeclarationListInfo info,
             IEnumerable<MemberDeclarationSyntax> newMembers,
             CancellationToken cancellationToken = default)
         {
+            if (document == null)
+                throw new ArgumentNullException(nameof(document));
+
             return document.ReplaceNodeAsync(
                 info.Parent,
                 info.WithMembers(newMembers).Parent,
                 cancellationToken);
         }
 
-        internal static Task<Document> ReplaceMembersAsync(
+        /// <summary>
+        /// Creates a new document with the specified members replaced with new members.
+        /// </summary>
+        /// <param name="document"></param>
+        /// <param name="info"></param>
+        /// <param name="newMembers"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public static Task<Document> ReplaceMembersAsync(
             this Document document,
-            in MemberDeclarationListInfo info,
+            MemberDeclarationListInfo info,
             SyntaxList<MemberDeclarationSyntax> newMembers,
             CancellationToken cancellationToken = default)
         {
+            if (document == null)
+                throw new ArgumentNullException(nameof(document));
+
             return document.ReplaceNodeAsync(
                 info.Parent,
                 info.WithMembers(newMembers).Parent,
                 cancellationToken);
         }
 
-        internal static Task<Document> ReplaceModifiersAsync(
+        /// <summary>
+        /// Creates a new document with the specified modifiers replaced with new modifiers.
+        /// </summary>
+        /// <param name="document"></param>
+        /// <param name="modifiersInfo"></param>
+        /// <param name="newModifiers"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public static Task<Document> ReplaceModifiersAsync(
             this Document document,
-            in ModifierListInfo modifiersInfo,
+            ModifierListInfo modifiersInfo,
             IEnumerable<SyntaxToken> newModifiers,
             CancellationToken cancellationToken = default)
         {
             return ReplaceModifiersAsync(document, modifiersInfo, TokenList(newModifiers), cancellationToken);
         }
 
-        internal static Task<Document> ReplaceModifiersAsync(
+        /// <summary>
+        /// Creates a new document with the specified modifiers replaced with new modifiers.
+        /// </summary>
+        /// <param name="document"></param>
+        /// <param name="modifiersInfo"></param>
+        /// <param name="newModifiers"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public static Task<Document> ReplaceModifiersAsync(
             this Document document,
-            in ModifierListInfo modifiersInfo,
+            ModifierListInfo modifiersInfo,
             SyntaxTokenList newModifiers,
             CancellationToken cancellationToken = default)
         {
+            if (document == null)
+                throw new ArgumentNullException(nameof(document));
+
             return document.ReplaceNodeAsync(modifiersInfo.Parent, modifiersInfo.WithModifiers(newModifiers).Parent, cancellationToken);
         }
     }

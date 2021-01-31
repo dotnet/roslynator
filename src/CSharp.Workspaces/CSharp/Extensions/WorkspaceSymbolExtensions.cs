@@ -8,17 +8,38 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp
 {
-    internal static class WorkspaceSymbolExtensions
+    public static class WorkspaceSymbolExtensions
     {
-        // https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/default-values-table
         /// <summary>
         /// Creates a new <see cref="ExpressionSyntax"/> that represents default value of the specified type symbol.
         /// </summary>
         /// <param name="typeSymbol"></param>
         /// <param name="options"></param>
-        /// <param name="type"></param>
         /// <param name="format"></param>
         public static ExpressionSyntax GetDefaultValueSyntax(
+            this ITypeSymbol typeSymbol,
+            DefaultSyntaxOptions options = DefaultSyntaxOptions.None,
+            SymbolDisplayFormat format = null)
+        {
+            return GetDefaultValueSyntax(typeSymbol, options, default(TypeSyntax), format);
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="ExpressionSyntax"/> that represents default value of the specified type symbol.
+        /// </summary>
+        /// <param name="typeSymbol"></param>
+        /// <param name="type"></param>
+        /// <param name="options"></param>
+        public static ExpressionSyntax GetDefaultValueSyntax(
+            this ITypeSymbol typeSymbol,
+            TypeSyntax type,
+            DefaultSyntaxOptions options = DefaultSyntaxOptions.None)
+        {
+            return GetDefaultValueSyntax(typeSymbol, options, type, default(SymbolDisplayFormat));
+        }
+
+        // https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/default-values-table
+        private static ExpressionSyntax GetDefaultValueSyntax(
             this ITypeSymbol typeSymbol,
             DefaultSyntaxOptions options = DefaultSyntaxOptions.None,
             TypeSyntax type = null,
@@ -83,7 +104,9 @@ namespace Roslynator.CSharp
             }
         }
 
-        internal static ExpressionSyntax GetDefaultValueSyntax(this IParameterSymbol parameterSymbol, SymbolDisplayFormat format = null)
+        internal static ExpressionSyntax GetDefaultValueSyntax(
+            this IParameterSymbol parameterSymbol,
+            SymbolDisplayFormat format = null)
         {
             if (parameterSymbol == null)
                 throw new ArgumentNullException(nameof(parameterSymbol));

@@ -429,7 +429,6 @@ namespace Roslynator.CSharp
         #endregion ConversionOperatorDeclarationSyntax
 
         #region DefaultExpressionSyntax
-        //TODO: make public
         internal static TextSpan ParenthesesSpan(this DefaultExpressionSyntax defaultExpression)
         {
             return TextSpan.FromBounds(defaultExpression.OpenParenToken.SpanStart, defaultExpression.CloseParenToken.Span.End);
@@ -1803,7 +1802,6 @@ namespace Roslynator.CSharp
                 GetEndIndex(list.Last(), includeExteriorTrivia, trim));
         }
 
-        //TODO: make public
         /// <summary>
         /// Creates a new list with the elements in the specified range replaced with new node.
         /// </summary>
@@ -1812,7 +1810,7 @@ namespace Roslynator.CSharp
         /// <param name="index"></param>
         /// <param name="count"></param>
         /// <param name="newNode"></param>
-        internal static SeparatedSyntaxList<TNode> ReplaceRange<TNode>(
+        public static SeparatedSyntaxList<TNode> ReplaceRange<TNode>(
             this SeparatedSyntaxList<TNode> list,
             int index,
             int count,
@@ -1899,7 +1897,14 @@ namespace Roslynator.CSharp
             return ReplaceRange(list, index, count, Empty.ReadOnlyList<TNode>());
         }
 
-        internal static SeparatedSyntaxList<TNode> TrimTrivia<TNode>(this SeparatedSyntaxList<TNode> list) where TNode : SyntaxNode
+        /// <summary>
+        /// Removes all leading whitespace from the leading trivia of the first node in a list
+        /// and all trailing whitespace from the trailing trivia of the last node in a list and returns a new list with the new trivia.
+        /// <see cref="SyntaxKind.WhitespaceTrivia"/> and <see cref="SyntaxKind.EndOfLineTrivia"/> is considered to be a whitespace.
+        /// </summary>
+        /// <typeparam name="TNode"></typeparam>
+        /// <param name="list"></param>
+        public static SeparatedSyntaxList<TNode> TrimTrivia<TNode>(this SeparatedSyntaxList<TNode> list) where TNode : SyntaxNode
         {
             int count = list.Count;
 
@@ -2316,7 +2321,6 @@ namespace Roslynator.CSharp
             return statements.Insert(index, statement);
         }
 
-        //TODO: make public
         /// <summary>
         /// Creates a new list with the elements in the specified range replaced with new node.
         /// </summary>
@@ -2325,7 +2329,7 @@ namespace Roslynator.CSharp
         /// <param name="index"></param>
         /// <param name="count"></param>
         /// <param name="newNode"></param>
-        internal static SyntaxList<TNode> ReplaceRange<TNode>(
+        public static SyntaxList<TNode> ReplaceRange<TNode>(
             this SyntaxList<TNode> list,
             int index,
             int count,
@@ -2432,7 +2436,14 @@ namespace Roslynator.CSharp
             return null;
         }
 
-        internal static SyntaxList<TNode> TrimTrivia<TNode>(this SyntaxList<TNode> list) where TNode : SyntaxNode
+        /// <summary>
+        /// Removes all leading whitespace from the leading trivia of the first node in a list
+        /// and all trailing whitespace from the trailing trivia of the last node in a list and returns a new list with the new trivia.
+        /// <see cref="SyntaxKind.WhitespaceTrivia"/> and <see cref="SyntaxKind.EndOfLineTrivia"/> is considered to be a whitespace.
+        /// </summary>
+        /// <typeparam name="TNode"></typeparam>
+        /// <param name="list"></param>
+        public static SyntaxList<TNode> TrimTrivia<TNode>(this SyntaxList<TNode> list) where TNode : SyntaxNode
         {
             int count = list.Count;
 
@@ -3094,7 +3105,13 @@ namespace Roslynator.CSharp
             return false;
         }
 
-        internal static bool IsInExpressionTree(
+        /// <summary>
+        /// Determines if the specified node is contained in an expression tree.
+        /// </summary>
+        /// <param name="node"></param>
+        /// <param name="semanticModel"></param>
+        /// <param name="cancellationToken"></param>
+        public static bool IsInExpressionTree(
             this SyntaxNode node,
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default)
@@ -3136,12 +3153,21 @@ namespace Roslynator.CSharp
             return false;
         }
 
-        internal static bool ContainsUnbalancedIfElseDirectives(this SyntaxNode node)
+        /// <summary>
+        /// Returns true if the specified node contains <c>#if</c> directive but it does not contain related <c>#endif</c> directive.
+        /// </summary>
+        /// <param name="node"></param>
+        public static bool ContainsUnbalancedIfElseDirectives(this SyntaxNode node)
         {
             return ContainsUnbalancedIfElseDirectives(node, node.FullSpan);
         }
 
-        internal static bool ContainsUnbalancedIfElseDirectives(this SyntaxNode node, TextSpan span)
+        /// <summary>
+        /// Returns true if the specified node contains <c>#if</c> directive but it does not contain related <c>#endif</c> directive.
+        /// </summary>
+        /// <param name="node"></param>
+        /// <param name="span"></param>
+        public static bool ContainsUnbalancedIfElseDirectives(this SyntaxNode node, TextSpan span)
         {
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
@@ -4162,7 +4188,6 @@ namespace Roslynator.CSharp
             return null;
         }
 
-        //TODO: make public
         internal static XmlElementSyntax UpdateName(this XmlElementSyntax element, string newName)
         {
             XmlElementStartTagSyntax startTag = element.StartTag;
