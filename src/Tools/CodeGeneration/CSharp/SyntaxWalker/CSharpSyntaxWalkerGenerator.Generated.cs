@@ -59,6 +59,7 @@ namespace Roslynator.CodeGeneration.CSharp
                 {
                     switch (propertySymbol.Name)
                     {
+                        case "Modifiers":
                         case "AsyncKeyword":
                         case "DelegateKeyword":
                         case "ParameterList":
@@ -1928,6 +1929,7 @@ namespace Roslynator.CodeGeneration.CSharp
                 {
                     switch (propertySymbol.Name)
                     {
+                        case "Modifiers":
                         case "AsyncKeyword":
                         case "ParameterList":
                         case "ArrowToken":
@@ -2262,6 +2264,7 @@ namespace Roslynator.CodeGeneration.CSharp
                 {
                     switch (propertySymbol.Name)
                     {
+                        case "Modifiers":
                         case "AsyncKeyword":
                         case "Parameter":
                         case "ArrowToken":
@@ -3165,6 +3168,57 @@ namespace Roslynator.CodeGeneration.CSharp
                         case "DelegateKeyword":
                         case "AsteriskToken":
                         case "CallingConvention":
+                        case "ParameterList":
+                            return true;
+                        case "LessThanToken":
+                        case "Parameters":
+                        case "GreaterThanToken":
+                            return false;
+                        default:
+                            throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
+                    }
+                }
+
+                case "DefaultConstraintSyntax":
+                {
+                    switch (propertySymbol.Name)
+                    {
+                        case "DefaultKeyword":
+                            return true;
+                        default:
+                            throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
+                    }
+                }
+
+                case "FunctionPointerCallingConventionSyntax":
+                {
+                    switch (propertySymbol.Name)
+                    {
+                        case "ManagedOrUnmanagedKeyword":
+                        case "UnmanagedCallingConventionList":
+                            return true;
+                        default:
+                            throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
+                    }
+                }
+
+                case "FunctionPointerParameterSyntax":
+                {
+                    switch (propertySymbol.Name)
+                    {
+                        case "AttributeLists":
+                        case "Modifiers":
+                        case "Type":
+                            return true;
+                        default:
+                            throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
+                    }
+                }
+
+                case "FunctionPointerParameterListSyntax":
+                {
+                    switch (propertySymbol.Name)
+                    {
                         case "LessThanToken":
                         case "Parameters":
                         case "GreaterThanToken":
@@ -3174,6 +3228,29 @@ namespace Roslynator.CodeGeneration.CSharp
                     }
                 }
 
+                case "FunctionPointerUnmanagedCallingConventionSyntax":
+                {
+                    switch (propertySymbol.Name)
+                    {
+                        case "Name":
+                            return true;
+                        default:
+                            throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
+                    }
+                }
+
+                case "FunctionPointerUnmanagedCallingConventionListSyntax":
+                {
+                    switch (propertySymbol.Name)
+                    {
+                        case "OpenBracketToken":
+                        case "CallingConventions":
+                        case "CloseBracketToken":
+                            return true;
+                        default:
+                            throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
+                    }
+                }
 
                 default:
                 {

@@ -549,6 +549,12 @@ namespace Roslynator.Testing.CSharp
                     case SyntaxKind.ImplicitObjectCreationExpression:
                     case SyntaxKind.PrimaryConstructorBaseType:
                     case SyntaxKind.FunctionPointerType:
+                    case SyntaxKind.DefaultConstraint:
+                    case SyntaxKind.FunctionPointerCallingConvention:
+                    case SyntaxKind.FunctionPointerParameter:
+                    case SyntaxKind.FunctionPointerParameterList:
+                    case SyntaxKind.FunctionPointerUnmanagedCallingConvention:
+                    case SyntaxKind.FunctionPointerUnmanagedCallingConventionList:
                         {
                             break;
                         }

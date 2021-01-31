@@ -1279,6 +1279,36 @@ namespace Roslynator.CodeGeneration.CSharp
                                 yield return (SyntaxKind)Enum.Parse(typeof(SyntaxKind), syntaxSymbol.Name.Remove(syntaxSymbol.Name.Length - 6));
                                 break;
                             }
+                        case "DefaultConstraintSyntax":
+                            {
+                                yield return SyntaxKind.DefaultConstraint;
+                                break;
+                            }
+                        case "FunctionPointerCallingConventionSyntax":
+                            {
+                                yield return SyntaxKind.FunctionPointerCallingConvention;
+                                break;
+                            }
+                        case "FunctionPointerParameterSyntax":
+                            {
+                                yield return SyntaxKind.FunctionPointerParameter;
+                                break;
+                            }
+                        case "FunctionPointerParameterListSyntax":
+                            {
+                                yield return SyntaxKind.FunctionPointerParameterList;
+                                break;
+                            }
+                        case "FunctionPointerUnmanagedCallingConventionSyntax":
+                            {
+                                yield return SyntaxKind.FunctionPointerUnmanagedCallingConvention;
+                                break;
+                            }
+                        case "FunctionPointerUnmanagedCallingConventionListSyntax":
+                            {
+                                yield return SyntaxKind.FunctionPointerUnmanagedCallingConventionList;
+                                break;
+                            }
                     }
                 }
             }

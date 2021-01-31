@@ -38,7 +38,7 @@ Roslynator.Documentation.DocumentationGenerator</Description>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.7.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.8.0" />
     <PackageReference Include="DotMarkdown" Version="0.1.0" />
   </ItemGroup>
 

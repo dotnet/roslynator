@@ -359,6 +359,12 @@ namespace Roslynator.CodeGeneration.CSharp
                     break;
                 }
 
+                case "DefaultConstraintSyntax":
+                {
+                    yield return SyntaxKind.DefaultConstraint;
+                    break;
+                }
+
                 case "DefaultExpressionSyntax":
                 {
                     yield return SyntaxKind.DefaultExpression;
@@ -558,9 +564,39 @@ namespace Roslynator.CodeGeneration.CSharp
                     break;
                 }
 
+                case "FunctionPointerCallingConventionSyntax":
+                {
+                    yield return SyntaxKind.FunctionPointerCallingConvention;
+                    break;
+                }
+
+                case "FunctionPointerParameterListSyntax":
+                {
+                    yield return SyntaxKind.FunctionPointerParameterList;
+                    break;
+                }
+
+                case "FunctionPointerParameterSyntax":
+                {
+                    yield return SyntaxKind.FunctionPointerParameter;
+                    break;
+                }
+
                 case "FunctionPointerTypeSyntax":
                 {
                     yield return SyntaxKind.FunctionPointerType;
+                    break;
+                }
+
+                case "FunctionPointerUnmanagedCallingConventionListSyntax":
+                {
+                    yield return SyntaxKind.FunctionPointerUnmanagedCallingConventionList;
+                    break;
+                }
+
+                case "FunctionPointerUnmanagedCallingConventionSyntax":
+                {
+                    yield return SyntaxKind.FunctionPointerUnmanagedCallingConvention;
                     break;
                 }
 

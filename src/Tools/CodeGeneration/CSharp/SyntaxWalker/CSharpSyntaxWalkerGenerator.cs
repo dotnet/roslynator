@@ -225,6 +225,11 @@ namespace Roslynator.CodeGeneration.CSharp
                     case "PositionalPatternClauseSyntax":
                     case "PropertyPatternClauseSyntax":
                     case "SubpatternSyntax":
+                    case "FunctionPointerParameterListSyntax":
+                    case "FunctionPointerCallingConventionSyntax":
+                    case "FunctionPointerCallingConventionListSyntax":
+                    case "FunctionPointerUnmanagedCallingConventionSyntax":
+                    case "FunctionPointerUnmanagedCallingConventionListSyntax":
                         {
                             if (UseCustomVisitMethod)
                             {

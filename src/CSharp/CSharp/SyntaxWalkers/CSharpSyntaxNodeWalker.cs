@@ -1095,6 +1095,10 @@ namespace Roslynator.CSharp.SyntaxWalkers
             }
         }
 
+        public override void VisitDefaultConstraint(DefaultConstraintSyntax node)
+        {
+        }
+
         public override void VisitDefaultExpression(DefaultExpressionSyntax node)
         {
             if (!ShouldVisit)
@@ -1742,16 +1746,96 @@ namespace Roslynator.CSharp.SyntaxWalkers
             }
         }
 
-        public override void VisitFunctionPointerType(FunctionPointerTypeSyntax node)
+        public override void VisitFunctionPointerCallingConvention(FunctionPointerCallingConventionSyntax node)
         {
-            foreach (ParameterSyntax parameter in node.Parameters)
+            if (!ShouldVisit)
+            {
+                return;
+            }
+
+            FunctionPointerUnmanagedCallingConventionListSyntax unmanagedCallingConventionList = node.UnmanagedCallingConventionList;
+            if (unmanagedCallingConventionList != null)
+            {
+                VisitFunctionPointerUnmanagedCallingConventionList(unmanagedCallingConventionList);
+            }
+        }
+
+        public override void VisitFunctionPointerParameter(FunctionPointerParameterSyntax node)
+        {
+            foreach (AttributeListSyntax attributeList in node.AttributeLists)
             {
                 if (!ShouldVisit)
                 {
                     return;
                 }
 
-                VisitParameter(parameter);
+                VisitAttributeList(attributeList);
+            }
+
+            if (!ShouldVisit)
+            {
+                return;
+            }
+
+            TypeSyntax type = node.Type;
+            if (type != null)
+            {
+                VisitType(type);
+            }
+        }
+
+        public override void VisitFunctionPointerParameterList(FunctionPointerParameterListSyntax node)
+        {
+            foreach (FunctionPointerParameterSyntax functionPointerParameter in node.Parameters)
+            {
+                if (!ShouldVisit)
+                {
+                    return;
+                }
+
+                VisitFunctionPointerParameter(functionPointerParameter);
+            }
+        }
+
+        public override void VisitFunctionPointerType(FunctionPointerTypeSyntax node)
+        {
+            if (!ShouldVisit)
+            {
+                return;
+            }
+
+            FunctionPointerCallingConventionSyntax callingConvention = node.CallingConvention;
+            if (callingConvention != null)
+            {
+                VisitFunctionPointerCallingConvention(callingConvention);
+            }
+
+            if (!ShouldVisit)
+            {
+                return;
+            }
+
+            FunctionPointerParameterListSyntax parameterList = node.ParameterList;
+            if (parameterList != null)
+            {
+                VisitFunctionPointerParameterList(parameterList);
+            }
+        }
+
+        public override void VisitFunctionPointerUnmanagedCallingConvention(FunctionPointerUnmanagedCallingConventionSyntax node)
+        {
+        }
+
+        public override void VisitFunctionPointerUnmanagedCallingConventionList(FunctionPointerUnmanagedCallingConventionListSyntax node)
+        {
+            foreach (FunctionPointerUnmanagedCallingConventionSyntax functionPointerUnmanagedCallingConvention in node.CallingConventions)
+            {
+                if (!ShouldVisit)
+                {
+                    return;
+                }
+
+                VisitFunctionPointerUnmanagedCallingConvention(functionPointerUnmanagedCallingConvention);
             }
         }
 
@@ -5172,6 +5256,9 @@ namespace Roslynator.CSharp.SyntaxWalkers
                     break;
                 case SyntaxKind.ConstructorConstraint:
                     VisitConstructorConstraint((ConstructorConstraintSyntax)node);
+                    break;
+                case SyntaxKind.DefaultConstraint:
+                    VisitDefaultConstraint((DefaultConstraintSyntax)node);
                     break;
                 case SyntaxKind.TypeConstraint:
                     VisitTypeConstraint((TypeConstraintSyntax)node);
