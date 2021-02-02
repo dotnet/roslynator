@@ -175,5 +175,59 @@ class C
 }
 ", equivalenceKey: EquivalenceKey.Join(RefactoringId, "Multiline"));
         }
+
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.JoinStringExpressions)]
+        public async Task Test_StringConcatenationOnMultipleLines_LeadingTriviaIncluded()
+        {
+            await VerifyRefactoringAsync(@"
+class C
+{
+    void M()
+    {
+        string s =
+[|            ""a"" +
+            ""b"" +
+            ""c""|];
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+        string s =
+            ""abc"";
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.JoinStringExpressions)]
+        public async Task Test_StringConcatenationOnMultipleLines_TrailingTriviaIncluded()
+        {
+            await VerifyRefactoringAsync(@"
+class C
+{
+    void M()
+    {
+        string s =
+            [|""a"" +
+            ""b"" +
+            ""c"" //|]
+;
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+        string s =
+            ""abc"" //
+;
+    }
+}
+");
+        }
     }
 }
