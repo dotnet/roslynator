@@ -56,6 +56,30 @@ class C2
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.DuplicateMember)]
+        public async Task Test_Constructor()
+        {
+            await VerifyRefactoringAsync(@"
+class C
+{
+    public C()
+    {
+    [||]}
+}
+", @"
+class C
+{
+    public C()
+    {
+    }
+
+    public C()
+    {
+    }
+}
+", equivalenceKey: RefactoringId, options: Options.AddAllowedCompilerDiagnosticId("CS0111"));
+        }
+
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.DuplicateMember)]
         public async Task Test_Indexer()
         {
             await VerifyRefactoringAsync(@"
