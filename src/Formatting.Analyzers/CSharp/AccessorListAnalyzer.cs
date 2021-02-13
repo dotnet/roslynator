@@ -60,7 +60,8 @@ namespace Roslynator.Formatting.CSharp
 
                         token = accessor.Body?.CloseBraceToken ?? accessor.SemicolonToken;
 
-                        Debug.Assert(token.Equals(accessor.GetLastToken()));
+                        if (!token.Equals(accessor.GetLastToken()))
+                            break;
                     }
                 }
 

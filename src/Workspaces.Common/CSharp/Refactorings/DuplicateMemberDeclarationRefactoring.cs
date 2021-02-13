@@ -51,7 +51,10 @@ namespace Roslynator.CSharp.Refactorings
                             }
                             else
                             {
-                                Debug.Fail(n.Kind().ToString());
+                                Debug.Assert(
+                                    n.IsKind(SyntaxKind.ThisConstructorInitializer, SyntaxKind.BaseConstructorInitializer),
+                                    n.Kind().ToString());
+
                                 return n;
                             }
                         });
