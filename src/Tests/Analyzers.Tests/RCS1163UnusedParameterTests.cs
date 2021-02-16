@@ -163,5 +163,20 @@ class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedParameter)]
+        public async Task TestNoDiagnostic_Discard()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System;
+
+class C
+{
+    void M(string _, string __, string _1)
+    {
+    }
+}
+");
+        }
     }
 }
