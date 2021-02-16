@@ -56,40 +56,6 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParenthesesWhenNecessary)]
-        public async Task Test_SuppressNullableWarningExpression()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
-#nullable enable
-
-class C
-{
-    string? M()
-    {
-        var c = new C();
-        
-        string s = [|c.M()?.ToString()|]!.ToString();
-
-        return null;
-    }
-}
-", @"
-#nullable enable
-
-class C
-{
-    string? M()
-    {
-        var c = new C();
-        
-        string s = (c.M()?.ToString())!.ToString();
-
-        return null;
-    }
-}
-");
-        }
-
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParenthesesWhenNecessary)]
         public async Task TestNoDiagnostic_PreprocessorDirectives()
         {
             await VerifyNoDiagnosticAsync(@"
