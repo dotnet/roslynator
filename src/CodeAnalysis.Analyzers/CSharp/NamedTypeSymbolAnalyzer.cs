@@ -10,7 +10,7 @@ using System.Collections.Generic;
 namespace Roslynator.CodeAnalysis.CSharp
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class NamedTypeSymbolAnalyzer : BaseDiagnosticAnalyzer
+    public class NamedTypeSymbolAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {

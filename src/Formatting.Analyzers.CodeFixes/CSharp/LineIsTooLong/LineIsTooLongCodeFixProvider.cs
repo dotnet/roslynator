@@ -22,7 +22,7 @@ namespace Roslynator.Formatting.CodeFixes.LineIsTooLong
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(LineIsTooLongCodeFixProvider))]
     [Shared]
-    internal class LineIsTooLongCodeFixProvider : BaseCodeFixProvider
+    public class LineIsTooLongCodeFixProvider : BaseCodeFixProvider
     {
         private const string Title = "Wrap line";
 

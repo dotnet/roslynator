@@ -12,7 +12,7 @@ namespace Roslynator.Formatting.CSharp
 {
     //TODO: sloučit s AccessorListAnalyzer
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class AddOrRemoveEmptyLineBetweenAccessorsAnalyzer : BaseDiagnosticAnalyzer
+    public class AddOrRemoveEmptyLineBetweenAccessorsAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {

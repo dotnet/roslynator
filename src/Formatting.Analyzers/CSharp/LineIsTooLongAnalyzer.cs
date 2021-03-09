@@ -13,7 +13,7 @@ using Roslynator.Formatting.CSharp;
 namespace Roslynator.Formatting
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    internal class LineIsTooLongAnalyzer : BaseDiagnosticAnalyzer
+    public class LineIsTooLongAnalyzer : BaseDiagnosticAnalyzer
     {
         private static volatile ImmutableDictionary<string, string> _properties;
 
