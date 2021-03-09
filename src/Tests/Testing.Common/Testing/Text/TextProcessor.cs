@@ -3,29 +3,65 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.Text;
 
 namespace Roslynator.Testing.Text
 {
-    internal class DefaultTextParser : TextParser
+    internal static class TextProcessor
     {
-        private const string OpenToken = "[|";
-        private const string CloseToken = "|]";
-        private const string OpenCloseTokens = OpenToken + CloseToken;
-        private const int TokensLength = 4;
+        private static readonly Regex _annotatedSpanRegex = new Regex(@"(?s)\{\|(?<identifier>[^:]+):(?<content>.*?)\|\}");
 
-        public DefaultTextParser(IAssert assert)
+        public static (string source, ImmutableDictionary<string, ImmutableArray<TextSpan>> spans) FindAnnotatedSpansAndRemove(string text)
         {
-            Assert = assert;
+            int offset = 0;
+            int lastPos = 0;
+
+            Match match = _annotatedSpanRegex.Match(text);
+
+            if (!match.Success)
+                return (text, ImmutableDictionary<string, ImmutableArray<TextSpan>>.Empty);
+
+            StringBuilder sb = StringBuilderCache.GetInstance(text.Length);
+
+            ImmutableDictionary<string, List<TextSpan>>.Builder dic = ImmutableDictionary.CreateBuilder<string, List<TextSpan>>();
+
+            do
+            {
+                Group content = match.Groups["content"];
+
+                sb.Append(text, lastPos, match.Index);
+                sb.Append(content.Value);
+
+                string identifier = match.Groups["identifier"].Value;
+                if (!dic.TryGetValue(identifier, out List<TextSpan> spans))
+                {
+                    spans = new List<TextSpan>();
+                    dic[identifier] = spans;
+                }
+
+                spans.Add(new TextSpan(match.Index - offset, content.Length));
+
+                lastPos = match.Index + match.Length;
+                offset += match.Length - content.Length;
+
+                match = match.NextMatch();
+
+            } while (match.Success);
+
+            sb.Append(text, lastPos, text.Length - lastPos);
+
+            return (
+                StringBuilderCache.GetStringAndFree(sb),
+                dic.ToImmutableDictionary(f => f.Key, f => f.Value.ToImmutableArray()));
         }
 
-        public IAssert Assert { get; }
-
-        public override TextParserResult GetSpans(string s, IComparer<LinePositionSpanInfo> comparer = null)
+        public static (string, ImmutableArray<TextSpan>) FindSpansAndRemove(string text)
         {
-            StringBuilder sb = StringBuilderCache.GetInstance(s.Length - TokensLength);
+            StringBuilder sb = StringBuilderCache.GetInstance(text.Length);
 
             var startPending = false;
             LinePositionInfo start = default;
@@ -37,12 +73,12 @@ namespace Roslynator.Testing.Text
             int line = 0;
             int column = 0;
 
-            int length = s.Length;
+            int length = text.Length;
 
             int i = 0;
             while (i < length)
             {
-                switch (s[i])
+                switch (text[i])
                 {
                     case '\r':
                         {
@@ -68,7 +104,7 @@ namespace Roslynator.Testing.Text
                             char nextChar = PeekNextChar();
                             if (nextChar == '|')
                             {
-                                sb.Append(s, lastPos, i - lastPos);
+                                sb.Append(text, lastPos, i - lastPos);
 
                                 var start2 = new LinePositionInfo(sb.Length, line, column);
 
@@ -128,16 +164,16 @@ namespace Roslynator.Testing.Text
             if (startPending
                 || stack?.Count > 0)
             {
-                Assert.True(false, "Text span is invalid.");
+                throw new InvalidOperationException("Text span is invalid.");
             }
 
-            sb.Append(s, lastPos, s.Length - lastPos);
+            sb.Append(text, lastPos, text.Length - lastPos);
 
-            spans?.Sort(comparer ?? LinePositionSpanInfoComparer.Index);
+            spans?.Sort(LinePositionSpanInfoComparer.Index);
 
-            return new TextParserResult(
+            return (
                 StringBuilderCache.GetStringAndFree(sb),
-                spans?.ToImmutableArray() ?? ImmutableArray<LinePositionSpanInfo>.Empty);
+                spans?.Select(f => f.Span).ToImmutableArray() ?? ImmutableArray<TextSpan>.Empty);
 
             char PeekNextChar()
             {
@@ -146,7 +182,7 @@ namespace Roslynator.Testing.Text
 
             char PeekChar(int offset)
             {
-                return (i + offset >= s.Length) ? '\0' : s[i + offset];
+                return (i + offset >= text.Length) ? '\0' : text[i + offset];
             }
 
             void CloseSpan()
@@ -161,7 +197,7 @@ namespace Roslynator.Testing.Text
                 }
                 else
                 {
-                    Assert.True(false, "Text span is invalid.");
+                    throw new InvalidOperationException("Text span is invalid.");
                 }
 
                 var end = new LinePositionInfo(sb.Length + i - lastPos, line, column);
@@ -170,47 +206,39 @@ namespace Roslynator.Testing.Text
 
                 (spans ??= new List<LinePositionSpanInfo>()).Add(span);
 
-                sb.Append(s, lastPos, i - lastPos);
+                sb.Append(text, lastPos, i - lastPos);
             }
         }
 
-        public override (TextSpan span, string text) ReplaceEmptySpan(string s, string replacement)
+        public static (string source, string expected, ImmutableArray<TextSpan> spans) FindSpansAndReplace(
+            string input,
+            string replacement1,
+            string replacement2 = null)
         {
-            int index = s.IndexOf(OpenCloseTokens, StringComparison.Ordinal);
+            (string source, ImmutableArray<TextSpan> spans) = FindSpansAndRemove(input);
 
-            if (index == -1)
-                Assert.True(false, "Text span is invalid or missing.");
+            if (spans.Length == 0)
+                throw new InvalidOperationException("Text contains no span.");
 
-            var span = new TextSpan(index, replacement.Length);
+            if (spans.Length > 1)
+                throw new InvalidOperationException("Text contains more than one span.");
 
-            string result = Replace(s, index, replacement);
+            string expected = (replacement2 != null)
+                ? source.Remove(spans[0].Start) + replacement2 + source.Substring(spans[0].End)
+                : null;
 
-            return (span, result);
-        }
+            string source2 = replacement1;
 
-        public override (TextSpan span, string text1, string text2) ReplaceEmptySpan(string s, string replacement1, string replacement2)
-        {
-            int index = s.IndexOf(OpenCloseTokens, StringComparison.Ordinal);
+            (string _, ImmutableArray<TextSpan> spans2) = FindSpansAndRemove(replacement1);
 
-            if (index == -1)
-                Assert.True(false, "Text span is invalid or missing.");
+            if (spans2.Length == 0)
+                source2 = "[|" + replacement1 + "|]";
 
-            var span = new TextSpan(index, replacement1.Length);
+            source2 = source.Remove(spans[0].Start) + source2 + source.Substring(spans[0].End);
 
-            string result1 = Replace(s, index, replacement1);
-            string result2 = Replace(s, index, replacement2);
+            (string source3, ImmutableArray<TextSpan> spans3) = FindSpansAndRemove(source2);
 
-            return (span, result1, result2);
-        }
-
-        private static string Replace(string s, int index, string replacement)
-        {
-            StringBuilder sb = StringBuilderCache.GetInstance(s.Length - TokensLength + replacement.Length)
-                .Append(s, 0, index)
-                .Append(replacement)
-                .Append(s, index + TokensLength, s.Length - index - TokensLength);
-
-            return StringBuilderCache.GetStringAndFree(sb);
+            return (source3, expected, spans3);
         }
     }
 }

@@ -2,22 +2,15 @@
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CodeFixes;
-using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
-using Roslynator.Testing;
 using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1223MarkTypeWithDebuggerDisplayAttributeTests : AbstractCSharpFixVerifier
+    public class RCS1223MarkTypeWithDebuggerDisplayAttributeTests : AbstractCSharpDiagnosticVerifier<MarkTypeWithDebuggerDisplayAttributeAnalyzer, MarkTypeWithDebuggerDisplayAttributeCodeFixProvider>
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.MarkTypeWithDebuggerDisplayAttribute;
-
-        protected override DiagnosticAnalyzer Analyzer { get; } = new MarkTypeWithDebuggerDisplayAttributeAnalyzer();
-
-        public override CodeFixProvider FixProvider { get; } = new MarkTypeWithDebuggerDisplayAttributeCodeFixProvider();
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute)]
         public async Task Test_PublicClass()

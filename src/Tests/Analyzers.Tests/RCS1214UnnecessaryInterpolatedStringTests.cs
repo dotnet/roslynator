@@ -2,20 +2,15 @@
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CodeFixes;
-using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.CodeFixes;
+using Roslynator.Testing.CSharp;
 using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1214UnnecessaryInterpolatedStringTests : AbstractCSharpFixVerifier
+    public class RCS1214UnnecessaryInterpolatedStringTests : AbstractCSharpDiagnosticVerifier<UnnecessaryInterpolatedStringAnalyzer, InterpolatedStringCodeFixProvider>
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.UnnecessaryInterpolatedString;
-
-        protected override DiagnosticAnalyzer Analyzer { get; } = new UnnecessaryInterpolatedStringAnalyzer();
-
-        public override CodeFixProvider FixProvider { get; } = new InterpolatedStringCodeFixProvider();
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryInterpolatedString)]
         public async Task Test_StringLiteral()
