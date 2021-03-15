@@ -79,6 +79,12 @@ namespace Roslynator.CommandLine
             IFormatProvider formatProvider = null,
             CancellationToken cancellationToken = default)
         {
+            foreach (string id in codeFixerOptions.IgnoredCompilerDiagnosticIds.OrderBy(f => f))
+                WriteLine($"Ignore compiler diagnostic '{id}'", Verbosity.Diagnostic);
+
+            foreach (string id in codeFixerOptions.IgnoredDiagnosticIds.OrderBy(f => f))
+                WriteLine($"Ignore diagnostic '{id}'", Verbosity.Diagnostic);
+
             if (projectOrSolution.IsProject)
             {
                 Project project = projectOrSolution.AsProject();

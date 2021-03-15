@@ -152,6 +152,8 @@ namespace Roslynator
 
         public static void WriteUsedAnalyzers(
             ImmutableArray<DiagnosticAnalyzer> analyzers,
+            Func<DiagnosticDescriptor, bool> predicate,
+            CodeAnalysisOptions options,
             ConsoleColor color,
             Verbosity verbosity)
         {
@@ -161,9 +163,15 @@ namespace Roslynator
             if (!ShouldWrite(verbosity))
                 return;
 
-            foreach (IGrouping<DiagnosticDescriptor, DiagnosticDescriptor> grouping in analyzers
+            IEnumerable<DiagnosticDescriptor> descriptors = analyzers
                 .SelectMany(f => f.SupportedDiagnostics)
                 .Distinct(DiagnosticDescriptorComparer.Id)
+                .Where(f => options.IsSupportedDiagnosticId(f.Id));
+
+            if (predicate != null)
+                descriptors = descriptors.Where(predicate);
+
+            foreach (IGrouping<DiagnosticDescriptor, DiagnosticDescriptor> grouping in descriptors
                 .OrderBy(f => f.Id)
                 .GroupBy(f => f, DiagnosticDescriptorComparer.IdPrefix))
             {
@@ -200,7 +208,11 @@ namespace Roslynator
             }
         }
 
-        public static void WriteUsedFixers(ImmutableArray<CodeFixProvider> fixers, ConsoleColor color, Verbosity verbosity)
+        public static void WriteUsedFixers(
+            ImmutableArray<CodeFixProvider> fixers,
+            CodeAnalysisOptions options,
+            ConsoleColor color,
+            Verbosity verbosity)
         {
             if (!ShouldWrite(verbosity))
                 return;
@@ -208,6 +220,7 @@ namespace Roslynator
             foreach (IGrouping<string, string> grouping in fixers
                 .SelectMany(f => f.FixableDiagnosticIds)
                 .Distinct()
+                .Where(f => options.IsSupportedDiagnosticId(f))
                 .OrderBy(f => f)
                 .GroupBy(f => f, DiagnosticIdComparer.Prefix))
             {
