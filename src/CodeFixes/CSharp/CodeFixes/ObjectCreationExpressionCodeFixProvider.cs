@@ -34,8 +34,9 @@ namespace Roslynator.CSharp.CodeFixes
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out ObjectCreationExpressionSyntax objectCreationExpression))
-                return;
+            ObjectCreationExpressionSyntax objectCreationExpression = root
+                .FindNode(context.Span, getInnermostNodeForTie: true)?
+                .FirstAncestorOrSelf<ObjectCreationExpressionSyntax>();
 
             switch (diagnostic.Id)
             {
