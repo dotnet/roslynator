@@ -152,8 +152,6 @@ namespace Roslynator
 
         public static void WriteUsedAnalyzers(
             ImmutableArray<DiagnosticAnalyzer> analyzers,
-            Project project,
-            CodeAnalysisOptions options,
             ConsoleColor color,
             Verbosity verbosity)
         {
@@ -163,21 +161,18 @@ namespace Roslynator
             if (!ShouldWrite(verbosity))
                 return;
 
-            foreach (IGrouping<DiagnosticDescriptor, (DiagnosticDescriptor descriptor, string severity)> grouping in analyzers
+            foreach (IGrouping<DiagnosticDescriptor, DiagnosticDescriptor> grouping in analyzers
                 .SelectMany(f => f.SupportedDiagnostics)
                 .Distinct(DiagnosticDescriptorComparer.Id)
-                .Select(f => (descriptor: f, reportDiagnostic: options.GetEffectiveSeverity(f, project.CompilationOptions)))
-                .Where(f => f.reportDiagnostic != ReportDiagnostic.Suppress)
-                .Select(f => (f.descriptor, severity: f.reportDiagnostic.ToDiagnosticSeverity().ToString()))
-                .OrderBy(f => f.descriptor.Id)
-                .GroupBy(f => f.descriptor, DiagnosticDescriptorComparer.IdPrefix))
+                .OrderBy(f => f.Id)
+                .GroupBy(f => f, DiagnosticDescriptorComparer.IdPrefix))
             {
                 int count = grouping.Count();
                 string prefix = DiagnosticIdPrefix.GetPrefix(grouping.Key.Id);
 
                 Write($"  {count} supported {((count == 1) ? "diagnostic" : "diagnostics")} with prefix '{prefix}'", color, verbosity);
 
-                using (IEnumerator<(DiagnosticDescriptor descriptor, string severity)> en = grouping.GetEnumerator())
+                using (IEnumerator<DiagnosticDescriptor> en = grouping.GetEnumerator())
                 {
                     if (en.MoveNext())
                     {
@@ -185,9 +180,7 @@ namespace Roslynator
 
                         while (true)
                         {
-                            Write(en.Current.descriptor.Id, color, verbosity);
-                            Write(" ", color, verbosity);
-                            Write(en.Current.severity, color, verbosity);
+                            Write(en.Current.Id, color, verbosity);
 
                             if (en.MoveNext())
                             {

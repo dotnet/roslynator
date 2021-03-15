@@ -127,7 +127,7 @@ namespace Roslynator.Diagnostics
                     return default;
             }
 
-            LogHelpers.WriteUsedAnalyzers(analyzers, project, Options, ConsoleColor.DarkGray, Verbosity.Diagnostic);
+            LogHelpers.WriteUsedAnalyzers(analyzers, ConsoleColor.DarkGray, Verbosity.Diagnostic);
 
             cancellationToken.ThrowIfCancellationRequested();
 

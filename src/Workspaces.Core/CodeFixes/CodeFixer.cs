@@ -14,7 +14,6 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.Formatting;
 using Roslynator.Host.Mef;
-using static Roslynator.CodeFixes.CodeFixerHelpers;
 using static Roslynator.Logger;
 
 namespace Roslynator.CodeFixes
@@ -180,15 +179,21 @@ namespace Roslynator.CodeFixes
                 return new ProjectFixResult(ProjectFixKind.NoFixers, analyzers: analyzers, fixers: fixers);
             }
 
-            Dictionary<string, ImmutableArray<CodeFixProvider>> fixersById = GetFixersById(fixers, Options);
+            Dictionary<string, ImmutableArray<CodeFixProvider>> fixersById = fixers
+                .SelectMany(f => f.FixableDiagnosticIds.Select(id => (id, fixer: f)))
+                .GroupBy(f => f.id)
+                .ToDictionary(f => f.Key, g => g.Select(f => f.fixer).Distinct().ToImmutableArray());
 
             analyzers = analyzers
                 .Where(analyzer => analyzer.SupportedDiagnostics.Any(descriptor => fixersById.ContainsKey(descriptor.Id)))
                 .ToImmutableArray();
 
-            Dictionary<string, ImmutableArray<DiagnosticAnalyzer>> analyzersById = GetAnalyzersById(analyzers);
+            Dictionary<string, ImmutableArray<DiagnosticAnalyzer>> analyzersById = analyzers
+                .SelectMany(f => f.SupportedDiagnostics.Select(d => (id: d.Id, analyzer: f)))
+                .GroupBy(f => f.id, f => f.analyzer)
+                .ToDictionary(g => g.Key, g => g.Select(analyzer => analyzer).Distinct().ToImmutableArray());
 
-            LogHelpers.WriteUsedAnalyzers(analyzers, project, Options, ConsoleColor.DarkGray, Verbosity.Diagnostic);
+            LogHelpers.WriteUsedAnalyzers(analyzers, ConsoleColor.DarkGray, Verbosity.Diagnostic);
             LogHelpers.WriteUsedFixers(fixers, ConsoleColor.DarkGray, Verbosity.Diagnostic);
 
             ImmutableArray<Diagnostic>.Builder fixedDiagnostics = ImmutableArray.CreateBuilder<Diagnostic>();
