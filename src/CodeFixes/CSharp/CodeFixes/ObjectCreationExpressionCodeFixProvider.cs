@@ -38,6 +38,9 @@ namespace Roslynator.CSharp.CodeFixes
                 .FindNode(context.Span, getInnermostNodeForTie: true)?
                 .FirstAncestorOrSelf<ObjectCreationExpressionSyntax>();
 
+            if (objectCreationExpression == null)
+                return;
+
             switch (diagnostic.Id)
             {
                 case CompilerDiagnosticIdentifiers.ThereIsNoArgumentGivenThatCorrespondsToRequiredFormalParameter:
