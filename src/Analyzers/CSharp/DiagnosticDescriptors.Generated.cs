@@ -2442,15 +2442,15 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1248</summary>
-        public static readonly DiagnosticDescriptor UseIsNullPatternInsteadOfComparisonOrViceVersa = DiagnosticDescriptorFactory.Default.Create(
-            id:                 DiagnosticIdentifiers.UseIsNullPatternInsteadOfComparisonOrViceVersa, 
-            title:              "Use 'is null' pattern instead of comparison (or vice versa).", 
-            messageFormat:      "Use 'is null' pattern instead of '{0}' operator.", 
+        public static readonly DiagnosticDescriptor UsePatternMatchingToCheckForNullOrViceVersa = DiagnosticDescriptorFactory.Default.Create(
+            id:                 DiagnosticIdentifiers.UsePatternMatchingToCheckForNullOrViceVersa, 
+            title:              "Use pattern matching to check for null (or vice versa).", 
+            messageFormat:      "Use pattern matching to check for null.", 
             category:           DiagnosticCategories.Style, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.UseIsNullPatternInsteadOfComparisonOrViceVersa, 
+            helpLinkUri:        DiagnosticIdentifiers.UsePatternMatchingToCheckForNullOrViceVersa, 
             customTags:         Array.Empty<string>());
 
         public static partial class ReportOnly
@@ -2600,15 +2600,15 @@ namespace Roslynator.CSharp
                 customTags:         Array.Empty<string>());
 
             /// <summary>RCS1248i</summary>
-            public static readonly DiagnosticDescriptor UseComparisonInsteadOfIsNullPattern = DiagnosticDescriptorFactory.Default.Create(
-                id:                 DiagnosticIdentifiers.UseIsNullPatternInsteadOfComparisonOrViceVersa, 
-                title:              "Use 'is null' pattern instead of comparison (or vice versa).", 
-                messageFormat:      "Use comparison instead of 'is null' pattern.", 
+            public static readonly DiagnosticDescriptor UseComparisonInsteadPatternMatchingToCheckForNull = DiagnosticDescriptorFactory.Default.Create(
+                id:                 DiagnosticIdentifiers.UsePatternMatchingToCheckForNullOrViceVersa, 
+                title:              "Use pattern matching to check for null (or vice versa).", 
+                messageFormat:      "Use comparison instead of pattern matching to check for null.", 
                 category:           DiagnosticCategories.Style, 
                 defaultSeverity:    DiagnosticSeverity.Info, 
                 isEnabledByDefault: false, 
                 description:        null, 
-                helpLinkUri:        DiagnosticIdentifiers.UseIsNullPatternInsteadOfComparisonOrViceVersa, 
+                helpLinkUri:        DiagnosticIdentifiers.UsePatternMatchingToCheckForNullOrViceVersa, 
                 customTags:         Array.Empty<string>());
 
         }
