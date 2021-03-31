@@ -1497,7 +1497,7 @@ while (true);]]></Before>
   </Analyzer>
   <Analyzer Identifier="AvoidUsageOfWhileStatementToCreateInfiniteLoop">
     <Id>RCS1065</Id>
-    <Title>Avoid usage of while statement to create an inifinite loop.</Title>
+    <Title>Avoid usage of while statement to create an infinite loop.</Title>
     <MessageFormat>Use for statement to create an infinite loop.</MessageFormat>
     <Category>Style</Category>
     <DefaultSeverity>Info</DefaultSeverity>
@@ -2389,7 +2389,7 @@ else
   </Analyzer>
   <Analyzer Identifier="UnnecessaryInterpolation">
     <Id>RCS1105</Id>
-    <Title>Unncessary interpolation.</Title>
+    <Title>Unnecessary interpolation.</Title>
     <Category>Simplification</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -2758,8 +2758,7 @@ if (s == null)
   </Analyzer>
   <Analyzer Identifier="RemoveRedundantFieldInitialization">
     <Id>RCS1129</Id>
-    <Title>Remove redundant field initalization.</Title>
-    <MessageFormat>Remove redundant field initialization.</MessageFormat>
+    <Title>Remove redundant field initialization.</Title>
     <Category>Redundancy</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -3186,7 +3185,7 @@ string s2 = s as string; // [|Id|]]]></Before>
   </Analyzer>
   <Analyzer Identifier="MemberTypeMustMatchOverriddenMemberType" IsObsolete="true">
     <Id>RCS1152</Id>
-    <Title>Member type must match overriden member type.</Title>
+    <Title>Member type must match overridden member type.</Title>
     <Category>ErrorFix</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -4096,7 +4095,7 @@ string x = s + i; // [|Id|]]]></Before>
   </Analyzer>
   <Analyzer Identifier="UnnecessaryNullCheck">
     <Id>RCS1199</Id>
-    <Title>Unncessary null check.</Title>
+    <Title>Unnecessary null check.</Title>
     <Category>Redundancy</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
