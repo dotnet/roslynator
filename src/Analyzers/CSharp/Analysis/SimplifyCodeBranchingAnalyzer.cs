@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Immutable;
 using System.Threading;
 using Microsoft.CodeAnalysis;
@@ -45,12 +44,10 @@ namespace Roslynator.CSharp.Analysis
             if (condition?.IsMissing != false)
                 return null;
 
-            StatementSyntax statement = ifStatement.Statement;
+            StatementSyntax ifStatementStatement = ifStatement.Statement;
 
-            if (statement == null)
+            if (ifStatementStatement == null)
                 return null;
-
-            var block = statement as BlockSyntax;
 
             ElseClauseSyntax elseClause = ifStatement.Else;
 
@@ -60,12 +57,21 @@ namespace Roslynator.CSharp.Analysis
                 {
                     return SimplifyCodeBranchingKind.IfElseInsideWhile;
                 }
-                else if (block?.Statements.Any() == false
-                    && block.OpenBraceToken.TrailingTrivia.IsEmptyOrWhitespace()
-                    && block.CloseBraceToken.LeadingTrivia.IsEmptyOrWhitespace()
-                    && IsFixableIfElseWithEmptyIf(ifStatement, elseClause))
+                else
                 {
-                    return SimplifyCodeBranchingKind.IfElseWithEmptyIf;
+                    var ifStatementBlock = ifStatementStatement as BlockSyntax;
+
+                    if (ifStatementBlock?.Statements.Any() == false
+                        && ifStatementBlock.OpenBraceToken.TrailingTrivia.IsEmptyOrWhitespace()
+                        && ifStatementBlock.CloseBraceToken.LeadingTrivia.IsEmptyOrWhitespace()
+                        && IsFixableIfElseWithEmptyIf(ifStatement, elseClause))
+                    {
+                        return SimplifyCodeBranchingKind.IfElseWithEmptyIf;
+                    }
+                    else if (IsFixableIfElseWithReturnOrContinueInsideIf(ifStatement, elseClause))
+                    {
+                        return SimplifyCodeBranchingKind.LastIfElseWithReturnOrContinueInsideIf;
+                    }
                 }
             }
             else if (IsFixableSimpleIfInsideWhileOrDo(ifStatement, semanticModel, cancellationToken))
@@ -111,14 +117,102 @@ namespace Roslynator.CSharp.Analysis
 
                 if ((statement as BlockSyntax)?.Statements.Any() == false)
                     return false;
+
+                //if (x)
+                //{
+                //}
+                //else if (y)
+                //{
+                //    M();
+                //}
             }
             else if (kind == SyntaxKind.Block)
             {
                 if (!((BlockSyntax)whenFalse).Statements.Any())
                     return false;
+
+                //if (x)
+                //{
+                //}
+                //else
+                //{
+                //    M();
+                //}
             }
 
+            //void M()
+            //{
+            //    if (x)
+            //    {
+            //    }
+            //    else
+            //    {
+            //        M();
+            //    }
+            //}
+
             return true;
+        }
+
+        private static bool IsFixableIfElseWithReturnOrContinueInsideIf(IfStatementSyntax ifStatement, ElseClauseSyntax elseClause)
+        {
+            if (elseClause.Statement?.IsKind(SyntaxKind.IfStatement) != false)
+                return false;
+
+            IfStatementSyntax topmostIf = ifStatement.GetTopmostIf();
+
+            if (!(topmostIf.Parent is BlockSyntax block))
+                return false;
+
+            if (!block.Statements.IsLast(topmostIf, ignoreLocalFunctions: true))
+                return false;
+
+            switch (block.Parent.Kind())
+            {
+                case SyntaxKind.MethodDeclaration:
+                case SyntaxKind.LocalFunctionStatement:
+                case SyntaxKind.ConstructorDeclaration:
+                case SyntaxKind.DestructorDeclaration:
+                case SyntaxKind.AddAccessorDeclaration:
+                case SyntaxKind.RemoveAccessorDeclaration:
+                case SyntaxKind.SetAccessorDeclaration:
+                    {
+                        //void M()
+                        //{
+                        //    if (x)
+                        //    {
+                        //        return;
+                        //    }
+                        //    else
+                        //    {
+                        //        M();
+                        //    }
+
+                        return ifStatement.SingleNonBlockStatementOrDefault() is ReturnStatementSyntax returnStatement
+                            && returnStatement.Expression == null;
+                    }
+                case SyntaxKind.ForEachStatement:
+                case SyntaxKind.ForEachVariableStatement:
+                case SyntaxKind.ForStatement:
+                case SyntaxKind.WhileStatement:
+                    {
+                        //while (x)
+                        //{
+                        //    if (y)
+                        //    {
+                        //        continue;
+                        //    }
+                        //    else
+                        //    {
+                        //        M();
+                        //    }
+                        //}
+
+                        return ifStatement.SingleNonBlockStatementOrDefault().IsKind(SyntaxKind.ContinueStatement);
+                    }
+            }
+
+            return false;
         }
 
         private static bool IsFixableIfElseInsideWhile(
@@ -159,6 +253,19 @@ namespace Roslynator.CSharp.Analysis
 
             if (whileStatement.Condition?.WalkDownParentheses().Kind() != SyntaxKind.TrueLiteralExpression)
                 return false;
+
+            //while (x)
+            //{
+            //    if (y)
+            //    {
+            //        break;
+            //    }
+            //    else
+            //    {
+            //    }
+            //
+            //    M();
+            //}
 
             return true;
         }
@@ -217,6 +324,16 @@ namespace Roslynator.CSharp.Analysis
                     return false;
                 }
 
+                //while (x)
+                //{
+                //    M();
+                //
+                //    if (y)
+                //    {
+                //        break;
+                //    }
+                //}
+
                 return true;
             }
             else if (kind == SyntaxKind.DoStatement)
@@ -239,6 +356,16 @@ namespace Roslynator.CSharp.Analysis
                     return false;
                 }
 
+                //do
+                //{
+                //    if (x)
+                //    { 
+                //        break;
+                //    }
+                //
+                //    M();
+                //}
+                //while (y);
                 return true;
             }
 
