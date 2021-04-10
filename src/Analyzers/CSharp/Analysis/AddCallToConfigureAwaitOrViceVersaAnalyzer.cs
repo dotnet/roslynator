@@ -11,7 +11,7 @@ using Roslynator.CSharp.Syntax;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class AddCallToConfigureAwaitOrViceVersaAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class AddCallToConfigureAwaitOrViceVersaAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 

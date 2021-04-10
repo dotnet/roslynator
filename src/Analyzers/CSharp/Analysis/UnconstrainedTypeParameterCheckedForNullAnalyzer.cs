@@ -14,7 +14,7 @@ using Roslynator.CSharp.Syntax;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class UnconstrainedTypeParameterCheckedForNullAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class UnconstrainedTypeParameterCheckedForNullAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 

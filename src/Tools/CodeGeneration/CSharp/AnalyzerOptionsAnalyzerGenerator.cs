@@ -30,7 +30,7 @@ namespace Roslynator.CodeGeneration.CSharp
                                         SimpleMemberAccessExpression(
                                             IdentifierName("LanguageNames"),
                                             IdentifierName("CSharp")))))),
-                        Modifiers.Internal(),
+                        TokenList(SyntaxKind.InternalKeyword, SyntaxKind.SealedKeyword),
                         Identifier("AnalyzerOptionsAnalyzer"),
                         default,
                         BaseList(SimpleBaseType(IdentifierName("DiagnosticAnalyzer"))),

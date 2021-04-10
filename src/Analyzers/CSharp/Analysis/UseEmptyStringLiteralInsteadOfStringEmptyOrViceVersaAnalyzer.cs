@@ -10,7 +10,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class UseEmptyStringLiteralInsteadOfStringEmptyOrViceVersaAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class UseEmptyStringLiteralInsteadOfStringEmptyOrViceVersaAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 

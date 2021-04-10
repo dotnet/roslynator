@@ -10,7 +10,7 @@ using Roslynator.CSharp;
 namespace Roslynator.Formatting.CSharp
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class AddEmptyLineBeforeEndRegionDirectiveAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class AddEmptyLineBeforeEndRegionDirectiveAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 

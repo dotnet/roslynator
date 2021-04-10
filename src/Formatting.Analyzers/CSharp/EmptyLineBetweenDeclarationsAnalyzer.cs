@@ -12,7 +12,7 @@ using Roslynator.CSharp;
 namespace Roslynator.Formatting.CSharp
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class EmptyLineBetweenDeclarationsAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class EmptyLineBetweenDeclarationsAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 

@@ -12,7 +12,7 @@ using Microsoft.CodeAnalysis.Text;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class AvoidUsageOfWhileStatementToCreateInfiniteLoopAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class AvoidUsageOfWhileStatementToCreateInfiniteLoopAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 

@@ -13,7 +13,7 @@ using Roslynator.CSharp.Syntax;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class UseStringIsNullOrEmptyMethodAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class UseStringIsNullOrEmptyMethodAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 

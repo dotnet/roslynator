@@ -12,7 +12,7 @@ using Roslynator.CSharp.Syntax;
 namespace Roslynator.CodeAnalysis.CSharp
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class UnnecessaryConditionalAccessAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class UnnecessaryConditionalAccessAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 

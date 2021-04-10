@@ -10,7 +10,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class OverridingMemberShouldNotChangeParamsModifierAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class OverridingMemberShouldNotChangeParamsModifierAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 

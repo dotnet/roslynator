@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class UseExplicitTypeInsteadOfVarWhenTypeIsNotObviousAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class UseExplicitTypeInsteadOfVarWhenTypeIsNotObviousAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 

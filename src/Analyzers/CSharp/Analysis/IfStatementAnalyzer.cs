@@ -12,7 +12,7 @@ using Roslynator.CSharp.Analysis.If;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class IfStatementAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class IfStatementAnalyzer : BaseDiagnosticAnalyzer
     {
         internal static IfAnalysisOptions AnalysisOptions { get; } = new IfAnalysisOptions(
             useCoalesceExpression: true,

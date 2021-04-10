@@ -12,7 +12,7 @@ using static Roslynator.DiagnosticHelpers;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class DuplicateWordInCommentAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class DuplicateWordInCommentAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 

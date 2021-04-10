@@ -12,7 +12,7 @@ using Roslynator.CSharp.Analysis.ReduceIfNesting;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class ReduceIfNestingAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class ReduceIfNestingAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 

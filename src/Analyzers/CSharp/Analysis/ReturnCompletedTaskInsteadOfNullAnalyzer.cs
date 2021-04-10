@@ -13,7 +13,7 @@ using Roslynator.CSharp.SyntaxWalkers;
 namespace Roslynator.CSharp.Analysis.ReturnTaskInsteadOfNull
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class ReturnCompletedTaskInsteadOfNullAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class ReturnCompletedTaskInsteadOfNullAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 

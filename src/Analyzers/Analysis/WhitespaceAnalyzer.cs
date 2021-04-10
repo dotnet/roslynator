@@ -10,7 +10,7 @@ using Microsoft.CodeAnalysis.CSharp;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp, LanguageNames.VisualBasic)]
-    public class WhitespaceAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class WhitespaceAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 

@@ -14,7 +14,7 @@ using Roslynator.CSharp.Syntax;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class MergeIfWithNestedIfAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class MergeIfWithNestedIfAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 

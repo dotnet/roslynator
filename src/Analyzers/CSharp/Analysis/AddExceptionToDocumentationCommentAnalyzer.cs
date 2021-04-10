@@ -12,7 +12,7 @@ using static Roslynator.CSharp.Analysis.AddExceptionToDocumentationComment.AddEx
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class AddExceptionToDocumentationCommentAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class AddExceptionToDocumentationCommentAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 

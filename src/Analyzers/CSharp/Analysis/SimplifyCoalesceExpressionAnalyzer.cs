@@ -13,7 +13,7 @@ using Roslynator.CSharp.Syntax;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class SimplifyCoalesceExpressionAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class SimplifyCoalesceExpressionAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 

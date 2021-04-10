@@ -10,7 +10,7 @@ using Microsoft.CodeAnalysis.Text;
 namespace Roslynator.Formatting.CSharp
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class AddNewLineAfterOpeningBraceOfEmptyBlockAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class AddNewLineAfterOpeningBraceOfEmptyBlockAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 

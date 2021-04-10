@@ -11,7 +11,7 @@ using Roslynator.CSharp;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class ConvertBlockBodyToExpressionBodyOrViceVersaAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class ConvertBlockBodyToExpressionBodyOrViceVersaAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 

@@ -15,7 +15,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class AddParagraphToDocumentationCommentAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class AddParagraphToDocumentationCommentAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 

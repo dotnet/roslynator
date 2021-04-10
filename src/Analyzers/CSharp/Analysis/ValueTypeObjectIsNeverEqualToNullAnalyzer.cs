@@ -10,7 +10,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class ValueTypeObjectIsNeverEqualToNullAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class ValueTypeObjectIsNeverEqualToNullAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 

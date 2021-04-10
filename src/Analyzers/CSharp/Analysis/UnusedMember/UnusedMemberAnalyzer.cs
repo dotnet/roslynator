@@ -14,7 +14,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace Roslynator.CSharp.Analysis.UnusedMember
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class UnusedMemberAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class UnusedMemberAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 

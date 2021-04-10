@@ -10,7 +10,7 @@ using Roslynator.CSharp.Analysis.RemoveRedundantStatement;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class RemoveRedundantStatementAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class RemoveRedundantStatementAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 

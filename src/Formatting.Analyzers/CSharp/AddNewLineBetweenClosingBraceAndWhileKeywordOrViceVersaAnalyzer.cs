@@ -11,7 +11,7 @@ using Roslynator.CSharp;
 namespace Roslynator.Formatting.CSharp
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersaAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersaAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 

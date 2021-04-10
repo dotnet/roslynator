@@ -9,7 +9,7 @@ using Roslynator.Formatting.CSharp;
 namespace Roslynator.Formatting
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp, LanguageNames.VisualBasic)]
-    public class UseLinefeedAsNewLineAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class UseLinefeedAsNewLineAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 

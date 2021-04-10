@@ -12,7 +12,7 @@ using static Roslynator.CSharp.SyntaxTriviaAnalysis;
 namespace Roslynator.Formatting.CSharp
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class FixFormattingOfCallChainAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class FixFormattingOfCallChainAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 

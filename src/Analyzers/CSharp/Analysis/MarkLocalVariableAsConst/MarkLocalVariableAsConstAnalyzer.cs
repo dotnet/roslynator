@@ -12,7 +12,7 @@ using Roslynator.CSharp.Syntax;
 namespace Roslynator.CSharp.Analysis.MarkLocalVariableAsConst
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class LocalDeclarationStatementAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class LocalDeclarationStatementAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 

@@ -12,7 +12,7 @@ using Roslynator.CSharp.Syntax;
 namespace Roslynator.CSharp.Analysis.UsePatternMatching
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class UsePatternMatchingInsteadOfAsAndNullCheckAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class UsePatternMatchingInsteadOfAsAndNullCheckAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 

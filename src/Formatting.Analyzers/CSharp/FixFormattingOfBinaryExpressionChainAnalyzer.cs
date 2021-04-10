@@ -11,7 +11,7 @@ using static Roslynator.CSharp.SyntaxTriviaAnalysis;
 namespace Roslynator.Formatting.CSharp
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class FixFormattingOfBinaryExpressionChainAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class FixFormattingOfBinaryExpressionChainAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 

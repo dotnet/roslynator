@@ -12,7 +12,7 @@ using Roslynator.CSharp.Syntax;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class UseStringLengthInsteadOfComparisonWithEmptyStringAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class UseStringLengthInsteadOfComparisonWithEmptyStringAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 

@@ -11,7 +11,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class FormatSummaryOnSingleLineAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class FormatSummaryOnSingleLineAnalyzer : BaseDiagnosticAnalyzer
     {
         private static readonly Regex _regex = new Regex(
             @"

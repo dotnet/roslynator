@@ -11,7 +11,7 @@ using Microsoft.CodeAnalysis.Text;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class DefaultLabelShouldBeLastLabelInSwitchSectionAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class DefaultLabelShouldBeLastLabelInSwitchSectionAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 

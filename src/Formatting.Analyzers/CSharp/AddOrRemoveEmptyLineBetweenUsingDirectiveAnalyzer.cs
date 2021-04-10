@@ -11,7 +11,7 @@ using Roslynator.CSharp;
 namespace Roslynator.Formatting.CSharp
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class AddOrRemoveEmptyLineBetweenUsingDirectiveAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class AddOrRemoveEmptyLineBetweenUsingDirectiveAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 

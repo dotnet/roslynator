@@ -14,7 +14,7 @@ using Roslynator.CSharp.SyntaxWalkers;
 namespace Roslynator.CSharp.Analysis.UnusedParameter
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class UnusedParameterAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class UnusedParameterAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 

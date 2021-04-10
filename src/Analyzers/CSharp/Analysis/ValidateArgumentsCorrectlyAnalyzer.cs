@@ -12,7 +12,7 @@ using Roslynator.CSharp.SyntaxWalkers;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class ValidateArgumentsCorrectlyAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class ValidateArgumentsCorrectlyAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 

@@ -12,7 +12,7 @@ using Roslynator.CSharp;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class ConvertAnonymousFunctionToMethodGroupOrViceVersaAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class ConvertAnonymousFunctionToMethodGroupOrViceVersaAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 

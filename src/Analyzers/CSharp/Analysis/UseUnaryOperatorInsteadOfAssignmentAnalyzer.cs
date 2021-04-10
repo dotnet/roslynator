@@ -11,7 +11,7 @@ using Microsoft.CodeAnalysis.Text;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class UseUnaryOperatorInsteadOfAssignmentAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class UseUnaryOperatorInsteadOfAssignmentAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 

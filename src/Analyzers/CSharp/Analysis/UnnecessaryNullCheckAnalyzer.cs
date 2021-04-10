@@ -12,7 +12,7 @@ using static Roslynator.CSharp.CSharpFactory;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class UnnecessaryNullCheckAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class UnnecessaryNullCheckAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 

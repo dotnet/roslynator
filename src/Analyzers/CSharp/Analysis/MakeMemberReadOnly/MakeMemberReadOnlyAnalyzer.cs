@@ -12,7 +12,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace Roslynator.CSharp.Analysis.MakeMemberReadOnly
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class MakeMemberReadOnlyAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class MakeMemberReadOnlyAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 

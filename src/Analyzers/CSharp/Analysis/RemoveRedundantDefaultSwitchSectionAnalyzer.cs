@@ -12,7 +12,7 @@ using Roslynator.CSharp;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class RemoveRedundantDefaultSwitchSectionAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class RemoveRedundantDefaultSwitchSectionAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 

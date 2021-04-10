@@ -11,7 +11,7 @@ using Roslynator.Formatting.CSharp;
 namespace Roslynator.Formatting
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class LineIsTooLongAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class LineIsTooLongAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 

@@ -13,7 +13,7 @@ using Roslynator.CSharp.SyntaxWalkers;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class UseForStatementInsteadOfWhileStatementAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class UseForStatementInsteadOfWhileStatementAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 

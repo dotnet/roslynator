@@ -10,7 +10,7 @@ using Roslynator.CSharp.Syntax;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class ConstantValuesShouldBePlacedOnRightSideOfComparisonsAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class ConstantValuesShouldBePlacedOnRightSideOfComparisonsAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 

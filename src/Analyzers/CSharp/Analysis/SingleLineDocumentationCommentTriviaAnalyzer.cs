@@ -14,7 +14,7 @@ using static Roslynator.DiagnosticHelpers;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class SingleLineDocumentationCommentTriviaAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class SingleLineDocumentationCommentTriviaAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 

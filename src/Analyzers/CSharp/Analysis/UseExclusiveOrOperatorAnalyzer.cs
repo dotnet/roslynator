@@ -13,7 +13,7 @@ using static Roslynator.CSharp.CSharpFactory;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class UseExclusiveOrOperatorAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class UseExclusiveOrOperatorAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 

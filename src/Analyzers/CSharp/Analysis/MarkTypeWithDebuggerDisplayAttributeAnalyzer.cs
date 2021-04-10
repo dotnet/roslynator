@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class MarkTypeWithDebuggerDisplayAttributeAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class MarkTypeWithDebuggerDisplayAttributeAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 

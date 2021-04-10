@@ -10,7 +10,7 @@ using Roslynator.CSharp;
 namespace Roslynator.Formatting.CSharp
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class RemoveNewlinesFromInitializerWithSingleLineExpressionAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class RemoveNewlinesFromInitializerWithSingleLineExpressionAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 

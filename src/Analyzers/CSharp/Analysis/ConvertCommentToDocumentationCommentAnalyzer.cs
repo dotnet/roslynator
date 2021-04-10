@@ -12,7 +12,7 @@ using static Roslynator.CSharp.Analysis.ConvertCommentToDocumentationCommentAnal
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class ConvertCommentToDocumentationCommentAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class ConvertCommentToDocumentationCommentAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 

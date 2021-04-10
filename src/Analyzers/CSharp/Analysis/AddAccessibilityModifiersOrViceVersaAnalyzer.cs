@@ -15,7 +15,7 @@ using Roslynator.CSharp;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class AddAccessibilityModifiersOrViceVersaAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class AddAccessibilityModifiersOrViceVersaAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableDictionary<Accessibility, ImmutableDictionary<string, string>> _properties;
 
