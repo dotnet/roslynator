@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.RemoveRedundantStatement); }
+            get { return ImmutableArray.Create(DiagnosticRules.RemoveRedundantStatement); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -36,7 +36,7 @@ namespace Roslynator.CSharp.Analysis
             if (!RemoveRedundantStatementAnalysis.IsFixable(continueStatement))
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveRedundantStatement, continueStatement);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveRedundantStatement, continueStatement);
         }
 
         private static void AnalyzeReturnStatement(SyntaxNodeAnalysisContext context)
@@ -49,7 +49,7 @@ namespace Roslynator.CSharp.Analysis
             if (!RemoveRedundantStatementAnalysis.IsFixable(returnStatement))
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveRedundantStatement, returnStatement);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveRedundantStatement, returnStatement);
         }
 
         private static void AnalyzeYieldBreakStatement(SyntaxNodeAnalysisContext context)
@@ -62,7 +62,7 @@ namespace Roslynator.CSharp.Analysis
             if (!RemoveRedundantStatementAnalysis.IsFixable(yieldBreakStatement))
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveRedundantStatement, yieldBreakStatement);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveRedundantStatement, yieldBreakStatement);
         }
     }
 }

@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.UnnecessaryUnsafeContext); }
+            get { return ImmutableArray.Create(DiagnosticRules.UnnecessaryUnsafeContext); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -50,7 +50,7 @@ namespace Roslynator.CSharp.Analysis
             if (!ParentDeclarationsContainsUnsafeModifier(unsafeStatement))
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UnnecessaryUnsafeContext, unsafeStatement.UnsafeKeyword);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UnnecessaryUnsafeContext, unsafeStatement.UnsafeKeyword);
         }
 
         private static void AnalyzeLocalFunctionStatement(SyntaxNodeAnalysisContext context)
@@ -76,7 +76,7 @@ namespace Roslynator.CSharp.Analysis
             if (!ParentDeclarationsContainsUnsafeModifier(parent))
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UnnecessaryUnsafeContext, modifiers[index]);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UnnecessaryUnsafeContext, modifiers[index]);
         }
 
         private static void AnalyzeTypeDeclaration(SyntaxNodeAnalysisContext context)
@@ -176,7 +176,7 @@ namespace Roslynator.CSharp.Analysis
             if (!ParentTypeDeclarationsContainsUnsafeModifier(memberDeclaration))
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UnnecessaryUnsafeContext, modifiers[index]);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UnnecessaryUnsafeContext, modifiers[index]);
         }
 
         private static bool ParentDeclarationsContainsUnsafeModifier(UnsafeStatementSyntax unsafeStatement)

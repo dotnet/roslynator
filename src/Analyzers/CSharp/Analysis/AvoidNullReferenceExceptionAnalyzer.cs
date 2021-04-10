@@ -17,7 +17,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.AvoidNullReferenceException); }
+            get { return ImmutableArray.Create(DiagnosticRules.AvoidNullReferenceException); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -247,7 +247,7 @@ namespace Roslynator.CSharp.Analysis
         {
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticDescriptors.AvoidNullReferenceException,
+                DiagnosticRules.AvoidNullReferenceException,
                 Location.Create(expression.SyntaxTree, new TextSpan(expression.Span.End, 1)));
         }
     }

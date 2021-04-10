@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.RemovePartialModifierFromTypeWithSinglePart); }
+            get { return ImmutableArray.Create(DiagnosticRules.RemovePartialModifierFromTypeWithSinglePart); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -68,7 +68,7 @@ namespace Roslynator.CSharp.Analysis
 
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticDescriptors.RemovePartialModifierFromTypeWithSinglePart,
+                DiagnosticRules.RemovePartialModifierFromTypeWithSinglePart,
                 typeDeclaration.Modifiers.Find(SyntaxKind.PartialKeyword));
         }
     }

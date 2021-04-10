@@ -17,7 +17,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.RemoveRedundantCast); }
+            get { return ImmutableArray.Create(DiagnosticRules.RemoveRedundantCast); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -102,7 +102,7 @@ namespace Roslynator.CSharp.Analysis
 
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticDescriptors.RemoveRedundantCast,
+                DiagnosticRules.RemoveRedundantCast,
                 Location.Create(castExpression.SyntaxTree, castExpression.ParenthesesSpan()));
         }
 
@@ -237,7 +237,7 @@ namespace Roslynator.CSharp.Analysis
 
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticDescriptors.RemoveRedundantCast,
+                DiagnosticRules.RemoveRedundantCast,
                 Location.Create(invocationExpression.SyntaxTree, TextSpan.FromBounds(invocationInfo.Name.SpanStart, invocationInfo.ArgumentList.Span.End)));
         }
     }

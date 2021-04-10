@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.AddBracesToSwitchSectionWithMultipleStatements); }
+            get { return ImmutableArray.Create(DiagnosticRules.AddBracesToSwitchSectionWithMultipleStatements); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -34,7 +34,7 @@ namespace Roslynator.CSharp.Analysis
             {
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
-                    DiagnosticDescriptors.AddBracesToSwitchSectionWithMultipleStatements,
+                    DiagnosticRules.AddBracesToSwitchSectionWithMultipleStatements,
                     Location.Create(switchSection.SyntaxTree, statements.Span));
             }
         }

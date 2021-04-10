@@ -16,7 +16,7 @@ namespace Roslynator.CSharp.Analysis.UsePatternMatching
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.UsePatternMatchingInsteadOfIsAndCast); }
+            get { return ImmutableArray.Create(DiagnosticRules.UsePatternMatchingInsteadOfIsAndCast); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -92,7 +92,7 @@ namespace Roslynator.CSharp.Analysis.UsePatternMatching
                         if (!IsFixable(right, identifierName, semanticModel, cancellationToken))
                             return;
 
-                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UsePatternMatchingInsteadOfIsAndCast, logicalAnd);
+                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UsePatternMatchingInsteadOfIsAndCast, logicalAnd);
                         break;
                     }
                 case SyntaxKind.IfStatement:
@@ -116,7 +116,7 @@ namespace Roslynator.CSharp.Analysis.UsePatternMatching
                         if (!IsFixable(statement, identifierName, semanticModel, cancellationToken))
                             return;
 
-                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UsePatternMatchingInsteadOfIsAndCast, ifStatement.Condition);
+                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UsePatternMatchingInsteadOfIsAndCast, ifStatement.Condition);
                         break;
                     }
             }

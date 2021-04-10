@@ -15,7 +15,7 @@ namespace Roslynator.CodeAnalysis.CSharp
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.CallLastInsteadOfUsingElementAccess); }
+            get { return ImmutableArray.Create(DiagnosticRules.CallLastInsteadOfUsingElementAccess); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -71,7 +71,7 @@ namespace Roslynator.CodeAnalysis.CSharp
                 return;
             }
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.CallLastInsteadOfUsingElementAccess, elementAccessExpression.ArgumentList);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.CallLastInsteadOfUsingElementAccess, elementAccessExpression.ArgumentList);
         }
     }
 }

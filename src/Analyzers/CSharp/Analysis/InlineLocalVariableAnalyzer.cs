@@ -22,8 +22,8 @@ namespace Roslynator.CSharp.Analysis
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticDescriptors.InlineLocalVariable,
-                    DiagnosticDescriptors.InlineLocalVariableFadeOut);
+                    DiagnosticRules.InlineLocalVariable,
+                    DiagnosticRules.InlineLocalVariableFadeOut);
             }
         }
 
@@ -34,7 +34,7 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(
                 c =>
                 {
-                    if (DiagnosticDescriptors.InlineLocalVariable.IsEffective(c))
+                    if (DiagnosticRules.InlineLocalVariable.IsEffective(c))
                         AnalyzeLocalDeclarationStatement(c);
                 },
                 SyntaxKind.LocalDeclarationStatement);
@@ -310,16 +310,16 @@ namespace Roslynator.CSharp.Analysis
             in SingleLocalDeclarationStatementInfo localDeclarationInfo,
             ExpressionSyntax expression)
         {
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.InlineLocalVariable, localDeclarationInfo.Statement);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.InlineLocalVariable, localDeclarationInfo.Statement);
 
             foreach (SyntaxToken modifier in localDeclarationInfo.Modifiers)
-                DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.InlineLocalVariableFadeOut, modifier);
+                DiagnosticHelpers.ReportToken(context, DiagnosticRules.InlineLocalVariableFadeOut, modifier);
 
-            DiagnosticHelpers.ReportNode(context, DiagnosticDescriptors.InlineLocalVariableFadeOut, localDeclarationInfo.Type);
-            DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.InlineLocalVariableFadeOut, localDeclarationInfo.Identifier);
-            DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.InlineLocalVariableFadeOut, localDeclarationInfo.EqualsToken);
-            DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.InlineLocalVariableFadeOut, localDeclarationInfo.SemicolonToken);
-            DiagnosticHelpers.ReportNode(context, DiagnosticDescriptors.InlineLocalVariableFadeOut, expression);
+            DiagnosticHelpers.ReportNode(context, DiagnosticRules.InlineLocalVariableFadeOut, localDeclarationInfo.Type);
+            DiagnosticHelpers.ReportToken(context, DiagnosticRules.InlineLocalVariableFadeOut, localDeclarationInfo.Identifier);
+            DiagnosticHelpers.ReportToken(context, DiagnosticRules.InlineLocalVariableFadeOut, localDeclarationInfo.EqualsToken);
+            DiagnosticHelpers.ReportToken(context, DiagnosticRules.InlineLocalVariableFadeOut, localDeclarationInfo.SemicolonToken);
+            DiagnosticHelpers.ReportNode(context, DiagnosticRules.InlineLocalVariableFadeOut, expression);
         }
     }
 }

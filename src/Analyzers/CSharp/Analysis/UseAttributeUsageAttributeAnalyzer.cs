@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.UseAttributeUsageAttribute); }
+            get { return ImmutableArray.Create(DiagnosticRules.UseAttributeUsageAttribute); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -62,7 +62,7 @@ namespace Roslynator.CSharp.Analysis
                 {
                     var classDeclaration = (ClassDeclarationSyntax)typeSymbol.GetSyntax(context.CancellationToken);
 
-                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseAttributeUsageAttribute, classDeclaration.Identifier);
+                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseAttributeUsageAttribute, classDeclaration.Identifier);
 
                     return;
                 }

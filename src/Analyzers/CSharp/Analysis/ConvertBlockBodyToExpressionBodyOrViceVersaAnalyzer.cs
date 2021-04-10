@@ -18,8 +18,8 @@ namespace Roslynator.CSharp.Analysis
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticDescriptors.ConvertBlockBodyToExpressionBodyOrViceVersa,
-                    DiagnosticDescriptors.ConvertBlockBodyToExpressionBodyOrViceVersaFadeOut);
+                    DiagnosticRules.ConvertBlockBodyToExpressionBodyOrViceVersa,
+                    DiagnosticRules.ConvertBlockBodyToExpressionBodyOrViceVersaFadeOut);
             }
         }
 
@@ -50,7 +50,7 @@ namespace Roslynator.CSharp.Analysis
 
         private static void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (!DiagnosticDescriptors.ConvertBlockBodyToExpressionBodyOrViceVersa.IsEffective(context))
+            if (!DiagnosticRules.ConvertBlockBodyToExpressionBodyOrViceVersa.IsEffective(context))
                 return;
 
             var methodDeclaration = (MethodDeclarationSyntax)context.Node;
@@ -85,21 +85,21 @@ namespace Roslynator.CSharp.Analysis
                 {
                     if (AnalyzerOptions.ConvertExpressionBodyToBlockBody.IsEnabled(context))
                     {
-                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ReportOnly.ConvertExpressionBodyToBlockBody, expressionBody);
+                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertExpressionBodyToBlockBody, expressionBody);
                         return;
                     }
 
                     if (AnalyzerOptions.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine.IsEnabled(context)
                         && methodDeclaration.SyntaxTree.IsMultiLineSpan(methodDeclaration.HeaderSpan()))
                     {
-                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ReportOnly.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine, expressionBody);
+                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine, expressionBody);
                         return;
                     }
 
                     if (AnalyzerOptions.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine.IsEnabled(context)
                         && expressionBody.Expression?.IsMultiLine() == true)
                     {
-                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ReportOnly.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine, expressionBody);
+                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine, expressionBody);
                     }
                 }
             }
@@ -107,7 +107,7 @@ namespace Roslynator.CSharp.Analysis
 
         private static void AnalyzePropertyDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (!DiagnosticDescriptors.ConvertBlockBodyToExpressionBodyOrViceVersa.IsEffective(context))
+            if (!DiagnosticRules.ConvertBlockBodyToExpressionBodyOrViceVersa.IsEffective(context))
                 return;
 
             var propertyDeclaration = (PropertyDeclarationSyntax)context.Node;
@@ -118,28 +118,28 @@ namespace Roslynator.CSharp.Analysis
             {
                 if (AnalyzerOptions.ConvertExpressionBodyToBlockBody.IsEnabled(context))
                 {
-                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ReportOnly.ConvertExpressionBodyToBlockBody, expressionBody);
+                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertExpressionBodyToBlockBody, expressionBody);
                     return;
                 }
 
                 if (AnalyzerOptions.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine.IsEnabled(context)
                     && propertyDeclaration.SyntaxTree.IsMultiLineSpan(propertyDeclaration.HeaderSpan()))
                 {
-                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ReportOnly.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine, expressionBody);
+                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine, expressionBody);
                     return;
                 }
 
                 if (AnalyzerOptions.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine.IsEnabled(context)
                     && expressionBody.Expression?.IsMultiLine() == true)
                 {
-                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ReportOnly.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine, expressionBody);
+                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine, expressionBody);
                 }
             }
         }
 
         private static void AnalyzeIndexerDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (!DiagnosticDescriptors.ConvertBlockBodyToExpressionBodyOrViceVersa.IsEffective(context))
+            if (!DiagnosticRules.ConvertBlockBodyToExpressionBodyOrViceVersa.IsEffective(context))
                 return;
 
             var indexerDeclaration = (IndexerDeclarationSyntax)context.Node;
@@ -150,28 +150,28 @@ namespace Roslynator.CSharp.Analysis
             {
                 if (AnalyzerOptions.ConvertExpressionBodyToBlockBody.IsEnabled(context))
                 {
-                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ReportOnly.ConvertExpressionBodyToBlockBody, expressionBody);
+                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertExpressionBodyToBlockBody, expressionBody);
                     return;
                 }
 
                 if (AnalyzerOptions.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine.IsEnabled(context)
                     && indexerDeclaration.SyntaxTree.IsMultiLineSpan(indexerDeclaration.HeaderSpan()))
                 {
-                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ReportOnly.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine, expressionBody);
+                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine, expressionBody);
                     return;
                 }
 
                 if (AnalyzerOptions.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine.IsEnabled(context)
                     && expressionBody.Expression?.IsMultiLine() == true)
                 {
-                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ReportOnly.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine, expressionBody);
+                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine, expressionBody);
                 }
             }
         }
 
         private static void AnalyzeOperatorDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (!DiagnosticDescriptors.ConvertBlockBodyToExpressionBodyOrViceVersa.IsEffective(context))
+            if (!DiagnosticRules.ConvertBlockBodyToExpressionBodyOrViceVersa.IsEffective(context))
                 return;
 
             var operatorDeclaration = (OperatorDeclarationSyntax)context.Node;
@@ -206,21 +206,21 @@ namespace Roslynator.CSharp.Analysis
                 {
                     if (AnalyzerOptions.ConvertExpressionBodyToBlockBody.IsEnabled(context))
                     {
-                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ReportOnly.ConvertExpressionBodyToBlockBody, expressionBody);
+                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertExpressionBodyToBlockBody, expressionBody);
                         return;
                     }
 
                     if (AnalyzerOptions.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine.IsEnabled(context)
                         && operatorDeclaration.SyntaxTree.IsMultiLineSpan(operatorDeclaration.HeaderSpan()))
                     {
-                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ReportOnly.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine, expressionBody);
+                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine, expressionBody);
                         return;
                     }
 
                     if (AnalyzerOptions.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine.IsEnabled(context)
                         && expressionBody.Expression?.IsMultiLine() == true)
                     {
-                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ReportOnly.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine, expressionBody);
+                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine, expressionBody);
                     }
                 }
             }
@@ -228,7 +228,7 @@ namespace Roslynator.CSharp.Analysis
 
         private static void AnalyzeConversionOperatorDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (!DiagnosticDescriptors.ConvertBlockBodyToExpressionBodyOrViceVersa.IsEffective(context))
+            if (!DiagnosticRules.ConvertBlockBodyToExpressionBodyOrViceVersa.IsEffective(context))
                 return;
 
             var operatorDeclaration = (ConversionOperatorDeclarationSyntax)context.Node;
@@ -263,21 +263,21 @@ namespace Roslynator.CSharp.Analysis
                 {
                     if (AnalyzerOptions.ConvertExpressionBodyToBlockBody.IsEnabled(context))
                     {
-                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ReportOnly.ConvertExpressionBodyToBlockBody, expressionBody);
+                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertExpressionBodyToBlockBody, expressionBody);
                         return;
                     }
 
                     if (AnalyzerOptions.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine.IsEnabled(context)
                         && operatorDeclaration.SyntaxTree.IsMultiLineSpan(operatorDeclaration.HeaderSpan()))
                     {
-                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ReportOnly.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine, expressionBody);
+                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine, expressionBody);
                         return;
                     }
 
                     if (AnalyzerOptions.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine.IsEnabled(context)
                         && expressionBody.Expression?.IsMultiLine() == true)
                     {
-                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ReportOnly.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine, expressionBody);
+                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine, expressionBody);
                     }
                 }
             }
@@ -285,7 +285,7 @@ namespace Roslynator.CSharp.Analysis
 
         private static void AnalyzeConstructorDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (!DiagnosticDescriptors.ConvertBlockBodyToExpressionBodyOrViceVersa.IsEffective(context))
+            if (!DiagnosticRules.ConvertBlockBodyToExpressionBodyOrViceVersa.IsEffective(context))
                 return;
 
             var constructorDeclaration = (ConstructorDeclarationSyntax)context.Node;
@@ -320,21 +320,21 @@ namespace Roslynator.CSharp.Analysis
                 {
                     if (AnalyzerOptions.ConvertExpressionBodyToBlockBody.IsEnabled(context))
                     {
-                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ReportOnly.ConvertExpressionBodyToBlockBody, expressionBody);
+                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertExpressionBodyToBlockBody, expressionBody);
                         return;
                     }
 
                     if (AnalyzerOptions.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine.IsEnabled(context)
                         && constructorDeclaration.SyntaxTree.IsMultiLineSpan(constructorDeclaration.HeaderSpan()))
                     {
-                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ReportOnly.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine, expressionBody);
+                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine, expressionBody);
                         return;
                     }
 
                     if (AnalyzerOptions.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine.IsEnabled(context)
                         && expressionBody.Expression?.IsMultiLine() == true)
                     {
-                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ReportOnly.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine, expressionBody);
+                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine, expressionBody);
                     }
                 }
             }
@@ -342,7 +342,7 @@ namespace Roslynator.CSharp.Analysis
 
         private static void AnalyzeDestructorDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (!DiagnosticDescriptors.ConvertBlockBodyToExpressionBodyOrViceVersa.IsEffective(context))
+            if (!DiagnosticRules.ConvertBlockBodyToExpressionBodyOrViceVersa.IsEffective(context))
                 return;
 
             var destructorDeclaration = (DestructorDeclarationSyntax)context.Node;
@@ -377,21 +377,21 @@ namespace Roslynator.CSharp.Analysis
                 {
                     if (AnalyzerOptions.ConvertExpressionBodyToBlockBody.IsEnabled(context))
                     {
-                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ReportOnly.ConvertExpressionBodyToBlockBody, expressionBody);
+                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertExpressionBodyToBlockBody, expressionBody);
                         return;
                     }
 
                     if (AnalyzerOptions.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine.IsEnabled(context)
                         && destructorDeclaration.SyntaxTree.IsMultiLineSpan(destructorDeclaration.HeaderSpan()))
                     {
-                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ReportOnly.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine, expressionBody);
+                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine, expressionBody);
                         return;
                     }
 
                     if (AnalyzerOptions.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine.IsEnabled(context)
                         && expressionBody.Expression?.IsMultiLine() == true)
                     {
-                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ReportOnly.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine, expressionBody);
+                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine, expressionBody);
                     }
                 }
             }
@@ -399,7 +399,7 @@ namespace Roslynator.CSharp.Analysis
 
         private static void AnalyzeLocalFunctionStatement(SyntaxNodeAnalysisContext context)
         {
-            if (!DiagnosticDescriptors.ConvertBlockBodyToExpressionBodyOrViceVersa.IsEffective(context))
+            if (!DiagnosticRules.ConvertBlockBodyToExpressionBodyOrViceVersa.IsEffective(context))
                 return;
 
             var localFunction = (LocalFunctionStatementSyntax)context.Node;
@@ -434,21 +434,21 @@ namespace Roslynator.CSharp.Analysis
                 {
                     if (AnalyzerOptions.ConvertExpressionBodyToBlockBody.IsEnabled(context))
                     {
-                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ReportOnly.ConvertExpressionBodyToBlockBody, expressionBody);
+                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertExpressionBodyToBlockBody, expressionBody);
                         return;
                     }
 
                     if (AnalyzerOptions.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine.IsEnabled(context)
                         && localFunction.SyntaxTree.IsMultiLineSpan(localFunction.HeaderSpan()))
                     {
-                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ReportOnly.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine, expressionBody);
+                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine, expressionBody);
                         return;
                     }
 
                     if (AnalyzerOptions.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine.IsEnabled(context)
                         && expressionBody.Expression?.IsMultiLine() == true)
                     {
-                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ReportOnly.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine, expressionBody);
+                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine, expressionBody);
                     }
                 }
             }
@@ -456,7 +456,7 @@ namespace Roslynator.CSharp.Analysis
 
         private static void AnalyzeAccessorDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (!DiagnosticDescriptors.ConvertBlockBodyToExpressionBodyOrViceVersa.IsEffective(context))
+            if (!DiagnosticRules.ConvertBlockBodyToExpressionBodyOrViceVersa.IsEffective(context))
                 return;
 
             var accessor = (AccessorDeclarationSyntax)context.Node;
@@ -475,14 +475,14 @@ namespace Roslynator.CSharp.Analysis
                 {
                     if (AnalyzerOptions.ConvertExpressionBodyToBlockBody.IsEnabled(context))
                     {
-                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ReportOnly.ConvertExpressionBodyToBlockBody, expressionBody);
+                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertExpressionBodyToBlockBody, expressionBody);
                         return;
                     }
 
                     if (AnalyzerOptions.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine.IsEnabled(context)
                         && expressionBody.Expression?.IsMultiLine() == true)
                     {
-                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ReportOnly.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine, expressionBody);
+                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine, expressionBody);
                     }
                 }
             }
@@ -594,14 +594,14 @@ namespace Roslynator.CSharp.Analysis
 
         private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, SyntaxNode blockOrAccessorList, ExpressionSyntax expression)
         {
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ConvertBlockBodyToExpressionBodyOrViceVersa, blockOrAccessorList);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ConvertBlockBodyToExpressionBodyOrViceVersa, blockOrAccessorList);
 
             ReportFadeOut(context, (expression.Parent as ReturnStatementSyntax)?.ReturnKeyword ?? default, blockOrAccessorList);
         }
 
         private static void ReportFadeOut(SyntaxNodeAnalysisContext context, SyntaxToken token, SyntaxNode blockOrAccessorList)
         {
-            DiagnosticDescriptor fadeOutAnalyzer = DiagnosticDescriptors.ConvertBlockBodyToExpressionBodyOrViceVersaFadeOut;
+            DiagnosticDescriptor fadeOutAnalyzer = DiagnosticRules.ConvertBlockBodyToExpressionBodyOrViceVersaFadeOut;
 
             if (token != default)
                 DiagnosticHelpers.ReportToken(context, fadeOutAnalyzer, token);

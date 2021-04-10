@@ -21,8 +21,8 @@ namespace Roslynator.CSharp.Analysis
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticDescriptors.UseNameOfOperator,
-                    DiagnosticDescriptors.UseNameOfOperatorFadeOut);
+                    DiagnosticRules.UseNameOfOperator,
+                    DiagnosticRules.UseNameOfOperatorFadeOut);
             }
         }
 
@@ -38,7 +38,7 @@ namespace Roslynator.CSharp.Analysis
                 startContext.RegisterSyntaxNodeAction(
                     c =>
                     {
-                        if (DiagnosticDescriptors.UseNameOfOperator.IsEffective(c))
+                        if (DiagnosticRules.UseNameOfOperator.IsEffective(c))
                             AnalyzeArgument(c);
                     },
                     SyntaxKind.Argument);
@@ -65,7 +65,7 @@ namespace Roslynator.CSharp.Analysis
             if (containingType.HasAttribute(MetadataNames.System_FlagsAttribute))
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseNameOfOperator, invocationInfo.InvocationExpression);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseNameOfOperator, invocationInfo.InvocationExpression);
         }
 
         private static void AnalyzeArgument(SyntaxNodeAnalysisContext context)
@@ -195,7 +195,7 @@ namespace Roslynator.CSharp.Analysis
         {
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticDescriptors.UseNameOfOperator,
+                DiagnosticRules.UseNameOfOperator,
                 literalExpression.GetLocation(),
                 ImmutableDictionary.CreateRange(new[] { new KeyValuePair<string, string>("Identifier", identifier) }));
 
@@ -208,12 +208,12 @@ namespace Roslynator.CSharp.Analysis
 
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
-                    DiagnosticDescriptors.UseNameOfOperatorFadeOut,
+                    DiagnosticRules.UseNameOfOperatorFadeOut,
                     Location.Create(syntaxTree, new TextSpan(span.Start, (text[0] == '@') ? 2 : 1)));
 
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
-                    DiagnosticDescriptors.UseNameOfOperatorFadeOut,
+                    DiagnosticRules.UseNameOfOperatorFadeOut,
                     Location.Create(syntaxTree, new TextSpan(span.End - 1, 1)));
             }
         }

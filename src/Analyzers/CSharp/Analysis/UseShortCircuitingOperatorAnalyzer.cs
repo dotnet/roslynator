@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.UseShortCircuitingOperator); }
+            get { return ImmutableArray.Create(DiagnosticRules.UseShortCircuitingOperator); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -49,7 +49,7 @@ namespace Roslynator.CSharp.Analysis
                     return;
             }
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseShortCircuitingOperator, binaryExpression.OperatorToken);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseShortCircuitingOperator, binaryExpression.OperatorToken);
         }
     }
 }

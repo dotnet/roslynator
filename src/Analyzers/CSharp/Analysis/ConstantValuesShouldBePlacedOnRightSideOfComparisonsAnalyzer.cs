@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.ConstantValuesShouldBePlacedOnRightSideOfComparisons); }
+            get { return ImmutableArray.Create(DiagnosticRules.ConstantValuesShouldBePlacedOnRightSideOfComparisons); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -49,7 +49,7 @@ namespace Roslynator.CSharp.Analysis
                 {
                     DiagnosticHelpers.ReportDiagnostic(
                         context,
-                        DiagnosticDescriptors.ConstantValuesShouldBePlacedOnRightSideOfComparisons,
+                        DiagnosticRules.ConstantValuesShouldBePlacedOnRightSideOfComparisons,
                         info.Left);
                 }
             }

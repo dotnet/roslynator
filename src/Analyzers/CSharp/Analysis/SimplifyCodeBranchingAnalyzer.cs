@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.SimplifyCodeBranching); }
+            get { return ImmutableArray.Create(DiagnosticRules.SimplifyCodeBranching); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -34,7 +34,7 @@ namespace Roslynator.CSharp.Analysis
             if (kind == null)
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.SimplifyCodeBranching, ifStatement.IfKeyword);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.SimplifyCodeBranching, ifStatement.IfKeyword);
         }
 
         internal static SimplifyCodeBranchingKind? GetKind(IfStatementSyntax ifStatement, SemanticModel semanticModel, CancellationToken cancellationToken)

@@ -13,7 +13,7 @@ namespace Roslynator.Formatting.CSharp
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.AddNewLineBeforeEnumMember); }
+            get { return ImmutableArray.Create(DiagnosticRules.AddNewLineBeforeEnumMember); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -40,7 +40,7 @@ namespace Roslynator.Formatting.CSharp
                 {
                     DiagnosticHelpers.ReportDiagnostic(
                         context,
-                        DiagnosticDescriptors.AddNewLineBeforeEnumMember,
+                        DiagnosticRules.AddNewLineBeforeEnumMember,
                         Location.Create(enumDeclaration.SyntaxTree, members[i].Span.WithLength(0)));
 
                     return;

@@ -16,7 +16,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.UnnecessaryUsageOfVerbatimStringLiteral); }
+            get { return ImmutableArray.Create(DiagnosticRules.UnnecessaryUsageOfVerbatimStringLiteral); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -51,7 +51,7 @@ namespace Roslynator.CSharp.Analysis
 
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticDescriptors.UnnecessaryUsageOfVerbatimStringLiteral,
+                DiagnosticRules.UnnecessaryUsageOfVerbatimStringLiteral,
                 Location.Create(node.SyntaxTree, new TextSpan(node.SpanStart, 1)));
         }
 
@@ -99,7 +99,7 @@ namespace Roslynator.CSharp.Analysis
 
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticDescriptors.UnnecessaryUsageOfVerbatimStringLiteral,
+                DiagnosticRules.UnnecessaryUsageOfVerbatimStringLiteral,
                 Location.Create(node.SyntaxTree, new TextSpan(node.SpanStart + 1, 1)));
         }
 

@@ -19,11 +19,11 @@ namespace Roslynator.CSharp.Analysis
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticDescriptors.DeclareEnumMemberWithZeroValue,
-                    DiagnosticDescriptors.CompositeEnumValueContainsUndefinedFlag,
-                    DiagnosticDescriptors.DeclareEnumValueAsCombinationOfNames,
-                    DiagnosticDescriptors.DuplicateEnumValue,
-                    DiagnosticDescriptors.UseBitShiftOperator);
+                    DiagnosticRules.DeclareEnumMemberWithZeroValue,
+                    DiagnosticRules.CompositeEnumValueContainsUndefinedFlag,
+                    DiagnosticRules.DeclareEnumValueAsCombinationOfNames,
+                    DiagnosticRules.DuplicateEnumValue,
+                    DiagnosticRules.UseBitShiftOperator);
             }
         }
 
@@ -49,7 +49,7 @@ namespace Roslynator.CSharp.Analysis
             ImmutableArray<ISymbol> members = default;
 
             if (hasFlagsAttribute
-                && DiagnosticDescriptors.DeclareEnumMemberWithZeroValue.IsEffective(context))
+                && DiagnosticRules.DeclareEnumMemberWithZeroValue.IsEffective(context))
             {
                 members = typeSymbol.GetMembers();
 
@@ -57,14 +57,14 @@ namespace Roslynator.CSharp.Analysis
                 {
                     var enumDeclaration = (EnumDeclarationSyntax)typeSymbol.GetSyntax(context.CancellationToken);
 
-                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.DeclareEnumMemberWithZeroValue, enumDeclaration.Identifier);
+                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.DeclareEnumMemberWithZeroValue, enumDeclaration.Identifier);
                 }
             }
 
             EnumSymbolInfo enumInfo = default;
 
             if (hasFlagsAttribute
-                && DiagnosticDescriptors.CompositeEnumValueContainsUndefinedFlag.IsEffective(context))
+                && DiagnosticRules.CompositeEnumValueContainsUndefinedFlag.IsEffective(context))
             {
                 enumInfo = EnumSymbolInfo.Create(typeSymbol);
 
@@ -85,7 +85,7 @@ namespace Roslynator.CSharp.Analysis
             }
 
             if (hasFlagsAttribute
-                && DiagnosticDescriptors.DeclareEnumValueAsCombinationOfNames.IsEffective(context))
+                && DiagnosticRules.DeclareEnumValueAsCombinationOfNames.IsEffective(context))
             {
                 if (members.IsDefault)
                     members = typeSymbol.GetMembers();
@@ -124,13 +124,13 @@ namespace Roslynator.CSharp.Analysis
                         List<EnumFieldSymbolInfo> values = enumInfo.Decompose(fieldInfo);
 
                         if (values?.Count > 1)
-                            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.DeclareEnumValueAsCombinationOfNames, expression);
+                            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.DeclareEnumValueAsCombinationOfNames, expression);
                     }
                 }
             }
 
             if (hasFlagsAttribute
-                && DiagnosticDescriptors.UseBitShiftOperator.IsEffective(context))
+                && DiagnosticRules.UseBitShiftOperator.IsEffective(context))
             {
                 if (members.IsDefault)
                     members = typeSymbol.GetMembers();
@@ -159,13 +159,13 @@ namespace Roslynator.CSharp.Analysis
                     {
                         var enumDeclaration = (EnumDeclarationSyntax)typeSymbol.GetSyntax(context.CancellationToken);
 
-                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseBitShiftOperator, enumDeclaration.Identifier);
+                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseBitShiftOperator, enumDeclaration.Identifier);
                         break;
                     }
                 }
             }
 
-            if (DiagnosticDescriptors.DuplicateEnumValue.IsEffective(context))
+            if (DiagnosticRules.DuplicateEnumValue.IsEffective(context))
             {
                 if (enumInfo.IsDefault)
                     enumInfo = EnumSymbolInfo.Create(typeSymbol);
@@ -307,7 +307,7 @@ namespace Roslynator.CSharp.Analysis
 
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticDescriptors.CompositeEnumValueContainsUndefinedFlag,
+                DiagnosticRules.CompositeEnumValueContainsUndefinedFlag,
                 enumMember.GetLocation(),
                 ImmutableDictionary.CreateRange(new[] { new KeyValuePair<string, string>("Value", value) }),
                 value);
@@ -324,14 +324,14 @@ namespace Roslynator.CSharp.Analysis
                 return;
             }
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.DuplicateEnumValue, enumMember);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.DuplicateEnumValue, enumMember);
         }
 
         private static void ReportDuplicateValue(
             SymbolAnalysisContext context,
             SyntaxNode node)
         {
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.DuplicateEnumValue, node);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.DuplicateEnumValue, node);
         }
     }
 }

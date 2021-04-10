@@ -16,7 +16,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.RemoveRedundantDefaultSwitchSection); }
+            get { return ImmutableArray.Create(DiagnosticRules.RemoveRedundantDefaultSwitchSection); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -51,7 +51,7 @@ namespace Roslynator.CSharp.Analysis
                 return;
             }
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveRedundantDefaultSwitchSection, defaultSection);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveRedundantDefaultSwitchSection, defaultSection);
         }
 
         private static bool ContainsOnlyBreakStatement(SwitchSectionSyntax switchSection)

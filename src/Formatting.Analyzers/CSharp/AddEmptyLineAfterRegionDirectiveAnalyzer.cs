@@ -14,7 +14,7 @@ namespace Roslynator.Formatting.CSharp
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.AddEmptyLineAfterRegionDirective); }
+            get { return ImmutableArray.Create(DiagnosticRules.AddEmptyLineAfterRegionDirective); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -33,7 +33,7 @@ namespace Roslynator.Formatting.CSharp
 
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticDescriptors.AddEmptyLineAfterRegionDirective,
+                DiagnosticRules.AddEmptyLineAfterRegionDirective,
                 Location.Create(regionDirective.SyntaxTree, regionDirective.EndOfDirectiveToken.Span));
 
             bool IsFollowedWithEmptyLineOrEndRegionDirective()

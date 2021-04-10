@@ -17,9 +17,9 @@ namespace Roslynator.CodeAnalysis.CSharp
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticDescriptors.UnknownLanguageName,
-                    DiagnosticDescriptors.SpecifyExportCodeFixProviderAttributeName,
-                    DiagnosticDescriptors.SpecifyExportCodeRefactoringProviderAttributeName);
+                    DiagnosticRules.UnknownLanguageName,
+                    DiagnosticRules.SpecifyExportCodeFixProviderAttributeName,
+                    DiagnosticRules.SpecifyExportCodeRefactoringProviderAttributeName);
             }
         }
 
@@ -86,7 +86,7 @@ namespace Roslynator.CodeAnalysis.CSharp
             if (attribute == null)
                 return;
 
-            if (DiagnosticDescriptors.UnknownLanguageName.IsEffective(context))
+            if (DiagnosticRules.UnknownLanguageName.IsEffective(context))
                 AnalyzeLanguageName(context, attribute);
         }
 
@@ -97,13 +97,13 @@ namespace Roslynator.CodeAnalysis.CSharp
             if (attribute == null)
                 return;
 
-            if (DiagnosticDescriptors.UnknownLanguageName.IsEffective(context))
+            if (DiagnosticRules.UnknownLanguageName.IsEffective(context))
                 AnalyzeLanguageName(context, attribute);
 
-            if (DiagnosticDescriptors.SpecifyExportCodeFixProviderAttributeName.IsEffective(context)
+            if (DiagnosticRules.SpecifyExportCodeFixProviderAttributeName.IsEffective(context)
                 && !ContainsNamedArgument(attribute, "Name"))
             {
-                ReportDiagnostic(context, attribute, DiagnosticDescriptors.SpecifyExportCodeFixProviderAttributeName);
+                ReportDiagnostic(context, attribute, DiagnosticRules.SpecifyExportCodeFixProviderAttributeName);
             }
         }
 
@@ -114,13 +114,13 @@ namespace Roslynator.CodeAnalysis.CSharp
             if (attribute == null)
                 return;
 
-            if (DiagnosticDescriptors.UnknownLanguageName.IsEffective(context))
+            if (DiagnosticRules.UnknownLanguageName.IsEffective(context))
                 AnalyzeLanguageName(context, attribute);
 
-            if (DiagnosticDescriptors.SpecifyExportCodeRefactoringProviderAttributeName.IsEffective(context)
+            if (DiagnosticRules.SpecifyExportCodeRefactoringProviderAttributeName.IsEffective(context)
                 && !ContainsNamedArgument(attribute, "Name"))
             {
-                ReportDiagnostic(context, attribute, DiagnosticDescriptors.SpecifyExportCodeRefactoringProviderAttributeName);
+                ReportDiagnostic(context, attribute, DiagnosticRules.SpecifyExportCodeRefactoringProviderAttributeName);
             }
         }
 
@@ -188,7 +188,7 @@ namespace Roslynator.CodeAnalysis.CSharp
             {
                 if (argumentIndex == i)
                 {
-                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UnknownLanguageName, arguments[i].Expression);
+                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UnknownLanguageName, arguments[i].Expression);
                     break;
                 }
             }

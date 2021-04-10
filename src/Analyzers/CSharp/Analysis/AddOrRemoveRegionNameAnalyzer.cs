@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.AddOrRemoveRegionName); }
+            get { return ImmutableArray.Create(DiagnosticRules.AddOrRemoveRegionName); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -42,12 +42,12 @@ namespace Roslynator.CSharp.Analysis
                 if (endTrivia.Kind() != SyntaxKind.PreprocessingMessageTrivia
                     || !string.Equals(trivia.ToString(), endTrivia.ToString(), StringComparison.Ordinal))
                 {
-                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AddOrRemoveRegionName, endRegionDirective, "Add", "to");
+                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AddOrRemoveRegionName, endRegionDirective, "Add", "to");
                 }
             }
             else if (endTrivia.Kind() == SyntaxKind.PreprocessingMessageTrivia)
             {
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AddOrRemoveRegionName, endRegionDirective, "Remove", "from");
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AddOrRemoveRegionName, endRegionDirective, "Remove", "from");
             }
         }
     }

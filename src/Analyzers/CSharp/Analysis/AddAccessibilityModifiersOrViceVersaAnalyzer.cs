@@ -42,7 +42,7 @@ namespace Roslynator.CSharp.Analysis
 
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.AddAccessibilityModifiersOrViceVersa); }
+            get { return ImmutableArray.Create(DiagnosticRules.AddAccessibilityModifiersOrViceVersa); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -184,7 +184,7 @@ namespace Roslynator.CSharp.Analysis
 
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
-                    DiagnosticDescriptors.AddAccessibilityModifiersOrViceVersa,
+                    DiagnosticRules.AddAccessibilityModifiersOrViceVersa,
                     location,
                     Properties[accessibility]);
             }
@@ -201,7 +201,7 @@ namespace Roslynator.CSharp.Analysis
 
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
-                    DiagnosticDescriptors.ReportOnly.RemoveAccessibilityModifiers,
+                    DiagnosticRules.ReportOnly.RemoveAccessibilityModifiers,
                     Location.Create(declaration.SyntaxTree, TextSpan.FromBounds(first.SpanStart, last.Span.End)));
             }
         }

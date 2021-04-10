@@ -17,8 +17,8 @@ namespace Roslynator.CSharp.Analysis
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticDescriptors.RemoveBracesFromIfElse,
-                    DiagnosticDescriptors.RemoveBracesFromIfElseFadeOut);
+                    DiagnosticRules.RemoveBracesFromIfElse,
+                    DiagnosticRules.RemoveBracesFromIfElseFadeOut);
             }
         }
 
@@ -29,7 +29,7 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(
                 c =>
                 {
-                    if (DiagnosticDescriptors.RemoveBracesFromIfElse.IsEffective(c))
+                    if (DiagnosticRules.RemoveBracesFromIfElse.IsEffective(c))
                         AnalyzeIfStatement(c);
                 },
                 SyntaxKind.IfStatement);
@@ -50,12 +50,12 @@ namespace Roslynator.CSharp.Analysis
             if (!analysis.RemoveBraces)
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveBracesFromIfElse, ifStatement);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveBracesFromIfElse, ifStatement);
 
             foreach (IfStatementOrElseClause ifOrElse in ifStatement.AsCascade())
             {
                 if (ifOrElse.Statement is BlockSyntax block)
-                    CSharpDiagnosticHelpers.ReportBraces(context, DiagnosticDescriptors.RemoveBracesFromIfElseFadeOut, block);
+                    CSharpDiagnosticHelpers.ReportBraces(context, DiagnosticRules.RemoveBracesFromIfElseFadeOut, block);
             }
         }
     }

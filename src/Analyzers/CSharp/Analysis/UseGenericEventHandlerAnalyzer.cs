@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.UseGenericEventHandler); }
+            get { return ImmutableArray.Create(DiagnosticRules.UseGenericEventHandler); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -72,7 +72,7 @@ namespace Roslynator.CSharp.Analysis
             if (type == null)
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseGenericEventHandler, type);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseGenericEventHandler, type);
         }
 
         private static TypeSyntax GetTypeSyntax(SyntaxNode node)

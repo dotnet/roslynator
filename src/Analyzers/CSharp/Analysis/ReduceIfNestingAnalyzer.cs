@@ -16,7 +16,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.ReduceIfNesting); }
+            get { return ImmutableArray.Create(DiagnosticRules.ReduceIfNesting); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.Analysis
 
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticDescriptors.ReduceIfNesting,
+                DiagnosticRules.ReduceIfNesting,
                 ifStatement.IfKeyword.GetLocation(),
                 ImmutableDictionary.CreateRange(new[] { new KeyValuePair<string, string>("JumpKind", analysis.JumpKind.ToString()) }));
         }

@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.AddBracesWhenExpressionSpansOverMultipleLines); }
+            get { return ImmutableArray.Create(DiagnosticRules.AddBracesWhenExpressionSpansOverMultipleLines); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -184,7 +184,7 @@ namespace Roslynator.CSharp.Analysis
         {
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticDescriptors.AddBracesWhenExpressionSpansOverMultipleLines,
+                DiagnosticRules.AddBracesWhenExpressionSpansOverMultipleLines,
                 embeddedStatement,
                 CSharpFacts.GetTitle(statement));
         }

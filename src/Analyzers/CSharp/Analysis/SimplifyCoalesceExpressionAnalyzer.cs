@@ -17,7 +17,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.SimplifyCoalesceExpression); }
+            get { return ImmutableArray.Create(DiagnosticRules.SimplifyCoalesceExpression); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -46,7 +46,7 @@ namespace Roslynator.CSharp.Analysis
 
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticDescriptors.SimplifyCoalesceExpression,
+                DiagnosticRules.SimplifyCoalesceExpression,
                 Location.Create(coalesceExpression.SyntaxTree, span));
         }
 

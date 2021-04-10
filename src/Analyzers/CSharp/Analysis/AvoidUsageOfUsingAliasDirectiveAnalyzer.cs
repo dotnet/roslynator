@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.AvoidUsageOfUsingAliasDirective); }
+            get { return ImmutableArray.Create(DiagnosticRules.AvoidUsageOfUsingAliasDirective); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.Analysis
                 .GetSymbol(usingDirective.Name, context.CancellationToken)?
                 .IsKind(SymbolKind.Namespace, SymbolKind.NamedType) == true)
             {
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AvoidUsageOfUsingAliasDirective, usingDirective);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AvoidUsageOfUsingAliasDirective, usingDirective);
             }
         }
     }

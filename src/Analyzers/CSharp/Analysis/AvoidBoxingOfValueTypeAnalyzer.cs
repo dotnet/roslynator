@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.AvoidBoxingOfValueType); }
+            get { return ImmutableArray.Create(DiagnosticRules.AvoidBoxingOfValueType); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -46,7 +46,7 @@ namespace Roslynator.CSharp.Analysis
             if (typeSymbol?.IsValueType != true)
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AvoidBoxingOfValueType, expression);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AvoidBoxingOfValueType, expression);
         }
     }
 }

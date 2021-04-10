@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.AvoidLockingOnPubliclyAccessibleInstance); }
+            get { return ImmutableArray.Create(DiagnosticRules.AvoidLockingOnPubliclyAccessibleInstance); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -48,7 +48,7 @@ namespace Roslynator.CSharp.Analysis
 
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticDescriptors.AvoidLockingOnPubliclyAccessibleInstance,
+                DiagnosticRules.AvoidLockingOnPubliclyAccessibleInstance,
                 expression,
                 expression.ToString());
         }

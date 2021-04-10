@@ -18,8 +18,8 @@ namespace Roslynator.Formatting.CSharp
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticDescriptors.RemoveEmptyLineBetweenUsingDirectivesWithSameRootNamespace,
-                    DiagnosticDescriptors.AddEmptyLineBetweenUsingDirectivesWithDifferentRootNamespaceOrViceVersa);
+                    DiagnosticRules.RemoveEmptyLineBetweenUsingDirectivesWithSameRootNamespace,
+                    DiagnosticRules.AddEmptyLineBetweenUsingDirectivesWithDifferentRootNamespaceOrViceVersa);
             }
         }
 
@@ -95,11 +95,11 @@ namespace Roslynator.Formatting.CSharp
                     {
                         DiagnosticHelpers.ReportDiagnosticIfNotSuppressed(
                             context,
-                            DiagnosticDescriptors.RemoveEmptyLineBetweenUsingDirectivesWithSameRootNamespace,
+                            DiagnosticRules.RemoveEmptyLineBetweenUsingDirectivesWithSameRootNamespace,
                             Location.Create(context.Node.SyntaxTree, leadingTrivia[0].Span.WithLength(0)));
                     }
                 }
-                else if (DiagnosticDescriptors.AddEmptyLineBetweenUsingDirectivesWithDifferentRootNamespaceOrViceVersa.IsEffective(context))
+                else if (DiagnosticRules.AddEmptyLineBetweenUsingDirectivesWithDifferentRootNamespaceOrViceVersa.IsEffective(context))
                 {
                     if (isEmptyLine)
                     {
@@ -107,7 +107,7 @@ namespace Roslynator.Formatting.CSharp
                         {
                             DiagnosticHelpers.ReportDiagnostic(
                                 context,
-                                DiagnosticDescriptors.ReportOnly.RemoveEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace,
+                                DiagnosticRules.ReportOnly.RemoveEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace,
                                 Location.Create(context.Node.SyntaxTree, leadingTrivia[0].Span.WithLength(0)),
                                 properties: DiagnosticProperties.AnalyzerOption_Invert);
                         }
@@ -116,7 +116,7 @@ namespace Roslynator.Formatting.CSharp
                     {
                         DiagnosticHelpers.ReportDiagnostic(
                             context,
-                            DiagnosticDescriptors.AddEmptyLineBetweenUsingDirectivesWithDifferentRootNamespaceOrViceVersa,
+                            DiagnosticRules.AddEmptyLineBetweenUsingDirectivesWithDifferentRootNamespaceOrViceVersa,
                             Location.Create(context.Node.SyntaxTree, trailingTrivia.Last().Span.WithLength(0)));
                     }
                 }

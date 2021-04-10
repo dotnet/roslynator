@@ -14,7 +14,7 @@ namespace Roslynator.Formatting.CSharp
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.AddNewLineAfterSwitchLabel); }
+            get { return ImmutableArray.Create(DiagnosticRules.AddNewLineAfterSwitchLabel); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -43,7 +43,7 @@ namespace Roslynator.Formatting.CSharp
 
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticDescriptors.AddNewLineAfterSwitchLabel,
+                DiagnosticRules.AddNewLineAfterSwitchLabel,
                 Location.Create(statement.SyntaxTree, statement.Span.WithLength(0)));
         }
     }

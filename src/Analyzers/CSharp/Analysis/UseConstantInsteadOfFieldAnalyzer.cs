@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.UseConstantInsteadOfField); }
+            get { return ImmutableArray.Create(DiagnosticRules.UseConstantInsteadOfField); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -37,7 +37,7 @@ namespace Roslynator.CSharp.Analysis
             if (!UseConstantInsteadOfFieldAnalysis.IsFixable(fieldDeclaration, context.SemanticModel, onlyPrivate: true, cancellationToken: context.CancellationToken))
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseConstantInsteadOfField, fieldDeclaration);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseConstantInsteadOfField, fieldDeclaration);
         }
     }
 }

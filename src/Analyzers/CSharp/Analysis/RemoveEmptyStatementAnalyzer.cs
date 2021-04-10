@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.RemoveEmptyStatement); }
+            get { return ImmutableArray.Create(DiagnosticRules.RemoveEmptyStatement); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -40,7 +40,7 @@ namespace Roslynator.CSharp.Analysis
             if (CSharpFacts.CanHaveEmbeddedStatement(kind))
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveEmptyStatement, emptyStatement);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveEmptyStatement, emptyStatement);
         }
     }
 }

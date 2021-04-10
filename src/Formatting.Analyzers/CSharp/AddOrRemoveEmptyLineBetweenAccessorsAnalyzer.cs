@@ -19,8 +19,8 @@ namespace Roslynator.Formatting.CSharp
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticDescriptors.AddEmptyLineBetweenAccessors,
-                    DiagnosticDescriptors.AddEmptyLineBetweenSingleLineAccessorsOrViceVersa);
+                    DiagnosticRules.AddEmptyLineBetweenAccessors,
+                    DiagnosticRules.AddEmptyLineBetweenSingleLineAccessorsOrViceVersa);
             }
         }
 
@@ -64,7 +64,7 @@ namespace Roslynator.Formatting.CSharp
             if (accessorList.SyntaxTree.IsSingleLineSpan(accessor1.Span, context.CancellationToken)
                 && accessorList.SyntaxTree.IsSingleLineSpan(accessor2.Span, context.CancellationToken))
             {
-                if (DiagnosticDescriptors.AddEmptyLineBetweenSingleLineAccessorsOrViceVersa.IsEffective(context))
+                if (DiagnosticRules.AddEmptyLineBetweenSingleLineAccessorsOrViceVersa.IsEffective(context))
                 {
                     if (isEmptyLine)
                     {
@@ -72,7 +72,7 @@ namespace Roslynator.Formatting.CSharp
                         {
                             DiagnosticHelpers.ReportDiagnostic(
                                 context,
-                                DiagnosticDescriptors.ReportOnly.RemoveEmptyLineBetweenSingleLineAccessors,
+                                DiagnosticRules.ReportOnly.RemoveEmptyLineBetweenSingleLineAccessors,
                                 Location.Create(context.Node.SyntaxTree, leadingTrivia[0].Span.WithLength(0)),
                                 properties: DiagnosticProperties.AnalyzerOption_Invert);
                         }
@@ -81,7 +81,7 @@ namespace Roslynator.Formatting.CSharp
                     {
                         DiagnosticHelpers.ReportDiagnostic(
                             context,
-                            DiagnosticDescriptors.AddEmptyLineBetweenSingleLineAccessorsOrViceVersa,
+                            DiagnosticRules.AddEmptyLineBetweenSingleLineAccessorsOrViceVersa,
                             Location.Create(context.Node.SyntaxTree, trailingTrivia.Last().Span.WithLength(0)));
                     }
                 }
@@ -90,7 +90,7 @@ namespace Roslynator.Formatting.CSharp
             {
                 DiagnosticHelpers.ReportDiagnosticIfNotSuppressed(
                     context,
-                    DiagnosticDescriptors.AddEmptyLineBetweenAccessors,
+                    DiagnosticRules.AddEmptyLineBetweenAccessors,
                     Location.Create(context.Node.SyntaxTree, trailingTrivia.Last().Span.WithLength(0)));
             }
         }

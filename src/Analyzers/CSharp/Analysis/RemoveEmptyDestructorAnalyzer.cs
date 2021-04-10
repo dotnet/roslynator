@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.RemoveEmptyDestructor); }
+            get { return ImmutableArray.Create(DiagnosticRules.RemoveEmptyDestructor); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -40,7 +40,7 @@ namespace Roslynator.CSharp.Analysis
             if (destructor.Body?.Statements.Count != 0)
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveEmptyDestructor, destructor);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveEmptyDestructor, destructor);
         }
     }
 }

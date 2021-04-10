@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.AvoidUsageOfForStatementToCreateInfiniteLoop); }
+            get { return ImmutableArray.Create(DiagnosticRules.AvoidUsageOfForStatementToCreateInfiniteLoop); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -37,7 +37,7 @@ namespace Roslynator.CSharp.Analysis
                 && !forStatement.SecondSemicolonToken.ContainsDirectives
                 && !forStatement.CloseParenToken.ContainsDirectives)
             {
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AvoidUsageOfForStatementToCreateInfiniteLoop, forStatement.ForKeyword);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AvoidUsageOfForStatementToCreateInfiniteLoop, forStatement.ForKeyword);
             }
         }
     }

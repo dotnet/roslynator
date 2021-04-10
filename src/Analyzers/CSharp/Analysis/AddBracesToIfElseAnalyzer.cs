@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.AddBracesToIfElse); }
+            get { return ImmutableArray.Create(DiagnosticRules.AddBracesToIfElse); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -40,7 +40,7 @@ namespace Roslynator.CSharp.Analysis
             if (statement.ContainsDirectives)
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AddBracesToIfElse, statement, CSharpFacts.GetTitle(ifStatement));
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AddBracesToIfElse, statement, CSharpFacts.GetTitle(ifStatement));
         }
 
         private static void AnalyzeElseClause(SyntaxNodeAnalysisContext context)
@@ -55,7 +55,7 @@ namespace Roslynator.CSharp.Analysis
             if (statement.ContainsDirectives)
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AddBracesToIfElse, statement, CSharpFacts.GetTitle(elseClause));
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AddBracesToIfElse, statement, CSharpFacts.GetTitle(elseClause));
         }
     }
 }

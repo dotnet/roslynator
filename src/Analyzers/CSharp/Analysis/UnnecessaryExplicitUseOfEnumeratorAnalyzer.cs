@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.UnnecessaryExplicitUseOfEnumerator); }
+            get { return ImmutableArray.Create(DiagnosticRules.UnnecessaryExplicitUseOfEnumerator); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -74,7 +74,7 @@ namespace Roslynator.CSharp.Analysis
 
             if (isFixable == true)
             {
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UnnecessaryExplicitUseOfEnumerator, usingStatement.UsingKeyword);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UnnecessaryExplicitUseOfEnumerator, usingStatement.UsingKeyword);
             }
         }
     }

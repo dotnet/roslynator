@@ -18,8 +18,8 @@ namespace Roslynator.CSharp.Analysis
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticDescriptors.UseCoalesceExpression,
-                    DiagnosticDescriptors.InlineLazyInitialization);
+                    DiagnosticRules.UseCoalesceExpression,
+                    DiagnosticRules.InlineLazyInitialization);
             }
         }
 
@@ -74,7 +74,7 @@ namespace Roslynator.CSharp.Analysis
             int index = statements.IndexOf(ifStatement);
 
             if (index > 0
-                && DiagnosticDescriptors.UseCoalesceExpression.IsEffective(context))
+                && DiagnosticRules.UseCoalesceExpression.IsEffective(context))
             {
                 StatementSyntax previousStatement = statements[index - 1];
 
@@ -83,11 +83,11 @@ namespace Roslynator.CSharp.Analysis
                     && !ifStatement.GetLeadingTrivia().Any(f => f.IsDirective)
                     && CanUseCoalesceExpression(previousStatement, nullCheck.Expression))
                 {
-                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseCoalesceExpression, previousStatement);
+                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseCoalesceExpression, previousStatement);
                 }
             }
 
-            if (!DiagnosticDescriptors.InlineLazyInitialization.IsEffective(context))
+            if (!DiagnosticRules.InlineLazyInitialization.IsEffective(context))
                 return;
 
             if (index == statements.Count - 1)
@@ -112,7 +112,7 @@ namespace Roslynator.CSharp.Analysis
             if (nextStatement.SpanOrLeadingTriviaContainsDirectives())
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.InlineLazyInitialization, ifStatement);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.InlineLazyInitialization, ifStatement);
 
             bool IsPartOfLazyInitialization()
             {

@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.RemoveEnumDefaultUnderlyingType); }
+            get { return ImmutableArray.Create(DiagnosticRules.RemoveEnumDefaultUnderlyingType); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -37,7 +37,7 @@ namespace Roslynator.CSharp.Analysis
             if (type?.IsMissing == false
                 && context.SemanticModel.GetTypeSymbol(type, context.CancellationToken)?.SpecialType == SpecialType.System_Int32)
             {
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveEnumDefaultUnderlyingType, type);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveEnumDefaultUnderlyingType, type);
             }
         }
     }

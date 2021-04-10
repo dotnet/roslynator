@@ -15,7 +15,7 @@ namespace Roslynator.Formatting.CSharp
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.RemoveNewLineBetweenIfKeywordAndElseKeyword); }
+            get { return ImmutableArray.Create(DiagnosticRules.RemoveNewLineBetweenIfKeywordAndElseKeyword); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -44,7 +44,7 @@ namespace Roslynator.Formatting.CSharp
 
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticDescriptors.RemoveNewLineBetweenIfKeywordAndElseKeyword,
+                DiagnosticRules.RemoveNewLineBetweenIfKeywordAndElseKeyword,
                 Location.Create(elseClause.SyntaxTree, new TextSpan(trailingTrivia.Last().SpanStart, 0)));
         }
     }

@@ -16,7 +16,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.RemoveUnnecessaryCaseLabel); }
+            get { return ImmutableArray.Create(DiagnosticRules.RemoveUnnecessaryCaseLabel); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -47,7 +47,7 @@ namespace Roslynator.CSharp.Analysis
                     && label.Keyword.TrailingTrivia.IsEmptyOrWhitespace()
                     && label.ColonToken.LeadingTrivia.IsEmptyOrWhitespace())
                 {
-                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveUnnecessaryCaseLabel, label);
+                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveUnnecessaryCaseLabel, label);
                 }
             }
         }

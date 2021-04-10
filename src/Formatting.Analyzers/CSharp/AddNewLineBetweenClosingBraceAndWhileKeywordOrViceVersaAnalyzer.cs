@@ -15,7 +15,7 @@ namespace Roslynator.Formatting.CSharp
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersa); }
+            get { return ImmutableArray.Create(DiagnosticRules.AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersa); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -43,7 +43,7 @@ namespace Roslynator.Formatting.CSharp
                     && !AnalyzerOptions.RemoveNewLineBetweenClosingBraceAndWhileKeyword.IsEnabled(context))
                 {
                     context.ReportDiagnostic(
-                        DiagnosticDescriptors.AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersa,
+                        DiagnosticRules.AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersa,
                         Location.Create(doStatement.SyntaxTree, new TextSpan(statement.FullSpan.End, 0)));
                 }
             }
@@ -53,7 +53,7 @@ namespace Roslynator.Formatting.CSharp
                     && AnalyzerOptions.RemoveNewLineBetweenClosingBraceAndWhileKeyword.IsEnabled(context))
                 {
                     context.ReportDiagnostic(
-                        DiagnosticDescriptors.ReportOnly.RemoveNewLineBetweenClosingBraceAndWhileKeyword,
+                        DiagnosticRules.ReportOnly.RemoveNewLineBetweenClosingBraceAndWhileKeyword,
                         Location.Create(doStatement.SyntaxTree, new TextSpan(trailingTrivia.Last().SpanStart, 0)),
                         properties: DiagnosticProperties.AnalyzerOption_Invert);
                 }

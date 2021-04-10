@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.ImplementExceptionConstructors); }
+            get { return ImmutableArray.Create(DiagnosticRules.ImplementExceptionConstructors); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -60,7 +60,7 @@ namespace Roslynator.CSharp.Analysis
 
             var classDeclaration = (ClassDeclarationSyntax)symbol.GetSyntax(context.CancellationToken);
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ImplementExceptionConstructors, classDeclaration.Identifier);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ImplementExceptionConstructors, classDeclaration.Identifier);
         }
 
         private static bool IsSerializationConstructor(IMethodSymbol methodSymbol)

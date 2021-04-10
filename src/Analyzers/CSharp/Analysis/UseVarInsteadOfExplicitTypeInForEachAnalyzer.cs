@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.UseVarInsteadOfExplicitTypeInForEach); }
+            get { return ImmutableArray.Create(DiagnosticRules.UseVarInsteadOfExplicitTypeInForEach); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -54,7 +54,7 @@ namespace Roslynator.CSharp.Analysis
         {
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticDescriptors.UseVarInsteadOfExplicitTypeInForEach,
+                DiagnosticRules.UseVarInsteadOfExplicitTypeInForEach,
                 node);
         }
     }

@@ -16,7 +16,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.SimplifyNullableOfT); }
+            get { return ImmutableArray.Create(DiagnosticRules.SimplifyNullableOfT); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -58,7 +58,7 @@ namespace Roslynator.CSharp.Analysis
             if (!namedTypeSymbol.IsNullableType())
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.SimplifyNullableOfT, genericName);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.SimplifyNullableOfT, genericName);
         }
 
         private static void AnalyzeQualifiedName(SyntaxNodeAnalysisContext context)
@@ -92,7 +92,7 @@ namespace Roslynator.CSharp.Analysis
             if (!typeSymbol.IsNullableType())
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.SimplifyNullableOfT, qualifiedName);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.SimplifyNullableOfT, qualifiedName);
         }
 
         private static bool IsWithinNameOfExpression(

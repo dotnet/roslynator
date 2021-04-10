@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.CallExtensionMethodAsInstanceMethod); }
+            get { return ImmutableArray.Create(DiagnosticRules.CallExtensionMethodAsInstanceMethod); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -50,7 +50,7 @@ namespace Roslynator.CSharp.Analysis
                 return;
             }
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.CallExtensionMethodAsInstanceMethod, invocation);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.CallExtensionMethodAsInstanceMethod, invocation);
         }
     }
 }

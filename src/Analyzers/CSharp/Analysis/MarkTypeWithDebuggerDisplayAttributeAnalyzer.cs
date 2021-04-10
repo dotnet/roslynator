@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.MarkTypeWithDebuggerDisplayAttribute); }
+            get { return ImmutableArray.Create(DiagnosticRules.MarkTypeWithDebuggerDisplayAttribute); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -82,7 +82,7 @@ namespace Roslynator.CSharp.Analysis
                 identifier = structDeclaration.Identifier;
             }
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.MarkTypeWithDebuggerDisplayAttribute, identifier, identifier.ValueText);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.MarkTypeWithDebuggerDisplayAttribute, identifier, identifier.ValueText);
         }
     }
 }

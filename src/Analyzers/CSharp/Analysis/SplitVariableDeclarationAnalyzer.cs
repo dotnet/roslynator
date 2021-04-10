@@ -16,7 +16,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.SplitVariableDeclaration); }
+            get { return ImmutableArray.Create(DiagnosticRules.SplitVariableDeclaration); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -40,7 +40,7 @@ namespace Roslynator.CSharp.Analysis
                     .DescendantTrivia(span)
                     .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                 {
-                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.SplitVariableDeclaration, variableDeclaration);
+                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.SplitVariableDeclaration, variableDeclaration);
                 }
             }
         }

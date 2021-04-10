@@ -19,8 +19,8 @@ namespace Roslynator.CSharp.Analysis
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticDescriptors.ConvertAnonymousFunctionToMethodGroupOrViceVersa,
-                    DiagnosticDescriptors.ConvertAnonymousFunctionToMethodGroupOrViceVersaFadeOut);
+                    DiagnosticRules.ConvertAnonymousFunctionToMethodGroupOrViceVersa,
+                    DiagnosticRules.ConvertAnonymousFunctionToMethodGroupOrViceVersaFadeOut);
             }
         }
 
@@ -51,7 +51,7 @@ namespace Roslynator.CSharp.Analysis
 
         private static void AnalyzeSimpleLambdaExpression(SyntaxNodeAnalysisContext context)
         {
-            if (!DiagnosticDescriptors.ConvertAnonymousFunctionToMethodGroupOrViceVersa.IsEffective(context))
+            if (!DiagnosticRules.ConvertAnonymousFunctionToMethodGroupOrViceVersa.IsEffective(context))
                 return;
 
             if (AnalyzerOptions.ConvertMethodGroupToAnonymousFunction.IsEnabled(context))
@@ -136,14 +136,14 @@ namespace Roslynator.CSharp.Analysis
                 return;
             }
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ConvertAnonymousFunctionToMethodGroupOrViceVersa, lambda);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ConvertAnonymousFunctionToMethodGroupOrViceVersa, lambda);
 
             FadeOut(context, parameter, null, lambda.Body as BlockSyntax, argumentList, lambda.ArrowToken, memberAccessExpression);
         }
 
         private static void AnalyzeParenthesizedLambdaExpression(SyntaxNodeAnalysisContext context)
         {
-            if (!DiagnosticDescriptors.ConvertAnonymousFunctionToMethodGroupOrViceVersa.IsEffective(context))
+            if (!DiagnosticRules.ConvertAnonymousFunctionToMethodGroupOrViceVersa.IsEffective(context))
                 return;
 
             if (AnalyzerOptions.ConvertMethodGroupToAnonymousFunction.IsEnabled(context))
@@ -238,14 +238,14 @@ namespace Roslynator.CSharp.Analysis
                 return;
             }
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ConvertAnonymousFunctionToMethodGroupOrViceVersa, lambda);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ConvertAnonymousFunctionToMethodGroupOrViceVersa, lambda);
 
             FadeOut(context, null, parameterList, lambda.Body as BlockSyntax, argumentList, lambda.ArrowToken, memberAccessExpression);
         }
 
         private static void AnalyzeAnonymousMethodExpression(SyntaxNodeAnalysisContext context)
         {
-            if (!DiagnosticDescriptors.ConvertAnonymousFunctionToMethodGroupOrViceVersa.IsEffective(context))
+            if (!DiagnosticRules.ConvertAnonymousFunctionToMethodGroupOrViceVersa.IsEffective(context))
                 return;
 
             if (AnalyzerOptions.ConvertMethodGroupToAnonymousFunction.IsEnabled(context))
@@ -343,7 +343,7 @@ namespace Roslynator.CSharp.Analysis
                 return;
             }
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ConvertAnonymousFunctionToMethodGroupOrViceVersa, anonymousMethod);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ConvertAnonymousFunctionToMethodGroupOrViceVersa, anonymousMethod);
 
             FadeOut(context, null, parameterList, anonymousMethod.Block, argumentList, anonymousMethod.DelegateKeyword, memberAccessExpression);
         }
@@ -549,7 +549,7 @@ namespace Roslynator.CSharp.Analysis
             SyntaxToken arrowTokenOrDelegateKeyword,
             MemberAccessExpressionSyntax memberAccessExpression)
         {
-            DiagnosticDescriptor fadeOutDescriptor = DiagnosticDescriptors.ConvertAnonymousFunctionToMethodGroupOrViceVersaFadeOut;
+            DiagnosticDescriptor fadeOutDescriptor = DiagnosticRules.ConvertAnonymousFunctionToMethodGroupOrViceVersaFadeOut;
 
             if (parameter != null)
                 DiagnosticHelpers.ReportNode(context, fadeOutDescriptor, parameter);
@@ -579,7 +579,7 @@ namespace Roslynator.CSharp.Analysis
 
         private static void AnalyzeArgument(SyntaxNodeAnalysisContext context)
         {
-            if (!DiagnosticDescriptors.ConvertAnonymousFunctionToMethodGroupOrViceVersa.IsEffective(context))
+            if (!DiagnosticRules.ConvertAnonymousFunctionToMethodGroupOrViceVersa.IsEffective(context))
                 return;
 
             if (!AnalyzerOptions.ConvertMethodGroupToAnonymousFunction.IsEnabled(context))
@@ -597,12 +597,12 @@ namespace Roslynator.CSharp.Analysis
             if (methodSymbol == null)
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ReportOnly.ConvertMethodGroupToAnonymousFunction, expression);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertMethodGroupToAnonymousFunction, expression);
         }
 
         private static void AnalyzeEqualsValueClause(SyntaxNodeAnalysisContext context)
         {
-            if (!DiagnosticDescriptors.ConvertAnonymousFunctionToMethodGroupOrViceVersa.IsEffective(context))
+            if (!DiagnosticRules.ConvertAnonymousFunctionToMethodGroupOrViceVersa.IsEffective(context))
                 return;
 
             if (!AnalyzerOptions.ConvertMethodGroupToAnonymousFunction.IsEnabled(context))
@@ -620,12 +620,12 @@ namespace Roslynator.CSharp.Analysis
             if (methodSymbol == null)
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ReportOnly.ConvertMethodGroupToAnonymousFunction, expression);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertMethodGroupToAnonymousFunction, expression);
         }
 
         private static void AnalyzeAssignment(SyntaxNodeAnalysisContext context)
         {
-            if (!DiagnosticDescriptors.ConvertAnonymousFunctionToMethodGroupOrViceVersa.IsEffective(context))
+            if (!DiagnosticRules.ConvertAnonymousFunctionToMethodGroupOrViceVersa.IsEffective(context))
                 return;
 
             if (!AnalyzerOptions.ConvertMethodGroupToAnonymousFunction.IsEnabled(context))
@@ -643,12 +643,12 @@ namespace Roslynator.CSharp.Analysis
             if (methodSymbol == null)
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ReportOnly.ConvertMethodGroupToAnonymousFunction, expression);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertMethodGroupToAnonymousFunction, expression);
         }
 
         private static void AnalyzeReturnStatement(SyntaxNodeAnalysisContext context)
         {
-            if (!DiagnosticDescriptors.ConvertAnonymousFunctionToMethodGroupOrViceVersa.IsEffective(context))
+            if (!DiagnosticRules.ConvertAnonymousFunctionToMethodGroupOrViceVersa.IsEffective(context))
                 return;
 
             if (!AnalyzerOptions.ConvertMethodGroupToAnonymousFunction.IsEnabled(context))
@@ -666,12 +666,12 @@ namespace Roslynator.CSharp.Analysis
             if (methodSymbol == null)
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ReportOnly.ConvertMethodGroupToAnonymousFunction, expression);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertMethodGroupToAnonymousFunction, expression);
         }
 
         private static void AnalyzeYieldReturnStatement(SyntaxNodeAnalysisContext context)
         {
-            if (!DiagnosticDescriptors.ConvertAnonymousFunctionToMethodGroupOrViceVersa.IsEffective(context))
+            if (!DiagnosticRules.ConvertAnonymousFunctionToMethodGroupOrViceVersa.IsEffective(context))
                 return;
 
             if (!AnalyzerOptions.ConvertMethodGroupToAnonymousFunction.IsEnabled(context))
@@ -689,12 +689,12 @@ namespace Roslynator.CSharp.Analysis
             if (methodSymbol == null)
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ReportOnly.ConvertMethodGroupToAnonymousFunction, expression);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertMethodGroupToAnonymousFunction, expression);
         }
 
         private static void AnalyzeArrowExpressionClause(SyntaxNodeAnalysisContext context)
         {
-            if (!DiagnosticDescriptors.ConvertAnonymousFunctionToMethodGroupOrViceVersa.IsEffective(context))
+            if (!DiagnosticRules.ConvertAnonymousFunctionToMethodGroupOrViceVersa.IsEffective(context))
                 return;
 
             if (!AnalyzerOptions.ConvertMethodGroupToAnonymousFunction.IsEnabled(context))
@@ -712,13 +712,13 @@ namespace Roslynator.CSharp.Analysis
             if (methodSymbol == null)
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ReportOnly.ConvertMethodGroupToAnonymousFunction, expression);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertMethodGroupToAnonymousFunction, expression);
         }
 
         //TODO: test
         private static void AnalyzeSwitchExpressionArm(SyntaxNodeAnalysisContext context)
         {
-            if (!DiagnosticDescriptors.ConvertAnonymousFunctionToMethodGroupOrViceVersa.IsEffective(context))
+            if (!DiagnosticRules.ConvertAnonymousFunctionToMethodGroupOrViceVersa.IsEffective(context))
                 return;
 
             if (!AnalyzerOptions.ConvertMethodGroupToAnonymousFunction.IsEnabled(context))
@@ -736,12 +736,12 @@ namespace Roslynator.CSharp.Analysis
             if (methodSymbol == null)
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ReportOnly.ConvertMethodGroupToAnonymousFunction, expression);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertMethodGroupToAnonymousFunction, expression);
         }
 
         private static void AnalyzeArrayInitializer(SyntaxNodeAnalysisContext context)
         {
-            if (!DiagnosticDescriptors.ConvertAnonymousFunctionToMethodGroupOrViceVersa.IsEffective(context))
+            if (!DiagnosticRules.ConvertAnonymousFunctionToMethodGroupOrViceVersa.IsEffective(context))
                 return;
 
             if (!AnalyzerOptions.ConvertMethodGroupToAnonymousFunction.IsEnabled(context))
@@ -758,14 +758,14 @@ namespace Roslynator.CSharp.Analysis
                     IMethodSymbol methodSymbol = context.SemanticModel.GetMethodSymbol(expression2, context.CancellationToken);
 
                     if (methodSymbol != null)
-                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ReportOnly.ConvertMethodGroupToAnonymousFunction, expression2);
+                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertMethodGroupToAnonymousFunction, expression2);
                 }
             }
         }
 #if DEBUG
         private static void AnalyzeIdentifierName(SyntaxNodeAnalysisContext context)
         {
-            if (!DiagnosticDescriptors.ConvertAnonymousFunctionToMethodGroupOrViceVersa.IsEffective(context))
+            if (!DiagnosticRules.ConvertAnonymousFunctionToMethodGroupOrViceVersa.IsEffective(context))
                 return;
 
             if (!AnalyzerOptions.ConvertMethodGroupToAnonymousFunction.IsEnabled(context))
@@ -778,7 +778,7 @@ namespace Roslynator.CSharp.Analysis
 
         private static void AnalyzeSimpleMemberAccessExpression(SyntaxNodeAnalysisContext context)
         {
-            if (!DiagnosticDescriptors.ConvertAnonymousFunctionToMethodGroupOrViceVersa.IsEffective(context))
+            if (!DiagnosticRules.ConvertAnonymousFunctionToMethodGroupOrViceVersa.IsEffective(context))
                 return;
 
             if (!AnalyzerOptions.ConvertMethodGroupToAnonymousFunction.IsEnabled(context))

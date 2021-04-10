@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.AddBracesToIfElseWhenExpressionSpansOverMultipleLines); }
+            get { return ImmutableArray.Create(DiagnosticRules.AddBracesToIfElseWhenExpressionSpansOverMultipleLines); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -45,7 +45,7 @@ namespace Roslynator.CSharp.Analysis
             if (!analysis.AddBraces)
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AddBracesToIfElseWhenExpressionSpansOverMultipleLines, ifStatement);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AddBracesToIfElseWhenExpressionSpansOverMultipleLines, ifStatement);
         }
     }
 }

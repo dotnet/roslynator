@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.UseEventArgsEmpty); }
+            get { return ImmutableArray.Create(DiagnosticRules.UseEventArgsEmpty); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -42,7 +42,7 @@ namespace Roslynator.CSharp.Analysis
             if (typeSymbol?.HasMetadataName(MetadataNames.System_EventArgs) != true)
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseEventArgsEmpty, objectCreation);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseEventArgsEmpty, objectCreation);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.AbstractTypeShouldNotHavePublicConstructors); }
+            get { return ImmutableArray.Create(DiagnosticRules.AbstractTypeShouldNotHavePublicConstructors); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -51,7 +51,7 @@ namespace Roslynator.CSharp.Analysis
             if (!isAbstract)
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AbstractTypeShouldNotHavePublicConstructors, constructorDeclaration.Identifier);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AbstractTypeShouldNotHavePublicConstructors, constructorDeclaration.Identifier);
         }
     }
 }

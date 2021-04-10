@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.UnnecessaryInterpolation); }
+            get { return ImmutableArray.Create(DiagnosticRules.UnnecessaryInterpolation); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -46,7 +46,7 @@ namespace Roslynator.CSharp.Analysis
             if (interpolatedString.StringStartToken.ValueText.Contains("@") != stringLiteralInfo.IsVerbatim)
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UnnecessaryInterpolation, interpolation);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UnnecessaryInterpolation, interpolation);
         }
     }
 }

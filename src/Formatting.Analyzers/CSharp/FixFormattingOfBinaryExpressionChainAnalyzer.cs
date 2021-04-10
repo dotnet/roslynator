@@ -15,7 +15,7 @@ namespace Roslynator.Formatting.CSharp
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.FixFormattingOfBinaryExpressionChain); }
+            get { return ImmutableArray.Create(DiagnosticRules.FixFormattingOfBinaryExpressionChain); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -168,7 +168,7 @@ namespace Roslynator.Formatting.CSharp
             {
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
-                    DiagnosticDescriptors.FixFormattingOfBinaryExpressionChain,
+                    DiagnosticRules.FixFormattingOfBinaryExpressionChain,
                     topBinaryExpression);
             }
         }

@@ -16,7 +16,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.ConvertCommentToDocumentationComment); }
+            get { return ImmutableArray.Create(DiagnosticRules.ConvertCommentToDocumentationComment); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -354,7 +354,7 @@ namespace Roslynator.CSharp.Analysis
         {
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticDescriptors.ConvertCommentToDocumentationComment,
+                DiagnosticRules.ConvertCommentToDocumentationComment,
                 Location.Create(context.Node.SyntaxTree, span));
         }
     }

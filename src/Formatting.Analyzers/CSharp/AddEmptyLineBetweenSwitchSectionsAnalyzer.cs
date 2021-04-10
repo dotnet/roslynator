@@ -14,7 +14,7 @@ namespace Roslynator.Formatting.CSharp
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.AddEmptyLineBetweenSwitchSections); }
+            get { return ImmutableArray.Create(DiagnosticRules.AddEmptyLineBetweenSwitchSections); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -49,7 +49,7 @@ namespace Roslynator.Formatting.CSharp
                     {
                         DiagnosticHelpers.ReportDiagnostic(
                             context,
-                            DiagnosticDescriptors.AddEmptyLineBetweenSwitchSections,
+                            DiagnosticRules.AddEmptyLineBetweenSwitchSections,
                             Location.Create(switchStatement.SyntaxTree, trailingTrivia.Last().Span.WithLength(0)));
                     }
                 }

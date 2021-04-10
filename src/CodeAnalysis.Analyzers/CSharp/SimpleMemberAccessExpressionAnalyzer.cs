@@ -20,8 +20,8 @@ namespace Roslynator.CodeAnalysis.CSharp
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticDescriptors.UsePropertySyntaxNodeSpanStart,
-                    DiagnosticDescriptors.CallAnyInsteadOfAccessingCount);
+                    DiagnosticRules.UsePropertySyntaxNodeSpanStart,
+                    DiagnosticRules.CallAnyInsteadOfAccessingCount);
             }
         }
 
@@ -77,7 +77,7 @@ namespace Roslynator.CodeAnalysis.CSharp
                                     if (!symbol2.ContainingType.HasMetadataName(RoslynMetadataNames.Microsoft_CodeAnalysis_SyntaxNode))
                                         break;
 
-                                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UsePropertySyntaxNodeSpanStart, memberAccessExpression);
+                                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UsePropertySyntaxNodeSpanStart, memberAccessExpression);
                                     break;
                                 }
                             case "Count":
@@ -131,7 +131,7 @@ namespace Roslynator.CodeAnalysis.CSharp
                     ? TextSpan.FromBounds(name.SpanStart, numericLiteralExpression.Span.End)
                     : TextSpan.FromBounds(numericLiteralExpression.SpanStart, name.Span.End);
 
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.CallAnyInsteadOfAccessingCount, Location.Create(memberAccessExpression.SyntaxTree, span));
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.CallAnyInsteadOfAccessingCount, Location.Create(memberAccessExpression.SyntaxTree, span));
             }
         }
     }

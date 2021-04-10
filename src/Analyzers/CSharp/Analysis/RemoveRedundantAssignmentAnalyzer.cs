@@ -21,8 +21,8 @@ namespace Roslynator.CSharp.Analysis
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticDescriptors.RemoveRedundantAssignment,
-                    DiagnosticDescriptors.RemoveRedundantAssignmentFadeOut);
+                    DiagnosticRules.RemoveRedundantAssignment,
+                    DiagnosticRules.RemoveRedundantAssignmentFadeOut);
             }
         }
 
@@ -33,7 +33,7 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(
                 c =>
                 {
-                    if (DiagnosticDescriptors.RemoveRedundantAssignment.IsEffective(c))
+                    if (DiagnosticRules.RemoveRedundantAssignment.IsEffective(c))
                         AnalyzeLocalDeclarationStatement(c);
                 },
                 SyntaxKind.LocalDeclarationStatement);
@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(
                 c =>
                 {
-                    if (DiagnosticDescriptors.RemoveRedundantAssignment.IsEffective(c))
+                    if (DiagnosticRules.RemoveRedundantAssignment.IsEffective(c))
                         AnalyzeSimpleAssignment(c);
                 },
                 SyntaxKind.SimpleAssignmentExpression);
@@ -109,16 +109,16 @@ namespace Roslynator.CSharp.Analysis
                     return;
             }
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveRedundantAssignment, localInfo.Identifier);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveRedundantAssignment, localInfo.Identifier);
 
             if (value != null)
             {
-                DiagnosticHelpers.ReportNode(context, DiagnosticDescriptors.RemoveRedundantAssignmentFadeOut, localInfo.Initializer);
-                DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.RemoveRedundantAssignmentFadeOut, assignmentInfo.OperatorToken);
+                DiagnosticHelpers.ReportNode(context, DiagnosticRules.RemoveRedundantAssignmentFadeOut, localInfo.Initializer);
+                DiagnosticHelpers.ReportToken(context, DiagnosticRules.RemoveRedundantAssignmentFadeOut, assignmentInfo.OperatorToken);
             }
 
-            DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.RemoveRedundantAssignmentFadeOut, localDeclaration.SemicolonToken);
-            DiagnosticHelpers.ReportNode(context, DiagnosticDescriptors.RemoveRedundantAssignmentFadeOut, assignmentInfo.Left);
+            DiagnosticHelpers.ReportToken(context, DiagnosticRules.RemoveRedundantAssignmentFadeOut, localDeclaration.SemicolonToken);
+            DiagnosticHelpers.ReportNode(context, DiagnosticRules.RemoveRedundantAssignmentFadeOut, assignmentInfo.Left);
         }
 
         private static bool IsReferenced(
@@ -235,7 +235,7 @@ namespace Roslynator.CSharp.Analysis
             if (result)
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveRedundantAssignment, assignment);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveRedundantAssignment, assignment);
 
             bool IsAssignedInsideAnonymousFunctionButDeclaredOutsideOfIt()
             {

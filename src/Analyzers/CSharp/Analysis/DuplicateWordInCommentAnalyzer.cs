@@ -16,7 +16,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.DuplicateWordInComment); }
+            get { return ImmutableArray.Create(DiagnosticRules.DuplicateWordInComment); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -71,7 +71,7 @@ namespace Roslynator.CSharp.Analysis
                                         {
                                             ReportDiagnostic(
                                                 context,
-                                                DiagnosticDescriptors.DuplicateWordInComment,
+                                                DiagnosticRules.DuplicateWordInComment,
                                                 Location.Create(context.Node.SyntaxTree, TextSpan.FromBounds(token.SpanStart + index2, token.SpanStart + index2 + len2)));
                                         }
 

@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.DeclareEachAttributeSeparately); }
+            get { return ImmutableArray.Create(DiagnosticRules.DeclareEachAttributeSeparately); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -29,7 +29,7 @@ namespace Roslynator.CSharp.Analysis
             var attributeList = (AttributeListSyntax)context.Node;
 
             if (IsFixable(attributeList))
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.DeclareEachAttributeSeparately, attributeList);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.DeclareEachAttributeSeparately, attributeList);
         }
 
         public static bool IsFixable(AttributeListSyntax attributeList)

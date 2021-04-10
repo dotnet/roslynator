@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.RemoveUnnecessaryElse); }
+            get { return ImmutableArray.Create(DiagnosticRules.RemoveUnnecessaryElse); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -34,7 +34,7 @@ namespace Roslynator.CSharp.Analysis
             if (!IsFixable(elseClause))
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveUnnecessaryElse, elseClause.ElseKeyword);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveUnnecessaryElse, elseClause.ElseKeyword);
         }
 
         public static bool IsFixable(ElseClauseSyntax elseClause)

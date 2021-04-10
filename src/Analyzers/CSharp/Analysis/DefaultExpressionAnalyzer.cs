@@ -16,7 +16,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.SimplifyDefaultExpression); }
+            get { return ImmutableArray.Create(DiagnosticRules.SimplifyDefaultExpression); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -138,7 +138,7 @@ namespace Roslynator.CSharp.Analysis
 
             void ReportDiagnostic()
             {
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.SimplifyDefaultExpression, Location.Create(defaultExpression.SyntaxTree, defaultExpression.ParenthesesSpan()));
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.SimplifyDefaultExpression, Location.Create(defaultExpression.SyntaxTree, defaultExpression.ParenthesesSpan()));
             }
         }
 

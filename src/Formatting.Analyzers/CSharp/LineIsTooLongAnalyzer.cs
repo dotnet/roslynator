@@ -15,7 +15,7 @@ namespace Roslynator.Formatting
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.LineIsTooLong); }
+            get { return ImmutableArray.Create(DiagnosticRules.LineIsTooLong); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -140,7 +140,7 @@ namespace Roslynator.Formatting
 
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
-                    DiagnosticDescriptors.LineIsTooLong,
+                    DiagnosticRules.LineIsTooLong,
                     Location.Create(tree, line.Span),
                     line.Span.Length);
             }

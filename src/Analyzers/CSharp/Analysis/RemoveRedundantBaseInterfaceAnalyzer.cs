@@ -18,7 +18,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.RemoveRedundantBaseInterface); }
+            get { return ImmutableArray.Create(DiagnosticRules.RemoveRedundantBaseInterface); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -128,7 +128,7 @@ namespace Roslynator.CSharp.Analysis
 
                         DiagnosticHelpers.ReportDiagnostic(
                             context,
-                            DiagnosticDescriptors.RemoveRedundantBaseInterface,
+                            DiagnosticRules.RemoveRedundantBaseInterface,
                             baseType,
                             SymbolDisplay.ToMinimalDisplayString(interfaceInfo.Symbol, context.SemanticModel, baseType.SpanStart, SymbolDisplayFormats.DisplayName),
                             SymbolDisplay.ToMinimalDisplayString(interfaceInfo2.Symbol, context.SemanticModel, baseType.SpanStart, SymbolDisplayFormats.DisplayName));

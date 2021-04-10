@@ -15,7 +15,7 @@ namespace Roslynator.Formatting.CSharp
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.AddEmptyLineBeforeUsingDirectiveList); }
+            get { return ImmutableArray.Create(DiagnosticRules.AddEmptyLineBeforeUsingDirectiveList); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -68,7 +68,7 @@ namespace Roslynator.Formatting.CSharp
             {
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
-                    DiagnosticDescriptors.AddEmptyLineBeforeUsingDirectiveList,
+                    DiagnosticRules.AddEmptyLineBeforeUsingDirectiveList,
                     Location.Create(compilationUnit.SyntaxTree, new TextSpan(position, 0)));
             }
         }

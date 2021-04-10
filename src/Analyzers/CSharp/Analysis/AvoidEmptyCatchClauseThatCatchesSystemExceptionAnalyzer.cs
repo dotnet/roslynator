@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.AvoidEmptyCatchClauseThatCatchesSystemException); }
+            get { return ImmutableArray.Create(DiagnosticRules.AvoidEmptyCatchClauseThatCatchesSystemException); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -57,7 +57,7 @@ namespace Roslynator.CSharp.Analysis
 
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticDescriptors.AvoidEmptyCatchClauseThatCatchesSystemException,
+                DiagnosticRules.AvoidEmptyCatchClauseThatCatchesSystemException,
                 catchClause.CatchKeyword);
         }
     }

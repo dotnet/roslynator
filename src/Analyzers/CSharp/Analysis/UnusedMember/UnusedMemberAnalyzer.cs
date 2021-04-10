@@ -18,7 +18,7 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.RemoveUnusedMemberDeclaration); }
+            get { return ImmutableArray.Create(DiagnosticRules.RemoveUnusedMemberDeclaration); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -347,7 +347,7 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
 
         private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, SyntaxNode node, string declarationName)
         {
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveUnusedMemberDeclaration, CSharpUtility.GetIdentifier(node), declarationName);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveUnusedMemberDeclaration, CSharpUtility.GetIdentifier(node), declarationName);
         }
     }
 }

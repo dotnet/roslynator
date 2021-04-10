@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.BitwiseOperationOnEnumWithoutFlagsAttribute); }
+            get { return ImmutableArray.Create(DiagnosticRules.BitwiseOperationOnEnumWithoutFlagsAttribute); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -45,7 +45,7 @@ namespace Roslynator.CSharp.Analysis
             {
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
-                    DiagnosticDescriptors.BitwiseOperationOnEnumWithoutFlagsAttribute,
+                    DiagnosticRules.BitwiseOperationOnEnumWithoutFlagsAttribute,
                     binaryExpression);
             }
         }
@@ -58,7 +58,7 @@ namespace Roslynator.CSharp.Analysis
             {
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
-                    DiagnosticDescriptors.BitwiseOperationOnEnumWithoutFlagsAttribute,
+                    DiagnosticRules.BitwiseOperationOnEnumWithoutFlagsAttribute,
                     prefixUnaryExpression);
             }
         }

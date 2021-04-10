@@ -16,7 +16,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.RemoveFileWithNoCode); }
+            get { return ImmutableArray.Create(DiagnosticRules.RemoveFileWithNoCode); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -44,7 +44,7 @@ namespace Roslynator.CSharp.Analysis
                 {
                     DiagnosticHelpers.ReportDiagnostic(
                         context,
-                        DiagnosticDescriptors.RemoveFileWithNoCode,
+                        DiagnosticRules.RemoveFileWithNoCode,
                         Location.Create(syntaxTree, default(TextSpan)));
                 }
             }

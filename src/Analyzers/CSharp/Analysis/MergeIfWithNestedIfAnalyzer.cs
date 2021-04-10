@@ -21,8 +21,8 @@ namespace Roslynator.CSharp.Analysis
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticDescriptors.MergeIfWithNestedIf,
-                    DiagnosticDescriptors.MergeIfWithNestedIfFadeOut);
+                    DiagnosticRules.MergeIfWithNestedIf,
+                    DiagnosticRules.MergeIfWithNestedIfFadeOut);
             }
         }
 
@@ -33,7 +33,7 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(
                 c =>
                 {
-                    if (DiagnosticDescriptors.MergeIfWithNestedIf.IsEffective(c))
+                    if (DiagnosticRules.MergeIfWithNestedIf.IsEffective(c))
                         AnalyzeIfStatement(c);
                 },
                 SyntaxKind.IfStatement);
@@ -70,16 +70,16 @@ namespace Roslynator.CSharp.Analysis
 
         private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, IfStatementSyntax ifStatement, IfStatementSyntax nestedIf)
         {
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.MergeIfWithNestedIf, ifStatement);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.MergeIfWithNestedIf, ifStatement);
 
-            DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.MergeIfWithNestedIfFadeOut, nestedIf.IfKeyword);
-            DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.MergeIfWithNestedIfFadeOut, nestedIf.OpenParenToken);
-            DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.MergeIfWithNestedIfFadeOut, nestedIf.CloseParenToken);
+            DiagnosticHelpers.ReportToken(context, DiagnosticRules.MergeIfWithNestedIfFadeOut, nestedIf.IfKeyword);
+            DiagnosticHelpers.ReportToken(context, DiagnosticRules.MergeIfWithNestedIfFadeOut, nestedIf.OpenParenToken);
+            DiagnosticHelpers.ReportToken(context, DiagnosticRules.MergeIfWithNestedIfFadeOut, nestedIf.CloseParenToken);
 
             if (ifStatement.Statement.IsKind(SyntaxKind.Block)
                 && nestedIf.Statement.IsKind(SyntaxKind.Block))
             {
-                CSharpDiagnosticHelpers.ReportBraces(context, DiagnosticDescriptors.MergeIfWithNestedIfFadeOut, (BlockSyntax)nestedIf.Statement);
+                CSharpDiagnosticHelpers.ReportBraces(context, DiagnosticRules.MergeIfWithNestedIfFadeOut, (BlockSyntax)nestedIf.Statement);
             }
         }
 

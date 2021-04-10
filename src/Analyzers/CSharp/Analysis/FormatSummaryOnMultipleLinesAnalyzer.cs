@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.FormatDocumentationSummaryOnMultipleLines); }
+            get { return ImmutableArray.Create(DiagnosticRules.FormatDocumentationSummaryOnMultipleLines); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -38,7 +38,7 @@ namespace Roslynator.CSharp.Analysis
             {
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
-                    DiagnosticDescriptors.FormatDocumentationSummaryOnMultipleLines,
+                    DiagnosticRules.FormatDocumentationSummaryOnMultipleLines,
                     summaryElement);
             }
         }

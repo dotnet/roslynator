@@ -11,7 +11,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.DeclareTypeInsideNamespace); }
+            get { return ImmutableArray.Create(DiagnosticRules.DeclareTypeInsideNamespace); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -46,7 +46,7 @@ namespace Roslynator.CSharp.Analysis
 
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticDescriptors.DeclareTypeInsideNamespace,
+                DiagnosticRules.DeclareTypeInsideNamespace,
                 identifier,
                 identifier.ValueText);
         }

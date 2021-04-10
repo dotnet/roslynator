@@ -19,8 +19,8 @@ namespace Roslynator.CSharp.Analysis.MakeMemberReadOnly
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticDescriptors.MakeFieldReadOnly,
-                    DiagnosticDescriptors.UseReadOnlyAutoProperty);
+                    DiagnosticRules.MakeFieldReadOnly,
+                    DiagnosticRules.UseReadOnlyAutoProperty);
             }
         }
 
@@ -39,9 +39,9 @@ namespace Roslynator.CSharp.Analysis.MakeMemberReadOnly
             if (typeDeclaration.Modifiers.Contains(SyntaxKind.PartialKeyword))
                 return;
 
-            bool skipField = !DiagnosticDescriptors.MakeFieldReadOnly.IsEffective(context);
+            bool skipField = !DiagnosticRules.MakeFieldReadOnly.IsEffective(context);
 
-            bool skipProperty = !DiagnosticDescriptors.UseReadOnlyAutoProperty.IsEffective(context)
+            bool skipProperty = !DiagnosticRules.UseReadOnlyAutoProperty.IsEffective(context)
                 || ((CSharpCompilation)context.Compilation).LanguageVersion < LanguageVersion.CSharp6;
 
             MakeMemberReadOnlyWalker walker = MakeMemberReadOnlyWalker.GetInstance();
@@ -130,7 +130,7 @@ namespace Roslynator.CSharp.Analysis.MakeMemberReadOnly
                         {
                             AccessorDeclarationSyntax setter = propertyDeclaration.Setter();
 
-                            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseReadOnlyAutoProperty, setter);
+                            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseReadOnlyAutoProperty, setter);
                         }
                     }
 
@@ -144,7 +144,7 @@ namespace Roslynator.CSharp.Analysis.MakeMemberReadOnly
                         if (count == 1
                             || count == grouping.Count())
                         {
-                            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.MakeFieldReadOnly, grouping.Key.Parent);
+                            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.MakeFieldReadOnly, grouping.Key.Parent);
                         }
                     }
                 }

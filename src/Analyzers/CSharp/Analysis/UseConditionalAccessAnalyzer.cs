@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.UseConditionalAccess); }
+            get { return ImmutableArray.Create(DiagnosticRules.UseConditionalAccess); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -91,7 +91,7 @@ namespace Roslynator.CSharp.Analysis
             if (ifStatement.IsInExpressionTree(context.SemanticModel, context.CancellationToken))
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseConditionalAccess, ifStatement);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseConditionalAccess, ifStatement);
         }
 
         private static void AnalyzeBinaryExpression(SyntaxNodeAnalysisContext context)
@@ -129,7 +129,7 @@ namespace Roslynator.CSharp.Analysis
 
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticDescriptors.UseConditionalAccess,
+                DiagnosticRules.UseConditionalAccess,
                 Location.Create(binaryExpression.SyntaxTree, TextSpan.FromBounds(left.SpanStart, right.Span.End)));
 
             static bool ExistsImplicitConversionToBoolean(INamedTypeSymbol typeSymbol)

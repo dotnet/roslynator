@@ -18,7 +18,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.UnconstrainedTypeParameterCheckedForNull); }
+            get { return ImmutableArray.Create(DiagnosticRules.UnconstrainedTypeParameterCheckedForNull); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -53,7 +53,7 @@ namespace Roslynator.CSharp.Analysis
                 && IsUnconstrainedTypeParameter(context.SemanticModel.GetTypeSymbol(nullCheck.Expression, context.CancellationToken))
                 && !binaryExpression.SpanContainsDirectives())
             {
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UnconstrainedTypeParameterCheckedForNull, binaryExpression);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UnconstrainedTypeParameterCheckedForNull, binaryExpression);
             }
         }
 

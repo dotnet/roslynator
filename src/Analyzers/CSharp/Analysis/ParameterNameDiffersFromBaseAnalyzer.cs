@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.ParameterNameDiffersFromBase); }
+            get { return ImmutableArray.Create(DiagnosticRules.ParameterNameDiffersFromBase); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -78,7 +78,7 @@ namespace Roslynator.CSharp.Analysis
                     {
                         DiagnosticHelpers.ReportDiagnostic(
                             context,
-                            DiagnosticDescriptors.ParameterNameDiffersFromBase,
+                            DiagnosticRules.ParameterNameDiffersFromBase,
                             parameterSyntax.Identifier,
                             name,
                             parameters2[i].Name);

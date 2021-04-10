@@ -14,7 +14,7 @@ namespace Roslynator.Formatting.CSharp
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.RemoveNewlinesFromInitializerWithSingleLineExpression); }
+            get { return ImmutableArray.Create(DiagnosticRules.RemoveNewlinesFromInitializerWithSingleLineExpression); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -66,7 +66,7 @@ namespace Roslynator.Formatting.CSharp
             if (!initializer.OpenBraceToken.GetPreviousToken().TrailingTrivia.IsEmptyOrWhitespace())
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveNewlinesFromInitializerWithSingleLineExpression, initializer);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveNewlinesFromInitializerWithSingleLineExpression, initializer);
         }
     }
 }

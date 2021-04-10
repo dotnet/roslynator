@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.EnumShouldDeclareExplicitValues); }
+            get { return ImmutableArray.Create(DiagnosticRules.EnumShouldDeclareExplicitValues); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -33,7 +33,7 @@ namespace Roslynator.CSharp.Analysis
                 if (enumMember.EqualsValue == null
                     && context.SemanticModel.GetDeclaredSymbol(enumMember, context.CancellationToken)?.HasConstantValue == true)
                 {
-                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.EnumShouldDeclareExplicitValues, enumDeclaration.Identifier);
+                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.EnumShouldDeclareExplicitValues, enumDeclaration.Identifier);
                     break;
                 }
             }

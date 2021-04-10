@@ -11,7 +11,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.RenamePrivateFieldToCamelCaseWithUnderscore); }
+            get { return ImmutableArray.Create(DiagnosticRules.RenamePrivateFieldToCamelCaseWithUnderscore); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -37,7 +37,7 @@ namespace Roslynator.CSharp.Analysis
                 {
                     DiagnosticHelpers.ReportDiagnostic(
                         context,
-                        DiagnosticDescriptors.RenamePrivateFieldToCamelCaseWithUnderscore,
+                        DiagnosticRules.RenamePrivateFieldToCamelCaseWithUnderscore,
                         fieldSymbol.Locations[0]);
                 }
             }

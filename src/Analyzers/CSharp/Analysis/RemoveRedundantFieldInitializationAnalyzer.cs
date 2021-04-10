@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.RemoveRedundantFieldInitialization); }
+            get { return ImmutableArray.Create(DiagnosticRules.RemoveRedundantFieldInitialization); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -57,11 +57,11 @@ namespace Roslynator.CSharp.Analysis
                             if (CSharpFacts.IsNumericType(typeSymbol.SpecialType)
                                 && value.IsNumericLiteralExpression("0"))
                             {
-                                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveRedundantFieldInitialization, initializer);
+                                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveRedundantFieldInitialization, initializer);
                             }
                             else if (semanticModel.IsDefaultValue(typeSymbol, value, cancellationToken))
                             {
-                                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveRedundantFieldInitialization, initializer);
+                                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveRedundantFieldInitialization, initializer);
                             }
                         }
                     }

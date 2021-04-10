@@ -16,7 +16,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.RemoveRedundantConstructor); }
+            get { return ImmutableArray.Create(DiagnosticRules.RemoveRedundantConstructor); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -64,7 +64,7 @@ namespace Roslynator.CSharp.Analysis
             if (!constructor.DescendantTrivia(constructor.Span).All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveRedundantConstructor, constructor);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveRedundantConstructor, constructor);
         }
 
         private static bool IsSingleInstanceConstructor(ConstructorDeclarationSyntax constructor)

@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.ThrowingOfNewNotImplementedException); }
+            get { return ImmutableArray.Create(DiagnosticRules.ThrowingOfNewNotImplementedException); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -64,7 +64,7 @@ namespace Roslynator.CSharp.Analysis
 
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticDescriptors.ThrowingOfNewNotImplementedException,
+                DiagnosticRules.ThrowingOfNewNotImplementedException,
                 expression);
         }
     }

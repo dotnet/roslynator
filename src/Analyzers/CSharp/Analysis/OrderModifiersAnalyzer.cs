@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.OrderModifiers); }
+            get { return ImmutableArray.Create(DiagnosticRules.OrderModifiers); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -148,7 +148,7 @@ namespace Roslynator.CSharp.Analysis
 
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticDescriptors.OrderModifiers,
+                DiagnosticRules.OrderModifiers,
                 Location.Create(context.Node.SyntaxTree, modifiers.Span));
         }
     }

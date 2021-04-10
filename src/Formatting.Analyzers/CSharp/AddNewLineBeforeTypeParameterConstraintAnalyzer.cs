@@ -16,7 +16,7 @@ namespace Roslynator.Formatting.CSharp
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.AddNewLineBeforeTypeParameterConstraint); }
+            get { return ImmutableArray.Create(DiagnosticRules.AddNewLineBeforeTypeParameterConstraint); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -87,7 +87,7 @@ namespace Roslynator.Formatting.CSharp
                 {
                     DiagnosticHelpers.ReportDiagnostic(
                         context,
-                        DiagnosticDescriptors.AddNewLineBeforeTypeParameterConstraint,
+                        DiagnosticRules.AddNewLineBeforeTypeParameterConstraint,
                         Location.Create(constraintClause.SyntaxTree, new TextSpan(constraintClause.SpanStart, 0)));
                 }
 

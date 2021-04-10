@@ -21,9 +21,9 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticDescriptors.UnusedParameter,
-                    DiagnosticDescriptors.UnusedThisParameter,
-                    DiagnosticDescriptors.UnusedTypeParameter);
+                    DiagnosticRules.UnusedParameter,
+                    DiagnosticRules.UnusedThisParameter,
+                    DiagnosticRules.UnusedTypeParameter);
             }
         }
 
@@ -365,16 +365,16 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
             {
                 if (parameter.Modifiers.Contains(SyntaxKind.ThisKeyword))
                 {
-                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UnusedThisParameter, parameter, parameter.Identifier.ValueText);
+                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UnusedThisParameter, parameter, parameter.Identifier.ValueText);
                 }
                 else
                 {
-                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UnusedParameter, parameter, parameter.Identifier.ValueText);
+                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UnusedParameter, parameter, parameter.Identifier.ValueText);
                 }
             }
             else if (node is TypeParameterSyntax typeParameter)
             {
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UnusedTypeParameter, typeParameter, typeParameter.Identifier.ValueText);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UnusedTypeParameter, typeParameter, typeParameter.Identifier.ValueText);
             }
             else
             {

@@ -18,7 +18,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.JoinStringExpressions); }
+            get { return ImmutableArray.Create(DiagnosticRules.JoinStringExpressions); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -151,7 +151,7 @@ namespace Roslynator.CSharp.Analysis
             {
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
-                    DiagnosticDescriptors.JoinStringExpressions,
+                    DiagnosticRules.JoinStringExpressions,
                     Location.Create(tree, span));
             }
         }

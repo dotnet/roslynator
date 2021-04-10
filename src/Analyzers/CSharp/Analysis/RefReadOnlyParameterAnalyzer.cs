@@ -21,8 +21,8 @@ namespace Roslynator.CSharp.Analysis
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticDescriptors.MakeParameterRefReadOnly,
-                    DiagnosticDescriptors.DoNotPassNonReadOnlyStructByReadOnlyReference);
+                    DiagnosticRules.MakeParameterRefReadOnly,
+                    DiagnosticRules.DoNotPassNonReadOnlyStructByReadOnlyReference);
             }
         }
 
@@ -128,7 +128,7 @@ namespace Roslynator.CSharp.Analysis
 
                         Debug.Assert(parameterSyntax.Modifiers.Contains(SyntaxKind.InKeyword), "");
 
-                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.DoNotPassNonReadOnlyStructByReadOnlyReference, parameterSyntax.Identifier);
+                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.DoNotPassNonReadOnlyStructByReadOnlyReference, parameterSyntax.Identifier);
                     }
 
                     continue;
@@ -201,7 +201,7 @@ namespace Roslynator.CSharp.Analysis
                         {
                             DiagnosticHelpers.ReportDiagnostic(
                                 context,
-                                DiagnosticDescriptors.MakeParameterRefReadOnly,
+                                DiagnosticRules.MakeParameterRefReadOnly,
                                 parameter.Identifier);
                         }
                     }

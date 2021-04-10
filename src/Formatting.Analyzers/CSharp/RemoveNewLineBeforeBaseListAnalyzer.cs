@@ -15,7 +15,7 @@ namespace Roslynator.Formatting.CSharp
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.RemoveNewLineBeforeBaseList); }
+            get { return ImmutableArray.Create(DiagnosticRules.RemoveNewLineBeforeBaseList); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -72,7 +72,7 @@ namespace Roslynator.Formatting.CSharp
 
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticDescriptors.RemoveNewLineBeforeBaseList,
+                DiagnosticRules.RemoveNewLineBeforeBaseList,
                 Location.Create(baseList.SyntaxTree, new TextSpan(trailingTrivia.Last().SpanStart, 0)));
         }
     }

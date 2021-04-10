@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.AvoidMultilineExpressionBody); }
+            get { return ImmutableArray.Create(DiagnosticRules.AvoidMultilineExpressionBody); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -42,7 +42,7 @@ namespace Roslynator.CSharp.Analysis
             ExpressionSyntax expression = arrowExpressionClause.Expression;
 
             if (expression?.IsMultiLine() == true)
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AvoidMultilineExpressionBody, expression);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AvoidMultilineExpressionBody, expression);
         }
     }
 }

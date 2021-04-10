@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.OrderTypeParameterConstraints); }
+            get { return ImmutableArray.Create(DiagnosticRules.OrderTypeParameterConstraints); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -48,7 +48,7 @@ namespace Roslynator.CSharp.Analysis
 
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticDescriptors.OrderTypeParameterConstraints,
+                DiagnosticRules.OrderTypeParameterConstraints,
                 genericInfo.ConstraintClauses[0]);
         }
 

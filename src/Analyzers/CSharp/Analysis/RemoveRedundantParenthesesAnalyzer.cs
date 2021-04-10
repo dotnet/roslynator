@@ -18,8 +18,8 @@ namespace Roslynator.CSharp.Analysis
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticDescriptors.RemoveRedundantParentheses,
-                    DiagnosticDescriptors.RemoveRedundantParenthesesFadeOut);
+                    DiagnosticRules.RemoveRedundantParentheses,
+                    DiagnosticRules.RemoveRedundantParenthesesFadeOut);
             }
         }
 
@@ -30,7 +30,7 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(
                 c =>
                 {
-                    if (DiagnosticDescriptors.RemoveRedundantParentheses.IsEffective(c))
+                    if (DiagnosticRules.RemoveRedundantParentheses.IsEffective(c))
                         AnalyzeParenthesizedExpression(c);
                 },
                 SyntaxKind.ParenthesizedExpression);
@@ -199,12 +199,12 @@ namespace Roslynator.CSharp.Analysis
             {
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
-                    DiagnosticDescriptors.RemoveRedundantParentheses,
+                    DiagnosticRules.RemoveRedundantParentheses,
                     openParen.GetLocation(),
                     additionalLocations: ImmutableArray.Create(closeParen.GetLocation()));
 
-                DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.RemoveRedundantParenthesesFadeOut, openParen);
-                DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.RemoveRedundantParenthesesFadeOut, closeParen);
+                DiagnosticHelpers.ReportToken(context, DiagnosticRules.RemoveRedundantParenthesesFadeOut, openParen);
+                DiagnosticHelpers.ReportToken(context, DiagnosticRules.RemoveRedundantParenthesesFadeOut, closeParen);
             }
         }
     }

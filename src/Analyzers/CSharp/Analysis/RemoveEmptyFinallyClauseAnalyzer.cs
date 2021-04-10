@@ -16,8 +16,8 @@ namespace Roslynator.CSharp.Analysis
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticDescriptors.RemoveEmptyFinallyClause,
-                    DiagnosticDescriptors.RemoveEmptyFinallyClauseFadeOut);
+                    DiagnosticRules.RemoveEmptyFinallyClause,
+                    DiagnosticRules.RemoveEmptyFinallyClauseFadeOut);
             }
         }
 
@@ -51,7 +51,7 @@ namespace Roslynator.CSharp.Analysis
 
             if (tryStatement.Catches.Any())
             {
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveEmptyFinallyClause, finallyClause);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveEmptyFinallyClause, finallyClause);
             }
             else
             {
@@ -72,11 +72,11 @@ namespace Roslynator.CSharp.Analysis
                 if (!finallyClause.FinallyKeyword.LeadingTrivia.IsEmptyOrWhitespace())
                     return;
 
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveEmptyFinallyClause, finallyClause);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveEmptyFinallyClause, finallyClause);
 
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveEmptyFinallyClauseFadeOut, tryStatement.TryKeyword);
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveEmptyFinallyClauseFadeOut, tryBlock.OpenBraceToken);
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveEmptyFinallyClauseFadeOut, tryBlock.CloseBraceToken);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveEmptyFinallyClauseFadeOut, tryStatement.TryKeyword);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveEmptyFinallyClauseFadeOut, tryBlock.OpenBraceToken);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveEmptyFinallyClauseFadeOut, tryBlock.CloseBraceToken);
             }
         }
     }

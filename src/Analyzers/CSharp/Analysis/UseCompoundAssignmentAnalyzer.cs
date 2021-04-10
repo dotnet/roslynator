@@ -17,8 +17,8 @@ namespace Roslynator.CSharp.Analysis
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticDescriptors.UseCompoundAssignment,
-                    DiagnosticDescriptors.UseCompoundAssignmentFadeOut);
+                    DiagnosticRules.UseCompoundAssignment,
+                    DiagnosticRules.UseCompoundAssignmentFadeOut);
             }
         }
 
@@ -29,7 +29,7 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(
                 c =>
                 {
-                    if (DiagnosticDescriptors.UseCompoundAssignment.IsEffective(c))
+                    if (DiagnosticRules.UseCompoundAssignment.IsEffective(c))
                         AnalyzeSimpleAssignment(c);
                 },
                 SyntaxKind.SimpleAssignmentExpression);
@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.Analysis
                     startContext.RegisterSyntaxNodeAction(
                         c =>
                         {
-                            if (DiagnosticDescriptors.UseCompoundAssignment.IsEffective(c))
+                            if (DiagnosticRules.UseCompoundAssignment.IsEffective(c))
                                 AnalyzeCoalesceExpression(c);
                         },
                         SyntaxKind.CoalesceExpression);
@@ -80,8 +80,8 @@ namespace Roslynator.CSharp.Analysis
 
             var binaryExpression = (BinaryExpressionSyntax)right;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseCompoundAssignment, assignmentExpression, GetCompoundAssignmentOperatorText(binaryExpression));
-            DiagnosticHelpers.ReportNode(context, DiagnosticDescriptors.UseCompoundAssignmentFadeOut, binaryExpression.Left);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseCompoundAssignment, assignmentExpression, GetCompoundAssignmentOperatorText(binaryExpression));
+            DiagnosticHelpers.ReportNode(context, DiagnosticRules.UseCompoundAssignmentFadeOut, binaryExpression.Left);
 
             bool CanBeReplacedWithCompoundAssignment(SyntaxKind kind)
             {
@@ -144,11 +144,11 @@ namespace Roslynator.CSharp.Analysis
             if (!CSharpFactory.AreEquivalent(binaryExpressionInfo.Left, assignmentInfo.Left))
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseCompoundAssignment, coalesceExpression);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseCompoundAssignment, coalesceExpression);
 
-            DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.UseCompoundAssignmentFadeOut, parenthesizedExpression.OpenParenToken);
-            DiagnosticHelpers.ReportNode(context, DiagnosticDescriptors.UseCompoundAssignmentFadeOut, assignmentInfo.Left);
-            DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.UseCompoundAssignmentFadeOut, parenthesizedExpression.CloseParenToken);
+            DiagnosticHelpers.ReportToken(context, DiagnosticRules.UseCompoundAssignmentFadeOut, parenthesizedExpression.OpenParenToken);
+            DiagnosticHelpers.ReportNode(context, DiagnosticRules.UseCompoundAssignmentFadeOut, assignmentInfo.Left);
+            DiagnosticHelpers.ReportToken(context, DiagnosticRules.UseCompoundAssignmentFadeOut, parenthesizedExpression.CloseParenToken);
         }
     }
 }

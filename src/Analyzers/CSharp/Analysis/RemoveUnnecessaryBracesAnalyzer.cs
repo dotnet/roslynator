@@ -17,8 +17,8 @@ namespace Roslynator.CSharp.Analysis
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticDescriptors.RemoveUnnecessaryBraces,
-                    DiagnosticDescriptors.RemoveUnnecessaryBracesFadeOut);
+                    DiagnosticRules.RemoveUnnecessaryBraces,
+                    DiagnosticRules.RemoveUnnecessaryBracesFadeOut);
             }
         }
 
@@ -29,7 +29,7 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(
                 c =>
                 {
-                    if (DiagnosticDescriptors.RemoveUnnecessaryBraces.IsEffective(c))
+                    if (DiagnosticRules.RemoveUnnecessaryBraces.IsEffective(c))
                         AnalyzerSwitchSection(c);
                 },
                 SyntaxKind.SwitchSection);
@@ -83,8 +83,8 @@ namespace Roslynator.CSharp.Analysis
             if (!AnalyzeTrivia(closeBrace.TrailingTrivia))
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveUnnecessaryBraces, openBrace);
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveUnnecessaryBracesFadeOut, closeBrace);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveUnnecessaryBraces, openBrace);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveUnnecessaryBracesFadeOut, closeBrace);
 
             static bool AnalyzeTrivia(SyntaxTriviaList trivia)
             {

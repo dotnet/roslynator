@@ -17,7 +17,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.UseExclusiveOrOperator); }
+            get { return ImmutableArray.Create(DiagnosticRules.UseExclusiveOrOperator); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -70,7 +70,7 @@ namespace Roslynator.CSharp.Analysis
             if (!AreEquivalent(expressions.InvertedExpression, expressions2.Expression))
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseExclusiveOrOperator, context.Node);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseExclusiveOrOperator, context.Node);
         }
 
         private static ExpressionPair GetExpressionPair(BinaryExpressionSyntax logicalAnd)

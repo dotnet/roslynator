@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.DeclareUsingDirectiveOnTopLevel); }
+            get { return ImmutableArray.Create(DiagnosticRules.DeclareUsingDirectiveOnTopLevel); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -58,7 +58,7 @@ namespace Roslynator.CSharp.Analysis
 
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticDescriptors.DeclareUsingDirectiveOnTopLevel,
+                DiagnosticRules.DeclareUsingDirectiveOnTopLevel,
                 Location.Create(namespaceDeclaration.SyntaxTree, usings.Span));
         }
     }

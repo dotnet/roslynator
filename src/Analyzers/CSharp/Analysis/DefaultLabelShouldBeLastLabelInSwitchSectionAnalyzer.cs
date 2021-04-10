@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.DefaultLabelShouldBeLastLabelInSwitchSection); }
+            get { return ImmutableArray.Create(DiagnosticRules.DefaultLabelShouldBeLastLabelInSwitchSection); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -50,7 +50,7 @@ namespace Roslynator.CSharp.Analysis
                     {
                         DiagnosticHelpers.ReportDiagnostic(
                             context,
-                            DiagnosticDescriptors.DefaultLabelShouldBeLastLabelInSwitchSection,
+                            DiagnosticRules.DefaultLabelShouldBeLastLabelInSwitchSection,
                             label);
 
                         break;

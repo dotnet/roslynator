@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.AvoidSemicolonAtEndOfDeclaration); }
+            get { return ImmutableArray.Create(DiagnosticRules.AvoidSemicolonAtEndOfDeclaration); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -37,7 +37,7 @@ namespace Roslynator.CSharp.Analysis
             if (semicolon.Parent != null
                 && !semicolon.IsMissing)
             {
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AvoidSemicolonAtEndOfDeclaration, semicolon);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AvoidSemicolonAtEndOfDeclaration, semicolon);
             }
         }
 
@@ -50,7 +50,7 @@ namespace Roslynator.CSharp.Analysis
             if (semicolon.Parent != null
                 && !semicolon.IsMissing)
             {
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AvoidSemicolonAtEndOfDeclaration, semicolon);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AvoidSemicolonAtEndOfDeclaration, semicolon);
             }
         }
 
@@ -63,7 +63,7 @@ namespace Roslynator.CSharp.Analysis
             if (semicolon.Parent != null
                 && !semicolon.IsMissing)
             {
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AvoidSemicolonAtEndOfDeclaration, semicolon);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AvoidSemicolonAtEndOfDeclaration, semicolon);
             }
         }
 
@@ -76,7 +76,7 @@ namespace Roslynator.CSharp.Analysis
             if (semicolon.Parent != null
                 && !semicolon.IsMissing)
             {
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AvoidSemicolonAtEndOfDeclaration, semicolon);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AvoidSemicolonAtEndOfDeclaration, semicolon);
             }
         }
 
@@ -89,7 +89,7 @@ namespace Roslynator.CSharp.Analysis
             if (semicolon.Parent != null
                 && !semicolon.IsMissing)
             {
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AvoidSemicolonAtEndOfDeclaration, semicolon);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AvoidSemicolonAtEndOfDeclaration, semicolon);
             }
         }
     }

@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.RemoveRedundantBaseConstructorCall); }
+            get { return ImmutableArray.Create(DiagnosticRules.RemoveRedundantBaseConstructorCall); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -39,7 +39,7 @@ namespace Roslynator.CSharp.Analysis
             {
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
-                    DiagnosticDescriptors.RemoveRedundantBaseConstructorCall,
+                    DiagnosticRules.RemoveRedundantBaseConstructorCall,
                     initializer);
             }
         }

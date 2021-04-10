@@ -16,7 +16,7 @@ namespace Roslynator.CSharp.Analysis.UsePatternMatching
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.UsePatternMatchingInsteadOfAsAndNullCheck); }
+            get { return ImmutableArray.Create(DiagnosticRules.UsePatternMatchingInsteadOfAsAndNullCheck); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -88,7 +88,7 @@ namespace Roslynator.CSharp.Analysis.UsePatternMatching
                     return;
             }
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UsePatternMatchingInsteadOfAsAndNullCheck, localInfo.Statement);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UsePatternMatchingInsteadOfAsAndNullCheck, localInfo.Statement);
         }
     }
 }

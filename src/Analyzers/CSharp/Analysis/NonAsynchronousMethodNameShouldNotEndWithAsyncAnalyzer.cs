@@ -18,9 +18,9 @@ namespace Roslynator.CSharp.Analysis
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticDescriptors.AsynchronousMethodNameShouldEndWithAsync,
-                    DiagnosticDescriptors.NonAsynchronousMethodNameShouldNotEndWithAsync,
-                    DiagnosticDescriptors.NonAsynchronousMethodNameShouldNotEndWithAsyncFadeOut);
+                    DiagnosticRules.AsynchronousMethodNameShouldEndWithAsync,
+                    DiagnosticRules.NonAsynchronousMethodNameShouldNotEndWithAsync,
+                    DiagnosticRules.NonAsynchronousMethodNameShouldNotEndWithAsyncFadeOut);
             }
         }
 
@@ -39,8 +39,8 @@ namespace Roslynator.CSharp.Analysis
                     {
                         if (DiagnosticHelpers.IsAnyEffective(
                             c,
-                            DiagnosticDescriptors.AsynchronousMethodNameShouldEndWithAsync,
-                            DiagnosticDescriptors.NonAsynchronousMethodNameShouldNotEndWithAsync))
+                            DiagnosticRules.AsynchronousMethodNameShouldEndWithAsync,
+                            DiagnosticRules.NonAsynchronousMethodNameShouldNotEndWithAsync))
                         {
                             AnalyzeMethodDeclaration(c, shouldCheckWindowsRuntimeTypes);
                         }
@@ -73,12 +73,12 @@ namespace Roslynator.CSharp.Analysis
 
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
-                    DiagnosticDescriptors.NonAsynchronousMethodNameShouldNotEndWithAsync,
+                    DiagnosticRules.NonAsynchronousMethodNameShouldNotEndWithAsync,
                     identifier);
 
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
-                    DiagnosticDescriptors.NonAsynchronousMethodNameShouldNotEndWithAsyncFadeOut,
+                    DiagnosticRules.NonAsynchronousMethodNameShouldNotEndWithAsyncFadeOut,
                     Location.Create(identifier.SyntaxTree, TextSpan.FromBounds(identifier.Span.End - 5, identifier.Span.End)));
             }
             else
@@ -94,7 +94,7 @@ namespace Roslynator.CSharp.Analysis
                 if (!SymbolUtility.IsAwaitable(methodSymbol.ReturnType, shouldCheckWindowsRuntimeTypes))
                     return;
 
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AsynchronousMethodNameShouldEndWithAsync, methodDeclaration.Identifier);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AsynchronousMethodNameShouldEndWithAsync, methodDeclaration.Identifier);
             }
         }
     }

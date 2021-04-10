@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.AddStaticModifierToAllPartialClassDeclarations); }
+            get { return ImmutableArray.Create(DiagnosticRules.AddStaticModifierToAllPartialClassDeclarations); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -55,7 +55,7 @@ namespace Roslynator.CSharp.Analysis
                 {
                     DiagnosticHelpers.ReportDiagnostic(
                         context,
-                        DiagnosticDescriptors.AddStaticModifierToAllPartialClassDeclarations,
+                        DiagnosticRules.AddStaticModifierToAllPartialClassDeclarations,
                         classDeclaration.Identifier);
                 }
             }

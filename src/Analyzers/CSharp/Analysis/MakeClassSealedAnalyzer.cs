@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.MakeClassSealed); }
+            get { return ImmutableArray.Create(DiagnosticRules.MakeClassSealed); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -73,7 +73,7 @@ namespace Roslynator.CSharp.Analysis
 
             var classDeclaration = (ClassDeclarationSyntax)namedTypeSymbol.GetSyntax(context.CancellationToken);
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.MakeClassSealed, classDeclaration.Identifier);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.MakeClassSealed, classDeclaration.Identifier);
         }
 
         private static bool ContainsDerivedType(

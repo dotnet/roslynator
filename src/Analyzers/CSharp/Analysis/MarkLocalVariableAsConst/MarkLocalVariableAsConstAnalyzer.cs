@@ -16,7 +16,7 @@ namespace Roslynator.CSharp.Analysis.MarkLocalVariableAsConst
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.MarkLocalVariableAsConst); }
+            get { return ImmutableArray.Create(DiagnosticRules.MarkLocalVariableAsConst); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -73,7 +73,7 @@ namespace Roslynator.CSharp.Analysis.MarkLocalVariableAsConst
             if (!CanBeMarkedAsConst(localInfo.Variables, statements, index + 1))
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.MarkLocalVariableAsConst, localInfo.Type);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.MarkLocalVariableAsConst, localInfo.Type);
         }
 
         private static bool CanBeMarkedAsConst(

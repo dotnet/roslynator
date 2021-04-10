@@ -25,7 +25,7 @@ namespace Roslynator.CodeAnalysis.CSharp
 
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.UsePatternMatching); }
+            get { return ImmutableArray.Create(DiagnosticRules.UsePatternMatching); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -179,7 +179,7 @@ namespace Roslynator.CodeAnalysis.CSharp
                 return;
             }
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UsePatternMatching, switchStatement.SwitchKeyword);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UsePatternMatching, switchStatement.SwitchKeyword);
 
             string GetName()
             {
@@ -312,7 +312,7 @@ namespace Roslynator.CodeAnalysis.CSharp
                 if (!CSharpFactory.AreEquivalent(isKindExpression.Expression, castExpression.Expression))
                     return;
 
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UsePatternMatching, ifStatement.IfKeyword);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UsePatternMatching, ifStatement.IfKeyword);
             }
         }
 

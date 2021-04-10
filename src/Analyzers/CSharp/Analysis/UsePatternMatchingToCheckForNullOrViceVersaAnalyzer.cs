@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.UsePatternMatchingToCheckForNullOrViceVersa); }
+            get { return ImmutableArray.Create(DiagnosticRules.UsePatternMatchingToCheckForNullOrViceVersa); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -66,7 +66,7 @@ namespace Roslynator.CSharp.Analysis
             {
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
-                    DiagnosticDescriptors.UsePatternMatchingToCheckForNullOrViceVersa,
+                    DiagnosticRules.UsePatternMatchingToCheckForNullOrViceVersa,
                     binaryExpression,
                     "==");
             }
@@ -85,7 +85,7 @@ namespace Roslynator.CSharp.Analysis
             {
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
-                    DiagnosticDescriptors.UsePatternMatchingToCheckForNullOrViceVersa,
+                    DiagnosticRules.UsePatternMatchingToCheckForNullOrViceVersa,
                     binaryExpression,
                     "!=");
             }
@@ -103,7 +103,7 @@ namespace Roslynator.CSharp.Analysis
             {
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
-                    DiagnosticDescriptors.ReportOnly.UseComparisonInsteadPatternMatchingToCheckForNull,
+                    DiagnosticRules.ReportOnly.UseComparisonInsteadPatternMatchingToCheckForNull,
                     isPatternExpression);
             }
         }

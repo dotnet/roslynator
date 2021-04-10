@@ -18,8 +18,8 @@ namespace Roslynator.CSharp.Analysis
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticDescriptors.RemoveEmptyRegion,
-                    DiagnosticDescriptors.RemoveEmptyRegionFadeOut);
+                    DiagnosticRules.RemoveEmptyRegion,
+                    DiagnosticRules.RemoveEmptyRegionFadeOut);
             }
         }
 
@@ -30,7 +30,7 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(
                 c =>
                 {
-                    if (DiagnosticDescriptors.RemoveEmptyRegion.IsEffective(c))
+                    if (DiagnosticRules.RemoveEmptyRegion.IsEffective(c))
                         AnalyzeRegionDirective(c);
                 },
                 SyntaxKind.RegionDirectiveTrivia);
@@ -50,12 +50,12 @@ namespace Roslynator.CSharp.Analysis
 
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticDescriptors.RemoveEmptyRegion,
+                DiagnosticRules.RemoveEmptyRegion,
                 regionDirective.GetLocation(),
                 additionalLocations: ImmutableArray.Create(region.EndDirective.GetLocation()));
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveEmptyRegionFadeOut, regionDirective.GetLocation());
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveEmptyRegionFadeOut, region.EndDirective.GetLocation());
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveEmptyRegionFadeOut, regionDirective.GetLocation());
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveEmptyRegionFadeOut, region.EndDirective.GetLocation());
         }
     }
 }

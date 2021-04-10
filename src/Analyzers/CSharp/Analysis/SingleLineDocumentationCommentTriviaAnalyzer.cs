@@ -17,17 +17,17 @@ namespace Roslynator.CSharp.Analysis
     public class SingleLineDocumentationCommentTriviaAnalyzer : BaseDiagnosticAnalyzer
     {
         private static readonly ImmutableArray<DiagnosticDescriptor> _supportedDiagnosticsWithoutFadeOut = ImmutableArray.Create(
-            DiagnosticDescriptors.AddSummaryToDocumentationComment,
-            DiagnosticDescriptors.AddSummaryElementToDocumentationComment,
-            DiagnosticDescriptors.AddParamElementToDocumentationComment,
-            DiagnosticDescriptors.AddTypeParamElementToDocumentationComment,
-            DiagnosticDescriptors.UnusedElementInDocumentationComment,
-            DiagnosticDescriptors.OrderElementsInDocumentationComment,
-            DiagnosticDescriptors.FixDocumentationCommentTag);
+            DiagnosticRules.AddSummaryToDocumentationComment,
+            DiagnosticRules.AddSummaryElementToDocumentationComment,
+            DiagnosticRules.AddParamElementToDocumentationComment,
+            DiagnosticRules.AddTypeParamElementToDocumentationComment,
+            DiagnosticRules.UnusedElementInDocumentationComment,
+            DiagnosticRules.OrderElementsInDocumentationComment,
+            DiagnosticRules.FixDocumentationCommentTag);
 
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return _supportedDiagnosticsWithoutFadeOut.Add(DiagnosticDescriptors.UnusedElementInDocumentationCommentFadeOut); }
+            get { return _supportedDiagnosticsWithoutFadeOut.Add(DiagnosticRules.UnusedElementInDocumentationCommentFadeOut); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -92,11 +92,11 @@ namespace Roslynator.CSharp.Analysis
                         case XmlTag.Summary:
                             {
                                 if (info.IsContentEmptyOrWhitespace)
-                                    ReportDiagnosticIfNotSuppressed(context, DiagnosticDescriptors.AddSummaryToDocumentationComment, info.Element);
+                                    ReportDiagnosticIfNotSuppressed(context, DiagnosticRules.AddSummaryToDocumentationComment, info.Element);
 
                                 containsSummaryElement = true;
 
-                                if (useCorrectDocumentationTagEnabled ??= DiagnosticDescriptors.FixDocumentationCommentTag.IsEffective(context))
+                                if (useCorrectDocumentationTagEnabled ??= DiagnosticRules.FixDocumentationCommentTag.IsEffective(context))
                                     FixDocumentationCommentTagAnalysis.Analyze(context, info);
 
                                 break;
@@ -109,7 +109,7 @@ namespace Roslynator.CSharp.Analysis
                                 if (info.IsContentEmptyOrWhitespace)
                                     ReportUnusedElement(context, info.Element, i, content);
 
-                                if (useCorrectDocumentationTagEnabled ??= DiagnosticDescriptors.FixDocumentationCommentTag.IsEffective(context))
+                                if (useCorrectDocumentationTagEnabled ??= DiagnosticRules.FixDocumentationCommentTag.IsEffective(context))
                                     FixDocumentationCommentTagAnalysis.Analyze(context, info);
 
                                 break;
@@ -120,7 +120,7 @@ namespace Roslynator.CSharp.Analysis
                         case XmlTag.Permission:
                         case XmlTag.TypeParam:
                             {
-                                if (useCorrectDocumentationTagEnabled ??= DiagnosticDescriptors.FixDocumentationCommentTag.IsEffective(context))
+                                if (useCorrectDocumentationTagEnabled ??= DiagnosticRules.FixDocumentationCommentTag.IsEffective(context))
                                     FixDocumentationCommentTagAnalysis.Analyze(context, info);
 
                                 break;
@@ -162,15 +162,15 @@ namespace Roslynator.CSharp.Analysis
             if (!containsSummaryElement
                 && !containsContentElement)
             {
-                ReportDiagnosticIfNotSuppressed(context, DiagnosticDescriptors.AddSummaryElementToDocumentationComment, documentationComment);
+                ReportDiagnosticIfNotSuppressed(context, DiagnosticRules.AddSummaryElementToDocumentationComment, documentationComment);
             }
 
             SyntaxNode parent = documentationComment.ParentTrivia.Token.Parent;
 
-            bool unusedElement = DiagnosticDescriptors.UnusedElementInDocumentationComment.IsEffective(context);
-            bool orderParams = DiagnosticDescriptors.OrderElementsInDocumentationComment.IsEffective(context);
-            bool addParam = DiagnosticDescriptors.AddParamElementToDocumentationComment.IsEffective(context);
-            bool addTypeParam = DiagnosticDescriptors.AddTypeParamElementToDocumentationComment.IsEffective(context);
+            bool unusedElement = DiagnosticRules.UnusedElementInDocumentationComment.IsEffective(context);
+            bool orderParams = DiagnosticRules.OrderElementsInDocumentationComment.IsEffective(context);
+            bool addParam = DiagnosticRules.AddParamElementToDocumentationComment.IsEffective(context);
+            bool addTypeParam = DiagnosticRules.AddTypeParamElementToDocumentationComment.IsEffective(context);
 
             if (addParam
                 || orderParams
@@ -186,7 +186,7 @@ namespace Roslynator.CSharp.Analysis
                     {
                         if (IsMissing(documentationComment, parameter))
                         {
-                            ReportDiagnostic(context, DiagnosticDescriptors.AddParamElementToDocumentationComment, documentationComment);
+                            ReportDiagnostic(context, DiagnosticRules.AddParamElementToDocumentationComment, documentationComment);
                             break;
                         }
                     }
@@ -212,7 +212,7 @@ namespace Roslynator.CSharp.Analysis
                     {
                         if (IsMissing(documentationComment, typeParameter))
                         {
-                            ReportDiagnostic(context, DiagnosticDescriptors.AddTypeParamElementToDocumentationComment, documentationComment);
+                            ReportDiagnostic(context, DiagnosticRules.AddTypeParamElementToDocumentationComment, documentationComment);
                             break;
                         }
                     }
@@ -319,7 +319,7 @@ namespace Roslynator.CSharp.Analysis
                 }
                 else if (index < firstIndex)
                 {
-                    ReportDiagnosticIfNotSuppressed(context, DiagnosticDescriptors.OrderElementsInDocumentationComment, firstElement);
+                    ReportDiagnosticIfNotSuppressed(context, DiagnosticRules.OrderElementsInDocumentationComment, firstElement);
                     return;
                 }
                 else
@@ -337,10 +337,10 @@ namespace Roslynator.CSharp.Analysis
             int index,
             SyntaxList<XmlNodeSyntax> xmlNodes)
         {
-            if (!DiagnosticDescriptors.UnusedElementInDocumentationComment.IsEffective(context))
+            if (!DiagnosticRules.UnusedElementInDocumentationComment.IsEffective(context))
                 return;
 
-            ReportDiagnostic(context, DiagnosticDescriptors.UnusedElementInDocumentationComment, xmlNode);
+            ReportDiagnostic(context, DiagnosticRules.UnusedElementInDocumentationComment, xmlNode);
 
             if (index > 0
                 && xmlNodes[index - 1] is XmlTextSyntax xmlText)
@@ -354,7 +354,7 @@ namespace Roslynator.CSharp.Analysis
                         SyntaxTrivia trivia = tokens[0].LeadingTrivia.SingleOrDefault(shouldThrow: false);
 
                         if (trivia.IsKind(SyntaxKind.DocumentationCommentExteriorTrivia))
-                            ReportDiagnostic(context, DiagnosticDescriptors.UnusedElementInDocumentationCommentFadeOut, trivia);
+                            ReportDiagnostic(context, DiagnosticRules.UnusedElementInDocumentationCommentFadeOut, trivia);
                     }
                 }
                 else if (tokens.Count == 2)
@@ -365,7 +365,7 @@ namespace Roslynator.CSharp.Analysis
                         SyntaxTrivia trivia = tokens[1].LeadingTrivia.SingleOrDefault(shouldThrow: false);
 
                         if (trivia.IsKind(SyntaxKind.DocumentationCommentExteriorTrivia))
-                            ReportDiagnostic(context, DiagnosticDescriptors.UnusedElementInDocumentationCommentFadeOut, trivia);
+                            ReportDiagnostic(context, DiagnosticRules.UnusedElementInDocumentationCommentFadeOut, trivia);
                     }
                 }
             }

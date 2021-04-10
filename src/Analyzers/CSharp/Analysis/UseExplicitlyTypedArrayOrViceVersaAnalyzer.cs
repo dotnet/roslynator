@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.UseExplicitlyTypedArrayOrViceVersa); }
+            get { return ImmutableArray.Create(DiagnosticRules.UseExplicitlyTypedArrayOrViceVersa); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -89,7 +89,7 @@ namespace Roslynator.CSharp.Analysis
 
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticDescriptors.UseExplicitlyTypedArrayOrViceVersa,
+                DiagnosticRules.UseExplicitlyTypedArrayOrViceVersa,
                 Location.Create(expression.SyntaxTree, TextSpan.FromBounds(expression.NewKeyword.SpanStart, expression.CloseBracketToken.Span.End)));
         }
 
@@ -128,7 +128,7 @@ namespace Roslynator.CSharp.Analysis
 
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticDescriptors.ReportOnly.UseImplicitlyTypedArray,
+                DiagnosticRules.ReportOnly.UseImplicitlyTypedArray,
                 Location.Create(arrayCreation.SyntaxTree, textSpan));
         }
     }

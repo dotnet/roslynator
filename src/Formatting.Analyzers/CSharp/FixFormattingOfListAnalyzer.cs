@@ -17,7 +17,7 @@ namespace Roslynator.Formatting.CSharp
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.FixFormattingOfList); }
+            get { return ImmutableArray.Create(DiagnosticRules.FixFormattingOfList); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -274,7 +274,7 @@ namespace Roslynator.Formatting.CSharp
             {
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
-                    DiagnosticDescriptors.FixFormattingOfList,
+                    DiagnosticRules.FixFormattingOfList,
                     Location.Create(first.SyntaxTree, nodes.Span),
                     GetTitle());
             }

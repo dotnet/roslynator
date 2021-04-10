@@ -16,7 +16,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.SimplifyLogicalNegation); }
+            get { return ImmutableArray.Create(DiagnosticRules.SimplifyLogicalNegation); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -89,7 +89,7 @@ namespace Roslynator.CSharp.Analysis
 
             void ReportDiagnostic()
             {
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.SimplifyLogicalNegation, logicalNot);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.SimplifyLogicalNegation, logicalNot);
             }
         }
 
@@ -164,7 +164,7 @@ namespace Roslynator.CSharp.Analysis
             if (!SymbolUtility.IsLinqExtensionOfIEnumerableOfTWithPredicate(methodSymbol))
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.SimplifyLogicalNegation, parent);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.SimplifyLogicalNegation, parent);
         }
 
         internal static ExpressionSyntax GetReturnExpression(CSharpSyntaxNode node)

@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.AddBraces); }
+            get { return ImmutableArray.Create(DiagnosticRules.AddBraces); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -45,7 +45,7 @@ namespace Roslynator.CSharp.Analysis
             if (statement.ContainsDirectives)
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AddBraces, statement, CSharpFacts.GetTitle(ifStatement));
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AddBraces, statement, CSharpFacts.GetTitle(ifStatement));
         }
 
         private static void AnalyzeElseClause(SyntaxNodeAnalysisContext context)
@@ -60,7 +60,7 @@ namespace Roslynator.CSharp.Analysis
             if (statement.ContainsDirectives)
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AddBraces, statement, CSharpFacts.GetTitle(elseClause));
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AddBraces, statement, CSharpFacts.GetTitle(elseClause));
         }
 
         private static void AnalyzeCommonForEachStatement(SyntaxNodeAnalysisContext context)
@@ -75,7 +75,7 @@ namespace Roslynator.CSharp.Analysis
             if (statement.ContainsDirectives)
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AddBraces, statement, CSharpFacts.GetTitle(forEachStatement));
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AddBraces, statement, CSharpFacts.GetTitle(forEachStatement));
         }
 
         private static void AnalyzeForStatement(SyntaxNodeAnalysisContext context)
@@ -90,7 +90,7 @@ namespace Roslynator.CSharp.Analysis
             if (statement.ContainsDirectives)
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AddBraces, statement, CSharpFacts.GetTitle(forStatement));
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AddBraces, statement, CSharpFacts.GetTitle(forStatement));
         }
 
         private static void AnalyzeUsingStatement(SyntaxNodeAnalysisContext context)
@@ -105,7 +105,7 @@ namespace Roslynator.CSharp.Analysis
             if (statement.ContainsDirectives)
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AddBraces, statement, CSharpFacts.GetTitle(usingStatement));
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AddBraces, statement, CSharpFacts.GetTitle(usingStatement));
         }
 
         private static void AnalyzeWhileStatement(SyntaxNodeAnalysisContext context)
@@ -120,7 +120,7 @@ namespace Roslynator.CSharp.Analysis
             if (statement.ContainsDirectives)
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AddBraces, statement, CSharpFacts.GetTitle(whileStatement));
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AddBraces, statement, CSharpFacts.GetTitle(whileStatement));
         }
 
         private static void AnalyzeDoStatement(SyntaxNodeAnalysisContext context)
@@ -135,7 +135,7 @@ namespace Roslynator.CSharp.Analysis
             if (statement.ContainsDirectives)
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AddBraces, statement, CSharpFacts.GetTitle(doStatement));
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AddBraces, statement, CSharpFacts.GetTitle(doStatement));
         }
 
         private static void AnalyzeLockStatement(SyntaxNodeAnalysisContext context)
@@ -150,7 +150,7 @@ namespace Roslynator.CSharp.Analysis
             if (statement.ContainsDirectives)
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AddBraces, statement, CSharpFacts.GetTitle(lockStatement));
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AddBraces, statement, CSharpFacts.GetTitle(lockStatement));
         }
 
         private static void AnalyzeFixedStatement(SyntaxNodeAnalysisContext context)
@@ -165,7 +165,7 @@ namespace Roslynator.CSharp.Analysis
             if (statement.ContainsDirectives)
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AddBraces, statement, CSharpFacts.GetTitle(fixedStatement));
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AddBraces, statement, CSharpFacts.GetTitle(fixedStatement));
         }
     }
 }

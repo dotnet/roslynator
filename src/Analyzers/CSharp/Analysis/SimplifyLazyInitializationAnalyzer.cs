@@ -17,7 +17,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.SimplifyLazyInitialization); }
+            get { return ImmutableArray.Create(DiagnosticRules.SimplifyLazyInitialization); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -126,7 +126,7 @@ namespace Roslynator.CSharp.Analysis
 
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticDescriptors.SimplifyLazyInitialization,
+                DiagnosticRules.SimplifyLazyInitialization,
                 Location.Create(node.SyntaxTree, TextSpan.FromBounds(ifStatement.SpanStart, returnStatement.Span.End)));
         }
 

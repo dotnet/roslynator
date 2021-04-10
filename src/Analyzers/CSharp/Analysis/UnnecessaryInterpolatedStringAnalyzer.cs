@@ -18,8 +18,8 @@ namespace Roslynator.CSharp.Analysis
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticDescriptors.UnnecessaryInterpolatedString,
-                    DiagnosticDescriptors.UnnecessaryInterpolatedStringFadeOut);
+                    DiagnosticRules.UnnecessaryInterpolatedString,
+                    DiagnosticRules.UnnecessaryInterpolatedStringFadeOut);
             }
         }
 
@@ -30,7 +30,7 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(
                 c =>
                 {
-                    if (DiagnosticDescriptors.UnnecessaryInterpolatedString.IsEffective(c))
+                    if (DiagnosticRules.UnnecessaryInterpolatedString.IsEffective(c))
                         AnalyzeInterpolatedStringExpression(c);
                 },
                 SyntaxKind.InterpolatedStringExpression);
@@ -57,7 +57,7 @@ namespace Roslynator.CSharp.Analysis
 
                 ReportDiagnostic(
                     context,
-                    DiagnosticDescriptors.UnnecessaryInterpolatedString,
+                    DiagnosticRules.UnnecessaryInterpolatedString,
                     Location.Create(interpolatedString.SyntaxTree, GetDollarSpan(interpolatedString)));
             }
             else
@@ -82,12 +82,12 @@ namespace Roslynator.CSharp.Analysis
                 if (IsFormattableString(context))
                     return;
 
-                ReportDiagnostic(context, DiagnosticDescriptors.UnnecessaryInterpolatedString, interpolatedString);
+                ReportDiagnostic(context, DiagnosticRules.UnnecessaryInterpolatedString, interpolatedString);
 
-                ReportToken(context, DiagnosticDescriptors.UnnecessaryInterpolatedStringFadeOut, interpolatedString.StringStartToken);
-                ReportToken(context, DiagnosticDescriptors.UnnecessaryInterpolatedStringFadeOut, interpolation.OpenBraceToken);
-                ReportToken(context, DiagnosticDescriptors.UnnecessaryInterpolatedStringFadeOut, interpolation.CloseBraceToken);
-                ReportToken(context, DiagnosticDescriptors.UnnecessaryInterpolatedStringFadeOut, interpolatedString.StringEndToken);
+                ReportToken(context, DiagnosticRules.UnnecessaryInterpolatedStringFadeOut, interpolatedString.StringStartToken);
+                ReportToken(context, DiagnosticRules.UnnecessaryInterpolatedStringFadeOut, interpolation.OpenBraceToken);
+                ReportToken(context, DiagnosticRules.UnnecessaryInterpolatedStringFadeOut, interpolation.CloseBraceToken);
+                ReportToken(context, DiagnosticRules.UnnecessaryInterpolatedStringFadeOut, interpolatedString.StringEndToken);
             }
 
             bool IsNonNullStringExpression(ExpressionSyntax expression)

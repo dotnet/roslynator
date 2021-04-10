@@ -18,7 +18,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.UseExceptionFilter); }
+            get { return ImmutableArray.Create(DiagnosticRules.UseExceptionFilter); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -64,7 +64,7 @@ namespace Roslynator.CSharp.Analysis
                 if (ifStatement.ContainsUnbalancedIfElseDirectives())
                     return;
 
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseExceptionFilter, ifStatement.IfKeyword);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseExceptionFilter, ifStatement.IfKeyword);
             }
         }
 

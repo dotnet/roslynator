@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.RemoveRedundantEmptyLine); }
+            get { return ImmutableArray.Create(DiagnosticRules.RemoveRedundantEmptyLine); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -291,7 +291,7 @@ namespace Roslynator.CSharp.Analysis
 
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticDescriptors.RemoveRedundantEmptyLine,
+                DiagnosticRules.RemoveRedundantEmptyLine,
                 Location.Create(node1.SyntaxTree, TextSpan.FromBounds(node2.FullSpan.Start, trivia.Span.End)));
         }
 
@@ -336,7 +336,7 @@ namespace Roslynator.CSharp.Analysis
 
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticDescriptors.RemoveRedundantEmptyLine,
+                DiagnosticRules.RemoveRedundantEmptyLine,
                 Location.Create(token.SyntaxTree, TextSpan.FromBounds(node.FullSpan.Start, trivia.Span.End)));
         }
 
@@ -391,7 +391,7 @@ namespace Roslynator.CSharp.Analysis
                 {
                     DiagnosticHelpers.ReportDiagnostic(
                         context,
-                        DiagnosticDescriptors.RemoveRedundantEmptyLine,
+                        DiagnosticRules.RemoveRedundantEmptyLine,
                         leadingTrivia[index + 1].GetLocation());
                 }
             }
@@ -484,7 +484,7 @@ namespace Roslynator.CSharp.Analysis
 
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticDescriptors.RemoveRedundantEmptyLine,
+                DiagnosticRules.RemoveRedundantEmptyLine,
                 Location.Create(context.Node.SyntaxTree, span.Value));
         }
 
@@ -511,7 +511,7 @@ namespace Roslynator.CSharp.Analysis
 
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticDescriptors.RemoveRedundantEmptyLine,
+                DiagnosticRules.RemoveRedundantEmptyLine,
                 Location.Create(context.Node.SyntaxTree, span.Value));
         }
 
@@ -538,7 +538,7 @@ namespace Roslynator.CSharp.Analysis
 
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticDescriptors.RemoveRedundantEmptyLine,
+                DiagnosticRules.RemoveRedundantEmptyLine,
                 Location.Create(tree, span.Value));
         }
 
@@ -631,7 +631,7 @@ namespace Roslynator.CSharp.Analysis
         {
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticDescriptors.RemoveRedundantEmptyLine,
+                DiagnosticRules.RemoveRedundantEmptyLine,
                 Location.Create(context.Node.SyntaxTree, span));
         }
     }

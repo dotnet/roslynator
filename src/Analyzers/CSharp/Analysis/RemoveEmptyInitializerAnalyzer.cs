@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.RemoveEmptyInitializer); }
+            get { return ImmutableArray.Create(DiagnosticRules.RemoveEmptyInitializer); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -50,7 +50,7 @@ namespace Roslynator.CSharp.Analysis
             if (initializer.IsInExpressionTree(context.SemanticModel, context.CancellationToken))
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveEmptyInitializer, initializer);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveEmptyInitializer, initializer);
         }
     }
 }

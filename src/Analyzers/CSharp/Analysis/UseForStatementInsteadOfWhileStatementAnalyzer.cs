@@ -17,7 +17,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.UseForStatementInsteadOfWhileStatement); }
+            get { return ImmutableArray.Create(DiagnosticRules.UseForStatementInsteadOfWhileStatement); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -101,7 +101,7 @@ namespace Roslynator.CSharp.Analysis
             if (IsLocalVariableReferencedAfterWhileStatement())
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseForStatementInsteadOfWhileStatement, whileStatement.WhileKeyword);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseForStatementInsteadOfWhileStatement, whileStatement.WhileKeyword);
 
             bool ContainsContinueStatement()
             {

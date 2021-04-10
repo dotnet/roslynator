@@ -16,7 +16,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.AddExceptionToDocumentationComment); }
+            get { return ImmutableArray.Create(DiagnosticRules.AddExceptionToDocumentationComment); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -44,7 +44,7 @@ namespace Roslynator.CSharp.Analysis
             if (!analysis.Success)
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AddExceptionToDocumentationComment, throwStatement);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AddExceptionToDocumentationComment, throwStatement);
         }
 
         private static void AnalyzeThrowExpression(SyntaxNodeAnalysisContext context, INamedTypeSymbol exceptionSymbol)
@@ -56,7 +56,7 @@ namespace Roslynator.CSharp.Analysis
             if (!analysis.Success)
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AddExceptionToDocumentationComment, throwExpression);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AddExceptionToDocumentationComment, throwExpression);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.AddParenthesesWhenNecessary); }
+            get { return ImmutableArray.Create(DiagnosticRules.AddParenthesesWhenNecessary); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -73,7 +73,7 @@ namespace Roslynator.CSharp.Analysis
             if (IsNestedDiagnostic(expression))
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AddParenthesesWhenNecessary, expression);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AddParenthesesWhenNecessary, expression);
         }
 
         private static bool IsNestedDiagnostic(SyntaxNode node)

@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.AvoidNestedConditionalOperators); }
+            get { return ImmutableArray.Create(DiagnosticRules.AvoidNestedConditionalOperators); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -34,7 +34,7 @@ namespace Roslynator.CSharp.Analysis
                 if (conditionalExpression.WhenTrue.WalkDownParentheses().IsKind(SyntaxKind.ConditionalExpression)
                     || conditionalExpression.WhenFalse.WalkDownParentheses().IsKind(SyntaxKind.ConditionalExpression))
                 {
-                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AvoidNestedConditionalOperators, conditionalExpression);
+                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AvoidNestedConditionalOperators, conditionalExpression);
                 }
             }
         }

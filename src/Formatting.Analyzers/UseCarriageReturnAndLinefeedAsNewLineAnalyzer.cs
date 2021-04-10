@@ -13,7 +13,7 @@ namespace Roslynator.Formatting
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.UseCarriageReturnAndLinefeedAsNewLine); }
+            get { return ImmutableArray.Create(DiagnosticRules.UseCarriageReturnAndLinefeedAsNewLine); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -37,7 +37,7 @@ namespace Roslynator.Formatting
                 {
                     DiagnosticHelpers.ReportDiagnostic(
                         context,
-                        DiagnosticDescriptors.UseCarriageReturnAndLinefeedAsNewLine,
+                        DiagnosticRules.UseCarriageReturnAndLinefeedAsNewLine,
                         Location.Create(context.Tree, new TextSpan(end, 1)));
                 }
             }

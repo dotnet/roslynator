@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.DeclareEachTypeInSeparateFile); }
+            get { return ImmutableArray.Create(DiagnosticRules.DeclareEachTypeInSeparateFile); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -81,7 +81,7 @@ namespace Roslynator.CSharp.Analysis
             if (token == default)
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.DeclareEachTypeInSeparateFile, token);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.DeclareEachTypeInSeparateFile, token);
         }
 
         private static bool ContainsSingleNamespaceWithSingleNonNamespaceMember(SyntaxList<MemberDeclarationSyntax> members)

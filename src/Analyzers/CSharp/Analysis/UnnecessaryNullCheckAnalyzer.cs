@@ -16,7 +16,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.UnnecessaryNullCheck); }
+            get { return ImmutableArray.Create(DiagnosticRules.UnnecessaryNullCheck); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -128,7 +128,7 @@ namespace Roslynator.CSharp.Analysis
                     }
                 }
 
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UnnecessaryNullCheck, logicalAnd);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UnnecessaryNullCheck, logicalAnd);
             }
         }
     }

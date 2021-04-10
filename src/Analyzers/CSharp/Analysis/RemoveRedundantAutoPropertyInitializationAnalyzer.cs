@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.RemoveRedundantAutoPropertyInitialization); }
+            get { return ImmutableArray.Create(DiagnosticRules.RemoveRedundantAutoPropertyInitialization); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -52,7 +52,7 @@ namespace Roslynator.CSharp.Analysis
             if (!context.SemanticModel.IsDefaultValue(typeSymbol, value, context.CancellationToken))
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveRedundantAutoPropertyInitialization, value);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveRedundantAutoPropertyInitialization, value);
         }
     }
 }

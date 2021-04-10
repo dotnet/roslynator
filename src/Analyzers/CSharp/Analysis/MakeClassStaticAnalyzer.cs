@@ -18,7 +18,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.MakeClassStatic); }
+            get { return ImmutableArray.Create(DiagnosticRules.MakeClassStatic); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -74,7 +74,7 @@ namespace Roslynator.CSharp.Analysis
             MakeClassStaticWalker.Free(walker);
 
             if (canBeMadeStatic)
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.MakeClassStatic, classDeclaration.Identifier);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.MakeClassStatic, classDeclaration.Identifier);
         }
 
         public static bool AnalyzeMembers(ImmutableArray<ISymbol> members)

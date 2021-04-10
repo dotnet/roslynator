@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.RemoveRedundantSealedModifier); }
+            get { return ImmutableArray.Create(DiagnosticRules.RemoveRedundantSealedModifier); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -67,7 +67,7 @@ namespace Roslynator.CSharp.Analysis
 
             SyntaxToken sealedKeyword = info.Modifiers.Find(SyntaxKind.SealedKeyword);
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveRedundantSealedModifier, sealedKeyword);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveRedundantSealedModifier, sealedKeyword);
         }
     }
 }

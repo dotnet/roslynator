@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.RemoveEmptyNamespaceDeclaration); }
+            get { return ImmutableArray.Create(DiagnosticRules.RemoveEmptyNamespaceDeclaration); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -46,7 +46,7 @@ namespace Roslynator.CSharp.Analysis
             if (!closeBrace.LeadingTrivia.IsEmptyOrWhitespace())
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveEmptyNamespaceDeclaration, declaration);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveEmptyNamespaceDeclaration, declaration);
         }
     }
 }

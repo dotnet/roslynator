@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.UsePredefinedType); }
+            get { return ImmutableArray.Create(DiagnosticRules.UsePredefinedType); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -236,7 +236,7 @@ namespace Roslynator.CSharp.Analysis
 
         private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, SyntaxNode node)
         {
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UsePredefinedType, node);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UsePredefinedType, node);
         }
     }
 }

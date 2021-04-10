@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.OverridingMemberShouldNotChangeParamsModifier); }
+            get { return ImmutableArray.Create(DiagnosticRules.OverridingMemberShouldNotChangeParamsModifier); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -45,7 +45,7 @@ namespace Roslynator.CSharp.Analysis
             if (lastParameter.Modifiers.Contains(SyntaxKind.ParamsKeyword) == lastParameterSymbol.IsParams)
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.OverridingMemberShouldNotChangeParamsModifier, lastParameter);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.OverridingMemberShouldNotChangeParamsModifier, lastParameter);
         }
 
         private static void AnalyzePropertySymbol(SymbolAnalysisContext context)
@@ -71,7 +71,7 @@ namespace Roslynator.CSharp.Analysis
             if (lastParameter.Modifiers.Contains(SyntaxKind.ParamsKeyword) == lastParameterSymbol.IsParams)
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.OverridingMemberShouldNotChangeParamsModifier, lastParameter);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.OverridingMemberShouldNotChangeParamsModifier, lastParameter);
         }
     }
 }

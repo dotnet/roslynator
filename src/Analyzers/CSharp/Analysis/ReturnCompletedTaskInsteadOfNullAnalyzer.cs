@@ -17,7 +17,7 @@ namespace Roslynator.CSharp.Analysis.ReturnTaskInsteadOfNull
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.ReturnCompletedTaskInsteadOfNull); }
+            get { return ImmutableArray.Create(DiagnosticRules.ReturnCompletedTaskInsteadOfNull); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -341,7 +341,7 @@ namespace Roslynator.CSharp.Analysis.ReturnTaskInsteadOfNull
         {
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticDescriptors.ReturnCompletedTaskInsteadOfNull,
+                DiagnosticRules.ReturnCompletedTaskInsteadOfNull,
                 expression);
         }
 

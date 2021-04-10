@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.AddArgumentListToObjectCreationOrViceVersa); }
+            get { return ImmutableArray.Create(DiagnosticRules.AddArgumentListToObjectCreationOrViceVersa); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -44,7 +44,7 @@ namespace Roslynator.CSharp.Analysis
 
                     DiagnosticHelpers.ReportDiagnostic(
                         context,
-                        DiagnosticDescriptors.AddArgumentListToObjectCreationOrViceVersa,
+                        DiagnosticRules.AddArgumentListToObjectCreationOrViceVersa,
                         Location.Create(objectCreationExpression.SyntaxTree, span));
                 }
             }
@@ -61,7 +61,7 @@ namespace Roslynator.CSharp.Analysis
                 {
                     DiagnosticHelpers.ReportDiagnostic(
                         context,
-                        DiagnosticDescriptors.ReportOnly.RemoveArgumentListFromObjectCreation,
+                        DiagnosticRules.ReportOnly.RemoveArgumentListFromObjectCreation,
                         argumentList);
                 }
             }

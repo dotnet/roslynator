@@ -17,8 +17,8 @@ namespace Roslynator.CSharp.Analysis
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticDescriptors.MergeElseWithNestedIf,
-                    DiagnosticDescriptors.MergeElseWithNestedIfFadeOut);
+                    DiagnosticRules.MergeElseWithNestedIf,
+                    DiagnosticRules.MergeElseWithNestedIfFadeOut);
             }
         }
 
@@ -29,7 +29,7 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(
                 c =>
                 {
-                    if (DiagnosticDescriptors.MergeElseWithNestedIf.IsEffective(c))
+                    if (DiagnosticRules.MergeElseWithNestedIf.IsEffective(c))
                         AnalyzeElseClause(c);
                 },
                 SyntaxKind.ElseClause);
@@ -55,8 +55,8 @@ namespace Roslynator.CSharp.Analysis
                 return;
             }
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.MergeElseWithNestedIf, block);
-            CSharpDiagnosticHelpers.ReportBraces(context, DiagnosticDescriptors.MergeElseWithNestedIfFadeOut, block);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.MergeElseWithNestedIf, block);
+            CSharpDiagnosticHelpers.ReportBraces(context, DiagnosticRules.MergeElseWithNestedIfFadeOut, block);
         }
     }
 }

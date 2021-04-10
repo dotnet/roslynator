@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.AddCallToConfigureAwaitOrViceVersa); }
+            get { return ImmutableArray.Create(DiagnosticRules.AddCallToConfigureAwaitOrViceVersa); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -54,7 +54,7 @@ namespace Roslynator.CSharp.Analysis
             if (!SymbolUtility.IsAwaitable(typeSymbol))
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AddCallToConfigureAwaitOrViceVersa, awaitExpression.Expression);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AddCallToConfigureAwaitOrViceVersa, awaitExpression.Expression);
         }
 
         private static void RemoveCallToConfigureAwait(SyntaxNodeAnalysisContext context)
@@ -84,7 +84,7 @@ namespace Roslynator.CSharp.Analysis
                         {
                             DiagnosticHelpers.ReportDiagnostic(
                                 context,
-                                DiagnosticDescriptors.ReportOnly.RemoveCallToConfigureAwait,
+                                DiagnosticRules.ReportOnly.RemoveCallToConfigureAwait,
                                 Location.Create(
                                     awaitExpression.SyntaxTree,
                                     TextSpan.FromBounds(invocationInfo.OperatorToken.SpanStart, expression.Span.End)));

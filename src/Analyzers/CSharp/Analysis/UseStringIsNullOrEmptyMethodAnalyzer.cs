@@ -17,7 +17,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.UseStringIsNullOrEmptyMethod); }
+            get { return ImmutableArray.Create(DiagnosticRules.UseStringIsNullOrEmptyMethod); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -57,7 +57,7 @@ namespace Roslynator.CSharp.Analysis
                         context.SemanticModel,
                         context.CancellationToken))
                 {
-                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseStringIsNullOrEmptyMethod, binaryExpression);
+                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseStringIsNullOrEmptyMethod, binaryExpression);
                 }
             }
             else if (kind == SyntaxKind.LogicalAndExpression)
@@ -70,7 +70,7 @@ namespace Roslynator.CSharp.Analysis
                         context.SemanticModel,
                         context.CancellationToken))
                 {
-                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseStringIsNullOrEmptyMethod, binaryExpression);
+                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseStringIsNullOrEmptyMethod, binaryExpression);
                 }
             }
         }

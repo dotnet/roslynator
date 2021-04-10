@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.SortEnumMembers); }
+            get { return ImmutableArray.Create(DiagnosticRules.SortEnumMembers); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -33,7 +33,7 @@ namespace Roslynator.CSharp.Analysis
                 && !enumDeclaration.ContainsDirectives(enumDeclaration.BracesSpan()))
             {
                 SyntaxToken identifier = enumDeclaration.Identifier;
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.SortEnumMembers, identifier, identifier);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.SortEnumMembers, identifier, identifier);
             }
         }
 

@@ -17,8 +17,8 @@ namespace Roslynator.CSharp.Analysis
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticDescriptors.RemoveTrailingWhitespace,
-                    DiagnosticDescriptors.RemoveRedundantEmptyLine);
+                    DiagnosticRules.RemoveTrailingWhitespace,
+                    DiagnosticRules.RemoveRedundantEmptyLine);
             }
         }
 
@@ -76,7 +76,7 @@ namespace Roslynator.CSharp.Analysis
                     {
                         DiagnosticHelpers.ReportDiagnostic(
                             context,
-                            DiagnosticDescriptors.RemoveRedundantEmptyLine,
+                            DiagnosticRules.RemoveRedundantEmptyLine,
                             Location.Create(context.Tree, emptyLines));
                     }
 
@@ -105,7 +105,7 @@ namespace Roslynator.CSharp.Analysis
 
                             DiagnosticHelpers.ReportDiagnostic(
                                 context,
-                                DiagnosticDescriptors.RemoveTrailingWhitespace,
+                                DiagnosticRules.RemoveTrailingWhitespace,
                                 Location.Create(context.Tree, whitespace));
                         }
                     }

@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.AvoidChainOfAssignments); }
+            get { return ImmutableArray.Create(DiagnosticRules.AvoidChainOfAssignments); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -32,7 +32,7 @@ namespace Roslynator.CSharp.Analysis
             if (assignment.Right is AssignmentExpressionSyntax
                 && !(assignment.Parent is AssignmentExpressionSyntax))
             {
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AvoidChainOfAssignments, assignment);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AvoidChainOfAssignments, assignment);
             }
         }
 
@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.Analysis
             var equalsValue = (EqualsValueClauseSyntax)context.Node;
 
             if (equalsValue.Value is AssignmentExpressionSyntax)
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AvoidChainOfAssignments, equalsValue);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AvoidChainOfAssignments, equalsValue);
         }
     }
 }

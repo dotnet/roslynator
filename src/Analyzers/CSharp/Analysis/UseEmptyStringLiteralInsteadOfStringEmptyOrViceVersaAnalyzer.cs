@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.UseEmptyStringLiteralInsteadOfStringEmptyOrViceVersa); }
+            get { return ImmutableArray.Create(DiagnosticRules.UseEmptyStringLiteralInsteadOfStringEmptyOrViceVersa); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -67,7 +67,7 @@ namespace Roslynator.CSharp.Analysis
             if (fieldSymbol.ContainingType?.SpecialType != SpecialType.System_String)
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseEmptyStringLiteralInsteadOfStringEmptyOrViceVersa, memberAccess);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseEmptyStringLiteralInsteadOfStringEmptyOrViceVersa, memberAccess);
         }
 
         private static void AnalyzeStringLiteralExpression(SyntaxNodeAnalysisContext context)
@@ -82,7 +82,7 @@ namespace Roslynator.CSharp.Analysis
 
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticDescriptors.ReportOnly.UseStringEmptyInsteadOfEmptyStringLiteral,
+                DiagnosticRules.ReportOnly.UseStringEmptyInsteadOfEmptyStringLiteral,
                 literalExpression);
         }
 
@@ -98,7 +98,7 @@ namespace Roslynator.CSharp.Analysis
 
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticDescriptors.ReportOnly.UseStringEmptyInsteadOfEmptyStringLiteral,
+                DiagnosticRules.ReportOnly.UseStringEmptyInsteadOfEmptyStringLiteral,
                 interpolatedString);
         }
     }

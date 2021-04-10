@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.RemoveRedundantCommaInInitializer); }
+            get { return ImmutableArray.Create(DiagnosticRules.RemoveRedundantCommaInInitializer); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -47,7 +47,7 @@ namespace Roslynator.CSharp.Analysis
 
             Debug.Assert(!token.IsMissing);
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveRedundantCommaInInitializer, token);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveRedundantCommaInInitializer, token);
         }
     }
 }

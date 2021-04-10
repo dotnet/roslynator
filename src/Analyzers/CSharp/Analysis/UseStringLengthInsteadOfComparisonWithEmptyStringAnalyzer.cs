@@ -16,7 +16,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.UseStringLengthInsteadOfComparisonWithEmptyString); }
+            get { return ImmutableArray.Create(DiagnosticRules.UseStringLengthInsteadOfComparisonWithEmptyString); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -49,14 +49,14 @@ namespace Roslynator.CSharp.Analysis
                 if (CSharpUtility.IsStringExpression(right, semanticModel, cancellationToken)
                     && !equalsExpression.IsInExpressionTree(semanticModel, cancellationToken))
                 {
-                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseStringLengthInsteadOfComparisonWithEmptyString, equalsExpression);
+                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseStringLengthInsteadOfComparisonWithEmptyString, equalsExpression);
                 }
             }
             else if (CSharpUtility.IsEmptyStringExpression(right, semanticModel, cancellationToken)
                 && CSharpUtility.IsStringExpression(left, semanticModel, cancellationToken)
                 && !equalsExpression.IsInExpressionTree(semanticModel, cancellationToken))
             {
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseStringLengthInsteadOfComparisonWithEmptyString, equalsExpression);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseStringLengthInsteadOfComparisonWithEmptyString, equalsExpression);
             }
         }
     }

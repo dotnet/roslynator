@@ -16,7 +16,7 @@ namespace Roslynator.Formatting.CSharp
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.UseSpacesInsteadOfTab); }
+            get { return ImmutableArray.Create(DiagnosticRules.UseSpacesInsteadOfTab); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -73,7 +73,7 @@ namespace Roslynator.Formatting.CSharp
                         } while (i < text.Length && text[i] == '\t');
 
                         AnalysisContext.ReportDiagnostic(
-                            DiagnosticDescriptors.UseSpacesInsteadOfTab,
+                            DiagnosticRules.UseSpacesInsteadOfTab,
                             Location.Create(AnalysisContext.Tree, new TextSpan(trivia.SpanStart + index, i - index)));
                     }
                 }
