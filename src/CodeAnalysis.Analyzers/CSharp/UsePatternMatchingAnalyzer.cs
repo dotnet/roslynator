@@ -23,9 +23,17 @@ namespace Roslynator.CodeAnalysis.CSharp
         private static ImmutableHashSet<string> _syntaxTypeNames;
         private static ImmutableDictionary<ushort, string> _syntaxKindValuesToNames;
 
+        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticRules.UsePatternMatching); }
+            get
+            {
+                if (_supportedDiagnostics.IsDefault)
+                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.UsePatternMatching);
+
+                return _supportedDiagnostics;
+            }
         }
 
         public override void Initialize(AnalysisContext context)

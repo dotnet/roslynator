@@ -13,13 +13,21 @@ namespace Roslynator.CSharp.Analysis
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class UseUnaryOperatorInsteadOfAssignmentAnalyzer : BaseDiagnosticAnalyzer
     {
+        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
             get
             {
-                return ImmutableArray.Create(
-                    DiagnosticRules.UseUnaryOperatorInsteadOfAssignment,
-                    DiagnosticRules.UseUnaryOperatorInsteadOfAssignmentFadeOut);
+                if (_supportedDiagnostics.IsDefault)
+                {
+                    Immutable.InterlockedInitialize(
+                        ref _supportedDiagnostics,
+                        DiagnosticRules.UseUnaryOperatorInsteadOfAssignment,
+                        DiagnosticRules.UseUnaryOperatorInsteadOfAssignmentFadeOut);
+                }
+
+                return _supportedDiagnostics;
             }
         }
 

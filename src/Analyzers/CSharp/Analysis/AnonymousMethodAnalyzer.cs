@@ -13,13 +13,21 @@ namespace Roslynator.CSharp.Analysis
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class AnonymousMethodAnalyzer : BaseDiagnosticAnalyzer
     {
+        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
             get
             {
-                return ImmutableArray.Create(
-                    DiagnosticRules.UseLambdaExpressionInsteadOfAnonymousMethod,
-                    DiagnosticRules.UseLambdaExpressionInsteadOfAnonymousMethodFadeOut);
+                if (_supportedDiagnostics.IsDefault)
+                {
+                    Immutable.InterlockedInitialize(
+                        ref _supportedDiagnostics,
+                        DiagnosticRules.UseLambdaExpressionInsteadOfAnonymousMethod,
+                        DiagnosticRules.UseLambdaExpressionInsteadOfAnonymousMethodFadeOut);
+                }
+
+                return _supportedDiagnostics;
             }
         }
 

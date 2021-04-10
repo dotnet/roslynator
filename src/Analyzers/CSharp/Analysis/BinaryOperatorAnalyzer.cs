@@ -16,13 +16,21 @@ namespace Roslynator.CSharp.Analysis
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class BinaryOperatorAnalyzer : BaseDiagnosticAnalyzer
     {
+        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
             get
             {
-                return ImmutableArray.Create(
-                    DiagnosticRules.ExpressionIsAlwaysEqualToTrueOrFalse,
-                    DiagnosticRules.UnnecessaryOperator);
+                if (_supportedDiagnostics.IsDefault)
+                {
+                    Immutable.InterlockedInitialize(
+                        ref _supportedDiagnostics,
+                        DiagnosticRules.ExpressionIsAlwaysEqualToTrueOrFalse,
+                        DiagnosticRules.UnnecessaryOperator);
+                }
+
+                return _supportedDiagnostics;
             }
         }
 

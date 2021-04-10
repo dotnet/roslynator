@@ -16,14 +16,22 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class UnusedParameterAnalyzer : BaseDiagnosticAnalyzer
     {
+        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
             get
             {
-                return ImmutableArray.Create(
-                    DiagnosticRules.UnusedParameter,
-                    DiagnosticRules.UnusedThisParameter,
-                    DiagnosticRules.UnusedTypeParameter);
+                if (_supportedDiagnostics.IsDefault)
+                {
+                    Immutable.InterlockedInitialize(
+                        ref _supportedDiagnostics,
+                        DiagnosticRules.UnusedParameter,
+                        DiagnosticRules.UnusedThisParameter,
+                        DiagnosticRules.UnusedTypeParameter);
+                }
+
+                return _supportedDiagnostics;
             }
         }
 

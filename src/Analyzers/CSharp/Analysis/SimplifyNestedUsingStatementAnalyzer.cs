@@ -13,13 +13,21 @@ namespace Roslynator.CSharp.Analysis
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class SimplifyNestedUsingStatementAnalyzer : BaseDiagnosticAnalyzer
     {
+        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
             get
             {
-                return ImmutableArray.Create(
-                    DiagnosticRules.SimplifyNestedUsingStatement,
-                    DiagnosticRules.SimplifyNestedUsingStatementFadeOut);
+                if (_supportedDiagnostics.IsDefault)
+                {
+                    Immutable.InterlockedInitialize(
+                        ref _supportedDiagnostics,
+                        DiagnosticRules.SimplifyNestedUsingStatement,
+                        DiagnosticRules.SimplifyNestedUsingStatementFadeOut);
+                }
+
+                return _supportedDiagnostics;
             }
         }
 

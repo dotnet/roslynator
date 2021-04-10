@@ -12,13 +12,21 @@ namespace Roslynator.CSharp.Analysis
     [DiagnosticAnalyzer(LanguageNames.CSharp, LanguageNames.VisualBasic)]
     public class WhitespaceAnalyzer : BaseDiagnosticAnalyzer
     {
+        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
             get
             {
-                return ImmutableArray.Create(
-                    DiagnosticRules.RemoveTrailingWhitespace,
-                    DiagnosticRules.RemoveRedundantEmptyLine);
+                if (_supportedDiagnostics.IsDefault)
+                {
+                    Immutable.InterlockedInitialize(
+                        ref _supportedDiagnostics,
+                        DiagnosticRules.RemoveTrailingWhitespace,
+                        DiagnosticRules.RemoveRedundantEmptyLine);
+                }
+
+                return _supportedDiagnostics;
             }
         }
 

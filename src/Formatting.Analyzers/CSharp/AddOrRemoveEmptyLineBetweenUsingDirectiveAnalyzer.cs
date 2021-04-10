@@ -13,13 +13,21 @@ namespace Roslynator.Formatting.CSharp
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class AddOrRemoveEmptyLineBetweenUsingDirectiveAnalyzer : BaseDiagnosticAnalyzer
     {
+        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
             get
             {
-                return ImmutableArray.Create(
-                    DiagnosticRules.RemoveEmptyLineBetweenUsingDirectivesWithSameRootNamespace,
-                    DiagnosticRules.AddEmptyLineBetweenUsingDirectivesWithDifferentRootNamespaceOrViceVersa);
+                if (_supportedDiagnostics.IsDefault)
+                {
+                    Immutable.InterlockedInitialize(
+                        ref _supportedDiagnostics,
+                        DiagnosticRules.RemoveEmptyLineBetweenUsingDirectivesWithSameRootNamespace,
+                        DiagnosticRules.AddEmptyLineBetweenUsingDirectivesWithDifferentRootNamespaceOrViceVersa);
+                }
+
+                return _supportedDiagnostics;
             }
         }
 

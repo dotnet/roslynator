@@ -16,6 +16,8 @@ namespace Roslynator.CSharp.Analysis
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class SingleLineDocumentationCommentTriviaAnalyzer : BaseDiagnosticAnalyzer
     {
+        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
         private static readonly ImmutableArray<DiagnosticDescriptor> _supportedDiagnosticsWithoutFadeOut = ImmutableArray.Create(
             DiagnosticRules.AddSummaryToDocumentationComment,
             DiagnosticRules.AddSummaryElementToDocumentationComment,
@@ -27,7 +29,13 @@ namespace Roslynator.CSharp.Analysis
 
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return _supportedDiagnosticsWithoutFadeOut.Add(DiagnosticRules.UnusedElementInDocumentationCommentFadeOut); }
+            get
+            {
+                if (_supportedDiagnostics.IsDefault)
+                    ImmutableInterlocked.InterlockedInitialize(ref _supportedDiagnostics, _supportedDiagnosticsWithoutFadeOut.Add(DiagnosticRules.UnusedElementInDocumentationCommentFadeOut));
+
+                return _supportedDiagnostics;
+            }
         }
 
         public override void Initialize(AnalysisContext context)

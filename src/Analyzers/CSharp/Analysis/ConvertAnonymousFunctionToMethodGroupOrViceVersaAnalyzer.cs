@@ -14,13 +14,21 @@ namespace Roslynator.CSharp.Analysis
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class ConvertAnonymousFunctionToMethodGroupOrViceVersaAnalyzer : BaseDiagnosticAnalyzer
     {
+        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
             get
             {
-                return ImmutableArray.Create(
-                    DiagnosticRules.ConvertAnonymousFunctionToMethodGroupOrViceVersa,
-                    DiagnosticRules.ConvertAnonymousFunctionToMethodGroupOrViceVersaFadeOut);
+                if (_supportedDiagnostics.IsDefault)
+                {
+                    Immutable.InterlockedInitialize(
+                        ref _supportedDiagnostics,
+                        DiagnosticRules.ConvertAnonymousFunctionToMethodGroupOrViceVersa,
+                        DiagnosticRules.ConvertAnonymousFunctionToMethodGroupOrViceVersaFadeOut);
+                }
+
+                return _supportedDiagnostics;
             }
         }
 

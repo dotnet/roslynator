@@ -14,9 +14,17 @@ namespace Roslynator.Formatting.CSharp
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class AddNewLineBeforeTypeParameterConstraintAnalyzer : BaseDiagnosticAnalyzer
     {
+        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticRules.AddNewLineBeforeTypeParameterConstraint); }
+            get
+            {
+                if (_supportedDiagnostics.IsDefault)
+                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddNewLineBeforeTypeParameterConstraint);
+
+                return _supportedDiagnostics;
+            }
         }
 
         public override void Initialize(AnalysisContext context)

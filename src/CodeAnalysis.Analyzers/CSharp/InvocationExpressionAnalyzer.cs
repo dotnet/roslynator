@@ -14,14 +14,22 @@ namespace Roslynator.CodeAnalysis.CSharp
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class InvocationExpressionAnalyzer : BaseDiagnosticAnalyzer
     {
+        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
             get
             {
-                return ImmutableArray.Create(
-                    DiagnosticRules.UnnecessaryNullCheck,
-                    DiagnosticRules.UseElementAccess,
-                    DiagnosticRules.UseReturnValue);
+                if (_supportedDiagnostics.IsDefault)
+                {
+                    Immutable.InterlockedInitialize(
+                        ref _supportedDiagnostics,
+                        DiagnosticRules.UnnecessaryNullCheck,
+                        DiagnosticRules.UseElementAccess,
+                        DiagnosticRules.UseReturnValue);
+                }
+
+                return _supportedDiagnostics;
             }
         }
 

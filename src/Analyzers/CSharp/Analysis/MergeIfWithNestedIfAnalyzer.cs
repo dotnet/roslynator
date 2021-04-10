@@ -16,13 +16,21 @@ namespace Roslynator.CSharp.Analysis
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class MergeIfWithNestedIfAnalyzer : BaseDiagnosticAnalyzer
     {
+        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
             get
             {
-                return ImmutableArray.Create(
-                    DiagnosticRules.MergeIfWithNestedIf,
-                    DiagnosticRules.MergeIfWithNestedIfFadeOut);
+                if (_supportedDiagnostics.IsDefault)
+                {
+                    Immutable.InterlockedInitialize(
+                        ref _supportedDiagnostics,
+                        DiagnosticRules.MergeIfWithNestedIf,
+                        DiagnosticRules.MergeIfWithNestedIfFadeOut);
+                }
+
+                return _supportedDiagnostics;
             }
         }
 

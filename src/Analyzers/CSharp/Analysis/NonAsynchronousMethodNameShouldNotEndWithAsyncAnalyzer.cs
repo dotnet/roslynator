@@ -13,14 +13,22 @@ namespace Roslynator.CSharp.Analysis
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class AsyncSuffixAnalyzer : BaseDiagnosticAnalyzer
     {
+        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
             get
             {
-                return ImmutableArray.Create(
-                    DiagnosticRules.AsynchronousMethodNameShouldEndWithAsync,
-                    DiagnosticRules.NonAsynchronousMethodNameShouldNotEndWithAsync,
-                    DiagnosticRules.NonAsynchronousMethodNameShouldNotEndWithAsyncFadeOut);
+                if (_supportedDiagnostics.IsDefault)
+                {
+                    Immutable.InterlockedInitialize(
+                        ref _supportedDiagnostics,
+                        DiagnosticRules.AsynchronousMethodNameShouldEndWithAsync,
+                        DiagnosticRules.NonAsynchronousMethodNameShouldNotEndWithAsync,
+                        DiagnosticRules.NonAsynchronousMethodNameShouldNotEndWithAsyncFadeOut);
+                }
+
+                return _supportedDiagnostics;
             }
         }
 

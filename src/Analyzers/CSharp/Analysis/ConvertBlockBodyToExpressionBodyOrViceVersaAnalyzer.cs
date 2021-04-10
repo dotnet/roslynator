@@ -13,13 +13,21 @@ namespace Roslynator.CSharp.Analysis
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class ConvertBlockBodyToExpressionBodyOrViceVersaAnalyzer : BaseDiagnosticAnalyzer
     {
+        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
             get
             {
-                return ImmutableArray.Create(
-                    DiagnosticRules.ConvertBlockBodyToExpressionBodyOrViceVersa,
-                    DiagnosticRules.ConvertBlockBodyToExpressionBodyOrViceVersaFadeOut);
+                if (_supportedDiagnostics.IsDefault)
+                {
+                    Immutable.InterlockedInitialize(
+                        ref _supportedDiagnostics,
+                        DiagnosticRules.ConvertBlockBodyToExpressionBodyOrViceVersa,
+                        DiagnosticRules.ConvertBlockBodyToExpressionBodyOrViceVersaFadeOut);
+                }
+
+                return _supportedDiagnostics;
             }
         }
 

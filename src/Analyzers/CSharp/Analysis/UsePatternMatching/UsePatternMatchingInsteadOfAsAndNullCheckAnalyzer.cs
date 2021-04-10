@@ -14,9 +14,17 @@ namespace Roslynator.CSharp.Analysis.UsePatternMatching
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class UsePatternMatchingInsteadOfAsAndNullCheckAnalyzer : BaseDiagnosticAnalyzer
     {
+        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticRules.UsePatternMatchingInsteadOfAsAndNullCheck); }
+            get
+            {
+                if (_supportedDiagnostics.IsDefault)
+                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.UsePatternMatchingInsteadOfAsAndNullCheck);
+
+                return _supportedDiagnostics;
+            }
         }
 
         public override void Initialize(AnalysisContext context)

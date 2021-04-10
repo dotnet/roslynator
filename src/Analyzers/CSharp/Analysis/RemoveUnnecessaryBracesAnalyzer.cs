@@ -12,13 +12,21 @@ namespace Roslynator.CSharp.Analysis
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class RemoveUnnecessaryBracesAnalyzer : BaseDiagnosticAnalyzer
     {
+        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
             get
             {
-                return ImmutableArray.Create(
-                    DiagnosticRules.RemoveUnnecessaryBraces,
-                    DiagnosticRules.RemoveUnnecessaryBracesFadeOut);
+                if (_supportedDiagnostics.IsDefault)
+                {
+                    Immutable.InterlockedInitialize(
+                        ref _supportedDiagnostics,
+                        DiagnosticRules.RemoveUnnecessaryBraces,
+                        DiagnosticRules.RemoveUnnecessaryBracesFadeOut);
+                }
+
+                return _supportedDiagnostics;
             }
         }
 

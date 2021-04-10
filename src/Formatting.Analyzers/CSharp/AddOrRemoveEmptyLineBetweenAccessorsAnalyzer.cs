@@ -14,13 +14,21 @@ namespace Roslynator.Formatting.CSharp
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class AddOrRemoveEmptyLineBetweenAccessorsAnalyzer : BaseDiagnosticAnalyzer
     {
+        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
             get
             {
-                return ImmutableArray.Create(
-                    DiagnosticRules.AddEmptyLineBetweenAccessors,
-                    DiagnosticRules.AddEmptyLineBetweenSingleLineAccessorsOrViceVersa);
+                if (_supportedDiagnostics.IsDefault)
+                {
+                    Immutable.InterlockedInitialize(
+                        ref _supportedDiagnostics,
+                        DiagnosticRules.AddEmptyLineBetweenAccessors,
+                        DiagnosticRules.AddEmptyLineBetweenSingleLineAccessorsOrViceVersa);
+                }
+
+                return _supportedDiagnostics;
             }
         }
 

@@ -14,14 +14,22 @@ namespace Roslynator.CSharp.Analysis
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class BooleanLiteralAnalyzer : BaseDiagnosticAnalyzer
     {
+        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
             get
             {
-                return ImmutableArray.Create(
-                    DiagnosticRules.RemoveRedundantBooleanLiteral,
-                    DiagnosticRules.SimplifyBooleanComparison,
-                    DiagnosticRules.SimplifyBooleanComparisonFadeOut);
+                if (_supportedDiagnostics.IsDefault)
+                {
+                    Immutable.InterlockedInitialize(
+                        ref _supportedDiagnostics,
+                        DiagnosticRules.RemoveRedundantBooleanLiteral,
+                        DiagnosticRules.SimplifyBooleanComparison,
+                        DiagnosticRules.SimplifyBooleanComparisonFadeOut);
+                }
+
+                return _supportedDiagnostics;
             }
         }
 

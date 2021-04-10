@@ -20,15 +20,23 @@ namespace Roslynator.CSharp.Analysis
             useBooleanExpression: false,
             useExpression: true);
 
+        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
             get
             {
-                return ImmutableArray.Create(
-                    DiagnosticRules.UseCoalesceExpressionInsteadOfIf,
-                    DiagnosticRules.ConvertIfToReturnStatement,
-                    DiagnosticRules.ConvertIfToReturnStatementFadeOut,
-                    DiagnosticRules.ConvertIfToAssignment);
+                if (_supportedDiagnostics.IsDefault)
+                {
+                    Immutable.InterlockedInitialize(
+                        ref _supportedDiagnostics,
+                        DiagnosticRules.UseCoalesceExpressionInsteadOfIf,
+                        DiagnosticRules.ConvertIfToReturnStatement,
+                        DiagnosticRules.ConvertIfToReturnStatementFadeOut,
+                        DiagnosticRules.ConvertIfToAssignment);
+                }
+
+                return _supportedDiagnostics;
             }
         }
 

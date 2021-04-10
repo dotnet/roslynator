@@ -17,13 +17,21 @@ namespace Roslynator.CSharp.Analysis
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class InlineLocalVariableAnalyzer : BaseDiagnosticAnalyzer
     {
+        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
             get
             {
-                return ImmutableArray.Create(
-                    DiagnosticRules.InlineLocalVariable,
-                    DiagnosticRules.InlineLocalVariableFadeOut);
+                if (_supportedDiagnostics.IsDefault)
+                {
+                    Immutable.InterlockedInitialize(
+                        ref _supportedDiagnostics,
+                        DiagnosticRules.InlineLocalVariable,
+                        DiagnosticRules.InlineLocalVariableFadeOut);
+                }
+
+                return _supportedDiagnostics;
             }
         }
 

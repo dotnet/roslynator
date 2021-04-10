@@ -13,13 +13,21 @@ namespace Roslynator.CSharp.Analysis
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class RemoveRedundantParenthesesAnalyzer : BaseDiagnosticAnalyzer
     {
+        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
             get
             {
-                return ImmutableArray.Create(
-                    DiagnosticRules.RemoveRedundantParentheses,
-                    DiagnosticRules.RemoveRedundantParenthesesFadeOut);
+                if (_supportedDiagnostics.IsDefault)
+                {
+                    Immutable.InterlockedInitialize(
+                        ref _supportedDiagnostics,
+                        DiagnosticRules.RemoveRedundantParentheses,
+                        DiagnosticRules.RemoveRedundantParenthesesFadeOut);
+                }
+
+                return _supportedDiagnostics;
             }
         }
 

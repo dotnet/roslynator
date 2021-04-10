@@ -16,30 +16,38 @@ namespace Roslynator.CSharp.Analysis
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class InvocationExpressionAnalyzer : BaseDiagnosticAnalyzer
     {
+        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
             get
             {
-                return ImmutableArray.Create(
-                    DiagnosticRules.OptimizeLinqMethodCall,
-                    DiagnosticRules.UseElementAccess,
-                    DiagnosticRules.UseCountOrLengthPropertyInsteadOfAnyMethod,
-                    DiagnosticRules.RemoveRedundantToStringCall,
-                    DiagnosticRules.RemoveRedundantStringToCharArrayCall,
-                    DiagnosticRules.CombineEnumerableWhereMethodChain,
-                    DiagnosticRules.CombineEnumerableWhereMethodChainFadeOut,
-                    DiagnosticRules.UseRegexInstanceInsteadOfStaticMethod,
-                    DiagnosticRules.OptimizeStringBuilderAppendCall,
-                    DiagnosticRules.AvoidBoxingOfValueType,
-                    DiagnosticRules.CallThenByInsteadOfOrderBy,
-                    DiagnosticRules.UseMethodChaining,
-                    DiagnosticRules.AvoidNullReferenceException,
-                    DiagnosticRules.UseStringComparison,
-                    DiagnosticRules.UseNameOfOperator,
-                    DiagnosticRules.RemoveRedundantCast,
-                    DiagnosticRules.SimplifyLogicalNegation,
-                    DiagnosticRules.UseCoalesceExpression,
-                    DiagnosticRules.OptimizeMethodCall);
+                if (_supportedDiagnostics.IsDefault)
+                {
+                    Immutable.InterlockedInitialize(
+                        ref _supportedDiagnostics,
+                        DiagnosticRules.OptimizeLinqMethodCall,
+                        DiagnosticRules.UseElementAccess,
+                        DiagnosticRules.UseCountOrLengthPropertyInsteadOfAnyMethod,
+                        DiagnosticRules.RemoveRedundantToStringCall,
+                        DiagnosticRules.RemoveRedundantStringToCharArrayCall,
+                        DiagnosticRules.CombineEnumerableWhereMethodChain,
+                        DiagnosticRules.CombineEnumerableWhereMethodChainFadeOut,
+                        DiagnosticRules.UseRegexInstanceInsteadOfStaticMethod,
+                        DiagnosticRules.OptimizeStringBuilderAppendCall,
+                        DiagnosticRules.AvoidBoxingOfValueType,
+                        DiagnosticRules.CallThenByInsteadOfOrderBy,
+                        DiagnosticRules.UseMethodChaining,
+                        DiagnosticRules.AvoidNullReferenceException,
+                        DiagnosticRules.UseStringComparison,
+                        DiagnosticRules.UseNameOfOperator,
+                        DiagnosticRules.RemoveRedundantCast,
+                        DiagnosticRules.SimplifyLogicalNegation,
+                        DiagnosticRules.UseCoalesceExpression,
+                        DiagnosticRules.OptimizeMethodCall);
+                }
+
+                return _supportedDiagnostics;
             }
         }
 

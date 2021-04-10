@@ -14,16 +14,24 @@ namespace Roslynator.CSharp.Analysis
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class EnumSymbolAnalyzer : BaseDiagnosticAnalyzer
     {
+        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
             get
             {
-                return ImmutableArray.Create(
-                    DiagnosticRules.DeclareEnumMemberWithZeroValue,
-                    DiagnosticRules.CompositeEnumValueContainsUndefinedFlag,
-                    DiagnosticRules.DeclareEnumValueAsCombinationOfNames,
-                    DiagnosticRules.DuplicateEnumValue,
-                    DiagnosticRules.UseBitShiftOperator);
+                if (_supportedDiagnostics.IsDefault)
+                {
+                    Immutable.InterlockedInitialize(
+                        ref _supportedDiagnostics,
+                        DiagnosticRules.DeclareEnumMemberWithZeroValue,
+                        DiagnosticRules.CompositeEnumValueContainsUndefinedFlag,
+                        DiagnosticRules.DeclareEnumValueAsCombinationOfNames,
+                        DiagnosticRules.DuplicateEnumValue,
+                        DiagnosticRules.UseBitShiftOperator);
+                }
+
+                return _supportedDiagnostics;
             }
         }
 

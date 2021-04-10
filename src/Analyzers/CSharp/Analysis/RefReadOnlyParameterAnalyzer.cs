@@ -16,13 +16,21 @@ namespace Roslynator.CSharp.Analysis
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class RefReadOnlyParameterAnalyzer : BaseDiagnosticAnalyzer
     {
+        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
             get
             {
-                return ImmutableArray.Create(
-                    DiagnosticRules.MakeParameterRefReadOnly,
-                    DiagnosticRules.DoNotPassNonReadOnlyStructByReadOnlyReference);
+                if (_supportedDiagnostics.IsDefault)
+                {
+                    Immutable.InterlockedInitialize(
+                        ref _supportedDiagnostics,
+                        DiagnosticRules.MakeParameterRefReadOnly,
+                        DiagnosticRules.DoNotPassNonReadOnlyStructByReadOnlyReference);
+                }
+
+                return _supportedDiagnostics;
             }
         }
 

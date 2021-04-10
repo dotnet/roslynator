@@ -12,13 +12,21 @@ namespace Roslynator.CSharp.Analysis
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class RemoveBracesFromIfElseAnalyzer : BaseDiagnosticAnalyzer
     {
+        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
             get
             {
-                return ImmutableArray.Create(
-                    DiagnosticRules.RemoveBracesFromIfElse,
-                    DiagnosticRules.RemoveBracesFromIfElseFadeOut);
+                if (_supportedDiagnostics.IsDefault)
+                {
+                    Immutable.InterlockedInitialize(
+                        ref _supportedDiagnostics,
+                        DiagnosticRules.RemoveBracesFromIfElse,
+                        DiagnosticRules.RemoveBracesFromIfElseFadeOut);
+                }
+
+                return _supportedDiagnostics;
             }
         }
 

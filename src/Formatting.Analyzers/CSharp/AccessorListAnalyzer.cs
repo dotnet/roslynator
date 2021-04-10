@@ -15,14 +15,22 @@ namespace Roslynator.Formatting.CSharp
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class AccessorListAnalyzer : BaseDiagnosticAnalyzer
     {
+        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
             get
             {
-                return ImmutableArray.Create(
-                    DiagnosticRules.RemoveNewLinesFromAccessorListOfAutoProperty,
-                    DiagnosticRules.AddNewLineBeforeAccessorOfFullProperty,
-                    DiagnosticRules.RemoveNewLinesFromAccessorWithSingleLineExpression);
+                if (_supportedDiagnostics.IsDefault)
+                {
+                    Immutable.InterlockedInitialize(
+                        ref _supportedDiagnostics,
+                        DiagnosticRules.RemoveNewLinesFromAccessorListOfAutoProperty,
+                        DiagnosticRules.AddNewLineBeforeAccessorOfFullProperty,
+                        DiagnosticRules.RemoveNewLinesFromAccessorWithSingleLineExpression);
+                }
+
+                return _supportedDiagnostics;
             }
         }
 

@@ -12,14 +12,22 @@ namespace Roslynator.CodeAnalysis.CSharp
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class NamedTypeSymbolAnalyzer : BaseDiagnosticAnalyzer
     {
+        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
             get
             {
-                return ImmutableArray.Create(
-                    DiagnosticRules.UnknownLanguageName,
-                    DiagnosticRules.SpecifyExportCodeFixProviderAttributeName,
-                    DiagnosticRules.SpecifyExportCodeRefactoringProviderAttributeName);
+                if (_supportedDiagnostics.IsDefault)
+                {
+                    Immutable.InterlockedInitialize(
+                        ref _supportedDiagnostics,
+                        DiagnosticRules.UnknownLanguageName,
+                        DiagnosticRules.SpecifyExportCodeFixProviderAttributeName,
+                        DiagnosticRules.SpecifyExportCodeRefactoringProviderAttributeName);
+                }
+
+                return _supportedDiagnostics;
             }
         }
 

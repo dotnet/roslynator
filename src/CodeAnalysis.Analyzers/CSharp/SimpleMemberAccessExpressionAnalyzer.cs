@@ -15,13 +15,21 @@ namespace Roslynator.CodeAnalysis.CSharp
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class SimpleMemberAccessExpressionAnalyzer : BaseDiagnosticAnalyzer
     {
+        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
             get
             {
-                return ImmutableArray.Create(
-                    DiagnosticRules.UsePropertySyntaxNodeSpanStart,
-                    DiagnosticRules.CallAnyInsteadOfAccessingCount);
+                if (_supportedDiagnostics.IsDefault)
+                {
+                    Immutable.InterlockedInitialize(
+                        ref _supportedDiagnostics,
+                        DiagnosticRules.UsePropertySyntaxNodeSpanStart,
+                        DiagnosticRules.CallAnyInsteadOfAccessingCount);
+                }
+
+                return _supportedDiagnostics;
             }
         }
 

@@ -14,13 +14,21 @@ namespace Roslynator.CSharp.Analysis.MakeMemberReadOnly
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class MakeMemberReadOnlyAnalyzer : BaseDiagnosticAnalyzer
     {
+        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
             get
             {
-                return ImmutableArray.Create(
-                    DiagnosticRules.MakeFieldReadOnly,
-                    DiagnosticRules.UseReadOnlyAutoProperty);
+                if (_supportedDiagnostics.IsDefault)
+                {
+                    Immutable.InterlockedInitialize(
+                        ref _supportedDiagnostics,
+                        DiagnosticRules.MakeFieldReadOnly,
+                        DiagnosticRules.UseReadOnlyAutoProperty);
+                }
+
+                return _supportedDiagnostics;
             }
         }
 

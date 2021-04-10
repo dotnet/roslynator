@@ -14,16 +14,24 @@ namespace Roslynator.Formatting.CSharp
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class EmptyLineBetweenDeclarationsAnalyzer : BaseDiagnosticAnalyzer
     {
+        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
             get
             {
-                return ImmutableArray.Create(
-                    DiagnosticRules.AddEmptyLineBetweenDeclarations,
-                    DiagnosticRules.AddEmptyLineBetweenSingleLineDeclarations,
-                    DiagnosticRules.AddEmptyLineBetweenDeclarationAndDocumentationComment,
-                    DiagnosticRules.AddEmptyLineBetweenSingleLineDeclarationsOfDifferentKind,
-                    DiagnosticRules.RemoveEmptyLineBetweenSingleLineDeclarationsOfSameKind);
+                if (_supportedDiagnostics.IsDefault)
+                {
+                    Immutable.InterlockedInitialize(
+                        ref _supportedDiagnostics,
+                        DiagnosticRules.AddEmptyLineBetweenDeclarations,
+                        DiagnosticRules.AddEmptyLineBetweenSingleLineDeclarations,
+                        DiagnosticRules.AddEmptyLineBetweenDeclarationAndDocumentationComment,
+                        DiagnosticRules.AddEmptyLineBetweenSingleLineDeclarationsOfDifferentKind,
+                        DiagnosticRules.RemoveEmptyLineBetweenSingleLineDeclarationsOfSameKind);
+                }
+
+                return _supportedDiagnostics;
             }
         }
 

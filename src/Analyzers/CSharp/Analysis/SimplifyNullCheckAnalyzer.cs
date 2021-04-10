@@ -14,13 +14,21 @@ namespace Roslynator.CSharp.Analysis
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class SimplifyNullCheckAnalyzer : BaseDiagnosticAnalyzer
     {
+        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
             get
             {
-                return ImmutableArray.Create(
-                    DiagnosticRules.UseCoalesceExpressionInsteadOfConditionalExpression,
-                    DiagnosticRules.UseConditionalAccessInsteadOfConditionalExpression);
+                if (_supportedDiagnostics.IsDefault)
+                {
+                    Immutable.InterlockedInitialize(
+                        ref _supportedDiagnostics,
+                        DiagnosticRules.UseCoalesceExpressionInsteadOfConditionalExpression,
+                        DiagnosticRules.UseConditionalAccessInsteadOfConditionalExpression);
+                }
+
+                return _supportedDiagnostics;
             }
         }
 
