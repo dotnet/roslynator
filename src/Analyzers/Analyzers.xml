@@ -2369,19 +2369,17 @@ else
       </Sample>
     </Samples>
     <Options>
-      <Option Identifier="SimplifyConditionalExpressionWhenItIncludesNegationOfCondition">
-        <Title>Simplify conditional expression (when it includes negation of condition).</Title>
+      <Option Identifier="DoNotSimplifyConditionalExpressionWhenConditionIsInverted">
+        <Title>Do not simplify conditional expression when condition is inverted.</Title>
         <Id>a</Id>
-        <OptionKey>enable_negation_of_condition</OptionKey>
-        <Kind>Enable</Kind>
+        <OptionKey>suppress_when_condition_is_inverted</OptionKey>
+        <Kind>Disable</Kind>
         <Samples>
           <Sample>
             <Before><![CDATA[bool x = y ? false : z;]]></Before>
-            <After><![CDATA[bool x = !y && z;]]></After>
           </Sample>
           <Sample>
             <Before><![CDATA[bool x = y ? z : true;]]></Before>
-            <After><![CDATA[bool x = !y || z;]]></After>
           </Sample>
         </Samples>
       </Option>
