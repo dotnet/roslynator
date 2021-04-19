@@ -5580,18 +5580,6 @@ void M()
       </Sample>
     </Samples>
     <Options>
-      <Option Identifier="UseLogicalNegationAndPatternMatchingToCheckForNull">
-        <Id>a</Id>
-        <Title>Use logical negation and pattern matching to check for null.</Title>
-        <OptionKey>use_logical_negation</OptionKey>
-        <Kind>Enable</Kind>
-        <Samples>
-          <Sample>
-            <Before><![CDATA[x != null]]></Before>
-            <After><![CDATA[!(x is null)]]></After>
-          </Sample>
-        </Samples>
-      </Option>
       <Option Identifier="UseComparisonInsteadPatternMatchingToCheckForNull">
         <Id>i</Id>
         <Title>Use comparison instead of pattern matching to check for null.</Title>

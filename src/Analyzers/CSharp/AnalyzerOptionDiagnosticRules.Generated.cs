@@ -201,18 +201,6 @@ namespace Roslynator.CSharp
             helpLinkUri:        AnalyzerOptionDiagnosticIdentifiers.DoNotUseElementAccessWhenExpressionIsInvocation, 
             customTags:         Array.Empty<string>());
 
-        /// <summary>RCS1248a</summary>
-        public static readonly DiagnosticDescriptor UseLogicalNegationAndPatternMatchingToCheckForNull = DiagnosticDescriptorFactory.Default.Create(
-            id:                 AnalyzerOptionDiagnosticIdentifiers.UseLogicalNegationAndPatternMatchingToCheckForNull, 
-            title:              "Use logical negation and pattern matching to check for null.", 
-            messageFormat:      "Use logical negation and pattern matching to check for null.", 
-            category:           DiagnosticCategories.AnalyzerOption, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        AnalyzerOptionDiagnosticIdentifiers.UseLogicalNegationAndPatternMatchingToCheckForNull, 
-            customTags:         Array.Empty<string>());
-
         /// <summary>RCS1248i</summary>
         public static readonly DiagnosticDescriptor UseComparisonInsteadPatternMatchingToCheckForNull = DiagnosticDescriptorFactory.Default.Create(
             id:                 AnalyzerOptionDiagnosticIdentifiers.UseComparisonInsteadPatternMatchingToCheckForNull, 
