@@ -6,7 +6,7 @@
 
   <PropertyGroup>
     <Version>2.0.0.1</Version>
-    <AssemblyName>Roslynator.CSharp.Workspaces</AssemblyName>
+    <AssemblyName>$(RoslynatorDllPrefix)Roslynator.CSharp.Workspaces</AssemblyName>
     <RootNamespace>Roslynator</RootNamespace>
     <CodeAnalysisRuleSet>..\api.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
