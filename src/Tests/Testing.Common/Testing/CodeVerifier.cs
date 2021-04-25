@@ -312,7 +312,12 @@ namespace Roslynator.Testing
                 for (int i = 0; i < additionalFiles.Length; i++)
                 {
                     Document additionalDocument = project.AddDocument(AppendNumberToFileName(options.DocumentName, i + 2), SourceText.From(additionalFiles[i].Source));
-                    expectedDocuments.Add(new ExpectedDocument(additionalDocument.Id, additionalFiles[i].ExpectedSource));
+
+                    string expectedSource = additionalFiles[i].ExpectedSource;
+
+                    if (expectedSource != null)
+                        expectedDocuments.Add(new ExpectedDocument(additionalDocument.Id, expectedSource));
+
                     project = additionalDocument.Project;
                 }
 

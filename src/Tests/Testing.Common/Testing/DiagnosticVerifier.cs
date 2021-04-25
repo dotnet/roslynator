@@ -73,6 +73,9 @@ namespace Roslynator.Testing
                 {
                     VerifyDiagnostics(data, analyzer, expectedDiagnostics, diagnostics, cancellationToken);
                 }
+
+                if (expectedDocuments.Any())
+                    await VerifyAdditionalDocumentsAsync(document.Project, expectedDocuments, cancellationToken);
             }
 
             static IEnumerable<Diagnostic> FilterDiagnostics(
@@ -119,7 +122,7 @@ namespace Roslynator.Testing
 
             using (Workspace workspace = new AdhocWorkspace())
             {
-                (Document document, ImmutableArray<ExpectedDocument> expectedDocuments) = CreateDocument(workspace.CurrentSolution, data.Source, data.AdditionalFiles, options, data.Descriptor);
+                (Document document, ImmutableArray<ExpectedDocument> _) = CreateDocument(workspace.CurrentSolution, data.Source, data.AdditionalFiles, options, data.Descriptor);
 
                 SyntaxTree tree = await document.GetSyntaxTreeAsync();
 
@@ -342,7 +345,7 @@ namespace Roslynator.Testing
 
             using (Workspace workspace = new AdhocWorkspace())
             {
-                (Document document, ImmutableArray<ExpectedDocument> expectedDocuments) = CreateDocument(workspace.CurrentSolution, data.Source, data.AdditionalFiles, options, data.Descriptor);
+                (Document document, ImmutableArray<ExpectedDocument> _) = CreateDocument(workspace.CurrentSolution, data.Source, data.AdditionalFiles, options, data.Descriptor);
 
                 Compilation compilation = await document.Project.GetCompilationAsync(cancellationToken);
 
