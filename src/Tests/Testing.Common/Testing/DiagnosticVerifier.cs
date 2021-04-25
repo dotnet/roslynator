@@ -36,6 +36,9 @@ namespace Roslynator.Testing
             TestOptions options = null,
             CancellationToken cancellationToken = default)
         {
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
+
             cancellationToken.ThrowIfCancellationRequested();
 
             options ??= Options;
@@ -105,6 +108,9 @@ namespace Roslynator.Testing
             TestOptions options = null,
             CancellationToken cancellationToken = default)
         {
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
+
             cancellationToken.ThrowIfCancellationRequested();
 
             options ??= Options;
@@ -176,6 +182,12 @@ namespace Roslynator.Testing
             TestOptions options = null,
             CancellationToken cancellationToken = default)
         {
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
+
+            if (expected == null)
+                throw new ArgumentNullException(nameof(expected));
+
             cancellationToken.ThrowIfCancellationRequested();
 
             options ??= Options;
@@ -315,6 +327,9 @@ namespace Roslynator.Testing
             TestOptions options = null,
             CancellationToken cancellationToken = default)
         {
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
+
             cancellationToken.ThrowIfCancellationRequested();
 
             options ??= Options;

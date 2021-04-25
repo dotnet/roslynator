@@ -35,6 +35,12 @@ namespace Roslynator.Testing
             TestOptions options = null,
             CancellationToken cancellationToken = default)
         {
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
+
+            if (expected == null)
+                throw new ArgumentNullException(nameof(expected));
+
             if (data.Spans.IsEmpty)
                 Fail("Span on which a refactoring should be invoked was not found.");
 
@@ -108,6 +114,9 @@ namespace Roslynator.Testing
             TestOptions options = null,
             CancellationToken cancellationToken = default)
         {
+            if (data == null)
+                throw new ArgumentNullException(nameof(data));
+
             if (data.Spans.IsEmpty)
                 Fail("Span on which a refactoring should be invoked was not found.");
 

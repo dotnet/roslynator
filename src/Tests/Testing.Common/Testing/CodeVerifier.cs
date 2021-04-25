@@ -23,7 +23,7 @@ namespace Roslynator.Testing
     {
         internal CodeVerifier(IAssert assert)
         {
-            Assert = assert;
+            Assert = assert ?? throw new ArgumentNullException(nameof(assert));
         }
 
         /// <summary>
