@@ -17,8 +17,6 @@ rd /S /Q "..\src\CommandLine\bin\Release\publish"
  /v:normal ^
  /m
 
-orang replace "../src" -n "AssemblyInfo.cs" e -c "patterns/assembly_names_to_be_prefixed.txt" f -r ""
-
 if errorlevel 1 (
  pause
  exit
@@ -27,6 +25,8 @@ if errorlevel 1 (
 del /Q "..\src\CommandLine\bin\Release\Roslynator.CommandLine.*.nupkg"
 
 dotnet pack -c Release --no-build -v normal /p:RoslynatorCommandLine=true "..\src\CommandLine\CommandLine.csproj"
+
+orang replace "../src" -n "AssemblyInfo.cs" e -c "patterns/assembly_names_to_be_prefixed.txt" f -r ""
 
 set _outDir=..\out\Release
 md "%_outDir%"
