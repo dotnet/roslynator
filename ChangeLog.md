@@ -5,13 +5,13 @@
 * Update references to Roslyn API to 3.8.0
 * A bunch of bug fixes
 
-## Analyzers
+#### Analyzers
 
 * Add option to invert analyzer [RCS1016](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1016.md) ([commit](https://github.com/JosefPihrt/Roslynator/commit/67a0fc5cfe9dd793cc6e504513ed6805678c1739))
 * Add more cases to analyzer [RCS1218](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1218.md) ([commit](https://github.com/JosefPihrt/Roslynator/commit/37e8edb7a2eefdd4a7749dd6a3f5b473ebbdcc0a))
 * Convert `!= null` to `is not null` ([RCS1248](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1248.md)) ([commit](https://github.com/JosefPihrt/Roslynator/commit/432a8fea3147447536dbb8fac47598ad1db68158))
 
-## Code Fixes
+#### Code Fixes
 
 * Add code fix for CS7036 ([commit](https://github.com/JosefPihrt/Roslynator/commit/9eae7307b9cab96c2d91e97aef8bda098c7e92d9))
 * Add code fix for CS8632 ([commit](https://github.com/JosefPihrt/Roslynator/commit/2c1d9ca64d2305e1ce278e1db6563d82582c4613))
