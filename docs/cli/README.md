@@ -44,6 +44,7 @@ C:/Program Files/dotnet/sdk/3.1.200
 * [list-symbols](list-symbols-command.md)
 * [loc](loc-command.md)
 * [lloc](lloc-command.md)
+* [spellcheck](spellcheck-command.md)
 
 ## Exit Code
 
