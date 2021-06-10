@@ -43,7 +43,7 @@ namespace Roslynator.Spelling
                     fixes.Remove(word);
             }
 
-            foreach (HashSet<string> values in fixes.Values)
+            foreach (HashSet<string> values in fixes.Values.ToList())
             {
                 foreach (string value in values)
                     fixes.Remove(value);
@@ -239,8 +239,6 @@ namespace Roslynator.Spelling
 
                         if (fixes.TryGetValue(key, out HashSet<string> fixes2))
                         {
-                            Debug.Assert(!fixes2.Contains(value), $"Fix list already contains {key}={value}");
-
                             fixes2.Add(value);
                         }
                         else
@@ -323,7 +321,7 @@ namespace Roslynator.Spelling
             {
                 var words = new List<string>();
                 var sequences = new List<WordSequence>();
-                var fixes = new Dictionary<string, HashSet<string>>();
+                var fixes = new Dictionary<string, HashSet<string>>(WordList.DefaultComparer);
 
                 List<string> caseSensitiveWords = null;
                 List<WordSequence> caseSensitiveSequences = null;

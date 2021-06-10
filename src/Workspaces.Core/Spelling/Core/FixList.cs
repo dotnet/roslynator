@@ -170,7 +170,7 @@ namespace Roslynator.Spelling
                 f => f.Value
                     .Select(f => new SpellingFix(f, SpellingFixKind.Predefined))
                     .ToImmutableHashSet(SpellingFixComparer.InvariantCultureIgnoreCase),
-                WordList.DefaultComparer);
+                dic.Comparer);
 
             return new FixList(items);
         }
