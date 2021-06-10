@@ -2,7 +2,7 @@
 
 namespace Roslynator.Spelling
 {
-    public enum TextCasing
+    internal enum TextCasing
     {
         Undefined = 0,
         Lower = 1,

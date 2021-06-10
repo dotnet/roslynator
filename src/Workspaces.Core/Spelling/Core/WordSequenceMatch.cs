@@ -5,7 +5,7 @@ using System.Diagnostics;
 namespace Roslynator.Spelling
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public readonly struct WordSequenceMatch
+    internal readonly struct WordSequenceMatch
     {
         public WordSequenceMatch(WordSequence sequence, int index, int length)
         {

@@ -9,7 +9,7 @@ using System.Threading;
 
 namespace Roslynator.Spelling
 {
-    public class SpellingData
+    internal class SpellingData
     {
         private WordCharMap _charIndexMap;
         private WordCharMap _reversedCharIndexMap;

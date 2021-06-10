@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 
 namespace Roslynator.Spelling
 {
-    public class Spellchecker
+    internal class Spellchecker
     {
         private static readonly Regex _wordRegex = new Regex(
             @"

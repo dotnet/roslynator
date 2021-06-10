@@ -2,7 +2,7 @@
 
 namespace Roslynator.Spelling
 {
-    public enum SpellingFixKind
+    internal enum SpellingFixKind
     {
         None = 0,
         Predefined = 1,

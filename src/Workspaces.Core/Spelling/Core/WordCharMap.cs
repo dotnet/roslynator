@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Roslynator.Spelling
 {
-    public sealed class WordCharMap
+    internal sealed class WordCharMap
     {
         private WordCharMap(WordList list, ImmutableDictionary<WordChar, ImmutableHashSet<string>> map)
         {

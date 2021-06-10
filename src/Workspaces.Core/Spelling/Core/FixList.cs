@@ -12,7 +12,7 @@ using System.Text;
 namespace Roslynator.Spelling
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public class FixList
+    internal class FixList
     {
         public static FixList Empty { get; }
             = new FixList(ImmutableDictionary.Create<string, ImmutableHashSet<SpellingFix>>(

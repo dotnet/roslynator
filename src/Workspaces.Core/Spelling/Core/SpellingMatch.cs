@@ -5,7 +5,7 @@ using System.Diagnostics;
 namespace Roslynator.Spelling
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public readonly struct SpellingMatch
+    internal readonly struct SpellingMatch
     {
         public SpellingMatch(string value, int index, string parent = null, int parentIndex = 0)
         {

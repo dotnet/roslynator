@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace Roslynator.Spelling
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public static class WordListLoader
+    internal static class WordListLoader
     {
         private static readonly Regex _splitRegex = new Regex(" +");
 

@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 
 namespace Roslynator.Spelling
 {
-    public static class SplitUtility
+    internal static class SplitUtility
     {
         private const string _splitCasePattern = @"
     (?<=

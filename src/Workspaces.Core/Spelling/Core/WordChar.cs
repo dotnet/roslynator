@@ -6,7 +6,7 @@ using System.Diagnostics;
 namespace Roslynator.Spelling
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public readonly struct WordChar : IEquatable<WordChar>
+    internal readonly struct WordChar : IEquatable<WordChar>
     {
         public WordChar(char value, int index)
         {

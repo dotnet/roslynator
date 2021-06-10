@@ -2,7 +2,7 @@
 
 namespace Roslynator.Spelling
 {
-    public class SpellcheckerOptions
+    internal class SpellcheckerOptions
     {
         public static SpellcheckerOptions Default { get; } = new SpellcheckerOptions(SplitMode.CaseAndHyphen);
 

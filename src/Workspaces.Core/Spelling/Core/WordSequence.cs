@@ -7,7 +7,7 @@ using System.Diagnostics;
 namespace Roslynator.Spelling
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public readonly struct WordSequence
+    internal readonly struct WordSequence
     {
         public WordSequence(ImmutableArray<string> words)
         {

@@ -10,7 +10,7 @@ using System.Linq;
 namespace Roslynator.Spelling
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public class WordList
+    internal class WordList
     {
         public static StringComparison DefaultComparison { get; } = StringComparison.InvariantCultureIgnoreCase;
 

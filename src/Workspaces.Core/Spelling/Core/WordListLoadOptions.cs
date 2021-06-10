@@ -5,7 +5,7 @@ using System;
 namespace Roslynator.Spelling
 {
     [Flags]
-    public enum WordListLoadOptions
+    internal enum WordListLoadOptions
     {
         None = 0,
         IgnoreCase = 1,

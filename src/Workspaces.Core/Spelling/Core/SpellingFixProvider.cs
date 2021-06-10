@@ -7,7 +7,7 @@ using System;
 
 namespace Roslynator.Spelling
 {
-    public static class SpellingFixProvider
+    internal static class SpellingFixProvider
     {
         public static ImmutableArray<string> Fuzzy(
             string value,

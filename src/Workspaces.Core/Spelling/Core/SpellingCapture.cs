@@ -5,7 +5,7 @@ using System.Diagnostics;
 namespace Roslynator.Spelling
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public class SpellingCapture
+    internal class SpellingCapture
     {
         public SpellingCapture(string value, int index, string containingValue = null)
         {

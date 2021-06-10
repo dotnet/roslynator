@@ -2,7 +2,7 @@
 
 namespace Roslynator.Spelling
 {
-    public readonly struct WordListLoaderResult
+    internal readonly struct WordListLoaderResult
     {
         internal WordListLoaderResult(WordList list, WordList caseSensitiveList, FixList fixList)
         {

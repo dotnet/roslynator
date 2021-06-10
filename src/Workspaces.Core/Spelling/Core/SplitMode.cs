@@ -5,7 +5,7 @@ using System;
 namespace Roslynator.Spelling
 {
     [Flags]
-    public enum SplitMode
+    internal enum SplitMode
     {
         None = 0,
         Case = 1,
