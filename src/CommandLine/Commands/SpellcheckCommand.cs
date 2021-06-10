@@ -153,17 +153,18 @@ namespace Roslynator.CommandLine
 
                 if (fixer.SpellingData.Fixes.TryGetValue(grouping.Key, out ImmutableHashSet<SpellingFix> possibleFixes))
                 {
-                    SpellingFix fix = possibleFixes.SingleOrDefault(
-                        f => (TextUtility.GetTextCasing(f.Value) != TextCasing.Undefined
-                            || string.Equals(grouping.Key, f.Value, StringComparison.OrdinalIgnoreCase)),
-                        shouldThrow: false);
+                    ImmutableArray<SpellingFix> fixes = possibleFixes
+                        .Where(
+                            f => (TextUtility.GetTextCasing(f.Value) != TextCasing.Undefined
+                                || string.Equals(grouping.Key, f.Value, StringComparison.OrdinalIgnoreCase)))
+                        .ToImmutableArray();
 
-                    if (!fix.IsDefault)
+                    if (fixes.Any())
                     {
-                        Write("=", ConsoleColor.Gray, Verbosity.Normal);
+                        Write(": ", ConsoleColor.Gray, Verbosity.Normal);
 
                         WriteLine(
-                            TextUtility.SetTextCasing(fix.Value, TextUtility.GetTextCasing(grouping.Key)),
+                            string.Join(", ", fixes.Select(f => TextUtility.SetTextCasing(f.Value, TextUtility.GetTextCasing(grouping.Key)))),
                             ConsoleColor.Cyan,
                             Verbosity.Normal);
 
