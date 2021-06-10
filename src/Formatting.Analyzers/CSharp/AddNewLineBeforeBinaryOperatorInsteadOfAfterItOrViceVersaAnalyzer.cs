@@ -19,7 +19,7 @@ namespace Roslynator.Formatting.CSharp
             get
             {
                 if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddNewLineBeforeBinaryOperatorInsteadOfAfterItOrViceVersa);
+                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddNewLineBeforeBinaryOperatorInsteadOfAfterItOrViceVersa, CommonDiagnosticRules.AnalyzerIsObsolete);
 
                 return _supportedDiagnostics;
             }
@@ -84,7 +84,8 @@ namespace Roslynator.Formatting.CSharp
                     context,
                     descriptor,
                     Location.Create(binaryExpression.SyntaxTree, binaryExpression.OperatorToken.Span.WithLength(0)),
-                    properties: properties);
+                    properties: properties,
+                    AnalyzerOptions.AddNewLineAfterBinaryOperatorInsteadOfBeforeIt);
             }
         }
     }

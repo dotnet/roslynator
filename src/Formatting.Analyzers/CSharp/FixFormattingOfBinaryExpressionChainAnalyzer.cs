@@ -20,7 +20,7 @@ namespace Roslynator.Formatting.CSharp
             get
             {
                 if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.FixFormattingOfBinaryExpressionChain);
+                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.FixFormattingOfBinaryExpressionChain, CommonDiagnosticRules.AnalyzerIsObsolete);
 
                 return _supportedDiagnostics;
             }
@@ -177,7 +177,8 @@ namespace Roslynator.Formatting.CSharp
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
                     DiagnosticRules.FixFormattingOfBinaryExpressionChain,
-                    topBinaryExpression);
+                    topBinaryExpression,
+                    AnalyzerOptions.AddNewLineAfterBinaryOperatorInsteadOfBeforeIt);
             }
         }
     }

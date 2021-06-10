@@ -18,7 +18,7 @@ namespace Roslynator.CSharp.Analysis
             get
             {
                 if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AvoidMultilineExpressionBody);
+                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AvoidMultilineExpressionBody, CommonDiagnosticRules.AnalyzerIsObsolete);
 
                 return _supportedDiagnostics;
             }
@@ -50,7 +50,7 @@ namespace Roslynator.CSharp.Analysis
             ExpressionSyntax expression = arrowExpressionClause.Expression;
 
             if (expression?.IsMultiLine() == true)
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AvoidMultilineExpressionBody, expression);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AvoidMultilineExpressionBody, expression, AnalyzerOptions.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine);
         }
     }
 }

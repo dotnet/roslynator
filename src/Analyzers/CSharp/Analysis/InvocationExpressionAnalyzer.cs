@@ -44,7 +44,8 @@ namespace Roslynator.CSharp.Analysis
                         DiagnosticRules.RemoveRedundantCast,
                         DiagnosticRules.SimplifyLogicalNegation,
                         DiagnosticRules.UseCoalesceExpression,
-                        DiagnosticRules.OptimizeMethodCall);
+                        DiagnosticRules.OptimizeMethodCall,
+                        CommonDiagnosticRules.AnalyzerIsObsolete);
                 }
 
                 return _supportedDiagnostics;
@@ -121,7 +122,11 @@ namespace Roslynator.CSharp.Analysis
                                         if (CanUseElementAccess(context, invocationInfo)
                                             && UseElementAccessAnalysis.IsFixableFirst(invocationInfo, context.SemanticModel, context.CancellationToken))
                                         {
-                                            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseElementAccess, Location.Create(invocation.SyntaxTree, TextSpan.FromBounds(invocationInfo.Name.SpanStart, invocationInfo.ArgumentList.Span.End)));
+                                            DiagnosticHelpers.ReportDiagnostic(
+                                                context,
+                                                DiagnosticRules.UseElementAccess,
+                                                Location.Create(invocation.SyntaxTree, TextSpan.FromBounds(invocationInfo.Name.SpanStart, invocationInfo.ArgumentList.Span.End)),
+                                                AnalyzerOptions.DoNotUseElementAccessWhenExpressionIsInvocation);
                                         }
 
                                         OptimizeLinqMethodCallAnalysis.AnalyzeWhere(context, invocationInfo);
@@ -248,7 +253,11 @@ namespace Roslynator.CSharp.Analysis
                                         && CanUseElementAccess(context, invocationInfo)
                                         && UseElementAccessAnalysis.IsFixableElementAt(invocationInfo, context.SemanticModel, context.CancellationToken))
                                     {
-                                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseElementAccess, Location.Create(invocation.SyntaxTree, TextSpan.FromBounds(invocationInfo.Name.SpanStart, invocationInfo.ArgumentList.Span.End)));
+                                        DiagnosticHelpers.ReportDiagnostic(
+                                            context,
+                                            DiagnosticRules.UseElementAccess,
+                                            Location.Create(invocation.SyntaxTree, TextSpan.FromBounds(invocationInfo.Name.SpanStart, invocationInfo.ArgumentList.Span.End)),
+                                            AnalyzerOptions.DoNotUseElementAccessWhenExpressionIsInvocation);
                                     }
 
                                     break;

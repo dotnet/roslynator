@@ -21,7 +21,7 @@ namespace Roslynator.CSharp.Analysis
             get
             {
                 if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.ConvertHasFlagCallToBitwiseOperationOrViceVersa);
+                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.ConvertHasFlagCallToBitwiseOperationOrViceVersa, CommonDiagnosticRules.AnalyzerIsObsolete);
 
                 return _supportedDiagnostics;
             }
@@ -100,7 +100,8 @@ namespace Roslynator.CSharp.Analysis
             DiagnosticHelpers.ReportDiagnostic(
                 context,
                 DiagnosticRules.ReportOnly.ConvertBitwiseOperationToHasFlagCall,
-                equalsOrNotEquals);
+                equalsOrNotEquals,
+                AnalyzerOptions.ConvertBitwiseOperationToHasFlagCall);
 
             bool IsSuitableAsExpressionOfHasFlag(ExpressionSyntax expression)
             {

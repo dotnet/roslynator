@@ -16,7 +16,7 @@ namespace Roslynator.CSharp.Analysis
             get
             {
                 if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.RenamePrivateFieldToCamelCaseWithUnderscore);
+                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.RenamePrivateFieldToCamelCaseWithUnderscore, CommonDiagnosticRules.AnalyzerIsObsolete);
 
                 return _supportedDiagnostics;
             }
@@ -45,7 +45,8 @@ namespace Roslynator.CSharp.Analysis
                     DiagnosticHelpers.ReportDiagnostic(
                         context,
                         DiagnosticRules.RenamePrivateFieldToCamelCaseWithUnderscore,
-                        fieldSymbol.Locations[0]);
+                        fieldSymbol.Locations[0],
+                        AnalyzerOptions.DoNotRenamePrivateStaticFieldToCamelCaseWithUnderscore);
                 }
             }
         }

@@ -20,7 +20,7 @@ namespace Roslynator.CSharp.Analysis
             get
             {
                 if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddCallToConfigureAwaitOrViceVersa);
+                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddCallToConfigureAwaitOrViceVersa, CommonDiagnosticRules.AnalyzerIsObsolete);
 
                 return _supportedDiagnostics;
             }
@@ -62,7 +62,7 @@ namespace Roslynator.CSharp.Analysis
             if (!SymbolUtility.IsAwaitable(typeSymbol))
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AddCallToConfigureAwaitOrViceVersa, awaitExpression.Expression);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AddCallToConfigureAwaitOrViceVersa, awaitExpression.Expression, AnalyzerOptions.RemoveCallToConfigureAwait);
         }
 
         private static void RemoveCallToConfigureAwait(SyntaxNodeAnalysisContext context)
@@ -95,7 +95,8 @@ namespace Roslynator.CSharp.Analysis
                                 DiagnosticRules.ReportOnly.RemoveCallToConfigureAwait,
                                 Location.Create(
                                     awaitExpression.SyntaxTree,
-                                    TextSpan.FromBounds(invocationInfo.OperatorToken.SpanStart, expression.Span.End)));
+                                    TextSpan.FromBounds(invocationInfo.OperatorToken.SpanStart, expression.Span.End)),
+                                AnalyzerOptions.RemoveCallToConfigureAwait);
                         }
 
                         break;

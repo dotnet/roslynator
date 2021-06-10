@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.Analysis
             get
             {
                 if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddArgumentListToObjectCreationOrViceVersa);
+                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddArgumentListToObjectCreationOrViceVersa, CommonDiagnosticRules.AnalyzerIsObsolete);
 
                 return _supportedDiagnostics;
             }
@@ -53,7 +53,8 @@ namespace Roslynator.CSharp.Analysis
                     DiagnosticHelpers.ReportDiagnostic(
                         context,
                         DiagnosticRules.AddArgumentListToObjectCreationOrViceVersa,
-                        Location.Create(objectCreationExpression.SyntaxTree, span));
+                        Location.Create(objectCreationExpression.SyntaxTree, span),
+                        AnalyzerOptions.RemoveArgumentListFromObjectCreation);
                 }
             }
             else if (!argumentList.Arguments.Any()
@@ -70,7 +71,8 @@ namespace Roslynator.CSharp.Analysis
                     DiagnosticHelpers.ReportDiagnostic(
                         context,
                         DiagnosticRules.ReportOnly.RemoveArgumentListFromObjectCreation,
-                        argumentList);
+                        argumentList,
+                        AnalyzerOptions.RemoveArgumentListFromObjectCreation);
                 }
             }
         }

@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.Analysis
             get
             {
                 if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.SimplifyConditionalExpression);
+                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.SimplifyConditionalExpression, CommonDiagnosticRules.AnalyzerIsObsolete);
 
                 return _supportedDiagnostics;
             }
@@ -73,6 +73,7 @@ namespace Roslynator.CSharp.Analysis
                     && !AnalyzerOptions.DoNotSimplifyConditionalExpressionWhenConditionIsInverted.IsEnabled(context)
                     && context.SemanticModel.GetTypeInfo(info.WhenFalse, context.CancellationToken).ConvertedType?.SpecialType == SpecialType.System_Boolean)
                 {
+                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.SimplifyConditionalExpression, conditionalExpression, AnalyzerOptions.DoNotSimplifyConditionalExpressionWhenConditionIsInverted);
                     ReportDiagnostic();
                 }
             }
@@ -83,6 +84,7 @@ namespace Roslynator.CSharp.Analysis
                     && !AnalyzerOptions.DoNotSimplifyConditionalExpressionWhenConditionIsInverted.IsEnabled(context)
                     && context.SemanticModel.GetTypeInfo(info.WhenTrue, context.CancellationToken).ConvertedType?.SpecialType == SpecialType.System_Boolean)
                 {
+                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.SimplifyConditionalExpression, conditionalExpression, AnalyzerOptions.DoNotSimplifyConditionalExpressionWhenConditionIsInverted);
                     ReportDiagnostic();
                 }
             }
