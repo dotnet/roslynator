@@ -2,12 +2,12 @@
 
 rem dotnet install tool -g orang.dotnet.cli
 
-set _apiVersion=2.1.0.0
-set _formattingVersion=1.2.0.0
-set _version=3.2.0.0
+set _apiVersion=2.1.0.1
+set _formattingVersion=1.2.0.1
+set _version=3.2.0.1
 set _version3=3.2.0
-set _cliVersion=0.1.3.0
-set _cliVersion3=0.1.3
+set _cliVersion=0.1.4.0
+set _cliVersion3=0.1.4
 set _root=..\src
 set _options=from-file -t m r -y trim-line -v n -o "orang.log" v=di
 
