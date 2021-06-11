@@ -11,13 +11,13 @@ set _rootDirectoryUrl="../../docs/api/"
 %_msbuildPath%\msbuild "..\src\CommandLine.sln" /t:Clean,Build /p:Configuration=Debug /v:m /m
 
 %_roslynatorExe% generate-doc "..\src\Core.sln" ^
- --msbuild-path %_msbuildPath% ^
+ -m %_msbuildPath% ^
  --properties %_msbuildProperties% ^
  -o "..\docs\api" ^
  -h "Roslynator API Reference"
 
 %_roslynatorExe% list-symbols "..\src\Core.sln" ^
- --msbuild-path %_msbuildPath% ^
+ -m %_msbuildPath% ^
  --properties %_msbuildProperties% ^
  --visibility public ^
  --depth member ^
@@ -25,7 +25,7 @@ set _rootDirectoryUrl="../../docs/api/"
  --output "..\docs\api.txt"
 
 %_roslynatorExe% generate-doc-root "..\src\Core.sln" ^
- --msbuild-path %_msbuildPath% ^
+ -m %_msbuildPath% ^
  --properties %_msbuildProperties% ^
  --projects Core ^
  -o "..\src\Core\README.md" ^
@@ -33,7 +33,7 @@ set _rootDirectoryUrl="../../docs/api/"
  --root-directory-url %_rootDirectoryUrl%
 
 %_roslynatorExe% generate-doc-root "..\src\Core.sln" ^
- --msbuild-path %_msbuildPath% ^
+ -m %_msbuildPath% ^
  --properties %_msbuildProperties% ^
  --projects CSharp ^
  -o "..\src\CSharp\README.md" ^
@@ -41,7 +41,7 @@ set _rootDirectoryUrl="../../docs/api/"
  --root-directory-url %_rootDirectoryUrl%
 
 %_roslynatorExe% generate-doc-root "..\src\Core.sln" ^
- --msbuild-path %_msbuildPath% ^
+ -m %_msbuildPath% ^
  --properties %_msbuildProperties% ^
  --projects Workspaces.Core ^
  -o "..\src\Workspaces.Core\README.md" ^
@@ -49,7 +49,7 @@ set _rootDirectoryUrl="../../docs/api/"
  --root-directory-url %_rootDirectoryUrl%
 
 %_roslynatorExe% generate-doc-root "..\src\Core.sln" ^
- --msbuild-path %_msbuildPath% ^
+ -m %_msbuildPath% ^
  --properties %_msbuildProperties% ^
  --projects CSharp.Workspaces ^
  -o "..\src\CSharp.Workspaces\README.md" ^
@@ -57,7 +57,7 @@ set _rootDirectoryUrl="../../docs/api/"
  --root-directory-url %_rootDirectoryUrl%
 
 %_roslynatorExe% generate-doc-root "..\src\Core.sln" ^
- --msbuild-path %_msbuildPath% ^
+ -m %_msbuildPath% ^
  --properties %_msbuildProperties% ^
  --projects Testing.Common Testing.CSharp Testing.CSharp.Xunit ^
  -o "..\src\Tests\README.md" ^

@@ -8,7 +8,7 @@ set _msbuildPath="%_programFiles%\Microsoft Visual Studio\2019\Community\MSBuild
 %_msbuildPath%\msbuild "..\src\CommandLine.sln" /t:Build /p:Configuration=Debug /v:m /m
 
 "..\src\CommandLine\bin\Debug\net48\roslynator" list-symbols "..\src\CommandLine\CommandLine.csproj" ^
- --msbuild-path %_msbuildPath% ^
+ -m %_msbuildPath% ^
  --depth type ^
  --visibility public ^
  --external-assemblies Microsoft.CodeAnalysis.dll Microsoft.CodeAnalysis.CSharp.dll ^
