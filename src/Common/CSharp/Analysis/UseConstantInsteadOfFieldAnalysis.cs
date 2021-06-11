@@ -77,6 +77,9 @@ namespace Roslynator.CSharp.Analysis
                 if (value == null)
                     return false;
 
+                if (value.WalkDownParentheses().IsKind(SyntaxKind.InterpolatedStringExpression))
+                    return false;
+
                 if (!semanticModel.HasConstantValue(value, cancellationToken))
                     return false;
             }
