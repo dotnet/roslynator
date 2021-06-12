@@ -257,11 +257,13 @@
     <Rule Id="IDE0057" Action="None" />
     <Rule Id="IDE0063" Action="None" />
     <Rule Id="IDE0063WithoutSuggestion" Action="None" />
+    <Rule Id="IDE0066" Action="Hidden" />
     <Rule Id="IDE0066WithoutSuggestion" Action="None" />
     <Rule Id="IDE0071" Action="None" />
     <Rule Id="IDE0071WithoutSuggestion" Action="None" />
     <Rule Id="IDE0074" Action="None" />
     <Rule Id="IDE0074WithoutSuggestion" Action="None" />
+    <Rule Id="IDE0079" Action="None" />
     <Rule Id="IDE1005" Action="Info" />
     <Rule Id="IDE1006" Action="Info" />
   </Rules>
