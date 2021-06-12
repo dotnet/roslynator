@@ -179,9 +179,6 @@ namespace Roslynator
             return new EnumeratorImpl(this);
         }
 
-        [SuppressMessage("Design", "CA1034:Nested types should not be visible")]
-        [SuppressMessage("Performance", "CA1815:Override equals and operator equals on value types")]
-        [SuppressMessage("Usage", "CA2231:Overload operator equals on overriding value type Equals")]
         [SuppressMessage("Usage", "RCS1223:Mark publicly visible type with DebuggerDisplay attribute.")]
         public struct Enumerator
         {

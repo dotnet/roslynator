@@ -2,8 +2,6 @@
 
 using System;
 
-#pragma warning disable RCS1130
-
 namespace Roslynator.CSharp
 {
     /// <summary>

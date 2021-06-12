@@ -2,8 +2,6 @@
 
 using System;
 
-#pragma warning disable CA1036
-
 namespace Roslynator.CodeFixes
 {
     public readonly struct CodeFixIdentifier : IEquatable<CodeFixIdentifier>, IComparable<CodeFixIdentifier>, IComparable
