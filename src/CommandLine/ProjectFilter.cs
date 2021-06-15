@@ -21,14 +21,14 @@ namespace Roslynator.CommandLine
                 throw new ArgumentException($"Cannot specify both '{nameof(names)}' and '{nameof(ignoredNames)}'.", nameof(names));
             }
 
-            Names = names?.ToImmutableHashSet() ?? ImmutableHashSet<string>.Empty;
-            IgnoredNames = ignoredNames?.ToImmutableHashSet() ?? ImmutableHashSet<string>.Empty;
+            Names = names?.Select(f => ProjectName.Create(f)).ToImmutableHashSet() ?? ImmutableHashSet<ProjectName>.Empty;
+            IgnoredNames = ignoredNames?.Select(f => ProjectName.Create(f)).ToImmutableHashSet() ?? ImmutableHashSet<ProjectName>.Empty;
             Language = language;
         }
 
-        public ImmutableHashSet<string> Names { get; }
+        public ImmutableHashSet<ProjectName> Names { get; }
 
-        public ImmutableHashSet<string> IgnoredNames { get; }
+        public ImmutableHashSet<ProjectName> IgnoredNames { get; }
 
         public string Language { get; }
 
@@ -51,12 +51,28 @@ namespace Roslynator.CommandLine
             }
 
             if (Names?.Count > 0)
-                return Names.Contains(project.Name);
+                return IsMatch(project.Name, Names);
 
             if (IgnoredNames?.Count > 0)
-                return !IgnoredNames.Contains(project.Name);
+                return !IsMatch(project.Name, IgnoredNames);
 
             return true;
+        }
+
+        private static bool IsMatch(string name, ImmutableHashSet<ProjectName> projectNames)
+        {
+            ProjectName projectName = ProjectName.Create(name);
+
+            foreach (ProjectName projectName2 in projectNames)
+            {
+                if (string.Equals(projectName2.Name, projectName.Name, StringComparison.Ordinal))
+                    return true;
+
+                if (string.Equals(projectName2.NameWithoutMoniker, projectName.NameWithoutMoniker, StringComparison.Ordinal))
+                    return true;
+            }
+
+            return false;
         }
     }
 }

@@ -79,25 +79,10 @@ namespace Roslynator.CommandLine
                     {
                         Solution solution = projectOrSolution.AsSolution();
 
-                        if (solution != null)
+                        if (solution != null
+                            && !VerifyProjectNames(solution))
                         {
-                            foreach (string name in ProjectFilter.Names)
-                            {
-                                if (!solution.ContainsProject(name))
-                                {
-                                    WriteLine($"Project '{name}' does not exist.", Verbosity.Quiet);
-                                    return CommandResult.Fail;
-                                }
-                            }
-
-                            foreach (string name in ProjectFilter.IgnoredNames)
-                            {
-                                if (!solution.ContainsProject(name))
-                                {
-                                    WriteLine($"Project '{name}' does not exist.", Verbosity.Quiet);
-                                    return CommandResult.Fail;
-                                }
-                            }
+                            return CommandResult.Fail;
                         }
 
                         return await ExecuteAsync(projectOrSolution, cancellationToken);
@@ -127,6 +112,47 @@ namespace Roslynator.CommandLine
             }
 
             return CommandResult.Canceled;
+        }
+
+        private bool VerifyProjectNames(Solution solution)
+        {
+            List<ProjectName> projectNames = solution.Projects.Select(f => ProjectName.Create(f.Name)).ToList();
+
+            if (ShouldWrite(Verbosity.Detailed))
+            {
+                WriteLine("List of projects:", Verbosity.Detailed);
+
+                foreach (IGrouping<string, ProjectName> grouping in projectNames
+                    .OrderBy(f => f.NameWithoutMoniker)
+                    .GroupBy(f => f.NameWithoutMoniker))
+                {
+                    WriteLine($"  {grouping.Key}", Verbosity.Detailed);
+
+                    foreach (string moniker in grouping
+                        .Select(f => f.Moniker)
+                        .Where(f => f != null)
+                        .OrderBy(f => f))
+                    {
+                        WriteLine($"    {moniker}", Verbosity.Detailed);
+                    }
+                }
+            }
+
+            ImmutableHashSet<ProjectName> values = (ProjectFilter.Names.Count > 0)
+                ? ProjectFilter.Names
+                : ProjectFilter.IgnoredNames;
+
+            foreach (ProjectName value in values)
+            {
+                if (!projectNames.Any(f => string.Equals(f.Name, value.Name, StringComparison.Ordinal))
+                    && !projectNames.Any(f => string.Equals(f.NameWithoutMoniker, value.NameWithoutMoniker, StringComparison.Ordinal)))
+                {
+                    WriteLine($"Project '{value}' does not exist.", Verbosity.Quiet);
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         protected virtual void OperationCanceled(OperationCanceledException ex)
