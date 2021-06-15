@@ -74,7 +74,8 @@ namespace Roslynator.CommandLine
             IFormatProvider formatProvider = null,
             CancellationToken cancellationToken = default)
         {
-            SpellingFixer spellingFixer;
+            SpellingFixer spellingFixer = null;
+            ImmutableArray<SpellingFixResult> results = default;
 
             if (projectOrSolution.IsProject)
             {
@@ -88,7 +89,7 @@ namespace Roslynator.CommandLine
 
                 Stopwatch stopwatch = Stopwatch.StartNew();
 
-                ImmutableArray<SpellingFixResult> results = await spellingFixer.FixProjectAsync(project, cancellationToken);
+                results = await spellingFixer.FixProjectAsync(project, cancellationToken);
 
                 stopwatch.Stop();
 
@@ -100,10 +101,10 @@ namespace Roslynator.CommandLine
 
                 spellingFixer = GetSpellingFixer(solution);
 
-                await spellingFixer.FixSolutionAsync(f => projectFilter.IsMatch(f), cancellationToken);
+                results = await spellingFixer.FixSolutionAsync(f => projectFilter.IsMatch(f), cancellationToken);
             }
 
-            WriteSummary(spellingFixer);
+            WriteSummary(results, spellingFixer);
 
             return CommandResult.Success;
 
@@ -122,15 +123,12 @@ namespace Roslynator.CommandLine
             WriteLine("Spellchecking was canceled.", Verbosity.Minimal);
         }
 
-        private void WriteSummary(SpellingFixer fixer)
+        private void WriteSummary(ImmutableArray<SpellingFixResult> results, SpellingFixer fixer)
         {
             if (!ShouldWrite(Verbosity.Normal))
                 return;
 
             List<NewWord> newWords = fixer.NewWords.Distinct(NewWordComparer.Instance).ToList();
-
-            if (newWords.Count == 0)
-                return;
 
             var isFirst = true;
             bool isDetailed = ShouldWrite(Verbosity.Detailed);
@@ -224,6 +222,43 @@ namespace Roslynator.CommandLine
                     }
 
                     WriteLine(containingValue, Verbosity.Normal);
+                }
+            }
+
+            WriteResults(results, SpellingFixKind.Predefined, "Auto fixes:");
+            WriteResults(results, SpellingFixKind.User, "User-applied fixes:");
+        }
+
+        private void WriteResults(ImmutableArray<SpellingFixResult> results, SpellingFixKind kind, string heading)
+        {
+            var isFirst = true;
+
+            foreach (IGrouping<SpellingFixResult, SpellingFixResult> grouping in results
+                .Where(f => f.Kind == kind)
+                .OrderBy(f => f.OldValue)
+                .ThenBy(f => f.NewValue)
+                .GroupBy(f => f, SpellingFixResultEqualityComparer.OldValueAndNewValue))
+            {
+                if (isFirst)
+                {
+                    WriteLine(Verbosity.Normal);
+                    WriteLine(heading, Verbosity.Normal);
+                    isFirst = false;
+                }
+
+                WriteLine($"{grouping.Key.OldValue}: {grouping.Key.NewValue}", Verbosity.Normal);
+
+                if (ShouldWrite(Verbosity.Detailed))
+                {
+                    foreach (IGrouping<SpellingFixResult, SpellingFixResult> grouping2 in grouping
+                        .Where(f => f.IsSymbol
+                            && !string.Equals(f.OldValue, f.OldIdentifier, StringComparison.Ordinal))
+                        .OrderBy(f => f.OldIdentifier, StringComparer.InvariantCulture)
+                        .ThenBy(f => f.NewIdentifier, StringComparer.InvariantCulture)
+                        .GroupBy(f => f, SpellingFixResultEqualityComparer.OldIdentifierAndNewIdentifier))
+                    {
+                            WriteLine($"  {grouping2.Key.OldIdentifier}: {grouping2.Key.NewIdentifier}", Verbosity.Detailed);
+                    }
                 }
             }
         }

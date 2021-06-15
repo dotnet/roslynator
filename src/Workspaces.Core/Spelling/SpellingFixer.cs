@@ -43,7 +43,7 @@ namespace Roslynator.Spelling
 
         private Solution CurrentSolution => Workspace.CurrentSolution;
 
-        public async Task FixSolutionAsync(Func<Project, bool> predicate, CancellationToken cancellationToken = default)
+        public async Task<ImmutableArray<SpellingFixResult>> FixSolutionAsync(Func<Project, bool> predicate, CancellationToken cancellationToken = default)
         {
             ImmutableArray<ProjectId> projects = CurrentSolution
                 .GetProjectDependencyGraph()
@@ -85,24 +85,8 @@ namespace Roslynator.Spelling
             stopwatch.Stop();
 
             WriteLine($"Done fixing solution '{CurrentSolution.FilePath}' in {stopwatch.Elapsed:mm\\:ss\\.ff}", Verbosity.Minimal);
-#if DEBUG
-            WriteLine(Verbosity.Normal);
 
-            foreach (IGrouping<SpellingFixResult, SpellingFixResult> grouping in results
-                .SelectMany(f => f)
-                .OrderBy(f => f.OldValue)
-                .ThenBy(f => f.NewValue)
-                .GroupBy(f => f, SpellingFixResultEqualityComparer.OldValueAndNewValue))
-            {
-                WriteLine($"{grouping.Key.OldValue} = {grouping.Key.NewValue}", Verbosity.Normal);
-
-                foreach (SpellingFixResult result in grouping)
-                {
-                    if (result.IsSymbol)
-                        WriteLine($"  {result.OldIdentifier}  {result.NewIdentifier}", Verbosity.Normal);
-                }
-            }
-#endif
+            return results.SelectMany(f => f).ToImmutableArray();
         }
 
         public async Task<ImmutableArray<SpellingFixResult>> FixProjectAsync(
@@ -276,7 +260,8 @@ namespace Roslynator.Spelling
                             results.Add(new SpellingFixResult(
                                 diagnostic.Value,
                                 fix.Value,
-                                diagnostic.Location.GetMappedLineSpan()));
+                                diagnostic.Location.GetMappedLineSpan(),
+                                fix.Kind));
 
                             ProcessFix(diagnostic, fix);
                         }
@@ -527,10 +512,11 @@ namespace Roslynator.Spelling
                     results.Add(new SpellingFixResult(
                         diagnostic.Value,
                         fix.Value,
+                        diagnostic.Location.GetMappedLineSpan(),
+                        fix.Kind,
                         diagnostic.Identifier.ValueText,
                         newName,
-                        diagnostic.Index,
-                        diagnostic.Location.GetMappedLineSpan()));
+                        diagnostic.Index));
 
                     ProcessFix(diagnostic, fix);
                 }
