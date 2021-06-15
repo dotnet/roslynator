@@ -27,6 +27,11 @@ namespace Roslynator.CodeGeneration
 
         private static readonly Regex _analyzersFileNameRegex = new Regex(@"\A(\w+\.)?Analyzers(?!\.Template)(\.\w+)?\z");
 
+        public IEnumerable<AnalyzerMetadata> GetAllAnalyzers()
+        {
+            return Analyzers.Concat(FormattingAnalyzers).Concat(CodeAnalysisAnalyzers);
+        }
+
         public ImmutableArray<AnalyzerMetadata> Analyzers
         {
             get

@@ -24,11 +24,9 @@ namespace Roslynator.CodeGeneration
 
             var metadata = new RoslynatorMetadata(rootPath);
 
-            string path = Path.Combine(rootPath, "default.roslynator.config");
-
             string content = CreateDefaultConfigFile(metadata.Refactorings, metadata.CodeFixes);
 
-            FileHelper.WriteAllText(path, content, Encoding.UTF8, onlyIfChanges: false, fileMustExists: false);
+            FileHelper.WriteAllText("default.roslynator.config", content, Encoding.UTF8, onlyIfChanges: false, fileMustExists: false);
         }
 
         public static string CreateDefaultConfigFile(

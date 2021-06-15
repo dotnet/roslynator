@@ -25,11 +25,9 @@ namespace Roslynator.CodeGeneration
 
             var metadata = new RoslynatorMetadata(rootPath);
 
-            string path = Path.Combine(rootPath, "default.ruleset");
-
             string content = CreateDefaultRuleSet(metadata, action);
 
-            FileHelper.WriteAllText(path, content, Encoding.UTF8, onlyIfChanges: false, fileMustExists: false);
+            FileHelper.WriteAllText("default.ruleset", content, Encoding.UTF8, onlyIfChanges: false, fileMustExists: false);
         }
 
         private static string CreateDefaultRuleSet(RoslynatorMetadata metadata, string action = null)
@@ -56,7 +54,7 @@ namespace Roslynator.CodeGeneration
             }
         }
 
-        private static void WriteRules(XmlWriter writer, IEnumerable<AnalyzerMetadata> analyzers, string analyzerId, string action = null)
+        private static void WriteRules(XmlWriter writer, IEnumerable<AnalyzerMetadata> analyzers, string analyzerId, string defaultAction = null)
         {
             string newLineChars = writer.Settings.NewLineChars;
             string indentChars = writer.Settings.IndentChars;
@@ -75,7 +73,7 @@ namespace Roslynator.CodeGeneration
                 writer.WriteStartElement("Rule");
                 writer.WriteAttributeString("Id", analyzer.Id);
 
-                action ??= (analyzer.IsEnabledByDefault) ? analyzer.DefaultSeverity : "None";
+                string action = defaultAction ?? ((analyzer.IsEnabledByDefault) ? analyzer.DefaultSeverity : "None");
 
                 writer.WriteAttributeString("Action", action);
                 writer.WriteEndElement();
