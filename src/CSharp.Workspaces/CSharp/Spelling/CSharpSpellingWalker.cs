@@ -99,12 +99,20 @@ namespace Roslynator.CSharp.Spelling
             if (!ShouldVisit(SpellingScopeFilter.LocalVariable
                 | SpellingScopeFilter.Field
                 | SpellingScopeFilter.Constant
-                | SpellingScopeFilter.ReturnType))
+                | SpellingScopeFilter.ReturnType
+                | SpellingScopeFilter.Class
+                | SpellingScopeFilter.Struct
+                | SpellingScopeFilter.Interface
+                | SpellingScopeFilter.Record))
             {
                 return;
             }
 
-            Debug.Assert(_stack.Count > 0);
+            if (_stack.Count == 0)
+            {
+                Debug.Fail(node.ToString());
+                return;
+            }
 
             SyntaxNode containingNode = _stack.Peek();
 
@@ -133,6 +141,34 @@ namespace Roslynator.CSharp.Spelling
                 case SyntaxKind.PropertyDeclaration:
                     {
                         if (ShouldVisit(SpellingScopeFilter.ReturnType))
+                            base.VisitTupleType(node);
+
+                        break;
+                    }
+                case SyntaxKind.ClassDeclaration:
+                    {
+                        if (ShouldVisit(SpellingScopeFilter.Class))
+                            base.VisitTupleType(node);
+
+                        break;
+                    }
+                case SyntaxKind.StructDeclaration:
+                    {
+                        if (ShouldVisit(SpellingScopeFilter.Struct))
+                            base.VisitTupleType(node);
+
+                        break;
+                    }
+                case SyntaxKind.InterfaceDeclaration:
+                    {
+                        if (ShouldVisit(SpellingScopeFilter.Interface))
+                            base.VisitTupleType(node);
+
+                        break;
+                    }
+                case SyntaxKind.RecordDeclaration:
+                    {
+                        if (ShouldVisit(SpellingScopeFilter.Record))
                             base.VisitTupleType(node);
 
                         break;
@@ -311,7 +347,9 @@ namespace Roslynator.CSharp.Spelling
             if (ShouldVisit(SpellingScopeFilter.Class))
                 AnalyzeIdentifier(node.Identifier);
 
+            _stack.Push(node);
             base.VisitClassDeclaration(node);
+            _stack.Pop();
         }
 
         public override void VisitStructDeclaration(StructDeclarationSyntax node)
@@ -319,7 +357,9 @@ namespace Roslynator.CSharp.Spelling
             if (ShouldVisit(SpellingScopeFilter.Struct))
                 AnalyzeIdentifier(node.Identifier);
 
+            _stack.Push(node);
             base.VisitStructDeclaration(node);
+            _stack.Pop();
         }
 
         public override void VisitInterfaceDeclaration(InterfaceDeclarationSyntax node)
@@ -340,7 +380,9 @@ namespace Roslynator.CSharp.Spelling
                 AnalyzeIdentifier(identifier, prefixLength: prefixLength);
             }
 
+            _stack.Push(node);
             base.VisitInterfaceDeclaration(node);
+            _stack.Pop();
         }
 
         public override void VisitRecordDeclaration(RecordDeclarationSyntax node)
@@ -348,7 +390,9 @@ namespace Roslynator.CSharp.Spelling
             if (ShouldVisit(SpellingScopeFilter.Record))
                 AnalyzeIdentifier(node.Identifier);
 
+            _stack.Push(node);
             base.VisitRecordDeclaration(node);
+            _stack.Pop();
         }
 
         public override void VisitEnumDeclaration(EnumDeclarationSyntax node)
