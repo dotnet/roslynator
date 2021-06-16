@@ -28,11 +28,6 @@ namespace Roslynator.CommandLine
     {
         private static int Main(string[] args)
         {
-            WriteLine(
-                $"Roslynator Command Line Tool version {typeof(Program).GetTypeInfo().Assembly.GetName().Version} "
-                    + $"(Roslyn version {typeof(Accessibility).GetTypeInfo().Assembly.GetName().Version})",
-                Verbosity.Normal);
-
             try
             {
                 ParserResult<object> parserResult = Parser.Default.ParseArguments<
@@ -86,6 +81,11 @@ namespace Roslynator.CommandLine
 
                 if (!verbosityParsed)
                     return ExitCodes.Error;
+
+                WriteLine(
+                    $"Roslynator Command Line Tool version {typeof(Program).GetTypeInfo().Assembly.GetName().Version} "
+                        + $"(Roslyn version {typeof(Accessibility).GetTypeInfo().Assembly.GetName().Version})",
+                    Verbosity.Normal);
 
                 return parserResult.MapResult(
 #if DEBUG
