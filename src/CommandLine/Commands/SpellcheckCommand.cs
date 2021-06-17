@@ -134,6 +134,28 @@ namespace Roslynator.CommandLine
             bool isDetailed = ShouldWrite(Verbosity.Detailed);
             StringComparer comparer = StringComparer.InvariantCulture;
 
+            if (ShouldWrite(Verbosity.Normal))
+            {
+                foreach (string containingValue in newWords
+                    .Select(f => f.ContainingValue)
+                    .Where(f => f != null)
+                    .Select(f => f!)
+                    .Distinct()
+                    .OrderBy(f => f))
+                {
+                    if (isFirst)
+                    {
+                        WriteLine(Verbosity.Normal);
+                        WriteLine("Words containing unknown words:", Verbosity.Normal);
+                        isFirst = false;
+                    }
+
+                    WriteLine(containingValue, Verbosity.Normal);
+                }
+            }
+
+            isFirst = true;
+
             foreach (IGrouping<string, NewWord> grouping in newWords
                 .GroupBy(f => f.Value, comparer)
                 .OrderBy(f => f.Key, comparer))
@@ -200,28 +222,6 @@ namespace Roslynator.CommandLine
                             WriteLine(line.Substring(endIndex, line.Length - endIndex), Verbosity.Detailed);
                         }
                     }
-                }
-            }
-
-            if (ShouldWrite(Verbosity.Detailed))
-            {
-                isFirst = true;
-
-                foreach (string containingValue in newWords
-                    .Select(f => f.ContainingValue)
-                    .Where(f => f != null)
-                    .Select(f => f!)
-                    .Distinct()
-                    .OrderBy(f => f))
-                {
-                    if (isFirst)
-                    {
-                        WriteLine(Verbosity.Normal);
-                        WriteLine("Words containing unknown words:", Verbosity.Normal);
-                        isFirst = false;
-                    }
-
-                    WriteLine(containingValue, Verbosity.Normal);
                 }
             }
 
