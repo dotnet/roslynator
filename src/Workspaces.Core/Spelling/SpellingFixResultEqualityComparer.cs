@@ -7,15 +7,15 @@ namespace Roslynator.Spelling
 {
     internal abstract class SpellingFixResultEqualityComparer : IEqualityComparer<SpellingFixResult>
     {
-        public static SpellingFixResultEqualityComparer OldValueAndNewValue { get; } = new OldValueAndNewValueComparer();
+        public static SpellingFixResultEqualityComparer ValueAndReplacement { get; } = new ValueAndReplacementComparer();
 
-        public static SpellingFixResultEqualityComparer OldIdentifierAndNewIdentifier { get; } = new OldIdentifierAndNewIdentifierComparer();
+        public static SpellingFixResultEqualityComparer ValueAndLineSpan { get; } = new ValueAndLineSpanComparer();
 
         public abstract bool Equals(SpellingFixResult x, SpellingFixResult y);
 
         public abstract int GetHashCode(SpellingFixResult obj);
 
-        private class OldValueAndNewValueComparer : SpellingFixResultEqualityComparer
+        private class ValueAndReplacementComparer : SpellingFixResultEqualityComparer
         {
             public override bool Equals(SpellingFixResult x, SpellingFixResult y)
             {
@@ -28,8 +28,8 @@ namespace Roslynator.Spelling
                 if (y == null)
                     return false;
 
-                return StringComparer.CurrentCulture.Equals(x.OldValue, y.OldValue)
-                    && StringComparer.CurrentCulture.Equals(x.NewValue, y.NewValue);
+                return StringComparer.CurrentCulture.Equals(x.Value, y.Value)
+                    && StringComparer.CurrentCulture.Equals(x.Replacement, y.Replacement);
             }
 
             public override int GetHashCode(SpellingFixResult obj)
@@ -38,12 +38,12 @@ namespace Roslynator.Spelling
                     throw new ArgumentNullException(nameof(obj));
 
                 return Hash.Combine(
-                    StringComparer.CurrentCulture.GetHashCode(obj.OldValue),
-                    StringComparer.CurrentCulture.GetHashCode(obj.NewValue));
+                    StringComparer.CurrentCulture.GetHashCode(obj.Value),
+                    StringComparer.CurrentCulture.GetHashCode(obj.Replacement));
             }
         }
 
-        private class OldIdentifierAndNewIdentifierComparer : SpellingFixResultEqualityComparer
+        private class ValueAndLineSpanComparer : SpellingFixResultEqualityComparer
         {
             public override bool Equals(SpellingFixResult x, SpellingFixResult y)
             {
@@ -56,8 +56,8 @@ namespace Roslynator.Spelling
                 if (y == null)
                     return false;
 
-                return StringComparer.CurrentCulture.Equals(x.OldIdentifier, y.OldIdentifier)
-                    && StringComparer.CurrentCulture.Equals(x.NewIdentifier, y.NewIdentifier);
+                return StringComparer.CurrentCulture.Equals(x.Value, y.Value)
+                    && StringComparer.CurrentCulture.Equals(x.LineSpan, y.LineSpan);
             }
 
             public override int GetHashCode(SpellingFixResult obj)
@@ -66,8 +66,8 @@ namespace Roslynator.Spelling
                     throw new ArgumentNullException(nameof(obj));
 
                 return Hash.Combine(
-                    StringComparer.CurrentCulture.GetHashCode(obj.OldIdentifier),
-                    StringComparer.CurrentCulture.GetHashCode(obj.NewIdentifier));
+                    StringComparer.CurrentCulture.GetHashCode(obj.Value),
+                    StringComparer.CurrentCulture.GetHashCode(obj.LineSpan));
             }
         }
     }

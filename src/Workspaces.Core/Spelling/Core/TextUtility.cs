@@ -6,6 +6,33 @@ namespace Roslynator.Spelling
 {
     internal static class TextUtility
     {
+        public static int GetLineStartIndex(string input, int index)
+        {
+            while (index > 0
+                && input[index - 1] != '\n')
+            {
+                index--;
+            }
+
+            return index;
+        }
+
+        public static int GetLineEndIndex(string input, int index)
+        {
+            while (index < input.Length)
+            {
+                if (input[index] == '\r'
+                    || input[index] == '\n')
+                {
+                    return index;
+                }
+
+                index++;
+            }
+
+            return input.Length;
+        }
+
         public static string ReplaceRange(string value, string replacement, int index, int length)
         {
             int endIndex = index + length;

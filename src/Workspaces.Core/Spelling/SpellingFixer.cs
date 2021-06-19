@@ -39,8 +39,6 @@ namespace Roslynator.Spelling
 
         public SpellingFixerOptions Options { get; }
 
-        public List<NewWord> NewWords { get; } = new List<NewWord>();
-
         private Solution CurrentSolution => Workspace.CurrentSolution;
 
         public async Task<ImmutableArray<SpellingFixResult>> FixSolutionAsync(Func<Project, bool> predicate, CancellationToken cancellationToken = default)
@@ -235,6 +233,8 @@ namespace Roslynator.Spelling
 
                 SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
 
+                string sourceTextText = null;
+
                 List<TextChange> textChanges = null;
 
                 foreach (SpellingDiagnostic diagnostic in grouping.OrderBy(f => f.Span.Start))
@@ -257,24 +257,15 @@ namespace Roslynator.Spelling
                             if (!Options.DryRun)
                                 (textChanges ??= new List<TextChange>()).Add(new TextChange(diagnostic.Span, fix.Value));
 
-                            results.Add(new SpellingFixResult(
-                                diagnostic.Value,
-                                fix.Value,
-                                diagnostic.Location.GetMappedLineSpan(),
-                                fix.Kind));
-
                             ProcessFix(diagnostic, fix);
                         }
                         else
                         {
                             AddIgnoredValue(diagnostic);
-                            AddNewWord(diagnostic, sourceText);
                         }
                     }
-                    else
-                    {
-                        AddNewWord(diagnostic, sourceText);
-                    }
+
+                    results.Add(SpellingFixResult.Create(sourceTextText ??= sourceText.ToString(), diagnostic, fix));
                 }
 
                 if (textChanges != null)
@@ -374,6 +365,8 @@ namespace Roslynator.Spelling
 
                 SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
 
+                string sourceTextText = null;
+
                 SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
                 ISymbol symbol = semanticModel.GetDeclaredSymbol(node, cancellationToken)
@@ -446,12 +439,12 @@ namespace Roslynator.Spelling
                             }
 
                             AddIgnoredValue(diagnostic);
-                            AddNewWord(diagnostic, sourceText);
+                            results.Add(SpellingFixResult.Create(sourceTextText ??= sourceText.ToString(), diagnostic));
                         }
                     }
                     else
                     {
-                        AddNewWord(diagnostic, sourceText);
+                        results.Add(SpellingFixResult.Create(sourceTextText ??= sourceText.ToString(), diagnostic));
                     }
                 }
 
@@ -509,14 +502,7 @@ namespace Roslynator.Spelling
                     if (fix.IsDefault)
                         continue;
 
-                    results.Add(new SpellingFixResult(
-                        diagnostic.Value,
-                        fix.Value,
-                        diagnostic.Location.GetMappedLineSpan(),
-                        fix.Kind,
-                        diagnostic.Identifier.ValueText,
-                        newName,
-                        diagnostic.Index));
+                    results.Add(SpellingFixResult.Create(sourceTextText ??= sourceText.ToString(), diagnostic, fix));
 
                     ProcessFix(diagnostic, fix);
                 }
@@ -621,17 +607,6 @@ namespace Roslynator.Spelling
             }
 
             SpellingData = SpellingData.AddWord(spellingFix.Value);
-        }
-
-        private void AddNewWord(SpellingDiagnostic diagnostic, SourceText sourceText)
-        {
-            var newWord = new NewWord(
-                diagnostic.Value,
-                sourceText.Lines.GetLineFromPosition(diagnostic.Index).ToString(),
-                diagnostic.Location.GetLineSpan(),
-                diagnostic.Parent);
-
-            NewWords.Add(newWord);
         }
 
         private void AddIgnoredValue(SpellingDiagnostic diagnostic)
