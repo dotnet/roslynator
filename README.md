@@ -22,9 +22,8 @@ A collection of 500+ [analyzers](src/Analyzers/README.md), [refactorings](src/Re
 
 ### Donation
 
-> "It's so good, that I made my first ever donation." Mateusz Piasecki, Roslynator user.
-
-Although Roslynator products are free of charge, any [donation](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=BX85UA346VTN6) is welcome and supports further development.
+* Although Roslynator products are free of charge, any [donation](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=BX85UA346VTN6) is welcome and supports further development.
+* [List of donations](Donations.md)
 
 ## Extensions for Visual Studio
 
