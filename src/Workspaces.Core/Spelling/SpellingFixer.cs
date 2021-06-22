@@ -233,7 +233,7 @@ namespace Roslynator.Spelling
 
                 SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
 
-                string sourceTextText = null;
+                string sourceTextText = (ShouldWrite(Verbosity.Detailed)) ? sourceText.ToString() : null;
 
                 List<TextChange> textChanges = null;
 
@@ -257,15 +257,20 @@ namespace Roslynator.Spelling
                             if (!Options.DryRun)
                                 (textChanges ??= new List<TextChange>()).Add(new TextChange(diagnostic.Span, fix.Value));
 
+                            results.Add(SpellingFixResult.Create(sourceTextText, diagnostic, fix));
+
                             ProcessFix(diagnostic, fix);
                         }
                         else
                         {
                             AddIgnoredValue(diagnostic);
+                            results.Add(SpellingFixResult.Create(sourceTextText, diagnostic));
                         }
                     }
-
-                    results.Add(SpellingFixResult.Create(sourceTextText ??= sourceText.ToString(), diagnostic, fix));
+                    else
+                    {
+                        results.Add(SpellingFixResult.Create(sourceTextText, diagnostic));
+                    }
                 }
 
                 if (textChanges != null)
@@ -414,13 +419,15 @@ namespace Roslynator.Spelling
                     LogHelpers.WriteSpellingDiagnostic(diagnostic, Options, sourceText, Path.GetDirectoryName(project.FilePath), "    ", Verbosity.Normal);
 
                     SpellingFix fix = GetFix(diagnostic);
-                    fixes.Add((diagnostic, fix));
 
                     if (!fix.IsDefault)
                     {
                         if (!string.Equals(diagnostic.Value, fix.Value, StringComparison.Ordinal))
                         {
                             WriteFix(diagnostic, fix);
+
+                            fixes.Add((diagnostic, fix));
+
                             newName = TextUtility.ReplaceRange(newName, fix.Value, diagnostic.Offset + indexOffset, diagnostic.Length);
 
                             indexOffset += fix.Value.Length - diagnostic.Length;
@@ -439,12 +446,12 @@ namespace Roslynator.Spelling
                             }
 
                             AddIgnoredValue(diagnostic);
-                            results.Add(SpellingFixResult.Create(sourceTextText ??= sourceText.ToString(), diagnostic));
+                            AddResult(results, diagnostic, default(SpellingFix), sourceText, ref sourceTextText);
                         }
                     }
                     else
                     {
-                        results.Add(SpellingFixResult.Create(sourceTextText ??= sourceText.ToString(), diagnostic));
+                        AddResult(results, diagnostic, default(SpellingFix), sourceText, ref sourceTextText);
                     }
                 }
 
@@ -499,16 +506,31 @@ namespace Roslynator.Spelling
 
                 foreach ((SpellingDiagnostic diagnostic, SpellingFix fix) in fixes)
                 {
-                    if (fix.IsDefault)
-                        continue;
-
-                    results.Add(SpellingFixResult.Create(sourceTextText ??= sourceText.ToString(), diagnostic, fix));
+                    AddResult(results, diagnostic, fix, sourceText, ref sourceTextText);
 
                     ProcessFix(diagnostic, fix);
                 }
             }
 
             return (results, allIgnored);
+
+            static void AddResult(
+                List<SpellingFixResult> results,
+                SpellingDiagnostic diagnostic,
+                SpellingFix fix,
+                SourceText sourceText,
+                ref string sourceTextText)
+            {
+                if (sourceTextText == null)
+                    sourceTextText = (ShouldWrite(Verbosity.Detailed)) ? sourceText.ToString() : "";
+
+                SpellingFixResult result = SpellingFixResult.Create(
+                    (sourceTextText.Length == 0) ? null : sourceTextText,
+                    diagnostic,
+                    fix);
+
+                results.Add(result);
+            }
         }
 
         private SpellingFix GetParentFix(SpellingDiagnostic diagnostic)

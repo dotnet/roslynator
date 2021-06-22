@@ -13,35 +13,35 @@ namespace Roslynator.Spelling
         private int _lineEndIndex = -1;
 
         private SpellingFixResult(
-            string input,
+            string sourceText,
             SpellingCapture capture,
             TextSpan span,
             SpellingFix fix,
             FileLinePositionSpan lineSpan)
         {
-            Input = input;
+            SourceText = sourceText;
             Capture = capture;
             Span = span;
             Fix = fix;
             LineSpan = lineSpan;
         }
 
-        public static SpellingFixResult Create(string input, SpellingDiagnostic diagnostic)
+        public static SpellingFixResult Create(string sourceText, SpellingDiagnostic diagnostic)
         {
-            return Create(input, diagnostic, default);
+            return Create(sourceText, diagnostic, default);
         }
 
-        public static SpellingFixResult Create(string input, SpellingDiagnostic diagnostic, SpellingFix fix)
+        public static SpellingFixResult Create(string sourceText, SpellingDiagnostic diagnostic, SpellingFix fix)
         {
             return new SpellingFixResult(
-                input,
+                sourceText,
                 new SpellingCapture(diagnostic.Value, diagnostic.Index, diagnostic.Parent, diagnostic.ParentIndex),
                 diagnostic.Span,
                 fix,
                 diagnostic.Location.GetMappedLineSpan());
         }
 
-        public string Input { get; }
+        public string SourceText { get; }
 
         public SpellingCapture Capture { get; }
 
@@ -90,7 +90,7 @@ namespace Roslynator.Spelling
             get
             {
                 if (_lineEndIndex == -1)
-                    _lineEndIndex = TextUtility.GetLineEndIndex(Input, Index + Length);
+                    _lineEndIndex = TextUtility.GetLineEndIndex(SourceText, Index + Length);
 
                 return _lineEndIndex;
             }

@@ -246,6 +246,7 @@ namespace Roslynator.CommandLine
                 WriteLine(grouping2.Key, ConsoleColor.Cyan, Verbosity.Detailed);
 
                 foreach (SpellingFixResult result in grouping2
+                    .Where(f => f.SourceText != null)
                     .Distinct(SpellingFixResultEqualityComparer.ValueAndLineSpan)
                     .OrderBy(f => f.LineNumber)
                     .ThenBy(f => f.LineSpan.StartLinePosition.Character))
@@ -274,11 +275,11 @@ namespace Roslynator.CommandLine
                         endIndex = result.Index + result.Length;
                     }
 
-                    Write(result.Input.Substring(lineStartIndex, index - lineStartIndex), Verbosity.Detailed);
+                    Write(result.SourceText.Substring(lineStartIndex, index - lineStartIndex), Verbosity.Detailed);
                     Out?.Write(">>>", Verbosity.Detailed);
                     Write(value, color, Verbosity.Detailed);
                     Out?.Write("<<<", Verbosity.Detailed);
-                    WriteLine(result.Input.Substring(endIndex, lineEndIndex - endIndex), Verbosity.Detailed);
+                    WriteLine(result.SourceText.Substring(endIndex, lineEndIndex - endIndex), Verbosity.Detailed);
                 }
             }
         }
@@ -387,6 +388,7 @@ namespace Roslynator.CommandLine
                         writer.WriteLine(grouping.Key);
 
                         foreach (IGrouping<string, SpellingFixResult> grouping2 in grouping
+                            .Where(f => f.SourceText != null)
                             .GroupBy(f => f.FilePath)
                             .OrderBy(f => f.Key, comparer))
                         {
@@ -405,11 +407,11 @@ namespace Roslynator.CommandLine
                                 int index = result.Index;
                                 int endIndex = result.Index + result.Length;
 
-                                Write(result.Input.Substring(lineStartIndex, index - lineStartIndex), Verbosity.Detailed);
+                                Write(result.SourceText.Substring(lineStartIndex, index - lineStartIndex), Verbosity.Detailed);
                                 Out?.Write(">>>", Verbosity.Detailed);
                                 Write(value, ConsoleColor.Green, Verbosity.Detailed);
                                 Out?.Write("<<<", Verbosity.Detailed);
-                                WriteLine(result.Input.Substring(endIndex, lineEndIndex - endIndex), Verbosity.Detailed);
+                                WriteLine(result.SourceText.Substring(endIndex, lineEndIndex - endIndex), Verbosity.Detailed);
                             }
                         }
                     }
