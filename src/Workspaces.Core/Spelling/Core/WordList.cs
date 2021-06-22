@@ -39,7 +39,7 @@ namespace Roslynator.Spelling
 
             Sequences = sequences?
                 .GroupBy(f => f.First, Comparer)
-                .ToImmutableDictionary(f => f.Key, f => f.ToImmutableArray())
+                .ToImmutableDictionary(f => f.Key, f => f.ToImmutableArray(), Comparer)
                 ?? ImmutableDictionary<string, ImmutableArray<WordSequence>>.Empty;
         }
 
