@@ -3,12 +3,12 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Diagnostics;
-using System.Threading.Tasks;
+using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.CSharp.Syntax;
 using Roslynator.CSharp.SyntaxWalkers;
 
 namespace Roslynator.CSharp.Analysis
@@ -63,7 +63,7 @@ namespace Roslynator.CSharp.Analysis
                     return;
             }
 
-            if (IsFixable(body))
+            if (IsFixable(body, context))
                 DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseAsyncAwait, methodDeclaration.Identifier);
         }
 
@@ -90,7 +90,7 @@ namespace Roslynator.CSharp.Analysis
                     return;
             }
 
-            if (IsFixable(body))
+            if (IsFixable(body, context))
                 DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseAsyncAwait, localFunction.Identifier);
         }
 
@@ -110,7 +110,7 @@ namespace Roslynator.CSharp.Analysis
             if (!IsTaskLike(methodSymbol.ReturnType))
                 return;
 
-            if (IsFixable(body))
+            if (IsFixable(body, context))
                 DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseAsyncAwait, simpleLambda);
         }
 
@@ -130,7 +130,7 @@ namespace Roslynator.CSharp.Analysis
             if (!IsTaskLike(methodSymbol.ReturnType))
                 return;
 
-            if (IsFixable(body))
+            if (IsFixable(body, context))
                 DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseAsyncAwait, parenthesizedLambda);
         }
 
@@ -152,21 +152,27 @@ namespace Roslynator.CSharp.Analysis
             if (!IsTaskLike(methodSymbol.ReturnType))
                 return;
 
-            if (IsFixable(body))
+            if (IsFixable(body, context))
                 DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseAsyncAwait, anonymousMethod);
         }
 
-        private static bool IsFixable(BlockSyntax body)
+        private static bool IsFixable(BlockSyntax body, SyntaxNodeAnalysisContext context)
         {
-            UseAsyncAwaitWalker walker = UseAsyncAwaitWalker.GetInstance();
+            UseAsyncAwaitWalker walker = null;
 
-            walker.VisitBlock(body);
+            try
+            {
+                walker = UseAsyncAwaitWalker.GetInstance(context.SemanticModel, context.CancellationToken);
 
-            ReturnStatementSyntax returnStatement = walker.ReturnStatement;
+                walker.VisitBlock(body);
 
-            UseAsyncAwaitWalker.Free(walker);
-
-            return returnStatement != null;
+                return walker.ReturnStatement != null;
+            }
+            finally
+            {
+                if (walker != null)
+                    UseAsyncAwaitWalker.Free(walker);
+            }
         }
 
         private static bool IsTaskLike(ITypeSymbol typeSymbol)
@@ -211,12 +217,9 @@ namespace Roslynator.CSharp.Analysis
 
             public ReturnStatementSyntax ReturnStatement { get; private set; }
 
-            private void Reset()
-            {
-                _shouldVisit = true;
-                _usingDeclarations.Clear();
-                ReturnStatement = null;
-            }
+            public SemanticModel SemanticModel { get; private set; }
+
+            public CancellationToken CancellationToken { get; private set; }
 
             public override void VisitUsingStatement(UsingStatementSyntax node)
             {
@@ -287,15 +290,60 @@ namespace Roslynator.CSharp.Analysis
                 {
                     ExpressionSyntax expression = node.Expression;
 
-                    if (expression?.IsKind(SyntaxKind.AwaitExpression) == false)
+                    if (expression?.IsKind(SyntaxKind.AwaitExpression) == false
+                        && !IsCompletedTask(expression))
                     {
                         ReturnStatement = node;
+                        _shouldVisit = false;
                     }
-
-                    _shouldVisit = false;
                 }
 
                 base.VisitReturnStatement(node);
+            }
+
+            private bool IsCompletedTask(ExpressionSyntax expression)
+            {
+                if (expression.IsKind(SyntaxKind.SimpleMemberAccessExpression))
+                {
+                    var simpleMemberAccess = (MemberAccessExpressionSyntax)expression;
+
+                    return string.Equals(simpleMemberAccess.Name.Identifier.ValueText, "CompletedTask", StringComparison.Ordinal)
+                        && SemanticModel.GetSymbol(expression, CancellationToken) is IPropertySymbol propertySymbol
+                        && IsTaskOrTaskOrT(propertySymbol.ContainingType);
+                }
+                else
+                {
+                    SimpleMemberInvocationExpressionInfo memberInvocation = SyntaxInfo.SimpleMemberInvocationExpressionInfo(expression);
+
+                    if (memberInvocation.Success)
+                    {
+                        switch (memberInvocation.NameText)
+                        {
+                            case "FromCanceled":
+                            case "FromException":
+                            case "FromResult":
+                                {
+                                    if (SemanticModel.GetSymbol(expression, CancellationToken) is IMethodSymbol methodSymbol
+                                        && (methodSymbol.Arity == 0 || methodSymbol.Arity == 1)
+                                        && methodSymbol.Parameters.Length == 1
+                                        && IsTaskOrTaskOrT(methodSymbol.ContainingType))
+                                    {
+                                        return true;
+                                    }
+
+                                    break;
+                                }
+                        }
+                    }
+                }
+
+                return false;
+            }
+
+            private static bool IsTaskOrTaskOrT(INamedTypeSymbol typeSymbol)
+            {
+                return typeSymbol.HasMetadataName(MetadataNames.System_Threading_Tasks_Task)
+                    || typeSymbol.HasMetadataName(MetadataNames.System_Threading_Tasks_Task_T);
             }
 
             public override void VisitLocalFunctionStatement(LocalFunctionStatementSyntax node)
@@ -314,24 +362,33 @@ namespace Roslynator.CSharp.Analysis
             {
             }
 
-            public static UseAsyncAwaitWalker GetInstance()
+            public static UseAsyncAwaitWalker GetInstance(SemanticModel semanticModel, CancellationToken cancellationToken)
             {
                 UseAsyncAwaitWalker walker = _cachedInstance;
 
                 if (walker != null)
                 {
-                    Debug.Assert(walker.ReturnStatement == null);
-
                     _cachedInstance = null;
-                    return walker;
+                }
+                else
+                {
+                    walker = new UseAsyncAwaitWalker();
                 }
 
-                return new UseAsyncAwaitWalker();
+                walker.SemanticModel = semanticModel;
+                walker.CancellationToken = cancellationToken;
+
+                return walker;
             }
 
             public static void Free(UseAsyncAwaitWalker walker)
             {
-                walker.Reset();
+                walker._shouldVisit = true;
+                walker._usingDeclarations.Clear();
+                walker.ReturnStatement = null;
+                walker.SemanticModel = null;
+                walker.CancellationToken = default;
+
                 _cachedInstance = walker;
             }
         }

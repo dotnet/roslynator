@@ -477,5 +477,119 @@ public class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
+        public async Task TestNoDiagnostic_TaskCompletedTask()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System.Threading;
+using System.Threading.Tasks;
+
+class C
+{
+    Task M(CancellationToken cancellationToken)
+    {
+        using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+
+        return Task.CompletedTask;
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
+        public async Task TestNoDiagnostic_TaskFromCanceled()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System.Threading;
+using System.Threading.Tasks;
+
+class C
+{
+    Task M(CancellationToken cancellationToken)
+    {
+        using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+
+        return Task.FromCanceled(cancellationToken);
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
+        public async Task TestNoDiagnostic_TaskFromException()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System.Threading;
+using System.Threading.Tasks;
+
+class C
+{
+    Task M(CancellationToken cancellationToken)
+    {
+        using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+
+        return Task.FromException(default(System.Exception));
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
+        public async Task TestNoDiagnostic_TaskOfTFromResult()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System.Threading;
+using System.Threading.Tasks;
+
+class C
+{
+    Task<int> M(CancellationToken cancellationToken)
+    {
+        using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+
+        return Task.FromResult(1);
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
+        public async Task TestNoDiagnostic_TaskOfTFromCanceled()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System.Threading;
+using System.Threading.Tasks;
+
+class C
+{
+    Task<int> M(CancellationToken cancellationToken)
+    {
+        using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+
+        return Task.FromCanceled<int>(cancellationToken);
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
+        public async Task TestNoDiagnostic_TaskOfTFromException()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System.Threading;
+using System.Threading.Tasks;
+
+class C
+{
+    Task<int> M(CancellationToken cancellationToken)
+    {
+        using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+
+        return Task.FromException<int>(default(System.Exception));
+    }
+}
+");
+        }
     }
 }
