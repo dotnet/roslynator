@@ -201,44 +201,51 @@ namespace Roslynator.CSharp.Analysis
                 && !propertySymbol.IsStatic
                 && (propertySymbol.IsVirtual || propertySymbol.IsOverride);
 
-            UseAutoPropertyWalker walker = UseAutoPropertyWalker.GetInstance();
-
             var isFixable = false;
+            UseAutoPropertyWalker walker = null;
 
-            ImmutableArray<SyntaxReference> syntaxReferences = containingType.DeclaringSyntaxReferences;
-
-            if (syntaxReferences.Length == 1)
+            try
             {
-                walker.SetValues(fieldSymbol, shouldSearchForReferenceInInstanceConstructor, semanticModel, cancellationToken);
+                walker = UseAutoPropertyWalker.GetInstance();
 
-                walker.Visit(propertyDeclaration.Parent);
+                ImmutableArray<SyntaxReference> syntaxReferences = containingType.DeclaringSyntaxReferences;
 
-                isFixable = walker.Success;
-            }
-            else
-            {
-                foreach (SyntaxReference syntaxReference in syntaxReferences)
+                if (syntaxReferences.Length == 1)
                 {
-                    SyntaxNode typeDeclaration = syntaxReference.GetSyntax(cancellationToken);
-
-                    if (typeDeclaration.SyntaxTree != semanticModel.SyntaxTree)
-                    {
-                        isFixable = false;
-                        break;
-                    }
-
                     walker.SetValues(fieldSymbol, shouldSearchForReferenceInInstanceConstructor, semanticModel, cancellationToken);
 
-                    walker.Visit(typeDeclaration);
+                    walker.Visit(propertyDeclaration.Parent);
 
                     isFixable = walker.Success;
+                }
+                else
+                {
+                    foreach (SyntaxReference syntaxReference in syntaxReferences)
+                    {
+                        SyntaxNode typeDeclaration = syntaxReference.GetSyntax(cancellationToken);
 
-                    if (!isFixable)
-                        break;
+                        if (typeDeclaration.SyntaxTree != semanticModel.SyntaxTree)
+                        {
+                            isFixable = false;
+                            break;
+                        }
+
+                        walker.SetValues(fieldSymbol, shouldSearchForReferenceInInstanceConstructor, semanticModel, cancellationToken);
+
+                        walker.Visit(typeDeclaration);
+
+                        isFixable = walker.Success;
+
+                        if (!isFixable)
+                            break;
+                    }
                 }
             }
-
-            UseAutoPropertyWalker.Free(walker);
+            finally
+            {
+                if (walker != null)
+                    UseAutoPropertyWalker.Free(walker);
+            }
 
             return isFixable;
         }

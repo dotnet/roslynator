@@ -164,59 +164,64 @@ namespace Roslynator.CSharp.Analysis
             if (walker == null)
                 return;
 
-            if (walker.Parameters.Count > 0)
+            try
             {
-                walker.SemanticModel = semanticModel;
-                walker.CancellationToken = cancellationToken;
-
-                if (bodyOrExpressionBody.IsKind(SyntaxKind.Block))
-                {
-                    walker.VisitBlock((BlockSyntax)bodyOrExpressionBody);
-                }
-                else
-                {
-                    walker.VisitArrowExpressionClause((ArrowExpressionClauseSyntax)bodyOrExpressionBody);
-                }
-
                 if (walker.Parameters.Count > 0)
                 {
-                    DataFlowAnalysis analysis = (bodyOrExpressionBody.IsKind(SyntaxKind.Block))
-                        ? semanticModel.AnalyzeDataFlow((BlockSyntax)bodyOrExpressionBody)
-                        : semanticModel.AnalyzeDataFlow(((ArrowExpressionClauseSyntax)bodyOrExpressionBody).Expression);
+                    walker.SemanticModel = semanticModel;
+                    walker.CancellationToken = cancellationToken;
 
-                    bool? isReferencedAsMethodGroup = null;
-
-                    foreach (KeyValuePair<string, IParameterSymbol> kvp in walker.Parameters)
+                    if (bodyOrExpressionBody.IsKind(SyntaxKind.Block))
                     {
-                        var isAssigned = false;
+                        walker.VisitBlock((BlockSyntax)bodyOrExpressionBody);
+                    }
+                    else
+                    {
+                        walker.VisitArrowExpressionClause((ArrowExpressionClauseSyntax)bodyOrExpressionBody);
+                    }
 
-                        foreach (ISymbol assignedSymbol in analysis.AlwaysAssigned)
+                    if (walker.Parameters.Count > 0)
+                    {
+                        DataFlowAnalysis analysis = (bodyOrExpressionBody.IsKind(SyntaxKind.Block))
+                            ? semanticModel.AnalyzeDataFlow((BlockSyntax)bodyOrExpressionBody)
+                            : semanticModel.AnalyzeDataFlow(((ArrowExpressionClauseSyntax)bodyOrExpressionBody).Expression);
+
+                        bool? isReferencedAsMethodGroup = null;
+
+                        foreach (KeyValuePair<string, IParameterSymbol> kvp in walker.Parameters)
                         {
-                            if (SymbolEqualityComparer.Default.Equals(assignedSymbol, kvp.Value))
+                            var isAssigned = false;
+
+                            foreach (ISymbol assignedSymbol in analysis.AlwaysAssigned)
                             {
-                                isAssigned = true;
-                                break;
+                                if (SymbolEqualityComparer.Default.Equals(assignedSymbol, kvp.Value))
+                                {
+                                    isAssigned = true;
+                                    break;
+                                }
                             }
-                        }
 
-                        if (isAssigned)
-                            continue;
+                            if (isAssigned)
+                                continue;
 
-                        if (isReferencedAsMethodGroup ??= IsReferencedAsMethodGroup())
-                            break;
+                            if (isReferencedAsMethodGroup ??= IsReferencedAsMethodGroup())
+                                break;
 
-                        if (kvp.Value.GetSyntaxOrDefault(cancellationToken) is ParameterSyntax parameter)
-                        {
-                            DiagnosticHelpers.ReportDiagnostic(
-                                context,
-                                DiagnosticRules.MakeParameterRefReadOnly,
-                                parameter.Identifier);
+                            if (kvp.Value.GetSyntaxOrDefault(cancellationToken) is ParameterSyntax parameter)
+                            {
+                                DiagnosticHelpers.ReportDiagnostic(
+                                    context,
+                                    DiagnosticRules.MakeParameterRefReadOnly,
+                                    parameter.Identifier);
+                            }
                         }
                     }
                 }
             }
-
-            SyntaxWalker.Free(walker);
+            finally
+            {
+                SyntaxWalker.Free(walker);
+            }
 
             bool IsReferencedAsMethodGroup()
             {

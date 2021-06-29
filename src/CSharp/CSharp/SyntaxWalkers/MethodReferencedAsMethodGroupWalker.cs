@@ -95,23 +95,18 @@ namespace Roslynator.CSharp.SyntaxWalkers
             {
                 walker = GetInstance();
 
-                Debug.Assert(walker.Symbol == null, "");
-                Debug.Assert(walker.SemanticModel == null, "");
-
                 walker.Symbol = methodSymbol;
                 walker.SemanticModel = semanticModel;
                 walker.CancellationToken = cancellationToken;
 
                 walker.Visit(node);
+
+                result = walker.Result;
             }
             finally
             {
                 if (walker != null)
-                {
-                    result = walker.Result;
-
                     Free(walker);
-                }
             }
 
             return result;

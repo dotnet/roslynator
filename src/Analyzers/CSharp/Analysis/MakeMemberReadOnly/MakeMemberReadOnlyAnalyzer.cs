@@ -47,15 +47,33 @@ namespace Roslynator.CSharp.Analysis.MakeMemberReadOnly
             if (typeDeclaration.Modifiers.Contains(SyntaxKind.PartialKeyword))
                 return;
 
+            MakeMemberReadOnlyWalker walker = null;
+
+            try
+            {
+                walker = MakeMemberReadOnlyWalker.GetInstance();
+
+                walker.SemanticModel = context.SemanticModel;
+                walker.CancellationToken = context.CancellationToken;
+
+                AnalyzeTypeDeclaration(context, typeDeclaration, walker);
+            }
+            finally
+            {
+                if (walker != null)
+                    MakeMemberReadOnlyWalker.Free(walker);
+            }
+        }
+
+        private static void AnalyzeTypeDeclaration(
+            SyntaxNodeAnalysisContext context,
+            TypeDeclarationSyntax typeDeclaration,
+            MakeMemberReadOnlyWalker walker)
+        {
             bool skipField = !DiagnosticRules.MakeFieldReadOnly.IsEffective(context);
 
             bool skipProperty = !DiagnosticRules.UseReadOnlyAutoProperty.IsEffective(context)
                 || ((CSharpCompilation)context.Compilation).LanguageVersion < LanguageVersion.CSharp6;
-
-            MakeMemberReadOnlyWalker walker = MakeMemberReadOnlyWalker.GetInstance();
-
-            walker.SemanticModel = context.SemanticModel;
-            walker.CancellationToken = context.CancellationToken;
 
             Dictionary<string, (SyntaxNode node, ISymbol symbol)> symbols = walker.Symbols;
 
@@ -157,24 +175,22 @@ namespace Roslynator.CSharp.Analysis.MakeMemberReadOnly
                     }
                 }
             }
+        }
 
-            MakeMemberReadOnlyWalker.Free(walker);
-
-            static bool AnalyzePropertyAttributes(IPropertySymbol propertySymbol)
+        private static bool AnalyzePropertyAttributes(IPropertySymbol propertySymbol)
+        {
+            foreach (AttributeData attributeData in propertySymbol.GetAttributes())
             {
-                foreach (AttributeData attributeData in propertySymbol.GetAttributes())
-                {
-                    INamedTypeSymbol attributeClass = attributeData.AttributeClass;
+                INamedTypeSymbol attributeClass = attributeData.AttributeClass;
 
-                    if (string.Equals(attributeClass.Name, "DependencyAttribute", StringComparison.Ordinal))
-                        return false;
+                if (string.Equals(attributeClass.Name, "DependencyAttribute", StringComparison.Ordinal))
+                    return false;
 
-                    if (attributeClass.HasMetadataName(MetadataNames.System_Runtime_Serialization_DataMemberAttribute))
-                        return false;
-                }
-
-                return true;
+                if (attributeClass.HasMetadataName(MetadataNames.System_Runtime_Serialization_DataMemberAttribute))
+                    return false;
             }
+
+            return true;
         }
 
         private static bool ValidateType(ITypeSymbol type)

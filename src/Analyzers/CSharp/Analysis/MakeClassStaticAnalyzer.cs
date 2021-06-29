@@ -68,18 +68,27 @@ namespace Roslynator.CSharp.Analysis
             if (!AnalyzeMembers(members))
                 return;
 
-            MakeClassStaticWalker walker = MakeClassStaticWalker.GetInstance();
+            bool canBeMadeStatic;
+            MakeClassStaticWalker walker = null;
 
-            walker.CanBeMadeStatic = true;
-            walker.Symbol = symbol;
-            walker.SemanticModel = context.SemanticModel;
-            walker.CancellationToken = context.CancellationToken;
+            try
+            {
+                walker = MakeClassStaticWalker.GetInstance();
 
-            walker.Visit(classDeclaration);
+                walker.CanBeMadeStatic = true;
+                walker.Symbol = symbol;
+                walker.SemanticModel = context.SemanticModel;
+                walker.CancellationToken = context.CancellationToken;
 
-            bool canBeMadeStatic = walker.CanBeMadeStatic;
+                walker.Visit(classDeclaration);
 
-            MakeClassStaticWalker.Free(walker);
+                canBeMadeStatic = walker.CanBeMadeStatic;
+            }
+            finally
+            {
+                if (walker != null)
+                    MakeClassStaticWalker.Free(walker);
+            }
 
             if (canBeMadeStatic)
                 DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.MakeClassStatic, classDeclaration.Identifier);

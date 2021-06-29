@@ -152,14 +152,5 @@ namespace Roslynator.CSharp.SyntaxWalkers
 
             _cachedInstance = walker;
         }
-
-        public static bool GetResultAndFree(ContainsLocalOrParameterReferenceWalker walker)
-        {
-            bool result = walker.Result;
-
-            Free(walker);
-
-            return result;
-        }
     }
 }

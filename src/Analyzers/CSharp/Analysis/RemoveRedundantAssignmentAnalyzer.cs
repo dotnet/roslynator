@@ -227,18 +227,28 @@ namespace Roslynator.CSharp.Analysis
             if (IsAssignedInsideAnonymousFunctionButDeclaredOutsideOfIt())
                 return;
 
-            RemoveRedundantAssignmentWalker walker = RemoveRedundantAssignmentWalker.GetInstance();
+            bool result;
+            RemoveRedundantAssignmentWalker walker = null;
 
-            walker.Symbol = symbol;
-            walker.SemanticModel = context.SemanticModel;
-            walker.CancellationToken = context.CancellationToken;
-            walker.Result = false;
+            try
+            {
+                walker = RemoveRedundantAssignmentWalker.GetInstance();
 
-            walker.Visit(assignmentInfo.Right);
+                walker.Symbol = symbol;
+                walker.SemanticModel = context.SemanticModel;
+                walker.CancellationToken = context.CancellationToken;
+                walker.Result = false;
 
-            bool result = walker.Result;
+                walker.Visit(assignmentInfo.Right);
 
-            RemoveRedundantAssignmentWalker.Free(walker);
+                result = walker.Result;
+
+            }
+            finally
+            {
+                if (walker != null)
+                    RemoveRedundantAssignmentWalker.Free(walker);
+            }
 
             if (result)
                 return;

@@ -52,17 +52,26 @@ namespace Roslynator.CSharp.Analysis
             if (symbol?.IsErrorType() != false)
                 return;
 
-            Walker walker = Walker.GetInstance();
+            ExpressionSyntax expression = null;
+            Walker walker = null;
 
-            walker.Symbol = symbol;
-            walker.SemanticModel = semanticModel;
-            walker.CancellationToken = cancellationToken;
+            try
+            {
+                walker = Walker.GetInstance();
 
-            walker.VisitBlock(catchClause.Block);
+                walker.Symbol = symbol;
+                walker.SemanticModel = semanticModel;
+                walker.CancellationToken = cancellationToken;
 
-            ExpressionSyntax expression = walker.ThrowStatement?.Expression;
+                walker.VisitBlock(catchClause.Block);
 
-            Walker.Free(walker);
+                expression = walker.ThrowStatement?.Expression;
+            }
+            finally
+            {
+                if (walker != null)
+                    Walker.Free(walker);
+            }
 
             if (expression != null)
             {

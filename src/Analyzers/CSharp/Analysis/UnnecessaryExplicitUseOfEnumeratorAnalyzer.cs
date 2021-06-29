@@ -70,15 +70,24 @@ namespace Roslynator.CSharp.Analysis
             if (!string.Equals(invocationInfo2.NameText, WellKnownMemberNames.GetEnumeratorMethodName, StringComparison.Ordinal))
                 return;
 
-            UnnecessaryUsageOfEnumeratorWalker walker = UnnecessaryUsageOfEnumeratorWalker.GetInstance();
+            bool? isFixable;
+            UnnecessaryUsageOfEnumeratorWalker walker = null;
 
-            walker.SetValues(declarator, context.SemanticModel, context.CancellationToken);
+            try
+            {
+                walker = UnnecessaryUsageOfEnumeratorWalker.GetInstance();
 
-            walker.Visit(whileStatement.Statement);
+                walker.SetValues(declarator, context.SemanticModel, context.CancellationToken);
 
-            bool? isFixable = walker.IsFixable;
+                walker.Visit(whileStatement.Statement);
 
-            UnnecessaryUsageOfEnumeratorWalker.Free(walker);
+                isFixable = walker.IsFixable;
+            }
+            finally
+            {
+                if (walker != null)
+                    UnnecessaryUsageOfEnumeratorWalker.Free(walker);
+            }
 
             if (isFixable == true)
             {

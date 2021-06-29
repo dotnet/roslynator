@@ -152,20 +152,28 @@ namespace Roslynator.CSharp.Analysis
                         if (localSymbol?.IsErrorType() != false)
                             return;
 
-                        ContainsLocalOrParameterReferenceWalker walker = ContainsLocalOrParameterReferenceWalker.GetInstance(localSymbol, context.SemanticModel, context.CancellationToken);
+                        ContainsLocalOrParameterReferenceWalker walker = null;
 
-                        walker.Visit(forEachStatement.Statement);
-
-                        if (!walker.Result
-                            && index < statements.Count - 2)
+                        try
                         {
-                            walker.VisitList(statements, index + 2);
+                            walker = ContainsLocalOrParameterReferenceWalker.GetInstance(localSymbol, context.SemanticModel, context.CancellationToken);
+
+                            walker.Visit(forEachStatement.Statement);
+
+                            if (!walker.Result
+                                && index < statements.Count - 2)
+                            {
+                                walker.VisitList(statements, index + 2);
+                            }
+
+                            if (!walker.Result)
+                                ReportDiagnostic(context, localDeclarationInfo, forEachStatement.Expression);
                         }
-
-                        if (ContainsLocalOrParameterReferenceWalker.GetResultAndFree(walker))
-                            return;
-
-                        ReportDiagnostic(context, localDeclarationInfo, forEachStatement.Expression);
+                        finally
+                        {
+                            if (walker != null)
+                                ContainsLocalOrParameterReferenceWalker.Free(walker);
+                        }
 
                         break;
                     }
@@ -184,20 +192,28 @@ namespace Roslynator.CSharp.Analysis
                         if (localSymbol?.IsErrorType() != false)
                             return;
 
-                        ContainsLocalOrParameterReferenceWalker walker = ContainsLocalOrParameterReferenceWalker.GetInstance(localSymbol, context.SemanticModel, context.CancellationToken);
+                        ContainsLocalOrParameterReferenceWalker walker = null;
 
-                        walker.VisitList(switchStatement.Sections);
-
-                        if (!walker.Result
-                            && index < statements.Count - 2)
+                        try
                         {
-                            walker.VisitList(statements, index + 2);
+                            walker = ContainsLocalOrParameterReferenceWalker.GetInstance(localSymbol, context.SemanticModel, context.CancellationToken);
+
+                            walker.VisitList(switchStatement.Sections);
+
+                            if (!walker.Result
+                                && index < statements.Count - 2)
+                            {
+                                walker.VisitList(statements, index + 2);
+                            }
+
+                            if (!walker.Result)
+                                ReportDiagnostic(context, localDeclarationInfo, switchStatement.Expression);
                         }
-
-                        if (ContainsLocalOrParameterReferenceWalker.GetResultAndFree(walker))
-                            return;
-
-                        ReportDiagnostic(context, localDeclarationInfo, switchStatement.Expression);
+                        finally
+                        {
+                            if (walker != null)
+                                ContainsLocalOrParameterReferenceWalker.Free(walker);
+                        }
 
                         break;
                     }
@@ -232,20 +248,28 @@ namespace Roslynator.CSharp.Analysis
             if (localSymbol?.IsErrorType() != false)
                 return;
 
-            ContainsLocalOrParameterReferenceWalker walker = ContainsLocalOrParameterReferenceWalker.GetInstance(localSymbol, context.SemanticModel, context.CancellationToken);
+            ContainsLocalOrParameterReferenceWalker walker = null;
 
-            walker.Visit(assignment.Left);
-
-            if (!walker.Result
-                && index < statements.Count - 2)
+            try
             {
-                walker.VisitList(statements, index + 2);
+                walker = ContainsLocalOrParameterReferenceWalker.GetInstance(localSymbol, context.SemanticModel, context.CancellationToken);
+
+                walker.Visit(assignment.Left);
+
+                if (!walker.Result
+                    && index < statements.Count - 2)
+                {
+                    walker.VisitList(statements, index + 2);
+                }
+
+                if (!walker.Result)
+                    ReportDiagnostic(context, localDeclarationInfo, identifierName);
             }
-
-            if (ContainsLocalOrParameterReferenceWalker.GetResultAndFree(walker))
-                return;
-
-            ReportDiagnostic(context, localDeclarationInfo, identifierName);
+            finally
+            {
+                if (walker != null)
+                    ContainsLocalOrParameterReferenceWalker.Free(walker);
+            }
         }
 
         private static void Analyze(
@@ -280,12 +304,22 @@ namespace Roslynator.CSharp.Analysis
 
             if (index < statements.Count - 2)
             {
-                ContainsLocalOrParameterReferenceWalker walker = ContainsLocalOrParameterReferenceWalker.GetInstance(localSymbol, context.SemanticModel, context.CancellationToken);
+                ContainsLocalOrParameterReferenceWalker walker = null;
 
-                walker.VisitList(statements, index + 2);
+                try
+                {
+                    walker = ContainsLocalOrParameterReferenceWalker.GetInstance(localSymbol, context.SemanticModel, context.CancellationToken);
 
-                if (ContainsLocalOrParameterReferenceWalker.GetResultAndFree(walker))
-                    return;
+                    walker.VisitList(statements, index + 2);
+
+                    if (walker.Result)
+                        return;
+                }
+                finally
+                {
+                    if (walker != null)
+                        ContainsLocalOrParameterReferenceWalker.Free(walker);
+                }
             }
 
             ReportDiagnostic(context, localDeclarationInfo, identifierName);

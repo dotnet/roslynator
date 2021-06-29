@@ -85,7 +85,7 @@ namespace Roslynator.CSharp.Refactorings
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default)
         {
-            int result = -1;
+            int resultIndex = -1;
             int whileStatementIndex = -1;
             ITypeSymbol typeSymbol = null;
 
@@ -94,7 +94,7 @@ namespace Roslynator.CSharp.Refactorings
                 StatementSyntax statement = statements[i];
 
                 if (!(statement is LocalDeclarationStatementSyntax localDeclaration))
-                    return result;
+                    return resultIndex;
 
                 VariableDeclarationSyntax declaration = localDeclaration.Declaration;
 
@@ -114,37 +114,47 @@ namespace Roslynator.CSharp.Refactorings
                     }
                     else if (!SymbolEqualityComparer.Default.Equals(typeSymbol, symbol.Type))
                     {
-                        return result;
+                        return resultIndex;
                     }
 
-                    ContainsLocalOrParameterReferenceWalker walker = ContainsLocalOrParameterReferenceWalker.GetInstance(symbol, semanticModel, cancellationToken);
+                    ContainsLocalOrParameterReferenceWalker walker = null;
 
-                    if (mustBeReferencedInsideWhileStatement)
+                    try
                     {
-                        walker.VisitWhileStatement(whileStatement);
+                        walker = ContainsLocalOrParameterReferenceWalker.GetInstance(symbol, semanticModel, cancellationToken);
 
-                        if (!walker.Result)
+                        if (mustBeReferencedInsideWhileStatement)
                         {
-                            ContainsLocalOrParameterReferenceWalker.Free(walker);
-                            return result;
+                            walker.VisitWhileStatement(whileStatement);
+
+                            if (!walker.Result)
+                            {
+                                ContainsLocalOrParameterReferenceWalker.Free(walker);
+                                return resultIndex;
+                            }
                         }
+
+                        walker.Result = false;
+
+                        if (whileStatementIndex == -1)
+                            whileStatementIndex = statements.IndexOf(whileStatement);
+
+                        walker.VisitList(statements, whileStatementIndex + 1);
+
+                        if (walker.Result)
+                            return resultIndex;
+                    }
+                    finally
+                    {
+                        if (walker != null)
+                            ContainsLocalOrParameterReferenceWalker.Free(walker);
                     }
 
-                    walker.Result = false;
-
-                    if (whileStatementIndex == -1)
-                        whileStatementIndex = statements.IndexOf(whileStatement);
-
-                    walker.VisitList(statements, whileStatementIndex + 1);
-
-                    if (ContainsLocalOrParameterReferenceWalker.GetResultAndFree(walker))
-                        return result;
-
-                    result = i;
+                    resultIndex = i;
                 }
             }
 
-            return result;
+            return resultIndex;
         }
 
         private static bool VerifyExpressionStatements(StatementListSelection selectedStatements)

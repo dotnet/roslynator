@@ -55,16 +55,25 @@ namespace Roslynator.CSharp.Analysis
             if (IsThrowStatementWithoutExpression(ifStatement.Statement.SingleNonBlockStatementOrDefault())
                 ^ IsThrowStatementWithoutExpression(ifStatement.Else?.Statement.SingleNonBlockStatementOrDefault()))
             {
-                UseExceptionFilterWalker walker = UseExceptionFilterWalker.GetInstance();
+                bool canUseExceptionFilter;
+                UseExceptionFilterWalker walker = null;
 
-                walker.SemanticModel = context.SemanticModel;
-                walker.CancellationToken = context.CancellationToken;
+                try
+                {
+                    walker = UseExceptionFilterWalker.GetInstance();
 
-                walker.Visit(ifStatement.Condition);
+                    walker.SemanticModel = context.SemanticModel;
+                    walker.CancellationToken = context.CancellationToken;
 
-                bool canUseExceptionFilter = walker.CanUseExceptionFilter;
+                    walker.Visit(ifStatement.Condition);
 
-                UseExceptionFilterWalker.Free(walker);
+                    canUseExceptionFilter = walker.CanUseExceptionFilter;
+                }
+                finally
+                {
+                    if (walker != null)
+                        UseExceptionFilterWalker.Free(walker);
+                }
 
                 if (!canUseExceptionFilter)
                     return;

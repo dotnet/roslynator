@@ -199,37 +199,42 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
             if (walker == null)
                 return;
 
-            Collection<NodeSymbolInfo> nodes = walker.Nodes;
-
-            if (ShouldAnalyzeDebuggerDisplayAttribute()
-                && nodes.Any(f => f.CanBeInDebuggerDisplayAttribute))
+            try
             {
-                if (attributes.IsDefault)
-                    attributes = semanticModel.GetDeclaredSymbol(typeDeclaration, cancellationToken).GetAttributes();
+                Collection<NodeSymbolInfo> nodes = walker.Nodes;
 
-                string value = attributes
-                    .FirstOrDefault(f => f.AttributeClass.HasMetadataName(MetadataNames.System_Diagnostics_DebuggerDisplayAttribute))?
-                    .ConstructorArguments
-                    .SingleOrDefault(shouldThrow: false)
-                    .Value?
-                    .ToString();
+                if (ShouldAnalyzeDebuggerDisplayAttribute()
+                    && nodes.Any(f => f.CanBeInDebuggerDisplayAttribute))
+                {
+                    if (attributes.IsDefault)
+                        attributes = semanticModel.GetDeclaredSymbol(typeDeclaration, cancellationToken).GetAttributes();
 
-                if (value != null)
-                    RemoveMethodsAndPropertiesThatAreInDebuggerDisplayAttributeValue(value, ref nodes);
+                    string value = attributes
+                        .FirstOrDefault(f => f.AttributeClass.HasMetadataName(MetadataNames.System_Diagnostics_DebuggerDisplayAttribute))?
+                        .ConstructorArguments
+                        .SingleOrDefault(shouldThrow: false)
+                        .Value?
+                        .ToString();
+
+                    if (value != null)
+                        RemoveMethodsAndPropertiesThatAreInDebuggerDisplayAttributeValue(value, ref nodes);
+                }
+
+                if (nodes.Count > 0)
+                {
+                    walker.SemanticModel = semanticModel;
+                    walker.CancellationToken = cancellationToken;
+
+                    walker.Visit(typeDeclaration);
+
+                    foreach (NodeSymbolInfo node in nodes)
+                        ReportDiagnostic(context, node.Node);
+                }
             }
-
-            if (nodes.Count > 0)
+            finally
             {
-                walker.SemanticModel = semanticModel;
-                walker.CancellationToken = cancellationToken;
-
-                walker.Visit(typeDeclaration);
-
-                foreach (NodeSymbolInfo node in nodes)
-                    ReportDiagnostic(context, node.Node);
+                UnusedMemberWalker.Free(walker);
             }
-
-            UnusedMemberWalker.Free(walker);
 
             bool ShouldAnalyzeDebuggerDisplayAttribute()
             {

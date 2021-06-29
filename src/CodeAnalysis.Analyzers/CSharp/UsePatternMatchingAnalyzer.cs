@@ -361,26 +361,35 @@ namespace Roslynator.CodeAnalysis.CSharp
 
             if (localSymbol.IsKind(SymbolKind.Local))
             {
-                ContainsLocalOrParameterReferenceWalker walker = ContainsLocalOrParameterReferenceWalker.GetInstance(localSymbol, context.SemanticModel, context.CancellationToken);
+                bool isReferenced;
+                ContainsLocalOrParameterReferenceWalker walker = null;
 
-                walker.VisitList(switchStatement.Sections);
-
-                if (!walker.Result)
+                try
                 {
-                    StatementListInfo statementsInfo = SyntaxInfo.StatementListInfo(switchStatement);
+                    walker = ContainsLocalOrParameterReferenceWalker.GetInstance(localSymbol, context.SemanticModel, context.CancellationToken);
 
-                    if (statementsInfo.Success)
+                    walker.VisitList(switchStatement.Sections);
+
+                    if (!walker.Result)
                     {
-                        int index = statementsInfo.IndexOf(switchStatement);
+                        StatementListInfo statementsInfo = SyntaxInfo.StatementListInfo(switchStatement);
 
-                        if (index < statementsInfo.Count - 1)
-                            walker.VisitList(statementsInfo.Statements, index + 1);
+                        if (statementsInfo.Success)
+                        {
+                            int index = statementsInfo.IndexOf(switchStatement);
+
+                            if (index < statementsInfo.Count - 1)
+                                walker.VisitList(statementsInfo.Statements, index + 1);
+                        }
                     }
+
+                    isReferenced = walker.Result;
                 }
-
-                bool isReferenced = walker.Result;
-
-                ContainsLocalOrParameterReferenceWalker.Free(walker);
+                finally
+                {
+                    if (walker != null)
+                        ContainsLocalOrParameterReferenceWalker.Free(walker);
+                }
 
                 return isReferenced;
             }

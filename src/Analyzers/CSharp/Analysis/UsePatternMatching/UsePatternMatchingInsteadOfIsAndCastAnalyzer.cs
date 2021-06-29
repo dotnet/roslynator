@@ -136,15 +136,24 @@ namespace Roslynator.CSharp.Analysis.UsePatternMatching
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            UsePatternMatchingWalker walker = UsePatternMatchingWalker.GetInstance();
+            bool isFixable;
+            UsePatternMatchingWalker walker = null;
 
-            walker.SetValues(identifierName, semanticModel, cancellationToken);
+            try
+            {
+                walker = UsePatternMatchingWalker.GetInstance();
 
-            walker.Visit(node);
+                walker.SetValues(identifierName, semanticModel, cancellationToken);
 
-            bool isFixable = walker.IsFixable.GetValueOrDefault();
+                walker.Visit(node);
 
-            UsePatternMatchingWalker.Free(walker);
+                isFixable = walker.IsFixable.GetValueOrDefault();
+            }
+            finally
+            {
+                if (walker != null)
+                    UsePatternMatchingWalker.Free(walker);
+            }
 
             return isFixable;
         }
