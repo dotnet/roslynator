@@ -169,5 +169,24 @@ class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseForStatementInsteadOfWhileStatement)]
+        public async Task TestNoDiagnostic_ConditionIsTrue()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M()
+    {
+        int i = 0;
+        while (true)
+        {
+            M();
+            i++;
+        }
+    }
+}
+");
+        }
     }
 }

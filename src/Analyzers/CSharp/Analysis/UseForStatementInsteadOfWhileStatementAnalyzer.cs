@@ -44,6 +44,9 @@ namespace Roslynator.CSharp.Analysis
             if (condition.IsMissing)
                 return;
 
+            if (condition.WalkDownParentheses().IsKind(SyntaxKind.TrueLiteralExpression))
+                return;
+
             if (!condition.IsSingleLine())
                 return;
 
