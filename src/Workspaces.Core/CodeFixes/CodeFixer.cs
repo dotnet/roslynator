@@ -95,8 +95,6 @@ namespace Roslynator.CodeFixes
 
             WriteLine($"Done fixing solution '{CurrentSolution.FilePath}' in {stopwatch.Elapsed:mm\\:ss\\.ff}", Verbosity.Minimal);
 
-            LogHelpers.WriteProjectFixResults(results, Options, FormatProvider);
-
             return results.ToImmutableArray();
         }
 
@@ -108,7 +106,7 @@ namespace Roslynator.CodeFixes
                 analyzerReferences: _analyzerReferences,
                 options: Options);
 
-            ProjectFixResult fixResult = await FixProjectAsync(project, analyzers, fixers, cancellationToken).ConfigureAwait(false);
+            FixResult fixResult = await FixProjectAsync(project, analyzers, fixers, cancellationToken).ConfigureAwait(false);
 
             project = CurrentSolution.GetProject(project.Id);
 
@@ -149,18 +147,16 @@ namespace Roslynator.CodeFixes
 
             var result = new ProjectFixResult(
                 kind: fixResult.Kind,
-                fixedDiagnostics: fixResult.FixedDiagnostics,
-                unfixedDiagnostics: unfixedDiagnostics,
-                unfixableDiagnostics: unfixableDiagnostics,
-                analyzers: fixResult.Analyzers,
-                fixers: fixResult.Fixers,
-                numberOfFormattedDocuments: formattedDocuments.Length,
-                numberOfAddedFileBanners: numberOfAddedFileBanners);
+                fixedDiagnostics: fixResult.FixedDiagnostics.Select(f => DiagnosticInfo.Create(f)),
+                unfixedDiagnostics: unfixedDiagnostics.Select(f => DiagnosticInfo.Create(f)),
+                unfixableDiagnostics: unfixableDiagnostics.Select(f => DiagnosticInfo.Create(f)),
+                numberOfFormattedDocuments: (Options.FileBannerLines.Any()) ? formattedDocuments.Length : -1,
+                numberOfAddedFileBanners: (Options.Format) ? numberOfAddedFileBanners : -1);
 
             LogHelpers.WriteFixSummary(
-                result.FixedDiagnostics,
-                result.UnfixedDiagnostics,
-                result.UnfixableDiagnostics,
+                fixResult.FixedDiagnostics,
+                unfixedDiagnostics,
+                unfixableDiagnostics,
                 baseDirectoryPath: Path.GetDirectoryName(project.FilePath),
                 indentation: "  ",
                 formatProvider: FormatProvider,
@@ -169,7 +165,7 @@ namespace Roslynator.CodeFixes
             return result;
         }
 
-        private async Task<ProjectFixResult> FixProjectAsync(
+        private async Task<FixResult> FixProjectAsync(
             Project project,
             ImmutableArray<DiagnosticAnalyzer> analyzers,
             ImmutableArray<CodeFixProvider> fixers,
@@ -178,7 +174,7 @@ namespace Roslynator.CodeFixes
             if (!fixers.Any())
             {
                 WriteLine($"  No fixers found to fix '{project.Name}'", ConsoleColor.DarkGray, Verbosity.Normal);
-                return new ProjectFixResult(ProjectFixKind.NoFixers, analyzers: analyzers, fixers: fixers);
+                return new FixResult(ProjectFixKind.NoFixers);
             }
 
             Dictionary<string, ImmutableArray<CodeFixProvider>> fixersById = fixers
@@ -218,7 +214,7 @@ namespace Roslynator.CodeFixes
                 ImmutableArray<Diagnostic> compilerDiagnostics = compilation.GetDiagnostics(cancellationToken);
 
                 if (!VerifyCompilerDiagnostics(compilerDiagnostics, project))
-                    return new ProjectFixResult(ProjectFixKind.CompilerError, fixedDiagnostics, analyzers: analyzers, fixers: fixers);
+                    return new FixResult(ProjectFixKind.CompilerError, fixedDiagnostics);
 
                 WriteLine($"  Analyze '{project.Name}'", Verbosity.Normal);
 
@@ -276,7 +272,7 @@ namespace Roslynator.CodeFixes
                     }
                     else if (result.Kind == DiagnosticFixKind.CompilerError)
                     {
-                        return new ProjectFixResult(ProjectFixKind.CompilerError, fixedDiagnostics, analyzers: analyzers, fixers: fixers);
+                        return new FixResult(ProjectFixKind.CompilerError, fixedDiagnostics);
                     }
                 }
 
@@ -287,7 +283,7 @@ namespace Roslynator.CodeFixes
                 previousDiagnostics = diagnostics;
             }
 
-            return new ProjectFixResult(fixKind, fixedDiagnostics, analyzers: analyzers, fixers: fixers);
+            return new FixResult(fixKind, fixedDiagnostics);
 
             ImmutableArray<Diagnostic> GetFixableDiagnostics(
                 ImmutableArray<Diagnostic> diagnostics,
@@ -690,6 +686,39 @@ namespace Roslynator.CodeFixes
             var compilationWithAnalyzers = new CompilationWithAnalyzers(compilation, analyzers, compilationWithAnalyzersOptions);
 
             return compilationWithAnalyzers.GetAnalyzerDiagnosticsAsync(cancellationToken);
+        }
+
+        private class FixResult
+        {
+            internal static FixResult Skipped { get; } = new FixResult(ProjectFixKind.Skipped);
+
+            internal FixResult(
+                ProjectFixKind kind,
+                IEnumerable<Diagnostic> fixedDiagnostics = default,
+                IEnumerable<Diagnostic> unfixedDiagnostics = default,
+                IEnumerable<Diagnostic> unfixableDiagnostics = default,
+                int numberOfFormattedDocuments = -1,
+                int numberOfAddedFileBanners = -1)
+            {
+                Kind = kind;
+                FixedDiagnostics = fixedDiagnostics?.ToImmutableArray() ?? ImmutableArray<Diagnostic>.Empty;
+                UnfixedDiagnostics = unfixedDiagnostics?.ToImmutableArray() ?? ImmutableArray<Diagnostic>.Empty;
+                UnfixableDiagnostics = unfixableDiagnostics?.ToImmutableArray() ?? ImmutableArray<Diagnostic>.Empty;
+                NumberOfFormattedDocuments = numberOfFormattedDocuments;
+                NumberOfAddedFileBanners = numberOfAddedFileBanners;
+            }
+
+            public ProjectFixKind Kind { get; }
+
+            public ImmutableArray<Diagnostic> FixedDiagnostics { get; }
+
+            public ImmutableArray<Diagnostic> UnfixedDiagnostics { get; }
+
+            public ImmutableArray<Diagnostic> UnfixableDiagnostics { get; }
+
+            public int NumberOfFormattedDocuments { get; }
+
+            public int NumberOfAddedFileBanners { get; }
         }
     }
 }

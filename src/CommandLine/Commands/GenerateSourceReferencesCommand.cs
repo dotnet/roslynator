@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Globalization;
@@ -16,7 +17,7 @@ using static Roslynator.Logger;
 
 namespace Roslynator.CommandLine
 {
-    internal class GenerateSourceReferencesCommand : MSBuildWorkspaceCommand
+    internal class GenerateSourceReferencesCommand : MSBuildWorkspaceCommand<CommandResult>
     {
         public GenerateSourceReferencesCommand(
             GenerateSourceReferencesCommandLineOptions options,
@@ -87,7 +88,7 @@ namespace Roslynator.CommandLine
 
             WriteLine($"Source references successfully saved to '{Options.Output}'.", Verbosity.Minimal);
 
-            return (success) ? CommandResult.Success : CommandResult.NotSuccess;
+            return (success) ? CommandResults.Success : CommandResults.NotSuccess;
         }
 
         private void WriteSymbol(XmlWriter writer, ISymbol symbol, CancellationToken cancellationToken)

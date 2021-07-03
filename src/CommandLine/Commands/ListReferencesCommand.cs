@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
@@ -11,7 +12,7 @@ using static Roslynator.Logger;
 
 namespace Roslynator.CommandLine
 {
-    internal class ListReferencesCommand : MSBuildWorkspaceCommand
+    internal class ListReferencesCommand : MSBuildWorkspaceCommand<CommandResult>
     {
         public ListReferencesCommand(
             ListReferencesCommandLineOptions options,
@@ -55,7 +56,7 @@ namespace Roslynator.CommandLine
                 WriteLine($"{count} assembl{((count == 1) ? "y" : "ies")} found", ConsoleColor.Green, Verbosity.Normal);
             }
 
-            return (count > 0) ? CommandResult.Success : CommandResult.NotSuccess;
+            return (count > 0) ? CommandResults.Success : CommandResults.NotSuccess;
 
             string GetDisplay(Compilation compilation, MetadataReference reference)
             {

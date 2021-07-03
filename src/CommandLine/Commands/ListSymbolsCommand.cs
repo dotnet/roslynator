@@ -23,7 +23,7 @@ using static Roslynator.Logger;
 
 namespace Roslynator.CommandLine
 {
-    internal class ListSymbolsCommand : MSBuildWorkspaceCommand
+    internal class ListSymbolsCommand : MSBuildWorkspaceCommand<CommandResult>
     {
         public ListSymbolsCommand(
             ListSymbolsCommandLineOptions options,
@@ -82,7 +82,7 @@ namespace Roslynator.CommandLine
                 if (hierarchyRoot == null)
                 {
                     WriteLine($"Cannot find type '{Options.HierarchyRoot}'", Verbosity.Quiet);
-                    return CommandResult.Fail;
+                    return CommandResults.Fail;
                 }
             }
 
@@ -97,7 +97,7 @@ namespace Roslynator.CommandLine
                 if (externalAssembly == null)
                 {
                     WriteLine($"Cannot find external assembly '{reference}'", Verbosity.Quiet);
-                    return CommandResult.Fail;
+                    return CommandResults.Fail;
                 }
 
                 (externalAssemblies ??= new HashSet<IAssemblySymbol>()).Add(externalAssembly);
@@ -212,7 +212,7 @@ namespace Roslynator.CommandLine
                 WriteSummary(assemblies, SymbolFilterOptions, Verbosity.Normal);
 #endif
 
-            return (assemblies.Any()) ? CommandResult.Success : CommandResult.NotSuccess;
+            return (assemblies.Any()) ? CommandResults.Success : CommandResults.NotSuccess;
         }
 
 #if DEBUG

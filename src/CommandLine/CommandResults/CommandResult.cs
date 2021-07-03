@@ -2,11 +2,13 @@
 
 namespace Roslynator.CommandLine
 {
-    internal enum CommandResult
+    internal class CommandResult
     {
-        Success = 0,
-        NotSuccess = 1,
-        Fail = 2,
-        Canceled = 3,
+        public CommandResult(CommandStatus status)
+        {
+            Status = status;
+        }
+
+        public CommandStatus Status { get; }
     }
 }

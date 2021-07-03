@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
 using System.Text;
@@ -13,7 +14,7 @@ using static Roslynator.Logger;
 
 namespace Roslynator.CommandLine
 {
-    internal class GenerateDocRootCommand : MSBuildWorkspaceCommand
+    internal class GenerateDocRootCommand : MSBuildWorkspaceCommand<CommandResult>
     {
         private static readonly Encoding _defaultEncoding = new UTF8Encoding(encoderShouldEmitUTF8Identifier: false);
 
@@ -84,7 +85,7 @@ namespace Roslynator.CommandLine
 
             WriteLine($"Documentation root successfully generated to '{path}'.", Verbosity.Minimal);
 
-            return CommandResult.Success;
+            return CommandResults.Success;
         }
     }
 }
