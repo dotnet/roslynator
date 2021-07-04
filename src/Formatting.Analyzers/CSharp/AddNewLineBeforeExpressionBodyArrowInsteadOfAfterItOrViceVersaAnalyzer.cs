@@ -37,7 +37,7 @@ namespace Roslynator.Formatting.CSharp
 
             SyntaxToken arrowToken = arrowExpressionClause.ArrowToken;
 
-            FormattingSuggestion suggestion = FormattingAnalysis.AnalyzeNewLineBeforeOrAfter(context, arrowToken, arrowExpressionClause.Expression, AnalyzerOptionDiagnosticRules.AddNewLineAfterExpressionBodyArrowInsteadOfBeforeIt);
+            FormattingSuggestion suggestion = FormattingAnalysis.AnalyzeNewLineBeforeOrAfter(context, arrowToken, arrowExpressionClause.Expression, AnalyzerOptions.AddNewLineAfterExpressionBodyArrowInsteadOfBeforeIt);
 
             if (suggestion == FormattingSuggestion.AddNewLineBefore)
             {

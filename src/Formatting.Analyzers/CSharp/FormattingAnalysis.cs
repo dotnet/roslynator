@@ -13,7 +13,7 @@ namespace Roslynator.Formatting.CSharp
             SyntaxNodeAnalysisContext context,
             SyntaxToken token,
             ExpressionSyntax expression,
-            DiagnosticDescriptor afterDescriptor)
+            AnalyzerOptionDescriptor afterDescriptor)
         {
             SyntaxToken previousToken = token.GetPreviousToken();
 
@@ -22,7 +22,7 @@ namespace Roslynator.Formatting.CSharp
                 if (!token.LeadingTrivia.Any()
                     && SyntaxTriviaAnalysis.IsOptionalWhitespaceThenEndOfLineTrivia(token.TrailingTrivia)
                     && SyntaxTriviaAnalysis.IsEmptyOrSingleWhitespaceTrivia(expression.GetLeadingTrivia())
-                    && !afterDescriptor.IsEffective(context))
+                    && !afterDescriptor.IsEnabled(context))
                 {
                     return FormattingSuggestion.AddNewLineBefore;
                 }
@@ -32,7 +32,7 @@ namespace Roslynator.Formatting.CSharp
                 if (SyntaxTriviaAnalysis.IsEmptyOrSingleWhitespaceTrivia(token.LeadingTrivia)
                     && SyntaxTriviaAnalysis.IsEmptyOrSingleWhitespaceTrivia(token.TrailingTrivia)
                     && !expression.GetLeadingTrivia().Any()
-                    && afterDescriptor.IsEffective(context))
+                    && afterDescriptor.IsEnabled(context))
                 {
                     return FormattingSuggestion.AddNewLineAfter;
                 }
