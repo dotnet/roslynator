@@ -219,6 +219,7 @@
     <Rule Id="CA5122" Action="Warning" />
   </Rules>
   <Rules AnalyzerId="Microsoft.CodeAnalysis.Analyzers" RuleNamespace="Microsoft.CodeAnalysis.Analyzers">
+    <Rule Id="RS1024" Action="Info" />
     <Rule Id="RS1025" Action="None" />
     <Rule Id="RS1026" Action="None" />
   </Rules>
