@@ -338,7 +338,7 @@ namespace Roslynator.Spelling
                 {
                     Debug.Fail(identifier.GetLocation().ToString());
 
-                    WriteLine($"    Cannot find document for'{identifier.ValueText}'", ConsoleColor.Yellow, Verbosity.Detailed);
+                    WriteLine($"    Cannot find document for '{identifier.ValueText}'", ConsoleColor.Yellow, Verbosity.Detailed);
                     continue;
                 }
 
@@ -350,7 +350,7 @@ namespace Roslynator.Spelling
 
                     if (identifier.Span != identifier2.Span
                         || identifier.RawKind != identifier2.RawKind
-                        || !string.Equals(identifier2.ValueText, identifier2.ValueText, StringComparison.Ordinal))
+                        || !string.Equals(identifier.ValueText, identifier2.ValueText, StringComparison.Ordinal))
                     {
                         continue;
                     }
@@ -465,7 +465,7 @@ namespace Roslynator.Spelling
 
                     try
                     {
-                        //TODO: detect name conflict
+                        //TODO: detect naming conflict
                         newSolution = await Microsoft.CodeAnalysis.Rename.Renamer.RenameSymbolAsync(
                             CurrentSolution,
                             symbol,
