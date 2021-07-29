@@ -53,6 +53,9 @@ dotnet_diagnostic.<RULE_ID>.severity = <default|none|silent|info|warning|error>
 
 For further information please see how to [set rule severity in an EditorConfig file](https://docs.microsoft.com/en-us/visualstudio/code-quality/use-roslyn-analyzers#set-rule-severity-in-an-editorconfig-file).
 
+### EditorConfig Options
+
+* [List of EditorConfig Options](Options.md)
 
 ## Change Default Configuration of Analyzers
 

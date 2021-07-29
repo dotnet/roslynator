@@ -4,6 +4,7 @@
 * [List of Analyzers](../src/Analyzers/README.md)
 * [List of Refactorings](../src/Refactorings/README.md)
 * [List of Fixable Compiler Diagnostics](../src/CodeFixes/README.md)
+* [List of EditorConfig Options](Options.md)
 
 ## How to
 

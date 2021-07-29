@@ -22,6 +22,35 @@ namespace Roslynator.CodeGeneration.Markdown
             document.Add(NewLine, Italic("(Generated with ", Link("DotMarkdown", "http://github.com/JosefPihrt/DotMarkdown"), ")"));
         }
 
+        public static string CreateListOfAnalyzerOptions(RoslynatorMetadata metadata)
+        {
+            IEnumerable<string> options = metadata.GetAllAnalyzers()
+                .SelectMany(f => f.Options)
+                .Select(analyzerOption =>
+                {
+                    string optionKey = analyzerOption.OptionKey;
+
+                    if (!optionKey.StartsWith("roslynator.", StringComparison.Ordinal))
+                        optionKey = $"roslynator.{analyzerOption.ParentId}.{optionKey}";
+
+                    return (analyzerOption, value: optionKey + " = " + (analyzerOption.OptionValue ?? "true"));
+                })
+                .OrderBy(f => f.value)
+                .Select(f => $"# {f.analyzerOption.Title}{NewLine}{f.value}");
+
+            MDocument document = Document(
+                Heading1("List of EditorConfig Options"),
+                FencedCodeBlock(
+                    string.Join(NewLine + NewLine, options),
+                    "editorconfig"));
+
+            document.AddFootnote();
+
+            var format = new MarkdownFormat(tableOptions: MarkdownFormat.Default.TableOptions | TableOptions.FormatContent);
+
+            return document.ToString(format);
+        }
+
         public static string CreateReadMe(IEnumerable<AnalyzerMetadata> analyzers, IEnumerable<RefactoringMetadata> refactorings, IComparer<string> comparer)
         {
             MDocument document = Document(
