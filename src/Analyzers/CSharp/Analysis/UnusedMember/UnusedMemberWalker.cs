@@ -244,6 +244,12 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
             VisitMembers(node.Members);
         }
 
+        public override void VisitRecordDeclaration(RecordDeclarationSyntax node)
+        {
+            VisitAttributeLists(node.AttributeLists);
+            VisitMembers(node.Members);
+        }
+
         public override void VisitDelegateDeclaration(DelegateDeclarationSyntax node)
         {
             VisitAttributeLists(node.AttributeLists);
