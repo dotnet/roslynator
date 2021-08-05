@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Threading;
@@ -55,6 +54,7 @@ namespace Roslynator.CSharp.Analysis
             ExpressionSyntax lastExpression = null;
             var isLiteral = false;
             var isVerbatim = false;
+            int startLine = -1;
 
             foreach (ExpressionSyntax expression in addExpression.AsChain().Reverse())
             {
@@ -73,6 +73,9 @@ namespace Roslynator.CSharp.Analysis
                                 firstExpression = expression;
                                 isLiteral = true;
                                 isVerbatim = isVerbatim2;
+
+                                if (isVerbatim)
+                                    startLine = expression.SyntaxTree.GetLineSpan(expression.GetSpan()).StartLine();
                             }
                             else if (!isLiteral
                                 || isVerbatim != isVerbatim2
@@ -87,6 +90,21 @@ namespace Roslynator.CSharp.Analysis
                             else
                             {
                                 lastExpression = expression;
+
+                                if (isVerbatim)
+                                {
+                                    FileLinePositionSpan lineSpan = expression.SyntaxTree.GetLineSpan(expression.GetSpan());
+
+                                    if (startLine != lineSpan.EndLine())
+                                    {
+                                        firstExpression = null;
+                                        lastExpression = null;
+                                    }
+                                    else
+                                    {
+                                        startLine = lineSpan.StartLine();
+                                    }
+                                }
                             }
 
                             break;
@@ -102,6 +120,9 @@ namespace Roslynator.CSharp.Analysis
                                 firstExpression = expression;
                                 isLiteral = false;
                                 isVerbatim = isVerbatim2;
+
+                                if (isVerbatim)
+                                    startLine = expression.SyntaxTree.GetLineSpan(expression.GetSpan()).StartLine();
                             }
                             else if (isLiteral
                                 || isVerbatim != isVerbatim2
@@ -116,6 +137,21 @@ namespace Roslynator.CSharp.Analysis
                             else
                             {
                                 lastExpression = expression;
+
+                                if (isVerbatim)
+                                {
+                                    FileLinePositionSpan lineSpan = expression.SyntaxTree.GetLineSpan(expression.GetSpan());
+
+                                    if (startLine != lineSpan.EndLine())
+                                    {
+                                        firstExpression = null;
+                                        lastExpression = null;
+                                    }
+                                    else
+                                    {
+                                        startLine = lineSpan.StartLine();
+                                    }
+                                }
                             }
 
                             break;

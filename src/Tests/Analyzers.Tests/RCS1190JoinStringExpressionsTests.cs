@@ -256,6 +256,22 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
+        public async Task TestNoDiagnostic_Verbatim_Multiline()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M(string s)
+    {
+        s = @""a
+            b"" + @""c""
+            + @""d"";
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
         public async Task TestNoDiagnostic_RegularAndVerbatim()
         {
             await VerifyNoDiagnosticAsync(@"
