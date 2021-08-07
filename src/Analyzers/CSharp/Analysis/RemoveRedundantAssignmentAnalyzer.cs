@@ -242,7 +242,6 @@ namespace Roslynator.CSharp.Analysis
                 walker.Visit(assignmentInfo.Right);
 
                 result = walker.Result;
-
             }
             finally
             {
