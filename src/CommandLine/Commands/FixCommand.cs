@@ -142,16 +142,18 @@ namespace Roslynator.CommandLine
             IEnumerable<ProjectFixResult> results,
             IFormatProvider formatProvider = null)
         {
-            int numberOfAddedFileBanners = results.Sum(f => f.NumberOfAddedFileBanners);
-            if (numberOfAddedFileBanners >= 0)
+            if (results.Any(f => f.NumberOfAddedFileBanners >= 0))
             {
+                int numberOfAddedFileBanners = results.Where(f => f.NumberOfAddedFileBanners >= 0).Sum(f => f.NumberOfAddedFileBanners);
+
                 WriteLine(Verbosity.Normal);
                 WriteLine($"{numberOfAddedFileBanners} file {((numberOfAddedFileBanners == 1) ? "banner" : "banners")} added", Verbosity.Normal);
             }
 
-            int numberOfFormattedDocuments = results.Sum(f => f.NumberOfFormattedDocuments);
-            if (numberOfFormattedDocuments >= 0)
+            if (results.Any(f => f.NumberOfFormattedDocuments >= 0))
             {
+                int numberOfFormattedDocuments = results.Where(f => f.NumberOfFormattedDocuments > 0).Sum(f => f.NumberOfFormattedDocuments);
+
                 WriteLine(Verbosity.Normal);
                 WriteLine($"{numberOfFormattedDocuments} {((numberOfFormattedDocuments == 1) ? "document" : "documents")} formatted", Verbosity.Normal);
             }
@@ -199,14 +201,14 @@ namespace Roslynator.CommandLine
         {
             if (options.FileBannerLines.Any())
             {
-                int count = results.Sum(f => f.NumberOfAddedFileBanners);
+                int count = results.Where(f => f.NumberOfAddedFileBanners >= 0).Sum(f => f.NumberOfAddedFileBanners);
                 WriteLine(Verbosity.Normal);
                 WriteLine($"{count} file {((count == 1) ? "banner" : "banners")} added", Verbosity.Normal);
             }
 
             if (options.Format)
             {
-                int count = results.Sum(f => f.NumberOfFormattedDocuments);
+                int count = results.Where(f => f.NumberOfFormattedDocuments >= 0).Sum(f => f.NumberOfFormattedDocuments);
                 WriteLine(Verbosity.Normal);
                 WriteLine($"{count} {((count == 1) ? "document" : "documents")} formatted", Verbosity.Normal);
             }
