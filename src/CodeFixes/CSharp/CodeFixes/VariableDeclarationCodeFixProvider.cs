@@ -42,12 +42,13 @@ namespace Roslynator.CSharp.CodeFixes
                     SyntaxKind.ForEachStatement,
                     SyntaxKind.Parameter,
                     SyntaxKind.DeclarationPattern,
-                    SyntaxKind.DeclarationExpression)))
+                    SyntaxKind.DeclarationExpression,
+                    SyntaxKind.LocalFunctionStatement)))
             {
                 return;
             }
 
-            if (node.IsKind(SyntaxKind.ForEachStatement, SyntaxKind.Parameter, SyntaxKind.DeclarationPattern, SyntaxKind.DeclarationExpression))
+            if (node.IsKind(SyntaxKind.ForEachStatement, SyntaxKind.Parameter, SyntaxKind.DeclarationPattern, SyntaxKind.DeclarationExpression, SyntaxKind.LocalFunctionStatement))
                 return;
 
             var variableDeclaration = (VariableDeclarationSyntax)node;

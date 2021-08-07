@@ -39,12 +39,13 @@ namespace Roslynator.CSharp.CodeFixes
                     SyntaxKind.VariableDeclaration,
                     SyntaxKind.ForEachStatement,
                     SyntaxKind.DeclarationPattern,
-                    SyntaxKind.DeclarationExpression)))
+                    SyntaxKind.DeclarationExpression,
+                    SyntaxKind.LocalFunctionStatement)))
             {
                 return;
             }
 
-            if (node.IsKind(SyntaxKind.VariableDeclaration, SyntaxKind.ForEachStatement, SyntaxKind.DeclarationPattern, SyntaxKind.DeclarationExpression))
+            if (node.IsKind(SyntaxKind.VariableDeclaration, SyntaxKind.ForEachStatement, SyntaxKind.DeclarationPattern, SyntaxKind.DeclarationExpression, SyntaxKind.LocalFunctionStatement))
                 return;
 
             var parameter = (ParameterSyntax)node;
