@@ -35,6 +35,28 @@ enum Foo
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.EnumShouldDeclareExplicitValues)]
+        public async Task Test_AllValues_MissingComma()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+enum [|Foo|]
+{
+    A,
+    B,
+    C
+    D,
+}
+", @"
+enum Foo
+{
+    A = 0,
+    B = 1,
+    C = 2
+    D = 3,
+}
+", options: Options.AddAllowedCompilerDiagnosticId("CS1003"));
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.EnumShouldDeclareExplicitValues)]
         public async Task Test_WithComments()
         {
             await VerifyDiagnosticAndFixAsync(@"

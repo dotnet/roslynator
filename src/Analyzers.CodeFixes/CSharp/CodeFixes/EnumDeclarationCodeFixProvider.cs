@@ -248,9 +248,11 @@ namespace Roslynator.CSharp.CodeFixes
                             expression = NumericLiteralExpression(value.Value, enumSymbol.EnumUnderlyingType.SpecialType);
                         }
 
-                        EqualsValueClauseSyntax equalsValue = EqualsValueClause(expression);
-
-                        EnumMemberDeclarationSyntax newMember = members[i].WithEqualsValue(equalsValue);
+                        EnumMemberDeclarationSyntax newMember = members[i].Update(
+                            members[i].AttributeLists,
+                            members[i].Modifiers,
+                            members[i].Identifier.WithoutTrailingTrivia(),
+                            EqualsValueClause(expression).WithTrailingTrivia(members[i].Identifier.TrailingTrivia));
 
                         newMembers = newMembers.ReplaceAt(i, newMember);
                     }
