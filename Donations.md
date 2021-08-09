@@ -23,6 +23,7 @@
 | $10.00 USD | Ian Kemp
 | $10.00 USD | Loïc Lopes
 | $10.00 USD | Ruben Lopez
+| $10.00 USD | Anthony Sichi
 | $5.00 USD | Jason Jeffries
 | $5.00 USD | Senthil Vadamadurai
 | $4.00 USD | Mateusz Piasecki
