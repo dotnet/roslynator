@@ -111,6 +111,9 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
             if (!parameterInfo.Success)
                 return;
 
+            if (parameterInfo.Parameters.SingleOrDefault(shouldThrow: false)?.Identifier.IsKind(SyntaxKind.ArgListKeyword) == true)
+                return;
+
             if (ContainsOnlyThrowNewExpression(parameterInfo.Body))
                 return;
 

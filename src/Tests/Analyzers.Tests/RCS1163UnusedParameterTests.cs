@@ -173,5 +173,22 @@ class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedParameter)]
+        public async Task TestNoDiagnostic_ArgIterator()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System;
+
+class C
+{
+    public static int GetCount(__arglist)
+    {
+        var argIterator = new ArgIterator(__arglist);
+        return argIterator.GetRemainingCount();
+    }
+}
+");
+        }
     }
 }
