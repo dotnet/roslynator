@@ -15,6 +15,20 @@ namespace Roslynator.CSharp.Analysis.Tests
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedParameter)]
         public async Task Test_Method()
         {
+            await VerifyDiagnosticAsync(@"
+class C
+{
+    void M([|object p|], __arglist)
+    {
+    }
+}
+"
+);
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedParameter)]
+        public async Task Test_Lambda()
+        {
             await VerifyDiagnosticAndFixAsync(@"
 using System;
 

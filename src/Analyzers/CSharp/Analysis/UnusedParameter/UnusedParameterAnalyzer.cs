@@ -111,9 +111,6 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
             if (!parameterInfo.Success)
                 return;
 
-            if (parameterInfo.Parameters.SingleOrDefault(shouldThrow: false)?.Identifier.IsKind(SyntaxKind.ArgListKeyword) == true)
-                return;
-
             if (ContainsOnlyThrowNewExpression(parameterInfo.Body))
                 return;
 
@@ -339,7 +336,7 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
         private static void FindUnusedNodes(in ParameterInfo parameterInfo, UnusedParameterWalker walker)
         {
             if (parameterInfo.Parameter != null
-                && !IsDiscardName(parameterInfo.Parameter.Identifier.ValueText))
+                && !IsArgListOrDiscard(parameterInfo.Parameter))
             {
                 walker.AddParameter(parameterInfo.Parameter);
             }
@@ -347,7 +344,7 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
             {
                 foreach (ParameterSyntax parameter in parameterInfo.Parameters)
                 {
-                    if (!IsDiscardName(parameter.Identifier.ValueText))
+                    if (!IsArgListOrDiscard(parameter))
                         walker.AddParameter(parameter);
                 }
             }
@@ -360,6 +357,12 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
 
             if (walker.Nodes.Count > 0)
                 walker.Visit(parameterInfo.Node);
+        }
+
+        private static bool IsArgListOrDiscard(ParameterSyntax parameter)
+        {
+            return parameter.Identifier.IsKind(SyntaxKind.ArgListKeyword)
+                || IsDiscardName(parameter.Identifier.ValueText);
         }
 
         private static bool IsDiscardName(string value)
