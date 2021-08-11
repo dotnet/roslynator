@@ -259,24 +259,30 @@ namespace Roslynator.CommandLine
 
         private static bool TryGetSingleInstance(out VisualStudioInstance instance)
         {
-            using (IEnumerator<VisualStudioInstance> en = MSBuildLocator.QueryVisualStudioInstances()
+            IGrouping<Version, VisualStudioInstance> instances = MSBuildLocator.QueryVisualStudioInstances()
                 .Distinct(VisualStudioInstanceComparer.MSBuildPath)
-                .GetEnumerator())
-            {
-                if (!en.MoveNext())
-                {
-                    WriteLine($"MSBuild location not found. Use option '--{ParameterNames.MSBuildPath}' to specify MSBuild location", Verbosity.Quiet);
-                    instance = null;
-                    return false;
-                }
+                .GroupBy(f => f.Version)
+                .OrderByDescending(f => f.Key)
+                .FirstOrDefault();
 
-                VisualStudioInstance firstInstance = en.Current;
+            if (instances == null)
+            {
+                WriteLine($"MSBuild location not found. Use option '-{OptionShortNames.MSBuildPath}, --{ParameterNames.MSBuildPath}' to specify MSBuild location", Verbosity.Quiet);
+                instance = null;
+                return false;
+            }
+
+            using (IEnumerator<VisualStudioInstance> en = instances.GetEnumerator())
+            {
+                en.MoveNext();
+
+                instance = en.Current;
 
                 if (en.MoveNext())
                 {
                     WriteLine("Multiple MSBuild locations found:", Verbosity.Quiet);
 
-                    WriteLine($"  {firstInstance.MSBuildPath}", Verbosity.Quiet);
+                    WriteLine($"  {instance.MSBuildPath}", Verbosity.Quiet);
 
                     do
                     {
@@ -289,7 +295,6 @@ namespace Roslynator.CommandLine
                     return false;
                 }
 
-                instance = firstInstance;
                 return true;
             }
         }
