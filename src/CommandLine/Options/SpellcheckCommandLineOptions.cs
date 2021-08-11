@@ -32,7 +32,7 @@ namespace Roslynator.CommandLine
         public bool DryRun { get; set; }
 
         [Option(
-            longName: ParameterNames.IgnoredScope,
+            longName: OptionNames.IgnoredScope,
             HelpText = "Defines syntax that should not be analyzed. Allowed values are comment, type, member, local, parameter, non-symbol and symbol.",
             MetaValue = "<SCOPE>")]
         public IEnumerable<string> IgnoredScope { get; set; }
@@ -54,13 +54,13 @@ namespace Roslynator.CommandLine
         public int MinWordLength { get; set; }
 
         [Option(
-            longName: ParameterNames.Scope,
+            longName: OptionNames.Scope,
             HelpText = "Defines syntax that should be analyzed. Allowed values are comment, type, member, local, parameter, non-symbol and symbol.",
             MetaValue = "<SCOPE>")]
         public IEnumerable<string> Scope { get; set; }
 
         [Option(
-            longName: ParameterNames.Visibility,
+            longName: OptionNames.Visibility,
             Default = nameof(Roslynator.Visibility.Public),
             HelpText = "Defines a  maximal visibility of a symbol to be fixable. Allowed values are public, internal or private. Default value is public.",
             MetaValue = "<VISIBILITY>")]

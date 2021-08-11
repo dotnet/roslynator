@@ -28,7 +28,7 @@ namespace Roslynator.CommandLine
         public string Identifier { get; set; }
 
         [Option(
-            longName: ParameterNames.TargetVersion,
+            longName: OptionNames.TargetVersion,
             Required = true,
             HelpText = "A package version to migrate to.",
             MetaValue = "<VERSION>")]

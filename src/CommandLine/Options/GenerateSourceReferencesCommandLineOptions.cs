@@ -46,7 +46,7 @@ namespace Roslynator.CommandLine
         public string Commit { get; set; }
 
         [Option(
-            longName: ParameterNames.Depth,
+            longName: OptionNames.Depth,
             HelpText = "Defines a depth of a documentation. Allowed values are member, type or namespace. Default value is member.",
             MetaValue = "<DEPTH>")]
         public string Depth { get; set; }
@@ -57,7 +57,7 @@ namespace Roslynator.CommandLine
         public string RepositoryType { get; set; }
 
         [Option(
-            longName: ParameterNames.Visibility,
+            longName: OptionNames.Visibility,
             Default = nameof(Roslynator.Visibility.Public),
             HelpText = "Defines a visibility of a type or a member. Allowed values are public, internal or private. Default value is public.",
             MetaValue = "<VISIBILITY>")]

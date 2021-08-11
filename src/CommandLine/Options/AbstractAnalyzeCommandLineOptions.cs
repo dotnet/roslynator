@@ -39,7 +39,7 @@ namespace Roslynator.CommandLine
         public IEnumerable<string> IgnoredDiagnostics { get; set; }
 
         [Option(
-            longName: ParameterNames.SeverityLevel,
+            longName: OptionNames.SeverityLevel,
             HelpText = "Defines minimally required severity for a diagnostic. Allowed values are hidden, info, warning or error. Default value is info.",
             MetaValue = "<LEVEL>")]
         public string SeverityLevel { get; set; }
@@ -52,7 +52,7 @@ namespace Roslynator.CommandLine
 
         internal bool TryParseDiagnosticSeverity(DiagnosticSeverity defaultValue, out DiagnosticSeverity value)
         {
-            return ParseHelpers.TryParseOptionValueAsEnum(SeverityLevel, ParameterNames.SeverityLevel, out value, defaultValue);
+            return ParseHelpers.TryParseOptionValueAsEnum(SeverityLevel, OptionNames.SeverityLevel, out value, defaultValue);
         }
     }
 }

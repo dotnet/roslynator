@@ -267,7 +267,7 @@ namespace Roslynator.CommandLine
 
             if (instances == null)
             {
-                WriteLine($"MSBuild location not found. Use option '-{OptionShortNames.MSBuildPath}, --{ParameterNames.MSBuildPath}' to specify MSBuild location", Verbosity.Quiet);
+                WriteLine($"MSBuild location not found. Use option '-{OptionShortNames.MSBuildPath}, --{OptionNames.MSBuildPath}' to specify MSBuild location", Verbosity.Quiet);
                 instance = null;
                 return false;
             }
@@ -290,7 +290,7 @@ namespace Roslynator.CommandLine
 
                     } while (en.MoveNext());
 
-                    WriteLine($"Use option '--{ParameterNames.MSBuildPath}' to specify MSBuild location", Verbosity.Quiet);
+                    WriteLine($"Use option '--{OptionNames.MSBuildPath}' to specify MSBuild location", Verbosity.Quiet);
                     instance = null;
                     return false;
                 }

@@ -22,7 +22,7 @@ namespace Roslynator.CommandLine
         public string Display { get; set; }
 
         [Option(
-            longName: ParameterNames.Type,
+            longName: OptionNames.Type,
             HelpText = "Defines a type of a reference. Allowed values are dll and project.")]
         public IEnumerable<string> Type { get; set; }
     }

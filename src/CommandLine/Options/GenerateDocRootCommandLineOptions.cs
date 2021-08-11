@@ -9,13 +9,13 @@ namespace Roslynator.CommandLine
     public class GenerateDocRootCommandLineOptions : AbstractGenerateDocCommandLineOptions
     {
         [Option(
-            longName: ParameterNames.IncludeContainingNamespace,
+            longName: OptionNames.IncludeContainingNamespace,
             HelpText = "Defines parts of a documentation that should include containing namespace. Allowed values are class-hierarchy.",
             MetaValue = "<INCLUDE_CONTAINING_NAMESPACE>")]
         public IEnumerable<string> IncludeContainingNamespace { get; set; }
 
         [Option(
-            longName: ParameterNames.IncludeSystemNamespace,
+            longName: OptionNames.IncludeSystemNamespace,
             HelpText = "Indicates whether namespace should be included when a type is directly contained in namespace 'System'.")]
         public bool IncludeSystemNamespace { get; set; }
 
@@ -26,7 +26,7 @@ namespace Roslynator.CommandLine
         public IEnumerable<string> IgnoredParts { get; set; }
 
         [Option(
-            longName: ParameterNames.RootDirectoryUrl,
+            longName: OptionNames.RootDirectoryUrl,
             HelpText = "Defines a relative url to the documentation root directory.",
             MetaValue = "<ROOT_DIRECTORY_URL>")]
         public string RootDirectoryUrl { get; set; }

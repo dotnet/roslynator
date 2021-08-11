@@ -10,7 +10,7 @@ namespace Roslynator.CommandLine
     public abstract class MSBuildCommandLineOptions : AbstractCommandLineOptions
     {
         [Option(
-            longName: ParameterNames.IgnoredProjects,
+            longName: OptionNames.IgnoredProjects,
             HelpText = "Defines projects that should not be analyzed.",
             MetaValue = "<PROJECT_NAME>")]
         public IEnumerable<string> IgnoredProjects { get; set; }
@@ -23,13 +23,13 @@ namespace Roslynator.CommandLine
 
         [Option(
             shortName: OptionShortNames.MSBuildPath,
-            longName: ParameterNames.MSBuildPath,
+            longName: OptionNames.MSBuildPath,
             HelpText = "Defines a path to MSBuild. This option must be specified if there are multiple locations of MSBuild (usually multiple installations of Visual Studio).",
             MetaValue = "<MSBUILD_PATH>")]
         public string MSBuildPath { get; set; }
 
         [Option(
-            longName: ParameterNames.Projects,
+            longName: OptionNames.Projects,
             HelpText = "Defines projects that should be analyzed.",
             MetaValue = "<PROJECT_NAME>")]
         public IEnumerable<string> Projects { get; set; }
@@ -65,7 +65,7 @@ namespace Roslynator.CommandLine
             if (Projects?.Any() == true
                 && IgnoredProjects?.Any() == true)
             {
-                Logger.WriteLine($"Cannot specify both '{ParameterNames.Projects}' and '{ParameterNames.IgnoredProjects}'.", Roslynator.Verbosity.Quiet);
+                Logger.WriteLine($"Cannot specify both '{OptionNames.Projects}' and '{OptionNames.IgnoredProjects}'.", Roslynator.Verbosity.Quiet);
                 return false;
             }
 

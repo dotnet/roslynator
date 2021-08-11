@@ -2,7 +2,7 @@
 
 namespace Roslynator.CommandLine
 {
-    internal static class ParameterNames
+    internal static class OptionNames
     {
         public const string Depth = "depth";
         public const string Display = "display";
