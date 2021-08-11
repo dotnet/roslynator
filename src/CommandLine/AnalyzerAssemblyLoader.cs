@@ -74,7 +74,7 @@ namespace Roslynator.CommandLine
             }
             else
             {
-                WriteLine($"File or directory not found: '{path}'", ConsoleColor.DarkGray, Verbosity.Normal);
+                WriteLine($"File or directory not found: '{path}'", ConsoleColors.DarkGray, Verbosity.Normal);
             }
 
             AnalyzerAssembly Load(string filePath)
@@ -87,7 +87,7 @@ namespace Roslynator.CommandLine
                     || ex is BadImageFormatException
                     || ex is SecurityException)
                 {
-                    WriteLine($"Cannot load assembly '{filePath}'", ConsoleColor.DarkGray, Verbosity.Diagnostic);
+                    WriteLine($"Cannot load assembly '{filePath}'", ConsoleColors.DarkGray, Verbosity.Diagnostic);
 
                     return null;
                 }

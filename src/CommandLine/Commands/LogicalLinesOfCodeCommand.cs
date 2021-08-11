@@ -41,7 +41,7 @@ namespace Roslynator.CommandLine
                 }
                 else
                 {
-                    WriteLine($"Cannot count logical lines for language '{project.Language}'", ConsoleColor.Yellow, Verbosity.Minimal);
+                    WriteLine($"Cannot count logical lines for language '{project.Language}'", ConsoleColors.Yellow, Verbosity.Minimal);
                     return new LinesOfCodeCommandResult(CommandStatus.Fail, default);
                 }
             }
@@ -59,7 +59,7 @@ namespace Roslynator.CommandLine
 
         private static async Task<CodeMetricsInfo> CountLogicalLinesAsync(Project project, ICodeMetricsService service, CodeMetricsOptions options, CancellationToken cancellationToken)
         {
-            WriteLine($"Count logical lines for '{project.Name}'", ConsoleColor.Cyan, Verbosity.Minimal);
+            WriteLine($"Count logical lines for '{project.Name}'", ConsoleColors.Cyan, Verbosity.Minimal);
 
             Stopwatch stopwatch = Stopwatch.StartNew();
 
@@ -82,7 +82,7 @@ namespace Roslynator.CommandLine
 
         private ImmutableDictionary<ProjectId, CodeMetricsInfo> CountLines(Solution solution, CodeMetricsOptions options, CancellationToken cancellationToken)
         {
-            WriteLine($"Count logical lines for solution '{solution.FilePath}'", ConsoleColor.Cyan, Verbosity.Minimal);
+            WriteLine($"Count logical lines for solution '{solution.FilePath}'", ConsoleColors.Cyan, Verbosity.Minimal);
 
             IEnumerable<Project> projects = FilterProjects(solution);
 
@@ -135,7 +135,7 @@ namespace Roslynator.CommandLine
                         Math.Max(totalPreprocessorDirectiveLines.Length, totalLines.Length))));
 
             WriteLine(Verbosity.Minimal);
-            WriteLine($"{totalCodeLines.PadLeft(maxDigits)} {totalCodeLineCount / (double)totalLineCount,4:P0} logical lines of code", ConsoleColor.Green, Verbosity.Minimal);
+            WriteLine($"{totalCodeLines.PadLeft(maxDigits)} {totalCodeLineCount / (double)totalLineCount,4:P0} logical lines of code", ConsoleColors.Green, Verbosity.Minimal);
             WriteLine($"{totalWhitespaceLines.PadLeft(maxDigits)} {totalWhitespaceLineCount / (double)totalLineCount,4:P0} white-space lines", Verbosity.Minimal);
             WriteLine($"{totalCommentLines.PadLeft(maxDigits)} {totalCommentLineCount / (double)totalLineCount,4:P0} comment lines", Verbosity.Minimal);
             WriteLine($"{totalPreprocessorDirectiveLines.PadLeft(maxDigits)} {totalPreprocessorDirectiveLineCount / (double)totalLineCount,4:P0} preprocessor directive lines", Verbosity.Minimal);

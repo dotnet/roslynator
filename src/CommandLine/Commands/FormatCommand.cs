@@ -54,7 +54,7 @@ namespace Roslynator.CommandLine
         {
             string solutionDirectory = Path.GetDirectoryName(solution.FilePath);
 
-            WriteLine($"Analyze solution '{solution.FilePath}'", ConsoleColor.Cyan, Verbosity.Minimal);
+            WriteLine($"Analyze solution '{solution.FilePath}'", ConsoleColors.Cyan, Verbosity.Minimal);
 
             Stopwatch stopwatch = Stopwatch.StartNew();
 
@@ -97,14 +97,14 @@ namespace Roslynator.CommandLine
                 if (!solution.Workspace.TryApplyChanges(newSolution))
                 {
                     Debug.Fail($"Cannot apply changes to solution '{solution.FilePath}'");
-                    WriteLine($"Cannot apply changes to solution '{solution.FilePath}'", ConsoleColor.Yellow, Verbosity.Diagnostic);
+                    WriteLine($"Cannot apply changes to solution '{solution.FilePath}'", ConsoleColors.Yellow, Verbosity.Diagnostic);
                 }
             }
 
             int count = changedDocuments.Sum(f => f.Length);
 
             WriteLine(Verbosity.Minimal);
-            WriteLine($"{count} {((count == 1) ? "document" : "documents")} formatted", ConsoleColor.Green, Verbosity.Minimal);
+            WriteLine($"{count} {((count == 1) ? "document" : "documents")} formatted", ConsoleColors.Green, Verbosity.Minimal);
 
             WriteLine(Verbosity.Minimal);
             WriteLine($"Done formatting solution '{solution.FilePath}' in {stopwatch.Elapsed:mm\\:ss\\.ff}", Verbosity.Minimal);
@@ -137,7 +137,7 @@ namespace Roslynator.CommandLine
                 if (!solution.Workspace.TryApplyChanges(newSolution))
                 {
                     Debug.Fail($"Cannot apply changes to solution '{newSolution.FilePath}'");
-                    WriteLine($"Cannot apply changes to solution '{newSolution.FilePath}'", ConsoleColor.Yellow, Verbosity.Diagnostic);
+                    WriteLine($"Cannot apply changes to solution '{newSolution.FilePath}'", ConsoleColors.Yellow, Verbosity.Diagnostic);
                 }
             }
 
@@ -154,7 +154,7 @@ namespace Roslynator.CommandLine
         private static void WriteSummary(int count)
         {
             WriteLine(Verbosity.Minimal);
-            WriteLine($"{count} {((count == 1) ? "document" : "documents")} formatted", ConsoleColor.Green, Verbosity.Minimal);
+            WriteLine($"{count} {((count == 1) ? "document" : "documents")} formatted", ConsoleColors.Green, Verbosity.Minimal);
         }
 
         protected override void OperationCanceled(OperationCanceledException ex)

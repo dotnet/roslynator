@@ -88,19 +88,19 @@ namespace Roslynator.CodeFixes
                 if (options.DiagnosticIdsFixableOneByOne.Contains(descriptor.Id))
                     return await GetFixAsync(diagnostics[0], fixer, project, options, formatProvider, cancellationToken).ConfigureAwait(false);
 
-                WriteLine($"  Diagnostic '{descriptor.Id}' cannot be fixed with '{fixer.GetType().FullName}' because it does not have FixAllProvider and '{descriptor.Id}' is not allowed to be fixed one by one.", ConsoleColor.Yellow, Verbosity.Diagnostic);
+                WriteLine($"  Diagnostic '{descriptor.Id}' cannot be fixed with '{fixer.GetType().FullName}' because it does not have FixAllProvider and '{descriptor.Id}' is not allowed to be fixed one by one.", ConsoleColors.Yellow, Verbosity.Diagnostic);
                 return default;
             }
 
             if (!fixAllProvider.GetSupportedFixAllDiagnosticIds(fixer).Any(f => f == descriptor.Id))
             {
-                WriteLine($"  '{fixAllProvider.GetType().FullName}' does not support diagnostic '{descriptor.Id}'", ConsoleColor.Yellow, Verbosity.Diagnostic);
+                WriteLine($"  '{fixAllProvider.GetType().FullName}' does not support diagnostic '{descriptor.Id}'", ConsoleColors.Yellow, Verbosity.Diagnostic);
                 return default;
             }
 
             if (!fixAllProvider.GetSupportedFixAllScopes().Any(f => f == options.FixAllScope))
             {
-                WriteLine($"  '{fixAllProvider.GetType().FullName}' does not support scope '{options.FixAllScope}'", ConsoleColor.Yellow, Verbosity.Diagnostic);
+                WriteLine($"  '{fixAllProvider.GetType().FullName}' does not support scope '{options.FixAllScope}'", ConsoleColors.Yellow, Verbosity.Diagnostic);
                 return default;
             }
 
@@ -138,17 +138,17 @@ namespace Roslynator.CodeFixes
 
                 if (fixAll != null)
                 {
-                    WriteLine($"  CodeFixProvider: '{fixer.GetType().FullName}'", ConsoleColor.DarkGray, Verbosity.Diagnostic);
+                    WriteLine($"  CodeFixProvider: '{fixer.GetType().FullName}'", ConsoleColors.DarkGray, Verbosity.Diagnostic);
 
                     if (!string.IsNullOrEmpty(fix.EquivalenceKey))
-                        WriteLine($"  EquivalenceKey:  '{fix.EquivalenceKey}'", ConsoleColor.DarkGray, Verbosity.Diagnostic);
+                        WriteLine($"  EquivalenceKey:  '{fix.EquivalenceKey}'", ConsoleColors.DarkGray, Verbosity.Diagnostic);
 
-                    WriteLine($"  FixAllProvider:  '{fixAllProvider.GetType().FullName}'", ConsoleColor.DarkGray, Verbosity.Diagnostic);
+                    WriteLine($"  FixAllProvider:  '{fixAllProvider.GetType().FullName}'", ConsoleColors.DarkGray, Verbosity.Diagnostic);
 
                     return (fixAll, document);
                 }
 
-                WriteLine($"  Fixer '{fixer.GetType().FullName}' registered no action for diagnostic '{descriptor.Id}'", ConsoleColor.DarkGray, Verbosity.Diagnostic);
+                WriteLine($"  Fixer '{fixer.GetType().FullName}' registered no action for diagnostic '{descriptor.Id}'", ConsoleColors.DarkGray, Verbosity.Diagnostic);
                 LogHelpers.WriteDiagnostic(diagnostic, baseDirectoryPath: Path.GetDirectoryName(project.FilePath), formatProvider: formatProvider, indentation: "    ", verbosity: Verbosity.Diagnostic);
             }
 
@@ -179,7 +179,7 @@ namespace Roslynator.CodeFixes
 
             if (action == null)
             {
-                WriteLine($"  Fixer '{fixer.GetType().FullName}' registered no action for diagnostic '{diagnostic.Id}'", ConsoleColor.DarkGray, Verbosity.Diagnostic);
+                WriteLine($"  Fixer '{fixer.GetType().FullName}' registered no action for diagnostic '{diagnostic.Id}'", ConsoleColors.DarkGray, Verbosity.Diagnostic);
                 LogHelpers.WriteDiagnostic(diagnostic, baseDirectoryPath: Path.GetDirectoryName(project.FilePath), formatProvider: formatProvider, indentation: "    ", verbosity: Verbosity.Diagnostic);
             }
 
@@ -233,9 +233,9 @@ namespace Roslynator.CodeFixes
 
         private static void WriteMultipleActionsSummary(in MultipleFixesInfo info)
         {
-            WriteLine($"  '{info.Fixer.GetType().FullName}' registered multiple actions to fix diagnostic '{info.DiagnosticId}'", ConsoleColor.Yellow, Verbosity.Diagnostic);
-            WriteLine($"    EquivalenceKey 1: '{info.EquivalenceKey1}'", ConsoleColor.Yellow, Verbosity.Diagnostic);
-            WriteLine($"    EquivalenceKey 2: '{info.EquivalenceKey2}'", ConsoleColor.Yellow, Verbosity.Diagnostic);
+            WriteLine($"  '{info.Fixer.GetType().FullName}' registered multiple actions to fix diagnostic '{info.DiagnosticId}'", ConsoleColors.Yellow, Verbosity.Diagnostic);
+            WriteLine($"    EquivalenceKey 1: '{info.EquivalenceKey1}'", ConsoleColors.Yellow, Verbosity.Diagnostic);
+            WriteLine($"    EquivalenceKey 2: '{info.EquivalenceKey2}'", ConsoleColors.Yellow, Verbosity.Diagnostic);
         }
 
         private readonly struct MultipleFixesInfo : IEquatable<MultipleFixesInfo>

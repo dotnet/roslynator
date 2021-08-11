@@ -188,7 +188,7 @@ namespace Roslynator.CommandLine
 
         protected virtual void WorkspaceFailed(object sender, WorkspaceDiagnosticEventArgs e)
         {
-            WriteLine($"  {e.Diagnostic.Message}", e.Diagnostic.Kind.GetColor(), Verbosity.Detailed);
+            WriteLine($"  {e.Diagnostic.Message}", e.Diagnostic.Kind.GetColors(), Verbosity.Detailed);
         }
 
         protected virtual Task<TCommandResult> ExecuteAsync(
@@ -325,7 +325,7 @@ namespace Roslynator.CommandLine
                 }
                 else
                 {
-                    WriteLine($"  Skip '{project.Name}'", ConsoleColor.DarkGray, Verbosity.Normal);
+                    WriteLine($"  Skip '{project.Name}'", ConsoleColors.DarkGray, Verbosity.Normal);
                 }
             }
         }
@@ -426,7 +426,7 @@ namespace Roslynator.CommandLine
                 }
                 else
                 {
-                    WriteLine(text, ConsoleColor.DarkGray, Verbosity.Diagnostic);
+                    WriteLine(text, ConsoleColors.DarkGray, Verbosity.Diagnostic);
                 }
             }
         }

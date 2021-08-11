@@ -145,7 +145,7 @@ namespace Roslynator.Spelling
                 }
                 else
                 {
-                    Write(value, ConsoleColor.Cyan);
+                    Write(value, ConsoleColors.Cyan);
                 }
 
                 WriteLine("'");
@@ -167,12 +167,12 @@ namespace Roslynator.Spelling
             if (containingValue != null)
             {
                 Write(containingValue.Remove(diagnostic.Index));
-                Write(fix.Value, ConsoleColor.Cyan);
+                Write(fix.Value, ConsoleColors.Cyan);
                 Write(containingValue.Substring(diagnostic.EndIndex, containingValue.Length - diagnostic.EndIndex));
             }
             else
             {
-                Write(fix.Value, ConsoleColor.Cyan);
+                Write(fix.Value, ConsoleColors.Cyan);
             }
 
             Write("'");

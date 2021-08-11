@@ -136,7 +136,7 @@ namespace Roslynator
             }
             catch (ReflectionTypeLoadException)
             {
-                WriteLine($"Cannot load types from assembly '{analyzerAssembly.FullName}'", ConsoleColor.DarkGray, Verbosity.Diagnostic);
+                WriteLine($"Cannot load types from assembly '{analyzerAssembly.FullName}'", ConsoleColors.DarkGray, Verbosity.Diagnostic);
             }
 
             return new AnalyzerAssembly(
@@ -153,8 +153,8 @@ namespace Roslynator
             }
             catch (TargetInvocationException ex)
             {
-                WriteLine($"Cannot create instance of type '{typeInfo.FullName}'", ConsoleColor.DarkGray, Verbosity.Diagnostic);
-                WriteLine(ex.ToString(), ConsoleColor.DarkGray, Verbosity.Diagnostic);
+                WriteLine($"Cannot create instance of type '{typeInfo.FullName}'", ConsoleColors.DarkGray, Verbosity.Diagnostic);
+                WriteLine(ex.ToString(), ConsoleColors.DarkGray, Verbosity.Diagnostic);
             }
 
             return default;

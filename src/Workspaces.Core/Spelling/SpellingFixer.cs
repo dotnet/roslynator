@@ -62,7 +62,7 @@ namespace Roslynator.Spelling
 
                 if (predicate == null || predicate(project))
                 {
-                    WriteLine($"Fix '{project.Name}' {$"{i + 1}/{projects.Length}"}", ConsoleColor.Cyan, Verbosity.Minimal);
+                    WriteLine($"Fix '{project.Name}' {$"{i + 1}/{projects.Length}"}", ConsoleColors.Cyan, Verbosity.Minimal);
 
                     ImmutableArray<SpellingFixResult> results2 = await FixProjectAsync(project, cancellationToken).ConfigureAwait(false);
 
@@ -70,7 +70,7 @@ namespace Roslynator.Spelling
                 }
                 else
                 {
-                    WriteLine($"Skip '{project.Name}' {$"{i + 1}/{projects.Length}"}", ConsoleColor.DarkGray, Verbosity.Minimal);
+                    WriteLine($"Skip '{project.Name}' {$"{i + 1}/{projects.Length}"}", ConsoleColors.DarkGray, Verbosity.Minimal);
                 }
 
                 TimeSpan elapsed = stopwatch.Elapsed;
@@ -252,7 +252,7 @@ namespace Roslynator.Spelling
                     {
                         if (!string.Equals(diagnostic.Value, fix.Value, StringComparison.Ordinal))
                         {
-                            WriteFix(diagnostic, fix, ConsoleColor.Green);
+                            WriteFix(diagnostic, fix, ConsoleColors.Green);
 
                             if (!Options.DryRun)
                                 (textChanges ??= new List<TextChange>()).Add(new TextChange(diagnostic.Span, fix.Value));
@@ -286,7 +286,7 @@ namespace Roslynator.Spelling
                 && !Workspace.TryApplyChanges(project.Solution))
             {
                 Debug.Fail($"Cannot apply changes to solution '{project.Solution.FilePath}'");
-                WriteLine($"    Cannot apply changes to solution '{project.Solution.FilePath}'", ConsoleColor.Yellow, Verbosity.Diagnostic);
+                WriteLine($"    Cannot apply changes to solution '{project.Solution.FilePath}'", ConsoleColors.Yellow, Verbosity.Diagnostic);
             }
 
             return results;
@@ -338,7 +338,7 @@ namespace Roslynator.Spelling
                 {
                     Debug.Fail(identifier.GetLocation().ToString());
 
-                    WriteLine($"    Cannot find document for '{identifier.ValueText}'", ConsoleColor.Yellow, Verbosity.Detailed);
+                    WriteLine($"    Cannot find document for '{identifier.ValueText}'", ConsoleColors.Yellow, Verbosity.Detailed);
                     continue;
                 }
 
@@ -391,7 +391,7 @@ namespace Roslynator.Spelling
                         if (locationText != null)
                             message += $" at {locationText}";
 
-                        WriteLine(message, ConsoleColor.Yellow, Verbosity.Detailed);
+                        WriteLine(message, ConsoleColors.Yellow, Verbosity.Detailed);
                     }
 
                     continue;
@@ -461,7 +461,7 @@ namespace Roslynator.Spelling
                 Solution newSolution = null;
                 if (!Options.DryRun)
                 {
-                    WriteLine($"    Rename '{identifier.ValueText}' to '{newName}'", ConsoleColor.Green, Verbosity.Minimal);
+                    WriteLine($"    Rename '{identifier.ValueText}' to '{newName}'", ConsoleColors.Green, Verbosity.Minimal);
 
                     try
                     {
@@ -480,7 +480,7 @@ namespace Roslynator.Spelling
 #endif
                     )
                     {
-                        WriteLine($"    Cannot rename '{symbol.Name}'", ConsoleColor.Yellow, Verbosity.Normal);
+                        WriteLine($"    Cannot rename '{symbol.Name}'", ConsoleColors.Yellow, Verbosity.Normal);
 #if DEBUG
                         WriteLine(document.FilePath);
                         WriteLine(identifier.ValueText);
@@ -499,7 +499,7 @@ namespace Roslynator.Spelling
                     else
                     {
                         Debug.Fail($"Cannot apply changes to solution '{newSolution.FilePath}'");
-                        WriteLine($"    Cannot apply changes to solution '{newSolution.FilePath}'", ConsoleColor.Yellow, Verbosity.Normal);
+                        WriteLine($"    Cannot apply changes to solution '{newSolution.FilePath}'", ConsoleColors.Yellow, Verbosity.Normal);
                         continue;
                     }
                 }
@@ -603,13 +603,13 @@ namespace Roslynator.Spelling
             return default;
         }
 
-        private static void WriteFix(SpellingDiagnostic diagnostic, SpellingFix fix, ConsoleColor? color = null)
+        private static void WriteFix(SpellingDiagnostic diagnostic, SpellingFix fix, ConsoleColors? colors = null)
         {
             string message = $"    Replace '{diagnostic.Value}' with '{fix.Value}'";
 
-            if (color != null)
+            if (colors != null)
             {
-                WriteLine(message, color.Value, Verbosity.Minimal);
+                WriteLine(message, colors.Value, Verbosity.Minimal);
             }
             else
             {

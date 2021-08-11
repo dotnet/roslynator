@@ -106,15 +106,15 @@ namespace Roslynator
             Out?.Write(value, verbosity: verbosity);
         }
 
-        public static void Write(string value, ConsoleColor color)
+        public static void Write(string value, ConsoleColors colors)
         {
-            ConsoleOut.Write(value, color);
+            ConsoleOut.Write(value, colors);
             Out?.Write(value);
         }
 
-        public static void Write(string value, ConsoleColor color, Verbosity verbosity)
+        public static void Write(string value, ConsoleColors colors, Verbosity verbosity)
         {
-            ConsoleOut.Write(value, color, verbosity: verbosity);
+            ConsoleOut.Write(value, colors, verbosity: verbosity);
             Out?.Write(value, verbosity: verbosity);
         }
 
@@ -124,9 +124,9 @@ namespace Roslynator
             Out?.WriteIf(condition, value);
         }
 
-        public static void WriteIf(bool condition, string value, ConsoleColor color)
+        public static void WriteIf(bool condition, string value, ConsoleColors colors)
         {
-            ConsoleOut.WriteIf(condition, value, color);
+            ConsoleOut.WriteIf(condition, value, colors);
             Out?.WriteIf(condition, value);
         }
 
@@ -134,30 +134,6 @@ namespace Roslynator
         {
             ConsoleOut.Write(value);
             Out?.Write(value);
-        }
-
-        public static void Write(string format, object arg0)
-        {
-            ConsoleOut.Write(format, arg0);
-            Out?.Write(format, arg0);
-        }
-
-        public static void Write(string format, object arg0, object arg1)
-        {
-            ConsoleOut.Write(format, arg0, arg1);
-            Out?.Write(format, arg0, arg1);
-        }
-
-        public static void Write(string format, object arg0, object arg1, object arg2)
-        {
-            ConsoleOut.Write(format, arg0, arg1, arg2);
-            Out?.Write(format, arg0, arg1, arg2);
-        }
-
-        public static void Write(string format, params object[] arg)
-        {
-            ConsoleOut.Write(format, arg);
-            Out?.Write(format, arg);
         }
 
         public static void WriteLine()
@@ -256,15 +232,15 @@ namespace Roslynator
             Out?.WriteLine(value, verbosity: verbosity);
         }
 
-        public static void WriteLine(string value, ConsoleColor color)
+        public static void WriteLine(string value, ConsoleColors colors)
         {
-            ConsoleOut.WriteLine(value, color);
+            ConsoleOut.WriteLine(value, colors);
             Out?.WriteLine(value);
         }
 
-        public static void WriteLine(string value, ConsoleColor color, Verbosity verbosity)
+        public static void WriteLine(string value, ConsoleColors colors, Verbosity verbosity)
         {
-            ConsoleOut.WriteLine(value, color, verbosity: verbosity);
+            ConsoleOut.WriteLine(value, colors, verbosity: verbosity);
             Out?.WriteLine(value, verbosity: verbosity);
         }
 
@@ -280,9 +256,9 @@ namespace Roslynator
             Out?.WriteLineIf(condition, value);
         }
 
-        public static void WriteLineIf(bool condition, string value, ConsoleColor color)
+        public static void WriteLineIf(bool condition, string value, ConsoleColors colors)
         {
-            ConsoleOut.WriteLineIf(condition, value, color);
+            ConsoleOut.WriteLineIf(condition, value, colors);
             Out?.WriteLineIf(condition, value);
         }
 
@@ -292,36 +268,14 @@ namespace Roslynator
             Out?.WriteLine(value);
         }
 
-        public static void WriteLine(string format, object arg0)
-        {
-            ConsoleOut.WriteLine(format, arg0);
-            Out?.WriteLine(format, arg0);
-        }
-
-        public static void WriteLine(string format, object arg0, object arg1)
-        {
-            ConsoleOut.WriteLine(format, arg0, arg1);
-            Out?.WriteLine(format, arg0, arg1);
-        }
-
-        public static void WriteLine(string format, object arg0, object arg1, object arg2)
-        {
-            ConsoleOut.WriteLine(format, arg0, arg1, arg2);
-            Out?.WriteLine(format, arg0, arg1, arg2);
-        }
-
-        public static void WriteLine(string format, params object[] arg)
-        {
-            ConsoleOut.WriteLine(format, arg);
-            Out?.WriteLine(format, arg);
-        }
-
         public static void WriteError(
             Exception exception,
             ConsoleColor color = ConsoleColor.Red,
             Verbosity verbosity = Verbosity.Quiet)
         {
-            WriteLine(exception.Message, color, verbosity);
+            var colors = new ConsoleColors(color);
+
+            WriteLine(exception.Message, colors, verbosity);
 
             if (exception is AggregateException aggregateException)
                 WriteInnerExceptions(aggregateException, "");
@@ -334,7 +288,7 @@ namespace Roslynator
 
                 foreach (Exception innerException in aggregateException.InnerExceptions)
                 {
-                    WriteLine(indent + "Inner exception: " + innerException.Message, color, verbosity);
+                    WriteLine(indent + "Inner exception: " + innerException.Message, colors, verbosity);
 
                     if (innerException is AggregateException aggregateException2)
                         WriteInnerExceptions(aggregateException2, indent);

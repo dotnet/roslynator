@@ -53,7 +53,7 @@ namespace Roslynator.CommandLine
             if (ShouldWrite(Verbosity.Normal))
             {
                 WriteLine(Verbosity.Normal);
-                WriteLine($"{count} assembl{((count == 1) ? "y" : "ies")} found", ConsoleColor.Green, Verbosity.Normal);
+                WriteLine($"{count} assembl{((count == 1) ? "y" : "ies")} found", ConsoleColors.Green, Verbosity.Normal);
             }
 
             return (count > 0) ? CommandResults.Success : CommandResults.NotSuccess;
@@ -105,7 +105,7 @@ namespace Roslynator.CommandLine
                     default:
                         {
 #if DEBUG
-                            WriteLine(reference.GetType().FullName, ConsoleColor.Yellow);
+                            WriteLine(reference.GetType().FullName, ConsoleColors.Yellow);
 #endif
                             return reference.Display;
                         }

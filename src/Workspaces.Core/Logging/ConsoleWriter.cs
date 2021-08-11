@@ -12,43 +12,71 @@ namespace Roslynator
         {
         }
 
-        public void Write(string value, ConsoleColor color)
+        public ConsoleColors Colors
         {
-            ConsoleColor tmp = Console.ForegroundColor;
-            Console.ForegroundColor = color;
-            Write(value);
-            Console.ForegroundColor = tmp;
+            get { return new ConsoleColors(Console.ForegroundColor, Console.BackgroundColor); }
+            set
+            {
+                if (value.Foreground != null)
+                    Console.ForegroundColor = value.Foreground.Value;
+
+                if (value.Background != null)
+                    Console.BackgroundColor = value.Background.Value;
+            }
         }
 
-        public void Write(string value, ConsoleColor color, Verbosity verbosity)
+        public void Write(string value, ConsoleColors colors)
         {
-            WriteIf(verbosity <= Verbosity, value, color);
+            if (!colors.IsDefault)
+            {
+                ConsoleColors tmp = Colors;
+                Colors = colors;
+                Write(value);
+                Colors = tmp;
+            }
+            else
+            {
+                Write(value);
+            }
         }
 
-        public void WriteIf(bool condition, string value, ConsoleColor color)
+        public void Write(string value, ConsoleColors colors, Verbosity verbosity)
+        {
+            WriteIf(ShouldWrite(verbosity), value, colors);
+        }
+
+        public void WriteIf(bool condition, string value, ConsoleColors colors)
         {
             if (condition)
-                Write(value, color);
+                Write(value, colors);
         }
 
-        public void WriteLine(string value, ConsoleColor color)
+        public void WriteLine(string value, ConsoleColors colors)
         {
-            ConsoleColor tmp = Console.ForegroundColor;
-            Console.ForegroundColor = color;
-            WriteLine(value);
-            Console.ForegroundColor = tmp;
+            if (!colors.IsDefault)
+            {
+                ConsoleColors tmp = Colors;
+                Colors = colors;
+                Write(value);
+                Colors = tmp;
+                WriteLine();
+            }
+            else
+            {
+                WriteLine(value);
+            }
         }
 
-        public void WriteLine(string value, ConsoleColor color, Verbosity verbosity)
+        public void WriteLine(string value, ConsoleColors colors, Verbosity verbosity)
         {
-            WriteLineIf(ShouldWrite(verbosity), value, color);
+            WriteLineIf(ShouldWrite(verbosity), value, colors);
         }
 
         public override void WriteLine(LogMessage message)
         {
-            if (message.ForegroundColor != null)
+            if (message.Colors != null)
             {
-                WriteLineIf(ShouldWrite(message.Verbosity), message.Text, message.ForegroundColor.Value);
+                WriteLineIf(ShouldWrite(message.Verbosity), message.Text, message.Colors.Value);
             }
             else
             {
@@ -56,10 +84,10 @@ namespace Roslynator
             }
         }
 
-        public void WriteLineIf(bool condition, string value, ConsoleColor color)
+        public void WriteLineIf(bool condition, string value, ConsoleColors colors)
         {
             if (condition)
-                WriteLine(value, color);
+                WriteLine(value, colors);
         }
 
         protected override void Dispose(bool disposing)

@@ -20,7 +20,7 @@ namespace Roslynator.CommandLine
             int count = 0;
             foreach (VisualStudioInstance instance in MSBuildLocator.QueryVisualStudioInstances())
             {
-                WriteLine($"{instance.Name} {instance.Version}", ConsoleColor.Cyan, Verbosity.Normal);
+                WriteLine($"{instance.Name} {instance.Version}", ConsoleColors.Cyan, Verbosity.Normal);
                 WriteLine($"  Visual Studio Path: {instance.VisualStudioRootPath}", Verbosity.Detailed);
                 WriteLine($"  MSBuild Path:       {instance.MSBuildPath}", Verbosity.Detailed);
 
@@ -28,7 +28,7 @@ namespace Roslynator.CommandLine
             }
 
             WriteLine(Verbosity.Minimal);
-            WriteLine($"{count} Visual Studio {((count == 1) ? "installation" : "installations")} found", ConsoleColor.Green, Verbosity.Minimal);
+            WriteLine($"{count} Visual Studio {((count == 1) ? "installation" : "installations")} found", ConsoleColors.Green, Verbosity.Minimal);
 
             return (count > 0) ? CommandStatus.Success : CommandStatus.NotSuccess;
         }

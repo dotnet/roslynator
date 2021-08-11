@@ -102,7 +102,7 @@ namespace Roslynator.CommandLine.Xml
                         summary,
                         new XElement("Projects", projects))));
 
-            WriteLine($"Save code analysis to '{filePath}'", ConsoleColor.DarkGray, Verbosity.Diagnostic);
+            WriteLine($"Save code analysis to '{filePath}'", ConsoleColors.DarkGray, Verbosity.Diagnostic);
 
             using (var fileStream = new FileStream(filePath, FileMode.Create))
             using (XmlWriter xmlWriter = XmlWriter.Create(fileStream, new XmlWriterSettings() { Indent = true, CloseOutput = false }))

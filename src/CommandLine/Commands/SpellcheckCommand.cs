@@ -85,7 +85,7 @@ namespace Roslynator.CommandLine
 
                 spellingFixer = GetSpellingFixer(solution);
 
-                WriteLine($"Fix '{project.Name}'", ConsoleColor.Cyan, Verbosity.Minimal);
+                WriteLine($"Fix '{project.Name}'", ConsoleColors.Cyan, Verbosity.Minimal);
 
                 Stopwatch stopwatch = Stopwatch.StartNew();
 
@@ -151,7 +151,7 @@ namespace Roslynator.CommandLine
                     WriteLine(grouping.Key, Verbosity.Normal);
 
                     if (isDetailed)
-                        WriteMatchingLines(grouping, comparer, ConsoleColor.Green, displayContainingValue: true);
+                        WriteMatchingLines(grouping, comparer, ConsoleColors.Green, displayContainingValue: true);
                 }
             }
 
@@ -183,11 +183,11 @@ namespace Roslynator.CommandLine
 
                     if (fixes.Any())
                     {
-                        Write(": ", ConsoleColor.Gray, Verbosity.Normal);
+                        Write(": ", ConsoleColors.Gray, Verbosity.Normal);
 
                         WriteLine(
                             string.Join(", ", fixes.Select(f => TextUtility.SetTextCasing(f.Value, TextUtility.GetTextCasing(grouping.Key)))),
-                            ConsoleColor.Cyan,
+                            ConsoleColors.Cyan,
                             Verbosity.Normal);
 
                         isFix = true;
@@ -198,7 +198,7 @@ namespace Roslynator.CommandLine
                     WriteLine(Verbosity.Normal);
 
                 if (isDetailed)
-                    WriteMatchingLines(grouping, comparer, ConsoleColor.Green);
+                    WriteMatchingLines(grouping, comparer, ConsoleColors.Green);
             }
 
             WriteResults(results, SpellingFixKind.Predefined, "Auto fixes:", comparer, isDetailed);
@@ -230,14 +230,14 @@ namespace Roslynator.CommandLine
                 WriteLine(grouping.Key, Verbosity.Normal);
 
                 if (isDetailed)
-                    WriteMatchingLines(grouping, comparer, ConsoleColor.Cyan);
+                    WriteMatchingLines(grouping, comparer, ConsoleColors.Cyan);
             }
         }
 
         private void WriteMatchingLines(
             IGrouping<string, SpellingFixResult> grouping,
             StringComparer comparer,
-            ConsoleColor color,
+            ConsoleColors colors,
             bool displayContainingValue = false)
         {
             foreach (IGrouping<string, SpellingFixResult> grouping2 in grouping
@@ -245,7 +245,7 @@ namespace Roslynator.CommandLine
                 .OrderBy(f => f.Key, comparer))
             {
                 Write("  ", Verbosity.Detailed);
-                WriteLine(grouping2.Key, ConsoleColor.Cyan, Verbosity.Detailed);
+                WriteLine(grouping2.Key, ConsoleColors.Cyan, Verbosity.Detailed);
 
                 foreach (SpellingFixResult result in grouping2
                     .Where(f => f.SourceText != null)
@@ -254,7 +254,7 @@ namespace Roslynator.CommandLine
                     .ThenBy(f => f.LineSpan.StartLinePosition.Character))
                 {
                     Write("    ", Verbosity.Detailed);
-                    Write(result.LineNumber.ToString(), ConsoleColor.Cyan, Verbosity.Detailed);
+                    Write(result.LineNumber.ToString(), ConsoleColors.Cyan, Verbosity.Detailed);
                     Write(" ", Verbosity.Detailed);
 
                     int lineStartIndex = result.LineStartIndex;
@@ -279,7 +279,7 @@ namespace Roslynator.CommandLine
 
                     Write(result.SourceText.Substring(lineStartIndex, index - lineStartIndex), Verbosity.Detailed);
                     Out?.Write(">>>", Verbosity.Detailed);
-                    Write(value, color, Verbosity.Detailed);
+                    Write(value, colors, Verbosity.Detailed);
                     Out?.Write("<<<", Verbosity.Detailed);
                     WriteLine(result.SourceText.Substring(endIndex, lineEndIndex - endIndex), Verbosity.Detailed);
                 }
@@ -416,7 +416,7 @@ namespace Roslynator.CommandLine
 
                                 Write(result.SourceText.Substring(lineStartIndex, index - lineStartIndex), Verbosity.Detailed);
                                 Out?.Write(">>>", Verbosity.Detailed);
-                                Write(value, ConsoleColor.Green, Verbosity.Detailed);
+                                Write(value, ConsoleColors.Green, Verbosity.Detailed);
                                 Out?.Write("<<<", Verbosity.Detailed);
                                 WriteLine(result.SourceText.Substring(endIndex, lineEndIndex - endIndex), Verbosity.Detailed);
                             }

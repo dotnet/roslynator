@@ -68,7 +68,7 @@ namespace Roslynator.CodeFixes
 
                 if (predicate == null || predicate(project))
                 {
-                    WriteLine($"Fix '{project.Name}' {$"{i + 1}/{projects.Length}"}", ConsoleColor.Cyan, Verbosity.Minimal);
+                    WriteLine($"Fix '{project.Name}' {$"{i + 1}/{projects.Length}"}", ConsoleColors.Cyan, Verbosity.Minimal);
 
                     ProjectFixResult result = await FixProjectAsync(project, cancellationToken).ConfigureAwait(false);
 
@@ -79,7 +79,7 @@ namespace Roslynator.CodeFixes
                 }
                 else
                 {
-                    WriteLine($"Skip '{project.Name}' {$"{i + 1}/{projects.Length}"}", ConsoleColor.DarkGray, Verbosity.Minimal);
+                    WriteLine($"Skip '{project.Name}' {$"{i + 1}/{projects.Length}"}", ConsoleColors.DarkGray, Verbosity.Minimal);
 
                     results.Add(ProjectFixResult.Skipped);
                 }
@@ -173,7 +173,7 @@ namespace Roslynator.CodeFixes
         {
             if (!fixers.Any())
             {
-                WriteLine($"  No fixers found to fix '{project.Name}'", ConsoleColor.DarkGray, Verbosity.Normal);
+                WriteLine($"  No fixers found to fix '{project.Name}'", ConsoleColors.DarkGray, Verbosity.Normal);
                 return new FixResult(ProjectFixKind.NoFixers);
             }
 
@@ -191,8 +191,8 @@ namespace Roslynator.CodeFixes
                 .GroupBy(f => f.id, f => f.analyzer)
                 .ToDictionary(g => g.Key, g => g.Select(analyzer => analyzer).Distinct().ToImmutableArray());
 
-            LogHelpers.WriteUsedAnalyzers(analyzers, f => fixersById.ContainsKey(f.Id), Options, ConsoleColor.DarkGray, Verbosity.Diagnostic);
-            LogHelpers.WriteUsedFixers(fixers, Options, ConsoleColor.DarkGray, Verbosity.Diagnostic);
+            LogHelpers.WriteUsedAnalyzers(analyzers, f => fixersById.ContainsKey(f.Id), Options, ConsoleColors.DarkGray, Verbosity.Diagnostic);
+            LogHelpers.WriteUsedFixers(fixers, Options, ConsoleColors.DarkGray, Verbosity.Diagnostic);
 
             ImmutableArray<Diagnostic>.Builder fixedDiagnostics = ImmutableArray.CreateBuilder<Diagnostic>();
 
@@ -443,7 +443,7 @@ namespace Roslynator.CodeFixes
             Project project,
             CancellationToken cancellationToken)
         {
-            WriteLine($"  Fix {diagnostics.Length} {descriptor.Id} '{descriptor.Title}'", diagnostics[0].Severity.GetColor(), Verbosity.Normal);
+            WriteLine($"  Fix {diagnostics.Length} {descriptor.Id} '{descriptor.Title}'", diagnostics[0].Severity.GetColors(), Verbosity.Normal);
 
             LogHelpers.WriteDiagnostics(diagnostics, baseDirectoryPath: Path.GetDirectoryName(project.FilePath), formatProvider: FormatProvider, indentation: "    ", verbosity: Verbosity.Detailed);
 
@@ -629,7 +629,7 @@ namespace Roslynator.CodeFixes
 
                 Document newDocument = document.WithSyntaxRoot(newRoot);
 
-                WriteLine($"  Add banner to '{PathUtilities.TrimStart(document.FilePath, solutionDirectory)}'", ConsoleColor.DarkGray, Verbosity.Detailed);
+                WriteLine($"  Add banner to '{PathUtilities.TrimStart(document.FilePath, solutionDirectory)}'", ConsoleColors.DarkGray, Verbosity.Detailed);
 
                 project = newDocument.Project;
 
@@ -640,7 +640,7 @@ namespace Roslynator.CodeFixes
                 && !Workspace.TryApplyChanges(project.Solution))
             {
                 Debug.Fail($"Cannot apply changes to solution '{project.Solution.FilePath}'");
-                WriteLine($"Cannot apply changes to solution '{project.Solution.FilePath}'", ConsoleColor.Yellow, Verbosity.Diagnostic);
+                WriteLine($"Cannot apply changes to solution '{project.Solution.FilePath}'", ConsoleColors.Yellow, Verbosity.Diagnostic);
             }
 
             return count;
@@ -664,7 +664,7 @@ namespace Roslynator.CodeFixes
                 && !Workspace.TryApplyChanges(newProject.Solution))
             {
                 Debug.Fail($"Cannot apply changes to solution '{newProject.Solution.FilePath}'");
-                WriteLine($"Cannot apply changes to solution '{newProject.Solution.FilePath}'", ConsoleColor.Yellow, Verbosity.Diagnostic);
+                WriteLine($"Cannot apply changes to solution '{newProject.Solution.FilePath}'", ConsoleColors.Yellow, Verbosity.Diagnostic);
             }
 
             return formattedDocuments;

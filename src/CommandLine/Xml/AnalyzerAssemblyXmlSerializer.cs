@@ -255,7 +255,7 @@ namespace Roslynator.CommandLine.Xml
                         diagnostics,
                         fixAllProviders)));
 
-            WriteLine($"Save analyzer assembly analysis to '{filePath}'", ConsoleColor.DarkGray, Verbosity.Diagnostic);
+            WriteLine($"Save analyzer assembly analysis to '{filePath}'", ConsoleColors.DarkGray, Verbosity.Diagnostic);
 
             using (var fileStream = new FileStream(filePath, FileMode.Create))
             using (XmlWriter xmlWriter = XmlWriter.Create(fileStream, new XmlWriterSettings() { Indent = true, CloseOutput = false }))

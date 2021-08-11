@@ -131,7 +131,7 @@ namespace Roslynator.CommandLine
 
             foreach (string path in Options.Output)
             {
-                WriteLine($"Save '{path}'", ConsoleColor.DarkGray, Verbosity.Diagnostic);
+                WriteLine($"Save '{path}'", ConsoleColors.DarkGray, Verbosity.Diagnostic);
 #if DEBUG
                 string extension = Path.GetExtension(path);
 

@@ -46,7 +46,7 @@ namespace Roslynator.CommandLine
                 }
                 else
                 {
-                    WriteLine($"Cannot count lines for '{project.FilePath}', language '{project.Language}' is not supported", ConsoleColor.Yellow, Verbosity.Minimal);
+                    WriteLine($"Cannot count lines for '{project.FilePath}', language '{project.Language}' is not supported", ConsoleColors.Yellow, Verbosity.Minimal);
                     return new LinesOfCodeCommandResult(CommandStatus.Fail, default);
                 }
             }
@@ -64,7 +64,7 @@ namespace Roslynator.CommandLine
 
         private async Task<CodeMetricsInfo> CountLinesAsync(Project project, ICodeMetricsService service, CodeMetricsOptions options, CancellationToken cancellationToken)
         {
-            WriteLine($"Count lines for '{project.Name}'", ConsoleColor.Cyan, Verbosity.Minimal);
+            WriteLine($"Count lines for '{project.Name}'", ConsoleColors.Cyan, Verbosity.Minimal);
 
             Stopwatch stopwatch = Stopwatch.StartNew();
 
@@ -88,7 +88,7 @@ namespace Roslynator.CommandLine
 
         private ImmutableDictionary<ProjectId, CodeMetricsInfo> CountLines(Solution solution, CodeMetricsOptions options, CancellationToken cancellationToken)
         {
-            WriteLine($"Count lines for solution '{solution.FilePath}'", ConsoleColor.Cyan, Verbosity.Minimal);
+            WriteLine($"Count lines for solution '{solution.FilePath}'", ConsoleColors.Cyan, Verbosity.Minimal);
 
             IEnumerable<Project> projects = FilterProjects(solution);
 
@@ -146,11 +146,11 @@ namespace Roslynator.CommandLine
                 || !Options.IncludeComments
                 || !Options.IncludePreprocessorDirectives)
             {
-                WriteLine($"{totalCodeLines.PadLeft(maxDigits)} {totalCodeLineCount / (double)totalLineCount,4:P0} lines of code", ConsoleColor.Green, Verbosity.Minimal);
+                WriteLine($"{totalCodeLines.PadLeft(maxDigits)} {totalCodeLineCount / (double)totalLineCount,4:P0} lines of code", ConsoleColors.Green, Verbosity.Minimal);
             }
             else
             {
-                WriteLine($"{totalCodeLines.PadLeft(maxDigits)} lines of code", ConsoleColor.Green, Verbosity.Minimal);
+                WriteLine($"{totalCodeLines.PadLeft(maxDigits)} lines of code", ConsoleColors.Green, Verbosity.Minimal);
             }
 
             if (Options.IgnoreBlockBoundary)

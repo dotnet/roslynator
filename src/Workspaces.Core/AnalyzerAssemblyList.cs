@@ -44,7 +44,7 @@ namespace Roslynator
 
         private void AddImpl(AnalyzerAssembly analyzerAssembly)
         {
-            WriteLine($"Add analyzer assembly '{analyzerAssembly.FullName}'", ConsoleColor.DarkGray, Verbosity.Detailed);
+            WriteLine($"Add analyzer assembly '{analyzerAssembly.FullName}'", ConsoleColors.DarkGray, Verbosity.Detailed);
 
             _analyzerAssemblies.Add(analyzerAssembly.FullName, analyzerAssembly);
         }

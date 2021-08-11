@@ -96,7 +96,7 @@ namespace Roslynator.CommandLine
 
                 CodeFixer codeFixer = GetCodeFixer(solution);
 
-                WriteLine($"Fix '{project.Name}'", ConsoleColor.Cyan, Verbosity.Minimal);
+                WriteLine($"Fix '{project.Name}'", ConsoleColors.Cyan, Verbosity.Minimal);
 
                 Stopwatch stopwatch = Stopwatch.StartNew();
 
@@ -165,7 +165,7 @@ namespace Roslynator.CommandLine
             int fixedCount = results.Sum(f => f.FixedDiagnostics.Length);
 
             WriteLine(Verbosity.Minimal);
-            WriteLine($"{fixedCount} {((fixedCount == 1) ? "diagnostic" : "diagnostics")} fixed", ConsoleColor.Green, Verbosity.Minimal);
+            WriteLine($"{fixedCount} {((fixedCount == 1) ? "diagnostic" : "diagnostics")} fixed", ConsoleColors.Green, Verbosity.Minimal);
 
             void WriteDiagnostics(
                 IEnumerable<DiagnosticInfo> diagnostics,
@@ -224,7 +224,7 @@ namespace Roslynator.CommandLine
             int fixedCount = results.Sum(f => f.FixedDiagnostics.Length);
 
             WriteLine(Verbosity.Minimal);
-            WriteLine($"{fixedCount} {((fixedCount == 1) ? "diagnostic" : "diagnostics")} fixed", ConsoleColor.Green, Verbosity.Minimal);
+            WriteLine($"{fixedCount} {((fixedCount == 1) ? "diagnostic" : "diagnostics")} fixed", ConsoleColors.Green, Verbosity.Minimal);
         }
 
         private static void WriteFixSummary(

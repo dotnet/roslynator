@@ -94,7 +94,7 @@ namespace Roslynator.Formatting
                 (await oldDocument.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false)).NormalizeWhitespace("", false).ToFullString(),
                 StringComparison.Ordinal))
             {
-                WriteLine($"Syntax roots with normalized white-space are not equivalent '{oldDocument.FilePath}'", ConsoleColor.Magenta);
+                WriteLine($"Syntax roots with normalized white-space are not equivalent '{oldDocument.FilePath}'", ConsoleColors.Magenta);
                 return false;
             }
 
@@ -102,7 +102,7 @@ namespace Roslynator.Formatting
                 await newDocument.GetSyntaxTreeAsync(cancellationToken).ConfigureAwait(false),
                 await oldDocument.GetSyntaxTreeAsync(cancellationToken).ConfigureAwait(false)))
             {
-                WriteLine($"Syntax trees are not equivalent '{oldDocument.FilePath}'", ConsoleColor.Magenta);
+                WriteLine($"Syntax trees are not equivalent '{oldDocument.FilePath}'", ConsoleColors.Magenta);
                 return false;
             }
 

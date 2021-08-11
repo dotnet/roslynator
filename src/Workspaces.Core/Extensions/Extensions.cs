@@ -288,6 +288,11 @@ namespace Roslynator
             }
         }
 
+        public static ConsoleColors GetColors(this DiagnosticSeverity diagnosticSeverity)
+        {
+            return new ConsoleColors(GetColor(diagnosticSeverity));
+        }
+
         public static async Task<CodeMetricsInfo> CountLinesAsync(
             this ICodeMetricsService service,
             Project project,
@@ -391,6 +396,11 @@ namespace Roslynator
                 default:
                     throw new InvalidOperationException($"Unknown value '{kind}'.");
             }
+        }
+
+        public static ConsoleColors GetColors(this WorkspaceDiagnosticKind kind)
+        {
+            return new ConsoleColors(GetColor(kind));
         }
 
         public static bool IsEffective(
