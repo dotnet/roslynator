@@ -10,7 +10,7 @@ namespace Roslynator.CommandLine
     {
         [Option(
             longName: OptionNames.IncludeContainingNamespace,
-            HelpText = "Defines parts of a documentation that should include containing namespace. Allowed values are class-hierarchy.",
+            HelpText = "Defines parts of a documentation that should include containing namespace. Allowed value is class-hierarchy.",
             MetaValue = "<INCLUDE_CONTAINING_NAMESPACE>")]
         public IEnumerable<string> IncludeContainingNamespace { get; set; }
 
@@ -28,7 +28,7 @@ namespace Roslynator.CommandLine
         [Option(
             longName: OptionNames.RootDirectoryUrl,
             HelpText = "Defines a relative url to the documentation root directory.",
-            MetaValue = "<ROOT_DIRECTORY_URL>")]
+            MetaValue = "<URL>")]
         public string RootDirectoryUrl { get; set; }
     }
 }

@@ -7,7 +7,7 @@ using CommandLine;
 namespace Roslynator.CommandLine
 {
     // Files, IgnoredFiles
-    public abstract class MSBuildCommandLineOptions : AbstractCommandLineOptions
+    public abstract class MSBuildCommandLineOptions : BaseCommandLineOptions
     {
         [Option(
             longName: OptionNames.IgnoredProjects,
@@ -17,15 +17,15 @@ namespace Roslynator.CommandLine
 
         [Option(
             longName: "language",
-            HelpText = "Defines project language. Allowed values are cs [csharp] or vb [visual basic]",
+            HelpText = "Defines project language. Allowed values are cs[harp] or v[isual-]b[asic]",
             MetaValue = "<LANGUAGE>")]
         public string Language { get; set; }
 
         [Option(
             shortName: OptionShortNames.MSBuildPath,
             longName: OptionNames.MSBuildPath,
-            HelpText = "Defines a path to MSBuild. This option must be specified if there are multiple locations of MSBuild (usually multiple installations of Visual Studio).",
-            MetaValue = "<MSBUILD_PATH>")]
+            HelpText = "Defines a path to MSBuild directory.",
+            MetaValue = "<DIRECTORY_PATH>")]
         public string MSBuildPath { get; set; }
 
         [Option(

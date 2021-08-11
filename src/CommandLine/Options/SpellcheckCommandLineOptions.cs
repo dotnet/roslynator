@@ -11,7 +11,7 @@ namespace Roslynator.CommandLine
         [Value(
             index: 0,
             HelpText = "Path to one or more project/solution files.",
-            MetaValue = "<PROJECT|SOLUTION>")]
+            MetaName = "<PROJECT|SOLUTION>")]
         public IEnumerable<string> Paths { get; set; }
 
         [Option(
@@ -50,7 +50,8 @@ namespace Roslynator.CommandLine
         [Option(
             longName: "min-word-length",
             Default = 3,
-            HelpText = "Specifies minimal word length to be checked. Default value is 3.")]
+            HelpText = "Specifies minimal word length to be checked. Default value is 3.",
+            MetaValue = "<NUM>")]
         public int MinWordLength { get; set; }
 
         [Option(
@@ -62,7 +63,7 @@ namespace Roslynator.CommandLine
         [Option(
             longName: OptionNames.Visibility,
             Default = nameof(Roslynator.Visibility.Public),
-            HelpText = "Defines a  maximal visibility of a symbol to be fixable. Allowed values are public, internal or private. Default value is public.",
+            HelpText = "Defines a  maximal visibility of a symbol to be fixable. Allowed values are public (default), internal or private.",
             MetaValue = "<VISIBILITY>")]
         public string Visibility { get; set; }
 

@@ -16,6 +16,9 @@ namespace Roslynator.CommandLine
             MetaValue = "<BATCH_SIZE>")]
         public int BatchSize { get; set; }
 
+        [AdditionalDescription(" If there are two (or more) fixers for a diagnostic and both provide a fix "
+            + "it is necessary to determine which one should be used to fix the diagnostic. "
+            + "Set verbosity to 'diagnostic' to see which diagnostics cannot be fixed due to multiple fixers.")]
         [Option(
             longName: "diagnostic-fixer-map",
             HelpText = "Defines mapping between diagnostic and its fixer (CodeFixProvider).",
@@ -42,7 +45,7 @@ namespace Roslynator.CommandLine
 
         [Option(
             longName: OptionNames.FixScope,
-            HelpText = "Defines fix scope. Allowed values are project or document. Default value is project.",
+            HelpText = "Defines fix scope. Allowed values are project (default) or document.",
             MetaValue = "<FIX_SCOPE>")]
         public string FixScope { get; set; }
 

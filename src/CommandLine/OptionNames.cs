@@ -6,7 +6,9 @@ namespace Roslynator.CommandLine
     {
         public const string Depth = "depth";
         public const string Display = "display";
+        public const string EndOfLine = "end-of-line";
         public const string FixScope = "fix-scope";
+        public const string Help = "help";
         public const string IgnoredMemberParts = "ignored-member-parts";
         public const string IgnoredNamespaceParts = "ignored-namespace-parts";
         public const string IgnoredParts = "ignored-parts";

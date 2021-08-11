@@ -12,7 +12,7 @@ namespace Roslynator.CommandLine
         [Value(
             index: 0,
             HelpText = "The project or solution file.",
-            MetaValue = "<PROJECT|SOLUTION>")]
+            MetaName = "<PROJECT|SOLUTION>")]
         public string Path { get; set; }
 
         [Option(
@@ -47,7 +47,7 @@ namespace Roslynator.CommandLine
 
         [Option(
             longName: OptionNames.Depth,
-            HelpText = "Defines a depth of a documentation. Allowed values are member, type or namespace. Default value is member.",
+            HelpText = "Defines a depth of a documentation. Allowed values are member (default), type or namespace.",
             MetaValue = "<DEPTH>")]
         public string Depth { get; set; }
 
@@ -59,7 +59,7 @@ namespace Roslynator.CommandLine
         [Option(
             longName: OptionNames.Visibility,
             Default = nameof(Roslynator.Visibility.Public),
-            HelpText = "Defines a visibility of a type or a member. Allowed values are public, internal or private. Default value is public.",
+            HelpText = "Defines a visibility of a type or a member. Allowed values are public (default), internal or private.",
             MetaValue = "<VISIBILITY>")]
         public string Visibility { get; set; }
     }

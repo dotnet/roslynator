@@ -11,13 +11,13 @@ namespace Roslynator.CommandLine
         [Value(
             index: 0,
             HelpText = "Path to one or more project/solution files.",
-            MetaValue = "<PROJECT|SOLUTION>")]
+            MetaName = "<PROJECT|SOLUTION>")]
         public IEnumerable<string> Paths { get; set; }
 
         [Option(
             shortName: OptionShortNames.AnalyzerAssemblies,
             longName: "analyzer-assemblies",
-            HelpText = "Define one or more paths to an analyzer assembly or a directory.",
+            HelpText = "Define one or more paths to an analyzer assembly or a directory that should be searched recursively for analyzer assemblies.",
             MetaValue = "<PATH>")]
         public IEnumerable<string> AnalyzerAssemblies { get; set; }
 
@@ -29,7 +29,7 @@ namespace Roslynator.CommandLine
 
         [Option(
             longName: "ignore-analyzer-references",
-            HelpText = "Indicates whether Roslynator should ignore analyzers that are referenced in projects.")]
+            HelpText = "Indicates whether analyzers that are referenced in a project should be ignored.")]
         public bool IgnoreAnalyzerReferences { get; set; }
 
         [Option(
@@ -40,7 +40,7 @@ namespace Roslynator.CommandLine
 
         [Option(
             longName: OptionNames.SeverityLevel,
-            HelpText = "Defines minimally required severity for a diagnostic. Allowed values are hidden, info, warning or error. Default value is info.",
+            HelpText = "Defines minimally required severity for a diagnostic. Allowed values are hidden, info (default), warning or error.",
             MetaValue = "<LEVEL>")]
         public string SeverityLevel { get; set; }
 

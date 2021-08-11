@@ -13,12 +13,12 @@ namespace Roslynator.CommandLine
         [Value(
             index: 0,
             HelpText = "Path to one or more project/solution files.",
-            MetaValue = "<PROJECT|SOLUTION>")]
+            MetaName = "<PROJECT|SOLUTION>")]
         public IEnumerable<string> Paths { get; set; }
 
         [Option(
             longName: OptionNames.Depth,
-            HelpText = "Defines a depth of a list of symbols. Allowed values are member, type or namespace. Default value is member.",
+            HelpText = "Defines a depth of a list of symbols. Allowed values are member (default), type or namespace.",
             MetaValue = "<DEPTH>")]
         public string Depth { get; set; }
 
@@ -75,14 +75,14 @@ namespace Roslynator.CommandLine
 
         [Option(
             longName: OptionNames.Layout,
-            HelpText = "Defines layout of a list of symbol definitions. Allowed values are namespace-list, namespace-hierarchy or type-hierarchy. Default value is namespace-list.")]
+            HelpText = "Defines layout of a list of symbol definitions. Allowed values are namespace-list (default), namespace-hierarchy or type-hierarchy.")]
         public string Layout { get; set; }
 
         [Option(
             shortName: OptionShortNames.Output,
             longName: "output",
             HelpText = "Defines path to file(s) that will store a list of symbol definitions.",
-            MetaValue = "<OUTPUT_FILE>")]
+            MetaValue = "<FILE_PATH>")]
         public IEnumerable<string> Output { get; set; }
 
         [Option(

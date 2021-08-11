@@ -14,7 +14,7 @@ namespace Roslynator.CommandLine
             index: 0,
             Required = true,
             HelpText = "The path to file or directory to analyze.",
-            MetaValue = "<PATH>")]
+            MetaName = "<PATH>")]
         public string Path { get; set; }
 
         [Option(longName: "additional-paths")]

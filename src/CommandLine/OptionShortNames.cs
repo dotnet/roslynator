@@ -6,8 +6,10 @@ namespace Roslynator.CommandLine
     {
         public const char AnalyzerAssemblies = 'a';
         public const char DryRun = 'd';
+        public const char Filter = 'f';
         public const char IncludeGeneratedCode = 'g';
-        public const char Heading = 'h';
+        public const char Help = 'h';
+        public const char Manual = 'm';
         public const char MSBuildPath = 'm';
         public const char Output = 'o';
         public const char Properties = 'p';

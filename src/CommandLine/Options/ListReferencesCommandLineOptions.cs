@@ -13,7 +13,7 @@ namespace Roslynator.CommandLine
         [Value(
             index: 0,
             HelpText = "Path to one or more project/solution files.",
-            MetaValue = "<PROJECT|SOLUTION>")]
+            MetaName = "<PROJECT|SOLUTION>")]
         public IEnumerable<string> Paths { get; set; }
 
         [Option(

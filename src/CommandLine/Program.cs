@@ -3,17 +3,18 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using CommandLine;
+using CommandLine.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeFixes;
-using Microsoft.CodeAnalysis.CSharp;
 using Roslynator.CodeFixes;
-using Roslynator.CSharp;
 using Roslynator.Diagnostics;
 using Roslynator.Documentation;
 using Roslynator.FindSymbols;
@@ -23,89 +24,181 @@ using static Roslynator.Logger;
 
 namespace Roslynator.CommandLine
 {
-    //TODO: banner/ruleset add, change, remove
     internal static class Program
     {
         private static int Main(string[] args)
         {
             try
             {
-                ParserResult<object> parserResult = Parser.Default.ParseArguments<
-                    MigrateCommandLineOptions,
-#if DEBUG
-                    AnalyzeAssemblyCommandLineOptions,
-                    FindSymbolsCommandLineOptions,
-                    SlnListCommandLineOptions,
-                    ListVisualStudioCommandLineOptions,
-                    GenerateSourceReferencesCommandLineOptions,
-                    ListReferencesCommandLineOptions,
-#endif
-                    FixCommandLineOptions,
-                    AnalyzeCommandLineOptions,
-                    ListSymbolsCommandLineOptions,
-                    FormatCommandLineOptions,
-                    SpellcheckCommandLineOptions,
-                    PhysicalLinesOfCodeCommandLineOptions,
-                    LogicalLinesOfCodeCommandLineOptions,
-                    GenerateDocCommandLineOptions,
-                    GenerateDocRootCommandLineOptions
-                    >(args);
+                Parser parser = CreateParser(ignoreUnknownArguments: true);
 
-                var verbosityParsed = false;
+                if (args == null
+                    || args.Length == 0)
+                {
+                    HelpCommand.WriteCommandsHelp();
+                    return ExitCodes.Success;
+                }
+
+                var success = true;
+                var help = false;
+
+                ParserResult<BaseCommandLineOptions> defaultResult = parser
+                    .ParseArguments<BaseCommandLineOptions>(args)
+                    .WithParsed(options =>
+                    {
+                        if (!options.Help)
+                            return;
+
+                        string commandName = args?.FirstOrDefault();
+                        Command command = (commandName != null)
+                            ? CommandLoader.LoadCommand(typeof(Program).Assembly, commandName)
+                            : null;
+
+                        success = ParseVerbosityAndOutput(options);
+
+                        if (!success)
+                            return;
+
+                        WriteArgs(args);
+
+                        if (command != null)
+                        {
+                            HelpCommand.WriteCommandHelp(command);
+                        }
+                        else
+                        {
+                            HelpCommand.WriteCommandsHelp();
+                        }
+
+                        help = true;
+                    })
+#if DEBUG
+                    .WithNotParsed(_ =>
+                    {
+                    });
+#else
+                    ;
+#endif
+                if (!success)
+                    return ExitCodes.Error;
+
+                if (help)
+                    return ExitCodes.Success;
+
+                parser = CreateParser();
+
+                ParserResult<object> parserResult = parser.ParseArguments(
+                    args,
+                    new Type[]
+                    {
+                        typeof(AnalyzeCommandLineOptions),
+                        typeof(FixCommandLineOptions),
+                        typeof(FormatCommandLineOptions),
+                        typeof(GenerateDocCommandLineOptions),
+                        typeof(GenerateDocRootCommandLineOptions),
+                        typeof(HelpCommandLineOptions),
+                        typeof(ListSymbolsCommandLineOptions),
+                        typeof(LogicalLinesOfCodeCommandLineOptions),
+                        typeof(MigrateCommandLineOptions),
+                        typeof(PhysicalLinesOfCodeCommandLineOptions),
+                        typeof(SpellcheckCommandLineOptions),
+#if DEBUG
+                        typeof(AnalyzeAssemblyCommandLineOptions),
+                        typeof(FindSymbolsCommandLineOptions),
+                        typeof(GenerateSourceReferencesCommandLineOptions),
+                        typeof(ListVisualStudioCommandLineOptions),
+                        typeof(ListReferencesCommandLineOptions),
+                        typeof(SlnListCommandLineOptions),
+#endif
+                    });
+
+                parserResult.WithNotParsed(_ =>
+                {
+                    var helpText = new HelpText(SentenceBuilder.Create(), HelpCommand.GetHeadingText());
+
+                    helpText = HelpText.DefaultParsingErrorsHandler(parserResult, helpText);
+
+                    VerbAttribute verbAttribute = parserResult.TypeInfo.Current.GetCustomAttribute<VerbAttribute>();
+
+                    if (verbAttribute != null)
+                    {
+                        helpText.AddPreOptionsText(Environment.NewLine + HelpCommand.GetFooterText(verbAttribute.Name));
+                    }
+
+                    Console.Error.WriteLine(helpText);
+
+                    success = false;
+                });
+
+                if (!success)
+                    return ExitCodes.Error;
 
                 parserResult.WithParsed<AbstractCommandLineOptions>(options =>
                 {
-                    var defaultVerbosity = Verbosity.Normal;
+                    success = ParseVerbosityAndOutput(options);
 
-                    if (options.Verbosity == null
-                        || TryParseVerbosity(options.Verbosity, out defaultVerbosity))
-                    {
-                        ConsoleOut.Verbosity = defaultVerbosity;
-
-                        Verbosity fileLogVerbosity = defaultVerbosity;
-
-                        if (options.FileLogVerbosity == null
-                            || TryParseVerbosity(options.FileLogVerbosity, out fileLogVerbosity))
-                        {
-                            if (options.FileLog != null)
-                            {
-                                var fs = new FileStream(options.FileLog, FileMode.Create, FileAccess.Write, FileShare.Read);
-                                var sw = new StreamWriter(fs, Encoding.UTF8, bufferSize: 4096, leaveOpen: false);
-                                Out = new TextWriterWithVerbosity(sw) { Verbosity = fileLogVerbosity };
-                            }
-
-                            verbosityParsed = true;
-                        }
-                    }
+                    if (success)
+                        WriteArgs(args);
                 });
 
-                if (!verbosityParsed)
+                if (!success)
                     return ExitCodes.Error;
 
-                WriteLine(
-                    $"Roslynator Command Line Tool version {typeof(Program).GetTypeInfo().Assembly.GetName().Version} "
-                        + $"(Roslyn version {typeof(Accessibility).GetTypeInfo().Assembly.GetName().Version})",
-                    Verbosity.Normal);
-
                 return parserResult.MapResult(
+                    (MSBuildCommandLineOptions options) =>
+                    {
+                        switch (options)
+                        {
+                            case AnalyzeCommandLineOptions analyzeCommandLineOptions:
+                                return AnalyzeAsync(analyzeCommandLineOptions).Result;
+                            case FixCommandLineOptions fixCommandLineOptions:
+                                return FixAsync(fixCommandLineOptions).Result;
+                            case FormatCommandLineOptions formatCommandLineOptions:
+                                return FormatAsync(formatCommandLineOptions).Result;
+                            case GenerateDocCommandLineOptions generateDocCommandLineOptions:
+                                return GenerateDocAsync(generateDocCommandLineOptions).Result;
+                            case GenerateDocRootCommandLineOptions generateDocRootCommandLineOptions:
+                                return GenerateDocRootAsync(generateDocRootCommandLineOptions).Result;
+                            case ListSymbolsCommandLineOptions listSymbolsCommandLineOptions:
+                                return ListSymbolsAsync(listSymbolsCommandLineOptions).Result;
+                            case LogicalLinesOfCodeCommandLineOptions logicalLinesOfCodeCommandLineOptions:
+                                return LogicalLinesOrCodeAsync(logicalLinesOfCodeCommandLineOptions).Result;
+                            case PhysicalLinesOfCodeCommandLineOptions physicalLinesOfCodeCommandLineOptions:
+                                return PhysicalLinesOfCodeAsync(physicalLinesOfCodeCommandLineOptions).Result;
+                            case SpellcheckCommandLineOptions spellcheckCommandLineOptions:
+                                return SpellcheckAsync(spellcheckCommandLineOptions).Result;
 #if DEBUG
-                    (AnalyzeAssemblyCommandLineOptions options) => AnalyzeAssembly(options),
-                    (FindSymbolsCommandLineOptions options) => FindSymbolsAsync(options).Result,
-                    (SlnListCommandLineOptions options) => SlnListAsync(options).Result,
-                    (ListVisualStudioCommandLineOptions options) => ListVisualStudio(options),
-                    (GenerateSourceReferencesCommandLineOptions options) => GenerateSourceReferencesAsync(options).Result,
-                    (ListReferencesCommandLineOptions options) => ListReferencesAsync(options).Result,
+                            case FindSymbolsCommandLineOptions findSymbolsCommandLineOptions:
+                                return FindSymbolsAsync(findSymbolsCommandLineOptions).Result;
+                            case GenerateSourceReferencesCommandLineOptions generateSourceReferencesCommandLineOptions:
+                                return GenerateSourceReferencesAsync(generateSourceReferencesCommandLineOptions).Result;
+                            case ListReferencesCommandLineOptions listReferencesCommandLineOptions:
+                                return ListReferencesAsync(listReferencesCommandLineOptions).Result;
+                            case SlnListCommandLineOptions slnListCommandLineOptions:
+                                return SlnListAsync(slnListCommandLineOptions).Result;
 #endif
-                    (FixCommandLineOptions options) => FixAsync(options).Result,
-                    (AnalyzeCommandLineOptions options) => AnalyzeAsync(options).Result,
-                    (ListSymbolsCommandLineOptions options) => ListSymbolsAsync(options).Result,
-                    (FormatCommandLineOptions options) => FormatAsync(options).Result,
-                    (SpellcheckCommandLineOptions options) => SpellcheckAsync(options).Result,
-                    (PhysicalLinesOfCodeCommandLineOptions options) => PhysicalLinesOfCodeAsync(options).Result,
-                    (LogicalLinesOfCodeCommandLineOptions options) => LogicalLinesOrCodeAsync(options).Result,
-                    (GenerateDocCommandLineOptions options) => GenerateDocAsync(options).Result,
-                    (GenerateDocRootCommandLineOptions options) => GenerateDocRootAsync(options).Result,
-                    (MigrateCommandLineOptions options) => Migrate(options),
+                            default:
+                                throw new InvalidOperationException();
+                        }
+                    },
+                    (AbstractCommandLineOptions options) =>
+                    {
+                        switch (options)
+                        {
+                            case HelpCommandLineOptions helpCommandLineOptions:
+                                return Help(helpCommandLineOptions);
+                            case MigrateCommandLineOptions migrateCommandLineOptions:
+                                return Migrate(migrateCommandLineOptions);
+#if DEBUG
+                            case AnalyzeAssemblyCommandLineOptions analyzeAssemblyCommandLineOptions:
+                                return AnalyzeAssembly(analyzeAssemblyCommandLineOptions);
+                            case ListVisualStudioCommandLineOptions listVisualStudioCommandLineOptions:
+                                return ListVisualStudio(listVisualStudioCommandLineOptions);
+#endif
+                            default:
+                                throw new InvalidOperationException();
+                        }
+                    },
                     _ => ExitCodes.Error);
             }
             catch (Exception ex) when (ex is AggregateException
@@ -121,6 +214,71 @@ namespace Roslynator.CommandLine
             }
 
             return ExitCodes.Error;
+        }
+
+        private static Parser CreateParser(bool? ignoreUnknownArguments = null)
+        {
+            ParserSettings defaultSettings = Parser.Default.Settings;
+
+            return new Parser(settings =>
+            {
+                settings.AutoHelp = false;
+                settings.AutoVersion = defaultSettings.AutoVersion;
+                settings.CaseInsensitiveEnumValues = defaultSettings.CaseInsensitiveEnumValues;
+                settings.CaseSensitive = defaultSettings.CaseSensitive;
+                settings.EnableDashDash = true;
+                settings.HelpWriter = null;
+                settings.IgnoreUnknownArguments = ignoreUnknownArguments ?? defaultSettings.IgnoreUnknownArguments;
+                settings.MaximumDisplayWidth = defaultSettings.MaximumDisplayWidth;
+                settings.ParsingCulture = defaultSettings.ParsingCulture;
+            });
+        }
+
+        private static bool ParseVerbosityAndOutput(AbstractCommandLineOptions options)
+        {
+            var defaultVerbosity = Verbosity.Normal;
+
+            if (options.Verbosity != null
+                && !TryParseVerbosity(options.Verbosity, out defaultVerbosity))
+            {
+                return false;
+            }
+
+            ConsoleOut.Verbosity = defaultVerbosity;
+
+            if (options is BaseCommandLineOptions baseOptions)
+            {
+                Verbosity fileLogVerbosity = defaultVerbosity;
+
+                if (baseOptions.FileLogVerbosity != null
+                    && !TryParseVerbosity(baseOptions.FileLogVerbosity, out fileLogVerbosity))
+                {
+                    return false;
+                }
+
+                if (baseOptions.FileLog != null)
+                {
+                    var fs = new FileStream(baseOptions.FileLog, FileMode.Create, FileAccess.Write, FileShare.Read);
+                    var sw = new StreamWriter(fs, Encoding.UTF8, bufferSize: 4096, leaveOpen: false);
+                    Out = new TextWriterWithVerbosity(sw) { Verbosity = fileLogVerbosity };
+                }
+            }
+
+            return true;
+        }
+
+        [Conditional("DEBUG")]
+        private static void WriteArgs(string[] args)
+        {
+            if (args != null)
+            {
+                WriteLine("--- ARGS ---", Verbosity.Diagnostic);
+
+                foreach (string arg in args)
+                    WriteLine(arg, Verbosity.Diagnostic);
+
+                WriteLine("--- END OF ARGS ---", Verbosity.Diagnostic);
+            }
         }
 
         private static async Task<int> FixAsync(FixCommandLineOptions options)
@@ -248,6 +406,30 @@ namespace Roslynator.CommandLine
             return GetExitCode(status);
         }
 
+        private static int Help(HelpCommandLineOptions options)
+        {
+            Filter filter = null;
+#if DEBUG
+            if (!string.IsNullOrEmpty(options.Filter))
+            {
+                try
+                {
+                    filter = new Filter(new Regex(options.Filter, RegexOptions.IgnoreCase));
+                }
+                catch (ArgumentException ex)
+                {
+                    WriteLine($"Filter is invalid: {ex.Message}", Verbosity.Quiet);
+                    return ExitCodes.Error;
+                }
+            }
+#endif
+            var command = new HelpCommand(options: options, filter);
+
+            CommandStatus status = command.Execute();
+
+            return GetExitCode(status);
+        }
+
         private static async Task<int> ListSymbolsAsync(ListSymbolsCommandLineOptions options)
         {
             if (!options.TryGetProjectFilter(out ProjectFilter projectFilter))
@@ -327,14 +509,10 @@ namespace Roslynator.CommandLine
             if (!TryParsePaths(options.Paths, out ImmutableArray<string> paths))
                 return ExitCodes.Error;
 
-            string endOfLine = options.EndOfLine;
-
-            if (endOfLine != null
-                && endOfLine != "lf"
-                && endOfLine != "crlf")
+            if (options.EndOfLine != null)
             {
-                WriteLine($"Unknown end of line '{endOfLine}'.", Verbosity.Quiet);
-                return ExitCodes.Error;
+                WriteLine($"Option '--{OptionNames.EndOfLine}' is obsolete.", ConsoleColors.Yellow);
+                CommandLineHelpers.WaitForKeyPress();
             }
 
             var command = new FormatCommand(options, projectFilter);

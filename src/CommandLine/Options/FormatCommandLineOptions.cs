@@ -11,7 +11,7 @@ namespace Roslynator.CommandLine
         [Value(
             index: 0,
             HelpText = "Path to one or more project/solution files.",
-            MetaValue = "<PROJECT|SOLUTION>")]
+            MetaName = "<PROJECT|SOLUTION>")]
         public IEnumerable<string> Paths { get; set; }
 
         [Option(
@@ -20,8 +20,9 @@ namespace Roslynator.CommandLine
             MetaValue = "<CULTURE_ID>")]
         public string Culture { get; set; }
 
+        [Hidden]
         [Option(
-            longName: "end-of-line",
+            longName: OptionNames.EndOfLine,
             HelpText = "Defines end of line character(s). Allowed values are lf or crlf.",
             MetaValue = "<END_OF_LINE>")]
         public string EndOfLine { get; set; }

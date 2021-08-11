@@ -21,12 +21,12 @@ namespace Roslynator.CommandLine
             shortName: OptionShortNames.Output,
             longName: "output",
             HelpText = "Defines path to file that will store reported diagnostics in XML format.",
-            MetaValue = "<OUTPUT_FILE>")]
+            MetaValue = "<FILE_PATH>")]
         public string Output { get; set; }
 
         [Option(
             longName: "report-not-configurable",
-            HelpText = "Indicates whether diagnostics that have tag 'NotConfigurable' should be reported.")]
+            HelpText = "Indicates whether diagnostics with 'NotConfigurable' tag should be reported.")]
         public bool ReportNotConfigurable { get; set; }
 
         [Option(

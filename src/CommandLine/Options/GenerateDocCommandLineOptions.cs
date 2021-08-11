@@ -13,7 +13,7 @@ namespace Roslynator.CommandLine
         [Option(
             longName: "additional-xml-documentation",
             HelpText = "Defines one or more xml documentation files that should be included. These files can contain a documentation for namespaces, for instance.",
-            MetaValue = "<XML_DOCUMENTATION_FILE>")]
+            MetaValue = "<FILE_PATH>")]
         public IEnumerable<string> AdditionalXmlDocumentation { get; set; }
 
         [Option(
@@ -69,7 +69,7 @@ namespace Roslynator.CommandLine
         [Option(
             longName: "inheritance-style",
             Default = DefaultValues.InheritanceStyle,
-            HelpText = "Defines a style of a type inheritance. Allowed values are horizontal or vertical. Default value is horizontal.",
+            HelpText = "Defines a style of a type inheritance. Allowed values are horizontal (default) or vertical.",
             MetaValue = "<INHERITANCE_STYLE>")]
         public InheritanceStyle InheritanceStyle { get; set; }
 
