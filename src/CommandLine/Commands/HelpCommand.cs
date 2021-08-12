@@ -192,9 +192,7 @@ namespace Roslynator.CommandLine
 
         internal static string GetFooterText(string command = null)
         {
-            return $"Run 'roslynator help {command ?? "[command]"}' for more information on a command."
-                + Environment.NewLine
-                + $"Run 'roslynator help {command ?? "[command]"} -v d' for more information on option values.";
+            return $"Run 'roslynator help {command ?? "[command]"}' for more information on a command.";
         }
     }
 }
