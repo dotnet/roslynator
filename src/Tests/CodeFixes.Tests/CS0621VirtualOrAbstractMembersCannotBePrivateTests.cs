@@ -50,5 +50,17 @@ class C
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId, nameof(SyntaxKind.VirtualKeyword)));
         }
+
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.VirtualOrAbstractMembersCannotBePrivate)]
+        public async Task Test_RemoveAbstractModifier()
+        {
+            await VerifyNoFixAsync(@"
+abstract class C
+{
+    abstract void M();
+}
+",
+equivalenceKey: EquivalenceKey.Create(DiagnosticId, nameof(SyntaxKind.VirtualKeyword)));
+        }
     }
 }
