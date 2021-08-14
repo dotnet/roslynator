@@ -45,8 +45,22 @@ namespace Roslynator.CommandLine
 
             CultureInfo culture = (Options.Culture != null) ? CultureInfo.GetCultureInfo(Options.Culture) : null;
 
+            var analyzerLoader = new AnalyzerLoader(analyzerAssemblies, codeAnalyzerOptions);
+
+            analyzerLoader.AnalyzerAssemblyAdded += (sender, args) =>
+            {
+                AnalyzerAssembly analyzerAssembly = args.AnalyzerAssembly;
+
+                if (analyzerAssembly.Name.EndsWith(".Analyzers")
+                    || analyzerAssembly.HasAnalyzers
+                    || analyzerAssembly.HasFixers)
+                {
+                    WriteLine($"Add analyzer assembly '{analyzerAssembly.FullName}'", ConsoleColors.DarkGray, Verbosity.Detailed);
+                }
+            };
+
             var codeAnalyzer = new CodeAnalyzer(
-                analyzerAssemblies: analyzerAssemblies,
+                analyzerLoader: analyzerLoader,
                 formatProvider: culture,
                 options: codeAnalyzerOptions);
 

@@ -18,19 +18,16 @@ namespace Roslynator.Diagnostics
 {
     internal class CodeAnalyzer
     {
-        private readonly AnalyzerAssemblyList _analyzerAssemblies = new AnalyzerAssemblyList();
-
-        private readonly AnalyzerAssemblyList _analyzerReferences = new AnalyzerAssemblyList();
+        private readonly AnalyzerLoader _analyzerLoader;
 
         internal static readonly TimeSpan MinimalExecutionTime = TimeSpan.FromMilliseconds(1);
 
         public CodeAnalyzer(
-            IEnumerable<AnalyzerAssembly> analyzerAssemblies = null,
+            AnalyzerLoader analyzerLoader,
             IFormatProvider formatProvider = null,
             CodeAnalyzerOptions options = null)
         {
-            if (analyzerAssemblies != null)
-                _analyzerAssemblies.AddRange(analyzerAssemblies);
+            _analyzerLoader = analyzerLoader;
 
             FormatProvider = formatProvider;
             Options = options ?? CodeAnalyzerOptions.Default;
@@ -112,11 +109,7 @@ namespace Roslynator.Diagnostics
 
         private async Task<ProjectAnalysisResult> AnalyzeProjectCoreAsync(Project project, CancellationToken cancellationToken = default)
         {
-            ImmutableArray<DiagnosticAnalyzer> analyzers = CodeAnalysisHelpers.GetAnalyzers(
-                project: project,
-                analyzerAssemblies: _analyzerAssemblies,
-                analyzerReferences: _analyzerReferences,
-                options: Options);
+            ImmutableArray<DiagnosticAnalyzer> analyzers = _analyzerLoader.GetAnalyzers(project: project);
 
             if (!analyzers.Any())
                 WriteLine($"  No analyzers found to analyze '{project.Name}'", ConsoleColors.DarkGray, Verbosity.Normal);

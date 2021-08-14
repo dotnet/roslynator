@@ -125,9 +125,23 @@ namespace Roslynator.CommandLine
 
             CodeFixer GetCodeFixer(Solution solution)
             {
+                var analyzerLoader = new AnalyzerLoader(analyzerAssemblies, codeFixerOptions);
+
+                analyzerLoader.AnalyzerAssemblyAdded += (sender, args) =>
+                {
+                    AnalyzerAssembly analyzerAssembly = args.AnalyzerAssembly;
+
+                    if (analyzerAssembly.Name.EndsWith(".Analyzers")
+                        || analyzerAssembly.HasAnalyzers
+                        || analyzerAssembly.HasFixers)
+                    {
+                        WriteLine($"Add analyzer assembly '{analyzerAssembly.FullName}'", ConsoleColors.DarkGray, Verbosity.Detailed);
+                    }
+                };
+
                 return new CodeFixer(
                     solution,
-                    analyzerAssemblies: analyzerAssemblies,
+                    analyzerLoader: analyzerLoader,
                     formatProvider: formatProvider,
                     options: codeFixerOptions);
             }

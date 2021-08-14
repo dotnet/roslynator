@@ -20,21 +20,17 @@ namespace Roslynator.CodeFixes
 {
     internal class CodeFixer
     {
-        private readonly AnalyzerAssemblyList _analyzerAssemblies = new AnalyzerAssemblyList();
-
-        private readonly AnalyzerAssemblyList _analyzerReferences = new AnalyzerAssemblyList();
+        private readonly AnalyzerLoader _analyzerLoader;
 
         public CodeFixer(
             Solution solution,
-            IEnumerable<AnalyzerAssembly> analyzerAssemblies = null,
+            AnalyzerLoader analyzerLoader,
             IFormatProvider formatProvider = null,
             CodeFixerOptions options = null)
         {
+            _analyzerLoader = analyzerLoader;
+
             Workspace = solution.Workspace;
-
-            if (analyzerAssemblies != null)
-                _analyzerAssemblies.AddRange(analyzerAssemblies);
-
             FormatProvider = formatProvider;
             Options = options ?? CodeFixerOptions.Default;
         }
@@ -100,11 +96,7 @@ namespace Roslynator.CodeFixes
 
         public async Task<ProjectFixResult> FixProjectAsync(Project project, CancellationToken cancellationToken = default)
         {
-            (ImmutableArray<DiagnosticAnalyzer> analyzers, ImmutableArray<CodeFixProvider> fixers) = CodeAnalysisHelpers.GetAnalyzersAndFixers(
-                project: project,
-                analyzerAssemblies: _analyzerAssemblies,
-                analyzerReferences: _analyzerReferences,
-                options: Options);
+            (ImmutableArray<DiagnosticAnalyzer> analyzers, ImmutableArray<CodeFixProvider> fixers) = _analyzerLoader.GetAnalyzersAndFixers(project: project);
 
             FixResult fixResult = await FixProjectAsync(project, analyzers, fixers, cancellationToken).ConfigureAwait(false);
 
