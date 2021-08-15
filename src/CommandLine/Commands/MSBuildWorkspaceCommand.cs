@@ -232,7 +232,7 @@ namespace Roslynator.CommandLine
             {
                 MSBuildLocator.RegisterMSBuildPath(msbuildPath);
             }
-            else if (TryGetSingleInstance(out VisualStudioInstance instance))
+            else if (TryGetVisualStudioInstance(out VisualStudioInstance instance))
             {
                 MSBuildLocator.RegisterInstance(instance);
                 msbuildPath = instance.MSBuildPath;
@@ -242,7 +242,7 @@ namespace Roslynator.CommandLine
                 return null;
             }
 
-            WriteLine($"MSBuild location is '{msbuildPath}'", Verbosity.Diagnostic);
+            WriteLine($"MSBuild location is '{msbuildPath}'", Verbosity.Detailed);
 
             if (!ParseHelpers.TryParseMSBuildProperties(rawProperties, out Dictionary<string, string> properties))
                 return null;
@@ -257,46 +257,39 @@ namespace Roslynator.CommandLine
             return MSBuildWorkspace.Create(properties);
         }
 
-        private static bool TryGetSingleInstance(out VisualStudioInstance instance)
+        private static bool TryGetVisualStudioInstance(out VisualStudioInstance instance)
         {
-            IGrouping<Version, VisualStudioInstance> instances = MSBuildLocator.QueryVisualStudioInstances()
+            List<VisualStudioInstance> instances = MSBuildLocator.QueryVisualStudioInstances()
                 .Distinct(VisualStudioInstanceComparer.MSBuildPath)
-                .GroupBy(f => f.Version)
-                .OrderByDescending(f => f.Key)
-                .FirstOrDefault();
+                .ToList();
 
-            if (instances == null)
+            if (instances.Count == 0)
             {
                 WriteLine($"MSBuild location not found. Use option '-{OptionShortNames.MSBuildPath}, --{OptionNames.MSBuildPath}' to specify MSBuild location", Verbosity.Quiet);
                 instance = null;
                 return false;
             }
 
-            using (IEnumerator<VisualStudioInstance> en = instances.GetEnumerator())
+            WriteLine("Available MSBuild locations:", Verbosity.Diagnostic);
+
+            foreach (VisualStudioInstance vsi in instances.OrderBy(f => f.Version))
+                WriteLine($"  {vsi.Name}, Version: {vsi.Version}, Path: {vsi.MSBuildPath}", Verbosity.Diagnostic);
+
+            instances = instances
+                .GroupBy(f => f.Version)
+                .OrderByDescending(f => f.Key)
+                .First()
+                .ToList();
+
+            if (instances.Count > 1)
             {
-                en.MoveNext();
-
-                instance = en.Current;
-
-                if (en.MoveNext())
-                {
-                    WriteLine("Multiple MSBuild locations found:", Verbosity.Quiet);
-
-                    WriteLine($"  {instance.MSBuildPath}", Verbosity.Quiet);
-
-                    do
-                    {
-                        WriteLine($"  {en.Current.MSBuildPath}", Verbosity.Quiet);
-
-                    } while (en.MoveNext());
-
-                    WriteLine($"Use option '--{OptionNames.MSBuildPath}' to specify MSBuild location", Verbosity.Quiet);
-                    instance = null;
-                    return false;
-                }
-
-                return true;
+                WriteLine($"Cannot choose MSBuild location automatically. Use option '-{OptionShortNames.MSBuildPath}, --{OptionNames.MSBuildPath}' to specify MSBuild location", Verbosity.Quiet);
+                instance = null;
+                return false;
             }
+
+            instance = instances[0];
+            return true;
         }
 
         private protected IEnumerable<Project> FilterProjects(
