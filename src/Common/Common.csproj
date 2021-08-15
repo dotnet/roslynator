@@ -6,7 +6,7 @@
 
   <PropertyGroup>
     <Version>3.2.1.1</Version>
-    <AssemblyName>Roslynator.Common</AssemblyName>
+    <AssemblyName>$(RoslynatorDllPrefix)Roslynator.Common</AssemblyName>
     <RootNamespace>Roslynator</RootNamespace>
   </PropertyGroup>
 

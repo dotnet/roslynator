@@ -13,4 +13,16 @@
     <RoslynatorDllPrefix>_</RoslynatorDllPrefix>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(RoslynatorAnalyzersNuGet)' == true">
+    <RoslynatorDllPrefix>Roslynator_Analyzers_</RoslynatorDllPrefix>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(RoslynatorCodeAnalysisAnalyzersNuGet)' == true">
+    <RoslynatorDllPrefix>Roslynator_CodeAnalysis_Analyzers_</RoslynatorDllPrefix>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(RoslynatorFormattingAnalyzersNuGet)' == true">
+    <RoslynatorDllPrefix>Roslynator_Formatting_Analyzers_</RoslynatorDllPrefix>
+  </PropertyGroup>
+
 </Project>

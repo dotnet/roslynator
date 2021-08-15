@@ -2,17 +2,27 @@
 (?<=
   assembly:\ InternalsVisibleTo\("
 )
-_?
+(
+    _
+  |
+    Roslynator_Analyzers_
+  |
+    Roslynator_CodeAnalysis_Analyzers_
+  |
+    Roslynator_Formatting_Analyzers_
+)?
 (?=
   Roslynator\.
   (
     Core
   |
+    Common
+  |
     CSharp(\.Workspaces)?
   |
     VisualBasic(\.Workspaces)?
   |
-    Workspaces\.Core
+    Workspaces\.(Core|Common)
   |
     Documentation
   )
