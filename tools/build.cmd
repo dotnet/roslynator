@@ -103,44 +103,10 @@ if errorlevel 1 (
  exit
 )
 
-del /Q "..\src\Analyzers.CodeFixes\bin\Release\Roslynator.Analyzers.*.nupkg"
-del /Q "..\src\CodeAnalysis.Analyzers.CodeFixes\bin\Release\Roslynator.CodeAnalysis.Analyzers.*.nupkg"
-del /Q "..\src\Formatting.Analyzers.CodeFixes\bin\Release\Roslynator.Formatting.Analyzers.*.nupkg"
-del /Q "..\src\Core\bin\Release\Roslynator.Core.*.nupkg"
-del /Q "..\src\Workspaces.Core\bin\Release\Roslynator.Workspaces.Core.*.nupkg"
-del /Q "..\src\CSharp\bin\Release\Roslynator.CSharp.*.nupkg"
-del /Q "..\src\CSharp.Workspaces\bin\Release\Roslynator.CSharp.Workspaces.*.nupkg"
-del /Q "..\src\Tests\Testing.Common\bin\Release\Roslynator.Testing.Common.*.nupkg"
-del /Q "..\src\Tests\Testing.CSharp\bin\Release\Roslynator.Testing.CSharp.*.nupkg"
-del /Q "..\src\Tests\Testing.CSharp.Xunit\bin\Release\Roslynator.Testing.CSharp.Xunit.*.nupkg"
-
 md "%_outDir%"
-del /Q "%_outDir%\*"
+orang delete "%_outDir%"
 
-orang replace "../src" -n "AssemblyInfo.cs" e -c "patterns/assembly_names_to_be_prefixed.txt" f -r "Roslynator_Analyzers_"
-orang delete "../src" -a d -n "bin,obj" l li e -i "packages,node_modules" l li e ne -t n --content-only -y su s
-dotnet restore --force "../src\Roslynator.sln"
-%_msbuildPath% "../src\Roslynator.sln" /t:Build /p:%_properties%,RoslynatorAnalyzersNuGet=true /v:normal /m
-dotnet pack -c Release --no-build -v normal "..\src\Analyzers.CodeFixes\Analyzers.CodeFixes.csproj"
-copy "..\src\Analyzers.CodeFixes\bin\Release\Roslynator.Analyzers.*.nupkg" "%_outDir%"
-
-orang replace "../src" -n "AssemblyInfo.cs" e -c "patterns/assembly_names_to_be_prefixed.txt" f -r ""
-orang replace "../src" -n "AssemblyInfo.cs" e -c "patterns/assembly_names_to_be_prefixed.txt" f -r "Roslynator_CodeAnalysis_Analyzers_"
-orang delete "../src" -a d -n "bin,obj" l li e -i "packages,node_modules" l li e ne -t n --content-only -y su s
-dotnet restore --force "../src\Roslynator.sln"
-%_msbuildPath% "../src\Roslynator.sln" /t:Build /p:%_properties%,RoslynatorCodeAnalysisAnalyzersNuGet=true /v:normal /m
-dotnet pack -c Release --no-build -v normal "..\src\CodeAnalysis.Analyzers.CodeFixes\CodeAnalysis.Analyzers.CodeFixes.csproj"
-copy "..\src\CodeAnalysis.Analyzers.CodeFixes\bin\Release\Roslynator.CodeAnalysis.Analyzers.*.nupkg" "%_outDir%"
-
-orang replace "../src" -n "AssemblyInfo.cs" e -c "patterns/assembly_names_to_be_prefixed.txt" f -r ""
-orang replace "../src" -n "AssemblyInfo.cs" e -c "patterns/assembly_names_to_be_prefixed.txt" f -r "Roslynator_Formatting_Analyzers_"
-orang delete "../src" -a d -n "bin,obj" l li e -i "packages,node_modules" l li e ne -t n --content-only -y su s
-dotnet restore --force "../src\Roslynator.sln"
-%_msbuildPath% "../src\Roslynator.sln" /t:Build /p:%_properties%,RoslynatorFormattingAnalyzersNuGet=true /v:normal /m
-dotnet pack -c Release --no-build -v normal "..\src\Formatting.Analyzers.CodeFixes\Formatting.Analyzers.CodeFixes.csproj"
-copy "..\src\Formatting.Analyzers.CodeFixes\bin\Release\Roslynator.Formatting.Analyzers.*.nupkg" "%_outDir%"
-
-orang replace "../src" -n "AssemblyInfo.cs" e -c "patterns/assembly_names_to_be_prefixed.txt" f -r ""
+orang rename "../src/VisualStudio" -n "(?=\.vsix\z)" -r ".%_version%"
 
 dotnet pack -c Release --no-build -v normal "..\src\Core\Core.csproj"
 dotnet pack -c Release --no-build -v normal "..\src\Workspaces.Core\Workspaces.Core.csproj"
@@ -150,17 +116,31 @@ dotnet pack -c Release --no-build -v normal "..\src\Tests\Testing.Common\Testing
 dotnet pack -c Release --no-build -v normal "..\src\Tests\Testing.CSharp\Testing.CSharp.csproj"
 dotnet pack -c Release --no-build -v normal "..\src\Tests\Testing.CSharp.Xunit\Testing.CSharp.Xunit.csproj"
 
-del /Q "..\src\VisualStudio\bin\Release\Roslynator.VisualStudio.*.vsix"
-ren    "..\src\VisualStudio\bin\Release\Roslynator.VisualStudio.vsix" "Roslynator.VisualStudio.%_version%.vsix"
-copy "..\src\VisualStudio\bin\Release\Roslynator.VisualStudio.%_version%.vsix" "%_outDir%"
+orang copy "../src" "%_outDir%" -e nupkg,vsix --flat -i packages e ne
 
-copy "..\src\Core\bin\Release\Roslynator.Core.*.nupkg" "%_outDir%"
-copy "..\src\Workspaces.Core\bin\Release\Roslynator.Workspaces.Core.*.nupkg" "%_outDir%"
-copy "..\src\CSharp\bin\Release\Roslynator.CSharp.*.nupkg" "%_outDir%"
-copy "..\src\CSharp.Workspaces\bin\Release\Roslynator.CSharp.Workspaces.*.nupkg" "%_outDir%"
-copy "..\src\Tests\Testing.Common\bin\Release\Roslynator.Testing.Common.*.nupkg" "%_outDir%"
-copy "..\src\Tests\Testing.CSharp\bin\Release\Roslynator.Testing.CSharp.*.nupkg" "%_outDir%"
-copy "..\src\Tests\Testing.CSharp.Xunit\bin\Release\Roslynator.Testing.CSharp.Xunit.*.nupkg" "%_outDir%"
+orang replace "../src" -n "AssemblyInfo.cs" e -c "patterns/assembly_names_to_be_prefixed.txt" f -r "Roslynator_Analyzers_"
+orang delete "../src" -a d -n "bin,obj" l li e -i "packages,node_modules" l li e ne -t n --content-only -y su s
+dotnet restore --force "../src\Roslynator.sln"
+%_msbuildPath% "../src\Roslynator.sln" /t:Build /p:%_properties%,RoslynatorAnalyzersNuGet=true /v:normal /m
+dotnet pack -c Release --no-build -v normal "..\src\Analyzers.CodeFixes\Analyzers.CodeFixes.csproj"
+copy "..\src\Analyzers.CodeFixes\bin\Release\Roslynator.Analyzers.*.nupkg" "%_outDir%"
+orang replace "../src" -n "AssemblyInfo.cs" e -c "patterns/assembly_names_to_be_prefixed.txt" f -r ""
+
+orang replace "../src" -n "AssemblyInfo.cs" e -c "patterns/assembly_names_to_be_prefixed.txt" f -r "Roslynator_CodeAnalysis_Analyzers_"
+orang delete "../src" -a d -n "bin,obj" l li e -i "packages,node_modules" l li e ne -t n --content-only -y su s
+dotnet restore --force "../src\Roslynator.sln"
+%_msbuildPath% "../src\Roslynator.sln" /t:Build /p:%_properties%,RoslynatorCodeAnalysisAnalyzersNuGet=true /v:normal /m
+dotnet pack -c Release --no-build -v normal "..\src\CodeAnalysis.Analyzers.CodeFixes\CodeAnalysis.Analyzers.CodeFixes.csproj"
+copy "..\src\CodeAnalysis.Analyzers.CodeFixes\bin\Release\Roslynator.CodeAnalysis.Analyzers.*.nupkg" "%_outDir%"
+orang replace "../src" -n "AssemblyInfo.cs" e -c "patterns/assembly_names_to_be_prefixed.txt" f -r ""
+
+orang replace "../src" -n "AssemblyInfo.cs" e -c "patterns/assembly_names_to_be_prefixed.txt" f -r "Roslynator_Formatting_Analyzers_"
+orang delete "../src" -a d -n "bin,obj" l li e -i "packages,node_modules" l li e ne -t n --content-only -y su s
+dotnet restore --force "../src\Roslynator.sln"
+%_msbuildPath% "../src\Roslynator.sln" /t:Build /p:%_properties%,RoslynatorFormattingAnalyzersNuGet=true /v:normal /m
+dotnet pack -c Release --no-build -v normal "..\src\Formatting.Analyzers.CodeFixes\Formatting.Analyzers.CodeFixes.csproj"
+copy "..\src\Formatting.Analyzers.CodeFixes\bin\Release\Roslynator.Formatting.Analyzers.*.nupkg" "%_outDir%"
+orang replace "../src" -n "AssemblyInfo.cs" e -c "patterns/assembly_names_to_be_prefixed.txt" f -r ""
 
 echo OK
 pause
