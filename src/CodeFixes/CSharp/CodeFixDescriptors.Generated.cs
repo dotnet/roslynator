@@ -764,12 +764,13 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true, 
             "CS0238");
 
-        /// <summary>RCF0101 (fixes CS0549)</summary>
+        /// <summary>RCF0101 (fixes CS0549, CS0621)</summary>
         public static readonly CodeFixDescriptor RemoveVirtualModifier = new CodeFixDescriptor(
             id:                 CodeFixIdentifiers.RemoveVirtualModifier, 
             title:              "Remove 'virtual' modifier", 
             isEnabledByDefault: true, 
-            "CS0549");
+            "CS0549", 
+            "CS0621");
 
         /// <summary>RCF0102 (fixes CS0549)</summary>
         public static readonly CodeFixDescriptor MakeContainingClassUnsealed = new CodeFixDescriptor(

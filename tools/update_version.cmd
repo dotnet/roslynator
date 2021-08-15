@@ -2,11 +2,11 @@
 
 rem dotnet install tool -g orang.dotnet.cli
 
-set _apiVersion=2.1.0.3
-set _formattingVersion=1.2.1.0
-set _codeAnalysisVersion=1.1.0.0
-set _version=3.2.1.1
-set _version3=3.2.1
+set _apiVersion=2.1.0.4
+set _formattingVersion=1.2.2.0
+set _codeAnalysisVersion=1.1.1.0
+set _version=3.2.2.0
+set _version3=3.2.2
 set _cliVersion=0.1.5.0
 set _cliVersion3=0.1.5
 set _root=..\src
