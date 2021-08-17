@@ -91,6 +91,9 @@ namespace Roslynator.CSharp.Analysis
             if (binaryLeft?.IsMissing != false)
                 return;
 
+            if (binaryLeft.IsKind(SyntaxKind.PointerIndirectionExpression))
+                return;
+
             if (binaryRight?.IsNumericLiteralExpression("1") != true)
                 return;
 
@@ -132,6 +135,9 @@ namespace Roslynator.CSharp.Analysis
             ExpressionSyntax right = assignment.Right;
 
             if (left?.IsMissing != false)
+                return;
+
+            if (left.IsKind(SyntaxKind.PointerIndirectionExpression))
                 return;
 
             if (right?.IsNumericLiteralExpression("1") != true)

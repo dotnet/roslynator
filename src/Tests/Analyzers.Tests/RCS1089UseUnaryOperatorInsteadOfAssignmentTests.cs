@@ -253,5 +253,31 @@ class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseUnaryOperatorInsteadOfAssignment)]
+        public async Task TestNoDiagnostic_PointerIndirection()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+
+    void M()
+    {
+        int[] a = new int[1] { 1 };
+        unsafe
+        {
+            fixed (int* p = &a[0])
+            {
+                *p += 1;
+                *p -= 1;
+
+                *p = *p + 1;
+                *p = *p - 1;
+            }
+        }
+    }
+}
+", options: Options.WithAllowUnsafe(enabled: true));
+        }
     }
 }
