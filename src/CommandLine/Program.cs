@@ -39,8 +39,7 @@ namespace Roslynator.CommandLine
                     return ExitCodes.Success;
                 }
 
-                var success = true;
-                var help = false;
+                bool? success = null;
 
                 ParserResult<BaseCommandLineOptions> defaultResult = parser
                     .ParseArguments<BaseCommandLineOptions>(args)
@@ -54,10 +53,11 @@ namespace Roslynator.CommandLine
                             ? CommandLoader.LoadCommand(typeof(Program).Assembly, commandName)
                             : null;
 
-                        success = ParseVerbosityAndOutput(options);
-
-                        if (!success)
+                        if (!ParseVerbosityAndOutput(options))
+                        {
+                            success = false;
                             return;
+                        }
 
                         WriteArgs(args);
 
@@ -70,19 +70,13 @@ namespace Roslynator.CommandLine
                             HelpCommand.WriteCommandsHelp();
                         }
 
-                        help = true;
-                    })
-#if DEBUG
-                    .WithNotParsed(_ =>
-                    {
+                        success = true;
                     });
-#else
-                    ;
-#endif
-                if (!success)
+
+                if (success == false)
                     return ExitCodes.Error;
 
-                if (help)
+                if (success == true)
                     return ExitCodes.Success;
 
                 parser = CreateParser();
@@ -112,8 +106,15 @@ namespace Roslynator.CommandLine
 #endif
                     });
 
-                parserResult.WithNotParsed(_ =>
+                parserResult.WithNotParsed(e =>
                 {
+                    if (e.Any(f => f.Tag == ErrorType.VersionRequestedError))
+                    {
+                        Console.WriteLine(typeof(Program).GetTypeInfo().Assembly.GetName().Version);
+                        success = false;
+                        return;
+                    }
+
                     var helpText = new HelpText(SentenceBuilder.Create(), HelpCommand.GetHeadingText());
 
                     helpText = HelpText.DefaultParsingErrorsHandler(parserResult, helpText);
@@ -130,18 +131,25 @@ namespace Roslynator.CommandLine
                     success = false;
                 });
 
-                if (!success)
+                if (success == true)
+                    return ExitCodes.Success;
+
+                if (success == false)
                     return ExitCodes.Error;
 
                 parserResult.WithParsed<AbstractCommandLineOptions>(options =>
-                {
-                    success = ParseVerbosityAndOutput(options);
-
-                    if (success)
+                    {
+                    if (ParseVerbosityAndOutput(options))
+                    {
                         WriteArgs(args);
+                    }
+                    else
+                    {
+                        success = false;
+                    }
                 });
 
-                if (!success)
+                if (success == false)
                     return ExitCodes.Error;
 
                 return parserResult.MapResult(
