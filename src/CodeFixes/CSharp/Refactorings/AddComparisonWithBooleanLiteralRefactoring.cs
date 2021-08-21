@@ -32,9 +32,14 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
+        public static string GetEquivalenceKey(ExpressionSyntax expression)
+        {
+            return (expression.IsKind(SyntaxKind.LogicalNotExpression)) ? "False" : "True";
+        }
+
         public static string GetTitle(ExpressionSyntax expression)
         {
-            return (expression.IsKind(SyntaxKind.LogicalNotExpression)) ? "Add ' == false'" : "Add ' == true'";
+            return (expression.IsKind(SyntaxKind.LogicalNotExpression)) ? "Replace '!' with ' == false'" : "Add ' == true'";
         }
 
         public static Task<Document> RefactorAsync(
