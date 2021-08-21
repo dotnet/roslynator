@@ -165,7 +165,11 @@ namespace Roslynator.CodeFixes
         {
             if (!fixers.Any())
             {
-                WriteLine($"  No fixers found to fix '{project.Name}'", ConsoleColors.DarkGray, Verbosity.Normal);
+                WriteLine(
+                    (analyzers.Any()) ? "  No fixers found" : "  No analyzers and fixers found",
+                    ConsoleColors.DarkGray,
+                    Verbosity.Normal);
+
                 return new FixResult(ProjectFixKind.NoFixers);
             }
 
