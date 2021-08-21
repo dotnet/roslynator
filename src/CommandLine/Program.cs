@@ -28,6 +28,13 @@ namespace Roslynator.CommandLine
     {
         private static int Main(string[] args)
         {
+#if DEBUG
+            if (args.LastOrDefault() == "--debug")
+            {
+                WriteArgs(args.Take(args.Length - 1).ToArray(), Verbosity.Quiet);
+                return ExitCodes.NotSuccess;
+            }
+#endif
             try
             {
                 Parser parser = CreateParser(ignoreUnknownArguments: true);
@@ -59,7 +66,7 @@ namespace Roslynator.CommandLine
                             return;
                         }
 
-                        WriteArgs(args);
+                        WriteArgs(args, Verbosity.Diagnostic);
 
                         if (command != null)
                         {
@@ -141,7 +148,7 @@ namespace Roslynator.CommandLine
                     {
                     if (ParseVerbosityAndOutput(options))
                     {
-                        WriteArgs(args);
+                        WriteArgs(args, Verbosity.Diagnostic);
                     }
                     else
                     {
@@ -276,16 +283,17 @@ namespace Roslynator.CommandLine
         }
 
         [Conditional("DEBUG")]
-        private static void WriteArgs(string[] args)
+        private static void WriteArgs(string[] args, Verbosity verbosity)
         {
-            if (args != null)
+            if (args != null
+                && ShouldWrite(verbosity))
             {
-                WriteLine("--- ARGS ---", Verbosity.Diagnostic);
+                WriteLine("--- ARGS ---", verbosity);
 
                 foreach (string arg in args)
-                    WriteLine(arg, Verbosity.Diagnostic);
+                    WriteLine(arg, verbosity);
 
-                WriteLine("--- END OF ARGS ---", Verbosity.Diagnostic);
+                WriteLine("--- END OF ARGS ---", verbosity);
             }
         }
 
