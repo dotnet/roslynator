@@ -13,13 +13,11 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator;
-using Roslynator.CSharp;
-using Roslynator.CSharp.Syntax;
 #endregion usings
 
 #pragma warning disable RCS1018, RCS1213, CA1822
 
-namespace Roslynator.Testing
+namespace Roslynator
 {
     class C
     {
