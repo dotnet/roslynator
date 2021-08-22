@@ -13,7 +13,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\CSharp.Workspaces\CSharp.Workspaces.csproj" />
+    <ProjectReference Include="..\Testing.Common\Testing.Common.csproj" />
+    <ProjectReference Include="..\Testing.CSharp\Testing.CSharp.csproj" />
+    <ProjectReference Include="..\Testing.CSharp.Xunit\Testing.CSharp.Xunit.csproj" />
   </ItemGroup>
 
 </Project>
