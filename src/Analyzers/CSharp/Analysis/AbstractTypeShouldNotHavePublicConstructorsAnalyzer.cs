@@ -33,12 +33,12 @@ namespace Roslynator.CSharp.Analysis
 
         private static void AnalyzeConstructorDeclaration(SyntaxNodeAnalysisContext context)
         {
-            var constructorDeclaration = (ConstructorDeclarationSyntax)context.Node;
-
-            if (!SyntaxAccessibility<ConstructorDeclarationSyntax>.Instance.GetExplicitAccessibility(constructorDeclaration).Is(Accessibility.Public, Accessibility.ProtectedOrInternal))
+            if (!context.Node.IsParentKind(SyntaxKind.ClassDeclaration))
                 return;
 
-            if (!constructorDeclaration.IsParentKind(SyntaxKind.ClassDeclaration))
+            var constructorDeclaration = (ConstructorDeclarationSyntax)context.Node;
+
+            if (SyntaxAccessibility<ConstructorDeclarationSyntax>.Instance.GetExplicitAccessibility(constructorDeclaration) != Accessibility.Public)
                 return;
 
             var classDeclaration = (ClassDeclarationSyntax)constructorDeclaration.Parent;
@@ -56,10 +56,13 @@ namespace Roslynator.CSharp.Analysis
                     isAbstract = classSymbol.IsAbstract;
             }
 
-            if (!isAbstract)
-                return;
-
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AbstractTypeShouldNotHavePublicConstructors, constructorDeclaration.Identifier);
+            if (isAbstract)
+            {
+                DiagnosticHelpers.ReportDiagnostic(
+                    context,
+                    DiagnosticRules.AbstractTypeShouldNotHavePublicConstructors,
+                    constructorDeclaration.Identifier);
+            }
         }
     }
 }
