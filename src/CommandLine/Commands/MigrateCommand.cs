@@ -54,7 +54,7 @@ namespace Roslynator.CommandLine
 
         public CommandStatus Execute()
         {
-            var cts = new CancellationTokenSource();
+            using var cts = new CancellationTokenSource();
             Console.CancelKeyPress += (sender, e) =>
             {
                 e.Cancel = true;
@@ -529,7 +529,7 @@ namespace Roslynator.CommandLine
             WriteLine("Operation was canceled.", Verbosity.Quiet);
         }
 
-        private string ReadFile(
+        private static string ReadFile(
             string filePath,
             ref Encoding encoding)
         {

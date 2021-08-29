@@ -35,9 +35,10 @@ namespace Roslynator.CommandLine
                 return ExitCodes.NotSuccess;
             }
 #endif
+            Parser parser = null;
             try
             {
-                Parser parser = CreateParser(ignoreUnknownArguments: true);
+                parser = CreateParser(ignoreUnknownArguments: true);
 
                 if (args == null
                     || args.Length == 0)
@@ -144,17 +145,18 @@ namespace Roslynator.CommandLine
                 if (success == false)
                     return ExitCodes.Error;
 
-                parserResult.WithParsed<AbstractCommandLineOptions>(options =>
+                parserResult.WithParsed<AbstractCommandLineOptions>(
+                    options =>
                     {
-                    if (ParseVerbosityAndOutput(options))
-                    {
-                        WriteArgs(args, Verbosity.Diagnostic);
-                    }
-                    else
-                    {
-                        success = false;
-                    }
-                });
+                        if (ParseVerbosityAndOutput(options))
+                        {
+                            WriteArgs(args, Verbosity.Diagnostic);
+                        }
+                        else
+                        {
+                            success = false;
+                        }
+                    });
 
                 if (success == false)
                     return ExitCodes.Error;
@@ -224,6 +226,7 @@ namespace Roslynator.CommandLine
             }
             finally
             {
+                parser?.Dispose();
                 Out?.Dispose();
                 Out = null;
             }

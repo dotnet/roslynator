@@ -14,7 +14,7 @@ namespace Roslynator.CommandLine
                     .Replace("]", "")
                     .Replace("|", "")
                     .Replace(" ", "-")
-                    .ToLower();
+                    .ToLowerInvariant();
         }
     }
 }

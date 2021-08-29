@@ -9,7 +9,7 @@ namespace Roslynator.CommandLine
 {
     public class MarkdownDocumentationWriter
     {
-        protected readonly MarkdownWriter _writer;
+        private protected readonly MarkdownWriter _writer;
 
         public MarkdownDocumentationWriter(MarkdownWriter writer)
         {

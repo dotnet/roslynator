@@ -50,7 +50,7 @@ namespace Roslynator.CommandLine
 
                 workspace.WorkspaceFailed += (sender, args) => WorkspaceFailed(sender, args);
 
-                var cts = new CancellationTokenSource();
+                using var cts = new CancellationTokenSource();
                 Console.CancelKeyPress += (sender, e) =>
                 {
                     e.Cancel = true;
@@ -200,7 +200,7 @@ namespace Roslynator.CommandLine
             return Task.FromResult(default(TCommandResult));
         }
 
-        private async Task<ProjectOrSolution> OpenProjectOrSolutionAsync(
+        private static async Task<ProjectOrSolution> OpenProjectOrSolutionAsync(
             string path,
             MSBuildWorkspace workspace,
             IProgress<ProjectLoadProgress> progress = null,

@@ -205,7 +205,7 @@ namespace Roslynator.CommandLine
             WriteResults(results, SpellingFixKind.User, "User-applied fixes:", comparer, isDetailed);
         }
 
-        private void WriteResults(
+        private static void WriteResults(
             ImmutableArray<SpellingFixResult> results,
             SpellingFixKind kind,
             string heading,
@@ -234,7 +234,7 @@ namespace Roslynator.CommandLine
             }
         }
 
-        private void WriteMatchingLines(
+        private static void WriteMatchingLines(
             IGrouping<string, SpellingFixResult> grouping,
             StringComparer comparer,
             ConsoleColors colors,
@@ -292,7 +292,7 @@ namespace Roslynator.CommandLine
         }
 
 #if DEBUG
-        public void SaveNewValues(
+        public static void SaveNewValues(
             SpellingData spellingData,
             FixList originalFixList,
             List<SpellingFixResult> results,

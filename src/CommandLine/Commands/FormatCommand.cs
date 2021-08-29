@@ -81,7 +81,7 @@ namespace Roslynator.CommandLine
                     WriteLine($"  Done analyzing '{project.Name}'", Verbosity.Normal);
                 });
 
-            if (changedDocuments.Count > 0)
+            if (!changedDocuments.IsEmpty)
             {
                 Solution newSolution = solution;
 

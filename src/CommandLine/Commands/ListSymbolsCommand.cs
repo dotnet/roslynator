@@ -113,14 +113,13 @@ namespace Roslynator.CommandLine
                 : null;
 
             using (var stringWriter = new StringWriter())
+            using (SymbolDefinitionWriter writer = new SymbolDefinitionTextWriter(
+                stringWriter,
+                filter: SymbolFilterOptions,
+                format: format,
+                documentationProvider: documentationProvider,
+                hierarchyRoot: hierarchyRoot))
             {
-                SymbolDefinitionWriter writer = new SymbolDefinitionTextWriter(
-                    stringWriter,
-                    filter: SymbolFilterOptions,
-                    format: format,
-                    documentationProvider: documentationProvider,
-                    hierarchyRoot: hierarchyRoot);
-
                 writer.WriteDocument(assemblies, cancellationToken);
 
                 text = stringWriter.ToString();
