@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net48</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <OutputType>Exe</OutputType>
     <AssemblyName>Roslynator.CommandLine.DocumentationGenerator</AssemblyName>
     <RootNamespace>Roslynator.CommandLine</RootNamespace>
