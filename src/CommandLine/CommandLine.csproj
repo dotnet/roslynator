@@ -4,7 +4,7 @@
     <TargetFramework>net48</TargetFramework>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(RoslynatorDotNetCli)' == true">
+  <PropertyGroup Condition="'$(RoslynatorDotNetCli)' == true OR '$(RoslynatorCoreCli)' == true ">
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
