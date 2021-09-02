@@ -460,6 +460,21 @@ namespace Roslynator
             }
         }
 
+        internal static ISymbol OverriddenSymbol(this ISymbol symbol)
+        {
+            switch (symbol.Kind)
+            {
+                case SymbolKind.Method:
+                    return ((IMethodSymbol)symbol).OverriddenMethod;
+                case SymbolKind.Property:
+                    return ((IPropertySymbol)symbol).OverriddenProperty;
+                case SymbolKind.Event:
+                    return ((IEventSymbol)symbol).OverriddenEvent;
+            }
+
+            return null;
+        }
+
         internal static ISymbol BaseOverriddenSymbol(this ISymbol symbol)
         {
             if (symbol == null)
