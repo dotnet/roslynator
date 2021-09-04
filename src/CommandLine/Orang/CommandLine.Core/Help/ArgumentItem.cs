@@ -2,22 +2,17 @@
 
 namespace Roslynator.CommandLine.Help
 {
-    public class ArgumentItem
+    public class ArgumentItem : HelpItem
     {
-        public ArgumentItem(CommandArgument argument, string text)
+        public ArgumentItem(CommandArgument argument, string syntax, string description) : base(syntax, description)
         {
             Argument = argument;
-            Text = text;
         }
 
         public CommandArgument Argument { get; }
 
-        public string Text { get; }
-
         public bool IsRequired => Argument.IsRequired;
 
         public string Name => Argument.Name;
-
-        public override string ToString() => Text;
     }
 }

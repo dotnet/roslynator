@@ -10,6 +10,40 @@ namespace Roslynator
 {
     internal static class CoreExtensions
     {
+        public static StringBuilder AppendIndent(this StringBuilder sb, string value, int indentLength)
+        {
+            if (value.Contains("\n"))
+            {
+                var indent = new string(' ', indentLength);
+
+                return AppendIndent(sb, value, indent);
+            }
+            else
+            {
+                return sb.Append(value);
+            }
+        }
+
+        public static StringBuilder AppendIndent(this StringBuilder sb, string value, string indent)
+        {
+            using (IEnumerator<string> en = TextHelpers.ReadLines(value).GetEnumerator())
+            {
+                if (en.MoveNext())
+                {
+                    sb.Append(en.Current);
+
+                    while (en.MoveNext())
+                    {
+                        sb.AppendLine();
+                        sb.Append(indent);
+                        sb.Append(en.Current);
+                    }
+                }
+            }
+
+            return sb;
+        }
+
         public static StringBuilder AppendSpaces(this StringBuilder sb, int count)
         {
             return sb.Append(' ', count);

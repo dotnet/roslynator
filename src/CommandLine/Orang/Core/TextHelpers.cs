@@ -29,7 +29,7 @@ namespace Roslynator
             {
                 var sb = new StringBuilder();
 
-                IndentImpl(value, new string(' ', indentLength), ref sb);
+                sb.AppendIndent(value, new string(' ', indentLength));
 
                 return sb.ToString();
             }
@@ -43,44 +43,12 @@ namespace Roslynator
             {
                 var sb = new StringBuilder();
 
-                IndentImpl(value, indent, ref sb);
+                sb.AppendIndent(value, indent);
 
                 return sb.ToString();
             }
 
             return value;
-        }
-
-        public static void Indent(string value, int indentLength, ref StringBuilder sb)
-        {
-            if (value.Contains("\n"))
-            {
-                var indent = new string(' ', indentLength);
-
-                IndentImpl(value, indent, ref sb);
-            }
-            else
-            {
-                sb.Append(value);
-            }
-        }
-
-        private static void IndentImpl(string value, string indent, ref StringBuilder sb)
-        {
-            using (IEnumerator<string> en = ReadLines(value).GetEnumerator())
-            {
-                if (en.MoveNext())
-                {
-                    sb.Append(en.Current);
-
-                    while (en.MoveNext())
-                    {
-                        sb.AppendLine();
-                        sb.Append(indent);
-                        sb.Append(en.Current);
-                    }
-                }
-            }
         }
 
         internal static string Join(string separator, string lastSeparator, IEnumerable<string> values)

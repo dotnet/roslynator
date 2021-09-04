@@ -50,9 +50,6 @@ namespace Roslynator.CommandLine
                     {
                         CommandArgument argument = en.Current;
 
-                        if (!argument.IsRequired)
-                            sb.Append("[");
-
                         if (!string.IsNullOrEmpty(argument.Name))
                         {
                             sb.Append(argument.Name);
@@ -63,9 +60,6 @@ namespace Roslynator.CommandLine
                             sb.Append(argument.Index);
                             sb.Append(">");
                         }
-
-                        if (!argument.IsRequired)
-                            sb.Append("]");
 
                         if (en.MoveNext())
                         {
@@ -81,7 +75,6 @@ namespace Roslynator.CommandLine
 
             sb.AppendLine();
 
-            bool anyIsOptional = command.Options.Any(f => !f.IsRequired);
             bool anyHasShortName = command.Options.Any(f => !string.IsNullOrEmpty(f.ShortName));
 
             var sb2 = new StringBuilder();
@@ -89,24 +82,15 @@ namespace Roslynator.CommandLine
 
             foreach (CommandOption option in command.Options)
             {
-                if (!option.IsRequired)
-                {
-                    sb2.Append("[");
-                }
-                else if (anyIsOptional)
-                {
-                    sb2.Append(" ");
-                }
-
                 if (!string.IsNullOrEmpty(option.ShortName))
                 {
                     sb2.Append("-");
                     sb2.Append(option.ShortName);
-                    sb2.Append("|");
+                    sb2.Append(", ");
                 }
                 else if (anyHasShortName)
                 {
-                    sb2.Append(' ', 3);
+                    sb2.Append(' ', 4);
                 }
 
                 if (!string.IsNullOrEmpty(option.Name))
@@ -115,15 +99,10 @@ namespace Roslynator.CommandLine
                     sb2.Append(option.Name);
                 }
 
-                if (!option.IsRequired)
-                    sb2.Append("]");
-
                 lines.Add(sb2.ToString());
 
                 sb2.Clear();
             }
-
-            int maxWidth = lines.Max(f => f.Length);
 
             for (int i = 0; i < lines.Count; i++)
             {
@@ -131,7 +110,7 @@ namespace Roslynator.CommandLine
 
                 if (!string.IsNullOrEmpty(command.Options[i].MetaValue))
                 {
-                    sb.Append(' ', maxWidth - lines[i].Length + 1);
+                    sb.Append(' ');
                     sb.Append(command.Options[i].MetaValue);
                 }
 
@@ -199,14 +178,11 @@ namespace Roslynator.CommandLine
 
             var sb = new StringBuilder();
 
-            if (!option.IsRequired)
-                sb.Append("[");
-
             if (!string.IsNullOrEmpty(option.ShortName))
             {
                 sb.Append("-");
                 sb.Append(option.ShortName);
-                sb.Append("|");
+                sb.Append(", ");
             }
 
             if (!string.IsNullOrEmpty(option.Name))
@@ -214,9 +190,6 @@ namespace Roslynator.CommandLine
                 sb.Append("--");
                 sb.Append(option.Name);
             }
-
-            if (!option.IsRequired)
-                sb.Append("]");
 
             if (!string.IsNullOrEmpty(option.MetaValue))
             {

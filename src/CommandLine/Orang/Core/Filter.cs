@@ -10,6 +10,8 @@ namespace Roslynator
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public class Filter
     {
+        internal static Filter EntireInput { get; } = new Filter(@"\A.*\z", RegexOptions.Singleline);
+
         public Filter(
             string pattern,
             bool isNegative = false) : this(pattern, RegexOptions.None, isNegative: isNegative)

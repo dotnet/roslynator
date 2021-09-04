@@ -2,18 +2,13 @@
 
 namespace Roslynator.CommandLine.Help
 {
-    public class CommandItem
+    public class CommandItem : HelpItem
     {
-        public CommandItem(Command command, string text)
+        public CommandItem(Command command, string syntax, string description) : base(syntax, description)
         {
             Command = command;
-            Text = text;
         }
 
         public Command Command { get; }
-
-        public string Text { get; }
-
-        public override string ToString() => Text;
     }
 }
