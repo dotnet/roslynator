@@ -22,4 +22,8 @@ orang replace %_spellingPath% -n WordList.cs e -c "StringComparer.FromComparison
 
 orang replace %_spellingPath% -n WordChar.cs e -c "HashCode." l -r "Hash."
 
+orang replace %_spellingPath% -e cs ^
+ -c "// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information." l ^
+ -r "// This code is originally from https://github.com/josefpihrt/orang. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information."
+
 pause
