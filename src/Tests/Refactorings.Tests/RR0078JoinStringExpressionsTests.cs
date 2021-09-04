@@ -230,5 +230,33 @@ class C
 }
 ", equivalenceKey: RefactoringId);
         }
+
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.JoinStringExpressions)]
+        public async Task Test_StringConcatenation_PreprocessorDirectives()
+        {
+            await VerifyRefactoringAsync(@"
+class C
+{
+    void M()
+    {
+        string s = ""a""
+#if DEBUG
+            + [|""b"" + ""c""|];
+    }
+#endif
+}
+", @"
+class C
+{
+    void M()
+    {
+        string s = ""a""
+#if DEBUG
+            + ""bc"";
+    }
+#endif
+}
+", equivalenceKey: RefactoringId, options: Options.WithDebugPreprocessorSymbol());
+        }
     }
 }
