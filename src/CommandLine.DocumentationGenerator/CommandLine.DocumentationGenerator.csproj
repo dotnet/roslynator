@@ -1,7 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
+  <PropertyGroup Condition="'$(RoslynatorDotNetCli)' != true AND '$(RoslynatorCommandLine)' != true">
+    <TargetFramework>net48</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(RoslynatorDotNetCli)' == true OR '$(RoslynatorCoreCli)' == true ">
     <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(RoslynatorCommandLine)' == true">
+    <TargetFramework>net48</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <OutputType>Exe</OutputType>
     <AssemblyName>Roslynator.CommandLine.DocumentationGenerator</AssemblyName>
     <RootNamespace>Roslynator.CommandLine</RootNamespace>
