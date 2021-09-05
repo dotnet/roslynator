@@ -4,11 +4,14 @@ namespace Roslynator.CommandLine
 {
     internal static class OptionNames
     {
+        public const string Ask = "ask";
+        public const string CodeContext = "code-context";
         public const string Depth = "depth";
         public const string Display = "display";
         public const string EndOfLine = "end-of-line";
         public const string FixScope = "fix-scope";
         public const string Help = "help";
+        public const string IgnoredCompilerDiagnostics = "ignored-compiler-diagnostics";
         public const string IgnoredMemberParts = "ignored-member-parts";
         public const string IgnoredNamespaceParts = "ignored-namespace-parts";
         public const string IgnoredParts = "ignored-parts";
@@ -18,9 +21,15 @@ namespace Roslynator.CommandLine
         public const string IgnoredTypeParts = "ignored-type-parts";
         public const string IncludeContainingNamespace = "include-containing-namespace";
         public const string IncludeSystemNamespace = "include-system-namespace";
+        public const string Interactive = "interactive";
         public const string Layout = "layout";
+        public const string Match = "match";
+        public const string MatchFrom = "match-from";
         public const string MSBuildPath = "msbuild-path";
+        public const string NewName = "new-name";
+        public const string NewNameFrom = "new-name-from";
         public const string OmitMemberParts = "omit-member-parts";
+        public const string OnError = "on-error";
         public const string Projects = "projects";
         public const string RootDirectoryUrl = "root-directory-url";
         public const string Scope = "scope";

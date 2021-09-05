@@ -481,76 +481,24 @@ namespace Roslynator.CodeFixes
 
         private bool VerifyCompilerDiagnostics(ImmutableArray<Diagnostic> diagnostics, Project project)
         {
-            const string indentation = "    ";
+            int errorCount = LogHelpers.WriteCompilerErrors(
+                diagnostics,
+                baseDirectoryPath: Path.GetDirectoryName(project.FilePath),
+                ignoredCompilerDiagnosticIds: Options.IgnoredCompilerDiagnosticIds,
+                formatProvider: FormatProvider,
+                indentation: "    ");
 
-            using (IEnumerator<Diagnostic> en = diagnostics
-                .Where(f => f.Severity == DiagnosticSeverity.Error
-                    && !Options.IgnoredCompilerDiagnosticIds.Contains(f.Id))
-                .GetEnumerator())
+            if (errorCount > 0)
             {
-                if (en.MoveNext())
+                if (!Options.IgnoreCompilerErrors)
                 {
-                    Write(indentation);
-                    WriteLine("Compilation errors:");
-
-                    string baseDirectoryPath = Path.GetDirectoryName(project.FilePath);
-
-                    const int maxCount = 10;
-
-                    int count = 0;
-
-                    do
-                    {
-                        count++;
-
-                        if (count <= maxCount)
-                        {
-                            LogHelpers.WriteDiagnostic(
-                                en.Current,
-                                baseDirectoryPath: baseDirectoryPath,
-                                formatProvider: FormatProvider,
-                                indentation: indentation,
-                                verbosity: Verbosity.Normal);
-                        }
-                        else
-                        {
-                            break;
-                        }
-
-                    } while (en.MoveNext());
-
-                    count = 0;
-
-                    var plus = false;
-
-                    while (en.MoveNext())
-                    {
-                        count++;
-
-                        if (count == 1000)
-                        {
-                            plus = true;
-                            break;
-                        }
-                    }
-
-                    if (count > maxCount)
-                    {
-                        Write(indentation);
-                        WriteLine($"and {count}{((plus) ? "+" : "")} more errors", verbosity: Verbosity.Normal);
-                    }
-
-                    if (!Options.IgnoreCompilerErrors)
-                    {
 #if DEBUG
-                        Console.Write("Stop (Y/N)? ");
+                    Console.Write("Stop (Y/N)? ");
 
-                        if (char.ToUpperInvariant((char)Console.Read()) == 'Y')
-                            return false;
+                    return char.ToUpperInvariant((char)Console.Read()) != 'Y';
 #else
-                        return false;
+                    return false;
 #endif
-                    }
                 }
             }
 

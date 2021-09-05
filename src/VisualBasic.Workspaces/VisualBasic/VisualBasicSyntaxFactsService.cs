@@ -60,5 +60,10 @@ namespace Roslynator.VisualBasic
         }
 
         public SyntaxNode GetSymbolDeclaration(SyntaxToken identifier) => throw new NotImplementedException();
+
+        public bool IsValidIdentifier(string name)
+        {
+            return SyntaxFacts.IsValidIdentifier(name);
+        }
     }
 }

@@ -118,5 +118,10 @@ namespace Roslynator.CSharp
             Debug.Fail(parent.Kind().ToString());
             return null;
         }
+
+        public bool IsValidIdentifier(string name)
+        {
+            return SyntaxFacts.IsValidIdentifier(name);
+        }
     }
 }

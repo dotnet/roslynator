@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using DotMarkdown;
 
 namespace Roslynator.CommandLine.Documentation
@@ -52,7 +53,18 @@ namespace Roslynator.CommandLine.Documentation
 
                     mw.WriteLink("Home", "README.md");
 
-                    foreach (string section in new[] { "Synopsis", "Arguments", "Options", "Samples" })
+                    string additionalContentFilePath = Path.Combine(dataDirectoryPath, command.Name + "_bottom.md");
+
+                    string additionalContent = (File.Exists(additionalContentFilePath))
+                        ? File.ReadAllText(additionalContentFilePath)
+                        : "";
+
+                    var sections = new List<string>() { "Synopsis", "Arguments", "Options" };
+
+                    if (Regex.IsMatch(additionalContent, @"^\#+ Examples", RegexOptions.Multiline))
+                        sections.Add("Examples");
+
+                    foreach (string section in sections)
                     {
                         mw.WriteString(" ");
                         mw.WriteCharEntity((char)0x2022);
@@ -66,13 +78,11 @@ namespace Roslynator.CommandLine.Documentation
                     writer.WriteArguments(command.Arguments);
                     writer.WriteOptions(command.Options);
 
-                    string samplesFilePath = Path.Combine(dataDirectoryPath, command.Name + "_bottom.md");
-
-                    if (File.Exists(samplesFilePath))
+                    if (!string.IsNullOrEmpty(additionalContent))
                     {
                         mw.WriteLine();
                         mw.WriteLine();
-                        mw.WriteRaw(File.ReadAllText(samplesFilePath));
+                        mw.WriteRaw(additionalContent);
                     }
 
                     WriteFootNote(mw);

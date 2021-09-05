@@ -329,6 +329,20 @@ namespace Roslynator.CSharp
                     return ((VariableDeclaratorSyntax)node).Identifier;
                 case SyntaxKind.RecordDeclaration:
                     return ((RecordDeclarationSyntax)node).Identifier;
+                case SyntaxKind.Parameter:
+                    return ((ParameterSyntax)node).Identifier;
+                case SyntaxKind.TypeParameter:
+                    return ((TypeParameterSyntax)node).Identifier;
+                case SyntaxKind.EnumMemberDeclaration:
+                    return ((EnumMemberDeclarationSyntax)node).Identifier;
+                case SyntaxKind.ForEachStatement:
+                    return ((ForEachStatementSyntax)node).Identifier;
+                case SyntaxKind.CatchDeclaration:
+                    return ((CatchDeclarationSyntax)node).Identifier;
+                case SyntaxKind.SingleVariableDesignation:
+                    return ((SingleVariableDesignationSyntax)node).Identifier;
+                case SyntaxKind.LocalFunctionStatement:
+                    return ((LocalFunctionStatementSyntax)node).Identifier;
             }
 
             return default;

@@ -15,6 +15,51 @@ namespace Roslynator.CommandLine
     {
         private static readonly Regex _lowerLetterUpperLetterRegex = new Regex(@"\p{Ll}\p{Lu}");
 
+        public static bool TryParseCodeExpression<T>(
+            string expression,
+            string filePath,
+            string optionName1,
+            string optionName2,
+            string returnTypeName,
+            Type returnType,
+            string parameterTypeName,
+            Type parameterType,
+            string parameterName,
+            out Func<ISymbol, T> func)
+        {
+            func = null;
+
+            if (string.IsNullOrEmpty(expression))
+            {
+                if (string.IsNullOrEmpty(filePath))
+                {
+                    WriteLine($"It is required to specify either '{optionName1}' or '{optionName2}'.", Verbosity.Quiet);
+                    return false;
+                }
+
+                if (!TryReadAllText(filePath, out filePath, ex => WriteError(ex)))
+                    return false;
+
+                return DelegateFactory.TryCreateFromSourceText(filePath, returnType, parameterType, out func);
+            }
+            else if (!string.IsNullOrEmpty(filePath))
+            {
+                WriteLine($"It is not allowed to specify both '{optionName1}' and '{optionName2}'.", Verbosity.Quiet);
+                return false;
+            }
+
+            return DelegateFactory.TryCreateFromExpression(
+                expression,
+                "C",
+                "M",
+                returnTypeName,
+                returnType,
+                parameterTypeName,
+                parameterType,
+                parameterName,
+                out func);
+        }
+
         public static bool TryParseMSBuildProperties(IEnumerable<string> values, out Dictionary<string, string> properties)
         {
             properties = null;
@@ -284,6 +329,26 @@ namespace Roslynator.CommandLine
             {
                 WriteLine($"Path '{path}' is invalid: {ex.Message}.", Verbosity.Quiet);
                 result = null;
+                return false;
+            }
+        }
+
+        public static bool TryReadAllText(
+            string path,
+            out string content,
+            Action<Exception> exceptionHandler = null)
+        {
+            try
+            {
+                content = File.ReadAllText(path);
+                return true;
+            }
+            catch (Exception ex) when (ex is ArgumentException
+                || ex is IOException
+                || ex is UnauthorizedAccessException)
+            {
+                exceptionHandler?.Invoke(ex);
+                content = null;
                 return false;
             }
         }

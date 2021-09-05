@@ -17,13 +17,32 @@ namespace Roslynator
         {
             StringBuilder sb = StringBuilderCache.GetInstance();
 
-            switch (diagnostic.Location.Kind)
+            FormatLocation(diagnostic.Location, baseDirectoryPath, ref sb);
+
+            sb.Append(GetSeverityText(diagnostic.Severity));
+            sb.Append(' ');
+            sb.Append(diagnostic.Id);
+            sb.Append(": ");
+
+            string message = diagnostic.GetMessage(formatProvider);
+
+            sb.Append(message);
+
+            return StringBuilderCache.GetStringAndFree(sb);
+        }
+
+        internal static void FormatLocation(
+            Location location,
+            string baseDirectoryPath,
+            ref StringBuilder sb)
+        {
+            switch (location.Kind)
             {
                 case LocationKind.SourceFile:
                 case LocationKind.XmlFile:
                 case LocationKind.ExternalFile:
                     {
-                        FileLinePositionSpan span = diagnostic.Location.GetMappedLineSpan();
+                        FileLinePositionSpan span = location.GetMappedLineSpan();
 
                         if (span.IsValid)
                         {
@@ -41,19 +60,6 @@ namespace Roslynator
                         break;
                     }
             }
-
-            string severity = GetSeverityText(diagnostic.Severity);
-
-            sb.Append(severity);
-            sb.Append(' ');
-            sb.Append(diagnostic.Id);
-            sb.Append(": ");
-
-            string message = diagnostic.GetMessage(formatProvider);
-
-            sb.Append(message);
-
-            return StringBuilderCache.GetStringAndFree(sb);
         }
 
         private static string GetSeverityText(DiagnosticSeverity diagnosticSeverity)

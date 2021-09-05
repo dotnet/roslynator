@@ -18,6 +18,7 @@ using Roslynator.CodeFixes;
 using Roslynator.Diagnostics;
 using Roslynator.Documentation;
 using Roslynator.FindSymbols;
+using Roslynator.Rename;
 using Roslynator.Spelling;
 using static Roslynator.CommandLine.ParseHelpers;
 using static Roslynator.Logger;
@@ -103,6 +104,7 @@ namespace Roslynator.CommandLine
                         typeof(LogicalLinesOfCodeCommandLineOptions),
                         typeof(MigrateCommandLineOptions),
                         typeof(PhysicalLinesOfCodeCommandLineOptions),
+                        typeof(RenameSymbolCommandLineOptions),
                         typeof(SpellcheckCommandLineOptions),
 #if DEBUG
                         typeof(AnalyzeAssemblyCommandLineOptions),
@@ -182,6 +184,8 @@ namespace Roslynator.CommandLine
                                 return LogicalLinesOrCodeAsync(logicalLinesOfCodeCommandLineOptions).Result;
                             case PhysicalLinesOfCodeCommandLineOptions physicalLinesOfCodeCommandLineOptions:
                                 return PhysicalLinesOfCodeAsync(physicalLinesOfCodeCommandLineOptions).Result;
+                            case RenameSymbolCommandLineOptions renameSymbolCommandLineOptions:
+                                return RenameSymbolAsync(renameSymbolCommandLineOptions).Result;
                             case SpellcheckCommandLineOptions spellcheckCommandLineOptions:
                                 return SpellcheckAsync(spellcheckCommandLineOptions).Result;
 #if DEBUG
@@ -419,6 +423,85 @@ namespace Roslynator.CommandLine
                 options: options,
                 symbolFinderOptions: symbolFinderOptions,
                 projectFilter: projectFilter);
+
+            CommandStatus status = await command.ExecuteAsync(paths, options.MSBuildPath, options.Properties);
+
+            return GetExitCode(status);
+        }
+
+        private static async Task<int> RenameSymbolAsync(RenameSymbolCommandLineOptions options)
+        {
+            if (!options.TryGetProjectFilter(out ProjectFilter projectFilter))
+                return ExitCodes.Error;
+
+            if (!TryParsePaths(options.Paths, out ImmutableArray<string> paths))
+                return ExitCodes.Error;
+
+            if (!TryParseOptionValueAsEnum(options.OnError, OptionNames.OnError, out RenameErrorResolution errorResolution, defaultValue: RenameErrorResolution.None))
+                return ExitCodes.Error;
+
+            var visibility = Visibility.Public;
+            var scopeFilter = RenameScopeFilter.All;
+#if DEBUG
+            if (!TryParseOptionValueAsEnum(options.Visibility, OptionNames.Visibility, out visibility))
+                return ExitCodes.Error;
+#endif
+            if (!TryParseOptionValueAsEnumFlags(options.Scope, OptionNames.Scope, out scopeFilter, defaultValue: RenameScopeFilter.All))
+                return ExitCodes.Error;
+
+            if (!TryParseCodeExpression(
+                options.Match,
+                options.MatchFrom,
+                OptionNames.Match,
+                OptionNames.MatchFrom,
+                "bool",
+                typeof(bool),
+                "ISymbol",
+                typeof(ISymbol),
+                "symbol",
+                out Func<ISymbol, bool> predicate))
+            {
+                return ExitCodes.Error;
+            }
+
+            string newNameFrom = options.NewNameFrom;
+
+            if (newNameFrom == null
+                && options.NewName == null)
+            {
+                newNameFrom = options.MatchFrom;
+            }
+
+            if (!TryParseCodeExpression(
+                options.NewName,
+                newNameFrom,
+                OptionNames.NewName,
+                OptionNames.NewNameFrom,
+                "string",
+                typeof(string),
+                "ISymbol",
+                typeof(ISymbol),
+                "symbol",
+                out Func<ISymbol, string> getNewName))
+            {
+                return ExitCodes.Error;
+            }
+
+            var command = new RenameSymbolCommand(
+                options: options,
+                projectFilter: projectFilter,
+                scopeFilter: scopeFilter,
+                visibility: visibility,
+                errorResolution: errorResolution,
+#if DEBUG
+                ignoredCompilerDiagnostics: options.IgnoredCompilerDiagnostics,
+                codeContext: options.CodeContext,
+#else
+                ignoredCompilerDiagnostics: null,
+                codeContext: -1,
+#endif
+                predicate: predicate,
+                getNewName: getNewName);
 
             CommandStatus status = await command.ExecuteAsync(paths, options.MSBuildPath, options.Properties);
 

@@ -273,6 +273,15 @@ namespace Roslynator
             ConsoleColor color = ConsoleColor.Red,
             Verbosity verbosity = Verbosity.Quiet)
         {
+            WriteError(exception, exception.Message, color, verbosity);
+        }
+
+        public static void WriteError(
+            Exception exception,
+            string message,
+            ConsoleColor color = ConsoleColor.Red,
+            Verbosity verbosity = Verbosity.Quiet)
+        {
             var colors = new ConsoleColors(color);
 
             WriteLine(exception.Message, colors, verbosity);
