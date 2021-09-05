@@ -1,118 +1,127 @@
+﻿
+# `roslynator generate-doc-root`
 
-# `generate-doc-root` Command
+Generates root documentation file from specified assemblies\.
 
-Generates root documentation file from specified assemblies.
+[Home](README.md) &#x2022; [Synopsis](#Synopsis) &#x2022; [Arguments](#Arguments) &#x2022; [Options](#Options)
 
 ## Synopsis
 
-```shell
-roslynator generate-doc-root
--h|--heading
--o|--output
-[--depth]
-[--file-log]
-[--file-log-verbosity]
-[--ignored-names]
-[--ignored-parts]
-[--ignored-projects]
-[--include-containing-namespace]
-[--include-system-namespace]
-[--language]
-[-m|--msbuild-path]
-[--no-mark-obsolete]
-[--no-precedence-for-system]
-[-p|--properties]
-[--projects]
-[--root-directory-url]
-[--scroll-to-content]
-[-v|--verbosity]
-[--visibility]
+```
+roslynator generate-doc-root <PROJECT|SOLUTION>
+    --depth <DEPTH>
+    --file-log <FILE_PATH>
+    --file-log-verbosity <LEVEL>
+    --heading <HEADING>
+-h, --help
+    --ignored-names <FULLY_QUALIFIED_METADATA_NAME>
+    --ignored-parts <IGNORED_PARTS>
+    --ignored-projects <PROJECT_NAME>
+    --include-containing-namespace <INCLUDE_CONTAINING_NAMESPACE>
+    --include-system-namespace
+    --language <LANGUAGE>
+-m, --msbuild-path <DIRECTORY_PATH>
+    --no-mark-obsolete
+    --no-precedence-for-system
+-o, --output <DIRECTORY_PATH>
+    --projects <PROJECT_NAME>
+-p, --properties <NAME=VALUE>
+    --root-directory-url <URL>
+    --scroll-to-content
+-v, --verbosity <LEVEL>
+    --visibility <VISIBILITY>
 ```
 
 ## Arguments
 
-**`PROJECT|SOLUTION`**
+**`<PROJECT|SOLUTION>`**
 
-The project or solution to analyze.
+The project or solution file\.
 
 ## Options
 
-### Required Options
+##### `--depth <DEPTH>`
 
-**`-h|--heading`** `<ROOT_FILE_HEADING>`
+Defines a depth of a documentation\. Allowed values are member \(default\), type or namespace\.
 
-Defines a heading of the root documentation file.
+##### `--file-log <FILE_PATH>`
 
-**`-o|--output`** `<OUTPUT_DIRECTORY>`
+Path to a file that should store output\.
 
-Defines a path for the output directory.
+##### `--file-log-verbosity <LEVEL>`
 
-### Optional Options
+Verbosity of the file log\. Allowed values are q\[uiet\], m\[inimal\], n\[ormal\], d\[etailed\] and diag\[nostic\]\.
 
-**`[--depth]`** `{member|type|namespace}`
+##### `--heading <HEADING>`
 
-Defines a depth of a documentation. Default value is `member`.
+Defines a heading of the root documentation file\.
 
-**`[--ignored-names]`** `<FULLY_QUALIFIED_METADATA_NAME>`
+##### `-h, --help`
 
-Defines a list of metadata names that should be excluded from a documentation. Namespace of type names can be specified.
+Show command line help\.
 
-**`[--ignored-parts]`** `{content namespaces class-hierarchy types other}`
+##### `--ignored-names <FULLY_QUALIFIED_METADATA_NAME>`
 
-Defines parts of a root documentation that should be excluded.
+Defines a list of metadata names that should be excluded from a documentation\. Namespace of type names can be specified\.
 
-**`--ignored-projects`** <PROJECT_NAME>
+##### `--ignored-parts <IGNORED_PARTS>`
 
-Defines projects that should be skipped.
+Defines parts of a root documentation that should be excluded\. Allowed values are content, namespaces, class\-hierarchy, types and other
 
-**`[--include-containing-namespace]`** `{class-hierarchy}`
+##### `--ignored-projects <PROJECT_NAME>`
 
-Defines parts of a documentation that should include containing namespace.
+Defines projects that should not be analyzed\.
 
-**`[--include-system-namespace]`**
+##### `--include-containing-namespace <INCLUDE_CONTAINING_NAMESPACE>`
 
-Indicates whether namespace should be included when a type is directly contained in namespace 'System'.
+Defines parts of a documentation that should include containing namespace\. Allowed value is class\-hierarchy\.
 
-**`--language`** `{cs[harp]|v[isual-]b[asic])}`
+##### `--include-system-namespace`
 
-Defines project language.
+Indicates whether namespace should be included when a type is directly contained in namespace 'System'\.
 
-**`-m|--msbuild-path`** <MSBUILD_PATH>
+##### `--language <LANGUAGE>`
 
-Defines a path to MSBuild. This option must be specified if there are multiple locations of MSBuild (usually multiple installations of Visual Studio).
+Defines project language\. Allowed values are cs\[harp\] or v\[isual\-\]b\[asic\]
 
-**`[--no-mark-obsolete]`**
+##### `-m, --msbuild-path <DIRECTORY_PATH>`
 
-Indicates whether obsolete types and members should not be marked as `[deprecated]`.
+Defines a path to MSBuild directory\.
 
-**`[--no-precedence-for-system]`**
+##### `--no-mark-obsolete`
 
-Indicates whether symbols contained in `System` namespace should be ordered as any other symbols and not before other symbols.
+Indicates whether obsolete types and members should not be marked as '\[deprecated\]'\.
 
-**`--projects`** <PROJECT_NAME>
+##### `--no-precedence-for-system`
 
-Defines projects that should be analyzed.
+Indicates whether symbols contained in 'System' namespace should be ordered as any other symbols and not before other symbols\.
 
-**`-p|--properties`** `<NAME=VALUE>`
+##### `-o, --output <DIRECTORY_PATH>`
 
-Defines one or more MSBuild properties.
+Defines a path for the output directory\.
 
-**`[--root-directory-url]`** <ROOT_DIRECTORY_URL>
+##### `--projects <PROJECT_NAME>`
 
-Defines a relative url to the documentation root directory.
+Defines projects that should be analyzed\.
 
-**`[--scroll-to-content]`**
+##### `-p, --properties <NAME=VALUE>`
 
-Indicates whether a link should lead to the top of the documentation content.
+Defines one or more MSBuild properties\.
 
-**`-v|--verbosity`** `{q[uiet]|m[inimal]|n[ormal]|d[etailed]|diag[nostic]}`
+##### `--root-directory-url <URL>`
 
-Defines the amount of information to display in the log.
+Defines a relative url to the documentation root directory\.
 
-**`[--visibility]`** `{public|internal|private}`
+##### `--scroll-to-content`
 
-Defines a visibility of a type or a member. Default value is `public`.
+Indicates whether a link should lead to the top of the documentation content\.
 
-## See Also
+##### `-v, --verbosity <LEVEL>`
 
-* [Roslynator Command-Line Interface](README.md)
+Verbosity of the log\. Allowed values are q\[uiet\], m\[inimal\], n\[ormal\], d\[etailed\] and diag\[nostic\]\.
+
+##### `--visibility <VISIBILITY>`
+
+Defines a visibility of a type or a member\. Allowed values are public \(default\), internal or private\.
+
+*\(Generated with [DotMarkdown](https://github.com/JosefPihrt/DotMarkdown)\)*

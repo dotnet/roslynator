@@ -1,78 +1,76 @@
+﻿
+# `roslynator lloc`
 
-# `lloc` Command
+Counts logical lines of code in the specified project or solution\.
 
-Counts logical lines of code in the specified project or solution.
+[Home](README.md) &#x2022; [Synopsis](#Synopsis) &#x2022; [Arguments](#Arguments) &#x2022; [Options](#Options)
 
 ## Synopsis
 
-```shell
+```
 roslynator lloc <PROJECT|SOLUTION>
-[--ignored-projects]
-[--include-comments]
-[-g|--include-generated-code]
-[--include-preprocessor-directives]
-[--include-whitespace]
-[--language]
-[--file-log]
-[--file-log-verbosity]
-[-m|--msbuild-path]
-[--projects]
-[-p|--properties]
-[-v|--verbosity]
+    --file-log <FILE_PATH>
+    --file-log-verbosity <LEVEL>
+-h, --help
+    --ignored-projects <PROJECT_NAME>
+-g, --include-generated-code
+    --language <LANGUAGE>
+-m, --msbuild-path <DIRECTORY_PATH>
+    --projects <PROJECT_NAME>
+-p, --properties <NAME=VALUE>
+-v, --verbosity <LEVEL>
 ```
 
 ## Arguments
 
-**`PROJECT|SOLUTION`**
+**`<PROJECT|SOLUTION>`**
 
-Path to one or more project/solution files.
+Path to one or more project/solution files\.
 
-### Optional Options
+## Options
 
-**`--ignored-projects`** <PROJECT_NAME>
+##### `--file-log <FILE_PATH>`
 
-Defines project names that should not be fixed.
+Path to a file that should store output\.
 
-**`--include-comments`**
+##### `--file-log-verbosity <LEVEL>`
 
-Indicates whether a line that contains only comment should be counted.
+Verbosity of the file log\. Allowed values are q\[uiet\], m\[inimal\], n\[ormal\], d\[etailed\] and diag\[nostic\]\.
 
-**`-g|--include-generated-code`**
+##### `-h, --help`
 
-Indicates whether generated code should be counted.
+Show command line help\.
 
-**`--include-preprocessor-directives`**
+##### `--ignored-projects <PROJECT_NAME>`
 
-Indicates whether preprocessor directive line should be counted.
+Defines projects that should not be analyzed\.
 
-**`--include-whitespace`**
+##### `-g, --include-generated-code`
 
-Indicates whether white-space line should be counted.
+Indicates whether generated code should be included\.
 
-**`--language`** `{cs[harp]|v[isual-]b[asic])}`
+##### `--language <LANGUAGE>`
 
-Defines project language.
+Defines project language\. Allowed values are cs\[harp\] or v\[isual\-\]b\[asic\]
 
-**`-m|--msbuild-path`** <MSBUILD_PATH>
+##### `-m, --msbuild-path <DIRECTORY_PATH>`
 
-Defines a path to MSBuild. This option must be specified if there are multiple locations of MSBuild (usually multiple installations of Visual Studio).
+Defines a path to MSBuild directory\.
 
-**`--projects`** <PROJECT_NAME>
+##### `--projects <PROJECT_NAME>`
 
-Defines projects that should be analyzed.
+Defines projects that should be analyzed\.
 
-**`-p|--properties`** `<NAME=VALUE>`
+##### `-p, --properties <NAME=VALUE>`
 
-Defines one or more MSBuild properties.
+Defines one or more MSBuild properties\.
 
-**`-v|--verbosity`** `{q[uiet]|m[inimal]|n[ormal]|d[etailed]|diag[nostic]}`
+##### `-v, --verbosity <LEVEL>`
 
-Defines the amount of information to display in the log.
+Verbosity of the log\. Allowed values are q\[uiet\], m\[inimal\], n\[ormal\], d\[etailed\] and diag\[nostic\]\.
 
 ## Redirected/Piped Input
 
 Redirected/piped input will be used as a list of project/solution paths separated with newlines.
 
-## See Also
-
-* [Roslynator Command-Line Interface](README.md)
+*\(Generated with [DotMarkdown](https://github.com/JosefPihrt/DotMarkdown)\)*

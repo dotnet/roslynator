@@ -1,143 +1,151 @@
+﻿
+# `roslynator fix`
 
-# `fix` Command
+Fixes diagnostics in the specified project or solution\.
 
-Fixes diagnostics in the specified project or solution.
+[Home](README.md) &#x2022; [Synopsis](#Synopsis) &#x2022; [Arguments](#Arguments) &#x2022; [Options](#Options)
 
 ## Synopsis
 
-```shell
+```
 roslynator fix <PROJECT|SOLUTION>
-[-a|--analyzer-assemblies]
-[--batch-size]
-[--culture]
-[--diagnostic-fixer-map]
-[--diagnostic-fix-map]
-[--diagnostics-fixable-one-by-one]
-[--file-banner]
-[--fix-scope]
-[--format]
-[--ignore-analyzer-references]
-[--ignore-compiler-errors]
-[--ignored-compiler-diagnostics]
-[--ignored-diagnostics]
-[--ignored-projects]
-[--language]
-[--file-log]
-[--file-log-verbosity]
-[--max-iterations]
-[-m|--msbuild-path]
-[--projects]
-[-p|--properties]
-[--severity-level]
-[--supported-diagnostics]
-[-v|--verbosity]
+-a, --analyzer-assemblies <PATH>
+    --batch-size <BATCH_SIZE>
+    --culture <CULTURE_ID>
+    --diagnostic-fixer-map <DIAGNOSTIC_ID=FIXER_FULL_NAME>
+    --diagnostic-fix-map <DIAGNOSTIC_ID=EQUIVALENCE_KEY>
+    --diagnostics-fixable-one-by-one <DIAGNOSTIC_ID>
+    --file-banner <FILE_BANNER>
+    --file-log <FILE_PATH>
+    --file-log-verbosity <LEVEL>
+    --fix-scope <FIX_SCOPE>
+    --format
+-h, --help
+    --ignore-analyzer-references
+    --ignore-compiler-errors
+    --ignored-compiler-diagnostics
+    --ignored-diagnostics <DIAGNOSTIC_ID>
+    --ignored-projects <PROJECT_NAME>
+    --language <LANGUAGE>
+    --max-iterations <MAX_ITERATIONS>
+-m, --msbuild-path <DIRECTORY_PATH>
+    --projects <PROJECT_NAME>
+-p, --properties <NAME=VALUE>
+    --severity-level <LEVEL>
+    --supported-diagnostics <DIAGNOSTIC_ID>
+-v, --verbosity <LEVEL>
 ```
 
 ## Arguments
 
-**`PROJECT|SOLUTION`**
+**`<PROJECT|SOLUTION>`**
 
-Path to one or more project/solution files.
+Path to one or more project/solution files\.
 
-### Optional Options
+## Options
 
-**`-a|--analyzer-assemblies`** <PATH>
+##### `-a, --analyzer-assemblies <PATH>`
 
-Defines one or more paths to:
+Define one or more paths to an analyzer assembly or a directory that should be searched recursively for analyzer assemblies\.
 
-* analyzer assembly
-* directory that should be searched recursively for analyzer assemblies
+##### `--batch-size <BATCH_SIZE>`
 
-**`--batch-size`** <BATCH_SIZE>
+Defines maximum number of diagnostics that can be fixed in one batch\.
 
-Defines maximum number of diagnostics that can be fixed in one batch.
+##### `--culture <CULTURE_ID>`
 
-**`--culture`** <CULTURE_ID>
+Defines culture that should be used to display diagnostic message\.
 
-Defines culture that should be used to display diagnostic message.
+##### `--diagnostic-fixer-map <DIAGNOSTIC_ID=FIXER_FULL_NAME>`
 
-**`--diagnostic-fixer-map`** <DIAGNOSTIC_ID=FIXER_FULL_NAME>
+Defines mapping between diagnostic and its fixer \(CodeFixProvider\)\. If there are two \(or more\) fixers for a diagnostic and both provide a fix it is necessary to determine which one should be used to fix the diagnostic\. Set verbosity to 'diagnostic' to see which diagnostics cannot be fixed due to multiple fixers\.
 
-Defines mapping between diagnostic and its fixer ((CodeFixProvider)[https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.codefixes.codefixprovider?view=roslyn-dotnet]).
+##### `--diagnostic-fix-map <DIAGNOSTIC_ID=EQUIVALENCE_KEY>`
 
-If there are two (or more) fixers for a diagnostic and both provide a fix it is necessary to determine which one should be used to fix the diagnostic.
-Set verbosity to 'diagnostic' to see which diagnostics cannot be fixed due to multiple fixers.
+Defines mapping between diagnostic and its fix \(CodeAction\)\.
 
-**`--diagnostic-fix-map`** <DIAGNOSTIC_ID=EQUIVALENCE_KEY>
+##### `--diagnostics-fixable-one-by-one <DIAGNOSTIC_ID>`
 
-Defines mapping between diagnostic and its fix ((CodeAction)[https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.codeactions.codeaction?view=roslyn-dotnet]).
+Defines diagnostics that can be fixed even if there is no FixAllProvider for them\.
 
-If there are two (or more) fixes for a diagnostic it is necessary to determine which one should be used to fix the diagnostic.
-Set verbosity to 'diagnostic' to see which diagnostics cannot be fixed due to multiple fixes.
+##### `--file-banner <FILE_BANNER>`
 
-**`--diagnostics-fixable-one-by-one`** <DIAGNOSTIC_ID>
+Defines text that should be at the of each source file\.
 
-Defines diagnostics that can be fixed even if there is no (FixAllProvider)[https://github.com/dotnet/roslyn/blob/master/docs/analyzers/FixAllProvider.md] for them.
+##### `--file-log <FILE_PATH>`
 
-**`--file-banner`** <FILE_BANNER>
+Path to a file that should store output\.
 
-Defines text that should be at the top of the source file.
+##### `--file-log-verbosity <LEVEL>`
 
-**`--fix-scope`** `{project|document}`
+Verbosity of the file log\. Allowed values are q\[uiet\], m\[inimal\], n\[ormal\], d\[etailed\] and diag\[nostic\]\.
 
-Defines a fix scope. Default value is `project`.
+##### `--fix-scope <FIX_SCOPE>`
 
-**`--format`**
+Defines fix scope\. Allowed values are project \(default\) or document\.
 
-Indicates whether each document should be formatted.
+##### `--format`
 
-**`--ignore-analyzer-references`**
+Indicates whether each document should be formatted\.
 
-Indicates whether Roslynator should ignore analyzers that are referenced in projects.
+##### `-h, --help`
 
-**`--ignore-compiler-errors`**
+Show command line help\.
 
-Indicates whether fixing should continue even if compilation has errors.
+##### `--ignore-analyzer-references`
 
-**`--ignored-compiler-diagnostics`** <DIAGNOSTIC_ID>
+Indicates whether analyzers that are referenced in a project should be ignored\.
 
-Defines compiler diagnostics that should be ignored even if `--ignore-compiler-errors` is not set.
+##### `--ignore-compiler-errors`
 
-**`--ignored-diagnostics`** <DIAGNOSTIC_ID>
+Indicates whether fixing should continue even if compilation has errors\.
 
-Defines diagnostics that should not be fixed.
+##### `--ignored-compiler-diagnostics`
 
-**`--ignored-projects`** <PROJECT_NAME>
+Defines compiler diagnostics that should be ignored even if \-\-ignore\-compiler\-errors is not set\.
 
-Defines projects that should not be fixed.
+##### `--ignored-diagnostics <DIAGNOSTIC_ID>`
 
-**`--language`** `{cs[harp]|v[isual-]b[asic])}`
+Defines diagnostics that should not be reported\.
 
-Defines project language.
+##### `--ignored-projects <PROJECT_NAME>`
 
-**`--max-iterations`** <MAX_ITERATIONS>
+Defines projects that should not be analyzed\.
 
-Defines maximum numbers of fixing iterations.
+##### `--language <LANGUAGE>`
 
-**`-m|--msbuild-path`** <MSBUILD_PATH>
+Defines project language\. Allowed values are cs\[harp\] or v\[isual\-\]b\[asic\]
 
-Defines a path to MSBuild. This option must be specified if there are multiple locations of MSBuild (usually multiple installations of Visual Studio).
+##### `--max-iterations <MAX_ITERATIONS>`
 
-**`--projects`** <PROJECT_NAME>
+Defines maximum numbers of fixing iterations\.
 
-Defines projects that should be analyzed.
+##### `-m, --msbuild-path <DIRECTORY_PATH>`
 
-**`-p|--properties`** `<NAME=VALUE>`
+Defines a path to MSBuild directory\.
 
-Defines one or more MSBuild properties.
+##### `--projects <PROJECT_NAME>`
 
-**`--severity-level`** `{hidden|info|warning|error}`
+Defines projects that should be analyzed\.
 
-Defines minimally required severity for a diagnostic. Default value is `info`.
+##### `-p, --properties <NAME=VALUE>`
 
-**`-v|--verbosity`** `{q[uiet]|m[inimal]|n[ormal]|d[etailed]|diag[nostic]}`
+Defines one or more MSBuild properties\.
 
-Defines the amount of information to display in the log.
+##### `--severity-level <LEVEL>`
+
+Defines minimally required severity for a diagnostic\. Allowed values are hidden, info \(default\), warning or error\.
+
+##### `--supported-diagnostics <DIAGNOSTIC_ID>`
+
+Defines diagnostics that should be reported\.
+
+##### `-v, --verbosity <LEVEL>`
+
+Verbosity of the log\. Allowed values are q\[uiet\], m\[inimal\], n\[ormal\], d\[etailed\] and diag\[nostic\]\.
 
 ## Redirected/Piped Input
 
 Redirected/piped input will be used as a list of project/solution paths separated with newlines.
 
-## See Also
-
-* [Roslynator Command-Line Interface](README.md)
+*\(Generated with [DotMarkdown](https://github.com/JosefPihrt/DotMarkdown)\)*

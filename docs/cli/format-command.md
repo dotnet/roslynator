@@ -1,72 +1,81 @@
+﻿
+# `roslynator format`
 
-# `format` Command
+Formats documents in the specified project or solution\.
 
-Formats documents in the specified project or solution.
+[Home](README.md) &#x2022; [Synopsis](#Synopsis) &#x2022; [Arguments](#Arguments) &#x2022; [Options](#Options)
 
 ## Synopsis
 
-```shell
+```
 roslynator format <PROJECT|SOLUTION>
-[--culture]
-[--end-of-line]
-[-g|--include-generated-code]
-[--ignored-projects]
-[--language]
-[--file-log]
-[--file-log-verbosity]
-[-m|--msbuild-path]
-[--projects]
-[-v|--verbosity]
+    --culture <CULTURE_ID>
+    --file-log <FILE_PATH>
+    --file-log-verbosity <LEVEL>
+-h, --help
+    --ignored-projects <PROJECT_NAME>
+-g, --include-generated-code
+    --language <LANGUAGE>
+-m, --msbuild-path <DIRECTORY_PATH>
+    --projects <PROJECT_NAME>
+-p, --properties <NAME=VALUE>
+-v, --verbosity <LEVEL>
 ```
 
 ## Arguments
 
-**`PROJECT|SOLUTION`**
+**`<PROJECT|SOLUTION>`**
 
-Path to one or more project/solution files.
+Path to one or more project/solution files\.
 
-### Optional Options
+## Options
 
-**`--culture`** <CULTURE_ID>
+##### `--culture <CULTURE_ID>`
 
-Defines culture that should be used to display diagnostic message.
+Defines culture that should be used to display diagnostic message\.
 
-**`--end-of-line`** {lf|crlf}
+##### `--file-log <FILE_PATH>`
 
-Defines end of line character(s).
+Path to a file that should store output\.
 
-**`-g|--include-generated-code`**
+##### `--file-log-verbosity <LEVEL>`
 
-Indicates whether generated code should be formatted.
+Verbosity of the file log\. Allowed values are q\[uiet\], m\[inimal\], n\[ormal\], d\[etailed\] and diag\[nostic\]\.
 
-**`--ignored-projects`** <PROJECT_NAME>
+##### `-h, --help`
 
-Defines project names that should not be formatted.
+Show command line help\.
 
-**`--language`** `{cs[harp]|v[isual-]b[asic])}`
+##### `--ignored-projects <PROJECT_NAME>`
 
-Defines project language.
+Defines projects that should not be analyzed\.
 
-**`-m|--msbuild-path`** <MSBUILD_PATH>
+##### `-g, --include-generated-code`
 
-Defines a path to MSBuild. This option must be specified if there are multiple locations of MSBuild (usually multiple installations of Visual Studio).
+Indicates whether generated code should be formatted\.
 
-**`--projects`** <PROJECT_NAME>
+##### `--language <LANGUAGE>`
 
-Defines projects that should be formatted.
+Defines project language\. Allowed values are cs\[harp\] or v\[isual\-\]b\[asic\]
 
-**`-p|--properties`** `<NAME=VALUE>`
+##### `-m, --msbuild-path <DIRECTORY_PATH>`
 
-Defines one or more MSBuild properties.
+Defines a path to MSBuild directory\.
 
-**`-v|--verbosity`** `{q[uiet]|m[inimal]|n[ormal]|d[etailed]|diag[nostic]}`
+##### `--projects <PROJECT_NAME>`
 
-Defines the amount of information to display in the log.
+Defines projects that should be analyzed\.
+
+##### `-p, --properties <NAME=VALUE>`
+
+Defines one or more MSBuild properties\.
+
+##### `-v, --verbosity <LEVEL>`
+
+Verbosity of the log\. Allowed values are q\[uiet\], m\[inimal\], n\[ormal\], d\[etailed\] and diag\[nostic\]\.
 
 ## Redirected/Piped Input
 
 Redirected/piped input will be used as a list of project/solution paths separated with newlines.
 
-## See Also
-
-* [Roslynator Command-Line Interface](README.md)
+*\(Generated with [DotMarkdown](https://github.com/JosefPihrt/DotMarkdown)\)*

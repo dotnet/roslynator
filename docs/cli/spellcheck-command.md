@@ -1,105 +1,118 @@
+﻿
+# `roslynator spellcheck`
 
-# `spellcheck` Command
+Searches the specified project or solution for possible misspellings or typos\.
 
-Searches the specified project or solution for possible misspellings or typos.
+[Home](README.md) &#x2022; [Synopsis](#Synopsis) &#x2022; [Arguments](#Arguments) &#x2022; [Options](#Options)
 
 ## Synopsis
 
-```shell
+```
 roslynator spellcheck <PROJECT|SOLUTION>
-[--case-sensitive]
-[--culture]
-[-d|--dry-run]
-[--file-log]
-[--file-log-verbosity]
-[--ignored-projects]
-[--ignored-scope]
-[--include-generated-code]
-[--interactive]
-[--language]
-[--min-word-length]
-[-m|--msbuild-path]
-[--projects]
-[-p|--properties]
-[--scope]
-[-v|--verbosity]
-[--visibility]
---words
+    --case-sensitive
+    --culture <CULTURE_ID>
+-d, --dry-run
+    --file-log <FILE_PATH>
+    --file-log-verbosity <LEVEL>
+-h, --help
+    --ignored-projects <PROJECT_NAME>
+    --ignored-scope <SCOPE>
+    --include-generated-code
+    --interactive
+    --language <LANGUAGE>
+    --min-word-length <NUM>
+-m, --msbuild-path <DIRECTORY_PATH>
+    --projects <PROJECT_NAME>
+-p, --properties <NAME=VALUE>
+    --scope <SCOPE>
+-v, --verbosity <LEVEL>
+    --visibility <VISIBILITY>
+    --words <PATH>
 ```
 
 ## Arguments
 
-**`PROJECT|SOLUTION`**
+**`<PROJECT|SOLUTION>`**
 
-Path to one or more project/solution files.
+Path to one or more project/solution files\.
 
-### Required Options
+## Options
 
-**`--words`** <PATH>
+##### `--case-sensitive`
 
-Specified path to file and/or directory that contains list of allowed words.
+Specifies case\-sensitive matching\.
 
-### Optional Options
+##### `--culture <CULTURE_ID>`
 
-**`--case-sensitive`**
+Defines culture that should be used to display diagnostic message\.
 
-Specifies case-sensitive matching.
+##### `-d, --dry-run`
 
-**`--culture`** <CULTURE_ID>
+Display misspellings and typos but do not save changes to a disk\.
 
-Defines culture that should be used to display diagnostic message.
+##### `--file-log <FILE_PATH>`
 
-**`-d|--dry-run`**
+Path to a file that should store output\.
 
-Display misspellings and typos but do not save changes to a disk.
- 
-**`--ignored-projects`** <PROJECT_NAME>
+##### `--file-log-verbosity <LEVEL>`
 
-Defines projects that should not be analyzed.
+Verbosity of the file log\. Allowed values are q\[uiet\], m\[inimal\], n\[ormal\], d\[etailed\] and diag\[nostic\]\.
 
-**`--ignored-scope`** <SCOPE>
+##### `-h, --help`
 
-Defines syntax that should not be analyzed. Allowed values are `comment`, `type`, `member`, `local`, `parameter`, `non-symbol` and `symbol`.
+Show command line help\.
 
-**`--include-generated-code`**
+##### `--ignored-projects <PROJECT_NAME>`
 
-Indicates whether generated code should be spellchecked.
+Defines projects that should not be analyzed\.
 
-**`--interactive`**
+##### `--ignored-scope <SCOPE>`
 
-Enable editing of a replacement.
+Defines syntax that should not be analyzed\. Allowed values are comment, type, member, local, parameter, non\-symbol and symbol\.
 
-**`--language`** `{cs[harp]|v[isual-]b[asic])}`
+##### `--include-generated-code`
 
-Defines project language.
+Indicates whether generated code should be spellchecked\.
 
-**`--min-word-length`** <NUM>
+##### `--interactive`
 
-Specifies minimal word length to be checked. Default value is 3.
+Enable editing of a replacement\.
 
-**`-m|--msbuild-path`** <MSBUILD_PATH>
+##### `--language <LANGUAGE>`
 
-Defines a path to MSBuild. This option must be specified if there are multiple locations of MSBuild. This is usually required when multiple versions of Visual Studio are installed.
+Defines project language\. Allowed values are cs\[harp\] or v\[isual\-\]b\[asic\]
 
-**`--projects`** <PROJECT_NAME>
+##### `--min-word-length <NUM>`
 
-Defines projects that should be analyzed.
+Specifies minimal word length to be checked\. Default value is 3\.
 
-**`-p|--properties`** `<NAME=VALUE>`
+##### `-m, --msbuild-path <DIRECTORY_PATH>`
 
-Defines one or more MSBuild properties.
+Defines a path to MSBuild directory\.
 
-**`--scope`** <SCOPE>
+##### `--projects <PROJECT_NAME>`
 
-Defines syntax that should be analyzed. Allowed values are `comment`, `type`, `member`, `local`, `parameter`, `non-symbol` and `symbol`.
+Defines projects that should be analyzed\.
 
-**`-v|--verbosity`** `{q[uiet]|m[inimal]|n[ormal]|d[etailed]|diag[nostic]}`
+##### `-p, --properties <NAME=VALUE>`
 
-Defines the amount of information to display in the log.
+Defines one or more MSBuild properties\.
 
-**`--visibility`** <VISIBILITY>
+##### `--scope <SCOPE>`
 
-Defines a  maximal visibility of a symbol to be fixable. Allowed values are `public`, `internal` or `private`. Default value is `public`.
+Defines syntax that should be analyzed\. Allowed values are comment, type, member, local, parameter, non\-symbol and symbol\.
+
+##### `-v, --verbosity <LEVEL>`
+
+Verbosity of the log\. Allowed values are q\[uiet\], m\[inimal\], n\[ormal\], d\[etailed\] and diag\[nostic\]\.
+
+##### `--visibility <VISIBILITY>`
+
+Defines a  maximal visibility of a symbol to be fixable\. Allowed values are public \(default\), internal or private\.
+
+##### `--words <PATH>`
+
+Specified path to file and/or directory that contains list of allowed words\.
 
 ## Redirected/Piped Input
 
@@ -118,6 +131,4 @@ Thus it is possible to [suppress](../HowToConfigureAnalyzers.md#how-to-suppress-
 * Word matching is case-insensitive by default (use option `--case-sensitive` to specify case-sensitive matching).
 * It is recommended to use [Wordb](https://github.com/JosefPihrt/Wordb/tree/main/data) wordlists that are specifically tailored to be used for spellchecking.
 
-## See Also
-
-* [Roslynator Command-Line Interface](README.md)
+*\(Generated with [DotMarkdown](https://github.com/JosefPihrt/DotMarkdown)\)*

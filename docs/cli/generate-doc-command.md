@@ -1,193 +1,202 @@
+﻿
+# `roslynator generate-doc`
 
-# `generate-doc` Command
+Generates documentation files from specified assemblies\.
 
-Generates documentation files from specified assemblies.
+[Home](README.md) &#x2022; [Synopsis](#Synopsis) &#x2022; [Arguments](#Arguments) &#x2022; [Options](#Options)
 
 ## Synopsis
 
-```shell
+```
 roslynator generate-doc <PROJECT|SOLUTION>
--h|--heading
--o|--output
-[--additional-xml-documentation]
-[--depth]
-[--file-log]
-[--file-log-verbosity]
-[--ignored-member-parts]
-[--ignored-names]
-[--ignored-namespace-parts]
-[--ignored-projects]
-[--ignored-root-parts]
-[--ignored-type-parts]
-[--include-all-derived-types]
-[--include-containing-namespace]
-[--include-ienumerable]
-[--include-inherited-interface-members]
-[--include-system-namespace]
-[--inheritance-style]
-[--language]
-[--max-derived-types]
-[-m|--msbuild-path]
-[--no-delete]
-[--no-mark-obsolete]
-[--no-precedence-for-system]
-[--no-wrap-base-types]
-[--no-wrap-constraints]
-[--omit-attribute-arguments]
-[--omit-inherited-attributes]
-[--omit-member-parts]
-[--preferred-culture]
-[--projects]
-[-p|--properties]
-[--scroll-to-content]
-[-v|--verbosity]
-[--visibility]
+    --additional-xml-documentation <FILE_PATH>
+    --depth <DEPTH>
+    --file-log <FILE_PATH>
+    --file-log-verbosity <LEVEL>
+    --heading <HEADING>
+-h, --help
+    --ignored-member-parts <IGNORED_MEMBER_PARTS>
+    --ignored-names <FULLY_QUALIFIED_METADATA_NAME>
+    --ignored-namespace-parts <IGNORED_NAMESPACE_PARTS>
+    --ignored-projects <PROJECT_NAME>
+    --ignored-root-parts <IGNORED_ROOT_PARTS>
+    --ignored-type-parts <IGNORED_TYPE_PARTS>
+    --include-all-derived-types
+    --include-containing-namespace <INCLUDE_CONTAINING_NAMESPACE>
+    --include-ienumerable
+    --include-inherited-interface-members
+    --include-system-namespace
+    --inheritance-style <INHERITANCE_STYLE>
+    --language <LANGUAGE>
+    --max-derived-types <MAX_DERIVED_TYPES>
+-m, --msbuild-path <DIRECTORY_PATH>
+    --no-delete
+    --no-mark-obsolete
+    --no-precedence-for-system
+    --no-wrap-base-types
+    --no-wrap-constraints
+    --omit-attribute-arguments
+    --omit-inherited-atttributes
+    --omit-member-parts
+-o, --output <DIRECTORY_PATH>
+    --preferred-culture <CULTURE_ID>
+    --projects <PROJECT_NAME>
+-p, --properties <NAME=VALUE>
+    --scroll-to-content
+-v, --verbosity <LEVEL>
+    --visibility <VISIBILITY>
 ```
 
 ## Arguments
 
-**`PROJECT|SOLUTION`**
+**`<PROJECT|SOLUTION>`**
 
-The project or solution to analyze.
+The project or solution file\.
 
 ## Options
 
-### Required Options
+##### `--additional-xml-documentation <FILE_PATH>`
 
-**`-h|--heading`** `<ROOT_FILE_HEADING>`
+Defines one or more xml documentation files that should be included\. These files can contain a documentation for namespaces, for instance\.
 
-Defines a heading of the root documentation file.
+##### `--depth <DEPTH>`
 
-**`-o|--output`** `<OUTPUT_DIRECTORY>`
+Defines a depth of a documentation\. Allowed values are member \(default\), type or namespace\.
 
-Defines a path for the output directory.
+##### `--file-log <FILE_PATH>`
 
-### Optional Options
+Path to a file that should store output\.
 
-**`[--additional-xml-documentation]`** `<XML_DOCUMENTATION_FILE>`
+##### `--file-log-verbosity <LEVEL>`
 
-Defines one or more xml documentation files that should be included. These files can contain a documentation for namespaces, for instance.
+Verbosity of the file log\. Allowed values are q\[uiet\], m\[inimal\], n\[ormal\], d\[etailed\] and diag\[nostic\]\.
 
-**`[--depth]`** `{member|type|namespace}`
+##### `--heading <HEADING>`
 
-Defines a depth of a documentation. Default value is `member`.
+Defines a heading of the root documentation file\.
 
-**`[--ignored-member-parts]`** `{overloads containing-type containing-assembly obsolete-message summary declaration type-parameters parameters return-value implements attributes exceptions examples remarks see-also}`
+##### `-h, --help`
 
-Defines parts of a member documentation that should be excluded.
+Show command line help\.
 
-**`[--ignored-names]`** `<FULLY_QUALIFIED_METADATA_NAME>`
+##### `--ignored-member-parts <IGNORED_MEMBER_PARTS>`
 
-Defines a list of metadata names that should be excluded from a documentation. Namespace of type names can be specified.
+Defines parts of a member documentation that should be excluded\. Allowed values are overloads, containing\-type, containing\-assembly, obsolete\-message, summary, declaration, type\-parameters, parameters, return\-value, implements, attributes, exceptions, examples, remarks and see\-also\.
 
-**`[--ignored-namespace-parts]`** `{content containing-namespace summary examples remarks classes structs interfaces enums delegates see-also}`
+##### `--ignored-names <FULLY_QUALIFIED_METADATA_NAME>`
 
-Defines parts of a namespace documentation that should be excluded.
+Defines a list of metadata names that should be excluded from a documentation\. Namespace of type names can be specified\.
 
-**`--ignored-projects`** <PROJECT_NAME>
+##### `--ignored-namespace-parts <IGNORED_NAMESPACE_PARTS>`
 
-Defines projects that should be skipped.
+Defines parts of a namespace documentation that should be excluded\. Allowed values are content, containing\-namespace, summary, examples, remarks, classes, structs, interfaces, enums, delegates and see\-also\.
 
-**`[--ignored-root-parts]`** `{content namespaces class-hierarchy types other}`
+##### `--ignored-projects <PROJECT_NAME>`
 
-Defines parts of a root documentation that should be excluded.
+Defines projects that should not be analyzed\.
 
-**`[--ignored-type-parts]`** `{content containing-namespace containing-assembly obsolete-message summary declaration type-parameters parameters return-value inheritance attributes derived implements examples remarks constructors fields indexers properties methods operators events explicit-interface-implementations extension-methods classes structs interfaces enums delegates see-also}`
+##### `--ignored-root-parts <IGNORED_ROOT_PARTS>`
 
-Defines parts of a type documentation that should be excluded.
+Defines parts of a root documentation that should be excluded\. Allowed values are content, namespaces, class\-hierarchy, types and other\.
 
-**`[--include-all-derived-types]`**
+##### `--ignored-type-parts <IGNORED_TYPE_PARTS>`
 
-Indicates whether all derived types should be included in the list of derived types. By default only types that directly inherits from a specified type are displayed.
+Defines parts of a type documentation that should be excluded\. Allowed values are content, containing\-namespace, containing\-assembly, obsolete\-message, summary, declaration, type\-parameters, parameters, return\-value, inheritance, attributes, derived, implements, examples, remarks, constructors, fields, indexers, properties, methods, operators, events, explicit\-interface\-implementations, extension\-methods, classes, structs, interfaces, enums, delegates and see\-also\.
 
-**`[--include-containing-namespace]`** `{class-hierarchy containing-type parameter return-type base-type attribute derived-type implemented-interface implemented-member exception see-also all}`
+##### `--include-all-derived-types`
 
-Defines parts of a documentation that should include containing namespace.
+Indicates whether all derived types should be included in the list of derived types\. By default only types that directly inherits from a specified type are displayed\.
 
-**`[--include-ienumerable]`**
+##### `--include-containing-namespace <INCLUDE_CONTAINING_NAMESPACE>`
 
-Indicates whether interface `System.Collections.IEnumerable` should be included in a documentation if a type also implements interface `System.Collections.Generic.IEnumerable<T>`.
+Defines parts of a documentation that should include containing namespace\. Allowed values are class\-hierarchy, containing\-type, parameter, return\-type, base\-type, attribute, derived\-type, implemented\-interface, implemented\-member, exception, see\-also and all\.
 
-**`[--include-inherited-interface-members]`**
+##### `--include-ienumerable`
 
-Indicates whether inherited interface members should be displayed in a list of members.
+Indicates whether interface System\.Collections\.IEnumerable should be included in a documentation if a type also implements interface System\.Collections\.Generic\.IEnumerable\<T>\.
 
-**`[--include-system-namespace]`**
+##### `--include-inherited-interface-members`
 
-Indicates whether namespace should be included when a type is directly contained in namespace 'System'.
+Indicates whether inherited interface members should be displayed in a list of members\.
 
-**`[--inheritance-style]`** `{horizontal|vertical}`
+##### `--include-system-namespace`
 
-Defines a style of a type inheritance. Default value is `horizontal`.
+Indicates whether namespace should be included when a type is directly contained in namespace 'System'\.
 
-**`--language`** `{cs[harp]|v[isual-]b[asic])}`
+##### `--inheritance-style <INHERITANCE_STYLE>`
 
-Defines project language.
+Defines a style of a type inheritance\. Allowed values are horizontal \(default\) or vertical\.
 
-**`[--max-derived-types]`** <MAX_DERIVED_TYPES>
+##### `--language <LANGUAGE>`
 
-Defines maximum number derived types that should be displayed. Default value is `5`.
+Defines project language\. Allowed values are cs\[harp\] or v\[isual\-\]b\[asic\]
 
-**`-m|--msbuild-path`** <MSBUILD_PATH>
+##### `--max-derived-types <MAX_DERIVED_TYPES>`
 
-Defines a path to MSBuild. This option must be specified if there are multiple locations of MSBuild (usually multiple installations of Visual Studio).
+Defines maximum number derived types that should be displayed\. Default value is 5\.
 
-**`[--no-delete]`**
+##### `-m, --msbuild-path <DIRECTORY_PATH>`
 
-Indicates whether output directory should not be deleted at the beginning of the process.
+Defines a path to MSBuild directory\.
 
-**`[--no-mark-obsolete]`**
+##### `--no-delete`
 
-Indicates whether obsolete types and members should not be marked as `[deprecated]`.
+Indicates whether output directory should not be deleted at the beginning of the process\.
 
-**`[--no-precedence-for-system]`**
+##### `--no-mark-obsolete`
 
-Indicates whether symbols contained in `System` namespace should be ordered as any other symbols and not before other symbols.
+Indicates whether obsolete types and members should not be marked as '\[deprecated\]'\.
 
-**`[--no-wrap-base-list]`**
+##### `--no-precedence-for-system`
 
-Indicates whether base types should not be wrapped.
+Indicates whether symbols contained in 'System' namespace should be ordered as any other symbols and not before other symbols\.
 
-**`[--no-wrap-constraints]`**
+##### `--no-wrap-base-types`
 
-Indicates whether constraints should not be wrapped.
+Indicates whether base types should not be wrapped\.
 
-**`[--omit-attribute-arguments]`**
+##### `--no-wrap-constraints`
 
-Indicates whether attribute arguments should be omitted when displaying an attribute.
+Indicates whether constraints should not be wrapped\.
 
-**`[--omit-inherited-attributes]`**
+##### `--omit-attribute-arguments`
 
-Indicates whether inherited attributes should be omitted.
+Indicates whether attribute arguments should be omitted when displaying an attribute\.
 
-**`[--omit-member-parts]`**
+##### `--omit-inherited-atttributes`
 
-Defines parts of member definition that should be omitted. Allowed values are constant-value, implements, inherited-from and overrides.
+Indicates whether inherited attributes should be omitted\.
 
-**`[--preferred-culture]`** <CULTURE_ID>
+##### `--omit-member-parts`
 
-Defines culture that should be used when searching for xml documentation files.
+Defines parts of member definition that should be omitted\. Allowed values are constant\-value, implements, inherited\-from and overrides\.
 
-**`--projects`** <PROJECT_NAME>
+##### `-o, --output <DIRECTORY_PATH>`
 
-Defines projects that should be analyzed.
+Defines a path for the output directory\.
 
-**`-p|--properties`** `<NAME=VALUE>`
+##### `--preferred-culture <CULTURE_ID>`
 
-Defines one or more MSBuild properties.
+Defines culture that should be used when searching for xml documentation files\.
 
-**`[--scroll-to-content]`**
+##### `--projects <PROJECT_NAME>`
 
-Indicates whether a link should lead to the top of the documentation content.
+Defines projects that should be analyzed\.
 
-**`-v|--verbosity`** `{q[uiet]|m[inimal]|n[ormal]|d[etailed]|diag[nostic]}`
+##### `-p, --properties <NAME=VALUE>`
 
-Defines the amount of information to display in the log.
+Defines one or more MSBuild properties\.
 
-**`[--visibility]`** `{public|internal|private}`
+##### `--scroll-to-content`
 
-Defines a visibility of a type or a member. Default value is `public`.
+Indicates whether a link should lead to the top of the documentation content\.
 
-## See Also
+##### `-v, --verbosity <LEVEL>`
 
-* [Roslynator Command-Line Interface](README.md)
+Verbosity of the log\. Allowed values are q\[uiet\], m\[inimal\], n\[ormal\], d\[etailed\] and diag\[nostic\]\.
+
+##### `--visibility <VISIBILITY>`
+
+Defines a visibility of a type or a member\. Allowed values are public \(default\), internal or private\.
+
+*\(Generated with [DotMarkdown](https://github.com/JosefPihrt/DotMarkdown)\)*

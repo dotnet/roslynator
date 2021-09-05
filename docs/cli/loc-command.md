@@ -1,87 +1,96 @@
+﻿
+# `roslynator loc`
 
-# `loc` Command
+Counts physical lines of code in the specified project or solution\.
 
-Counts physical lines of code in the specified project or solution.
+[Home](README.md) &#x2022; [Synopsis](#Synopsis) &#x2022; [Arguments](#Arguments) &#x2022; [Options](#Options)
 
 ## Synopsis
 
-```shell
+```
 roslynator loc <PROJECT|SOLUTION>
-[--ignore-block-boundary]
-[--ignored-projects]
-[--include-comments]
-[-g|--include-generated-code]
-[--include-preprocessor-directives]
-[--include-whitespace]
-[--language]
-[--file-log]
-[--file-log-verbosity]
-[-m|--msbuild-path]
-[--projects]
-[-p|--properties]
-[-v|--verbosity]
+    --file-log <FILE_PATH>
+    --file-log-verbosity <LEVEL>
+-h, --help
+    --ignore-block-boundary
+    --ignored-projects <PROJECT_NAME>
+    --include-comments
+-g, --include-generated-code
+    --include-preprocessor-directives
+    --include-whitespace
+    --language <LANGUAGE>
+-m, --msbuild-path <DIRECTORY_PATH>
+    --projects <PROJECT_NAME>
+-p, --properties <NAME=VALUE>
+-v, --verbosity <LEVEL>
 ```
 
 ## Arguments
 
-**`PROJECT|SOLUTION`**
+**`<PROJECT|SOLUTION>`**
 
-Path to one or more project/solution files.
+Path to one or more project/solution files\.
 
-### Optional Options
+## Options
 
-**`--ignore-block-boundary`**
+##### `--file-log <FILE_PATH>`
 
-Indicates whether a line that contains only block boundary should not be counted.
+Path to a file that should store output\.
 
-In C# block boundary is opening brace or closing brace.
+##### `--file-log-verbosity <LEVEL>`
 
-In Visual Basic block boundary is end-block-statement such as `End Class`.
+Verbosity of the file log\. Allowed values are q\[uiet\], m\[inimal\], n\[ormal\], d\[etailed\] and diag\[nostic\]\.
 
-**`--ignored-projects`** <PROJECT_NAME>
+##### `-h, --help`
 
-Defines project names that should not be fixed.
+Show command line help\.
 
-**`--include-comments`**
+##### `--ignore-block-boundary`
 
-Indicates whether a line that contains only comment should be counted.
+Indicates whether a line that contains only block boundary should not be counted\.
 
-**`-g|--include-generated-code`**
+##### `--ignored-projects <PROJECT_NAME>`
 
-Indicates whether generated code should be counted.
+Defines projects that should not be analyzed\.
 
-**`--include-preprocessor-directives`**
+##### `--include-comments`
 
-Indicates whether preprocessor directive line should be counted.
+Indicates whether a line that contains only comment should be counted\.
 
-**`--include-whitespace`**
+##### `-g, --include-generated-code`
 
-Indicates whether white-space line should be counted.
+Indicates whether generated code should be included\.
 
-**`--language`** `{cs[harp]|v[isual-]b[asic])}`
+##### `--include-preprocessor-directives`
 
-Defines project language.
+Indicates whether preprocessor directive line should be counted\.
 
-**`-m|--msbuild-path`** <MSBUILD_PATH>
+##### `--include-whitespace`
 
-Defines a path to MSBuild. This option must be specified if there are multiple locations of MSBuild (usually multiple installations of Visual Studio).
+Indicates whether white\-space line should be counted\.
 
-**`--projects`** <PROJECT_NAME>
+##### `--language <LANGUAGE>`
 
-Defines projects that should be analyzed.
+Defines project language\. Allowed values are cs\[harp\] or v\[isual\-\]b\[asic\]
 
-**`-p|--properties`** `<NAME=VALUE>`
+##### `-m, --msbuild-path <DIRECTORY_PATH>`
 
-Defines one or more MSBuild properties.
+Defines a path to MSBuild directory\.
 
-**`-v|--verbosity`** `{q[uiet]|m[inimal]|n[ormal]|d[etailed]|diag[nostic]}`
+##### `--projects <PROJECT_NAME>`
 
-Defines the amount of information to display in the log.
+Defines projects that should be analyzed\.
+
+##### `-p, --properties <NAME=VALUE>`
+
+Defines one or more MSBuild properties\.
+
+##### `-v, --verbosity <LEVEL>`
+
+Verbosity of the log\. Allowed values are q\[uiet\], m\[inimal\], n\[ormal\], d\[etailed\] and diag\[nostic\]\.
 
 ## Redirected/Piped Input
 
 Redirected/piped input will be used as a list of project/solution paths separated with newlines.
 
-## See Also
-
-* [Roslynator Command-Line Interface](README.md)
+*\(Generated with [DotMarkdown](https://github.com/JosefPihrt/DotMarkdown)\)*
