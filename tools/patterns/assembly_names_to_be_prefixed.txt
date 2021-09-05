@@ -3,7 +3,7 @@
   assembly:\ InternalsVisibleTo\("
 )
 (
-    _
+    Roslynator_Cli_
   |
     Roslynator_Analyzers_
   |

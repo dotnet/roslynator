@@ -2,15 +2,15 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Roslynator.CommandLine</id>
-    <version>0.1.5</version>
+    <version>0.2.0</version>
     <authors>Josef Pihrt</authors>
     <owners>Josef Pihrt</owners>
     <license type="expression">Apache-2.0</license>
     <projectUrl>https://github.com/JosefPihrt/Roslynator</projectUrl>
     <icon>icon.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Command line tool for Roslynator</description>
-    <summary>Command line tool for Roslynator</summary>
+    <description>Roslynator command line tool</description>
+    <summary>Roslynator command line tool</summary>
     <copyright>Copyright (c) 2017-2021 Josef Pihrt</copyright>
     <tags>CLI Roslyn C# CSharp VB VisualBasic</tags>
     <developmentDependency>true</developmentDependency>

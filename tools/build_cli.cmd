@@ -8,7 +8,7 @@ md "%_outDir%"
 del /Q "%_outDir%\Roslynator.CommandLine.*.nupkg"
 del /Q "%_outDir%\Roslynator.DotNet.Cli.*.nupkg"
 
-orang replace "../src" -n "AssemblyInfo.cs" e -c "patterns/assembly_names_to_be_prefixed.txt" f -r "_"
+orang replace "../src" -n "AssemblyInfo.cs" e -c "patterns/assembly_names_to_be_prefixed.txt" f -r "Roslynator_Cli_"
 
 orang delete "../src" -a d -n "bin,obj" l li e -i "packages,node_modules" l li e ne -t n --content-only -y su s
 

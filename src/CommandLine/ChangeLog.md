@@ -1,3 +1,11 @@
+### 0.2.0 (2021-09-05)
+
+* Add command [`rename-symbol`](https://github.com/JosefPihrt/Roslynator/blob/master/docs/cli/rename-symbol-command.md)
+  * This command enables to rename multiple symbols in one batch.
+* It is no longer required to specify path to MSBuild directory using `--msbuild-path` option.
+  * Latest version will be selected by default.
+* .NET Core CLI targets .NET 5.0
+
 ### 0.1.5 (2021-07-11)
 
 * Add support for redirected/piped input

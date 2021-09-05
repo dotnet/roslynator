@@ -11,7 +11,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(RoslynatorDotNetCli)' == true OR '$(RoslynatorCommandLine)' == true">
-    <RoslynatorDllPrefix>_</RoslynatorDllPrefix>
+    <RoslynatorDllPrefix>Roslynator_Cli_</RoslynatorDllPrefix>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(RoslynatorAnalyzersNuGet)' == true">

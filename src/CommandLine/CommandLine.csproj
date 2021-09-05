@@ -13,7 +13,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.1.5.0</Version>
+    <Version>0.2.0.0</Version>
     <OutputType>Exe</OutputType>
     <AssemblyName>Roslynator</AssemblyName>
     <RootNamespace>Roslynator.CommandLine</RootNamespace>
@@ -24,9 +24,9 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>roslynator</ToolCommandName>
     <PackageId>Roslynator.DotNet.Cli</PackageId>
-    <PackageVersion>0.1.5</PackageVersion>
+    <PackageVersion>0.2.0</PackageVersion>
     <Authors>Josef Pihrt</Authors>
-    <Description>.NET Core Global Tool for Roslynator</Description>
+    <Description>Roslynator command line tool for .NET Core</Description>
     <PackageProjectUrl>https://github.com/JosefPihrt/Roslynator</PackageProjectUrl>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageIcon>icon.png</PackageIcon>

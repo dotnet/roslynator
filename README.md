@@ -61,11 +61,12 @@ A collection of 500+ [analyzers](src/Analyzers/README.md), [refactorings](src/Re
 | [Roslynator.CSharp](https://www.nuget.org/packages/Roslynator.CSharp) | [![NuGet](https://img.shields.io/nuget/v/Roslynator.CSharp.svg)](https://www.nuget.org/packages/Roslynator.CSharp) | [Microsoft.CodeAnalysis.CSharp](https://www.nuget.org/packages/Microsoft.CodeAnalysis.CSharp) |
 | [Roslynator.CSharp.Workspaces](https://www.nuget.org/packages/Roslynator.CSharp.Workspaces) | [![NuGet](https://img.shields.io/nuget/v/Roslynator.CSharp.Workspaces.svg)](https://www.nuget.org/packages/Roslynator.CSharp.Workspaces) | [Microsoft.CodeAnalysis.CSharp.Workspaces](https://www.nuget.org/packages/Microsoft.CodeAnalysis.CSharp.Workspaces) |
 
-## Roslynator Command-Line Interface
+## Roslynator Command Line Tool
 
-* Roslynator CLI is distributed as NuGet package [Roslynator.CommandLine](https://www.nuget.org/packages/Roslynator.CommandLine). &ensp;[![NuGet](https://img.shields.io/nuget/v/Roslynator.CommandLine.svg)](https://www.nuget.org/packages/Roslynator.CommandLine)
-* Roslynator CLI is also distributed as .NET Core Global Tool [Roslynator.DotNet.Cli](https://www.nuget.org/packages/Roslynator.DotNet.Cli). &ensp;[![NuGet](https://img.shields.io/nuget/v/Roslynator.DotNet.Cli.svg)](https://www.nuget.org/packages/Roslynator.DotNet.Cli)
-* See [documentation](docs/cli/README.md).
+* [Roslynator.CommandLine](https://www.nuget.org/packages/Roslynator.CommandLine) is .NET Framework console app &ensp;[![NuGet](https://img.shields.io/nuget/v/Roslynator.CommandLine.svg)](https://www.nuget.org/packages/Roslynator.CommandLine)
+* [Roslynator.DotNet.Cli](https://www.nuget.org/packages/Roslynator.DotNet.Cli) is .NET Core global tool &ensp;[![NuGet](https://img.shields.io/nuget/v/Roslynator.DotNet.Cli.svg)](https://www.nuget.org/packages/Roslynator.DotNet.Cli)
+* [Documentation](docs/cli/README.md)
+* [Change log](src/CommandLine/ChangeLog.md)
 
 ## Roslynator Testing Framework
 
