@@ -2,3 +2,7 @@
 
 # top-most EditorConfig file
 root = true
+
+# Code files
+[*.{cs,csx}]
+roslynator.RCS1045.suppress_when_field_is_static = true

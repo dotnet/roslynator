@@ -484,5 +484,51 @@ class DependencyAttribute : Attribute
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
+        public async Task TestNoDiagnostic_ParameterAttribute()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System;
+using Microsoft.AspNetCore.Components;
+
+class C
+{
+    [Parameter]
+    private string P { get; set; }
+}
+
+namespace Microsoft.AspNetCore.Components
+{
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
+    class ParameterAttribute : Attribute
+    {
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReadOnlyAutoProperty)]
+        public async Task TestNoDiagnostic_CascadingParameterAttribute()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System;
+using Microsoft.AspNetCore.Components;
+
+class C
+{
+    [CascadingParameter]
+    private string P { get; set; }
+}
+
+namespace Microsoft.AspNetCore.Components
+{
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
+    class CascadingParameterAttribute : Attribute
+    {
+    }
+}
+");
+        }
     }
 }

@@ -14,6 +14,9 @@ namespace Roslynator.CSharp.Analysis.MakeMemberReadOnly
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class MakeMemberReadOnlyAnalyzer : BaseDiagnosticAnalyzer
     {
+        private static readonly MetadataName Microsoft_AspNetCore_Components_ParameterAttribute = MetadataName.Parse("Microsoft.AspNetCore.Components.ParameterAttribute");
+        private static readonly MetadataName Microsoft_AspNetCore_Components_CascadingParameterAttribute = MetadataName.Parse("Microsoft.AspNetCore.Components.CascadingParameterAttribute");
+
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
@@ -187,6 +190,12 @@ namespace Roslynator.CSharp.Analysis.MakeMemberReadOnly
                     return false;
 
                 if (attributeClass.HasMetadataName(MetadataNames.System_Runtime_Serialization_DataMemberAttribute))
+                    return false;
+
+                if (attributeClass.HasMetadataName(Microsoft_AspNetCore_Components_ParameterAttribute))
+                    return false;
+
+                if (attributeClass.HasMetadataName(Microsoft_AspNetCore_Components_CascadingParameterAttribute))
                     return false;
             }
 
