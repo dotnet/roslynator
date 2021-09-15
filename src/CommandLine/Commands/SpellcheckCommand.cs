@@ -56,6 +56,7 @@ namespace Roslynator.CommandLine
             var options = new SpellingFixerOptions(
                 scopeFilter: ScopeFilter,
                 symbolVisibility: visibilityFilter,
+                minWordLength: Options.MinWordLength,
                 includeGeneratedCode: Options.IncludeGeneratedCode,
                 interactive: Options.Interactive,
                 dryRun: Options.DryRun);
