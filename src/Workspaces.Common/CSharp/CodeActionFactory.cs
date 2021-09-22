@@ -68,7 +68,7 @@ namespace Roslynator.CSharp
             SemanticModel semanticModel)
         {
             if (newTypeSymbol.NullableAnnotation == NullableAnnotation.Annotated
-                && semanticModel.GetNullableContext(expression.SpanStart) == NullableContext.WarningsEnabled)
+                && (semanticModel.GetNullableContext(expression.SpanStart) & NullableContext.WarningsEnabled) != 0)
             {
                 return SymbolDisplayFormats.FullName;
             }
