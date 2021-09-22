@@ -55,38 +55,52 @@ namespace Roslynator.CSharp.Refactorings
             SwitchExpressionSyntax switchExpression,
             CancellationToken cancellationToken)
         {
-            IEnumerable<SwitchSectionSyntax> sections = switchExpression.Arms.Select((arm, i) =>
+            SeparatedSyntaxList<SwitchExpressionArmSyntax> arms = switchExpression.Arms;
+            SyntaxToken[] separators = arms.GetSeparators().ToArray();
+
+            IEnumerable<SwitchSectionSyntax> sections = arms.Select((arm, i) =>
             {
-                SyntaxToken separator = switchExpression.Arms.GetSeparator(i);
-                SyntaxToken semicolon = Token(SyntaxKind.SemicolonToken);
-
-                if (!separator.IsMissing)
-                    semicolon = semicolon.WithTriviaFrom(separator);
-
                 PatternSyntax pattern = arm.Pattern;
+                ExpressionSyntax expression = arm.Expression;
+                SyntaxToken semicolon = Token(SyntaxKind.SemicolonToken);
+                SyntaxToken separator = default;
 
-                switch (pattern.Kind())
+                if (i < separators.Length)
+                    separator = separators[i];
+
+                if (separator.Kind() == SyntaxKind.None
+                    || separator.IsMissing)
                 {
-                    case SyntaxKind.ConstantPattern:
-                        {
-                            CaseSwitchLabelSyntax label = CaseSwitchLabel(
-                                Token(SyntaxKind.CaseKeyword).WithLeadingTrivia(pattern.GetLeadingTrivia()),
-                                ((ConstantPatternSyntax)pattern).Expression.WithoutLeadingTrivia(),
-                                Token(SyntaxKind.ColonToken).WithTriviaFrom(arm.EqualsGreaterThanToken));
-
-                            return SwitchSection(label, CreateStatement(arm.Expression, semicolon));
-                        }
-                    case SyntaxKind.DiscardPattern:
-                        {
-                            DefaultSwitchLabelSyntax label = DefaultSwitchLabel(Token(SyntaxKind.DefaultKeyword), Token(SyntaxKind.ColonToken));
-
-                            return SwitchSection(label, CreateStatement(arm.Expression, semicolon));
-                        }
-                    default:
-                        {
-                            throw new InvalidOperationException();
-                        }
+                    semicolon = semicolon.WithTrailingTrivia(arm.GetTrailingTrivia());
+                    expression = expression.WithoutTrailingTrivia();
                 }
+                else
+                {
+                    semicolon = semicolon.WithTriviaFrom(separator);
+                }
+
+                SyntaxKind kind = pattern.Kind();
+                SwitchLabelSyntax label = default;
+
+                if (kind == SyntaxKind.ConstantPattern)
+                {
+                    label = CaseSwitchLabel(
+                        Token(SyntaxKind.CaseKeyword).WithLeadingTrivia(pattern.GetLeadingTrivia()),
+                        ((ConstantPatternSyntax)pattern).Expression.WithoutLeadingTrivia(),
+                        Token(SyntaxKind.ColonToken).WithTriviaFrom(arm.EqualsGreaterThanToken));
+                }
+                else if (kind == SyntaxKind.DiscardPattern)
+                {
+                    label = DefaultSwitchLabel(Token(SyntaxKind.DefaultKeyword), Token(SyntaxKind.ColonToken));
+                }
+                else
+                {
+                    throw new InvalidOperationException();
+                }
+
+                StatementSyntax statement = CreateStatement(expression, semicolon);
+
+                return SwitchSection(label, statement);
             });
 
             var returnStatement = (ReturnStatementSyntax)switchExpression.Parent;
