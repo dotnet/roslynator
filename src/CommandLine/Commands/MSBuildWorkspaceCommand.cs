@@ -66,18 +66,29 @@ namespace Roslynator.CommandLine
 
                     foreach (string path in paths)
                     {
-                        TCommandResult result = await ExecuteAsync(path, workspace, cancellationToken);
+                        TCommandResult result;
+                        try
+                        {
+                            result = await ExecuteAsync(path, workspace, cancellationToken);
+                        }
+                        catch (ProjectOrSolutionLoadException ex)
+                        {
+                            WriteLine(ex.Message, Colors.Message_Warning, Verbosity.Minimal);
+                            WriteError(ex.InnerException, ConsoleColor.Yellow, Verbosity.Minimal);
+                            status = CommandStatus.Fail;
+                            continue;
+                        }
 
                         results.Add(result);
 
-                        if (result.Status != CommandStatus.NotSuccess)
-                            status = result.Status;
-
-                        if (status == CommandStatus.Fail
-                            || status == CommandStatus.Canceled)
+                        if (status != CommandStatus.Fail
+                            && result.Status != CommandStatus.NotSuccess)
                         {
-                            break;
+                            status = result.Status;
                         }
+
+                        if (status == CommandStatus.Canceled)
+                            break;
 
                         workspace.CloseSolution();
                     }
@@ -212,13 +223,20 @@ namespace Roslynator.CommandLine
 
             ProjectOrSolution projectOrSolution;
 
-            if (isSolution)
+            try
             {
-                projectOrSolution = await workspace.OpenSolutionAsync(path, progress, cancellationToken);
+                if (isSolution)
+                {
+                    projectOrSolution = await workspace.OpenSolutionAsync(path, progress, cancellationToken);
+                }
+                else
+                {
+                    projectOrSolution = await workspace.OpenProjectAsync(path, progress, cancellationToken);
+                }
             }
-            else
+            catch (InvalidOperationException ex)
             {
-                projectOrSolution = await workspace.OpenProjectAsync(path, progress, cancellationToken);
+                throw new ProjectOrSolutionLoadException($"Error occurred while loading {((isSolution) ? "solution" : "project")} '{path}'", ex);
             }
 
             WriteLine($"Done loading {((projectOrSolution.IsSolution) ? "solution" : "project")} '{projectOrSolution.FilePath}'", Verbosity.Minimal);
