@@ -81,7 +81,8 @@ namespace Roslynator.CSharp.Spelling
 
             if (token.IsKind(
                 SyntaxKind.IdentifierToken,
-                SyntaxKind.XmlTextLiteralToken))
+                SyntaxKind.XmlTextLiteralToken,
+                SyntaxKind.ArgListKeyword))
             {
                 Debug.Assert(value == token.ToString().Substring(span.Start - token.SpanStart, span.Length), value);
 
@@ -94,7 +95,7 @@ namespace Roslynator.CSharp.Spelling
                     (token.IsKind(SyntaxKind.IdentifierToken)) ? token : default);
             }
 
-            throw new InvalidOperationException();
+            throw new InvalidOperationException($"Unexpected syntax at {location}");
         }
     }
 }
