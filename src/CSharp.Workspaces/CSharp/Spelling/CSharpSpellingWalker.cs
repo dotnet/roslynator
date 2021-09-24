@@ -459,6 +459,9 @@ namespace Roslynator.CSharp.Spelling
 
         public override void VisitParameter(ParameterSyntax node)
         {
+            if (node.Identifier.IsKind(SyntaxKind.ArgListKeyword))
+                return;
+
             if (ShouldVisit(SpellingScopeFilter.Parameter))
                 AnalyzeIdentifier(node.Identifier);
 

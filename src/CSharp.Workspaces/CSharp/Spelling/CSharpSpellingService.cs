@@ -81,8 +81,7 @@ namespace Roslynator.CSharp.Spelling
 
             if (token.IsKind(
                 SyntaxKind.IdentifierToken,
-                SyntaxKind.XmlTextLiteralToken,
-                SyntaxKind.ArgListKeyword))
+                SyntaxKind.XmlTextLiteralToken))
             {
                 Debug.Assert(value == token.ToString().Substring(span.Start - token.SpanStart, span.Length), value);
 
