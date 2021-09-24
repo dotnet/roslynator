@@ -145,6 +145,14 @@ namespace Roslynator.CSharp.Spelling
 
                         break;
                     }
+                case SyntaxKind.EventDeclaration:
+                case SyntaxKind.EventFieldDeclaration:
+                    {
+                        if (ShouldVisit(SpellingScopeFilter.Event))
+                            base.VisitTupleType(node);
+
+                        break;
+                    }
                 case SyntaxKind.ClassDeclaration:
                     {
                         if (ShouldVisit(SpellingScopeFilter.Class))
