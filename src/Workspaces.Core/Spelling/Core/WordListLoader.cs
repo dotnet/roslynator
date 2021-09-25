@@ -20,6 +20,7 @@ namespace Roslynator.Spelling
         public static WordListLoaderResult Load(
             IEnumerable<string> paths,
             int minWordLength = -1,
+            int maxWordLength = int.MaxValue,
             WordListLoadOptions options = WordListLoadOptions.None,
             CancellationToken cancellationToken = default)
         {
@@ -29,7 +30,7 @@ namespace Roslynator.Spelling
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                LoadFile(filePath, minWordLength, state);
+                LoadFile(filePath, minWordLength, maxWordLength, state);
             }
 
             Dictionary<string, HashSet<string>> fixes = state.Fixes;
@@ -58,6 +59,7 @@ namespace Roslynator.Spelling
         internal static WordListLoaderResult LoadParallel(
             IEnumerable<string> paths,
             int minWordLength = -1,
+            int maxWordLength = int.MaxValue,
             WordListLoadOptions options = WordListLoadOptions.None,
             CancellationToken cancellationToken = default)
         {
@@ -71,7 +73,7 @@ namespace Roslynator.Spelling
                 path =>
                 {
                     LoadState state = LoadState.Create(options);
-                    LoadFile(path, minWordLength, state);
+                    LoadFile(path, minWordLength, maxWordLength, state);
                     states.Add(state);
                 });
 
@@ -145,11 +147,12 @@ namespace Roslynator.Spelling
         public static WordListLoaderResult LoadFile(
             string path,
             int minWordLength = -1,
+            int maxWordLength = int.MaxValue,
             WordListLoadOptions options = WordListLoadOptions.None)
         {
             LoadState state = LoadState.Create(options);
 
-            LoadFile(path, minWordLength, state);
+            LoadFile(path, minWordLength, maxWordLength, state);
 
             return new WordListLoaderResult(
                 new WordList(state.Words, state.Sequences),
@@ -162,6 +165,7 @@ namespace Roslynator.Spelling
         private static void LoadFile(
             string path,
             int minWordLength,
+            int maxWordLength,
             LoadState state)
         {
             List<string> words = state.Words;
@@ -223,7 +227,8 @@ namespace Roslynator.Spelling
                 {
                     string key = line.Substring(startIndex, separatorIndex - startIndex);
 
-                    if (key.Length >= minWordLength)
+                    if (key.Length >= minWordLength
+                        && key.Length <= maxWordLength)
                     {
                         startIndex = separatorIndex + 1;
 
@@ -271,7 +276,8 @@ namespace Roslynator.Spelling
                             }
                         }
                     }
-                    else if (value.Length >= minWordLength)
+                    else if (value.Length >= minWordLength
+                        && value.Length <= maxWordLength)
                     {
                         if (caseSensitiveWords != null
                             && !IsLower(value))

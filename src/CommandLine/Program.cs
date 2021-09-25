@@ -651,6 +651,7 @@ namespace Roslynator.CommandLine
             WordListLoaderResult loaderResult = WordListLoader.Load(
                 wordListPaths,
                 options.MinWordLength,
+                options.MaxWordLength,
                 (options.CaseSensitive) ? WordListLoadOptions.None : WordListLoadOptions.IgnoreCase);
 
             var data = new SpellingData(loaderResult.List, loaderResult.CaseSensitiveList, loaderResult.FixList);

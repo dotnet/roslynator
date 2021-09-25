@@ -13,6 +13,7 @@ namespace Roslynator.Spelling
             VisibilityFilter symbolVisibility = VisibilityFilter.All,
             SplitMode splitMode = SplitMode.CaseAndHyphen,
             int minWordLength = 3,
+            int maxWordLength = int.MaxValue,
             int codeContext = 1,
             bool includeGeneratedCode = false,
             bool autoFix = true,
@@ -26,6 +27,7 @@ namespace Roslynator.Spelling
             SymbolVisibility = symbolVisibility;
             SplitMode = splitMode;
             MinWordLength = minWordLength;
+            MaxWordLength = maxWordLength;
             CodeContext = codeContext;
             IncludeGeneratedCode = includeGeneratedCode;
             AutoFix = autoFix;
@@ -40,6 +42,8 @@ namespace Roslynator.Spelling
         public SplitMode SplitMode { get; }
 
         public int MinWordLength { get; }
+
+        public int MaxWordLength { get; }
 
         public int CodeContext { get; }
 

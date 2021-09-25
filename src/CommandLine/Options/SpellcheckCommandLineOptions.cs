@@ -48,6 +48,13 @@ namespace Roslynator.CommandLine
         public bool Interactive { get; set; }
 
         [Option(
+            longName: "max-word-length",
+            Default = int.MaxValue,
+            HelpText = "Specifies maximal word length to be checked.",
+            MetaValue = "<NUM>")]
+        public int MaxWordLength { get; set; }
+
+        [Option(
             longName: "min-word-length",
             Default = 3,
             HelpText = "Specifies minimal word length to be checked. Default value is 3.",

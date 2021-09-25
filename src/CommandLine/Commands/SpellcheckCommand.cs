@@ -57,6 +57,7 @@ namespace Roslynator.CommandLine
                 scopeFilter: ScopeFilter,
                 symbolVisibility: visibilityFilter,
                 minWordLength: Options.MinWordLength,
+                maxWordLength: Options.MaxWordLength,
                 includeGeneratedCode: Options.IncludeGeneratedCode,
                 interactive: Options.Interactive,
                 dryRun: Options.DryRun);

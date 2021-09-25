@@ -122,7 +122,8 @@ namespace Roslynator.Spelling
                     continue;
                 }
 
-                if (match.Length >= Options.MinWordLength)
+                if (match.Length >= Options.MinWordLength
+                    && match.Length <= Options.MaxWordLength)
                 {
                     if (_splitRegex == null)
                     {
@@ -140,8 +141,11 @@ namespace Roslynator.Spelling
             string value,
             int prefixLength = 0)
         {
-            if (value.Length < Options.MinWordLength)
+            if (value.Length < Options.MinWordLength
+                || value.Length > Options.MaxWordLength)
+            {
                 return ImmutableArray<SpellingMatch>.Empty;
+            }
 
             if (prefixLength > 0
                 && Data.Contains(value))
@@ -218,8 +222,11 @@ namespace Roslynator.Spelling
 
         private bool IsMatch(string value)
         {
-            if (value.Length < Options.MinWordLength)
+            if (value.Length < Options.MinWordLength
+                || value.Length > Options.MaxWordLength)
+            {
                 return false;
+            }
 
             if (IsAllowedNonsensicalWord(value))
                 return false;

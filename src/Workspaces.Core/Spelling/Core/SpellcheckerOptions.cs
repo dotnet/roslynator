@@ -8,14 +8,18 @@ namespace Roslynator.Spelling
 
         public SpellcheckerOptions(
             SplitMode splitMode = SplitMode.CaseAndHyphen,
-            int minWordLength = 3)
+            int minWordLength = 3,
+            int maxWordLength = int.MaxValue)
         {
             SplitMode = splitMode;
             MinWordLength = minWordLength;
+            MaxWordLength = maxWordLength;
         }
 
         public SplitMode SplitMode { get; }
 
         public int MinWordLength { get; }
+
+        public int MaxWordLength { get; }
     }
 }
