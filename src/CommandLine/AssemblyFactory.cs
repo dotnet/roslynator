@@ -74,7 +74,7 @@ namespace Roslynator.CommandLine
                                         default,
                                         default,
                                         ArrowExpressionClause(expression),
-                                        default(SyntaxToken))))))));
+                                        Token(SyntaxKind.SemicolonToken))))))));
 
             SyntaxTree syntaxTree = CSharpSyntaxTree.Create(compilationUnit);
 
