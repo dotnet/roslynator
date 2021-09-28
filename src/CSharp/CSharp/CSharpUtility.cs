@@ -418,6 +418,7 @@ namespace Roslynator.CSharp
                     case SyntaxKind.ArrowExpressionClause:
                     case SyntaxKind.ThisConstructorInitializer:
                     case SyntaxKind.BaseConstructorInitializer:
+                    case SyntaxKind.SwitchExpressionArm:
                         return false;
 #if DEBUG
                     default:
