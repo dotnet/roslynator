@@ -40,7 +40,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             CodeAction codeAction = CodeAction.Create(
                 "Use auto-property",
-                cancellationToken => RefactorAsync(context.Document, property, cancellationToken),
+                ct => RefactorAsync(context.Document, property, ct),
                 GetEquivalenceKey(diagnostic));
 
             context.RegisterCodeFix(codeAction, diagnostic);

@@ -33,7 +33,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             CodeAction codeAction = CodeAction.Create(
                 "Remove braces",
-                cancellationToken => SimplifyNestedUsingStatementRefactoring.RefactorAsync(context.Document, usingStatement, cancellationToken),
+                ct => SimplifyNestedUsingStatementRefactoring.RefactorAsync(context.Document, usingStatement, ct),
                 GetEquivalenceKey(DiagnosticIdentifiers.SimplifyNestedUsingStatement));
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);

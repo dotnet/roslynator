@@ -51,12 +51,12 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Inline lazy initialization",
-                                cancellationToken =>
+                                ct =>
                                 {
                                     return InlineLazyInitializationAsync(
                                         context.Document,
                                         (IfStatementSyntax)statement,
-                                        cancellationToken);
+                                        ct);
                                 },
                                 GetEquivalenceKey(diagnostic));
 
@@ -71,7 +71,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                             CodeAction codeAction = CodeAction.Create(
                                 $"Remove redundant '{memberAccess.Name?.Identifier.ValueText}' call",
-                                cancellationToken => RemoveRedundantDisposeOrCloseCallRefactoring.RefactorAsync(context.Document, expressionStatement, cancellationToken),
+                                ct => RemoveRedundantDisposeOrCloseCallRefactoring.RefactorAsync(context.Document, expressionStatement, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -104,7 +104,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                             CodeAction codeAction = CodeAction.Create(
                                 "Use method chaining",
-                                cancellationToken => UseMethodChainingRefactoring.RefactorAsync(context.Document, analysis, expressionStatement, cancellationToken),
+                                ct => UseMethodChainingRefactoring.RefactorAsync(context.Document, analysis, expressionStatement, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);

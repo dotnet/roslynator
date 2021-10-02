@@ -55,7 +55,7 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 CodeAction codeAction = CodeAction.Create(
                     $"Remove parameter '{parameter.Identifier.ValueText}'",
-                    cancellationToken => context.Document.RemoveNodeAsync(parameter, cancellationToken),
+                    ct => context.Document.RemoveNodeAsync(parameter, ct),
                     GetEquivalenceKey(diagnostic));
 
                 context.RegisterCodeFix(codeAction, diagnostic);

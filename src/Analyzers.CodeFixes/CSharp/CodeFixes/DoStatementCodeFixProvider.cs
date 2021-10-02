@@ -30,12 +30,12 @@ namespace Roslynator.CSharp.CodeFixes
 
             CodeAction codeAction = CodeAction.Create(
                 "Convert to 'while'",
-                cancellationToken =>
+                ct =>
                 {
                     return ConvertDoToWhileRefactoring.RefactorAsync(
                         context.Document,
                         doStatement,
-                        cancellationToken);
+                        ct);
                 },
                 GetEquivalenceKey(DiagnosticIdentifiers.AvoidUsageOfDoStatementToCreateInfiniteLoop));
 

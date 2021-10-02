@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     "Invert operator",
-                    cancellationToken => InvertOperatorRefactoring.RefactorAsync(context.Document, operatorToken, cancellationToken),
+                    ct => InvertOperatorRefactoring.RefactorAsync(context.Document, operatorToken, ct),
                     RefactoringIdentifiers.InvertOperator);
             }
 
@@ -88,7 +88,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     context.RegisterRefactoring(
                         ReplaceAsWithCastRefactoring.Title,
-                        cancellationToken => ReplaceAsWithCastRefactoring.RefactorAsync(context.Document, binaryExpression, cancellationToken),
+                        ct => ReplaceAsWithCastRefactoring.RefactorAsync(context.Document, binaryExpression, ct),
                         RefactoringIdentifiers.ReplaceAsWithCast);
                 }
             }

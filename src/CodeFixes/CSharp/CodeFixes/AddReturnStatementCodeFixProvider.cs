@@ -148,7 +148,7 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 CodeAction codeAction = CodeAction.Create(
                     "Add return statement that returns default value",
-                    cancellationToken => RefactorAsync(context.Document, body, typeSymbol, cancellationToken),
+                    ct => RefactorAsync(context.Document, body, typeSymbol, ct),
                     GetEquivalenceKey(diagnostic));
 
                 context.RegisterCodeFix(codeAction, diagnostic);

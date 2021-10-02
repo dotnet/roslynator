@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     context.RegisterRefactoring(
                         "Join string expressions",
-                        cancellationToken => ToInterpolatedStringAsync(context.Document, concatenationInfo, cancellationToken),
+                        ct => ToInterpolatedStringAsync(context.Document, concatenationInfo, ct),
                         RefactoringIdentifiers.JoinStringExpressions);
                 }
             }
@@ -31,7 +31,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     "Join string literals",
-                    cancellationToken => ToStringLiteralAsync(context.Document, concatenationInfo, multiline: false, cancellationToken: cancellationToken),
+                    ct => ToStringLiteralAsync(context.Document, concatenationInfo, multiline: false, cancellationToken: ct),
                     RefactoringIdentifiers.JoinStringExpressions);
 
                 if (concatenationInfo.BinaryExpression
@@ -40,7 +40,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     context.RegisterRefactoring(
                         "Join string literals into multiline string literal",
-                        cancellationToken => ToStringLiteralAsync(context.Document, concatenationInfo, multiline: true, cancellationToken: cancellationToken),
+                        ct => ToStringLiteralAsync(context.Document, concatenationInfo, multiline: true, cancellationToken: ct),
                         EquivalenceKey.Join(RefactoringIdentifiers.JoinStringExpressions, "Multiline"));
                 }
             }

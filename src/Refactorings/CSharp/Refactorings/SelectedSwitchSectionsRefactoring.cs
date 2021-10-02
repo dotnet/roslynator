@@ -54,13 +54,13 @@ namespace Roslynator.CSharp.Refactorings
 
                     context.RegisterRefactoring(
                         title,
-                        cancellationToken =>
+                        ct =>
                         {
                             return AddBracesToSwitchSectionsRefactoring.RefactorAsync(
                                 context.Document,
                                 switchStatement,
                                 addBraces.ToArray(),
-                                cancellationToken);
+                                ct);
                         },
                         RefactoringIdentifiers.AddBracesToSwitchSections);
                 }
@@ -75,13 +75,13 @@ namespace Roslynator.CSharp.Refactorings
 
                     context.RegisterRefactoring(
                         title,
-                        cancellationToken =>
+                        ct =>
                         {
                             return RemoveBracesFromSwitchSectionsRefactoring.RefactorAsync(
                                 context.Document,
                                 switchStatement,
                                 removeBraces.ToArray(),
-                                cancellationToken);
+                                ct);
                         },
                         RefactoringIdentifiers.RemoveBracesFromSwitchSections);
                 }
@@ -96,13 +96,13 @@ namespace Roslynator.CSharp.Refactorings
 
                 context.RegisterRefactoring(
                     title,
-                    cancellationToken =>
+                    ct =>
                     {
                         return RemoveStatementsFromSwitchSectionsRefactoring.RefactorAsync(
                             context.Document,
                             switchStatement,
                             selectedSections.ToImmutableArray(),
-                            cancellationToken);
+                            ct);
                     },
                     RefactoringIdentifiers.RemoveStatementsFromSwitchSections);
             }

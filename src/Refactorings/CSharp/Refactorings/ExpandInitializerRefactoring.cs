@@ -76,13 +76,13 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 Title,
-                cancellationToken => RefactorAsync(
+                ct => RefactorAsync(
                     context.Document,
                     statementsInfo,
                     statement,
                     initializer,
                     expression.WithoutTrivia(),
-                    cancellationToken),
+                    ct),
                 RefactoringIdentifiers.ExpandInitializer);
         }
 

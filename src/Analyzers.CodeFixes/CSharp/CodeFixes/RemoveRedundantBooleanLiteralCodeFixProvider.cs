@@ -51,12 +51,12 @@ namespace Roslynator.CSharp.CodeFixes
                         RegisterCodeFix(
                             context,
                             node.ToString(),
-                            cancellationToken =>
+                            ct =>
                             {
                                 return RemoveRedundantBooleanLiteralRefactoring.RefactorAsync(
                                     context.Document,
                                     (ForStatementSyntax)node.Parent,
-                                    cancellationToken);
+                                    ct);
                             });
 
                         break;
@@ -73,12 +73,12 @@ namespace Roslynator.CSharp.CodeFixes
                         RegisterCodeFix(
                             context,
                             binaryExpression.ToString(span),
-                            cancellationToken =>
+                            ct =>
                             {
                                 return RemoveRedundantBooleanLiteralRefactoring.RefactorAsync(
                                     context.Document,
                                     binaryExpression,
-                                    cancellationToken);
+                                    ct);
                             });
 
                         break;

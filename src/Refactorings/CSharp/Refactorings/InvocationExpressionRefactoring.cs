@@ -54,12 +54,12 @@ namespace Roslynator.CSharp.Refactorings
                             {
                                 context.RegisterRefactoring(
                                     CallExtensionMethodAsInstanceMethodRefactoring.Title,
-                                    cancellationToken =>
+                                    ct =>
                                     {
                                         return context.Document.ReplaceNodeAsync(
                                             analysis.InvocationExpression,
                                             analysis.NewInvocationExpression,
-                                            cancellationToken);
+                                            ct);
                                     },
                                     RefactoringIdentifiers.CallExtensionMethodAsInstanceMethod);
                             }
@@ -82,13 +82,13 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     context.RegisterRefactoring(
                         ConvertHasFlagCallToBitwiseOperationRefactoring.Title,
-                        cancellationToken =>
+                        ct =>
                         {
                             return ConvertHasFlagCallToBitwiseOperationRefactoring.RefactorAsync(
                                 context.Document,
                                 invocationExpression,
                                 semanticModel,
-                                cancellationToken);
+                                ct);
                         },
                         RefactoringIdentifiers.ConvertHasFlagCallToBitwiseOperation);
                 }

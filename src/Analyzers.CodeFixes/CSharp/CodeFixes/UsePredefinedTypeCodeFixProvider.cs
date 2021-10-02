@@ -47,7 +47,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             CodeAction codeAction = CodeAction.Create(
                 $"Use predefined type '{SymbolDisplay.ToDisplayString(typeSymbol, SymbolDisplayFormats.DisplayName_WithoutNullableReferenceTypeModifier)}'",
-                cancellationToken => UsePredefinedTypeAsync(context.Document, node, typeSymbol, cancellationToken),
+                ct => UsePredefinedTypeAsync(context.Document, node, typeSymbol, ct),
                 GetEquivalenceKey(DiagnosticIdentifiers.UsePredefinedType));
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);

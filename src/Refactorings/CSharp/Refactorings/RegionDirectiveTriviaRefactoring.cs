@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     "Remove all region directives",
-                    cancellationToken => context.Document.RemovePreprocessorDirectivesAsync(PreprocessorDirectiveFilter.Region | PreprocessorDirectiveFilter.EndRegion, cancellationToken),
+                    ct => context.Document.RemovePreprocessorDirectivesAsync(PreprocessorDirectiveFilter.Region | PreprocessorDirectiveFilter.EndRegion, ct),
                     RefactoringIdentifiers.RemoveAllRegionDirectives);
             }
         }
@@ -30,7 +30,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     context.RegisterRefactoring(
                         "Remove region",
-                        cancellationToken => context.Document.RemoveRegionAsync(region, cancellationToken),
+                        ct => context.Document.RemoveRegionAsync(region, ct),
                         RefactoringIdentifiers.RemoveRegion);
                 }
             }
@@ -47,7 +47,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     context.RegisterRefactoring(
                         "Remove region",
-                        cancellationToken => context.Document.RemoveRegionAsync(region, cancellationToken),
+                        ct => context.Document.RemoveRegionAsync(region, ct),
                         RefactoringIdentifiers.RemoveRegion);
                 }
             }

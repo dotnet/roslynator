@@ -52,7 +52,7 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 CodeAction codeAction = CodeAction.Create(
                     AddComparisonWithBooleanLiteralRefactoring.GetTitle(expression),
-                    cancellationToken => AddComparisonWithBooleanLiteralRefactoring.RefactorAsync(context.Document, expression, cancellationToken),
+                    ct => AddComparisonWithBooleanLiteralRefactoring.RefactorAsync(context.Document, expression, ct),
                     GetEquivalenceKey(diagnostic));
 
                 context.RegisterCodeFix(codeAction, diagnostic);

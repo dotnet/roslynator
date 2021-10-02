@@ -80,11 +80,11 @@ namespace Roslynator.CSharp.Refactorings
         {
             context.RegisterRefactoring(
                 $"Check {name} for null",
-                cancellationToken => RefactorAsync(
+                ct => RefactorAsync(
                     context.Document,
                     parameters,
                     semanticModel,
-                    cancellationToken),
+                    ct),
                 RefactoringIdentifiers.CheckParameterForNull);
         }
 

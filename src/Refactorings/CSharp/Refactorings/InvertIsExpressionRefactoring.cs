@@ -49,7 +49,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             context.RegisterRefactoring(
                 "Invert is",
-                cancellationToken => RefactorAsync(context.Document, expression, cancellationToken),
+                ct => RefactorAsync(context.Document, expression, ct),
                 RefactoringIdentifiers.InvertIsExpression);
         }
 

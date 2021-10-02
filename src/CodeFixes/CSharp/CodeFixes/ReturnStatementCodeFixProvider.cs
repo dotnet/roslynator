@@ -96,7 +96,7 @@ namespace Roslynator.CSharp.CodeFixes
                                     {
                                         CodeAction codeAction = CodeAction.Create(
                                             "Use yield return instead of return",
-                                            cancellationToken => UseYieldReturnInsteadOfReturnRefactoring.RefactorAsync(context.Document, returnStatement, replacementKind, semanticModel, cancellationToken),
+                                            ct => UseYieldReturnInsteadOfReturnRefactoring.RefactorAsync(context.Document, returnStatement, replacementKind, semanticModel, ct),
                                             GetEquivalenceKey(diagnostic));
 
                                         context.RegisterCodeFix(codeAction, diagnostic);
@@ -129,13 +129,13 @@ namespace Roslynator.CSharp.CodeFixes
                                     {
                                         CodeAction codeAction = CodeAction.Create(
                                             "Remove return expression",
-                                            cancellationToken =>
+                                            ct =>
                                             {
                                                 ReturnStatementSyntax newNode = returnStatement
                                                     .WithExpression(null)
                                                     .WithFormatterAnnotation();
 
-                                                return context.Document.ReplaceNodeAsync(returnStatement, newNode, cancellationToken);
+                                                return context.Document.ReplaceNodeAsync(returnStatement, newNode, ct);
                                             },
                                             GetEquivalenceKey(diagnostic, CodeFixIdentifiers.RemoveReturnExpression));
 
@@ -159,7 +159,7 @@ namespace Roslynator.CSharp.CodeFixes
                                 {
                                     CodeAction codeAction = CodeAction.Create(
                                         "Remove 'return'",
-                                        cancellationToken =>
+                                        ct =>
                                         {
                                             SyntaxTriviaList leadingTrivia = returnStatement
                                                 .GetLeadingTrivia()
@@ -170,7 +170,7 @@ namespace Roslynator.CSharp.CodeFixes
                                                 expression.WithLeadingTrivia(leadingTrivia),
                                                 returnStatement.SemicolonToken);
 
-                                            return context.Document.ReplaceNodeAsync(returnStatement, newNode, cancellationToken);
+                                            return context.Document.ReplaceNodeAsync(returnStatement, newNode, ct);
                                         },
                                         GetEquivalenceKey(diagnostic, CodeFixIdentifiers.RemoveReturnKeyword));
 

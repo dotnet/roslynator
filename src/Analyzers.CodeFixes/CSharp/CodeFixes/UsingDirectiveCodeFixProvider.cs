@@ -30,7 +30,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             CodeAction codeAction = CodeAction.Create(
                 "Inline alias expression",
-                cancellationToken => AvoidUsageOfUsingAliasDirectiveRefactoring.RefactorAsync(context.Document, usingDirective, cancellationToken),
+                ct => AvoidUsageOfUsingAliasDirectiveRefactoring.RefactorAsync(context.Document, usingDirective, ct),
                 GetEquivalenceKey(DiagnosticIdentifiers.AvoidUsageOfUsingAliasDirective));
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);

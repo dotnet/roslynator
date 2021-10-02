@@ -37,7 +37,7 @@ namespace Roslynator.CSharp.CodeFixes
                 (trivia.IsKind(SyntaxKind.PreprocessingMessageTrivia))
                     ? "Add region name to #endregion"
                     : "Remove region name from #endregion",
-                cancellationToken => AddOrRemoveRegionNameRefactoring.RefactorAsync(context.Document, endRegionDirective, trivia, cancellationToken),
+                ct => AddOrRemoveRegionNameRefactoring.RefactorAsync(context.Document, endRegionDirective, trivia, ct),
                 GetEquivalenceKey(DiagnosticIdentifiers.AddOrRemoveRegionName));
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);

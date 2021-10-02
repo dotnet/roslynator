@@ -36,7 +36,7 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 CodeAction codeAction = CodeAction.Create(
                     Title,
-                    cancellationToken => UseNameOfOperatorRefactoring.RefactorAsync(context.Document, (LiteralExpressionSyntax)node, identifier, cancellationToken),
+                    ct => UseNameOfOperatorRefactoring.RefactorAsync(context.Document, (LiteralExpressionSyntax)node, identifier, ct),
                     GetEquivalenceKey(diagnostic));
 
                 context.RegisterCodeFix(codeAction, diagnostic);
@@ -45,7 +45,7 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 CodeAction codeAction = CodeAction.Create(
                     Title,
-                    cancellationToken => UseNameOfOperatorRefactoring.RefactorAsync(context.Document, (InvocationExpressionSyntax)node, cancellationToken),
+                    ct => UseNameOfOperatorRefactoring.RefactorAsync(context.Document, (InvocationExpressionSyntax)node, ct),
                     GetEquivalenceKey(diagnostic));
 
                 context.RegisterCodeFix(codeAction, diagnostic);

@@ -36,7 +36,7 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Remove redundant initialization",
-                                cancellationToken => RemoveRedundantAutoPropertyInitializationRefactoring.RefactorAsync(context.Document, property, cancellationToken),
+                                ct => RemoveRedundantAutoPropertyInitializationRefactoring.RefactorAsync(context.Document, property, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);

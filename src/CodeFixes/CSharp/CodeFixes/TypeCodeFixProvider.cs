@@ -52,7 +52,7 @@ namespace Roslynator.CSharp.CodeFixes
                     {
                         CodeAction codeAction = CodeAction.Create(
                             GetTitle(typeParameters),
-                            cancellationToken =>
+                            ct =>
                             {
                                 SeparatedSyntaxList<TypeSyntax> typeArguments = CreateTypeArguments(typeParameters, type.SpanStart, semanticModel).ToSeparatedSyntaxList();
 
@@ -60,7 +60,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                                 GenericNameSyntax newNode = SyntaxFactory.GenericName(identifierName.Identifier, SyntaxFactory.TypeArgumentList(typeArguments));
 
-                                return context.Document.ReplaceNodeAsync(type, newNode, cancellationToken);
+                                return context.Document.ReplaceNodeAsync(type, newNode, ct);
                             },
                             GetEquivalenceKey(diagnostic, SymbolDisplay.ToDisplayString(namedTypeSymbol, SymbolDisplayFormats.DisplayName)));
 

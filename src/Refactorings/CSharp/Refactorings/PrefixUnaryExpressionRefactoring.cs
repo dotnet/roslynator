@@ -50,7 +50,7 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 $"Replace '{preIncrement}' with '{postIncrement}'",
-                cancellationToken => ChangePreIncrementToPostIncrementAsync(context.Document, preIncrement, postIncrement, cancellationToken),
+                ct => ChangePreIncrementToPostIncrementAsync(context.Document, preIncrement, postIncrement, ct),
                 RefactoringIdentifiers.ReplacePrefixOperatorWithPostfixOperator);
         }
 
@@ -66,7 +66,7 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 $"Invert {preIncrement.OperatorToken}",
-                cancellationToken => ChangePreIncrementToPreDecrementAsync(context.Document, preIncrement, preDecrement, cancellationToken),
+                ct => ChangePreIncrementToPreDecrementAsync(context.Document, preIncrement, preDecrement, ct),
                 RefactoringIdentifiers.InvertPrefixOrPostfixUnaryOperator);
         }
 
@@ -86,7 +86,7 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 $"Replace '{preDecrement}' with '{postDecrement}'",
-                cancellationToken => ChangePreDecrementToPostDecrementAsync(context.Document, preDecrement, postDecrement, cancellationToken),
+                ct => ChangePreDecrementToPostDecrementAsync(context.Document, preDecrement, postDecrement, ct),
                 RefactoringIdentifiers.ReplacePrefixOperatorWithPostfixOperator);
         }
 
@@ -102,7 +102,7 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 $"Invert {preDecrement.OperatorToken}",
-                cancellationToken => ChangePreDecrementToPreIncrementAsync(context.Document, preDecrement, preIncrement, cancellationToken),
+                ct => ChangePreDecrementToPreIncrementAsync(context.Document, preDecrement, preIncrement, ct),
                 RefactoringIdentifiers.InvertPrefixOrPostfixUnaryOperator);
         }
 

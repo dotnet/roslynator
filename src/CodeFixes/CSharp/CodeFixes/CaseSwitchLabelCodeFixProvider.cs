@@ -39,7 +39,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             CodeAction codeAction = CodeAction.Create(
                 "Remove duplicate cases",
-                cancellationToken => RefactorAsync(context.Document, switchStatement, cancellationToken),
+                ct => RefactorAsync(context.Document, switchStatement, ct),
                 EquivalenceKey.Create(diagnostic));
 
             context.RegisterCodeFix(codeAction, diagnostic);

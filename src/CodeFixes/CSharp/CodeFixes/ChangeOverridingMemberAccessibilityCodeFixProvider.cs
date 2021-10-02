@@ -50,7 +50,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             CodeAction codeAction = CodeAction.Create(
                 $"Change accessibility to '{SyntaxFacts.GetText(newAccessibility)}'",
-                cancellationToken =>
+                ct =>
                 {
                     if (node.Kind() == SyntaxKind.VariableDeclarator)
                     {
@@ -69,7 +69,7 @@ namespace Roslynator.CSharp.CodeFixes
                         newNode = SyntaxAccessibility.WithExplicitAccessibility(node, newAccessibility);
                     }
 
-                    return context.Document.ReplaceNodeAsync(node, newNode, cancellationToken);
+                    return context.Document.ReplaceNodeAsync(node, newNode, ct);
                 },
                 GetEquivalenceKey(diagnostic));
 

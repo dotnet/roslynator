@@ -53,7 +53,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             CodeAction codeAction = CodeAction.Create(
                 title,
-                cancellationToken =>
+                ct =>
                 {
                     SyntaxNode newNode = memberDeclaration;
 
@@ -66,7 +66,7 @@ namespace Roslynator.CSharp.CodeFixes
                     if (!info.IsStatic)
                         newNode = ModifierList.Insert(newNode, SyntaxKind.StaticKeyword);
 
-                    return context.Document.ReplaceNodeAsync(memberDeclaration, newNode, cancellationToken);
+                    return context.Document.ReplaceNodeAsync(memberDeclaration, newNode, ct);
                 },
                 base.GetEquivalenceKey(diagnostic));
 

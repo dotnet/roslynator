@@ -86,7 +86,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                                             CodeAction codeAction = CodeAction.Create(
                                                 "Add argument list",
-                                                cancellationToken => context.Document.ReplaceNodeAsync(conditionalAccess, newNode, cancellationToken),
+                                                ct => context.Document.ReplaceNodeAsync(conditionalAccess, newNode, ct),
                                                 GetEquivalenceKey(diagnostic));
 
                                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -200,7 +200,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                             CodeAction codeAction = CodeAction.Create(
                                 "Return default value",
-                                cancellationToken =>
+                                ct =>
                                 {
                                     ExpressionSyntax expression = typeSymbol.GetDefaultValueSyntax(context.Document.GetDefaultSyntaxOptions());
 
@@ -212,7 +212,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                                     ReturnStatementSyntax newNode = returnStatement.WithExpression(expression);
 
-                                    return context.Document.ReplaceNodeAsync(returnStatement, newNode, cancellationToken);
+                                    return context.Document.ReplaceNodeAsync(returnStatement, newNode, ct);
                                 },
                                 GetEquivalenceKey(diagnostic));
 
@@ -279,7 +279,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                                         CodeAction codeAction = CodeAction.Create(
                                             "Remove semicolon",
-                                            cancellationToken =>
+                                            ct =>
                                             {
                                                 SyntaxTriviaList trivia = body
                                                     .GetTrailingTrivia()
@@ -291,7 +291,7 @@ namespace Roslynator.CSharp.CodeFixes
                                                     .WithBody(body.WithTrailingTrivia(trivia))
                                                     .WithSemicolonToken(default(SyntaxToken));
 
-                                                return context.Document.ReplaceNodeAsync(methodDeclaration, newNode, cancellationToken);
+                                                return context.Document.ReplaceNodeAsync(methodDeclaration, newNode, ct);
                                             },
                                             GetEquivalenceKey(diagnostic));
 
@@ -307,7 +307,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                                         CodeAction codeAction = CodeAction.Create(
                                             "Remove semicolon",
-                                            cancellationToken =>
+                                            ct =>
                                             {
                                                 SyntaxTriviaList trivia = accessorList
                                                     .GetTrailingTrivia()
@@ -319,7 +319,7 @@ namespace Roslynator.CSharp.CodeFixes
                                                     .WithAccessorList(accessorList.WithTrailingTrivia(trivia))
                                                     .WithSemicolonToken(default(SyntaxToken));
 
-                                                return context.Document.ReplaceNodeAsync(propertyDeclaration, newNode, cancellationToken);
+                                                return context.Document.ReplaceNodeAsync(propertyDeclaration, newNode, ct);
                                             },
                                             GetEquivalenceKey(diagnostic));
 
@@ -335,7 +335,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                                         CodeAction codeAction = CodeAction.Create(
                                             "Remove semicolon",
-                                            cancellationToken =>
+                                            ct =>
                                             {
                                                 SyntaxTriviaList trivia = body
                                                     .GetTrailingTrivia()
@@ -347,7 +347,7 @@ namespace Roslynator.CSharp.CodeFixes
                                                     .WithBody(body.WithTrailingTrivia(trivia))
                                                     .WithSemicolonToken(default(SyntaxToken));
 
-                                                return context.Document.ReplaceNodeAsync(accessorDeclaration, newNode, cancellationToken);
+                                                return context.Document.ReplaceNodeAsync(accessorDeclaration, newNode, ct);
                                             },
                                             GetEquivalenceKey(diagnostic));
 
@@ -418,7 +418,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                             CodeAction codeAction = CodeAction.Create(
                                 "Add default value",
-                                cancellationToken =>
+                                ct =>
                                 {
                                     ExpressionSyntax defaultValue = typeSymbol.GetDefaultValueSyntax(context.Document.GetDefaultSyntaxOptions());
 
@@ -427,7 +427,7 @@ namespace Roslynator.CSharp.CodeFixes
                                         .WithoutTrailingTrivia()
                                         .WithFormatterAnnotation();
 
-                                    return context.Document.ReplaceNodeAsync(parameter, newParameter, cancellationToken);
+                                    return context.Document.ReplaceNodeAsync(parameter, newParameter, ct);
                                 },
                                 GetEquivalenceKey(diagnostic));
 

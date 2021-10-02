@@ -55,7 +55,7 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 "Add default value",
-                cancellationToken => RefactorAsync(context.Document, parameter, typeSymbol, cancellationToken),
+                ct => RefactorAsync(context.Document, parameter, typeSymbol, ct),
                 RefactoringIdentifiers.AddDefaultValueToParameter);
         }
 

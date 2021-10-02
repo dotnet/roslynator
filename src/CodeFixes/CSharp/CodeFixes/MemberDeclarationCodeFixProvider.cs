@@ -77,14 +77,14 @@ namespace Roslynator.CSharp.CodeFixes
 
                             CodeAction codeAction = CodeAction.Create(
                                 "Add documentation comment",
-                                cancellationToken => AddDocumentationCommentRefactoring.RefactorAsync(context.Document, memberDeclaration, false, cancellationToken),
+                                ct => AddDocumentationCommentRefactoring.RefactorAsync(context.Document, memberDeclaration, false, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
 
                             CodeAction codeAction2 = CodeAction.Create(
                                 "Add documentation comment (copy from base if available)",
-                                cancellationToken => AddDocumentationCommentRefactoring.RefactorAsync(context.Document, memberDeclaration, true, cancellationToken),
+                                ct => AddDocumentationCommentRefactoring.RefactorAsync(context.Document, memberDeclaration, true, ct),
                                 GetEquivalenceKey(diagnostic, "CopyFromBaseIfAvailable"));
 
                             context.RegisterCodeFix(codeAction2, diagnostic);
@@ -121,12 +121,12 @@ namespace Roslynator.CSharp.CodeFixes
 
                             CodeAction codeAction = CodeAction.Create(
                                 "Change return type to 'void'",
-                                cancellationToken =>
+                                ct =>
                                 {
                                     return context.Document.Solution().ReplaceNodesAsync(
                                         new MethodDeclarationSyntax[] { methodDeclaration, otherPart },
                                         (node, _) => node.WithReturnType(CSharpFactory.VoidType().WithTriviaFrom(node.ReturnType)),
-                                        cancellationToken);
+                                        ct);
                                 },
                                 GetEquivalenceKey(diagnostic));
 
@@ -235,7 +235,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                             CodeAction codeAction = CodeAction.Create(
                                 "Remove parameters",
-                                cancellationToken =>
+                                ct =>
                                 {
                                     ParameterListSyntax parameterList = constructorDeclaration.ParameterList;
 
@@ -246,7 +246,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                                     ConstructorDeclarationSyntax newNode = constructorDeclaration.WithParameterList(newParameterList);
 
-                                    return context.Document.ReplaceNodeAsync(constructorDeclaration, newNode, cancellationToken);
+                                    return context.Document.ReplaceNodeAsync(constructorDeclaration, newNode, ct);
                                 },
                                 GetEquivalenceKey(diagnostic));
 
@@ -282,11 +282,11 @@ namespace Roslynator.CSharp.CodeFixes
 
                             CodeAction codeAction = CodeAction.Create(
                                 "Rename destructor to match class name",
-                                cancellationToken =>
+                                ct =>
                                 {
                                     DestructorDeclarationSyntax newNode = destructorDeclaration.WithIdentifier(classDeclaration.Identifier.WithTriviaFrom(destructorDeclaration.Identifier));
 
-                                    return context.Document.ReplaceNodeAsync(destructorDeclaration, newNode, cancellationToken);
+                                    return context.Document.ReplaceNodeAsync(destructorDeclaration, newNode, ct);
                                 },
                                 GetEquivalenceKey(diagnostic));
 

@@ -59,7 +59,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             CodeAction codeAction = CodeAction.Create(
                 "Use conditional access",
-                cancellationToken => RefactorAsync(context.Document, expression, cancellationToken),
+                ct => RefactorAsync(context.Document, expression, ct),
                 GetEquivalenceKey(DiagnosticIdentifiers.AvoidNullReferenceException));
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);

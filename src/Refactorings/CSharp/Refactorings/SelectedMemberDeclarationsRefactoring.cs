@@ -66,10 +66,10 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         context.RegisterRefactoring(
                             ChangeAccessibilityRefactoring.GetTitle(accessibility),
-                            async cancellationToken =>
+                            async ct =>
                             {
-                                SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
-                                return await ChangeAccessibilityRefactoring.RefactorAsync(context.Document.Solution(), selectedMembers, accessibility, semanticModel, cancellationToken).ConfigureAwait(false);
+                                SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(ct).ConfigureAwait(false);
+                                return await ChangeAccessibilityRefactoring.RefactorAsync(context.Document.Solution(), selectedMembers, accessibility, semanticModel, ct).ConfigureAwait(false);
                             },
                             _accessibilityIdentifierMap[accessibility]);
                     }
@@ -77,7 +77,7 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         context.RegisterRefactoring(
                             ChangeAccessibilityRefactoring.GetTitle(accessibility),
-                            cancellationToken => ChangeAccessibilityRefactoring.RefactorAsync(context.Document, selectedMembers, accessibility, cancellationToken),
+                            ct => ChangeAccessibilityRefactoring.RefactorAsync(context.Document, selectedMembers, accessibility, ct),
                             EquivalenceKey.Join(RefactoringIdentifiers.ChangeAccessibility, accessibility.ToString()));
                     }
                 }

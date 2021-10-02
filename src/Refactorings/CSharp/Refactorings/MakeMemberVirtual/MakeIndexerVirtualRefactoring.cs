@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.Refactorings.MakeMemberVirtual
 
             context.RegisterRefactoring(
                 "Make indexer virtual",
-                cancellationToken => RefactorAsync(context.Document, indexerDeclaration, cancellationToken),
+                ct => RefactorAsync(context.Document, indexerDeclaration, ct),
                 RefactoringIdentifiers.MakeMemberVirtual);
         }
 

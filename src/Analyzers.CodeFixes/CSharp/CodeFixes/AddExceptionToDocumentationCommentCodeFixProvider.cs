@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.CodeFixes
                                     {
                                         CodeAction codeAction = CodeAction.Create(
                                             "Add exception to documentation comment",
-                                            cancellationToken => AddExceptionToDocumentationCommentRefactoring.RefactorAsync(context.Document, (ThrowStatementSyntax)node, cancellationToken),
+                                            ct => AddExceptionToDocumentationCommentRefactoring.RefactorAsync(context.Document, (ThrowStatementSyntax)node, ct),
                                             GetEquivalenceKey(diagnostic));
 
                                         context.RegisterCodeFix(codeAction, diagnostic);
@@ -51,7 +51,7 @@ namespace Roslynator.CSharp.CodeFixes
                                     {
                                         CodeAction codeAction = CodeAction.Create(
                                             "Add exception to documentation comment",
-                                            cancellationToken => AddExceptionToDocumentationCommentRefactoring.RefactorAsync(context.Document, (ThrowExpressionSyntax)node, cancellationToken),
+                                            ct => AddExceptionToDocumentationCommentRefactoring.RefactorAsync(context.Document, (ThrowExpressionSyntax)node, ct),
                                             GetEquivalenceKey(diagnostic));
 
                                         context.RegisterCodeFix(codeAction, diagnostic);

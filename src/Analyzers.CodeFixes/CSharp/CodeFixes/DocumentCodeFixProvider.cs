@@ -34,9 +34,9 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Remove file with no code",
-                                cancellationToken =>
+                                ct =>
                                 {
-                                    cancellationToken.ThrowIfCancellationRequested();
+                                    ct.ThrowIfCancellationRequested();
                                     return RemoveFromSolutionAsync(context.Document);
                                 },
                                 GetEquivalenceKey(diagnostic));

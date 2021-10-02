@@ -46,7 +46,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             CodeAction codeAction = CodeAction.Create(
                 "Replace 'struct' with 'class'",
-                cancellationToken => context.Document.ReplaceNodeAsync(structDeclaration, ClassDeclaration(structDeclaration), cancellationToken),
+                ct => context.Document.ReplaceNodeAsync(structDeclaration, ClassDeclaration(structDeclaration), ct),
                 GetEquivalenceKey(diagnostic));
 
             context.RegisterCodeFix(codeAction, diagnostic);

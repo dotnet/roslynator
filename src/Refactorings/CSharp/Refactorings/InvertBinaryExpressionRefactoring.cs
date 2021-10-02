@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 "Invert binary expression",
-                cancellationToken => RefactorAsync(context.Document, binaryExpression, cancellationToken),
+                ct => RefactorAsync(context.Document, binaryExpression, ct),
                 RefactoringIdentifiers.InvertBinaryExpression);
         }
 

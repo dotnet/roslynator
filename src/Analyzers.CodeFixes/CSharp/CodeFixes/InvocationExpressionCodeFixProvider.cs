@@ -49,7 +49,7 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Combine 'Where' method chain",
-                                cancellationToken => CombineEnumerableWhereMethodChainRefactoring.RefactorAsync(context.Document, invocation, cancellationToken),
+                                ct => CombineEnumerableWhereMethodChainRefactoring.RefactorAsync(context.Document, invocation, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -61,7 +61,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                             CodeAction codeAction = CodeAction.Create(
                                 $"Use '{propertyName}' property instead of calling 'Any'",
-                                cancellationToken => UseCountOrLengthPropertyInsteadOfAnyMethodRefactoring.RefactorAsync(context.Document, invocation, propertyName, cancellationToken),
+                                ct => UseCountOrLengthPropertyInsteadOfAnyMethodRefactoring.RefactorAsync(context.Document, invocation, propertyName, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -71,7 +71,7 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Remove redundant 'ToString' call",
-                                cancellationToken => context.Document.ReplaceNodeAsync(invocation, RemoveInvocation(invocation).WithFormatterAnnotation(), cancellationToken),
+                                ct => context.Document.ReplaceNodeAsync(invocation, RemoveInvocation(invocation).WithFormatterAnnotation(), ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -81,7 +81,7 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Remove redundant 'ToCharArray' call",
-                                cancellationToken => context.Document.ReplaceNodeAsync(invocation, RemoveInvocation(invocation).WithFormatterAnnotation(), cancellationToken),
+                                ct => context.Document.ReplaceNodeAsync(invocation, RemoveInvocation(invocation).WithFormatterAnnotation(), ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -91,7 +91,7 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 CallExtensionMethodAsInstanceMethodRefactoring.Title,
-                                cancellationToken => CallExtensionMethodAsInstanceMethodRefactoring.RefactorAsync(context.Document, invocation, cancellationToken),
+                                ct => CallExtensionMethodAsInstanceMethodRefactoring.RefactorAsync(context.Document, invocation, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -109,7 +109,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                             CodeAction codeAction = CodeAction.Create(
                                 $"Call '{newName}' instead of '{oldName}'",
-                                cancellationToken => CallThenByInsteadOfOrderByRefactoring.RefactorAsync(context.Document, invocation, newName, cancellationToken),
+                                ct => CallThenByInsteadOfOrderByRefactoring.RefactorAsync(context.Document, invocation, newName, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);

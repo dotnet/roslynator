@@ -38,7 +38,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             CodeAction codeAction = CodeAction.Create(
                 "Use 'is' operator",
-                cancellationToken => UseIsOperatorInsteadOfAsOperatorRefactoring.RefactorAsync(context.Document, node, cancellationToken),
+                ct => UseIsOperatorInsteadOfAsOperatorRefactoring.RefactorAsync(context.Document, node, ct),
                 GetEquivalenceKey(diagnostic));
 
             context.RegisterCodeFix(codeAction, diagnostic);

@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             CodeAction codeAction = CodeAction.Create(
                 "Extract declaration from using statement",
-                cancellationToken => RefactorAsync(context.Document, usingStatement, cancellationToken),
+                ct => RefactorAsync(context.Document, usingStatement, ct),
                 GetEquivalenceKey(diagnostic));
 
             context.RegisterCodeFix(codeAction, diagnostic);

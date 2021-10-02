@@ -68,7 +68,7 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 $"Promote '{variable.Identifier.ValueText}' to parameter",
-                cancellationToken =>
+                ct =>
                 {
                     return RefactorAsync(
                         context.Document,
@@ -76,7 +76,7 @@ namespace Roslynator.CSharp.Refactorings
                         localDeclaration,
                         type.WithoutTrivia().WithSimplifierAnnotation(),
                         variable,
-                        cancellationToken);
+                        ct);
                 },
                 RefactoringIdentifiers.PromoteLocalToParameter);
         }

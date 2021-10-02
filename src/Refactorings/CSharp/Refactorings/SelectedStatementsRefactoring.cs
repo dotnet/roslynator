@@ -59,7 +59,7 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         context.RegisterRefactoring(
                             analysis.Title,
-                            cancellationToken => IfRefactoring.RefactorAsync(context.Document, analysis, cancellationToken),
+                            ct => IfRefactoring.RefactorAsync(context.Document, analysis, ct),
                             equivalenceKey: refactoringId);
                     }
                 }

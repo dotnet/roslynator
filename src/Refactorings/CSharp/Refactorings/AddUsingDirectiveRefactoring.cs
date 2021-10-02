@@ -48,7 +48,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     $"using {namespaceSymbol};",
-                    cancellationToken => RefactorAsync(context.Document, node, namespaceSymbol, cancellationToken),
+                    ct => RefactorAsync(context.Document, node, namespaceSymbol, ct),
                     RefactoringIdentifiers.AddUsingDirective);
             }
         }

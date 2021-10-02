@@ -35,11 +35,11 @@ namespace Roslynator.CSharp.CodeFixes
 
             CodeAction codeAction = CodeAction.Create(
                 "Add braces",
-                cancellationToken =>
+                ct =>
                 {
                     BlockSyntax block = SyntaxFactory.Block(statement).WithFormatterAnnotation();
 
-                    return context.Document.ReplaceNodeAsync(statement, block, cancellationToken);
+                    return context.Document.ReplaceNodeAsync(statement, block, ct);
                 },
                 GetEquivalenceKey(diagnostic));
 

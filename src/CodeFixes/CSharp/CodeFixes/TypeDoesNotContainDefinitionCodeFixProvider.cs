@@ -100,7 +100,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                         CodeAction codeAction = CodeAction.Create(
                             "Remove 'await'",
-                            cancellationToken =>
+                            ct =>
                             {
                                 ExpressionSyntax expression2 = awaitExpression.Expression;
 
@@ -111,7 +111,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                                 ExpressionSyntax newNode = expression2.WithLeadingTrivia(leadingTrivia);
 
-                                return document.ReplaceNodeAsync(awaitExpression, newNode, cancellationToken);
+                                return document.ReplaceNodeAsync(awaitExpression, newNode, ct);
                             },
                             GetEquivalenceKey(diagnostic));
 

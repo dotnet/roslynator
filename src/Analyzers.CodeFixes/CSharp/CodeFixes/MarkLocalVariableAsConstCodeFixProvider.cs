@@ -33,7 +33,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             CodeAction codeAction = CodeAction.Create(
                 $"Mark {GetNames(localDeclaration)} as const",
-                cancellationToken => MarkLocalVariableAsConstRefactoring.RefactorAsync(context.Document, localDeclaration, cancellationToken),
+                ct => MarkLocalVariableAsConstRefactoring.RefactorAsync(context.Document, localDeclaration, ct),
                 GetEquivalenceKey(diagnostic));
 
             context.RegisterCodeFix(codeAction, diagnostic);

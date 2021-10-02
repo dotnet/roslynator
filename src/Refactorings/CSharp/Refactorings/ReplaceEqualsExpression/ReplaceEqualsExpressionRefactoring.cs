@@ -50,7 +50,7 @@ namespace Roslynator.CSharp.Refactorings.ReplaceEqualsExpression
 
             context.RegisterRefactoring(
                 title,
-                cancellationToken => RefactorAsync(context.Document, nullCheck, cancellationToken),
+                ct => RefactorAsync(context.Document, nullCheck, ct),
                 GetEquivalenceKey());
         }
 

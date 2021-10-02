@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             CodeAction codeAction = CodeAction.Create(
                 ReplaceAsWithCastRefactoring.Title,
-                cancellationToken => ReplaceAsWithCastRefactoring.RefactorAsync(context.Document, binaryExpression, cancellationToken),
+                ct => ReplaceAsWithCastRefactoring.RefactorAsync(context.Document, binaryExpression, ct),
                 GetEquivalenceKey(diagnostic));
 
             context.RegisterCodeFix(codeAction, diagnostic);

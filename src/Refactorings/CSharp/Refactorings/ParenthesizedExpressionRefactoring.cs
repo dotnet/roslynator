@@ -13,12 +13,12 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     "Remove parentheses",
-                    cancellationToken =>
+                    ct =>
                     {
                         return ExtractExpressionFromParenthesesRefactoring.RefactorAsync(
                             context.Document,
                             parenthesizedExpression,
-                            cancellationToken);
+                            ct);
                     },
                     RefactoringIdentifiers.RemoveParentheses);
             }

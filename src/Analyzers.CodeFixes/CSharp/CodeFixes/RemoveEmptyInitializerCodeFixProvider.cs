@@ -30,7 +30,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             CodeAction codeAction = CodeAction.Create(
                 "Remove empty initializer",
-                cancellationToken => RemoveEmptyInitializerRefactoring.RefactorAsync(context.Document, objectCreationExpression, cancellationToken),
+                ct => RemoveEmptyInitializerRefactoring.RefactorAsync(context.Document, objectCreationExpression, ct),
                 GetEquivalenceKey(DiagnosticIdentifiers.RemoveEmptyInitializer));
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);

@@ -35,7 +35,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             CodeAction codeAction = CodeAction.Create(
                 $"Remove '{CSharpUtility.GetIdentifier(node).ValueText}'",
-                cancellationToken => RefactorAsync(context.Document, node, cancellationToken),
+                ct => RefactorAsync(context.Document, node, ct),
                 GetEquivalenceKey(diagnostic));
 
             context.RegisterCodeFix(codeAction, diagnostic);

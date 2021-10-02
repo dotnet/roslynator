@@ -43,7 +43,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             CodeAction codeAction = CodeAction.Create(
                 "Validate arguments correctly",
-                cancellationToken => RefactorAsync(context.Document, statement, cancellationToken),
+                ct => RefactorAsync(context.Document, statement, ct),
                 GetEquivalenceKey(diagnostic));
 
             context.RegisterCodeFix(codeAction, diagnostic);

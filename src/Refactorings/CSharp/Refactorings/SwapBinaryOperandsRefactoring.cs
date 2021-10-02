@@ -20,13 +20,13 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     "Swap operands",
-                    cancellationToken =>
+                    ct =>
                     {
                         BinaryExpressionSyntax newBinaryExpression = SyntaxRefactorings.SwapBinaryOperands(binaryExpression);
 
                         newBinaryExpression = newBinaryExpression.WithOperatorToken(newBinaryExpression.OperatorToken.WithNavigationAnnotation());
 
-                        return context.Document.ReplaceNodeAsync(binaryExpression, newBinaryExpression, cancellationToken);
+                        return context.Document.ReplaceNodeAsync(binaryExpression, newBinaryExpression, ct);
                     },
                     RefactoringIdentifiers.SwapBinaryOperands);
             }

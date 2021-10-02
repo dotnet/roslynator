@@ -122,7 +122,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             CodeAction codeAction = CodeAction.Create(
                 GetTitle(comparisonName),
-                cancellationToken => RefactorAsync(context.Document, binaryExpression, comparisonName, cancellationToken),
+                ct => RefactorAsync(context.Document, binaryExpression, comparisonName, ct),
                 GetEquivalenceKey(diagnostic, (comparisonName != "InvariantCultureIgnoreCase") ? comparisonName : null));
 
             context.RegisterCodeFix(codeAction, diagnostic);
@@ -169,7 +169,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             CodeAction codeAction = CodeAction.Create(
                 GetTitle(comparisonName),
-                cancellationToken => RefactorAsync(context.Document, invocationInfo, comparisonName, semanticModel, cancellationToken),
+                ct => RefactorAsync(context.Document, invocationInfo, comparisonName, semanticModel, ct),
                 GetEquivalenceKey(diagnostic, (comparisonName != "InvariantCultureIgnoreCase") ? comparisonName : null));
 
             context.RegisterCodeFix(codeAction, diagnostic);

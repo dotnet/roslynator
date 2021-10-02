@@ -55,7 +55,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                             CodeAction codeAction = CodeAction.Create(
                                 "Override object.Equals",
-                                cancellationToken =>
+                                ct =>
                                 {
                                     TypeSyntax type = typeSymbol.ToMinimalTypeSyntax(semanticModel, typeDeclaration.Identifier.SpanStart);
 
@@ -63,7 +63,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                                     TypeDeclarationSyntax newNode = MemberDeclarationInserter.Default.Insert(typeDeclaration, methodDeclaration);
 
-                                    return context.Document.ReplaceNodeAsync(typeDeclaration, newNode, cancellationToken);
+                                    return context.Document.ReplaceNodeAsync(typeDeclaration, newNode, ct);
                                 },
                                 GetEquivalenceKey(diagnostic));
 
@@ -82,11 +82,11 @@ namespace Roslynator.CSharp.CodeFixes
 
                             CodeAction codeAction = CodeAction.Create(
                                 "Override object.GetHashCode",
-                                cancellationToken =>
+                                ct =>
                                 {
                                     TypeDeclarationSyntax newNode = MemberDeclarationInserter.Default.Insert(typeDeclaration, methodDeclaration);
 
-                                    return context.Document.ReplaceNodeAsync(typeDeclaration, newNode, cancellationToken);
+                                    return context.Document.ReplaceNodeAsync(typeDeclaration, newNode, ct);
                                 },
                                 GetEquivalenceKey(diagnostic));
 

@@ -24,13 +24,13 @@ namespace Roslynator.CSharp.Refactorings
 
                     context.RegisterRefactoring(
                         "Replace cast with 'as'",
-                        cancellationToken =>
+                        ct =>
                         {
                             BinaryExpressionSyntax newNode = CSharpFactory.AsExpression(castExpression.Expression.WithTriviaFrom(castExpression.Type), castExpression.Type.WithTriviaFrom(castExpression.Expression))
                                 .WithTriviaFrom(castExpression)
                                 .WithFormatterAnnotation();
 
-                            return document.ReplaceNodeAsync(castExpression, newNode, cancellationToken);
+                            return document.ReplaceNodeAsync(castExpression, newNode, ct);
                         },
                         RefactoringIdentifiers.ReplaceCastWithAs);
                 }

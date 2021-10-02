@@ -43,7 +43,7 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Remove redundant switch section",
-                                cancellationToken => RemoveRedundantDefaultSwitchSectionRefactoring.RefactorAsync(context.Document, switchSection, cancellationToken),
+                                ct => RemoveRedundantDefaultSwitchSectionRefactoring.RefactorAsync(context.Document, switchSection, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -53,7 +53,7 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Move default label to the last position",
-                                cancellationToken => DefaultLabelShouldBeLastLabelInSwitchSectionRefactoring.RefactorAsync(context.Document, switchSection, cancellationToken),
+                                ct => DefaultLabelShouldBeLastLabelInSwitchSectionRefactoring.RefactorAsync(context.Document, switchSection, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -63,7 +63,7 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 AddBracesToSwitchSectionRefactoring.Title,
-                                cancellationToken => AddBracesToSwitchSectionRefactoring.RefactorAsync(context.Document, switchSection, cancellationToken),
+                                ct => AddBracesToSwitchSectionRefactoring.RefactorAsync(context.Document, switchSection, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -73,7 +73,7 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Merge sections",
-                                cancellationToken => MergeSwitchSectionsRefactoring.RefactorAsync(context.Document, switchSection, cancellationToken),
+                                ct => MergeSwitchSectionsRefactoring.RefactorAsync(context.Document, switchSection, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);

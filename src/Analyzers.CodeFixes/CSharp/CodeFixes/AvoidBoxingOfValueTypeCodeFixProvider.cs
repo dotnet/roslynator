@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.CodeFixes
                                 (expression.IsKind(SyntaxKind.CharacterLiteralExpression))
                                     ? "Use string literal instead of character literal"
                                     : "Call 'ToString'",
-                                cancellationToken => RefactorAsync(context.Document, expression, cancellationToken),
+                                ct => RefactorAsync(context.Document, expression, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);

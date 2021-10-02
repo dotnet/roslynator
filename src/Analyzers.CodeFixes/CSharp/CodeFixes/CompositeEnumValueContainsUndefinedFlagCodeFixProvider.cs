@@ -39,7 +39,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             CodeAction codeAction = CodeAction.Create(
                 $"Declare enum member with value {value}",
-                cancellationToken => RefactorAsync(context.Document, enumDeclaration, value, cancellationToken),
+                ct => RefactorAsync(context.Document, enumDeclaration, value, ct),
                 GetEquivalenceKey(diagnostic));
 
             context.RegisterCodeFix(codeAction, diagnostic);

@@ -73,13 +73,13 @@ namespace Roslynator.CSharp.CodeFixes
 
                             CodeAction codeAction = CodeAction.Create(
                                 $"Add '{SyntaxFacts.GetText(refOrOutKeyword.Kind())}' modifier",
-                                cancellationToken =>
+                                ct =>
                                 {
                                     ArgumentSyntax newArgument = argument
                                         .WithRefOrOutKeyword(refOrOutKeyword)
                                         .WithFormatterAnnotation();
 
-                                    return context.Document.ReplaceNodeAsync(argument, newArgument, cancellationToken);
+                                    return context.Document.ReplaceNodeAsync(argument, newArgument, ct);
                                 },
                                 GetEquivalenceKey(diagnostic));
 
@@ -93,14 +93,14 @@ namespace Roslynator.CSharp.CodeFixes
 
                             CodeAction codeAction = CodeAction.Create(
                                 "Remove 'ref' modifier",
-                                cancellationToken =>
+                                ct =>
                                 {
                                     ArgumentSyntax newArgument = argument
                                         .WithRefOrOutKeyword(default(SyntaxToken))
                                         .PrependToLeadingTrivia(argument.RefOrOutKeyword.GetAllTrivia())
                                         .WithFormatterAnnotation();
 
-                                    return context.Document.ReplaceNodeAsync(argument, newArgument, cancellationToken);
+                                    return context.Document.ReplaceNodeAsync(argument, newArgument, ct);
                                 },
                                 GetEquivalenceKey(diagnostic));
 
@@ -160,11 +160,11 @@ namespace Roslynator.CSharp.CodeFixes
                                     {
                                         CodeAction codeAction = CodeAction.Create(
                                             "Add argument list",
-                                            cancellationToken =>
+                                            ct =>
                                             {
                                                 ArgumentSyntax newNode = argument.WithExpression(invocationExpression);
 
-                                                return context.Document.ReplaceNodeAsync(argument, newNode, cancellationToken);
+                                                return context.Document.ReplaceNodeAsync(argument, newNode, ct);
                                             },
                                             GetEquivalenceKey(diagnostic, CodeFixIdentifiers.AddArgumentList));
 
@@ -194,7 +194,7 @@ namespace Roslynator.CSharp.CodeFixes
                                             {
                                                 CodeAction codeAction = CodeAction.Create(
                                                     "Create singleton array",
-                                                    cancellationToken => CreateSingletonArrayRefactoring.RefactorAsync(context.Document, expression, arrayType.ElementType, semanticModel, cancellationToken),
+                                                    ct => CreateSingletonArrayRefactoring.RefactorAsync(context.Document, expression, arrayType.ElementType, semanticModel, ct),
                                                     GetEquivalenceKey(diagnostic, CodeFixIdentifiers.CreateSingletonArray));
 
                                                 context.RegisterCodeFix(codeAction, diagnostic);

@@ -136,7 +136,7 @@ namespace Roslynator.CSharp.CodeFixes
         {
             CodeAction codeAction = CodeAction.Create(
                 $"Move constraint '{constraintInfo.Constraint}'",
-                cancellationToken =>
+                ct =>
                 {
                     SeparatedSyntaxList<TypeParameterConstraintSyntax> newConstraints = constraintInfo.Constraints
                         .Remove(constraintInfo.Constraint)
@@ -146,7 +146,7 @@ namespace Roslynator.CSharp.CodeFixes
                         .WithConstraints(newConstraints)
                         .WithFormatterAnnotation();
 
-                    return context.Document.ReplaceNodeAsync(constraintInfo.ConstraintClause, newNode, cancellationToken);
+                    return context.Document.ReplaceNodeAsync(constraintInfo.ConstraintClause, newNode, ct);
                 },
                 GetEquivalenceKey(diagnostic));
 
@@ -160,7 +160,7 @@ namespace Roslynator.CSharp.CodeFixes
         {
             CodeAction codeAction = CodeAction.Create(
                 $"Remove constraint '{constraint}'",
-                cancellationToken => context.Document.RemoveNodeAsync(constraint, cancellationToken),
+                ct => context.Document.RemoveNodeAsync(constraint, ct),
                 GetEquivalenceKey(diagnostic, constraint.Kind().ToString()));
 
             context.RegisterCodeFix(codeAction, diagnostic);

@@ -32,7 +32,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             CodeAction codeAction = CodeAction.Create(
                 "Add braces to if-else",
-                cancellationToken => AddBracesToIfElseRefactoring.RefactorAsync(context.Document, ifStatement, cancellationToken),
+                ct => AddBracesToIfElseRefactoring.RefactorAsync(context.Document, ifStatement, ct),
                 GetEquivalenceKey(DiagnosticIdentifiers.AddBracesToIfElseWhenExpressionSpansOverMultipleLines));
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);

@@ -54,7 +54,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                         CodeAction codeAction = CodeAction.Create(
                             Title,
-                            cancellationToken =>
+                            ct =>
                             {
                                 PropertyDeclarationSyntax newNode = propertyDeclaration
                                     .RemoveNode(initializer)
@@ -62,7 +62,7 @@ namespace Roslynator.CSharp.CodeFixes
                                     .AppendToTrailingTrivia(propertyDeclaration.SemicolonToken.GetAllTrivia())
                                     .WithFormatterAnnotation();
 
-                                return context.Document.ReplaceNodeAsync(propertyDeclaration, newNode, cancellationToken);
+                                return context.Document.ReplaceNodeAsync(propertyDeclaration, newNode, ct);
                             },
                             GetEquivalenceKey(diagnostic, CodeFixIdentifiers.RemovePropertyOrFieldInitializer));
 
@@ -75,13 +75,13 @@ namespace Roslynator.CSharp.CodeFixes
 
                         CodeAction codeAction = CodeAction.Create(
                             Title,
-                            cancellationToken =>
+                            ct =>
                             {
                                 VariableDeclaratorSyntax newNode = variableDeclarator
                                     .RemoveNode(initializer)
                                     .WithFormatterAnnotation();
 
-                                return context.Document.ReplaceNodeAsync(variableDeclarator, newNode, cancellationToken);
+                                return context.Document.ReplaceNodeAsync(variableDeclarator, newNode, ct);
                             },
                             GetEquivalenceKey(CompilerDiagnosticIdentifiers.CS0573_CannotHaveInstancePropertyOrFieldInitializersInStruct, CodeFixIdentifiers.RemovePropertyOrFieldInitializer));
 

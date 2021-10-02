@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     "Extract generic type",
-                    cancellationToken => ExtractGenericTypeRefactoring.RefactorAsync(context.Document, genericName, cancellationToken),
+                    ct => ExtractGenericTypeRefactoring.RefactorAsync(context.Document, genericName, ct),
                     RefactoringIdentifiers.ExtractGenericType);
             }
         }

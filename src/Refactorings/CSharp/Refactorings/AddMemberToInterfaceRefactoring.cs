@@ -143,11 +143,11 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     title,
-                    cancellationToken =>
+                    ct =>
                     {
                         InterfaceDeclarationSyntax newNode = CreateNewNode(memberDeclaration, interfaceDeclaration);
 
-                        return document.ReplaceNodeAsync(interfaceDeclaration, newNode, cancellationToken);
+                        return document.ReplaceNodeAsync(interfaceDeclaration, newNode, ct);
                     },
                     equivalenceKey);
             }
@@ -155,11 +155,11 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     title,
-                    cancellationToken =>
+                    ct =>
                     {
                         InterfaceDeclarationSyntax newNode = CreateNewNode(memberDeclaration, interfaceDeclaration);
 
-                        return document.Solution().ReplaceNodeAsync(interfaceDeclaration, newNode, cancellationToken);
+                        return document.Solution().ReplaceNodeAsync(interfaceDeclaration, newNode, ct);
                     },
                     equivalenceKey);
             }

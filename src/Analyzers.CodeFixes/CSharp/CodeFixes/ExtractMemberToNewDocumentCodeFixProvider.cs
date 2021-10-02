@@ -38,7 +38,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             CodeAction codeAction = CodeAction.Create(
                 title,
-                cancellationToken => ExtractTypeDeclarationToNewDocumentRefactoring.RefactorAsync(context.Document, memberDeclaration, cancellationToken),
+                ct => ExtractTypeDeclarationToNewDocumentRefactoring.RefactorAsync(context.Document, memberDeclaration, ct),
                 GetEquivalenceKey(DiagnosticIdentifiers.DeclareEachTypeInSeparateFile));
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);

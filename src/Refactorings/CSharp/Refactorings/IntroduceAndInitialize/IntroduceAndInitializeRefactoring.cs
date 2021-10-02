@@ -101,7 +101,7 @@ namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
         {
             context.RegisterRefactoring(
                 GetTitle(),
-                cancellationToken => RefactorAsync(context.Document, cancellationToken),
+                ct => RefactorAsync(context.Document, ct),
                 GetEquivalenceKey());
         }
 

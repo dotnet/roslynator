@@ -107,7 +107,7 @@ namespace Roslynator.CSharp.CodeFixes
                             {
                                 CodeAction codeAction = CodeAction.Create(
                                     "Replace variable declaration with assignment",
-                                    cancellationToken =>
+                                    ct =>
                                     {
                                         ExpressionStatementSyntax newNode = CSharpFactory.SimpleAssignmentStatement(
                                             SyntaxFactory.IdentifierName(variableDeclarator.Identifier),
@@ -117,7 +117,7 @@ namespace Roslynator.CSharp.CodeFixes
                                             .WithTriviaFrom(localDeclaration)
                                             .WithFormatterAnnotation();
 
-                                        return context.Document.ReplaceNodeAsync(localDeclaration, newNode, cancellationToken);
+                                        return context.Document.ReplaceNodeAsync(localDeclaration, newNode, ct);
                                     },
                                     GetEquivalenceKey(diagnostic));
                                 context.RegisterCodeFix(codeAction, diagnostic);

@@ -35,7 +35,7 @@ namespace Roslynator.CSharp.CodeFixes
                     {
                         CodeAction codeAction = CodeAction.Create(
                             "Remove redundant cast",
-                            cancellationToken => RemoveRedundantCastRefactoring.RefactorAsync(context.Document, (CastExpressionSyntax)node, cancellationToken),
+                            ct => RemoveRedundantCastRefactoring.RefactorAsync(context.Document, (CastExpressionSyntax)node, ct),
                             GetEquivalenceKey(DiagnosticIdentifiers.RemoveRedundantCast));
 
                         context.RegisterCodeFix(codeAction, context.Diagnostics);
@@ -45,7 +45,7 @@ namespace Roslynator.CSharp.CodeFixes
                     {
                         CodeAction codeAction = CodeAction.Create(
                             "Remove redundant cast",
-                            cancellationToken => RemoveRedundantCastRefactoring.RefactorAsync(context.Document, (InvocationExpressionSyntax)node, cancellationToken),
+                            ct => RemoveRedundantCastRefactoring.RefactorAsync(context.Document, (InvocationExpressionSyntax)node, ct),
                             GetEquivalenceKey(DiagnosticIdentifiers.RemoveRedundantCast));
 
                         context.RegisterCodeFix(codeAction, context.Diagnostics);

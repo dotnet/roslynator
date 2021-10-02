@@ -42,7 +42,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             context.RegisterRefactoring(
                 "Use StringBuilder instead of concatenation",
-                cancellationToken => RefactorAsync(context.Document, concatenationInfo, statement, cancellationToken),
+                ct => RefactorAsync(context.Document, concatenationInfo, statement, ct),
                 RefactoringIdentifiers.UseStringBuilderInsteadOfConcatenation);
         }
 

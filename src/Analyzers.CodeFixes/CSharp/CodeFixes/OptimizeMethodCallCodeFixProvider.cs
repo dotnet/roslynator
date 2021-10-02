@@ -61,7 +61,7 @@ namespace Roslynator.CSharp.CodeFixes
                                 {
                                     CodeAction codeAction = CodeAction.Create(
                                         "Call 'Concat' instead of 'Join'",
-                                        cancellationToken => CallStringConcatInsteadOfStringJoinAsync(document, invocationExpression, cancellationToken),
+                                        ct => CallStringConcatInsteadOfStringJoinAsync(document, invocationExpression, ct),
                                         GetEquivalenceKey(diagnostic, "CallConcatInsteadOfJoin"));
 
                                     context.RegisterCodeFix(codeAction, diagnostic);

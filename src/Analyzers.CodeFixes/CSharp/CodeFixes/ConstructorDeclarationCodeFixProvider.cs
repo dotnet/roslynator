@@ -42,7 +42,7 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Remove redundant base constructor call",
-                                cancellationToken => RemoveRedundantBaseConstructorCallRefactoring.RefactorAsync(context.Document, constructor, cancellationToken),
+                                ct => RemoveRedundantBaseConstructorCallRefactoring.RefactorAsync(context.Document, constructor, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -63,7 +63,7 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Change accessibility to 'protected'",
-                                cancellationToken => AbstractTypeShouldNotHavePublicConstructorsRefactoring.RefactorAsync(context.Document, constructor, cancellationToken),
+                                ct => AbstractTypeShouldNotHavePublicConstructorsRefactoring.RefactorAsync(context.Document, constructor, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);

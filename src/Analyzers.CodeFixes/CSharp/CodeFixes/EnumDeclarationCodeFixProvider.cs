@@ -50,7 +50,7 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 $"Sort '{enumDeclaration.Identifier}' members",
-                                cancellationToken => SortEnumMembersAsync(document, enumDeclaration, cancellationToken),
+                                ct => SortEnumMembersAsync(document, enumDeclaration, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);

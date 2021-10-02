@@ -21,7 +21,7 @@ namespace Roslynator.CSharp.Refactorings.SortMemberDeclarations
             {
                 context.RegisterRefactoring(
                     "Sort enum members by name",
-                    cancellationToken => SortByNameAsync(context.Document, enumDeclaration, selectedMembers, cancellationToken),
+                    ct => SortByNameAsync(context.Document, enumDeclaration, selectedMembers, ct),
                     RefactoringIdentifiers.SortMemberDeclarations);
             }
 
@@ -33,7 +33,7 @@ namespace Roslynator.CSharp.Refactorings.SortMemberDeclarations
                 {
                     context.RegisterRefactoring(
                         "Sort enum members by value",
-                        cancellationToken => SortByValueAsync(context.Document, enumDeclaration, selectedMembers, cancellationToken),
+                        ct => SortByValueAsync(context.Document, enumDeclaration, selectedMembers, ct),
                         RefactoringIdentifiers.SortMemberDeclarations);
                 }
             }

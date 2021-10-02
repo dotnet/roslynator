@@ -33,7 +33,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             CodeAction codeAction = CodeAction.Create(
                 $"Simplify name '{type}'",
-                cancellationToken => SimplifyNullableOfTRefactoring.RefactorAsync(context.Document, type, nullableType, cancellationToken),
+                ct => SimplifyNullableOfTRefactoring.RefactorAsync(context.Document, type, nullableType, ct),
                 GetEquivalenceKey(DiagnosticIdentifiers.SimplifyNullableOfT));
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);

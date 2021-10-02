@@ -327,7 +327,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     RegisterRefactoring(
                         "Uncomment",
-                        cancellationToken => UncommentSingleLineCommentRefactoring.RefactorAsync(Document, trivia, cancellationToken),
+                        ct => UncommentSingleLineCommentRefactoring.RefactorAsync(Document, trivia, ct),
                         RefactoringIdentifiers.UncommentSingleLineComment);
                 }
 
@@ -339,7 +339,7 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         RegisterRefactoring(
                             ConvertCommentToDocumentationCommentRefactoring.Title,
-                            cancellationToken => ConvertCommentToDocumentationCommentRefactoring.RefactorAsync(Document, (MemberDeclarationSyntax)trivia.Token.Parent, fixableSpan, cancellationToken),
+                            ct => ConvertCommentToDocumentationCommentRefactoring.RefactorAsync(Document, (MemberDeclarationSyntax)trivia.Token.Parent, fixableSpan, ct),
                             RefactoringIdentifiers.ConvertCommentToDocumentationComment);
                     }
                 }

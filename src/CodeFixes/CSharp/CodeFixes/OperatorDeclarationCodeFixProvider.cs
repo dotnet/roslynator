@@ -50,11 +50,11 @@ namespace Roslynator.CSharp.CodeFixes
 
             CodeAction codeAction = CodeAction.Create(
                 $"Generate {newToken} operator",
-                cancellationToken =>
+                ct =>
                 {
                     OperatorDeclarationSyntax newNode = operatorDeclaration.WithOperatorToken(newToken);
 
-                    return context.Document.InsertNodeAfterAsync(operatorDeclaration, newNode, cancellationToken);
+                    return context.Document.InsertNodeAfterAsync(operatorDeclaration, newNode, ct);
                 },
                 EquivalenceKey.Create(diagnostic));
 

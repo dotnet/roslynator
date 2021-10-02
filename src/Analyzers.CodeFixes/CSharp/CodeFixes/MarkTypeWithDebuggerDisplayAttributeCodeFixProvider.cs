@@ -32,7 +32,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             CodeAction codeAction = CodeAction.Create(
                 "Use DebuggerDisplay attribute",
-                cancellationToken => MarkTypeWithDebuggerDisplayAttributeRefactoring.RefactorAsync(context.Document, typeDeclaration, cancellationToken),
+                ct => MarkTypeWithDebuggerDisplayAttributeRefactoring.RefactorAsync(context.Document, typeDeclaration, ct),
                 GetEquivalenceKey(diagnostic));
 
             context.RegisterCodeFix(codeAction, diagnostic);

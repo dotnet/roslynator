@@ -16,7 +16,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     context.RegisterRefactoring(
                         IntroduceLocalVariableRefactoring.GetTitle(expression),
-                        cancellationToken => IntroduceLocalVariableRefactoring.RefactorAsync(context.Document, usingStatement, expression, cancellationToken),
+                        ct => IntroduceLocalVariableRefactoring.RefactorAsync(context.Document, usingStatement, expression, ct),
                         RefactoringIdentifiers.IntroduceLocalVariable);
                 }
             }

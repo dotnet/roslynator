@@ -55,7 +55,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                                 CodeAction codeAction = CodeAction.Create(
                                     $"Move '{baseType.Type}' before any interface",
-                                    cancellationToken =>
+                                    ct =>
                                     {
                                         BaseTypeSyntax firstType = types[0];
 
@@ -65,7 +65,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                                         BaseListSyntax newBaseList = baseList.WithTypes(newTypes);
 
-                                        return context.Document.ReplaceNodeAsync(baseList, newBaseList, cancellationToken);
+                                        return context.Document.ReplaceNodeAsync(baseList, newBaseList, ct);
                                     },
                                     GetEquivalenceKey(diagnostic));
 
@@ -95,7 +95,7 @@ namespace Roslynator.CSharp.CodeFixes
                             {
                                 CodeAction codeAction = CodeAction.Create(
                                     "Remove base list",
-                                    cancellationToken =>
+                                    ct =>
                                     {
                                         SyntaxToken token = baseList.GetFirstToken().GetPreviousToken();
 
@@ -107,7 +107,7 @@ namespace Roslynator.CSharp.CodeFixes
                                             .ReplaceToken(token, token.WithTrailingTrivia(trivia))
                                             .WithBaseList(null);
 
-                                        return context.Document.ReplaceNodeAsync(classDeclaration, newNode, cancellationToken);
+                                        return context.Document.ReplaceNodeAsync(classDeclaration, newNode, ct);
                                     },
                                     base.GetEquivalenceKey(diagnostic, CodeFixIdentifiers.RemoveBaseList));
 

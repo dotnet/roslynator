@@ -53,7 +53,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             CodeAction codeAction = CodeAction.Create(
                 "Replace [] with ()",
-                cancellationToken => context.Document.ReplaceNodeAsync(elementAccess, invocationExpression, cancellationToken),
+                ct => context.Document.ReplaceNodeAsync(elementAccess, invocationExpression, ct),
                 GetEquivalenceKey(diagnostic));
 
             context.RegisterCodeFix(codeAction, diagnostic);

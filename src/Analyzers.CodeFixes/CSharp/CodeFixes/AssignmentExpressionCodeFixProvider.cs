@@ -61,12 +61,12 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Remove redundant delegate creation",
-                                cancellationToken =>
+                                ct =>
                                 {
                                     return RemoveRedundantDelegateCreationRefactoring.RefactorAsync(
                                         document,
                                         (ObjectCreationExpressionSyntax)assignment.Right,
-                                        cancellationToken);
+                                        ct);
                                 },
                                 GetEquivalenceKey(diagnostic));
 

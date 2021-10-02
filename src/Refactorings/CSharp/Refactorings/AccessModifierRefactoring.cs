@@ -46,7 +46,7 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             context.RegisterRefactoring(
                                 GetTitle(accessibility),
-                                cancellationToken => RefactorAsync(context.Solution, memberDeclarations, accessibility, cancellationToken),
+                                ct => RefactorAsync(context.Solution, memberDeclarations, accessibility, ct),
                                 EquivalenceKey.Join(RefactoringIdentifiers.ChangeAccessibility, accessibility.ToString()));
                         }
                     }
@@ -70,7 +70,7 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         context.RegisterRefactoring(
                             GetTitle(accessibility),
-                            cancellationToken => RefactorAsync(context.Solution, symbol, accessibility, cancellationToken),
+                            ct => RefactorAsync(context.Solution, symbol, accessibility, ct),
                             EquivalenceKey.Join(RefactoringIdentifiers.ChangeAccessibility, accessibility.ToString()));
                     }
                 }
@@ -78,7 +78,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     context.RegisterRefactoring(
                         GetTitle(accessibility),
-                        cancellationToken => RefactorAsync(context.Document, node, accessibility, cancellationToken),
+                        ct => RefactorAsync(context.Document, node, accessibility, ct),
                         EquivalenceKey.Join(RefactoringIdentifiers.ChangeAccessibility, accessibility.ToString()));
                 }
             }

@@ -89,7 +89,7 @@ namespace Roslynator.CSharp.Refactorings.SortMemberDeclarations
 
             context.RegisterRefactoring(
                 title,
-                cancellationToken => RefactorAsync(context.Document, selectedMembers, comparer, cancellationToken),
+                ct => RefactorAsync(context.Document, selectedMembers, comparer, ct),
                 RefactoringIdentifiers.SortMemberDeclarations);
         }
 

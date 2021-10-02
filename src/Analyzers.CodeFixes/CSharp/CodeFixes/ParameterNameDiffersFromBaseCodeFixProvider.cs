@@ -84,7 +84,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                             CodeAction codeAction = CodeAction.Create(
                                 $"Rename '{oldName}' to '{newName}'",
-                                cancellationToken => Renamer.RenameSymbolAsync(context.Document.Solution(), parameterSymbol, newName, default(OptionSet), cancellationToken),
+                                ct => Renamer.RenameSymbolAsync(context.Document.Solution(), parameterSymbol, newName, default(OptionSet), ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);

@@ -37,7 +37,7 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         context.RegisterRefactoring(
                             "Convert to 'for'",
-                            cancellationToken => ConvertForEachToForRefactoring.RefactorAsync(context.Document, forEachStatement, semanticModel: semanticModel, reverseLoop: false, cancellationToken: cancellationToken),
+                            ct => ConvertForEachToForRefactoring.RefactorAsync(context.Document, forEachStatement, semanticModel: semanticModel, reverseLoop: false, cancellationToken: ct),
                             RefactoringIdentifiers.ConvertForEachToFor);
                     }
 
@@ -45,7 +45,7 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         context.RegisterRefactoring(
                             "Convert to 'for' and reverse loop",
-                            cancellationToken => ConvertForEachToForRefactoring.RefactorAsync(context.Document, forEachStatement, semanticModel: semanticModel, reverseLoop: true, cancellationToken: cancellationToken),
+                            ct => ConvertForEachToForRefactoring.RefactorAsync(context.Document, forEachStatement, semanticModel: semanticModel, reverseLoop: true, cancellationToken: ct),
                             RefactoringIdentifiers.ConvertForEachToForAndReverseLoop);
                     }
                 }
@@ -152,7 +152,7 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 $"Rename '{oldName}' to '{newName}'",
-                cancellationToken => Renamer.RenameSymbolAsync(context.Solution, symbol, newName, default(OptionSet), cancellationToken),
+                ct => Renamer.RenameSymbolAsync(context.Solution, symbol, newName, default(OptionSet), ct),
                 RefactoringIdentifiers.RenameIdentifierAccordingToTypeName);
         }
     }

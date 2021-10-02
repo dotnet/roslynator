@@ -32,7 +32,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             CodeAction codeAction = CodeAction.Create(
                 "Make string literal part of interpolated string",
-                cancellationToken => UnnecessaryInterpolationRefactoring.RefactorAsync(context.Document, interpolation, cancellationToken),
+                ct => UnnecessaryInterpolationRefactoring.RefactorAsync(context.Document, interpolation, ct),
                 GetEquivalenceKey(diagnostic));
 
             context.RegisterCodeFix(codeAction, diagnostic);

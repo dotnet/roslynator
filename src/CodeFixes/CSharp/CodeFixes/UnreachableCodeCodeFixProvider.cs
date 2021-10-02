@@ -57,7 +57,7 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 codeAction = CodeAction.Create(
                     Title,
-                    cancellationToken =>
+                    ct =>
                     {
                         SyntaxList<StatementSyntax> statements = statementsInfo.Statements;
 
@@ -65,7 +65,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                         if (index == statements.Count - 1)
                         {
-                            return context.Document.RemoveStatementAsync(statement, cancellationToken);
+                            return context.Document.RemoveStatementAsync(statement, ct);
                         }
                         else
                         {
@@ -76,7 +76,7 @@ namespace Roslynator.CSharp.CodeFixes
                             return context.Document.ReplaceStatementsAsync(
                                 statementsInfo,
                                 nodes,
-                                cancellationToken);
+                                ct);
                         }
                     },
                     base.GetEquivalenceKey(diagnostic));
@@ -125,7 +125,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                         return CodeAction.Create(
                             Title,
-                            cancellationToken => document.RemoveStatementAsync(ifStatement, cancellationToken),
+                            ct => document.RemoveStatementAsync(ifStatement, ct),
                             GetEquivalenceKey(diagnostic));
                     }
                 case SyntaxKind.ElseClause:
@@ -159,7 +159,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                         return CodeAction.Create(
                             Title,
-                            cancellationToken => document.RemoveNodeAsync(elseClause, cancellationToken),
+                            ct => document.RemoveNodeAsync(elseClause, ct),
                             GetEquivalenceKey(diagnostic));
                     }
                 case SyntaxKind.Block:
@@ -175,7 +175,7 @@ namespace Roslynator.CSharp.CodeFixes
         {
             return CodeAction.Create(
                 Title,
-                cancellationToken =>
+                ct =>
                 {
                     StatementSyntax firstStatement = statements[0];
 
@@ -191,7 +191,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                     statements = statements.Replace(lastStatement, newLastStatement);
 
-                    return document.ReplaceNodeAsync(ifStatement, statements, cancellationToken);
+                    return document.ReplaceNodeAsync(ifStatement, statements, ct);
                 },
                 GetEquivalenceKey(diagnostic));
         }
@@ -200,13 +200,13 @@ namespace Roslynator.CSharp.CodeFixes
         {
             return CodeAction.Create(
                 Title,
-                cancellationToken =>
+                ct =>
                 {
                     StatementSyntax newNode = statement
                         .WithLeadingTrivia(ifStatement.GetLeadingTrivia().AddRange(statement.GetLeadingTrivia().EmptyIfWhitespace()))
                         .WithTrailingTrivia(statement.GetTrailingTrivia().EmptyIfWhitespace().AddRange(ifStatement.GetTrailingTrivia()));
 
-                    return document.ReplaceNodeAsync(ifStatement, newNode, cancellationToken);
+                    return document.ReplaceNodeAsync(ifStatement, newNode, ct);
                 },
                 GetEquivalenceKey(diagnostic));
         }

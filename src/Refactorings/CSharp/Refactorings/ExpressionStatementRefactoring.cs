@@ -44,7 +44,7 @@ namespace Roslynator.CSharp.Refactorings
 
                             context.RegisterRefactoring(
                                 IntroduceLocalVariableRefactoring.GetTitle(expression),
-                                cancellationToken => IntroduceLocalVariableRefactoring.RefactorAsync(context.Document, expressionStatement, typeSymbol, addAwait, semanticModel, cancellationToken),
+                                ct => IntroduceLocalVariableRefactoring.RefactorAsync(context.Document, expressionStatement, typeSymbol, addAwait, semanticModel, ct),
                                 RefactoringIdentifiers.IntroduceLocalVariable);
                         }
                     }

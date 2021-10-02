@@ -31,11 +31,11 @@ namespace Roslynator.CSharp.Refactorings
 
                     context.RegisterRefactoring(
                         title,
-                        cancellationToken =>
+                        ct =>
                         {
                             return context.Document.RemovePreprocessorDirectivesAsync(
                                 directives.ToImmutableArray(),
-                                cancellationToken);
+                                ct);
                         },
                         RefactoringIdentifiers.RemoveDirectiveAndRelatedDirectives);
                 }

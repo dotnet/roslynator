@@ -61,7 +61,7 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 "Convert to interpolated string",
-                cancellationToken => RefactorAsync(context.Document, invocation, semanticModel, cancellationToken),
+                ct => RefactorAsync(context.Document, invocation, semanticModel, ct),
                 RefactoringIdentifiers.ConvertStringFormatToInterpolatedString);
         }
 

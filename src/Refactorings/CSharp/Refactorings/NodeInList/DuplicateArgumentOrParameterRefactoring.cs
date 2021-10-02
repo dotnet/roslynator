@@ -26,7 +26,7 @@ namespace Roslynator.CSharp.Refactorings.NodeInList
             {
                 context.RegisterRefactoring(
                     GetTitle(),
-                    cancellationToken => RefactorAsync(context.Document, index, cancellationToken),
+                    ct => RefactorAsync(context.Document, index, ct),
                     equivalenceKey: equivalenceKey);
             }
         }

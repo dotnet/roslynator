@@ -22,7 +22,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     $"Parenthesize '{expression}'",
-                    cancellationToken => ParenthesizeExpressionRefactoring.RefactorAsync(context.Document, expression, cancellationToken),
+                    ct => ParenthesizeExpressionRefactoring.RefactorAsync(context.Document, expression, ct),
                     RefactoringIdentifiers.ParenthesizeExpression);
             }
 

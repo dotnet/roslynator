@@ -93,7 +93,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                             CodeAction codeAction = CodeAction.Create(
                                 "Add 'param' element",
-                                cancellationToken => refactoring.RefactorAsync(context.Document, documentationComment, cancellationToken),
+                                ct => refactoring.RefactorAsync(context.Document, documentationComment, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -105,7 +105,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                             CodeAction codeAction = CodeAction.Create(
                                 "Add 'typeparam' element",
-                                cancellationToken => refactoring.RefactorAsync(context.Document, documentationComment, cancellationToken),
+                                ct => refactoring.RefactorAsync(context.Document, documentationComment, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);

@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Remove empty namespace declaration",
-                                cancellationToken => RemoveEmptyNamespaceDeclarationRefactoring.RefactorAsync(context.Document, namespaceDeclaration, cancellationToken),
+                                ct => RemoveEmptyNamespaceDeclarationRefactoring.RefactorAsync(context.Document, namespaceDeclaration, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -55,7 +55,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                             CodeAction codeAction = CodeAction.Create(
                                 title,
-                                cancellationToken => DeclareUsingDirectiveOnTopLevelRefactoring.RefactorAsync(context.Document, namespaceDeclaration, cancellationToken),
+                                ct => DeclareUsingDirectiveOnTopLevelRefactoring.RefactorAsync(context.Document, namespaceDeclaration, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);

@@ -34,7 +34,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     $"Replace '{methodDeclaration.Identifier.ValueText}' with property",
-                    cancellationToken => ReplaceMethodWithPropertyRefactoring.RefactorAsync(context.Document, methodDeclaration, cancellationToken),
+                    ct => ReplaceMethodWithPropertyRefactoring.RefactorAsync(context.Document, methodDeclaration, ct),
                     RefactoringIdentifiers.ReplaceMethodWithProperty);
             }
 
@@ -44,7 +44,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     ConvertBlockBodyToExpressionBodyRefactoring.Title,
-                    cancellationToken => ConvertBlockBodyToExpressionBodyRefactoring.RefactorAsync(context.Document, methodDeclaration, cancellationToken),
+                    ct => ConvertBlockBodyToExpressionBodyRefactoring.RefactorAsync(context.Document, methodDeclaration, ct),
                     RefactoringIdentifiers.ConvertBlockBodyToExpressionBody);
             }
 
@@ -143,7 +143,7 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 $"Rename '{oldName}' to '{newName}'",
-                cancellationToken => Renamer.RenameSymbolAsync(context.Solution, methodSymbol, newName, default(OptionSet), cancellationToken),
+                ct => Renamer.RenameSymbolAsync(context.Solution, methodSymbol, newName, default(OptionSet), ct),
                 RefactoringIdentifiers.RenameMethodAccordingToTypeName);
         }
 

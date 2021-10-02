@@ -20,7 +20,7 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             context.RegisterRefactoring(
                                 "Invert boolean literal",
-                                cancellationToken => InvertBooleanLiteralRefactoring.RefactorAsync(context.Document, literalExpression, cancellationToken),
+                                ct => InvertBooleanLiteralRefactoring.RefactorAsync(context.Document, literalExpression, ct),
                                 RefactoringIdentifiers.InvertBooleanLiteral);
                         }
 

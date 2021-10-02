@@ -15,14 +15,14 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     "Insert interpolation",
-                    cancellationToken =>
+                    ct =>
                     {
                         return InsertInterpolationRefactoring.RefactorAsync(
                             context.Document,
                             interpolatedString,
                             context.Span,
                             addNameOf: false,
-                            cancellationToken: cancellationToken);
+                            cancellationToken: ct);
                     },
                     RefactoringIdentifiers.InsertStringInterpolation);
             }
@@ -32,12 +32,12 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     "Remove '$'",
-                    cancellationToken =>
+                    ct =>
                     {
                         return ConvertInterpolatedStringToStringLiteralRefactoring.RefactorAsync(
                             context.Document,
                             interpolatedString,
-                            cancellationToken);
+                            ct);
                     },
                     RefactoringIdentifiers.ConvertInterpolatedStringToStringLiteral);
             }
@@ -50,12 +50,12 @@ namespace Roslynator.CSharp.Refactorings
 
                 context.RegisterRefactoring(
                     $"Replace interpolated string with '{expression}'",
-                    cancellationToken =>
+                    ct =>
                     {
                         return ReplaceInterpolatedStringWithInterpolationExpressionRefactoring.RefactorAsync(
                             context.Document,
                             interpolatedString,
-                            cancellationToken);
+                            ct);
                     },
                     RefactoringIdentifiers.ReplaceInterpolatedStringWithInterpolationExpression);
             }

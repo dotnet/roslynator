@@ -30,7 +30,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     context.RegisterRefactoring(
                         (constructors.Count == 1) ? "Generate base constructor" : "Generate base constructors",
-                        cancellationToken => GenerateBaseConstructorsRefactoring.RefactorAsync(context.Document, recordDeclaration, constructors.ToArray(), semanticModel, cancellationToken),
+                        ct => GenerateBaseConstructorsRefactoring.RefactorAsync(context.Document, recordDeclaration, constructors.ToArray(), semanticModel, ct),
                         RefactoringIdentifiers.GenerateBaseConstructors);
                 }
             }

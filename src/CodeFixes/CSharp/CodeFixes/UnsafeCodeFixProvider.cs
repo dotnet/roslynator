@@ -66,7 +66,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                                     CodeAction codeAction = CodeAction.Create(
                                         "Wrap in unsafe block",
-                                        cancellationToken =>
+                                        ct =>
                                         {
                                             BlockSyntax block = (statement.IsKind(SyntaxKind.Block))
                                                 ? (BlockSyntax)statement
@@ -74,7 +74,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                                             UnsafeStatementSyntax unsafeStatement = SyntaxFactory.UnsafeStatement(block).WithFormatterAnnotation();
 
-                                            return context.Document.ReplaceNodeAsync(statement, unsafeStatement, cancellationToken);
+                                            return context.Document.ReplaceNodeAsync(statement, unsafeStatement, ct);
                                         },
                                         GetEquivalenceKey(diagnostic, CodeFixIdentifiers.WrapInUnsafeStatement));
 

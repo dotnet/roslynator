@@ -21,7 +21,7 @@ namespace Roslynator.CSharp.Refactorings.AddOrRemoveParameterName
 
             context.RegisterRefactoring(
                 "Add parameter name",
-                cancellationToken => RefactorAsync(context.Document, argumentList, selection, cancellationToken),
+                ct => RefactorAsync(context.Document, argumentList, selection, ct),
                 RefactoringIdentifiers.AddParameterNameToArgument);
         }
 

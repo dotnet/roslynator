@@ -39,7 +39,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             CodeAction codeAction = CodeAction.Create(
                 "Use Regex instance",
-                cancellationToken => UseRegexInstanceInsteadOfStaticMethodRefactoring.RefactorAsync(context.Document, invocation, cancellationToken),
+                ct => UseRegexInstanceInsteadOfStaticMethodRefactoring.RefactorAsync(context.Document, invocation, ct),
                 GetEquivalenceKey(DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod));
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);

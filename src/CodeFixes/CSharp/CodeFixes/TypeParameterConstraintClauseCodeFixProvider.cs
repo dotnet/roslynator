@@ -49,11 +49,11 @@ namespace Roslynator.CSharp.CodeFixes
 
                             CodeAction codeAction = CodeAction.Create(
                                 "Remove constraints",
-                                cancellationToken =>
+                                ct =>
                                 {
                                     GenericInfo newGenericInfo = genericInfo.RemoveAllConstraintClauses();
 
-                                    return context.Document.ReplaceNodeAsync(genericInfo.Node, newGenericInfo.Node, cancellationToken);
+                                    return context.Document.ReplaceNodeAsync(genericInfo.Node, newGenericInfo.Node, ct);
                                 },
                                 GetEquivalenceKey(diagnostic));
 
@@ -78,7 +78,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                             CodeAction codeAction = CodeAction.Create(
                                 $"Combine constraints for '{name}'",
-                                cancellationToken =>
+                                ct =>
                                 {
                                     TypeParameterConstraintClauseSyntax newConstraintClause = constraintClause2.WithConstraints(constraintClause2.Constraints.AddRange(constraintClause.Constraints));
 
@@ -88,7 +88,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                                     GenericInfo newGenericInfo = genericInfo.WithConstraintClauses(newConstraintClauses);
 
-                                    return context.Document.ReplaceNodeAsync(genericInfo.Node, newGenericInfo.Node, cancellationToken);
+                                    return context.Document.ReplaceNodeAsync(genericInfo.Node, newGenericInfo.Node, ct);
                                 },
                                 GetEquivalenceKey(diagnostic));
 

@@ -21,7 +21,7 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 $"Convert to '{newLiteralExpression}'",
-                cancellationToken => RefactorAsync(context.Document, literalExpression, newLiteralExpression, cancellationToken),
+                ct => RefactorAsync(context.Document, literalExpression, newLiteralExpression, ct),
                 RefactoringIdentifiers.ConvertHexadecimalLiteralToDecimalLiteral);
         }
 

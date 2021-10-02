@@ -55,7 +55,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             context.RegisterRefactoring(
                 "Add braces",
-                cancellationToken => RefactorAsync(context.Document, statement, cancellationToken),
+                ct => RefactorAsync(context.Document, statement, ct),
                 RefactoringIdentifiers.AddBraces);
         }
 

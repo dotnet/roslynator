@@ -51,7 +51,7 @@ namespace Roslynator.CSharp.Refactorings
                                 {
                                     context.RegisterRefactoring(
                                         $"Duplicate {CSharpFacts.GetTitle(member)}",
-                                        cancellationToken => DuplicateMemberDeclarationRefactoring.RefactorAsync(context.Document, member, cancellationToken),
+                                        ct => DuplicateMemberDeclarationRefactoring.RefactorAsync(context.Document, member, ct),
                                         RefactoringIdentifiers.DuplicateMember);
                                 }
                             }
@@ -209,7 +209,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     ConvertBlockBodyToExpressionBodyRefactoring.Title,
-                    cancellationToken => ConvertBlockBodyToExpressionBodyRefactoring.RefactorAsync(context.Document, operatorDeclaration, cancellationToken),
+                    ct => ConvertBlockBodyToExpressionBodyRefactoring.RefactorAsync(context.Document, operatorDeclaration, ct),
                     RefactoringIdentifiers.ConvertBlockBodyToExpressionBody);
             }
         }
@@ -222,7 +222,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     ConvertBlockBodyToExpressionBodyRefactoring.Title,
-                    cancellationToken => ConvertBlockBodyToExpressionBodyRefactoring.RefactorAsync(context.Document, operatorDeclaration, cancellationToken),
+                    ct => ConvertBlockBodyToExpressionBodyRefactoring.RefactorAsync(context.Document, operatorDeclaration, ct),
                     RefactoringIdentifiers.ConvertBlockBodyToExpressionBody);
             }
         }

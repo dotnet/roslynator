@@ -34,7 +34,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     SplitVariableDeclarationRefactoring.GetTitle(variableDeclaration),
-                    cancellationToken => SplitVariableDeclarationRefactoring.RefactorAsync(context.Document, variableDeclaration, cancellationToken),
+                    ct => SplitVariableDeclarationRefactoring.RefactorAsync(context.Document, variableDeclaration, ct),
                     RefactoringIdentifiers.SplitVariableDeclaration);
             }
         }
@@ -80,7 +80,7 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 $"Rename '{oldName}' to '{newName}'",
-                cancellationToken => Renamer.RenameSymbolAsync(context.Solution, localSymbol, newName, default(OptionSet), cancellationToken),
+                ct => Renamer.RenameSymbolAsync(context.Solution, localSymbol, newName, default(OptionSet), ct),
                 RefactoringIdentifiers.RenameIdentifierAccordingToTypeName);
         }
 

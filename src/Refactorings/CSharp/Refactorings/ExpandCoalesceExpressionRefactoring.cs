@@ -25,7 +25,7 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 "Expand ??",
-                cancellationToken => RefactorAsync(context.Document, binaryExpression, cancellationToken),
+                ct => RefactorAsync(context.Document, binaryExpression, ct),
                 RefactoringIdentifiers.ExpandCoalesceExpression);
         }
 

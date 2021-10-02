@@ -101,7 +101,7 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Remove unnecessary semicolon",
-                                cancellationToken => AvoidSemicolonAtEndOfDeclarationRefactoring.RefactorAsync(context.Document, memberDeclaration, cancellationToken),
+                                ct => AvoidSemicolonAtEndOfDeclarationRefactoring.RefactorAsync(context.Document, memberDeclaration, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -134,7 +134,7 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Use constant instead of field",
-                                cancellationToken => UseConstantInsteadOfFieldRefactoring.RefactorAsync(context.Document, (FieldDeclarationSyntax)memberDeclaration, cancellationToken),
+                                ct => UseConstantInsteadOfFieldRefactoring.RefactorAsync(context.Document, (FieldDeclarationSyntax)memberDeclaration, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -144,7 +144,7 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Use read-only auto-property",
-                                cancellationToken => UseReadOnlyAutoPropertyAsync(context.Document, (PropertyDeclarationSyntax)memberDeclaration, cancellationToken),
+                                ct => UseReadOnlyAutoPropertyAsync(context.Document, (PropertyDeclarationSyntax)memberDeclaration, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -154,7 +154,7 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 ConvertCommentToDocumentationCommentRefactoring.Title,
-                                cancellationToken => ConvertCommentToDocumentationCommentRefactoring.RefactorAsync(context.Document, memberDeclaration, context.Span, cancellationToken),
+                                ct => ConvertCommentToDocumentationCommentRefactoring.RefactorAsync(context.Document, memberDeclaration, context.Span, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -166,13 +166,13 @@ namespace Roslynator.CSharp.CodeFixes
 
                             CodeAction codeAction = CodeAction.Create(
                                 "Make method an extension method",
-                                cancellationToken =>
+                                ct =>
                                 {
                                     ParameterSyntax parameter = methodDeclaration.ParameterList.Parameters[0];
 
                                     ParameterSyntax newParameter = ModifierList.Insert(parameter, SyntaxKind.ThisKeyword);
 
-                                    return context.Document.ReplaceNodeAsync(parameter, newParameter, cancellationToken);
+                                    return context.Document.ReplaceNodeAsync(parameter, newParameter, ct);
                                 },
                                 GetEquivalenceKey(diagnostic));
 

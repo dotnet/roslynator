@@ -65,7 +65,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 context.RegisterRefactoring(
                     $"Generate '{methodName}' method",
-                    cancellationToken =>
+                    ct =>
                     {
                         return RefactorAsync(
                             context.Document,
@@ -73,7 +73,7 @@ namespace Roslynator.CSharp.Refactorings
                             eventSymbol,
                             eventArgsSymbol,
                             context.SupportsCSharp6,
-                            cancellationToken);
+                            ct);
                     },
                     RefactoringIdentifiers.GenerateEventInvokingMethod);
             }

@@ -50,7 +50,7 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 $"Replace '{postIncrement}' with '{preIncrement}'",
-                cancellationToken => ChangePostIncrementToPreIncrementAsync(context.Document, postIncrement, preIncrement, cancellationToken),
+                ct => ChangePostIncrementToPreIncrementAsync(context.Document, postIncrement, preIncrement, ct),
                 RefactoringIdentifiers.ReplacePrefixOperatorWithPostfixOperator);
         }
 
@@ -66,7 +66,7 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 $"Invert {postIncrement.OperatorToken}",
-                cancellationToken => ChangePostIncrementToPostDecrementAsync(context.Document, postIncrement, postDecrement, cancellationToken),
+                ct => ChangePostIncrementToPostDecrementAsync(context.Document, postIncrement, postDecrement, ct),
                 RefactoringIdentifiers.InvertPrefixOrPostfixUnaryOperator);
         }
 
@@ -86,7 +86,7 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 $"Replace '{postDecrement}' with '{preDecrement}'",
-                cancellationToken => ChangePostDecrementToPreDecrementAsync(context.Document, postDecrement, preDecrement, cancellationToken),
+                ct => ChangePostDecrementToPreDecrementAsync(context.Document, postDecrement, preDecrement, ct),
                 RefactoringIdentifiers.ReplacePrefixOperatorWithPostfixOperator);
         }
 
@@ -102,7 +102,7 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 $"Invert {postDecrement.OperatorToken}",
-                cancellationToken => ChangePostDecrementToPostIncrementAsync(context.Document, postDecrement, postIncrement, cancellationToken),
+                ct => ChangePostDecrementToPostIncrementAsync(context.Document, postDecrement, postIncrement, ct),
                 RefactoringIdentifiers.InvertPrefixOrPostfixUnaryOperator);
         }
 

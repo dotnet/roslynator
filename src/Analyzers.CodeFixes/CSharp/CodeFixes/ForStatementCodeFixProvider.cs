@@ -36,12 +36,12 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Use while to create an infinite loop",
-                                cancellationToken =>
+                                ct =>
                                 {
                                     return AvoidUsageOfForStatementToCreateInfiniteLoopRefactoring.RefactorAsync(
                                         context.Document,
                                         forStatement,
-                                        cancellationToken);
+                                        ct);
                                 },
                                 GetEquivalenceKey(diagnostic));
 

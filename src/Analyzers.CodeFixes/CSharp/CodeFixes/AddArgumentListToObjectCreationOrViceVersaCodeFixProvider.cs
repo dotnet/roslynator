@@ -36,7 +36,7 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 CodeAction codeAction = CodeAction.Create(
                     "Remove argument list",
-                    cancellationToken => RemoveArgumentListFromObjectCreationAsync(document, objectCreationExpression.ArgumentList, cancellationToken),
+                    ct => RemoveArgumentListFromObjectCreationAsync(document, objectCreationExpression.ArgumentList, ct),
                     GetEquivalenceKey(diagnostic));
 
                 context.RegisterCodeFix(codeAction, diagnostic);
@@ -45,7 +45,7 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 CodeAction codeAction = CodeAction.Create(
                     "Add argument list",
-                    cancellationToken => AddArgumentListToObjectCreationRefactoring.RefactorAsync(document, objectCreationExpression, cancellationToken),
+                    ct => AddArgumentListToObjectCreationRefactoring.RefactorAsync(document, objectCreationExpression, ct),
                     GetEquivalenceKey(diagnostic));
 
                 context.RegisterCodeFix(codeAction, diagnostic);

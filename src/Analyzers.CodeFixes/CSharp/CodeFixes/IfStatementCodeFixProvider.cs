@@ -73,7 +73,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                             CodeAction codeAction = CodeAction.Create(
                                 analysis.Title,
-                                cancellationToken => IfRefactoring.RefactorAsync(context.Document, analysis, cancellationToken),
+                                ct => IfRefactoring.RefactorAsync(context.Document, analysis, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -83,14 +83,14 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Invert if",
-                                cancellationToken =>
+                                ct =>
                                 {
                                     return ReduceIfNestingRefactoring.RefactorAsync(
                                         context.Document,
                                         ifStatement,
                                         (SyntaxKind)Enum.Parse(typeof(SyntaxKind), diagnostic.Properties["JumpKind"]),
                                         recursive: true,
-                                        cancellationToken: cancellationToken);
+                                        cancellationToken: ct);
                                 },
                                 GetEquivalenceKey(diagnostic));
 
@@ -101,12 +101,12 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Use exception filter",
-                                cancellationToken =>
+                                ct =>
                                 {
                                     return UseExceptionFilterAsync(
                                         context.Document,
                                         ifStatement,
-                                        cancellationToken: cancellationToken);
+                                        cancellationToken: ct);
                                 },
                                 GetEquivalenceKey(diagnostic));
 

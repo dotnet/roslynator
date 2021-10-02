@@ -65,7 +65,7 @@ namespace Roslynator.CSharp.CodeFixes
                                     {
                                         CodeAction codeAction = CodeAction.Create(
                                             "Replace 'break' with 'return'",
-                                            cancellationToken =>
+                                            ct =>
                                             {
                                                 var breakStatement = (BreakStatementSyntax)statement;
                                                 SyntaxToken breakKeyword = breakStatement.BreakKeyword;
@@ -75,7 +75,7 @@ namespace Roslynator.CSharp.CodeFixes
                                                     null,
                                                     breakStatement.SemicolonToken);
 
-                                                return context.Document.ReplaceNodeAsync(statement, newStatement, cancellationToken);
+                                                return context.Document.ReplaceNodeAsync(statement, newStatement, ct);
                                             },
                                             GetEquivalenceKey(diagnostic, CodeFixIdentifiers.ReplaceBreakWithContinue));
 
@@ -98,7 +98,7 @@ namespace Roslynator.CSharp.CodeFixes
                                     {
                                         CodeAction codeAction = CodeAction.Create(
                                             "Replace 'break' with 'return'",
-                                            cancellationToken =>
+                                            ct =>
                                             {
                                                 var breakStatement = (BreakStatementSyntax)statement;
                                                 SyntaxToken breakKeyword = breakStatement.BreakKeyword;
@@ -108,7 +108,7 @@ namespace Roslynator.CSharp.CodeFixes
                                                     null,
                                                     breakStatement.SemicolonToken);
 
-                                                return context.Document.ReplaceNodeAsync(statement, newStatement, cancellationToken);
+                                                return context.Document.ReplaceNodeAsync(statement, newStatement, ct);
                                             },
                                             GetEquivalenceKey(diagnostic, CodeFixIdentifiers.ReplaceBreakWithContinue));
 

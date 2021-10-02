@@ -37,7 +37,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     context.RegisterRefactoring(
                         "Remove all sections",
-                        cancellationToken => RemoveAllSwitchSectionsAsync(context.Document, switchStatement, cancellationToken),
+                        ct => RemoveAllSwitchSectionsAsync(context.Document, switchStatement, ct),
                         RefactoringIdentifiers.RemoveAllSwitchSections);
                 }
             }
@@ -57,7 +57,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     "Duplicate statement",
-                    cancellationToken => DuplicateStatementAsync(context.Document, statement, cancellationToken),
+                    ct => DuplicateStatementAsync(context.Document, statement, ct),
                     RefactoringIdentifiers.DuplicateStatement);
             }
 

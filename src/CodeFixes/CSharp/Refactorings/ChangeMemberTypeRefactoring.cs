@@ -133,7 +133,7 @@ namespace Roslynator.CSharp.Refactorings
 
             CodeAction codeAction = CodeAction.Create(
                 title,
-                cancellationToken =>
+                ct =>
                 {
                     SyntaxNode newNode = null;
 
@@ -162,11 +162,11 @@ namespace Roslynator.CSharp.Refactorings
                                 }
                             });
 
-                        return document.ReplaceNodeAsync(node, newNode, cancellationToken);
+                        return document.ReplaceNodeAsync(node, newNode, ct);
                     }
                     else
                     {
-                        return document.ReplaceNodeAsync(type, newType, cancellationToken);
+                        return document.ReplaceNodeAsync(type, newType, ct);
                     }
                 },
                 EquivalenceKey.Create(diagnostic, CodeFixIdentifiers.ChangeMemberTypeAccordingToReturnExpression, additionalKey));

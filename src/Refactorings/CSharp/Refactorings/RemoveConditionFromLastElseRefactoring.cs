@@ -17,7 +17,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     "Remove condition",
-                    cancellationToken => RefactorAsync(context.Document, elseClause, cancellationToken),
+                    ct => RefactorAsync(context.Document, elseClause, ct),
                     RefactoringIdentifiers.RemoveConditionFromLastElse);
             }
         }

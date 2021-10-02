@@ -30,7 +30,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             CodeAction codeAction = CodeAction.Create(
                 "Remove redundant base interface",
-                cancellationToken => RemoveRedundantBaseInterfaceRefactoring.RefactorAsync(context.Document, baseType, cancellationToken),
+                ct => RemoveRedundantBaseInterfaceRefactoring.RefactorAsync(context.Document, baseType, ct),
                 GetEquivalenceKey(DiagnosticIdentifiers.RemoveRedundantBaseInterface));
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);

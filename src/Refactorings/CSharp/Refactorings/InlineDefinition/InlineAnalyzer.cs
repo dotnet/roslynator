@@ -72,17 +72,17 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
 
                 if (expression != null)
                 {
-                    context.RegisterRefactoring($"Inline {title}", cancellationToken => refactoring.InlineAsync(nodeIncludingConditionalAccess, expression, cancellationToken), GetEquivalenceKey());
+                    context.RegisterRefactoring($"Inline {title}", ct => refactoring.InlineAsync(nodeIncludingConditionalAccess, expression, ct), GetEquivalenceKey());
 
-                    context.RegisterRefactoring($"Inline and remove {title}", cancellationToken => refactoring.InlineAndRemoveAsync(nodeIncludingConditionalAccess, expression, cancellationToken), EquivalenceKey.Join(GetEquivalenceKey(), "Remove"));
+                    context.RegisterRefactoring($"Inline and remove {title}", ct => refactoring.InlineAndRemoveAsync(nodeIncludingConditionalAccess, expression, ct), EquivalenceKey.Join(GetEquivalenceKey(), "Remove"));
                 }
                 else
                 {
                     var expressionStatement = (ExpressionStatementSyntax)nodeIncludingConditionalAccess.Parent;
 
-                    context.RegisterRefactoring($"Inline {title}", cancellationToken => refactoring.InlineAsync(expressionStatement, statements, cancellationToken), GetEquivalenceKey());
+                    context.RegisterRefactoring($"Inline {title}", ct => refactoring.InlineAsync(expressionStatement, statements, ct), GetEquivalenceKey());
 
-                    context.RegisterRefactoring($"Inline and remove {title}", cancellationToken => refactoring.InlineAndRemoveAsync(expressionStatement, statements, cancellationToken), EquivalenceKey.Join(GetEquivalenceKey(), "Remove"));
+                    context.RegisterRefactoring($"Inline and remove {title}", ct => refactoring.InlineAndRemoveAsync(expressionStatement, statements, ct), EquivalenceKey.Join(GetEquivalenceKey(), "Remove"));
                 }
             }
         }

@@ -56,7 +56,7 @@ namespace Roslynator.CSharp.CodeFixes
                 {
                     CodeAction codeAction = CodeAction.Create(
                         $"Change accessibility to '{SyntaxFacts.GetText(accessibility)}'",
-                        cancellationToken => ChangeAccessibilityRefactoring.RefactorAsync(context.Solution(), memberDeclarations, accessibility, cancellationToken),
+                        ct => ChangeAccessibilityRefactoring.RefactorAsync(context.Solution(), memberDeclarations, accessibility, ct),
                         GetEquivalenceKey(CompilerDiagnosticIdentifiers.CS0262_PartialDeclarationsHaveConflictingAccessibilityModifiers, accessibility.ToString()));
 
                     context.RegisterCodeFix(codeAction, diagnostic);

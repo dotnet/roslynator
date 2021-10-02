@@ -36,7 +36,7 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 $"Remove unused type parameter '{typeParameter.Identifier}'",
-                                cancellationToken => UnusedParameterRefactoring.RefactorAsync(context.Document, typeParameter, cancellationToken),
+                                ct => UnusedParameterRefactoring.RefactorAsync(context.Document, typeParameter, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);

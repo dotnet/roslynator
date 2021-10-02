@@ -26,7 +26,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     context.RegisterRefactoring(
                         ConvertExpressionBodyToBlockBodyRefactoring.Title,
-                        cancellationToken => ConvertExpressionBodyToBlockBodyRefactoring.RefactorAsync(context.Document, arrowExpressionClause, cancellationToken),
+                        ct => ConvertExpressionBodyToBlockBodyRefactoring.RefactorAsync(context.Document, arrowExpressionClause, ct),
                         RefactoringIdentifiers.ConvertExpressionBodyToBlockBody);
                 }
             }

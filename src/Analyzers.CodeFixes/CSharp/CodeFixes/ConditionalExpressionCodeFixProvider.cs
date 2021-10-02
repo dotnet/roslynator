@@ -52,12 +52,12 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Use coalesce expression",
-                                cancellationToken =>
+                                ct =>
                                 {
                                     return SimplifyNullCheckRefactoring.RefactorAsync(
                                         document,
                                         conditionalExpression,
-                                        cancellationToken);
+                                        ct);
                                 },
                                 GetEquivalenceKey(diagnostic));
 
@@ -78,12 +78,12 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Use conditional access",
-                                cancellationToken =>
+                                ct =>
                                 {
                                     return SimplifyNullCheckRefactoring.RefactorAsync(
                                         document,
                                         conditionalExpression,
-                                        cancellationToken);
+                                        ct);
                                 },
                                 GetEquivalenceKey(diagnostic));
 

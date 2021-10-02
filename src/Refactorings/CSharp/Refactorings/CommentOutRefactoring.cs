@@ -20,7 +20,7 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 $"Comment out {CSharpFacts.GetTitle(member)}",
-                cancellationToken => RefactorAsync(context.Document, fileSpan.StartLine(), fileSpan.EndLine(), cancellationToken),
+                ct => RefactorAsync(context.Document, fileSpan.StartLine(), fileSpan.EndLine(), ct),
                 RefactoringIdentifiers.CommentOutMember);
         }
 
@@ -30,7 +30,7 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 $"Comment out {CSharpFacts.GetTitle(localFunctionStatement)}",
-                cancellationToken => RefactorAsync(context.Document, fileSpan.StartLine(), fileSpan.EndLine(), cancellationToken),
+                ct => RefactorAsync(context.Document, fileSpan.StartLine(), fileSpan.EndLine(), ct),
                 RefactoringIdentifiers.CommentOutMember);
         }
 

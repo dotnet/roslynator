@@ -21,7 +21,7 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 "Duplicate argument",
-                cancellationToken => RefactorAsync(context.Document, argument, cancellationToken),
+                ct => RefactorAsync(context.Document, argument, ct),
                 RefactoringIdentifiers.DuplicateArgument);
         }
 

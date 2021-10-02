@@ -61,7 +61,7 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Simplify boolean comparison",
-                                cancellationToken => SimplifyBooleanComparisonRefactoring.RefactorAsync(document, binaryExpression, cancellationToken),
+                                ct => SimplifyBooleanComparisonRefactoring.RefactorAsync(document, binaryExpression, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -72,7 +72,7 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Swap operands",
-                                cancellationToken => document.ReplaceNodeAsync(binaryExpression, SyntaxRefactorings.SwapBinaryOperands(binaryExpression), cancellationToken),
+                                ct => document.ReplaceNodeAsync(binaryExpression, SyntaxRefactorings.SwapBinaryOperands(binaryExpression), ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -82,7 +82,7 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Use 'string.IsNullOrEmpty' method",
-                                cancellationToken => UseStringIsNullOrEmptyMethodAsync(document, binaryExpression, cancellationToken),
+                                ct => UseStringIsNullOrEmptyMethodAsync(document, binaryExpression, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -100,7 +100,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                             CodeAction codeAction = CodeAction.Create(
                                 "Simplify coalesce expression",
-                                cancellationToken => SimplifyCoalesceExpressionRefactoring.RefactorAsync(document, binaryExpression, expression, cancellationToken),
+                                ct => SimplifyCoalesceExpressionRefactoring.RefactorAsync(document, binaryExpression, expression, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -110,7 +110,7 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Remove redundant 'as' operator",
-                                cancellationToken => RemoveRedundantAsOperatorRefactoring.RefactorAsync(document, binaryExpression, cancellationToken),
+                                ct => RemoveRedundantAsOperatorRefactoring.RefactorAsync(document, binaryExpression, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -120,7 +120,7 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Use string.Length",
-                                cancellationToken => UseStringLengthInsteadOfComparisonWithEmptyStringAsync(document, binaryExpression, cancellationToken),
+                                ct => UseStringLengthInsteadOfComparisonWithEmptyStringAsync(document, binaryExpression, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -134,7 +134,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                             CodeAction codeAction = CodeAction.Create(
                                 $"Use EqualityComparer<{typeSymbol.Name}>.Default",
-                                cancellationToken => UnconstrainedTypeParameterCheckedForNullRefactoring.RefactorAsync(document, binaryExpression, typeSymbol, cancellationToken),
+                                ct => UnconstrainedTypeParameterCheckedForNullRefactoring.RefactorAsync(document, binaryExpression, typeSymbol, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -162,7 +162,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                             CodeAction codeAction = CodeAction.Create(
                                 title,
-                                cancellationToken => ValueTypeObjectIsNeverEqualToNullRefactoring.RefactorAsync(document, binaryExpression, typeSymbol, cancellationToken),
+                                ct => ValueTypeObjectIsNeverEqualToNullRefactoring.RefactorAsync(document, binaryExpression, typeSymbol, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -172,7 +172,7 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Join string expressions",
-                                cancellationToken => JoinStringExpressionsRefactoring.RefactorAsync(document, binaryExpression, context.Span, cancellationToken),
+                                ct => JoinStringExpressionsRefactoring.RefactorAsync(document, binaryExpression, context.Span, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -182,7 +182,7 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Use ^ operator",
-                                cancellationToken => UseExclusiveOrOperatorRefactoring.RefactorAsync(document, binaryExpression, cancellationToken),
+                                ct => UseExclusiveOrOperatorRefactoring.RefactorAsync(document, binaryExpression, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);

@@ -48,7 +48,7 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         context.RegisterRefactoring(
                             AddBracesToSwitchSectionRefactoring.Title,
-                            cancellationToken => AddBracesToSwitchSectionRefactoring.RefactorAsync(context.Document, switchSection, cancellationToken),
+                            ct => AddBracesToSwitchSectionRefactoring.RefactorAsync(context.Document, switchSection, ct),
                             RefactoringIdentifiers.AddBracesToSwitchSection);
                     }
 
@@ -57,7 +57,7 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         context.RegisterRefactoring(
                             AddBracesToSwitchSectionsRefactoring.Title,
-                            cancellationToken => AddBracesToSwitchSectionsRefactoring.RefactorAsync(context.Document, switchStatement, null, cancellationToken),
+                            ct => AddBracesToSwitchSectionsRefactoring.RefactorAsync(context.Document, switchStatement, null, ct),
                             RefactoringIdentifiers.AddBracesToSwitchSections);
                     }
                 }
@@ -67,7 +67,7 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         context.RegisterRefactoring(
                             RemoveBracesFromSwitchSectionRefactoring.Title,
-                            cancellationToken => RemoveBracesFromSwitchSectionRefactoring.RefactorAsync(context.Document, switchSection, cancellationToken),
+                            ct => RemoveBracesFromSwitchSectionRefactoring.RefactorAsync(context.Document, switchSection, ct),
                             RefactoringIdentifiers.RemoveBracesFromSwitchSection);
                     }
 
@@ -76,7 +76,7 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         context.RegisterRefactoring(
                             RemoveBracesFromSwitchSectionsRefactoring.Title,
-                            cancellationToken => RemoveBracesFromSwitchSectionsRefactoring.RefactorAsync(context.Document, switchStatement, null, cancellationToken),
+                            ct => RemoveBracesFromSwitchSectionsRefactoring.RefactorAsync(context.Document, switchStatement, null, ct),
                             RefactoringIdentifiers.RemoveBracesFromSwitchSections);
                     }
                 }

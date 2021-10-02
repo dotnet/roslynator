@@ -49,7 +49,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             CodeAction codeAction = CodeAction.Create(
                 (node.IsKind(SyntaxKind.EventDeclaration)) ? "Remove accessor" : "Remove body",
-                cancellationToken => RefactorAsync(context.Document, node, cancellationToken),
+                ct => RefactorAsync(context.Document, node, ct),
                 GetEquivalenceKey(diagnostic));
 
             context.RegisterCodeFix(codeAction, diagnostic);

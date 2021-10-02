@@ -29,7 +29,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             CodeAction codeAction = CodeAction.Create(
                 "Remove parentheses",
-                cancellationToken => context.Document.RemoveNodeAsync(attributeArgumentList, SyntaxRemoveOptions.KeepNoTrivia, cancellationToken),
+                ct => context.Document.RemoveNodeAsync(attributeArgumentList, SyntaxRemoveOptions.KeepNoTrivia, ct),
                 GetEquivalenceKey(DiagnosticIdentifiers.RemoveArgumentListFromAttribute));
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);

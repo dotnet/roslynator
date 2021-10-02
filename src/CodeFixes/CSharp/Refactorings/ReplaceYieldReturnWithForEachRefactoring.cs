@@ -39,7 +39,7 @@ namespace Roslynator.CSharp.Refactorings
 
             CodeAction codeAction = CodeAction.Create(
                 "Replace yield return with foreach",
-                cancellationToken => RefactorAsync(context.Document, expression, semanticModel, cancellationToken),
+                ct => RefactorAsync(context.Document, expression, semanticModel, ct),
                 EquivalenceKey.Create(diagnostic, CodeFixIdentifiers.ReplaceYieldReturnWithForEach));
 
             context.RegisterCodeFix(codeAction, diagnostic);

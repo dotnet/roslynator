@@ -40,7 +40,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             CodeAction codeAction = CodeAction.Create(
                 $"Remove type parameter '{name}'",
-                cancellationToken =>
+                ct =>
                 {
                     GenericInfo genericInfo = SyntaxInfo.GenericInfo(typeParameter);
 
@@ -51,7 +51,7 @@ namespace Roslynator.CSharp.CodeFixes
                     if (constraintClause != null)
                         newGenericInfo = newGenericInfo.RemoveConstraintClause(constraintClause);
 
-                    return context.Document.ReplaceNodeAsync(genericInfo.Node, newGenericInfo.Node, cancellationToken);
+                    return context.Document.ReplaceNodeAsync(genericInfo.Node, newGenericInfo.Node, ct);
                 },
                 GetEquivalenceKey(diagnostic));
 

@@ -28,7 +28,7 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             context.RegisterRefactoring(
                                 "Duplicate local function",
-                                cancellationToken => DuplicateMemberDeclarationRefactoring.RefactorAsync(context.Document, localFunctionStatement, cancellationToken),
+                                ct => DuplicateMemberDeclarationRefactoring.RefactorAsync(context.Document, localFunctionStatement, ct),
                                 RefactoringIdentifiers.DuplicateMember);
                         }
 
@@ -52,7 +52,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     ConvertBlockBodyToExpressionBodyRefactoring.Title,
-                    cancellationToken => ConvertBlockBodyToExpressionBodyRefactoring.RefactorAsync(context.Document, localFunctionStatement, cancellationToken),
+                    ct => ConvertBlockBodyToExpressionBodyRefactoring.RefactorAsync(context.Document, localFunctionStatement, ct),
                     RefactoringIdentifiers.ConvertBlockBodyToExpressionBody);
             }
 

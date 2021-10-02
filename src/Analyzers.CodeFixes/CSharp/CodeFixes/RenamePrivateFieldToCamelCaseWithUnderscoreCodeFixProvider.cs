@@ -47,7 +47,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             CodeAction codeAction = CodeAction.Create(
                 $"Rename '{oldName}' to '{newName}'",
-                cancellationToken => RefactorAsync(context.Document, symbol, newName, cancellationToken),
+                ct => RefactorAsync(context.Document, symbol, newName, ct),
                 DiagnosticIdentifiers.RenamePrivateFieldToCamelCaseWithUnderscore);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);

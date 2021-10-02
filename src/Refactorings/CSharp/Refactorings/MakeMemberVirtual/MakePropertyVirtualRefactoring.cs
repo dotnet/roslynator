@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.Refactorings.MakeMemberVirtual
 
             context.RegisterRefactoring(
                 "Make property virtual",
-                cancellationToken => RefactorAsync(context.Document, propertyDeclaration, cancellationToken),
+                ct => RefactorAsync(context.Document, propertyDeclaration, ct),
                 RefactoringIdentifiers.MakeMemberVirtual);
         }
 

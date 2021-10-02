@@ -35,7 +35,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             CodeAction codeAction = CodeAction.Create(
                 "Introduce field to lock on",
-                cancellationToken => AvoidLockingOnPubliclyAccessibleInstanceRefactoring.RefactorAsync(context.Document, lockStatement, cancellationToken),
+                ct => AvoidLockingOnPubliclyAccessibleInstanceRefactoring.RefactorAsync(context.Document, lockStatement, ct),
                 GetEquivalenceKey(DiagnosticIdentifiers.AvoidLockingOnPubliclyAccessibleInstance));
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);

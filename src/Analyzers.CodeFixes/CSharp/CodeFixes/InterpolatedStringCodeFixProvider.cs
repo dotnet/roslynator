@@ -69,7 +69,7 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Convert to concatenation",
-                                cancellationToken => ConvertInterpolatedStringToConcatenationRefactoring.RefactorAsync(document, interpolatedString, cancellationToken),
+                                ct => ConvertInterpolatedStringToConcatenationRefactoring.RefactorAsync(document, interpolatedString, ct),
                                 GetEquivalenceKey(diagnostic.Id));
 
                             context.RegisterCodeFix(codeAction, diagnostic);

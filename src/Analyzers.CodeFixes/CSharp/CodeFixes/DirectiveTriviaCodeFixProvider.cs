@@ -36,7 +36,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             CodeAction codeAction = CodeAction.Create(
                 "Merge directives",
-                cancellationToken => RefactorAsync(context.Document, (PragmaWarningDirectiveTriviaSyntax)directive, cancellationToken),
+                ct => RefactorAsync(context.Document, (PragmaWarningDirectiveTriviaSyntax)directive, ct),
                 GetEquivalenceKey(diagnostic));
 
             context.RegisterCodeFix(codeAction, diagnostic);

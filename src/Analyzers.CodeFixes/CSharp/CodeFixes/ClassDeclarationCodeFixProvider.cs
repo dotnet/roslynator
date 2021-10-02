@@ -76,12 +76,12 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Generate exception constructors",
-                                cancellationToken =>
+                                ct =>
                                 {
                                     return ImplementExceptionConstructorsAsync(
                                         context.Document,
                                         classDeclaration,
-                                        cancellationToken);
+                                        ct);
                                 },
                                 GetEquivalenceKey(diagnostic));
 
@@ -92,7 +92,7 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Use AttributeUsageAttribute",
-                                cancellationToken => UseAttributeUsageAttributeAsync(context.Document, classDeclaration, cancellationToken),
+                                ct => UseAttributeUsageAttributeAsync(context.Document, classDeclaration, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);

@@ -24,7 +24,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     "Call 'IndexOf' instead of 'Contains'",
-                    cancellationToken => RefactorAsync(context.Document, invocation, cancellationToken),
+                    ct => RefactorAsync(context.Document, invocation, ct),
                     RefactoringIdentifiers.CallIndexOfInsteadOfContains);
             }
         }

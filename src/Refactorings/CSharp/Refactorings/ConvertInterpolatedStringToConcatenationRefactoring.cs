@@ -35,7 +35,7 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 "Convert to concatenation",
-                cancellationToken => RefactorAsync(context.Document, interpolatedString, cancellationToken),
+                ct => RefactorAsync(context.Document, interpolatedString, ct),
                 RefactoringIdentifiers.ConvertInterpolatedStringToConcatenation);
         }
 

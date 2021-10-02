@@ -36,7 +36,7 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Use EventArgs.Empty",
-                                cancellationToken => UseEventArgsEmptyRefactoring.RefactorAsync(context.Document, objectCreationExpression, cancellationToken),
+                                ct => UseEventArgsEmptyRefactoring.RefactorAsync(context.Document, objectCreationExpression, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);

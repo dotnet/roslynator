@@ -44,7 +44,7 @@ namespace Roslynator.CSharp.Refactorings
                 (parent.Kind() == SyntaxKind.ElseClause)
                     ? "Extract from containing else clause"
                     : "Extract from containing statement",
-                cancellationToken => RefactorAsync(context.Document, statement, cancellationToken),
+                ct => RefactorAsync(context.Document, statement, ct),
                 RefactoringIdentifiers.ExtractStatement);
         }
 

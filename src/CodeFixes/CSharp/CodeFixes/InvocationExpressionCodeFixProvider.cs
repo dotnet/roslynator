@@ -34,13 +34,13 @@ namespace Roslynator.CSharp.CodeFixes
 
             CodeAction codeAction = CodeAction.Create(
                 "Remove argument list",
-                cancellationToken =>
+                ct =>
                 {
                     ExpressionSyntax newNode = invocationExpression.Expression
                         .AppendToTrailingTrivia(invocationExpression.ArgumentList.GetTrailingTrivia())
                         .WithFormatterAnnotation();
 
-                    return context.Document.ReplaceNodeAsync(invocationExpression, newNode, cancellationToken);
+                    return context.Document.ReplaceNodeAsync(invocationExpression, newNode, ct);
                 },
                 GetEquivalenceKey(diagnostic));
 

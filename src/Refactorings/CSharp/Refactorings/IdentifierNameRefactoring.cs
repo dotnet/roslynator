@@ -81,7 +81,7 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 $"Rename '{fieldSymbol.Name}' to '{newName}'",
-                cancellationToken => Renamer.RenameSymbolAsync(context.Solution, fieldSymbol, newName, default(OptionSet), cancellationToken),
+                ct => Renamer.RenameSymbolAsync(context.Solution, fieldSymbol, newName, default(OptionSet), ct),
                 RefactoringIdentifiers.RenameBackingFieldAccordingToPropertyName);
         }
 

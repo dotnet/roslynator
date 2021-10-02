@@ -28,7 +28,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     "Remove property initializer",
-                    cancellationToken => RemovePropertyInitializerRefactoring.RefactorAsync(context.Document, propertyDeclaration, cancellationToken),
+                    ct => RemovePropertyInitializerRefactoring.RefactorAsync(context.Document, propertyDeclaration, ct),
                     RefactoringIdentifiers.RemovePropertyInitializer);
             }
 
@@ -42,7 +42,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     context.RegisterRefactoring(
                         "Expand property",
-                        cancellationToken => ExpandPropertyRefactoring.RefactorAsync(context.Document, propertyDeclaration, cancellationToken),
+                        ct => ExpandPropertyRefactoring.RefactorAsync(context.Document, propertyDeclaration, ct),
                         RefactoringIdentifiers.ExpandProperty);
                 }
 
@@ -50,7 +50,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     context.RegisterRefactoring(
                         "Expand property and add backing field",
-                        cancellationToken => ExpandPropertyAndAddBackingFieldRefactoring.RefactorAsync(context.Document, propertyDeclaration, context.Settings.PrefixFieldIdentifierWithUnderscore, cancellationToken),
+                        ct => ExpandPropertyAndAddBackingFieldRefactoring.RefactorAsync(context.Document, propertyDeclaration, context.Settings.PrefixFieldIdentifierWithUnderscore, ct),
                         RefactoringIdentifiers.ExpandPropertyAndAddBackingField);
                 }
             }
@@ -145,7 +145,7 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 $"Rename '{oldName}' to '{newName}'",
-                cancellationToken => Renamer.RenameSymbolAsync(context.Solution, symbol, newName, default(OptionSet), cancellationToken),
+                ct => Renamer.RenameSymbolAsync(context.Solution, symbol, newName, default(OptionSet), ct),
                 RefactoringIdentifiers.RenamePropertyAccordingToTypeName);
         }
     }

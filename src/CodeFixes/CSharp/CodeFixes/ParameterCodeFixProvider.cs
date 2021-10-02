@@ -60,7 +60,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                                     CodeAction codeAction = CodeAction.Create(
                                         $"Change parameter type to '{newType}'",
-                                        cancellationToken => context.Document.ReplaceNodeAsync(type, newType.WithTriviaFrom(type), cancellationToken),
+                                        ct => context.Document.ReplaceNodeAsync(type, newType.WithTriviaFrom(type), ct),
                                         GetEquivalenceKey(diagnostic));
 
                                     context.RegisterCodeFix(codeAction, diagnostic);
@@ -80,13 +80,13 @@ namespace Roslynator.CSharp.CodeFixes
 
                             CodeAction codeAction = CodeAction.Create(
                                 "Remove default value from parameter",
-                                cancellationToken =>
+                                ct =>
                                 {
                                     ParameterSyntax newParameter = parameter
                                         .RemoveNode(defaultValue)
                                         .WithFormatterAnnotation();
 
-                                    return context.Document.ReplaceNodeAsync(parameter, newParameter, cancellationToken);
+                                    return context.Document.ReplaceNodeAsync(parameter, newParameter, ct);
                                 },
                                 GetEquivalenceKey(diagnostic));
 

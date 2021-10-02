@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     "Convert to 'foreach'",
-                    cancellationToken => ConvertForToForEachRefactoring.RefactorAsync(context.Document, forStatement, cancellationToken),
+                    ct => ConvertForToForEachRefactoring.RefactorAsync(context.Document, forStatement, ct),
                     RefactoringIdentifiers.ConvertForToForEach);
             }
 
@@ -24,7 +24,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     "Convert to 'while'",
-                    cancellationToken => ConvertForToWhileRefactoring.RefactorAsync(context.Document, forStatement, cancellationToken),
+                    ct => ConvertForToWhileRefactoring.RefactorAsync(context.Document, forStatement, ct),
                     RefactoringIdentifiers.ConvertForToWhile);
             }
 
@@ -35,14 +35,14 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     context.RegisterRefactoring(
                         "Reverse 'for' statement",
-                        cancellationToken => ReverseForStatementRefactoring.RefactorAsync(context.Document, forStatement, cancellationToken),
+                        ct => ReverseForStatementRefactoring.RefactorAsync(context.Document, forStatement, ct),
                         RefactoringIdentifiers.ReverseForStatement);
                 }
                 else if (ReverseReversedForStatementRefactoring.CanRefactor(forStatement))
                 {
                     context.RegisterRefactoring(
                         "Reverse 'for' statement",
-                        cancellationToken => ReverseReversedForStatementRefactoring.RefactorAsync(context.Document, forStatement, cancellationToken),
+                        ct => ReverseReversedForStatementRefactoring.RefactorAsync(context.Document, forStatement, ct),
                         RefactoringIdentifiers.ReverseForStatement);
                 }
             }

@@ -30,12 +30,12 @@ namespace Roslynator.CSharp.CodeFixes
 
             CodeAction codeAction = CodeAction.Create(
                 "Remove unnecessary case label",
-                cancellationToken =>
+                ct =>
                 {
                     return RemoveUnnecessaryCaseLabelRefactoring.RefactorAsync(
                         context.Document,
                         label,
-                        cancellationToken);
+                        ct);
                 },
                 GetEquivalenceKey(DiagnosticIdentifiers.RemoveUnnecessaryCaseLabel));
 

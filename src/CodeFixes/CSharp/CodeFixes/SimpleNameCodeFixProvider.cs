@@ -53,13 +53,13 @@ namespace Roslynator.CSharp.CodeFixes
 
                 CodeAction codeAction = CodeAction.Create(
                     "Add argument list",
-                    cancellationToken =>
+                    ct =>
                     {
                         InvocationExpressionSyntax invocationExpression = InvocationExpression(
                             memberAccess.WithoutTrailingTrivia(),
                             ArgumentList().WithTrailingTrivia(memberAccess.GetTrailingTrivia()));
 
-                        return document.ReplaceNodeAsync(memberAccess, invocationExpression, cancellationToken);
+                        return document.ReplaceNodeAsync(memberAccess, invocationExpression, ct);
                     },
                     GetEquivalenceKey(diagnostic));
 
@@ -88,7 +88,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                             CodeAction codeAction = CodeAction.Create(
                                 $"Change element type to '{SymbolDisplay.ToMinimalDisplayString(typeSymbol, semanticModel, simpleName.SpanStart, SymbolDisplayFormats.DisplayName)}'",
-                                cancellationToken => document.ReplaceNodeAsync(simpleName, newType, cancellationToken),
+                                ct => document.ReplaceNodeAsync(simpleName, newType, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);

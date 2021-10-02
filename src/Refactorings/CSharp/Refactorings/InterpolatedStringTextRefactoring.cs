@@ -29,14 +29,14 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     context.RegisterRefactoring(
                         "Insert interpolation",
-                        cancellationToken =>
+                        ct =>
                         {
                             return InsertInterpolationRefactoring.RefactorAsync(
                                 context.Document,
                                 interpolatedString,
                                 span,
                                 addNameOf: false,
-                                cancellationToken: cancellationToken);
+                                cancellationToken: ct);
                         },
                         RefactoringIdentifiers.InsertStringInterpolation);
 
@@ -57,14 +57,14 @@ namespace Roslynator.CSharp.Refactorings
                             {
                                 context.RegisterRefactoring(
                                     "Insert interpolation with nameof",
-                                    cancellationToken =>
+                                    ct =>
                                     {
                                         return InsertInterpolationRefactoring.RefactorAsync(
                                             context.Document,
                                             interpolatedString,
                                             span,
                                             addNameOf: true,
-                                            cancellationToken: cancellationToken);
+                                            cancellationToken: ct);
                                     },
                                     RefactoringIdentifiers.InsertStringInterpolation);
 
