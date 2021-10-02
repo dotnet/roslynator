@@ -3230,12 +3230,14 @@ namespace Roslynator.CSharp
                     case SyntaxKind.AwaitExpression:
                     case SyntaxKind.CoalesceAssignmentExpression:
                     case SyntaxKind.CoalesceExpression:
+                    case SyntaxKind.ConditionalAccessExpression:
                     case SyntaxKind.ConditionalExpression:
                     case SyntaxKind.DivideAssignmentExpression:
                     case SyntaxKind.ElementAccessExpression:
                     case SyntaxKind.EqualsExpression:
                     case SyntaxKind.EqualsValueClause:
                     case SyntaxKind.ExclusiveOrAssignmentExpression:
+                    case SyntaxKind.ImplicitObjectCreationExpression:
                     case SyntaxKind.InterpolatedStringExpression:
                     case SyntaxKind.Interpolation:
                     case SyntaxKind.InvocationExpression:
