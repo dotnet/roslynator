@@ -110,7 +110,7 @@ namespace Roslynator.CSharp.Spelling
 
             if (_stack.Count == 0)
             {
-                Debug.Fail(node.ToString());
+                SyntaxDebug.Fail(node);
                 return;
             }
 
@@ -190,7 +190,7 @@ namespace Roslynator.CSharp.Spelling
                     }
                 default:
                     {
-                        Debug.Fail(containingNode.Kind().ToString());
+                        SyntaxDebug.Fail(containingNode);
                         break;
                     }
             }
@@ -233,7 +233,7 @@ namespace Roslynator.CSharp.Spelling
 
         public override void VisitVariableDeclarator(VariableDeclaratorSyntax node)
         {
-            Debug.Assert(node.IsParentKind(SyntaxKind.VariableDeclaration), node.Parent.Kind().ToString());
+            SyntaxDebug.Assert(node.IsParentKind(SyntaxKind.VariableDeclaration), node.Parent);
 
             SyntaxNode containingNode = _stack.Peek();
 
@@ -265,7 +265,7 @@ namespace Roslynator.CSharp.Spelling
                     }
                 default:
                     {
-                        Debug.Fail(containingNode.Kind().ToString());
+                        SyntaxDebug.Fail(containingNode);
                         break;
                     }
             }

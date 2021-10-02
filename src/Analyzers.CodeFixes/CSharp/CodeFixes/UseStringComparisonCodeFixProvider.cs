@@ -282,7 +282,7 @@ namespace Roslynator.CSharp.CodeFixes
                     }
                 default:
                     {
-                        Debug.Fail(expression.Kind().ToString());
+                        SyntaxDebug.Fail(expression);
                         return Argument(expression);
                     }
             }
@@ -308,7 +308,7 @@ namespace Roslynator.CSharp.CodeFixes
                     }
                 default:
                     {
-                        Debug.Fail(expression.Kind().ToString());
+                        SyntaxDebug.Fail(expression);
                         return argument;
                     }
             }

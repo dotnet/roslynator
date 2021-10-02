@@ -72,7 +72,7 @@ namespace Roslynator.CSharp.FindSymbols
                     return false;
             }
 
-            Debug.Fail(token.Kind().ToString());
+            SyntaxDebug.Fail(token);
 
             return false;
        }

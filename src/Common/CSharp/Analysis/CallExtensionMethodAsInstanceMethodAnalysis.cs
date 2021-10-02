@@ -122,7 +122,7 @@ namespace Roslynator.CSharp.Analysis
                         }
                     default:
                         {
-                            Debug.Fail(expression.Kind().ToString());
+                            SyntaxDebug.Fail(expression);
                             return null;
                         }
                 }

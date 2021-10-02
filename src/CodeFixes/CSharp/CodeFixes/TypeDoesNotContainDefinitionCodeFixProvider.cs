@@ -38,7 +38,7 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 case SimpleNameSyntax simpleName:
                     {
-                        Debug.Assert(expression.IsKind(SyntaxKind.IdentifierName, SyntaxKind.GenericName), expression.Kind().ToString());
+                        SyntaxDebug.Assert(expression.IsKind(SyntaxKind.IdentifierName, SyntaxKind.GenericName), expression);
 
                         if (simpleName.IsParentKind(SyntaxKind.SimpleMemberAccessExpression))
                         {

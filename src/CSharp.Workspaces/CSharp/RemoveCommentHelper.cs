@@ -10,7 +10,7 @@ namespace Roslynator.CSharp
     {
         public static SyntaxToken GetReplacementToken(SyntaxTrivia comment)
         {
-            Debug.Assert(CSharpFacts.IsCommentTrivia(comment.Kind()), comment.Kind().ToString());
+            SyntaxDebug.Assert(CSharpFacts.IsCommentTrivia(comment.Kind()), comment);
 
             SyntaxToken token = comment.Token;
 

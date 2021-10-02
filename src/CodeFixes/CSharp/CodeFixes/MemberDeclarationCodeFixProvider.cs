@@ -201,7 +201,7 @@ namespace Roslynator.CSharp.CodeFixes
                                     }
                             }
 
-                            Debug.Assert(node != null, memberDeclaration.ToString());
+                            SyntaxDebug.Assert(node != null, memberDeclaration);
 
                             if (node == null)
                                 break;

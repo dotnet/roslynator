@@ -60,7 +60,7 @@ namespace Roslynator.CSharp.Refactorings
                     return SyntaxKind.RightShiftExpression;
             }
 
-            Debug.Fail(assignmentExpression.Kind().ToString());
+            SyntaxDebug.Fail(assignmentExpression);
             return SyntaxKind.None;
         }
     }

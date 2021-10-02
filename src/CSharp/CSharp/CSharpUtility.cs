@@ -439,7 +439,7 @@ namespace Roslynator.CSharp
                                     }
                                 default:
                                     {
-                                        Debug.Fail(parent.Kind().ToString());
+                                        SyntaxDebug.Fail(parent);
                                         break;
                                     }
                             }
@@ -575,7 +575,7 @@ namespace Roslynator.CSharp
                     return ((LocalFunctionStatementSyntax)node).ExpressionBody;
             }
 
-            Debug.Assert(!CSharpFacts.CanHaveExpressionBody(node.Kind()), node.Kind().ToString());
+            SyntaxDebug.Assert(!CSharpFacts.CanHaveExpressionBody(node.Kind()), node);
 
             return null;
         }

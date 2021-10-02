@@ -124,7 +124,7 @@ namespace Roslynator.CSharp
                     }
                 default:
                     {
-                        Debug.Assert(parent == null, parent.Kind().ToString());
+                        SyntaxDebug.Assert(parent == null, parent);
 
                         return document.RemoveNodeAsync(member, SyntaxRefactorings.DefaultRemoveOptions, cancellationToken);
                     }
@@ -354,7 +354,7 @@ namespace Roslynator.CSharp
                         return (directiveFilter & PreprocessorDirectiveFilter.Nullable) != 0;
                 }
 
-                Debug.Fail(directive.Kind().ToString());
+                SyntaxDebug.Fail(directive);
                 return false;
             }
         }

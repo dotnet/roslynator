@@ -409,7 +409,7 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
             }
             else
             {
-                Debug.Fail(node.ToString());
+                SyntaxDebug.Fail(node);
             }
         }
 

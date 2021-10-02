@@ -48,7 +48,7 @@ namespace Roslynator.CSharp.CodeFixes
             }
             else
             {
-                Debug.Assert(expression.IsKind(SyntaxKind.EqualsExpression, SyntaxKind.NotEqualsExpression), expression.Kind().ToString());
+                SyntaxDebug.Assert(expression.IsKind(SyntaxKind.EqualsExpression, SyntaxKind.NotEqualsExpression), expression);
 
                 CodeAction codeAction = CodeAction.Create(
                     "Call 'HasFlag'",

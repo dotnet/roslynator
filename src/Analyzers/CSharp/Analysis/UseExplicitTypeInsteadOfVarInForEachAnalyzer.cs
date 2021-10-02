@@ -74,7 +74,7 @@ namespace Roslynator.CSharp.Analysis
                     }
                 default:
                     {
-                        Debug.Assert(forEachStatement.ContainsDiagnostics, forEachStatement.Variable.Kind().ToString());
+                        SyntaxDebug.Assert(forEachStatement.ContainsDiagnostics, forEachStatement.Variable);
                         break;
                     }
             }

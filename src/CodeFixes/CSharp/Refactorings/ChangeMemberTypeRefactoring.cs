@@ -32,7 +32,7 @@ namespace Roslynator.CSharp.Refactorings
 
             (ISymbol symbol, ITypeSymbol typeSymbol) = GetContainingSymbolAndType(expression, semanticModel, context.CancellationToken);
 
-            Debug.Assert(symbol != null, expression.ToString());
+            SyntaxDebug.Assert(symbol != null, expression);
 
             if (symbol == null)
                 return;
@@ -206,7 +206,7 @@ namespace Roslynator.CSharp.Refactorings
                     }
             }
 
-            Debug.Fail(expression.ToString());
+            SyntaxDebug.Fail(expression);
 
             return default((ISymbol, ITypeSymbol));
         }

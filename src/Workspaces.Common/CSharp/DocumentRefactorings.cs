@@ -47,7 +47,7 @@ namespace Roslynator.CSharp
                         }
                     default:
                         {
-                            Debug.Fail(parent.Kind().ToString());
+                            SyntaxDebug.Fail(parent);
                             break;
                         }
                 }
@@ -98,7 +98,7 @@ namespace Roslynator.CSharp
                     if (f.Expression is DeclarationExpressionSyntax declarationExpression)
                         return f.WithExpression(declarationExpression.WithType(declarationExpression.Type.WithSimplifierAnnotation()));
 
-                    Debug.Fail(f.Expression.Kind().ToString());
+                    SyntaxDebug.Fail(f.Expression);
 
                     return f;
                 })

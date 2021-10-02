@@ -38,7 +38,7 @@ namespace Roslynator.CSharp
 
             foreach (InterpolatedStringContentSyntax content in interpolatedString.Contents)
             {
-                Debug.Assert(content.IsKind(SyntaxKind.Interpolation, SyntaxKind.InterpolatedStringText), content.Kind().ToString());
+                SyntaxDebug.Assert(content.IsKind(SyntaxKind.Interpolation, SyntaxKind.InterpolatedStringText), content);
 
                 switch (content.Kind())
                 {

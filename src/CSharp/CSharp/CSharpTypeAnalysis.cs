@@ -408,7 +408,7 @@ namespace Roslynator.CSharp
                     }
                 default:
                     {
-                        Debug.Fail(declarationExpression.Designation.Kind().ToString());
+                        SyntaxDebug.Fail(declarationExpression.Designation);
                         return false;
                     }
             }
@@ -498,12 +498,12 @@ namespace Roslynator.CSharp
                 case SyntaxKind.EqualsValueClause:
                 case SyntaxKind.SimpleMemberAccessExpression:
                     {
-                        Debug.Assert(!tupleExpression.Arguments.Any(f => f.Expression.IsKind(SyntaxKind.DeclarationExpression)), tupleExpression.ToString());
+                        SyntaxDebug.Assert(!tupleExpression.Arguments.Any(f => f.Expression.IsKind(SyntaxKind.DeclarationExpression)), tupleExpression);
                         return false;
                     }
                 default:
                     {
-                        Debug.Fail(tupleExpression.Parent.Kind().ToString());
+                        SyntaxDebug.Fail(tupleExpression.Parent);
                         return false;
                     }
             }
@@ -648,7 +648,7 @@ namespace Roslynator.CSharp
                         if (type == null)
                             return default;
 
-                        Debug.Assert(type.IsVar, type.Kind().ToString());
+                        SyntaxDebug.Assert(type.IsVar, type);
 
                         if (type.IsVar)
                             flags |= TypeAnalysisFlags.Implicit;
@@ -659,7 +659,7 @@ namespace Roslynator.CSharp
                     {
                         foreach (ArgumentSyntax argument in tupleExpression.Arguments)
                         {
-                            Debug.Assert(argument.Expression.IsKind(SyntaxKind.DeclarationExpression), argument.Expression.Kind().ToString());
+                            SyntaxDebug.Assert(argument.Expression.IsKind(SyntaxKind.DeclarationExpression), argument.Expression);
 
                             if (argument.Expression is DeclarationExpressionSyntax declarationExpression)
                             {
@@ -680,7 +680,7 @@ namespace Roslynator.CSharp
                     }
                 default:
                     {
-                        Debug.Fail(forEachStatement.Variable.Kind().ToString());
+                        SyntaxDebug.Fail(forEachStatement.Variable);
                         return default;
                     }
             }
@@ -749,7 +749,7 @@ namespace Roslynator.CSharp
 
             TypeSyntax type = declarationExpression.Type;
 
-            Debug.Assert(type.IsVar, type.Kind().ToString());
+            SyntaxDebug.Assert(type.IsVar, type);
 
             if (!type.IsVar)
                 return false;

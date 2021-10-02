@@ -98,7 +98,7 @@ namespace Roslynator.CSharp.FindSymbols
                     }
                 default:
                     {
-                        Debug.Fail(node.Kind().ToString());
+                        SyntaxDebug.Fail(node);
 
                         walker.Visit(node);
                         break;

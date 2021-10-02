@@ -173,7 +173,7 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 default:
                     {
-                        Debug.Fail(node.Kind().ToString());
+                        SyntaxDebug.Fail(node);
                         return node;
                     }
             }

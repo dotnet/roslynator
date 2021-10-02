@@ -597,7 +597,7 @@ namespace Roslynator.CSharp
                         }
                     }
 
-                    Debug.Fail(token.ToString());
+                    SyntaxDebug.Fail(token);
                     return token;
                 });
         }

@@ -306,7 +306,7 @@ namespace Roslynator.CSharp.CodeFixes
                     }
             }
 
-            Debug.Fail(innerInvocationExpression.ToString());
+            SyntaxDebug.Fail(innerInvocationExpression);
             return outerInvocationExpression;
         }
 

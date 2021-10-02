@@ -206,7 +206,7 @@ namespace Roslynator.CSharp.Analysis
 
             SyntaxToken identifier = CSharpUtility.GetIdentifier(node);
 
-            Debug.Assert(!identifier.IsKind(SyntaxKind.None), node.ToString());
+            SyntaxDebug.Assert(!identifier.IsKind(SyntaxKind.None), node);
 
             if (identifier.Kind() == SyntaxKind.None)
                 return;

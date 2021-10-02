@@ -310,7 +310,7 @@ namespace Roslynator.CSharp.CodeFixes
             }
             else
             {
-                Debug.Fail(binaryExpression.ToString());
+                SyntaxDebug.Fail(binaryExpression);
                 return document;
             }
 

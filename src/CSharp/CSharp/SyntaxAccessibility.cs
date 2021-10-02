@@ -72,7 +72,7 @@ namespace Roslynator.CSharp
                     return SyntaxAccessibility<IncompleteMemberSyntax>.Instance.GetDefaultAccessibility((IncompleteMemberSyntax)declaration);
             }
 
-            Debug.Fail(declaration.Kind().ToString());
+            SyntaxDebug.Fail(declaration);
 
             return Accessibility.NotApplicable;
         }
@@ -134,7 +134,7 @@ namespace Roslynator.CSharp
                     return SyntaxAccessibility<IncompleteMemberSyntax>.Instance.GetDefaultExplicitAccessibility((IncompleteMemberSyntax)declaration);
             }
 
-            Debug.Fail(declaration.Kind().ToString());
+            SyntaxDebug.Fail(declaration);
 
             return Accessibility.NotApplicable;
         }
@@ -196,7 +196,7 @@ namespace Roslynator.CSharp
                     return SyntaxAccessibility<IncompleteMemberSyntax>.Instance.GetAccessibility((IncompleteMemberSyntax)declaration);
             }
 
-            Debug.Fail(declaration.Kind().ToString());
+            SyntaxDebug.Fail(declaration);
 
             return Accessibility.NotApplicable;
         }
@@ -258,7 +258,7 @@ namespace Roslynator.CSharp
                     return SyntaxAccessibility<IncompleteMemberSyntax>.Instance.GetExplicitAccessibility((IncompleteMemberSyntax)declaration);
             }
 
-            Debug.Fail(declaration.Kind().ToString());
+            SyntaxDebug.Fail(declaration);
 
             return Accessibility.NotApplicable;
         }
@@ -350,7 +350,7 @@ namespace Roslynator.CSharp
                 if (parent is ICompilationUnitSyntax)
                     return true;
 
-                Debug.Assert(parent is MemberDeclarationSyntax, parent.Kind().ToString());
+                SyntaxDebug.Assert(parent is MemberDeclarationSyntax, parent);
 
                 declaration = parent as MemberDeclarationSyntax;
 
@@ -504,7 +504,7 @@ namespace Roslynator.CSharp
                     {
                         var memberDeclaration = node.Parent?.Parent as MemberDeclarationSyntax;
 
-                        Debug.Assert(memberDeclaration != null, node.ToString());
+                        SyntaxDebug.Assert(memberDeclaration != null, node);
 
                         if (memberDeclaration != null)
                         {
@@ -522,7 +522,7 @@ namespace Roslynator.CSharp
                     }
                 default:
                     {
-                        Debug.Fail(node.Kind().ToString());
+                        SyntaxDebug.Fail(node);
                         return false;
                     }
             }

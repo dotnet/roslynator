@@ -51,7 +51,7 @@ namespace Roslynator.CSharp.Refactorings
             }
             else
             {
-                Debug.Fail(binaryExpression.ToString());
+                SyntaxDebug.Fail(binaryExpression);
             }
 
             return document.ReplaceNodeAsync(binaryExpression, newNode.WithFormatterAnnotation(), cancellationToken);

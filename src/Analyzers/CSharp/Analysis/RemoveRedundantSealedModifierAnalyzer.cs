@@ -64,7 +64,7 @@ namespace Roslynator.CSharp.Analysis
 
             SyntaxNode node = symbol.GetSyntax(context.CancellationToken);
 
-            Debug.Assert(node.IsKind(SyntaxKind.MethodDeclaration, SyntaxKind.PropertyDeclaration, SyntaxKind.IndexerDeclaration), node.Kind().ToString());
+            SyntaxDebug.Assert(node.IsKind(SyntaxKind.MethodDeclaration, SyntaxKind.PropertyDeclaration, SyntaxKind.IndexerDeclaration), node);
 
             ModifierListInfo info = SyntaxInfo.ModifierListInfo(node);
 

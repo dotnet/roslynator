@@ -3263,7 +3263,7 @@ namespace Roslynator.CSharp
                         }
                     default:
                         {
-                            Debug.Fail(current.Kind().ToString());
+                            SyntaxDebug.Fail(current);
                             break;
                         }
 #endif
@@ -4202,7 +4202,7 @@ namespace Roslynator.CSharp
                     return ((InterfaceDeclarationSyntax)typeDeclaration).WithMembers(newMembers);
                 default:
                     {
-                        Debug.Fail(typeDeclaration.Kind().ToString());
+                        SyntaxDebug.Fail(typeDeclaration);
                         return typeDeclaration;
                     }
             }
@@ -4242,11 +4242,11 @@ namespace Roslynator.CSharp
 
                 } while (qualifiedName != null);
 
-                Debug.Fail(left.Kind().ToString());
+                SyntaxDebug.Fail(left);
             }
             else
             {
-                Debug.Fail(usingDirective.Name.Kind().ToString());
+                SyntaxDebug.Fail(usingDirective.Name);
             }
 
             return null;

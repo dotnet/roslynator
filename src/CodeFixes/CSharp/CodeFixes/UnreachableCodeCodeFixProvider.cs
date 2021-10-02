@@ -39,7 +39,7 @@ namespace Roslynator.CSharp.CodeFixes
             if (!TryFindFirstAncestorOrSelf(root, context.Span, out StatementSyntax statement))
                 return;
 
-            Debug.Assert(context.Span.Start == statement.SpanStart, statement.ToString());
+            SyntaxDebug.Assert(context.Span.Start == statement.SpanStart, statement);
 
             if (context.Span.Start != statement.SpanStart)
                 return;

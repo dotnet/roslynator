@@ -272,7 +272,7 @@ namespace Roslynator.CSharp.Analysis
                             if (declaringSyntax == null)
                                 break;
 
-                            Debug.Assert(declaringSyntax.IsKind(SyntaxKind.VariableDeclarator, SyntaxKind.Parameter), declaringSyntax.Kind().ToString());
+                            SyntaxDebug.Assert(declaringSyntax.IsKind(SyntaxKind.VariableDeclarator, SyntaxKind.Parameter), declaringSyntax);
                         }
 
                         SyntaxNode n2 = declaringSyntax.Parent;

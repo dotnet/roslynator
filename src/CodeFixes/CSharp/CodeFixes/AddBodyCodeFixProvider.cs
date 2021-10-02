@@ -245,7 +245,7 @@ namespace Roslynator.CSharp.CodeFixes
                     }
             }
 
-            Debug.Fail(node.Kind().ToString());
+            SyntaxDebug.Fail(node);
 
             return null;
         }

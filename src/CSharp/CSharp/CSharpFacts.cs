@@ -111,7 +111,7 @@ namespace Roslynator.CSharp
                     return "parameter";
                 default:
                     {
-                        Debug.Fail(node.Kind().ToString());
+                        SyntaxDebug.Fail(node);
 
                         if (node is StatementSyntax)
                             return "statement";

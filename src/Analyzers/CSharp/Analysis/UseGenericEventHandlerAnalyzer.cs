@@ -96,12 +96,12 @@ namespace Roslynator.CSharp.Analysis
                         if (declarator.Parent is VariableDeclarationSyntax declaration)
                             return declaration.Type;
 
-                        Debug.Fail(declarator.Parent.Kind().ToString());
+                        SyntaxDebug.Fail(declarator.Parent);
                         break;
                     }
                 default:
                     {
-                        Debug.Fail(node.Kind().ToString());
+                        SyntaxDebug.Fail(node);
                         break;
                     }
             }

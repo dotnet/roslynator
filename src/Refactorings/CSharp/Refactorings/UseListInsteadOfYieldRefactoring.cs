@@ -190,7 +190,7 @@ namespace Roslynator.CSharp.Refactorings
                         node.SemicolonToken);
                 }
 
-                Debug.Fail(node.Kind().ToString());
+                SyntaxDebug.Fail(node);
 
                 return base.VisitYieldStatement(node);
             }

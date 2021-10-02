@@ -248,7 +248,7 @@ namespace Roslynator.CSharp.Syntax
                     return new GenericInfo(((StructDeclarationSyntax)Node).WithTypeParameterList(typeParameterList));
             }
 
-            Debug.Fail(Node.Kind().ToString());
+            SyntaxDebug.Fail(Node);
             return this;
         }
 
@@ -280,7 +280,7 @@ namespace Roslynator.CSharp.Syntax
                     return new GenericInfo(((StructDeclarationSyntax)self.Node).WithTypeParameterList(RemoveTypeParameter()));
             }
 
-            Debug.Fail(self.Node.Kind().ToString());
+            SyntaxDebug.Fail(self.Node);
             return this;
 
             TypeParameterListSyntax RemoveTypeParameter()
@@ -319,7 +319,7 @@ namespace Roslynator.CSharp.Syntax
                     return new GenericInfo(((StructDeclarationSyntax)Node).WithConstraintClauses(constraintClauses));
             }
 
-            Debug.Fail(Node.Kind().ToString());
+            SyntaxDebug.Fail(Node);
             return this;
         }
 
@@ -349,7 +349,7 @@ namespace Roslynator.CSharp.Syntax
                     return new GenericInfo(((StructDeclarationSyntax)Node).WithConstraintClauses(ConstraintClauses.Remove(constraintClause)));
             }
 
-            Debug.Fail(Node.Kind().ToString());
+            SyntaxDebug.Fail(Node);
             return this;
         }
 

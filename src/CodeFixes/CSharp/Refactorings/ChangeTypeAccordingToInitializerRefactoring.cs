@@ -36,7 +36,7 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 default:
                     {
-                        Debug.Fail(equalsValueClause.Parent.Kind().ToString());
+                        SyntaxDebug.Fail(equalsValueClause.Parent);
                         break;
                     }
             }

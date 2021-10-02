@@ -162,7 +162,7 @@ namespace Roslynator.CSharp
                     }
                 default:
                     {
-                        Debug.Fail(parent.Kind().ToString());
+                        SyntaxDebug.Fail(parent);
 
                         return document.ReplaceNodeAsync(initializer, newInitializer, cancellationToken);
                     }

@@ -108,7 +108,7 @@ namespace Roslynator.CSharp
                                 return parent;
                             }
 
-                            Debug.Fail(parent.Kind().ToString());
+                            SyntaxDebug.Fail(parent);
                             return null;
                         }
 
@@ -116,7 +116,7 @@ namespace Roslynator.CSharp
                     }
             }
 
-            Debug.Fail(parent.Kind().ToString());
+            SyntaxDebug.Fail(parent);
             return null;
         }
 

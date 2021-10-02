@@ -38,7 +38,7 @@ namespace Roslynator.CSharp.CodeFixes
                 ? methodDeclaration.Body
                 : ((LocalFunctionStatementSyntax)node).Body;
 
-            Debug.Assert(body != null, node.ToString());
+            SyntaxDebug.Assert(body != null, node);
 
             if (body == null)
                 return;

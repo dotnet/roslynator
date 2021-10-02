@@ -47,7 +47,7 @@ namespace Roslynator.CSharp.Refactorings
                             }
                         default:
                             {
-                                Debug.Fail(label.Kind().ToString());
+                                SyntaxDebug.Fail(label);
                                 return;
                             }
                     }

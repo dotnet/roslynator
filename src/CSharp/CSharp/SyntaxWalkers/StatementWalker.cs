@@ -315,7 +315,7 @@ namespace Roslynator.CSharp.SyntaxWalkers
                     }
                 default:
                     {
-                        Debug.Fail(node.Kind().ToString());
+                        SyntaxDebug.Fail(node);
                         Visit(node);
                         break;
                     }

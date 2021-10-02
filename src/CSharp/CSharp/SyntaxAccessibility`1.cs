@@ -123,7 +123,7 @@ namespace Roslynator.CSharp
                         return SyntaxAccessibility<EventDeclarationSyntax>.Instance.GetDefaultAccessibility((EventDeclarationSyntax)containingDeclaration);
                 }
 
-                Debug.Assert(containingDeclaration == null, containingDeclaration.Kind().ToString());
+                SyntaxDebug.Assert(containingDeclaration == null, containingDeclaration);
 
                 return Accessibility.NotApplicable;
             }
@@ -161,7 +161,7 @@ namespace Roslynator.CSharp
                             return SyntaxAccessibility<EventDeclarationSyntax>.Instance.GetAccessibility((EventDeclarationSyntax)containingDeclaration);
                     }
 
-                    Debug.Fail(containingDeclaration.Kind().ToString());
+                    SyntaxDebug.Fail(containingDeclaration);
 
                     return Accessibility.NotApplicable;
                 }

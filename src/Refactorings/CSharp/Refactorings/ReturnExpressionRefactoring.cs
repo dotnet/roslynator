@@ -100,7 +100,7 @@ namespace Roslynator.CSharp.Refactorings
                     }
             }
 
-            Debug.Fail(expression.ToString());
+            SyntaxDebug.Fail(expression);
 
             return default((ISymbol, ITypeSymbol));
         }

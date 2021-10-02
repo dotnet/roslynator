@@ -559,7 +559,7 @@ namespace Roslynator.CSharp.Analysis
                             }
                         default:
                             {
-                                Debug.Fail(accessorList.Parent.Kind().ToString());
+                                SyntaxDebug.Fail(accessorList.Parent);
                                 break;
                             }
                     }
@@ -633,7 +633,7 @@ namespace Roslynator.CSharp.Analysis
                     }
                 default:
                     {
-                        Debug.Fail(blockOrAccessorList.Kind().ToString());
+                        SyntaxDebug.Fail(blockOrAccessorList);
                         break;
                     }
             }

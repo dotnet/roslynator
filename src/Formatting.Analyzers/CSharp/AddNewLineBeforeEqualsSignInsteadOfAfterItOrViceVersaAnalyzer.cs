@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.CSharp;
 
 namespace Roslynator.Formatting.CSharp
 {
@@ -67,7 +68,7 @@ namespace Roslynator.Formatting.CSharp
                     }
                 default:
                     {
-                        Debug.Fail(node.Parent.Kind().ToString());
+                        SyntaxDebug.Fail(node.Parent);
                         break;
                     }
             }

@@ -100,7 +100,7 @@ namespace Roslynator.CSharp.Refactorings
 
                         PatternSyntax pattern = isPatternExpression.Pattern;
 
-                        Debug.Assert(pattern.IsKind(SyntaxKind.DeclarationPattern, SyntaxKind.ConstantPattern), pattern.Kind().ToString());
+                        SyntaxDebug.Assert(pattern.IsKind(SyntaxKind.DeclarationPattern, SyntaxKind.ConstantPattern), pattern);
 
                         if (!pattern.IsKind(SyntaxKind.DeclarationPattern, SyntaxKind.ConstantPattern))
                             return default;

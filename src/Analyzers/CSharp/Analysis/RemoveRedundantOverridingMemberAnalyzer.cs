@@ -368,7 +368,7 @@ namespace Roslynator.CSharp.Analysis
                     }
                 default:
                     {
-                        Debug.Fail(accessor.Kind().ToString());
+                        SyntaxDebug.Fail(accessor);
                         return false;
                     }
             }
@@ -501,7 +501,7 @@ namespace Roslynator.CSharp.Analysis
                     }
                 default:
                     {
-                        Debug.Fail(accessor.Kind().ToString());
+                        SyntaxDebug.Fail(accessor);
                         return false;
                     }
             }

@@ -128,7 +128,7 @@ namespace Roslynator.CSharp.CodeFixes
                             }
                         default:
                             {
-                                Debug.Fail(node.ToString());
+                                SyntaxDebug.Fail(node);
                                 return node;
                             }
                     }

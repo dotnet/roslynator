@@ -408,7 +408,7 @@ namespace Roslynator.CSharp
 
         private static PrefixUnaryExpressionSyntax DefaultInvert(ExpressionSyntax expression)
         {
-            Debug.Assert(expression.Kind() != SyntaxKind.ParenthesizedExpression, expression.Kind().ToString());
+            SyntaxDebug.Assert(expression.Kind() != SyntaxKind.ParenthesizedExpression, expression);
 
             SyntaxTriviaList leadingTrivia = expression.GetLeadingTrivia();
 

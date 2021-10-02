@@ -74,7 +74,7 @@ namespace Roslynator.CSharp.Analysis
 
             SyntaxNode parent = localFunctionStatement.Parent;
 
-            Debug.Assert(parent.IsKind(SyntaxKind.Block), parent.Kind().ToString());
+            SyntaxDebug.Assert(parent.IsKind(SyntaxKind.Block), parent);
 
             if (!(parent is BlockSyntax))
                 return;
@@ -234,7 +234,7 @@ namespace Roslynator.CSharp.Analysis
 
                 node = node.Parent;
 
-                Debug.Assert(node.IsKind(SyntaxKind.Block), node.Kind().ToString());
+                SyntaxDebug.Assert(node.IsKind(SyntaxKind.Block), node);
 
                 if (node.Kind() != SyntaxKind.Block)
                     break;
@@ -242,7 +242,7 @@ namespace Roslynator.CSharp.Analysis
                 node = node.Parent;
             }
 
-            Debug.Assert(node is MemberDeclarationSyntax, node.Kind().ToString());
+            SyntaxDebug.Assert(node is MemberDeclarationSyntax, node);
 
             if (node is MemberDeclarationSyntax memberDeclaration)
             {

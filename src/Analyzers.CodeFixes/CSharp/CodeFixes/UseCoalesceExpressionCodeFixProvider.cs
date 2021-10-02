@@ -126,7 +126,7 @@ namespace Roslynator.CSharp.CodeFixes
                     }
                 default:
                     {
-                        Debug.Fail(statement.Kind().ToString());
+                        SyntaxDebug.Fail(statement);
 
                         return document;
                     }

@@ -163,7 +163,7 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     default:
                         {
-                            Debug.Fail(node.Kind().ToString());
+                            SyntaxDebug.Fail(node);
                             return node;
                         }
                 }

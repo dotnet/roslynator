@@ -446,7 +446,7 @@ namespace Roslynator.CSharp.Refactorings
                     }
             }
 
-            Debug.Fail(expression.Kind().ToString());
+            SyntaxDebug.Fail(expression);
 
             return default;
         }
