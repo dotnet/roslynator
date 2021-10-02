@@ -25,9 +25,9 @@ namespace Roslynator.CSharp.CodeFixes
             get
             {
                 return ImmutableArray.Create(
-                    CompilerDiagnosticIdentifiers.PartialMethodMayNotHaveMultipleDefiningDeclarations,
-                    CompilerDiagnosticIdentifiers.MemberMustDeclareBodyBecauseItIsNotMarkedAbstractExternOrPartial,
-                    CompilerDiagnosticIdentifiers.LocalFunctionMustAlwaysHaveBody);
+                    CompilerDiagnosticIdentifiers.CS0756_PartialMethodMayNotHaveMultipleDefiningDeclarations,
+                    CompilerDiagnosticIdentifiers.CS0501_MemberMustDeclareBodyBecauseItIsNotMarkedAbstractExternOrPartial,
+                    CompilerDiagnosticIdentifiers.CS8112_LocalFunctionMustAlwaysHaveBody);
             }
         }
 

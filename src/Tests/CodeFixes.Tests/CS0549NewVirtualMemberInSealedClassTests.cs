@@ -8,9 +8,9 @@ namespace Roslynator.CSharp.CodeFixes.Tests
 {
     public class CS0549NewVirtualMemberInSealedClassTests : AbstractCSharpCompilerDiagnosticFixVerifier<ModifiersCodeFixProvider>
     {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.NewVirtualMemberInSealedClass;
+        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS0549_NewVirtualMemberInSealedClass;
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.NewVirtualMemberInSealedClass)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0549_NewVirtualMemberInSealedClass)]
         public async Task Test_ReadOnlyPropertyInSealedClass()
         {
             await VerifyFixAsync(@"

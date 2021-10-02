@@ -50,7 +50,7 @@ namespace Roslynator.CodeGeneration.CSharp
                         ArgumentList(
                             Argument(
                                 NameColon("id"),
-                                SimpleMemberAccessExpression(IdentifierName("CompilerDiagnosticIdentifiers"), IdentifierName(compilerDiagnostic.Identifier))),
+                                SimpleMemberAccessExpression(IdentifierName("CompilerDiagnosticIdentifiers"), IdentifierName($"{compilerDiagnostic.Id}_{compilerDiagnostic.Identifier}"))),
                             Argument(
                                 NameColon("title"),
                                 StringLiteralExpression(compilerDiagnostic.Title)),

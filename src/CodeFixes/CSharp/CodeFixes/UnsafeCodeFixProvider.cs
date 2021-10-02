@@ -18,7 +18,7 @@ namespace Roslynator.CSharp.CodeFixes
     {
         public override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.PointersAndFixedSizeBuffersMayOnlyBeUsedInUnsafeContext); }
+            get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.CS0214_PointersAndFixedSizeBuffersMayOnlyBeUsedInUnsafeContext); }
         }
 
         public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -32,7 +32,7 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 switch (diagnostic.Id)
                 {
-                    case CompilerDiagnosticIdentifiers.PointersAndFixedSizeBuffersMayOnlyBeUsedInUnsafeContext:
+                    case CompilerDiagnosticIdentifiers.CS0214_PointersAndFixedSizeBuffersMayOnlyBeUsedInUnsafeContext:
                         {
                             var fStatement = false;
                             var fMemberDeclaration = false;

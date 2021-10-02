@@ -27,35 +27,35 @@ namespace Roslynator.CSharp.CodeFixes
             get
             {
                 return ImmutableArray.Create(
-                    CompilerDiagnosticIdentifiers.MissingXmlCommentForPubliclyVisibleTypeOrMember,
-                    CompilerDiagnosticIdentifiers.MethodReturnTypeMustMatchOverriddenMethodReturnType,
-                    CompilerDiagnosticIdentifiers.MemberTypeMustMatchOverriddenMemberType,
-                    CompilerDiagnosticIdentifiers.MissingPartialModifier,
-                    CompilerDiagnosticIdentifiers.PartialMethodMustBeDeclaredInPartialClassOrPartialStruct,
-                    CompilerDiagnosticIdentifiers.MemberIsAbstractButItIsContainedInNonAbstractClass,
-                    CompilerDiagnosticIdentifiers.StaticConstructorMustBeParameterless,
-                    CompilerDiagnosticIdentifiers.PartialMethodsMustHaveVoidReturnType,
-                    CompilerDiagnosticIdentifiers.ExplicitInterfaceDeclarationCanOnlyBeDeclaredInClassOrStruct,
-                    CompilerDiagnosticIdentifiers.InterfacesCannotContainFields,
-                    CompilerDiagnosticIdentifiers.InterfacesCannotContainOperators,
-                    CompilerDiagnosticIdentifiers.InterfacesCannotDeclareTypes,
-                    CompilerDiagnosticIdentifiers.OnlyClassTypesCanContainDestructors,
-                    CompilerDiagnosticIdentifiers.StructsCannotContainExplicitParameterlessConstructors,
-                    CompilerDiagnosticIdentifiers.NameOfDestructorMustMatchNameOfClass,
-                    CompilerDiagnosticIdentifiers.CannotChangeTupleElementNameWhenOverridingInheritedMember,
-                    CompilerDiagnosticIdentifiers.MethodsWithVariableArgumentsAreNotCLSCompliant,
-                    CompilerDiagnosticIdentifiers.ArgumentTypeIsNotCLSCompliant,
-                    CompilerDiagnosticIdentifiers.ReturnTypeIsNotCLSCompliant,
-                    CompilerDiagnosticIdentifiers.TypeOfVariableIsNotCLSCompliant,
-                    CompilerDiagnosticIdentifiers.IdentifierDifferingOnlyInCaseIsNotCLSCompliant,
-                    CompilerDiagnosticIdentifiers.OverloadedMethodDifferingOnlyInRefOrOutOrInArrayRankIsNotCLSCompliant,
-                    CompilerDiagnosticIdentifiers.OverloadedMethodDifferingOnlyByUnnamedArrayTypesIsNotCLSCompliant,
-                    CompilerDiagnosticIdentifiers.IdentifierIsNotCLSCompliant,
-                    CompilerDiagnosticIdentifiers.BaseTypeIsNotCLSCompliant,
-                    CompilerDiagnosticIdentifiers.ArraysAsAttributeArgumentsIsNotCLSCompliant,
-                    CompilerDiagnosticIdentifiers.ConstraintTypeIsNotCLSCompliant,
-                    CompilerDiagnosticIdentifiers.TypeIsNotCLSCompliantBecauseBaseInterfaceIsNotCLSCompliant,
-                    CompilerDiagnosticIdentifiers.ExplicitInterfaceDeclarationIsNotMemberOfInterface);
+                    CompilerDiagnosticIdentifiers.CS1591_MissingXmlCommentForPubliclyVisibleTypeOrMember,
+                    CompilerDiagnosticIdentifiers.CS0508_MethodReturnTypeMustMatchOverriddenMethodReturnType,
+                    CompilerDiagnosticIdentifiers.CS1715_MemberTypeMustMatchOverriddenMemberType,
+                    CompilerDiagnosticIdentifiers.CS0260_MissingPartialModifier,
+                    CompilerDiagnosticIdentifiers.CS0751_PartialMethodMustBeDeclaredInPartialClassOrPartialStruct,
+                    CompilerDiagnosticIdentifiers.CS0513_MemberIsAbstractButItIsContainedInNonAbstractClass,
+                    CompilerDiagnosticIdentifiers.CS0132_StaticConstructorMustBeParameterless,
+                    CompilerDiagnosticIdentifiers.CS0766_PartialMethodsMustHaveVoidReturnType,
+                    CompilerDiagnosticIdentifiers.CS0541_ExplicitInterfaceDeclarationCanOnlyBeDeclaredInClassOrStruct,
+                    CompilerDiagnosticIdentifiers.CS0525_InterfacesCannotContainFields,
+                    CompilerDiagnosticIdentifiers.CS0567_InterfacesCannotContainOperators,
+                    CompilerDiagnosticIdentifiers.CS0524_InterfacesCannotDeclareTypes,
+                    CompilerDiagnosticIdentifiers.CS0575_OnlyClassTypesCanContainDestructors,
+                    CompilerDiagnosticIdentifiers.CS0568_StructsCannotContainExplicitParameterlessConstructors,
+                    CompilerDiagnosticIdentifiers.CS0574_NameOfDestructorMustMatchNameOfClass,
+                    CompilerDiagnosticIdentifiers.CS8139_CannotChangeTupleElementNameWhenOverridingInheritedMember,
+                    CompilerDiagnosticIdentifiers.CS3000_MethodsWithVariableArgumentsAreNotCLSCompliant,
+                    CompilerDiagnosticIdentifiers.CS3001_ArgumentTypeIsNotCLSCompliant,
+                    CompilerDiagnosticIdentifiers.CS3002_ReturnTypeIsNotCLSCompliant,
+                    CompilerDiagnosticIdentifiers.CS3003_TypeOfVariableIsNotCLSCompliant,
+                    CompilerDiagnosticIdentifiers.CS3005_IdentifierDifferingOnlyInCaseIsNotCLSCompliant,
+                    CompilerDiagnosticIdentifiers.CS3006_OverloadedMethodDifferingOnlyInRefOrOutOrInArrayRankIsNotCLSCompliant,
+                    CompilerDiagnosticIdentifiers.CS3007_OverloadedMethodDifferingOnlyByUnnamedArrayTypesIsNotCLSCompliant,
+                    CompilerDiagnosticIdentifiers.CS3008_IdentifierIsNotCLSCompliant,
+                    CompilerDiagnosticIdentifiers.CS3009_BaseTypeIsNotCLSCompliant,
+                    CompilerDiagnosticIdentifiers.CS3016_ArraysAsAttributeArgumentsIsNotCLSCompliant,
+                    CompilerDiagnosticIdentifiers.CS3024_ConstraintTypeIsNotCLSCompliant,
+                    CompilerDiagnosticIdentifiers.CS3027_TypeIsNotCLSCompliantBecauseBaseInterfaceIsNotCLSCompliant,
+                    CompilerDiagnosticIdentifiers.CS0539_ExplicitInterfaceDeclarationIsNotMemberOfInterface);
             }
         }
 
@@ -70,7 +70,7 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 switch (diagnostic.Id)
                 {
-                    case CompilerDiagnosticIdentifiers.MissingXmlCommentForPubliclyVisibleTypeOrMember:
+                    case CompilerDiagnosticIdentifiers.CS1591_MissingXmlCommentForPubliclyVisibleTypeOrMember:
                         {
                             if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddDocumentationComment))
                                 break;
@@ -90,7 +90,7 @@ namespace Roslynator.CSharp.CodeFixes
                             context.RegisterCodeFix(codeAction2, diagnostic);
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.MethodReturnTypeMustMatchOverriddenMethodReturnType:
+                    case CompilerDiagnosticIdentifiers.CS0508_MethodReturnTypeMustMatchOverriddenMethodReturnType:
                         {
                             if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.ChangeMethodReturnType))
                                 break;
@@ -105,7 +105,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.PartialMethodsMustHaveVoidReturnType:
+                    case CompilerDiagnosticIdentifiers.CS0766_PartialMethodsMustHaveVoidReturnType:
                         {
                             if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.ChangeMethodReturnType))
                                 break;
@@ -133,7 +133,7 @@ namespace Roslynator.CSharp.CodeFixes
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.MemberTypeMustMatchOverriddenMemberType:
+                    case CompilerDiagnosticIdentifiers.CS1715_MemberTypeMustMatchOverriddenMemberType:
                         {
                             if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.MemberTypeMustMatchOverriddenMemberType))
                                 break;
@@ -174,8 +174,8 @@ namespace Roslynator.CSharp.CodeFixes
 
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.MissingPartialModifier:
-                    case CompilerDiagnosticIdentifiers.PartialMethodMustBeDeclaredInPartialClassOrPartialStruct:
+                    case CompilerDiagnosticIdentifiers.CS0260_MissingPartialModifier:
+                    case CompilerDiagnosticIdentifiers.CS0751_PartialMethodMustBeDeclaredInPartialClassOrPartialStruct:
                         {
                             if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddPartialModifier))
                                 break;
@@ -209,7 +209,7 @@ namespace Roslynator.CSharp.CodeFixes
                             ModifiersCodeFixRegistrator.AddModifier(context, diagnostic, node, SyntaxKind.PartialKeyword, title: $"Make {CSharpFacts.GetTitle(node)} partial");
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.MemberIsAbstractButItIsContainedInNonAbstractClass:
+                    case CompilerDiagnosticIdentifiers.CS0513_MemberIsAbstractButItIsContainedInNonAbstractClass:
                         {
                             if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.MakeContainingClassAbstract))
                                 break;
@@ -226,7 +226,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.StaticConstructorMustBeParameterless:
+                    case CompilerDiagnosticIdentifiers.CS0132_StaticConstructorMustBeParameterless:
                         {
                             if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveParametersFromStaticConstructor))
                                 break;
@@ -253,12 +253,12 @@ namespace Roslynator.CSharp.CodeFixes
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.ExplicitInterfaceDeclarationCanOnlyBeDeclaredInClassOrStruct:
-                    case CompilerDiagnosticIdentifiers.InterfacesCannotContainFields:
-                    case CompilerDiagnosticIdentifiers.InterfacesCannotContainOperators:
-                    case CompilerDiagnosticIdentifiers.InterfacesCannotDeclareTypes:
-                    case CompilerDiagnosticIdentifiers.OnlyClassTypesCanContainDestructors:
-                    case CompilerDiagnosticIdentifiers.StructsCannotContainExplicitParameterlessConstructors:
+                    case CompilerDiagnosticIdentifiers.CS0541_ExplicitInterfaceDeclarationCanOnlyBeDeclaredInClassOrStruct:
+                    case CompilerDiagnosticIdentifiers.CS0525_InterfacesCannotContainFields:
+                    case CompilerDiagnosticIdentifiers.CS0567_InterfacesCannotContainOperators:
+                    case CompilerDiagnosticIdentifiers.CS0524_InterfacesCannotDeclareTypes:
+                    case CompilerDiagnosticIdentifiers.CS0575_OnlyClassTypesCanContainDestructors:
+                    case CompilerDiagnosticIdentifiers.CS0568_StructsCannotContainExplicitParameterlessConstructors:
                         {
                             if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveMemberDeclaration))
                                 break;
@@ -266,7 +266,7 @@ namespace Roslynator.CSharp.CodeFixes
                             CodeFixRegistrator.RemoveMemberDeclaration(context, diagnostic, memberDeclaration);
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.NameOfDestructorMustMatchNameOfClass:
+                    case CompilerDiagnosticIdentifiers.CS0574_NameOfDestructorMustMatchNameOfClass:
                         {
                             if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RenameDestructorToMatchClassName))
                                 break;
@@ -293,7 +293,7 @@ namespace Roslynator.CSharp.CodeFixes
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.CannotChangeTupleElementNameWhenOverridingInheritedMember:
+                    case CompilerDiagnosticIdentifiers.CS8139_CannotChangeTupleElementNameWhenOverridingInheritedMember:
                         {
                             if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RenameTupleElement))
                                 break;
@@ -389,18 +389,18 @@ namespace Roslynator.CSharp.CodeFixes
 
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.MethodsWithVariableArgumentsAreNotCLSCompliant:
-                    case CompilerDiagnosticIdentifiers.ArgumentTypeIsNotCLSCompliant:
-                    case CompilerDiagnosticIdentifiers.ReturnTypeIsNotCLSCompliant:
-                    case CompilerDiagnosticIdentifiers.TypeOfVariableIsNotCLSCompliant:
-                    case CompilerDiagnosticIdentifiers.IdentifierDifferingOnlyInCaseIsNotCLSCompliant:
-                    case CompilerDiagnosticIdentifiers.OverloadedMethodDifferingOnlyInRefOrOutOrInArrayRankIsNotCLSCompliant:
-                    case CompilerDiagnosticIdentifiers.OverloadedMethodDifferingOnlyByUnnamedArrayTypesIsNotCLSCompliant:
-                    case CompilerDiagnosticIdentifiers.IdentifierIsNotCLSCompliant:
-                    case CompilerDiagnosticIdentifiers.BaseTypeIsNotCLSCompliant:
-                    case CompilerDiagnosticIdentifiers.ArraysAsAttributeArgumentsIsNotCLSCompliant:
-                    case CompilerDiagnosticIdentifiers.ConstraintTypeIsNotCLSCompliant:
-                    case CompilerDiagnosticIdentifiers.TypeIsNotCLSCompliantBecauseBaseInterfaceIsNotCLSCompliant:
+                    case CompilerDiagnosticIdentifiers.CS3000_MethodsWithVariableArgumentsAreNotCLSCompliant:
+                    case CompilerDiagnosticIdentifiers.CS3001_ArgumentTypeIsNotCLSCompliant:
+                    case CompilerDiagnosticIdentifiers.CS3002_ReturnTypeIsNotCLSCompliant:
+                    case CompilerDiagnosticIdentifiers.CS3003_TypeOfVariableIsNotCLSCompliant:
+                    case CompilerDiagnosticIdentifiers.CS3005_IdentifierDifferingOnlyInCaseIsNotCLSCompliant:
+                    case CompilerDiagnosticIdentifiers.CS3006_OverloadedMethodDifferingOnlyInRefOrOutOrInArrayRankIsNotCLSCompliant:
+                    case CompilerDiagnosticIdentifiers.CS3007_OverloadedMethodDifferingOnlyByUnnamedArrayTypesIsNotCLSCompliant:
+                    case CompilerDiagnosticIdentifiers.CS3008_IdentifierIsNotCLSCompliant:
+                    case CompilerDiagnosticIdentifiers.CS3009_BaseTypeIsNotCLSCompliant:
+                    case CompilerDiagnosticIdentifiers.CS3016_ArraysAsAttributeArgumentsIsNotCLSCompliant:
+                    case CompilerDiagnosticIdentifiers.CS3024_ConstraintTypeIsNotCLSCompliant:
+                    case CompilerDiagnosticIdentifiers.CS3027_TypeIsNotCLSCompliantBecauseBaseInterfaceIsNotCLSCompliant:
                         {
                             if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.MarkDeclarationAsNonCLSCompliant))
                                 break;
@@ -413,7 +413,7 @@ namespace Roslynator.CSharp.CodeFixes
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.ExplicitInterfaceDeclarationIsNotMemberOfInterface:
+                    case CompilerDiagnosticIdentifiers.CS0539_ExplicitInterfaceDeclarationIsNotMemberOfInterface:
                         {
                             if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddParameterToExplicitlyImplementedInterfaceMember))
                                 break;

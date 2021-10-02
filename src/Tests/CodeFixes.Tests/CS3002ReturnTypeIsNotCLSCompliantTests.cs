@@ -8,9 +8,9 @@ namespace Roslynator.CSharp.CodeFixes.Tests
 {
     public class CS3002ReturnTypeIsNotCLSCompliantTests : AbstractCSharpCompilerDiagnosticFixVerifier<MemberDeclarationCodeFixProvider>
     {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.ReturnTypeIsNotCLSCompliant;
+        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS3002_ReturnTypeIsNotCLSCompliant;
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.ReturnTypeIsNotCLSCompliant)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS3002_ReturnTypeIsNotCLSCompliant)]
         public async Task Test()
         {
             await VerifyFixAsync(@"

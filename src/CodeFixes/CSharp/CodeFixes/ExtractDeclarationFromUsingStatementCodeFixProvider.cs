@@ -21,7 +21,7 @@ namespace Roslynator.CSharp.CodeFixes
     {
         public override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.TypeUsedInUsingStatementMustBeImplicitlyConvertibleToIDisposable); }
+            get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.CS1674_TypeUsedInUsingStatementMustBeImplicitlyConvertibleToIDisposable); }
         }
 
         public override async Task RegisterCodeFixesAsync(CodeFixContext context)

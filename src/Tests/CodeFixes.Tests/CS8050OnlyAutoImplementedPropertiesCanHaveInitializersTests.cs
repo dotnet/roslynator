@@ -8,9 +8,9 @@ namespace Roslynator.CSharp.CodeFixes.Tests
 {
     public class CS8050OnlyAutoImplementedPropertiesCanHaveInitializersTests : AbstractCSharpCompilerDiagnosticFixVerifier<RemovePropertyOrFieldInitializerCodeFixProvider>
     {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.OnlyAutoImplementedPropertiesCanHaveInitializers;
+        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS8050_OnlyAutoImplementedPropertiesCanHaveInitializers;
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.OnlyAutoImplementedPropertiesCanHaveInitializers)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS8050_OnlyAutoImplementedPropertiesCanHaveInitializers)]
         public async Task Test()
         {
             await VerifyFixAsync(@"

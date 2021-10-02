@@ -8,9 +8,9 @@ namespace Roslynator.CSharp.CodeFixes.Tests
 {
     public class CS0131LeftHandSideOfAssignmentMustBeVariablePropertyOrIndexerTests : AbstractCSharpCompilerDiagnosticFixVerifier<ExpressionCodeFixProvider>
     {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.LeftHandSideOfAssignmentMustBeVariablePropertyOrIndexer;
+        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS0131_LeftHandSideOfAssignmentMustBeVariablePropertyOrIndexer;
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.LeftHandSideOfAssignmentMustBeVariablePropertyOrIndexer)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0131_LeftHandSideOfAssignmentMustBeVariablePropertyOrIndexer)]
         public async Task Test()
         {
             await VerifyFixAsync(@"

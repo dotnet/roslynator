@@ -8,9 +8,9 @@ namespace Roslynator.CSharp.CodeFixes.Tests
 {
     public class CS1715MemberTypeMustMatchOverriddenMemberTypeTests : AbstractCSharpCompilerDiagnosticFixVerifier<MemberDeclarationCodeFixProvider>
     {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.MemberTypeMustMatchOverriddenMemberType;
+        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS1715_MemberTypeMustMatchOverriddenMemberType;
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.MemberTypeMustMatchOverriddenMemberType)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1715_MemberTypeMustMatchOverriddenMemberType)]
         public async Task TestFix()
         {
             await VerifyFixAsync(@"

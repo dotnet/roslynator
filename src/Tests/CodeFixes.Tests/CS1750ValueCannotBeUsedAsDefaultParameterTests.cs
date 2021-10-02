@@ -9,9 +9,9 @@ namespace Roslynator.CSharp.CodeFixes.Tests
 {
     public class CS1750ValueCannotBeUsedAsDefaultParameterTests : AbstractCSharpCompilerDiagnosticFixVerifier<TokenCodeFixProvider>
     {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.ValueCannotBeUsedAsDefaultParameter;
+        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS1750_ValueCannotBeUsedAsDefaultParameter;
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.ValueCannotBeUsedAsDefaultParameter)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1750_ValueCannotBeUsedAsDefaultParameter)]
         public async Task Test_ChangeParameterType()
         {
             await VerifyFixAsync(@"

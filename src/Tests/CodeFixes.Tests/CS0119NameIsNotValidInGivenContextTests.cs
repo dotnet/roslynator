@@ -8,9 +8,9 @@ namespace Roslynator.CSharp.CodeFixes.Tests
 {
     public class CS0119NameIsNotValidInGivenContextTests : AbstractCSharpCompilerDiagnosticFixVerifier<SimpleNameCodeFixProvider>
     {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.NameIsNotValidInGivenContext;
+        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS0119_NameIsNotValidInGivenContext;
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.NameIsNotValidInGivenContext)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0119_NameIsNotValidInGivenContext)]
         public async Task Test()
         {
             await VerifyFixAsync(@"

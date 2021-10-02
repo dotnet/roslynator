@@ -8,9 +8,9 @@ namespace Roslynator.CSharp.CodeFixes.Tests
 {
     public class CS0177OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethodTests : AbstractCSharpCompilerDiagnosticFixVerifier<AssignDefaultValueToOutParameterCodeFixProvider>
     {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod;
+        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS0177_OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod;
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0177_OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
         public async Task Test_VoidMethodWithTwoOutParameters()
         {
             await VerifyFixAsync(@"
@@ -32,7 +32,7 @@ class C
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
         }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0177_OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
         public async Task Test_VoidMethodWithStatement()
         {
             await VerifyFixAsync(@"
@@ -56,7 +56,7 @@ class C
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
         }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0177_OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
         public async Task Test_BoolMethodWithReturnStatement()
         {
             await VerifyFixAsync(@"
@@ -80,7 +80,7 @@ class C
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
         }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0177_OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
         public async Task Test_BoolMethodWithStatements()
         {
             await VerifyFixAsync(@"
@@ -107,7 +107,7 @@ class C
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
         }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0177_OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
         public async Task Test_BoolMethodWithReturnStatements()
         {
             await VerifyFixAsync(@"
@@ -141,7 +141,7 @@ class C
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
         }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0177_OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
         public async Task Test_MethodWithExpressionBody()
         {
             await VerifyFixAsync(@"
@@ -353,7 +353,7 @@ class C
         }
 #pragma warning restore xUnit1013
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0177_OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
         public async Task TestNoFix_MethodWithoutBody()
         {
             await VerifyNoFixAsync(@"
@@ -364,7 +364,7 @@ class C
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
         }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0177_OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
         public async Task TestNoFix_LocalFunctionWithoutBody()
         {
             await VerifyNoFixAsync(@"

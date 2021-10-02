@@ -17,7 +17,7 @@ namespace Roslynator.CSharp.CodeFixes
     {
         public override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.NonInvocableMemberCannotBeUsedLikeMethod); }
+            get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.CS1955_NonInvocableMemberCannotBeUsedLikeMethod); }
         }
 
         public override async Task RegisterCodeFixesAsync(CodeFixContext context)

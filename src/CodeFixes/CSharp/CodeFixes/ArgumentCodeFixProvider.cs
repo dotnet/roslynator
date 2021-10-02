@@ -26,10 +26,10 @@ namespace Roslynator.CSharp.CodeFixes
             get
             {
                 return ImmutableArray.Create(
-                    CompilerDiagnosticIdentifiers.ArgumentMustBePassedWithRefOrOutKeyword,
-                    CompilerDiagnosticIdentifiers.ArgumentShouldNotBePassedWithRefOrOutKeyword,
-                    CompilerDiagnosticIdentifiers.CannotConvertArgumentType,
-                    CompilerDiagnosticIdentifiers.ReadOnlyFieldCannotBePassedAsRefOrOutValue);
+                    CompilerDiagnosticIdentifiers.CS1620_ArgumentMustBePassedWithRefOrOutKeyword,
+                    CompilerDiagnosticIdentifiers.CS1615_ArgumentShouldNotBePassedWithRefOrOutKeyword,
+                    CompilerDiagnosticIdentifiers.CS1503_CannotConvertArgumentType,
+                    CompilerDiagnosticIdentifiers.CS0192_ReadOnlyFieldCannotBePassedAsRefOrOutValue);
             }
         }
 
@@ -44,7 +44,7 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 switch (diagnostic.Id)
                 {
-                    case CompilerDiagnosticIdentifiers.ArgumentMustBePassedWithRefOrOutKeyword:
+                    case CompilerDiagnosticIdentifiers.CS1620_ArgumentMustBePassedWithRefOrOutKeyword:
                         {
                             if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddOutModifierToArgument))
                                 return;
@@ -86,7 +86,7 @@ namespace Roslynator.CSharp.CodeFixes
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.ArgumentShouldNotBePassedWithRefOrOutKeyword:
+                    case CompilerDiagnosticIdentifiers.CS1615_ArgumentShouldNotBePassedWithRefOrOutKeyword:
                         {
                             if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveRefModifier))
                                 return;
@@ -107,7 +107,7 @@ namespace Roslynator.CSharp.CodeFixes
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.CannotConvertArgumentType:
+                    case CompilerDiagnosticIdentifiers.CS1503_CannotConvertArgumentType:
                         {
                             if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.ReplaceNullLiteralExpressionWithDefaultValue))
                             {
@@ -207,7 +207,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.ReadOnlyFieldCannotBePassedAsRefOrOutValue:
+                    case CompilerDiagnosticIdentifiers.CS0192_ReadOnlyFieldCannotBePassedAsRefOrOutValue:
                         {
                             if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.MakeFieldWritable))
                                 return;

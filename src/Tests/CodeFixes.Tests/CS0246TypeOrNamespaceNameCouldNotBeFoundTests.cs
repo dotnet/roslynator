@@ -8,9 +8,9 @@ namespace Roslynator.CSharp.CodeFixes.Tests
 {
     public class CS0246TypeOrNamespaceNameCouldNotBeFoundTests : AbstractCSharpCompilerDiagnosticFixVerifier<SimpleNameCodeFixProvider>
     {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.TypeOrNamespaceNameCouldNotBeFound;
+        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS0246_TypeOrNamespaceNameCouldNotBeFound;
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.TypeOrNamespaceNameCouldNotBeFound)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0246_TypeOrNamespaceNameCouldNotBeFound)]
         public async Task Test_ChangeType_Field()
         {
             await VerifyFixAsync(@"
@@ -26,7 +26,7 @@ class C
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId, CodeFixIdentifiers.ChangeMemberTypeAccordingToReturnExpression));
         }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.TypeOrNamespaceNameCouldNotBeFound)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0246_TypeOrNamespaceNameCouldNotBeFound)]
         public async Task Test_ChangeType_Method()
         {
             await VerifyFixAsync(@"
@@ -48,7 +48,7 @@ class C
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId, CodeFixIdentifiers.ChangeMemberTypeAccordingToReturnExpression));
         }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.TypeOrNamespaceNameCouldNotBeFound)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0246_TypeOrNamespaceNameCouldNotBeFound)]
         public async Task Test_ChangeType_Method_ExpressionBody()
         {
             await VerifyFixAsync(@"
@@ -64,7 +64,7 @@ class C
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId, CodeFixIdentifiers.ChangeMemberTypeAccordingToReturnExpression));
         }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.TypeOrNamespaceNameCouldNotBeFound)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0246_TypeOrNamespaceNameCouldNotBeFound)]
         public async Task Test_ChangeType_LocalFunction()
         {
             await VerifyFixAsync(@"
@@ -92,7 +92,7 @@ class C
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId, CodeFixIdentifiers.ChangeMemberTypeAccordingToReturnExpression));
         }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.TypeOrNamespaceNameCouldNotBeFound)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0246_TypeOrNamespaceNameCouldNotBeFound)]
         public async Task Test_ChangeType_LocalFunction_ExpressionBody()
         {
             await VerifyFixAsync(@"

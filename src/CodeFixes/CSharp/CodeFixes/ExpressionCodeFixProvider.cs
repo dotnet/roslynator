@@ -26,16 +26,16 @@ namespace Roslynator.CSharp.CodeFixes
             get
             {
                 return ImmutableArray.Create(
-                    CompilerDiagnosticIdentifiers.CannotImplicitlyConvertTypeExplicitConversionExists,
-                    CompilerDiagnosticIdentifiers.ConstantValueCannotBeConverted,
-                    CompilerDiagnosticIdentifiers.ExpressionBeingAssignedMustBeConstant,
-                    CompilerDiagnosticIdentifiers.CannotConvertNullToTypeBecauseItIsNonNullableValueType,
-                    CompilerDiagnosticIdentifiers.ResultOfExpressionIsAlwaysConstantSinceValueIsNeverEqualToNull,
-                    CompilerDiagnosticIdentifiers.CannotConvertNullToTypeParameterBecauseItCouldBeNonNullableValueType,
-                    CompilerDiagnosticIdentifiers.OnlyAssignmentCallIncrementDecrementAndNewObjectExpressionsCanBeUsedAsStatement,
-                    CompilerDiagnosticIdentifiers.CannotImplicitlyConvertType,
-                    CompilerDiagnosticIdentifiers.LeftHandSideOfAssignmentMustBeVariablePropertyOrIndexer,
-                    CompilerDiagnosticIdentifiers.ReadOnlyFieldCannotBeAssignedTo);
+                    CompilerDiagnosticIdentifiers.CS0266_CannotImplicitlyConvertTypeExplicitConversionExists,
+                    CompilerDiagnosticIdentifiers.CS0221_ConstantValueCannotBeConverted,
+                    CompilerDiagnosticIdentifiers.CS0133_ExpressionBeingAssignedMustBeConstant,
+                    CompilerDiagnosticIdentifiers.CS0037_CannotConvertNullToTypeBecauseItIsNonNullableValueType,
+                    CompilerDiagnosticIdentifiers.CS0472_ResultOfExpressionIsAlwaysConstantSinceValueIsNeverEqualToNull,
+                    CompilerDiagnosticIdentifiers.CS0403_CannotConvertNullToTypeParameterBecauseItCouldBeNonNullableValueType,
+                    CompilerDiagnosticIdentifiers.CS0201_OnlyAssignmentCallIncrementDecrementAndNewObjectExpressionsCanBeUsedAsStatement,
+                    CompilerDiagnosticIdentifiers.CS0029_CannotImplicitlyConvertType,
+                    CompilerDiagnosticIdentifiers.CS0131_LeftHandSideOfAssignmentMustBeVariablePropertyOrIndexer,
+                    CompilerDiagnosticIdentifiers.CS0191_ReadOnlyFieldCannotBeAssignedTo);
             }
         }
 
@@ -50,7 +50,7 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 switch (diagnostic.Id)
                 {
-                    case CompilerDiagnosticIdentifiers.CannotImplicitlyConvertTypeExplicitConversionExists:
+                    case CompilerDiagnosticIdentifiers.CS0266_CannotImplicitlyConvertTypeExplicitConversionExists:
                         {
                             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
@@ -130,7 +130,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.ConstantValueCannotBeConverted:
+                    case CompilerDiagnosticIdentifiers.CS0221_ConstantValueCannotBeConverted:
                         {
                             if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.UseUncheckedExpression))
                                 break;
@@ -150,7 +150,7 @@ namespace Roslynator.CSharp.CodeFixes
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.ExpressionBeingAssignedMustBeConstant:
+                    case CompilerDiagnosticIdentifiers.CS0133_ExpressionBeingAssignedMustBeConstant:
                         {
                             SyntaxNode parent = expression.Parent;
 
@@ -193,8 +193,8 @@ namespace Roslynator.CSharp.CodeFixes
 
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.CannotConvertNullToTypeBecauseItIsNonNullableValueType:
-                    case CompilerDiagnosticIdentifiers.CannotConvertNullToTypeParameterBecauseItCouldBeNonNullableValueType:
+                    case CompilerDiagnosticIdentifiers.CS0037_CannotConvertNullToTypeBecauseItIsNonNullableValueType:
+                    case CompilerDiagnosticIdentifiers.CS0403_CannotConvertNullToTypeParameterBecauseItCouldBeNonNullableValueType:
                         {
                             if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.ReplaceNullLiteralExpressionWithDefaultValue))
                                 break;
@@ -204,7 +204,7 @@ namespace Roslynator.CSharp.CodeFixes
                             CodeFixRegistrator.ReplaceNullWithDefaultValue(context, diagnostic, expression, semanticModel);
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.ResultOfExpressionIsAlwaysConstantSinceValueIsNeverEqualToNull:
+                    case CompilerDiagnosticIdentifiers.CS0472_ResultOfExpressionIsAlwaysConstantSinceValueIsNeverEqualToNull:
                         {
                             if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveConditionThatIsAlwaysEqualToTrueOrFalse))
                                 break;
@@ -232,7 +232,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.OnlyAssignmentCallIncrementDecrementAndNewObjectExpressionsCanBeUsedAsStatement:
+                    case CompilerDiagnosticIdentifiers.CS0201_OnlyAssignmentCallIncrementDecrementAndNewObjectExpressionsCanBeUsedAsStatement:
                         {
                             if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveParentheses)
                                 && expression is ParenthesizedExpressionSyntax parenthesizedExpression
@@ -369,7 +369,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.CannotImplicitlyConvertType:
+                    case CompilerDiagnosticIdentifiers.CS0029_CannotImplicitlyConvertType:
                         {
                             if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.ReplaceYieldReturnWithForEach)
                                 && expression.IsParentKind(SyntaxKind.YieldReturnStatement))
@@ -444,7 +444,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.LeftHandSideOfAssignmentMustBeVariablePropertyOrIndexer:
+                    case CompilerDiagnosticIdentifiers.CS0131_LeftHandSideOfAssignmentMustBeVariablePropertyOrIndexer:
                         {
                             if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveConstModifier))
                                 return;
@@ -492,7 +492,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.ReadOnlyFieldCannotBeAssignedTo:
+                    case CompilerDiagnosticIdentifiers.CS0191_ReadOnlyFieldCannotBeAssignedTo:
                         {
                             if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.MakeFieldWritable))
                                 break;

@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.CodeFixes
     {
         public override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.CannotImplicitlyConvertType); }
+            get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.CS0029_CannotImplicitlyConvertType); }
         }
 
         public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -32,7 +32,7 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 switch (diagnostic.Id)
                 {
-                    case CompilerDiagnosticIdentifiers.CannotImplicitlyConvertType:
+                    case CompilerDiagnosticIdentifiers.CS0029_CannotImplicitlyConvertType:
                         {
                             if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.ReplaceStringLiteralWithCharacterLiteral)
                                 && node?.Kind() == SyntaxKind.StringLiteralExpression)

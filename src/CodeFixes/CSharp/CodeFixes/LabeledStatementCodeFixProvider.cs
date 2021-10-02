@@ -16,7 +16,7 @@ namespace Roslynator.CSharp.CodeFixes
     {
         public override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.LabelHasNotBeenReferenced); }
+            get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.CS0164_LabelHasNotBeenReferenced); }
         }
 
         public override async Task RegisterCodeFixesAsync(CodeFixContext context)

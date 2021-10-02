@@ -21,8 +21,8 @@ namespace Roslynator.CSharp.CodeFixes
             get
             {
                 return ImmutableArray.Create(
-                    CompilerDiagnosticIdentifiers.ConstraintsAreNotAllowedOnNonGenericDeclarations,
-                    CompilerDiagnosticIdentifiers.ConstraintClauseHasAlreadyBeenSpecified);
+                    CompilerDiagnosticIdentifiers.CS0080_ConstraintsAreNotAllowedOnNonGenericDeclarations,
+                    CompilerDiagnosticIdentifiers.CS0409_ConstraintClauseHasAlreadyBeenSpecified);
             }
         }
 
@@ -37,7 +37,7 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 switch (diagnostic.Id)
                 {
-                    case CompilerDiagnosticIdentifiers.ConstraintsAreNotAllowedOnNonGenericDeclarations:
+                    case CompilerDiagnosticIdentifiers.CS0080_ConstraintsAreNotAllowedOnNonGenericDeclarations:
                         {
                             if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveConstraintClauses))
                                 break;
@@ -60,7 +60,7 @@ namespace Roslynator.CSharp.CodeFixes
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.ConstraintClauseHasAlreadyBeenSpecified:
+                    case CompilerDiagnosticIdentifiers.CS0409_ConstraintClauseHasAlreadyBeenSpecified:
                         {
                             if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.CombineConstraintClauses))
                                 break;

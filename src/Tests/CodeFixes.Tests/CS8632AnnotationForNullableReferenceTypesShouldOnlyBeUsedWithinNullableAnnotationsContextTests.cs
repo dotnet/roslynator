@@ -8,9 +8,9 @@ namespace Roslynator.CSharp.CodeFixes.Tests
 {
     public class CS8632AnnotationForNullableReferenceTypesShouldOnlyBeUsedWithinNullableAnnotationsContextTests : AbstractCSharpCompilerDiagnosticFixVerifier<TokenCodeFixProvider>
     {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.AnnotationForNullableReferenceTypesShouldOnlyBeUsedWithinNullableAnnotationsContext;
+        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS8632_AnnotationForNullableReferenceTypesShouldOnlyBeUsedWithinNullableAnnotationsContext;
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.AnnotationForNullableReferenceTypesShouldOnlyBeUsedWithinNullableAnnotationsContext)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS8632_AnnotationForNullableReferenceTypesShouldOnlyBeUsedWithinNullableAnnotationsContext)]
         public async Task Test_Method()
         {
             await VerifyFixAsync(@"

@@ -12,7 +12,7 @@ namespace Roslynator.CSharp.Refactorings.Tests
 
         public override CSharpTestOptions Options
         {
-            get { return base.Options.AddAllowedCompilerDiagnosticId(CompilerDiagnosticIdentifiers.NotAllCodePathsReturnValue); }
+            get { return base.Options.AddAllowedCompilerDiagnosticId(CompilerDiagnosticIdentifiers.CS0161_NotAllCodePathsReturnValue); }
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ChangeMethodReturnTypeToVoid)]

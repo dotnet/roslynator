@@ -8,9 +8,9 @@ namespace Roslynator.CSharp.CodeFixes.Tests
 {
     public class CS0201OnlyAssignmentCallIncrementDecrementAndNewObjectExpressionsCanBeUsedAsStatementTests : AbstractCSharpCompilerDiagnosticFixVerifier<ExpressionCodeFixProvider>
     {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.OnlyAssignmentCallIncrementDecrementAndNewObjectExpressionsCanBeUsedAsStatement;
+        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS0201_OnlyAssignmentCallIncrementDecrementAndNewObjectExpressionsCanBeUsedAsStatement;
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.OnlyAssignmentCallIncrementDecrementAndNewObjectExpressionsCanBeUsedAsStatement)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0201_OnlyAssignmentCallIncrementDecrementAndNewObjectExpressionsCanBeUsedAsStatement)]
         public async Task Test_RemoveParentheses()
         {
             await VerifyFixAsync(@"
@@ -32,7 +32,7 @@ class C
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
         }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.OnlyAssignmentCallIncrementDecrementAndNewObjectExpressionsCanBeUsedAsStatement)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0201_OnlyAssignmentCallIncrementDecrementAndNewObjectExpressionsCanBeUsedAsStatement)]
         public async Task Test_IntroduceLocal()
         {
             await VerifyFixAsync(@"
@@ -58,7 +58,7 @@ class C
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId, CodeFixIdentifiers.IntroduceLocalVariable));
         }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.OnlyAssignmentCallIncrementDecrementAndNewObjectExpressionsCanBeUsedAsStatement)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0201_OnlyAssignmentCallIncrementDecrementAndNewObjectExpressionsCanBeUsedAsStatement)]
         public async Task Test_IntroduceField()
         {
             await VerifyFixAsync(@"
@@ -86,7 +86,7 @@ class C
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId, CodeFixIdentifiers.IntroduceField));
         }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.OnlyAssignmentCallIncrementDecrementAndNewObjectExpressionsCanBeUsedAsStatement)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0201_OnlyAssignmentCallIncrementDecrementAndNewObjectExpressionsCanBeUsedAsStatement)]
         public async Task Test_IntroduceStaticField()
         {
             await VerifyFixAsync(@"
@@ -114,7 +114,7 @@ class C
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId, CodeFixIdentifiers.IntroduceField));
         }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.OnlyAssignmentCallIncrementDecrementAndNewObjectExpressionsCanBeUsedAsStatement)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0201_OnlyAssignmentCallIncrementDecrementAndNewObjectExpressionsCanBeUsedAsStatement)]
         public async Task Test_AddArgumentList()
         {
             await VerifyFixAsync(@"
@@ -142,7 +142,7 @@ class C
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId, CodeFixIdentifiers.AddArgumentList));
         }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.OnlyAssignmentCallIncrementDecrementAndNewObjectExpressionsCanBeUsedAsStatement)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0201_OnlyAssignmentCallIncrementDecrementAndNewObjectExpressionsCanBeUsedAsStatement)]
         public async Task Test_ReplaceConditionalExpressionWithIfElse()
         {
             await VerifyFixAsync(@"
@@ -181,7 +181,7 @@ class C
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId, CodeFixIdentifiers.ReplaceConditionalExpressionWithIfElse));
         }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.OnlyAssignmentCallIncrementDecrementAndNewObjectExpressionsCanBeUsedAsStatement)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0201_OnlyAssignmentCallIncrementDecrementAndNewObjectExpressionsCanBeUsedAsStatement)]
         public async Task Test_ReplaceComparisonWithAssignment()
         {
             await VerifyFixAsync(@"

@@ -20,8 +20,8 @@ namespace Roslynator.CSharp.CodeFixes
             get
             {
                 return ImmutableArray.Create(
-                    CompilerDiagnosticIdentifiers.AttributeIsNotValidOnThisDeclarationType,
-                    CompilerDiagnosticIdentifiers.AttributeIsOnlyValidOnMethodsOrAttributeClasses);
+                    CompilerDiagnosticIdentifiers.CS0592_AttributeIsNotValidOnThisDeclarationType,
+                    CompilerDiagnosticIdentifiers.CS1689_AttributeIsOnlyValidOnMethodsOrAttributeClasses);
             }
         }
 

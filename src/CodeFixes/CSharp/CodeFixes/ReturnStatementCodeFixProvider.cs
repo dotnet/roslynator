@@ -22,9 +22,9 @@ namespace Roslynator.CSharp.CodeFixes
             get
             {
                 return ImmutableArray.Create(
-                    CompilerDiagnosticIdentifiers.CannotReturnValueFromIterator,
-                    CompilerDiagnosticIdentifiers.SinceMethodReturnsVoidReturnKeywordMustNotBeFollowedByObjectExpression,
-                    CompilerDiagnosticIdentifiers.SinceMethodIsAsyncMethodThatReturnsTaskReturnKeywordMustNotBeFollowedByObjectExpression);
+                    CompilerDiagnosticIdentifiers.CS1622_CannotReturnValueFromIterator,
+                    CompilerDiagnosticIdentifiers.CS0127_SinceMethodReturnsVoidReturnKeywordMustNotBeFollowedByObjectExpression,
+                    CompilerDiagnosticIdentifiers.CS1997_SinceMethodIsAsyncMethodThatReturnsTaskReturnKeywordMustNotBeFollowedByObjectExpression);
             }
         }
 
@@ -39,7 +39,7 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 switch (diagnostic.Id)
                 {
-                    case CompilerDiagnosticIdentifiers.CannotReturnValueFromIterator:
+                    case CompilerDiagnosticIdentifiers.CS1622_CannotReturnValueFromIterator:
                         {
                             if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.UseYieldReturnInsteadOfReturn))
                                 break;
@@ -106,8 +106,8 @@ namespace Roslynator.CSharp.CodeFixes
 
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.SinceMethodReturnsVoidReturnKeywordMustNotBeFollowedByObjectExpression:
-                    case CompilerDiagnosticIdentifiers.SinceMethodIsAsyncMethodThatReturnsTaskReturnKeywordMustNotBeFollowedByObjectExpression:
+                    case CompilerDiagnosticIdentifiers.CS0127_SinceMethodReturnsVoidReturnKeywordMustNotBeFollowedByObjectExpression:
+                    case CompilerDiagnosticIdentifiers.CS1997_SinceMethodIsAsyncMethodThatReturnsTaskReturnKeywordMustNotBeFollowedByObjectExpression:
                         {
                             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 

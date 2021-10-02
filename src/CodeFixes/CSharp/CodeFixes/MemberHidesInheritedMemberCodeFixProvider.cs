@@ -20,8 +20,8 @@ namespace Roslynator.CSharp.CodeFixes
             get
             {
                 return ImmutableArray.Create(
-                    CompilerDiagnosticIdentifiers.MemberHidesInheritedMemberUseNewKeywordIfHidingWasIntended,
-                    CompilerDiagnosticIdentifiers.MemberHidesInheritedMemberToMakeCurrentMethodOverrideThatImplementationAddOverrideKeyword);
+                    CompilerDiagnosticIdentifiers.CS0108_MemberHidesInheritedMemberUseNewKeywordIfHidingWasIntended,
+                    CompilerDiagnosticIdentifiers.CS0114_MemberHidesInheritedMemberToMakeCurrentMethodOverrideThatImplementationAddOverrideKeyword);
             }
         }
 
@@ -36,7 +36,7 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 switch (diagnostic.Id)
                 {
-                    case CompilerDiagnosticIdentifiers.MemberHidesInheritedMemberUseNewKeywordIfHidingWasIntended:
+                    case CompilerDiagnosticIdentifiers.CS0108_MemberHidesInheritedMemberUseNewKeywordIfHidingWasIntended:
                         {
                             if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddNewModifier))
                                 ModifiersCodeFixRegistrator.AddModifier(context, diagnostic, memberDeclaration, SyntaxKind.NewKeyword, additionalKey: nameof(SyntaxKind.NewKeyword));
@@ -46,7 +46,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.MemberHidesInheritedMemberToMakeCurrentMethodOverrideThatImplementationAddOverrideKeyword:
+                    case CompilerDiagnosticIdentifiers.CS0114_MemberHidesInheritedMemberToMakeCurrentMethodOverrideThatImplementationAddOverrideKeyword:
                         {
                             if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddOverrideModifier)
                                 && !SyntaxInfo.ModifierListInfo(memberDeclaration).IsStatic)

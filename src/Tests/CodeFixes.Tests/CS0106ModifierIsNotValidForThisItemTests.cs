@@ -8,9 +8,9 @@ namespace Roslynator.CSharp.CodeFixes.Tests
 {
     public class CS0106ModifierIsNotValidForThisItemTests : AbstractCSharpCompilerDiagnosticFixVerifier<ModifiersCodeFixProvider>
     {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.ModifierIsNotValidForThisItem;
+        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS0106_ModifierIsNotValidForThisItem;
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.ModifierIsNotValidForThisItem)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0106_ModifierIsNotValidForThisItem)]
         public async Task Test_VirtualModifierInStruct()
         {
             await VerifyFixAsync(@"
@@ -42,7 +42,7 @@ struct S
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
         }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.ModifierIsNotValidForThisItem)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0106_ModifierIsNotValidForThisItem)]
         public async Task Test_AsyncModifier()
         {
             await VerifyFixAsync(@"

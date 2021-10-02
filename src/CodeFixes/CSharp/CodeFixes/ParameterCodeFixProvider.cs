@@ -21,10 +21,10 @@ namespace Roslynator.CSharp.CodeFixes
             get
             {
                 return ImmutableArray.Create(
-                    CompilerDiagnosticIdentifiers.ParamsParameterMustBeSingleDimensionalArray,
-                    CompilerDiagnosticIdentifiers.CannotSpecifyDefaultValueForParameterArray,
-                    CompilerDiagnosticIdentifiers.RefOrOutParameterCannotHaveDefaultValue,
-                    CompilerDiagnosticIdentifiers.CannotSpecifyDefaultValueForThisParameter);
+                    CompilerDiagnosticIdentifiers.CS0225_ParamsParameterMustBeSingleDimensionalArray,
+                    CompilerDiagnosticIdentifiers.CS1751_CannotSpecifyDefaultValueForParameterArray,
+                    CompilerDiagnosticIdentifiers.CS1741_RefOrOutParameterCannotHaveDefaultValue,
+                    CompilerDiagnosticIdentifiers.CS1743_CannotSpecifyDefaultValueForThisParameter);
             }
         }
 
@@ -39,7 +39,7 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 switch (diagnostic.Id)
                 {
-                    case CompilerDiagnosticIdentifiers.ParamsParameterMustBeSingleDimensionalArray:
+                    case CompilerDiagnosticIdentifiers.CS0225_ParamsParameterMustBeSingleDimensionalArray:
                         {
                             if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.ChangeTypeOfParamsParameter))
                                 break;
@@ -69,9 +69,9 @@ namespace Roslynator.CSharp.CodeFixes
 
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.CannotSpecifyDefaultValueForParameterArray:
-                    case CompilerDiagnosticIdentifiers.RefOrOutParameterCannotHaveDefaultValue:
-                    case CompilerDiagnosticIdentifiers.CannotSpecifyDefaultValueForThisParameter:
+                    case CompilerDiagnosticIdentifiers.CS1751_CannotSpecifyDefaultValueForParameterArray:
+                    case CompilerDiagnosticIdentifiers.CS1741_RefOrOutParameterCannotHaveDefaultValue:
+                    case CompilerDiagnosticIdentifiers.CS1743_CannotSpecifyDefaultValueForThisParameter:
                         {
                             if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveDefaultValueFromParameter))
                                 break;

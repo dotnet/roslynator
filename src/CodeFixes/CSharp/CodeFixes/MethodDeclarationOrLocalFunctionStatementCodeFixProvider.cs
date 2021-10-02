@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.CodeFixes
     {
         public override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.BodyCannotBeIteratorBlockBecauseTypeIsNotIteratorInterfaceType); }
+            get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.CS1624_BodyCannotBeIteratorBlockBecauseTypeIsNotIteratorInterfaceType); }
         }
 
         public override async Task RegisterCodeFixesAsync(CodeFixContext context)

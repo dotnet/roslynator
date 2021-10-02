@@ -8,9 +8,9 @@ namespace Roslynator.CSharp.CodeFixes.Tests
 {
     public class CS1012TooManyCharactersInCharacterLiteralTests : AbstractCSharpCompilerDiagnosticFixVerifier<LiteralExpressionCodeFixProvider>
     {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.TooManyCharactersInCharacterLiteral;
+        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS1012_TooManyCharactersInCharacterLiteral;
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.TooManyCharactersInCharacterLiteral)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1012_TooManyCharactersInCharacterLiteral)]
         public async Task Test()
         {
             await VerifyFixAsync(@"

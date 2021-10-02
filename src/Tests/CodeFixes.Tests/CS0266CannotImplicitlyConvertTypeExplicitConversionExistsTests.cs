@@ -8,9 +8,9 @@ namespace Roslynator.CSharp.CodeFixes.Tests
 {
     public class CS0266CannotImplicitlyConvertTypeExplicitConversionExistsTests : AbstractCSharpCompilerDiagnosticFixVerifier<ExpressionCodeFixProvider>
     {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CannotImplicitlyConvertTypeExplicitConversionExists;
+        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS0266_CannotImplicitlyConvertTypeExplicitConversionExists;
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CannotImplicitlyConvertTypeExplicitConversionExists)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0266_CannotImplicitlyConvertTypeExplicitConversionExists)]
         public async Task Test_ChangeTypeAccordingToInitializer()
         {
             await VerifyFixAsync(@"

@@ -21,9 +21,9 @@ namespace Roslynator.CSharp.CodeFixes
             get
             {
                 return ImmutableArray.Create(
-                    CompilerDiagnosticIdentifiers.CannotAssignMethodGroupToImplicitlyTypedVariable,
-                    CompilerDiagnosticIdentifiers.NoOverloadMatchesDelegate,
-                    CompilerDiagnosticIdentifiers.MethodHasWrongReturnType);
+                    CompilerDiagnosticIdentifiers.CS0815_CannotAssignMethodGroupToImplicitlyTypedVariable,
+                    CompilerDiagnosticIdentifiers.CS0123_NoOverloadMatchesDelegate,
+                    CompilerDiagnosticIdentifiers.CS0407_MethodHasWrongReturnType);
             }
         }
 

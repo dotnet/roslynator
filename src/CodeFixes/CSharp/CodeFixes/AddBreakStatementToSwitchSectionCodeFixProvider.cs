@@ -23,8 +23,8 @@ namespace Roslynator.CSharp.CodeFixes
             get
             {
                 return ImmutableArray.Create(
-                    CompilerDiagnosticIdentifiers.ControlCannotFallThroughFromOneCaseLabelToAnother,
-                    CompilerDiagnosticIdentifiers.ControlCannotFallOutOfSwitchFromFinalCaseLabel);
+                    CompilerDiagnosticIdentifiers.CS0163_ControlCannotFallThroughFromOneCaseLabelToAnother,
+                    CompilerDiagnosticIdentifiers.CS8070_ControlCannotFallOutOfSwitchFromFinalCaseLabel);
             }
         }
 

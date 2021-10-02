@@ -8,9 +8,9 @@ namespace Roslynator.CSharp.CodeFixes.Tests
 {
     public class CS1003SyntaxErrorCharExpectedTests : AbstractCSharpCompilerDiagnosticFixVerifier<SyntaxErrorCharExpectedCodeFixProvider>
     {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.SyntaxErrorCharExpected;
+        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS1003_SyntaxErrorCharExpected;
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.SyntaxErrorCharExpected)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1003_SyntaxErrorCharExpected)]
         public async Task Test_MissingCommaInInitializer_Singleline()
         {
             await VerifyFixAsync(@"
@@ -36,7 +36,7 @@ class C
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
         }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.SyntaxErrorCharExpected)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1003_SyntaxErrorCharExpected)]
         public async Task Test_MissingCommaInInitializer_Multiline()
         {
             await VerifyFixAsync(@"
@@ -72,7 +72,7 @@ class C
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
         }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.SyntaxErrorCharExpected)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1003_SyntaxErrorCharExpected)]
         public async Task Test_MissingCommaBetweenEnumMembers()
         {
             await VerifyFixAsync(@"

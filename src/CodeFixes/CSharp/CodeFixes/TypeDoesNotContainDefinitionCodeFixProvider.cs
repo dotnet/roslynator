@@ -21,7 +21,7 @@ namespace Roslynator.CSharp.CodeFixes
     {
         public override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFound); }
+            get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.CS1061_TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFound); }
         }
 
         public override async Task RegisterCodeFixesAsync(CodeFixContext context)

@@ -8,9 +8,9 @@ namespace Roslynator.CSharp.CodeFixes.Tests
 {
     public class CS0029CannotImplicitlyConvertTypeTests : AbstractCSharpCompilerDiagnosticFixVerifier<ExpressionCodeFixProvider>
     {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CannotImplicitlyConvertType;
+        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS0029_CannotImplicitlyConvertType;
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CannotImplicitlyConvertType)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0029_CannotImplicitlyConvertType)]
         public async Task Test_RemoveAssignmentOfVoidExpression()
         {
             await VerifyFixAsync(@"
@@ -34,7 +34,7 @@ class C
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId, "RemoveAssignment"));
         }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CannotImplicitlyConvertType)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0029_CannotImplicitlyConvertType)]
         public async Task Test_ChangeReturnTypeAccordingToReturnExpression()
         {
             await VerifyFixAsync(@"
@@ -56,7 +56,7 @@ class C
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId, CodeFixIdentifiers.ChangeMemberTypeAccordingToReturnExpression));
         }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CannotImplicitlyConvertType)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0029_CannotImplicitlyConvertType)]
         public async Task Test_ChangeReturnTypeAccordingToReturnExpression_ExpressionBody()
         {
             await VerifyFixAsync(@"

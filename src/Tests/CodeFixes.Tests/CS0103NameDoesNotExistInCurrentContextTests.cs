@@ -8,9 +8,9 @@ namespace Roslynator.CSharp.CodeFixes.Tests
 {
     public class CS0103NameDoesNotExistInCurrentContextTests : AbstractCSharpCompilerDiagnosticFixVerifier<IdentifierNameCodeFixProvider>
     {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.NameDoesNotExistInCurrentContext;
+        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS0103_NameDoesNotExistInCurrentContext;
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.NameDoesNotExistInCurrentContext)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0103_NameDoesNotExistInCurrentContext)]
         public async Task Test()
         {
             await VerifyFixAsync(@"
@@ -32,7 +32,7 @@ class C
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId, "string"));
         }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.NameDoesNotExistInCurrentContext)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0103_NameDoesNotExistInCurrentContext)]
         public async Task Test_NullableReferenceType()
         {
             await VerifyFixAsync(@"

@@ -8,9 +8,9 @@ namespace Roslynator.CSharp.CodeFixes.Tests
 {
     public class CS0162UnreachableCodeDetectedTests : AbstractCSharpCompilerDiagnosticFixVerifier<UnreachableCodeCodeFixProvider>
     {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.UnreachableCodeDetected;
+        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS0162_UnreachableCodeDetected;
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.UnreachableCodeDetected)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0162_UnreachableCodeDetected)]
         public async Task Test()
         {
             await VerifyFixAsync(@"
@@ -43,7 +43,7 @@ class C
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
         }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.UnreachableCodeDetected)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0162_UnreachableCodeDetected)]
         public async Task Test_LocalFunction()
         {
             await VerifyFixAsync(@"
@@ -81,7 +81,7 @@ class C
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
         }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.UnreachableCodeDetected)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0162_UnreachableCodeDetected)]
         public async Task Test_LocalFunction2()
         {
             await VerifyFixAsync(@"

@@ -44,39 +44,39 @@ namespace Roslynator.CSharp.CodeFixes
             get
             {
                 return ImmutableArray.Create(
-                    CompilerDiagnosticIdentifiers.ModifierIsNotValidForThisItem,
-                    CompilerDiagnosticIdentifiers.MoreThanOneProtectionModifier,
-                    CompilerDiagnosticIdentifiers.AccessibilityModifiersMayNotBeUsedOnAccessorsInInterface,
-                    CompilerDiagnosticIdentifiers.ModifiersCannotBePlacedOnEventAccessorDeclarations,
-                    CompilerDiagnosticIdentifiers.AccessModifiersAreNotAllowedOnStaticConstructors,
-                    CompilerDiagnosticIdentifiers.OnlyMethodsClassesStructsOrInterfacesMayBePartial,
-                    CompilerDiagnosticIdentifiers.ClassCannotBeBothStaticAndSealed,
-                    CompilerDiagnosticIdentifiers.FieldCanNotBeBothVolatileAndReadOnly,
-                    CompilerDiagnosticIdentifiers.NewProtectedMemberDeclaredInSealedClass,
-                    CompilerDiagnosticIdentifiers.StaticClassesCannotContainProtectedMembers,
-                    CompilerDiagnosticIdentifiers.VirtualOrAbstractMembersCannotBePrivate,
-                    CompilerDiagnosticIdentifiers.AbstractPropertiesCannotHavePrivateAccessors,
-                    CompilerDiagnosticIdentifiers.StaticMemberCannotBeMarkedOverrideVirtualOrAbstract,
-                    CompilerDiagnosticIdentifiers.AsyncModifierCanOnlyBeUsedInMethodsThatHaveBody,
-                    CompilerDiagnosticIdentifiers.PartialMethodCannotHaveAccessModifiersOrVirtualAbstractOverrideNewSealedOrExternModifiers,
-                    CompilerDiagnosticIdentifiers.ExtensionMethodMustBeStatic,
-                    CompilerDiagnosticIdentifiers.NoDefiningDeclarationFoundForImplementingDeclarationOfPartialMethod,
-                    CompilerDiagnosticIdentifiers.MethodHasParameterModifierThisWhichIsNotOnFirstParameter,
-                    CompilerDiagnosticIdentifiers.CannotDeclareInstanceMembersInStaticClass,
-                    CompilerDiagnosticIdentifiers.StaticClassesCannotHaveInstanceConstructors,
-                    CompilerDiagnosticIdentifiers.ElementsDefinedInNamespaceCannotBeExplicitlyDeclaredAsPrivateProtectedOrProtectedInternal,
-                    CompilerDiagnosticIdentifiers.NamespaceAlreadyContainsDefinition,
-                    CompilerDiagnosticIdentifiers.TypeAlreadyContainsDefinition,
-                    CompilerDiagnosticIdentifiers.NoSuitableMethodFoundToOverride,
-                    CompilerDiagnosticIdentifiers.ExtensionMethodMustBeDefinedInNonGenericStaticClass,
-                    CompilerDiagnosticIdentifiers.AsyncMethodsCannotHaveRefOrOutParameters,
-                    CompilerDiagnosticIdentifiers.IteratorsCannotHaveRefOrOutParameters,
-                    CompilerDiagnosticIdentifiers.CannotHaveInstancePropertyOrFieldInitializersInStruct,
-                    CompilerDiagnosticIdentifiers.ReadOnlyFieldCannotBePassedAsRefOrOutValue,
-                    CompilerDiagnosticIdentifiers.MemberMustDeclareBodyBecauseItIsNotMarkedAbstractExternOrPartial,
-                    CompilerDiagnosticIdentifiers.NewVirtualMemberInSealedClass,
-                    CompilerDiagnosticIdentifiers.InstanceFieldsOfReadOnlyStructsMustBeReadOnly,
-                    CompilerDiagnosticIdentifiers.MemberCannotBeSealedBecauseItIsNotOverride);
+                    CompilerDiagnosticIdentifiers.CS0106_ModifierIsNotValidForThisItem,
+                    CompilerDiagnosticIdentifiers.CS0107_MoreThanOneProtectionModifier,
+                    CompilerDiagnosticIdentifiers.CS0275_AccessibilityModifiersMayNotBeUsedOnAccessorsInInterface,
+                    CompilerDiagnosticIdentifiers.CS1609_ModifiersCannotBePlacedOnEventAccessorDeclarations,
+                    CompilerDiagnosticIdentifiers.CS0515_AccessModifiersAreNotAllowedOnStaticConstructors,
+                    CompilerDiagnosticIdentifiers.CS0753_OnlyMethodsClassesStructsOrInterfacesMayBePartial,
+                    CompilerDiagnosticIdentifiers.CS0441_ClassCannotBeBothStaticAndSealed,
+                    CompilerDiagnosticIdentifiers.CS0678_FieldCanNotBeBothVolatileAndReadOnly,
+                    CompilerDiagnosticIdentifiers.CS0628_NewProtectedMemberDeclaredInSealedClass,
+                    CompilerDiagnosticIdentifiers.CS1057_StaticClassesCannotContainProtectedMembers,
+                    CompilerDiagnosticIdentifiers.CS0621_VirtualOrAbstractMembersCannotBePrivate,
+                    CompilerDiagnosticIdentifiers.CS0442_AbstractPropertiesCannotHavePrivateAccessors,
+                    CompilerDiagnosticIdentifiers.CS0112_StaticMemberCannotBeMarkedOverrideVirtualOrAbstract,
+                    CompilerDiagnosticIdentifiers.CS1994_AsyncModifierCanOnlyBeUsedInMethodsThatHaveBody,
+                    CompilerDiagnosticIdentifiers.CS0750_PartialMethodCannotHaveAccessModifiersOrVirtualAbstractOverrideNewSealedOrExternModifiers,
+                    CompilerDiagnosticIdentifiers.CS1105_ExtensionMethodMustBeStatic,
+                    CompilerDiagnosticIdentifiers.CS0759_NoDefiningDeclarationFoundForImplementingDeclarationOfPartialMethod,
+                    CompilerDiagnosticIdentifiers.CS1100_MethodHasParameterModifierThisWhichIsNotOnFirstParameter,
+                    CompilerDiagnosticIdentifiers.CS0708_CannotDeclareInstanceMembersInStaticClass,
+                    CompilerDiagnosticIdentifiers.CS0710_StaticClassesCannotHaveInstanceConstructors,
+                    CompilerDiagnosticIdentifiers.CS1527_ElementsDefinedInNamespaceCannotBeExplicitlyDeclaredAsPrivateProtectedOrProtectedInternal,
+                    CompilerDiagnosticIdentifiers.CS0101_NamespaceAlreadyContainsDefinition,
+                    CompilerDiagnosticIdentifiers.CS0102_TypeAlreadyContainsDefinition,
+                    CompilerDiagnosticIdentifiers.CS0115_NoSuitableMethodFoundToOverride,
+                    CompilerDiagnosticIdentifiers.CS1106_ExtensionMethodMustBeDefinedInNonGenericStaticClass,
+                    CompilerDiagnosticIdentifiers.CS1988_AsyncMethodsCannotHaveRefOrOutParameters,
+                    CompilerDiagnosticIdentifiers.CS1623_IteratorsCannotHaveRefOrOutParameters,
+                    CompilerDiagnosticIdentifiers.CS0573_CannotHaveInstancePropertyOrFieldInitializersInStruct,
+                    CompilerDiagnosticIdentifiers.CS0192_ReadOnlyFieldCannotBePassedAsRefOrOutValue,
+                    CompilerDiagnosticIdentifiers.CS0501_MemberMustDeclareBodyBecauseItIsNotMarkedAbstractExternOrPartial,
+                    CompilerDiagnosticIdentifiers.CS0549_NewVirtualMemberInSealedClass,
+                    CompilerDiagnosticIdentifiers.CS8340_InstanceFieldsOfReadOnlyStructsMustBeReadOnly,
+                    CompilerDiagnosticIdentifiers.CS0238_MemberCannotBeSealedBecauseItIsNotOverride);
             }
         }
 
@@ -101,7 +101,7 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 switch (diagnostic.Id)
                 {
-                    case CompilerDiagnosticIdentifiers.ModifierIsNotValidForThisItem:
+                    case CompilerDiagnosticIdentifiers.CS0106_ModifierIsNotValidForThisItem:
                         {
                             if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveInvalidModifier))
                                 break;
@@ -159,36 +159,36 @@ namespace Roslynator.CSharp.CodeFixes
 
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.MoreThanOneProtectionModifier:
+                    case CompilerDiagnosticIdentifiers.CS0107_MoreThanOneProtectionModifier:
                         {
                             if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveInvalidModifier))
                                 ModifiersCodeFixRegistrator.RemoveModifier(context, diagnostic, node, token);
 
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.AccessibilityModifiersMayNotBeUsedOnAccessorsInInterface:
-                    case CompilerDiagnosticIdentifiers.AccessModifiersAreNotAllowedOnStaticConstructors:
+                    case CompilerDiagnosticIdentifiers.CS0275_AccessibilityModifiersMayNotBeUsedOnAccessorsInInterface:
+                    case CompilerDiagnosticIdentifiers.CS0515_AccessModifiersAreNotAllowedOnStaticConstructors:
                         {
                             if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveInvalidModifier))
                                 ModifiersCodeFixRegistrator.RemoveAccessibility(context, diagnostic, node);
 
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.ModifiersCannotBePlacedOnEventAccessorDeclarations:
+                    case CompilerDiagnosticIdentifiers.CS1609_ModifiersCannotBePlacedOnEventAccessorDeclarations:
                         {
                             if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveInvalidModifier))
                                 ModifiersCodeFixRegistrator.RemoveModifiers(context, diagnostic, node);
 
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.OnlyMethodsClassesStructsOrInterfacesMayBePartial:
+                    case CompilerDiagnosticIdentifiers.CS0753_OnlyMethodsClassesStructsOrInterfacesMayBePartial:
                         {
                             if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveInvalidModifier))
                                 ModifiersCodeFixRegistrator.RemoveModifier(context, diagnostic, node, SyntaxKind.PartialKeyword);
 
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.ClassCannotBeBothStaticAndSealed:
+                    case CompilerDiagnosticIdentifiers.CS0441_ClassCannotBeBothStaticAndSealed:
                         {
                             if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveInvalidModifier))
                                 break;
@@ -197,7 +197,7 @@ namespace Roslynator.CSharp.CodeFixes
                             ModifiersCodeFixRegistrator.RemoveModifier(context, diagnostic, node, SyntaxKind.SealedKeyword, additionalKey: nameof(SyntaxKind.SealedKeyword));
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.FieldCanNotBeBothVolatileAndReadOnly:
+                    case CompilerDiagnosticIdentifiers.CS0678_FieldCanNotBeBothVolatileAndReadOnly:
                         {
                             if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveInvalidModifier))
                                 break;
@@ -208,15 +208,15 @@ namespace Roslynator.CSharp.CodeFixes
                             ModifiersCodeFixRegistrator.RemoveModifier(context, diagnostic, fieldDeclaration, SyntaxKind.ReadOnlyKeyword, additionalKey: nameof(SyntaxKind.ReadOnlyKeyword));
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.NewProtectedMemberDeclaredInSealedClass:
-                    case CompilerDiagnosticIdentifiers.StaticClassesCannotContainProtectedMembers:
+                    case CompilerDiagnosticIdentifiers.CS0628_NewProtectedMemberDeclaredInSealedClass:
+                    case CompilerDiagnosticIdentifiers.CS1057_StaticClassesCannotContainProtectedMembers:
                         {
                             if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.ChangeAccessibility))
                                 ModifiersCodeFixRegistrator.ChangeAccessibility(context, diagnostic, node, _publicOrInternalOrPrivate);
 
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.VirtualOrAbstractMembersCannotBePrivate:
+                    case CompilerDiagnosticIdentifiers.CS0621_VirtualOrAbstractMembersCannotBePrivate:
                         {
                             if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveVirtualModifier))
                             {
@@ -231,7 +231,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.AbstractPropertiesCannotHavePrivateAccessors:
+                    case CompilerDiagnosticIdentifiers.CS0442_AbstractPropertiesCannotHavePrivateAccessors:
                         {
                             if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveInvalidModifier))
                                 ModifiersCodeFixRegistrator.RemoveAccessibility(context, diagnostic, node, additionalKey: CodeFixIdentifiers.RemoveInvalidModifier);
@@ -241,7 +241,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.StaticMemberCannotBeMarkedOverrideVirtualOrAbstract:
+                    case CompilerDiagnosticIdentifiers.CS0112_StaticMemberCannotBeMarkedOverrideVirtualOrAbstract:
                         {
                             if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveInvalidModifier))
                                 break;
@@ -257,14 +257,14 @@ namespace Roslynator.CSharp.CodeFixes
                             ModifiersCodeFixRegistrator.RemoveModifier(context, diagnostic, node, SyntaxKind.AbstractKeyword, additionalKey: nameof(SyntaxKind.AbstractKeyword));
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.AsyncModifierCanOnlyBeUsedInMethodsThatHaveBody:
+                    case CompilerDiagnosticIdentifiers.CS1994_AsyncModifierCanOnlyBeUsedInMethodsThatHaveBody:
                         {
                             if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveInvalidModifier))
                                 ModifiersCodeFixRegistrator.RemoveModifier(context, diagnostic, node, SyntaxKind.AsyncKeyword);
 
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.PartialMethodCannotHaveAccessModifiersOrVirtualAbstractOverrideNewSealedOrExternModifiers:
+                    case CompilerDiagnosticIdentifiers.CS0750_PartialMethodCannotHaveAccessModifiersOrVirtualAbstractOverrideNewSealedOrExternModifiers:
                         {
                             if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveInvalidModifier))
                                 break;
@@ -297,7 +297,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.ExtensionMethodMustBeStatic:
+                    case CompilerDiagnosticIdentifiers.CS1105_ExtensionMethodMustBeStatic:
                         {
                             if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddStaticModifier))
                                 AddStaticModifier(context, diagnostic, node, CodeFixIdentifiers.AddStaticModifier);
@@ -315,7 +315,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.ExtensionMethodMustBeDefinedInNonGenericStaticClass:
+                    case CompilerDiagnosticIdentifiers.CS1106_ExtensionMethodMustBeDefinedInNonGenericStaticClass:
                         {
                             if (!(node is ClassDeclarationSyntax classDeclaration))
                                 return;
@@ -345,22 +345,22 @@ namespace Roslynator.CSharp.CodeFixes
 
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.NoDefiningDeclarationFoundForImplementingDeclarationOfPartialMethod:
+                    case CompilerDiagnosticIdentifiers.CS0759_NoDefiningDeclarationFoundForImplementingDeclarationOfPartialMethod:
                         {
                             if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveInvalidModifier))
                                 ModifiersCodeFixRegistrator.RemoveModifier(context, diagnostic, node, SyntaxKind.PartialKeyword);
 
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.MethodHasParameterModifierThisWhichIsNotOnFirstParameter:
+                    case CompilerDiagnosticIdentifiers.CS1100_MethodHasParameterModifierThisWhichIsNotOnFirstParameter:
                         {
                             if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveThisModifier))
                                 ModifiersCodeFixRegistrator.RemoveModifier(context, diagnostic, token.Parent, token);
 
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.CannotDeclareInstanceMembersInStaticClass:
-                    case CompilerDiagnosticIdentifiers.StaticClassesCannotHaveInstanceConstructors:
+                    case CompilerDiagnosticIdentifiers.CS0708_CannotDeclareInstanceMembersInStaticClass:
+                    case CompilerDiagnosticIdentifiers.CS0710_StaticClassesCannotHaveInstanceConstructors:
                         {
                             if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddStaticModifier))
                                 AddStaticModifier(context, diagnostic, node, CodeFixIdentifiers.AddStaticModifier);
@@ -380,15 +380,15 @@ namespace Roslynator.CSharp.CodeFixes
 
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.ElementsDefinedInNamespaceCannotBeExplicitlyDeclaredAsPrivateProtectedOrProtectedInternal:
+                    case CompilerDiagnosticIdentifiers.CS1527_ElementsDefinedInNamespaceCannotBeExplicitlyDeclaredAsPrivateProtectedOrProtectedInternal:
                         {
                             if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.ChangeAccessibility))
                                 ModifiersCodeFixRegistrator.ChangeAccessibility(context, diagnostic, node, _publicOrInternal);
 
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.NamespaceAlreadyContainsDefinition:
-                    case CompilerDiagnosticIdentifiers.TypeAlreadyContainsDefinition:
+                    case CompilerDiagnosticIdentifiers.CS0101_NamespaceAlreadyContainsDefinition:
+                    case CompilerDiagnosticIdentifiers.CS0102_TypeAlreadyContainsDefinition:
                         {
                             if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddPartialModifier))
                                 break;
@@ -420,16 +420,16 @@ namespace Roslynator.CSharp.CodeFixes
 
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.NoSuitableMethodFoundToOverride:
+                    case CompilerDiagnosticIdentifiers.CS0115_NoSuitableMethodFoundToOverride:
                         {
                             if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveInvalidModifier))
                                 ModifiersCodeFixRegistrator.RemoveModifier(context, diagnostic, node, SyntaxKind.OverrideKeyword);
 
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.AsyncMethodsCannotHaveRefOrOutParameters:
-                    case CompilerDiagnosticIdentifiers.IteratorsCannotHaveRefOrOutParameters:
-                    case CompilerDiagnosticIdentifiers.ReadOnlyFieldCannotBePassedAsRefOrOutValue:
+                    case CompilerDiagnosticIdentifiers.CS1988_AsyncMethodsCannotHaveRefOrOutParameters:
+                    case CompilerDiagnosticIdentifiers.CS1623_IteratorsCannotHaveRefOrOutParameters:
+                    case CompilerDiagnosticIdentifiers.CS0192_ReadOnlyFieldCannotBePassedAsRefOrOutValue:
                         {
                             if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveRefModifier))
                                 ModifiersCodeFixRegistrator.RemoveModifier(context, diagnostic, node, SyntaxKind.RefKeyword, additionalKey: nameof(SyntaxKind.RefKeyword));
@@ -439,14 +439,14 @@ namespace Roslynator.CSharp.CodeFixes
 
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.CannotHaveInstancePropertyOrFieldInitializersInStruct:
+                    case CompilerDiagnosticIdentifiers.CS0573_CannotHaveInstancePropertyOrFieldInitializersInStruct:
                         {
                             if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddStaticModifier))
                                 AddStaticModifier(context, diagnostic, node);
 
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.MemberMustDeclareBodyBecauseItIsNotMarkedAbstractExternOrPartial:
+                    case CompilerDiagnosticIdentifiers.CS0501_MemberMustDeclareBodyBecauseItIsNotMarkedAbstractExternOrPartial:
                         {
                             if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddModifierAbstract)
                                 && node.Kind() == SyntaxKind.MethodDeclaration
@@ -457,7 +457,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.NewVirtualMemberInSealedClass:
+                    case CompilerDiagnosticIdentifiers.CS0549_NewVirtualMemberInSealedClass:
                         {
                             if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveVirtualModifier))
                             {
@@ -489,7 +489,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.InstanceFieldsOfReadOnlyStructsMustBeReadOnly:
+                    case CompilerDiagnosticIdentifiers.CS8340_InstanceFieldsOfReadOnlyStructsMustBeReadOnly:
                         {
                             if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.MakeMemberReadOnly))
                                 break;
@@ -497,7 +497,7 @@ namespace Roslynator.CSharp.CodeFixes
                             ModifiersCodeFixRegistrator.AddModifier(context, diagnostic, node, SyntaxKind.ReadOnlyKeyword);
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.MemberCannotBeSealedBecauseItIsNotOverride:
+                    case CompilerDiagnosticIdentifiers.CS0238_MemberCannotBeSealedBecauseItIsNotOverride:
                         {
                             if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveSealedModifier))
                                 break;
@@ -505,7 +505,7 @@ namespace Roslynator.CSharp.CodeFixes
                             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                             if (semanticModel.GetDiagnostic(
-                                CompilerDiagnosticIdentifiers.MemberHidesInheritedMemberToMakeCurrentMethodOverrideThatImplementationAddOverrideKeyword,
+                                CompilerDiagnosticIdentifiers.CS0114_MemberHidesInheritedMemberToMakeCurrentMethodOverrideThatImplementationAddOverrideKeyword,
                                 CSharpUtility.GetIdentifier(node).Span,
                                 context.CancellationToken) != null)
                             {

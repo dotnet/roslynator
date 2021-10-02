@@ -12,7 +12,7 @@ namespace Roslynator.CSharp.Refactorings.Tests
 
         public override CSharpTestOptions Options
         {
-            get { return base.Options.AddAllowedCompilerDiagnosticId(CompilerDiagnosticIdentifiers.EmptySwitchBlock); }
+            get { return base.Options.AddAllowedCompilerDiagnosticId(CompilerDiagnosticIdentifiers.CS1522_EmptySwitchBlock); }
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddMissingCases)]

@@ -8,9 +8,9 @@ namespace Roslynator.CSharp.CodeFixes.Tests
 {
     public class CS1741RefOrOutParameterCannotHaveDefaultValueTests : AbstractCSharpCompilerDiagnosticFixVerifier<ParameterCodeFixProvider>
     {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.RefOrOutParameterCannotHaveDefaultValue;
+        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS1741_RefOrOutParameterCannotHaveDefaultValue;
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.RefOrOutParameterCannotHaveDefaultValue)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1741_RefOrOutParameterCannotHaveDefaultValue)]
         public async Task Test_Out()
         {
             await VerifyFixAsync(@"
@@ -34,7 +34,7 @@ class C
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
         }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.RefOrOutParameterCannotHaveDefaultValue)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1741_RefOrOutParameterCannotHaveDefaultValue)]
         public async Task Test_Ref()
         {
             await VerifyFixAsync(@"

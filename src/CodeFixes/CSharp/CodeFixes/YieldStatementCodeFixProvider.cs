@@ -18,7 +18,7 @@ namespace Roslynator.CSharp.CodeFixes
     {
         public override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.YieldStatementCannotBeUsedInsideAnonymousMethodOrLambdaExpression); }
+            get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.CS1621_YieldStatementCannotBeUsedInsideAnonymousMethodOrLambdaExpression); }
         }
 
         public override async Task RegisterCodeFixesAsync(CodeFixContext context)

@@ -18,7 +18,7 @@ namespace Roslynator.CSharp.CodeFixes
     {
         public override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.EmbeddedStatementCannotBeDeclarationOrLabeledStatement); }
+            get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.CS1023_EmbeddedStatementCannotBeDeclarationOrLabeledStatement); }
         }
 
         public override async Task RegisterCodeFixesAsync(CodeFixContext context)

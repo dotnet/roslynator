@@ -22,9 +22,9 @@ namespace Roslynator.CSharp.CodeFixes
             get
             {
                 return ImmutableArray.Create(
-                    CompilerDiagnosticIdentifiers.BaseClassMustComeBeforeAnyInterface,
-                    CompilerDiagnosticIdentifiers.StaticClassCannotDeriveFromType,
-                    CompilerDiagnosticIdentifiers.StaticClassCannotImplementInterfaces);
+                    CompilerDiagnosticIdentifiers.CS1722_BaseClassMustComeBeforeAnyInterface,
+                    CompilerDiagnosticIdentifiers.CS0713_StaticClassCannotDeriveFromType,
+                    CompilerDiagnosticIdentifiers.CS0714_StaticClassCannotImplementInterfaces);
             }
         }
 
@@ -42,7 +42,7 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 switch (diagnostic.Id)
                 {
-                    case CompilerDiagnosticIdentifiers.BaseClassMustComeBeforeAnyInterface:
+                    case CompilerDiagnosticIdentifiers.CS1722_BaseClassMustComeBeforeAnyInterface:
                         {
                             if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.MoveBaseClassBeforeAnyInterface))
                                 return;
@@ -74,8 +74,8 @@ namespace Roslynator.CSharp.CodeFixes
 
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.StaticClassCannotDeriveFromType:
-                    case CompilerDiagnosticIdentifiers.StaticClassCannotImplementInterfaces:
+                    case CompilerDiagnosticIdentifiers.CS0713_StaticClassCannotDeriveFromType:
+                    case CompilerDiagnosticIdentifiers.CS0714_StaticClassCannotImplementInterfaces:
                         {
                             if (!(baseList.Parent is ClassDeclarationSyntax classDeclaration))
                                 break;

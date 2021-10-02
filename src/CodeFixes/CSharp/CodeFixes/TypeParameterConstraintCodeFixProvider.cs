@@ -22,11 +22,11 @@ namespace Roslynator.CSharp.CodeFixes
             get
             {
                 return ImmutableArray.Create(
-                    CompilerDiagnosticIdentifiers.NewConstraintMustBeLastConstraintSpecified,
-                    CompilerDiagnosticIdentifiers.DuplicateConstraintForTypeParameter,
-                    CompilerDiagnosticIdentifiers.ClassOrStructConstraintMustComeBeforeAnyOtherConstraints,
-                    CompilerDiagnosticIdentifiers.CannotSpecifyBothConstraintClassAndClassOrStructConstraint,
-                    CompilerDiagnosticIdentifiers.NewConstraintCannotBeUsedWithStructConstraint);
+                    CompilerDiagnosticIdentifiers.CS0401_NewConstraintMustBeLastConstraintSpecified,
+                    CompilerDiagnosticIdentifiers.CS0405_DuplicateConstraintForTypeParameter,
+                    CompilerDiagnosticIdentifiers.CS0449_ClassOrStructConstraintMustComeBeforeAnyOtherConstraints,
+                    CompilerDiagnosticIdentifiers.CS0450_CannotSpecifyBothConstraintClassAndClassOrStructConstraint,
+                    CompilerDiagnosticIdentifiers.CS0451_NewConstraintCannotBeUsedWithStructConstraint);
             }
         }
 
@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 switch (diagnostic.Id)
                 {
-                    case CompilerDiagnosticIdentifiers.NewConstraintMustBeLastConstraintSpecified:
+                    case CompilerDiagnosticIdentifiers.CS0401_NewConstraintMustBeLastConstraintSpecified:
                         {
                             if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.MoveConstraint))
                                 break;
@@ -55,14 +55,14 @@ namespace Roslynator.CSharp.CodeFixes
 
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.DuplicateConstraintForTypeParameter:
+                    case CompilerDiagnosticIdentifiers.CS0405_DuplicateConstraintForTypeParameter:
                         {
                             if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveConstraint))
                                 RemoveConstraint(context, diagnostic, constraint);
 
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.ClassOrStructConstraintMustComeBeforeAnyOtherConstraints:
+                    case CompilerDiagnosticIdentifiers.CS0449_ClassOrStructConstraintMustComeBeforeAnyOtherConstraints:
                         {
                             if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.MoveConstraint))
                                 break;
@@ -83,7 +83,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.CannotSpecifyBothConstraintClassAndClassOrStructConstraint:
+                    case CompilerDiagnosticIdentifiers.CS0450_CannotSpecifyBothConstraintClassAndClassOrStructConstraint:
                         {
                             if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveConstraint))
                                 break;
@@ -107,7 +107,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.NewConstraintCannotBeUsedWithStructConstraint:
+                    case CompilerDiagnosticIdentifiers.CS0451_NewConstraintCannotBeUsedWithStructConstraint:
                         {
                             if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveConstraint))
                                 break;

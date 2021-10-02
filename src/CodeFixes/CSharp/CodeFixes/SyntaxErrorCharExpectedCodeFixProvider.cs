@@ -20,7 +20,7 @@ namespace Roslynator.CSharp.CodeFixes
     {
         public override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.SyntaxErrorCharExpected); }
+            get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.CS1003_SyntaxErrorCharExpected); }
         }
 
         public override async Task RegisterCodeFixesAsync(CodeFixContext context)

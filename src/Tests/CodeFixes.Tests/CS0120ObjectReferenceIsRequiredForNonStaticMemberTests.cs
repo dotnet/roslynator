@@ -8,9 +8,9 @@ namespace Roslynator.CSharp.CodeFixes.Tests
 {
     public class CS0120ObjectReferenceIsRequiredForNonStaticMemberTests : AbstractCSharpCompilerDiagnosticFixVerifier<ObjectReferenceIsRequiredForNonStaticMemberCodeFixProvider>
     {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.ObjectReferenceIsRequiredForNonStaticMember;
+        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS0120_ObjectReferenceIsRequiredForNonStaticMember;
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.ObjectReferenceIsRequiredForNonStaticMember)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0120_ObjectReferenceIsRequiredForNonStaticMember)]
         public async Task Test_MakeContainingMethodNonStatic()
         {
             await VerifyFixAsync(@"
@@ -36,7 +36,7 @@ class A
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId, CodeFixIdentifiers.MakeMemberNonStatic));
         }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.ObjectReferenceIsRequiredForNonStaticMember)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0120_ObjectReferenceIsRequiredForNonStaticMember)]
         public async Task TestNoFix()
         {
             await VerifyNoFixAsync(@"

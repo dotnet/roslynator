@@ -8,9 +8,9 @@ namespace Roslynator.CSharp.CodeFixes.Tests
 {
     public class CS1061TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFoundTests : AbstractCSharpCompilerDiagnosticFixVerifier<TypeDoesNotContainDefinitionCodeFixProvider>
     {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFound;
+        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS1061_TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFound;
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFound)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1061_TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFound)]
         public async Task Test_RemoveAwaitKeyword()
         {
             await VerifyFixAsync(@"
@@ -60,7 +60,7 @@ class C
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
         }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFound)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1061_TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFound)]
         public async Task Test_LengthToCount()
         {
             await VerifyFixAsync(@"
@@ -100,7 +100,7 @@ class C
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
         }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFound)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1061_TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFound)]
         public async Task Test_LengthToCount_ConditionalAccess()
         {
             await VerifyFixAsync(@"
@@ -140,7 +140,7 @@ class C
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
         }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFound)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1061_TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFound)]
         public async Task Test_ReplaceInvocationWithMemberAccess()
         {
             await VerifyFixAsync(@"
@@ -168,7 +168,7 @@ class C
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
         }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFound)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1061_TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFound)]
         public async Task Test_ReplaceMemberAccessWithInvocation()
         {
             await VerifyFixAsync(@"
@@ -196,7 +196,7 @@ class C
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
         }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFound)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1061_TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFound)]
         public async Task TestNoFix_ConditionalAccess()
         {
             await VerifyNoFixAsync(@"
@@ -210,7 +210,7 @@ class C
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
         }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFound)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1061_TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFound)]
         public async Task TestNoFix_ConditionalAccess2()
         {
             await VerifyNoFixAsync(@"

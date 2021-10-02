@@ -8,9 +8,9 @@ namespace Roslynator.CSharp.CodeFixes.Tests
 {
     public class CS8139CannotChangeTupleElementNameWhenOverridingInheritedMemberTests : AbstractCSharpCompilerDiagnosticFixVerifier<MemberDeclarationCodeFixProvider>
     {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CannotChangeTupleElementNameWhenOverridingInheritedMember;
+        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS8139_CannotChangeTupleElementNameWhenOverridingInheritedMember;
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CannotChangeTupleElementNameWhenOverridingInheritedMember)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS8139_CannotChangeTupleElementNameWhenOverridingInheritedMember)]
         public async Task Test_Method()
         {
             await VerifyFixAsync(@"
@@ -48,7 +48,7 @@ class B
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
         }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CannotChangeTupleElementNameWhenOverridingInheritedMember)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS8139_CannotChangeTupleElementNameWhenOverridingInheritedMember)]
         public async Task Test_Property()
         {
             await VerifyFixAsync(@"

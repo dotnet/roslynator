@@ -8,9 +8,9 @@ namespace Roslynator.CSharp.CodeFixes.Tests
 {
     public class CS0165UseOfUnassignedLocalVariableTests : AbstractCSharpCompilerDiagnosticFixVerifier<IdentifierNameCodeFixProvider>
     {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.UseOfUnassignedLocalVariable;
+        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS0165_UseOfUnassignedLocalVariable;
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.UseOfUnassignedLocalVariable)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0165_UseOfUnassignedLocalVariable)]
         public async Task Test()
         {
             await VerifyFixAsync(@"

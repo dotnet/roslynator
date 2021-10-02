@@ -8,9 +8,9 @@ namespace Roslynator.CSharp.CodeFixes.Tests
 {
     public class CS0126ObjectOfTypeConvertibleToTypeIsRequiredTests : AbstractCSharpCompilerDiagnosticFixVerifier<TokenCodeFixProvider>
     {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.ObjectOfTypeConvertibleToTypeIsRequired;
+        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS0126_ObjectOfTypeConvertibleToTypeIsRequired;
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.ObjectOfTypeConvertibleToTypeIsRequired)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0126_ObjectOfTypeConvertibleToTypeIsRequired)]
         public async Task Test()
         {
             await VerifyFixAsync(@"

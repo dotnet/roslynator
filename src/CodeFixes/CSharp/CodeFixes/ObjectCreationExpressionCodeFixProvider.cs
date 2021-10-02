@@ -22,7 +22,7 @@ namespace Roslynator.CSharp.CodeFixes
     {
         public override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.ThereIsNoArgumentGivenThatCorrespondsToRequiredFormalParameter); }
+            get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.CS7036_ThereIsNoArgumentGivenThatCorrespondsToRequiredFormalParameter); }
         }
 
         public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -43,7 +43,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             switch (diagnostic.Id)
             {
-                case CompilerDiagnosticIdentifiers.ThereIsNoArgumentGivenThatCorrespondsToRequiredFormalParameter:
+                case CompilerDiagnosticIdentifiers.CS7036_ThereIsNoArgumentGivenThatCorrespondsToRequiredFormalParameter:
                     {
                         if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.MoveInitializerExpressionsToConstructor))
                             break;
@@ -69,7 +69,7 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             if (expression is AssignmentExpressionSyntax assignment
                                 && semanticModel.GetDiagnostic(
-                                    CompilerDiagnosticIdentifiers.PropertyOrIndexerCannotBeUsedInThisContextBecauseSetAccessorIsAccessible,
+                                    CompilerDiagnosticIdentifiers.CS0272_PropertyOrIndexerCannotBeUsedInThisContextBecauseSetAccessorIsAccessible,
                                     assignment.Left.Span,
                                     context.CancellationToken) != null)
                             {

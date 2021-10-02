@@ -10,7 +10,7 @@ namespace Roslynator.CSharp
     {
         /// <summary>CS0019</summary>
         public static readonly DiagnosticDescriptor OperatorCannotBeAppliedToOperands = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.OperatorCannotBeAppliedToOperands, 
+            id:                 CompilerDiagnosticIdentifiers.CS0019_OperatorCannotBeAppliedToOperands, 
             title:              "Operator 'operator' cannot be applied to operands of type 'type' and 'type'.", 
             messageFormat:      "Operator '{0}' cannot be applied to operands of type '{1}' and '{2}'", 
             category:           "Compiler", 
@@ -22,7 +22,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0021</summary>
         public static readonly DiagnosticDescriptor CannotApplyIndexingToExpression = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.CannotApplyIndexingToExpression, 
+            id:                 CompilerDiagnosticIdentifiers.CS0021_CannotApplyIndexingToExpression, 
             title:              "Cannot apply indexing with [] to an expression of type 'type'.", 
             messageFormat:      "Cannot apply indexing with [] to an expression of type '{0}'", 
             category:           "Compiler", 
@@ -34,7 +34,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0023</summary>
         public static readonly DiagnosticDescriptor OperatorCannotBeAppliedToOperand = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.OperatorCannotBeAppliedToOperand, 
+            id:                 CompilerDiagnosticIdentifiers.CS0023_OperatorCannotBeAppliedToOperand, 
             title:              "Operator 'operator' cannot be applied to operand of type 'type'.", 
             messageFormat:      "Operator '{0}' cannot be applied to operand of type '{1}'", 
             category:           "Compiler", 
@@ -46,7 +46,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0029</summary>
         public static readonly DiagnosticDescriptor CannotImplicitlyConvertType = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.CannotImplicitlyConvertType, 
+            id:                 CompilerDiagnosticIdentifiers.CS0029_CannotImplicitlyConvertType, 
             title:              "Cannot implicitly convert type 'type' to 'type'.", 
             messageFormat:      "Cannot implicitly convert type '{0}' to '{1}'", 
             category:           "Compiler", 
@@ -58,7 +58,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0030</summary>
         public static readonly DiagnosticDescriptor CannotConvertType = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.CannotConvertType, 
+            id:                 CompilerDiagnosticIdentifiers.CS0030_CannotConvertType, 
             title:              "Cannot convert type 'type' to 'type'.", 
             messageFormat:      "Cannot convert type '{0}' to '{1}'", 
             category:           "Compiler", 
@@ -70,7 +70,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0037</summary>
         public static readonly DiagnosticDescriptor CannotConvertNullToTypeBecauseItIsNonNullableValueType = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.CannotConvertNullToTypeBecauseItIsNonNullableValueType, 
+            id:                 CompilerDiagnosticIdentifiers.CS0037_CannotConvertNullToTypeBecauseItIsNonNullableValueType, 
             title:              "Cannot convert null to 'type' because it is a non-nullable value type.", 
             messageFormat:      "Cannot convert null to '{0}' because it is a non-nullable value type", 
             category:           "Compiler", 
@@ -82,7 +82,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0069</summary>
         public static readonly DiagnosticDescriptor EventInInterfaceCannotHaveAddOrRemoveAccessors = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.EventInInterfaceCannotHaveAddOrRemoveAccessors, 
+            id:                 CompilerDiagnosticIdentifiers.CS0069_EventInInterfaceCannotHaveAddOrRemoveAccessors, 
             title:              "An event in an interface cannot have add or remove accessors.", 
             messageFormat:      "An event in an interface cannot have add or remove accessors", 
             category:           "Compiler", 
@@ -94,7 +94,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0077</summary>
         public static readonly DiagnosticDescriptor AsOperatorMustBeUsedWithReferenceTypeOrNullableType = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.AsOperatorMustBeUsedWithReferenceTypeOrNullableType, 
+            id:                 CompilerDiagnosticIdentifiers.CS0077_AsOperatorMustBeUsedWithReferenceTypeOrNullableType, 
             title:              "The as operator must be used with a reference type or nullable type ('type' is a non-nullable value type).", 
             messageFormat:      "The as operator must be used with a reference type or nullable type ('{0}' is a non-nullable value type)", 
             category:           "Compiler", 
@@ -106,7 +106,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0080</summary>
         public static readonly DiagnosticDescriptor ConstraintsAreNotAllowedOnNonGenericDeclarations = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.ConstraintsAreNotAllowedOnNonGenericDeclarations, 
+            id:                 CompilerDiagnosticIdentifiers.CS0080_ConstraintsAreNotAllowedOnNonGenericDeclarations, 
             title:              "Constraints are not allowed on non-generic declarations.", 
             messageFormat:      "Constraints are not allowed on non-generic declarations", 
             category:           "Compiler", 
@@ -118,7 +118,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0101</summary>
         public static readonly DiagnosticDescriptor NamespaceAlreadyContainsDefinition = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.NamespaceAlreadyContainsDefinition, 
+            id:                 CompilerDiagnosticIdentifiers.CS0101_NamespaceAlreadyContainsDefinition, 
             title:              "The namespace 'namespace' already contains a definition for 'type'.", 
             messageFormat:      "The namespace '{1}' already contains a definition for '{0}'", 
             category:           "Compiler", 
@@ -130,7 +130,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0102</summary>
         public static readonly DiagnosticDescriptor TypeAlreadyContainsDefinition = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.TypeAlreadyContainsDefinition, 
+            id:                 CompilerDiagnosticIdentifiers.CS0102_TypeAlreadyContainsDefinition, 
             title:              "The type 'type name' already contains a definition for 'identifier'.", 
             messageFormat:      "The type '{0}' already contains a definition for '{1}'", 
             category:           "Compiler", 
@@ -142,7 +142,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0103</summary>
         public static readonly DiagnosticDescriptor NameDoesNotExistInCurrentContext = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.NameDoesNotExistInCurrentContext, 
+            id:                 CompilerDiagnosticIdentifiers.CS0103_NameDoesNotExistInCurrentContext, 
             title:              "The name 'identifier' does not exist in the current context.", 
             messageFormat:      "The name '{0}' does not exist in the current context", 
             category:           "Compiler", 
@@ -154,7 +154,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0106</summary>
         public static readonly DiagnosticDescriptor ModifierIsNotValidForThisItem = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.ModifierIsNotValidForThisItem, 
+            id:                 CompilerDiagnosticIdentifiers.CS0106_ModifierIsNotValidForThisItem, 
             title:              "The modifier 'modifier' is not valid for this item.", 
             messageFormat:      "The modifier '{0}' is not valid for this item", 
             category:           "Compiler", 
@@ -166,7 +166,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0107</summary>
         public static readonly DiagnosticDescriptor MoreThanOneProtectionModifier = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.MoreThanOneProtectionModifier, 
+            id:                 CompilerDiagnosticIdentifiers.CS0107_MoreThanOneProtectionModifier, 
             title:              "More than one protection modifier.", 
             messageFormat:      "More than one protection modifier", 
             category:           "Compiler", 
@@ -178,7 +178,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0108</summary>
         public static readonly DiagnosticDescriptor MemberHidesInheritedMemberUseNewKeywordIfHidingWasIntended = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.MemberHidesInheritedMemberUseNewKeywordIfHidingWasIntended, 
+            id:                 CompilerDiagnosticIdentifiers.CS0108_MemberHidesInheritedMemberUseNewKeywordIfHidingWasIntended, 
             title:              "'member1' hides inherited member 'member2'. Use the new keyword if hiding was intended.", 
             messageFormat:      "'{0}' hides inherited member '{1}'. Use the new keyword if hiding was intended.", 
             category:           "Compiler", 
@@ -190,7 +190,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0109</summary>
         public static readonly DiagnosticDescriptor MemberDoesNotHideAccessibleMember = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.MemberDoesNotHideAccessibleMember, 
+            id:                 CompilerDiagnosticIdentifiers.CS0109_MemberDoesNotHideAccessibleMember, 
             title:              "The member 'member' does not hide an inherited member. The new keyword is not required.", 
             messageFormat:      "The member '{0}' does not hide an accessible member. The new keyword is not required.", 
             category:           "Compiler", 
@@ -202,7 +202,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0112</summary>
         public static readonly DiagnosticDescriptor StaticMemberCannotBeMarkedOverrideVirtualOrAbstract = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.StaticMemberCannotBeMarkedOverrideVirtualOrAbstract, 
+            id:                 CompilerDiagnosticIdentifiers.CS0112_StaticMemberCannotBeMarkedOverrideVirtualOrAbstract, 
             title:              "A static member 'function' cannot be marked as override, virtual or abstract.", 
             messageFormat:      "A static member '{0}' cannot be marked as override, virtual, or abstract", 
             category:           "Compiler", 
@@ -214,7 +214,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0114</summary>
         public static readonly DiagnosticDescriptor MemberHidesInheritedMemberToMakeCurrentMethodOverrideThatImplementationAddOverrideKeyword = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.MemberHidesInheritedMemberToMakeCurrentMethodOverrideThatImplementationAddOverrideKeyword, 
+            id:                 CompilerDiagnosticIdentifiers.CS0114_MemberHidesInheritedMemberToMakeCurrentMethodOverrideThatImplementationAddOverrideKeyword, 
             title:              "'function1' hides inherited member 'function2'. To make the current method override that implementation, add the override keyword. Otherwise add the new keyword.", 
             messageFormat:      "'{0}' hides inherited member '{1}'. To make the current member override that implementation, add the override keyword. Otherwise add the new keyword.", 
             category:           "Compiler", 
@@ -226,7 +226,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0115</summary>
         public static readonly DiagnosticDescriptor NoSuitableMethodFoundToOverride = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.NoSuitableMethodFoundToOverride, 
+            id:                 CompilerDiagnosticIdentifiers.CS0115_NoSuitableMethodFoundToOverride, 
             title:              "'function': no suitable method found to override.", 
             messageFormat:      "'{0}': no suitable method found to override", 
             category:           "Compiler", 
@@ -238,7 +238,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0119</summary>
         public static readonly DiagnosticDescriptor NameIsNotValidInGivenContext = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.NameIsNotValidInGivenContext, 
+            id:                 CompilerDiagnosticIdentifiers.CS0119_NameIsNotValidInGivenContext, 
             title:              "'identifier' is a 'construct', which is not valid in the given context.", 
             messageFormat:      "'{0}' is a {1}, which is not valid in the given context", 
             category:           "Compiler", 
@@ -250,7 +250,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0120</summary>
         public static readonly DiagnosticDescriptor ObjectReferenceIsRequiredForNonStaticMember = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.ObjectReferenceIsRequiredForNonStaticMember, 
+            id:                 CompilerDiagnosticIdentifiers.CS0120_ObjectReferenceIsRequiredForNonStaticMember, 
             title:              "An object reference is required for the nonstatic field, method, or property 'member'.", 
             messageFormat:      "An object reference is required for the non-static field, method, or property '{0}'", 
             category:           "Compiler", 
@@ -262,7 +262,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0123</summary>
         public static readonly DiagnosticDescriptor NoOverloadMatchesDelegate = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.NoOverloadMatchesDelegate, 
+            id:                 CompilerDiagnosticIdentifiers.CS0123_NoOverloadMatchesDelegate, 
             title:              "No overload for 'method' matches delegate 'delegate'.", 
             messageFormat:      "No overload for '{0}' matches delegate '{1}'", 
             category:           "Compiler", 
@@ -274,7 +274,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0126</summary>
         public static readonly DiagnosticDescriptor ObjectOfTypeConvertibleToTypeIsRequired = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.ObjectOfTypeConvertibleToTypeIsRequired, 
+            id:                 CompilerDiagnosticIdentifiers.CS0126_ObjectOfTypeConvertibleToTypeIsRequired, 
             title:              "An object of a type convertible to 'type' is required.", 
             messageFormat:      "An object of a type convertible to '{0}' is required", 
             category:           "Compiler", 
@@ -286,7 +286,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0127</summary>
         public static readonly DiagnosticDescriptor SinceMethodReturnsVoidReturnKeywordMustNotBeFollowedByObjectExpression = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.SinceMethodReturnsVoidReturnKeywordMustNotBeFollowedByObjectExpression, 
+            id:                 CompilerDiagnosticIdentifiers.CS0127_SinceMethodReturnsVoidReturnKeywordMustNotBeFollowedByObjectExpression, 
             title:              "Since 'function' returns void, a return keyword must not be followed by an object expression.", 
             messageFormat:      "Since '{0}' returns void, a return keyword must not be followed by an object expression", 
             category:           "Compiler", 
@@ -298,7 +298,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0128</summary>
         public static readonly DiagnosticDescriptor LocalVariableOrFunctionIsAlreadyDefinedInThisScope = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.LocalVariableOrFunctionIsAlreadyDefinedInThisScope, 
+            id:                 CompilerDiagnosticIdentifiers.CS0128_LocalVariableOrFunctionIsAlreadyDefinedInThisScope, 
             title:              "A local variable named 'variable' is already defined in this scope.", 
             messageFormat:      "A local variable or function named '{0}' is already defined in this scope", 
             category:           "Compiler", 
@@ -310,7 +310,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0131</summary>
         public static readonly DiagnosticDescriptor LeftHandSideOfAssignmentMustBeVariablePropertyOrIndexer = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.LeftHandSideOfAssignmentMustBeVariablePropertyOrIndexer, 
+            id:                 CompilerDiagnosticIdentifiers.CS0131_LeftHandSideOfAssignmentMustBeVariablePropertyOrIndexer, 
             title:              "The left-hand side of an assignment must be a variable, property or indexer.", 
             messageFormat:      "The left-hand side of an assignment must be a variable, property or indexer", 
             category:           "Compiler", 
@@ -322,7 +322,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0132</summary>
         public static readonly DiagnosticDescriptor StaticConstructorMustBeParameterless = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.StaticConstructorMustBeParameterless, 
+            id:                 CompilerDiagnosticIdentifiers.CS0132_StaticConstructorMustBeParameterless, 
             title:              "'constructor': a static constructor must be parameterless.", 
             messageFormat:      "'{0}': a static constructor must be parameterless", 
             category:           "Compiler", 
@@ -334,7 +334,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0133</summary>
         public static readonly DiagnosticDescriptor ExpressionBeingAssignedMustBeConstant = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.ExpressionBeingAssignedMustBeConstant, 
+            id:                 CompilerDiagnosticIdentifiers.CS0133_ExpressionBeingAssignedMustBeConstant, 
             title:              "The expression being assigned to 'variable' must be constant.", 
             messageFormat:      "The expression being assigned to '{0}' must be constant", 
             category:           "Compiler", 
@@ -346,7 +346,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0136</summary>
         public static readonly DiagnosticDescriptor LocalOrParameterCannotBeDeclaredInThisScopeBecauseThatNameIsUsedInEnclosingScopeToDefineLocalOrParameter = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.LocalOrParameterCannotBeDeclaredInThisScopeBecauseThatNameIsUsedInEnclosingScopeToDefineLocalOrParameter, 
+            id:                 CompilerDiagnosticIdentifiers.CS0136_LocalOrParameterCannotBeDeclaredInThisScopeBecauseThatNameIsUsedInEnclosingScopeToDefineLocalOrParameter, 
             title:              "A local variable named 'var' cannot be declared in this scope because it would give a different meaning to 'var', which is already used in a 'parent or current/child' scope to denote something else.", 
             messageFormat:      "A local or parameter named '{0}' cannot be declared in this scope because that name is used in an enclosing local scope to define a local or parameter", 
             category:           "Compiler", 
@@ -358,7 +358,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0139</summary>
         public static readonly DiagnosticDescriptor NoEnclosingLoopOutOfWhichToBreakOrContinue = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.NoEnclosingLoopOutOfWhichToBreakOrContinue, 
+            id:                 CompilerDiagnosticIdentifiers.CS0139_NoEnclosingLoopOutOfWhichToBreakOrContinue, 
             title:              "No enclosing loop out of which to break or continue.", 
             messageFormat:      "No enclosing loop out of which to break or continue", 
             category:           "Compiler", 
@@ -370,7 +370,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0152</summary>
         public static readonly DiagnosticDescriptor SwitchStatementContainsMultipleCasesWithSameLabelValue = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.SwitchStatementContainsMultipleCasesWithSameLabelValue, 
+            id:                 CompilerDiagnosticIdentifiers.CS0152_SwitchStatementContainsMultipleCasesWithSameLabelValue, 
             title:              "The switch statement contains multiple cases with same label value.", 
             messageFormat:      "The switch statement contains multiple cases with the label value '{0}'", 
             category:           "Compiler", 
@@ -382,7 +382,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0161</summary>
         public static readonly DiagnosticDescriptor NotAllCodePathsReturnValue = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.NotAllCodePathsReturnValue, 
+            id:                 CompilerDiagnosticIdentifiers.CS0161_NotAllCodePathsReturnValue, 
             title:              "'method': not all code paths return a value.", 
             messageFormat:      "'{0}': not all code paths return a value", 
             category:           "Compiler", 
@@ -394,7 +394,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0162</summary>
         public static readonly DiagnosticDescriptor UnreachableCodeDetected = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.UnreachableCodeDetected, 
+            id:                 CompilerDiagnosticIdentifiers.CS0162_UnreachableCodeDetected, 
             title:              "Unreachable code detected.", 
             messageFormat:      "Unreachable code detected", 
             category:           "Compiler", 
@@ -406,7 +406,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0163</summary>
         public static readonly DiagnosticDescriptor ControlCannotFallThroughFromOneCaseLabelToAnother = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.ControlCannotFallThroughFromOneCaseLabelToAnother, 
+            id:                 CompilerDiagnosticIdentifiers.CS0163_ControlCannotFallThroughFromOneCaseLabelToAnother, 
             title:              "Control cannot fall through from one case label ('label') to another.", 
             messageFormat:      "Control cannot fall through from one case label ('{0}') to another", 
             category:           "Compiler", 
@@ -418,7 +418,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0164</summary>
         public static readonly DiagnosticDescriptor LabelHasNotBeenReferenced = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.LabelHasNotBeenReferenced, 
+            id:                 CompilerDiagnosticIdentifiers.CS0164_LabelHasNotBeenReferenced, 
             title:              "This label has not been referenced.", 
             messageFormat:      "This label has not been referenced", 
             category:           "Compiler", 
@@ -430,7 +430,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0165</summary>
         public static readonly DiagnosticDescriptor UseOfUnassignedLocalVariable = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.UseOfUnassignedLocalVariable, 
+            id:                 CompilerDiagnosticIdentifiers.CS0165_UseOfUnassignedLocalVariable, 
             title:              "Use of unassigned local variable 'name'.", 
             messageFormat:      "Use of unassigned local variable '{0}'", 
             category:           "Compiler", 
@@ -442,7 +442,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0168</summary>
         public static readonly DiagnosticDescriptor VariableIsDeclaredButNeverUsed = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.VariableIsDeclaredButNeverUsed, 
+            id:                 CompilerDiagnosticIdentifiers.CS0168_VariableIsDeclaredButNeverUsed, 
             title:              "The variable 'var' is declared but never used.", 
             messageFormat:      "The variable '{0}' is declared but never used", 
             category:           "Compiler", 
@@ -454,7 +454,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0173</summary>
         public static readonly DiagnosticDescriptor TypeOfConditionalExpressionCannotBeDetermined = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.TypeOfConditionalExpressionCannotBeDetermined, 
+            id:                 CompilerDiagnosticIdentifiers.CS0173_TypeOfConditionalExpressionCannotBeDetermined, 
             title:              "Type of conditional expression cannot be determined because there is no implicit conversion between 'class1' and 'class2'.", 
             messageFormat:      "Type of conditional expression cannot be determined because there is no implicit conversion between '{0}' and '{1}'", 
             category:           "Compiler", 
@@ -466,7 +466,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0177</summary>
         public static readonly DiagnosticDescriptor OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod, 
+            id:                 CompilerDiagnosticIdentifiers.CS0177_OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod, 
             title:              "The out parameter 'parameter' must be assigned to before control leaves the current method.", 
             messageFormat:      "The out parameter '{0}' must be assigned to before control leaves the current method", 
             category:           "Compiler", 
@@ -478,7 +478,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0191</summary>
         public static readonly DiagnosticDescriptor ReadOnlyFieldCannotBeAssignedTo = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.ReadOnlyFieldCannotBeAssignedTo, 
+            id:                 CompilerDiagnosticIdentifiers.CS0191_ReadOnlyFieldCannotBeAssignedTo, 
             title:              "A readonly field cannot be assigned to (except in a constructor or a variable initializer).", 
             messageFormat:      "A readonly field cannot be assigned to (except in a constructor or a variable initializer)", 
             category:           "Compiler", 
@@ -490,7 +490,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0192</summary>
         public static readonly DiagnosticDescriptor ReadOnlyFieldCannotBePassedAsRefOrOutValue = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.ReadOnlyFieldCannotBePassedAsRefOrOutValue, 
+            id:                 CompilerDiagnosticIdentifiers.CS0192_ReadOnlyFieldCannotBePassedAsRefOrOutValue, 
             title:              "Readonly field 'name' cannot be used as ref or out value (except in a constructor).", 
             messageFormat:      "A readonly field cannot be used as a ref or out value (except in a constructor)", 
             category:           "Compiler", 
@@ -502,7 +502,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0201</summary>
         public static readonly DiagnosticDescriptor OnlyAssignmentCallIncrementDecrementAndNewObjectExpressionsCanBeUsedAsStatement = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.OnlyAssignmentCallIncrementDecrementAndNewObjectExpressionsCanBeUsedAsStatement, 
+            id:                 CompilerDiagnosticIdentifiers.CS0201_OnlyAssignmentCallIncrementDecrementAndNewObjectExpressionsCanBeUsedAsStatement, 
             title:              "Only assignment, call, increment, decrement, and new object expressions can be used as a statement.", 
             messageFormat:      "Only assignment, call, increment, decrement, and new object expressions can be used as a statement", 
             category:           "Compiler", 
@@ -514,7 +514,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0214</summary>
         public static readonly DiagnosticDescriptor PointersAndFixedSizeBuffersMayOnlyBeUsedInUnsafeContext = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.PointersAndFixedSizeBuffersMayOnlyBeUsedInUnsafeContext, 
+            id:                 CompilerDiagnosticIdentifiers.CS0214_PointersAndFixedSizeBuffersMayOnlyBeUsedInUnsafeContext, 
             title:              "Pointers and fixed size buffers may only be used in an unsafe context.", 
             messageFormat:      "Pointers and fixed size buffers may only be used in an unsafe context", 
             category:           "Compiler", 
@@ -526,7 +526,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0216</summary>
         public static readonly DiagnosticDescriptor OperatorRequiresMatchingOperatorToAlsoBeDefined = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.OperatorRequiresMatchingOperatorToAlsoBeDefined, 
+            id:                 CompilerDiagnosticIdentifiers.CS0216_OperatorRequiresMatchingOperatorToAlsoBeDefined, 
             title:              "The operator 'operator' requires a matching operator 'missing_operator' to also be defined.", 
             messageFormat:      "The operator '{0}' requires a matching operator '{1}' to also be defined", 
             category:           "Compiler", 
@@ -538,7 +538,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0219</summary>
         public static readonly DiagnosticDescriptor VariableIsAssignedButItsValueIsNeverUsed = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.VariableIsAssignedButItsValueIsNeverUsed, 
+            id:                 CompilerDiagnosticIdentifiers.CS0219_VariableIsAssignedButItsValueIsNeverUsed, 
             title:              "The variable 'variable' is assigned but its value is never used.", 
             messageFormat:      "The variable '{0}' is assigned but its value is never used", 
             category:           "Compiler", 
@@ -550,7 +550,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0221</summary>
         public static readonly DiagnosticDescriptor ConstantValueCannotBeConverted = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.ConstantValueCannotBeConverted, 
+            id:                 CompilerDiagnosticIdentifiers.CS0221_ConstantValueCannotBeConverted, 
             title:              "Constant value 'value' cannot be converted to a 'type' (use 'unchecked' syntax to override).", 
             messageFormat:      "Constant value '{0}' cannot be converted to a '{1}' (use 'unchecked' syntax to override)", 
             category:           "Compiler", 
@@ -562,7 +562,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0225</summary>
         public static readonly DiagnosticDescriptor ParamsParameterMustBeSingleDimensionalArray = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.ParamsParameterMustBeSingleDimensionalArray, 
+            id:                 CompilerDiagnosticIdentifiers.CS0225_ParamsParameterMustBeSingleDimensionalArray, 
             title:              "The params parameter must be a single dimensional array.", 
             messageFormat:      "The params parameter must be a single dimensional array", 
             category:           "Compiler", 
@@ -574,7 +574,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0238</summary>
         public static readonly DiagnosticDescriptor MemberCannotBeSealedBecauseItIsNotOverride = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.MemberCannotBeSealedBecauseItIsNotOverride, 
+            id:                 CompilerDiagnosticIdentifiers.CS0238_MemberCannotBeSealedBecauseItIsNotOverride, 
             title:              "'identifier' cannot be sealed because it is not an override.", 
             messageFormat:      "'{0}' cannot be sealed because it is not an override", 
             category:           "Compiler", 
@@ -586,7 +586,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0246</summary>
         public static readonly DiagnosticDescriptor TypeOrNamespaceNameCouldNotBeFound = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.TypeOrNamespaceNameCouldNotBeFound, 
+            id:                 CompilerDiagnosticIdentifiers.CS0246_TypeOrNamespaceNameCouldNotBeFound, 
             title:              "The type or namespace name 'type/namespace' could not be found (are you missing a using directive or an assembly reference?).", 
             messageFormat:      "The type or namespace name '{0}' could not be found (are you missing a using directive or an assembly reference?)", 
             category:           "Compiler", 
@@ -598,7 +598,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0260</summary>
         public static readonly DiagnosticDescriptor MissingPartialModifier = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.MissingPartialModifier, 
+            id:                 CompilerDiagnosticIdentifiers.CS0260_MissingPartialModifier, 
             title:              "Missing partial modifier on declaration of type 'type'; another partial declaration of this type exists.", 
             messageFormat:      "Missing partial modifier on declaration of type '{0}'; another partial declaration of this type exists", 
             category:           "Compiler", 
@@ -610,7 +610,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0262</summary>
         public static readonly DiagnosticDescriptor PartialDeclarationsHaveConflictingAccessibilityModifiers = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.PartialDeclarationsHaveConflictingAccessibilityModifiers, 
+            id:                 CompilerDiagnosticIdentifiers.CS0262_PartialDeclarationsHaveConflictingAccessibilityModifiers, 
             title:              "Partial declarations of 'type' have conflicting accessibility modifiers.", 
             messageFormat:      "Partial declarations of '{0}' have conflicting accessibility modifiers", 
             category:           "Compiler", 
@@ -622,7 +622,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0266</summary>
         public static readonly DiagnosticDescriptor CannotImplicitlyConvertTypeExplicitConversionExists = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.CannotImplicitlyConvertTypeExplicitConversionExists, 
+            id:                 CompilerDiagnosticIdentifiers.CS0266_CannotImplicitlyConvertTypeExplicitConversionExists, 
             title:              "Cannot implicitly convert type 'type1' to 'type2'. An explicit conversion exists (are you missing a cast?).", 
             messageFormat:      "Cannot implicitly convert type '{0}' to '{1}'. An explicit conversion exists (are you missing a cast?)", 
             category:           "Compiler", 
@@ -634,7 +634,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0267</summary>
         public static readonly DiagnosticDescriptor PartialModifierCanOnlyAppearImmediatelyBeforeClassStructInterfaceOrVoid = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.PartialModifierCanOnlyAppearImmediatelyBeforeClassStructInterfaceOrVoid, 
+            id:                 CompilerDiagnosticIdentifiers.CS0267_PartialModifierCanOnlyAppearImmediatelyBeforeClassStructInterfaceOrVoid, 
             title:              "The partial modifier can only appear immediately before 'class', 'struct', or 'interface'.", 
             messageFormat:      "The 'partial' modifier can only appear immediately before 'class', 'struct', 'interface', or 'void'", 
             category:           "Compiler", 
@@ -646,7 +646,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0272</summary>
         public static readonly DiagnosticDescriptor PropertyOrIndexerCannotBeUsedInThisContextBecauseSetAccessorIsAccessible = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.PropertyOrIndexerCannotBeUsedInThisContextBecauseSetAccessorIsAccessible, 
+            id:                 CompilerDiagnosticIdentifiers.CS0272_PropertyOrIndexerCannotBeUsedInThisContextBecauseSetAccessorIsAccessible, 
             title:              "The property or indexer 'name' cannot be used in this context because the set accessor is inaccessible.", 
             messageFormat:      "The property or indexer '{0}' cannot be used in this context because the set accessor is inaccessible", 
             category:           "Compiler", 
@@ -658,7 +658,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0275</summary>
         public static readonly DiagnosticDescriptor AccessibilityModifiersMayNotBeUsedOnAccessorsInInterface = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.AccessibilityModifiersMayNotBeUsedOnAccessorsInInterface, 
+            id:                 CompilerDiagnosticIdentifiers.CS0275_AccessibilityModifiersMayNotBeUsedOnAccessorsInInterface, 
             title:              "'accessor': accessibility modifiers may not be used on accessors in an interface.", 
             messageFormat:      "'{0}': accessibility modifiers may not be used on accessors in an interface", 
             category:           "Compiler", 
@@ -670,7 +670,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0305</summary>
         public static readonly DiagnosticDescriptor UsingGenericTypeRequiresNumberOfTypeArguments = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.UsingGenericTypeRequiresNumberOfTypeArguments, 
+            id:                 CompilerDiagnosticIdentifiers.CS0305_UsingGenericTypeRequiresNumberOfTypeArguments, 
             title:              "Using the generic type 'generic type' requires 'number' type arguments.", 
             messageFormat:      "Using the generic {1} '{0}' requires {2} type arguments", 
             category:           "Compiler", 
@@ -682,7 +682,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0401</summary>
         public static readonly DiagnosticDescriptor NewConstraintMustBeLastConstraintSpecified = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.NewConstraintMustBeLastConstraintSpecified, 
+            id:                 CompilerDiagnosticIdentifiers.CS0401_NewConstraintMustBeLastConstraintSpecified, 
             title:              "The new() constraint must be the last constraint specified.", 
             messageFormat:      "The new() constraint must be the last constraint specified", 
             category:           "Compiler", 
@@ -694,7 +694,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0403</summary>
         public static readonly DiagnosticDescriptor CannotConvertNullToTypeParameterBecauseItCouldBeNonNullableValueType = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.CannotConvertNullToTypeParameterBecauseItCouldBeNonNullableValueType, 
+            id:                 CompilerDiagnosticIdentifiers.CS0403_CannotConvertNullToTypeParameterBecauseItCouldBeNonNullableValueType, 
             title:              "Cannot convert null to type parameter 'name' because it could be a non-nullable value type. Consider using default('T') instead.", 
             messageFormat:      "Cannot convert null to type parameter '{0}' because it could be a non-nullable value type. Consider using 'default({0})' instead.", 
             category:           "Compiler", 
@@ -706,7 +706,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0405</summary>
         public static readonly DiagnosticDescriptor DuplicateConstraintForTypeParameter = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.DuplicateConstraintForTypeParameter, 
+            id:                 CompilerDiagnosticIdentifiers.CS0405_DuplicateConstraintForTypeParameter, 
             title:              "Duplicate constraint 'constraint' for type parameter 'type parameter'.", 
             messageFormat:      "Duplicate constraint '{0}' for type parameter '{1}'", 
             category:           "Compiler", 
@@ -718,7 +718,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0407</summary>
         public static readonly DiagnosticDescriptor MethodHasWrongReturnType = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.MethodHasWrongReturnType, 
+            id:                 CompilerDiagnosticIdentifiers.CS0407_MethodHasWrongReturnType, 
             title:              "'return-type method' has the wrong return type.", 
             messageFormat:      "'{1} {0}' has the wrong return type", 
             category:           "Compiler", 
@@ -730,7 +730,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0409</summary>
         public static readonly DiagnosticDescriptor ConstraintClauseHasAlreadyBeenSpecified = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.ConstraintClauseHasAlreadyBeenSpecified, 
+            id:                 CompilerDiagnosticIdentifiers.CS0409_ConstraintClauseHasAlreadyBeenSpecified, 
             title:              "A constraint clause has already been specified for type parameter 'type parameter'. All of the constraints for a type parameter must be specified in a single where clause.", 
             messageFormat:      "A constraint clause has already been specified for type parameter '{0}'. All of the constraints for a type parameter must be specified in a single where clause.", 
             category:           "Compiler", 
@@ -742,7 +742,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0428</summary>
         public static readonly DiagnosticDescriptor CannotConvertMethodGroupToNonDelegateType = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.CannotConvertMethodGroupToNonDelegateType, 
+            id:                 CompilerDiagnosticIdentifiers.CS0428_CannotConvertMethodGroupToNonDelegateType, 
             title:              "Cannot convert method group 'identifier' to non-delegate type 'type'. Did you intend to invoke the method?", 
             messageFormat:      "Cannot convert method group '{0}' to non-delegate type '{1}'. Did you intend to invoke the method?", 
             category:           "Compiler", 
@@ -754,7 +754,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0441</summary>
         public static readonly DiagnosticDescriptor ClassCannotBeBothStaticAndSealed = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.ClassCannotBeBothStaticAndSealed, 
+            id:                 CompilerDiagnosticIdentifiers.CS0441_ClassCannotBeBothStaticAndSealed, 
             title:              "'class': a class cannot be both static and sealed.", 
             messageFormat:      "'{0}': a class cannot be both static and sealed", 
             category:           "Compiler", 
@@ -766,7 +766,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0442</summary>
         public static readonly DiagnosticDescriptor AbstractPropertiesCannotHavePrivateAccessors = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.AbstractPropertiesCannotHavePrivateAccessors, 
+            id:                 CompilerDiagnosticIdentifiers.CS0442_AbstractPropertiesCannotHavePrivateAccessors, 
             title:              "'property': abstract properties cannot have private accessors.", 
             messageFormat:      "'{0}': abstract properties cannot have private accessors", 
             category:           "Compiler", 
@@ -778,7 +778,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0449</summary>
         public static readonly DiagnosticDescriptor ClassOrStructConstraintMustComeBeforeAnyOtherConstraints = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.ClassOrStructConstraintMustComeBeforeAnyOtherConstraints, 
+            id:                 CompilerDiagnosticIdentifiers.CS0449_ClassOrStructConstraintMustComeBeforeAnyOtherConstraints, 
             title:              "The 'class' or 'struct' constraint must come before any other constraints.", 
             messageFormat:      "The 'class' or 'struct' constraint must come before any other constraints", 
             category:           "Compiler", 
@@ -790,7 +790,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0450</summary>
         public static readonly DiagnosticDescriptor CannotSpecifyBothConstraintClassAndClassOrStructConstraint = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.CannotSpecifyBothConstraintClassAndClassOrStructConstraint, 
+            id:                 CompilerDiagnosticIdentifiers.CS0450_CannotSpecifyBothConstraintClassAndClassOrStructConstraint, 
             title:              "'type parameter name': cannot specify both a constraint class and the 'class' or 'struct' constraint.", 
             messageFormat:      "'{0}': cannot specify both a constraint class and the 'class' or 'struct' constraint", 
             category:           "Compiler", 
@@ -802,7 +802,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0451</summary>
         public static readonly DiagnosticDescriptor NewConstraintCannotBeUsedWithStructConstraint = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.NewConstraintCannotBeUsedWithStructConstraint, 
+            id:                 CompilerDiagnosticIdentifiers.CS0451_NewConstraintCannotBeUsedWithStructConstraint, 
             title:              "The 'new()' constraint cannot be used with the 'struct' constraint.", 
             messageFormat:      "The 'new()' constraint cannot be used with the 'struct' constraint", 
             category:           "Compiler", 
@@ -814,7 +814,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0472</summary>
         public static readonly DiagnosticDescriptor ResultOfExpressionIsAlwaysConstantSinceValueIsNeverEqualToNull = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.ResultOfExpressionIsAlwaysConstantSinceValueIsNeverEqualToNull, 
+            id:                 CompilerDiagnosticIdentifiers.CS0472_ResultOfExpressionIsAlwaysConstantSinceValueIsNeverEqualToNull, 
             title:              "The result of the expression is always 'value1' since a value of type 'value2' is never equal to 'null' of type 'value3'.", 
             messageFormat:      "The result of the expression is always '{0}' since a value of type '{1}' is never equal to 'null' of type '{2}'", 
             category:           "Compiler", 
@@ -826,7 +826,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0500</summary>
         public static readonly DiagnosticDescriptor MemberCannotDeclareBodyBecauseItIsMarkedAbstract = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.MemberCannotDeclareBodyBecauseItIsMarkedAbstract, 
+            id:                 CompilerDiagnosticIdentifiers.CS0500_MemberCannotDeclareBodyBecauseItIsMarkedAbstract, 
             title:              "'class member' cannot declare a body because it is marked abstract.", 
             messageFormat:      "'{0}' cannot declare a body because it is marked abstract", 
             category:           "Compiler", 
@@ -838,7 +838,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0501</summary>
         public static readonly DiagnosticDescriptor MemberMustDeclareBodyBecauseItIsNotMarkedAbstractExternOrPartial = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.MemberMustDeclareBodyBecauseItIsNotMarkedAbstractExternOrPartial, 
+            id:                 CompilerDiagnosticIdentifiers.CS0501_MemberMustDeclareBodyBecauseItIsNotMarkedAbstractExternOrPartial, 
             title:              "'member function' must declare a body because it is not marked abstract, extern, or partial.", 
             messageFormat:      "'{0}' must declare a body because it is not marked abstract, extern, or partial", 
             category:           "Compiler", 
@@ -850,7 +850,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0507</summary>
         public static readonly DiagnosticDescriptor CannotChangeAccessModifiersWhenOverridingInheritedMember = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.CannotChangeAccessModifiersWhenOverridingInheritedMember, 
+            id:                 CompilerDiagnosticIdentifiers.CS0507_CannotChangeAccessModifiersWhenOverridingInheritedMember, 
             title:              "'function1': cannot change access modifiers when overriding 'access' inherited member 'function2'.", 
             messageFormat:      "'{0}': cannot change access modifiers when overriding '{1}' inherited member '{2}'", 
             category:           "Compiler", 
@@ -862,7 +862,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0508</summary>
         public static readonly DiagnosticDescriptor MethodReturnTypeMustMatchOverriddenMethodReturnType = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.MethodReturnTypeMustMatchOverriddenMethodReturnType, 
+            id:                 CompilerDiagnosticIdentifiers.CS0508_MethodReturnTypeMustMatchOverriddenMethodReturnType, 
             title:              "'type1': return type must be 'type2' to match overridden member 'member name'.", 
             messageFormat:      "'{0}': return type must be '{2}' to match overridden member '{1}'", 
             category:           "Compiler", 
@@ -874,7 +874,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0513</summary>
         public static readonly DiagnosticDescriptor MemberIsAbstractButItIsContainedInNonAbstractClass = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.MemberIsAbstractButItIsContainedInNonAbstractClass, 
+            id:                 CompilerDiagnosticIdentifiers.CS0513_MemberIsAbstractButItIsContainedInNonAbstractClass, 
             title:              "'function' is abstract but it is contained in nonabstract class 'class'.", 
             messageFormat:      "'{0}' is abstract but it is contained in non-abstract class '{1}'", 
             category:           "Compiler", 
@@ -886,7 +886,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0515</summary>
         public static readonly DiagnosticDescriptor AccessModifiersAreNotAllowedOnStaticConstructors = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.AccessModifiersAreNotAllowedOnStaticConstructors, 
+            id:                 CompilerDiagnosticIdentifiers.CS0515_AccessModifiersAreNotAllowedOnStaticConstructors, 
             title:              "'function': access modifiers are not allowed on static constructors.", 
             messageFormat:      "'{0}': access modifiers are not allowed on static constructors", 
             category:           "Compiler", 
@@ -898,7 +898,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0524</summary>
         public static readonly DiagnosticDescriptor InterfacesCannotDeclareTypes = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.InterfacesCannotDeclareTypes, 
+            id:                 CompilerDiagnosticIdentifiers.CS0524_InterfacesCannotDeclareTypes, 
             title:              "'identifier': interfaces cannot declare types.", 
             messageFormat:      "'{0}': interfaces cannot declare types", 
             category:           "Compiler", 
@@ -910,7 +910,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0525</summary>
         public static readonly DiagnosticDescriptor InterfacesCannotContainFields = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.InterfacesCannotContainFields, 
+            id:                 CompilerDiagnosticIdentifiers.CS0525_InterfacesCannotContainFields, 
             title:              "Interfaces cannot contain fields.", 
             messageFormat:      "Interfaces cannot contain fields", 
             category:           "Compiler", 
@@ -922,7 +922,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0527</summary>
         public static readonly DiagnosticDescriptor TypeInInterfaceListIsNotInterface = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.TypeInInterfaceListIsNotInterface, 
+            id:                 CompilerDiagnosticIdentifiers.CS0527_TypeInInterfaceListIsNotInterface, 
             title:              "Type 'type' in interface list is not an interface.", 
             messageFormat:      "Type '{0}' in interface list is not an interface", 
             category:           "Compiler", 
@@ -934,7 +934,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0531</summary>
         public static readonly DiagnosticDescriptor InterfaceMembersCannotHaveDefinition = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.InterfaceMembersCannotHaveDefinition, 
+            id:                 CompilerDiagnosticIdentifiers.CS0531_InterfaceMembersCannotHaveDefinition, 
             title:              "'member': interface members cannot have a definition.", 
             messageFormat:      "'{0}': interface members cannot have a definition", 
             category:           "Compiler", 
@@ -946,7 +946,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0539</summary>
         public static readonly DiagnosticDescriptor ExplicitInterfaceDeclarationIsNotMemberOfInterface = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.ExplicitInterfaceDeclarationIsNotMemberOfInterface, 
+            id:                 CompilerDiagnosticIdentifiers.CS0539_ExplicitInterfaceDeclarationIsNotMemberOfInterface, 
             title:              "'member' in explicit interface declaration is not a member of interface", 
             messageFormat:      "'{0}' in explicit interface declaration is not a member of interface", 
             category:           "Compiler", 
@@ -958,7 +958,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0541</summary>
         public static readonly DiagnosticDescriptor ExplicitInterfaceDeclarationCanOnlyBeDeclaredInClassOrStruct = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.ExplicitInterfaceDeclarationCanOnlyBeDeclaredInClassOrStruct, 
+            id:                 CompilerDiagnosticIdentifiers.CS0541_ExplicitInterfaceDeclarationCanOnlyBeDeclaredInClassOrStruct, 
             title:              "'declaration': explicit interface declaration can only be declared in a class or struct.", 
             messageFormat:      "'{0}': explicit interface declaration can only be declared in a class or struct", 
             category:           "Compiler", 
@@ -970,7 +970,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0549</summary>
         public static readonly DiagnosticDescriptor NewVirtualMemberInSealedClass = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.NewVirtualMemberInSealedClass, 
+            id:                 CompilerDiagnosticIdentifiers.CS0549_NewVirtualMemberInSealedClass, 
             title:              "New virtual member in sealed class.", 
             messageFormat:      "'{0}' is a new virtual member in sealed class '{1}'", 
             category:           "Compiler", 
@@ -982,7 +982,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0558</summary>
         public static readonly DiagnosticDescriptor UserDefinedOperatorMustBeDeclaredStaticAndPublic = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.UserDefinedOperatorMustBeDeclaredStaticAndPublic, 
+            id:                 CompilerDiagnosticIdentifiers.CS0558_UserDefinedOperatorMustBeDeclaredStaticAndPublic, 
             title:              "User-defined operator 'operator' must be declared static and public.", 
             messageFormat:      "User-defined operator '{0}' must be declared static and public", 
             category:           "Compiler", 
@@ -994,7 +994,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0567</summary>
         public static readonly DiagnosticDescriptor InterfacesCannotContainOperators = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.InterfacesCannotContainOperators, 
+            id:                 CompilerDiagnosticIdentifiers.CS0567_InterfacesCannotContainOperators, 
             title:              "Interfaces cannot contain operators.", 
             messageFormat:      "Interfaces cannot contain operators", 
             category:           "Compiler", 
@@ -1006,7 +1006,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0568</summary>
         public static readonly DiagnosticDescriptor StructsCannotContainExplicitParameterlessConstructors = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.StructsCannotContainExplicitParameterlessConstructors, 
+            id:                 CompilerDiagnosticIdentifiers.CS0568_StructsCannotContainExplicitParameterlessConstructors, 
             title:              "Structs cannot contain explicit parameterless constructors.", 
             messageFormat:      "Structs cannot contain explicit parameterless constructors", 
             category:           "Compiler", 
@@ -1018,7 +1018,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0573</summary>
         public static readonly DiagnosticDescriptor CannotHaveInstancePropertyOrFieldInitializersInStruct = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.CannotHaveInstancePropertyOrFieldInitializersInStruct, 
+            id:                 CompilerDiagnosticIdentifiers.CS0573_CannotHaveInstancePropertyOrFieldInitializersInStruct, 
             title:              "'field declaration': cannot have instance field initializers in structs.", 
             messageFormat:      "'{0}': cannot have instance property or field initializers in structs", 
             category:           "Compiler", 
@@ -1030,7 +1030,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0574</summary>
         public static readonly DiagnosticDescriptor NameOfDestructorMustMatchNameOfClass = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.NameOfDestructorMustMatchNameOfClass, 
+            id:                 CompilerDiagnosticIdentifiers.CS0574_NameOfDestructorMustMatchNameOfClass, 
             title:              "Name of destructor must match name of class.", 
             messageFormat:      "Name of destructor must match name of class", 
             category:           "Compiler", 
@@ -1042,7 +1042,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0575</summary>
         public static readonly DiagnosticDescriptor OnlyClassTypesCanContainDestructors = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.OnlyClassTypesCanContainDestructors, 
+            id:                 CompilerDiagnosticIdentifiers.CS0575_OnlyClassTypesCanContainDestructors, 
             title:              "Only class types can contain destructors.", 
             messageFormat:      "Only class types can contain destructors", 
             category:           "Compiler", 
@@ -1054,7 +1054,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0579</summary>
         public static readonly DiagnosticDescriptor DuplicateAttribute = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.DuplicateAttribute, 
+            id:                 CompilerDiagnosticIdentifiers.CS0579_DuplicateAttribute, 
             title:              "Duplicate 'attribute' attribute.", 
             messageFormat:      "Duplicate '{0}' attribute", 
             category:           "Compiler", 
@@ -1066,7 +1066,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0592</summary>
         public static readonly DiagnosticDescriptor AttributeIsNotValidOnThisDeclarationType = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.AttributeIsNotValidOnThisDeclarationType, 
+            id:                 CompilerDiagnosticIdentifiers.CS0592_AttributeIsNotValidOnThisDeclarationType, 
             title:              "Attribute 'attribute' is not valid on this declaration type. It is valid on 'type' declarations only.", 
             messageFormat:      "Attribute '{0}' is not valid on this declaration type. It is only valid on '{1}' declarations.", 
             category:           "Compiler", 
@@ -1078,7 +1078,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0621</summary>
         public static readonly DiagnosticDescriptor VirtualOrAbstractMembersCannotBePrivate = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.VirtualOrAbstractMembersCannotBePrivate, 
+            id:                 CompilerDiagnosticIdentifiers.CS0621_VirtualOrAbstractMembersCannotBePrivate, 
             title:              "'member': virtual or abstract members cannot be private.", 
             messageFormat:      "'{0}': virtual or abstract members cannot be private", 
             category:           "Compiler", 
@@ -1090,7 +1090,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0628</summary>
         public static readonly DiagnosticDescriptor NewProtectedMemberDeclaredInSealedClass = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.NewProtectedMemberDeclaredInSealedClass, 
+            id:                 CompilerDiagnosticIdentifiers.CS0628_NewProtectedMemberDeclaredInSealedClass, 
             title:              "member' : new protected member declared in sealed class.", 
             messageFormat:      "'{0}': new protected member declared in sealed class", 
             category:           "Compiler", 
@@ -1102,7 +1102,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0659</summary>
         public static readonly DiagnosticDescriptor TypeOverridesObjectEqualsButDoesNotOverrideObjectGetHashCode = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.TypeOverridesObjectEqualsButDoesNotOverrideObjectGetHashCode, 
+            id:                 CompilerDiagnosticIdentifiers.CS0659_TypeOverridesObjectEqualsButDoesNotOverrideObjectGetHashCode, 
             title:              "'class' overrides Object.Equals(object o) but does not override Object.GetHashCode().", 
             messageFormat:      "'{0}' overrides Object.Equals(object o) but does not override Object.GetHashCode()", 
             category:           "Compiler", 
@@ -1114,7 +1114,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0660</summary>
         public static readonly DiagnosticDescriptor TypeDefinesEqualityOperatorButDoesNotOverrideObjectEquals = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.TypeDefinesEqualityOperatorButDoesNotOverrideObjectEquals, 
+            id:                 CompilerDiagnosticIdentifiers.CS0660_TypeDefinesEqualityOperatorButDoesNotOverrideObjectEquals, 
             title:              "'class' defines operator == or operator != but does not override Object.Equals(object o).", 
             messageFormat:      "'{0}' defines operator == or operator != but does not override Object.Equals(object o)", 
             category:           "Compiler", 
@@ -1126,7 +1126,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0661</summary>
         public static readonly DiagnosticDescriptor TypeDefinesEqualityOperatorButDoesNotOverrideObjectGetHashCode = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.TypeDefinesEqualityOperatorButDoesNotOverrideObjectGetHashCode, 
+            id:                 CompilerDiagnosticIdentifiers.CS0661_TypeDefinesEqualityOperatorButDoesNotOverrideObjectGetHashCode, 
             title:              "'class' defines operator == or operator != but does not override Object.GetHashCode().", 
             messageFormat:      "'{0}' defines operator == or operator != but does not override Object.GetHashCode()", 
             category:           "Compiler", 
@@ -1138,7 +1138,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0678</summary>
         public static readonly DiagnosticDescriptor FieldCanNotBeBothVolatileAndReadOnly = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.FieldCanNotBeBothVolatileAndReadOnly, 
+            id:                 CompilerDiagnosticIdentifiers.CS0678_FieldCanNotBeBothVolatileAndReadOnly, 
             title:              "'variable': a field can not be both volatile and readonly.", 
             messageFormat:      "'{0}': a field cannot be both volatile and readonly", 
             category:           "Compiler", 
@@ -1150,7 +1150,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0693</summary>
         public static readonly DiagnosticDescriptor TypeParameterHasSameNameAsTypeParameterFromOuterType = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.TypeParameterHasSameNameAsTypeParameterFromOuterType, 
+            id:                 CompilerDiagnosticIdentifiers.CS0693_TypeParameterHasSameNameAsTypeParameterFromOuterType, 
             title:              "Type parameter 'type parameter' has the same name as the type parameter from outer type 'type'.", 
             messageFormat:      "Type parameter '{0}' has the same name as the type parameter from outer type '{1}'", 
             category:           "Compiler", 
@@ -1162,7 +1162,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0708</summary>
         public static readonly DiagnosticDescriptor CannotDeclareInstanceMembersInStaticClass = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.CannotDeclareInstanceMembersInStaticClass, 
+            id:                 CompilerDiagnosticIdentifiers.CS0708_CannotDeclareInstanceMembersInStaticClass, 
             title:              "'field': cannot declare instance members in a static class.", 
             messageFormat:      "'{0}': cannot declare instance members in a static class", 
             category:           "Compiler", 
@@ -1174,7 +1174,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0710</summary>
         public static readonly DiagnosticDescriptor StaticClassesCannotHaveInstanceConstructors = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.StaticClassesCannotHaveInstanceConstructors, 
+            id:                 CompilerDiagnosticIdentifiers.CS0710_StaticClassesCannotHaveInstanceConstructors, 
             title:              "Static classes cannot have instance constructors", 
             messageFormat:      "Static classes cannot have instance constructors", 
             category:           "Compiler", 
@@ -1186,7 +1186,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0713</summary>
         public static readonly DiagnosticDescriptor StaticClassCannotDeriveFromType = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.StaticClassCannotDeriveFromType, 
+            id:                 CompilerDiagnosticIdentifiers.CS0713_StaticClassCannotDeriveFromType, 
             title:              "Static class 'static type' cannot derive from type 'type'. Static classes must derive from object.", 
             messageFormat:      "Static class '{0}' cannot derive from type '{1}'. Static classes must derive from object.", 
             category:           "Compiler", 
@@ -1198,7 +1198,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0714</summary>
         public static readonly DiagnosticDescriptor StaticClassCannotImplementInterfaces = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.StaticClassCannotImplementInterfaces, 
+            id:                 CompilerDiagnosticIdentifiers.CS0714_StaticClassCannotImplementInterfaces, 
             title:              "Static class cannot implement interfaces.", 
             messageFormat:      "'{0}': static classes cannot implement interfaces", 
             category:           "Compiler", 
@@ -1210,7 +1210,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0718</summary>
         public static readonly DiagnosticDescriptor StaticTypesCannotBeUsedAsTypeArguments = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.StaticTypesCannotBeUsedAsTypeArguments, 
+            id:                 CompilerDiagnosticIdentifiers.CS0718_StaticTypesCannotBeUsedAsTypeArguments, 
             title:              "'type': static types cannot be used as type arguments.", 
             messageFormat:      "'{0}': static types cannot be used as type arguments", 
             category:           "Compiler", 
@@ -1222,7 +1222,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0750</summary>
         public static readonly DiagnosticDescriptor PartialMethodCannotHaveAccessModifiersOrVirtualAbstractOverrideNewSealedOrExternModifiers = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.PartialMethodCannotHaveAccessModifiersOrVirtualAbstractOverrideNewSealedOrExternModifiers, 
+            id:                 CompilerDiagnosticIdentifiers.CS0750_PartialMethodCannotHaveAccessModifiersOrVirtualAbstractOverrideNewSealedOrExternModifiers, 
             title:              "A partial method cannot have access modifiers or the virtual, abstract, override, new, sealed, or extern modifiers.", 
             messageFormat:      "A partial method cannot have access modifiers or the virtual, abstract, override, new, sealed, or extern modifiers", 
             category:           "Compiler", 
@@ -1234,7 +1234,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0751</summary>
         public static readonly DiagnosticDescriptor PartialMethodMustBeDeclaredInPartialClassOrPartialStruct = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.PartialMethodMustBeDeclaredInPartialClassOrPartialStruct, 
+            id:                 CompilerDiagnosticIdentifiers.CS0751_PartialMethodMustBeDeclaredInPartialClassOrPartialStruct, 
             title:              "A partial method must be declared in a partial class or partial struct.", 
             messageFormat:      "A partial method must be declared within a partial class or partial struct", 
             category:           "Compiler", 
@@ -1246,7 +1246,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0753</summary>
         public static readonly DiagnosticDescriptor OnlyMethodsClassesStructsOrInterfacesMayBePartial = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.OnlyMethodsClassesStructsOrInterfacesMayBePartial, 
+            id:                 CompilerDiagnosticIdentifiers.CS0753_OnlyMethodsClassesStructsOrInterfacesMayBePartial, 
             title:              "Only methods, classes, structs, or interfaces may be partial.", 
             messageFormat:      "Only methods, classes, structs, or interfaces may be partial", 
             category:           "Compiler", 
@@ -1258,7 +1258,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0756</summary>
         public static readonly DiagnosticDescriptor PartialMethodMayNotHaveMultipleDefiningDeclarations = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.PartialMethodMayNotHaveMultipleDefiningDeclarations, 
+            id:                 CompilerDiagnosticIdentifiers.CS0756_PartialMethodMayNotHaveMultipleDefiningDeclarations, 
             title:              "A partial method may not have multiple defining declarations.", 
             messageFormat:      "A partial method may not have multiple defining declarations", 
             category:           "Compiler", 
@@ -1270,7 +1270,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0759</summary>
         public static readonly DiagnosticDescriptor NoDefiningDeclarationFoundForImplementingDeclarationOfPartialMethod = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.NoDefiningDeclarationFoundForImplementingDeclarationOfPartialMethod, 
+            id:                 CompilerDiagnosticIdentifiers.CS0759_NoDefiningDeclarationFoundForImplementingDeclarationOfPartialMethod, 
             title:              "No defining declaration found for implementing declaration of partial method 'method'.", 
             messageFormat:      "No defining declaration found for implementing declaration of partial method '{0}'", 
             category:           "Compiler", 
@@ -1282,7 +1282,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0766</summary>
         public static readonly DiagnosticDescriptor PartialMethodsMustHaveVoidReturnType = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.PartialMethodsMustHaveVoidReturnType, 
+            id:                 CompilerDiagnosticIdentifiers.CS0766_PartialMethodsMustHaveVoidReturnType, 
             title:              "Partial methods must have a void return type.", 
             messageFormat:      "Partial methods must have a void return type", 
             category:           "Compiler", 
@@ -1294,7 +1294,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0815</summary>
         public static readonly DiagnosticDescriptor CannotAssignMethodGroupToImplicitlyTypedVariable = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.CannotAssignMethodGroupToImplicitlyTypedVariable, 
+            id:                 CompilerDiagnosticIdentifiers.CS0815_CannotAssignMethodGroupToImplicitlyTypedVariable, 
             title:              "Cannot assign 'expression' to an implicitly typed local.", 
             messageFormat:      "Cannot assign {0} to an implicitly-typed variable", 
             category:           "Compiler", 
@@ -1306,7 +1306,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0819</summary>
         public static readonly DiagnosticDescriptor ImplicitlyTypedVariablesCannotHaveMultipleDeclarators = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.ImplicitlyTypedVariablesCannotHaveMultipleDeclarators, 
+            id:                 CompilerDiagnosticIdentifiers.CS0819_ImplicitlyTypedVariablesCannotHaveMultipleDeclarators, 
             title:              "Implicitly typed locals cannot have multiple declarators.", 
             messageFormat:      "Implicitly-typed variables cannot have multiple declarators", 
             category:           "Compiler", 
@@ -1318,7 +1318,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS0822</summary>
         public static readonly DiagnosticDescriptor ImplicitlyTypedVariablesCannotBeConstant = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.ImplicitlyTypedVariablesCannotBeConstant, 
+            id:                 CompilerDiagnosticIdentifiers.CS0822_ImplicitlyTypedVariablesCannotBeConstant, 
             title:              "Implicitly typed locals cannot be const.", 
             messageFormat:      "Implicitly-typed variables cannot be constant", 
             category:           "Compiler", 
@@ -1330,7 +1330,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS1002</summary>
         public static readonly DiagnosticDescriptor SemicolonExpected = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.SemicolonExpected, 
+            id:                 CompilerDiagnosticIdentifiers.CS1002_SemicolonExpected, 
             title:              "; expected.", 
             messageFormat:      "; expected", 
             category:           "Compiler", 
@@ -1342,7 +1342,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS1003</summary>
         public static readonly DiagnosticDescriptor SyntaxErrorCharExpected = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.SyntaxErrorCharExpected, 
+            id:                 CompilerDiagnosticIdentifiers.CS1003_SyntaxErrorCharExpected, 
             title:              "Syntax error, 'char' expected.", 
             messageFormat:      "Syntax error, '{0}' expected", 
             category:           "Compiler", 
@@ -1354,7 +1354,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS1004</summary>
         public static readonly DiagnosticDescriptor DuplicateModifier = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.DuplicateModifier, 
+            id:                 CompilerDiagnosticIdentifiers.CS1004_DuplicateModifier, 
             title:              "Duplicate 'modifier' modifier.", 
             messageFormat:      "Duplicate '{0}' modifier", 
             category:           "Compiler", 
@@ -1366,7 +1366,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS1012</summary>
         public static readonly DiagnosticDescriptor TooManyCharactersInCharacterLiteral = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.TooManyCharactersInCharacterLiteral, 
+            id:                 CompilerDiagnosticIdentifiers.CS1012_TooManyCharactersInCharacterLiteral, 
             title:              "Too many characters in character literal.", 
             messageFormat:      "Too many characters in character literal", 
             category:           "Compiler", 
@@ -1378,7 +1378,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS1023</summary>
         public static readonly DiagnosticDescriptor EmbeddedStatementCannotBeDeclarationOrLabeledStatement = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.EmbeddedStatementCannotBeDeclarationOrLabeledStatement, 
+            id:                 CompilerDiagnosticIdentifiers.CS1023_EmbeddedStatementCannotBeDeclarationOrLabeledStatement, 
             title:              "Embedded statement cannot be a declaration or labeled statement.", 
             messageFormat:      "Embedded statement cannot be a declaration or labeled statement", 
             category:           "Compiler", 
@@ -1390,7 +1390,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS1031</summary>
         public static readonly DiagnosticDescriptor TypeExpected = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.TypeExpected, 
+            id:                 CompilerDiagnosticIdentifiers.CS1031_TypeExpected, 
             title:              "Type expected.", 
             messageFormat:      "Type expected", 
             category:           "Compiler", 
@@ -1402,7 +1402,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS1057</summary>
         public static readonly DiagnosticDescriptor StaticClassesCannotContainProtectedMembers = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.StaticClassesCannotContainProtectedMembers, 
+            id:                 CompilerDiagnosticIdentifiers.CS1057_StaticClassesCannotContainProtectedMembers, 
             title:              "'member': static classes cannot contain protected members.", 
             messageFormat:      "'{0}': static classes cannot contain protected members", 
             category:           "Compiler", 
@@ -1414,7 +1414,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS1061</summary>
         public static readonly DiagnosticDescriptor TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFound = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFound, 
+            id:                 CompilerDiagnosticIdentifiers.CS1061_TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFound, 
             title:              "'type' does not contain a definition for 'member' and no extension method 'name' accepting a first argument of type 'type' could be found (are you missing a using directive or an assembly reference?).", 
             messageFormat:      "'{0}' does not contain a definition for '{1}' and no extension method '{1}' accepting a first argument of type '{0}' could be found (are you missing a using directive or an assembly reference?)", 
             category:           "Compiler", 
@@ -1426,7 +1426,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS1100</summary>
         public static readonly DiagnosticDescriptor MethodHasParameterModifierThisWhichIsNotOnFirstParameter = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.MethodHasParameterModifierThisWhichIsNotOnFirstParameter, 
+            id:                 CompilerDiagnosticIdentifiers.CS1100_MethodHasParameterModifierThisWhichIsNotOnFirstParameter, 
             title:              "Method 'name' has a parameter modifier 'this' which is not on the first parameter.", 
             messageFormat:      "Method '{0}' has a parameter modifier 'this' which is not on the first parameter", 
             category:           "Compiler", 
@@ -1438,7 +1438,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS1105</summary>
         public static readonly DiagnosticDescriptor ExtensionMethodMustBeStatic = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.ExtensionMethodMustBeStatic, 
+            id:                 CompilerDiagnosticIdentifiers.CS1105_ExtensionMethodMustBeStatic, 
             title:              "Extension methods must be static.", 
             messageFormat:      "Extension method must be static", 
             category:           "Compiler", 
@@ -1450,7 +1450,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS1106</summary>
         public static readonly DiagnosticDescriptor ExtensionMethodMustBeDefinedInNonGenericStaticClass = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.ExtensionMethodMustBeDefinedInNonGenericStaticClass, 
+            id:                 CompilerDiagnosticIdentifiers.CS1106_ExtensionMethodMustBeDefinedInNonGenericStaticClass, 
             title:              "Extension methods must be defined in a non-generic static class.", 
             messageFormat:      "Extension method must be defined in a non-generic static class", 
             category:           "Compiler", 
@@ -1462,7 +1462,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS1503</summary>
         public static readonly DiagnosticDescriptor CannotConvertArgumentType = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.CannotConvertArgumentType, 
+            id:                 CompilerDiagnosticIdentifiers.CS1503_CannotConvertArgumentType, 
             title:              "Argument 'number' cannot convert from 'type1' to 'type2'.", 
             messageFormat:      "Argument {0}: cannot convert from '{1}' to '{2}'", 
             category:           "Compiler", 
@@ -1474,7 +1474,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS1522</summary>
         public static readonly DiagnosticDescriptor EmptySwitchBlock = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.EmptySwitchBlock, 
+            id:                 CompilerDiagnosticIdentifiers.CS1522_EmptySwitchBlock, 
             title:              "Empty switch block.", 
             messageFormat:      "Empty switch block", 
             category:           "Compiler", 
@@ -1486,7 +1486,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS1526</summary>
         public static readonly DiagnosticDescriptor NewExpressionRequiresParenthesesOrBracketsOrBracesAfterType = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.NewExpressionRequiresParenthesesOrBracketsOrBracesAfterType, 
+            id:                 CompilerDiagnosticIdentifiers.CS1526_NewExpressionRequiresParenthesesOrBracketsOrBracesAfterType, 
             title:              "A new expression requires (), [], or {} after type.", 
             messageFormat:      "A new expression requires (), [], or {} after type", 
             category:           "Compiler", 
@@ -1498,7 +1498,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS1527</summary>
         public static readonly DiagnosticDescriptor ElementsDefinedInNamespaceCannotBeExplicitlyDeclaredAsPrivateProtectedOrProtectedInternal = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.ElementsDefinedInNamespaceCannotBeExplicitlyDeclaredAsPrivateProtectedOrProtectedInternal, 
+            id:                 CompilerDiagnosticIdentifiers.CS1527_ElementsDefinedInNamespaceCannotBeExplicitlyDeclaredAsPrivateProtectedOrProtectedInternal, 
             title:              "Elements defined in a namespace cannot be explicitly declared as private, protected, protected internal or private protected.", 
             messageFormat:      "Elements defined in a namespace cannot be explicitly declared as private, protected, or protected internal", 
             category:           "Compiler", 
@@ -1510,7 +1510,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS1591</summary>
         public static readonly DiagnosticDescriptor MissingXmlCommentForPubliclyVisibleTypeOrMember = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.MissingXmlCommentForPubliclyVisibleTypeOrMember, 
+            id:                 CompilerDiagnosticIdentifiers.CS1591_MissingXmlCommentForPubliclyVisibleTypeOrMember, 
             title:              "Missing XML comment for publicly visible type or member 'name'.", 
             messageFormat:      "Missing XML comment for publicly visible type or member '{0}'", 
             category:           "Compiler", 
@@ -1522,7 +1522,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS1597</summary>
         public static readonly DiagnosticDescriptor SemicolonAfterMethodOrAccessorBlockIsNotValid = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.SemicolonAfterMethodOrAccessorBlockIsNotValid, 
+            id:                 CompilerDiagnosticIdentifiers.CS1597_SemicolonAfterMethodOrAccessorBlockIsNotValid, 
             title:              "Semicolon after method or accessor block is not valid.", 
             messageFormat:      "Semicolon after method or accessor block is not valid", 
             category:           "Compiler", 
@@ -1534,7 +1534,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS1609</summary>
         public static readonly DiagnosticDescriptor ModifiersCannotBePlacedOnEventAccessorDeclarations = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.ModifiersCannotBePlacedOnEventAccessorDeclarations, 
+            id:                 CompilerDiagnosticIdentifiers.CS1609_ModifiersCannotBePlacedOnEventAccessorDeclarations, 
             title:              "Modifiers cannot be placed on event accessor declarations.", 
             messageFormat:      "Modifiers cannot be placed on event accessor declarations", 
             category:           "Compiler", 
@@ -1546,7 +1546,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS1615</summary>
         public static readonly DiagnosticDescriptor ArgumentShouldNotBePassedWithRefOrOutKeyword = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.ArgumentShouldNotBePassedWithRefOrOutKeyword, 
+            id:                 CompilerDiagnosticIdentifiers.CS1615_ArgumentShouldNotBePassedWithRefOrOutKeyword, 
             title:              "Argument 'number' should not be passed with the 'keyword' keyword.", 
             messageFormat:      "Argument {0} may not be passed with the '{1}' keyword", 
             category:           "Compiler", 
@@ -1558,7 +1558,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS1620</summary>
         public static readonly DiagnosticDescriptor ArgumentMustBePassedWithRefOrOutKeyword = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.ArgumentMustBePassedWithRefOrOutKeyword, 
+            id:                 CompilerDiagnosticIdentifiers.CS1620_ArgumentMustBePassedWithRefOrOutKeyword, 
             title:              "Argument 'number' must be passed with the 'keyword' keyword.", 
             messageFormat:      "Argument {0} must be passed with the '{1}' keyword", 
             category:           "Compiler", 
@@ -1570,7 +1570,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS1621</summary>
         public static readonly DiagnosticDescriptor YieldStatementCannotBeUsedInsideAnonymousMethodOrLambdaExpression = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.YieldStatementCannotBeUsedInsideAnonymousMethodOrLambdaExpression, 
+            id:                 CompilerDiagnosticIdentifiers.CS1621_YieldStatementCannotBeUsedInsideAnonymousMethodOrLambdaExpression, 
             title:              "The yield statement cannot be used inside an anonymous method or lambda expression.", 
             messageFormat:      "The yield statement cannot be used inside an anonymous method or lambda expression", 
             category:           "Compiler", 
@@ -1582,7 +1582,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS1622</summary>
         public static readonly DiagnosticDescriptor CannotReturnValueFromIterator = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.CannotReturnValueFromIterator, 
+            id:                 CompilerDiagnosticIdentifiers.CS1622_CannotReturnValueFromIterator, 
             title:              "Cannot return a value from an iterator. Use the yield return statement to return a value, or yield break to end the iteration.", 
             messageFormat:      "Cannot return a value from an iterator. Use the yield return statement to return a value, or yield break to end the iteration.", 
             category:           "Compiler", 
@@ -1594,7 +1594,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS1623</summary>
         public static readonly DiagnosticDescriptor IteratorsCannotHaveRefOrOutParameters = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.IteratorsCannotHaveRefOrOutParameters, 
+            id:                 CompilerDiagnosticIdentifiers.CS1623_IteratorsCannotHaveRefOrOutParameters, 
             title:              "Iterators cannot have ref or out parameters.", 
             messageFormat:      "Iterators cannot have ref or out parameters", 
             category:           "Compiler", 
@@ -1606,7 +1606,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS1624</summary>
         public static readonly DiagnosticDescriptor BodyCannotBeIteratorBlockBecauseTypeIsNotIteratorInterfaceType = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.BodyCannotBeIteratorBlockBecauseTypeIsNotIteratorInterfaceType, 
+            id:                 CompilerDiagnosticIdentifiers.CS1624_BodyCannotBeIteratorBlockBecauseTypeIsNotIteratorInterfaceType, 
             title:              "The body of 'identifier' cannot be an iterator block because 'type' is not an iterator interface type.", 
             messageFormat:      "The body of '{0}' cannot be an iterator block because '{1}' is not an iterator interface type", 
             category:           "Compiler", 
@@ -1618,7 +1618,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS1643</summary>
         public static readonly DiagnosticDescriptor NotAllCodePathsReturnValueInAnonymousFunction = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.NotAllCodePathsReturnValueInAnonymousFunction, 
+            id:                 CompilerDiagnosticIdentifiers.CS1643_NotAllCodePathsReturnValueInAnonymousFunction, 
             title:              "Not all code paths return a value in method of type 'type'.", 
             messageFormat:      "Not all code paths return a value in {0} of type '{1}'", 
             category:           "Compiler", 
@@ -1630,7 +1630,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS1674</summary>
         public static readonly DiagnosticDescriptor TypeUsedInUsingStatementMustBeImplicitlyConvertibleToIDisposable = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.TypeUsedInUsingStatementMustBeImplicitlyConvertibleToIDisposable, 
+            id:                 CompilerDiagnosticIdentifiers.CS1674_TypeUsedInUsingStatementMustBeImplicitlyConvertibleToIDisposable, 
             title:              "'T': type used in a using statement must be implicitly convertible to 'System.IDisposable'.", 
             messageFormat:      "'{0}': type used in a using statement must be implicitly convertible to 'System.IDisposable'", 
             category:           "Compiler", 
@@ -1642,7 +1642,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS1689</summary>
         public static readonly DiagnosticDescriptor AttributeIsOnlyValidOnMethodsOrAttributeClasses = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.AttributeIsOnlyValidOnMethodsOrAttributeClasses, 
+            id:                 CompilerDiagnosticIdentifiers.CS1689_AttributeIsOnlyValidOnMethodsOrAttributeClasses, 
             title:              "Attribute 'attribute' is only valid on methods or attribute classes.", 
             messageFormat:      "Attribute '{0}' is only valid on methods or attribute classes", 
             category:           "Compiler", 
@@ -1654,7 +1654,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS1715</summary>
         public static readonly DiagnosticDescriptor MemberTypeMustMatchOverriddenMemberType = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.MemberTypeMustMatchOverriddenMemberType, 
+            id:                 CompilerDiagnosticIdentifiers.CS1715_MemberTypeMustMatchOverriddenMemberType, 
             title:              "'type1': type must be 'type2' to match overridden member 'member'.", 
             messageFormat:      "'{0}': type must be '{2}' to match overridden member '{1}'", 
             category:           "Compiler", 
@@ -1666,7 +1666,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS1717</summary>
         public static readonly DiagnosticDescriptor AssignmentMadeToSameVariable = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.AssignmentMadeToSameVariable, 
+            id:                 CompilerDiagnosticIdentifiers.CS1717_AssignmentMadeToSameVariable, 
             title:              "Assignment made to same variable; did you mean to assign something else?", 
             messageFormat:      "Assignment made to same variable; did you mean to assign something else?", 
             category:           "Compiler", 
@@ -1678,7 +1678,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS1722</summary>
         public static readonly DiagnosticDescriptor BaseClassMustComeBeforeAnyInterface = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.BaseClassMustComeBeforeAnyInterface, 
+            id:                 CompilerDiagnosticIdentifiers.CS1722_BaseClassMustComeBeforeAnyInterface, 
             title:              "Base class 'class' must come before any interfaces.", 
             messageFormat:      "Base class '{0}' must come before any interfaces", 
             category:           "Compiler", 
@@ -1690,7 +1690,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS1737</summary>
         public static readonly DiagnosticDescriptor OptionalParametersMustAppearAfterAllRequiredParameters = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.OptionalParametersMustAppearAfterAllRequiredParameters, 
+            id:                 CompilerDiagnosticIdentifiers.CS1737_OptionalParametersMustAppearAfterAllRequiredParameters, 
             title:              "Optional parameters must appear after all required parameters.", 
             messageFormat:      "Optional parameters must appear after all required parameters", 
             category:           "Compiler", 
@@ -1702,7 +1702,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS1741</summary>
         public static readonly DiagnosticDescriptor RefOrOutParameterCannotHaveDefaultValue = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.RefOrOutParameterCannotHaveDefaultValue, 
+            id:                 CompilerDiagnosticIdentifiers.CS1741_RefOrOutParameterCannotHaveDefaultValue, 
             title:              "A ref or out parameter cannot have a default value.", 
             messageFormat:      "A ref or out parameter cannot have a default value", 
             category:           "Compiler", 
@@ -1714,7 +1714,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS1743</summary>
         public static readonly DiagnosticDescriptor CannotSpecifyDefaultValueForThisParameter = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.CannotSpecifyDefaultValueForThisParameter, 
+            id:                 CompilerDiagnosticIdentifiers.CS1743_CannotSpecifyDefaultValueForThisParameter, 
             title:              "Cannot specify a default value for the 'this' parameter.", 
             messageFormat:      "Cannot specify a default value for the 'this' parameter", 
             category:           "Compiler", 
@@ -1726,7 +1726,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS1750</summary>
         public static readonly DiagnosticDescriptor ValueCannotBeUsedAsDefaultParameter = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.ValueCannotBeUsedAsDefaultParameter, 
+            id:                 CompilerDiagnosticIdentifiers.CS1750_ValueCannotBeUsedAsDefaultParameter, 
             title:              "A value of type 'type1' cannot be used as a default parameter because there are no standard conversions to type 'type2.", 
             messageFormat:      "A value of type '{0}' cannot be used as a default parameter because there are no standard conversions to type '{1}'", 
             category:           "Compiler", 
@@ -1738,7 +1738,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS1751</summary>
         public static readonly DiagnosticDescriptor CannotSpecifyDefaultValueForParameterArray = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.CannotSpecifyDefaultValueForParameterArray, 
+            id:                 CompilerDiagnosticIdentifiers.CS1751_CannotSpecifyDefaultValueForParameterArray, 
             title:              "Cannot specify a default value for a parameter array.", 
             messageFormat:      "Cannot specify a default value for a parameter array", 
             category:           "Compiler", 
@@ -1750,7 +1750,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS1955</summary>
         public static readonly DiagnosticDescriptor NonInvocableMemberCannotBeUsedLikeMethod = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.NonInvocableMemberCannotBeUsedLikeMethod, 
+            id:                 CompilerDiagnosticIdentifiers.CS1955_NonInvocableMemberCannotBeUsedLikeMethod, 
             title:              "Non-invocable member 'name' cannot be used like a method.", 
             messageFormat:      "Non-invocable member '{0}' cannot be used like a method.", 
             category:           "Compiler", 
@@ -1762,7 +1762,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS1983</summary>
         public static readonly DiagnosticDescriptor ReturnTypeOfAsyncMethodMustBeVoidOrTaskOrTaskOfT = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.ReturnTypeOfAsyncMethodMustBeVoidOrTaskOrTaskOfT, 
+            id:                 CompilerDiagnosticIdentifiers.CS1983_ReturnTypeOfAsyncMethodMustBeVoidOrTaskOrTaskOfT, 
             title:              "The return type of an async method must be void, Task or Task<T>.", 
             messageFormat:      "The return type of an async method must be void, Task or Task<T>", 
             category:           "Compiler", 
@@ -1774,7 +1774,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS1988</summary>
         public static readonly DiagnosticDescriptor AsyncMethodsCannotHaveRefOrOutParameters = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.AsyncMethodsCannotHaveRefOrOutParameters, 
+            id:                 CompilerDiagnosticIdentifiers.CS1988_AsyncMethodsCannotHaveRefOrOutParameters, 
             title:              "Async methods cannot have ref or out parameters.", 
             messageFormat:      "Async methods cannot have ref or out parameters", 
             category:           "Compiler", 
@@ -1786,7 +1786,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS1994</summary>
         public static readonly DiagnosticDescriptor AsyncModifierCanOnlyBeUsedInMethodsThatHaveBody = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.AsyncModifierCanOnlyBeUsedInMethodsThatHaveBody, 
+            id:                 CompilerDiagnosticIdentifiers.CS1994_AsyncModifierCanOnlyBeUsedInMethodsThatHaveBody, 
             title:              "The 'async' modifier can only be used in methods that have a body.", 
             messageFormat:      "The 'async' modifier can only be used in methods that have a body.", 
             category:           "Compiler", 
@@ -1798,7 +1798,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS1997</summary>
         public static readonly DiagnosticDescriptor SinceMethodIsAsyncMethodThatReturnsTaskReturnKeywordMustNotBeFollowedByObjectExpression = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.SinceMethodIsAsyncMethodThatReturnsTaskReturnKeywordMustNotBeFollowedByObjectExpression, 
+            id:                 CompilerDiagnosticIdentifiers.CS1997_SinceMethodIsAsyncMethodThatReturnsTaskReturnKeywordMustNotBeFollowedByObjectExpression, 
             title:              "Since 'RemoveReturnKeywordOrReturnExpression.FooAsync()' is an async method that returns 'Task', a return keyword must not be followed by an object expression. Did you intend to return 'Task<T>>'?", 
             messageFormat:      "Since '{0}' is an async method that returns 'Task', a return keyword must not be followed by an object expression. Did you intend to return 'Task<T>'?", 
             category:           "Compiler", 
@@ -1810,7 +1810,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS3000</summary>
         public static readonly DiagnosticDescriptor MethodsWithVariableArgumentsAreNotCLSCompliant = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.MethodsWithVariableArgumentsAreNotCLSCompliant, 
+            id:                 CompilerDiagnosticIdentifiers.CS3000_MethodsWithVariableArgumentsAreNotCLSCompliant, 
             title:              "Methods with variable arguments are not CLS-compliant.", 
             messageFormat:      "Methods with variable arguments are not CLS-compliant", 
             category:           "Compiler", 
@@ -1822,7 +1822,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS3001</summary>
         public static readonly DiagnosticDescriptor ArgumentTypeIsNotCLSCompliant = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.ArgumentTypeIsNotCLSCompliant, 
+            id:                 CompilerDiagnosticIdentifiers.CS3001_ArgumentTypeIsNotCLSCompliant, 
             title:              "Argument type 'type' is not CLS-compliant.", 
             messageFormat:      "Argument type '{0}' is not CLS-compliant", 
             category:           "Compiler", 
@@ -1834,7 +1834,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS3002</summary>
         public static readonly DiagnosticDescriptor ReturnTypeIsNotCLSCompliant = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.ReturnTypeIsNotCLSCompliant, 
+            id:                 CompilerDiagnosticIdentifiers.CS3002_ReturnTypeIsNotCLSCompliant, 
             title:              "Return type of 'method' is not CLS-compliant.", 
             messageFormat:      "Return type of '{0}' is not CLS-compliant", 
             category:           "Compiler", 
@@ -1846,7 +1846,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS3003</summary>
         public static readonly DiagnosticDescriptor TypeOfVariableIsNotCLSCompliant = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.TypeOfVariableIsNotCLSCompliant, 
+            id:                 CompilerDiagnosticIdentifiers.CS3003_TypeOfVariableIsNotCLSCompliant, 
             title:              "Type of 'variable' is not CLS-compliant.", 
             messageFormat:      "Type of '{0}' is not CLS-compliant", 
             category:           "Compiler", 
@@ -1858,7 +1858,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS3005</summary>
         public static readonly DiagnosticDescriptor IdentifierDifferingOnlyInCaseIsNotCLSCompliant = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.IdentifierDifferingOnlyInCaseIsNotCLSCompliant, 
+            id:                 CompilerDiagnosticIdentifiers.CS3005_IdentifierDifferingOnlyInCaseIsNotCLSCompliant, 
             title:              "Identifier 'identifier' differing only in case is not CLS-compliant.", 
             messageFormat:      "Identifier '{0}' differing only in case is not CLS-compliant", 
             category:           "Compiler", 
@@ -1870,7 +1870,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS3006</summary>
         public static readonly DiagnosticDescriptor OverloadedMethodDifferingOnlyInRefOrOutOrInArrayRankIsNotCLSCompliant = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.OverloadedMethodDifferingOnlyInRefOrOutOrInArrayRankIsNotCLSCompliant, 
+            id:                 CompilerDiagnosticIdentifiers.CS3006_OverloadedMethodDifferingOnlyInRefOrOutOrInArrayRankIsNotCLSCompliant, 
             title:              "Overloaded method 'method' differing only in ref or out, or in array rank, is not CLS-compliant.", 
             messageFormat:      "Overloaded method '{0}' differing only in ref or out, or in array rank, is not CLS-compliant", 
             category:           "Compiler", 
@@ -1882,7 +1882,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS3007</summary>
         public static readonly DiagnosticDescriptor OverloadedMethodDifferingOnlyByUnnamedArrayTypesIsNotCLSCompliant = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.OverloadedMethodDifferingOnlyByUnnamedArrayTypesIsNotCLSCompliant, 
+            id:                 CompilerDiagnosticIdentifiers.CS3007_OverloadedMethodDifferingOnlyByUnnamedArrayTypesIsNotCLSCompliant, 
             title:              "Overloaded method 'method' differing only by unnamed array types is not CLS-compliant.", 
             messageFormat:      "Overloaded method '{0}' differing only by unnamed array types is not CLS-compliant", 
             category:           "Compiler", 
@@ -1894,7 +1894,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS3008</summary>
         public static readonly DiagnosticDescriptor IdentifierIsNotCLSCompliant = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.IdentifierIsNotCLSCompliant, 
+            id:                 CompilerDiagnosticIdentifiers.CS3008_IdentifierIsNotCLSCompliant, 
             title:              "Identifier 'identifier' is not CLS-compliant.", 
             messageFormat:      "Identifier '{0}' is not CLS-compliant", 
             category:           "Compiler", 
@@ -1906,7 +1906,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS3009</summary>
         public static readonly DiagnosticDescriptor BaseTypeIsNotCLSCompliant = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.BaseTypeIsNotCLSCompliant, 
+            id:                 CompilerDiagnosticIdentifiers.CS3009_BaseTypeIsNotCLSCompliant, 
             title:              "Base type 'type' is not CLS-compliant.", 
             messageFormat:      "'{0}': base type '{1}' is not CLS-compliant", 
             category:           "Compiler", 
@@ -1918,7 +1918,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS3016</summary>
         public static readonly DiagnosticDescriptor ArraysAsAttributeArgumentsIsNotCLSCompliant = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.ArraysAsAttributeArgumentsIsNotCLSCompliant, 
+            id:                 CompilerDiagnosticIdentifiers.CS3016_ArraysAsAttributeArgumentsIsNotCLSCompliant, 
             title:              "Arrays as attribute arguments is not CLS-compliant.", 
             messageFormat:      "Arrays as attribute arguments is not CLS-compliant", 
             category:           "Compiler", 
@@ -1930,7 +1930,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS3024</summary>
         public static readonly DiagnosticDescriptor ConstraintTypeIsNotCLSCompliant = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.ConstraintTypeIsNotCLSCompliant, 
+            id:                 CompilerDiagnosticIdentifiers.CS3024_ConstraintTypeIsNotCLSCompliant, 
             title:              "Constraint type 'type' is not CLS-compliant.", 
             messageFormat:      "Constraint type '{0}' is not CLS-compliant", 
             category:           "Compiler", 
@@ -1942,7 +1942,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS3027</summary>
         public static readonly DiagnosticDescriptor TypeIsNotCLSCompliantBecauseBaseInterfaceIsNotCLSCompliant = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.TypeIsNotCLSCompliantBecauseBaseInterfaceIsNotCLSCompliant, 
+            id:                 CompilerDiagnosticIdentifiers.CS3027_TypeIsNotCLSCompliantBecauseBaseInterfaceIsNotCLSCompliant, 
             title:              "'type_1' is not CLS-compliant because base interface 'type_2' is not CLS-compliant.", 
             messageFormat:      "'{0}' is not CLS-compliant because base interface '{1}' is not CLS-compliant", 
             category:           "Compiler", 
@@ -1954,7 +1954,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS7036</summary>
         public static readonly DiagnosticDescriptor ThereIsNoArgumentGivenThatCorrespondsToRequiredFormalParameter = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.ThereIsNoArgumentGivenThatCorrespondsToRequiredFormalParameter, 
+            id:                 CompilerDiagnosticIdentifiers.CS7036_ThereIsNoArgumentGivenThatCorrespondsToRequiredFormalParameter, 
             title:              "There is no argument given that corresponds to the required formal parameter 'parameter' of 'member'.", 
             messageFormat:      "There is no argument given that corresponds to the required formal parameter '{0}' of '{1}'", 
             category:           "Compiler", 
@@ -1966,7 +1966,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS8050</summary>
         public static readonly DiagnosticDescriptor OnlyAutoImplementedPropertiesCanHaveInitializers = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.OnlyAutoImplementedPropertiesCanHaveInitializers, 
+            id:                 CompilerDiagnosticIdentifiers.CS8050_OnlyAutoImplementedPropertiesCanHaveInitializers, 
             title:              "Only auto-implemented properties can have initializers.", 
             messageFormat:      "Only auto-implemented properties can have initializers.", 
             category:           "Compiler", 
@@ -1978,7 +1978,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS8070</summary>
         public static readonly DiagnosticDescriptor ControlCannotFallOutOfSwitchFromFinalCaseLabel = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.ControlCannotFallOutOfSwitchFromFinalCaseLabel, 
+            id:                 CompilerDiagnosticIdentifiers.CS8070_ControlCannotFallOutOfSwitchFromFinalCaseLabel, 
             title:              "Control cannot fall out of switch from final case label ('default').", 
             messageFormat:      "Control cannot fall out of switch from final case label ('{0}')", 
             category:           "Compiler", 
@@ -1990,7 +1990,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS8112</summary>
         public static readonly DiagnosticDescriptor LocalFunctionMustAlwaysHaveBody = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.LocalFunctionMustAlwaysHaveBody, 
+            id:                 CompilerDiagnosticIdentifiers.CS8112_LocalFunctionMustAlwaysHaveBody, 
             title:              "'function' is a local function and must therefore always have a body.", 
             messageFormat:      "'{0}' is a local function and must therefore always have a body.", 
             category:           "Compiler", 
@@ -2002,7 +2002,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS8139</summary>
         public static readonly DiagnosticDescriptor CannotChangeTupleElementNameWhenOverridingInheritedMember = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.CannotChangeTupleElementNameWhenOverridingInheritedMember, 
+            id:                 CompilerDiagnosticIdentifiers.CS8139_CannotChangeTupleElementNameWhenOverridingInheritedMember, 
             title:              "Cannot change tuple element names when overriding inherited member.", 
             messageFormat:      "'{0}': cannot change tuple element names when overriding inherited member '{1}'", 
             category:           "Compiler", 
@@ -2014,7 +2014,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS8340</summary>
         public static readonly DiagnosticDescriptor InstanceFieldsOfReadOnlyStructsMustBeReadOnly = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.InstanceFieldsOfReadOnlyStructsMustBeReadOnly, 
+            id:                 CompilerDiagnosticIdentifiers.CS8340_InstanceFieldsOfReadOnlyStructsMustBeReadOnly, 
             title:              "Instance fields of read-only structs must be read-only.", 
             messageFormat:      "Instance fields of readonly structs must be readonly", 
             category:           "Compiler", 
@@ -2026,7 +2026,7 @@ namespace Roslynator.CSharp
 
         /// <summary>CS8632</summary>
         public static readonly DiagnosticDescriptor AnnotationForNullableReferenceTypesShouldOnlyBeUsedWithinNullableAnnotationsContext = new DiagnosticDescriptor(
-            id:                 CompilerDiagnosticIdentifiers.AnnotationForNullableReferenceTypesShouldOnlyBeUsedWithinNullableAnnotationsContext, 
+            id:                 CompilerDiagnosticIdentifiers.CS8632_AnnotationForNullableReferenceTypesShouldOnlyBeUsedWithinNullableAnnotationsContext, 
             title:              "The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.", 
             messageFormat:      "The annotation for nullable reference types should only be used in code within a '#nullable' annotations context", 
             category:           "Compiler", 

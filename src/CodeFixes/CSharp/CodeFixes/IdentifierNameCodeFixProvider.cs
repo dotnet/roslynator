@@ -23,8 +23,8 @@ namespace Roslynator.CSharp.CodeFixes
             get
             {
                 return ImmutableArray.Create(
-                    CompilerDiagnosticIdentifiers.UseOfUnassignedLocalVariable,
-                    CompilerDiagnosticIdentifiers.NameDoesNotExistInCurrentContext);
+                    CompilerDiagnosticIdentifiers.CS0165_UseOfUnassignedLocalVariable,
+                    CompilerDiagnosticIdentifiers.CS0103_NameDoesNotExistInCurrentContext);
             }
         }
 
@@ -42,7 +42,7 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 switch (diagnostic.Id)
                 {
-                    case CompilerDiagnosticIdentifiers.UseOfUnassignedLocalVariable:
+                    case CompilerDiagnosticIdentifiers.CS0165_UseOfUnassignedLocalVariable:
                         {
                             if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.InitializeLocalVariableWithDefaultValue))
                                 return;
@@ -91,7 +91,7 @@ namespace Roslynator.CSharp.CodeFixes
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.NameDoesNotExistInCurrentContext:
+                    case CompilerDiagnosticIdentifiers.CS0103_NameDoesNotExistInCurrentContext:
                         {
                             if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddVariableType))
                                 return;

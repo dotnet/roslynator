@@ -23,9 +23,9 @@ namespace Roslynator.CSharp.CodeFixes
             get
             {
                 return ImmutableArray.Create(
-                    CompilerDiagnosticIdentifiers.CannotConvertMethodGroupToNonDelegateType,
-                    CompilerDiagnosticIdentifiers.TypeOrNamespaceNameCouldNotBeFound,
-                    CompilerDiagnosticIdentifiers.NameIsNotValidInGivenContext);
+                    CompilerDiagnosticIdentifiers.CS0428_CannotConvertMethodGroupToNonDelegateType,
+                    CompilerDiagnosticIdentifiers.CS0246_TypeOrNamespaceNameCouldNotBeFound,
+                    CompilerDiagnosticIdentifiers.CS0119_NameIsNotValidInGivenContext);
             }
         }
 
@@ -40,8 +40,8 @@ namespace Roslynator.CSharp.CodeFixes
             Diagnostic diagnostic = context.Diagnostics[0];
             string diagnosticId = diagnostic.Id;
 
-            if (diagnosticId == CompilerDiagnosticIdentifiers.CannotConvertMethodGroupToNonDelegateType
-                || diagnosticId == CompilerDiagnosticIdentifiers.NameIsNotValidInGivenContext)
+            if (diagnosticId == CompilerDiagnosticIdentifiers.CS0428_CannotConvertMethodGroupToNonDelegateType
+                || diagnosticId == CompilerDiagnosticIdentifiers.CS0119_NameIsNotValidInGivenContext)
             {
                 if (!Settings.IsEnabled(diagnosticId, CodeFixIdentifiers.AddArgumentList))
                     return;
@@ -65,7 +65,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                 context.RegisterCodeFix(codeAction, diagnostic);
             }
-            else if (diagnosticId == CompilerDiagnosticIdentifiers.TypeOrNamespaceNameCouldNotBeFound)
+            else if (diagnosticId == CompilerDiagnosticIdentifiers.CS0246_TypeOrNamespaceNameCouldNotBeFound)
             {
                 if (Settings.IsEnabled(diagnosticId, CodeFixIdentifiers.ChangeArrayType)
                     && (simpleName.Parent is ArrayTypeSyntax arrayType)

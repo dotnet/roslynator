@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis.Tests
 
         public override CSharpTestOptions Options
         {
-            get { return base.Options.AddAllowedCompilerDiagnosticId(CompilerDiagnosticIdentifiers.UnreachableCodeDetected); }
+            get { return base.Options.AddAllowedCompilerDiagnosticId(CompilerDiagnosticIdentifiers.CS0162_UnreachableCodeDetected); }
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
@@ -728,7 +728,7 @@ class C
         return await DoAsync();
     }
 }
-", options: Options.AddAllowedCompilerDiagnosticId(CompilerDiagnosticIdentifiers.SinceMethodIsAsyncMethodThatReturnsTaskReturnKeywordMustNotBeFollowedByObjectExpression));
+", options: Options.AddAllowedCompilerDiagnosticId(CompilerDiagnosticIdentifiers.CS1997_SinceMethodIsAsyncMethodThatReturnsTaskReturnKeywordMustNotBeFollowedByObjectExpression));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]

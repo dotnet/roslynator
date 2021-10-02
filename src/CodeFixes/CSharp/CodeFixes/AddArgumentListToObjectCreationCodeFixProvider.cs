@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.CodeFixes
     {
         public override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.NewExpressionRequiresParenthesesOrBracketsOrBracesAfterType); }
+            get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.CS1526_NewExpressionRequiresParenthesesOrBracketsOrBracesAfterType); }
         }
 
         public override async Task RegisterCodeFixesAsync(CodeFixContext context)

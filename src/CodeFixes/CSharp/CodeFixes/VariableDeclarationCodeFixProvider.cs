@@ -22,10 +22,10 @@ namespace Roslynator.CSharp.CodeFixes
             get
             {
                 return ImmutableArray.Create(
-                    CompilerDiagnosticIdentifiers.ImplicitlyTypedVariablesCannotHaveMultipleDeclarators,
-                    CompilerDiagnosticIdentifiers.ImplicitlyTypedVariablesCannotBeConstant,
-                    CompilerDiagnosticIdentifiers.LocalVariableOrFunctionIsAlreadyDefinedInThisScope,
-                    CompilerDiagnosticIdentifiers.LocalOrParameterCannotBeDeclaredInThisScopeBecauseThatNameIsUsedInEnclosingScopeToDefineLocalOrParameter);
+                    CompilerDiagnosticIdentifiers.CS0819_ImplicitlyTypedVariablesCannotHaveMultipleDeclarators,
+                    CompilerDiagnosticIdentifiers.CS0822_ImplicitlyTypedVariablesCannotBeConstant,
+                    CompilerDiagnosticIdentifiers.CS0128_LocalVariableOrFunctionIsAlreadyDefinedInThisScope,
+                    CompilerDiagnosticIdentifiers.CS0136_LocalOrParameterCannotBeDeclaredInThisScopeBecauseThatNameIsUsedInEnclosingScopeToDefineLocalOrParameter);
             }
         }
 
@@ -57,8 +57,8 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 switch (diagnostic.Id)
                 {
-                    case CompilerDiagnosticIdentifiers.ImplicitlyTypedVariablesCannotHaveMultipleDeclarators:
-                    case CompilerDiagnosticIdentifiers.ImplicitlyTypedVariablesCannotBeConstant:
+                    case CompilerDiagnosticIdentifiers.CS0819_ImplicitlyTypedVariablesCannotHaveMultipleDeclarators:
+                    case CompilerDiagnosticIdentifiers.CS0822_ImplicitlyTypedVariablesCannotBeConstant:
                         {
                             if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.UseExplicitTypeInsteadOfVar))
                                 return;
@@ -78,8 +78,8 @@ namespace Roslynator.CSharp.CodeFixes
 
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.LocalVariableOrFunctionIsAlreadyDefinedInThisScope:
-                    case CompilerDiagnosticIdentifiers.LocalOrParameterCannotBeDeclaredInThisScopeBecauseThatNameIsUsedInEnclosingScopeToDefineLocalOrParameter:
+                    case CompilerDiagnosticIdentifiers.CS0128_LocalVariableOrFunctionIsAlreadyDefinedInThisScope:
+                    case CompilerDiagnosticIdentifiers.CS0136_LocalOrParameterCannotBeDeclaredInThisScopeBecauseThatNameIsUsedInEnclosingScopeToDefineLocalOrParameter:
                         {
                             if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.ReplaceVariableDeclarationWithAssignment))
                                 return;

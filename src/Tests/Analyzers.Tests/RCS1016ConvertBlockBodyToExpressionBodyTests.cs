@@ -808,7 +808,7 @@ class C
         get { new object(); }
     }
 }
-", options: Options.AddAllowedCompilerDiagnosticId(CompilerDiagnosticIdentifiers.NotAllCodePathsReturnValue));
+", options: Options.AddAllowedCompilerDiagnosticId(CompilerDiagnosticIdentifiers.CS0161_NotAllCodePathsReturnValue));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]

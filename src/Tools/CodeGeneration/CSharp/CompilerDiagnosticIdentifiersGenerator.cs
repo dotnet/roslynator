@@ -28,7 +28,7 @@ namespace Roslynator.CodeGeneration.CSharp
                                 return FieldDeclaration(
                                     Modifiers.Public_Const(),
                                     PredefinedStringType(),
-                                    f.Identifier,
+                                    $"{f.Id}_{f.Identifier}",
                                     StringLiteralExpression(f.Id));
                             })
                             .ToSyntaxList<MemberDeclarationSyntax>())));

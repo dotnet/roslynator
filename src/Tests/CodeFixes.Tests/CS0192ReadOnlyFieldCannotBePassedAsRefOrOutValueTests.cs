@@ -8,9 +8,9 @@ namespace Roslynator.CSharp.CodeFixes.Tests
 {
     public class CS0192ReadOnlyFieldCannotBePassedAsRefOrOutValueTests : AbstractCSharpCompilerDiagnosticFixVerifier<ArgumentCodeFixProvider>
     {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.ReadOnlyFieldCannotBePassedAsRefOrOutValue;
+        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS0192_ReadOnlyFieldCannotBePassedAsRefOrOutValue;
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.ReadOnlyFieldCannotBePassedAsRefOrOutValue)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0192_ReadOnlyFieldCannotBePassedAsRefOrOutValue)]
         public async Task Test_MakeFieldWritable()
         {
             await VerifyFixAsync(@"

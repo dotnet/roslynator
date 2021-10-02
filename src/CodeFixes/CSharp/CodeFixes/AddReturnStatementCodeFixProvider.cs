@@ -22,8 +22,8 @@ namespace Roslynator.CSharp.CodeFixes
             get
             {
                 return ImmutableArray.Create(
-                    CompilerDiagnosticIdentifiers.NotAllCodePathsReturnValue,
-                    CompilerDiagnosticIdentifiers.NotAllCodePathsReturnValueInAnonymousFunction);
+                    CompilerDiagnosticIdentifiers.CS0161_NotAllCodePathsReturnValue,
+                    CompilerDiagnosticIdentifiers.CS1643_NotAllCodePathsReturnValueInAnonymousFunction);
             }
         }
 

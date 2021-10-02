@@ -18,7 +18,7 @@ namespace Roslynator.CSharp.CodeFixes
     {
         public override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.TooManyCharactersInCharacterLiteral); }
+            get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.CS1012_TooManyCharactersInCharacterLiteral); }
         }
 
         public override async Task RegisterCodeFixesAsync(CodeFixContext context)

@@ -8,9 +8,9 @@ namespace Roslynator.CSharp.CodeFixes.Tests
 {
     public class CS0508MethodReturnTypeMustMatchOverriddenMethodReturnTypeTests : AbstractCSharpCompilerDiagnosticFixVerifier<MemberDeclarationCodeFixProvider>
     {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.MethodReturnTypeMustMatchOverriddenMethodReturnType;
+        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS0508_MethodReturnTypeMustMatchOverriddenMethodReturnType;
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.MethodReturnTypeMustMatchOverriddenMethodReturnType)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0508_MethodReturnTypeMustMatchOverriddenMethodReturnType)]
         public async Task TestFix()
         {
             await VerifyFixAsync(@"

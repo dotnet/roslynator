@@ -195,7 +195,7 @@ namespace N
         }
     }
 }
-", options: Options.AddAllowedCompilerDiagnosticId(CompilerDiagnosticIdentifiers.UserDefinedOperatorMustBeDeclaredStaticAndPublic));
+", options: Options.AddAllowedCompilerDiagnosticId(CompilerDiagnosticIdentifiers.CS0558_UserDefinedOperatorMustBeDeclaredStaticAndPublic));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddAccessibilityModifiersOrViceVersa)]

@@ -8,14 +8,14 @@ namespace Roslynator.CSharp.CodeFixes.Tests
 {
     public class CS1983ReturnTypeOfAsyncMethodMustBeVoidOrTaskOrTaskOfTTests : AbstractCSharpCompilerDiagnosticFixVerifier<ReturnTypeOfAsyncMethodMustBeVoidOrTaskOrTaskOfTCodeFixProvider>
     {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.ReturnTypeOfAsyncMethodMustBeVoidOrTaskOrTaskOfT;
+        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS1983_ReturnTypeOfAsyncMethodMustBeVoidOrTaskOrTaskOfT;
 
         public override CSharpTestOptions Options
         {
-            get { return base.Options.AddAllowedCompilerDiagnosticId(CompilerDiagnosticIdentifiers.SinceMethodIsAsyncMethodThatReturnsTaskReturnKeywordMustNotBeFollowedByObjectExpression); }
+            get { return base.Options.AddAllowedCompilerDiagnosticId(CompilerDiagnosticIdentifiers.CS1997_SinceMethodIsAsyncMethodThatReturnsTaskReturnKeywordMustNotBeFollowedByObjectExpression); }
         }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.ReturnTypeOfAsyncMethodMustBeVoidOrTaskOrTaskOfT)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1983_ReturnTypeOfAsyncMethodMustBeVoidOrTaskOrTaskOfT)]
         public async Task Test_Task()
         {
             await VerifyFixAsync(@"
@@ -105,7 +105,7 @@ public class Foo
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId, "Task"));
         }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.ReturnTypeOfAsyncMethodMustBeVoidOrTaskOrTaskOfT)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1983_ReturnTypeOfAsyncMethodMustBeVoidOrTaskOrTaskOfT)]
         public async Task Test_TaskOfT()
         {
             await VerifyFixAsync(@"
@@ -211,7 +211,7 @@ public class Foo
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId, "TaskOfT"));
         }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.ReturnTypeOfAsyncMethodMustBeVoidOrTaskOrTaskOfT)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1983_ReturnTypeOfAsyncMethodMustBeVoidOrTaskOrTaskOfT)]
         public async Task TestNoFix()
         {
             const string source = @"

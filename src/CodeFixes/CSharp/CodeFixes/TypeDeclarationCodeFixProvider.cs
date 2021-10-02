@@ -24,9 +24,9 @@ namespace Roslynator.CSharp.CodeFixes
             get
             {
                 return ImmutableArray.Create(
-                    CompilerDiagnosticIdentifiers.TypeDefinesEqualityOperatorButDoesNotOverrideObjectEquals,
-                    CompilerDiagnosticIdentifiers.TypeDefinesEqualityOperatorButDoesNotOverrideObjectGetHashCode,
-                    CompilerDiagnosticIdentifiers.TypeOverridesObjectEqualsButDoesNotOverrideObjectGetHashCode);
+                    CompilerDiagnosticIdentifiers.CS0660_TypeDefinesEqualityOperatorButDoesNotOverrideObjectEquals,
+                    CompilerDiagnosticIdentifiers.CS0661_TypeDefinesEqualityOperatorButDoesNotOverrideObjectGetHashCode,
+                    CompilerDiagnosticIdentifiers.CS0659_TypeOverridesObjectEqualsButDoesNotOverrideObjectGetHashCode);
             }
         }
 
@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 switch (diagnostic.Id)
                 {
-                    case CompilerDiagnosticIdentifiers.TypeDefinesEqualityOperatorButDoesNotOverrideObjectEquals:
+                    case CompilerDiagnosticIdentifiers.CS0660_TypeDefinesEqualityOperatorButDoesNotOverrideObjectEquals:
                         {
                             if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.DefineObjectEquals))
                                 break;
@@ -70,8 +70,8 @@ namespace Roslynator.CSharp.CodeFixes
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.TypeDefinesEqualityOperatorButDoesNotOverrideObjectGetHashCode:
-                    case CompilerDiagnosticIdentifiers.TypeOverridesObjectEqualsButDoesNotOverrideObjectGetHashCode:
+                    case CompilerDiagnosticIdentifiers.CS0661_TypeDefinesEqualityOperatorButDoesNotOverrideObjectGetHashCode:
+                    case CompilerDiagnosticIdentifiers.CS0659_TypeOverridesObjectEqualsButDoesNotOverrideObjectGetHashCode:
                         {
                             if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.DefineObjectGetHashCode))
                                 break;

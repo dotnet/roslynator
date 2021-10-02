@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.CodeFixes
     {
         public override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.TypeInInterfaceListIsNotInterface); }
+            get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.CS0527_TypeInInterfaceListIsNotInterface); }
         }
 
         public override async Task RegisterCodeFixesAsync(CodeFixContext context)

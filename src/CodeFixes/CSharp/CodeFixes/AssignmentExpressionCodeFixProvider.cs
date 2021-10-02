@@ -16,7 +16,7 @@ namespace Roslynator.CSharp.CodeFixes
     {
         public override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.AssignmentMadeToSameVariable); }
+            get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.CS1717_AssignmentMadeToSameVariable); }
         }
 
         public override async Task RegisterCodeFixesAsync(CodeFixContext context)

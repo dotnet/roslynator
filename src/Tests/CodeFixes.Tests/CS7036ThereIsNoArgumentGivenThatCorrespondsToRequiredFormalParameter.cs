@@ -8,9 +8,9 @@ namespace Roslynator.CSharp.CodeFixes.Tests
 {
     public class CS7036ThereIsNoArgumentGivenThatCorrespondsToRequiredFormalParameter : AbstractCSharpCompilerDiagnosticFixVerifier<ObjectCreationExpressionCodeFixProvider>
     {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.ThereIsNoArgumentGivenThatCorrespondsToRequiredFormalParameter;
+        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS7036_ThereIsNoArgumentGivenThatCorrespondsToRequiredFormalParameter;
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.ThereIsNoArgumentGivenThatCorrespondsToRequiredFormalParameter)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS7036_ThereIsNoArgumentGivenThatCorrespondsToRequiredFormalParameter)]
         public async Task Test()
         {
             await VerifyFixAsync(@"
@@ -60,7 +60,7 @@ class C
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
         }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.ThereIsNoArgumentGivenThatCorrespondsToRequiredFormalParameter)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS7036_ThereIsNoArgumentGivenThatCorrespondsToRequiredFormalParameter)]
         public async Task Test_NoArgumentList()
         {
             await VerifyFixAsync(@"
@@ -110,7 +110,7 @@ class C
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
         }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.ThereIsNoArgumentGivenThatCorrespondsToRequiredFormalParameter)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS7036_ThereIsNoArgumentGivenThatCorrespondsToRequiredFormalParameter)]
         public async Task Test_NotAllProperties()
         {
             await VerifyFixAsync(@"

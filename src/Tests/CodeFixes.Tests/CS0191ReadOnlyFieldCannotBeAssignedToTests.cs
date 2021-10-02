@@ -8,9 +8,9 @@ namespace Roslynator.CSharp.CodeFixes.Tests
 {
     public class CS0191ReadOnlyFieldCannotBeAssignedToTests : AbstractCSharpCompilerDiagnosticFixVerifier<ExpressionCodeFixProvider>
     {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.ReadOnlyFieldCannotBeAssignedTo;
+        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS0191_ReadOnlyFieldCannotBeAssignedTo;
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.ReadOnlyFieldCannotBeAssignedTo)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0191_ReadOnlyFieldCannotBeAssignedTo)]
         public async Task Test()
         {
             await VerifyFixAsync(@"

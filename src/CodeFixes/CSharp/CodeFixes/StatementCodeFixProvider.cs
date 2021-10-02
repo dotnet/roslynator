@@ -21,8 +21,8 @@ namespace Roslynator.CSharp.CodeFixes
             get
             {
                 return ImmutableArray.Create(
-                    CompilerDiagnosticIdentifiers.EmptySwitchBlock,
-                    CompilerDiagnosticIdentifiers.NoEnclosingLoopOutOfWhichToBreakOrContinue);
+                    CompilerDiagnosticIdentifiers.CS1522_EmptySwitchBlock,
+                    CompilerDiagnosticIdentifiers.CS0139_NoEnclosingLoopOutOfWhichToBreakOrContinue);
             }
         }
 
@@ -37,7 +37,7 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 switch (diagnostic.Id)
                 {
-                    case CompilerDiagnosticIdentifiers.EmptySwitchBlock:
+                    case CompilerDiagnosticIdentifiers.CS1522_EmptySwitchBlock:
                         {
                             if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveEmptySwitchStatement))
                                 break;
@@ -48,7 +48,7 @@ namespace Roslynator.CSharp.CodeFixes
                             CodeFixRegistrator.RemoveStatement(context, diagnostic, switchStatement);
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.NoEnclosingLoopOutOfWhichToBreakOrContinue:
+                    case CompilerDiagnosticIdentifiers.CS0139_NoEnclosingLoopOutOfWhichToBreakOrContinue:
                         {
                             if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveJumpStatement))
                                 CodeFixRegistrator.RemoveStatement(context, diagnostic, statement);

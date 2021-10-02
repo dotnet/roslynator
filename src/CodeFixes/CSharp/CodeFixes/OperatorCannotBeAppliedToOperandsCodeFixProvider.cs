@@ -18,7 +18,7 @@ namespace Roslynator.CSharp.CodeFixes
     {
         public override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.OperatorCannotBeAppliedToOperands); }
+            get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.CS0019_OperatorCannotBeAppliedToOperands); }
         }
 
         public override async Task RegisterCodeFixesAsync(CodeFixContext context)

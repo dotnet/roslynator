@@ -8,9 +8,9 @@ namespace Roslynator.CSharp.CodeFixes.Tests
 {
     public class CS0507CannotChangeAccessModifiersWhenOverridingInheritedMemberTests : AbstractCSharpCompilerDiagnosticFixVerifier<ChangeOverridingMemberAccessibilityCodeFixProvider>
     {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CannotChangeAccessModifiersWhenOverridingInheritedMember;
+        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS0507_CannotChangeAccessModifiersWhenOverridingInheritedMember;
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CannotChangeAccessModifiersWhenOverridingInheritedMember)]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0507_CannotChangeAccessModifiersWhenOverridingInheritedMember)]
         public async Task Test_AccessorWithPublicAccessibility()
         {
             await VerifyFixAsync(@"

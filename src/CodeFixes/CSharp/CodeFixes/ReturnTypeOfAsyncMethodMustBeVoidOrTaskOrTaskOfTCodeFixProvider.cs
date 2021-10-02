@@ -18,7 +18,7 @@ namespace Roslynator.CSharp.CodeFixes
     {
         public override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.ReturnTypeOfAsyncMethodMustBeVoidOrTaskOrTaskOfT); }
+            get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.CS1983_ReturnTypeOfAsyncMethodMustBeVoidOrTaskOrTaskOfT); }
         }
 
         public override async Task RegisterCodeFixesAsync(CodeFixContext context)
