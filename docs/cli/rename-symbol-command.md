@@ -129,7 +129,7 @@ This is a very simple example that will rename all symbols to random name.
 ```shell
 roslynator rename-symbol my.sln
   --match "true"
-  --new-name "obfuscate.cs"
+  --new-name-from "obfuscate.cs"
 ```
 #### Notes
 
@@ -211,7 +211,7 @@ namespace Roslynator.CSharp
 
 ```shell
 roslynator rename-symbol my.sln
-  --match "rename-constants.cs"
+  --match-from "rename-constants.cs"
   --include-generated-code
   --scope member
 ```
