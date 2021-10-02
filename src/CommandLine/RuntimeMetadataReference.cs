@@ -42,7 +42,22 @@ namespace Roslynator
             get
             {
                 if (_metadataReferences.IsDefault)
-                    ImmutableInterlocked.InterlockedInitialize(ref _metadataReferences, CreateMetadataReferences());
+                {
+                    ImmutableArray<MetadataReference> references = CreateMetadataReferences();
+#if DEBUG
+                    foreach (string assemblyName in new[]
+                    {
+                        "Roslynator.Core.dll" ,
+                        "Roslynator.CSharp.dll" ,
+                        "Roslynator.Workspaces.Core.dll" ,
+                        "Roslynator.CSharp.Workspaces.dll"
+                    })
+                    {
+                        Debug.Assert(references.OfType<PortableExecutableReference>().Any(f => f.FilePath.EndsWith(assemblyName, StringComparison.OrdinalIgnoreCase)), assemblyName);
+                    }
+#endif
+                    ImmutableInterlocked.InterlockedInitialize(ref _metadataReferences, references);
+                }
 
                 return _metadataReferences;
 
