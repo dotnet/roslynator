@@ -223,7 +223,7 @@ namespace Roslynator.CSharp.CodeFixes
                                 ModifierListInfo modifierInfo = SyntaxInfo.ModifierListInfo(node);
 
                                 if (modifierInfo.IsVirtual)
-                                   ModifiersCodeFixRegistrator.RemoveModifier(context, diagnostic, node, SyntaxKind.VirtualKeyword, additionalKey: nameof(SyntaxKind.VirtualKeyword));
+                                    ModifiersCodeFixRegistrator.RemoveModifier(context, diagnostic, node, SyntaxKind.VirtualKeyword, additionalKey: nameof(SyntaxKind.VirtualKeyword));
                             }
 
                             if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.ChangeAccessibility))

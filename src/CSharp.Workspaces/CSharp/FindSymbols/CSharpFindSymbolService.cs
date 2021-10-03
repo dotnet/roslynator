@@ -75,7 +75,7 @@ namespace Roslynator.CSharp.FindSymbols
             SyntaxDebug.Fail(token);
 
             return false;
-       }
+        }
 
         public override ImmutableArray<ISymbol> FindLocalSymbols(
             SyntaxNode node,

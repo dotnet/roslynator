@@ -523,7 +523,7 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
-        public async Task Test_Concatentation_Char()
+        public async Task Test_Concatenation_Char()
         {
             await VerifyDiagnosticAndFixAsync(@"
 using System.Text;

@@ -22,7 +22,7 @@ namespace Roslynator.Documentation
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string DebuggerDisplay
         {
-            get { return (Success) ? $"{Origin} {RawXml}" : "Uninitalized"; }
+            get { return (Success) ? $"{Origin} {RawXml}" : "Uninitialized"; }
         }
     }
 }
