@@ -58,9 +58,9 @@ namespace Roslynator.CommandLine
                     || assemblyName.Name.StartsWith("Microsoft.VisualStudio.")
                     || string.Equals(assemblyName.Name, "Microsoft.DiaSymReader", StringComparison.Ordinal))
                     && !assemblyName.Name.StartsWith("System."),
-                assemblyName.Name);
+                assemblyName.ToString());
 
-            WriteLine($"Unable to resolve assembly '{args.Name}'.", ConsoleColors.DarkGray, Verbosity.Diagnostic);
+            WriteLine($"Unable to resolve assembly '{assemblyName}'.", ConsoleColors.DarkGray, Verbosity.Diagnostic);
 
             return null;
 
