@@ -489,14 +489,15 @@ namespace Roslynator.CSharp
                     }
                 case SyntaxKind.Argument:
                 case SyntaxKind.ArrayInitializerExpression:
-                case SyntaxKind.ReturnStatement:
-                case SyntaxKind.YieldReturnStatement:
                 case SyntaxKind.ArrowExpressionClause:
-                case SyntaxKind.SimpleLambdaExpression:
-                case SyntaxKind.ParenthesizedLambdaExpression:
                 case SyntaxKind.CollectionInitializerExpression:
                 case SyntaxKind.EqualsValueClause:
+                case SyntaxKind.ParenthesizedLambdaExpression:
+                case SyntaxKind.ReturnStatement:
+                case SyntaxKind.SimpleLambdaExpression:
                 case SyntaxKind.SimpleMemberAccessExpression:
+                case SyntaxKind.SwitchExpression:
+                case SyntaxKind.YieldReturnStatement:
                     {
                         SyntaxDebug.Assert(!tupleExpression.Arguments.Any(f => f.Expression.IsKind(SyntaxKind.DeclarationExpression)), tupleExpression);
                         return false;
