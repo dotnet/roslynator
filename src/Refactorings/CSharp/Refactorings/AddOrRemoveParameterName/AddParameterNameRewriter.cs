@@ -50,11 +50,13 @@ namespace Roslynator.CSharp.Refactorings.AddOrRemoveParameterName
 
                 if (parameterSymbol != null)
                 {
-                    return argument
+                    ArgumentSyntax newArgument = argument.WithoutLeadingTrivia();
+
+                    return newArgument
                         .WithNameColon(
                             NameColon(parameterSymbol.ToDisplayString(_symbolDisplayFormat))
                                 .WithTrailingTrivia(Space))
-                        .WithTriviaFrom(argument);
+                        .WithLeadingTrivia(argument.GetLeadingTrivia());
                 }
             }
 
