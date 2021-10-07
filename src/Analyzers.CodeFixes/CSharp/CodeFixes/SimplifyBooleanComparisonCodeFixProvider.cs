@@ -1,19 +1,101 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Immutable;
+using System.Composition;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CodeActions;
+using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.CSharp;
+using Roslynator.CodeFixes;
+using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.CodeFixes
 {
-    internal static class SimplifyBooleanComparisonRefactoring
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SimplifyBooleanComparisonCodeFixProvider))]
+    [Shared]
+    public sealed class SimplifyBooleanComparisonCodeFixProvider : BaseCodeFixProvider
     {
-        public static async Task<Document> RefactorAsync(
+        private const string Title = "Simplify boolean comparison";
+
+        public override ImmutableArray<string> FixableDiagnosticIds
+        {
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.SimplifyBooleanComparison); }
+        }
+
+        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+        {
+            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+            if (!TryFindFirstAncestorOrSelf(
+                root,
+                context.Span,
+                out SyntaxNode node,
+                predicate: f => f is BinaryExpressionSyntax || f.IsKind(SyntaxKind.IsPatternExpression)))
+            {
+                return;
+            }
+
+            Document document = context.Document;
+            Diagnostic diagnostic = context.Diagnostics[0];
+
+            if (node is BinaryExpressionSyntax binaryExpression)
+            {
+                CodeAction codeAction = CodeAction.Create(
+                    Title,
+                    ct => SimplifyBooleanComparisonAsync(document, binaryExpression, ct),
+                    GetEquivalenceKey(diagnostic));
+
+                context.RegisterCodeFix(codeAction, diagnostic);
+            }
+            else
+            {
+                CodeAction codeAction = CodeAction.Create(
+                    Title,
+                    ct => SimplifyBooleanComparisonAsync(document, (IsPatternExpressionSyntax)node, ct),
+                    GetEquivalenceKey(diagnostic));
+
+                context.RegisterCodeFix(codeAction, diagnostic);
+            }
+        }
+
+        public static async Task<Document> SimplifyBooleanComparisonAsync(
+            Document document,
+            IsPatternExpressionSyntax isPattern,
+            CancellationToken cancellationToken)
+        {
+            PatternSyntax pattern = isPattern.Pattern;
+
+            bool isNegative;
+
+            if (pattern is ConstantPatternSyntax constantPattern)
+            {
+                isNegative = constantPattern.Expression.IsKind(SyntaxKind.FalseLiteralExpression);
+            }
+            else
+            {
+                var notPattern = (UnaryPatternSyntax)pattern;
+
+                constantPattern = (ConstantPatternSyntax)notPattern.Pattern;
+
+                isNegative = constantPattern.Expression.IsKind(SyntaxKind.TrueLiteralExpression);
+            }
+
+            ExpressionSyntax expression = isPattern.Expression;
+            SyntaxTriviaList trailing = expression.GetTrailingTrivia().EmptyIfWhitespace().AddRange(isPattern.GetTrailingTrivia());
+            ExpressionSyntax newExpression = expression.WithTrailingTrivia(trailing);
+
+            if (isNegative)
+                newExpression = LogicalNotExpression(newExpression.WithoutTrivia().Parenthesize()).WithTriviaFrom(newExpression);
+
+            return await document.ReplaceNodeAsync(isPattern, newExpression, cancellationToken).ConfigureAwait(false);
+        }
+
+        public static async Task<Document> SimplifyBooleanComparisonAsync(
             Document document,
             BinaryExpressionSyntax binaryExpression,
             CancellationToken cancellationToken)

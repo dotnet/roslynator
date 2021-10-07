@@ -76,6 +76,14 @@ namespace Roslynator.CSharp.Analysis
                         AnalyzeForStatement(c);
                 },
                 SyntaxKind.ForStatement);
+
+            context.RegisterSyntaxNodeAction(
+                c =>
+                {
+                    if (DiagnosticRules.SimplifyBooleanComparison.IsEffective(c))
+                        AnalyzeIsPatternExpression(c);
+                },
+                SyntaxKind.IsPatternExpression);
         }
 
         private static void AnalyzeForStatement(SyntaxNodeAnalysisContext context)
@@ -86,6 +94,34 @@ namespace Roslynator.CSharp.Analysis
 
             if (condition?.Kind() == SyntaxKind.TrueLiteralExpression)
                 DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveRedundantBooleanLiteral, condition, condition.ToString());
+        }
+
+        private static void AnalyzeIsPatternExpression(SyntaxNodeAnalysisContext context)
+        {
+            var isPattern = (IsPatternExpressionSyntax)context.Node;
+
+            PatternSyntax pattern = isPattern.Pattern;
+
+            if (isPattern.Pattern.IsKind(SyntaxKind.NotPattern))
+            {
+                var notPattern = (UnaryPatternSyntax)isPattern.Pattern;
+
+                pattern = notPattern.Pattern;
+            }
+
+            if (pattern is ConstantPatternSyntax constantPattern)
+            {
+                ExpressionSyntax expression = constantPattern.Expression;
+
+                if (expression.IsKind(SyntaxKind.TrueLiteralExpression, SyntaxKind.FalseLiteralExpression)
+                    && context.SemanticModel.GetTypeSymbol(
+                        isPattern.Expression,
+                        context.CancellationToken)?
+                        .SpecialType == SpecialType.System_Boolean)
+                {
+                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.SimplifyBooleanComparison, isPattern);
+                }
+            }
         }
 
         private static void AnalyzeEqualsExpression(SyntaxNodeAnalysisContext context)

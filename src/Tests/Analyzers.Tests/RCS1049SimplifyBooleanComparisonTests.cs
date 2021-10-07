@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1049SimplifyBooleanComparisonTests : AbstractCSharpDiagnosticVerifier<BooleanLiteralAnalyzer, BinaryExpressionCodeFixProvider>
+    public class RCS1049SimplifyBooleanComparisonTests : AbstractCSharpDiagnosticVerifier<BooleanLiteralAnalyzer, SimplifyBooleanComparisonCodeFixProvider>
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.SimplifyBooleanComparison;
 
@@ -75,6 +75,117 @@ class C
             !x)
         {
         }
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyBooleanComparison)]
+        public async Task Test_IsTrue()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+        bool x = false;
+        if ([|x is true|]) { }
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+        bool x = false;
+        if (x) { }
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyBooleanComparison)]
+        public async Task Test_IsFalse()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+        bool x = false;
+        if ([|x is false|]) { }
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+        bool x = false;
+        if (!x) { }
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyBooleanComparison)]
+        public async Task Test_IsNotTrue()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+        bool x = false;
+        if ([|x is not true|]) { }
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+        bool x = false;
+        if (!x) { }
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyBooleanComparison)]
+        public async Task Test_IsNotFalse()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+        bool x = false;
+        if ([|x is not false|]) { }
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+        bool x = false;
+        if (x) { }
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyBooleanComparison)]
+        public async Task TestNoDiagnostic_NullableIsTrue()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M()
+    {
+        bool? x = null;
+        if (x is true) { }
     }
 }
 ");

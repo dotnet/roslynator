@@ -2,7 +2,6 @@
 
 using System.Collections.Immutable;
 using System.Composition;
-using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -10,7 +9,6 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Text;
 using Roslynator.CodeFixes;
 using Roslynator.CSharp.Refactorings;
 using Roslynator.CSharp.Syntax;
@@ -28,7 +26,6 @@ namespace Roslynator.CSharp.CodeFixes
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticIdentifiers.SimplifyBooleanComparison,
                     DiagnosticIdentifiers.ConstantValuesShouldBePlacedOnRightSideOfComparisons,
                     DiagnosticIdentifiers.UseStringIsNullOrEmptyMethod,
                     DiagnosticIdentifiers.SimplifyCoalesceExpression,
@@ -57,17 +54,6 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 switch (diagnostic.Id)
                 {
-                    case DiagnosticIdentifiers.SimplifyBooleanComparison:
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Simplify boolean comparison",
-                                ct => SimplifyBooleanComparisonRefactoring.RefactorAsync(document, binaryExpression, ct),
-                                GetEquivalenceKey(diagnostic));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
-
-                            break;
-                        }
                     case DiagnosticIdentifiers.ConstantValuesShouldBePlacedOnRightSideOfComparisons:
                         {
                             CodeAction codeAction = CodeAction.Create(
