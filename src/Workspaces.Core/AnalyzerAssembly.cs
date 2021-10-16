@@ -70,73 +70,87 @@ namespace Roslynator
             Dictionary<string, ImmutableArray<DiagnosticAnalyzer>.Builder> analyzers = null;
             Dictionary<string, ImmutableArray<CodeFixProvider>.Builder> fixers = null;
 
+            TypeInfo[] types = null;
             try
             {
-                foreach (TypeInfo typeInfo in analyzerAssembly.DefinedTypes)
+                types = analyzerAssembly.DefinedTypes.ToArray();
+            }
+            catch (ReflectionTypeLoadException ex)
+            {
+                types = ex.Types.OfType<TypeInfo>().ToArray();
+
+                int count = ex.Types.Count(f => f == null);
+                string message = $"Cannot load {count} type{((count == 1) ? "" : "s")} from assembly '{analyzerAssembly.FullName}'";
+
+                if (!string.IsNullOrEmpty(analyzerAssembly.Location))
+                    message += $" at '{analyzerAssembly.Location}'";
+
+                WriteLine(message, ConsoleColors.DarkGray, Verbosity.Diagnostic);
+
+                foreach (Exception loadeException in ex.LoaderExceptions)
+                    WriteLine($"  {loadeException.Message}", ConsoleColors.DarkGray, Verbosity.Diagnostic);
+            }
+
+            foreach (TypeInfo typeInfo in types)
+            {
+                if (loadAnalyzers
+                    && !typeInfo.IsAbstract
+                    && typeInfo.IsSubclassOf(typeof(DiagnosticAnalyzer)))
                 {
-                    if (loadAnalyzers
-                        && !typeInfo.IsAbstract
-                        && typeInfo.IsSubclassOf(typeof(DiagnosticAnalyzer)))
+                    DiagnosticAnalyzerAttribute attribute = typeInfo.GetCustomAttribute<DiagnosticAnalyzerAttribute>();
+
+                    if (attribute != null)
                     {
-                        DiagnosticAnalyzerAttribute attribute = typeInfo.GetCustomAttribute<DiagnosticAnalyzerAttribute>();
+                        DiagnosticAnalyzer analyzer = CreateInstanceAndCatchIfThrows<DiagnosticAnalyzer>(typeInfo);
 
-                        if (attribute != null)
+                        if (analyzer != null)
                         {
-                            DiagnosticAnalyzer analyzer = CreateInstanceAndCatchIfThrows<DiagnosticAnalyzer>(typeInfo);
+                            if (analyzers == null)
+                                analyzers = new Dictionary<string, ImmutableArray<DiagnosticAnalyzer>.Builder>();
 
-                            if (analyzer != null)
+                            foreach (string language2 in attribute.Languages)
                             {
-                                if (analyzers == null)
-                                    analyzers = new Dictionary<string, ImmutableArray<DiagnosticAnalyzer>.Builder>();
-
-                                foreach (string language2 in attribute.Languages)
+                                if (language == null
+                                    || language == language2)
                                 {
-                                    if (language == null
-                                        || language == language2)
-                                    {
-                                        if (!analyzers.TryGetValue(language2, out ImmutableArray<DiagnosticAnalyzer>.Builder value))
-                                            analyzers[language2] = ImmutableArray.CreateBuilder<DiagnosticAnalyzer>();
+                                    if (!analyzers.TryGetValue(language2, out ImmutableArray<DiagnosticAnalyzer>.Builder value))
+                                        analyzers[language2] = ImmutableArray.CreateBuilder<DiagnosticAnalyzer>();
 
-                                        analyzers[language2].Add(analyzer);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    else if (loadFixers
-                        && !typeInfo.IsAbstract
-                        && typeInfo.IsSubclassOf(typeof(CodeFixProvider)))
-                    {
-                        ExportCodeFixProviderAttribute attribute = typeInfo.GetCustomAttribute<ExportCodeFixProviderAttribute>();
-
-                        if (attribute != null)
-                        {
-                            CodeFixProvider fixer = CreateInstanceAndCatchIfThrows<CodeFixProvider>(typeInfo);
-
-                            if (fixer != null)
-                            {
-                                if (fixers == null)
-                                    fixers = new Dictionary<string, ImmutableArray<CodeFixProvider>.Builder>();
-
-                                foreach (string language2 in attribute.Languages)
-                                {
-                                    if (language == null
-                                        || language == language2)
-                                    {
-                                        if (!fixers.TryGetValue(language2, out ImmutableArray<CodeFixProvider>.Builder value))
-                                            fixers[language2] = ImmutableArray.CreateBuilder<CodeFixProvider>();
-
-                                        fixers[language2].Add(fixer);
-                                    }
+                                    analyzers[language2].Add(analyzer);
                                 }
                             }
                         }
                     }
                 }
-            }
-            catch (ReflectionTypeLoadException)
-            {
-                WriteLine($"Cannot load types from assembly '{analyzerAssembly.FullName}'", ConsoleColors.DarkGray, Verbosity.Diagnostic);
+                else if (loadFixers
+                    && !typeInfo.IsAbstract
+                    && typeInfo.IsSubclassOf(typeof(CodeFixProvider)))
+                {
+                    ExportCodeFixProviderAttribute attribute = typeInfo.GetCustomAttribute<ExportCodeFixProviderAttribute>();
+
+                    if (attribute != null)
+                    {
+                        CodeFixProvider fixer = CreateInstanceAndCatchIfThrows<CodeFixProvider>(typeInfo);
+
+                        if (fixer != null)
+                        {
+                            if (fixers == null)
+                                fixers = new Dictionary<string, ImmutableArray<CodeFixProvider>.Builder>();
+
+                            foreach (string language2 in attribute.Languages)
+                            {
+                                if (language == null
+                                    || language == language2)
+                                {
+                                    if (!fixers.TryGetValue(language2, out ImmutableArray<CodeFixProvider>.Builder value))
+                                        fixers[language2] = ImmutableArray.CreateBuilder<CodeFixProvider>();
+
+                                    fixers[language2].Add(fixer);
+                                }
+                            }
+                        }
+                    }
+                }
             }
 
             return new AnalyzerAssembly(
