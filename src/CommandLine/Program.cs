@@ -153,6 +153,16 @@ namespace Roslynator.CommandLine
                         if (ParseVerbosityAndOutput(options))
                         {
                             WriteArgs(args, Verbosity.Diagnostic);
+
+                            string tfm = null;
+#if NETFRAMEWORK
+                            tfm = ".NET Framework";
+#else
+                            tfm = ".NET Core";
+#endif
+                            WriteLine($"Roslynator Version: {typeof(Program).GetTypeInfo().Assembly.GetName().Version}", Verbosity.Diagnostic);
+                            WriteLine($"Roslynator Target Framework: {tfm}", Verbosity.Diagnostic);
+                            WriteLine($"Roslyn Version: {typeof(Accessibility).GetTypeInfo().Assembly.GetName().Version}", Verbosity.Diagnostic);
                         }
                         else
                         {
