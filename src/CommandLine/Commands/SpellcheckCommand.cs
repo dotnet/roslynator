@@ -203,11 +203,18 @@ namespace Roslynator.CommandLine
                     WriteMatchingLines(grouping, comparer, ConsoleColors.Green);
             }
 
-            WriteResults(results, SpellingFixKind.Predefined, "Auto fixes:", comparer, isDetailed);
-            WriteResults(results, SpellingFixKind.User, "User-applied fixes:", comparer, isDetailed);
+            bool any1 = WriteResults(results, SpellingFixKind.Predefined, "Auto fixes:", comparer, isDetailed);
+            bool any2 = WriteResults(results, SpellingFixKind.User, "User-applied fixes:", comparer, isDetailed);
+
+            if (!isFirst
+                && !any1
+                && !any2)
+            {
+                WriteLine(Verbosity.Normal);
+            }
         }
 
-        private static void WriteResults(
+        private static bool WriteResults(
             ImmutableArray<SpellingFixResult> results,
             SpellingFixKind kind,
             string heading,
@@ -234,6 +241,8 @@ namespace Roslynator.CommandLine
                 if (isDetailed)
                     WriteMatchingLines(grouping, comparer, ConsoleColors.Cyan);
             }
+
+            return !isFirst;
         }
 
         private static void WriteMatchingLines(
