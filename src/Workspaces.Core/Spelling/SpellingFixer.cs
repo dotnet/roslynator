@@ -103,7 +103,7 @@ namespace Roslynator.Spelling
 
             ImmutableArray<SpellingFixResult>.Builder results = ImmutableArray.CreateBuilder<SpellingFixResult>();
 
-            bool commentsFixed = (Options.ScopeFilter & SpellingScopeFilter.NonSymbol) == 0;
+            bool nonSymbolsFixed = (Options.ScopeFilter & (SpellingScopeFilter.NonSymbol)) == 0;
 
             while (true)
             {
@@ -177,11 +177,11 @@ namespace Roslynator.Spelling
                     spellingDiagnostics.Add(spellingDiagnostic);
                 }
 
-                if (!commentsFixed)
+                if (!nonSymbolsFixed)
                 {
                     List<SpellingFixResult> commentResults = await FixCommentsAsync(project, spellingDiagnostics, cancellationToken).ConfigureAwait(false);
                     results.AddRange(commentResults);
-                    commentsFixed = true;
+                    nonSymbolsFixed = true;
                 }
 
                 if ((Options.ScopeFilter & SpellingScopeFilter.Symbol) == 0)

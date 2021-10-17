@@ -638,8 +638,14 @@ namespace Roslynator.CommandLine
 
         private static async Task<int> SpellcheckAsync(SpellcheckCommandLineOptions options)
         {
-            if (!TryParseOptionValueAsEnumFlags(options.Scope, OptionNames.Scope, out SpellingScopeFilter scopeFilter, SpellingScopeFilter.All))
+            if (!TryParseOptionValueAsEnumFlags(
+                options.Scope,
+                OptionNames.Scope,
+                out SpellingScopeFilter scopeFilter,
+                SpellingScopeFilter.Comment | SpellingScopeFilter.RegionDirective | SpellingScopeFilter.Symbol))
+            {
                 return ExitCodes.Error;
+            }
 
             if (!TryParseOptionValueAsEnumFlags(options.IgnoredScope, OptionNames.IgnoredScope, out SpellingScopeFilter ignoredScopeFilter, SpellingScopeFilter.None))
                 return ExitCodes.Error;

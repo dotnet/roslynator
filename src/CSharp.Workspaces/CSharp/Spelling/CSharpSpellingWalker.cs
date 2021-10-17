@@ -560,6 +560,31 @@ namespace Roslynator.CSharp.Spelling
             _stack.Pop();
         }
 
+        public override void VisitLiteralExpression(LiteralExpressionSyntax node)
+        {
+            if (node.IsKind(SyntaxKind.StringLiteralExpression)
+                && ShouldVisit(SpellingScopeFilter.Literal))
+            {
+                SyntaxToken token = node.Token;
+
+                AnalyzeText(token.Text, node.SyntaxTree, token.Span);
+            }
+
+            base.VisitLiteralExpression(node);
+        }
+
+        public override void VisitInterpolatedStringText(InterpolatedStringTextSyntax node)
+        {
+            if (ShouldVisit(SpellingScopeFilter.Literal))
+            {
+                SyntaxToken token = node.TextToken;
+
+                AnalyzeText(token.Text, node.SyntaxTree, token.Span);
+            }
+
+            base.VisitInterpolatedStringText(node);
+        }
+
         private bool ShouldVisit(SpellingScopeFilter filter)
         {
             return (Options.ScopeFilter & filter) != 0;

@@ -81,9 +81,11 @@ namespace Roslynator.CSharp.Spelling
 
             if (token.IsKind(
                 SyntaxKind.IdentifierToken,
-                SyntaxKind.XmlTextLiteralToken))
+                SyntaxKind.XmlTextLiteralToken,
+                SyntaxKind.StringLiteralToken,
+                SyntaxKind.InterpolatedStringTextToken))
             {
-                Debug.Assert(value == token.ToString().Substring(span.Start - token.SpanStart, span.Length), value);
+                Debug.Assert(value == token.Text.Substring(span.Start - token.SpanStart, span.Length), value);
 
                 return new CSharpSpellingDiagnostic(
                     diagnostic,

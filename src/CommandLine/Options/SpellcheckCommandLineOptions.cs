@@ -33,7 +33,7 @@ namespace Roslynator.CommandLine
 
         [Option(
             longName: OptionNames.IgnoredScope,
-            HelpText = "Defines syntax that should not be analyzed. Allowed values are comment, type, member, local, parameter, non-symbol and symbol.",
+            HelpText = "Defines syntax that should not be analyzed. Allowed values are comment, type, member, local, parameter, literal, non-symbol and symbol.",
             MetaValue = "<SCOPE>")]
         public IEnumerable<string> IgnoredScope { get; set; }
 
@@ -63,7 +63,7 @@ namespace Roslynator.CommandLine
 
         [Option(
             longName: OptionNames.Scope,
-            HelpText = "Defines syntax that should be analyzed. Allowed values are comment, type, member, local, parameter, non-symbol and symbol.",
+            HelpText = "Defines syntax that should be analyzed. Allowed values are comment, type, member, local, parameter, literal, non-symbol, symbol and all. Literals are not analyzed by default.",
             MetaValue = "<SCOPE>")]
         public IEnumerable<string> Scope { get; set; }
 

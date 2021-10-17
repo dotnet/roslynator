@@ -12,7 +12,6 @@ namespace Roslynator.Spelling
         NonDocumentationComment = 1 << 1,
         Comment = DocumentationComment | NonDocumentationComment,
         RegionDirective = 1 << 2,
-        NonSymbol = Comment | RegionDirective,
         Namespace = 1 << 3,
         Class = 1 << 4,
         Struct = 1 << 5,
@@ -36,6 +35,8 @@ namespace Roslynator.Spelling
         UsingAlias = 1 << 20,
         ReturnType = 1 << 21,
         Symbol = Namespace | Type | Member | Local | Parameter | TypeParameter | UsingAlias | ReturnType,
+        Literal = 1 << 22,
+        NonSymbol = Comment | RegionDirective | Literal,
         All = Symbol | NonSymbol,
     }
 }
