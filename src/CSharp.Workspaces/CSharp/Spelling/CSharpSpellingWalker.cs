@@ -29,7 +29,7 @@ namespace Roslynator.CSharp.Spelling
 
             static SyntaxWalkerDepth GetWalkerDepth(SpellingAnalysisContext context)
             {
-                if ((context.Options.ScopeFilter & (SpellingScopeFilter.DocumentationComment | SpellingScopeFilter.RegionDirective)) != 0)
+                if ((context.Options.ScopeFilter & (SpellingScopeFilter.DocumentationComment | SpellingScopeFilter.Region)) != 0)
                     return SyntaxWalkerDepth.StructuredTrivia;
 
                 if ((context.Options.ScopeFilter & SpellingScopeFilter.NonDocumentationComment) != 0)
@@ -76,14 +76,14 @@ namespace Roslynator.CSharp.Spelling
                 case SyntaxKind.RegionDirectiveTrivia:
                 case SyntaxKind.EndRegionDirectiveTrivia:
                     {
-                        if (ShouldVisit(SpellingScopeFilter.RegionDirective))
+                        if (ShouldVisit(SpellingScopeFilter.Region))
                             base.VisitTrivia(trivia);
 
                         break;
                     }
                 case SyntaxKind.PreprocessingMessageTrivia:
                     {
-                        Debug.Assert(ShouldVisit(SpellingScopeFilter.RegionDirective));
+                        Debug.Assert(ShouldVisit(SpellingScopeFilter.Region));
 
                         AnalyzeText(trivia.ToString(), trivia.SyntaxTree, trivia.Span);
                         break;

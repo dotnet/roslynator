@@ -642,7 +642,7 @@ namespace Roslynator.CommandLine
                 options.Scope,
                 OptionNames.Scope,
                 out SpellingScopeFilter scopeFilter,
-                SpellingScopeFilter.Comment | SpellingScopeFilter.RegionDirective | SpellingScopeFilter.Symbol))
+                SpellingScopeFilter.Comment | SpellingScopeFilter.Region | SpellingScopeFilter.Symbol))
             {
                 return ExitCodes.Error;
             }
