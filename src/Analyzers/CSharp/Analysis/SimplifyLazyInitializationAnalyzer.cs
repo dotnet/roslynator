@@ -106,6 +106,21 @@ namespace Roslynator.CSharp.Analysis
             if (!nullCheck.Success)
                 return;
 
+            if (nullCheck.Style == NullCheckStyles.EqualsToNull)
+            {
+                ISymbol equalsOperatorSymbol = semanticModel.GetSymbol(nullCheck.NullCheckExpression, cancellationToken);
+
+                if (!equalsOperatorSymbol.IsErrorType()
+                    && equalsOperatorSymbol.ContainingType.SpecialType != SpecialType.System_Object
+                    && equalsOperatorSymbol is IMethodSymbol methodSymbol)
+                {
+                    ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
+
+                    if (!SymbolEqualityComparer.IncludeNullability.Equals(parameters[0].Type, parameters[1].Type))
+                        return;
+                }
+            }
+
             ExpressionSyntax expression = nullCheck.Expression;
 
             if (!expression.IsKind(SyntaxKind.IdentifierName, SyntaxKind.SimpleMemberAccessExpression))
