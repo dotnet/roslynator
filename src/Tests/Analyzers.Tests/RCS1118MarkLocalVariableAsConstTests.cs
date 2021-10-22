@@ -36,5 +36,20 @@ class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkLocalVariableAsConst)]
+        public async Task TestNoDiagnostic_InterpolatedString()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M()
+    {
+        string s = $""a"";
+        string s2 = s + ""b"";
+    }
+}
+");
+        }
     }
 }

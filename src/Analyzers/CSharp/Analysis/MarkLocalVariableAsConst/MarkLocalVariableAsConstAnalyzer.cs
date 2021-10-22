@@ -132,7 +132,7 @@ namespace Roslynator.CSharp.Analysis.MarkLocalVariableAsConst
                     }
                 case SpecialType.System_Char:
                     {
-                        if (expression.Kind() == SyntaxKind.CharacterLiteralExpression)
+                        if (expression.IsKind(SyntaxKind.CharacterLiteralExpression))
                             return true;
 
                         break;
@@ -149,15 +149,20 @@ namespace Roslynator.CSharp.Analysis.MarkLocalVariableAsConst
                 case SpecialType.System_Single:
                 case SpecialType.System_Double:
                     {
-                        if (expression.Kind() == SyntaxKind.NumericLiteralExpression)
+                        if (expression.IsKind(SyntaxKind.NumericLiteralExpression))
                             return true;
 
                         break;
                     }
                 case SpecialType.System_String:
                     {
-                        if (expression.Kind() == SyntaxKind.StringLiteralExpression)
-                            return true;
+                        switch (expression.Kind())
+                        {
+                            case SyntaxKind.StringLiteralExpression:
+                                return true;
+                            case SyntaxKind.InterpolatedStringExpression:
+                                return false;
+                        }
 
                         break;
                     }
