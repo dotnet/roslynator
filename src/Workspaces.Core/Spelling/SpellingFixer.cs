@@ -537,7 +537,7 @@ namespace Roslynator.Spelling
         {
             string containingValue = diagnostic.Parent;
 
-            if (Options.AutoFix
+            if (Options.Autofix
                 && containingValue != null
                 && SpellingData.Fixes.TryGetKey(containingValue, out string actualKey)
                 && string.Equals(containingValue, actualKey, StringComparison.Ordinal))
@@ -557,7 +557,7 @@ namespace Roslynator.Spelling
         {
             string value = diagnostic.Value;
 
-            if (Options.AutoFix)
+            if (Options.Autofix)
             {
                 TextCasing textCasing = TextUtility.GetTextCasing(value);
 

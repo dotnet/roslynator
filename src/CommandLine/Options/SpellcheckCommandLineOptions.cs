@@ -60,7 +60,12 @@ namespace Roslynator.CommandLine
             HelpText = "Specifies minimal word length to be checked. Default value is 3.",
             MetaValue = "<NUM>")]
         public int MinWordLength { get; set; }
-
+#if DEBUG
+        [Option(
+            longName: OptionNames.NoAutofix,
+            HelpText = "Disable applying predefined fixes.")]
+        public bool NoAutofix { get; set; }
+#endif
         [Option(
             longName: OptionNames.Scope,
             HelpText = "Defines syntax that should be analyzed. Allowed values are comment, type, member, local, parameter, literal, non-symbol, symbol and all. Literals are not analyzed by default.",

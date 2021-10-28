@@ -28,6 +28,7 @@ namespace Roslynator.CommandLine
         public const string MSBuildPath = "msbuild-path";
         public const string NewName = "new-name";
         public const string NewNameFrom = "new-name-from";
+        public const string NoAutofix = "no-autofix";
         public const string OmitMemberParts = "omit-member-parts";
         public const string OnError = "on-error";
         public const string Projects = "projects";

@@ -59,6 +59,9 @@ namespace Roslynator.CommandLine
                 minWordLength: Options.MinWordLength,
                 maxWordLength: Options.MaxWordLength,
                 includeGeneratedCode: Options.IncludeGeneratedCode,
+#if DEBUG
+                autofix: !Options.NoAutofix,
+#endif
                 interactive: Options.Interactive,
                 dryRun: Options.DryRun);
 

@@ -16,7 +16,7 @@ namespace Roslynator.Spelling
             int maxWordLength = int.MaxValue,
             int codeContext = 1,
             bool includeGeneratedCode = false,
-            bool autoFix = true,
+            bool autofix = true,
             bool interactive = false,
             bool dryRun = false)
         {
@@ -30,7 +30,7 @@ namespace Roslynator.Spelling
             MaxWordLength = maxWordLength;
             CodeContext = codeContext;
             IncludeGeneratedCode = includeGeneratedCode;
-            AutoFix = autoFix;
+            Autofix = autofix;
             Interactive = interactive;
             DryRun = dryRun;
         }
@@ -49,7 +49,7 @@ namespace Roslynator.Spelling
 
         public bool IncludeGeneratedCode { get; }
 
-        public bool AutoFix { get; }
+        public bool Autofix { get; }
 
         public bool Interactive { get; }
 
