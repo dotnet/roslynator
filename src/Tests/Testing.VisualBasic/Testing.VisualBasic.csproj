@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>1.0.1.0</Version>
+    <Version>$(RoslynatorTestingVersion)</Version>
     <AssemblyName>Roslynator.Testing.VisualBasic</AssemblyName>
     <RootNamespace>Roslynator.Testing</RootNamespace>
   </PropertyGroup>
@@ -19,7 +19,7 @@
 
   <PropertyGroup>
     <PackageId>Roslynator.Testing.VisualBasic</PackageId>
-    <PackageVersion>1.0.0-beta</PackageVersion>
+    <PackageVersion>$(RoslynatorTestingPackageVersion)</PackageVersion>
     <Company></Company>
     <Description>Test framework for Roslyn analyzers, refactorings and code fixes.</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>

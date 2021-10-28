@@ -5,6 +5,11 @@ if not defined _programFiles set _programFiles=%ProgramFiles%
 
 set _msbuildPath="%_programFiles%\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\MSBuild"
 set _properties=Configuration=Release,Deterministic=true,TreatWarningsAsErrors=true,WarningsNotAsErrors=1591,DefineConstants=VSCODE
+set _version=3.2.3
+
+orang replace "..\src\VisualStudioCode\package\package.json" ^
+ -c "patterns\vscode_version.txt" from-file -t m r ^
+ -r %_version%
 
 dotnet restore --force "..\src\VisualStudioCode.sln"
 

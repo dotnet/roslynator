@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>1.1.1.0</Version>
+    <Version>$(RoslynatorCodeAnalysisAnalyzersVersion)</Version>
     <AssemblyName>Roslynator.CodeAnalysis.Analyzers</AssemblyName>
     <RootNamespace>Roslynator.CodeAnalysis</RootNamespace>
     <IsPackable>false</IsPackable>

@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>2.1.0.5</Version>
+    <Version>$(RoslynatorCoreVersion)</Version>
     <AssemblyName>$(RoslynatorDllPrefix)Roslynator.Workspaces.Core</AssemblyName>
     <RootNamespace>Roslynator</RootNamespace>
     <CodeAnalysisRuleSet>..\api.ruleset</CodeAnalysisRuleSet>
@@ -17,7 +17,7 @@
 
   <PropertyGroup>
     <PackageId>Roslynator.Workspaces.Core</PackageId>
-    <PackageVersion>2.1.0</PackageVersion>
+    <PackageVersion>$(RoslynatorCorePackageVersion)</PackageVersion>
     <Company></Company>
     <Description>This library extends functionality of package Microsoft.CodeAnalysis.Workspaces.Common.</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
