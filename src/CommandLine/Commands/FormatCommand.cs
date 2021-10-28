@@ -47,7 +47,7 @@ namespace Roslynator.CommandLine
                 formattedDocuments = await FormatSolutionAsync(solution, options, cancellationToken);
             }
 
-            return new FormatCommandResult((formattedDocuments.Length > 0) ? CommandStatus.Success : CommandStatus.NotSuccess, formattedDocuments.Length);
+            return new FormatCommandResult((formattedDocuments.Length > 0) ? CommandStatus.NotSuccess : CommandStatus.Success, formattedDocuments.Length);
         }
 
         private async Task<ImmutableArray<DocumentId>> FormatSolutionAsync(Solution solution, CodeFormatterOptions options, CancellationToken cancellationToken)

@@ -90,7 +90,7 @@ namespace Roslynator.CommandLine
 
         private CommandStatus Execute(CancellationToken cancellationToken)
         {
-            var status = CommandStatus.NotSuccess;
+            var status = CommandStatus.Success;
 
             foreach (string path in Paths)
             {
@@ -124,7 +124,7 @@ namespace Roslynator.CommandLine
 
         private CommandStatus ExecuteDirectory(string directoryPath, CancellationToken cancellationToken)
         {
-            var status = CommandStatus.NotSuccess;
+            var status = CommandStatus.Success;
 
 #if NETCOREAPP3_1
             var enumerationOptions = new EnumerationOptions() { IgnoreInaccessible = true, RecurseSubdirectories = true };
@@ -307,13 +307,9 @@ namespace Roslynator.CommandLine
                     using (XmlWriter xmlWriter = XmlWriter.Create(path, settings))
                         document.Save(xmlWriter);
                 }
+            }
 
-                return CommandStatus.Success;
-            }
-            else
-            {
-                return CommandStatus.NotSuccess;
-            }
+            return CommandStatus.Success;
         }
 
         private CommandStatus ExecuteRuleSet(string path)
@@ -337,7 +333,7 @@ namespace Roslynator.CommandLine
             IEnumerable<XElement> rules = document.Root.Elements("Rules");
 
             if (!rules.Any())
-                return CommandStatus.NotSuccess;
+                return CommandStatus.Success;
 
             foreach (XElement element in rules.Elements("Rule"))
             {
@@ -410,11 +406,9 @@ namespace Roslynator.CommandLine
                         document.Save(xmlWriter);
                     }
                 }
-
-                return CommandStatus.Success;
             }
 
-            return CommandStatus.NotSuccess;
+            return CommandStatus.Success;
         }
 
         private CommandStatus ExecuteEditorConfig(string path)
@@ -501,11 +495,9 @@ namespace Roslynator.CommandLine
                         return CommandStatus.NotSuccess;
                     }
                 }
-
-                return CommandStatus.Success;
             }
 
-            return CommandStatus.NotSuccess;
+            return CommandStatus.Success;
         }
 
         private static void WriteXmlError(XElement element, string message)

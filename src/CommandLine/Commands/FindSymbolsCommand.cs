@@ -151,7 +151,7 @@ namespace Roslynator.CommandLine
             WriteLine(Verbosity.Minimal);
             WriteLine($"{allSymbols.Length} {((allSymbols.Length == 1) ? "symbol" : "symbols")} found", ConsoleColors.Green, Verbosity.Minimal);
 
-            return (allSymbols.Length > 0) ? CommandResults.Success : CommandResults.NotSuccess;
+            return CommandResults.Success;
         }
 
         private static Task<ImmutableArray<ISymbol>> AnalyzeProject(

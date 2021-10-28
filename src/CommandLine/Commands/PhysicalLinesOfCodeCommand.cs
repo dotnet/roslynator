@@ -57,9 +57,7 @@ namespace Roslynator.CommandLine
                 codeMetrics = CodeMetricsInfo.Create(codeMetricsByProject.Values);
             }
 
-            return new LinesOfCodeCommandResult(
-                (codeMetrics.TotalLineCount > 0) ? CommandStatus.Success : CommandStatus.NotSuccess,
-                codeMetrics);
+            return new LinesOfCodeCommandResult(CommandStatus.Success, codeMetrics);
         }
 
         private async Task<CodeMetricsInfo> CountLinesAsync(Project project, ICodeMetricsService service, CodeMetricsOptions options, CancellationToken cancellationToken)

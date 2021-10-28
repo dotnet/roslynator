@@ -109,7 +109,7 @@ namespace Roslynator.CommandLine
                 }
             }
 
-            return (analyzerAssemblies.Length > 0) ? CommandStatus.Success : CommandStatus.NotSuccess;
+            return CommandStatus.Success;
         }
 
         private static void WriteAnalyzerAssembly(AnalyzerAssemblyInfo analyzerAssemblyInfo, DiagnosticMap map)

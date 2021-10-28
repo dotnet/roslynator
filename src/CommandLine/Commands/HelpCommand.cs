@@ -32,14 +32,14 @@ namespace Roslynator.CommandLine
                     manual: Options.Manual,
                     includeValues: ConsoleOut.Verbosity > Verbosity.Normal,
                     filter: Filter);
+
+                return CommandStatus.Success;
             }
             catch (ArgumentException ex)
             {
                 WriteError(ex);
                 return CommandStatus.Fail;
             }
-
-            return CommandStatus.Success;
         }
 
         private static void WriteHelp(

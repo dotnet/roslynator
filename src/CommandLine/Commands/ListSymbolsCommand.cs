@@ -211,7 +211,7 @@ namespace Roslynator.CommandLine
                 WriteSummary(assemblies, SymbolFilterOptions, Verbosity.Normal);
 #endif
 
-            return (assemblies.Any()) ? CommandResults.Success : CommandResults.NotSuccess;
+            return CommandResults.Success;
         }
 
 #if DEBUG

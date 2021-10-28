@@ -120,7 +120,7 @@ namespace Roslynator.CommandLine
             WriteProjectFixResults(results, codeFixerOptions, formatProvider);
 
             return new FixCommandResult(
-                (results.Any(f => f.FixedDiagnostics.Length > 0)) ? CommandStatus.Success : CommandStatus.NotSuccess,
+                (results.Any(f => f.UnfixedDiagnostics.Length > 0)) ? CommandStatus.NotSuccess : CommandStatus.Success,
                 results);
 
             CodeFixer GetCodeFixer(Solution solution)

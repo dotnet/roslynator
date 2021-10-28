@@ -56,7 +56,7 @@ namespace Roslynator.CommandLine
                 WriteLine($"{count} assembl{((count == 1) ? "y" : "ies")} found", ConsoleColors.Green, Verbosity.Normal);
             }
 
-            return (count > 0) ? CommandResults.Success : CommandResults.NotSuccess;
+            return CommandResults.Success;
 
             string GetDisplay(Compilation compilation, MetadataReference reference)
             {

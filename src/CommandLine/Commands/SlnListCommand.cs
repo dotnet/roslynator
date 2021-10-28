@@ -101,7 +101,7 @@ namespace Roslynator.CommandLine
 
             WriteLine();
 
-            return (projects.Count > 0) ? CommandResults.Success : CommandResults.NotSuccess;
+            return CommandResults.Success;
         }
     }
 }

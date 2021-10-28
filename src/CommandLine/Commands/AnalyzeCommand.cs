@@ -84,7 +84,7 @@ namespace Roslynator.CommandLine
             }
 
             return new AnalyzeCommandResult(
-                (results.Any(f => f.Diagnostics.Length > 0)) ? CommandStatus.Success : CommandStatus.NotSuccess,
+                (results.Any(f => f.Diagnostics.Length > 0)) ? CommandStatus.NotSuccess : CommandStatus.Success,
                 results);
         }
 
