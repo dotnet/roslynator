@@ -1889,7 +1889,7 @@ object x = items.Peek();]]></After>
     <MessageFormat>Implement the functionality instead of throwing new NotImplementedException.</MessageFormat>
     <Category>General</Category>
     <DefaultSeverity>Info</DefaultSeverity>
-    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
       <Sample>
         <Before><![CDATA[public void Foo()
@@ -2045,7 +2045,7 @@ public string Foo // [|Id|]
     <MessageFormat>Add call to 'ConfigureAwait'.</MessageFormat>
     <Category>Design</Category>
     <DefaultSeverity>Info</DefaultSeverity>
-    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
       <Sample>
         <Before><![CDATA[public async Task FooAsync()
