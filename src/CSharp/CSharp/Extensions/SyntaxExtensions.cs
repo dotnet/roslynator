@@ -3256,6 +3256,8 @@ namespace Roslynator.CSharp
                     case SyntaxKind.SimpleAssignmentExpression:
                     case SyntaxKind.SimpleMemberAccessExpression:
                     case SyntaxKind.SubtractAssignmentExpression:
+                    case SyntaxKind.SwitchExpression:
+                    case SyntaxKind.SwitchExpressionArm:
                     case SyntaxKind.VariableDeclaration:
                     case SyntaxKind.VariableDeclarator:
                         {

@@ -500,6 +500,7 @@ namespace Roslynator.CSharp
                 case SyntaxKind.SetAccessorDeclaration:
                 case SyntaxKind.AddAccessorDeclaration:
                 case SyntaxKind.RemoveAccessorDeclaration:
+                case SyntaxKind.InitAccessorDeclaration:
                 case SyntaxKind.UnknownAccessorDeclaration:
                     {
                         var memberDeclaration = node.Parent?.Parent as MemberDeclarationSyntax;

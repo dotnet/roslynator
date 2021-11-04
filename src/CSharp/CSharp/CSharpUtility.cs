@@ -430,6 +430,7 @@ namespace Roslynator.CSharp
                             {
                                 case SyntaxKind.Argument:
                                 case SyntaxKind.ArgumentList:
+                                case SyntaxKind.BracketedArgumentList:
                                 case SyntaxKind.EqualsValueClause:
                                 case SyntaxKind.Interpolation:
                                 case SyntaxKind.VariableDeclaration:
