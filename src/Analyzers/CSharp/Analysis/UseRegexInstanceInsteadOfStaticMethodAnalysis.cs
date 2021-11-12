@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.Syntax;
+using Microsoft.CodeAnalysis.CSharp;
 
 namespace Roslynator.CSharp.Analysis
 {
@@ -60,7 +61,9 @@ namespace Roslynator.CSharp.Analysis
 
                 ISymbol symbol = semanticModel.GetSymbol(expression, cancellationToken);
 
-                Debug.Assert(symbol != null);
+                SyntaxDebug.Assert(
+                    symbol != null || expression.WalkDownParentheses().IsKind(SyntaxKind.InterpolatedStringExpression),
+                    expression);
 
                 if (symbol == null)
                     return true;
