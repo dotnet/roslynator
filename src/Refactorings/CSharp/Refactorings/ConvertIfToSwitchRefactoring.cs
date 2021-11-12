@@ -100,9 +100,9 @@ namespace Roslynator.CSharp.Refactorings
 
                         PatternSyntax pattern = isPatternExpression.Pattern;
 
-                        SyntaxDebug.Assert(pattern.IsKind(SyntaxKind.DeclarationPattern, SyntaxKind.ConstantPattern), pattern);
+                        SyntaxDebug.Assert(pattern.IsKind(SyntaxKind.DeclarationPattern, SyntaxKind.ConstantPattern, SyntaxKind.NotPattern), pattern);
 
-                        if (!pattern.IsKind(SyntaxKind.DeclarationPattern, SyntaxKind.ConstantPattern))
+                        if (!pattern.IsKind(SyntaxKind.DeclarationPattern, SyntaxKind.ConstantPattern, SyntaxKind.NotPattern))
                             return default;
 
                         ExpressionSyntax expression = isPatternExpression.Expression.WalkDownParentheses();
@@ -269,6 +269,12 @@ namespace Roslynator.CSharp.Refactorings
                         else if (pattern is DeclarationPatternSyntax)
                         {
                             return SingletonList<SwitchLabelSyntax>(CasePatternSwitchLabel(pattern, Token(SyntaxKind.ColonToken)));
+                        }
+                        else if (pattern.IsKind(SyntaxKind.NotPattern))
+                        {
+                            var notPattern = (UnaryPatternSyntax)pattern;
+
+                            return SingletonList<SwitchLabelSyntax>(CasePatternSwitchLabel(notPattern, Token(SyntaxKind.ColonToken)));
                         }
                         else
                         {

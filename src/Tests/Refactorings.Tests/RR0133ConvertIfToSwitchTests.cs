@@ -127,6 +127,53 @@ class C
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToSwitch)]
+        public async Task Test_NotPattern()
+        {
+            await VerifyRefactoringAsync(@"
+class C
+{
+    int M()
+    {
+        object x = null;
+
+        [||]if (x is string s)
+        {
+            return 1;
+        }
+        else if (x is not null)
+        {
+        }
+
+        return 0;
+    }
+}
+", @"
+class C
+{
+    int M()
+    {
+        object x = null;
+
+        switch (x)
+        {
+            case string s:
+                {
+                    return 1;
+                }
+
+            case not null:
+                {
+                    break;
+                }
+        }
+
+        return 0;
+    }
+}
+", equivalenceKey: RefactoringId);
+        }
+
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToSwitch)]
         public async Task Test_ConstantAndPattern()
         {
             await VerifyRefactoringAsync(@"
