@@ -103,6 +103,18 @@ namespace Roslynator.CSharp.CodeFixes
 
                         return SyntaxRefactorings.ChangeInvokedMethodName(newNode, (memberAccessExpression.Name.Identifier.ValueText == "All") ? "Any" : "All");
                     }
+                case SyntaxKind.IsPatternExpression:
+                    {
+                        var isPatternExpression = (IsPatternExpressionSyntax)expression;
+
+                        var pattern = (ConstantPatternSyntax)isPatternExpression.Pattern;
+
+                        UnaryPatternSyntax newPattern = NotPattern(pattern.WithoutTrivia()).WithTriviaFrom(pattern);
+
+                        return isPatternExpression.WithPattern(newPattern)
+                            .PrependToLeadingTrivia(logicalNot.GetLeadingTrivia())
+                            .AppendToTrailingTrivia(logicalNot.GetTrailingTrivia());
+                    }
             }
 
             return null;

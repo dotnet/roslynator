@@ -93,6 +93,22 @@ namespace Roslynator.CSharp.Analysis
 
                         break;
                     }
+                case SyntaxKind.IsPatternExpression:
+                    {
+                        if (((CSharpParseOptions)expression.SyntaxTree.Options).LanguageVersion >= LanguageVersion.CSharp9)
+                        {
+                            var isPatternExpression = (IsPatternExpressionSyntax)expression;
+
+                            if (isPatternExpression.Pattern is ConstantPatternSyntax constantPattern
+                                && constantPattern.Expression.IsKind(SyntaxKind.NullLiteralExpression))
+                            {
+                                ReportDiagnostic();
+                            }
+                        }
+
+
+                        break;
+                    }
             }
 
             void ReportDiagnostic()

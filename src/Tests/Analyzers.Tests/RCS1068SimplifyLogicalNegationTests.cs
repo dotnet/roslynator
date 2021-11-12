@@ -495,6 +495,36 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyLogicalNegation)]
+        public async Task Test_IsNotNullPattern()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+        string x = null;
+
+        if (
+            [|!(x is null)|] //x
+        ) { }
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+        string x = null;
+
+        if (
+            x is not null //x
+        ) { }
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyLogicalNegation)]
         public async Task TestNoDiagnostic_NotEqualsOperator()
         {
             await VerifyNoDiagnosticAsync(@"
