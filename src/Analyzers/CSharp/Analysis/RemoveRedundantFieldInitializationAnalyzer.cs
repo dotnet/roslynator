@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Immutable;
 using System.Threading;
 using Microsoft.CodeAnalysis;
@@ -53,7 +54,11 @@ namespace Roslynator.CSharp.Analysis
                 if (initializer?.ContainsDirectives == false)
                 {
                     ExpressionSyntax value = initializer.Value?.WalkDownParentheses();
-                    if (value?.IsKind(SyntaxKind.SuppressNullableWarningExpression) == false)
+
+                    if (value is CastExpressionSyntax castExpression)
+                        value = castExpression.Expression.WalkDownParentheses();
+
+                    if (CanBeConstantValue(value))
                     {
                         SemanticModel semanticModel = context.SemanticModel;
                         CancellationToken cancellationToken = context.CancellationToken;
@@ -74,6 +79,23 @@ namespace Roslynator.CSharp.Analysis
                         }
                     }
                 }
+            }
+        }
+
+        private static bool CanBeConstantValue(ExpressionSyntax value)
+        {
+            switch (value.Kind())
+            {
+                case SyntaxKind.NullLiteralExpression:
+                case SyntaxKind.NumericLiteralExpression:
+                case SyntaxKind.TrueLiteralExpression:
+                case SyntaxKind.FalseLiteralExpression:
+                case SyntaxKind.CharacterLiteralExpression:
+                case SyntaxKind.DefaultLiteralExpression:
+                case SyntaxKind.DefaultExpression:
+                    return true;
+                default:
+                    return false;
             }
         }
     }

@@ -22,8 +22,7 @@ class C
     const bool K = false;
 
     bool P1 { get; set; } = [|false|];
-    bool P2 { get; set; } = [|K|];
-    bool P3 { get; set; } = [|default|];
+    bool P2 { get; set; } = [|default|];
 }
 ", @"
 class C
@@ -32,7 +31,6 @@ class C
 
     bool P1 { get; set; }
     bool P2 { get; set; }
-    bool P3 { get; set; }
 }
 ");
         }
@@ -70,8 +68,7 @@ class C
     const char K = '\0';
 
     char P1 { get; set; } = [|'\0'|];
-    char P2 { get; set; } = [|K|];
-    char P3 { get; set; } = [|default|];
+    char P2 { get; set; } = [|default|];
 }
 ", @"
 class C
@@ -80,7 +77,6 @@ class C
 
     char P1 { get; set; }
     char P2 { get; set; }
-    char P3 { get; set; }
 }
 ");
         }
@@ -96,7 +92,6 @@ class C
     string P1 { get; set; } = [|null|];
     string P2 { get; set; } = [|default(string)|];
     string P3 { get; set; } = [|default|];
-    string P4 { get; set; } = [|K|];
 }
 ", @"
 class C
@@ -106,7 +101,6 @@ class C
     string P1 { get; set; }
     string P2 { get; set; }
     string P3 { get; set; }
-    string P4 { get; set; }
 }
 ");
         }
@@ -121,8 +115,7 @@ class C
 
     int P1 { get; set; } = [|0|];
     int P2 { get; set; } = [|(int)0|];
-    int P3 { get; set; } = [|K|];
-    int P4 { get; set; } = [|default|];
+    int P3 { get; set; } = [|default|];
 }
 ", @"
 class C
@@ -132,7 +125,6 @@ class C
     int P1 { get; set; }
     int P2 { get; set; }
     int P3 { get; set; }
-    int P4 { get; set; }
 }
 ");
         }
@@ -146,8 +138,7 @@ class C
     const ulong K = 0;
 
     ulong P1 { get; set; } = [|(ulong)0|];
-    ulong P2 { get; set; } = [|K|];
-    ulong P3 { get; set; } = [|default|];
+    ulong P2 { get; set; } = [|default|];
 }
 ", @"
 class C
@@ -156,7 +147,6 @@ class C
 
     ulong P1 { get; set; }
     ulong P2 { get; set; }
-    ulong P3 { get; set; }
 }
 ");
         }
@@ -189,6 +179,22 @@ class C
     float PF { get; set; }
     double PDO { get; set; }
     decimal PDE { get; set; }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantFieldInitialization)]
+        public async Task TestNoDiagnostic()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System.Text.RegularExpressions;
+
+class C
+{
+    const bool K = false;
+
+    bool P1 { get; set; } = K;
+    RegexOptions P2 { get; set; } = RegexOptions.None;
 }
 ");
         }

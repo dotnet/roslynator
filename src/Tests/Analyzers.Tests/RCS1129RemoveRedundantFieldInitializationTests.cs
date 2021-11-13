@@ -100,26 +100,6 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantFieldInitialization)]
-        public async Task Test_BoolConst()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
-class C
-{
-    const bool K = false;
-
-    bool _f [|= K|];
-}
-", @"
-class C
-{
-    const bool K = false;
-
-    bool _f;
-}
-");
-        }
-
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantFieldInitialization)]
         public async Task Test_Char()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -130,26 +110,6 @@ class C
 ", @"
 class C
 {
-    char _f;
-}
-");
-        }
-
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantFieldInitialization)]
-        public async Task Test_CharConst()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
-class C
-{
-    const char K = '\0';
-
-    char _f [|= K|];
-}
-", @"
-class C
-{
-    const char K = '\0';
-
     char _f;
 }
 ");
@@ -172,26 +132,6 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantFieldInitialization)]
-        public async Task Test_IntConst()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
-class C
-{
-    const int K = 0;
-
-    int _f [|= K|];
-}
-", @"
-class C
-{
-    const int K = 0;
-
-    int _f;
-}
-");
-        }
-
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantFieldInitialization)]
         public async Task Test_ULong()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -208,26 +148,6 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantFieldInitialization)]
-        public async Task Test_ULongConst()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
-class C
-{
-    const ulong K = 0;
-
-    ulong _f [|= K|];
-}
-", @"
-class C
-{
-    const ulong K = 0;
-
-    ulong _f;
-}
-");
-        }
-
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantFieldInitialization)]
         public async Task Test_Enum()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -237,10 +157,9 @@ class C
 {
     const RegexOptions RegexOptionsConst = RegexOptions.None;
 
-    RegexOptions _f1 [|= 0|];
-    RegexOptions _f2 [|= RegexOptions.None|];
+    RegexOptions _f1 [|= default|];
+    RegexOptions _f2 [|= default(RegexOptions)|];
     RegexOptions _f3 [|= (RegexOptions)0|];
-    RegexOptions _f4 [|= RegexOptionsConst|];
 }
 ", @"
 using System.Text.RegularExpressions;
@@ -252,7 +171,6 @@ class C
     RegexOptions _f1;
     RegexOptions _f2;
     RegexOptions _f3;
-    RegexOptions _f4;
 }
 ");
         }
@@ -265,18 +183,32 @@ class C
 {
     const string K = null;
 
-    string _s2 [|= null|];
-    string _s3 [|= default(string)|];
-    string _s4 [|= K|];
+    string _s1 [|= null|];
+    string _s2 [|= default(string)|];
 }
 ", @"
 class C
 {
     const string K = null;
 
+    string _s1;
     string _s2;
-    string _s3;
-    string _s4;
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantFieldInitialization)]
+        public async Task TestNoDiagnostic()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System.Text.RegularExpressions;
+
+class C
+{
+const bool K = false;
+
+    bool _k = K;
+    RegexOptions _r = RegexOptions.None;
 }
 ");
         }

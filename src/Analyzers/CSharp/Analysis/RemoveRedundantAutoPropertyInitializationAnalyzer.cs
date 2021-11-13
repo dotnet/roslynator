@@ -43,7 +43,10 @@ namespace Roslynator.CSharp.Analysis
 
             ExpressionSyntax value = initializer?.Value?.WalkDownParentheses();
 
-            if (value?.IsKind(SyntaxKind.SuppressNullableWarningExpression) != false)
+            if (value == null)
+                return;
+
+            if (!CanBeConstantValue(value))
                 return;
 
             if (initializer.SpanOrLeadingTriviaContainsDirectives())
@@ -61,6 +64,26 @@ namespace Roslynator.CSharp.Analysis
                 return;
 
             DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveRedundantAutoPropertyInitialization, value);
+        }
+
+        private static bool CanBeConstantValue(ExpressionSyntax value)
+        {
+            if (value is CastExpressionSyntax castExpression)
+                value = castExpression.Expression.WalkDownParentheses();
+
+            switch (value.Kind())
+            {
+                case SyntaxKind.NullLiteralExpression:
+                case SyntaxKind.NumericLiteralExpression:
+                case SyntaxKind.TrueLiteralExpression:
+                case SyntaxKind.FalseLiteralExpression:
+                case SyntaxKind.CharacterLiteralExpression:
+                case SyntaxKind.DefaultLiteralExpression:
+                case SyntaxKind.DefaultExpression:
+                    return true;
+                default:
+                    return false;
+            }
         }
     }
 }
