@@ -409,6 +409,10 @@ namespace Roslynator.CSharp
 
                                         break;
                                     }
+                                case GlobalStatementSyntax:
+                                    {
+                                        break;
+                                    }
                                 default:
                                     {
                                         return 0;
@@ -431,9 +435,7 @@ namespace Roslynator.CSharp
 
             int DetermineIndentationSize(CompilationUnitSyntax compilationUnit)
             {
-                MemberDeclarationSyntax member = compilationUnit.Members.FirstOrDefault();
-
-                if (member != null)
+                foreach (MemberDeclarationSyntax member in compilationUnit.Members)
                 {
                     if (member is NamespaceDeclarationSyntax namespaceDeclaration)
                     {

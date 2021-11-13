@@ -229,6 +229,24 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfCallChain)]
+        public async Task Test_TopLevelStatement()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System;
+
+Console
+    .WriteLine();
+
+class Program
+{
+    void Main(string[] args)
+    {
+    }
+}
+", options: Options.WithCompilationOptions(Options.CompilationOptions.WithOutputKind(OutputKind.ConsoleApplication)));
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfCallChain)]
         public async Task TestNoDiagnostic()
         {
             await VerifyNoDiagnosticAsync(@"
