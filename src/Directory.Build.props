@@ -1,7 +1,7 @@
 ﻿<Project>
 
   <PropertyGroup>
-    <LangVersion>8.0</LangVersion>
+    <LangVersion>9.0</LangVersion>
     <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)global.ruleset</CodeAnalysisRuleSet>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)Roslynator.snk</AssemblyOriginatorKeyFile>
