@@ -792,7 +792,7 @@ namespace Roslynator.CSharp
             messageFormat:      "Implement the functionality instead of throwing new NotImplementedException.", 
             category:           DiagnosticCategories.General, 
             defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: true, 
+            isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.ThrowingOfNewNotImplementedException, 
             customTags:         Array.Empty<string>());
@@ -868,7 +868,7 @@ namespace Roslynator.CSharp
             messageFormat:      "Add call to 'ConfigureAwait'.", 
             category:           DiagnosticCategories.Design, 
             defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: true, 
+            isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.AddCallToConfigureAwaitOrViceVersa, 
             customTags:         Array.Empty<string>());
@@ -2570,7 +2570,7 @@ namespace Roslynator.CSharp
                 messageFormat:      "Remove call to 'ConfigureAwait'.", 
                 category:           DiagnosticCategories.Design, 
                 defaultSeverity:    DiagnosticSeverity.Info, 
-                isEnabledByDefault: true, 
+                isEnabledByDefault: false, 
                 description:        null, 
                 helpLinkUri:        DiagnosticIdentifiers.AddCallToConfigureAwaitOrViceVersa, 
                 customTags:         WellKnownDiagnosticTags.Unnecessary);

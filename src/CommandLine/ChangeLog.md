@@ -1,3 +1,11 @@
+### 0.3.0 (2021-11-14)
+
+* Bump Roslyn version to 4.0.1
+* Add option `--max-word-length` to `spellcheck` command
+* Add spellchecking of string literals
+* Fix exit code so the tool can be used in CI/CD pipeline
+  * Return 0 if no diagnostic is found
+
 ### 0.2.0 (2021-09-05)
 
 * Add command [`rename-symbol`](https://github.com/JosefPihrt/Roslynator/blob/master/docs/cli/rename-symbol-command.md)

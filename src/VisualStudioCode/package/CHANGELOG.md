@@ -1,3 +1,8 @@
+## 3.3.0 (2021-11-14)
+
+* Bunch of bug fixes and small improvements
+* Disable analyzers RCS1079 and RCS1090 by default
+
 ## 3.2.2 (2021-08-15)
 
 * Ensure that shared assemblies with be loaded properly on .NET Core ([issue](https://github.com/JosefPihrt/Roslynator/issues/833))

@@ -66,13 +66,13 @@
 | RCS1075 | [Avoid empty catch clause that catches System.Exception](../../docs/analyzers/RCS1075.md) | Design | Warning |
 | RCS1077 | [Optimize LINQ method call](../../docs/analyzers/RCS1077.md) | Performance | Info |
 | RCS1078 | [Use "" instead of string.Empty (or vice versa)](../../docs/analyzers/RCS1078.md) | General | None |
-| RCS1079 | [Throwing of new NotImplementedException](../../docs/analyzers/RCS1079.md) | General | Info |
+| RCS1079 | [Throwing of new NotImplementedException](../../docs/analyzers/RCS1079.md) | General | None |
 | RCS1080 | [Use 'Count/Length' property instead of 'Any' method](../../docs/analyzers/RCS1080.md) | Performance | Info |
 | RCS1081 | [Split variable declaration](../../docs/analyzers/RCS1081.md) | Readability | None |
 | RCS1084 | [Use coalesce expression instead of conditional expression](../../docs/analyzers/RCS1084.md) | Simplification | Info |
 | RCS1085 | [Use auto-implemented property](../../docs/analyzers/RCS1085.md) | Simplification | Info |
 | RCS1089 | [Use --/++ operator instead of assignment](../../docs/analyzers/RCS1089.md) | Simplification | Info |
-| RCS1090 | [Add call to 'ConfigureAwait' (or vice versa)](../../docs/analyzers/RCS1090.md) | Design | Info |
+| RCS1090 | [Add call to 'ConfigureAwait' (or vice versa)](../../docs/analyzers/RCS1090.md) | Design | None |
 | RCS1091 | [Remove empty region](../../docs/analyzers/RCS1091.md) | Redundancy | Hidden |
 | RCS1093 | [Remove file with no code](../../docs/analyzers/RCS1093.md) | Redundancy | Info |
 | RCS1094 | [Declare using directive on top level](../../docs/analyzers/RCS1094.md) | Readability | None |
