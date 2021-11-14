@@ -46,10 +46,11 @@ class C
     void M()
     {
         string s = $""a"";
-        string s2 = s + ""b"";
+        string s2 = $""a"" + """";
+        string s3 = $""a"";
     }
 }
-");
+", options: WellKnownCSharpTestOptions.Default_CSharp9);
         }
     }
 }

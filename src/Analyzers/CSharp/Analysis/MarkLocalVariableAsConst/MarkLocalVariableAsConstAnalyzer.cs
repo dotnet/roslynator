@@ -74,12 +74,23 @@ namespace Roslynator.CSharp.Analysis.MarkLocalVariableAsConst
 
             foreach (VariableDeclaratorSyntax declarator in localInfo.Variables)
             {
-                if (!HasConstantValue(declarator.Initializer?.Value, typeSymbol, context.SemanticModel, context.CancellationToken))
+                ExpressionSyntax value = declarator.Initializer?.Value?.WalkDownParentheses();
+
+                if (value?.IsMissing != false)
+                    return;
+
+                if (!HasConstantValue(value, typeSymbol, context.SemanticModel, context.CancellationToken))
                     return;
             }
 
             if (!CanBeMarkedAsConst(localInfo.Variables, statements, index + 1))
                 return;
+
+            if (((CSharpParseOptions)context.Node.SyntaxTree.Options).LanguageVersion <= LanguageVersion.CSharp9
+                && ContainsInterpolatedString(localInfo.Variables))
+            {
+                return;
+            }
 
             DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.MarkLocalVariableAsConst, localInfo.Type);
         }
@@ -118,9 +129,6 @@ namespace Roslynator.CSharp.Analysis.MarkLocalVariableAsConst
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default)
         {
-            if (expression?.IsMissing != false)
-                return false;
-
             switch (typeSymbol.SpecialType)
             {
                 case SpecialType.System_Boolean:
@@ -169,6 +177,27 @@ namespace Roslynator.CSharp.Analysis.MarkLocalVariableAsConst
             }
 
             return semanticModel.HasConstantValue(expression, cancellationToken);
+        }
+
+        private static bool ContainsInterpolatedString(SeparatedSyntaxList<VariableDeclaratorSyntax> variables)
+        {
+            foreach (VariableDeclaratorSyntax declarator in variables)
+            {
+                ExpressionSyntax value = declarator.Initializer.Value.WalkDownParentheses();
+
+                if (value is not LiteralExpressionSyntax)
+                {
+                    foreach (SyntaxNode node in value.DescendantNodes())
+                    {
+                        if (node.IsKind(SyntaxKind.InterpolatedStringExpression))
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
         }
     }
 }
