@@ -9,7 +9,7 @@
     <AssemblyName>Roslynator.CSharp.CodeFixes</AssemblyName>
     <RootNamespace>Roslynator.CSharp.CodeFixes</RootNamespace>
     <NuspecFile>Roslynator.CodeFixes.nuspec</NuspecFile>
-    <NuspecProperties>configuration=$(Configuration)</NuspecProperties>
+    <NuspecProperties>configuration=$(Configuration);version=$(RoslynatorCodeFixesPackageVersion)</NuspecProperties>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 

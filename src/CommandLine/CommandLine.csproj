@@ -40,7 +40,7 @@
     <NuspecFile>CommandLine.nuspec</NuspecFile> 
     <IntermediatePackDir>$(MSBuildProjectDirectory)/bin/$(Configuration)/publish/</IntermediatePackDir>
     <PublishDir>$(IntermediatePackDir)$(TargetFramework)/</PublishDir>
-    <NuspecProperties>publishDir=$([MSBuild]::NormalizeDirectory($(IntermediatePackDir)))</NuspecProperties>
+    <NuspecProperties>publishDir=$([MSBuild]::NormalizeDirectory($(IntermediatePackDir)));version=$(RoslynatorCliPackageVersion)</NuspecProperties>
   </PropertyGroup>
 
   <ItemGroup>

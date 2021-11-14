@@ -9,7 +9,7 @@
     <AssemblyName>Roslynator.Formatting.Analyzers.CodeFixes</AssemblyName>
     <RootNamespace>Roslynator.Formatting</RootNamespace>
     <NuspecFile>Roslynator.Formatting.Analyzers.nuspec</NuspecFile> 
-    <NuspecProperties>configuration=$(Configuration)</NuspecProperties>
+    <NuspecProperties>configuration=$(Configuration);version=$(RoslynatorFormattingAnalyzersPackageVersion)</NuspecProperties>
   </PropertyGroup>
 
   <ItemGroup>

@@ -9,7 +9,7 @@
     <AssemblyName>Roslynator.CodeAnalysis.Analyzers.CodeFixes</AssemblyName>
     <RootNamespace>Roslynator.CodeAnalysis</RootNamespace>
     <NuspecFile>Roslynator.CodeAnalysis.Analyzers.nuspec</NuspecFile> 
-    <NuspecProperties>configuration=$(Configuration)</NuspecProperties>
+    <NuspecProperties>configuration=$(Configuration);version=$(RoslynatorCodeAnalysisAnalyzersPackageVersion)</NuspecProperties>
   </PropertyGroup>
 
   <ItemGroup>
