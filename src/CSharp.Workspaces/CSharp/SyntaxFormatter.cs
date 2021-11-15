@@ -120,6 +120,25 @@ namespace Roslynator.CSharp
 
                         break;
                     }
+                case SyntaxKind.ImplicitObjectCreationExpression:
+                    {
+                        var expression = (ImplicitObjectCreationExpressionSyntax)parent;
+
+                        expression = expression.WithInitializer(newInitializer);
+
+                        ArgumentListSyntax argumentList = expression.ArgumentList;
+
+                        if (argumentList != null)
+                        {
+                            newParent = expression.WithArgumentList(argumentList.WithTrailingTrivia(Space));
+                        }
+                        else
+                        {
+                            newParent = expression.WithNewKeyword(expression.NewKeyword.WithTrailingTrivia(Space));
+                        }
+
+                        break;
+                    }
                 case SyntaxKind.ArrayCreationExpression:
                     {
                         var expression = (ArrayCreationExpressionSyntax)parent;

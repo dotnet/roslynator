@@ -402,6 +402,35 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewlinesFromInitializerWithSingleLineExpression)]
+        public async Task Test_ImplicitObjectCreationInitializer()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    string P { get; set; }
+
+    C M()
+    {
+        return new()
+        [|{
+            P = null
+        }|];
+    }
+}
+", @"
+class C
+{
+    string P { get; set; }
+
+    C M()
+    {
+        return new() { P = null };
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewlinesFromInitializerWithSingleLineExpression)]
         public async Task TestNoDiagnostic_MultipleExpressions()
         {
             await VerifyNoDiagnosticAsync(@"
