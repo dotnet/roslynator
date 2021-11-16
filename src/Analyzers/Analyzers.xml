@@ -1826,15 +1826,15 @@ catch (Exception ex) // [|Id|]
 object x = stack.First(); // [|Id|]]]></Before>
         <After><![CDATA[var stack = new Stack<object>();
 // ...
-object x = items.Peek();]]></After>
+object x = stack.Peek();]]></After>
       </Sample>
       <Sample>
         <Before><![CDATA[var queue = new Queue<object>();
 // ...
-object x = stack.First(); // [|Id|]]]></Before>
+object x = queue.First(); // [|Id|]]]></Before>
         <After><![CDATA[var queue = new Queue<object>();
 // ...
-object x = items.Peek();]]></After>
+object x = queue.Peek();]]></After>
       </Sample>
       <Sample>
         <Before><![CDATA[enumerable.Any() ? enumerable.First() : default]]></Before>
