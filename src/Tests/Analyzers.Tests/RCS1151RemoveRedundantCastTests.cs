@@ -407,7 +407,7 @@ class B : C
 ");
         }
 
-        //TODO: Add test for default interface implementation (RCS1151)
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantCast)]
         internal async Task TestNoDiagnostic_DefaultInterfaceImplementation()
         {
             await VerifyNoDiagnosticAsync(@"
