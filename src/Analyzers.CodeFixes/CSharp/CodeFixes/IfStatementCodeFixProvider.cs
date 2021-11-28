@@ -146,7 +146,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                 SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-                filterExpression = SyntaxInverter.LogicallyInvert(filterExpression, semanticModel, cancellationToken);
+                filterExpression = SyntaxLogicalInverter.GetInstance(document).LogicallyInvert(filterExpression, semanticModel, cancellationToken);
             }
             else
             {

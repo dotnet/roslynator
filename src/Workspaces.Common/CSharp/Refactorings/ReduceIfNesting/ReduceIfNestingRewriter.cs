@@ -19,16 +19,22 @@ namespace Roslynator.CSharp.Refactorings.ReduceIfNesting
         {
             private readonly StatementSyntax _jumpStatement;
             private readonly bool _recursive;
+            private readonly SyntaxLogicalInverter _logicalInverter;
             private readonly SyntaxKind _jumpKind;
             private StatementListInfo _statementsInfo;
             private readonly SemanticModel _semanticModel;
             private readonly CancellationToken _cancellationToken;
 
-            public ReduceIfStatementRewriter(SyntaxKind jumpKind, bool recursive, SemanticModel semanticModel, CancellationToken cancellationToken)
+            public ReduceIfStatementRewriter(
+                SyntaxKind jumpKind,
+                bool recursive,
+                SyntaxLogicalInverter logicalInverter,
+                SemanticModel semanticModel,
+                CancellationToken cancellationToken)
             {
                 _jumpKind = jumpKind;
                 _recursive = recursive;
-
+                _logicalInverter = logicalInverter;
                 _jumpStatement = CreateJumpStatement(jumpKind);
                 _semanticModel = semanticModel;
                 _cancellationToken = cancellationToken;
@@ -153,7 +159,7 @@ namespace Roslynator.CSharp.Refactorings.ReduceIfNesting
 
                 int index = statements.IndexOf(ifStatement);
 
-                ExpressionSyntax newCondition = SyntaxInverter.LogicallyInvert(ifStatement.Condition, _semanticModel, _cancellationToken);
+                ExpressionSyntax newCondition = _logicalInverter.LogicallyInvert(ifStatement.Condition, _semanticModel, _cancellationToken);
 
                 if (_recursive)
                     ifStatement = (IfStatementSyntax)VisitIfStatement(ifStatement);

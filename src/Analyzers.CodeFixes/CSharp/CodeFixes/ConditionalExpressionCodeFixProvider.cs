@@ -159,7 +159,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                     SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-                    newNode = CreateNewNode(conditionalExpression, SyntaxInverter.LogicallyInvert(info.Condition, semanticModel, cancellationToken));
+                    newNode = CreateNewNode(conditionalExpression, SyntaxLogicalInverter.GetInstance(document).LogicallyInvert(info.Condition, semanticModel, cancellationToken));
                 }
                 else
                 {
@@ -167,7 +167,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                     SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-                    ExpressionSyntax newCondition = SyntaxInverter.LogicallyInvert(conditionalExpression.Condition, semanticModel, cancellationToken);
+                    ExpressionSyntax newCondition = SyntaxLogicalInverter.GetInstance(document).LogicallyInvert(conditionalExpression.Condition, semanticModel, cancellationToken);
 
                     SyntaxTriviaList trailingTrivia = info
                         .QuestionToken
@@ -204,7 +204,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                 SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-                ExpressionSyntax newCondition = SyntaxInverter.LogicallyInvert(conditionalExpression.Condition, semanticModel, cancellationToken);
+                ExpressionSyntax newCondition = SyntaxLogicalInverter.GetInstance(document).LogicallyInvert(conditionalExpression.Condition, semanticModel, cancellationToken);
 
                 SyntaxTriviaList trailingTrivia = whenTrue
                     .GetTrailingTrivia()

@@ -24,7 +24,12 @@ namespace Roslynator.CSharp.Refactorings.ReduceIfNesting
 
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            var rewriter = new ReduceIfStatementRewriter(jumpKind, recursive, semanticModel, cancellationToken);
+            var rewriter = new ReduceIfStatementRewriter(
+                jumpKind,
+                recursive,
+                SyntaxLogicalInverter.GetInstance(document),
+                semanticModel,
+                cancellationToken);
 
             SyntaxNode newNode = rewriter.Visit(node);
 

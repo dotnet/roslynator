@@ -11,5 +11,6 @@ namespace Roslynator.CSharp
         InferredTupleElementNames,
         PatternMatchingWithGenerics,
         NullCoalescingAssignmentOperator,
+        NotPattern,
     }
 }

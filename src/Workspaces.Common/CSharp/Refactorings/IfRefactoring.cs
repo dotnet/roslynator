@@ -184,7 +184,7 @@ namespace Roslynator.CSharp.Refactorings
             ExpressionSyntax right = analysis.Right;
 
             if (analysis.Invert)
-                right = SyntaxInverter.LogicallyInvert(right, analysis.SemanticModel, cancellationToken);
+                right = SyntaxLogicalInverter.GetInstance(document).LogicallyInvert(right, analysis.SemanticModel, cancellationToken);
 
             ExpressionStatementSyntax newNode = SimpleAssignmentStatement(analysis.Left.WithoutTrivia(), right.WithoutTrivia())
                 .WithTriviaFrom(analysis.IfStatement)
@@ -307,7 +307,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             IfStatementSyntax ifStatement = analysis.IfStatement;
 
-            ExpressionSyntax expression = GetBooleanExpression(ifStatement.Condition, analysis.Expression1, analysis.Expression2, analysis.SemanticModel, cancellationToken);
+            ExpressionSyntax expression = GetBooleanExpression(ifStatement.Condition, analysis.Expression1, analysis.Expression2, document, analysis.SemanticModel, cancellationToken);
 
             StatementSyntax newNode = ReturnStatement(expression)
                 .WithTriviaFrom(ifStatement)
@@ -324,7 +324,7 @@ namespace Roslynator.CSharp.Refactorings
             ExpressionSyntax expression = analysis.Expression;
 
             if (analysis.Invert)
-                expression = SyntaxInverter.LogicallyInvert(expression, analysis.SemanticModel, cancellationToken);
+                expression = SyntaxLogicalInverter.GetInstance(document).LogicallyInvert(expression, analysis.SemanticModel, cancellationToken);
 
             StatementSyntax statement;
             if (analysis.IsYield)
@@ -389,7 +389,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             IfStatementSyntax ifStatement = analysis.IfStatement;
 
-            ExpressionSyntax expression = GetBooleanExpression(ifStatement.Condition, analysis.Expression1, analysis.Expression2, analysis.SemanticModel, cancellationToken);
+            ExpressionSyntax expression = GetBooleanExpression(ifStatement.Condition, analysis.Expression1, analysis.Expression2, document, analysis.SemanticModel, cancellationToken);
 
             StatementSyntax newNode = YieldReturnStatement(expression)
                 .WithTriviaFrom(ifStatement)
@@ -440,6 +440,7 @@ namespace Roslynator.CSharp.Refactorings
                 analysis.IfStatement.Condition,
                 analysis.Expression1,
                 analysis.Expression2,
+                document,
                 analysis.SemanticModel,
                 cancellationToken);
 
@@ -470,6 +471,7 @@ namespace Roslynator.CSharp.Refactorings
             ExpressionSyntax condition,
             ExpressionSyntax expression1,
             ExpressionSyntax expression2,
+            Document document,
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default)
         {
@@ -492,11 +494,11 @@ namespace Roslynator.CSharp.Refactorings
                         switch (expression2.Kind())
                         {
                             case SyntaxKind.TrueLiteralExpression:
-                                return SyntaxInverter.LogicallyInvert(condition, semanticModel, cancellationToken);
+                                return SyntaxLogicalInverter.GetInstance(document).LogicallyInvert(condition, semanticModel, cancellationToken);
                             case SyntaxKind.FalseLiteralExpression:
                                 return expression2;
                             default:
-                                return LogicalAndExpression(SyntaxInverter.LogicallyInvert(condition, semanticModel, cancellationToken), expression2);
+                                return LogicalAndExpression(SyntaxLogicalInverter.GetInstance(document).LogicallyInvert(condition, semanticModel, cancellationToken), expression2);
                         }
                     }
                 default:
@@ -504,7 +506,7 @@ namespace Roslynator.CSharp.Refactorings
                         switch (expression2.Kind())
                         {
                             case SyntaxKind.TrueLiteralExpression:
-                                return LogicalOrExpression(SyntaxInverter.LogicallyInvert(condition, semanticModel, cancellationToken), expression1);
+                                return LogicalOrExpression(SyntaxLogicalInverter.GetInstance(document).LogicallyInvert(condition, semanticModel, cancellationToken), expression1);
                             case SyntaxKind.FalseLiteralExpression:
                                 return LogicalAndExpression(condition, expression1);
                             default:

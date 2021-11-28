@@ -61,7 +61,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             if (kind == SimplifyCodeBranchingKind.IfElseWithEmptyIf)
             {
-                ExpressionSyntax newCondition = SyntaxInverter.LogicallyInvert(condition, semanticModel, cancellationToken);
+                ExpressionSyntax newCondition = SyntaxLogicalInverter.GetInstance(document).LogicallyInvert(condition, semanticModel, cancellationToken);
 
                 StatementSyntax statement = elseClause.Statement;
 
@@ -119,7 +119,7 @@ namespace Roslynator.CSharp.CodeFixes
                 }
 
                 if (!elseContainsBreak)
-                    condition = SyntaxInverter.LogicallyInvert(condition, semanticModel, cancellationToken);
+                    condition = SyntaxLogicalInverter.GetInstance(document).LogicallyInvert(condition, semanticModel, cancellationToken);
 
                 WhileStatementSyntax newWhileStatement = whileStatement.Update(
                     whileStatement.WhileKeyword,
@@ -140,7 +140,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                 BlockSyntax newBlock = block.WithStatements(statements.Remove(ifStatement));
 
-                ExpressionSyntax newCondition = SyntaxInverter.LogicallyInvert(condition, semanticModel, cancellationToken);
+                ExpressionSyntax newCondition = SyntaxLogicalInverter.GetInstance(document).LogicallyInvert(condition, semanticModel, cancellationToken);
 
                 SyntaxNode newNode;
 
@@ -228,7 +228,7 @@ namespace Roslynator.CSharp.CodeFixes
                 IfStatementSyntax newIfStatement = ifStatement.Update(
                     ifStatement.IfKeyword,
                     ifStatement.OpenParenToken,
-                    SyntaxInverter.LogicallyInvert(condition, semanticModel, cancellationToken),
+                    SyntaxLogicalInverter.GetInstance(document).LogicallyInvert(condition, semanticModel, cancellationToken),
                     ifStatement.CloseParenToken,
                     elseClause.Statement,
                     default(ElseClauseSyntax))

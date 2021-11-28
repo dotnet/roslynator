@@ -64,7 +64,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            ExpressionSyntax newNode = SyntaxInverter.LogicallyInvert(binaryExpression, semanticModel, cancellationToken);
+            ExpressionSyntax newNode = SyntaxLogicalInverter.GetInstance(document).LogicallyInvert(binaryExpression, semanticModel, cancellationToken);
 
             newNode = newNode.WithFormatterAnnotation();
 

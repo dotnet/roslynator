@@ -49,14 +49,14 @@ namespace Roslynator.CSharp.CodeFixes
             PrefixUnaryExpressionSyntax logicalNot,
             CancellationToken cancellationToken = default)
         {
-            ExpressionSyntax newNode = GetNewNode(logicalNot)
+            ExpressionSyntax newNode = GetNewNode(logicalNot, document)
                 .WithTriviaFrom(logicalNot)
                 .WithSimplifierAnnotation();
 
             return document.ReplaceNodeAsync(logicalNot, newNode, cancellationToken);
         }
 
-        private static ExpressionSyntax GetNewNode(PrefixUnaryExpressionSyntax logicalNot)
+        private static ExpressionSyntax GetNewNode(PrefixUnaryExpressionSyntax logicalNot, Document document)
         {
             ExpressionSyntax operand = logicalNot.Operand;
             ExpressionSyntax expression = operand.WalkDownParentheses();
@@ -83,7 +83,7 @@ namespace Roslynator.CSharp.CodeFixes
                 case SyntaxKind.GreaterThanExpression:
                 case SyntaxKind.GreaterThanOrEqualExpression:
                     {
-                        BinaryExpressionSyntax newExpression = SyntaxInverter.InvertBinaryExpression((BinaryExpressionSyntax)expression);
+                        BinaryExpressionSyntax newExpression = SyntaxLogicalInverter.GetInstance(document).InvertBinaryExpression((BinaryExpressionSyntax)expression);
 
                         return operand.ReplaceNode(expression, newExpression);
                     }
