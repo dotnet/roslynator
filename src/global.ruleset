@@ -312,12 +312,10 @@
     <Rule Id="RCS1010" Action="Info" />
     <Rule Id="RCS1013" Action="Info" />
     <Rule Id="RCS1014" Action="Info" />
-    <Rule Id="RCS1014a" Action="Info" />
     <Rule Id="RCS1017" Action="Info" />
     <Rule Id="RCS1018" Action="Warning" />
     <Rule Id="RCS1019" Action="Info" />
     <Rule Id="RCS1034" Action="Info" />
-    <Rule Id="RCS1036a" Action="Info" />
     <Rule Id="RCS1037" Action="Warning" />
     <Rule Id="RCS1039" Action="Info" />
     <Rule Id="RCS1040" Action="Info" />
@@ -361,9 +359,7 @@
     <Rule Id="RCS1188" Action="Info" />
     <Rule Id="RCS1189" Action="Info" />
     <Rule Id="RCS1207" Action="Info" />
-    <Rule Id="RCS1207i" Action="Info" />
     <Rule Id="RCS1244" Action="Info" />
-    <Rule Id="RCS1246a" Action="Info" />
   </Rules>
   <Rules AnalyzerId="Roslynator.Formatting.Analyzers" RuleNamespace="Roslynator.Formatting.Analyzers">
     <Rule Id="RCS0001" Action="Info" />
@@ -374,10 +370,8 @@
     <Rule Id="RCS0009" Action="Info" />
     <Rule Id="RCS0010" Action="Info" />
     <Rule Id="RCS0011" Action="Info" />
-    <Rule Id="RCS0011i" Action="Info" />
     <Rule Id="RCS0013" Action="Info" />
     <Rule Id="RCS0015" Action="Info" />
-    <Rule Id="RCS0015i" Action="Info" />
     <Rule Id="RCS0016" Action="Info" />
     <Rule Id="RCS0021" Action="Info" />
     <Rule Id="RCS0022" Action="Info" />
@@ -401,7 +395,6 @@
     <Rule Id="RCS0049" Action="Info" />
     <Rule Id="RCS0050" Action="Info" />
     <Rule Id="RCS0051" Action="Info" />
-    <Rule Id="RCS0051i" Action="Info" />
     <Rule Id="RCS0053" Action="Info" />
     <Rule Id="RCS0054" Action="Info" />
     <Rule Id="RCS0055" Action="Info" />

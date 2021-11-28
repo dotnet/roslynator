@@ -1,0 +1,5 @@
+# EditorConfig is awesome: https://EditorConfig.org
+
+# Code files
+[*.{cs,csx}]
+roslynator.RCS1090.invert = true
