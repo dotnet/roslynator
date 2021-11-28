@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis.Tests
 
         public override CSharpTestOptions Options
         {
-            get { return base.Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.ConvertBitwiseOperationToHasFlagCall); }
+            get { return base.Options.EnableConfigOption(AnalyzerOptions.ConvertBitwiseOperationToHasFlagCall.OptionKey); }
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertHasFlagCallToBitwiseOperationOrViceVersa)]

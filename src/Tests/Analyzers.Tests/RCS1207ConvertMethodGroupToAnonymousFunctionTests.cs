@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis.Tests
 
         public override CSharpTestOptions Options
         {
-            get { return base.Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.ConvertMethodGroupToAnonymousFunction); }
+            get { return base.Options.EnableConfigOption(AnalyzerOptions.ConvertMethodGroupToAnonymousFunction.OptionKey); }
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertAnonymousFunctionToMethodGroupOrViceVersa)]
@@ -596,7 +596,7 @@ class C
         M2(M);
     }
 }
-", options: Options.DisableDiagnostic(AnalyzerOptionDiagnosticRules.ConvertMethodGroupToAnonymousFunction));
+", options: Options.AddConfigOption(AnalyzerOptions.ConvertMethodGroupToAnonymousFunction.OptionKey, false));
         }
     }
 }

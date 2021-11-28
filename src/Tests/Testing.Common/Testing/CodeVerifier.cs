@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.Text;
 using static System.Environment;
 
 namespace Roslynator.Testing
@@ -285,13 +287,45 @@ namespace Roslynator.Testing
         {
             const string DefaultProjectName = "TestProject";
 
-            CompilationOptions compilationOptions = options.CompilationOptions;
+            ProjectId projectId = ProjectId.CreateNewId();
+
+            ProjectInfo projectInfo = ProjectInfo.Create(
+                id: projectId,
+                version: VersionStamp.Default,
+                name: DefaultProjectName,
+                assemblyName: DefaultProjectName,
+                language: options.Language,
+                compilationOptions: options.CompilationOptions,
+                parseOptions: options.ParseOptions,
+                metadataReferences: options.MetadataReferences);
 
             Project project = solution
-                .AddProject(DefaultProjectName, DefaultProjectName, options.Language)
-                .WithMetadataReferences(options.MetadataReferences)
-                .WithCompilationOptions(compilationOptions)
-                .WithParseOptions(options.ParseOptions);
+                .AddProject(projectInfo)
+                .GetProject(projectId);
+
+            string directoryPath = Path.GetDirectoryName(typeof(CodeVerifier).Assembly.Location);
+
+            if (options.ConfigOptions.Count > 0)
+            {
+                System.Text.StringBuilder sb = StringBuilderCache.GetInstance();
+
+                sb.AppendLine("root = true");
+                sb.AppendLine();
+                sb.AppendLine("[*.*]");
+                foreach (KeyValuePair<string, string> configOption in options.ConfigOptions)
+                {
+                    sb.Append(configOption.Key);
+                    sb.Append(" = ");
+                    sb.AppendLine(configOption.Value);
+                }
+
+                TextDocument configFile = project.AddAnalyzerConfigDocument(
+                    ".editorconfig",
+                    SourceText.From(StringBuilderCache.GetStringAndFree(sb)),
+                    filePath: Path.Combine(directoryPath, ".editorconfig"));
+
+                project = configFile.Project;
+            }
 
             if (descriptor != null)
             {
@@ -300,7 +334,10 @@ namespace Roslynator.Testing
                 project = project.WithCompilationOptions(newCompilationOptions);
             }
 
-            Document document = project.AddDocument(options.DocumentName, SourceText.From(source));
+            Document document = project.AddDocument(
+                options.DocumentName,
+                SourceText.From(source),
+                filePath: Path.Combine(directoryPath, options.DocumentName));
 
             ImmutableArray<ExpectedDocument>.Builder expectedDocuments = null;
 

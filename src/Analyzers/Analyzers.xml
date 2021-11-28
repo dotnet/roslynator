@@ -404,7 +404,7 @@ foreach (var item in items) // [|Id|]
     <Category>Style</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
-    <Summary>This analyzer has been deprecated. Use analyzer [RCS1016a](RCS1016a.md) instead.</Summary>
+    <Summary>This analyzer has been deprecated. Use EditorConfig option `use_block_body_when_expression_is_multiline = true` instead.</Summary>
     <Samples>
       <Sample>
         <Before><![CDATA[public string[] Foo() => new string[] // [|Id|]

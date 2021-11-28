@@ -27,10 +27,9 @@ namespace Roslynator
             Document document,
             SyntaxTree syntaxTree)
         {
-            return analyzerOption.Parent.IsEffective(syntaxTree, document.Project.CompilationOptions)
+            return analyzerOption.Descriptor.IsEffective(syntaxTree, document.Project.CompilationOptions)
                 && analyzerOption.IsEnabled(
                     syntaxTree,
-                    document.Project.CompilationOptions,
                     document.Project.AnalyzerOptions);
         }
 

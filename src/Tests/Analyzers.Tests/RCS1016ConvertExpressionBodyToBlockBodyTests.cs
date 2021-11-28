@@ -32,7 +32,7 @@ class C
 
     void M() { }
 }
-", options: Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.ConvertExpressionBodyToBlockBody));
+", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
@@ -55,7 +55,7 @@ class C
 
     void M() { }
 }
-", options: Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.ConvertExpressionBodyToBlockBody));
+", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
@@ -74,7 +74,7 @@ class C
         return null;
     }
 }
-", options: Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.ConvertExpressionBodyToBlockBody));
+", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
@@ -97,7 +97,7 @@ class C
             y);
     }
 }
-", options: Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.ConvertExpressionBodyToBlockBody));
+", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
@@ -122,7 +122,7 @@ class C
                     z);
     }
 }
-", options: Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.ConvertExpressionBodyToBlockBody));
+", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
@@ -141,7 +141,7 @@ class C
         M();
     }
 }
-", options: Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.ConvertExpressionBodyToBlockBody));
+", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
@@ -166,7 +166,7 @@ class C
         }
     }
 }
-", options: Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.ConvertExpressionBodyToBlockBody));
+", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
@@ -199,7 +199,7 @@ class C
         }
     }
 }
-", options: Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.ConvertExpressionBodyToBlockBody));
+", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
@@ -224,7 +224,7 @@ class C
         }
     }
 }
-", options: Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.ConvertExpressionBodyToBlockBody));
+", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
@@ -243,7 +243,7 @@ class C
         get { return null; }
     }
 }
-", options: Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.ConvertExpressionBodyToBlockBody));
+", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
@@ -276,7 +276,7 @@ class C
         return null;
     }
 }
-", options: Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.ConvertExpressionBodyToBlockBody));
+", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
@@ -323,7 +323,7 @@ class C
         return null;
     }
 }
-", options: Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.ConvertExpressionBodyToBlockBody));
+", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
@@ -370,7 +370,7 @@ class C
         return null;
     }
 }
-", options: Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.ConvertExpressionBodyToBlockBody).AddAllowedCompilerDiagnosticId("CS0518"));
+", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey).AddAllowedCompilerDiagnosticId("CS0518"));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
@@ -389,7 +389,7 @@ class C
         get { return null; }
     }
 }
-", options: Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.ConvertExpressionBodyToBlockBody));
+", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
@@ -424,7 +424,7 @@ class C
         }
     }
 }
-", options: Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.ConvertExpressionBodyToBlockBody));
+", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
@@ -443,7 +443,7 @@ class C
         return value;
     }
 }
-", options: Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.ConvertExpressionBodyToBlockBody));
+", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
@@ -462,7 +462,7 @@ class C
         return new C();
     }
 }
-", options: Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.ConvertExpressionBodyToBlockBody));
+", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
@@ -485,7 +485,7 @@ class C
 
     void M() { }
 }
-", options: Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.ConvertExpressionBodyToBlockBody));
+", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
@@ -504,7 +504,7 @@ class C
         throw new System.NotImplementedException();
     }
 }
-", options: Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.ConvertExpressionBodyToBlockBody));
+", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
@@ -523,7 +523,7 @@ class C
         throw new System.NotImplementedException();
     }
 }
-", options: Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.ConvertExpressionBodyToBlockBody));
+", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
@@ -542,7 +542,7 @@ class C
         throw new System.NotImplementedException();
     }
 }
-", options: Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.ConvertExpressionBodyToBlockBody));
+", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
@@ -567,7 +567,7 @@ class C
         }
     }
 }
-", options: Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.ConvertExpressionBodyToBlockBody));
+", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
@@ -592,7 +592,7 @@ class C
         }
     }
 }
-", options: Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.ConvertExpressionBodyToBlockBody));
+", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
@@ -611,7 +611,7 @@ class C
         get { throw new System.NotImplementedException(); }
     }
 }
-", options: Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.ConvertExpressionBodyToBlockBody));
+", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
@@ -646,7 +646,7 @@ class C
         }
     }
 }
-", options: Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.ConvertExpressionBodyToBlockBody));
+", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
@@ -665,7 +665,7 @@ class C
         get { throw new System.NotImplementedException(); }
     }
 }
-", options: Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.ConvertExpressionBodyToBlockBody));
+", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
@@ -700,7 +700,7 @@ class C
         }
     }
 }
-", options: Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.ConvertExpressionBodyToBlockBody));
+", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
@@ -719,7 +719,7 @@ class C
         throw new System.NotImplementedException();
     }
 }
-", options: Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.ConvertExpressionBodyToBlockBody));
+", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
@@ -738,7 +738,7 @@ class C
         throw new System.NotImplementedException();
     }
 }
-", options: Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.ConvertExpressionBodyToBlockBody));
+", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
@@ -831,7 +831,7 @@ class C
 
     string _f;
 }
-", options: Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.ConvertExpressionBodyToBlockBody));
+", options: Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBody.OptionKey));
         }
     }
 }

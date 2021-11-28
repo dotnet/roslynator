@@ -100,8 +100,7 @@ namespace Roslynator.CSharp.Analysis
             DiagnosticHelpers.ReportDiagnostic(
                 context,
                 DiagnosticRules.ReportOnly.ConvertBitwiseOperationToHasFlagCall,
-                equalsOrNotEquals,
-                AnalyzerOptions.ConvertBitwiseOperationToHasFlagCall);
+                equalsOrNotEquals);
 
             bool IsSuitableAsExpressionOfHasFlag(ExpressionSyntax expression)
             {

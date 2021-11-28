@@ -84,8 +84,7 @@ namespace Roslynator.Formatting.CSharp
                     context,
                     descriptor,
                     Location.Create(binaryExpression.SyntaxTree, binaryExpression.OperatorToken.Span.WithLength(0)),
-                    properties: properties,
-                    AnalyzerOptions.AddNewLineAfterBinaryOperatorInsteadOfBeforeIt);
+                    properties: properties);
             }
         }
     }

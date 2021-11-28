@@ -101,9 +101,6 @@ namespace Roslynator.CSharp.Analysis
                 context,
                 DiagnosticRules.UseExplicitlyTypedArrayOrViceVersa,
                 location);
-
-            DiagnosticHelpers.ReportObsolete(context, location, AnalyzerOptions.UseImplicitlyTypedArray);
-            DiagnosticHelpers.ReportObsolete(context, location, AnalyzerOptions.UseImplicitlyTypedArrayWhenTypeIsObvious);
         }
 
         private static void AnalyzeArrayCreationExpression(SyntaxNodeAnalysisContext context)
@@ -145,9 +142,6 @@ namespace Roslynator.CSharp.Analysis
                 context,
                 DiagnosticRules.ReportOnly.UseImplicitlyTypedArray,
                 location);
-
-            DiagnosticHelpers.ReportObsolete(context, location, AnalyzerOptions.UseImplicitlyTypedArray);
-            DiagnosticHelpers.ReportObsolete(context, location, AnalyzerOptions.UseImplicitlyTypedArrayWhenTypeIsObvious);
         }
     }
 }

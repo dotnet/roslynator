@@ -125,8 +125,7 @@ namespace Roslynator.CSharp.Analysis
                                             DiagnosticHelpers.ReportDiagnostic(
                                                 context,
                                                 DiagnosticRules.UseElementAccess,
-                                                Location.Create(invocation.SyntaxTree, TextSpan.FromBounds(invocationInfo.Name.SpanStart, invocationInfo.ArgumentList.Span.End)),
-                                                AnalyzerOptions.DoNotUseElementAccessWhenExpressionIsInvocation);
+                                                Location.Create(invocation.SyntaxTree, TextSpan.FromBounds(invocationInfo.Name.SpanStart, invocationInfo.ArgumentList.Span.End)));
                                         }
 
                                         OptimizeLinqMethodCallAnalysis.AnalyzeWhere(context, invocationInfo);
@@ -256,8 +255,7 @@ namespace Roslynator.CSharp.Analysis
                                         DiagnosticHelpers.ReportDiagnostic(
                                             context,
                                             DiagnosticRules.UseElementAccess,
-                                            Location.Create(invocation.SyntaxTree, TextSpan.FromBounds(invocationInfo.Name.SpanStart, invocationInfo.ArgumentList.Span.End)),
-                                            AnalyzerOptions.DoNotUseElementAccessWhenExpressionIsInvocation);
+                                            Location.Create(invocation.SyntaxTree, TextSpan.FromBounds(invocationInfo.Name.SpanStart, invocationInfo.ArgumentList.Span.End)));
                                     }
 
                                     break;

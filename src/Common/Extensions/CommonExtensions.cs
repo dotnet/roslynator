@@ -16,7 +16,6 @@ namespace Roslynator
             return IsEnabled(
                 analyzerOption,
                 context.Node.SyntaxTree,
-                context.Compilation.Options,
                 context.Options);
         }
 
@@ -40,7 +39,6 @@ namespace Roslynator
             return IsEnabled(
                 analyzerOption,
                 context.Symbol.Locations[0].SourceTree,
-                context.Compilation.Options,
                 context.Options);
         }
 
@@ -51,16 +49,15 @@ namespace Roslynator
             AnalyzerOptions analyzerOptions,
             bool checkParent)
         {
-            if (checkParent && !analyzerOption.Parent.IsEffective(syntaxTree, compilationOptions))
+            if (checkParent && !analyzerOption.Descriptor.IsEffective(syntaxTree, compilationOptions))
                 return null;
 
-            return IsEnabled(analyzerOption, syntaxTree, compilationOptions, analyzerOptions);
+            return IsEnabled(analyzerOption, syntaxTree, analyzerOptions);
         }
 
         public static bool IsEnabled(
             this AnalyzerOptionDescriptor analyzerOption,
             SyntaxTree syntaxTree,
-            CompilationOptions compilationOptions,
             AnalyzerOptions analyzerOptions)
         {
             if (analyzerOptions
@@ -70,26 +67,6 @@ namespace Roslynator
                 && bool.TryParse(value, out bool result))
             {
                 return result;
-            }
-
-            if (analyzerOption.Descriptor != null
-                && compilationOptions
-                    .SpecificDiagnosticOptions
-                    .TryGetValue(analyzerOption.Descriptor.Id, out ReportDiagnostic reportDiagnostic))
-            {
-                switch (reportDiagnostic)
-                {
-                    case ReportDiagnostic.Default:
-                    case ReportDiagnostic.Suppress:
-                        return false;
-                    case ReportDiagnostic.Error:
-                    case ReportDiagnostic.Warn:
-                    case ReportDiagnostic.Info:
-                    case ReportDiagnostic.Hidden:
-                        return true;
-                    default:
-                        throw new InvalidOperationException();
-                }
             }
 
             return false;

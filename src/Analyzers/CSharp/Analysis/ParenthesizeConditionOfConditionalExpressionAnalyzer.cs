@@ -56,14 +56,14 @@ namespace Roslynator.CSharp.Analysis
                     if (!expression.IsMissing
                         && CSharpFacts.IsSingleTokenExpression(expression.Kind()))
                     {
-                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.RemoveParenthesesFromConditionOfConditionalExpressionWhenExpressionIsSingleToken, condition, AnalyzerOptions.RemoveParenthesesFromConditionOfConditionalExpressionWhenExpressionIsSingleToken);
+                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.RemoveParenthesesFromConditionOfConditionalExpressionWhenExpressionIsSingleToken, condition);
                     }
                 }
             }
             else if (!CSharpFacts.IsSingleTokenExpression(kind)
                 || !AnalyzerOptions.RemoveParenthesesFromConditionOfConditionalExpressionWhenExpressionIsSingleToken.IsEnabled(context))
             {
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ParenthesizeConditionOfConditionalExpression, condition, AnalyzerOptions.RemoveParenthesesFromConditionOfConditionalExpressionWhenExpressionIsSingleToken);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ParenthesizeConditionOfConditionalExpression, condition);
             }
         }
     }

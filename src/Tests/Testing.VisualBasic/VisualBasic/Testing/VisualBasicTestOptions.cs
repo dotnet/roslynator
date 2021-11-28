@@ -16,8 +16,9 @@ namespace Roslynator.Testing
             VisualBasicParseOptions parseOptions = null,
             IEnumerable<MetadataReference> metadataReferences = null,
             IEnumerable<string> allowedCompilerDiagnosticIds = null,
-            DiagnosticSeverity allowedCompilerDiagnosticSeverity = DiagnosticSeverity.Info)
-            : base(metadataReferences, allowedCompilerDiagnosticIds, allowedCompilerDiagnosticSeverity)
+            DiagnosticSeverity allowedCompilerDiagnosticSeverity = DiagnosticSeverity.Info,
+            IEnumerable<KeyValuePair<string, string>> configOptions = null)
+            : base(metadataReferences, allowedCompilerDiagnosticIds, allowedCompilerDiagnosticSeverity, configOptions)
         {
             CompilationOptions = compilationOptions ?? new VisualBasicCompilationOptions(OutputKind.DynamicallyLinkedLibrary);
             ParseOptions = parseOptions ?? VisualBasicParseOptions.Default;
@@ -27,7 +28,8 @@ namespace Roslynator.Testing
             : base(
                 other.MetadataReferences,
                 other.AllowedCompilerDiagnosticIds,
-                other.AllowedCompilerDiagnosticSeverity)
+                other.AllowedCompilerDiagnosticSeverity,
+                other.ConfigOptions)
         {
             CompilationOptions = other.CompilationOptions;
             ParseOptions = other.ParseOptions;
@@ -81,6 +83,11 @@ namespace Roslynator.Testing
             return new VisualBasicTestOptions(this) { AllowedCompilerDiagnosticSeverity = value };
         }
 
+        protected override TestOptions CommonWithConfigOptions(IEnumerable<KeyValuePair<string, string>> values)
+        {
+            return new VisualBasicTestOptions(this) { ConfigOptions = values?.ToImmutableDictionary() ?? ImmutableDictionary<string, string>.Empty };
+        }
+
         new public VisualBasicTestOptions WithMetadataReferences(IEnumerable<MetadataReference> values)
         {
             return (VisualBasicTestOptions)base.WithMetadataReferences(values);
@@ -104,6 +111,11 @@ namespace Roslynator.Testing
         public VisualBasicTestOptions WithCompilationOptions(VisualBasicCompilationOptions compilationOptions)
         {
             return new VisualBasicTestOptions(this) { CompilationOptions = compilationOptions ?? throw new ArgumentNullException(nameof(compilationOptions)) };
+        }
+
+        new public VisualBasicTestOptions WithConfigOptions(IEnumerable<KeyValuePair<string, string>> values)
+        {
+            return (VisualBasicTestOptions)base.WithConfigOptions(values);
         }
     }
 }

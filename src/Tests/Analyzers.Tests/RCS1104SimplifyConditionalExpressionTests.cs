@@ -187,7 +187,7 @@ class C
         bool z2 = x ? y : true;
     }
 }
-", options: Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.DoNotSimplifyConditionalExpressionWhenConditionIsInverted));
+", options: Options.EnableConfigOption(AnalyzerOptions.DoNotSimplifyConditionalExpressionWhenConditionIsInverted.OptionKey));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyConditionalExpression)]

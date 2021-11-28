@@ -75,7 +75,7 @@ namespace Roslynator.CSharp.Analysis
             if (fieldSymbol.ContainingType?.SpecialType != SpecialType.System_String)
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseEmptyStringLiteralInsteadOfStringEmptyOrViceVersa, memberAccess, AnalyzerOptions.UseStringEmptyInsteadOfEmptyStringLiteral);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseEmptyStringLiteralInsteadOfStringEmptyOrViceVersa, memberAccess);
         }
 
         private static void AnalyzeStringLiteralExpression(SyntaxNodeAnalysisContext context)
@@ -91,8 +91,7 @@ namespace Roslynator.CSharp.Analysis
             DiagnosticHelpers.ReportDiagnostic(
                 context,
                 DiagnosticRules.ReportOnly.UseStringEmptyInsteadOfEmptyStringLiteral,
-                literalExpression,
-                AnalyzerOptions.UseStringEmptyInsteadOfEmptyStringLiteral);
+                literalExpression);
         }
 
         private static void AnalyzeInterpolatedStringExpression(SyntaxNodeAnalysisContext context)
@@ -108,8 +107,7 @@ namespace Roslynator.CSharp.Analysis
             DiagnosticHelpers.ReportDiagnostic(
                 context,
                 DiagnosticRules.ReportOnly.UseStringEmptyInsteadOfEmptyStringLiteral,
-                interpolatedString,
-                AnalyzerOptions.UseStringEmptyInsteadOfEmptyStringLiteral);
+                interpolatedString);
         }
     }
 }

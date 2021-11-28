@@ -194,8 +194,7 @@ namespace Roslynator.CSharp.Analysis
                     context,
                     DiagnosticRules.AddAccessibilityModifiersOrViceVersa,
                     location,
-                    Properties[accessibility],
-                    AnalyzerOptions.RemoveAccessibilityModifiers);
+                    Properties[accessibility]);
             }
             else if (AnalyzerOptions.RemoveAccessibilityModifiers.IsEnabled(context)
                 && !declaration.IsKind(SyntaxKind.OperatorDeclaration, SyntaxKind.ConversionOperatorDeclaration))
@@ -211,8 +210,7 @@ namespace Roslynator.CSharp.Analysis
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
                     DiagnosticRules.ReportOnly.RemoveAccessibilityModifiers,
-                    Location.Create(declaration.SyntaxTree, TextSpan.FromBounds(first.SpanStart, last.Span.End)),
-                    AnalyzerOptions.RemoveAccessibilityModifiers);
+                    Location.Create(declaration.SyntaxTree, TextSpan.FromBounds(first.SpanStart, last.Span.End)));
             }
         }
 

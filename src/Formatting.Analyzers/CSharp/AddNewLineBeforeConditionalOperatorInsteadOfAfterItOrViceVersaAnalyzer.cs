@@ -85,8 +85,7 @@ namespace Roslynator.Formatting.CSharp
                     context,
                     descriptor,
                     Location.Create(token.SyntaxTree, token.Span.WithLength(0)),
-                    properties: properties,
-                    AnalyzerOptions.AddNewLineAfterConditionalOperatorInsteadOfBeforeIt);
+                    properties: properties);
             }
         }
     }

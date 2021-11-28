@@ -62,7 +62,7 @@ namespace Roslynator.Testing
 
                 VerifyCompilerDiagnostics(compilerDiagnostics, options);
 
-                ImmutableArray<Diagnostic> diagnostics = await GetAnalyzerDiagnosticsAsync(compilation, analyzer, DiagnosticComparer.SpanStart, cancellationToken);
+                ImmutableArray<Diagnostic> diagnostics = await GetAnalyzerDiagnosticsAsync(compilation, analyzer, document.Project.AnalyzerOptions, DiagnosticComparer.SpanStart, cancellationToken);
 
                 if (diagnostics.Length > 0
                     && supportedDiagnostics.Length > 1)
@@ -136,7 +136,7 @@ namespace Roslynator.Testing
 
                 VerifyCompilerDiagnostics(compilerDiagnostics, options);
 
-                ImmutableArray<Diagnostic> actualDiagnostics = await GetAnalyzerDiagnosticsAsync(compilation, analyzer, DiagnosticComparer.SpanStart, cancellationToken);
+                ImmutableArray<Diagnostic> actualDiagnostics = await GetAnalyzerDiagnosticsAsync(compilation, analyzer, document.Project.AnalyzerOptions, DiagnosticComparer.SpanStart, cancellationToken);
 
                 actualDiagnostics = actualDiagnostics
                     .Where(diagnostic => string.Equals(diagnostic.Id, data.Descriptor.Id))
@@ -231,7 +231,7 @@ namespace Roslynator.Testing
                 {
                     cancellationToken.ThrowIfCancellationRequested();
 
-                    ImmutableArray<Diagnostic> diagnostics = await GetAnalyzerDiagnosticsAsync(compilation, analyzer, DiagnosticComparer.SpanStart, cancellationToken);
+                    ImmutableArray<Diagnostic> diagnostics = await GetAnalyzerDiagnosticsAsync(compilation, analyzer, document.Project.AnalyzerOptions, DiagnosticComparer.SpanStart, cancellationToken);
 
                     int length = diagnostics.Length;
 
@@ -359,7 +359,7 @@ namespace Roslynator.Testing
 
                 VerifyCompilerDiagnostics(compilerDiagnostics, options);
 
-                ImmutableArray<Diagnostic> diagnostics = await GetAnalyzerDiagnosticsAsync(compilation, analyzer, DiagnosticComparer.SpanStart, cancellationToken);
+                ImmutableArray<Diagnostic> diagnostics = await GetAnalyzerDiagnosticsAsync(compilation, analyzer, document.Project.AnalyzerOptions, DiagnosticComparer.SpanStart, cancellationToken);
 
                 foreach (Diagnostic diagnostic in diagnostics)
                 {
@@ -520,12 +520,14 @@ namespace Roslynator.Testing
         private Task<ImmutableArray<Diagnostic>> GetAnalyzerDiagnosticsAsync(
             Compilation compilation,
             DiagnosticAnalyzer analyzer,
+            AnalyzerOptions options,
             IComparer<Diagnostic> comparer = null,
             CancellationToken cancellationToken = default)
         {
             return GetAnalyzerDiagnosticsAsync(
                 compilation,
                 ImmutableArray.Create(analyzer),
+                options,
                 comparer,
                 cancellationToken);
         }
@@ -533,14 +535,15 @@ namespace Roslynator.Testing
         private async Task<ImmutableArray<Diagnostic>> GetAnalyzerDiagnosticsAsync(
             Compilation compilation,
             ImmutableArray<DiagnosticAnalyzer> analyzers,
+            AnalyzerOptions options,
             IComparer<Diagnostic> comparer = null,
             CancellationToken cancellationToken = default)
         {
             Exception exception = null;
             DiagnosticAnalyzer analyzer = null;
 
-            var options = new CompilationWithAnalyzersOptions(
-                options: null,
+            var compilationWithAnalyzersOptions = new CompilationWithAnalyzersOptions(
+                options: options,
                 onAnalyzerException: (e, a, _) =>
                 {
                     exception = e;
@@ -551,7 +554,7 @@ namespace Roslynator.Testing
                 reportSuppressedDiagnostics: false,
                 analyzerExceptionFilter: null);
 
-            CompilationWithAnalyzers compilationWithAnalyzers = compilation.WithAnalyzers(analyzers, options);
+            CompilationWithAnalyzers compilationWithAnalyzers = compilation.WithAnalyzers(analyzers, compilationWithAnalyzersOptions);
 
             ImmutableArray<Diagnostic> diagnostics = await compilationWithAnalyzers.GetAnalyzerDiagnosticsAsync(cancellationToken);
 

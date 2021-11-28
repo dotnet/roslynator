@@ -57,7 +57,8 @@ class C
 
     string M2() => null;
 }
-", options: Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.UseImplicitlyTypedArrayWhenTypeIsObvious));
+", options: Options.EnableConfigOption("roslynator.RCS1014.use_implicit_type_when_obvious"));
+//", options: Options.EnableConfigOption(AnalyzerOptions.UseImplicitlyTypedArrayWhenTypeIsObvious.OptionKey));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyTypedArrayOrViceVersa)]
@@ -145,7 +146,7 @@ class C
         var x = new[] { """" };
     }
 }
-", options: Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.UseImplicitlyTypedArrayWhenTypeIsObvious));
+", options: Options.EnableConfigOption(AnalyzerOptions.UseImplicitlyTypedArrayWhenTypeIsObvious.OptionKey));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyTypedArrayOrViceVersa)]

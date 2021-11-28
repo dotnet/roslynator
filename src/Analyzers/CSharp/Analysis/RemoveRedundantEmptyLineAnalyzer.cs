@@ -351,7 +351,7 @@ namespace Roslynator.CSharp.Analysis
             }
             else
             {
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveRedundantEmptyLine, location, obsoleteAnalyzerOption);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveRedundantEmptyLine, location);
             }
         }
 

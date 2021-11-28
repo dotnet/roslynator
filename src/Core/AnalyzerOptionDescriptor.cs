@@ -7,27 +7,21 @@ namespace Roslynator
     internal readonly struct AnalyzerOptionDescriptor
     {
         public AnalyzerOptionDescriptor(
-            DiagnosticDescriptor descriptor,
-            DiagnosticDescriptor parent,
-            string optionKey)
+            string optionKey,
+            DiagnosticDescriptor descriptor)
         {
             Descriptor = descriptor;
-            Parent = parent;
             OptionKey = optionKey;
         }
+        public string OptionKey { get; }
 
         public DiagnosticDescriptor Descriptor { get; }
-
-        public DiagnosticDescriptor Parent { get; }
-
-        public string OptionKey { get; }
 
         public bool IsDefault
         {
             get
             {
                 return Descriptor == null
-                    && Parent == null
                     && OptionKey == null;
             }
         }

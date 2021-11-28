@@ -118,8 +118,7 @@ namespace Roslynator.Formatting.CSharp
                                 context,
                                 DiagnosticRules.ReportOnly.RemoveEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace,
                                 Location.Create(context.Node.SyntaxTree, leadingTrivia[0].Span.WithLength(0)),
-                                properties: DiagnosticProperties.AnalyzerOption_Invert,
-                                AnalyzerOptions.RemoveEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace);
+                                properties: DiagnosticProperties.AnalyzerOption_Invert);
                         }
                     }
                     else if (!AnalyzerOptions.RemoveEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace.IsEnabled(context))
@@ -127,8 +126,7 @@ namespace Roslynator.Formatting.CSharp
                         DiagnosticHelpers.ReportDiagnostic(
                             context,
                             DiagnosticRules.AddEmptyLineBetweenUsingDirectivesWithDifferentRootNamespaceOrViceVersa,
-                            Location.Create(context.Node.SyntaxTree, trailingTrivia.Last().Span.WithLength(0)),
-                            AnalyzerOptions.RemoveEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace);
+                            Location.Create(context.Node.SyntaxTree, trailingTrivia.Last().Span.WithLength(0)));
                     }
                 }
             }

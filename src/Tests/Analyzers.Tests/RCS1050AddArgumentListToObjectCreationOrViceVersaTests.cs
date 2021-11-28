@@ -49,7 +49,7 @@ public class C
 {
     List<string> items = new List<string> { ""a"", ""b"", ""c"" };
 }
-", options: Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.RemoveArgumentListFromObjectCreation));
+", options: Options.EnableConfigOption(AnalyzerOptions.RemoveArgumentListFromObjectCreation.OptionKey));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddArgumentListToObjectCreationOrViceVersa)]
@@ -88,7 +88,7 @@ public class C
 {
     List<string> items = new List<string>();
 }
-", options: Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.RemoveArgumentListFromObjectCreation));
+", options: Options.EnableConfigOption(AnalyzerOptions.RemoveArgumentListFromObjectCreation.OptionKey));
         }
     }
 }

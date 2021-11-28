@@ -108,7 +108,7 @@ class C
         } while (x);
     }
 }
-", options: Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.RemoveNewLineBetweenClosingBraceAndWhileKeyword));
+", options: Options.EnableConfigOption(AnalyzerOptions.RemoveNewLineBetweenClosingBraceAndWhileKeyword.OptionKey));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersa)]
@@ -142,7 +142,7 @@ class C
         } while (x);
     }
 }
-", options: Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.RemoveNewLineBetweenClosingBraceAndWhileKeyword));
+", options: Options.EnableConfigOption(AnalyzerOptions.RemoveNewLineBetweenClosingBraceAndWhileKeyword.OptionKey));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersa)]
@@ -199,7 +199,7 @@ class C
         } while (x);
     }
 }
-", options: Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.RemoveNewLineBetweenClosingBraceAndWhileKeyword));
+", options: Options.EnableConfigOption(AnalyzerOptions.RemoveNewLineBetweenClosingBraceAndWhileKeyword.OptionKey));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersa)]
@@ -217,7 +217,7 @@ class C
         while (x);
     }
 }
-", options: Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.RemoveNewLineBetweenClosingBraceAndWhileKeyword));
+", options: Options.EnableConfigOption(AnalyzerOptions.RemoveNewLineBetweenClosingBraceAndWhileKeyword.OptionKey));
         }
     }
 }

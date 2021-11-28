@@ -428,7 +428,7 @@ class C
         if (options.HasFlag(StringSplitOptions.RemoveEmptyEntries)) { }
     }
 }
-", options: Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.ConvertBitwiseOperationToHasFlagCall));
+", options: Options.EnableConfigOption(AnalyzerOptions.ConvertBitwiseOperationToHasFlagCall.OptionKey));
         }
     }
 }

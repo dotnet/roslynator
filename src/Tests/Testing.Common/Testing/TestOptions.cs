@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
@@ -20,11 +21,13 @@ namespace Roslynator.Testing
         internal TestOptions(
             IEnumerable<MetadataReference> metadataReferences = null,
             IEnumerable<string> allowedCompilerDiagnosticIds = null,
-            DiagnosticSeverity allowedCompilerDiagnosticSeverity = DiagnosticSeverity.Info)
+            DiagnosticSeverity allowedCompilerDiagnosticSeverity = DiagnosticSeverity.Info,
+            IEnumerable<KeyValuePair<string, string>> configOptions = null)
         {
             MetadataReferences = metadataReferences?.ToImmutableArray() ?? ImmutableArray<MetadataReference>.Empty;
             AllowedCompilerDiagnosticIds = allowedCompilerDiagnosticIds?.ToImmutableArray() ?? ImmutableArray<string>.Empty;
             AllowedCompilerDiagnosticSeverity = allowedCompilerDiagnosticSeverity;
+            ConfigOptions = configOptions?.ToImmutableDictionary() ?? ImmutableDictionary<string, string>.Empty;
         }
 
         /// <summary>
@@ -65,6 +68,11 @@ namespace Roslynator.Testing
         public ImmutableArray<string> AllowedCompilerDiagnosticIds { get; protected set; }
 
         /// <summary>
+        /// Gets a collection of EditorConfig options.
+        /// </summary>
+        public ImmutableDictionary<string, string> ConfigOptions { get; protected set; }
+
+        /// <summary>
         /// Gets a maximal allowed compiler diagnostic severity.
         /// </summary>
         public DiagnosticSeverity AllowedCompilerDiagnosticSeverity { get; protected set; }
@@ -75,6 +83,8 @@ namespace Roslynator.Testing
         protected abstract TestOptions CommonWithAllowedCompilerDiagnosticIds(IEnumerable<string> values);
 
         protected abstract TestOptions CommonWithAllowedCompilerDiagnosticSeverity(DiagnosticSeverity value);
+
+        protected abstract TestOptions CommonWithConfigOptions(IEnumerable<KeyValuePair<string, string>> values);
 
         public TestOptions WithMetadataReferences(IEnumerable<MetadataReference> values)
         {
@@ -89,6 +99,11 @@ namespace Roslynator.Testing
         public TestOptions WithAllowedCompilerDiagnosticSeverity(DiagnosticSeverity value)
         {
             return CommonWithAllowedCompilerDiagnosticSeverity(value);
+        }
+
+        public TestOptions WithConfigOptions(IEnumerable<KeyValuePair<string, string>> values)
+        {
+            return CommonWithConfigOptions(values);
         }
 #pragma warning restore CS1591
 

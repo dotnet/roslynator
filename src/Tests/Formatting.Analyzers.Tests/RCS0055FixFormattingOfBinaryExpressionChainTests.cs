@@ -125,7 +125,9 @@ class C
             """");
     }
 }
-", options: Options.EnableDiagnostic(DiagnosticRules.AddNewLineBeforeBinaryOperatorInsteadOfAfterItOrViceVersa, AnalyzerOptionDiagnosticRules.AddNewLineAfterBinaryOperatorInsteadOfBeforeIt));
+", options: Options
+                .EnableDiagnostic(DiagnosticRules.AddNewLineBeforeBinaryOperatorInsteadOfAfterItOrViceVersa)
+                .EnableConfigOption(AnalyzerOptions.AddNewLineAfterBinaryOperatorInsteadOfBeforeIt.OptionKey));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfBinaryExpressionChain)]

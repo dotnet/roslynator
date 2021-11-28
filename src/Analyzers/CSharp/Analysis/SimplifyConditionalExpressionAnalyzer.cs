@@ -73,7 +73,7 @@ namespace Roslynator.CSharp.Analysis
                     && !AnalyzerOptions.DoNotSimplifyConditionalExpressionWhenConditionIsInverted.IsEnabled(context)
                     && context.SemanticModel.GetTypeInfo(info.WhenFalse, context.CancellationToken).ConvertedType?.SpecialType == SpecialType.System_Boolean)
                 {
-                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.SimplifyConditionalExpression, conditionalExpression, AnalyzerOptions.DoNotSimplifyConditionalExpressionWhenConditionIsInverted);
+                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.SimplifyConditionalExpression, conditionalExpression);
                 }
             }
             else if (falseKind == SyntaxKind.TrueLiteralExpression)
@@ -83,7 +83,7 @@ namespace Roslynator.CSharp.Analysis
                     && !AnalyzerOptions.DoNotSimplifyConditionalExpressionWhenConditionIsInverted.IsEnabled(context)
                     && context.SemanticModel.GetTypeInfo(info.WhenTrue, context.CancellationToken).ConvertedType?.SpecialType == SpecialType.System_Boolean)
                 {
-                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.SimplifyConditionalExpression, conditionalExpression, AnalyzerOptions.DoNotSimplifyConditionalExpressionWhenConditionIsInverted);
+                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.SimplifyConditionalExpression, conditionalExpression);
                 }
             }
             else if (falseKind == SyntaxKind.FalseLiteralExpression)

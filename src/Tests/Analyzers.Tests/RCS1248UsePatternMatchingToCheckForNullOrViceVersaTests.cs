@@ -133,7 +133,7 @@ class C
         }
     }
 }
-", options: Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.UseComparisonInsteadPatternMatchingToCheckForNull));
+", options: Options.EnableConfigOption(AnalyzerOptions.UseComparisonInsteadPatternMatchingToCheckForNull.OptionKey));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingToCheckForNullOrViceVersa)]
@@ -163,7 +163,7 @@ class C
         }
     }
 }
-", options: Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.UseComparisonInsteadPatternMatchingToCheckForNull));
+", options: Options.EnableConfigOption(AnalyzerOptions.UseComparisonInsteadPatternMatchingToCheckForNull.OptionKey));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingToCheckForNullOrViceVersa)]

@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis.Tests
 
         public override CSharpTestOptions Options
         {
-            get { return base.Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.RemoveCallToConfigureAwait); }
+            get { return base.Options.EnableConfigOption(AnalyzerOptions.RemoveCallToConfigureAwait.OptionKey); }
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddCallToConfigureAwaitOrViceVersa)]

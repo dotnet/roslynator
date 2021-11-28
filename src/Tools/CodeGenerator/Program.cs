@@ -155,12 +155,6 @@ namespace Roslynator.CodeGeneration
                 if (optionAnalyzers.Any())
                 {
                     WriteCompilationUnit(
-                        Path.Combine(dirPath, "AnalyzerOptionDiagnosticRules.Generated.cs"),
-                        DiagnosticRulesGenerators.Default.Generate(optionAnalyzers, obsolete: false, comparer: comparer, @namespace: @namespace, className: "AnalyzerOptionDiagnosticRules", identifiersClassName: "AnalyzerOptionDiagnosticIdentifiers"),
-                        normalizeWhitespace: false,
-                        fileMustExist: false);
-
-                    WriteCompilationUnit(
                         Path.Combine(dirPath, "AnalyzerOptionDiagnosticIdentifiers.Generated.cs"),
                         DiagnosticIdentifiersGenerator.Generate(optionAnalyzers, obsolete: false, comparer: comparer, @namespace: @namespace, className: "AnalyzerOptionDiagnosticIdentifiers"),
                         fileMustExist: false);
@@ -175,11 +169,6 @@ namespace Roslynator.CodeGeneration
                     .SelectMany(f => f.OptionAnalyzers)
                     .Where(f => f.Id != null)
                     .Select(f => f.Identifier);
-
-                WriteCompilationUnit(
-                    Path.Combine(dirPath, "AnalyzerOptionsAnalyzer.Generated.cs"),
-                    AnalyzerOptionsAnalyzerGenerator.Generate(analyzerOptionIdentifiers, @namespace: @namespace),
-                    fileMustExist: false);
             }
 
             void WriteCompilationUnit(

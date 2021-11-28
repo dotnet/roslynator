@@ -17,14 +17,14 @@ namespace Roslynator.CSharp.Analysis.Tests
 
         public override CSharpTestOptions Options
         {
-            get { return base.Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine); }
+            get { return base.Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine.OptionKey); }
         }
 
         private CSharpTestOptions Options_ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine
-            => _options_ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine ??= Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine);
+            => _options_ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine ??= Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine.OptionKey);
 
         private CSharpTestOptions Options_ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine
-            => _options_ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine ??= Options.EnableDiagnostic(AnalyzerOptionDiagnosticRules.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine);
+            => _options_ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine ??= Options.EnableConfigOption(AnalyzerOptions.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine.OptionKey);
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa)]
         public async Task Test_Method_MultilineExpression()
