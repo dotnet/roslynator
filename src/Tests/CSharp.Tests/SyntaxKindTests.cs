@@ -532,7 +532,6 @@ namespace Roslynator.Testing.CSharp
                     case SyntaxKind.OrKeyword:
                     case SyntaxKind.AndKeyword:
                     case SyntaxKind.NotKeyword:
-                    case SyntaxKind.DataKeyword:
                     case SyntaxKind.WithKeyword:
                     case SyntaxKind.InitKeyword:
                     case SyntaxKind.RecordKeyword:
@@ -557,6 +556,12 @@ namespace Roslynator.Testing.CSharp
                     case SyntaxKind.FunctionPointerUnmanagedCallingConventionList:
                     case SyntaxKind.ManagedKeyword:
                     case SyntaxKind.UnmanagedKeyword:
+                    // new in 4.0.1
+                    case SyntaxKind.ExpressionColon:
+                    case SyntaxKind.FileScopedNamespaceDeclaration:
+                    case SyntaxKind.LineDirectivePosition:
+                    case SyntaxKind.LineSpanDirectiveTrivia:
+                    case SyntaxKind.RecordStructDeclaration:
                         {
                             break;
                         }

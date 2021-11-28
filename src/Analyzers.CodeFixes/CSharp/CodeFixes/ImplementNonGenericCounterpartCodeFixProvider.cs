@@ -290,7 +290,8 @@ public int global::System.Collections.IEqualityComparer.GetHashCode(object obj)
 
                 newTypeDeclaration = classDeclaration.WithBaseList(baseList.WithTypes(baseTypes));
             }
-            else if (kind == SyntaxKind.StructDeclaration)
+            else if (kind == SyntaxKind.StructDeclaration
+                || kind == SyntaxKind.RecordStructDeclaration)
             {
                 var structDeclaration = (StructDeclarationSyntax)newTypeDeclaration;
 

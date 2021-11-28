@@ -87,6 +87,7 @@ namespace Roslynator.CSharp
                 case SyntaxKind.ClassDeclaration:
                     return "class";
                 case SyntaxKind.StructDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     return "struct";
                 case SyntaxKind.InterfaceDeclaration:
                     return "interface";
@@ -152,12 +153,18 @@ namespace Roslynator.CSharp
         /// <param name="kind"></param>
         public static bool CanHaveMembers(SyntaxKind kind)
         {
-            return kind.Is(
-                SyntaxKind.CompilationUnit,
-                SyntaxKind.NamespaceDeclaration,
-                SyntaxKind.ClassDeclaration,
-                SyntaxKind.StructDeclaration,
-                SyntaxKind.InterfaceDeclaration);
+            switch (kind)
+            {
+                case SyntaxKind.CompilationUnit:
+                case SyntaxKind.NamespaceDeclaration:
+                case SyntaxKind.ClassDeclaration:
+                case SyntaxKind.StructDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
+                case SyntaxKind.InterfaceDeclaration:
+                    return true;
+                default:
+                    return false;
+            }
         }
 
         /// <summary>
@@ -309,6 +316,7 @@ namespace Roslynator.CSharp
                 case SyntaxKind.PropertyDeclaration:
                 case SyntaxKind.RecordDeclaration:
                 case SyntaxKind.StructDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                 case SyntaxKind.IncompleteMember:
                 case SyntaxKind.GetAccessorDeclaration:
                 case SyntaxKind.SetAccessorDeclaration:
@@ -1064,6 +1072,7 @@ namespace Roslynator.CSharp
                 case SyntaxKind.ClassDeclaration:
                 case SyntaxKind.InterfaceDeclaration:
                 case SyntaxKind.StructDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                 case SyntaxKind.RecordDeclaration:
                 case SyntaxKind.MethodDeclaration:
                 case SyntaxKind.DelegateDeclaration:

@@ -38,6 +38,7 @@ namespace Roslynator.CSharp.FindSymbols
                         case SyntaxKind.PropertyDeclaration:
                         case SyntaxKind.RecordDeclaration:
                         case SyntaxKind.StructDeclaration:
+                        case SyntaxKind.RecordStructDeclaration:
                         case SyntaxKind.TypeParameter:
                         case SyntaxKind.UsingDirective:
                         case SyntaxKind.VariableDeclarator:

@@ -52,6 +52,7 @@ namespace Roslynator.CSharp
                 case SyntaxKind.EnumDeclaration:
                 case SyntaxKind.InterfaceDeclaration:
                 case SyntaxKind.StructDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                 case SyntaxKind.ClassDeclaration:
                 case SyntaxKind.RecordDeclaration:
                 case SyntaxKind.NamespaceDeclaration:
@@ -128,6 +129,7 @@ namespace Roslynator.CSharp
                     case SyntaxKind.InterfaceDeclaration:
                         return ((InterfaceDeclarationSyntax)member).Identifier.ValueText;
                     case SyntaxKind.StructDeclaration:
+                    case SyntaxKind.RecordStructDeclaration:
                         return ((StructDeclarationSyntax)member).Identifier.ValueText;
                     case SyntaxKind.ClassDeclaration:
                         return ((ClassDeclarationSyntax)member).Identifier.ValueText;

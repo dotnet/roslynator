@@ -181,6 +181,7 @@ namespace Roslynator.CSharp.Syntax
                 case SyntaxKind.RecordDeclaration:
                     return new ModifierListInfo(node, ((RecordDeclarationSyntax)node).Modifiers);
                 case SyntaxKind.StructDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     return new ModifierListInfo(node, ((StructDeclarationSyntax)node).Modifiers);
                 case SyntaxKind.IncompleteMember:
                     return new ModifierListInfo(node, ((IncompleteMemberSyntax)node).Modifiers);
@@ -603,6 +604,7 @@ namespace Roslynator.CSharp.Syntax
                         return new ModifierListInfo(newNode, newNode.Modifiers);
                     }
                 case SyntaxKind.StructDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     {
                         var structDeclaration = (StructDeclarationSyntax)Parent;
                         StructDeclarationSyntax newNode = structDeclaration.WithModifiers(modifiers);

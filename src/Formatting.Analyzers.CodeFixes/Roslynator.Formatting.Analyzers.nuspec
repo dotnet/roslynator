@@ -11,7 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A collection of formatting analyzers, powered by Roslyn.
 
-  - This package is dependent on Microsoft.CodeAnalysis.CSharp.Workspaces 3.8.0.
+  - This package is dependent on Microsoft.CodeAnalysis.CSharp.Workspaces 4.0.1.
   - All analyzers are disabled by default.</description>
     <summary>A collection of formatting analyzers, powered by Roslyn.</summary>
     <copyright>Copyright (c) 2016-2021 Josef Pihrt</copyright>

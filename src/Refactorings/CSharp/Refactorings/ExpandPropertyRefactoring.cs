@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static bool CanRefactor(PropertyDeclarationSyntax propertyDeclaration)
         {
-            return propertyDeclaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration)
+            return propertyDeclaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.RecordStructDeclaration)
                 && propertyDeclaration
                     .AccessorList?
                     .Accessors

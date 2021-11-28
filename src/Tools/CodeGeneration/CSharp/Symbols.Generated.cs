@@ -510,6 +510,12 @@ namespace Roslynator.CodeGeneration.CSharp
                     break;
                 }
 
+                case "ExpressionColonSyntax":
+                {
+                    yield return SyntaxKind.ExpressionColon;
+                    break;
+                }
+
                 case "ExpressionStatementSyntax":
                 {
                     yield return SyntaxKind.ExpressionStatement;
@@ -525,6 +531,12 @@ namespace Roslynator.CodeGeneration.CSharp
                 case "FieldDeclarationSyntax":
                 {
                     yield return SyntaxKind.FieldDeclaration;
+                    break;
+                }
+
+                case "FileScopedNamespaceDeclarationSyntax":
+                {
+                    yield return SyntaxKind.FileScopedNamespaceDeclaration;
                     break;
                 }
 
@@ -782,9 +794,21 @@ namespace Roslynator.CodeGeneration.CSharp
                     break;
                 }
 
+                case "LineDirectivePositionSyntax":
+                {
+                    yield return SyntaxKind.LineDirectivePosition;
+                    break;
+                }
+
                 case "LineDirectiveTriviaSyntax":
                 {
                     yield return SyntaxKind.LineDirectiveTrivia;
+                    break;
+                }
+
+                case "LineSpanDirectiveTriviaSyntax":
+                {
+                    yield return SyntaxKind.LineSpanDirectiveTrivia;
                     break;
                 }
 
@@ -1182,6 +1206,7 @@ namespace Roslynator.CodeGeneration.CSharp
                 case "StructDeclarationSyntax":
                 {
                     yield return SyntaxKind.StructDeclaration;
+                    yield return SyntaxKind.RecordStructDeclaration;
                     break;
                 }
 

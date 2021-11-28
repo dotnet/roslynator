@@ -237,7 +237,7 @@ using System;
 Console
     .WriteLine();
 
-class Program
+partial class Program
 {
     void Main(string[] args)
     {

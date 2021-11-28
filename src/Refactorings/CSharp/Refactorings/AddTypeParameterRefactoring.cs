@@ -264,6 +264,7 @@ namespace Roslynator.CSharp.Refactorings
                         break;
                     }
                 case SyntaxKind.StructDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     {
                         newNode = GetNewNode((StructDeclarationSyntax)node, constraint, semanticModel);
                         break;

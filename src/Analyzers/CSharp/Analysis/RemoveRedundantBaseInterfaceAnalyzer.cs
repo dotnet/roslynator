@@ -40,8 +40,14 @@ namespace Roslynator.CSharp.Analysis
         {
             var baseList = (BaseListSyntax)context.Node;
 
-            if (!baseList.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.InterfaceDeclaration))
+            if (!baseList.IsParentKind(
+                SyntaxKind.ClassDeclaration,
+                SyntaxKind.StructDeclaration,
+                SyntaxKind.RecordStructDeclaration,
+                SyntaxKind.InterfaceDeclaration))
+            {
                 return;
+            }
 
             if (baseList.ContainsDiagnostics)
                 return;

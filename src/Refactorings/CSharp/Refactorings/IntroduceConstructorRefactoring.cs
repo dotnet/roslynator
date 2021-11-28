@@ -37,7 +37,7 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 }
             }
-            else if (kind.Is(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration))
+            else if (kind.Is(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.RecordStructDeclaration))
             {
                 SemanticModel semanticModel = null;
 
@@ -95,7 +95,7 @@ namespace Roslynator.CSharp.Refactorings
             if (symbol.IsStatic)
                 return false;
 
-            if (!propertyDeclaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration))
+            if (!propertyDeclaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.RecordStructDeclaration))
                 return false;
 
             ArrowExpressionClauseSyntax expressionBody = propertyDeclaration.ExpressionBody;
@@ -313,6 +313,7 @@ namespace Roslynator.CSharp.Refactorings
                 case SyntaxKind.RecordDeclaration:
                     return ((RecordDeclarationSyntax)declaration).Identifier.Text;
                 case SyntaxKind.StructDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     return ((StructDeclarationSyntax)declaration).Identifier.Text;
             }
 
@@ -326,6 +327,7 @@ namespace Roslynator.CSharp.Refactorings
                 case SyntaxKind.ClassDeclaration:
                 case SyntaxKind.RecordDeclaration:
                 case SyntaxKind.StructDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     return declaration;
                 default:
                     {

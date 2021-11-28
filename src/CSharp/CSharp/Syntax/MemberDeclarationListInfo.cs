@@ -180,6 +180,7 @@ namespace Roslynator.CSharp.Syntax
                 case SyntaxKind.ClassDeclaration:
                 case SyntaxKind.RecordDeclaration:
                 case SyntaxKind.StructDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                 case SyntaxKind.InterfaceDeclaration:
                     {
                         var typeDeclaration = (TypeDeclarationSyntax)node;
@@ -239,6 +240,7 @@ namespace Roslynator.CSharp.Syntax
                         return new MemberDeclarationListInfo(declaration, declaration.Members);
                     }
                 case SyntaxKind.StructDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     {
                         var declaration = (StructDeclarationSyntax)Parent;
                         declaration = declaration.WithMembers(members);
@@ -291,6 +293,7 @@ namespace Roslynator.CSharp.Syntax
                         return new MemberDeclarationListInfo(declaration, declaration.Members);
                     }
                 case SyntaxKind.StructDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     {
                         var declaration = (StructDeclarationSyntax)Parent;
                         declaration = declaration.RemoveNode(node, options);
@@ -343,6 +346,7 @@ namespace Roslynator.CSharp.Syntax
                         return new MemberDeclarationListInfo(declaration, declaration.Members);
                     }
                 case SyntaxKind.StructDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     {
                         var declaration = (StructDeclarationSyntax)Parent;
                         declaration = declaration.ReplaceNode(oldNode, newNode);

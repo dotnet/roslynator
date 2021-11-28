@@ -134,6 +134,7 @@ namespace Roslynator.CSharp.Syntax
                 case SyntaxKind.ClassDeclaration:
                 case SyntaxKind.InterfaceDeclaration:
                 case SyntaxKind.StructDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                 case SyntaxKind.RecordDeclaration:
                     {
                         return new GenericInfo((TypeDeclarationSyntax)node);
@@ -245,6 +246,7 @@ namespace Roslynator.CSharp.Syntax
                 case SyntaxKind.RecordDeclaration:
                     return new GenericInfo(((RecordDeclarationSyntax)Node).WithTypeParameterList(typeParameterList));
                 case SyntaxKind.StructDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     return new GenericInfo(((StructDeclarationSyntax)Node).WithTypeParameterList(typeParameterList));
             }
 
@@ -277,6 +279,7 @@ namespace Roslynator.CSharp.Syntax
                 case SyntaxKind.RecordDeclaration:
                     return new GenericInfo(((RecordDeclarationSyntax)self.Node).WithTypeParameterList(RemoveTypeParameter()));
                 case SyntaxKind.StructDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     return new GenericInfo(((StructDeclarationSyntax)self.Node).WithTypeParameterList(RemoveTypeParameter()));
             }
 
@@ -316,6 +319,7 @@ namespace Roslynator.CSharp.Syntax
                 case SyntaxKind.RecordDeclaration:
                     return new GenericInfo(((RecordDeclarationSyntax)Node).WithConstraintClauses(constraintClauses));
                 case SyntaxKind.StructDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     return new GenericInfo(((StructDeclarationSyntax)Node).WithConstraintClauses(constraintClauses));
             }
 
@@ -346,6 +350,7 @@ namespace Roslynator.CSharp.Syntax
                 case SyntaxKind.RecordDeclaration:
                     return new GenericInfo(((RecordDeclarationSyntax)Node).WithConstraintClauses(ConstraintClauses.Remove(constraintClause)));
                 case SyntaxKind.StructDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     return new GenericInfo(((StructDeclarationSyntax)Node).WithConstraintClauses(ConstraintClauses.Remove(constraintClause)));
             }
 

@@ -26,6 +26,7 @@ namespace Roslynator.CSharp.Refactorings
                 case SyntaxKind.ClassDeclaration:
                 case SyntaxKind.RecordDeclaration:
                 case SyntaxKind.StructDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                 case SyntaxKind.InterfaceDeclaration:
                 case SyntaxKind.EnumDeclaration:
                     {
@@ -39,6 +40,7 @@ namespace Roslynator.CSharp.Refactorings
                                 SyntaxKind.NamespaceDeclaration,
                                 SyntaxKind.ClassDeclaration,
                                 SyntaxKind.StructDeclaration,
+                                SyntaxKind.RecordStructDeclaration,
                                 SyntaxKind.InterfaceDeclaration,
                                 SyntaxKind.CompilationUnit))
                             {
@@ -111,6 +113,7 @@ namespace Roslynator.CSharp.Refactorings
                         break;
                     }
                 case SyntaxKind.StructDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     {
                         var structDeclaration = (StructDeclarationSyntax)member;
                         await StructDeclarationRefactoring.ComputeRefactoringsAsync(context, structDeclaration).ConfigureAwait(false);
@@ -252,6 +255,7 @@ namespace Roslynator.CSharp.Refactorings
                 case SyntaxKind.RecordDeclaration:
                     return ((RecordDeclarationSyntax)member).BraceContainsSpan(span);
                 case SyntaxKind.StructDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     return ((StructDeclarationSyntax)member).BraceContainsSpan(span);
                 case SyntaxKind.InterfaceDeclaration:
                     return ((InterfaceDeclarationSyntax)member).BraceContainsSpan(span);

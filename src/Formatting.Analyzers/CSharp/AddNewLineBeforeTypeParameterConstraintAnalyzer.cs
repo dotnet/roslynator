@@ -31,9 +31,13 @@ namespace Roslynator.Formatting.CSharp
         {
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeTypeDeclaration(f), SyntaxKind.ClassDeclaration);
-            context.RegisterSyntaxNodeAction(f => AnalyzeTypeDeclaration(f), SyntaxKind.StructDeclaration);
-            context.RegisterSyntaxNodeAction(f => AnalyzeTypeDeclaration(f), SyntaxKind.InterfaceDeclaration);
+            context.RegisterSyntaxNodeAction(
+                f => AnalyzeTypeDeclaration(f),
+                SyntaxKind.ClassDeclaration,
+                SyntaxKind.StructDeclaration,
+                SyntaxKind.RecordStructDeclaration,
+                SyntaxKind.InterfaceDeclaration);
+
             context.RegisterSyntaxNodeAction(f => AnalyzeDelegateDeclaration(f), SyntaxKind.DelegateDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeMethodDeclaration(f), SyntaxKind.MethodDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeLocalFunctionStatement(f), SyntaxKind.LocalFunctionStatement);

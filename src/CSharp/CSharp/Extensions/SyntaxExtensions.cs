@@ -3209,6 +3209,7 @@ namespace Roslynator.CSharp
                     case SyntaxKind.ReturnStatement:
                     case SyntaxKind.SetAccessorDeclaration:
                     case SyntaxKind.StructDeclaration:
+                    case SyntaxKind.RecordStructDeclaration:
                     case SyntaxKind.SwitchStatement:
                     case SyntaxKind.ThrowStatement:
                     case SyntaxKind.TryStatement:
@@ -4199,6 +4200,7 @@ namespace Roslynator.CSharp
                 case SyntaxKind.RecordDeclaration:
                     return ((RecordDeclarationSyntax)typeDeclaration).WithMembers(newMembers);
                 case SyntaxKind.StructDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     return ((StructDeclarationSyntax)typeDeclaration).WithMembers(newMembers);
                 case SyntaxKind.InterfaceDeclaration:
                     return ((InterfaceDeclarationSyntax)typeDeclaration).WithMembers(newMembers);

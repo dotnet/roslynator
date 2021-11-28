@@ -141,7 +141,7 @@ namespace Roslynator.CSharp.CodeFixes
                                     });
                             }
                             else if (node.IsKind(SyntaxKind.MethodDeclaration, SyntaxKind.PropertyDeclaration, SyntaxKind.IndexerDeclaration, SyntaxKind.EventDeclaration, SyntaxKind.EventFieldDeclaration)
-                                && node.IsParentKind(SyntaxKind.StructDeclaration)
+                                && node.IsParentKind(SyntaxKind.StructDeclaration, SyntaxKind.RecordStructDeclaration)
                                 && modifiers.Contains(SyntaxKind.VirtualKeyword))
                             {
                                 ModifiersCodeFixRegistrator.RemoveModifier(context, diagnostic, node, SyntaxKind.VirtualKeyword);
@@ -396,6 +396,7 @@ namespace Roslynator.CSharp.CodeFixes
                             if (!node.IsKind(
                                 SyntaxKind.ClassDeclaration,
                                 SyntaxKind.StructDeclaration,
+                                SyntaxKind.RecordStructDeclaration,
                                 SyntaxKind.InterfaceDeclaration,
                                 SyntaxKind.MethodDeclaration))
                             {

@@ -33,6 +33,7 @@ namespace Roslynator.CSharp.Documentation
                 case SyntaxKind.ClassDeclaration:
                     return Generate((ClassDeclarationSyntax)memberDeclaration, settings);
                 case SyntaxKind.StructDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     return Generate((StructDeclarationSyntax)memberDeclaration, settings);
                 case SyntaxKind.InterfaceDeclaration:
                     return Generate((InterfaceDeclarationSyntax)memberDeclaration, settings);
@@ -634,6 +635,7 @@ namespace Roslynator.CSharp.Documentation
                 case SyntaxKind.RecordDeclaration:
                     return ((RecordDeclarationSyntax)parent).BaseList?.Types.Any() == true;
                 case SyntaxKind.StructDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     return ((StructDeclarationSyntax)parent).BaseList?.Types.Any() == true;
             }
 

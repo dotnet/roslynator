@@ -46,6 +46,7 @@ namespace Roslynator.CSharp
                 case SyntaxKind.InterfaceDeclaration:
                     return 13;
                 case SyntaxKind.StructDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     return 14;
                 case SyntaxKind.ClassDeclaration:
                     return 15;

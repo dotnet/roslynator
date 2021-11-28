@@ -105,6 +105,7 @@ namespace Roslynator.CSharp
                         return document.ReplaceNodeAsync(classDeclaration, SyntaxRefactorings.RemoveMember(classDeclaration, member), cancellationToken);
                     }
                 case SyntaxKind.StructDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     {
                         var structDeclaration = (StructDeclarationSyntax)parent;
 

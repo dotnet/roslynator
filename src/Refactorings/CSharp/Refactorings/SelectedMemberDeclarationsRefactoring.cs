@@ -111,6 +111,7 @@ namespace Roslynator.CSharp.Refactorings
                                 break;
                             }
                         case SyntaxKind.StructDeclaration:
+                        case SyntaxKind.RecordStructDeclaration:
                             {
                                 if (((StructDeclarationSyntax)member).Modifiers.Contains(SyntaxKind.PartialKeyword))
                                     return true;

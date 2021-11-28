@@ -1033,6 +1033,7 @@ namespace Roslynator.CodeGeneration.CSharp
                         case "StructDeclarationSyntax":
                             {
                                 yield return SyntaxKind.StructDeclaration;
+                                yield return SyntaxKind.RecordStructDeclaration;
                                 break;
                             }
                         case "SubpatternSyntax":
@@ -1308,6 +1309,30 @@ namespace Roslynator.CodeGeneration.CSharp
                             {
                                 yield return SyntaxKind.FunctionPointerUnmanagedCallingConventionList;
                                 break;
+                            }
+                        case "ExpressionColonSyntax":
+                            {
+                                yield return SyntaxKind.ExpressionColon;
+                                break;
+                            }
+                        case "FileScopedNamespaceDeclarationSyntax":
+                            {
+                                yield return SyntaxKind.FileScopedNamespaceDeclaration;
+                                break;
+                            }
+                        case "LineDirectivePositionSyntax":
+                            {
+                                yield return SyntaxKind.LineDirectivePosition;
+                                break;
+                            }
+                        case "LineSpanDirectiveTriviaSyntax":
+                            {
+                                yield return SyntaxKind.LineSpanDirectiveTrivia;
+                                break;
+                            }
+                        default:
+                            {
+                                throw new InvalidOperationException(syntaxSymbol.Name);
                             }
                     }
                 }

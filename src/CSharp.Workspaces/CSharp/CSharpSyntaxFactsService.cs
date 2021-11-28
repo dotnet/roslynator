@@ -80,6 +80,7 @@ namespace Roslynator.CSharp
                 case SyntaxKind.TypeParameter:
                 case SyntaxKind.ClassDeclaration:
                 case SyntaxKind.StructDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                 case SyntaxKind.InterfaceDeclaration:
                 case SyntaxKind.RecordDeclaration:
                 case SyntaxKind.EnumDeclaration:

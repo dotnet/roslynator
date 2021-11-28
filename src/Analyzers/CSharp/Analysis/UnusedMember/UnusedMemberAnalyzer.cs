@@ -33,8 +33,11 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
         {
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeTypeDeclaration(f), SyntaxKind.ClassDeclaration);
-            context.RegisterSyntaxNodeAction(f => AnalyzeTypeDeclaration(f), SyntaxKind.StructDeclaration);
+            context.RegisterSyntaxNodeAction(
+                f => AnalyzeTypeDeclaration(f),
+                SyntaxKind.ClassDeclaration,
+                SyntaxKind.StructDeclaration,
+                SyntaxKind.RecordStructDeclaration);
         }
 
         [SuppressMessage("Simplification", "RCS1180:Inline lazy initialization.")]
@@ -51,7 +54,7 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
             INamedTypeSymbol declarationSymbol = null;
             ImmutableArray<AttributeData> attributes = default;
 
-            if (typeDeclaration.IsKind(SyntaxKind.StructDeclaration))
+            if (typeDeclaration.IsKind(SyntaxKind.StructDeclaration, SyntaxKind.RecordStructDeclaration))
             {
                 declarationSymbol = semanticModel.GetDeclaredSymbol(typeDeclaration, cancellationToken);
 

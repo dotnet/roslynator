@@ -186,13 +186,14 @@ namespace Roslynator.CSharp.CodeFixes
                             {
                                 case SyntaxKind.MethodDeclaration:
                                     {
-                                        if (memberDeclaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration))
+                                        if (memberDeclaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.RecordStructDeclaration))
                                             node = memberDeclaration.Parent;
 
                                         break;
                                     }
                                 case SyntaxKind.ClassDeclaration:
                                 case SyntaxKind.StructDeclaration:
+                                case SyntaxKind.RecordStructDeclaration:
                                 case SyntaxKind.InterfaceDeclaration:
                                 case SyntaxKind.RecordDeclaration:
                                     {

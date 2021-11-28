@@ -161,6 +161,7 @@ namespace Roslynator.CSharp
                 case SyntaxKind.RecordDeclaration:
                     return (TNode)(SyntaxNode)ModifierList<RecordDeclarationSyntax>.Instance.Insert((RecordDeclarationSyntax)(SyntaxNode)node, kind, comparer);
                 case SyntaxKind.StructDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     return (TNode)(SyntaxNode)ModifierList<StructDeclarationSyntax>.Instance.Insert((StructDeclarationSyntax)(SyntaxNode)node, kind, comparer);
                 case SyntaxKind.GetAccessorDeclaration:
                 case SyntaxKind.SetAccessorDeclaration:
@@ -223,6 +224,7 @@ namespace Roslynator.CSharp
                 case SyntaxKind.RecordDeclaration:
                     return (TNode)(SyntaxNode)ModifierList<RecordDeclarationSyntax>.Instance.Insert((RecordDeclarationSyntax)(SyntaxNode)node, modifier, comparer);
                 case SyntaxKind.StructDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     return (TNode)(SyntaxNode)ModifierList<StructDeclarationSyntax>.Instance.Insert((StructDeclarationSyntax)(SyntaxNode)node, modifier, comparer);
                 case SyntaxKind.GetAccessorDeclaration:
                 case SyntaxKind.SetAccessorDeclaration:
@@ -284,6 +286,7 @@ namespace Roslynator.CSharp
                 case SyntaxKind.RecordDeclaration:
                     return (TNode)(SyntaxNode)ModifierList<RecordDeclarationSyntax>.Instance.Remove((RecordDeclarationSyntax)(SyntaxNode)node, kind);
                 case SyntaxKind.StructDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     return (TNode)(SyntaxNode)ModifierList<StructDeclarationSyntax>.Instance.Remove((StructDeclarationSyntax)(SyntaxNode)node, kind);
                 case SyntaxKind.GetAccessorDeclaration:
                 case SyntaxKind.SetAccessorDeclaration:
@@ -345,6 +348,7 @@ namespace Roslynator.CSharp
                 case SyntaxKind.RecordDeclaration:
                     return (TNode)(SyntaxNode)ModifierList<RecordDeclarationSyntax>.Instance.Remove((RecordDeclarationSyntax)(SyntaxNode)node, modifier);
                 case SyntaxKind.StructDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     return (TNode)(SyntaxNode)ModifierList<StructDeclarationSyntax>.Instance.Remove((StructDeclarationSyntax)(SyntaxNode)node, modifier);
                 case SyntaxKind.GetAccessorDeclaration:
                 case SyntaxKind.SetAccessorDeclaration:
@@ -406,6 +410,7 @@ namespace Roslynator.CSharp
                 case SyntaxKind.RecordDeclaration:
                     return (TNode)(SyntaxNode)ModifierList<RecordDeclarationSyntax>.Instance.RemoveAt((RecordDeclarationSyntax)(SyntaxNode)node, index);
                 case SyntaxKind.StructDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     return (TNode)(SyntaxNode)ModifierList<StructDeclarationSyntax>.Instance.RemoveAt((StructDeclarationSyntax)(SyntaxNode)node, index);
                 case SyntaxKind.GetAccessorDeclaration:
                 case SyntaxKind.SetAccessorDeclaration:
@@ -467,6 +472,7 @@ namespace Roslynator.CSharp
                 case SyntaxKind.RecordDeclaration:
                     return (TNode)(SyntaxNode)ModifierList<RecordDeclarationSyntax>.Instance.RemoveAll((RecordDeclarationSyntax)(SyntaxNode)node, predicate);
                 case SyntaxKind.StructDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     return (TNode)(SyntaxNode)ModifierList<StructDeclarationSyntax>.Instance.RemoveAll((StructDeclarationSyntax)(SyntaxNode)node, predicate);
                 case SyntaxKind.GetAccessorDeclaration:
                 case SyntaxKind.SetAccessorDeclaration:
@@ -527,6 +533,7 @@ namespace Roslynator.CSharp
                 case SyntaxKind.RecordDeclaration:
                     return (TNode)(SyntaxNode)ModifierList<RecordDeclarationSyntax>.Instance.RemoveAll((RecordDeclarationSyntax)(SyntaxNode)node);
                 case SyntaxKind.StructDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     return (TNode)(SyntaxNode)ModifierList<StructDeclarationSyntax>.Instance.RemoveAll((StructDeclarationSyntax)(SyntaxNode)node);
                 case SyntaxKind.GetAccessorDeclaration:
                 case SyntaxKind.SetAccessorDeclaration:

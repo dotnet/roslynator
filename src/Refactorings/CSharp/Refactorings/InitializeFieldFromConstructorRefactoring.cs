@@ -95,7 +95,7 @@ namespace Roslynator.CSharp.Refactorings
             if (!(fieldDeclaration.Parent is TypeDeclarationSyntax typeDeclaration))
                 return false;
 
-            if (!typeDeclaration.IsKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration))
+            if (!typeDeclaration.IsKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.RecordStructDeclaration))
                 return false;
 
             return typeDeclaration

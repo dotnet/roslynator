@@ -25,7 +25,8 @@ namespace Roslynator.CSharp.Refactorings
             if (node.IsKind(
                 SyntaxKind.ClassDeclaration,
                 SyntaxKind.InterfaceDeclaration,
-                SyntaxKind.StructDeclaration))
+                SyntaxKind.StructDeclaration,
+                SyntaxKind.RecordStructDeclaration))
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 

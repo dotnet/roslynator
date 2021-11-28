@@ -30,10 +30,14 @@ namespace Roslynator.CSharp.Analysis
         {
             base.Initialize(context);
 
+            context.RegisterSyntaxNodeAction(
+                f => AnalyzeTypeDeclaration(f),
+                SyntaxKind.ClassDeclaration,
+                SyntaxKind.StructDeclaration,
+                SyntaxKind.RecordStructDeclaration,
+                SyntaxKind.InterfaceDeclaration);
+
             context.RegisterSyntaxNodeAction(f => AnalyzeUnsafeStatement(f), SyntaxKind.UnsafeStatement);
-            context.RegisterSyntaxNodeAction(f => AnalyzeTypeDeclaration(f), SyntaxKind.ClassDeclaration);
-            context.RegisterSyntaxNodeAction(f => AnalyzeTypeDeclaration(f), SyntaxKind.StructDeclaration);
-            context.RegisterSyntaxNodeAction(f => AnalyzeTypeDeclaration(f), SyntaxKind.InterfaceDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeDelegateDeclaration(f), SyntaxKind.DelegateDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeLocalFunctionStatement(f), SyntaxKind.LocalFunctionStatement);
             context.RegisterSyntaxNodeAction(f => AnalyzeMethodDeclaration(f), SyntaxKind.MethodDeclaration);
@@ -259,7 +263,11 @@ namespace Roslynator.CSharp.Analysis
         {
             SyntaxNode parent = memberDeclaration.Parent;
 
-            while (parent.IsKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.InterfaceDeclaration))
+            while (parent.IsKind(
+                SyntaxKind.ClassDeclaration,
+                SyntaxKind.StructDeclaration,
+                SyntaxKind.RecordStructDeclaration,
+                SyntaxKind.InterfaceDeclaration))
             {
                 if (((TypeDeclarationSyntax)parent).Modifiers.Contains(SyntaxKind.UnsafeKeyword))
                     return true;

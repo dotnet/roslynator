@@ -304,6 +304,7 @@ namespace Roslynator.CSharp
                 case SyntaxKind.ClassDeclaration:
                     return ((ClassDeclarationSyntax)node).Identifier;
                 case SyntaxKind.StructDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     return ((StructDeclarationSyntax)node).Identifier;
                 case SyntaxKind.InterfaceDeclaration:
                     return ((InterfaceDeclarationSyntax)node).Identifier;
@@ -395,6 +396,7 @@ namespace Roslynator.CSharp
                     case SyntaxKind.NamespaceDeclaration:
                     case SyntaxKind.ClassDeclaration:
                     case SyntaxKind.StructDeclaration:
+                    case SyntaxKind.RecordStructDeclaration:
                     case SyntaxKind.InterfaceDeclaration:
                     case SyntaxKind.RecordDeclaration:
                     case SyntaxKind.EnumDeclaration:
@@ -743,6 +745,7 @@ namespace Roslynator.CSharp
                 case SyntaxKind.InterfaceDeclaration:
                     return ((InterfaceDeclarationSyntax)declaration).TypeParameterList;
                 case SyntaxKind.StructDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     return ((StructDeclarationSyntax)declaration).TypeParameterList;
                 case SyntaxKind.MethodDeclaration:
                     return ((MethodDeclarationSyntax)declaration).TypeParameterList;

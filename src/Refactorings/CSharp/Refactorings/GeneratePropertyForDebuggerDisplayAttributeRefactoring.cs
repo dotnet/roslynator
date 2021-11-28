@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.Refactorings
             if (!attribute.IsParentKind(SyntaxKind.AttributeList))
                 return;
 
-            if (!attribute.Parent.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration))
+            if (!attribute.Parent.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.RecordStructDeclaration))
                 return;
 
             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);

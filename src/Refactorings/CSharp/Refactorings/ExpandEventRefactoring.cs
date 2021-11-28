@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static bool CanRefactor(EventFieldDeclarationSyntax eventDeclaration)
         {
-            return eventDeclaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration)
+            return eventDeclaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.RecordStructDeclaration)
                 && eventDeclaration.Declaration?.Variables.Count == 1;
         }
 

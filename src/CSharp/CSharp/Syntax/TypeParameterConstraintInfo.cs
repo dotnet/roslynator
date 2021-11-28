@@ -185,6 +185,7 @@ namespace Roslynator.CSharp.Syntax
                         return new TypeParameterConstraintInfo(constraint, constraintClause);
                     }
                 case SyntaxKind.StructDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     {
                         var structDeclaration = (StructDeclarationSyntax)parent;
 

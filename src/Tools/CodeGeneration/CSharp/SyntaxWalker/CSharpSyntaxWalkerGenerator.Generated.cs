@@ -609,6 +609,7 @@ namespace Roslynator.CodeGeneration.CSharp
                         case "ImplicitOrExplicitKeyword":
                         case "OperatorKeyword":
                         case "Type":
+                        case "ExplicitInterfaceSpecifier":
                         case "ParameterList":
                         case "Body":
                         case "ExpressionBody":
@@ -1731,6 +1732,8 @@ namespace Roslynator.CodeGeneration.CSharp
                         case "Name":
                         case "ColonToken":
                             return true;
+                        case "Expression":
+                            return false;
                         default:
                             throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
                     }
@@ -1836,6 +1839,7 @@ namespace Roslynator.CodeGeneration.CSharp
                         case "Modifiers":
                         case "ReturnType":
                         case "OperatorKeyword":
+                        case "ExplicitInterfaceSpecifier":
                         case "OperatorToken":
                         case "ParameterList":
                         case "Body":
@@ -1929,8 +1933,10 @@ namespace Roslynator.CodeGeneration.CSharp
                 {
                     switch (propertySymbol.Name)
                     {
+                        case "AttributeLists":
                         case "Modifiers":
                         case "AsyncKeyword":
+                        case "ReturnType":
                         case "ParameterList":
                         case "ArrowToken":
                         case "ExpressionBody":
@@ -2264,6 +2270,7 @@ namespace Roslynator.CodeGeneration.CSharp
                 {
                     switch (propertySymbol.Name)
                     {
+                        case "AttributeLists":
                         case "Modifiers":
                         case "AsyncKeyword":
                         case "Parameter":
@@ -2593,6 +2600,7 @@ namespace Roslynator.CodeGeneration.CSharp
                 {
                     switch (propertySymbol.Name)
                     {
+                        case "GlobalKeyword":
                         case "UsingKeyword":
                         case "StaticKeyword":
                         case "Alias":
@@ -2992,6 +3000,7 @@ namespace Roslynator.CodeGeneration.CSharp
                     switch (propertySymbol.Name)
                     {
                         case "NameColon":
+                        case "ExpressionColon":
                         case "Pattern":
                             return true;
                         default:
@@ -3108,6 +3117,7 @@ namespace Roslynator.CodeGeneration.CSharp
                         case "AttributeLists":
                         case "Modifiers":
                         case "Keyword":
+                        case "ClassOrStructKeyword":
                         case "Identifier":
                         case "ParameterList":
                         case "TypeParameterList":
@@ -3246,6 +3256,70 @@ namespace Roslynator.CodeGeneration.CSharp
                         case "OpenBracketToken":
                         case "CallingConventions":
                         case "CloseBracketToken":
+                            return true;
+                        default:
+                            throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
+                    }
+                }
+
+                case "ExpressionColonSyntax":
+                {
+                    switch (propertySymbol.Name)
+                    {
+                        case "Expression":
+                        case "ColonToken":
+                            return true;
+                        default:
+                            throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
+                    }
+                }
+
+                case "FileScopedNamespaceDeclarationSyntax":
+                {
+                    switch (propertySymbol.Name)
+                    {
+                        case "AttributeLists":
+                        case "Modifiers":
+                        case "NamespaceKeyword":
+                        case "Name":
+                        case "SemicolonToken":
+                        case "Externs":
+                        case "Usings":
+                        case "Members":
+                            return true;
+                        default:
+                            throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
+                    }
+                }
+
+                case "LineDirectivePositionSyntax":
+                {
+                    switch (propertySymbol.Name)
+                    {
+                        case "OpenParenToken":
+                        case "Line":
+                        case "CommaToken":
+                        case "Character":
+                        case "CloseParenToken":
+                            return true;
+                        default:
+                            throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");
+                    }
+                }
+
+                case "LineSpanDirectiveTriviaSyntax":
+                {
+                    switch (propertySymbol.Name)
+                    {
+                        case "HashToken":
+                        case "LineKeyword":
+                        case "Start":
+                        case "MinusToken":
+                        case "End":
+                        case "CharacterOffset":
+                        case "File":
+                        case "EndOfDirectiveToken":
+                        case "IsActive":
                             return true;
                         default:
                             throw new InvalidOperationException($"Unrecognized property '{propertySymbol.ToDisplayString(SymbolDisplayFormats.Test)}'");

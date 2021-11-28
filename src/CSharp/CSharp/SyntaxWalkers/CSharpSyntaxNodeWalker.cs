@@ -12,7 +12,7 @@ namespace Roslynator.CSharp.SyntaxWalkers
 {
     internal abstract class CSharpSyntaxNodeWalker : CSharpSyntaxWalker
     {
-        protected CSharpSyntaxNodeWalker(): base(depth: SyntaxWalkerDepth.Node)
+        protected CSharpSyntaxNodeWalker() : base(depth: SyntaxWalkerDepth.Node)
         {
         }
 
@@ -940,6 +940,17 @@ namespace Roslynator.CSharp.SyntaxWalkers
                 return;
             }
 
+            ExplicitInterfaceSpecifierSyntax explicitInterfaceSpecifier = node.ExplicitInterfaceSpecifier;
+            if (explicitInterfaceSpecifier != null)
+            {
+                VisitExplicitInterfaceSpecifier(explicitInterfaceSpecifier);
+            }
+
+            if (!ShouldVisit)
+            {
+                return;
+            }
+
             TypeSyntax type = node.Type;
             if (type != null)
             {
@@ -1512,6 +1523,20 @@ namespace Roslynator.CSharp.SyntaxWalkers
             }
         }
 
+        public override void VisitExpressionColon(ExpressionColonSyntax node)
+        {
+            if (!ShouldVisit)
+            {
+                return;
+            }
+
+            ExpressionSyntax expression = node.Expression;
+            if (expression != null)
+            {
+                VisitExpression(expression);
+            }
+        }
+
         public override void VisitExpressionStatement(ExpressionStatementSyntax node)
         {
             if (!ShouldVisit)
@@ -1551,6 +1576,60 @@ namespace Roslynator.CSharp.SyntaxWalkers
             if (declaration != null)
             {
                 VisitVariableDeclaration(declaration);
+            }
+        }
+
+        public override void VisitFileScopedNamespaceDeclaration(FileScopedNamespaceDeclarationSyntax node)
+        {
+            foreach (AttributeListSyntax attributeList in node.AttributeLists)
+            {
+                if (!ShouldVisit)
+                {
+                    return;
+                }
+
+                VisitAttributeList(attributeList);
+            }
+
+            if (!ShouldVisit)
+            {
+                return;
+            }
+
+            NameSyntax name = node.Name;
+            if (name != null)
+            {
+                VisitType(name);
+            }
+
+            foreach (ExternAliasDirectiveSyntax externAliasDirective in node.Externs)
+            {
+                if (!ShouldVisit)
+                {
+                    return;
+                }
+
+                VisitExternAliasDirective(externAliasDirective);
+            }
+
+            foreach (UsingDirectiveSyntax usingDirective in node.Usings)
+            {
+                if (!ShouldVisit)
+                {
+                    return;
+                }
+
+                VisitUsingDirective(usingDirective);
+            }
+
+            foreach (MemberDeclarationSyntax memberDeclaration in node.Members)
+            {
+                if (!ShouldVisit)
+                {
+                    return;
+                }
+
+                VisitMemberDeclaration(memberDeclaration);
             }
         }
 
@@ -2450,8 +2529,37 @@ namespace Roslynator.CSharp.SyntaxWalkers
             }
         }
 
+        public override void VisitLineDirectivePosition(LineDirectivePositionSyntax node)
+        {
+        }
+
         public override void VisitLineDirectiveTrivia(LineDirectiveTriviaSyntax node)
         {
+        }
+
+        public override void VisitLineSpanDirectiveTrivia(LineSpanDirectiveTriviaSyntax node)
+        {
+            if (!ShouldVisit)
+            {
+                return;
+            }
+
+            LineDirectivePositionSyntax start = node.Start;
+            if (start != null)
+            {
+                VisitLineDirectivePosition(start);
+            }
+
+            if (!ShouldVisit)
+            {
+                return;
+            }
+
+            LineDirectivePositionSyntax end = node.End;
+            if (end != null)
+            {
+                VisitLineDirectivePosition(end);
+            }
         }
 
         public override void VisitLiteralExpression(LiteralExpressionSyntax node)
@@ -2908,6 +3016,17 @@ namespace Roslynator.CSharp.SyntaxWalkers
                 return;
             }
 
+            ExplicitInterfaceSpecifierSyntax explicitInterfaceSpecifier = node.ExplicitInterfaceSpecifier;
+            if (explicitInterfaceSpecifier != null)
+            {
+                VisitExplicitInterfaceSpecifier(explicitInterfaceSpecifier);
+            }
+
+            if (!ShouldVisit)
+            {
+                return;
+            }
+
             ParameterListSyntax parameterList = node.ParameterList;
             if (parameterList != null)
             {
@@ -3042,6 +3161,27 @@ namespace Roslynator.CSharp.SyntaxWalkers
 
         public override void VisitParenthesizedLambdaExpression(ParenthesizedLambdaExpressionSyntax node)
         {
+            foreach (AttributeListSyntax attributeList in node.AttributeLists)
+            {
+                if (!ShouldVisit)
+                {
+                    return;
+                }
+
+                VisitAttributeList(attributeList);
+            }
+
+            if (!ShouldVisit)
+            {
+                return;
+            }
+
+            TypeSyntax returnType = node.ReturnType;
+            if (returnType != null)
+            {
+                VisitType(returnType);
+            }
+
             if (!ShouldVisit)
             {
                 return;
@@ -3684,6 +3824,16 @@ namespace Roslynator.CSharp.SyntaxWalkers
 
         public override void VisitSimpleLambdaExpression(SimpleLambdaExpressionSyntax node)
         {
+            foreach (AttributeListSyntax attributeList in node.AttributeLists)
+            {
+                if (!ShouldVisit)
+                {
+                    return;
+                }
+
+                VisitAttributeList(attributeList);
+            }
+
             if (!ShouldVisit)
             {
                 return;
@@ -3831,6 +3981,17 @@ namespace Roslynator.CSharp.SyntaxWalkers
             if (nameColon != null)
             {
                 VisitNameColon(nameColon);
+            }
+
+            if (!ShouldVisit)
+            {
+                return;
+            }
+
+            BaseExpressionColonSyntax expressionColon = node.ExpressionColon;
+            if (expressionColon != null)
+            {
+                VisitBaseExpressionColon(expressionColon);
             }
 
             if (!ShouldVisit)
@@ -4635,6 +4796,23 @@ namespace Roslynator.CSharp.SyntaxWalkers
             }
         }
 
+        protected virtual void VisitBaseExpressionColon(BaseExpressionColonSyntax node)
+        {
+            switch (node.Kind())
+            {
+                case SyntaxKind.ExpressionColon:
+                    VisitExpressionColon((ExpressionColonSyntax)node);
+                    break;
+                case SyntaxKind.NameColon:
+                    VisitNameColon((NameColonSyntax)node);
+                    break;
+                default:
+                    Debug.Fail($"Unrecognized kind '{node.Kind()}'.");
+                    base.Visit(node);
+                    break;
+            }
+        }
+
         protected virtual void VisitBaseType(BaseTypeSyntax node)
         {
             switch (node.Kind())
@@ -4997,6 +5175,9 @@ namespace Roslynator.CSharp.SyntaxWalkers
                 case SyntaxKind.FieldDeclaration:
                     VisitFieldDeclaration((FieldDeclarationSyntax)node);
                     break;
+                case SyntaxKind.FileScopedNamespaceDeclaration:
+                    VisitFileScopedNamespaceDeclaration((FileScopedNamespaceDeclarationSyntax)node);
+                    break;
                 case SyntaxKind.GlobalStatement:
                     VisitGlobalStatement((GlobalStatementSyntax)node);
                     break;
@@ -5025,6 +5206,7 @@ namespace Roslynator.CSharp.SyntaxWalkers
                     VisitRecordDeclaration((RecordDeclarationSyntax)node);
                     break;
                 case SyntaxKind.StructDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     VisitStructDeclaration((StructDeclarationSyntax)node);
                     break;
                 default:

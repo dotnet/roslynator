@@ -161,6 +161,7 @@ namespace Roslynator.CSharp.Spelling
                         break;
                     }
                 case SyntaxKind.StructDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     {
                         if (ShouldVisit(SpellingScopeFilter.Struct))
                             base.VisitTupleType(node);
