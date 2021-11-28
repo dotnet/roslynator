@@ -13,6 +13,7 @@ namespace Roslynator
             Descriptor = descriptor;
             OptionKey = optionKey;
         }
+
         public string OptionKey { get; }
 
         public DiagnosticDescriptor Descriptor { get; }

@@ -9,6 +9,8 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
+#pragma warning disable RCS1223
+
 namespace Roslynator.CSharp
 {
     /// <summary>
