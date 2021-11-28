@@ -10,7 +10,7 @@ namespace Roslynator.CSharp.Analysis.RemoveRedundantStatement
     {
         public virtual bool IsFixable(TStatement statement)
         {
-            if (!(statement.Parent is BlockSyntax block))
+            if (statement.Parent is not BlockSyntax block)
                 return false;
 
             if (!block.Statements.IsLast(statement, ignoreLocalFunctions: true))

@@ -196,7 +196,7 @@ namespace Roslynator.CSharp.Analysis
                 case SyntaxKind.ArrayInitializerExpression:
                 case SyntaxKind.CollectionInitializerExpression:
                     {
-                        if (!(expression is AssignmentExpressionSyntax))
+                        if (expression is not AssignmentExpressionSyntax)
                             ReportDiagnostic();
 
                         break;

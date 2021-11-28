@@ -44,7 +44,7 @@ namespace Roslynator.CSharp.CodeFixes
             if (!TryFindFirstAncestorOrSelf(root, context.Span, out SyntaxNode node, predicate: f => f.IsKind(SyntaxKind.VariableDeclarator, SyntaxKind.AddAssignmentExpression, SyntaxKind.SubtractAssignmentExpression)))
                 return;
 
-            if (!(node is VariableDeclaratorSyntax variableDeclarator))
+            if (node is not VariableDeclaratorSyntax variableDeclarator)
                 return;
 
             if (!variableDeclarator.IsParentKind(SyntaxKind.VariableDeclaration))

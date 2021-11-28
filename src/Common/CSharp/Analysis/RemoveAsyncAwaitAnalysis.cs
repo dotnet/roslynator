@@ -315,7 +315,7 @@ namespace Roslynator.CSharp.Analysis
             {
                 var block = (BlockSyntax)statement;
 
-                if (!(block.Statements.LastOrDefault() is ReturnStatementSyntax returnStatement))
+                if (block.Statements.LastOrDefault() is not ReturnStatementSyntax returnStatement)
                     return null;
 
                 return GetAwaitExpression(returnStatement);

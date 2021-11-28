@@ -62,7 +62,7 @@ namespace Roslynator.CSharp.Analysis
 
             var memberAccessExpression = (MemberAccessExpressionSyntax)expression;
 
-            if (!(context.SemanticModel.GetSymbol(memberAccessExpression, context.CancellationToken) is IFieldSymbol fieldSymbol))
+            if (context.SemanticModel.GetSymbol(memberAccessExpression, context.CancellationToken) is not IFieldSymbol fieldSymbol)
                 return;
 
             INamedTypeSymbol containingType = fieldSymbol.ContainingType;

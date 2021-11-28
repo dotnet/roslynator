@@ -569,7 +569,7 @@ namespace Roslynator.CSharp.Analysis
 
             parent = parent.Parent;
 
-            if (!(parent is DoStatementSyntax doStatement))
+            if (parent is not DoStatementSyntax doStatement)
                 return false;
 
             int emptyLine = doStatement.SyntaxTree.GetLineSpan(span).EndLine();

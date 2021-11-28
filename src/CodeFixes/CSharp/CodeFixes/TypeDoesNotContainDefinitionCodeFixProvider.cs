@@ -84,7 +84,7 @@ namespace Roslynator.CSharp.CodeFixes
                         if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.FixMemberAccessName))
                             break;
 
-                        if (!(memberBindingExpression.Parent is ConditionalAccessExpressionSyntax conditionalAccessExpression))
+                        if (memberBindingExpression.Parent is not ConditionalAccessExpressionSyntax conditionalAccessExpression)
                             break;
 
                         SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);

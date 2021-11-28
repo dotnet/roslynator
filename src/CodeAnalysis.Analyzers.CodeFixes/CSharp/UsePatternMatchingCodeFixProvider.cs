@@ -71,7 +71,7 @@ namespace Roslynator.CodeAnalysis.CSharp
         {
             SyntaxList<SwitchSectionSyntax> newSections = switchStatement.Sections.Select(section =>
             {
-                if (!(section.Labels.Single() is CaseSwitchLabelSyntax label))
+                if (section.Labels.Single() is not CaseSwitchLabelSyntax label)
                     return section;
 
                 SyntaxList<StatementSyntax> statements = section.Statements;

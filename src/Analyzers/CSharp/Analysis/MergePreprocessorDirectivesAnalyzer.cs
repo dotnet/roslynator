@@ -106,7 +106,7 @@ namespace Roslynator.CSharp.Analysis
             if (!list[i].IsKind(SyntaxKind.PragmaWarningDirectiveTrivia))
                 return;
 
-            if (!(list[i].GetStructure() is PragmaWarningDirectiveTriviaSyntax nextDirective))
+            if (list[i].GetStructure() is not PragmaWarningDirectiveTriviaSyntax nextDirective)
                 return;
 
             SyntaxToken disableOrRestoreKeyword = directive.DisableOrRestoreKeyword;

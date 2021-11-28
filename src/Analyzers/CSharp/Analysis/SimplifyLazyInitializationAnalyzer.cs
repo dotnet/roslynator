@@ -63,10 +63,10 @@ namespace Roslynator.CSharp.Analysis
             if (statements.Count != 2)
                 return;
 
-            if (!(statements[0] is IfStatementSyntax ifStatement))
+            if (statements[0] is not IfStatementSyntax ifStatement)
                 return;
 
-            if (!(statements[1] is ReturnStatementSyntax returnStatement))
+            if (statements[1] is not ReturnStatementSyntax returnStatement)
                 return;
 
             ExpressionSyntax returnExpression = returnStatement.Expression;
@@ -126,7 +126,7 @@ namespace Roslynator.CSharp.Analysis
             if (!expression.IsKind(SyntaxKind.IdentifierName, SyntaxKind.SimpleMemberAccessExpression))
                 return;
 
-            if (!(semanticModel.GetSymbol(expression, cancellationToken) is IFieldSymbol fieldSymbol))
+            if (semanticModel.GetSymbol(expression, cancellationToken) is not IFieldSymbol fieldSymbol)
                 return;
 
             if (!ExpressionEquals(expression, assignmentInfo.Left))

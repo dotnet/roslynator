@@ -49,7 +49,7 @@ namespace Roslynator.CSharp.Analysis
             if (catchClause.Filter != null)
                 return;
 
-            if (!(catchClause.Block.Statements.FirstOrDefault() is IfStatementSyntax ifStatement))
+            if (catchClause.Block.Statements.FirstOrDefault() is not IfStatementSyntax ifStatement)
                 return;
 
             if (IsThrowStatementWithoutExpression(ifStatement.Statement.SingleNonBlockStatementOrDefault())

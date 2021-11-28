@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             parent = parent.Parent;
 
-            if (!(parent is StructDeclarationSyntax structDeclaration))
+            if (parent is not StructDeclarationSyntax structDeclaration)
                 return;
 
             CodeAction codeAction = CodeAction.Create(

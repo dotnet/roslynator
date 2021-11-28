@@ -84,7 +84,7 @@ namespace Roslynator.CSharp.Analysis
             if (assignmentInfo.Statement.SpanOrLeadingTriviaContainsDirectives())
                 return;
 
-            if (!(assignmentInfo.Left is IdentifierNameSyntax identifierName))
+            if (assignmentInfo.Left is not IdentifierNameSyntax identifierName)
                 return;
 
             string name = identifierName.Identifier.ValueText;
@@ -95,7 +95,7 @@ namespace Roslynator.CSharp.Analysis
             SemanticModel semanticModel = context.SemanticModel;
             CancellationToken cancellationToken = context.CancellationToken;
 
-            if (!(semanticModel.GetSymbol(identifierName, cancellationToken) is ILocalSymbol localSymbol))
+            if (semanticModel.GetSymbol(identifierName, cancellationToken) is not ILocalSymbol localSymbol)
                 return;
 
             if (!SymbolEqualityComparer.Default.Equals(localSymbol, semanticModel.GetDeclaredSymbol(localInfo.Declarator, cancellationToken)))
@@ -162,7 +162,7 @@ namespace Roslynator.CSharp.Analysis
             if (!assignmentInfo.Success)
                 return;
 
-            if (!(assignmentInfo.Left is IdentifierNameSyntax identifierName))
+            if (assignmentInfo.Left is not IdentifierNameSyntax identifierName)
                 return;
 
             StatementListInfo statementsInfo = SyntaxInfo.StatementListInfo(assignmentInfo.Statement);
@@ -194,10 +194,10 @@ namespace Roslynator.CSharp.Analysis
             if (nextStatement.SpanOrLeadingTriviaContainsDirectives())
                 return;
 
-            if (!(nextStatement is ReturnStatementSyntax returnStatement))
+            if (nextStatement is not ReturnStatementSyntax returnStatement)
                 return;
 
-            if (!(returnStatement.Expression?.WalkDownParentheses() is IdentifierNameSyntax identifierName3))
+            if (returnStatement.Expression?.WalkDownParentheses() is not IdentifierNameSyntax identifierName3)
                 return;
 
             if (!string.Equals(identifierName.Identifier.ValueText, identifierName3.Identifier.ValueText, StringComparison.Ordinal))

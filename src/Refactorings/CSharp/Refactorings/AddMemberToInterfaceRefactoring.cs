@@ -112,7 +112,7 @@ namespace Roslynator.CSharp.Refactorings
             if (interfaceSymbol.Language != LanguageNames.CSharp)
                 return false;
 
-            if (!(interfaceSymbol.GetSyntaxOrDefault(context.CancellationToken) is InterfaceDeclarationSyntax interfaceDeclaration))
+            if (interfaceSymbol.GetSyntaxOrDefault(context.CancellationToken) is not InterfaceDeclarationSyntax interfaceDeclaration)
                 return false;
 
             if (SymbolEqualityComparer.Default.Equals(interfaceSymbol, explicitInterfaceSymbol))

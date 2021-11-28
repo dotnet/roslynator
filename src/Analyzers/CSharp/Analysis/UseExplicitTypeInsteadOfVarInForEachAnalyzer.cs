@@ -63,7 +63,7 @@ namespace Roslynator.CSharp.Analysis
                     {
                         foreach (ArgumentSyntax argument in tupleExpression.Arguments)
                         {
-                            if (!(argument.Expression is DeclarationExpressionSyntax declarationExpression))
+                            if (argument.Expression is not DeclarationExpressionSyntax declarationExpression)
                                 continue;
 
                             if (CSharpTypeAnalysis.IsImplicitThatCanBeExplicit(declarationExpression, context.SemanticModel, context.CancellationToken))

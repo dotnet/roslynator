@@ -1056,7 +1056,7 @@ namespace Roslynator.Documentation
 
             parts.AddRange(symbol.ToDisplayParts(format2));
 
-            if (!(symbol is INamedTypeSymbol typeSymbol))
+            if (symbol is not INamedTypeSymbol typeSymbol)
                 return;
 
             if (removeAttributeSuffix)

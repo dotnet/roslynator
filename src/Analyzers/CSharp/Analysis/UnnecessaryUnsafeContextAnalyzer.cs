@@ -80,7 +80,7 @@ namespace Roslynator.CSharp.Analysis
 
             SyntaxDebug.Assert(parent.IsKind(SyntaxKind.Block), parent);
 
-            if (!(parent is BlockSyntax))
+            if (parent is not BlockSyntax)
                 return;
 
             parent = parent.Parent;

@@ -649,7 +649,7 @@ namespace Roslynator.CSharp
 
                     while (i >= 0)
                     {
-                        if (!(statements[i] is ExpressionStatementSyntax expressionStatement))
+                        if (statements[i] is not ExpressionStatementSyntax expressionStatement)
                             break;
 
                         ExpressionSyntax expression = expressionStatement.Expression;

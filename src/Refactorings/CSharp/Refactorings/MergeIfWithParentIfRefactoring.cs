@@ -25,7 +25,7 @@ namespace Roslynator.CSharp.Refactorings
             }
             else
             {
-                if (!(ifStatement.Parent is BlockSyntax block))
+                if (ifStatement.Parent is not BlockSyntax block)
                     return;
 
                 if (block.Statements.Count != 1)

@@ -207,7 +207,7 @@ namespace Roslynator.CSharp.Analysis.ReduceIfNesting
                         if (jumpKind != SyntaxKind.None)
                             return Success(jumpKind, parent);
 
-                        if (!(semanticModel.GetSymbol(anonymousFunction, cancellationToken) is IMethodSymbol methodSymbol))
+                        if (semanticModel.GetSymbol(anonymousFunction, cancellationToken) is not IMethodSymbol methodSymbol)
                             return Fail(parent);
 
                         if (methodSymbol.ReturnsVoid)
@@ -391,7 +391,7 @@ namespace Roslynator.CSharp.Analysis.ReduceIfNesting
 
         internal static bool IsFixableRecursively(IfStatementSyntax ifStatement, SyntaxKind jumpKind)
         {
-            if (!(ifStatement.Statement is BlockSyntax block))
+            if (ifStatement.Statement is not BlockSyntax block)
                 return false;
 
             SyntaxList<StatementSyntax> statements = block.Statements;
@@ -420,7 +420,7 @@ namespace Roslynator.CSharp.Analysis.ReduceIfNesting
             if (ifStatement.Condition?.IsMissing != false)
                 return false;
 
-            if (!(ifStatement.Statement is BlockSyntax block))
+            if (ifStatement.Statement is not BlockSyntax block)
                 return false;
 
             SyntaxList<StatementSyntax> statements = block.Statements;

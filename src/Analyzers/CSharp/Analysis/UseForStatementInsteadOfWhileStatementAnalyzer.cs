@@ -52,7 +52,7 @@ namespace Roslynator.CSharp.Analysis
 
             StatementSyntax statement = whileStatement.Statement;
 
-            if (!(statement is BlockSyntax block))
+            if (statement is not BlockSyntax block)
                 return;
 
             SyntaxList<StatementSyntax> innerStatements = block.Statements;

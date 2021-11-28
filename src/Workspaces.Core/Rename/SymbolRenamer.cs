@@ -929,7 +929,7 @@ namespace Roslynator.Rename
                 {
                     foreach (ReferencedSymbol referencedSymbol in referencedSymbols)
                     {
-                        if (!(referencedSymbol.Definition is IMethodSymbol methodSymbol)
+                        if (referencedSymbol.Definition is not IMethodSymbol methodSymbol
                             || !methodSymbol.MethodKind.Is(MethodKind.PropertyGet, MethodKind.PropertySet, MethodKind.EventAdd, MethodKind.EventRemove))
                         {
                             foreach (Location location in referencedSymbol.Definition.Locations)

@@ -63,7 +63,7 @@ namespace Roslynator.CSharp.Refactorings
 
             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-            if (!(semanticModel.GetDeclaredSymbol(variable, context.CancellationToken) is ILocalSymbol localSymbol))
+            if (semanticModel.GetDeclaredSymbol(variable, context.CancellationToken) is not ILocalSymbol localSymbol)
                 return;
 
             string oldName = identifier.ValueText;

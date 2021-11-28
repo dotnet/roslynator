@@ -77,7 +77,7 @@ namespace Roslynator.CodeAnalysis.CSharp
         {
             BinaryExpressionInfo binaryExpressionInfo = SyntaxInfo.BinaryExpressionInfo(binaryExpression);
 
-            if (!(binaryExpressionInfo.Left is MemberAccessExpressionSyntax memberAccessExpression))
+            if (binaryExpressionInfo.Left is not MemberAccessExpressionSyntax memberAccessExpression)
                 memberAccessExpression = (MemberAccessExpressionSyntax)binaryExpressionInfo.Right;
 
             SimpleNameSyntax name = memberAccessExpression.Name;

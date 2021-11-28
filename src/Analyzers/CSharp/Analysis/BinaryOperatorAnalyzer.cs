@@ -73,7 +73,7 @@ namespace Roslynator.CSharp.Analysis
         {
             var simpleMemberAccess = (MemberAccessExpressionSyntax)context.Node;
 
-            if (!(simpleMemberAccess.Name is IdentifierNameSyntax identifierName))
+            if (simpleMemberAccess.Name is not IdentifierNameSyntax identifierName)
                 return;
 
             if (identifierName.Identifier.ValueText != "NaN")
@@ -220,10 +220,10 @@ namespace Roslynator.CSharp.Analysis
 
             bool IsReversedForStatement()
             {
-                if (!(left is IdentifierNameSyntax identifierName))
+                if (left is not IdentifierNameSyntax identifierName)
                     return false;
 
-                if (!(binaryExpression.WalkUpParentheses().Parent is ForStatementSyntax forStatement))
+                if (binaryExpression.WalkUpParentheses().Parent is not ForStatementSyntax forStatement)
                     return false;
 
                 VariableDeclarationSyntax declaration = forStatement.Declaration;

@@ -237,7 +237,7 @@ namespace Roslynator.CSharp
                     InvertBinaryExpression(binaryExpression));
             }
 
-            if (!(expression is ConditionalAccessExpressionSyntax conditionalAccess))
+            if (expression is not ConditionalAccessExpressionSyntax conditionalAccess)
                 return DefaultInvert(binaryExpression);
 
             if (conditionalAccess.Expression.Kind() != SyntaxKind.IdentifierName)
@@ -270,7 +270,7 @@ namespace Roslynator.CSharp
                     }
                 case InvocationExpressionSyntax invocation:
                     {
-                        if (!(invocation.Expression is MemberBindingExpressionSyntax memberBinding))
+                        if (invocation.Expression is not MemberBindingExpressionSyntax memberBinding)
                             return null;
 
                         return InvocationExpression(SimpleMemberAccessExpression(conditionalAccess.Expression, memberBinding.Name), invocation.ArgumentList);

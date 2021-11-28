@@ -73,7 +73,7 @@ namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
             if (expression == null)
                 return null;
 
-            if (!(semanticModel.GetTypeSymbol(expression, cancellationToken) is INamedTypeSymbol typeSymbol))
+            if (semanticModel.GetTypeSymbol(expression, cancellationToken) is not INamedTypeSymbol typeSymbol)
                 return null;
 
             if (!InheritsFromException(typeSymbol, exceptionSymbol))

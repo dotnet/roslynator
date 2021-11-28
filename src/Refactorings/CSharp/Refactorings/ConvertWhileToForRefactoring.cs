@@ -20,7 +20,7 @@ namespace Roslynator.CSharp.Refactorings
 
         public static async Task ComputeRefactoringAsync(RefactoringContext context, StatementListSelection selectedStatements)
         {
-            if (!(selectedStatements.Last() is WhileStatementSyntax whileStatement))
+            if (selectedStatements.Last() is not WhileStatementSyntax whileStatement)
                 return;
 
             if (selectedStatements.Count == 1)
@@ -93,7 +93,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 StatementSyntax statement = statements[i];
 
-                if (!(statement is LocalDeclarationStatementSyntax localDeclaration))
+                if (statement is not LocalDeclarationStatementSyntax localDeclaration)
                     return resultIndex;
 
                 VariableDeclarationSyntax declaration = localDeclaration.Declaration;
@@ -163,7 +163,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 StatementSyntax statement = selectedStatements[i];
 
-                if (!(statement is ExpressionStatementSyntax expressionStatement))
+                if (statement is not ExpressionStatementSyntax expressionStatement)
                     return false;
 
                 if (!CSharpFacts.CanBeInitializerExpressionInForStatement(expressionStatement.Expression.Kind()))

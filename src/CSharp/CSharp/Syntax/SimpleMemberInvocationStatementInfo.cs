@@ -93,7 +93,7 @@ namespace Roslynator.CSharp.Syntax
             ExpressionStatementSyntax expressionStatement,
             bool allowMissing = false)
         {
-            if (!(expressionStatement?.Expression is InvocationExpressionSyntax invocationExpression))
+            if (expressionStatement?.Expression is not InvocationExpressionSyntax invocationExpression)
                 return default;
 
             return CreateImpl(invocationExpression, allowMissing);

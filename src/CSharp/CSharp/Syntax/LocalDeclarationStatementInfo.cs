@@ -112,7 +112,7 @@ namespace Roslynator.CSharp.Syntax
             if (node?.Kind() != SyntaxKind.VariableDeclarator)
                 return default;
 
-            if (!(node?.Parent is VariableDeclarationSyntax declaration))
+            if (node?.Parent is not VariableDeclarationSyntax declaration)
                 return default;
 
             TypeSyntax type = declaration.Type;
@@ -120,7 +120,7 @@ namespace Roslynator.CSharp.Syntax
             if (!Check(type, allowMissing))
                 return default;
 
-            if (!(declaration.Parent is LocalDeclarationStatementSyntax localDeclarationStatement))
+            if (declaration.Parent is not LocalDeclarationStatementSyntax localDeclarationStatement)
                 return default;
 
             return new LocalDeclarationStatementInfo(localDeclarationStatement);

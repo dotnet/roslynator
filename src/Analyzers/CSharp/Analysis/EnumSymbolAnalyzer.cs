@@ -100,7 +100,7 @@ namespace Roslynator.CSharp.Analysis
 
                 foreach (ISymbol member in members)
                 {
-                    if (!(member is IFieldSymbol fieldSymbol))
+                    if (member is not IFieldSymbol fieldSymbol)
                         continue;
 
                     if (!fieldSymbol.HasConstantValue)
@@ -145,7 +145,7 @@ namespace Roslynator.CSharp.Analysis
 
                 foreach (ISymbol member in members)
                 {
-                    if (!(member is IFieldSymbol fieldSymbol))
+                    if (member is not IFieldSymbol fieldSymbol)
                         continue;
 
                     if (!fieldSymbol.HasConstantValue)

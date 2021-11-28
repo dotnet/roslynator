@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.Refactorings
 
             for (int i = 0; i < selectedStatements.Count; i++)
             {
-                if (!(selectedStatements[i] is IfStatementSyntax ifStatement))
+                if (selectedStatements[i] is not IfStatementSyntax ifStatement)
                     return;
 
                 if (!ifStatement.IsSimpleIf())
@@ -112,12 +112,12 @@ namespace Roslynator.CSharp.Refactorings
             if (statement2 == null)
                 return false;
 
-            if (!(statement1 is BlockSyntax block1))
+            if (statement1 is not BlockSyntax block1)
                 return CSharpFactory.AreEquivalent(statement1, statement2.SingleNonBlockStatementOrDefault());
 
             SyntaxList<StatementSyntax> statements1 = block1.Statements;
 
-            if (!(statement2 is BlockSyntax block2))
+            if (statement2 is not BlockSyntax block2)
                 return CSharpFactory.AreEquivalent(statement2, statement1.SingleNonBlockStatementOrDefault());
 
             SyntaxList<StatementSyntax> statements2 = block2.Statements;

@@ -132,10 +132,10 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
 
         private static ISymbol GetIndexerParameterSymbol(IdentifierNameSyntax identifierName, ISymbol symbol)
         {
-            if (!(symbol?.ContainingSymbol is IMethodSymbol methodSymbol))
+            if (symbol?.ContainingSymbol is not IMethodSymbol methodSymbol)
                 return null;
 
-            if (!(methodSymbol.AssociatedSymbol is IPropertySymbol propertySymbol))
+            if (methodSymbol.AssociatedSymbol is not IPropertySymbol propertySymbol)
                 return null;
 
             if (!propertySymbol.IsIndexer)

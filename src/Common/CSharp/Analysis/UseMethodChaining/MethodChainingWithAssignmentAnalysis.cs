@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.Analysis.UseMethodChaining
             if (statement.SpanOrLeadingTriviaContainsDirectives())
                 return false;
 
-            if (!(statement is ExpressionStatementSyntax expressionStatement))
+            if (statement is not ExpressionStatementSyntax expressionStatement)
                 return false;
 
             SimpleAssignmentExpressionInfo assignmentInfo = SyntaxInfo.SimpleAssignmentExpressionInfo(expressionStatement.Expression);
@@ -35,7 +35,7 @@ namespace Roslynator.CSharp.Analysis.UseMethodChaining
             if (!invocationInfo.Success)
                 return false;
 
-            if (!(WalkDownMethodChain(invocationInfo).Expression is IdentifierNameSyntax identifierName))
+            if (WalkDownMethodChain(invocationInfo).Expression is not IdentifierNameSyntax identifierName)
                 return false;
 
             if (name != identifierName.Identifier.ValueText)

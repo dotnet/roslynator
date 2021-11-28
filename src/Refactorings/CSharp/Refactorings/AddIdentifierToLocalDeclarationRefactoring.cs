@@ -66,7 +66,7 @@ namespace Roslynator.CSharp.Refactorings
 
         public static async Task ComputeRefactoringAsync(RefactoringContext context, ExpressionStatementSyntax expressionStatement)
         {
-            if (!(expressionStatement.Expression is TypeSyntax expression))
+            if (expressionStatement.Expression is not TypeSyntax expression)
                 return;
 
             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);

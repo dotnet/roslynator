@@ -70,10 +70,10 @@ namespace Roslynator.CSharp.Refactorings
             if (variableDeclarator.Initializer != null)
                 return;
 
-            if (!(variableDeclarator.Parent is VariableDeclarationSyntax variableDeclaration))
+            if (variableDeclarator.Parent is not VariableDeclarationSyntax variableDeclaration)
                 return;
 
-            if (!(variableDeclaration.Parent is FieldDeclarationSyntax fieldDeclaration))
+            if (variableDeclaration.Parent is not FieldDeclarationSyntax fieldDeclaration)
                 return;
 
             if (!CanRefactor(fieldDeclaration))
@@ -92,7 +92,7 @@ namespace Roslynator.CSharp.Refactorings
             if (fieldDeclaration.Modifiers.ContainsAny(SyntaxKind.StaticKeyword, SyntaxKind.ConstKeyword))
                 return false;
 
-            if (!(fieldDeclaration.Parent is TypeDeclarationSyntax typeDeclaration))
+            if (fieldDeclaration.Parent is not TypeDeclarationSyntax typeDeclaration)
                 return false;
 
             if (!typeDeclaration.IsKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.RecordStructDeclaration))
@@ -143,7 +143,7 @@ namespace Roslynator.CSharp.Refactorings
 
             for (int i = 0; i < members.Count; i++)
             {
-                if (!(members[i] is ConstructorDeclarationSyntax constructorDeclaration))
+                if (members[i] is not ConstructorDeclarationSyntax constructorDeclaration)
                     continue;
 
                 if (constructorDeclaration.Modifiers.Contains(SyntaxKind.StaticKeyword))

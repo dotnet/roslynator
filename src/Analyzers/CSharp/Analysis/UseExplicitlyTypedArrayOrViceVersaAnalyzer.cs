@@ -89,7 +89,7 @@ namespace Roslynator.CSharp.Analysis
                 }
             }
 
-            if (!(context.SemanticModel.GetTypeSymbol(expression, context.CancellationToken) is IArrayTypeSymbol arrayTypeSymbol))
+            if (context.SemanticModel.GetTypeSymbol(expression, context.CancellationToken) is not IArrayTypeSymbol arrayTypeSymbol)
                 return;
 
             if (!arrayTypeSymbol.ElementType.SupportsExplicitDeclaration())

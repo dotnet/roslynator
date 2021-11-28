@@ -126,7 +126,7 @@ namespace Roslynator.CSharp.Analysis
             in SimpleMemberInvocationExpressionInfo invocationInfo,
             ArgumentSyntax argument)
         {
-            if (!(argument.Parent is ArgumentListSyntax argumentList))
+            if (argument.Parent is not ArgumentListSyntax argumentList)
                 return;
 
             SeparatedSyntaxList<ArgumentSyntax> arguments = argumentList.Arguments;

@@ -43,7 +43,7 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            if (!(semanticModel.GetSymbol(node, cancellationToken) is IPropertySymbol propertySymbol))
+            if (semanticModel.GetSymbol(node, cancellationToken) is not IPropertySymbol propertySymbol)
                 return null;
 
             if (propertySymbol.Language != LanguageNames.CSharp)

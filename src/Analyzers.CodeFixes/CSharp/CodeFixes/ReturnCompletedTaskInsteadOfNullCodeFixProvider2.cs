@@ -34,7 +34,7 @@ namespace Roslynator.CSharp.CodeFixes
             if (!TryFindNode(root, context.Span, out ExpressionSyntax expression))
                 return;
 
-            if (!(expression.WalkUpParentheses() is ConditionalAccessExpressionSyntax conditionalAccess))
+            if (expression.WalkUpParentheses() is not ConditionalAccessExpressionSyntax conditionalAccess)
                 return;
 
             Diagnostic diagnostic = context.Diagnostics[0];

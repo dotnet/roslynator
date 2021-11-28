@@ -44,7 +44,7 @@ namespace Roslynator.CSharp.Refactorings
                 if (containingType == null)
                     return;
 
-                if (!(eventSymbol.Type is INamedTypeSymbol eventHandlerType))
+                if (eventSymbol.Type is not INamedTypeSymbol eventHandlerType)
                     continue;
 
                 ITypeSymbol eventArgsSymbol = GetEventArgsSymbol(eventHandlerType, semanticModel);

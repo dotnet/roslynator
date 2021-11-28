@@ -101,10 +101,10 @@ namespace Roslynator.CSharp.Analysis
             if (simpleLambda.AsyncKeyword.IsKind(SyntaxKind.AsyncKeyword))
                 return;
 
-            if (!(simpleLambda.Body is BlockSyntax body))
+            if (simpleLambda.Body is not BlockSyntax body)
                 return;
 
-            if (!(context.SemanticModel.GetSymbol(simpleLambda, context.CancellationToken) is IMethodSymbol methodSymbol))
+            if (context.SemanticModel.GetSymbol(simpleLambda, context.CancellationToken) is not IMethodSymbol methodSymbol)
                 return;
 
             if (!IsTaskLike(methodSymbol.ReturnType))
@@ -121,10 +121,10 @@ namespace Roslynator.CSharp.Analysis
             if (parenthesizedLambda.AsyncKeyword.IsKind(SyntaxKind.AsyncKeyword))
                 return;
 
-            if (!(parenthesizedLambda.Body is BlockSyntax body))
+            if (parenthesizedLambda.Body is not BlockSyntax body)
                 return;
 
-            if (!(context.SemanticModel.GetSymbol(parenthesizedLambda, context.CancellationToken) is IMethodSymbol methodSymbol))
+            if (context.SemanticModel.GetSymbol(parenthesizedLambda, context.CancellationToken) is not IMethodSymbol methodSymbol)
                 return;
 
             if (!IsTaskLike(methodSymbol.ReturnType))
@@ -146,7 +146,7 @@ namespace Roslynator.CSharp.Analysis
             if (body == null)
                 return;
 
-            if (!(context.SemanticModel.GetSymbol(anonymousMethod, context.CancellationToken) is IMethodSymbol methodSymbol))
+            if (context.SemanticModel.GetSymbol(anonymousMethod, context.CancellationToken) is not IMethodSymbol methodSymbol)
                 return;
 
             if (!IsTaskLike(methodSymbol.ReturnType))

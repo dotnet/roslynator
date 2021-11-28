@@ -47,10 +47,10 @@ namespace Roslynator.CSharp.Analysis
         {
             var elseClause = (ElseClauseSyntax)context.Node;
 
-            if (!(elseClause.Statement is BlockSyntax block))
+            if (elseClause.Statement is not BlockSyntax block)
                 return;
 
-            if (!(block.Statements.SingleOrDefault(shouldThrow: false) is IfStatementSyntax ifStatement))
+            if (block.Statements.SingleOrDefault(shouldThrow: false) is not IfStatementSyntax ifStatement)
                 return;
 
             if (!elseClause.ElseKeyword.TrailingTrivia.IsEmptyOrWhitespace()

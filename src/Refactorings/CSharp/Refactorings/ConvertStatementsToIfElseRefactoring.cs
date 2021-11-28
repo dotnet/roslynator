@@ -21,7 +21,7 @@ namespace Roslynator.CSharp.Refactorings
 
             for (int i = 0; i < selectedStatements.Count - 1; i++)
             {
-                if (!(selectedStatements[i] is IfStatementSyntax ifStatement))
+                if (selectedStatements[i] is not IfStatementSyntax ifStatement)
                     break;
 
                 foreach (IfStatementOrElseClause ifOrElse in ifStatement.AsCascade())

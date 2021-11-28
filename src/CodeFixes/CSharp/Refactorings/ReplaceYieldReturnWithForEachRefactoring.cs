@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.Refactorings
 
             ITypeSymbol type = typeInfo.Type;
 
-            if (!(type is INamedTypeSymbol namedTypeSymbol))
+            if (type is not INamedTypeSymbol namedTypeSymbol)
                 return;
 
             ITypeSymbol convertedType = typeInfo.ConvertedType;

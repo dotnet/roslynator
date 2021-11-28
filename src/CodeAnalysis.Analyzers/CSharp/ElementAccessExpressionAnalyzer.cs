@@ -60,7 +60,7 @@ namespace Roslynator.CodeAnalysis.CSharp
 
             var memberAccessExpression = (MemberAccessExpressionSyntax)subtractExpressionInfo.Left;
 
-            if (!(memberAccessExpression.Name is IdentifierNameSyntax identifierName))
+            if (memberAccessExpression.Name is not IdentifierNameSyntax identifierName)
                 return;
 
             if (identifierName.Identifier.ValueText != "Count")

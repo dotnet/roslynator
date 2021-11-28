@@ -40,7 +40,7 @@ namespace Roslynator.CSharp.Analysis
             if (methodSymbol.Parameters.Any())
                 return;
 
-            if (!(methodSymbol.ReturnType is IArrayTypeSymbol arrayType))
+            if (methodSymbol.ReturnType is not IArrayTypeSymbol arrayType)
                 return;
 
             if (arrayType.ElementType.SpecialType != SpecialType.System_Char)

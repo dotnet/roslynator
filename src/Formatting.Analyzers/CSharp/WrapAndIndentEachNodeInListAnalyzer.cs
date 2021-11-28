@@ -141,7 +141,7 @@ namespace Roslynator.Formatting.CSharp
                     else if (isSingleLineBetween)
                     {
                         if (i < count - 1
-                            || !(node2 is ArgumentSyntax argument)
+                            || node2 is not ArgumentSyntax argument
                             || !argument.Expression.IsKind(SyntaxKind.AnonymousMethodExpression, SyntaxKind.SimpleLambdaExpression, SyntaxKind.ParenthesizedLambdaExpression))
                         {
                             ReportDiagnostic();

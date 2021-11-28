@@ -21,7 +21,7 @@ namespace Roslynator.CSharp.Refactorings
             SyntaxNode declaration,
             SemanticModel semanticModel)
         {
-            if (!(semanticModel.GetDeclaredSymbol(declaration, context.CancellationToken) is IMethodSymbol methodSymbol))
+            if (semanticModel.GetDeclaredSymbol(declaration, context.CancellationToken) is not IMethodSymbol methodSymbol)
                 return;
 
             ITypeSymbol typeSymbol = GetElementType(methodSymbol.ReturnType, semanticModel);

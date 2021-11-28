@@ -164,7 +164,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                             parent = parent.Parent;
 
-                            if (!(parent is VariableDeclarationSyntax variableDeclaration))
+                            if (parent is not VariableDeclarationSyntax variableDeclaration)
                                 break;
 
                             if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveConstModifier)
@@ -462,7 +462,7 @@ namespace Roslynator.CSharp.CodeFixes
                             if (symbolInfo.CandidateReason != CandidateReason.NotAVariable)
                                 return;
 
-                            if (!(symbolInfo.CandidateSymbols.SingleOrDefault(shouldThrow: false) is ILocalSymbol localSymbol))
+                            if (symbolInfo.CandidateSymbols.SingleOrDefault(shouldThrow: false) is not ILocalSymbol localSymbol)
                                 return;
 
                             if (!localSymbol.IsConst)
@@ -480,7 +480,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                             node = node.Parent;
 
-                            if (!(node is LocalDeclarationStatementSyntax localDeclaration))
+                            if (node is not LocalDeclarationStatementSyntax localDeclaration)
                                 return;
 
                             SyntaxToken constModifier = localDeclaration.Modifiers.Find(SyntaxKind.ConstKeyword);
@@ -512,13 +512,13 @@ namespace Roslynator.CSharp.CodeFixes
                             if (symbolInfo.CandidateReason != CandidateReason.NotAVariable)
                                 return;
 
-                            if (!(symbolInfo.CandidateSymbols.SingleOrDefault(shouldThrow: false) is IFieldSymbol fieldSymbol))
+                            if (symbolInfo.CandidateSymbols.SingleOrDefault(shouldThrow: false) is not IFieldSymbol fieldSymbol)
                                 return;
 
                             if (fieldSymbol.DeclaredAccessibility != Accessibility.Private)
                                 return;
 
-                            if (!(fieldSymbol.GetSyntax().Parent.Parent is FieldDeclarationSyntax fieldDeclaration))
+                            if (fieldSymbol.GetSyntax().Parent.Parent is not FieldDeclarationSyntax fieldDeclaration)
                                 return;
 
                             TypeDeclarationSyntax containingTypeDeclaration = fieldDeclaration.FirstAncestor<TypeDeclarationSyntax>();
@@ -697,13 +697,13 @@ namespace Roslynator.CSharp.CodeFixes
             ExpressionSyntax expression,
             SemanticModel semanticModel)
         {
-            if (!(expression.Parent is AssignmentExpressionSyntax assignmentExpression))
+            if (expression.Parent is not AssignmentExpressionSyntax assignmentExpression)
                 return;
 
             if (expression != assignmentExpression.Right)
                 return;
 
-            if (!(assignmentExpression.Parent is ExpressionStatementSyntax expressionStatement))
+            if (assignmentExpression.Parent is not ExpressionStatementSyntax expressionStatement)
                 return;
 
             ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, context.CancellationToken);

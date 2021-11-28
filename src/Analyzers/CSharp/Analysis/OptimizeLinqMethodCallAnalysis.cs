@@ -347,7 +347,7 @@ namespace Roslynator.CSharp.Analysis
             if (!lambda.Success)
                 return;
 
-            if (!(lambda.Body is ExpressionSyntax))
+            if (lambda.Body is not ExpressionSyntax)
                 return;
 
             SingleParameterLambdaExpressionInfo lambda2 = SyntaxInfo.SingleParameterLambdaExpressionInfo(argument2.Expression);
@@ -355,7 +355,7 @@ namespace Roslynator.CSharp.Analysis
             if (!lambda2.Success)
                 return;
 
-            if (!(lambda2.Body is ExpressionSyntax))
+            if (lambda2.Body is not ExpressionSyntax)
                 return;
 
             if (!lambda.Parameter.Identifier.ValueText.Equals(lambda2.Parameter.Identifier.ValueText, StringComparison.Ordinal))

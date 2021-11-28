@@ -77,7 +77,7 @@ namespace Roslynator.CSharp.CodeFixes
                     case CompilerDiagnosticIdentifiers.CS0713_StaticClassCannotDeriveFromType:
                     case CompilerDiagnosticIdentifiers.CS0714_StaticClassCannotImplementInterfaces:
                         {
-                            if (!(baseList.Parent is ClassDeclarationSyntax classDeclaration))
+                            if (baseList.Parent is not ClassDeclarationSyntax classDeclaration)
                                 break;
 
                             if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.MakeClassNonStatic))

@@ -219,13 +219,13 @@ namespace Roslynator.CSharp.CodeFixes
                             if (symbolInfo.CandidateReason != CandidateReason.NotAVariable)
                                 return;
 
-                            if (!(symbolInfo.CandidateSymbols.SingleOrDefault(shouldThrow: false) is IFieldSymbol fieldSymbol))
+                            if (symbolInfo.CandidateSymbols.SingleOrDefault(shouldThrow: false) is not IFieldSymbol fieldSymbol)
                                 return;
 
                             if (fieldSymbol.DeclaredAccessibility != Accessibility.Private)
                                 return;
 
-                            if (!(fieldSymbol.GetSyntax().Parent.Parent is FieldDeclarationSyntax fieldDeclaration))
+                            if (fieldSymbol.GetSyntax().Parent.Parent is not FieldDeclarationSyntax fieldDeclaration)
                                 return;
 
                             TypeDeclarationSyntax containingTypeDeclaration = fieldDeclaration.FirstAncestor<TypeDeclarationSyntax>();

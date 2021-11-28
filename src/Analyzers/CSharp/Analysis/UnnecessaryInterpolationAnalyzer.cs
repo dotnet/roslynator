@@ -48,7 +48,7 @@ namespace Roslynator.CSharp.Analysis
             if (!stringLiteralInfo.Success)
                 return;
 
-            if (!(interpolation.Parent is InterpolatedStringExpressionSyntax interpolatedString))
+            if (interpolation.Parent is not InterpolatedStringExpressionSyntax interpolatedString)
                 return;
 
             if (interpolatedString.StringStartToken.ValueText.Contains("@") != stringLiteralInfo.IsVerbatim)

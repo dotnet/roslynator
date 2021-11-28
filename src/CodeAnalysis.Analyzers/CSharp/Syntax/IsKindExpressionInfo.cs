@@ -146,10 +146,10 @@ namespace Roslynator.CSharp.Syntax
                     }
                 case ConditionalAccessExpressionSyntax conditionalAccess:
                     {
-                        if (!(conditionalAccess.WhenNotNull is InvocationExpressionSyntax invocationExpression))
+                        if (conditionalAccess.WhenNotNull is not InvocationExpressionSyntax invocationExpression)
                             break;
 
-                        if (!(invocationExpression.Expression is MemberBindingExpressionSyntax memberBindingExpression))
+                        if (invocationExpression.Expression is not MemberBindingExpressionSyntax memberBindingExpression)
                             break;
 
                         if (expression2.IsKind(SyntaxKind.TrueLiteralExpression))

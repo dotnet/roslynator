@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Analysis
             if (trivia.Kind() != SyntaxKind.SingleLineCommentTrivia)
                 return default;
 
-            if (!(trivia.Token.Parent is MemberDeclarationSyntax memberDeclaration))
+            if (trivia.Token.Parent is not MemberDeclarationSyntax memberDeclaration)
                 return default;
 
             TextSpan span = trivia.Span;

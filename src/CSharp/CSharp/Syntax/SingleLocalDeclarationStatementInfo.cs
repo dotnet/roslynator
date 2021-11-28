@@ -152,7 +152,7 @@ namespace Roslynator.CSharp.Syntax
             if (!Check(variableDeclaration, allowMissing))
                 return default;
 
-            if (!(variableDeclaration.Parent is LocalDeclarationStatementSyntax localDeclarationStatement))
+            if (variableDeclaration.Parent is not LocalDeclarationStatementSyntax localDeclarationStatement)
                 return default;
 
             VariableDeclaratorSyntax variableDeclarator = variableDeclaration.Variables.SingleOrDefault(shouldThrow: false);
@@ -170,16 +170,16 @@ namespace Roslynator.CSharp.Syntax
             if (node?.Kind() != SyntaxKind.EqualsValueClause)
                 return default;
 
-            if (!(node.Parent is VariableDeclaratorSyntax declarator))
+            if (node.Parent is not VariableDeclaratorSyntax declarator)
                 return default;
 
-            if (!(declarator.Parent is VariableDeclarationSyntax declaration))
+            if (declarator.Parent is not VariableDeclarationSyntax declaration)
                 return default;
 
             if (declaration.Variables.Count != 1)
                 return default;
 
-            if (!(declaration.Parent is LocalDeclarationStatementSyntax localDeclarationStatement))
+            if (declaration.Parent is not LocalDeclarationStatementSyntax localDeclarationStatement)
                 return default;
 
             return new SingleLocalDeclarationStatementInfo(localDeclarationStatement, declarator);

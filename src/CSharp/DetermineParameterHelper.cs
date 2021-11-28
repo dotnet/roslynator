@@ -19,7 +19,7 @@ namespace Roslynator.CSharp
             bool allowCandidate = false,
             CancellationToken cancellationToken = default)
         {
-            if (!(argument.Parent is BaseArgumentListSyntax argumentList))
+            if (argument.Parent is not BaseArgumentListSyntax argumentList)
                 return null;
 
             if (argumentList.Parent == null)
@@ -90,10 +90,10 @@ namespace Roslynator.CSharp
 
             SyntaxNode parent = attributeArgument.Parent;
 
-            if (!(parent is AttributeArgumentListSyntax argumentList))
+            if (parent is not AttributeArgumentListSyntax argumentList)
                 return null;
 
-            if (!(argumentList.Parent is AttributeSyntax attribute))
+            if (argumentList.Parent is not AttributeSyntax attribute)
                 return null;
 
             ISymbol symbol = GetSymbol(attribute, allowCandidate, semanticModel, cancellationToken);

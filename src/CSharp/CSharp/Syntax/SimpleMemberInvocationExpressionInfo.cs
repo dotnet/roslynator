@@ -115,7 +115,7 @@ namespace Roslynator.CSharp.Syntax
             InvocationExpressionSyntax invocationExpression,
             bool allowMissing = false)
         {
-            if (!(invocationExpression?.Expression is MemberAccessExpressionSyntax memberAccessExpression))
+            if (invocationExpression?.Expression is not MemberAccessExpressionSyntax memberAccessExpression)
                 return default;
 
             if (memberAccessExpression.Kind() != SyntaxKind.SimpleMemberAccessExpression)

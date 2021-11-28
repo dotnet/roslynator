@@ -158,7 +158,7 @@ namespace Roslynator.CSharp.Refactorings
                     }
             }
 
-            return !(parent is AssignmentExpressionSyntax);
+            return parent is not AssignmentExpressionSyntax;
         }
 
         public static async Task<Document> RefactorAsync(

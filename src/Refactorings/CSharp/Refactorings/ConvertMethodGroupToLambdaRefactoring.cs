@@ -29,7 +29,7 @@ namespace Roslynator.CSharp.Refactorings
 
             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-            if (!(semanticModel.GetSymbol(expression, context.CancellationToken) is IMethodSymbol methodSymbol))
+            if (semanticModel.GetSymbol(expression, context.CancellationToken) is not IMethodSymbol methodSymbol)
                 return;
 
             context.RegisterRefactoring(

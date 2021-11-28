@@ -214,7 +214,7 @@ namespace Roslynator.CSharp.Analysis
             if (!simpleAssignmentStatement.Success)
                 return;
 
-            if (!(simpleAssignmentStatement.Left is ElementAccessExpressionSyntax elementAccessExpression))
+            if (simpleAssignmentStatement.Left is not ElementAccessExpressionSyntax elementAccessExpression)
                 return;
 
             if (!CSharpFactory.AreEquivalent(invocationInfo.Expression, elementAccessExpression.Expression))

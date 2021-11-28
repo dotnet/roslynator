@@ -97,7 +97,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             SyntaxDebug.Assert(syntax.IsKind(SyntaxKind.EventDeclaration, SyntaxKind.EventFieldDeclaration, SyntaxKind.FieldDeclaration, SyntaxKind.MethodDeclaration, SyntaxKind.PropertyDeclaration), syntax);
 
-            if (!(syntax is MemberDeclarationSyntax memberDeclaration))
+            if (syntax is not MemberDeclarationSyntax memberDeclaration)
                 return;
 
             if (SyntaxInfo.ModifierListInfo(memberDeclaration).IsStatic)

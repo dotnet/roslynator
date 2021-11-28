@@ -55,7 +55,7 @@ namespace Roslynator.CSharp.Analysis.AddExceptionToDocumentationComment
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            if (!(semanticModel.GetTypeSymbol(expression, cancellationToken) is INamedTypeSymbol typeSymbol))
+            if (semanticModel.GetTypeSymbol(expression, cancellationToken) is not INamedTypeSymbol typeSymbol)
                 return Fail;
 
             if (!InheritsFromException(typeSymbol, exceptionSymbol))
@@ -63,7 +63,7 @@ namespace Roslynator.CSharp.Analysis.AddExceptionToDocumentationComment
 
             ISymbol declarationSymbol = GetDeclarationSymbol(node.SpanStart, semanticModel, cancellationToken);
 
-            if (!(declarationSymbol?.GetSyntax(cancellationToken) is MemberDeclarationSyntax containingMember))
+            if (declarationSymbol?.GetSyntax(cancellationToken) is not MemberDeclarationSyntax containingMember)
                 return Fail;
 
             DocumentationCommentTriviaSyntax comment = containingMember.GetSingleLineDocumentationComment();
@@ -196,7 +196,7 @@ namespace Roslynator.CSharp.Analysis.AddExceptionToDocumentationComment
 
         private static ISymbol GetDeclarationSymbol(ISymbol symbol)
         {
-            if (!(symbol is IMethodSymbol methodSymbol))
+            if (symbol is not IMethodSymbol methodSymbol)
                 return null;
 
             MethodKind methodKind = methodSymbol.MethodKind;

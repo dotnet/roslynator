@@ -42,7 +42,7 @@ namespace Roslynator.CSharp.Analysis
             if (castExpression.ContainsDiagnostics)
                 return;
 
-            if (!(castExpression.Parent is ParenthesizedExpressionSyntax parenthesizedExpression))
+            if (castExpression.Parent is not ParenthesizedExpressionSyntax parenthesizedExpression)
                 return;
 
             ExpressionSyntax accessedExpression = GetAccessedExpression(parenthesizedExpression.Parent);

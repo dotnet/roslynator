@@ -50,7 +50,7 @@ namespace Roslynator.CSharp.Analysis
 
             foreach (MemberDeclarationSyntax member in classDeclaration.Members)
             {
-                if (!(member is MethodDeclarationSyntax methodDeclaration))
+                if (member is not MethodDeclarationSyntax methodDeclaration)
                     continue;
 
                 if (!methodDeclaration.Modifiers.Contains(SyntaxKind.StaticKeyword))

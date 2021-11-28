@@ -106,7 +106,7 @@ namespace Roslynator.CSharp.Syntax
             TypeParameterConstraintSyntax constraint,
             bool allowMissing = false)
         {
-            if (!(constraint?.Parent is TypeParameterConstraintClauseSyntax constraintClause))
+            if (constraint?.Parent is not TypeParameterConstraintClauseSyntax constraintClause)
                 return default;
 
             IdentifierNameSyntax name = constraintClause.Name;

@@ -50,7 +50,7 @@ namespace Roslynator.CSharp.Analysis
             if (elseClause.Statement?.IsKind(SyntaxKind.IfStatement) != false)
                 return false;
 
-            if (!(elseClause.Parent is IfStatementSyntax ifStatement))
+            if (elseClause.Parent is not IfStatementSyntax ifStatement)
                 return false;
 
             if (!ifStatement.IsTopmostIf())

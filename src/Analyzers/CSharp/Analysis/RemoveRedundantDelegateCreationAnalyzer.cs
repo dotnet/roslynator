@@ -93,13 +93,13 @@ namespace Roslynator.CSharp.Analysis
             SemanticModel semanticModel = context.SemanticModel;
             CancellationToken cancellationToken = context.CancellationToken;
 
-            if (!(semanticModel.GetSymbol(assignmentExpression, cancellationToken) is IMethodSymbol methodSymbol))
+            if (semanticModel.GetSymbol(assignmentExpression, cancellationToken) is not IMethodSymbol methodSymbol)
                 return;
 
             if (!methodSymbol.MethodKind.Is(MethodKind.EventAdd, MethodKind.EventRemove))
                 return;
 
-            if (!(methodSymbol.Parameters.SingleOrDefault(shouldThrow: false)?.Type is INamedTypeSymbol typeSymbol))
+            if (methodSymbol.Parameters.SingleOrDefault(shouldThrow: false)?.Type is not INamedTypeSymbol typeSymbol)
                 return;
 
             if (!SymbolUtility.IsEventHandlerMethod(typeSymbol.DelegateInvokeMethod))

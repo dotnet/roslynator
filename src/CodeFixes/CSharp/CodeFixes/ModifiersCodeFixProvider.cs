@@ -317,7 +317,7 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case CompilerDiagnosticIdentifiers.CS1106_ExtensionMethodMustBeDefinedInNonGenericStaticClass:
                         {
-                            if (!(node is ClassDeclarationSyntax classDeclaration))
+                            if (node is not ClassDeclarationSyntax classDeclaration)
                                 return;
 
                             if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddStaticModifier)

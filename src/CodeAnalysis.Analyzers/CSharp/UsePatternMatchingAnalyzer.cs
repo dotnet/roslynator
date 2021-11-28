@@ -140,7 +140,7 @@ namespace Roslynator.CodeAnalysis.CSharp
 
                 var memberAccess = (MemberAccessExpressionSyntax)value;
 
-                if (!(memberAccess.Name is IdentifierNameSyntax identifierName))
+                if (memberAccess.Name is not IdentifierNameSyntax identifierName)
                     return;
 
                 string kindName = identifierName.Identifier.ValueText;
@@ -168,10 +168,10 @@ namespace Roslynator.CodeAnalysis.CSharp
                 if (!localStatement.Success)
                     return;
 
-                if (!(localStatement.Value is CastExpressionSyntax castExpression))
+                if (localStatement.Value is not CastExpressionSyntax castExpression)
                     return;
 
-                if (!(castExpression.Expression is IdentifierNameSyntax localName))
+                if (castExpression.Expression is not IdentifierNameSyntax localName)
                     return;
 
                 if (name != localName.Identifier.ValueText)
@@ -237,7 +237,7 @@ namespace Roslynator.CodeAnalysis.CSharp
                 if (invocationInfo.NameText != "Kind")
                     return null;
 
-                if (!(invocationInfo.Expression is IdentifierNameSyntax identifierName))
+                if (invocationInfo.Expression is not IdentifierNameSyntax identifierName)
                     return null;
 
                 return identifierName.Identifier.ValueText;
@@ -261,7 +261,7 @@ namespace Roslynator.CodeAnalysis.CSharp
             if (!optionalConstantValue.HasValue)
                 return;
 
-            if (!(optionalConstantValue.Value is ushort value))
+            if (optionalConstantValue.Value is not ushort value)
                 return;
 
             if (!_syntaxKindValuesToNames.TryGetValue(value, out string name))
@@ -277,7 +277,7 @@ namespace Roslynator.CodeAnalysis.CSharp
                 case IsKindExpressionStyle.Kind:
                 case IsKindExpressionStyle.KindConditional:
                     {
-                        if (!(ifStatement.Statement is BlockSyntax block))
+                        if (ifStatement.Statement is not BlockSyntax block)
                             return;
 
                         Analyze(block.Statements.FirstOrDefault());
@@ -311,7 +311,7 @@ namespace Roslynator.CodeAnalysis.CSharp
                 if (!localInfo.Success)
                     return;
 
-                if (!(localInfo.Value is CastExpressionSyntax castExpression))
+                if (localInfo.Value is not CastExpressionSyntax castExpression)
                     return;
 
                 if (!IsFixableSyntaxSymbol(castExpression.Type, name, semanticModel, cancellationToken))

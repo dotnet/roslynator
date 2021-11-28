@@ -38,7 +38,7 @@ namespace Roslynator.CSharp.Refactorings
             if (!simpleAssignment.Left.IsKind(SyntaxKind.IdentifierName))
                 return;
 
-            if (!(simpleAssignment.Right is IdentifierNameSyntax identifierName))
+            if (simpleAssignment.Right is not IdentifierNameSyntax identifierName)
                 return;
 
             if (identifierName.Identifier.ValueText != "value")

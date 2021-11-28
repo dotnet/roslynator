@@ -171,7 +171,7 @@ namespace Roslynator.CSharp.Syntax
                         if (isNotPattern)
                             pattern = ((UnaryPatternSyntax)pattern).Pattern;
 
-                        if (!(pattern is ConstantPatternSyntax constantPattern))
+                        if (pattern is not ConstantPatternSyntax constantPattern)
                             break;
 
                         if (!constantPattern.Expression.IsKind(SyntaxKind.NullLiteralExpression))
@@ -223,7 +223,7 @@ namespace Roslynator.CSharp.Syntax
 
                                     var isPatternExpression = (IsPatternExpressionSyntax)operand;
 
-                                    if (!(isPatternExpression.Pattern is ConstantPatternSyntax constantPattern))
+                                    if (isPatternExpression.Pattern is not ConstantPatternSyntax constantPattern)
                                         break;
 
                                     if (!constantPattern.Expression.IsKind(SyntaxKind.NullLiteralExpression))
@@ -317,7 +317,7 @@ namespace Roslynator.CSharp.Syntax
             if ((allowedStyles & (NullCheckStyles.HasValueProperty)) == 0)
                 return default;
 
-            if (!(expression is MemberAccessExpressionSyntax memberAccessExpression))
+            if (expression is not MemberAccessExpressionSyntax memberAccessExpression)
                 return default;
 
             if (memberAccessExpression.Kind() != SyntaxKind.SimpleMemberAccessExpression)

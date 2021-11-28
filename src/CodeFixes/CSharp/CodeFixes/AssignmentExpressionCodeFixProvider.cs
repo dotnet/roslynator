@@ -31,7 +31,7 @@ namespace Roslynator.CSharp.CodeFixes
             if (!TryFindFirstAncestorOrSelf(root, context.Span, out AssignmentExpressionSyntax assignmentExpression))
                 return;
 
-            if (!(assignmentExpression.Parent is ExpressionStatementSyntax expressionStatement))
+            if (assignmentExpression.Parent is not ExpressionStatementSyntax expressionStatement)
                 return;
 
             CodeFixRegistrator.RemoveStatement(context, diagnostic, expressionStatement, title: "Remove assignment");

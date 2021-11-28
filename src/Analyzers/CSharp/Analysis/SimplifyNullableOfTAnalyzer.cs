@@ -60,7 +60,7 @@ namespace Roslynator.CSharp.Analysis
                 return;
             }
 
-            if (!(context.SemanticModel.GetSymbol(genericName, context.CancellationToken) is INamedTypeSymbol namedTypeSymbol))
+            if (context.SemanticModel.GetSymbol(genericName, context.CancellationToken) is not INamedTypeSymbol namedTypeSymbol)
                 return;
 
             if (!namedTypeSymbol.IsNullableType())
@@ -76,7 +76,7 @@ namespace Roslynator.CSharp.Analysis
             if (qualifiedName.IsParentKind(SyntaxKind.UsingDirective, SyntaxKind.QualifiedCref))
                 return;
 
-            if (!(qualifiedName.Right is GenericNameSyntax genericName))
+            if (qualifiedName.Right is not GenericNameSyntax genericName)
                 return;
 
             if (genericName
@@ -91,7 +91,7 @@ namespace Roslynator.CSharp.Analysis
             if (IsWithinNameOfExpression(qualifiedName, context.SemanticModel, context.CancellationToken))
                 return;
 
-            if (!(context.SemanticModel.GetSymbol(qualifiedName, context.CancellationToken) is INamedTypeSymbol typeSymbol))
+            if (context.SemanticModel.GetSymbol(qualifiedName, context.CancellationToken) is not INamedTypeSymbol typeSymbol)
                 return;
 
             if (CSharpFacts.IsPredefinedType(typeSymbol.SpecialType))

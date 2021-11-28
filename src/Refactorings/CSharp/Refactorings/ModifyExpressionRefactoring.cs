@@ -108,7 +108,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static void CallToString(RefactoringContext context, ExpressionSyntax expression, ITypeSymbol destinationType)
         {
-            if (!(expression is LiteralExpressionSyntax))
+            if (expression is not LiteralExpressionSyntax)
                 CallToMethodRefactoring.ComputeRefactoring(context, expression, destinationType, "ToString");
         }
 
@@ -117,7 +117,7 @@ namespace Roslynator.CSharp.Refactorings
             ExpressionSyntax expression,
             SemanticModel semanticModel)
         {
-            if (!(semanticModel.GetTypeSymbol(expression, context.CancellationToken) is INamedTypeSymbol typeSymbol))
+            if (semanticModel.GetTypeSymbol(expression, context.CancellationToken) is not INamedTypeSymbol typeSymbol)
                 return;
 
             INamedTypeSymbol constructedFrom = typeSymbol.ConstructedFrom;

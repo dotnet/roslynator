@@ -600,7 +600,7 @@ namespace Roslynator.CSharp.Analysis.If
 
             var memberAccessExpression = (MemberAccessExpressionSyntax)expression;
 
-            if (!(memberAccessExpression.Name is IdentifierNameSyntax identifierName))
+            if (memberAccessExpression.Name is not IdentifierNameSyntax identifierName)
                 return null;
 
             if (!string.Equals(identifierName.Identifier.ValueText, "Value", StringComparison.Ordinal))

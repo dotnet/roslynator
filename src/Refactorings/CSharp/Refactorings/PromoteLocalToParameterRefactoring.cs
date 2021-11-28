@@ -18,7 +18,7 @@ namespace Roslynator.CSharp.Refactorings
             LocalDeclarationStatementSyntax localDeclaration,
             SemanticModel semanticModel)
         {
-            if (!(semanticModel.GetEnclosingSymbol(localDeclaration.SpanStart, context.CancellationToken) is IMethodSymbol methodSymbol))
+            if (semanticModel.GetEnclosingSymbol(localDeclaration.SpanStart, context.CancellationToken) is not IMethodSymbol methodSymbol)
                 return;
 
             if (methodSymbol.IsImplicitlyDeclared)

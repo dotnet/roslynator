@@ -426,7 +426,7 @@ namespace Roslynator.CSharp.Analysis
                     {
                         ExpressionSyntax expression = GetGetAccessorExpression(accessor);
 
-                        if (!(expression is ElementAccessExpressionSyntax elementAccess))
+                        if (expression is not ElementAccessExpressionSyntax elementAccess)
                             return false;
 
                         if (elementAccess.Expression?.IsKind(SyntaxKind.BaseExpression) != true)

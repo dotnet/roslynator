@@ -107,7 +107,7 @@ namespace Roslynator.CSharp.Refactorings
             if (interfaceSymbol?.TypeKind != TypeKind.Interface)
                 return default;
 
-            if (!(interfaceSymbol.GetSyntaxOrDefault(context.CancellationToken) is InterfaceDeclarationSyntax _))
+            if (interfaceSymbol.GetSyntaxOrDefault(context.CancellationToken) is not InterfaceDeclarationSyntax _)
                 return default;
 
             ISymbol memberSymbol = context.SemanticModel.GetDeclaredSymbol(memberDeclaration, context.CancellationToken);
@@ -165,7 +165,7 @@ namespace Roslynator.CSharp.Refactorings
                 if (interfaceSymbol?.TypeKind != TypeKind.Interface)
                     continue;
 
-                if (!(interfaceSymbol.GetSyntaxOrDefault(context.CancellationToken) is InterfaceDeclarationSyntax _))
+                if (interfaceSymbol.GetSyntaxOrDefault(context.CancellationToken) is not InterfaceDeclarationSyntax _)
                     continue;
 
                 ISymbol interfaceMemberSymbol = FindInterfaceMember(memberSymbol, interfaceSymbol);

@@ -42,7 +42,7 @@ namespace Roslynator.CSharp.CodeFixes
                             if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveEmptySwitchStatement))
                                 break;
 
-                            if (!(statement is SwitchStatementSyntax switchStatement))
+                            if (statement is not SwitchStatementSyntax switchStatement)
                                 break;
 
                             CodeFixRegistrator.RemoveStatement(context, diagnostic, switchStatement);

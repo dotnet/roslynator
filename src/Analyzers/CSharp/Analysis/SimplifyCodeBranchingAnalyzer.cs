@@ -169,7 +169,7 @@ namespace Roslynator.CSharp.Analysis
 
             IfStatementSyntax topmostIf = ifStatement.GetTopmostIf();
 
-            if (!(topmostIf.Parent is BlockSyntax block))
+            if (topmostIf.Parent is not BlockSyntax block)
                 return false;
 
             if (!block.Statements.IsLast(topmostIf, ignoreLocalFunctions: true))
@@ -253,7 +253,7 @@ namespace Roslynator.CSharp.Analysis
                 parent = block.Parent;
             }
 
-            if (!(parent is WhileStatementSyntax whileStatement))
+            if (parent is not WhileStatementSyntax whileStatement)
                 return false;
 
             if (whileStatement.SpanContainsDirectives())

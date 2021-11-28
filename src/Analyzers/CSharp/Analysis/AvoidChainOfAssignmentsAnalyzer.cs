@@ -38,7 +38,7 @@ namespace Roslynator.CSharp.Analysis
             var assignment = (AssignmentExpressionSyntax)context.Node;
 
             if (assignment.Right is AssignmentExpressionSyntax
-                && !(assignment.Parent is AssignmentExpressionSyntax))
+                && assignment.Parent is not AssignmentExpressionSyntax)
             {
                 DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AvoidChainOfAssignments, assignment);
             }

@@ -95,7 +95,7 @@ namespace Roslynator.CSharp.Refactorings
                         return false;
 
                     if (keepCompositeValue
-                        && !(expression is LiteralExpressionSyntax))
+                        && expression is not LiteralExpressionSyntax)
                     {
                         IFieldSymbol fieldSymbol = semanticModel.GetDeclaredSymbol(enumMember, cancellationToken);
 

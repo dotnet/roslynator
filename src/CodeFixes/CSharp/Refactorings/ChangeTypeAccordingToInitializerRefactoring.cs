@@ -21,7 +21,7 @@ namespace Roslynator.CSharp.Refactorings
             ExpressionSyntax expression,
             SemanticModel semanticModel)
         {
-            if (!(expression.Parent is EqualsValueClauseSyntax equalsValueClause))
+            if (expression.Parent is not EqualsValueClauseSyntax equalsValueClause)
                 return default;
 
             switch (equalsValueClause.Parent)
@@ -51,7 +51,7 @@ namespace Roslynator.CSharp.Refactorings
             VariableDeclaratorSyntax variableDeclarator,
             SemanticModel semanticModel)
         {
-            if (!(variableDeclarator.Parent is VariableDeclarationSyntax variableDeclaration))
+            if (variableDeclarator.Parent is not VariableDeclarationSyntax variableDeclaration)
                 return default;
 
             TypeSyntax type = variableDeclaration.Type;

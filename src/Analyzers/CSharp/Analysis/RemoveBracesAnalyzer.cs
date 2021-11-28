@@ -233,7 +233,7 @@ namespace Roslynator.CSharp.Analysis
 
         private static BlockSyntax GetFixableBlock(StatementSyntax statement)
         {
-            if (!(statement is BlockSyntax block))
+            if (statement is not BlockSyntax block)
                 return null;
 
             statement = block.Statements.SingleOrDefault(shouldThrow: false);

@@ -59,7 +59,7 @@ namespace Roslynator.CSharp.Analysis
             if (IsArgumentExpressionOfNameOfExpression(context, identifierName))
                 return;
 
-            if (!(context.SemanticModel.GetSymbol(identifierName, context.CancellationToken) is ITypeSymbol typeSymbol))
+            if (context.SemanticModel.GetSymbol(identifierName, context.CancellationToken) is not ITypeSymbol typeSymbol)
                 return;
 
             if (!CSharpFacts.IsPredefinedType(typeSymbol.SpecialType))
@@ -103,13 +103,13 @@ namespace Roslynator.CSharp.Analysis
 
         private static void Analyze(SyntaxNodeAnalysisContext context, CrefSyntax cref, NameMemberCrefSyntax nameMemberCref)
         {
-            if (!(nameMemberCref.Name is IdentifierNameSyntax identifierName))
+            if (nameMemberCref.Name is not IdentifierNameSyntax identifierName)
                 return;
 
             if (!SupportsPredefinedType(identifierName))
                 return;
 
-            if (!(context.SemanticModel.GetSymbol(identifierName, context.CancellationToken) is ITypeSymbol typeSymbol))
+            if (context.SemanticModel.GetSymbol(identifierName, context.CancellationToken) is not ITypeSymbol typeSymbol)
                 return;
 
             if (!CSharpFacts.IsPredefinedType(typeSymbol.SpecialType))
@@ -130,7 +130,7 @@ namespace Roslynator.CSharp.Analysis
             if (qualifiedName.IsParentKind(SyntaxKind.UsingDirective))
                 return;
 
-            if (!(qualifiedName.Right is IdentifierNameSyntax identifierName))
+            if (qualifiedName.Right is not IdentifierNameSyntax identifierName)
                 return;
 
             if (!SupportsPredefinedType(identifierName))
@@ -139,7 +139,7 @@ namespace Roslynator.CSharp.Analysis
             if (IsArgumentExpressionOfNameOfExpression(context, qualifiedName))
                 return;
 
-            if (!(context.SemanticModel.GetSymbol(qualifiedName, context.CancellationToken) is ITypeSymbol typeSymbol))
+            if (context.SemanticModel.GetSymbol(qualifiedName, context.CancellationToken) is not ITypeSymbol typeSymbol)
                 return;
 
             if (!CSharpFacts.IsPredefinedType(typeSymbol.SpecialType))
@@ -171,7 +171,7 @@ namespace Roslynator.CSharp.Analysis
             {
                 memberAccess = (MemberAccessExpressionSyntax)expression;
 
-                if (!(memberAccess.Name is IdentifierNameSyntax identifierName))
+                if (memberAccess.Name is not IdentifierNameSyntax identifierName)
                     return;
 
                 if (!SupportsPredefinedType(identifierName))
@@ -182,7 +182,7 @@ namespace Roslynator.CSharp.Analysis
                 return;
             }
 
-            if (!(context.SemanticModel.GetSymbol(expression, context.CancellationToken) is ITypeSymbol typeSymbol))
+            if (context.SemanticModel.GetSymbol(expression, context.CancellationToken) is not ITypeSymbol typeSymbol)
                 return;
 
             if (!CSharpFacts.IsPredefinedType(typeSymbol.SpecialType))

@@ -35,7 +35,7 @@ namespace Roslynator.CSharp.CodeFixes
             if (!TryFindFirstAncestorOrSelf(root, context.Span, out SimpleNameSyntax simpleName))
                 return;
 
-            if (!(simpleName is IdentifierNameSyntax identifierName))
+            if (simpleName is not IdentifierNameSyntax identifierName)
                 return;
 
             Document document = context.Document;
@@ -52,7 +52,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-                            if (!(semanticModel.GetSymbol(identifierName, cancellationToken) is ILocalSymbol localSymbol))
+                            if (semanticModel.GetSymbol(identifierName, cancellationToken) is not ILocalSymbol localSymbol)
                                 break;
 
                             ITypeSymbol typeSymbol = localSymbol.Type;
@@ -60,7 +60,7 @@ namespace Roslynator.CSharp.CodeFixes
                             if (typeSymbol.Kind == SymbolKind.ErrorType)
                                 break;
 
-                            if (!(localSymbol.GetSyntax(cancellationToken) is VariableDeclaratorSyntax variableDeclarator))
+                            if (localSymbol.GetSyntax(cancellationToken) is not VariableDeclaratorSyntax variableDeclarator)
                                 break;
 
                             CodeAction codeAction = CodeAction.Create(
@@ -99,7 +99,7 @@ namespace Roslynator.CSharp.CodeFixes
                             if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddVariableType))
                                 return;
 
-                            if (!(identifierName.Parent is ArgumentSyntax argument))
+                            if (identifierName.Parent is not ArgumentSyntax argument)
                                 break;
 
                             if (argument.RefOrOutKeyword.Kind() != SyntaxKind.OutKeyword)

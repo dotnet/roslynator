@@ -47,7 +47,7 @@ namespace Roslynator.CSharp.Analysis
         {
             var switchSection = (SwitchSectionSyntax)context.Node;
 
-            if (!(switchSection.Statements.SingleOrDefault(shouldThrow: false) is BlockSyntax block))
+            if (switchSection.Statements.SingleOrDefault(shouldThrow: false) is not BlockSyntax block)
                 return;
 
             SyntaxList<StatementSyntax> statements = block.Statements;

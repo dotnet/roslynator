@@ -40,7 +40,7 @@ namespace Roslynator.CSharp.Analysis
 
             SymbolInfo symbolInfo = semanticModel.GetSpeculativeSymbolInfo(invocationExpression.SpanStart, elementAccess, SpeculativeBindingOption.BindAsExpression);
 
-            return !(symbolInfo.Symbol is IPropertySymbol propertySymbol)
+            return symbolInfo.Symbol is not IPropertySymbol propertySymbol
                 || !propertySymbol.IsIndexer
                 || CheckInfiniteRecursion(propertySymbol, invocationExpression.SpanStart, semanticModel, cancellationToken);
         }

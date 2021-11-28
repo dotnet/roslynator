@@ -272,10 +272,10 @@ namespace Roslynator.CSharp.CodeFixes
                             if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RenameDestructorToMatchClassName))
                                 break;
 
-                            if (!(memberDeclaration is DestructorDeclarationSyntax destructorDeclaration))
+                            if (memberDeclaration is not DestructorDeclarationSyntax destructorDeclaration)
                                 break;
 
-                            if (!(memberDeclaration.Parent is ClassDeclarationSyntax classDeclaration))
+                            if (memberDeclaration.Parent is not ClassDeclarationSyntax classDeclaration)
                                 break;
 
                             if (classDeclaration.Identifier.ValueText.Length == 0)
@@ -305,13 +305,13 @@ namespace Roslynator.CSharp.CodeFixes
                             {
                                 IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(methodDeclaration, context.CancellationToken);
 
-                                if (!(methodSymbol.ReturnType is INamedTypeSymbol tupleType))
+                                if (methodSymbol.ReturnType is not INamedTypeSymbol tupleType)
                                     break;
 
                                 if (!tupleType.IsTupleType)
                                     break;
 
-                                if (!(methodSymbol.OverriddenMethod?.ReturnType is INamedTypeSymbol baseTupleType))
+                                if (methodSymbol.OverriddenMethod?.ReturnType is not INamedTypeSymbol baseTupleType)
                                     break;
 
                                 if (!baseTupleType.IsTupleType)
@@ -348,13 +348,13 @@ namespace Roslynator.CSharp.CodeFixes
                             {
                                 IPropertySymbol propertySymbol = semanticModel.GetDeclaredSymbol(propertyDeclaration, context.CancellationToken);
 
-                                if (!(propertySymbol.Type is INamedTypeSymbol tupleType))
+                                if (propertySymbol.Type is not INamedTypeSymbol tupleType)
                                     break;
 
                                 if (!tupleType.IsTupleType)
                                     break;
 
-                                if (!(propertySymbol.OverriddenProperty?.Type is INamedTypeSymbol baseTupleType))
+                                if (propertySymbol.OverriddenProperty?.Type is not INamedTypeSymbol baseTupleType)
                                     break;
 
                                 if (!baseTupleType.IsTupleType)

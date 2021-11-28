@@ -29,7 +29,7 @@ namespace Roslynator.CSharp.Analysis.UseMethodChaining
                     {
                         var expressionStatement = (ExpressionStatementSyntax)parent;
 
-                        if (!(WalkDownMethodChain(invocationInfo).Expression is IdentifierNameSyntax identifierName))
+                        if (WalkDownMethodChain(invocationInfo).Expression is not IdentifierNameSyntax identifierName)
                             break;
 
                         string name = identifierName.Identifier.ValueText;
@@ -40,13 +40,13 @@ namespace Roslynator.CSharp.Analysis.UseMethodChaining
                     {
                         var assignmentExpression = (AssignmentExpressionSyntax)parent;
 
-                        if (!(assignmentExpression.Left is IdentifierNameSyntax identifierName))
+                        if (assignmentExpression.Left is not IdentifierNameSyntax identifierName)
                             break;
 
                         if (assignmentExpression.Right != invocationExpression)
                             break;
 
-                        if (!(assignmentExpression.Parent is ExpressionStatementSyntax expressionStatement))
+                        if (assignmentExpression.Parent is not ExpressionStatementSyntax expressionStatement)
                             break;
 
                         string name = identifierName.Identifier.ValueText;

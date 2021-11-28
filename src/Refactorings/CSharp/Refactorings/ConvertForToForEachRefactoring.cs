@@ -157,7 +157,7 @@ namespace Roslynator.CSharp.Refactorings
 
             parent = parent.Parent;
 
-            if (!(parent is ElementAccessExpressionSyntax elementAccess))
+            if (parent is not ElementAccessExpressionSyntax elementAccess)
                 return false;
 
             ExpressionSyntax expression = elementAccess.Expression;

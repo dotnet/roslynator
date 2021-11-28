@@ -37,7 +37,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 StatementSyntax statement = statements[i];
 
-                if (!(statement is LocalDeclarationStatementSyntax localDeclaration))
+                if (statement is not LocalDeclarationStatementSyntax localDeclaration)
                     return false;
 
                 TypeSyntax type = localDeclaration.Declaration?.Type;

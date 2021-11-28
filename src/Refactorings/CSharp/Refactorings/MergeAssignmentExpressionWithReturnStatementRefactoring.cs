@@ -20,7 +20,7 @@ namespace Roslynator.CSharp.Refactorings
             if (!simpleAssignment.Success)
                 return;
 
-            if (!(selectedStatements.Last() is ReturnStatementSyntax returnStatement))
+            if (selectedStatements.Last() is not ReturnStatementSyntax returnStatement)
                 return;
 
             if (returnStatement.Expression == null)

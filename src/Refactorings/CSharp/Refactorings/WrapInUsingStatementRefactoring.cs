@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringAsync(RefactoringContext context, VariableDeclarationSyntax variableDeclaration)
         {
-            if (!(variableDeclaration.Parent is LocalDeclarationStatementSyntax localDeclaration))
+            if (variableDeclaration.Parent is not LocalDeclarationStatementSyntax localDeclaration)
                 return;
 
             if (!CSharpFacts.CanHaveStatements(localDeclaration.Parent.Kind()))

@@ -134,7 +134,7 @@ namespace Roslynator.CSharp.CodeFixes
             BinaryExpressionSyntax equalityExpression,
             CancellationToken cancellationToken)
         {
-            if (!(equalityExpression.Left.WalkDownParentheses() is InvocationExpressionSyntax invocationExpression))
+            if (equalityExpression.Left.WalkDownParentheses() is not InvocationExpressionSyntax invocationExpression)
                 invocationExpression = (InvocationExpressionSyntax)equalityExpression.Right.WalkDownParentheses();
 
             ExpressionSyntax newExpression = SyntaxRefactorings.ChangeInvokedMethodName(invocationExpression, "Equals");

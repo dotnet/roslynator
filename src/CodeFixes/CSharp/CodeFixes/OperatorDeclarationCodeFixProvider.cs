@@ -45,7 +45,7 @@ namespace Roslynator.CSharp.CodeFixes
             if (operatorDeclaration.BodyOrExpressionBody() == null)
                 return;
 
-            if (!(operatorDeclaration.Parent is TypeDeclarationSyntax typeDeclaration))
+            if (operatorDeclaration.Parent is not TypeDeclarationSyntax typeDeclaration)
                 return;
 
             CodeAction codeAction = CodeAction.Create(

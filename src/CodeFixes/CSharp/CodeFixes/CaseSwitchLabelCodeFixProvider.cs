@@ -34,7 +34,7 @@ namespace Roslynator.CSharp.CodeFixes
             if (!TryFindFirstAncestorOrSelf(root, context.Span, out CaseSwitchLabelSyntax caseSwitchLabel))
                 return;
 
-            if (!(caseSwitchLabel.Parent.Parent is SwitchStatementSyntax switchStatement))
+            if (caseSwitchLabel.Parent.Parent is not SwitchStatementSyntax switchStatement)
                 return;
 
             CodeAction codeAction = CodeAction.Create(

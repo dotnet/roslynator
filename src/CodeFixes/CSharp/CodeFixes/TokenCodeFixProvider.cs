@@ -107,7 +107,7 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case CompilerDiagnosticIdentifiers.CS1750_ValueCannotBeUsedAsDefaultParameter:
                         {
-                            if (!(token.Parent is ParameterSyntax parameter))
+                            if (token.Parent is not ParameterSyntax parameter)
                                 break;
 
                             ExpressionSyntax value = parameter.Default?.Value;
@@ -227,10 +227,10 @@ namespace Roslynator.CSharp.CodeFixes
                             if (token.Kind() != SyntaxKind.CloseParenToken)
                                 break;
 
-                            if (!(token.Parent is DefaultExpressionSyntax defaultExpression))
+                            if (token.Parent is not DefaultExpressionSyntax defaultExpression)
                                 break;
 
-                            if (!(defaultExpression.Type is IdentifierNameSyntax identifierName))
+                            if (defaultExpression.Type is not IdentifierNameSyntax identifierName)
                                 break;
 
                             if (!identifierName.IsMissing)
@@ -366,7 +366,7 @@ namespace Roslynator.CSharp.CodeFixes
                             if (token.Kind() != SyntaxKind.ForEachKeyword)
                                 break;
 
-                            if (!(token.Parent is ForEachStatementSyntax forEachStatement))
+                            if (token.Parent is not ForEachStatementSyntax forEachStatement)
                                 break;
 
                             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
@@ -386,7 +386,7 @@ namespace Roslynator.CSharp.CodeFixes
                             if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddDefaultValueToParameter))
                                 break;
 
-                            if (!(token.Parent is BaseParameterListSyntax parameterList))
+                            if (token.Parent is not BaseParameterListSyntax parameterList)
                                 break;
 
                             SeparatedSyntaxList<ParameterSyntax> parameters = parameterList.Parameters;

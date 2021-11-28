@@ -42,7 +42,7 @@ namespace Roslynator.CSharp.Analysis
             if (declarator == null)
                 return;
 
-            if (!(usingStatement.Statement?.SingleNonBlockStatementOrDefault() is WhileStatementSyntax whileStatement))
+            if (usingStatement.Statement?.SingleNonBlockStatementOrDefault() is not WhileStatementSyntax whileStatement)
                 return;
 
             SimpleMemberInvocationExpressionInfo invocationInfo = SyntaxInfo.SimpleMemberInvocationExpressionInfo(whileStatement.Condition);

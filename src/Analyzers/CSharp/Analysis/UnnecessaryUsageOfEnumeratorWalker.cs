@@ -72,7 +72,7 @@ namespace Roslynator.CSharp.Analysis
                 return;
             }
 
-            if (!(memberAccessExpression.Name is IdentifierNameSyntax identifierName))
+            if (memberAccessExpression.Name is not IdentifierNameSyntax identifierName)
             {
                 IsFixable = false;
                 return;

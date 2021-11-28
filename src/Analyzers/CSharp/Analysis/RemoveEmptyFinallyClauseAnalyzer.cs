@@ -40,7 +40,7 @@ namespace Roslynator.CSharp.Analysis
         {
             var finallyClause = (FinallyClauseSyntax)context.Node;
 
-            if (!(finallyClause.Parent is TryStatementSyntax tryStatement))
+            if (finallyClause.Parent is not TryStatementSyntax tryStatement)
                 return;
 
             BlockSyntax finallyBlock = finallyClause.Block;

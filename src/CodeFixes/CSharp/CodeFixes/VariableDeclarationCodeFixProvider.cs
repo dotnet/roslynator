@@ -84,7 +84,7 @@ namespace Roslynator.CSharp.CodeFixes
                             if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.ReplaceVariableDeclarationWithAssignment))
                                 return;
 
-                            if (!(variableDeclaration.Parent is LocalDeclarationStatementSyntax localDeclaration))
+                            if (variableDeclaration.Parent is not LocalDeclarationStatementSyntax localDeclaration)
                                 return;
 
                             VariableDeclaratorSyntax variableDeclarator = variableDeclaration.Variables.SingleOrDefault(shouldThrow: false);

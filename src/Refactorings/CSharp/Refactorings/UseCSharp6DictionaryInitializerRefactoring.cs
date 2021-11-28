@@ -25,7 +25,7 @@ namespace Roslynator.CSharp.Refactorings
             if (!expressions.All(f => f.IsKind(SyntaxKind.ComplexElementInitializerExpression)))
                 return;
 
-            if (!(initializer.Parent is ObjectCreationExpressionSyntax objectCreationExpression))
+            if (initializer.Parent is not ObjectCreationExpressionSyntax objectCreationExpression)
                 return;
 
             var complexElementInitializer = (InitializerExpressionSyntax)expressions[0];

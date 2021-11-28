@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.Refactorings
 
             int firstIndex = selectedLabels.FirstIndex;
 
-            if (!(labels[firstIndex] is CaseSwitchLabelSyntax label))
+            if (labels[firstIndex] is not CaseSwitchLabelSyntax label)
                 return;
 
             ExpressionSyntax value = label.Value;
@@ -36,7 +36,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 for (int i = firstIndex + 1; i <= selectedLabels.LastIndex; i++)
                 {
-                    if (!(labels[i] is CaseSwitchLabelSyntax label2))
+                    if (labels[i] is not CaseSwitchLabelSyntax label2)
                         return;
 
                     if (!label2.Value.IsKind(SyntaxKind.StringLiteralExpression))
@@ -73,7 +73,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 for (int i = firstIndex + 1; i <= selectedLabels.LastIndex; i++)
                 {
-                    if (!(labels[i] is CaseSwitchLabelSyntax label2))
+                    if (labels[i] is not CaseSwitchLabelSyntax label2)
                         return;
 
                     if (!label2.Value.IsKind(SyntaxKind.SimpleMemberAccessExpression))

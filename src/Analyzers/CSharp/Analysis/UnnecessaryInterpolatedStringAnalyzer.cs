@@ -70,7 +70,7 @@ namespace Roslynator.CSharp.Analysis
             }
             else
             {
-                if (!(contents.SingleOrDefault(shouldThrow: false) is InterpolationSyntax interpolation))
+                if (contents.SingleOrDefault(shouldThrow: false) is not InterpolationSyntax interpolation)
                     return;
 
                 if (interpolation.AlignmentClause != null)

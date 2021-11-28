@@ -46,7 +46,7 @@ namespace Roslynator.CSharp.Analysis
 
             foreach (XmlNodeSyntax node in documentationComment.Content)
             {
-                if (!(node is XmlElementSyntax element))
+                if (node is not XmlElementSyntax element)
                     continue;
 
                 string localName = element.StartTag.Name?.LocalName.ValueText;

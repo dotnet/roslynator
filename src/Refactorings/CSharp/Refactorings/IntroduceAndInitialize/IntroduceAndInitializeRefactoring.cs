@@ -171,7 +171,7 @@ namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
             if (!parameter.IsParentKind(SyntaxKind.ParameterList))
                 return false;
 
-            if (!(parameter.Parent.Parent is ConstructorDeclarationSyntax constructorDeclaration))
+            if (parameter.Parent.Parent is not ConstructorDeclarationSyntax constructorDeclaration)
                 return false;
 
             if (constructorDeclaration.Modifiers.Contains(SyntaxKind.StaticKeyword))

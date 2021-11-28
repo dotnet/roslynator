@@ -205,7 +205,7 @@ namespace Roslynator.CSharp.Refactorings
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default)
         {
-            if (!(statement is IfStatementSyntax ifStatement))
+            if (statement is not IfStatementSyntax ifStatement)
                 return default;
 
             NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(ifStatement.Condition, NullCheckStyles.EqualsToNull | NullCheckStyles.IsNull);

@@ -57,7 +57,7 @@ namespace Roslynator.CSharp.Analysis.UsePatternMatching
             if (localInfo.Statement.SpanOrTrailingTriviaContainsDirectives())
                 return;
 
-            if (!(localInfo.Statement.NextStatement() is IfStatementSyntax ifStatement))
+            if (localInfo.Statement.NextStatement() is not IfStatementSyntax ifStatement)
                 return;
 
             if (!ifStatement.IsSimpleIf())

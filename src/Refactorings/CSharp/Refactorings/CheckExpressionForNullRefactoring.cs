@@ -200,7 +200,7 @@ namespace Roslynator.CSharp.Refactorings
 
             StatementSyntax nextStatement = statements[index + 1];
 
-            if (!(nextStatement is IfStatementSyntax ifStatement))
+            if (nextStatement is not IfStatementSyntax ifStatement)
                 return false;
 
             NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(ifStatement.Condition, NullCheckStyles.NotEqualsToNull);

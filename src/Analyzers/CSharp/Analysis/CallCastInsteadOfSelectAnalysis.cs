@@ -56,7 +56,7 @@ namespace Roslynator.CSharp.Analysis
             if (castExpression == null)
                 return;
 
-            if (!(castExpression.Expression is IdentifierNameSyntax identifierName))
+            if (castExpression.Expression is not IdentifierNameSyntax identifierName)
                 return;
 
             if (!string.Equals(lambdaInfo.Parameter.Identifier.ValueText, identifierName.Identifier.ValueText, StringComparison.Ordinal))

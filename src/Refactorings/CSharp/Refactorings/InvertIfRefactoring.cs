@@ -343,7 +343,7 @@ namespace Roslynator.CSharp.Refactorings
 
             public InvertIfAnalysis AnalyzeNextStatement()
             {
-                if (!(NextStatement is IfStatementSyntax ifStatement))
+                if (NextStatement is not IfStatementSyntax ifStatement)
                     return default;
 
                 SimpleIfStatementInfo simpleIf = SyntaxInfo.SimpleIfStatementInfo(ifStatement);

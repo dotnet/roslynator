@@ -21,7 +21,7 @@ namespace Roslynator.CSharp.Refactorings
             if (parameterList.Parameters.Count != 2)
                 return;
 
-            if (!(parenthesizedLambda.WalkUpParentheses().Parent is AssignmentExpressionSyntax assignmentExpression))
+            if (parenthesizedLambda.WalkUpParentheses().Parent is not AssignmentExpressionSyntax assignmentExpression)
                 return;
 
             if (assignmentExpression.Kind() != SyntaxKind.AddAssignmentExpression)
@@ -34,7 +34,7 @@ namespace Roslynator.CSharp.Refactorings
             if (methodSymbol?.MethodKind != MethodKind.EventAdd)
                 return;
 
-            if (!(semanticModel.GetSymbol(assignmentExpression.Left, context.CancellationToken) is IEventSymbol eventSymbol))
+            if (semanticModel.GetSymbol(assignmentExpression.Left, context.CancellationToken) is not IEventSymbol eventSymbol)
                 return;
 
             MemberDeclarationSyntax memberDeclaration = assignmentExpression.FirstAncestor<MemberDeclarationSyntax>();
@@ -44,7 +44,7 @@ namespace Roslynator.CSharp.Refactorings
 
             Debug.Assert(memberDeclaration.Parent is TypeDeclarationSyntax);
 
-            if (!(memberDeclaration.Parent is TypeDeclarationSyntax typeDeclaration))
+            if (memberDeclaration.Parent is not TypeDeclarationSyntax typeDeclaration)
                 return;
 
             context.CancellationToken.ThrowIfCancellationRequested();

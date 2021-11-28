@@ -97,7 +97,7 @@ namespace Roslynator.CSharp.Analysis
 
             void AnalyzeSimpleMemberAccessExpression(ExpressionSyntax expression, MemberAccessExpressionSyntax memberAccessExpression, ExpressionSyntax expression3)
             {
-                if (!(memberAccessExpression.Name is IdentifierNameSyntax identifierName)
+                if (memberAccessExpression.Name is not IdentifierNameSyntax identifierName
                     || !string.Equals(identifierName.Identifier.ValueText, "Value", StringComparison.Ordinal))
                 {
                     return;

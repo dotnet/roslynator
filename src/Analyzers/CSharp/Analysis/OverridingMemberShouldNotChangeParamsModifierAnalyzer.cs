@@ -42,7 +42,7 @@ namespace Roslynator.CSharp.Analysis
             if (lastParameterSymbol == null)
                 return;
 
-            if (!(methodSymbol.GetSyntaxOrDefault(context.CancellationToken) is MethodDeclarationSyntax methodDeclaration))
+            if (methodSymbol.GetSyntaxOrDefault(context.CancellationToken) is not MethodDeclarationSyntax methodDeclaration)
                 return;
 
             ParameterSyntax lastParameter = methodDeclaration.ParameterList?.Parameters.LastOrDefault();
@@ -68,7 +68,7 @@ namespace Roslynator.CSharp.Analysis
             if (lastParameterSymbol == null)
                 return;
 
-            if (!(propertySymbol.GetSyntaxOrDefault(context.CancellationToken) is IndexerDeclarationSyntax indexerDeclaration))
+            if (propertySymbol.GetSyntaxOrDefault(context.CancellationToken) is not IndexerDeclarationSyntax indexerDeclaration)
                 return;
 
             ParameterSyntax lastParameter = indexerDeclaration.ParameterList?.Parameters.LastOrDefault();

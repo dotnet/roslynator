@@ -329,10 +329,10 @@ namespace Roslynator.CSharp
             if (type == null)
                 return default;
 
-            if (!(declarationExpression.Designation is SingleVariableDesignationSyntax singleVariableDesignation))
+            if (declarationExpression.Designation is not SingleVariableDesignationSyntax singleVariableDesignation)
                 return default;
 
-            if (!(semanticModel.GetDeclaredSymbol(singleVariableDesignation, cancellationToken) is ILocalSymbol localSymbol))
+            if (semanticModel.GetDeclaredSymbol(singleVariableDesignation, cancellationToken) is not ILocalSymbol localSymbol)
                 return default;
 
             ITypeSymbol typeSymbol = localSymbol.Type;
@@ -397,7 +397,7 @@ namespace Roslynator.CSharp
                     {
                         foreach (VariableDesignationSyntax variableDesignation in parenthesizedVariableDesignation.Variables)
                         {
-                            if (!(variableDesignation is SingleVariableDesignationSyntax singleVariableDesignation2))
+                            if (variableDesignation is not SingleVariableDesignationSyntax singleVariableDesignation2)
                                 return false;
 
                             if (!IsLocalThatSupportsExplicitDeclaration(singleVariableDesignation2))
@@ -415,7 +415,7 @@ namespace Roslynator.CSharp
 
             bool IsLocalThatSupportsExplicitDeclaration(VariableDesignationSyntax variableDesignation)
             {
-                if (!(semanticModel.GetDeclaredSymbol(variableDesignation, cancellationToken) is ILocalSymbol localSymbol))
+                if (semanticModel.GetDeclaredSymbol(variableDesignation, cancellationToken) is not ILocalSymbol localSymbol)
                     return false;
 
                 ITypeSymbol typeSymbol = localSymbol.Type;
@@ -440,10 +440,10 @@ namespace Roslynator.CSharp
             if (type.IsVar)
                 return false;
 
-            if (!(declarationExpression.Designation is SingleVariableDesignationSyntax singleVariableDesignation))
+            if (declarationExpression.Designation is not SingleVariableDesignationSyntax singleVariableDesignation)
                 return false;
 
-            if (!(semanticModel.GetDeclaredSymbol(singleVariableDesignation, cancellationToken) is ILocalSymbol localSymbol))
+            if (semanticModel.GetDeclaredSymbol(singleVariableDesignation, cancellationToken) is not ILocalSymbol localSymbol)
                 return false;
 
             ITypeSymbol typeSymbol = localSymbol.Type;
@@ -555,7 +555,7 @@ namespace Roslynator.CSharp
 
             foreach (ArgumentSyntax argument in tupleExpression.Arguments)
             {
-                if (!(argument.Expression is DeclarationExpressionSyntax declarationExpression))
+                if (argument.Expression is not DeclarationExpressionSyntax declarationExpression)
                     return false;
 
                 TypeSyntax type = declarationExpression.Type;
@@ -563,10 +563,10 @@ namespace Roslynator.CSharp
                 if (type == null)
                     return false;
 
-                if (!(declarationExpression.Designation is SingleVariableDesignationSyntax singleVariableDesignation))
+                if (declarationExpression.Designation is not SingleVariableDesignationSyntax singleVariableDesignation)
                     return false;
 
-                if (!(semanticModel.GetDeclaredSymbol(singleVariableDesignation, cancellationToken) is ILocalSymbol localSymbol))
+                if (semanticModel.GetDeclaredSymbol(singleVariableDesignation, cancellationToken) is not ILocalSymbol localSymbol)
                     return false;
 
                 ITypeSymbol typeSymbol = localSymbol.Type;
@@ -748,7 +748,7 @@ namespace Roslynator.CSharp
         {
             ExpressionSyntax variable = forEachStatement.Variable;
 
-            if (!(variable is DeclarationExpressionSyntax declarationExpression))
+            if (variable is not DeclarationExpressionSyntax declarationExpression)
                 return false;
 
             TypeSyntax type = declarationExpression.Type;
@@ -800,7 +800,7 @@ namespace Roslynator.CSharp
         {
             ExpressionSyntax variable = forEachStatement.Variable;
 
-            if (!(variable is TupleExpressionSyntax tupleExpression))
+            if (variable is not TupleExpressionSyntax tupleExpression)
                 return false;
 
             return IsExplicitThatCanBeImplicit(tupleExpression, forEachStatement, semanticModel);
@@ -815,7 +815,7 @@ namespace Roslynator.CSharp
 
             foreach (ArgumentSyntax argument in tupleExpression.Arguments)
             {
-                if (!(argument.Expression is DeclarationExpressionSyntax declarationExpression))
+                if (argument.Expression is not DeclarationExpressionSyntax declarationExpression)
                     return false;
 
                 TypeSyntax type = declarationExpression.Type;

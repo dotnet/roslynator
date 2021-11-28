@@ -22,7 +22,7 @@ namespace Roslynator.CSharp
             if (!newTypeSymbol.OriginalDefinition.EqualsOrInheritsFromTaskOfT())
                 return default;
 
-            if (!(semanticModel.GetEnclosingSymbol(variableDeclaration.SpanStart, cancellationToken) is IMethodSymbol methodSymbol))
+            if (semanticModel.GetEnclosingSymbol(variableDeclaration.SpanStart, cancellationToken) is not IMethodSymbol methodSymbol)
                 return default;
 
             if (!methodSymbol.MethodKind.Is(MethodKind.Ordinary, MethodKind.LocalFunction))
