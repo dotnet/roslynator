@@ -7,7 +7,7 @@ set _msbuildPath="%_programFiles%\Microsoft Visual Studio\2019\Community\MSBuild
 set _properties=Configuration=Release,Deterministic=true,TreatWarningsAsErrors=true,WarningsNotAsErrors=1591
 set _outDir=..\out\Release
 set _version=3.3.0
-set _version4=3.3.0.0
+set _version4=3.3.0.1
 
 orang replace "..\src\VisualStudio\source.extension.vsixmanifest" ^
  -c "patterns\vsix_manifest_version.txt" from-file -t m r ^
