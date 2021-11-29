@@ -304,7 +304,6 @@ namespace Roslynator.CSharp
                 case SyntaxKind.ClassDeclaration:
                     return ((ClassDeclarationSyntax)node).Identifier;
                 case SyntaxKind.StructDeclaration:
-                case SyntaxKind.RecordStructDeclaration:
                     return ((StructDeclarationSyntax)node).Identifier;
                 case SyntaxKind.InterfaceDeclaration:
                     return ((InterfaceDeclarationSyntax)node).Identifier;
@@ -329,6 +328,7 @@ namespace Roslynator.CSharp
                 case SyntaxKind.VariableDeclarator:
                     return ((VariableDeclaratorSyntax)node).Identifier;
                 case SyntaxKind.RecordDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     return ((RecordDeclarationSyntax)node).Identifier;
                 case SyntaxKind.Parameter:
                     return ((ParameterSyntax)node).Identifier;
@@ -745,7 +745,6 @@ namespace Roslynator.CSharp
                 case SyntaxKind.InterfaceDeclaration:
                     return ((InterfaceDeclarationSyntax)declaration).TypeParameterList;
                 case SyntaxKind.StructDeclaration:
-                case SyntaxKind.RecordStructDeclaration:
                     return ((StructDeclarationSyntax)declaration).TypeParameterList;
                 case SyntaxKind.MethodDeclaration:
                     return ((MethodDeclarationSyntax)declaration).TypeParameterList;
@@ -754,6 +753,7 @@ namespace Roslynator.CSharp
                 case SyntaxKind.LocalFunctionStatement:
                     return ((LocalFunctionStatementSyntax)declaration).TypeParameterList;
                 case SyntaxKind.RecordDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     return ((RecordDeclarationSyntax)declaration).TypeParameterList;
                 default:
                     return null;

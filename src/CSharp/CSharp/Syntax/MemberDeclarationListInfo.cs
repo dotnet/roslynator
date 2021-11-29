@@ -234,13 +234,13 @@ namespace Roslynator.CSharp.Syntax
                         return new MemberDeclarationListInfo(declaration, declaration.Members);
                     }
                 case SyntaxKind.RecordDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     {
                         var declaration = (RecordDeclarationSyntax)Parent;
                         declaration = declaration.WithMembers(members);
                         return new MemberDeclarationListInfo(declaration, declaration.Members);
                     }
                 case SyntaxKind.StructDeclaration:
-                case SyntaxKind.RecordStructDeclaration:
                     {
                         var declaration = (StructDeclarationSyntax)Parent;
                         declaration = declaration.WithMembers(members);
@@ -287,13 +287,13 @@ namespace Roslynator.CSharp.Syntax
                         return new MemberDeclarationListInfo(declaration, declaration.Members);
                     }
                 case SyntaxKind.RecordDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     {
                         var declaration = (RecordDeclarationSyntax)Parent;
                         declaration = declaration.RemoveNode(node, options);
                         return new MemberDeclarationListInfo(declaration, declaration.Members);
                     }
                 case SyntaxKind.StructDeclaration:
-                case SyntaxKind.RecordStructDeclaration:
                     {
                         var declaration = (StructDeclarationSyntax)Parent;
                         declaration = declaration.RemoveNode(node, options);
@@ -340,13 +340,13 @@ namespace Roslynator.CSharp.Syntax
                         return new MemberDeclarationListInfo(declaration, declaration.Members);
                     }
                 case SyntaxKind.RecordDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     {
                         var declaration = (RecordDeclarationSyntax)Parent;
                         declaration = declaration.ReplaceNode(oldNode, newNode);
                         return new MemberDeclarationListInfo(declaration, declaration.Members);
                     }
                 case SyntaxKind.StructDeclaration:
-                case SyntaxKind.RecordStructDeclaration:
                     {
                         var declaration = (StructDeclarationSyntax)Parent;
                         declaration = declaration.ReplaceNode(oldNode, newNode);

@@ -110,9 +110,9 @@ namespace Roslynator.CSharp.Refactorings
                 case SyntaxKind.TypeParameter:
                     return ((TypeParameterSyntax)node).AttributeLists;
                 case SyntaxKind.RecordDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     return ((RecordDeclarationSyntax)node).AttributeLists;
                 case SyntaxKind.StructDeclaration:
-                case SyntaxKind.RecordStructDeclaration:
                     return ((StructDeclarationSyntax)node).AttributeLists;
                 case SyntaxKind.PropertyDeclaration:
                     return ((PropertyDeclarationSyntax)node).AttributeLists;
@@ -171,9 +171,9 @@ namespace Roslynator.CSharp.Refactorings
                 case SyntaxKind.TypeParameter:
                     return ((TypeParameterSyntax)node).WithAttributeLists(attributeLists);
                 case SyntaxKind.RecordDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     return ((RecordDeclarationSyntax)node).WithAttributeLists(attributeLists);
                 case SyntaxKind.StructDeclaration:
-                case SyntaxKind.RecordStructDeclaration:
                     return ((StructDeclarationSyntax)node).WithAttributeLists(attributeLists);
                 case SyntaxKind.PropertyDeclaration:
                     return ((PropertyDeclarationSyntax)node).WithAttributeLists(attributeLists);

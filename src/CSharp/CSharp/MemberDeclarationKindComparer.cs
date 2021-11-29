@@ -46,16 +46,17 @@ namespace Roslynator.CSharp
                 case SyntaxKind.InterfaceDeclaration:
                     return 13;
                 case SyntaxKind.StructDeclaration:
-                case SyntaxKind.RecordStructDeclaration:
                     return 14;
                 case SyntaxKind.ClassDeclaration:
                     return 15;
                 case SyntaxKind.RecordDeclaration:
                     return 16;
-                case SyntaxKind.NamespaceDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     return 17;
-                case SyntaxKind.IncompleteMember:
+                case SyntaxKind.NamespaceDeclaration:
                     return 18;
+                case SyntaxKind.IncompleteMember:
+                    return 19;
                 default:
                     {
                         Debug.Fail($"unknown member '{kind}'");

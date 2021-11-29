@@ -1033,7 +1033,6 @@ namespace Roslynator.CodeGeneration.CSharp
                         case "StructDeclarationSyntax":
                             {
                                 yield return SyntaxKind.StructDeclaration;
-                                yield return SyntaxKind.RecordStructDeclaration;
                                 break;
                             }
                         case "SubpatternSyntax":
@@ -1268,10 +1267,15 @@ namespace Roslynator.CodeGeneration.CSharp
                                 yield return SyntaxKind.OrPattern;
                                 break;
                             }
+                        case "RecordDeclarationSyntax":
+                            {
+                                yield return SyntaxKind.RecordDeclaration;
+                                yield return SyntaxKind.RecordStructDeclaration;
+                                break;
+                            }
                         case "RelationalPatternSyntax":
                         case "ParenthesizedPatternSyntax":
                         case "TypePatternSyntax":
-                        case "RecordDeclarationSyntax":
                         case "WithExpressionSyntax":
                         case "ImplicitObjectCreationExpressionSyntax":
                         case "PrimaryConstructorBaseTypeSyntax":

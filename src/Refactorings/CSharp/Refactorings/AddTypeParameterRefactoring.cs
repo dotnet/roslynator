@@ -259,12 +259,12 @@ namespace Roslynator.CSharp.Refactorings
                         break;
                     }
                 case SyntaxKind.RecordDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     {
                         newNode = GetNewNode((RecordDeclarationSyntax)node, constraint, semanticModel);
                         break;
                     }
                 case SyntaxKind.StructDeclaration:
-                case SyntaxKind.RecordStructDeclaration:
                     {
                         newNode = GetNewNode((StructDeclarationSyntax)node, constraint, semanticModel);
                         break;

@@ -244,9 +244,9 @@ namespace Roslynator.CSharp.Syntax
                 case SyntaxKind.MethodDeclaration:
                     return new GenericInfo(((MethodDeclarationSyntax)Node).WithTypeParameterList(typeParameterList));
                 case SyntaxKind.RecordDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     return new GenericInfo(((RecordDeclarationSyntax)Node).WithTypeParameterList(typeParameterList));
                 case SyntaxKind.StructDeclaration:
-                case SyntaxKind.RecordStructDeclaration:
                     return new GenericInfo(((StructDeclarationSyntax)Node).WithTypeParameterList(typeParameterList));
             }
 
@@ -277,9 +277,9 @@ namespace Roslynator.CSharp.Syntax
                 case SyntaxKind.MethodDeclaration:
                     return new GenericInfo(((MethodDeclarationSyntax)self.Node).WithTypeParameterList(RemoveTypeParameter()));
                 case SyntaxKind.RecordDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     return new GenericInfo(((RecordDeclarationSyntax)self.Node).WithTypeParameterList(RemoveTypeParameter()));
                 case SyntaxKind.StructDeclaration:
-                case SyntaxKind.RecordStructDeclaration:
                     return new GenericInfo(((StructDeclarationSyntax)self.Node).WithTypeParameterList(RemoveTypeParameter()));
             }
 
@@ -317,9 +317,9 @@ namespace Roslynator.CSharp.Syntax
                 case SyntaxKind.MethodDeclaration:
                     return new GenericInfo(((MethodDeclarationSyntax)Node).WithConstraintClauses(constraintClauses));
                 case SyntaxKind.RecordDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     return new GenericInfo(((RecordDeclarationSyntax)Node).WithConstraintClauses(constraintClauses));
                 case SyntaxKind.StructDeclaration:
-                case SyntaxKind.RecordStructDeclaration:
                     return new GenericInfo(((StructDeclarationSyntax)Node).WithConstraintClauses(constraintClauses));
             }
 
@@ -348,9 +348,9 @@ namespace Roslynator.CSharp.Syntax
                 case SyntaxKind.MethodDeclaration:
                     return new GenericInfo(((MethodDeclarationSyntax)Node).WithConstraintClauses(ConstraintClauses.Remove(constraintClause)));
                 case SyntaxKind.RecordDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     return new GenericInfo(((RecordDeclarationSyntax)Node).WithConstraintClauses(ConstraintClauses.Remove(constraintClause)));
                 case SyntaxKind.StructDeclaration:
-                case SyntaxKind.RecordStructDeclaration:
                     return new GenericInfo(((StructDeclarationSyntax)Node).WithConstraintClauses(ConstraintClauses.Remove(constraintClause)));
             }
 

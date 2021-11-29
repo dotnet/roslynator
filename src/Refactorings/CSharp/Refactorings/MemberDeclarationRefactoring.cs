@@ -103,6 +103,7 @@ namespace Roslynator.CSharp.Refactorings
                         break;
                     }
                 case SyntaxKind.RecordDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     {
                         var recordDeclaration = (RecordDeclarationSyntax)member;
                         await RecordDeclarationRefactoring.ComputeRefactoringsAsync(context, recordDeclaration).ConfigureAwait(false);
@@ -113,7 +114,6 @@ namespace Roslynator.CSharp.Refactorings
                         break;
                     }
                 case SyntaxKind.StructDeclaration:
-                case SyntaxKind.RecordStructDeclaration:
                     {
                         var structDeclaration = (StructDeclarationSyntax)member;
                         await StructDeclarationRefactoring.ComputeRefactoringsAsync(context, structDeclaration).ConfigureAwait(false);
@@ -253,9 +253,9 @@ namespace Roslynator.CSharp.Refactorings
                 case SyntaxKind.ClassDeclaration:
                     return ((ClassDeclarationSyntax)member).BraceContainsSpan(span);
                 case SyntaxKind.RecordDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     return ((RecordDeclarationSyntax)member).BraceContainsSpan(span);
                 case SyntaxKind.StructDeclaration:
-                case SyntaxKind.RecordStructDeclaration:
                     return ((StructDeclarationSyntax)member).BraceContainsSpan(span);
                 case SyntaxKind.InterfaceDeclaration:
                     return ((InterfaceDeclarationSyntax)member).BraceContainsSpan(span);

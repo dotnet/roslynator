@@ -4198,9 +4198,9 @@ namespace Roslynator.CSharp
                 case SyntaxKind.ClassDeclaration:
                     return ((ClassDeclarationSyntax)typeDeclaration).WithMembers(newMembers);
                 case SyntaxKind.RecordDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     return ((RecordDeclarationSyntax)typeDeclaration).WithMembers(newMembers);
                 case SyntaxKind.StructDeclaration:
-                case SyntaxKind.RecordStructDeclaration:
                     return ((StructDeclarationSyntax)typeDeclaration).WithMembers(newMembers);
                 case SyntaxKind.InterfaceDeclaration:
                     return ((InterfaceDeclarationSyntax)typeDeclaration).WithMembers(newMembers);

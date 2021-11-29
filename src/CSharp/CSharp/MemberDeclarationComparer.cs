@@ -10,7 +10,7 @@ namespace Roslynator.CSharp
 {
     internal abstract class MemberDeclarationComparer : IComparer<MemberDeclarationSyntax>
     {
-        internal const int MaxRank = 18;
+        internal const int MaxRank = 19;
 
         internal const int ConstRank = 0;
         internal const int FieldRank = 1;
@@ -129,11 +129,11 @@ namespace Roslynator.CSharp
                     case SyntaxKind.InterfaceDeclaration:
                         return ((InterfaceDeclarationSyntax)member).Identifier.ValueText;
                     case SyntaxKind.StructDeclaration:
-                    case SyntaxKind.RecordStructDeclaration:
                         return ((StructDeclarationSyntax)member).Identifier.ValueText;
                     case SyntaxKind.ClassDeclaration:
                         return ((ClassDeclarationSyntax)member).Identifier.ValueText;
                     case SyntaxKind.RecordDeclaration:
+                    case SyntaxKind.RecordStructDeclaration:
                         return ((RecordDeclarationSyntax)member).Identifier.ValueText;
                     case SyntaxKind.NamespaceDeclaration:
                         return ((NamespaceDeclarationSyntax)member).Name.ToString();

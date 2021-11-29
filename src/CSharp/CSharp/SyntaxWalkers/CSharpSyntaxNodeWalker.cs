@@ -5203,10 +5203,10 @@ namespace Roslynator.CSharp.SyntaxWalkers
                     VisitPropertyDeclaration((PropertyDeclarationSyntax)node);
                     break;
                 case SyntaxKind.RecordDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     VisitRecordDeclaration((RecordDeclarationSyntax)node);
                     break;
                 case SyntaxKind.StructDeclaration:
-                case SyntaxKind.RecordStructDeclaration:
                     VisitStructDeclaration((StructDeclarationSyntax)node);
                     break;
                 default:

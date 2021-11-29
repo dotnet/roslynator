@@ -1098,6 +1098,7 @@ namespace Roslynator.CodeGeneration.CSharp
                 case "RecordDeclarationSyntax":
                 {
                     yield return SyntaxKind.RecordDeclaration;
+                    yield return SyntaxKind.RecordStructDeclaration;
                     break;
                 }
 
@@ -1206,7 +1207,6 @@ namespace Roslynator.CodeGeneration.CSharp
                 case "StructDeclarationSyntax":
                 {
                     yield return SyntaxKind.StructDeclaration;
-                    yield return SyntaxKind.RecordStructDeclaration;
                     break;
                 }
 

@@ -87,13 +87,13 @@ namespace Roslynator.CSharp
                 case SyntaxKind.ClassDeclaration:
                     return "class";
                 case SyntaxKind.StructDeclaration:
-                case SyntaxKind.RecordStructDeclaration:
                     return "struct";
                 case SyntaxKind.InterfaceDeclaration:
                     return "interface";
                 case SyntaxKind.EnumDeclaration:
                     return "enum";
                 case SyntaxKind.RecordDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     return "record";
                 case SyntaxKind.IncompleteMember:
                     return "member";

@@ -33,7 +33,6 @@ namespace Roslynator.CSharp.Documentation
                 case SyntaxKind.ClassDeclaration:
                     return Generate((ClassDeclarationSyntax)memberDeclaration, settings);
                 case SyntaxKind.StructDeclaration:
-                case SyntaxKind.RecordStructDeclaration:
                     return Generate((StructDeclarationSyntax)memberDeclaration, settings);
                 case SyntaxKind.InterfaceDeclaration:
                     return Generate((InterfaceDeclarationSyntax)memberDeclaration, settings);
@@ -64,6 +63,7 @@ namespace Roslynator.CSharp.Documentation
                 case SyntaxKind.IndexerDeclaration:
                     return Generate((IndexerDeclarationSyntax)memberDeclaration, settings);
                 case SyntaxKind.RecordDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     return Generate((RecordDeclarationSyntax)memberDeclaration, settings);
                 default:
                     throw new ArgumentException("", nameof(memberDeclaration));
@@ -633,9 +633,9 @@ namespace Roslynator.CSharp.Documentation
                 case SyntaxKind.ClassDeclaration:
                     return ((ClassDeclarationSyntax)parent).BaseList?.Types.Any() == true;
                 case SyntaxKind.RecordDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     return ((RecordDeclarationSyntax)parent).BaseList?.Types.Any() == true;
                 case SyntaxKind.StructDeclaration:
-                case SyntaxKind.RecordStructDeclaration:
                     return ((StructDeclarationSyntax)parent).BaseList?.Types.Any() == true;
             }
 
