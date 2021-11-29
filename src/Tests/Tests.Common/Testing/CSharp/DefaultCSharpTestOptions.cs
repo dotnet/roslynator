@@ -25,7 +25,7 @@ namespace Roslynator.Testing.CSharp
             );
 
             return CSharpTestOptions.Default
-                .WithParseOptions(CSharpTestOptions.Default.ParseOptions.WithLanguageVersion(LanguageVersion.CSharp9))
+                .WithParseOptions(CSharpTestOptions.Default.ParseOptions.WithLanguageVersion(LanguageVersion.CSharp10))
                 .WithAllowedCompilerDiagnosticIds(allowedCompilerDiagnosticIds);
         }
     }
