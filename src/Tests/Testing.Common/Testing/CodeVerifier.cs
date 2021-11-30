@@ -6,6 +6,7 @@ using System.Collections.Immutable;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -303,11 +304,11 @@ namespace Roslynator.Testing
                 .AddProject(projectInfo)
                 .GetProject(projectId);
 
-            string directoryPath = Path.GetDirectoryName(typeof(CodeVerifier).Assembly.Location);
+            const string directoryPath = "z:";
 
             if (options.ConfigOptions.Count > 0)
             {
-                System.Text.StringBuilder sb = StringBuilderCache.GetInstance();
+                StringBuilder sb = StringBuilderCache.GetInstance();
 
                 sb.AppendLine("root = true");
                 sb.AppendLine();
@@ -348,7 +349,12 @@ namespace Roslynator.Testing
 
                 for (int i = 0; i < additionalFiles.Length; i++)
                 {
-                    Document additionalDocument = project.AddDocument(AppendNumberToFileName(options.DocumentName, i + 2), SourceText.From(additionalFiles[i].Source));
+                    string documentName = AppendNumberToFileName(options.DocumentName, i + 2);
+
+                    Document additionalDocument = project.AddDocument(
+                        documentName,
+                        SourceText.From(additionalFiles[i].Source),
+                        filePath: Path.Combine(directoryPath, documentName));
 
                     string expectedSource = additionalFiles[i].ExpectedSource;
 
