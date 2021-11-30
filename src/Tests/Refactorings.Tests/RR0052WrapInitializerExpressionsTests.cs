@@ -43,6 +43,42 @@ class C
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapInitializerExpressions)]
+        public async Task Test_WithExpressionToMultiLine()
+        {
+            await VerifyRefactoringAsync(@"
+record C
+{
+    string P1 { get; set; }
+    string P2 { get; set; }
+
+    void M()
+    {
+        var x = this with {[||] P1 = null, P2 = null };
+    }
+}
+
+namespace System.Runtime.CompilerServices { internal static class IsExternalInit {} }
+", @"
+record C
+{
+    string P1 { get; set; }
+    string P2 { get; set; }
+
+    void M()
+    {
+        var x = this with
+        {
+            P1 = null,
+            P2 = null
+        };
+    }
+}
+
+namespace System.Runtime.CompilerServices { internal static class IsExternalInit {} }
+", equivalenceKey: RefactoringId);
+        }
+
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapInitializerExpressions)]
         public async Task Test_ToSingleLine()
         {
             await VerifyRefactoringAsync(@"
@@ -71,6 +107,42 @@ class C
         var x = new C() { P1 = null, P2 = null };
     }
 }
+", equivalenceKey: RefactoringId);
+        }
+
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapInitializerExpressions)]
+        public async Task Test_WithExpressionToSingleLine()
+        {
+            await VerifyRefactoringAsync(@"
+record C
+{
+    string P1 { get; set; }
+    string P2 { get; set; }
+
+    void M()
+    {
+        var x = this with
+        {
+            [||]P1 = null,
+            P2 = null
+        };
+    }
+}
+
+namespace System.Runtime.CompilerServices { internal static class IsExternalInit {} }
+", @"
+record C
+{
+    string P1 { get; set; }
+    string P2 { get; set; }
+
+    void M()
+    {
+        var x = this with { P1 = null, P2 = null };
+    }
+}
+
+namespace System.Runtime.CompilerServices { internal static class IsExternalInit {} }
 ", equivalenceKey: RefactoringId);
         }
 

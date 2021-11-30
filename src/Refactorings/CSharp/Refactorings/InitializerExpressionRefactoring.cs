@@ -31,7 +31,8 @@ namespace Roslynator.CSharp.Refactorings
                         SyntaxKind.ArrayCreationExpression,
                         SyntaxKind.ImplicitArrayCreationExpression,
                         SyntaxKind.ObjectCreationExpression,
-                        SyntaxKind.CollectionInitializerExpression))
+                        SyntaxKind.CollectionInitializerExpression,
+                        SyntaxKind.WithExpression))
                 {
                     if (initializer.IsSingleLine(includeExteriorTrivia: false))
                     {

@@ -652,6 +652,7 @@ namespace Roslynator.CSharp.Refactorings
                     case SyntaxKind.CollectionInitializerExpression:
                     case SyntaxKind.ComplexElementInitializerExpression:
                     case SyntaxKind.ObjectInitializerExpression:
+                    case SyntaxKind.WithInitializerExpression:
                         {
                             if (flags.IsSet(Flag.InitializerExpression))
                                 continue;
