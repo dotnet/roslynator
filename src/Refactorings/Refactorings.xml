@@ -280,7 +280,7 @@
       <Syntax>expression body</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0038" Identifier="ExpandInitializer" Title="Expand initializer">
+  <Refactoring Id="RR0038" Identifier="ExpandInitializer" Title="Expand initializer" IsEnabledByDefault="false">
     <Syntaxes>
       <Syntax>initializer</Syntax>
     </Syntaxes>
