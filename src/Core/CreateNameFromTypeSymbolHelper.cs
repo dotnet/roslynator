@@ -33,6 +33,13 @@ namespace Roslynator
                 name = name.Substring(1);
             }
 
+            if (name.Length >= 8
+                && name.EndsWith("Syntax", StringComparison.Ordinal)
+                && typeSymbol.EqualsOrInheritsFrom(MetadataNames.Microsoft_CodeAnalysis_SyntaxNode))
+            {
+                name = name.Remove(name.Length - 6);
+            }
+
             if (name.Length > 1
                 && UsePlural(typeSymbol2))
             {

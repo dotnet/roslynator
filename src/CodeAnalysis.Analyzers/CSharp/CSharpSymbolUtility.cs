@@ -39,7 +39,7 @@ namespace Roslynator.CSharp
                 .Parameters
                 .SingleOrDefault(shouldThrow: false)?
                 .Type
-                .HasMetadataName(RoslynMetadataNames.Microsoft_CodeAnalysis_SyntaxNode) == true;
+                .HasMetadataName(MetadataNames.Microsoft_CodeAnalysis_SyntaxNode) == true;
         }
 
         public static bool IsIsKindExtensionMethod(
@@ -73,7 +73,7 @@ namespace Roslynator.CSharp
             if (parameters.Length != 2)
                 return false;
 
-            if (!parameters[0].Type.HasMetadataName(RoslynMetadataNames.Microsoft_CodeAnalysis_SyntaxNode))
+            if (!parameters[0].Type.HasMetadataName(MetadataNames.Microsoft_CodeAnalysis_SyntaxNode))
                 return false;
 
             if (!parameters[1].Type.HasMetadataName(CSharpMetadataNames.Microsoft_CodeAnalysis_CSharp_SyntaxKind))

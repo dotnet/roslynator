@@ -82,7 +82,7 @@ namespace Roslynator.CodeAnalysis.CSharp
                                     if (symbol2 == null)
                                         break;
 
-                                    if (!symbol2.ContainingType.HasMetadataName(RoslynMetadataNames.Microsoft_CodeAnalysis_SyntaxNode))
+                                    if (!symbol2.ContainingType.HasMetadataName(MetadataNames.Microsoft_CodeAnalysis_SyntaxNode))
                                         break;
 
                                     DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UsePropertySyntaxNodeSpanStart, memberAccessExpression);

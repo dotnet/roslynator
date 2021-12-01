@@ -6,6 +6,7 @@ namespace Roslynator
     {
         public static readonly MetadataName Microsoft_CodeAnalysis_CSharp_CSharpSyntaxNode = MetadataName.Parse("Microsoft.CodeAnalysis.CSharp.CSharpSyntaxNode");
         public static readonly MetadataName Microsoft_CodeAnalysis_CSharp_SyntaxKind = MetadataName.Parse("Microsoft.CodeAnalysis.CSharp.SyntaxKind");
+        public static readonly MetadataName Microsoft_CodeAnalysis_SyntaxNode = MetadataName.Parse("Microsoft.CodeAnalysis.SyntaxNode");
         public static readonly MetadataName System_ArgumentException = MetadataName.Parse("System.ArgumentException");
         public static readonly MetadataName System_ArgumentNullException = MetadataName.Parse("System.ArgumentNullException");
         public static readonly MetadataName System_Attribute = MetadataName.Parse("System.Attribute");

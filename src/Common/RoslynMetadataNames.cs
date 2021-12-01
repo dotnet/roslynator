@@ -32,7 +32,6 @@ namespace Roslynator
         public static readonly MetadataName Microsoft_CodeAnalysis_CSharpExtensions = MetadataName.Parse("Microsoft.CodeAnalysis.CSharpExtensions");
         public static readonly MetadataName Microsoft_CodeAnalysis_Diagnostics = MetadataName.Parse("Microsoft.CodeAnalysis.Diagnostics");
         public static readonly MetadataName Microsoft_CodeAnalysis_Diagnostics_DiagnosticAnalyzerAttribute = MetadataName.Parse("Microsoft.CodeAnalysis.Diagnostics.DiagnosticAnalyzerAttribute");
-        public static readonly MetadataName Microsoft_CodeAnalysis_SyntaxNode = MetadataName.Parse("Microsoft.CodeAnalysis.SyntaxNode");
         public static readonly MetadataName Microsoft_CodeAnalysis_SyntaxTriviaList = MetadataName.Parse("Microsoft.CodeAnalysis.SyntaxTriviaList");
         public static readonly MetadataName Microsoft_CodeAnalysis_Text_TextSpan = MetadataName.Parse("Microsoft.CodeAnalysis.Text.TextSpan");
     }
