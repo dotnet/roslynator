@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
+using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -489,22 +490,41 @@ namespace Roslynator.CSharp.Analysis
 
             SyntaxTriviaList leading = compilationUnit.EndOfFileToken.LeadingTrivia;
 
-            int start = -1;
+            SyntaxTriviaList.Reversed.Enumerator en = leading.Reverse().GetEnumerator();
 
-            foreach (SyntaxTrivia trivia in leading.Reverse())
+            if (en.MoveNext()
+                && en.Current.IsEndOfLineTrivia())
             {
-                if (trivia.IsEndOfLineTrivia())
-                {
-                    start = trivia.SpanStart;
-                }
-                else
-                {
-                    break;
-                }
-            }
+                int start = en.Current.SpanStart;
 
-            if (start >= 0)
-            {
+                if (en.MoveNext())
+                {
+                    if (!en.Current.IsWhitespaceTrivia()
+                        || en.MoveNext())
+                    {
+                        if (CSharpFacts.IsCommentTrivia(en.Current.Kind())
+                            || SyntaxFacts.IsPreprocessorDirective(en.Current.Kind()))
+                        {
+                            return;
+                        }
+
+                        do
+                        {
+                            Debug.Assert(en.Current.IsWhitespaceOrEndOfLineTrivia(), en.Current.Kind().ToString());
+
+                            if (en.Current.IsEndOfLineTrivia())
+                            {
+                                start = en.Current.SpanStart;
+                            }
+                            else
+                            {
+                                break;
+                            }
+
+                        } while (en.MoveNext());
+                    }
+                }
+
                 ReportDiagnostic(context, TextSpan.FromBounds(start, leading.Span.End));
             }
         }

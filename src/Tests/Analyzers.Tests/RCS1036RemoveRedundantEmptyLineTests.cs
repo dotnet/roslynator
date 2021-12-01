@@ -379,5 +379,59 @@ class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantEmptyLine)]
+        public async Task TestNoDiagnostic_EmptyLineAtEndOfFile()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantEmptyLine)]
+        public async Task TestNoDiagnostic_EmptyLineAtEndOfFileAfterMultiLineComment()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+}
+/** **/ 
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantEmptyLine)]
+        public async Task TestNoDiagnostic_EmptyLineAtEndOfFileWithWhitespace()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+}
+ ");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantEmptyLine)]
+        public async Task TestNoDiagnostic_EmptyLineAtEndOfFileAfterSingleLineComment()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+}
+//x
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantEmptyLine)]
+        public async Task TestNoDiagnostic_EmptyLineAtEndOfFileAfterPreprocessorDirective()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+}
+#if DEBUG
+#endif
+");
+        }
     }
 }
