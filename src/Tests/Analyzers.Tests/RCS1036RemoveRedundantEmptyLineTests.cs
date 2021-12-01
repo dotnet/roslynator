@@ -272,6 +272,37 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantEmptyLine)]
+        public async Task Test_EndOfFile()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+}
+[|
+|]", @"
+class C
+{
+}
+", options: Options.EnableConfigOption(AnalyzerOptions.RemoveEmptyLineBetweenClosingBraceAndSwitchSection.OptionKey));
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantEmptyLine)]
+        public async Task Test_EndOfFile2()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+}
+[|
+
+|]", @"
+class C
+{
+}
+", options: Options.EnableConfigOption(AnalyzerOptions.RemoveEmptyLineBetweenClosingBraceAndSwitchSection.OptionKey));
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantEmptyLine)]
         public async Task TestNoDiagnostic_ObjectInitializer()
         {
             await VerifyNoDiagnosticAsync(@"

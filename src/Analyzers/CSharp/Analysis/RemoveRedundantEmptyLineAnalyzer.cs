@@ -54,6 +54,8 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(f => AnalyzeInitializer(f), SyntaxKind.ArrayInitializerExpression);
             context.RegisterSyntaxNodeAction(f => AnalyzeInitializer(f), SyntaxKind.CollectionInitializerExpression);
             context.RegisterSyntaxNodeAction(f => AnalyzeInitializer(f), SyntaxKind.ObjectInitializerExpression);
+
+            context.RegisterSyntaxNodeAction(f => AnalyzeCompilationUnit(f), SyntaxKind.CompilationUnit);
         }
 
         private static void AnalyzeClassDeclaration(SyntaxNodeAnalysisContext context)
@@ -478,6 +480,32 @@ namespace Roslynator.CSharp.Analysis
             {
                 AnalyzeStart(context, accessors[0], accessorList.OpenBraceToken);
                 AnalyzeEnd(context, accessors.Last(), accessorList.CloseBraceToken);
+            }
+        }
+
+        private void AnalyzeCompilationUnit(SyntaxNodeAnalysisContext context)
+        {
+            var compilationUnit = (CompilationUnitSyntax)context.Node;
+
+            SyntaxTriviaList leading = compilationUnit.EndOfFileToken.LeadingTrivia;
+
+            int start = -1;
+
+            foreach (SyntaxTrivia trivia in leading.Reverse())
+            {
+                if (trivia.IsEndOfLineTrivia())
+                {
+                    start = trivia.SpanStart;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            if (start >= 0)
+            {
+                ReportDiagnostic(context, TextSpan.FromBounds(start, leading.Span.End));
             }
         }
 
