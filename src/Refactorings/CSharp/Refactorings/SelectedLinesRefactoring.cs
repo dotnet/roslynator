@@ -55,7 +55,7 @@ namespace Roslynator.CSharp.Refactorings
                     if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInRegion))
                     {
                         context.RegisterRefactoring(
-                            "Wrap in region",
+                            "Wrap in #region",
                             ct => WrapInRegionRefactoring.Instance.RefactorAsync(document, selectedLines, ct),
                             RefactoringIdentifiers.WrapInRegion);
                     }
