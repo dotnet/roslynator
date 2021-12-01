@@ -20,6 +20,12 @@ namespace Roslynator.CSharp.Refactorings
             int i = 0;
             SyntaxList<InterpolatedStringContentSyntax> contents = interpolatedString.Contents;
 
+            if (contents.Count == 0)
+            {
+                return span.Start == interpolatedString.StringStartToken.Span.End
+                    && span.End == interpolatedString.StringEndToken.SpanStart;
+            }
+
             foreach (InterpolatedStringContentSyntax content in contents)
             {
                 SyntaxKind kind = content.Kind();
@@ -73,7 +79,9 @@ namespace Roslynator.CSharp.Refactorings
                     isVerbatim: interpolatedString.IsVerbatim(),
                     isInterpolatedText: true);
 
-                sb.Append(CSharpFactory.NameOfExpression(identifier));
+                sb.Append("nameof(");
+                sb.Append(identifier);
+                sb.Append(")");
             }
 
             int closeBracePosition = sb.Length;
