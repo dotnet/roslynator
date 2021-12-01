@@ -864,10 +864,10 @@ return true;]]></After>
     </Syntaxes>
     <Span>else keyword</Span>
   </Refactoring>
-  <Refactoring Id="RR0100" Identifier="RemoveDirectiveAndRelatedDirectives" Title="Remove directive and related directives">
+  <Refactoring Id="RR0100" Identifier="RemovePreprocessorDirective" Title="Remove preprocessor directive">
     <Syntaxes>
-      <Syntax>preprocessor directive</Syntax>
-      <Syntax>region directive</Syntax>
+      <Syntax>#if directive</Syntax>
+      <Syntax>#region directive</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0101" Identifier="RemoveEmptyLines" Title="Remove empty lines">

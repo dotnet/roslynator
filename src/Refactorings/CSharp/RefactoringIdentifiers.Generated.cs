@@ -145,7 +145,6 @@ namespace Roslynator.CSharp.Refactorings
         public const string RemoveBracesFromSwitchSections = Prefix + "0097";
         public const string RemoveComment = Prefix + "0098";
         public const string RemoveConditionFromLastElse = Prefix + "0099";
-        public const string RemoveDirectiveAndRelatedDirectives = Prefix + "0100";
         public const string RemoveEmptyLines = Prefix + "0101";
         public const string RemoveEnumMemberValue = Prefix + "0199";
         public const string RemoveInterpolation = Prefix + "0102";
@@ -153,6 +152,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string RemoveMemberDeclarations = Prefix + "0104";
         public const string RemoveParameterNameFromArgument = Prefix + "0105";
         public const string RemoveParentheses = Prefix + "0106";
+        public const string RemovePreprocessorDirective = Prefix + "0100";
         public const string RemovePropertyInitializer = Prefix + "0107";
         public const string RemoveRegion = Prefix + "0108";
         public const string RemoveStatement = Prefix + "0109";
