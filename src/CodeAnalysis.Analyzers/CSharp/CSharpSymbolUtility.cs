@@ -22,7 +22,7 @@ namespace Roslynator.CSharp
             if (symbol.Name != "Kind")
                 return false;
 
-            if (!symbol.ContainingType.HasMetadataName(CSharpMetadataNames.Microsoft_CodeAnalysis_CSharp_CSharpExtensions))
+            if (!symbol.ContainingType.HasMetadataName(RoslynMetadataNames.Microsoft_CodeAnalysis_CSharp_CSharpExtensions))
                 return false;
 
             var methodSymbol = (IMethodSymbol)symbol;
@@ -32,7 +32,7 @@ namespace Roslynator.CSharp
 
             methodSymbol = methodSymbol.ReducedFrom;
 
-            if (!methodSymbol.ReturnType.HasMetadataName(CSharpMetadataNames.Microsoft_CodeAnalysis_CSharp_SyntaxKind))
+            if (!methodSymbol.ReturnType.HasMetadataName(RoslynMetadataNames.Microsoft_CodeAnalysis_CSharp_SyntaxKind))
                 return false;
 
             return methodSymbol
@@ -76,7 +76,7 @@ namespace Roslynator.CSharp
             if (!parameters[0].Type.HasMetadataName(MetadataNames.Microsoft_CodeAnalysis_SyntaxNode))
                 return false;
 
-            if (!parameters[1].Type.HasMetadataName(CSharpMetadataNames.Microsoft_CodeAnalysis_CSharp_SyntaxKind))
+            if (!parameters[1].Type.HasMetadataName(RoslynMetadataNames.Microsoft_CodeAnalysis_CSharp_SyntaxKind))
                 return false;
 
             return true;

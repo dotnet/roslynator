@@ -110,7 +110,7 @@ namespace Roslynator.CodeAnalysis.CSharp
 
             ITypeSymbol kindSymbol = context.SemanticModel.GetTypeSymbol(switchExpression, context.CancellationToken);
 
-            if (kindSymbol?.HasMetadataName(CSharpMetadataNames.Microsoft_CodeAnalysis_CSharp_SyntaxKind) != true)
+            if (kindSymbol?.HasMetadataName(RoslynMetadataNames.Microsoft_CodeAnalysis_CSharp_SyntaxKind) != true)
                 return;
 
             foreach (SwitchSectionSyntax section in sections)
@@ -346,7 +346,7 @@ namespace Roslynator.CodeAnalysis.CSharp
             if (string.Compare(kindName, 0, syntaxName, 0, kindName.Length, StringComparison.Ordinal) != 0)
                 return false;
 
-            if (!syntaxSymbol.InheritsFrom(CSharpMetadataNames.Microsoft_CodeAnalysis_CSharp_CSharpSyntaxNode))
+            if (!syntaxSymbol.InheritsFrom(RoslynMetadataNames.Microsoft_CodeAnalysis_CSharp_CSharpSyntaxNode))
                 return false;
 
             return true;

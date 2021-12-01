@@ -9,6 +9,8 @@ namespace Roslynator
         public static readonly MetadataName Microsoft_CodeAnalysis_CodeFixes_ExportCodeFixProviderAttribute = MetadataName.Parse("Microsoft.CodeAnalysis.CodeFixes.ExportCodeFixProviderAttribute");
         public static readonly MetadataName Microsoft_CodeAnalysis_CodeRefactorings = MetadataName.Parse("Microsoft.CodeAnalysis.CodeRefactorings");
         public static readonly MetadataName Microsoft_CodeAnalysis_CodeRefactorings_ExportCodeRefactoringProviderAttribute = MetadataName.Parse("Microsoft.CodeAnalysis.CodeRefactorings.ExportCodeRefactoringProviderAttribute");
+        public static readonly MetadataName Microsoft_CodeAnalysis_CSharp_CSharpExtensions = MetadataName.Parse("Microsoft.CodeAnalysis.CSharp.CSharpExtensions");
+        public static readonly MetadataName Microsoft_CodeAnalysis_CSharp_CSharpSyntaxNode = MetadataName.Parse("Microsoft.CodeAnalysis.CSharp.CSharpSyntaxNode");
         public static readonly MetadataName Microsoft_CodeAnalysis_CSharp_Syntax = MetadataName.Parse("Microsoft.CodeAnalysis.CSharp.Syntax");
         public static readonly MetadataName Microsoft_CodeAnalysis_CSharp_Syntax_AnonymousFunctionExpressionSyntax = MetadataName.Parse("Microsoft.CodeAnalysis.CSharp.Syntax.AnonymousFunctionExpressionSyntax");
         public static readonly MetadataName Microsoft_CodeAnalysis_CSharp_Syntax_BaseExpressionColonSyntax = MetadataName.Parse("Microsoft.CodeAnalysis.CSharp.Syntax.BaseExpressionColonSyntax");
@@ -29,6 +31,7 @@ namespace Roslynator
         public static readonly MetadataName Microsoft_CodeAnalysis_CSharp_Syntax_VariableDesignationSyntax = MetadataName.Parse("Microsoft.CodeAnalysis.CSharp.Syntax.VariableDesignationSyntax");
         public static readonly MetadataName Microsoft_CodeAnalysis_CSharp_Syntax_XmlAttributeSyntax = MetadataName.Parse("Microsoft.CodeAnalysis.CSharp.Syntax.XmlAttributeSyntax");
         public static readonly MetadataName Microsoft_CodeAnalysis_CSharp_Syntax_XmlNodeSyntax = MetadataName.Parse("Microsoft.CodeAnalysis.CSharp.Syntax.XmlNodeSyntax");
+        public static readonly MetadataName Microsoft_CodeAnalysis_CSharp_SyntaxKind = MetadataName.Parse("Microsoft.CodeAnalysis.CSharp.SyntaxKind");
         public static readonly MetadataName Microsoft_CodeAnalysis_CSharpExtensions = MetadataName.Parse("Microsoft.CodeAnalysis.CSharpExtensions");
         public static readonly MetadataName Microsoft_CodeAnalysis_Diagnostics = MetadataName.Parse("Microsoft.CodeAnalysis.Diagnostics");
         public static readonly MetadataName Microsoft_CodeAnalysis_Diagnostics_DiagnosticAnalyzerAttribute = MetadataName.Parse("Microsoft.CodeAnalysis.Diagnostics.DiagnosticAnalyzerAttribute");
