@@ -55,4 +55,3 @@ namespace Roslynator.Text.RegularExpressions
         VerticalTab = 9,
     }
 }
-

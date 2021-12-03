@@ -383,4 +383,3 @@ namespace Roslynator.CSharp.Analysis
         }
     }
 }
-

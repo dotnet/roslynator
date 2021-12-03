@@ -55,4 +55,3 @@ namespace Roslynator.CSharp.Refactorings
         }
     }
 }
-

@@ -220,4 +220,3 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
         }
     }
 }
-

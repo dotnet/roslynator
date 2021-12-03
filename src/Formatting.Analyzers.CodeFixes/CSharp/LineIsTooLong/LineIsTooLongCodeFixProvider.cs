@@ -293,4 +293,3 @@ namespace Roslynator.Formatting.CodeFixes.LineIsTooLong
         }
     }
 }
-

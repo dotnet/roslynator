@@ -106,4 +106,3 @@ namespace Roslynator.CSharp.Analysis.UsePatternMatching
         }
     }
 }
-

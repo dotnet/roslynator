@@ -38,4 +38,3 @@
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1815:Override equals and operator equals on value types", Scope = "type", Target = "~T:Roslynator.CSharp.Syntax.StringLiteralExpressionInfo")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1815:Override equals and operator equals on value types", Scope = "type", Target = "~T:Roslynator.CSharp.Syntax.UsingDirectiveListInfo")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1815:Override equals and operator equals on value types", Scope = "type", Target = "~T:Roslynator.CSharp.Syntax.XmlElementInfo")]
-

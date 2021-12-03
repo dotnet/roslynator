@@ -20,4 +20,3 @@ namespace Roslynator.Formatting.CodeFixes.LineIsTooLong
         FieldOrLocalInitializer = 13,
     }
 }
-

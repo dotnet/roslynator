@@ -1274,4 +1274,3 @@ namespace Roslynator.Text.RegularExpressions
         };
     }
 }
-

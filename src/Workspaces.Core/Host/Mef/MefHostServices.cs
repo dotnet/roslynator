@@ -121,4 +121,3 @@ namespace Roslynator.Host.Mef
         }
     }
 }
-
