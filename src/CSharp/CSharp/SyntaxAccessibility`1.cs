@@ -188,7 +188,7 @@ namespace Roslynator.CSharp
                 if (declaration == null)
                     throw new ArgumentNullException(nameof(declaration));
 
-                return (declaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.RecordStructDeclaration))
+                return (declaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.RecordDeclaration, SyntaxKind.RecordStructDeclaration))
                     ? Accessibility.Private
                     : Accessibility.Internal;
             }
@@ -198,7 +198,7 @@ namespace Roslynator.CSharp
                 if (declaration == null)
                     throw new ArgumentNullException(nameof(declaration));
 
-                return (declaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.RecordStructDeclaration))
+                return (declaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.RecordDeclaration, SyntaxKind.RecordStructDeclaration))
                     ? Accessibility.Private
                     : Accessibility.Internal;
             }
@@ -327,7 +327,7 @@ namespace Roslynator.CSharp
                 if (declaration == null)
                     throw new ArgumentNullException(nameof(declaration));
 
-                return (declaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.RecordStructDeclaration))
+                return (declaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.RecordDeclaration, SyntaxKind.RecordStructDeclaration))
                     ? Accessibility.Private
                     : Accessibility.Internal;
             }
@@ -337,7 +337,7 @@ namespace Roslynator.CSharp
                 if (declaration == null)
                     throw new ArgumentNullException(nameof(declaration));
 
-                return (declaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.RecordStructDeclaration))
+                return (declaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.RecordDeclaration, SyntaxKind.RecordStructDeclaration))
                     ? Accessibility.Private
                     : Accessibility.Internal;
             }

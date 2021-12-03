@@ -31,7 +31,8 @@ namespace Roslynator.CSharp.Analysis
             base.Initialize(context);
 
             context.RegisterSyntaxNodeAction(f => AnalyzeClassDeclaration(f), SyntaxKind.ClassDeclaration);
-            context.RegisterSyntaxNodeAction(f => AnalyzeStructDeclaration(f), SyntaxKind.StructDeclaration, SyntaxKind.RecordStructDeclaration);
+            context.RegisterSyntaxNodeAction(f => AnalyzeStructDeclaration(f), SyntaxKind.StructDeclaration);
+            context.RegisterSyntaxNodeAction(f => AnalyzeRecordDeclaration(f), SyntaxKind.RecordDeclaration, SyntaxKind.RecordStructDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeInterfaceDeclaration(f), SyntaxKind.InterfaceDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeNamespaceDeclaration(f), SyntaxKind.NamespaceDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeSwitchStatement(f), SyntaxKind.SwitchStatement);
@@ -79,6 +80,17 @@ namespace Roslynator.CSharp.Analysis
                 structDeclaration.Members,
                 structDeclaration.OpenBraceToken,
                 structDeclaration.CloseBraceToken);
+        }
+
+        private static void AnalyzeRecordDeclaration(SyntaxNodeAnalysisContext context)
+        {
+            var recordDeclaration = (RecordDeclarationSyntax)context.Node;
+
+            AnalyzeDeclaration(
+                context,
+                recordDeclaration.Members,
+                recordDeclaration.OpenBraceToken,
+                recordDeclaration.CloseBraceToken);
         }
 
         private static void AnalyzeInterfaceDeclaration(SyntaxNodeAnalysisContext context)

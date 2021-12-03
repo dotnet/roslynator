@@ -30,28 +30,18 @@ namespace Roslynator.CSharp.Analysis
         {
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeClassDeclaration(f), SyntaxKind.ClassDeclaration);
-            context.RegisterSyntaxNodeAction(f => AnalyzeStructDeclaration(f), SyntaxKind.StructDeclaration, SyntaxKind.RecordStructDeclaration);
-            context.RegisterSyntaxNodeAction(f => AnalyzeInterfaceDeclaration(f), SyntaxKind.InterfaceDeclaration);
+            context.RegisterSyntaxNodeAction(
+                f => AnalyzeTypeDeclaration(f),
+                SyntaxKind.ClassDeclaration,
+                SyntaxKind.StructDeclaration,
+                SyntaxKind.RecordDeclaration,
+                SyntaxKind.InterfaceDeclaration);
         }
 
-        private void AnalyzeClassDeclaration(SyntaxNodeAnalysisContext context)
+        private void AnalyzeTypeDeclaration(SyntaxNodeAnalysisContext context)
         {
-            AnalyzeTypeDeclaration(context, (TypeDeclarationSyntax)context.Node);
-        }
+            var typeDeclaration = (TypeDeclarationSyntax)context.Node;
 
-        private void AnalyzeStructDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            AnalyzeTypeDeclaration(context, (TypeDeclarationSyntax)context.Node);
-        }
-
-        private void AnalyzeInterfaceDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            AnalyzeTypeDeclaration(context, (TypeDeclarationSyntax)context.Node);
-        }
-
-        private void AnalyzeTypeDeclaration(SyntaxNodeAnalysisContext context, TypeDeclarationSyntax typeDeclaration)
-        {
             if (!typeDeclaration.Modifiers.Contains(SyntaxKind.PartialKeyword))
                 return;
 

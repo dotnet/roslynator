@@ -94,7 +94,7 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
             if (methodDeclaration.ContainsDiagnostics)
                 return;
 
-            if (!methodDeclaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.RecordStructDeclaration))
+            if (!methodDeclaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.RecordDeclaration, SyntaxKind.RecordStructDeclaration))
                 return;
 
             if (methodDeclaration.Modifiers.ContainsAny(
@@ -195,7 +195,7 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
             if (indexerDeclaration.ContainsDiagnostics)
                 return;
 
-            if (!indexerDeclaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.RecordStructDeclaration))
+            if (!indexerDeclaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.RecordDeclaration, SyntaxKind.RecordStructDeclaration))
                 return;
 
             if (indexerDeclaration.Modifiers.ContainsAny(SyntaxKind.AbstractKeyword, SyntaxKind.VirtualKeyword, SyntaxKind.OverrideKeyword))

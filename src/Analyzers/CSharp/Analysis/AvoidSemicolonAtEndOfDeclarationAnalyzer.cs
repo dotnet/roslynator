@@ -32,7 +32,8 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(f => AnalyzeNamespaceDeclaration(f), SyntaxKind.NamespaceDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeClassDeclaration(f), SyntaxKind.ClassDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeInterfaceDeclaration(f), SyntaxKind.InterfaceDeclaration);
-            context.RegisterSyntaxNodeAction(f => AnalyzeStructDeclaration(f), SyntaxKind.StructDeclaration, SyntaxKind.RecordStructDeclaration);
+            context.RegisterSyntaxNodeAction(f => AnalyzeStructDeclaration(f), SyntaxKind.StructDeclaration);
+            context.RegisterSyntaxNodeAction(f => AnalyzeRecordDeclaration(f), SyntaxKind.RecordDeclaration, SyntaxKind.RecordStructDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeEnumDeclaration(f), SyntaxKind.EnumDeclaration);
         }
 
@@ -85,6 +86,22 @@ namespace Roslynator.CSharp.Analysis
                 && !semicolon.IsMissing)
             {
                 DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AvoidSemicolonAtEndOfDeclaration, semicolon);
+            }
+        }
+
+        private static void AnalyzeRecordDeclaration(SyntaxNodeAnalysisContext context)
+        {
+            var declaration = (RecordDeclarationSyntax)context.Node;
+
+            if (declaration.CloseBraceToken.IsKind(SyntaxKind.CloseBraceToken))
+            {
+                SyntaxToken semicolon = declaration.SemicolonToken;
+
+                if (semicolon.Parent != null
+                    && !semicolon.IsMissing)
+                {
+                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AvoidSemicolonAtEndOfDeclaration, semicolon);
+                }
             }
         }
 

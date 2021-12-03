@@ -70,7 +70,8 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(f => AnalyzeMethodDeclaration(f), SyntaxKind.MethodDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeOperatorDeclaration(f), SyntaxKind.OperatorDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzePropertyDeclaration(f), SyntaxKind.PropertyDeclaration);
-            context.RegisterSyntaxNodeAction(f => AnalyzeStructDeclaration(f), SyntaxKind.StructDeclaration, SyntaxKind.RecordStructDeclaration);
+            context.RegisterSyntaxNodeAction(f => AnalyzeStructDeclaration(f), SyntaxKind.StructDeclaration);
+            context.RegisterSyntaxNodeAction(f => AnalyzeRecordDeclaration(f), SyntaxKind.RecordDeclaration, SyntaxKind.RecordStructDeclaration);
         }
 
         private static void AnalyzeClassDeclaration(SyntaxNodeAnalysisContext context)
@@ -169,6 +170,13 @@ namespace Roslynator.CSharp.Analysis
             var structDeclaration = (StructDeclarationSyntax)context.Node;
 
             Analyze(context, structDeclaration, structDeclaration.Modifiers);
+        }
+
+        private static void AnalyzeRecordDeclaration(SyntaxNodeAnalysisContext context)
+        {
+            var recordDeclaration = (RecordDeclarationSyntax)context.Node;
+
+            Analyze(context, recordDeclaration, recordDeclaration.Modifiers);
         }
 
         private static void Analyze(SyntaxNodeAnalysisContext context, MemberDeclarationSyntax declaration, SyntaxTokenList modifiers)

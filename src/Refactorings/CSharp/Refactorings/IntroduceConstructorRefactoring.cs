@@ -37,7 +37,7 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 }
             }
-            else if (kind.Is(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.RecordStructDeclaration))
+            else if (kind.Is(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.RecordDeclaration, SyntaxKind.RecordStructDeclaration))
             {
                 SemanticModel semanticModel = null;
 
@@ -95,7 +95,7 @@ namespace Roslynator.CSharp.Refactorings
             if (symbol.IsStatic)
                 return false;
 
-            if (!propertyDeclaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.RecordStructDeclaration))
+            if (!propertyDeclaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.RecordDeclaration, SyntaxKind.RecordStructDeclaration))
                 return false;
 
             ArrowExpressionClauseSyntax expressionBody = propertyDeclaration.ExpressionBody;

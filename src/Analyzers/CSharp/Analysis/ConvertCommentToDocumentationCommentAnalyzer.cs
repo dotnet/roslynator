@@ -33,7 +33,8 @@ namespace Roslynator.CSharp.Analysis
 
             context.RegisterSyntaxNodeAction(f => AnalyzeNamespaceDeclaration(f), SyntaxKind.NamespaceDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeClassDeclaration(f), SyntaxKind.ClassDeclaration);
-            context.RegisterSyntaxNodeAction(f => AnalyzeStructDeclaration(f), SyntaxKind.StructDeclaration, SyntaxKind.RecordStructDeclaration);
+            context.RegisterSyntaxNodeAction(f => AnalyzeStructDeclaration(f), SyntaxKind.StructDeclaration);
+            context.RegisterSyntaxNodeAction(f => AnalyzeRecordDeclaration(f), SyntaxKind.RecordDeclaration, SyntaxKind.RecordStructDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeInterfaceDeclaration(f), SyntaxKind.InterfaceDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeEnumDeclaration(f), SyntaxKind.EnumDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeDelegateDeclaration(f), SyntaxKind.DelegateDeclaration);
@@ -87,6 +88,21 @@ namespace Roslynator.CSharp.Analysis
                 ?? AnalyzeTrailing(structDeclaration.TypeParameterList)
                 ?? AnalyzeTrailing(structDeclaration.BaseList)
                 ?? AnalyzeTrailing(structDeclaration.ConstraintClauses);
+
+            ReportDiagnostic(context, analysis);
+        }
+
+        private static void AnalyzeRecordDeclaration(SyntaxNodeAnalysisContext context)
+        {
+            if (AnalyzeLeading(context))
+                return;
+
+            var recordDeclaration = (RecordDeclarationSyntax)context.Node;
+
+            TrailingAnalysis? analysis = AnalyzeTrailing(recordDeclaration.Identifier)
+                ?? AnalyzeTrailing(recordDeclaration.TypeParameterList)
+                ?? AnalyzeTrailing(recordDeclaration.BaseList)
+                ?? AnalyzeTrailing(recordDeclaration.ConstraintClauses);
 
             ReportDiagnostic(context, analysis);
         }
