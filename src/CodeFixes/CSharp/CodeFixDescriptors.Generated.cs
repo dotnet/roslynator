@@ -904,5 +904,13 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true, 
             "CS8632");
 
+        /// <summary>RCF0119 (fixes CS8618, CS8625)</summary>
+        public static readonly CodeFixDescriptor UseNullForgivingOperator = new CodeFixDescriptor(
+            id:                 CodeFixIdentifiers.UseNullForgivingOperator, 
+            title:              "Use null-forgiving operator", 
+            isEnabledByDefault: true, 
+            "CS8618", 
+            "CS8625");
+
     }
 }

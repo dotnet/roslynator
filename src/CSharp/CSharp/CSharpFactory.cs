@@ -1406,6 +1406,17 @@ namespace Roslynator.CSharp
         {
             return PostfixUnaryExpression(SyntaxKind.PostDecrementExpression, operand, operatorToken);
         }
+
+        public static PostfixUnaryExpressionSyntax SuppressNullableWarningExpression(ExpressionSyntax operand)
+        {
+            return PostfixUnaryExpression(SyntaxKind.SuppressNullableWarningExpression, operand);
+        }
+
+        public static PostfixUnaryExpressionSyntax SuppressNullableWarningExpression(ExpressionSyntax operand, SyntaxToken operatorToken)
+        {
+            return PostfixUnaryExpression(SyntaxKind.SuppressNullableWarningExpression, operand, operatorToken);
+        }
+
         #endregion PostfixUnaryExpression
 
         #region AssignmentExpression

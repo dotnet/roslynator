@@ -1176,6 +1176,20 @@
     Title="Instance fields of read-only structs must be read-only."
     Message="Instance fields of readonly structs must be readonly"
     HelpUrl="" />
+  <Diagnostic
+	Id="CS8618"
+    Identifier="NonNullableMemberIsUninitialized"
+	Severity="Warning"
+    Title="Non-nullable member is uninitialized. Consider declaring the member as nullable." 
+	Message="Non-nullable {0} '{1}' is uninitialized. Consider declaring the {0} as nullable"
+	HelpUrl="" />
+  <Diagnostic
+	Id="CS8625"
+    Identifier="CannotConvertNullLiteralToNonNullableReferenceType"
+	Severity="Warning"
+	Title="Cannot convert null literal to non-nullable reference type."
+	Message="Cannot convert null literal to non-nullable reference type"
+    HelpUrl="" />
   <Diagnostic 
     Id="CS8632"
     Identifier="AnnotationForNullableReferenceTypesShouldOnlyBeUsedWithinNullableAnnotationsContext"
