@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
-    <Identity Id="d42db039-5432-4399-bb62-67a9b4c3b838" Version="3.3.0" Language="en-US" Publisher="Josef Pihrt" />
-    <DisplayName>Roslynator 2019</DisplayName>
+    <Identity Id="f326ee1b-81a6-4577-b251-1f29d391cef3" Version="3.3.0" Language="en-US" Publisher="Josef Pihrt" />
+    <DisplayName>Roslynator 2022</DisplayName>
     <Description xml:space="preserve">A collection of 500+ analyzers, refactorings and fixes for C#, powered by Roslyn.</Description>
     <MoreInfo>http://github.com/JosefPihrt/Roslynator</MoreInfo>
     <License>LICENSE.txt</License>
@@ -12,9 +12,15 @@
     <Tags>Roslyn;Refactoring;Analyzer;CodeAnalysis;C#;CSharp;Productivity;Diagnostic</Tags>
   </Metadata>
   <Installation>
-    <InstallationTarget Version="[16.0,17.0)" Id="Microsoft.VisualStudio.Community" />
-    <InstallationTarget Version="[16.0,17.0)" Id="Microsoft.VisualStudio.Pro" />
-    <InstallationTarget Version="[16.0,17.0)" Id="Microsoft.VisualStudio.Enterprise" />
+    <InstallationTarget Version="[17.0,18.0)" Id="Microsoft.VisualStudio.Community">
+      <ProductArchitecture>amd64</ProductArchitecture>
+    </InstallationTarget>
+    <InstallationTarget Version="[17.0,18.0)" Id="Microsoft.VisualStudio.Pro">
+      <ProductArchitecture>amd64</ProductArchitecture>
+    </InstallationTarget>
+    <InstallationTarget Version="[17.0,18.0)" Id="Microsoft.VisualStudio.Enterprise">
+      <ProductArchitecture>amd64</ProductArchitecture>
+    </InstallationTarget>
   </Installation>
   <Dependencies>
     <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.6,)" />

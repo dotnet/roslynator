@@ -15,7 +15,8 @@ namespace Roslynator.VisualStudio
         {
             return Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                @"JosefPihrt\Roslynator\VisualStudio\2019");
+                "JosefPihrt",
+                "Roslynator");
         }
 
         public static string GetRuleSetPath()

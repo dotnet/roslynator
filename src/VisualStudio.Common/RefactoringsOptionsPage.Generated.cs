@@ -118,7 +118,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.RemoveBracesFromSwitchSections, "Remove braces from switch sections", IsEnabled(RefactoringIdentifiers.RemoveBracesFromSwitchSections)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.RemoveComment, "Remove comment", IsEnabled(RefactoringIdentifiers.RemoveComment)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.RemoveConditionFromLastElse, "Remove condition from last else clause", IsEnabled(RefactoringIdentifiers.RemoveConditionFromLastElse)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.RemoveDirectiveAndRelatedDirectives, "Remove directive and related directives", IsEnabled(RefactoringIdentifiers.RemoveDirectiveAndRelatedDirectives)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.RemovePreprocessorDirective, "Remove directive and related directives", IsEnabled(RefactoringIdentifiers.RemovePreprocessorDirective)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.RemoveEmptyLines, "Remove empty lines", IsEnabled(RefactoringIdentifiers.RemoveEmptyLines)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.RemoveInterpolation, "Remove interpolation", IsEnabled(RefactoringIdentifiers.RemoveInterpolation)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.RemoveMember, "Remove member", IsEnabled(RefactoringIdentifiers.RemoveMember)));
