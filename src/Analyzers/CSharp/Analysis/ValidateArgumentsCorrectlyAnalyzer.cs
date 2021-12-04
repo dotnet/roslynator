@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.Syntax;
 using Roslynator.CSharp.SyntaxWalkers;
 
 namespace Roslynator.CSharp.Analysis
@@ -32,33 +32,49 @@ namespace Roslynator.CSharp.Analysis
             base.Initialize(context);
 
             context.RegisterSyntaxNodeAction(f => AnalyzeMethodDeclaration(f), SyntaxKind.MethodDeclaration);
+            context.RegisterSyntaxNodeAction(f => AnalyzeConstructorDeclaration(f), SyntaxKind.ConstructorDeclaration);
         }
 
         private static void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
         {
             var methodDeclaration = (MethodDeclarationSyntax)context.Node;
 
-            BlockSyntax body = methodDeclaration.Body;
+            AnalyzeParameterList(context, methodDeclaration.ParameterList, methodDeclaration.Body);
+        }
 
+        private static void AnalyzeConstructorDeclaration(SyntaxNodeAnalysisContext context)
+        {
+            var constructorDeclaration = (ConstructorDeclarationSyntax)context.Node;
+
+            AnalyzeParameterList(context, constructorDeclaration.ParameterList, constructorDeclaration.Body);
+        }
+
+        private static void AnalyzeParameterList(SyntaxNodeAnalysisContext context, ParameterListSyntax parameterList, BlockSyntax body)
+        {
             if (body == null)
                 return;
-
-            ParameterListSyntax parameterList = methodDeclaration.ParameterList;
 
             if (parameterList == null)
                 return;
 
-            if (!parameterList.Parameters.Any())
+            SeparatedSyntaxList<ParameterSyntax> parameters = parameterList.Parameters;
+
+            if (!parameters.Any())
                 return;
 
             SyntaxList<StatementSyntax> statements = body.Statements;
 
             int statementCount = statements.Count;
 
+            if (statementCount == 0)
+                return;
+
+            AnalyzeUnnecessaryNullCheck(context, parameters, statements);
+
             int index = -1;
             for (int i = 0; i < statementCount; i++)
             {
-                if (IsNullCheck(statements[i]))
+                if (IsConditionWithThrow(statements[i]))
                 {
                     index++;
                 }
@@ -101,10 +117,77 @@ namespace Roslynator.CSharp.Analysis
                 Location.Create(body.SyntaxTree, new TextSpan(statements[index + 1].SpanStart, 0)));
         }
 
-        private static bool IsNullCheck(StatementSyntax statement)
+        private static void AnalyzeUnnecessaryNullCheck(
+            SyntaxNodeAnalysisContext context,
+            SeparatedSyntaxList<ParameterSyntax> parameters,
+            SyntaxList<StatementSyntax> statements)
         {
-            return statement.IsKind(SyntaxKind.IfStatement)
-                && ((IfStatementSyntax)statement).SingleNonBlockStatementOrDefault().IsKind(SyntaxKind.ThrowStatement);
+            int lastIndex = -1;
+
+            foreach (ParameterSyntax parameter in parameters)
+            {
+                if (parameter.IsParams())
+                    break;
+
+                lastIndex++;
+            }
+
+            if (lastIndex == -1)
+                return;
+
+            foreach (StatementSyntax statement in statements)
+            {
+                if (statement is IfStatementSyntax ifStatement
+                    && ifStatement.IsSimpleIf()
+                    && ifStatement.SingleNonBlockStatementOrDefault() is ThrowStatementSyntax throwStatement)
+                {
+                    NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(ifStatement.Condition, context.SemanticModel, NullCheckStyles.CheckingNull);
+
+                    if (nullCheck.Success)
+                    {
+                        ParameterSyntax parameter = GetParameter(nullCheck.Expression);
+
+                        if (parameter?.Default?.Value.IsKind(
+                            SyntaxKind.NullLiteralExpression,
+                            SyntaxKind.DefaultLiteralExpression,
+                            SyntaxKind.DefaultExpression) == true)
+                        {
+                            ITypeSymbol exceptionSymbol = context.SemanticModel.GetTypeSymbol(throwStatement.Expression, context.CancellationToken);
+
+                            if (exceptionSymbol.HasMetadataName(MetadataNames.System_ArgumentNullException))
+                            {
+                                context.ReportDiagnostic(DiagnosticRules.ValidateArgumentsCorrectly, ifStatement);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            ParameterSyntax GetParameter(ExpressionSyntax expression)
+            {
+                if (expression is IdentifierNameSyntax identifierName)
+                {
+                    string identifierText = identifierName.Identifier.ValueText;
+                    for (int i = 0; i <= lastIndex; i++)
+                    {
+                        if (parameters[i].Identifier.ValueText == identifierText)
+                            return parameters[i];
+                    }
+                }
+
+                return null;
+            }
+        }
+
+        private static bool IsConditionWithThrow(StatementSyntax statement)
+        {
+            return statement is IfStatementSyntax ifStatement
+                && ifStatement.IsSimpleIf()
+                && ifStatement.SingleNonBlockStatementOrDefault().IsKind(SyntaxKind.ThrowStatement);
         }
     }
 }

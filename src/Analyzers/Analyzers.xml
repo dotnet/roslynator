@@ -4831,12 +4831,16 @@ class Foo
     <Category>Design</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
-    <Summary>
-      An iterator method (a method that contains `yield`) will not validate arguments until the caller begins to enumerate the result items.
+    <Summary>**Case #1**
 
-      To ensure that arguments are validated immediately (when the method is called), move
-      the iterator to a separate method (local function).
-    </Summary>
+An iterator method (a method that contains `yield`) will not validate arguments until the caller begins to enumerate the result items.
+
+To ensure that arguments are validated immediately (when the method is called), move
+the iterator to a separate method (local function).
+
+**Case #2**
+
+Remove condition where a parameter that has default value equal to `null` is checked for null and then `ArgumentNullException` is thrown.</Summary>
     <Samples>
       <Sample>
         <Before><![CDATA[IEnumerable<object> Foo(IEnumerable<object> items)
