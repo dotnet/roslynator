@@ -90,7 +90,7 @@ namespace Roslynator.CodeGeneration
             string ruleSetXml = File.ReadAllText(Path.Combine(rootPath, @"Tools\CodeGeneration\DefaultRuleSet.xml"));
 
             WriteCompilationUnit(
-                @"VisualStudio.Common\RuleSetHelpers.Generated.cs",
+                @"VisualStudio.Common\DefaultRuleSet.Generated.cs",
                 RuleSetGenerator.Generate(ruleSetXml));
 
             File.WriteAllText(
