@@ -21,9 +21,9 @@ namespace Roslynator.VisualStudio
 
         private void OpenLocation_Click(object sender, RoutedEventArgs e)
         {
-            RuleSetHelpers.EnsureRuleSetExistsInLocalAppData();
+            DefaultRuleSet.CreateFileIfNotExists();
 
-            string ruleSetPath = RuleSetHelpers.GetRuleSetPath();
+            string ruleSetPath = DefaultRuleSet.GetFilePath();
 
             if (File.Exists(ruleSetPath))
             {

@@ -7,11 +7,11 @@ using System.Windows;
 
 namespace Roslynator.VisualStudio
 {
-    internal static partial class RuleSetHelpers
+    internal static partial class DefaultRuleSet
     {
-        private const string RuleSetFileName = "roslynator.ruleset";
+        private const string FileName = "roslynator.ruleset";
 
-        public static string GetRuleSetDirectoryPath()
+        public static string GetDirectoryPath()
         {
             return Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
@@ -19,16 +19,16 @@ namespace Roslynator.VisualStudio
                 "Roslynator");
         }
 
-        public static string GetRuleSetPath()
+        public static string GetFilePath()
         {
-            return Path.Combine(GetRuleSetDirectoryPath(), RuleSetFileName);
+            return Path.Combine(GetDirectoryPath(), FileName);
         }
 
-        public static void EnsureRuleSetExistsInLocalAppData(bool showErrorMessage = false)
+        public static void CreateFileIfNotExists(bool showErrorMessage = false)
         {
-            string directoryPath = GetRuleSetDirectoryPath();
+            string directoryPath = GetDirectoryPath();
 
-            string ruleSetPath = Path.Combine(directoryPath, RuleSetFileName);
+            string ruleSetPath = Path.Combine(directoryPath, FileName);
 
             if (!File.Exists(ruleSetPath))
             {

@@ -40,7 +40,7 @@ namespace Roslynator.VisualStudio
         {
             await base.InitializeAsync(cancellationToken, progress);
 
-            RuleSetHelpers.EnsureRuleSetExistsInLocalAppData(showErrorMessage: true);
+            DefaultRuleSet.CreateFileIfNotExists(showErrorMessage: true);
         }
     }
 }
