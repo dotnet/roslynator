@@ -33,7 +33,10 @@ namespace Roslynator.CSharp.CodeFixes
         {
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out SimpleNameSyntax simpleName))
+            if (!TryFindNode(root, context.Span, out SyntaxNode node))
+                return;
+
+            if (node is not SimpleNameSyntax simpleName)
                 return;
 
             Document document = context.Document;
