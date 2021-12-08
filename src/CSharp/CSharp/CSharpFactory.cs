@@ -938,7 +938,12 @@ namespace Roslynator.CSharp
             return AutoAccessorDeclaration(SyntaxKind.SetAccessorDeclaration, modifiers);
         }
 
-        private static AccessorDeclarationSyntax AutoAccessorDeclaration(SyntaxKind kind, SyntaxTokenList modifiers = default)
+        public static AccessorDeclarationSyntax AutoInitAccessorDeclaration(SyntaxTokenList modifiers = default)
+        {
+            return AutoAccessorDeclaration(SyntaxKind.InitAccessorDeclaration, modifiers);
+        }
+
+        internal static AccessorDeclarationSyntax AutoAccessorDeclaration(SyntaxKind kind, SyntaxTokenList modifiers = default)
         {
             return AccessorDeclaration(
                 kind,
@@ -957,6 +962,8 @@ namespace Roslynator.CSharp
                     return SyntaxKind.GetKeyword;
                 case SyntaxKind.SetAccessorDeclaration:
                     return SyntaxKind.SetKeyword;
+                case SyntaxKind.InitAccessorDeclaration:
+                    return SyntaxKind.InitKeyword;
                 case SyntaxKind.AddAccessorDeclaration:
                     return SyntaxKind.AddKeyword;
                 case SyntaxKind.RemoveAccessorDeclaration:

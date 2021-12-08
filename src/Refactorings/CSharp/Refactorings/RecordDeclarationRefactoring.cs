@@ -43,6 +43,13 @@ namespace Roslynator.CSharp.Refactorings
                 ImplementCustomEnumeratorRefactoring.ComputeRefactoring(context, recordDeclaration, semanticModel);
             }
 
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExpandPositionalConstructor)
+                && recordDeclaration.ParameterList != null
+                && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(recordDeclaration.ParameterList.Parameters))
+            {
+                ExpandPositionalConstructorRefactoring.ComputeRefactoring(context, recordDeclaration);
+            }
+
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.SortMemberDeclarations)
                 && recordDeclaration.BracesSpan().Contains(context.Span))
             {

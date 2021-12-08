@@ -2372,4 +2372,28 @@ class Foo : IFoo
       </Sample>
     </Samples>
   </Refactoring>
+  <Refactoring Id="RR0215" Identifier="ExpandPositionalConstructor" Title="Expand positional constructor">
+    <Syntaxes>
+      <Syntax>positional record</Syntax>
+    </Syntaxes>
+    <Span>parameter list</Span>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[public record Foo([property: Obsolete] string Value1, string Value2);]]></Before>
+        <After><![CDATA[public record Foo
+{
+    public Foo(string value1, string value2)
+    {
+        Value1 = value1;
+        Value2 = value2;
+    }
+
+    [Obsolete]
+    public string Value1 { get; init; }
+    public string Value2 { get; init; }
+}
+]]></After>
+      </Sample>
+    </Samples>
+  </Refactoring>
 </Refactorings>

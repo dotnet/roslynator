@@ -14,7 +14,7 @@ namespace Roslynator.VisualStudio
             get;
         }
 
-        = RefactoringIdentifiers.ConvertSwitchExpressionToSwitchStatement;
+        = RefactoringIdentifiers.ExpandPositionalConstructor;
         internal static void SetRefactoringsDisabledByDefault(RefactoringSettings settings)
         {
             settings.Disable(RefactoringIdentifiers.AddIdentifierToParameter);
@@ -229,6 +229,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.DuplicateSwitchSection, "Duplicate switch section", IsEnabled(RefactoringIdentifiers.DuplicateSwitchSection)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.AddParameterToInterfaceMember, "Add parameter to interface member", IsEnabled(RefactoringIdentifiers.AddParameterToInterfaceMember)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertSwitchExpressionToSwitchStatement, "Convert 'switch' expression to 'switch' statement", IsEnabled(RefactoringIdentifiers.ConvertSwitchExpressionToSwitchStatement)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.ExpandPositionalConstructor, "Expand positional record", IsEnabled(RefactoringIdentifiers.ExpandPositionalConstructor)));
         }
     }
 }

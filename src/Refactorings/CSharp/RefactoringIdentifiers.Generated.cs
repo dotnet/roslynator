@@ -80,6 +80,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string ExpandCompoundAssignmentOperator = Prefix + "0034";
         public const string ExpandEvent = Prefix + "0036";
         public const string ExpandInitializer = Prefix + "0038";
+        public const string ExpandPositionalConstructor = Prefix + "0215";
         public const string ExpandProperty = Prefix + "0040";
         public const string ExpandPropertyAndAddBackingField = Prefix + "0041";
         public const string ExtractEventHandlerMethod = Prefix + "0203";

@@ -96,6 +96,22 @@ namespace Roslynator.CSharp
         }
 
         /// <summary>
+        /// Creates a new <see cref="RecordDeclarationSyntax"/> with the specified member inserted.
+        /// </summary>
+        /// <param name="recordDeclaration"></param>
+        /// <param name="member"></param>
+        public RecordDeclarationSyntax Insert(RecordDeclarationSyntax recordDeclaration, MemberDeclarationSyntax member)
+        {
+            if (recordDeclaration == null)
+                throw new ArgumentNullException(nameof(recordDeclaration));
+
+            if (member == null)
+                throw new ArgumentNullException(nameof(member));
+
+            return recordDeclaration.WithMembers(Insert(recordDeclaration.Members, member));
+        }
+
+        /// <summary>
         /// Creates a new <see cref="TypeDeclarationSyntax"/> with the specified member removed.
         /// </summary>
         /// <param name="typeDeclaration"></param>
