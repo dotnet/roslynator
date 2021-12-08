@@ -8,6 +8,7 @@ namespace Roslynator.CSharp.Refactorings
 {
     public static partial class RefactoringIdentifiers
     {
+        public const string AddAllPropertiesToInitializer = Prefix + "0216";
         public const string AddBraces = Prefix + "0002";
         public const string AddBracesToIfElse = Prefix + "0003";
         public const string AddBracesToSwitchSection = Prefix + "0004";

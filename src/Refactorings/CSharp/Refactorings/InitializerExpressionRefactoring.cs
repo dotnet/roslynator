@@ -55,6 +55,15 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 }
 
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddAllPropertiesToInitializer)
+                    && initializer.IsKind(SyntaxKind.ObjectInitializerExpression, SyntaxKind.WithInitializerExpression)
+                    && AddAllPropertiesToInitializerRefactoring.IsApplicableSpan(initializer, context.Span))
+                {
+                    SemanticModel semanticModdel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                    AddAllPropertiesToInitializerRefactoring.ComputeRefactorings(context, initializer, semanticModdel);
+                }
+
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExpandInitializer))
                     await ExpandInitializerRefactoring.ComputeRefactoringsAsync(context, initializer).ConfigureAwait(false);
 

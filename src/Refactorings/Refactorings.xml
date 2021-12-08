@@ -2396,4 +2396,35 @@ class Foo : IFoo
       </Sample>
     </Samples>
   </Refactoring>
+  <Refactoring Id="RR0216" Identifier="AddAllPropertiesToInitializer" Title="Add all properties to initializer">
+    <Syntaxes>
+      <Syntax>object/record initializer</Syntax>
+    </Syntaxes>
+    <Span></Span>
+    <Summary></Summary>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[class C
+{
+  public string P1 { get; set; }
+  public string P2 { get; set; }
+
+  void M()
+  {
+      var x = new C() { };
+  }
+}]]></Before>
+        <After><![CDATA[class C
+{
+  public string P1 { get; set; }
+  public string P2 { get; set; }
+
+  void M()
+  {
+      var x = new C() { P1 = , P2 = };
+  }
+}]]></After>
+      </Sample>
+    </Samples>
+  </Refactoring>
 </Refactorings>

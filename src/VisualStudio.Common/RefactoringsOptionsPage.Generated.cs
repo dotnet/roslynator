@@ -9,18 +9,14 @@ namespace Roslynator.VisualStudio
 {
     public partial class RefactoringsOptionsPage
     {
-        protected override string MaxId
-        {
-            get;
-        }
-
-        = RefactoringIdentifiers.ExpandPositionalConstructor;
+        protected override string MaxId { get; } = RefactoringIdentifiers.AddAllPropertiesToInitializer;
         internal static void SetRefactoringsDisabledByDefault(RefactoringSettings settings)
         {
             settings.Disable(RefactoringIdentifiers.AddIdentifierToParameter);
             settings.Disable(RefactoringIdentifiers.AddIdentifierToVariableDeclaration);
             settings.Disable(RefactoringIdentifiers.ConvertEmptyStringToStringEmpty);
             settings.Disable(RefactoringIdentifiers.ConvertForEachToForAndReverseLoop);
+            settings.Disable(RefactoringIdentifiers.ExpandInitializer);
             settings.Disable(RefactoringIdentifiers.IntroduceConstructor);
             settings.Disable(RefactoringIdentifiers.RemoveAllDocumentationComments);
             settings.Disable(RefactoringIdentifiers.ReplaceMethodWithProperty);
@@ -118,7 +114,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.RemoveBracesFromSwitchSections, "Remove braces from switch sections", IsEnabled(RefactoringIdentifiers.RemoveBracesFromSwitchSections)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.RemoveComment, "Remove comment", IsEnabled(RefactoringIdentifiers.RemoveComment)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.RemoveConditionFromLastElse, "Remove condition from last else clause", IsEnabled(RefactoringIdentifiers.RemoveConditionFromLastElse)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.RemovePreprocessorDirective, "Remove directive and related directives", IsEnabled(RefactoringIdentifiers.RemovePreprocessorDirective)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.RemovePreprocessorDirective, "Remove preprocessor directive", IsEnabled(RefactoringIdentifiers.RemovePreprocessorDirective)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.RemoveEmptyLines, "Remove empty lines", IsEnabled(RefactoringIdentifiers.RemoveEmptyLines)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.RemoveInterpolation, "Remove interpolation", IsEnabled(RefactoringIdentifiers.RemoveInterpolation)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.RemoveMember, "Remove member", IsEnabled(RefactoringIdentifiers.RemoveMember)));
@@ -189,7 +185,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertEmptyStringToStringEmpty, "Convert \"\" to string.Empty", IsEnabled(RefactoringIdentifiers.ConvertEmptyStringToStringEmpty)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.WrapInCondition, "Wrap in condition", IsEnabled(RefactoringIdentifiers.WrapInCondition)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.WrapInIfDirective, "Wrap in #if directive", IsEnabled(RefactoringIdentifiers.WrapInIfDirective)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.WrapInRegion, "Wrap in region", IsEnabled(RefactoringIdentifiers.WrapInRegion)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.WrapInRegion, "Wrap in #region directive", IsEnabled(RefactoringIdentifiers.WrapInRegion)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.WrapInTryCatch, "Wrap in try-catch", IsEnabled(RefactoringIdentifiers.WrapInTryCatch)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.WrapInUsingStatement, "Wrap in using statement", IsEnabled(RefactoringIdentifiers.WrapInUsingStatement)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.AddTypeParameter, "Add type parameter", IsEnabled(RefactoringIdentifiers.AddTypeParameter)));
@@ -229,7 +225,8 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.DuplicateSwitchSection, "Duplicate switch section", IsEnabled(RefactoringIdentifiers.DuplicateSwitchSection)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.AddParameterToInterfaceMember, "Add parameter to interface member", IsEnabled(RefactoringIdentifiers.AddParameterToInterfaceMember)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertSwitchExpressionToSwitchStatement, "Convert 'switch' expression to 'switch' statement", IsEnabled(RefactoringIdentifiers.ConvertSwitchExpressionToSwitchStatement)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.ExpandPositionalConstructor, "Expand positional record", IsEnabled(RefactoringIdentifiers.ExpandPositionalConstructor)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.ExpandPositionalConstructor, "Expand positional constructor", IsEnabled(RefactoringIdentifiers.ExpandPositionalConstructor)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.AddAllPropertiesToInitializer, "Add all properties to initializer", IsEnabled(RefactoringIdentifiers.AddAllPropertiesToInitializer)));
         }
     }
 }
