@@ -184,7 +184,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.UseLambdaExpressionInsteadOfAnonymousMethod, "Use lambda expression instead of anonymous method", IsEnabled(RefactoringIdentifiers.UseLambdaExpressionInsteadOfAnonymousMethod)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.UseStringEmptyInsteadOfEmptyStringLiteral, "Convert \"\" to string.Empty", IsEnabled(RefactoringIdentifiers.UseStringEmptyInsteadOfEmptyStringLiteral)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.WrapStatementsInCondition, "Wrap statements in condition", IsEnabled(RefactoringIdentifiers.WrapStatementsInCondition)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.WrapInIfDirective, "Wrap in #if directive", IsEnabled(RefactoringIdentifiers.WrapInIfDirective)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.WrapLinesInPreprocessorDirective, "Wrap lines in preprocessor directive", IsEnabled(RefactoringIdentifiers.WrapLinesInPreprocessorDirective)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.WrapInRegion, "Wrap in #region directive", IsEnabled(RefactoringIdentifiers.WrapInRegion)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.WrapInTryCatch, "Wrap in try-catch", IsEnabled(RefactoringIdentifiers.WrapInTryCatch)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.WrapInUsingStatement, "Wrap in using statement", IsEnabled(RefactoringIdentifiers.WrapInUsingStatement)));

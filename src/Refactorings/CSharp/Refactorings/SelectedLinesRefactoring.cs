@@ -34,7 +34,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             if (context.IsAnyRefactoringEnabled(
                 RefactoringIdentifiers.WrapInRegion,
-                RefactoringIdentifiers.WrapInIfDirective,
+                RefactoringIdentifiers.WrapLinesInPreprocessorDirective,
                 RefactoringIdentifiers.RemoveEmptyLines))
             {
                 SyntaxNode root = context.Root;
@@ -60,12 +60,12 @@ namespace Roslynator.CSharp.Refactorings
                             RefactoringIdentifiers.WrapInRegion);
                     }
 
-                    if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInIfDirective))
+                    if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapLinesInPreprocessorDirective))
                     {
                         context.RegisterRefactoring(
                             "Wrap in #if",
-                            ct => WrapInIfDirectiveRefactoring.Instance.RefactorAsync(document, selectedLines, ct),
-                            RefactoringIdentifiers.WrapInIfDirective);
+                            ct => WrapLinesInPreprocessorDirectiveRefactoring.Instance.RefactorAsync(document, selectedLines, ct),
+                            RefactoringIdentifiers.WrapLinesInPreprocessorDirective);
                     }
                 }
 

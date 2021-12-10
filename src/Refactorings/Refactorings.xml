@@ -1475,7 +1475,7 @@ i--;]]></After>
       <Syntax>statement</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0174" Identifier="WrapInIfDirective" Title="Wrap in #if directive">
+  <Refactoring Id="RR0174" Identifier="WrapLinesInPreprocessorDirective" Title="Wrap lines in preprocessor directive">
     <Syntaxes>
       <Syntax>selected lines</Syntax>
     </Syntaxes>

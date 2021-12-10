@@ -2,13 +2,13 @@
 
 namespace Roslynator.CSharp.Refactorings.WrapSelectedLines
 {
-    internal sealed class WrapInIfDirectiveRefactoring : WrapSelectedLinesRefactoring
+    internal sealed class WrapLinesInPreprocessorDirectiveRefactoring : WrapSelectedLinesRefactoring
     {
-        private WrapInIfDirectiveRefactoring()
+        private WrapLinesInPreprocessorDirectiveRefactoring()
         {
         }
 
-        public static WrapInIfDirectiveRefactoring Instance { get; } = new WrapInIfDirectiveRefactoring();
+        public static WrapLinesInPreprocessorDirectiveRefactoring Instance { get; } = new WrapLinesInPreprocessorDirectiveRefactoring();
 
         public override string GetFirstLineText()
         {
