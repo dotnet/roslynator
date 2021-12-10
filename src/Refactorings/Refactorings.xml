@@ -258,7 +258,7 @@
     </Syntaxes>
     <Span>opening or closing brace</Span>
   </Refactoring>
-  <Refactoring Id="RR0034" Identifier="ExpandCompoundAssignmentOperator" Title="Expand compound assignment operator">
+  <Refactoring Id="RR0034" Identifier="ExpandCompoundAssignment" Title="Expand compound assignment">
     <Syntaxes>
       <Syntax>compound assignment expression</Syntax>
     </Syntaxes>
