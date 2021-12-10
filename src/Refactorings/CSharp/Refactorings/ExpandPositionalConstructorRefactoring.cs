@@ -68,7 +68,7 @@ namespace Roslynator.CSharp.Refactorings
                 SyntaxToken propertyIdentifier = Identifier(StringUtility.FirstCharToUpper(identifierText));
                 identifiersMap.Add(identifier.ValueText, parameterIdentifier);
 
-                IEnumerable<AttributeListSyntax> attributeLists = parameter.AttributeLists.Where(f => f.Target.Identifier.IsKind(SyntaxKind.PropertyKeyword));
+                IEnumerable<AttributeListSyntax> attributeLists = parameter.AttributeLists.Where(f => f.Target?.Identifier.IsKind(SyntaxKind.PropertyKeyword) == true);
 
                 allAttributeLists.AddRange(attributeLists);
 

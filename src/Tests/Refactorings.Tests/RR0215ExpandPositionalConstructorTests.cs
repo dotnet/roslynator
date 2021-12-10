@@ -83,7 +83,41 @@ namespace System.Runtime.CompilerServices { internal static class IsExternalInit
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertSwitchExpressionToSwitchStatement)]
-        public async Task Test_Attribute()
+        public async Task Test_AttributeWithoutTarget()
+        {
+            await VerifyRefactoringAsync(@"
+using System;
+
+public record R([||]string P, [Foo] object O);
+
+[AttributeUsage(AttributeTargets.Parameter)]
+public sealed class FooAttribute : Attribute { }
+
+namespace System.Runtime.CompilerServices { internal static class IsExternalInit {} }
+", @"
+using System;
+
+public record R
+{
+    public R(string p, [Foo] object o)
+    {
+        P = p;
+        O = o;
+    }
+
+    public string P { get; init; }
+    public object O { get; init; }
+}
+
+[AttributeUsage(AttributeTargets.Parameter)]
+public sealed class FooAttribute : Attribute { }
+
+namespace System.Runtime.CompilerServices { internal static class IsExternalInit {} }
+", options: Options.AddAllowedCompilerDiagnosticId("CS0612"), equivalenceKey: RefactoringId);
+        }
+
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertSwitchExpressionToSwitchStatement)]
+        public async Task Test_AttributeWithTarget()
         {
             await VerifyRefactoringAsync(@"
 using System;
@@ -112,7 +146,7 @@ namespace System.Runtime.CompilerServices { internal static class IsExternalInit
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertSwitchExpressionToSwitchStatement)]
-        public async Task Test_Attribute_Multiline()
+        public async Task Test_AttributeWithTarget_Multiline()
         {
             await VerifyRefactoringAsync(@"
 using System;
