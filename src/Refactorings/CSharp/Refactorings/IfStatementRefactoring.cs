@@ -115,7 +115,7 @@ namespace Roslynator.CSharp.Refactorings
                     ConvertIfToSwitchRefactoring.ComputeRefactoring(context, ifStatement, semanticModel);
                 }
 
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.SplitIfStatement))
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.SplitIf))
                     SplitIfStatementRefactoring.ComputeRefactoring(context, ifStatement);
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.MergeIfWithParentIf)

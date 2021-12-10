@@ -1534,9 +1534,9 @@ i--;]]></After>
       <Syntax>yield break</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0184" Identifier="SplitIfStatement" Title="Split if statement">
+  <Refactoring Id="RR0184" Identifier="SplitIf" Title="Split if">
     <Syntaxes>
-      <Syntax>if statement that has logical or expression as a condition</Syntax>
+      <Syntax>if statement that has 'logical or' expression as a condition</Syntax>
     </Syntaxes>
     <Span>top if keyword or selected if statement</Span>
   </Refactoring>

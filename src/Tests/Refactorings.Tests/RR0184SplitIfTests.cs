@@ -6,11 +6,11 @@ using Xunit;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public class RR0184SplitIfStatementTests : AbstractCSharpRefactoringVerifier
+    public class RR0184SplitIfTests : AbstractCSharpRefactoringVerifier
     {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.SplitIfStatement;
+        public override string RefactoringId { get; } = RefactoringIdentifiers.SplitIf;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SplitIfStatement)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SplitIf)]
         public async Task Test_SimpleIf()
         {
             await VerifyRefactoringAsync(@"
@@ -47,7 +47,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SplitIfStatement)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SplitIf)]
         public async Task Test_SimpleIf2()
         {
             await VerifyRefactoringAsync(@"
@@ -96,7 +96,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SplitIfStatement)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SplitIf)]
         public async Task Test_SimpleIf_EmbeddedStatement()
         {
             await VerifyRefactoringAsync(@"
@@ -137,7 +137,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SplitIfStatement)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SplitIf)]
         public async Task Test_LastElseIf()
         {
             await VerifyRefactoringAsync(@"
@@ -179,7 +179,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SplitIfStatement)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SplitIf)]
         public async Task Test_LastElseIf2()
         {
             await VerifyRefactoringAsync(@"
@@ -225,7 +225,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SplitIfStatement)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SplitIf)]
         public async Task TestNoRefactoring_SimpleIf_SimpleCondition()
         {
             await VerifyNoRefactoringAsync(@"
