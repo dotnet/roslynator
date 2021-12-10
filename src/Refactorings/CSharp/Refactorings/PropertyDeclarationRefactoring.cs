@@ -65,8 +65,8 @@ namespace Roslynator.CSharp.Refactorings
                     RefactoringIdentifiers.ConvertBlockBodyToExpressionBody);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.NotifyWhenPropertyChange))
-                await NotifyWhenPropertyChangeRefactoring.ComputeRefactoringAsync(context, propertyDeclaration).ConfigureAwait(false);
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.NotifyWhenPropertyChanges))
+                await NotifyWhenPropertyChangesRefactoring.ComputeRefactoringAsync(context, propertyDeclaration).ConfigureAwait(false);
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.MakeMemberAbstract)
                 && propertyDeclaration.HeaderSpan().Contains(context.Span))

@@ -11,7 +11,7 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class NotifyWhenPropertyChangeRefactoring
+    internal static class NotifyWhenPropertyChangesRefactoring
     {
         public static async Task ComputeRefactoringAsync(
             RefactoringContext context,
@@ -64,9 +64,9 @@ namespace Roslynator.CSharp.Refactorings
             Document document = context.Document;
 
             context.RegisterRefactoring(
-                "Notify when property change",
+                "Notify when property changes",
                 ct => RefactorAsync(document, property, methodSymbol.Name, ct),
-                RefactoringIdentifiers.NotifyWhenPropertyChange);
+                RefactoringIdentifiers.NotifyWhenPropertyChanges);
 
             ExpressionSyntax GetExpression()
             {

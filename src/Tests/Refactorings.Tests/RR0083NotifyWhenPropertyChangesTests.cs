@@ -6,11 +6,11 @@ using Xunit;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public class RR0083NotifyWhenPropertyChangeTests : AbstractCSharpRefactoringVerifier
+    public class RR0083NotifyWhenPropertyChangesTests : AbstractCSharpRefactoringVerifier
     {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.NotifyWhenPropertyChange;
+        public override string RefactoringId { get; } = RefactoringIdentifiers.NotifyWhenPropertyChanges;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.NotifyWhenPropertyChange)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.NotifyWhenPropertyChanges)]
         public async Task Test_SetterWithBody()
         {
             await VerifyRefactoringAsync(@"
@@ -64,7 +64,7 @@ class C : INotifyPropertyChanged
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.NotifyWhenPropertyChange)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.NotifyWhenPropertyChanges)]
         public async Task Test_SetterWithExpressionBody()
         {
             await VerifyRefactoringAsync(@"
@@ -118,7 +118,7 @@ class C : INotifyPropertyChanged
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.NotifyWhenPropertyChange)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.NotifyWhenPropertyChanges)]
         public async Task Test_OnPropertyChanged()
         {
             await VerifyRefactoringAsync(@"
