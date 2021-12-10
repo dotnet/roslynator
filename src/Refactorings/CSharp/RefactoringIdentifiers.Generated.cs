@@ -163,12 +163,12 @@ namespace Roslynator.CSharp.Refactorings
         public const string RenameMethodAccordingToTypeName = Prefix + "0113";
         public const string RenameParameterAccordingToTypeName = Prefix + "0114";
         public const string RenamePropertyAccordingToTypeName = Prefix + "0115";
-        public const string ReplaceAsWithCast = Prefix + "0117";
-        public const string ReplaceCastWithAs = Prefix + "0118";
+        public const string ReplaceAsExpressionWithExplicitCast = Prefix + "0117";
         public const string ReplaceConditionalExpressionWithExpression = Prefix + "0119";
         public const string ReplaceEqualsExpressionWithStringEquals = Prefix + "0124";
         public const string ReplaceEqualsExpressionWithStringIsNullOrEmpty = Prefix + "0125";
         public const string ReplaceEqualsExpressionWithStringIsNullOrWhiteSpace = Prefix + "0126";
+        public const string ReplaceExplicitCastWithAsExpression = Prefix + "0118";
         public const string ReplaceInterpolatedStringWithInterpolationExpression = Prefix + "0135";
         public const string ReplaceMethodWithProperty = Prefix + "0138";
         public const string ReplaceObjectCreationWithDefaultValue = Prefix + "0185";

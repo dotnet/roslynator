@@ -79,7 +79,7 @@ namespace Roslynator.CSharp.Refactorings
                 }
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceAsWithCast)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceAsExpressionWithExplicitCast)
                 && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(binaryExpression))
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
@@ -87,9 +87,9 @@ namespace Roslynator.CSharp.Refactorings
                 if (ReplaceAsWithCastAnalysis.IsFixable(binaryExpression, semanticModel, context.CancellationToken))
                 {
                     context.RegisterRefactoring(
-                        ReplaceAsWithCastRefactoring.Title,
-                        ct => ReplaceAsWithCastRefactoring.RefactorAsync(context.Document, binaryExpression, ct),
-                        RefactoringIdentifiers.ReplaceAsWithCast);
+                        ReplaceAsExpressionWithExplicitCastRefactoring.Title,
+                        ct => ReplaceAsExpressionWithExplicitCastRefactoring.RefactorAsync(context.Document, binaryExpression, ct),
+                        RefactoringIdentifiers.ReplaceAsExpressionWithExplicitCast);
                 }
             }
 

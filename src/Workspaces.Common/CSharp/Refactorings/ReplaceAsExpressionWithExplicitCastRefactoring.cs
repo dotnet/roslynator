@@ -8,9 +8,9 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class ReplaceAsWithCastRefactoring
+    internal static class ReplaceAsExpressionWithExplicitCastRefactoring
     {
-        public const string Title = "Replace 'as' with cast";
+        public const string Title = "Replace 'as' with explicit cast";
 
         public static Task<Document> RefactorAsync(
             Document document,

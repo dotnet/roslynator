@@ -131,8 +131,8 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.RenameParameterAccordingToTypeName, "Rename parameter according to its type name", IsEnabled(RefactoringIdentifiers.RenameParameterAccordingToTypeName)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.RenamePropertyAccordingToTypeName, "Rename property according to type name", IsEnabled(RefactoringIdentifiers.RenamePropertyAccordingToTypeName)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.InvertLinqMethodCall, "Invert LINQ method call", IsEnabled(RefactoringIdentifiers.InvertLinqMethodCall)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceAsWithCast, "Replace as expression with cast expression", IsEnabled(RefactoringIdentifiers.ReplaceAsWithCast)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceCastWithAs, "Replace cast expression with as expression", IsEnabled(RefactoringIdentifiers.ReplaceCastWithAs)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceAsExpressionWithExplicitCast, "Replace 'as' expression with explicit cast", IsEnabled(RefactoringIdentifiers.ReplaceAsExpressionWithExplicitCast)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceExplicitCastWithAsExpression, "Replace explicit cast expression 'as' expression", IsEnabled(RefactoringIdentifiers.ReplaceExplicitCastWithAsExpression)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceConditionalExpressionWithExpression, "Replace conditional expression with expression", IsEnabled(RefactoringIdentifiers.ReplaceConditionalExpressionWithExpression)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertConditionalExpressionToIfElse, "Convert ?: to if-else", IsEnabled(RefactoringIdentifiers.ConvertConditionalExpressionToIfElse)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.UseReadOnlyFieldInsteadOfConstant, "Use read-only field instead of constant", IsEnabled(RefactoringIdentifiers.UseReadOnlyFieldInsteadOfConstant)));

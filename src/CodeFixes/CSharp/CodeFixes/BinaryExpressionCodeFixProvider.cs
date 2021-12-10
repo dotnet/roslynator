@@ -40,8 +40,8 @@ namespace Roslynator.CSharp.CodeFixes
                 return;
 
             CodeAction codeAction = CodeAction.Create(
-                ReplaceAsWithCastRefactoring.Title,
-                ct => ReplaceAsWithCastRefactoring.RefactorAsync(context.Document, binaryExpression, ct),
+                ReplaceAsExpressionWithExplicitCastRefactoring.Title,
+                ct => ReplaceAsExpressionWithExplicitCastRefactoring.RefactorAsync(context.Document, binaryExpression, ct),
                 GetEquivalenceKey(diagnostic));
 
             context.RegisterCodeFix(codeAction, diagnostic);

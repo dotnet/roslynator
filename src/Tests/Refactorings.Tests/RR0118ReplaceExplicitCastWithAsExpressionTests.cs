@@ -6,11 +6,11 @@ using Xunit;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public class RR0118ReplaceCastWithAsTests : AbstractCSharpRefactoringVerifier
+    public class RR0118ReplaceExplicitCastWithAsExpressionTests : AbstractCSharpRefactoringVerifier
     {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.ReplaceCastWithAs;
+        public override string RefactoringId { get; } = RefactoringIdentifiers.ReplaceExplicitCastWithAsExpression;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceCastWithAs)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceExplicitCastWithAsExpression)]
         public async Task Test()
         {
             await VerifyRefactoringAsync(@"
@@ -36,7 +36,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceCastWithAs)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceExplicitCastWithAsExpression)]
         public async Task TestNoRefactoring_ValueType()
         {
             await VerifyNoRefactoringAsync(@"

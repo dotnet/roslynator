@@ -1001,12 +1001,12 @@ return true;]]></After>
       </Sample>
     </Samples>
   </Refactoring>
-  <Refactoring Id="RR0117" Identifier="ReplaceAsWithCast" Title="Replace as expression with cast expression">
+  <Refactoring Id="RR0117" Identifier="ReplaceAsExpressionWithExplicitCast" Title="Replace 'as' expression with explicit cast">
     <Syntaxes>
       <Syntax>as expression</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0118" Identifier="ReplaceCastWithAs" Title="Replace cast expression with as expression">
+  <Refactoring Id="RR0118" Identifier="ReplaceExplicitCastWithAsExpression" Title="Replace explicit cast expression 'as' expression">
     <Syntaxes>
       <Syntax>cast expression</Syntax>
     </Syntaxes>
