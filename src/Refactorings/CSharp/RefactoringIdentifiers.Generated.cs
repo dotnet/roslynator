@@ -103,7 +103,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string InlineConstantValue = Prefix + "0127";
         public const string InlineMethod = Prefix + "0062";
         public const string InlineProperty = Prefix + "0198";
-        public const string InlineUsingStatic = Prefix + "0180";
+        public const string InlineUsingStaticDirective = Prefix + "0180";
         public const string InsertStringInterpolation = Prefix + "0063";
         public const string IntroduceAndInitializeField = Prefix + "0064";
         public const string IntroduceAndInitializeProperty = Prefix + "0065";

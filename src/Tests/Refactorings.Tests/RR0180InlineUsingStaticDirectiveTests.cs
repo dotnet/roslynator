@@ -6,11 +6,11 @@ using Xunit;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public class RR0180InlineUsingStaticTests : AbstractCSharpRefactoringVerifier
+    public class RR0180InlineUsingStaticDirectiveTests : AbstractCSharpRefactoringVerifier
     {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.InlineUsingStatic;
+        public override string RefactoringId { get; } = RefactoringIdentifiers.InlineUsingStaticDirective;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InlineUsingStatic)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InlineUsingStaticDirective)]
         public async Task Test()
         {
             await VerifyRefactoringAsync(@"

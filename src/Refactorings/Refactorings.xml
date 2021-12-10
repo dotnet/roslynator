@@ -1513,7 +1513,7 @@ i--;]]></After>
     </Syntaxes>
     <Span>base list</Span>
   </Refactoring>
-  <Refactoring Id="RR0180" Identifier="InlineUsingStatic" Title="Inline using static">
+  <Refactoring Id="RR0180" Identifier="InlineUsingStaticDirective" Title="Inline using static directive">
     <Syntaxes>
       <Syntax>using static directive</Syntax>
     </Syntaxes>

@@ -190,7 +190,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.WrapInUsingStatement, "Wrap in using statement", IsEnabled(RefactoringIdentifiers.WrapInUsingStatement)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.AddTypeParameter, "Add type parameter", IsEnabled(RefactoringIdentifiers.AddTypeParameter)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ImplementIEquatableOfT, "Implement IEquatable<T>", IsEnabled(RefactoringIdentifiers.ImplementIEquatableOfT)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.InlineUsingStatic, "Inline using static", IsEnabled(RefactoringIdentifiers.InlineUsingStatic)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.InlineUsingStaticDirective, "Inline using static directive", IsEnabled(RefactoringIdentifiers.InlineUsingStaticDirective)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.InlineConstant, "Inline constant", IsEnabled(RefactoringIdentifiers.InlineConstant)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.UseStringBuilderInsteadOfConcatenation, "Use StringBuilder instead of concatenation", IsEnabled(RefactoringIdentifiers.UseStringBuilderInsteadOfConcatenation)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.UseListInsteadOfYield, "Use List<T> instead of yield", IsEnabled(RefactoringIdentifiers.UseListInsteadOfYield)));
