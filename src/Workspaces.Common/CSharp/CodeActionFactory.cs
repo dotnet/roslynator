@@ -91,7 +91,7 @@ namespace Roslynator.CSharp
                 equivalenceKey);
         }
 
-        public static CodeAction AddCastExpression(
+        public static CodeAction AddExplicitCast(
             Document document,
             ExpressionSyntax expression,
             ITypeSymbol destinationType,
@@ -107,7 +107,7 @@ namespace Roslynator.CSharp
 
             return CodeAction.Create(
                 title ?? $"Cast to '{typeName}'",
-                ct => DocumentRefactorings.AddCastExpressionAsync(document, expression, newType, ct),
+                ct => DocumentRefactorings.AddExplicitCastAsync(document, expression, newType, ct),
                 equivalenceKey);
         }
 

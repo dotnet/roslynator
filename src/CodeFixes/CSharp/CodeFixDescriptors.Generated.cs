@@ -481,9 +481,9 @@ namespace Roslynator.CSharp
             "CS0710");
 
         /// <summary>RCF0063 (fixes CS0173)</summary>
-        public static readonly CodeFixDescriptor AddCastExpression = new CodeFixDescriptor(
-            id:                 CodeFixIdentifiers.AddCastExpression, 
-            title:              "Add cast expression", 
+        public static readonly CodeFixDescriptor AddExplicitCast = new CodeFixDescriptor(
+            id:                 CodeFixIdentifiers.AddExplicitCast, 
+            title:              "Add explicit cast", 
             isEnabledByDefault: true, 
             "CS0173");
 

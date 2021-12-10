@@ -360,7 +360,7 @@
       <Id>CS0710</Id>
     </FixableDiagnosticIds>
   </CodeFix>
-  <CodeFix Id="RCF0063" Identifier="AddCastExpression" Title="Add cast expression">
+  <CodeFix Id="RCF0063" Identifier="AddExplicitCast" Title="Add explicit cast">
     <FixableDiagnosticIds>
       <Id>CS0173</Id>
     </FixableDiagnosticIds>

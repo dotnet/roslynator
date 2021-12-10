@@ -23,10 +23,10 @@ namespace Roslynator.CSharp.Refactorings
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.CallToMethod))
                     CallToMethod(context, expression, destinationType, semanticModel);
 
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddCastExpression)
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddExplicitCast)
                     && addCastExpression)
                 {
-                    RegisterAddCastExpressionRefactoring(context, expression, destinationType, semanticModel);
+                    RegisterAddExplicitCastRefactoring(context, expression, destinationType, semanticModel);
                 }
             }
             else if (destinationType.IsString())
@@ -70,10 +70,10 @@ namespace Roslynator.CSharp.Refactorings
                 }
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddCastExpression))
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddExplicitCast))
             {
                 foreach (ITypeSymbol destinationType in convertibleDestinationTypes)
-                    RegisterAddCastExpressionRefactoring(context, expression, destinationType, semanticModel);
+                    RegisterAddExplicitCastRefactoring(context, expression, destinationType, semanticModel);
             }
         }
 
@@ -146,18 +146,18 @@ namespace Roslynator.CSharp.Refactorings
                 CallToMethodRefactoring.ComputeRefactoring(context, expression, enumerable, "ToList");
         }
 
-        private static void RegisterAddCastExpressionRefactoring(
+        private static void RegisterAddExplicitCastRefactoring(
             RefactoringContext context,
             ExpressionSyntax expression,
             ITypeSymbol destinationType,
             SemanticModel semanticModel)
         {
-            CodeAction codeAction = CodeActionFactory.AddCastExpression(
+            CodeAction codeAction = CodeActionFactory.AddExplicitCast(
                 context.Document,
                 expression,
                 destinationType,
                 semanticModel,
-                equivalenceKey: EquivalenceKey.Join(RefactoringIdentifiers.AddCastExpression, SymbolDisplay.ToDisplayString(destinationType)));
+                equivalenceKey: EquivalenceKey.Join(RefactoringIdentifiers.AddExplicitCast, SymbolDisplay.ToDisplayString(destinationType)));
 
             context.RegisterRefactoring(codeAction);
         }

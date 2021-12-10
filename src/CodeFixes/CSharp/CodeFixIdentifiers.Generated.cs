@@ -67,7 +67,7 @@ namespace Roslynator.CSharp
         public const string RemoveThisModifier = CodeFixIdentifier.CodeFixIdPrefix + "0060";
         public const string RemoveTypeParameter = CodeFixIdentifier.CodeFixIdPrefix + "0061";
         public const string MakeContainingClassNonStatic = CodeFixIdentifier.CodeFixIdPrefix + "0062";
-        public const string AddCastExpression = CodeFixIdentifier.CodeFixIdPrefix + "0063";
+        public const string AddExplicitCast = CodeFixIdentifier.CodeFixIdPrefix + "0063";
         public const string MoveConstraint = CodeFixIdentifier.CodeFixIdPrefix + "0064";
         public const string RemoveConstraint = CodeFixIdentifier.CodeFixIdPrefix + "0065";
         public const string CombineConstraintClauses = CodeFixIdentifier.CodeFixIdPrefix + "0066";

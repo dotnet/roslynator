@@ -20,8 +20,8 @@ namespace Roslynator.CSharp.Refactorings
 
             await ChangeVariableDeclarationTypeRefactoring.ComputeRefactoringsAsync(context, variableDeclaration).ConfigureAwait(false);
 
-            if (context.IsAnyRefactoringEnabled(RefactoringIdentifiers.AddCastExpression, RefactoringIdentifiers.CallToMethod))
-                await AddCastExpressionAsync(context, variableDeclaration).ConfigureAwait(false);
+            if (context.IsAnyRefactoringEnabled(RefactoringIdentifiers.AddExplicitCast, RefactoringIdentifiers.CallToMethod))
+                await AddExplicitCastnAsync(context, variableDeclaration).ConfigureAwait(false);
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInUsingStatement))
                 await WrapInUsingStatementRefactoring.ComputeRefactoringAsync(context, variableDeclaration).ConfigureAwait(false);
@@ -84,7 +84,7 @@ namespace Roslynator.CSharp.Refactorings
                 RefactoringIdentifiers.RenameIdentifierAccordingToTypeName);
         }
 
-        private static async Task AddCastExpressionAsync(
+        private static async Task AddExplicitCastnAsync(
             RefactoringContext context,
             VariableDeclarationSyntax variableDeclaration)
         {

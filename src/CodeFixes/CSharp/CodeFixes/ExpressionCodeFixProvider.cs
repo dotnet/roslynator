@@ -108,8 +108,8 @@ namespace Roslynator.CSharp.CodeFixes
                                 ChangeMemberTypeRefactoring.ComputeCodeFix(context, diagnostic, expression, semanticModel);
                             }
 
-                            if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddCastExpression))
-                                CodeFixRegistrator.AddCastExpression(context, diagnostic, expression, convertedType, semanticModel);
+                            if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddExplicitCast))
+                                CodeFixRegistrator.AddExplicitCast(context, diagnostic, expression, convertedType, semanticModel);
 
                             if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.ChangeTypeAccordingToInitializer))
                                 ChangeTypeAccordingToInitializerRefactoring.ComputeCodeFix(context, diagnostic, expression, semanticModel);

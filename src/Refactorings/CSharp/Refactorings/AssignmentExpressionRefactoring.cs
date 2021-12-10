@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.Refactorings
                     RefactoringIdentifiers.ExpandCompoundAssignmentOperator);
             }
 
-            if (context.IsAnyRefactoringEnabled(RefactoringIdentifiers.AddCastExpression, RefactoringIdentifiers.CallToMethod)
+            if (context.IsAnyRefactoringEnabled(RefactoringIdentifiers.AddExplicitCast, RefactoringIdentifiers.CallToMethod)
                 && assignmentExpression.IsKind(SyntaxKind.SimpleAssignmentExpression))
             {
                 SimpleAssignmentExpressionInfo simpleAssignment = SyntaxInfo.SimpleAssignmentExpressionInfo(assignmentExpression);

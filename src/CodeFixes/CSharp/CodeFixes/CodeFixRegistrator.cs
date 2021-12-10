@@ -38,14 +38,14 @@ namespace Roslynator.CSharp.CodeFixes
             return new CodeFixRegistrationResult(true);
         }
 
-        public static void AddCastExpression(
+        public static void AddExplicitCast(
             CodeFixContext context,
             Diagnostic diagnostic,
             ExpressionSyntax expression,
             ITypeSymbol destinationType,
             SemanticModel semanticModel)
         {
-            CodeAction codeAction = CodeActionFactory.AddCastExpression(context.Document, expression, destinationType, semanticModel, equivalenceKey: EquivalenceKey.Create(diagnostic, CodeFixIdentifiers.AddCastExpression));
+            CodeAction codeAction = CodeActionFactory.AddExplicitCast(context.Document, expression, destinationType, semanticModel, equivalenceKey: EquivalenceKey.Create(diagnostic, CodeFixIdentifiers.AddExplicitCast));
 
             context.RegisterCodeFix(codeAction, diagnostic);
         }

@@ -32,7 +32,7 @@
     </Syntaxes>
     <Span>case or default keyword</Span>
   </Refactoring>
-  <Refactoring Id="RR0006" Identifier="AddCastExpression" Title="Add cast expression">
+  <Refactoring Id="RR0006" Identifier="AddExplicitCast" Title="Add explicit cast">
     <Syntaxes>
       <Syntax>argument</Syntax>
       <Syntax>assignment expression</Syntax>
