@@ -940,7 +940,7 @@ return true;]]></After>
     </Syntaxes>
     <Span>open/close brace</Span>
   </Refactoring>
-  <Refactoring Id="RR0110" Identifier="RemoveStatementsFromSwitchSections" Title="Remove statements from switch sections">
+  <Refactoring Id="RR0110" Identifier="MergeSwitchSections" Title="Merge switch sections">
     <Syntaxes>
       <Syntax>selected switch sections</Syntax>
     </Syntaxes>

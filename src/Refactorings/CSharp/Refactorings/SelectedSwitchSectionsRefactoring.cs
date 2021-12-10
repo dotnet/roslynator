@@ -10,7 +10,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void ComputeRefactorings(RefactoringContext context, SwitchStatementSyntax switchStatement)
         {
-            bool fRemoveStatements = context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveStatementsFromSwitchSections);
+            bool fRemoveStatements = context.IsRefactoringEnabled(RefactoringIdentifiers.MergeSwitchSections);
             bool fAddBraces = context.IsRefactoringEnabled(RefactoringIdentifiers.AddBracesToSwitchSections);
             bool fRemoveBraces = context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveBracesFromSwitchSections);
 
@@ -98,13 +98,13 @@ namespace Roslynator.CSharp.Refactorings
                     title,
                     ct =>
                     {
-                        return RemoveStatementsFromSwitchSectionsRefactoring.RefactorAsync(
+                        return MergeSwitchSectionsRefactoring.RefactorAsync(
                             context.Document,
                             switchStatement,
                             selectedSections.ToImmutableArray(),
                             ct);
                     },
-                    RefactoringIdentifiers.RemoveStatementsFromSwitchSections);
+                    RefactoringIdentifiers.MergeSwitchSections);
             }
         }
     }

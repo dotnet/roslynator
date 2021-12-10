@@ -128,6 +128,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string MergeIfStatements = Prefix + "0075";
         public const string MergeIfWithParentIf = Prefix + "0196";
         public const string MergeLocalDeclarations = Prefix + "0077";
+        public const string MergeSwitchSections = Prefix + "0110";
         public const string MoveUnsafeContextToContainingDeclaration = Prefix + "0202";
         public const string NotifyWhenPropertyChange = Prefix + "0083";
         public const string ParenthesizeExpression = Prefix + "0084";
@@ -158,7 +159,6 @@ namespace Roslynator.CSharp.Refactorings
         public const string RemovePropertyInitializer = Prefix + "0107";
         public const string RemoveRegion = Prefix + "0108";
         public const string RemoveStatement = Prefix + "0109";
-        public const string RemoveStatementsFromSwitchSections = Prefix + "0110";
         public const string RenameBackingFieldAccordingToPropertyName = Prefix + "0111";
         public const string RenameIdentifierAccordingToTypeName = Prefix + "0112";
         public const string RenameMethodAccordingToTypeName = Prefix + "0113";

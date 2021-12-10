@@ -124,7 +124,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.RemovePropertyInitializer, "Remove property initializer", IsEnabled(RefactoringIdentifiers.RemovePropertyInitializer)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.RemoveRegion, "Remove region", IsEnabled(RefactoringIdentifiers.RemoveRegion)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.RemoveStatement, "Remove statement", IsEnabled(RefactoringIdentifiers.RemoveStatement)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.RemoveStatementsFromSwitchSections, "Remove statements from switch sections", IsEnabled(RefactoringIdentifiers.RemoveStatementsFromSwitchSections)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.MergeSwitchSections, "Merge switch sections", IsEnabled(RefactoringIdentifiers.MergeSwitchSections)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.RenameBackingFieldAccordingToPropertyName, "Rename backing field according to property name", IsEnabled(RefactoringIdentifiers.RenameBackingFieldAccordingToPropertyName)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.RenameIdentifierAccordingToTypeName, "Rename identifier according to type name", IsEnabled(RefactoringIdentifiers.RenameIdentifierAccordingToTypeName)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.RenameMethodAccordingToTypeName, "Rename method according to type name", IsEnabled(RefactoringIdentifiers.RenameMethodAccordingToTypeName)));

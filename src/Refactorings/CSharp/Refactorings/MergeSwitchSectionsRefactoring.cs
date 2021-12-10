@@ -11,7 +11,7 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class RemoveStatementsFromSwitchSectionsRefactoring
+    internal static class MergeSwitchSectionsRefactoring
     {
         public static Task<Document> RefactorAsync(
             Document document,
