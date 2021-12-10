@@ -8,7 +8,7 @@ using Roslynator.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class MergeAssignmentExpressionWithReturnStatementRefactoring
+    internal static class RemoveUnnecessaryAssignmentRefactoring
     {
         public static void ComputeRefactorings(RefactoringContext context, StatementListSelection selectedStatements)
         {
@@ -30,9 +30,9 @@ namespace Roslynator.CSharp.Refactorings
                 return;
 
             context.RegisterRefactoring(
-                "Merge statements",
+                "Remove unnecessary assignment",
                 ct => RefactorAsync(context.Document, simpleAssignment.Statement, returnStatement, ct),
-                RefactoringIdentifiers.MergeAssignmentExpressionWithReturnStatement);
+                RefactoringIdentifiers.RemoveUnnecessaryAssignment);
         }
 
         public static Task<Document> RefactorAsync(

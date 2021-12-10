@@ -122,7 +122,6 @@ namespace Roslynator.CSharp.Refactorings
         public const string JoinStringExpressions = Prefix + "0078";
         public const string MakeMemberAbstract = Prefix + "0069";
         public const string MakeMemberVirtual = Prefix + "0070";
-        public const string MergeAssignmentExpressionWithReturnStatement = Prefix + "0073";
         public const string MergeAttributes = Prefix + "0074";
         public const string MergeIfStatements = Prefix + "0075";
         public const string MergeIfWithParentIf = Prefix + "0196";
@@ -158,6 +157,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string RemovePropertyInitializer = Prefix + "0107";
         public const string RemoveRegion = Prefix + "0108";
         public const string RemoveStatement = Prefix + "0109";
+        public const string RemoveUnnecessaryAssignment = Prefix + "0073";
         public const string RenameBackingFieldAccordingToPropertyName = Prefix + "0111";
         public const string RenameIdentifierAccordingToTypeName = Prefix + "0112";
         public const string RenameMethodAccordingToTypeName = Prefix + "0113";

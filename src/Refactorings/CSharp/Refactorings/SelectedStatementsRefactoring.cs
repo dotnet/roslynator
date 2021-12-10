@@ -68,8 +68,8 @@ namespace Roslynator.CSharp.Refactorings
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.MergeLocalDeclarations))
                 await MergeLocalDeclarationsRefactoring.ComputeRefactoringsAsync(context, selectedStatements).ConfigureAwait(false);
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.MergeAssignmentExpressionWithReturnStatement))
-                MergeAssignmentExpressionWithReturnStatementRefactoring.ComputeRefactorings(context, selectedStatements);
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveUnnecessaryAssignment))
+                RemoveUnnecessaryAssignmentRefactoring.ComputeRefactorings(context, selectedStatements);
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.CheckExpressionForNull))
                 await CheckExpressionForNullRefactoring.ComputeRefactoringAsync(context, selectedStatements).ConfigureAwait(false);

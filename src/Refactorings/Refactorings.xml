@@ -671,7 +671,7 @@ if (y)
       <Syntax>indexer declaration</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0073" Identifier="MergeAssignmentExpressionWithReturnStatement" Title="Merge assignment expression with return statement">
+  <Refactoring Id="RR0073" Identifier="RemoveUnnecessaryAssignment" Title="Remove unnecessary assignment">
     <Syntaxes>
       <Syntax>assignment expression followed with return statement</Syntax>
     </Syntaxes>
