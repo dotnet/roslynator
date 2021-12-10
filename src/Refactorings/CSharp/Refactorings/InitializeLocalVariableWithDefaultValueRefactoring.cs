@@ -10,7 +10,7 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class InitializeLocalWithDefaultValueRefactoring
+    internal static class InitializeLocalVariableWithDefaultValueRefactoring
     {
         public static async Task ComputeRefactoringAsync(RefactoringContext context, LocalDeclarationStatementSyntax localDeclaration)
         {
@@ -44,7 +44,7 @@ namespace Roslynator.CSharp.Refactorings
             context.RegisterRefactoring(
                 $"Initialize '{declarator.Identifier.ValueText}' with default value",
                 ct => RefactorAsync(context.Document, localDeclaration, declarator, typeSymbol, ct),
-                RefactoringIdentifiers.InitializeLocalWithDefaultValue);
+                RefactoringIdentifiers.InitializeLocalVariableWithDefaultValue);
         }
 
         public static Task<Document> RefactorAsync(

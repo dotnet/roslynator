@@ -603,7 +603,7 @@ if (y)
       </Sample>
     </Samples>
   </Refactoring>
-  <Refactoring Id="RR0060" Identifier="InitializeLocalWithDefaultValue" Title="Initialize local with default value">
+  <Refactoring Id="RR0060" Identifier="InitializeLocalVariableWithDefaultValue" Title="Initialize local variable with default value">
     <Syntaxes>
       <Syntax>local declaration without initializer</Syntax>
     </Syntaxes>

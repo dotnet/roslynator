@@ -98,7 +98,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string ImplementCustomEnumerator = Prefix + "0210";
         public const string ImplementIEquatableOfT = Prefix + "0179";
         public const string InitializeFieldFromConstructor = Prefix + "0197";
-        public const string InitializeLocalWithDefaultValue = Prefix + "0060";
+        public const string InitializeLocalVariableWithDefaultValue = Prefix + "0060";
         public const string InlineAliasExpression = Prefix + "0061";
         public const string InlineConstant = Prefix + "0181";
         public const string InlineConstantValue = Prefix + "0127";
