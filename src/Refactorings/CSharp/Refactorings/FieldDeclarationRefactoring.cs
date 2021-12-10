@@ -15,13 +15,13 @@ namespace Roslynator.CSharp.Refactorings
         {
             if (fieldDeclaration.Modifiers.Contains(SyntaxKind.ConstKeyword))
             {
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceConstantWithField)
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseReadOnlyFieldInsteadOfConstant)
                     && fieldDeclaration.Span.Contains(context.Span))
                 {
                     context.RegisterRefactoring(
                         "Replace constant with field",
-                        ct => ReplaceConstantWithFieldRefactoring.RefactorAsync(context.Document, fieldDeclaration, ct),
-                        RefactoringIdentifiers.ReplaceConstantWithField);
+                        ct => UseReadOnlyFieldInsteadOfConstantRefactoring.RefactorAsync(context.Document, fieldDeclaration, ct),
+                        RefactoringIdentifiers.UseReadOnlyFieldInsteadOfConstant);
                 }
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.InlineConstant)

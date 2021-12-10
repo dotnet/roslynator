@@ -183,8 +183,8 @@ namespace Roslynator.CSharp.CodeFixes
                                 && fieldDeclaration.Modifiers.Contains(SyntaxKind.ConstKeyword))
                             {
                                 CodeAction codeAction = CodeAction.Create(
-                                    ReplaceConstantWithFieldRefactoring.Title,
-                                    ct => ReplaceConstantWithFieldRefactoring.RefactorAsync(context.Document, fieldDeclaration, ct),
+                                    UseReadOnlyFieldInsteadOfConstantRefactoring.Title,
+                                    ct => UseReadOnlyFieldInsteadOfConstantRefactoring.RefactorAsync(context.Document, fieldDeclaration, ct),
                                     GetEquivalenceKey(diagnostic));
 
                                 context.RegisterCodeFix(codeAction, diagnostic);

@@ -1052,7 +1052,7 @@ else
       </Sample>
     </Samples>
   </Refactoring>
-  <Refactoring Id="RR0121" Identifier="ReplaceConstantWithField" Title="Replace constant with field">
+  <Refactoring Id="RR0121" Identifier="UseReadOnlyFieldInsteadOfConstant" Title="Use read-only field instead of constant">
     <Syntaxes>
       <Syntax>constant declaration</Syntax>
     </Syntaxes>

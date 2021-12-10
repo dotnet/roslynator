@@ -135,7 +135,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceCastWithAs, "Replace cast expression with as expression", IsEnabled(RefactoringIdentifiers.ReplaceCastWithAs)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceConditionalExpressionWithExpression, "Replace conditional expression with expression", IsEnabled(RefactoringIdentifiers.ReplaceConditionalExpressionWithExpression)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertConditionalExpressionToIfElse, "Convert ?: to if-else", IsEnabled(RefactoringIdentifiers.ConvertConditionalExpressionToIfElse)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceConstantWithField, "Replace constant with field", IsEnabled(RefactoringIdentifiers.ReplaceConstantWithField)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.UseReadOnlyFieldInsteadOfConstant, "Use read-only field instead of constant", IsEnabled(RefactoringIdentifiers.UseReadOnlyFieldInsteadOfConstant)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertDoToWhile, "Convert 'do' to 'while'", IsEnabled(RefactoringIdentifiers.ConvertDoToWhile)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceEqualsExpressionWithStringEquals, "Replace equals expression with string.Equals", IsEnabled(RefactoringIdentifiers.ReplaceEqualsExpressionWithStringEquals)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceEqualsExpressionWithStringIsNullOrEmpty, "Replace equals expression with string.IsNullOrEmpty", IsEnabled(RefactoringIdentifiers.ReplaceEqualsExpressionWithStringIsNullOrEmpty)));

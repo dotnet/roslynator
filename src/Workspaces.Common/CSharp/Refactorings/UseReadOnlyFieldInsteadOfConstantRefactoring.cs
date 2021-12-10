@@ -8,9 +8,9 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class ReplaceConstantWithFieldRefactoring
+    internal static class UseReadOnlyFieldInsteadOfConstantRefactoring
     {
-        public const string Title = "Replace constant with field";
+        public const string Title = "Use read-only field instead of constant";
 
         public static async Task<Document> RefactorAsync(
             Document document,
