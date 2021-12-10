@@ -7,15 +7,15 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings.WrapStatements
 {
-    internal sealed class WrapInTryCatchRefactoring : WrapStatementsRefactoring<TryStatementSyntax>
+    internal sealed class WrapLinesInTryCatchRefactoring : WrapStatementsRefactoring<TryStatementSyntax>
     {
         public const string Title = "Wrap in try-catch";
 
-        private WrapInTryCatchRefactoring()
+        private WrapLinesInTryCatchRefactoring()
         {
         }
 
-        public static WrapInTryCatchRefactoring Instance { get; } = new WrapInTryCatchRefactoring();
+        public static WrapLinesInTryCatchRefactoring Instance { get; } = new WrapLinesInTryCatchRefactoring();
 
         public override TryStatementSyntax CreateStatement(ImmutableArray<StatementSyntax> statements)
         {

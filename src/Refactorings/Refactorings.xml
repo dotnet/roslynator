@@ -1485,7 +1485,7 @@ i--;]]></After>
       <Syntax>selected lines</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0176" Identifier="WrapInTryCatch" Title="Wrap in try-catch">
+  <Refactoring Id="RR0176" Identifier="WrapLinesInTryCatch" Title="Wrap lines in try-catch">
     <Syntaxes>
       <Syntax>selected statements</Syntax>
     </Syntaxes>

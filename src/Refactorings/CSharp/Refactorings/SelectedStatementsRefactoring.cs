@@ -17,7 +17,7 @@ namespace Roslynator.CSharp.Refactorings
                 || context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertStatementsToIfElse)
                 || context.IsRefactoringEnabled(RefactoringIdentifiers.MergeLocalDeclarations)
                 || context.IsRefactoringEnabled(RefactoringIdentifiers.WrapStatementsInCondition)
-                || context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInTryCatch)
+                || context.IsRefactoringEnabled(RefactoringIdentifiers.WrapLinesInTryCatch)
                 || context.IsRefactoringEnabled(RefactoringIdentifiers.UseCoalesceExpressionInsteadOfIf)
                 || context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertIfToConditionalExpression)
                 || context.IsRefactoringEnabled(RefactoringIdentifiers.SimplifyIf)
@@ -85,12 +85,12 @@ namespace Roslynator.CSharp.Refactorings
                     RefactoringIdentifiers.WrapStatementsInCondition);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInTryCatch))
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapLinesInTryCatch))
             {
                 context.RegisterRefactoring(
-                    WrapInTryCatchRefactoring.Title,
-                    ct => WrapInTryCatchRefactoring.Instance.RefactorAsync(context.Document, selectedStatements, ct),
-                    RefactoringIdentifiers.WrapInTryCatch);
+                    WrapLinesInTryCatchRefactoring.Title,
+                    ct => WrapLinesInTryCatchRefactoring.Instance.RefactorAsync(context.Document, selectedStatements, ct),
+                    RefactoringIdentifiers.WrapLinesInTryCatch);
             }
         }
     }
