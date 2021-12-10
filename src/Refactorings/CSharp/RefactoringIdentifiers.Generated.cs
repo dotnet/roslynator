@@ -44,7 +44,6 @@ namespace Roslynator.CSharp.Refactorings
         public const string ConvertCommentToDocumentationComment = Prefix + "0192";
         public const string ConvertConditionalExpressionToIfElse = Prefix + "0120";
         public const string ConvertDoToWhile = Prefix + "0123";
-        public const string ConvertEmptyStringToStringEmpty = Prefix + "0171";
         public const string ConvertExpressionBodyToBlockBody = Prefix + "0037";
         public const string ConvertForEachToFor = Prefix + "0129";
         public const string ConvertForEachToForAndReverseLoop = Prefix + "0188";
@@ -198,6 +197,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string UseListInsteadOfYield = Prefix + "0183";
         public const string UseReadOnlyFieldInsteadOfConstant = Prefix + "0121";
         public const string UseStringBuilderInsteadOfConcatenation = Prefix + "0182";
+        public const string UseStringEmptyInsteadOfEmptyStringLiteral = Prefix + "0171";
         public const string WrapArguments = Prefix + "0048";
         public const string WrapBinaryExpression = Prefix + "0049";
         public const string WrapCallChain = Prefix + "0051";

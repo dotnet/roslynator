@@ -14,12 +14,12 @@ namespace Roslynator.VisualStudio
         {
             settings.Disable(RefactoringIdentifiers.AddIdentifierToParameter);
             settings.Disable(RefactoringIdentifiers.AddIdentifierToVariableDeclaration);
-            settings.Disable(RefactoringIdentifiers.ConvertEmptyStringToStringEmpty);
             settings.Disable(RefactoringIdentifiers.ConvertForEachToForAndReverseLoop);
             settings.Disable(RefactoringIdentifiers.ExpandInitializer);
             settings.Disable(RefactoringIdentifiers.IntroduceConstructor);
             settings.Disable(RefactoringIdentifiers.RemoveAllDocumentationComments);
             settings.Disable(RefactoringIdentifiers.ReplaceMethodWithProperty);
+            settings.Disable(RefactoringIdentifiers.UseStringEmptyInsteadOfEmptyStringLiteral);
         }
 
         protected override void Fill(ICollection<BaseModel> refactorings)
@@ -182,7 +182,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.UseElementAccessInsteadOfLinqMethod, "Use element access instead of LINQ method", IsEnabled(RefactoringIdentifiers.UseElementAccessInsteadOfLinqMethod)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertBlockBodyToExpressionBody, "Convert block body to expression-body", IsEnabled(RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.UseLambdaExpressionInsteadOfAnonymousMethod, "Use lambda expression instead of anonymous method", IsEnabled(RefactoringIdentifiers.UseLambdaExpressionInsteadOfAnonymousMethod)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertEmptyStringToStringEmpty, "Convert \"\" to string.Empty", IsEnabled(RefactoringIdentifiers.ConvertEmptyStringToStringEmpty)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.UseStringEmptyInsteadOfEmptyStringLiteral, "Convert \"\" to string.Empty", IsEnabled(RefactoringIdentifiers.UseStringEmptyInsteadOfEmptyStringLiteral)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.WrapInCondition, "Wrap in condition", IsEnabled(RefactoringIdentifiers.WrapInCondition)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.WrapInIfDirective, "Wrap in #if directive", IsEnabled(RefactoringIdentifiers.WrapInIfDirective)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.WrapInRegion, "Wrap in #region directive", IsEnabled(RefactoringIdentifiers.WrapInRegion)));

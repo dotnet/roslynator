@@ -1460,7 +1460,7 @@ i--;]]></After>
     </Syntaxes>
     <Span>delegate keyword</Span>
   </Refactoring>
-  <Refactoring Id="RR0171" Identifier="ConvertEmptyStringToStringEmpty" Title="Convert &quot;&quot; to string.Empty" IsEnabledByDefault="false">
+  <Refactoring Id="RR0171" Identifier="UseStringEmptyInsteadOfEmptyStringLiteral" Title="Convert &quot;&quot; to string.Empty" IsEnabledByDefault="false">
     <Syntaxes>
       <Syntax>empty string literal</Syntax>
     </Syntaxes>

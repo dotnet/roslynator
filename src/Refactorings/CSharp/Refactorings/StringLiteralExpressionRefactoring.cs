@@ -110,13 +110,13 @@ namespace Roslynator.CSharp.Refactorings
                 }
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertEmptyStringToStringEmpty)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseStringEmptyInsteadOfEmptyStringLiteral)
                 && CanConvertToStringEmpty(literalExpression))
             {
                 context.RegisterRefactoring(
                     "Convert to 'string.Empty'",
                     ct => ConvertToStringEmptyAsync(context.Document, literalExpression, ct),
-                    RefactoringIdentifiers.ConvertEmptyStringToStringEmpty);
+                    RefactoringIdentifiers.UseStringEmptyInsteadOfEmptyStringLiteral);
             }
         }
 
