@@ -189,7 +189,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string UncommentMultiLineComment = Prefix + "0200";
         public const string UncommentSingleLineComment = Prefix + "0163";
         public const string UseCoalesceExpressionInsteadOfIf = Prefix + "0165";
-        public const string UseConstantInsteadOfField = Prefix + "0128";
+        public const string UseConstantInsteadOfReadOnlyField = Prefix + "0128";
         public const string UseCSharp6DictionaryInitializer = Prefix + "0191";
         public const string UseElementAccessInsteadOfLinqMethod = Prefix + "0167";
         public const string UseEnumeratorExplicitly = Prefix + "0206";

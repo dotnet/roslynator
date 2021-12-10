@@ -134,7 +134,7 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Use constant instead of field",
-                                ct => UseConstantInsteadOfFieldRefactoring.RefactorAsync(context.Document, (FieldDeclarationSyntax)memberDeclaration, ct),
+                                ct => UseConstantInsteadOfReadOnlyFieldRefactoring.RefactorAsync(context.Document, (FieldDeclarationSyntax)memberDeclaration, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);

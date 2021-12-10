@@ -1115,7 +1115,7 @@ void Foo()
       </Sample>
     </Samples>
   </Refactoring>
-  <Refactoring Id="RR0128" Identifier="UseConstantInsteadOfField" Title="Use constant instead of field">
+  <Refactoring Id="RR0128" Identifier="UseConstantInsteadOfReadOnlyField" Title="Use constant instead of read-only field">
     <Syntaxes>
       <Syntax>read-only field</Syntax>
     </Syntaxes>

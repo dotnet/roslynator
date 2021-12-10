@@ -8,7 +8,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class UseConstantInsteadOfFieldRefactoring
+    internal static class UseConstantInsteadOfReadOnlyFieldRefactoring
     {
         public static Task<Document> RefactorAsync(
             Document document,

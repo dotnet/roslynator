@@ -141,7 +141,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceEqualsExpressionWithStringIsNullOrEmpty, "Replace equals expression with string.IsNullOrEmpty", IsEnabled(RefactoringIdentifiers.ReplaceEqualsExpressionWithStringIsNullOrEmpty)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceEqualsExpressionWithStringIsNullOrWhiteSpace, "Replace equals expression with string.IsNullOrWhiteSpace", IsEnabled(RefactoringIdentifiers.ReplaceEqualsExpressionWithStringIsNullOrWhiteSpace)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.InlineConstantValue, "Inline constant value", IsEnabled(RefactoringIdentifiers.InlineConstantValue)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.UseConstantInsteadOfField, "Use constant instead of field", IsEnabled(RefactoringIdentifiers.UseConstantInsteadOfField)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.UseConstantInsteadOfReadOnlyField, "Use constant instead of read-only field", IsEnabled(RefactoringIdentifiers.UseConstantInsteadOfReadOnlyField)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertForEachToFor, "Convert 'foreach' to 'for'", IsEnabled(RefactoringIdentifiers.ConvertForEachToFor)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertForToForEach, "Convert 'for' to 'foreach'", IsEnabled(RefactoringIdentifiers.ConvertForToForEach)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertForToWhile, "Convert 'for' to 'while'", IsEnabled(RefactoringIdentifiers.ConvertForToWhile)));
