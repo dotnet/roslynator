@@ -13,7 +13,7 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class AddMissingCasesRefactoring
+    internal static class AddMissingCasesToSwitchStatementRefactoring
     {
         private const string Title = "Add missing cases";
 
@@ -97,17 +97,17 @@ namespace Roslynator.CSharp.Refactorings
                     context.RegisterRefactoring(
                         Title,
                         ct => AddCasesAsync(document, switchStatement, fieldsToValue.Select(f => f.Value), ct),
-                        RefactoringIdentifiers.AddMissingCases);
+                        RefactoringIdentifiers.AddMissingCasesToSwitchStatement);
                 }
             }
-            else if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddMissingCases))
+            else if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddMissingCasesToSwitchStatement))
             {
                 Document document = context.Document;
 
                 context.RegisterRefactoring(
                     Title,
                     ct => AddCasesAsync(document, switchStatement, semanticModel, ct),
-                    RefactoringIdentifiers.AddMissingCases);
+                    RefactoringIdentifiers.AddMissingCasesToSwitchStatement);
             }
         }
 

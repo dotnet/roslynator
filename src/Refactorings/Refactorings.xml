@@ -563,7 +563,7 @@ if (y)
     </Syntaxes>
     <Span>identifier</Span>
   </Refactoring>
-  <Refactoring Id="RR0059" Identifier="AddMissingCases" Title="Add missing cases to switch statement">
+  <Refactoring Id="RR0059" Identifier="AddMissingCasesToSwitchStatement" Title="Add missing cases to switch statement">
     <Syntaxes>
       <Syntax>switch statement</Syntax>
     </Syntaxes>

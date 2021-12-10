@@ -20,7 +20,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string AddIdentifierToParameter = Prefix + "0012";
         public const string AddIdentifierToVariableDeclaration = Prefix + "0010";
         public const string AddMemberToInterface = Prefix + "0195";
-        public const string AddMissingCases = Prefix + "0059";
+        public const string AddMissingCasesToSwitchStatement = Prefix + "0059";
         public const string AddParameterNameToArgument = Prefix + "0011";
         public const string AddParameterToInterfaceMember = Prefix + "0213";
         public const string AddTagToDocumentationComment = Prefix + "0208";

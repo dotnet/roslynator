@@ -6,16 +6,16 @@ using Xunit;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public class RR0059AddMissingCasesTests : AbstractCSharpRefactoringVerifier
+    public class RR0059AddMissingCasesToSwitchStatementTests : AbstractCSharpRefactoringVerifier
     {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.AddMissingCases;
+        public override string RefactoringId { get; } = RefactoringIdentifiers.AddMissingCasesToSwitchStatement;
 
         public override CSharpTestOptions Options
         {
             get { return base.Options.AddAllowedCompilerDiagnosticId(CompilerDiagnosticIdentifiers.CS1522_EmptySwitchBlock); }
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddMissingCases)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddMissingCasesToSwitchStatement)]
         public async Task Test_Empty()
         {
             await VerifyRefactoringAsync(@"
@@ -66,7 +66,7 @@ class C
 equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddMissingCases)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddMissingCasesToSwitchStatement)]
         public async Task Test_Default()
         {
             await VerifyRefactoringAsync(@"
@@ -119,7 +119,7 @@ class C
 equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddMissingCases)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddMissingCasesToSwitchStatement)]
         public async Task Test2()
         {
             await VerifyRefactoringAsync(@"
@@ -177,7 +177,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddMissingCases)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddMissingCasesToSwitchStatement)]
         public async Task Test_Flags()
         {
             await VerifyRefactoringAsync(@"
@@ -257,7 +257,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddMissingCases)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddMissingCasesToSwitchStatement)]
         public async Task Test_TwoFieldsWithSameValue()
         {
             await VerifyRefactoringAsync(@"
@@ -311,7 +311,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddMissingCases)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddMissingCasesToSwitchStatement)]
         public async Task TestNoRefactoring()
         {
             await VerifyNoRefactoringAsync(@"
