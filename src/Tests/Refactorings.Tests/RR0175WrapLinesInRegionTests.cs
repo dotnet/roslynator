@@ -6,11 +6,11 @@ using Xunit;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public class RR0175WrapInRegionTests : AbstractCSharpRefactoringVerifier
+    public class RR0175WrapLinesInRegionTests : AbstractCSharpRefactoringVerifier
     {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.WrapInRegion;
+        public override string RefactoringId { get; } = RefactoringIdentifiers.WrapLinesInRegion;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapInRegion)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapLinesInRegion)]
         public async Task Test_EndsAtStartOfLine()
         {
             await VerifyRefactoringAsync(@"
@@ -32,7 +32,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapInRegion)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapLinesInRegion)]
         public async Task Test_EndsAtEndOfLine()
         {
             await VerifyRefactoringAsync(@"
@@ -54,7 +54,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapInRegion)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapLinesInRegion)]
         public async Task Test_StartsAfterSingeLineDocumentationComment()
         {
             await VerifyRefactoringAsync(@"
@@ -82,7 +82,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapInRegion)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapLinesInRegion)]
         public async Task Test_StartsAndEndsInSingleLineDocumentationComment()
         {
             await VerifyRefactoringAsync(@"
@@ -110,7 +110,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapInRegion)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapLinesInRegion)]
         public async Task Test_EndsAtEndOfSingleLineDocumentationComment()
         {
             await VerifyRefactoringAsync(@"
@@ -138,7 +138,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapInRegion)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapLinesInRegion)]
         public async Task Test_MultiLineDocumentationComment()
         {
             await VerifyRefactoringAsync(@"
@@ -166,7 +166,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapInRegion)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapLinesInRegion)]
         public async Task Test_EndsAtEndOfMultiLineDocumentationComment()
         {
             await VerifyRefactoringAsync(@"
@@ -194,7 +194,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapInRegion)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapLinesInRegion)]
         public async Task Test_EntireText()
         {
             await VerifyRefactoringAsync(@"[|class C
@@ -214,7 +214,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapInRegion)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapLinesInRegion)]
         public async Task TestNoRefactoring_SpanIsEmpty()
         {
             await VerifyNoRefactoringAsync(@"
@@ -228,7 +228,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapInRegion)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapLinesInRegion)]
         public async Task TestNoRefactoring_StartInMultiLineDocumentationComment()
         {
             await VerifyNoRefactoringAsync(@"
@@ -245,7 +245,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapInRegion)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapLinesInRegion)]
         public async Task TestNoRefactoring_EndsInMultiLineDocumentationComment()
         {
             await VerifyNoRefactoringAsync(@"
@@ -261,7 +261,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapInRegion)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapLinesInRegion)]
         public async Task TestNoRefactoring_EndsInMultiLineDocumentationComment2()
         {
             await VerifyNoRefactoringAsync(@"

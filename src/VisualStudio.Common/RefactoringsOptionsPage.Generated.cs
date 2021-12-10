@@ -185,7 +185,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.UseStringEmptyInsteadOfEmptyStringLiteral, "Convert \"\" to string.Empty", IsEnabled(RefactoringIdentifiers.UseStringEmptyInsteadOfEmptyStringLiteral)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.WrapStatementsInCondition, "Wrap statements in condition", IsEnabled(RefactoringIdentifiers.WrapStatementsInCondition)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.WrapLinesInPreprocessorDirective, "Wrap lines in preprocessor directive", IsEnabled(RefactoringIdentifiers.WrapLinesInPreprocessorDirective)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.WrapInRegion, "Wrap in #region directive", IsEnabled(RefactoringIdentifiers.WrapInRegion)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.WrapLinesInRegion, "Wrap lines in #region directive", IsEnabled(RefactoringIdentifiers.WrapLinesInRegion)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.WrapInTryCatch, "Wrap in try-catch", IsEnabled(RefactoringIdentifiers.WrapInTryCatch)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.WrapInUsingStatement, "Wrap in using statement", IsEnabled(RefactoringIdentifiers.WrapInUsingStatement)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.AddTypeParameter, "Add type parameter", IsEnabled(RefactoringIdentifiers.AddTypeParameter)));

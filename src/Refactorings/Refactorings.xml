@@ -1480,7 +1480,7 @@ i--;]]></After>
       <Syntax>selected lines</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0175" Identifier="WrapInRegion" Title="Wrap in #region directive">
+  <Refactoring Id="RR0175" Identifier="WrapLinesInRegion" Title="Wrap lines in #region directive">
     <Syntaxes>
       <Syntax>selected lines</Syntax>
     </Syntaxes>

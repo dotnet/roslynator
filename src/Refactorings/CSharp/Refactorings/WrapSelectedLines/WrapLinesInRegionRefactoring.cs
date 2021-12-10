@@ -2,13 +2,13 @@
 
 namespace Roslynator.CSharp.Refactorings.WrapSelectedLines
 {
-    internal sealed class WrapInRegionRefactoring : WrapSelectedLinesRefactoring
+    internal sealed class WrapLinesInRegionRefactoring : WrapSelectedLinesRefactoring
     {
-        private WrapInRegionRefactoring()
+        private WrapLinesInRegionRefactoring()
         {
         }
 
-        public static WrapInRegionRefactoring Instance { get; } = new WrapInRegionRefactoring();
+        public static WrapLinesInRegionRefactoring Instance { get; } = new WrapLinesInRegionRefactoring();
 
         public override bool Indent
         {
