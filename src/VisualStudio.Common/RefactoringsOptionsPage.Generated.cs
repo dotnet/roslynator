@@ -99,7 +99,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.InvertOperator, "Invert operator", IsEnabled(RefactoringIdentifiers.InvertOperator)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.NotifyWhenPropertyChanges, "Notify when property changes", IsEnabled(RefactoringIdentifiers.NotifyWhenPropertyChanges)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ParenthesizeExpression, "Parenthesize expression", IsEnabled(RefactoringIdentifiers.ParenthesizeExpression)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.PromoteLocalToParameter, "Promote local to parameter", IsEnabled(RefactoringIdentifiers.PromoteLocalToParameter)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.PromoteLocalVariableToParameter, "Promote local variable to parameter", IsEnabled(RefactoringIdentifiers.PromoteLocalVariableToParameter)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.RemoveAllComments, "Remove all comments", IsEnabled(RefactoringIdentifiers.RemoveAllComments)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.RemoveAllCommentsExceptDocumentationComments, "Remove all comments (except documentation comments)", IsEnabled(RefactoringIdentifiers.RemoveAllCommentsExceptDocumentationComments)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.RemoveAllDocumentationComments, "Remove all documentation comments", IsEnabled(RefactoringIdentifiers.RemoveAllDocumentationComments)));

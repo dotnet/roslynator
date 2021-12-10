@@ -766,7 +766,7 @@ return true;]]></After>
       <Syntax>selected expression</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0085" Identifier="PromoteLocalToParameter" Title="Promote local to parameter">
+  <Refactoring Id="RR0085" Identifier="PromoteLocalVariableToParameter" Title="Promote local variable to parameter">
     <Syntaxes>
       <Syntax>local declaration in method</Syntax>
     </Syntaxes>

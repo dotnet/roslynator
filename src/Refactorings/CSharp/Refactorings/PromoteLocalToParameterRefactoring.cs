@@ -78,7 +78,7 @@ namespace Roslynator.CSharp.Refactorings
                         variable,
                         ct);
                 },
-                RefactoringIdentifiers.PromoteLocalToParameter);
+                RefactoringIdentifiers.PromoteLocalVariableToParameter);
         }
 
         public static Task<Document> RefactorAsync(

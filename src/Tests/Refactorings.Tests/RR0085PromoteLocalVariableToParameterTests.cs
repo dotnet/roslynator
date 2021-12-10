@@ -6,11 +6,11 @@ using Xunit;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public class RR0085PromoteLocalToParameterTests : AbstractCSharpRefactoringVerifier
+    public class RR0085PromoteLocalVariableToParameterTests : AbstractCSharpRefactoringVerifier
     {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.PromoteLocalToParameter;
+        public override string RefactoringId { get; } = RefactoringIdentifiers.PromoteLocalVariableToParameter;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.PromoteLocalToParameter)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.PromoteLocalVariableToParameter)]
         public async Task Test_MethodWithSingleLocalDeclaration()
         {
             await VerifyRefactoringAsync(@"
@@ -32,7 +32,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.PromoteLocalToParameter)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.PromoteLocalVariableToParameter)]
         public async Task Test_LocalFunctionWithSingleLocalDeclaration()
         {
             await VerifyRefactoringAsync(@"
@@ -60,7 +60,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.PromoteLocalToParameter)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.PromoteLocalVariableToParameter)]
         public async Task Test_MethodWithMultipleLocalDeclarationsWithoutInitialization()
         {
             await VerifyRefactoringAsync(@"
@@ -82,7 +82,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.PromoteLocalToParameter)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.PromoteLocalVariableToParameter)]
         public async Task Test_MethodWithMultipleLocalDeclarationsWithInitialization()
         {
             await VerifyRefactoringAsync(@"
@@ -105,7 +105,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.PromoteLocalToParameter)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.PromoteLocalVariableToParameter)]
         public async Task TestNoRefactoring_TypeDoesNotSupportExplicitDeclaration()
         {
             await VerifyNoRefactoringAsync(@"

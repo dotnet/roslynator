@@ -16,7 +16,7 @@ namespace Roslynator.CSharp.Refactorings
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.InitializeLocalVariableWithDefaultValue))
                 await InitializeLocalVariableWithDefaultValueRefactoring.ComputeRefactoringAsync(context, localDeclaration).ConfigureAwait(false);
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.PromoteLocalToParameter))
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.PromoteLocalVariableToParameter))
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
                 PromoteLocalToParameterRefactoring.ComputeRefactoring(context, localDeclaration, semanticModel);

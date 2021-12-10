@@ -131,7 +131,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string MoveUnsafeContextToContainingDeclaration = Prefix + "0202";
         public const string NotifyWhenPropertyChanges = Prefix + "0083";
         public const string ParenthesizeExpression = Prefix + "0084";
-        public const string PromoteLocalToParameter = Prefix + "0085";
+        public const string PromoteLocalVariableToParameter = Prefix + "0085";
         public const string RemoveAllComments = Prefix + "0086";
         public const string RemoveAllCommentsExceptDocumentationComments = Prefix + "0087";
         public const string RemoveAllDocumentationComments = Prefix + "0088";
