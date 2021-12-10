@@ -29,8 +29,8 @@ namespace Roslynator.CSharp.Refactorings
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertNullLiteralToDefaultExpression))
                 await ConvertNullLiteralToDefaultExpressionRefactoring.ComputeRefactoringAsync(context, expression).ConfigureAwait(false);
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceConditionalExpressionWithExpression))
-                ReplaceConditionalExpressionWithExpressionRefactoring.ComputeRefactoring(context, expression);
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceConditionalExpressionWithTrueOrFalseBranch))
+                ReplaceConditionalExpressionWithTrueOrFalseBranchRefactoring.ComputeRefactoring(context, expression);
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.CheckExpressionForNull)
                 && context.Span.IsContainedInSpanOrBetweenSpans(expression))

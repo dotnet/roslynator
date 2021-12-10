@@ -133,7 +133,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.InvertLinqMethodCall, "Invert LINQ method call", IsEnabled(RefactoringIdentifiers.InvertLinqMethodCall)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceAsExpressionWithExplicitCast, "Replace 'as' expression with explicit cast", IsEnabled(RefactoringIdentifiers.ReplaceAsExpressionWithExplicitCast)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceExplicitCastWithAsExpression, "Replace explicit cast expression 'as' expression", IsEnabled(RefactoringIdentifiers.ReplaceExplicitCastWithAsExpression)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceConditionalExpressionWithExpression, "Replace conditional expression with expression", IsEnabled(RefactoringIdentifiers.ReplaceConditionalExpressionWithExpression)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceConditionalExpressionWithTrueOrFalseBranch, "Replace conditional expression with true/false branch", IsEnabled(RefactoringIdentifiers.ReplaceConditionalExpressionWithTrueOrFalseBranch)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertConditionalExpressionToIfElse, "Convert ?: to if-else", IsEnabled(RefactoringIdentifiers.ConvertConditionalExpressionToIfElse)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.UseReadOnlyFieldInsteadOfConstant, "Use read-only field instead of constant", IsEnabled(RefactoringIdentifiers.UseReadOnlyFieldInsteadOfConstant)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertDoToWhile, "Convert 'do' to 'while'", IsEnabled(RefactoringIdentifiers.ConvertDoToWhile)));

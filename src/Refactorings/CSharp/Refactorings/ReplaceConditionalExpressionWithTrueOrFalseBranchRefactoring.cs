@@ -8,7 +8,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class ReplaceConditionalExpressionWithExpressionRefactoring
+    internal static class ReplaceConditionalExpressionWithTrueOrFalseBranchRefactoring
     {
         public static void ComputeRefactoring(RefactoringContext context, ExpressionSyntax expression)
         {
@@ -31,7 +31,7 @@ namespace Roslynator.CSharp.Refactorings
             context.RegisterRefactoring(
                 $"Replace ?: with '{expression}'",
                 ct => RefactorAsync(context.Document, expression, ct),
-                RefactoringIdentifiers.ReplaceConditionalExpressionWithExpression);
+                RefactoringIdentifiers.ReplaceConditionalExpressionWithTrueOrFalseBranch);
         }
 
         private static Task<Document> RefactorAsync(

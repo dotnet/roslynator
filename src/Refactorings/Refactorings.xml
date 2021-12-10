@@ -1011,7 +1011,7 @@ return true;]]></After>
       <Syntax>cast expression</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0119" Identifier="ReplaceConditionalExpressionWithExpression" Title="Replace conditional expression with expression">
+  <Refactoring Id="RR0119" Identifier="ReplaceConditionalExpressionWithTrueOrFalseBranch" Title="Replace conditional expression with true/false branch">
     <Syntaxes>
       <Syntax>conditional expression</Syntax>
     </Syntaxes>
