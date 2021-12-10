@@ -24,7 +24,7 @@ namespace Roslynator.CSharp.Refactorings
                         RefactoringIdentifiers.UseReadOnlyFieldInsteadOfConstant);
                 }
 
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.InlineConstant)
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.InlineConstantDeclaration)
                     && !fieldDeclaration.ContainsDiagnostics)
                 {
                     VariableDeclaratorSyntax variableDeclarator = fieldDeclaration
@@ -36,8 +36,8 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         context.RegisterRefactoring(
                             "Inline constant",
-                            ct => InlineConstantRefactoring.RefactorAsync(context.Document, fieldDeclaration, variableDeclarator, ct),
-                            RefactoringIdentifiers.InlineConstant);
+                            ct => InlineConstantDeclarationRefactoring.RefactorAsync(context.Document, fieldDeclaration, variableDeclarator, ct),
+                            RefactoringIdentifiers.InlineConstantDeclaration);
                     }
                 }
             }

@@ -11,7 +11,7 @@ using Microsoft.CodeAnalysis.FindSymbols;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class InlineConstantRefactoring
+    internal static class InlineConstantDeclarationRefactoring
     {
         private static readonly SyntaxAnnotation _removeAnnotation = new SyntaxAnnotation();
 

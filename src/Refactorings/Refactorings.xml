@@ -1518,7 +1518,7 @@ i--;]]></After>
       <Syntax>using static directive</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0181" Identifier="InlineConstant" Title="Inline constant">
+  <Refactoring Id="RR0181" Identifier="InlineConstantDeclaration" Title="Inline constant declaration">
     <Syntaxes>
       <Syntax>constant declaration</Syntax>
     </Syntaxes>
