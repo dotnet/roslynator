@@ -52,7 +52,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string ConvertForToWhile = Prefix + "0131";
         public const string ConvertHasFlagCallToBitwiseOperation = Prefix + "0164";
         public const string ConvertHexadecimalLiteralToDecimalLiteral = Prefix + "0132";
-        public const string ConvertIfToConditionalOperator = Prefix + "0166";
+        public const string ConvertIfToConditionalExpression = Prefix + "0166";
         public const string ConvertIfToSwitch = Prefix + "0133";
         public const string ConvertInterpolatedStringToConcatenation = Prefix + "0193";
         public const string ConvertInterpolatedStringToStringFormat = Prefix + "0201";

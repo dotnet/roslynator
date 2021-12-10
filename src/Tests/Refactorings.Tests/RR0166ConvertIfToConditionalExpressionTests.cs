@@ -6,11 +6,11 @@ using Xunit;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public class RR0166ConvertIfToConditionalOperatorTests : AbstractCSharpRefactoringVerifier
+    public class RR0166ConvertIfToConditionalExpressionTests : AbstractCSharpRefactoringVerifier
     {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.ConvertIfToConditionalOperator;
+        public override string RefactoringId { get; } = RefactoringIdentifiers.ConvertIfToConditionalExpression;
 
-        [Theory, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToConditionalOperator)]
+        [Theory, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToConditionalExpression)]
         [InlineData("if (f) { z = x; } else { z = y; }", "z = (f) ? x : y;")]
         [InlineData("if (f) z = x; else z = y;", "z = (f) ? x : y;")]
         public async Task Test_IfElseToAssignmentWithConditionalExpression(string source, string expected)
@@ -26,7 +26,7 @@ class C
 ", source, expected, equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToConditionalOperator)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToConditionalExpression)]
         public async Task Test_AssignmentAndIfElseToAssignmentWithConditionalExpression()
         {
             await VerifyRefactoringAsync(@"
@@ -56,7 +56,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToConditionalOperator)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToConditionalExpression)]
         public async Task Test_AssignmentAndIfToAssignmentWithConditionalExpression()
         {
             await VerifyRefactoringAsync(@"
@@ -82,7 +82,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToConditionalOperator)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToConditionalExpression)]
         public async Task Test_LocalDeclarationAndIfElseToAssignmentWithConditionalExpression()
         {
             await VerifyRefactoringAsync(@"
@@ -112,7 +112,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Theory, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToConditionalOperator)]
+        [Theory, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToConditionalExpression)]
         [InlineData("if (f) { return x; } else { return y; }", "return (f) ? x : y;")]
         [InlineData("if (f) return x; else return y;", "return (f) ? x : y;")]
         [InlineData("if (f) { return x; } return y;", "return (f) ? x : y;")]
@@ -130,7 +130,7 @@ class C
 ", source, expected, equivalenceKey: RefactoringId);
         }
 
-        [Theory, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToConditionalOperator)]
+        [Theory, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToConditionalExpression)]
         [InlineData("if (f) { yield return x; } else { yield return y; }", "yield return (f) ? x : y;")]
         [InlineData("if (f) yield return x; else yield return y;", "yield return (f) ? x : y;")]
         public async Task Test_IfElseToYieldReturnWithConditionalExpression(string source, string expected)
@@ -148,7 +148,7 @@ class C
 ", source, expected, equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToConditionalOperator)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToConditionalExpression)]
         public async Task TestNoRefactoring_IfElseToAssignmentWithConditionalExpression()
         {
             await VerifyNoRefactoringAsync(@"
@@ -170,7 +170,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToConditionalOperator)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToConditionalExpression)]
         public async Task TestNoRefactoring_LocalDeclarationAndIfElseAssignmentWithConditionalExpression()
         {
             await VerifyNoRefactoringAsync(@"
@@ -192,7 +192,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToConditionalOperator)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToConditionalExpression)]
         public async Task TestNoRefactoring_AssignmentAndIfElseToAssignmentWithConditionalExpression()
         {
             await VerifyNoRefactoringAsync(@"
@@ -215,7 +215,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToConditionalOperator)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToConditionalExpression)]
         public async Task TestNoRefactoring_IfElseToYieldReturnWithConditionalExpression()
         {
             await VerifyNoRefactoringAsync(@"
@@ -238,7 +238,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToConditionalOperator)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToConditionalExpression)]
         public async Task TestNoRefactoring_IfElseToReturnWithConditionalExpression()
         {
             await VerifyNoRefactoringAsync(@"
@@ -259,7 +259,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToConditionalOperator)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToConditionalExpression)]
         public async Task TestNoRefactoring_IfReturnToReturnWithConditionalExpression()
         {
             await VerifyNoRefactoringAsync(@"

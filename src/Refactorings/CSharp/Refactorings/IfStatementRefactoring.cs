@@ -22,7 +22,7 @@ namespace Roslynator.CSharp.Refactorings
         public static IfAnalysisOptions GetIfAnalysisOptions(RefactoringContext context)
         {
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseCoalesceExpressionInsteadOfIf)
-                && context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertIfToConditionalOperator)
+                && context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertIfToConditionalExpression)
                 && context.IsRefactoringEnabled(RefactoringIdentifiers.SimplifyIf))
             {
                 return DefaultIfAnalysisOptions;
@@ -30,7 +30,7 @@ namespace Roslynator.CSharp.Refactorings
 
             return new IfAnalysisOptions(
                 useCoalesceExpression: context.IsRefactoringEnabled(RefactoringIdentifiers.UseCoalesceExpressionInsteadOfIf),
-                useConditionalExpression: context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertIfToConditionalOperator),
+                useConditionalExpression: context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertIfToConditionalExpression),
                 useBooleanExpression: context.IsRefactoringEnabled(RefactoringIdentifiers.SimplifyIf),
                 useExpression: false);
         }
@@ -50,7 +50,7 @@ namespace Roslynator.CSharp.Refactorings
                 case IfAnalysisKind.IfElseToReturnWithConditionalExpression:
                 case IfAnalysisKind.IfElseToYieldReturnWithConditionalExpression:
                 case IfAnalysisKind.IfReturnToReturnWithConditionalExpression:
-                    return RefactoringIdentifiers.ConvertIfToConditionalOperator;
+                    return RefactoringIdentifiers.ConvertIfToConditionalExpression;
                 case IfAnalysisKind.IfElseToReturnWithBooleanExpression:
                 case IfAnalysisKind.IfElseToYieldReturnWithBooleanExpression:
                 case IfAnalysisKind.IfReturnToReturnWithBooleanExpression:
@@ -80,7 +80,7 @@ namespace Roslynator.CSharp.Refactorings
                 if (isTopmostIf
                     && context.IsAnyRefactoringEnabled(
                         RefactoringIdentifiers.UseCoalesceExpressionInsteadOfIf,
-                        RefactoringIdentifiers.ConvertIfToConditionalOperator,
+                        RefactoringIdentifiers.ConvertIfToConditionalExpression,
                         RefactoringIdentifiers.SimplifyIf))
                 {
                     SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);

@@ -1428,7 +1428,7 @@ i--;]]></After>
     </Syntaxes>
     <Span>top if keyword or selected if statement</Span>
   </Refactoring>
-  <Refactoring Id="RR0166" Identifier="ConvertIfToConditionalOperator" Title="Convert 'if' to ?:">
+  <Refactoring Id="RR0166" Identifier="ConvertIfToConditionalExpression" Title="Convert 'if' to ?:">
     <Syntaxes>
       <Syntax>if statement</Syntax>
     </Syntaxes>
