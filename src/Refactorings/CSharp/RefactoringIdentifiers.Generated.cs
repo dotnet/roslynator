@@ -38,7 +38,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string CheckExpressionForNull = Prefix + "0024";
         public const string CheckParameterForNull = Prefix + "0025";
         public const string CollapseToInitializer = Prefix + "0026";
-        public const string CommentOutMember = Prefix + "0027";
+        public const string CommentOutMemberDeclaration = Prefix + "0027";
         public const string CommentOutStatement = Prefix + "0028";
         public const string ConvertBlockBodyToExpressionBody = Prefix + "0169";
         public const string ConvertCommentToDocumentationComment = Prefix + "0192";

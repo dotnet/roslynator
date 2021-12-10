@@ -169,7 +169,7 @@
       <Syntax>object creation followed with assignment(s)</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0027" Identifier="CommentOutMember" Title="Comment out member">
+  <Refactoring Id="RR0027" Identifier="CommentOutMemberDeclaration" Title="Comment out member declaration">
     <Syntaxes>
       <Syntax>method</Syntax>
       <Syntax>constructor</Syntax>

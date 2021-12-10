@@ -32,7 +32,7 @@ namespace Roslynator.CSharp.Refactorings
                                 RefactoringIdentifiers.DuplicateMember);
                         }
 
-                        if (context.IsRefactoringEnabled(RefactoringIdentifiers.CommentOutMember))
+                        if (context.IsRefactoringEnabled(RefactoringIdentifiers.CommentOutMemberDeclaration))
                             CommentOutRefactoring.RegisterRefactoring(context, localFunctionStatement);
                     }
                 }
