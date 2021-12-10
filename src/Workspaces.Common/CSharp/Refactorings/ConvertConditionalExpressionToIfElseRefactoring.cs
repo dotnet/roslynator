@@ -14,7 +14,7 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class ConvertConditionalOperatorToIfElseRefactoring
+    internal static class ConvertConditionalExpressionToIfElseRefactoring
     {
         public const string Title = "Convert ?: to if-else";
 

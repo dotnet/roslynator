@@ -1017,7 +1017,7 @@ return true;]]></After>
     </Syntaxes>
     <Span>selected true/false expression</Span>
   </Refactoring>
-  <Refactoring Id="RR0120" Identifier="ConvertConditionalOperatorToIfElse" Title="Convert ?: to if-else">
+  <Refactoring Id="RR0120" Identifier="ConvertConditionalExpressionToIfElse" Title="Convert ?: to if-else">
     <Syntaxes>
       <Syntax>?: operator that is part of local declaration, assignment or (yield) return statement</Syntax>
     </Syntaxes>

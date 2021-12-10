@@ -42,7 +42,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string CommentOutStatement = Prefix + "0028";
         public const string ConvertBlockBodyToExpressionBody = Prefix + "0169";
         public const string ConvertCommentToDocumentationComment = Prefix + "0192";
-        public const string ConvertConditionalOperatorToIfElse = Prefix + "0120";
+        public const string ConvertConditionalExpressionToIfElse = Prefix + "0120";
         public const string ConvertDoToWhile = Prefix + "0123";
         public const string ConvertEmptyStringToStringEmpty = Prefix + "0171";
         public const string ConvertExpressionBodyToBlockBody = Prefix + "0037";

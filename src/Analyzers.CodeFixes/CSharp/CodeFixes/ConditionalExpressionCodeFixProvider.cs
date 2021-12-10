@@ -94,11 +94,11 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                            (CodeAction codeAction, CodeAction recursiveCodeAction) = ConvertConditionalOperatorToIfElseRefactoring.ComputeRefactoring(
+                            (CodeAction codeAction, CodeAction recursiveCodeAction) = ConvertConditionalExpressionToIfElseRefactoring.ComputeRefactoring(
                                 document,
                                 conditionalExpression,
                                 data: default,
-                                recursiveData: new CodeActionData(ConvertConditionalOperatorToIfElseRefactoring.Title, GetEquivalenceKey(diagnostic)),
+                                recursiveData: new CodeActionData(ConvertConditionalExpressionToIfElseRefactoring.Title, GetEquivalenceKey(diagnostic)),
                                 semanticModel,
                                 context.CancellationToken);
 

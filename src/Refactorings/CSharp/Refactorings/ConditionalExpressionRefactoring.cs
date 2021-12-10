@@ -11,7 +11,7 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class ConditionalExpressionRefactoring
     {
-        internal static readonly string ConvertConditionalOperatorToIfElseRecursiveEquivalenceKey = EquivalenceKey.Join(RefactoringIdentifiers.ConvertConditionalOperatorToIfElse, "Recursive");
+        internal static readonly string ConvertConditionalExpressionToIfElseRecursiveEquivalenceKey = EquivalenceKey.Join(RefactoringIdentifiers.ConvertConditionalExpressionToIfElse, "Recursive");
 
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, ConditionalExpressionSyntax conditionalExpression)
         {
@@ -35,15 +35,15 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 }
 
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertConditionalOperatorToIfElse))
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertConditionalExpressionToIfElse))
                 {
                     SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                    (CodeAction codeAction, CodeAction recursiveCodeAction) = ConvertConditionalOperatorToIfElseRefactoring.ComputeRefactoring(
+                    (CodeAction codeAction, CodeAction recursiveCodeAction) = ConvertConditionalExpressionToIfElseRefactoring.ComputeRefactoring(
                         context.Document,
                         conditionalExpression,
-                        new CodeActionData(ConvertConditionalOperatorToIfElseRefactoring.Title, RefactoringIdentifiers.ConvertConditionalOperatorToIfElse),
-                        new CodeActionData(ConvertConditionalOperatorToIfElseRefactoring.RecursiveTitle, ConvertConditionalOperatorToIfElseRecursiveEquivalenceKey),
+                        new CodeActionData(ConvertConditionalExpressionToIfElseRefactoring.Title, RefactoringIdentifiers.ConvertConditionalExpressionToIfElse),
+                        new CodeActionData(ConvertConditionalExpressionToIfElseRefactoring.RecursiveTitle, ConvertConditionalExpressionToIfElseRecursiveEquivalenceKey),
                         semanticModel,
                         context.CancellationToken);
 

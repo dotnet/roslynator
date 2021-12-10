@@ -6,11 +6,11 @@ using Xunit;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public class RR0120ConvertConditionalOperatorToIfElseTests : AbstractCSharpRefactoringVerifier
+    public class RR0120ConvertConditionalExpressionToIfElseTests : AbstractCSharpRefactoringVerifier
     {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.ConvertConditionalOperatorToIfElse;
+        public override string RefactoringId { get; } = RefactoringIdentifiers.ConvertConditionalExpressionToIfElse;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalOperatorToIfElse)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalExpressionToIfElse)]
         public async Task Test_LocalDeclaration()
         {
             await VerifyRefactoringAsync(@"
@@ -40,7 +40,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalOperatorToIfElse)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalExpressionToIfElse)]
         public async Task Test_LocalDeclaration_Multiline()
         {
             await VerifyRefactoringAsync(@"
@@ -72,7 +72,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalOperatorToIfElse)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalExpressionToIfElse)]
         public async Task Test_LocalDeclaration_Recursive()
         {
             await VerifyRefactoringAsync(@"
@@ -106,10 +106,10 @@ class C
         }
     }
 }
-", equivalenceKey: ConditionalExpressionRefactoring.ConvertConditionalOperatorToIfElseRecursiveEquivalenceKey);
+", equivalenceKey: ConditionalExpressionRefactoring.ConvertConditionalExpressionToIfElseRecursiveEquivalenceKey);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalOperatorToIfElse)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalExpressionToIfElse)]
         public async Task Test_LocalDeclaration_Recursive2()
         {
             await VerifyRefactoringAsync(@"
@@ -140,10 +140,10 @@ class C
         }
     }
 }
-", equivalenceKey: ConditionalExpressionRefactoring.ConvertConditionalOperatorToIfElseRecursiveEquivalenceKey);
+", equivalenceKey: ConditionalExpressionRefactoring.ConvertConditionalExpressionToIfElseRecursiveEquivalenceKey);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalOperatorToIfElse)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalExpressionToIfElse)]
         public async Task Test_SimpleAssignment()
         {
             await VerifyRefactoringAsync(@"
@@ -174,7 +174,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalOperatorToIfElse)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalExpressionToIfElse)]
         public async Task Test_SimpleAssignment_Multiline()
         {
             await VerifyRefactoringAsync(@"
@@ -207,7 +207,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalOperatorToIfElse)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalExpressionToIfElse)]
         public async Task Test_SimpleAssignment_Recursive()
         {
             await VerifyRefactoringAsync(@"
@@ -242,10 +242,10 @@ class C
         }
     }
 }
-", equivalenceKey: ConditionalExpressionRefactoring.ConvertConditionalOperatorToIfElseRecursiveEquivalenceKey);
+", equivalenceKey: ConditionalExpressionRefactoring.ConvertConditionalExpressionToIfElseRecursiveEquivalenceKey);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalOperatorToIfElse)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalExpressionToIfElse)]
         public async Task Test_SimpleAssignment_Recursive2()
         {
             await VerifyRefactoringAsync(@"
@@ -277,10 +277,10 @@ class C
         }
     }
 }
-", equivalenceKey: ConditionalExpressionRefactoring.ConvertConditionalOperatorToIfElseRecursiveEquivalenceKey);
+", equivalenceKey: ConditionalExpressionRefactoring.ConvertConditionalExpressionToIfElseRecursiveEquivalenceKey);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalOperatorToIfElse)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalExpressionToIfElse)]
         public async Task Test_ReturnStatement()
         {
             await VerifyRefactoringAsync(@"
@@ -309,7 +309,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalOperatorToIfElse)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalExpressionToIfElse)]
         public async Task Test_ReturnStatement_Multiline()
         {
             await VerifyRefactoringAsync(@"
@@ -340,7 +340,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalOperatorToIfElse)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalExpressionToIfElse)]
         public async Task Test_ReturnStatement_Recursive()
         {
             await VerifyRefactoringAsync(@"
@@ -377,10 +377,10 @@ class C
         }
     }
 }
-", equivalenceKey: ConditionalExpressionRefactoring.ConvertConditionalOperatorToIfElseRecursiveEquivalenceKey);
+", equivalenceKey: ConditionalExpressionRefactoring.ConvertConditionalExpressionToIfElseRecursiveEquivalenceKey);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalOperatorToIfElse)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalExpressionToIfElse)]
         public async Task Test_ReturnStatement_Recursive2()
         {
             await VerifyRefactoringAsync(@"
@@ -414,10 +414,10 @@ class C
         }
     }
 }
-", equivalenceKey: ConditionalExpressionRefactoring.ConvertConditionalOperatorToIfElseRecursiveEquivalenceKey);
+", equivalenceKey: ConditionalExpressionRefactoring.ConvertConditionalExpressionToIfElseRecursiveEquivalenceKey);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalOperatorToIfElse)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalExpressionToIfElse)]
         public async Task Test_YieldReturnStatement()
         {
             await VerifyRefactoringAsync(@"
@@ -450,7 +450,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalOperatorToIfElse)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalExpressionToIfElse)]
         public async Task Test_YieldReturnStatement_Multiline()
         {
             await VerifyRefactoringAsync(@"
@@ -485,7 +485,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalOperatorToIfElse)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalExpressionToIfElse)]
         public async Task Test_YieldReturnStatement_Recursive()
         {
             await VerifyRefactoringAsync(@"
@@ -526,10 +526,10 @@ class C
         }
     }
 }
-", equivalenceKey: ConditionalExpressionRefactoring.ConvertConditionalOperatorToIfElseRecursiveEquivalenceKey);
+", equivalenceKey: ConditionalExpressionRefactoring.ConvertConditionalExpressionToIfElseRecursiveEquivalenceKey);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalOperatorToIfElse)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalExpressionToIfElse)]
         public async Task Test_YieldReturnStatement_Recursive2()
         {
             await VerifyRefactoringAsync(@"
@@ -567,7 +567,7 @@ class C
         }
     }
 }
-", equivalenceKey: ConditionalExpressionRefactoring.ConvertConditionalOperatorToIfElseRecursiveEquivalenceKey);
+", equivalenceKey: ConditionalExpressionRefactoring.ConvertConditionalExpressionToIfElseRecursiveEquivalenceKey);
         }
     }
 }
