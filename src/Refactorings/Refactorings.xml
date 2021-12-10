@@ -1465,7 +1465,7 @@ i--;]]></After>
       <Syntax>empty string literal</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0172" Identifier="WrapInCondition" Title="Wrap in condition">
+  <Refactoring Id="RR0172" Identifier="WrapStatementsInCondition" Title="Wrap statements in condition">
     <Syntaxes>
       <Syntax>selected statements</Syntax>
     </Syntaxes>

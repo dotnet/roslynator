@@ -203,12 +203,12 @@ namespace Roslynator.CSharp.Refactorings
         public const string WrapCallChain = Prefix + "0051";
         public const string WrapConditionalExpression = Prefix + "0050";
         public const string WrapConstraintClauses = Prefix + "0187";
-        public const string WrapInCondition = Prefix + "0172";
         public const string WrapInIfDirective = Prefix + "0174";
         public const string WrapInitializerExpressions = Prefix + "0052";
         public const string WrapInRegion = Prefix + "0175";
         public const string WrapInTryCatch = Prefix + "0176";
         public const string WrapInUsingStatement = Prefix + "0177";
         public const string WrapParameters = Prefix + "0053";
+        public const string WrapStatementsInCondition = Prefix + "0172";
     }
 }

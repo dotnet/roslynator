@@ -16,7 +16,7 @@ namespace Roslynator.CSharp.Refactorings
                 || context.IsRefactoringEnabled(RefactoringIdentifiers.MergeIfStatements)
                 || context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertStatementsToIfElse)
                 || context.IsRefactoringEnabled(RefactoringIdentifiers.MergeLocalDeclarations)
-                || context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInCondition)
+                || context.IsRefactoringEnabled(RefactoringIdentifiers.WrapStatementsInCondition)
                 || context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInTryCatch)
                 || context.IsRefactoringEnabled(RefactoringIdentifiers.UseCoalesceExpressionInsteadOfIf)
                 || context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertIfToConditionalExpression)
@@ -77,12 +77,12 @@ namespace Roslynator.CSharp.Refactorings
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertWhileToFor))
                 await ConvertWhileToForRefactoring.ComputeRefactoringAsync(context, selectedStatements).ConfigureAwait(false);
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInCondition))
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapStatementsInCondition))
             {
                 context.RegisterRefactoring(
                     WrapInIfStatementRefactoring.Title,
                     ct => WrapInIfStatementRefactoring.Instance.RefactorAsync(context.Document, selectedStatements, ct),
-                    RefactoringIdentifiers.WrapInCondition);
+                    RefactoringIdentifiers.WrapStatementsInCondition);
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInTryCatch))
