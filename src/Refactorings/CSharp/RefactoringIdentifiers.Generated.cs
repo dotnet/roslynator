@@ -79,7 +79,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string DuplicateSwitchSection = Prefix + "0212";
         public const string ExpandCoalesceExpression = Prefix + "0035";
         public const string ExpandCompoundAssignment = Prefix + "0034";
-        public const string ExpandEvent = Prefix + "0036";
+        public const string ExpandEventDeclaration = Prefix + "0036";
         public const string ExpandInitializer = Prefix + "0038";
         public const string ExpandPositionalConstructor = Prefix + "0215";
         public const string ExpandProperty = Prefix + "0040";

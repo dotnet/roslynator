@@ -13,14 +13,14 @@ namespace Roslynator.CSharp.Refactorings
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.GenerateEventInvokingMethod))
                 await GenerateOnEventMethodRefactoring.ComputeRefactoringAsync(context, eventFieldDeclaration).ConfigureAwait(false);
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExpandEvent)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExpandEventDeclaration)
                 && eventFieldDeclaration.Span.Contains(context.Span)
-                && ExpandEventRefactoring.CanRefactor(eventFieldDeclaration))
+                && ExpandEventDeclarationRefactoring.CanRefactor(eventFieldDeclaration))
             {
                 context.RegisterRefactoring(
                     "Expand event",
-                    ct => ExpandEventRefactoring.RefactorAsync(context.Document, eventFieldDeclaration, ct),
-                    RefactoringIdentifiers.ExpandEvent);
+                    ct => ExpandEventDeclarationRefactoring.RefactorAsync(context.Document, eventFieldDeclaration, ct),
+                    RefactoringIdentifiers.ExpandEventDeclaration);
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.CopyDocumentationCommentFromBaseMember)

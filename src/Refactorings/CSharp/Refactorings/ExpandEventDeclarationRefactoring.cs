@@ -10,7 +10,7 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class ExpandEventRefactoring
+    internal static class ExpandEventDeclarationRefactoring
     {
         public static bool CanRefactor(EventFieldDeclarationSyntax eventDeclaration)
         {

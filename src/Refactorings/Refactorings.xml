@@ -270,7 +270,7 @@
     </Syntaxes>
     <Span>?? operator</Span>
   </Refactoring>
-  <Refactoring Id="RR0036" Identifier="ExpandEvent" Title="Expand event">
+  <Refactoring Id="RR0036" Identifier="ExpandEventDeclaration" Title="Expand event declaration">
     <Syntaxes>
       <Syntax>event field declaration</Syntax>
     </Syntaxes>
