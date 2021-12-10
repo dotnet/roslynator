@@ -150,7 +150,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string RemoveEmptyLines = Prefix + "0101";
         public const string RemoveEnumMemberValue = Prefix + "0199";
         public const string RemoveInterpolation = Prefix + "0102";
-        public const string RemoveMember = Prefix + "0103";
+        public const string RemoveMemberDeclaration = Prefix + "0103";
         public const string RemoveMemberDeclarations = Prefix + "0104";
         public const string RemoveParameterNameFromArgument = Prefix + "0105";
         public const string RemoveParentheses = Prefix + "0106";

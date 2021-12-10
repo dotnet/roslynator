@@ -881,7 +881,7 @@ return true;]]></After>
     </Syntaxes>
     <Span>opening or closing brace</Span>
   </Refactoring>
-  <Refactoring Id="RR0103" Identifier="RemoveMember" Title="Remove member">
+  <Refactoring Id="RR0103" Identifier="RemoveMemberDeclaration" Title="Remove member declaration">
     <Syntaxes>
       <Syntax>method</Syntax>
       <Syntax>constructor</Syntax>

@@ -31,7 +31,7 @@ namespace Roslynator.CSharp.Refactorings
                 case SyntaxKind.EnumDeclaration:
                     {
                         if (context.IsAnyRefactoringEnabled(
-                            RefactoringIdentifiers.RemoveMember,
+                            RefactoringIdentifiers.RemoveMemberDeclaration,
                             RefactoringIdentifiers.DuplicateMember,
                             RefactoringIdentifiers.CommentOutMemberDeclaration)
                             && BraceContainsSpan(member, context.Span))
@@ -44,9 +44,9 @@ namespace Roslynator.CSharp.Refactorings
                                 SyntaxKind.InterfaceDeclaration,
                                 SyntaxKind.CompilationUnit))
                             {
-                                if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveMember))
+                                if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveMemberDeclaration))
                                 {
-                                    context.RegisterRefactoring(CodeActionFactory.RemoveMemberDeclaration(context.Document, member, equivalenceKey: RefactoringIdentifiers.RemoveMember));
+                                    context.RegisterRefactoring(CodeActionFactory.RemoveMemberDeclaration(context.Document, member, equivalenceKey: RefactoringIdentifiers.RemoveMemberDeclaration));
                                 }
 
                                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.DuplicateMember))

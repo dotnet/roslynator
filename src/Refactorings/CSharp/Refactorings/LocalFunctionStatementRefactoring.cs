@@ -19,9 +19,9 @@ namespace Roslynator.CSharp.Refactorings
                     if (body.OpenBraceToken.Span.Contains(context.Span)
                         || body.CloseBraceToken.Span.Contains(context.Span))
                     {
-                        if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveMember))
+                        if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveMemberDeclaration))
                         {
-                            context.RegisterRefactoring(CodeActionFactory.RemoveStatement(context.Document, localFunctionStatement, equivalenceKey: RefactoringIdentifiers.RemoveMember));
+                            context.RegisterRefactoring(CodeActionFactory.RemoveStatement(context.Document, localFunctionStatement, equivalenceKey: RefactoringIdentifiers.RemoveMemberDeclaration));
                         }
 
                         if (context.IsRefactoringEnabled(RefactoringIdentifiers.DuplicateMember))
