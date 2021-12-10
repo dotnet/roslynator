@@ -57,8 +57,8 @@ namespace Roslynator.CSharp.Refactorings
         public const string ConvertInterpolatedStringToConcatenation = Prefix + "0193";
         public const string ConvertInterpolatedStringToStringFormat = Prefix + "0201";
         public const string ConvertInterpolatedStringToStringLiteral = Prefix + "0136";
+        public const string ConvertLambdaBlockBodyToExpressionBody = Prefix + "0154";
         public const string ConvertLambdaExpressionBodyToBlockBody = Prefix + "0039";
-        public const string ConvertLambdaExpressionBodyToExpressionBody = Prefix + "0154";
         public const string ConvertMethodGroupToLambda = Prefix + "0137";
         public const string ConvertNullLiteralToDefaultExpression = Prefix + "0139";
         public const string ConvertRegularStringLiteralToVerbatimStringLiteral = Prefix + "0142";

@@ -10,7 +10,7 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class ConvertLambdaExpressionBodyToExpressionBodyRefactoring
+    internal static class ConvertLambdaBlockBodyToExpressionBodyRefactoring
     {
         public const string Title = "Use expression-bodied lambda";
 

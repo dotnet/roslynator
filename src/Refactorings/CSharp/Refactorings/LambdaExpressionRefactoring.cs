@@ -26,19 +26,19 @@ namespace Roslynator.CSharp.Refactorings
                     RefactoringIdentifiers.ConvertLambdaExpressionBodyToBlockBody);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertLambdaExpressionBodyToExpressionBody)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertLambdaBlockBodyToExpressionBody)
                 && ConvertLambdaExpressionBodyToExpressionBodyAnalysis.IsFixable(lambda))
             {
                 context.RegisterRefactoring(
-                    ConvertLambdaExpressionBodyToExpressionBodyRefactoring.Title,
+                    ConvertLambdaBlockBodyToExpressionBodyRefactoring.Title,
                     ct =>
                     {
-                        return ConvertLambdaExpressionBodyToExpressionBodyRefactoring.RefactorAsync(
+                        return ConvertLambdaBlockBodyToExpressionBodyRefactoring.RefactorAsync(
                             context.Document,
                             lambda,
                             ct);
                     },
-                    RefactoringIdentifiers.ConvertLambdaExpressionBodyToExpressionBody);
+                    RefactoringIdentifiers.ConvertLambdaBlockBodyToExpressionBody);
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExtractEventHandlerMethod)

@@ -1333,7 +1333,7 @@ i--;]]></After>
     </Syntaxes>
     <Span>top if keyword or selected if statement</Span>
   </Refactoring>
-  <Refactoring Id="RR0154" Identifier="ConvertLambdaExpressionBodyToExpressionBody" Title="Convert lambda expression body to expression-body">
+  <Refactoring Id="RR0154" Identifier="ConvertLambdaBlockBodyToExpressionBody" Title="Convert lambda block body to expression body">
     <Syntaxes>
       <Syntax>lambda expression with block body with single single-line statement</Syntax>
     </Syntaxes>

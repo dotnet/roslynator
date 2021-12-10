@@ -29,8 +29,8 @@ namespace Roslynator.CSharp.CodeFixes
                 return;
 
             CodeAction codeAction = CodeAction.Create(
-                ConvertLambdaExpressionBodyToExpressionBodyRefactoring.Title,
-                ct => ConvertLambdaExpressionBodyToExpressionBodyRefactoring.RefactorAsync(context.Document, (LambdaExpressionSyntax)block.Parent, ct),
+                ConvertLambdaBlockBodyToExpressionBodyRefactoring.Title,
+                ct => ConvertLambdaBlockBodyToExpressionBodyRefactoring.RefactorAsync(context.Document, (LambdaExpressionSyntax)block.Parent, ct),
                 GetEquivalenceKey(DiagnosticIdentifiers.ConvertLambdaExpressionBodyToExpressionBody));
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
