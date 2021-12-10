@@ -25,8 +25,8 @@ namespace Roslynator.CSharp.Refactorings
                 await ChangeMethodReturnTypeToVoidRefactoring.ComputeRefactoringAsync(context, methodDeclaration).ConfigureAwait(false);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddTypeParameter))
-                AddTypeParameterRefactoring.ComputeRefactoring(context, methodDeclaration);
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddGenericParameterToDeclaration))
+                AddGenericParameterToDeclarationRefactoring.ComputeRefactoring(context, methodDeclaration);
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceMethodWithProperty)
                 && methodDeclaration.HeaderSpan().Contains(context.Span)

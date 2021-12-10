@@ -12,7 +12,7 @@ using static Roslynator.CSharp.CSharpTypeFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class AddTypeParameterRefactoring
+    internal static class AddGenericParameterToDeclarationRefactoring
     {
         public static void ComputeRefactoring(RefactoringContext context, ClassDeclarationSyntax classDeclaration)
         {
@@ -224,14 +224,14 @@ namespace Roslynator.CSharp.Refactorings
         private static void RegisterRefactoring(RefactoringContext context, SyntaxNode node)
         {
             context.RegisterRefactoring(
-                "Add type parameter",
+                "Add generic parameter",
                 ct => RefactorAsync(context.Document, node, ConstraintKind.None, ct),
-                RefactoringIdentifiers.AddTypeParameter);
+                RefactoringIdentifiers.AddGenericParameterToDeclaration);
 
             context.RegisterRefactoring(
-                "Add type parameter with type constraint",
+                "Add generic parameter with type constraint",
                 ct => RefactorAsync(context.Document, node, ConstraintKind.Type, ct),
-                EquivalenceKey.Join(RefactoringIdentifiers.AddTypeParameter, "WithTypeConstraint"));
+                EquivalenceKey.Join(RefactoringIdentifiers.AddGenericParameterToDeclaration, "WithTypeConstraint"));
         }
 
         private static async Task<Document> RefactorAsync(

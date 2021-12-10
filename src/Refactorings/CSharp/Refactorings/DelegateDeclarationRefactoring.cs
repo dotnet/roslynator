@@ -8,8 +8,8 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void ComputeRefactorings(RefactoringContext context, DelegateDeclarationSyntax delegateDeclaration)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddTypeParameter))
-                AddTypeParameterRefactoring.ComputeRefactoring(context, delegateDeclaration);
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddGenericParameterToDeclaration))
+                AddGenericParameterToDeclarationRefactoring.ComputeRefactoring(context, delegateDeclaration);
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExtractTypeDeclarationToNewFile))
                 ExtractTypeDeclarationToNewFileRefactoring.ComputeRefactorings(context, delegateDeclaration);

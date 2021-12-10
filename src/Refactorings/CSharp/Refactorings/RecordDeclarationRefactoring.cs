@@ -13,8 +13,8 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, RecordDeclarationSyntax recordDeclaration)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddTypeParameter))
-                AddTypeParameterRefactoring.ComputeRefactoring(context, recordDeclaration);
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddGenericParameterToDeclaration))
+                AddGenericParameterToDeclarationRefactoring.ComputeRefactoring(context, recordDeclaration);
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExtractTypeDeclarationToNewFile))
                 ExtractTypeDeclarationToNewFileRefactoring.ComputeRefactorings(context, recordDeclaration);

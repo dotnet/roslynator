@@ -17,6 +17,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string AddEmptyLineBetweenDeclarations = Prefix + "0205";
         public const string AddExceptionToDocumentationComment = Prefix + "0009";
         public const string AddExplicitCast = Prefix + "0006";
+        public const string AddGenericParameterToDeclaration = Prefix + "0178";
         public const string AddIdentifierToParameter = Prefix + "0012";
         public const string AddIdentifierToVariableDeclaration = Prefix + "0010";
         public const string AddMemberToInterface = Prefix + "0195";
@@ -24,7 +25,6 @@ namespace Roslynator.CSharp.Refactorings
         public const string AddParameterNameToArgument = Prefix + "0011";
         public const string AddParameterToInterfaceMember = Prefix + "0213";
         public const string AddTagToDocumentationComment = Prefix + "0208";
-        public const string AddTypeParameter = Prefix + "0178";
         public const string AddUsingDirective = Prefix + "0013";
         public const string AddUsingStaticDirective = Prefix + "0014";
         public const string CallExtensionMethodAsInstanceMethod = Prefix + "0016";

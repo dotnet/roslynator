@@ -1495,7 +1495,7 @@ i--;]]></After>
       <Syntax>local declaration of type that implements IDisposable</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0178" Identifier="AddTypeParameter" Title="Add type parameter">
+  <Refactoring Id="RR0178" Identifier="AddGenericParameterToDeclaration" Title="Add generic parameter to a declaration">
     <Syntaxes>
       <Syntax>class declaration</Syntax>
       <Syntax>struct declaration</Syntax>

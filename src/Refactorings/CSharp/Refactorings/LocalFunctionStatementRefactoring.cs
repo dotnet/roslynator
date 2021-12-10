@@ -44,8 +44,8 @@ namespace Roslynator.CSharp.Refactorings
                 await ChangeMethodReturnTypeToVoidRefactoring.ComputeRefactoringAsync(context, localFunctionStatement).ConfigureAwait(false);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddTypeParameter))
-                AddTypeParameterRefactoring.ComputeRefactoring(context, localFunctionStatement);
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddGenericParameterToDeclaration))
+                AddGenericParameterToDeclarationRefactoring.ComputeRefactoring(context, localFunctionStatement);
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)
                 && ConvertBlockBodyToExpressionBodyRefactoring.CanRefactor(localFunctionStatement, context.Span))
