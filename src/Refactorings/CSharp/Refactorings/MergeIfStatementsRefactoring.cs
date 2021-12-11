@@ -55,7 +55,7 @@ namespace Roslynator.CSharp.Refactorings
             context.RegisterRefactoring(
                 "Merge 'if' statements",
                 ct => RefactorAsync(document, selectedStatements, ct),
-                RefactoringIdentifiers.MergeIfStatements);
+                RefactoringDescriptors.MergeIfStatements);
         }
 
         private static Task<Document> RefactorAsync(

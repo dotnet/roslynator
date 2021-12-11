@@ -10,7 +10,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, EventDeclarationSyntax eventDeclaration)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.CopyDocumentationCommentFromBaseMember)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.CopyDocumentationCommentFromBaseMember)
                 && eventDeclaration.HeaderSpan().Contains(context.Span)
                 && !eventDeclaration.HasDocumentationComment())
             {
@@ -18,7 +18,7 @@ namespace Roslynator.CSharp.Refactorings
                 CopyDocumentationCommentFromBaseMemberRefactoring.ComputeRefactoring(context, eventDeclaration, semanticModel);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddMemberToInterface)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.AddMemberToInterface)
                 && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(eventDeclaration.Identifier))
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);

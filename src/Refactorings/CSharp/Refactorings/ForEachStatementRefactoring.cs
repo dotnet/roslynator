@@ -14,17 +14,17 @@ namespace Roslynator.CSharp.Refactorings
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, ForEachStatementSyntax forEachStatement)
         {
             if (context.IsAnyRefactoringEnabled(
-                RefactoringIdentifiers.ChangeExplicitTypeToVar,
-                RefactoringIdentifiers.ChangeVarToExplicitType,
-                RefactoringIdentifiers.ChangeTypeAccordingToExpression))
+                RefactoringDescriptors.UseImplicitType,
+                RefactoringDescriptors.UseExplicitType,
+                RefactoringDescriptors.ChangeTypeAccordingToExpression))
             {
                 await ChangeTypeAsync(context, forEachStatement).ConfigureAwait(false);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RenameIdentifierAccordingToTypeName))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.RenameIdentifierAccordingToTypeName))
                 await RenameIdentifierAccordingToTypeNameAsync(context, forEachStatement).ConfigureAwait(false);
 
-            if (context.IsAnyRefactoringEnabled(RefactoringIdentifiers.ConvertForEachToFor, RefactoringIdentifiers.ConvertForEachToForAndReverseLoop)
+            if (context.IsAnyRefactoringEnabled(RefactoringDescriptors.ConvertForEachToFor, RefactoringDescriptors.ConvertForEachToForAndReverseLoop)
                 && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(forEachStatement))
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
@@ -33,25 +33,25 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (SymbolUtility.HasAccessibleIndexer(typeSymbol, semanticModel, forEachStatement.SpanStart))
                 {
-                    if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertForEachToFor))
+                    if (context.IsRefactoringEnabled(RefactoringDescriptors.ConvertForEachToFor))
                     {
                         context.RegisterRefactoring(
                             "Convert to 'for'",
                             ct => ConvertForEachToForRefactoring.RefactorAsync(context.Document, forEachStatement, semanticModel: semanticModel, reverseLoop: false, cancellationToken: ct),
-                            RefactoringIdentifiers.ConvertForEachToFor);
+                            RefactoringDescriptors.ConvertForEachToFor);
                     }
 
-                    if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertForEachToForAndReverseLoop))
+                    if (context.IsRefactoringEnabled(RefactoringDescriptors.ConvertForEachToForAndReverseLoop))
                     {
                         context.RegisterRefactoring(
                             "Convert to 'for' and reverse loop",
                             ct => ConvertForEachToForRefactoring.RefactorAsync(context.Document, forEachStatement, semanticModel: semanticModel, reverseLoop: true, cancellationToken: ct),
-                            RefactoringIdentifiers.ConvertForEachToForAndReverseLoop);
+                            RefactoringDescriptors.ConvertForEachToForAndReverseLoop);
                     }
                 }
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseEnumeratorExplicitly)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.UseEnumeratorExplicitly)
                 && context.Span.IsEmptyAndContainedInSpan(forEachStatement.ForEachKeyword))
             {
                 UseEnumeratorExplicitlyRefactoring.ComputeRefactoring(context, forEachStatement);
@@ -74,21 +74,21 @@ namespace Roslynator.CSharp.Refactorings
             if (analysis.IsExplicit)
             {
                 if (analysis.SupportsImplicit
-                    && context.IsRefactoringEnabled(RefactoringIdentifiers.ChangeExplicitTypeToVar))
+                    && context.IsRefactoringEnabled(RefactoringDescriptors.UseImplicitType))
                 {
-                    context.RegisterRefactoring(CodeActionFactory.ChangeTypeToVar(context.Document, type, equivalenceKey: RefactoringIdentifiers.ChangeExplicitTypeToVar));
+                    context.RegisterRefactoring(CodeActionFactory.ChangeTypeToVar(context.Document, type, equivalenceKey: EquivalenceKey.Create(RefactoringDescriptors.UseImplicitType)));
                 }
 
                 if (!forEachStatement.ContainsDiagnostics
-                    && context.IsRefactoringEnabled(RefactoringIdentifiers.ChangeTypeAccordingToExpression))
+                    && context.IsRefactoringEnabled(RefactoringDescriptors.ChangeTypeAccordingToExpression))
                 {
                     ChangeTypeAccordingToExpression(context, forEachStatement, semanticModel);
                 }
             }
             else if (analysis.SupportsExplicit
-                && context.IsRefactoringEnabled(RefactoringIdentifiers.ChangeVarToExplicitType))
+                && context.IsRefactoringEnabled(RefactoringDescriptors.UseExplicitType))
             {
-                context.RegisterRefactoring(CodeActionFactory.ChangeType(context.Document, type, analysis.Symbol, semanticModel, equivalenceKey: RefactoringIdentifiers.ChangeVarToExplicitType));
+                context.RegisterRefactoring(CodeActionFactory.UseExplicitType(context.Document, type, analysis.Symbol, semanticModel, equivalenceKey: EquivalenceKey.Create(RefactoringDescriptors.UseExplicitType)));
             }
         }
 
@@ -112,7 +112,7 @@ namespace Roslynator.CSharp.Refactorings
             if (!conversion.IsImplicit)
                 return;
 
-            context.RegisterRefactoring(CodeActionFactory.ChangeType(context.Document, forEachStatement.Type, elementType, semanticModel, equivalenceKey: RefactoringIdentifiers.ChangeTypeAccordingToExpression));
+            context.RegisterRefactoring(CodeActionFactory.UseExplicitType(context.Document, forEachStatement.Type, elementType, semanticModel, equivalenceKey: EquivalenceKey.Create(RefactoringDescriptors.ChangeTypeAccordingToExpression)));
         }
 
         internal static async Task RenameIdentifierAccordingToTypeNameAsync(
@@ -153,7 +153,7 @@ namespace Roslynator.CSharp.Refactorings
             context.RegisterRefactoring(
                 $"Rename '{oldName}' to '{newName}'",
                 ct => Renamer.RenameSymbolAsync(context.Solution, symbol, newName, default(OptionSet), ct),
-                RefactoringIdentifiers.RenameIdentifierAccordingToTypeName);
+                RefactoringDescriptors.RenameIdentifierAccordingToTypeName);
         }
     }
 }

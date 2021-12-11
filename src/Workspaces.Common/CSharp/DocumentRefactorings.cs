@@ -169,7 +169,7 @@ namespace Roslynator.CSharp
             return document.ReplaceNodeAsync(variableDeclaration, newVariableDeclaration, cancellationToken);
         }
 
-        public static Task<Document> AddCastExpressionAsync(
+        public static Task<Document> AddExplicitCastAsync(
             Document document,
             ExpressionSyntax expression,
             ITypeSymbol destinationType,
@@ -177,10 +177,10 @@ namespace Roslynator.CSharp
         {
             TypeSyntax type = destinationType.ToTypeSyntax().WithSimplifierAnnotation();
 
-            return AddCastExpressionAsync(document, expression, type, cancellationToken);
+            return AddExplicitCastAsync(document, expression, type, cancellationToken);
         }
 
-        public static Task<Document> AddCastExpressionAsync(
+        public static Task<Document> AddExplicitCastAsync(
             Document document,
             ExpressionSyntax expression,
             TypeSyntax destinationType,

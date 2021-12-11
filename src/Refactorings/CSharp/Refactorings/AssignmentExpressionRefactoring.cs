@@ -12,18 +12,18 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, AssignmentExpressionSyntax assignmentExpression)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExpandCompoundAssignmentOperator)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.ExpandCompoundAssignment)
                 && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(assignmentExpression.OperatorToken)
                 && CSharpFacts.IsCompoundAssignmentExpression(assignmentExpression.Kind())
                 && SyntaxInfo.AssignmentExpressionInfo(assignmentExpression).Success)
             {
                 context.RegisterRefactoring(
                     $"Expand {assignmentExpression.OperatorToken}",
-                    ct => ExpandCompoundAssignmentOperatorRefactoring.RefactorAsync(context.Document, assignmentExpression, ct),
-                    RefactoringIdentifiers.ExpandCompoundAssignmentOperator);
+                    ct => ExpandCompoundAssignmentRefactoring.RefactorAsync(context.Document, assignmentExpression, ct),
+                    RefactoringDescriptors.ExpandCompoundAssignment);
             }
 
-            if (context.IsAnyRefactoringEnabled(RefactoringIdentifiers.AddCastExpression, RefactoringIdentifiers.CallToMethod)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.AddExplicitCast)
                 && assignmentExpression.IsKind(SyntaxKind.SimpleAssignmentExpression))
             {
                 SimpleAssignmentExpressionInfo simpleAssignment = SyntaxInfo.SimpleAssignmentExpressionInfo(assignmentExpression);
@@ -44,7 +44,7 @@ namespace Roslynator.CSharp.Refactorings
                         if (rightSymbol?.IsErrorType() == false
                             && !SymbolEqualityComparer.Default.Equals(leftSymbol, rightSymbol))
                         {
-                            ModifyExpressionRefactoring.ComputeRefactoring(context, right, leftSymbol, semanticModel);
+                            AddExplicitCastRefactoring.ComputeRefactoring(context, right, leftSymbol, semanticModel);
                         }
                     }
                 }

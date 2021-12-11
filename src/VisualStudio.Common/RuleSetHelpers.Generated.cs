@@ -4,7 +4,7 @@
 
 namespace Roslynator.VisualStudio
 {
-    internal static partial class RuleSetHelpers
+    internal static partial class DefaultRuleSet
     {
         private const string RuleSetXml = @"<?xml version=""1.0"" encoding=""utf-8""?>
 <!--

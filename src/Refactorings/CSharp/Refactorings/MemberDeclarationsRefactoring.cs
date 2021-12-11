@@ -43,25 +43,27 @@ namespace Roslynator.CSharp.Refactorings
             if (endLine >= tree.GetStartLine(members[index + 1].TrimmedSpan(), context.CancellationToken))
                 return;
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveMemberDeclarations))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.RemoveMemberDeclarations))
             {
                 context.RegisterRefactoring(
                     "Remove members above",
                     ct => ReplaceMembersAsync(context.Document, info, members.Skip(index + 1), ct),
-                    EquivalenceKey.Join(RefactoringIdentifiers.RemoveMemberDeclarations, "Above"));
+                    RefactoringDescriptors.RemoveMemberDeclarations,
+                    "Above");
 
                 context.RegisterRefactoring(
                     "Remove members below",
                     ct => ReplaceMembersAsync(context.Document, info, members.Take(index + 1), ct),
-                    EquivalenceKey.Join(RefactoringIdentifiers.RemoveMemberDeclarations, "Below"));
+                    RefactoringDescriptors.RemoveMemberDeclarations,
+                    "Below");
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.SwapMemberDeclarations))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.SwapMemberDeclarations))
             {
                 context.RegisterRefactoring(
                     "Swap members",
                     ct => SwapMembersAsync(context.Document, info, index, ct),
-                    RefactoringIdentifiers.SwapMemberDeclarations);
+                    RefactoringDescriptors.SwapMemberDeclarations);
             }
         }
 

@@ -2024,6 +2024,30 @@ namespace Roslynator.CSharp
             helpLinkUri:        "", 
             customTags:         WellKnownDiagnosticTags.Compiler);
 
+        /// <summary>CS8618</summary>
+        public static readonly DiagnosticDescriptor NonNullableMemberIsUninitialized = new DiagnosticDescriptor(
+            id:                 CompilerDiagnosticIdentifiers.CS8618_NonNullableMemberIsUninitialized, 
+            title:              "Non-nullable member is uninitialized. Consider declaring the member as nullable.", 
+            messageFormat:      "Non-nullable {0} '{1}' is uninitialized. Consider declaring the {0} as nullable", 
+            category:           "Compiler", 
+            defaultSeverity:    DiagnosticSeverity.Warning, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        "", 
+            customTags:         WellKnownDiagnosticTags.Compiler);
+
+        /// <summary>CS8625</summary>
+        public static readonly DiagnosticDescriptor CannotConvertNullLiteralToNonNullableReferenceType = new DiagnosticDescriptor(
+            id:                 CompilerDiagnosticIdentifiers.CS8625_CannotConvertNullLiteralToNonNullableReferenceType, 
+            title:              "Cannot convert null literal to non-nullable reference type.", 
+            messageFormat:      "Cannot convert null literal to non-nullable reference type", 
+            category:           "Compiler", 
+            defaultSeverity:    DiagnosticSeverity.Warning, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        "", 
+            customTags:         WellKnownDiagnosticTags.Compiler);
+
         /// <summary>CS8632</summary>
         public static readonly DiagnosticDescriptor AnnotationForNullableReferenceTypesShouldOnlyBeUsedWithinNullableAnnotationsContext = new DiagnosticDescriptor(
             id:                 CompilerDiagnosticIdentifiers.CS8632_AnnotationForNullableReferenceTypesShouldOnlyBeUsedWithinNullableAnnotationsContext, 

@@ -11,39 +11,39 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class ConditionalExpressionRefactoring
     {
-        internal static readonly string ConvertConditionalOperatorToIfElseRecursiveEquivalenceKey = EquivalenceKey.Join(RefactoringIdentifiers.ConvertConditionalOperatorToIfElse, "Recursive");
+        internal static readonly string ConvertConditionalExpressionToIfElseRecursiveEquivalenceKey = EquivalenceKey.Create(RefactoringIdentifiers.ConvertConditionalExpressionToIfElse, "Recursive");
 
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, ConditionalExpressionSyntax conditionalExpression)
         {
             if (context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(conditionalExpression))
             {
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapConditionalExpression))
+                if (context.IsRefactoringEnabled(RefactoringDescriptors.WrapConditionalExpression))
                 {
                     if (conditionalExpression.IsSingleLine())
                     {
                         context.RegisterRefactoring(
                             "Wrap ?:",
                             ct => SyntaxFormatter.WrapConditionalExpressionAsync(context.Document, conditionalExpression, ct),
-                            RefactoringIdentifiers.WrapConditionalExpression);
+                            RefactoringDescriptors.WrapConditionalExpression);
                     }
                     else if (conditionalExpression.DescendantTrivia(conditionalExpression.Span).All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                     {
                         context.RegisterRefactoring(
                             "Unwrap ?:",
                             ct => SyntaxFormatter.UnwrapExpressionAsync(context.Document, conditionalExpression, ct),
-                            RefactoringIdentifiers.WrapConditionalExpression);
+                            RefactoringDescriptors.WrapConditionalExpression);
                     }
                 }
 
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertConditionalOperatorToIfElse))
+                if (context.IsRefactoringEnabled(RefactoringDescriptors.ConvertConditionalExpressionToIfElse))
                 {
                     SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                    (CodeAction codeAction, CodeAction recursiveCodeAction) = ConvertConditionalOperatorToIfElseRefactoring.ComputeRefactoring(
+                    (CodeAction codeAction, CodeAction recursiveCodeAction) = ConvertConditionalExpressionToIfElseRefactoring.ComputeRefactoring(
                         context.Document,
                         conditionalExpression,
-                        new CodeActionData(ConvertConditionalOperatorToIfElseRefactoring.Title, RefactoringIdentifiers.ConvertConditionalOperatorToIfElse),
-                        new CodeActionData(ConvertConditionalOperatorToIfElseRefactoring.RecursiveTitle, ConvertConditionalOperatorToIfElseRecursiveEquivalenceKey),
+                        new CodeActionData(ConvertConditionalExpressionToIfElseRefactoring.Title, EquivalenceKey.Create(RefactoringDescriptors.ConvertConditionalExpressionToIfElse)),
+                        new CodeActionData(ConvertConditionalExpressionToIfElseRefactoring.RecursiveTitle, ConvertConditionalExpressionToIfElseRecursiveEquivalenceKey),
                         semanticModel,
                         context.CancellationToken);
 
@@ -55,7 +55,7 @@ namespace Roslynator.CSharp.Refactorings
                 }
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.InvertConditionalExpression)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.InvertConditionalExpression)
                 && (context.Span.IsBetweenSpans(conditionalExpression)
                     || context.Span.IsEmptyAndContainedInSpan(conditionalExpression.QuestionToken, conditionalExpression.ColonToken))
                 && InvertConditionalExpressionRefactoring.CanRefactor(conditionalExpression))
@@ -63,7 +63,7 @@ namespace Roslynator.CSharp.Refactorings
                 context.RegisterRefactoring(
                     "Invert ?:",
                     ct => InvertConditionalExpressionRefactoring.RefactorAsync(context.Document, conditionalExpression, ct),
-                    RefactoringIdentifiers.InvertConditionalExpression);
+                    RefactoringDescriptors.InvertConditionalExpression);
             }
         }
     }

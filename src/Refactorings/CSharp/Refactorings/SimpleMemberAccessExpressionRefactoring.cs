@@ -9,13 +9,13 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringAsync(RefactoringContext context, MemberAccessExpressionSyntax memberAccess)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddUsingStaticDirective))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.AddUsingStaticDirective))
                 await AddUsingStaticDirectiveRefactoring.ComputeRefactoringsAsync(context, memberAccess).ConfigureAwait(false);
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapCallChain))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.WrapCallChain))
                 await WrapCallChainRefactoring.ComputeRefactoringsAsync(context, memberAccess).ConfigureAwait(false);
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertMethodGroupToLambda))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.ConvertMethodGroupToLambda))
                 await ConvertMethodGroupToLambdaRefactoring.ComputeRefactoringAsync(context, memberAccess).ConfigureAwait(false);
         }
     }

@@ -17,70 +17,70 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, PropertyDeclarationSyntax propertyDeclaration)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplacePropertyWithMethod)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.ReplacePropertyWithMethod)
                 && propertyDeclaration.HeaderSpan().Contains(context.Span))
             {
                 ReplacePropertyWithMethodRefactoring.ComputeRefactoring(context, propertyDeclaration);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemovePropertyInitializer)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.RemovePropertyInitializer)
                 && RemovePropertyInitializerRefactoring.CanRefactor(context, propertyDeclaration))
             {
                 context.RegisterRefactoring(
                     "Remove property initializer",
                     ct => RemovePropertyInitializerRefactoring.RefactorAsync(context.Document, propertyDeclaration, ct),
-                    RefactoringIdentifiers.RemovePropertyInitializer);
+                    RefactoringDescriptors.RemovePropertyInitializer);
             }
 
             if (context.IsAnyRefactoringEnabled(
-                RefactoringIdentifiers.ExpandProperty,
-                RefactoringIdentifiers.ExpandPropertyAndAddBackingField)
+                RefactoringDescriptors.ConvertAutoPropertyToFullProperty,
+                RefactoringDescriptors.ConvertAutoPropertyToFullPropertyWithoutBackingField)
                 && propertyDeclaration.Span.Contains(context.Span)
-                && ExpandPropertyRefactoring.CanRefactor(propertyDeclaration))
+                && ConvertAutoPropertyToFullPropertyWithoutBackingFieldRefactoring.CanRefactor(propertyDeclaration))
             {
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExpandProperty))
+                if (context.IsRefactoringEnabled(RefactoringDescriptors.ConvertAutoPropertyToFullProperty))
                 {
                     context.RegisterRefactoring(
-                        "Expand property",
-                        ct => ExpandPropertyRefactoring.RefactorAsync(context.Document, propertyDeclaration, ct),
-                        RefactoringIdentifiers.ExpandProperty);
+                        "Convert to full property",
+                        ct => ConvertAutoPropertyToFullPropertyRefactoring.RefactorAsync(context.Document, propertyDeclaration, context.Settings.PrefixFieldIdentifierWithUnderscore, ct),
+                        RefactoringDescriptors.ConvertAutoPropertyToFullProperty);
                 }
 
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExpandPropertyAndAddBackingField))
+                if (context.IsRefactoringEnabled(RefactoringDescriptors.ConvertAutoPropertyToFullPropertyWithoutBackingField))
                 {
                     context.RegisterRefactoring(
-                        "Expand property and add backing field",
-                        ct => ExpandPropertyAndAddBackingFieldRefactoring.RefactorAsync(context.Document, propertyDeclaration, context.Settings.PrefixFieldIdentifierWithUnderscore, ct),
-                        RefactoringIdentifiers.ExpandPropertyAndAddBackingField);
+                        "Convert to full property (without backing field)",
+                        ct => ConvertAutoPropertyToFullPropertyWithoutBackingFieldRefactoring.RefactorAsync(context.Document, propertyDeclaration, ct),
+                        RefactoringDescriptors.ConvertAutoPropertyToFullPropertyWithoutBackingField);
                 }
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.ConvertBlockBodyToExpressionBody)
                 && context.SupportsCSharp6
                 && ConvertBlockBodyToExpressionBodyRefactoring.CanRefactor(propertyDeclaration, context.Span))
             {
                 context.RegisterRefactoring(
                     ConvertBlockBodyToExpressionBodyRefactoring.Title,
                     ct => ConvertBlockBodyToExpressionBodyRefactoring.RefactorAsync(context.Document, propertyDeclaration, ct),
-                    RefactoringIdentifiers.ConvertBlockBodyToExpressionBody);
+                    RefactoringDescriptors.ConvertBlockBodyToExpressionBody);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.NotifyWhenPropertyChange))
-                await NotifyWhenPropertyChangeRefactoring.ComputeRefactoringAsync(context, propertyDeclaration).ConfigureAwait(false);
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.NotifyWhenPropertyChanges))
+                await NotifyWhenPropertyChangesRefactoring.ComputeRefactoringAsync(context, propertyDeclaration).ConfigureAwait(false);
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.MakeMemberAbstract)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.MakeMemberAbstract)
                 && propertyDeclaration.HeaderSpan().Contains(context.Span))
             {
                 MakePropertyAbstractRefactoring.ComputeRefactoring(context, propertyDeclaration);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.MakeMemberVirtual)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.MakeMemberVirtual)
                 && context.Span.IsEmptyAndContainedInSpan(propertyDeclaration.Identifier))
             {
                 MakePropertyVirtualRefactoring.ComputeRefactoring(context, propertyDeclaration);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.CopyDocumentationCommentFromBaseMember)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.CopyDocumentationCommentFromBaseMember)
                 && propertyDeclaration.HeaderSpan().Contains(context.Span)
                 && !propertyDeclaration.HasDocumentationComment())
             {
@@ -88,10 +88,10 @@ namespace Roslynator.CSharp.Refactorings
                 CopyDocumentationCommentFromBaseMemberRefactoring.ComputeRefactoring(context, propertyDeclaration, semanticModel);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RenamePropertyAccordingToTypeName))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.RenamePropertyAccordingToTypeName))
                 await RenamePropertyAccordingToTypeName(context, propertyDeclaration).ConfigureAwait(false);
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddMemberToInterface)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.AddMemberToInterface)
                 && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(propertyDeclaration.Identifier))
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
@@ -146,7 +146,7 @@ namespace Roslynator.CSharp.Refactorings
             context.RegisterRefactoring(
                 $"Rename '{oldName}' to '{newName}'",
                 ct => Renamer.RenameSymbolAsync(context.Solution, symbol, newName, default(OptionSet), ct),
-                RefactoringIdentifiers.RenamePropertyAccordingToTypeName);
+                RefactoringDescriptors.RenamePropertyAccordingToTypeName);
         }
     }
 }

@@ -102,7 +102,7 @@ namespace Roslynator.CSharp.Refactorings
             context.RegisterRefactoring(
                 "Change return type to 'void'",
                 ct => document.ReplaceNodeAsync(returnType, CSharpFactory.VoidType().WithTriviaFrom(returnType), ct),
-                RefactoringIdentifiers.ChangeMethodReturnTypeToVoid);
+                RefactoringDescriptors.ChangeMethodReturnTypeToVoid);
         }
     }
 }

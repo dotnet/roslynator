@@ -8,11 +8,6 @@ namespace Roslynator.VisualStudio
 {
     public partial class CodeFixesOptionsPage
     {
-        protected override string MaxId
-        {
-            get;
-        }
-
-        = CodeFixIdentifiers.RemoveAnnotationForNullableReferenceTypes;
+        protected override string MaxId { get; } = CodeFixIdentifiers.UseNullForgivingOperator;
     }
 }

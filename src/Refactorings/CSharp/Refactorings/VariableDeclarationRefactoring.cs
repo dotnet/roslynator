@@ -15,27 +15,24 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, VariableDeclarationSyntax variableDeclaration)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RenameIdentifierAccordingToTypeName))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.RenameIdentifierAccordingToTypeName))
                 await RenameVariableAccordingToTypeNameAsync(context, variableDeclaration).ConfigureAwait(false);
 
             await ChangeVariableDeclarationTypeRefactoring.ComputeRefactoringsAsync(context, variableDeclaration).ConfigureAwait(false);
 
-            if (context.IsAnyRefactoringEnabled(RefactoringIdentifiers.AddCastExpression, RefactoringIdentifiers.CallToMethod))
-                await AddCastExpressionAsync(context, variableDeclaration).ConfigureAwait(false);
+           if (context.IsRefactoringEnabled(RefactoringDescriptors.AddExplicitCast))
+                await AddExplicitCastAsync(context, variableDeclaration).ConfigureAwait(false);
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInUsingStatement))
-                await WrapInUsingStatementRefactoring.ComputeRefactoringAsync(context, variableDeclaration).ConfigureAwait(false);
-
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.CheckExpressionForNull))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.CheckExpressionForNull))
                 await CheckExpressionForNullRefactoring.ComputeRefactoringAsync(context, variableDeclaration).ConfigureAwait(false);
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.SplitVariableDeclaration)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.SplitVariableDeclaration)
                 && SplitVariableDeclarationAnalysis.IsFixable(variableDeclaration))
             {
                 context.RegisterRefactoring(
                     SplitVariableDeclarationRefactoring.GetTitle(variableDeclaration),
                     ct => SplitVariableDeclarationRefactoring.RefactorAsync(context.Document, variableDeclaration, ct),
-                    RefactoringIdentifiers.SplitVariableDeclaration);
+                    RefactoringDescriptors.SplitVariableDeclaration);
             }
         }
 
@@ -81,10 +78,10 @@ namespace Roslynator.CSharp.Refactorings
             context.RegisterRefactoring(
                 $"Rename '{oldName}' to '{newName}'",
                 ct => Renamer.RenameSymbolAsync(context.Solution, localSymbol, newName, default(OptionSet), ct),
-                RefactoringIdentifiers.RenameIdentifierAccordingToTypeName);
+                RefactoringDescriptors.RenameIdentifierAccordingToTypeName);
         }
 
-        private static async Task AddCastExpressionAsync(
+        private static async Task AddExplicitCastAsync(
             RefactoringContext context,
             VariableDeclarationSyntax variableDeclaration)
         {
@@ -113,7 +110,7 @@ namespace Roslynator.CSharp.Refactorings
             if (SymbolEqualityComparer.Default.Equals(declarationType, expressionType))
                 return;
 
-            ModifyExpressionRefactoring.ComputeRefactoring(context, declarator.Initializer.Value, declarationType, semanticModel);
+            AddExplicitCastRefactoring.ComputeRefactoring(context, declarator.Initializer.Value, declarationType, semanticModel);
         }
     }
 }

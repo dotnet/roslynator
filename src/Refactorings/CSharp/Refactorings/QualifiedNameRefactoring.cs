@@ -10,7 +10,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, QualifiedNameSyntax qualifiedName)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddUsingDirective)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.AddUsingDirective)
                 && context.Span.IsEmpty
                 && qualifiedName.DotToken.SpanStart == context.Span.Start
                 && qualifiedName.Left?.Kind() == SyntaxKind.IdentifierName)

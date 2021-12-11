@@ -39,7 +39,7 @@ namespace Roslynator.CSharp.Refactorings
             context.RegisterRefactoring(
                 $"Invert '{fromMethodName}'",
                 ct => RefactorAsync(context.Document, invocation, toMethodName, expression, ct),
-                RefactoringIdentifiers.InvertLinqMethodCall);
+                RefactoringDescriptors.InvertLinqMethodCall);
 
             return true;
         }

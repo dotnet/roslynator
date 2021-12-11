@@ -62,7 +62,7 @@ namespace Roslynator.CSharp.Refactorings
             context.RegisterRefactoring(
                 "Convert to interpolated string",
                 ct => RefactorAsync(context.Document, invocation, semanticModel, ct),
-                RefactoringIdentifiers.ConvertStringFormatToInterpolatedString);
+                RefactoringDescriptors.ConvertStringFormatToInterpolatedString);
         }
 
         private static ImmutableArray<ISymbol> GetFormatMethods(SemanticModel semanticModel)

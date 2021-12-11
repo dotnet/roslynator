@@ -10,16 +10,16 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, SwitchStatementSyntax switchStatement)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddMissingCases))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.AddMissingCasesToSwitchStatement))
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                AddMissingCasesRefactoring.ComputeRefactoring(context, switchStatement, semanticModel);
+                AddMissingCasesToSwitchStatementRefactoring.ComputeRefactoring(context, switchStatement, semanticModel);
             }
 
             SelectedSwitchSectionsRefactoring.ComputeRefactorings(context, switchStatement);
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertSwitchToIf))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.ConvertSwitchToIf))
             {
                 if (context.Span.IsEmptyAndContainedInSpan(switchStatement.SwitchKeyword)
                     || context.Span.IsBetweenSpans(switchStatement))
@@ -28,7 +28,7 @@ namespace Roslynator.CSharp.Refactorings
                 }
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.DuplicateSwitchSection))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.DuplicateSwitchSection))
                 DuplicateSwitchSectionRefactoring.ComputeRefactoring(context, switchStatement);
         }
     }

@@ -15,23 +15,23 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, IdentifierNameSyntax identifierName)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RenameBackingFieldAccordingToPropertyName))
-                await RenameFieldAccordingToPropertyNameAsync(context, identifierName).ConfigureAwait(false);
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.SyncPropertyNameAndBackingFieldName))
+                await SyncPropertyNameAndBackingFieldNameAsync(context, identifierName).ConfigureAwait(false);
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddUsingDirective)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.AddUsingDirective)
                 && context.Span.IsEmpty)
             {
                 await AddUsingDirectiveRefactoring.ComputeRefactoringsAsync(context, identifierName).ConfigureAwait(false);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.InlineProperty))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.InlineProperty))
                 await InlinePropertyRefactoring.ComputeRefactoringsAsync(context, identifierName).ConfigureAwait(false);
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertMethodGroupToLambda))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.ConvertMethodGroupToLambda))
                 await ConvertMethodGroupToLambdaRefactoring.ComputeRefactoringAsync(context, identifierName).ConfigureAwait(false);
         }
 
-        private static async Task RenameFieldAccordingToPropertyNameAsync(
+        private static async Task SyncPropertyNameAndBackingFieldNameAsync(
             RefactoringContext context,
             IdentifierNameSyntax identifierName)
         {
@@ -82,7 +82,7 @@ namespace Roslynator.CSharp.Refactorings
             context.RegisterRefactoring(
                 $"Rename '{fieldSymbol.Name}' to '{newName}'",
                 ct => Renamer.RenameSymbolAsync(context.Solution, fieldSymbol, newName, default(OptionSet), ct),
-                RefactoringIdentifiers.RenameBackingFieldAccordingToPropertyName);
+                RefactoringDescriptors.SyncPropertyNameAndBackingFieldName);
         }
 
         private static bool IsQualified(SimpleNameSyntax identifierName)

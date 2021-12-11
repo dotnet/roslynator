@@ -10,35 +10,35 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, ExpressionSyntax expression)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExtractExpressionFromCondition)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.ExtractExpressionFromCondition)
                 && context.Span.IsBetweenSpans(expression))
             {
                 ExtractConditionRefactoring.ComputeRefactoring(context, expression);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ParenthesizeExpression)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.ParenthesizeExpression)
                 && context.Span.IsBetweenSpans(expression)
                 && ParenthesizeExpressionRefactoring.CanRefactor(context, expression))
             {
                 context.RegisterRefactoring(
                     $"Parenthesize '{expression}'",
                     ct => ParenthesizeExpressionRefactoring.RefactorAsync(context.Document, expression, ct),
-                    RefactoringIdentifiers.ParenthesizeExpression);
+                    RefactoringDescriptors.ParenthesizeExpression);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertNullLiteralToDefaultExpression))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.ConvertNullLiteralToDefaultExpression))
                 await ConvertNullLiteralToDefaultExpressionRefactoring.ComputeRefactoringAsync(context, expression).ConfigureAwait(false);
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceConditionalExpressionWithExpression))
-                ReplaceConditionalExpressionWithExpressionRefactoring.ComputeRefactoring(context, expression);
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.ReplaceConditionalExpressionWithTrueOrFalseBranch))
+                ReplaceConditionalExpressionWithTrueOrFalseBranchRefactoring.ComputeRefactoring(context, expression);
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.CheckExpressionForNull)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.CheckExpressionForNull)
                 && context.Span.IsContainedInSpanOrBetweenSpans(expression))
             {
                 await CheckExpressionForNullRefactoring.ComputeRefactoringAsync(context, expression).ConfigureAwait(false);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.InlineConstantValue)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.InlineConstantValue)
                 && context.Span.IsBetweenSpans(expression))
             {
                 await InlineConstantValueRefactoring.ComputeRefactoringAsync(context, expression).ConfigureAwait(false);

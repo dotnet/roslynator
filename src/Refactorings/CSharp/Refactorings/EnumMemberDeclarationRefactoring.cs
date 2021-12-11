@@ -13,14 +13,14 @@ namespace Roslynator.CSharp.Refactorings
             if (context.Span.IsEmpty
                 && enumMemberDeclaration.Parent is EnumDeclarationSyntax enumDeclaration)
             {
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.GenerateEnumValues))
+                if (context.IsRefactoringEnabled(RefactoringDescriptors.GenerateEnumValues))
                 {
                     SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                     GenerateEnumValuesRefactoring.ComputeRefactoring(context, enumDeclaration, semanticModel);
                 }
 
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.GenerateEnumMember))
+                if (context.IsRefactoringEnabled(RefactoringDescriptors.GenerateEnumMember))
                 {
                     SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 

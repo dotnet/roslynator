@@ -49,7 +49,7 @@ namespace Roslynator.CSharp.Refactorings
                         context.RegisterRefactoring(
                             Title,
                             ct => RefactorAsync(context.Document, selectedLabels, StringLiteralExpressionLabelComparer.Instance, ct),
-                            RefactoringIdentifiers.SortCaseLabels);
+                            RefactoringDescriptors.SortCaseLabels);
 
                         return;
                     }
@@ -91,7 +91,7 @@ namespace Roslynator.CSharp.Refactorings
                         context.RegisterRefactoring(
                             Title,
                             ct => RefactorAsync(context.Document, selectedLabels, SimpleMemberAccessExpressionLabelComparer.Instance, ct),
-                            RefactoringIdentifiers.SortCaseLabels);
+                            RefactoringDescriptors.SortCaseLabels);
 
                         return;
                     }

@@ -85,7 +85,7 @@ namespace Roslynator.CSharp.Refactorings
             context.RegisterRefactoring(
                 "Duplicate section",
                 ct => DuplicateSwitchSectionAsync(context.Document, switchSection, insertNewLine, ct),
-                RefactoringIdentifiers.DuplicateSwitchSection);
+                RefactoringDescriptors.DuplicateSwitchSection);
         }
 
         private static Task<Document> DuplicateSwitchSectionAsync(

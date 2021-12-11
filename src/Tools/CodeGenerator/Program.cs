@@ -40,6 +40,10 @@ namespace Roslynator.CodeGeneration
             ImmutableArray<CompilerDiagnosticMetadata> compilerDiagnostics = metadata.CompilerDiagnostics;
 
             WriteCompilationUnit(
+                @"Refactorings\CSharp\RefactoringDescriptors.Generated.cs",
+                RefactoringDescriptorsGenerator.Generate(refactorings.Where(f => !f.IsObsolete), comparer: comparer));
+
+            WriteCompilationUnit(
                 @"Refactorings\CSharp\RefactoringIdentifiers.Generated.cs",
                 RefactoringIdentifiersGenerator.Generate(refactorings, obsolete: false, comparer: comparer));
 
@@ -51,11 +55,11 @@ namespace Roslynator.CodeGeneration
                 @"VisualStudio.Common\RefactoringsOptionsPage.Generated.cs",
                 RefactoringsOptionsPageGenerator.Generate(refactorings.Where(f => !f.IsObsolete), comparer));
 
-            WriteDiagnostics(@"Analyzers\CSharp", analyzers, @namespace: "Roslynator.CSharp");
+            WriteDiagnostics(@"Analyzers\CSharp", analyzers, @namespace: "Roslynator.CSharp", categoryName: nameof(DiagnosticCategories.Roslynator));
 
-            WriteDiagnostics(@"CodeAnalysis.Analyzers\CSharp", codeAnalysisAnalyzers, @namespace: "Roslynator.CodeAnalysis.CSharp");
+            WriteDiagnostics(@"CodeAnalysis.Analyzers\CSharp", codeAnalysisAnalyzers, @namespace: "Roslynator.CodeAnalysis.CSharp", categoryName: nameof(DiagnosticCategories.Roslynator));
 
-            WriteDiagnostics(@"Formatting.Analyzers\CSharp", formattingAnalyzers, @namespace: "Roslynator.Formatting.CSharp");
+            WriteDiagnostics(@"Formatting.Analyzers\CSharp", formattingAnalyzers, @namespace: "Roslynator.Formatting.CSharp", categoryName: nameof(DiagnosticCategories.Roslynator));
 
             WriteCompilationUnit(
                 @"CodeFixes\CSharp\CompilerDiagnosticRules.Generated.cs",
@@ -90,7 +94,7 @@ namespace Roslynator.CodeGeneration
             string ruleSetXml = File.ReadAllText(Path.Combine(rootPath, @"Tools\CodeGeneration\DefaultRuleSet.xml"));
 
             WriteCompilationUnit(
-                @"VisualStudio.Common\RuleSetHelpers.Generated.cs",
+                @"VisualStudio.Common\DefaultRuleSet.Generated.cs",
                 RuleSetGenerator.Generate(ruleSetXml));
 
             File.WriteAllText(
@@ -129,17 +133,18 @@ namespace Roslynator.CodeGeneration
                 string dirPath,
                 ImmutableArray<AnalyzerMetadata> analyzers,
                 string @namespace,
+                string categoryName,
                 string descriptorsClassName = "DiagnosticRules",
                 string identifiersClassName = "DiagnosticIdentifiers")
             {
                 WriteCompilationUnit(
                     Path.Combine(dirPath, $"{descriptorsClassName}.Generated.cs"),
-                    DiagnosticRulesGenerators.Default.Generate(analyzers, obsolete: false, comparer: comparer, @namespace: @namespace, className: descriptorsClassName, identifiersClassName: identifiersClassName),
+                    DiagnosticRulesGenerators.Default.Generate(analyzers, obsolete: false, comparer: comparer, @namespace: @namespace, className: descriptorsClassName, identifiersClassName: identifiersClassName, categoryName: categoryName),
                     normalizeWhitespace: false);
 
                 WriteCompilationUnit(
                     Path.Combine(dirPath, $"{descriptorsClassName}.Deprecated.Generated.cs"),
-                    DiagnosticRulesGenerators.Default.Generate(analyzers, obsolete: true, comparer: comparer, @namespace: @namespace, className: descriptorsClassName, identifiersClassName: identifiersClassName),
+                    DiagnosticRulesGenerators.Default.Generate(analyzers, obsolete: true, comparer: comparer, @namespace: @namespace, className: descriptorsClassName, identifiersClassName: identifiersClassName, categoryName: categoryName),
                     normalizeWhitespace: false);
 
                 WriteCompilationUnit(

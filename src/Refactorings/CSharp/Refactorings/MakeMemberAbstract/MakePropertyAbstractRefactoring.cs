@@ -25,7 +25,7 @@ namespace Roslynator.CSharp.Refactorings.MakeMemberAbstract
             context.RegisterRefactoring(
                 "Make property abstract",
                 ct => RefactorAsync(context.Document, propertyDeclaration, ct),
-                RefactoringIdentifiers.MakeMemberAbstract);
+                RefactoringDescriptors.MakeMemberAbstract);
         }
 
         public static Task<Document> RefactorAsync(

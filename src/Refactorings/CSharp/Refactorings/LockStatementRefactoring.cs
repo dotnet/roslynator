@@ -10,7 +10,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void ComputeRefactorings(RefactoringContext context, LockStatementSyntax lockStatement)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.IntroduceFieldToLockOn))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.IntroduceFieldToLockOn))
             {
                 ExpressionSyntax expression = lockStatement.Expression;
 
@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.Refactorings
                             context.RegisterRefactoring(
                                 "Introduce field to lock on",
                                 ct => IntroduceFieldToLockOnRefactoring.RefactorAsync(context.Document, lockStatement, ct),
-                                RefactoringIdentifiers.IntroduceFieldToLockOn);
+                                RefactoringDescriptors.IntroduceFieldToLockOn);
                         }
                     }
                 }

@@ -14,15 +14,15 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static ImmutableDictionary<Accessibility, string> _accessibilityIdentifierMap = ImmutableDictionary.CreateRange(new[]
             {
-                new KeyValuePair<Accessibility, string>(Accessibility.Public, EquivalenceKey.Join(RefactoringIdentifiers.ChangeAccessibility, nameof(Accessibility.Public))),
-                new KeyValuePair<Accessibility, string>(Accessibility.Internal, EquivalenceKey.Join(RefactoringIdentifiers.ChangeAccessibility, nameof(Accessibility.Internal))),
-                new KeyValuePair<Accessibility, string>(Accessibility.Protected, EquivalenceKey.Join(RefactoringIdentifiers.ChangeAccessibility, nameof(Accessibility.Protected))),
-                new KeyValuePair<Accessibility, string>(Accessibility.Private, EquivalenceKey.Join(RefactoringIdentifiers.ChangeAccessibility, nameof(Accessibility.Private)))
+                new KeyValuePair<Accessibility, string>(Accessibility.Public, EquivalenceKey.Create(RefactoringDescriptors.ChangeAccessibility.Id, nameof(Accessibility.Public))),
+                new KeyValuePair<Accessibility, string>(Accessibility.Internal, EquivalenceKey.Create(RefactoringDescriptors.ChangeAccessibility.Id, nameof(Accessibility.Internal))),
+                new KeyValuePair<Accessibility, string>(Accessibility.Protected, EquivalenceKey.Create(RefactoringDescriptors.ChangeAccessibility.Id, nameof(Accessibility.Protected))),
+                new KeyValuePair<Accessibility, string>(Accessibility.Private, EquivalenceKey.Create(RefactoringDescriptors.ChangeAccessibility.Id, nameof(Accessibility.Private)))
             });
 
         public static async Task ComputeRefactoringAsync(RefactoringContext context, MemberDeclarationListSelection selectedMembers)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ChangeAccessibility)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.ChangeAccessibility)
                 && !selectedMembers.Parent.IsKind(SyntaxKind.InterfaceDeclaration))
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
@@ -41,19 +41,19 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             if (context.IsAnyRefactoringEnabled(
-                RefactoringIdentifiers.ConvertBlockBodyToExpressionBody,
-                RefactoringIdentifiers.ConvertExpressionBodyToBlockBody))
+                RefactoringDescriptors.ConvertBlockBodyToExpressionBody,
+                RefactoringDescriptors.ConvertExpressionBodyToBlockBody))
             {
                 ConvertBodyAndExpressionBodyRefactoring.ComputeRefactoring(context, selectedMembers);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.InitializeFieldFromConstructor)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.InitializeFieldFromConstructor)
                 && !selectedMembers.Parent.IsKind(SyntaxKind.InterfaceDeclaration))
             {
                 InitializeFieldFromConstructorRefactoring.ComputeRefactoring(context, selectedMembers);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddEmptyLineBetweenDeclarations))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.AddEmptyLineBetweenDeclarations))
             {
                 AddEmptyLineBetweenDeclarationsRefactoring.ComputeRefactoring(context, selectedMembers);
             }
@@ -78,7 +78,8 @@ namespace Roslynator.CSharp.Refactorings
                         context.RegisterRefactoring(
                             ChangeAccessibilityRefactoring.GetTitle(accessibility),
                             ct => ChangeAccessibilityRefactoring.RefactorAsync(context.Document, selectedMembers, accessibility, ct),
-                            EquivalenceKey.Join(RefactoringIdentifiers.ChangeAccessibility, accessibility.ToString()));
+                            RefactoringDescriptors.ChangeAccessibility,
+                            accessibility.ToString());
                     }
                 }
             }

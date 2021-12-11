@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.Refactorings
             context.RegisterRefactoring(
                 "Remove all statements",
                 ct => RefactorAsync(context.Document, member, ct),
-                RefactoringIdentifiers.RemoveAllStatements);
+                RefactoringDescriptors.RemoveAllStatements);
         }
 
         public static bool CanRefactor(MemberDeclarationSyntax member, TextSpan span)

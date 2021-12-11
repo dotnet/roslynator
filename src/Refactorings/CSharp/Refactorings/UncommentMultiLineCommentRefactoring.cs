@@ -27,7 +27,7 @@ namespace Roslynator.CSharp.Refactorings
             context.RegisterRefactoring(
                 "Uncomment",
                 ct => context.Document.WithTextChangeAsync(multiLineComment.Span, s.Substring(2, s.Length - 4), ct),
-                RefactoringIdentifiers.UncommentMultiLineComment);
+                RefactoringDescriptors.UncommentMultiLineComment);
         }
     }
 }

@@ -8,7 +8,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void ComputeRefactorings(RefactoringContext context, ParenthesizedExpressionSyntax parenthesizedExpression)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveParentheses)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.RemoveParentheses)
                 && ExtractExpressionFromParenthesesRefactoring.CanRefactor(context, parenthesizedExpression))
             {
                 context.RegisterRefactoring(
@@ -20,7 +20,7 @@ namespace Roslynator.CSharp.Refactorings
                             parenthesizedExpression,
                             ct);
                     },
-                    RefactoringIdentifiers.RemoveParentheses);
+                    RefactoringDescriptors.RemoveParentheses);
             }
         }
     }

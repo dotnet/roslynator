@@ -34,9 +34,9 @@ namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
             return 0;
         }
 
-        protected override string GetEquivalenceKey()
+        protected override RefactoringDescriptor GetDescriptor()
         {
-            return RefactoringIdentifiers.IntroduceAndInitializeField;
+            return RefactoringDescriptors.IntroduceAndInitializeField;
         }
 
         protected override string GetTitle()

@@ -48,9 +48,9 @@ namespace Roslynator.CSharp.Refactorings
         private static void RegisterRefactoring(RefactoringContext context, ExpressionSyntax expression)
         {
             context.RegisterRefactoring(
-                "Invert is",
+                "Invert 'is'",
                 ct => RefactorAsync(context.Document, expression, ct),
-                RefactoringIdentifiers.InvertIsExpression);
+                RefactoringDescriptors.InvertIsExpression);
         }
 
         private static async Task<Document> RefactorAsync(

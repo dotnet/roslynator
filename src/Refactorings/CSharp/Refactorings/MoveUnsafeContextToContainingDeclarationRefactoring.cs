@@ -55,7 +55,7 @@ namespace Roslynator.CSharp.Refactorings
             context.RegisterRefactoring(
                 GetTitle(parent.Kind()),
                 ct => RefactorAsync(context.Document, node, parent, ct),
-                RefactoringIdentifiers.MoveUnsafeContextToContainingDeclaration);
+                RefactoringDescriptors.MoveUnsafeContextToContainingDeclaration);
         }
 
         public static void ComputeRefactoring(RefactoringContext context, UnsafeStatementSyntax unsafeStatement)
@@ -78,7 +78,7 @@ namespace Roslynator.CSharp.Refactorings
             context.RegisterRefactoring(
                 GetTitle(parent.Kind()),
                 ct => RefactorAsync(context.Document, unsafeStatement, parent, ct),
-                RefactoringIdentifiers.MoveUnsafeContextToContainingDeclaration);
+                RefactoringDescriptors.MoveUnsafeContextToContainingDeclaration);
         }
 
         private static string GetTitle(SyntaxKind kind)

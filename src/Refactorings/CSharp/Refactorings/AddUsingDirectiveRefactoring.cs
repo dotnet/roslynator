@@ -49,7 +49,7 @@ namespace Roslynator.CSharp.Refactorings
                 context.RegisterRefactoring(
                     $"using {namespaceSymbol};",
                     ct => RefactorAsync(context.Document, node, namespaceSymbol, ct),
-                    RefactoringIdentifiers.AddUsingDirective);
+                    RefactoringDescriptors.AddUsingDirective);
             }
         }
 

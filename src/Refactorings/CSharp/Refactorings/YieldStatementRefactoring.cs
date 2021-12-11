@@ -13,49 +13,15 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, YieldStatementSyntax yieldStatement)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.CallToMethod)
-                && yieldStatement.Kind() == SyntaxKind.YieldReturnStatement)
-            {
-                ExpressionSyntax expression = yieldStatement.Expression;
-
-                if (expression?.IsMissing == false
-                    && expression.Span.Contains(context.Span))
-                {
-                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                    (ISymbol memberSymbol, ITypeSymbol memberTypeSymbol) = ReturnExpressionRefactoring.GetContainingSymbolAndType(expression, semanticModel, context.CancellationToken);
-
-                    if (memberSymbol != null
-                        && (memberTypeSymbol is INamedTypeSymbol namedTypeSymbol)
-                        && namedTypeSymbol.SpecialType != SpecialType.System_Collections_IEnumerable
-                        && namedTypeSymbol.OriginalDefinition.IsIEnumerableOfT())
-                    {
-                        ITypeSymbol argumentSymbol = namedTypeSymbol.TypeArguments[0];
-
-                        ITypeSymbol expressionTypeSymbol = semanticModel.GetTypeSymbol(expression, context.CancellationToken);
-
-                        if (!SymbolEqualityComparer.Default.Equals(argumentSymbol, expressionTypeSymbol))
-                        {
-                            ModifyExpressionRefactoring.ComputeRefactoring(
-                                context,
-                                expression,
-                                argumentSymbol,
-                                semanticModel,
-                                addCastExpression: false);
-                        }
-                    }
-                }
-            }
-
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertReturnToIf)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.ConvertReturnStatementToIf)
                 && (context.Span.IsEmptyAndContainedInSpan(yieldStatement.YieldKeyword)
                     || context.Span.IsEmptyAndContainedInSpan(yieldStatement.ReturnOrBreakKeyword)
                     || context.Span.IsBetweenSpans(yieldStatement)))
             {
-                await ConvertReturnToIfRefactoring.ConvertYieldReturnToIfElse.ComputeRefactoringAsync(context, yieldStatement).ConfigureAwait(false);
+                await ConvertReturnStatementToIfRefactoring.ConvertYieldReturnToIfElse.ComputeRefactoringAsync(context, yieldStatement).ConfigureAwait(false);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseListInsteadOfYield)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.UseListInsteadOfYield)
                 && yieldStatement.IsYieldReturn()
                 && context.Span.IsEmptyAndContainedInSpan(yieldStatement.YieldKeyword))
             {

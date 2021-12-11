@@ -10,7 +10,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, LambdaExpressionSyntax lambda)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertLambdaExpressionBodyToBlockBody)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.ConvertLambdaExpressionBodyToBlockBody)
                 && ConvertLambdaExpressionBodyToBlockBodyRefactoring.CanRefactor(context, lambda))
             {
                 context.RegisterRefactoring(
@@ -23,25 +23,25 @@ namespace Roslynator.CSharp.Refactorings
                             (ExpressionSyntax)lambda.Body,
                             ct);
                     },
-                    RefactoringIdentifiers.ConvertLambdaExpressionBodyToBlockBody);
+                    RefactoringDescriptors.ConvertLambdaExpressionBodyToBlockBody);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertLambdaExpressionBodyToExpressionBody)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.ConvertLambdaBlockBodyToExpressionBody)
                 && ConvertLambdaExpressionBodyToExpressionBodyAnalysis.IsFixable(lambda))
             {
                 context.RegisterRefactoring(
-                    ConvertLambdaExpressionBodyToExpressionBodyRefactoring.Title,
+                    ConvertLambdaBlockBodyToExpressionBodyRefactoring.Title,
                     ct =>
                     {
-                        return ConvertLambdaExpressionBodyToExpressionBodyRefactoring.RefactorAsync(
+                        return ConvertLambdaBlockBodyToExpressionBodyRefactoring.RefactorAsync(
                             context.Document,
                             lambda,
                             ct);
                     },
-                    RefactoringIdentifiers.ConvertLambdaExpressionBodyToExpressionBody);
+                    RefactoringDescriptors.ConvertLambdaBlockBodyToExpressionBody);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExtractEventHandlerMethod)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.ExtractEventHandlerMethod)
                 && context.Span.IsBetweenSpans(lambda)
                 && lambda is ParenthesizedLambdaExpressionSyntax parenthesizedLambda)
             {

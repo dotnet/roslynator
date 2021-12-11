@@ -9,13 +9,13 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void ComputeRefactorings(RefactoringContext context, InterfaceDeclarationSyntax interfaceDeclaration)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddTypeParameter))
-                AddTypeParameterRefactoring.ComputeRefactoring(context, interfaceDeclaration);
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.AddGenericParameterToDeclaration))
+                AddGenericParameterToDeclarationRefactoring.ComputeRefactoring(context, interfaceDeclaration);
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExtractTypeDeclarationToNewFile))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.ExtractTypeDeclarationToNewFile))
                 ExtractTypeDeclarationToNewFileRefactoring.ComputeRefactorings(context, interfaceDeclaration);
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.SortMemberDeclarations)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.SortMemberDeclarations)
                 && interfaceDeclaration.BracesSpan().Contains(context.Span))
             {
                 SortMemberDeclarationsRefactoring.ComputeRefactoring(context, interfaceDeclaration);

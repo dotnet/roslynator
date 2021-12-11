@@ -24,14 +24,14 @@ namespace Roslynator.CSharp.Refactorings
                 context.RegisterRefactoring(
                     "Wrap binary expression",
                     ct => SyntaxFormatter.WrapBinaryExpressionAsync(context.Document, binaryExpression, ct),
-                    RefactoringIdentifiers.WrapBinaryExpression);
+                    RefactoringDescriptors.WrapBinaryExpression);
             }
             else if (binaryExpression.DescendantTrivia(binaryExpression.Span).All(f => f.IsWhitespaceOrEndOfLineTrivia()))
             {
                 context.RegisterRefactoring(
                     "Unwrap binary expression",
                     ct => SyntaxFormatter.UnwrapExpressionAsync(context.Document, binaryExpression, ct),
-                    RefactoringIdentifiers.WrapBinaryExpression);
+                    RefactoringDescriptors.WrapBinaryExpression);
             }
         }
 

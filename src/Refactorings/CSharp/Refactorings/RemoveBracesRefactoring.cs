@@ -31,19 +31,19 @@ namespace Roslynator.CSharp.Refactorings
         private static void ComputeRefactoring(RefactoringContext context, BlockSyntax block)
         {
             if (context.IsAnyRefactoringEnabled(
-                RefactoringIdentifiers.RemoveBraces,
-                RefactoringIdentifiers.RemoveBracesFromIfElse)
+                RefactoringDescriptors.RemoveBraces,
+                RefactoringDescriptors.RemoveBracesFromIfElse)
                 && CanRefactor(context, block))
             {
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveBraces))
+                if (context.IsRefactoringEnabled(RefactoringDescriptors.RemoveBraces))
                 {
                     context.RegisterRefactoring(
                         "Remove braces",
                         ct => RefactorAsync(context.Document, block, ct),
-                        RefactoringIdentifiers.RemoveBraces);
+                        RefactoringDescriptors.RemoveBraces);
                 }
 
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveBracesFromIfElse))
+                if (context.IsRefactoringEnabled(RefactoringDescriptors.RemoveBracesFromIfElse))
                 {
                     IfStatementSyntax topmostIf = GetTopmostIf(block);
 
@@ -59,7 +59,7 @@ namespace Roslynator.CSharp.Refactorings
                                     topmostIf,
                                     ct);
                             },
-                            RefactoringIdentifiers.RemoveBracesFromIfElse);
+                            RefactoringDescriptors.RemoveBracesFromIfElse);
                     }
                 }
             }

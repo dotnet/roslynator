@@ -29,7 +29,7 @@ namespace Roslynator.CSharp.Refactorings
             context.RegisterRefactoring(
                 GetTitle(variables.Count == 1),
                 ct => RefactorAsync(context.Document, fieldDeclaration, ct),
-                RefactoringIdentifiers.InitializeFieldFromConstructor);
+                RefactoringDescriptors.InitializeFieldFromConstructor);
         }
 
         public static void ComputeRefactoring(RefactoringContext context, MemberDeclarationListSelection selectedMembers)
@@ -55,7 +55,7 @@ namespace Roslynator.CSharp.Refactorings
             context.RegisterRefactoring(
                 GetTitle(count == 1),
                 ct => RefactorAsync(context.Document, selectedMembers, ct),
-                RefactoringIdentifiers.InitializeFieldFromConstructor);
+                RefactoringDescriptors.InitializeFieldFromConstructor);
         }
 
         private static string GetTitle(bool isSingle)
@@ -84,7 +84,7 @@ namespace Roslynator.CSharp.Refactorings
             context.RegisterRefactoring(
                 "Initialize field from constructor",
                 ct => RefactorAsync(context.Document, ImmutableArray.Create(fieldInfo), (TypeDeclarationSyntax)fieldDeclaration.Parent, ct),
-                RefactoringIdentifiers.InitializeFieldFromConstructor);
+                RefactoringDescriptors.InitializeFieldFromConstructor);
         }
 
         private static bool CanRefactor(FieldDeclarationSyntax fieldDeclaration)

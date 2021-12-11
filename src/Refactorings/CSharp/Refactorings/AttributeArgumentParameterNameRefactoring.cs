@@ -21,8 +21,8 @@ namespace Roslynator.CSharp.Refactorings
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, AttributeArgumentListSyntax argumentList)
         {
             if (!context.IsAnyRefactoringEnabled(
-                RefactoringIdentifiers.AddParameterNameToArgument,
-                RefactoringIdentifiers.RemoveParameterNameFromArgument))
+                RefactoringDescriptors.AddArgumentName,
+                RefactoringDescriptors.RemoveArgumentName))
             {
                 return;
             }
@@ -46,26 +46,26 @@ namespace Roslynator.CSharp.Refactorings
 
             AttributeArgumentSyntax[] arguments = list.ToArray();
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddParameterNameToArgument)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.AddArgumentName)
                 && await CanAddParameterNameAsync(context, arguments).ConfigureAwait(false))
             {
                 context.RegisterRefactoring(
-                    "Add parameter name",
-                    ct => AddParameterNameToArgumentsAsync(context.Document, argumentList, arguments, ct),
-                    RefactoringIdentifiers.AddParameterNameToArgument);
+                    "Add argument name",
+                    ct => AddArgumentNameAsync(context.Document, argumentList, arguments, ct),
+                    RefactoringDescriptors.AddArgumentName);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveParameterNameFromArgument)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.RemoveArgumentName)
                 && arguments.Any(f => f.NameColon != null))
             {
                 context.RegisterRefactoring(
-                    "Remove parameter name",
-                    ct => RemoveParameterNameFromArgumentsAsync(context.Document, argumentList, arguments, ct),
-                    RefactoringIdentifiers.RemoveParameterNameFromArgument);
+                    "Remove argument name",
+                    ct => RemoveArgumentNameAsync(context.Document, argumentList, arguments, ct),
+                    RefactoringDescriptors.RemoveArgumentName);
             }
         }
 
-        private static async Task<Document> AddParameterNameToArgumentsAsync(
+        private static async Task<Document> AddArgumentNameAsync(
             Document document,
             AttributeArgumentListSyntax argumentList,
             AttributeArgumentSyntax[] arguments,
@@ -79,7 +79,7 @@ namespace Roslynator.CSharp.Refactorings
             return await document.ReplaceNodeAsync(argumentList, newArgumentList, cancellationToken).ConfigureAwait(false);
         }
 
-        private static Task<Document> RemoveParameterNameFromArgumentsAsync(
+        private static Task<Document> RemoveArgumentNameAsync(
             Document document,
             AttributeArgumentListSyntax argumentList,
             AttributeArgumentSyntax[] arguments,

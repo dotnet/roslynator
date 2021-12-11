@@ -32,7 +32,7 @@ namespace Roslynator.CSharp.Refactorings
             context.RegisterRefactoring(
                 "Convert to 'string.Format'",
                 ct => RefactorAsync(context.Document, interpolatedString, ct),
-                RefactoringIdentifiers.ConvertInterpolatedStringToStringFormat);
+                RefactoringDescriptors.ConvertInterpolatedStringToStringFormat);
 
             void Analyze()
             {

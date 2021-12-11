@@ -17,7 +17,7 @@ namespace Roslynator.CSharp
             string equivalenceKey = null)
         {
             return CodeAction.Create(
-                title ?? "Change type to 'var'",
+                title ?? "Use implicit type",
                 ct => DocumentRefactorings.ChangeTypeToVarAsync(document, type, ct),
                 equivalenceKey);
         }
@@ -29,9 +29,19 @@ namespace Roslynator.CSharp
             string equivalenceKey = null)
         {
             return CodeAction.Create(
-                title ?? "Change type to 'var'",
+                title ?? "Use implicit type",
                 ct => DocumentRefactorings.ChangeTypeToVarAsync(document, tupleExpression, ct),
                 equivalenceKey);
+        }
+
+        public static CodeAction UseExplicitType(
+            Document document,
+            TypeSyntax type,
+            ITypeSymbol newTypeSymbol,
+            SemanticModel semanticModel,
+            string equivalenceKey = null)
+        {
+            return ChangeType(document, type, newTypeSymbol, semanticModel, title: "Use explicit type", equivalenceKey: equivalenceKey);
         }
 
         public static CodeAction ChangeType(
@@ -62,6 +72,19 @@ namespace Roslynator.CSharp
             return ChangeType(document, type, newTypeSymbol, title, equivalenceKey);
         }
 
+        private static CodeAction ChangeType(
+            Document document,
+            TypeSyntax type,
+            ITypeSymbol newTypeSymbol,
+            string title,
+            string equivalenceKey = null)
+        {
+            return CodeAction.Create(
+                title,
+                ct => DocumentRefactorings.ChangeTypeAsync(document, type, newTypeSymbol, ct),
+                equivalenceKey);
+        }
+
         private static SymbolDisplayFormat GetSymbolDisplayFormat(
             ExpressionSyntax expression,
             ITypeSymbol newTypeSymbol,
@@ -78,20 +101,7 @@ namespace Roslynator.CSharp
             }
         }
 
-        public static CodeAction ChangeType(
-            Document document,
-            TypeSyntax type,
-            ITypeSymbol newTypeSymbol,
-            string title,
-            string equivalenceKey = null)
-        {
-            return CodeAction.Create(
-                title,
-                ct => DocumentRefactorings.ChangeTypeAsync(document, type, newTypeSymbol, ct),
-                equivalenceKey);
-        }
-
-        public static CodeAction AddCastExpression(
+        public static CodeAction AddExplicitCast(
             Document document,
             ExpressionSyntax expression,
             ITypeSymbol destinationType,
@@ -107,7 +117,7 @@ namespace Roslynator.CSharp
 
             return CodeAction.Create(
                 title ?? $"Cast to '{typeName}'",
-                ct => DocumentRefactorings.AddCastExpressionAsync(document, expression, newType, ct),
+                ct => DocumentRefactorings.AddExplicitCastAsync(document, expression, newType, ct),
                 equivalenceKey);
         }
 

@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, DeclarationExpressionSyntax declarationExpression)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RenameIdentifierAccordingToTypeName))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.RenameIdentifierAccordingToTypeName))
                 await RenameVariableAccordingToTypeNameAsync(context, declarationExpression).ConfigureAwait(false);
 
             await ChangeDeclarationExpressionTypeRefactoring.ComputeRefactoringsAsync(context, declarationExpression).ConfigureAwait(false);
@@ -62,7 +62,7 @@ namespace Roslynator.CSharp.Refactorings
             context.RegisterRefactoring(
                 $"Rename '{oldName}' to '{newName}'",
                 ct => Renamer.RenameSymbolAsync(context.Solution, localSymbol, newName, default(OptionSet), ct),
-                RefactoringIdentifiers.RenameIdentifierAccordingToTypeName);
+                RefactoringDescriptors.RenameIdentifierAccordingToTypeName);
         }
     }
 }

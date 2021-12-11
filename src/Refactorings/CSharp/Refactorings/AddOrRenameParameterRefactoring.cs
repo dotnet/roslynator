@@ -15,9 +15,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, ParameterSyntax parameter)
         {
-            if (!context.IsAnyRefactoringEnabled(
-                RefactoringIdentifiers.AddIdentifierToParameter,
-                RefactoringIdentifiers.RenameParameterAccordingToTypeName))
+            if (!context.IsRefactoringEnabled(RefactoringDescriptors.RenameParameterAccordingToTypeName))
             {
                 return;
             }
@@ -29,29 +27,8 @@ namespace Roslynator.CSharp.Refactorings
             if (parameterSymbol?.Type == null)
                 return;
 
-            if (parameter.Identifier.IsMissing)
-            {
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddIdentifierToParameter))
-                {
-                    TextSpan span = (parameter.Type != null)
-                        ? TextSpan.FromBounds(parameter.Type.Span.End, parameter.Span.End)
-                        : parameter.Span;
-
-                    if (span.Contains(context.Span))
-                    {
-                        string name = NameGenerator.CreateName(parameterSymbol.Type, firstCharToLower: true);
-
-                        if (!string.IsNullOrEmpty(name))
-                        {
-                            context.RegisterRefactoring(
-                                $"Add identifier '{name}'",
-                                ct => AddParameterNameToParameterAsync(context.Document, parameter, name, ct),
-                                RefactoringIdentifiers.AddIdentifierToParameter);
-                        }
-                    }
-                }
-            }
-            else if (context.IsRefactoringEnabled(RefactoringIdentifiers.RenameParameterAccordingToTypeName)
+            if (!parameter.Identifier.IsMissing
+                && context.IsRefactoringEnabled(RefactoringDescriptors.RenameParameterAccordingToTypeName)
                 && parameter.Identifier.Span.Contains(context.Span))
             {
                 string oldName = parameter.Identifier.ValueText;
@@ -67,7 +44,7 @@ namespace Roslynator.CSharp.Refactorings
                     context.RegisterRefactoring(
                         $"Rename '{oldName}' to '{newName}'",
                         ct => Renamer.RenameSymbolAsync(context.Solution, parameterSymbol, newName, default(OptionSet), ct),
-                        RefactoringIdentifiers.RenameParameterAccordingToTypeName);
+                        RefactoringDescriptors.RenameParameterAccordingToTypeName);
                 }
             }
         }

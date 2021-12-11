@@ -11,7 +11,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void ComputeRefactoring(RefactoringContext context, UsingDirectiveSyntax usingDirective)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.InlineAliasExpression))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.InlineAliasExpression))
             {
                 NameEqualsSyntax alias = usingDirective.Alias;
 
@@ -25,19 +25,19 @@ namespace Roslynator.CSharp.Refactorings
                         context.RegisterRefactoring(
                             "Inline alias expression",
                             ct => InlineAliasExpressionRefactoring.RefactorAsync(context.Document, usingDirective, ct),
-                            RefactoringIdentifiers.InlineAliasExpression);
+                            RefactoringDescriptors.InlineAliasExpression);
                     }
                 }
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.InlineUsingStatic)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.InlineUsingStaticDirective)
                 && usingDirective.StaticKeyword.IsKind(SyntaxKind.StaticKeyword)
                 && usingDirective.IsParentKind(SyntaxKind.CompilationUnit, SyntaxKind.NamespaceDeclaration))
             {
                 context.RegisterRefactoring(
                     "Inline using static",
-                    ct => InlineUsingStaticRefactoring.RefactorAsync(context.Document, usingDirective, ct),
-                    RefactoringIdentifiers.InlineUsingStatic);
+                    ct => InlineUsingStaticDirectiveRefactoring.RefactorAsync(context.Document, usingDirective, ct),
+                    RefactoringDescriptors.InlineUsingStaticDirective);
             }
         }
     }

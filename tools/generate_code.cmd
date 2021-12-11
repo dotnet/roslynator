@@ -9,6 +9,6 @@ if not defined _programFiles set _programFiles=%ProgramFiles%
  /v:minimal ^
  /m
 
-dotnet "..\src\Tools\CodeGenerator\bin\Debug\netcoreapp2.1\CodeGenerator.dll" "..\src"
+dotnet "..\src\Tools\CodeGenerator\bin\Debug\netcoreapp2.1\Roslynator.CodeGenerator.dll" "..\src"
 
 pause

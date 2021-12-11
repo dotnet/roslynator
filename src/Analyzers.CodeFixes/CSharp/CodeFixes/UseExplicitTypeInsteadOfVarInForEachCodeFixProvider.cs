@@ -74,7 +74,7 @@ namespace Roslynator.CSharp.CodeFixes
                     }
             }
 
-            CodeAction codeAction = CodeActionFactory.ChangeType(document, type, typeSymbol, semanticModel, equivalenceKey: GetEquivalenceKey(diagnostic));
+            CodeAction codeAction = CodeActionFactory.UseExplicitType(document, type, typeSymbol, semanticModel, equivalenceKey: GetEquivalenceKey(diagnostic));
 
             context.RegisterCodeFix(codeAction, diagnostic);
         }

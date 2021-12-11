@@ -15,13 +15,13 @@ namespace Roslynator.CSharp.Refactorings
                 case SyntaxKind.TrueLiteralExpression:
                 case SyntaxKind.FalseLiteralExpression:
                     {
-                        if (context.IsRefactoringEnabled(RefactoringIdentifiers.InvertBooleanLiteral)
+                        if (context.IsRefactoringEnabled(RefactoringDescriptors.InvertBooleanLiteral)
                             && literalExpression.Span.Contains(context.Span))
                         {
                             context.RegisterRefactoring(
                                 "Invert boolean literal",
                                 ct => InvertBooleanLiteralRefactoring.RefactorAsync(context.Document, literalExpression, ct),
-                                RefactoringIdentifiers.InvertBooleanLiteral);
+                                RefactoringDescriptors.InvertBooleanLiteral);
                         }
 
                         break;
@@ -35,7 +35,7 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 case SyntaxKind.NumericLiteralExpression:
                     {
-                        if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertHexadecimalLiteralToDecimalLiteral)
+                        if (context.IsRefactoringEnabled(RefactoringDescriptors.ConvertHexadecimalLiteralToDecimalLiteral)
                             && context.Span.IsBetweenSpans(literalExpression))
                         {
                             ConvertHexadecimalLiteralToDecimalLiteralRefactoring.ComputeRefactoring(context, literalExpression);

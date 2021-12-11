@@ -40,7 +40,7 @@ namespace Roslynator.CSharp.Refactorings.ConvertReturnToIf
                 context.RegisterRefactoring(
                     GetTitle(statement),
                     ct => RefactorAsync(context.Document, statement, expression, ct),
-                    RefactoringIdentifiers.ConvertReturnToIf);
+                    RefactoringDescriptors.ConvertReturnStatementToIf);
             }
         }
 

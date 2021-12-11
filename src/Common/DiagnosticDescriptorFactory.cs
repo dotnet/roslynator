@@ -46,7 +46,7 @@ namespace Roslynator
                 descriptor.Id + IdSuffix,
                 descriptor.Title,
                 descriptor.MessageFormat,
-                DiagnosticCategories.FadeOut,
+                descriptor.Category,
                 DiagnosticSeverity.Hidden,
                 isEnabledByDefault: true,
                 customTags: new string[] { WellKnownDiagnosticTags.Unnecessary, WellKnownDiagnosticTags.NotConfigurable });

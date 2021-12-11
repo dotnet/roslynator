@@ -360,7 +360,7 @@
       <Id>CS0710</Id>
     </FixableDiagnosticIds>
   </CodeFix>
-  <CodeFix Id="RCF0063" Identifier="AddCastExpression" Title="Add cast expression">
+  <CodeFix Id="RCF0063" Identifier="AddExplicitCast" Title="Add explicit cast">
     <FixableDiagnosticIds>
       <Id>CS0173</Id>
     </FixableDiagnosticIds>
@@ -671,5 +671,11 @@
     <FixableDiagnosticIds>
       <Id>CS8632</Id>
     </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0119" Identifier="UseNullForgivingOperator" Title="Use null-forgiving operator">
+    <FixableDiagnosticIds>
+      <Id>CS8618</Id>
+	  <Id>CS8625</Id>
+	</FixableDiagnosticIds>
   </CodeFix>
 </CodeFixes>

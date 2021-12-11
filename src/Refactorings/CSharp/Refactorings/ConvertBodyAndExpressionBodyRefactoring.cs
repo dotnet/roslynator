@@ -15,32 +15,32 @@ namespace Roslynator.CSharp.Refactorings
 
             TextSpan span = context.Span;
 
-            string refactoringId = GetRefactoringId(selectedMembers.First());
+            RefactoringDescriptor refactoring = GetRefactoringDescriptor(selectedMembers.First());
 
-            if (refactoringId == null)
+            if (refactoring.Id == null)
                 return;
 
-            if (refactoringId != GetRefactoringId(selectedMembers.Last()))
+            if (!RefactoringDescriptorComparer.Id.Equals(refactoring, GetRefactoringDescriptor(selectedMembers.Last())))
                 return;
 
-            if (refactoringId == RefactoringIdentifiers.ConvertBlockBodyToExpressionBody
-                && context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertBlockBodyToExpressionBody))
+            if (RefactoringDescriptorComparer.Id.Equals(refactoring, RefactoringDescriptors.ConvertBlockBodyToExpressionBody)
+                && context.IsRefactoringEnabled(RefactoringDescriptors.ConvertBlockBodyToExpressionBody))
             {
                 context.RegisterRefactoring(
                     ConvertBlockBodyToExpressionBodyRefactoring.Title,
                     ct => ConvertBlockBodyToExpressionBodyRefactoring.RefactorAsync(context.Document, selectedMembers, ct),
-                    RefactoringIdentifiers.ConvertBlockBodyToExpressionBody);
+                    RefactoringDescriptors.ConvertBlockBodyToExpressionBody);
             }
-            else if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertExpressionBodyToBlockBody))
+            else if (context.IsRefactoringEnabled(RefactoringDescriptors.ConvertExpressionBodyToBlockBody))
             {
                 context.RegisterRefactoring(
                     ConvertExpressionBodyToBlockBodyRefactoring.Title,
                     ct => ConvertExpressionBodyToBlockBodyRefactoring.RefactorAsync(context.Document, selectedMembers, ct),
-                    RefactoringIdentifiers.ConvertExpressionBodyToBlockBody);
+                    RefactoringDescriptors.ConvertExpressionBodyToBlockBody);
             }
         }
 
-        private static string GetRefactoringId(MemberDeclarationSyntax memberDeclaration)
+        private static RefactoringDescriptor GetRefactoringDescriptor(MemberDeclarationSyntax memberDeclaration)
         {
             switch (memberDeclaration)
             {
@@ -51,14 +51,14 @@ namespace Roslynator.CSharp.Refactorings
                         if (expressionBody != null)
                         {
                             if (ExpandExpressionBodyAnalysis.IsFixable(expressionBody))
-                                return RefactoringIdentifiers.ConvertExpressionBodyToBlockBody;
+                                return RefactoringDescriptors.ConvertExpressionBodyToBlockBody;
                         }
                         else if (ConvertBlockBodyToExpressionBodyRefactoring.CanRefactor(methodDeclaration))
                         {
-                            return RefactoringIdentifiers.ConvertBlockBodyToExpressionBody;
+                            return RefactoringDescriptors.ConvertBlockBodyToExpressionBody;
                         }
 
-                        return null;
+                        return default;
                     }
                 case PropertyDeclarationSyntax propertyDeclaration:
                     {
@@ -67,14 +67,14 @@ namespace Roslynator.CSharp.Refactorings
                         if (expressionBody != null)
                         {
                             if (ExpandExpressionBodyAnalysis.IsFixable(expressionBody))
-                                return RefactoringIdentifiers.ConvertExpressionBodyToBlockBody;
+                                return RefactoringDescriptors.ConvertExpressionBodyToBlockBody;
                         }
                         else if (ConvertBlockBodyToExpressionBodyRefactoring.CanRefactor(propertyDeclaration))
                         {
-                            return RefactoringIdentifiers.ConvertBlockBodyToExpressionBody;
+                            return RefactoringDescriptors.ConvertBlockBodyToExpressionBody;
                         }
 
-                        return null;
+                        return default;
                     }
                 case IndexerDeclarationSyntax indexerDeclaration:
                     {
@@ -83,14 +83,14 @@ namespace Roslynator.CSharp.Refactorings
                         if (expressionBody != null)
                         {
                             if (ExpandExpressionBodyAnalysis.IsFixable(expressionBody))
-                                return RefactoringIdentifiers.ConvertExpressionBodyToBlockBody;
+                                return RefactoringDescriptors.ConvertExpressionBodyToBlockBody;
                         }
                         else if (ConvertBlockBodyToExpressionBodyRefactoring.CanRefactor(indexerDeclaration))
                         {
-                            return RefactoringIdentifiers.ConvertBlockBodyToExpressionBody;
+                            return RefactoringDescriptors.ConvertBlockBodyToExpressionBody;
                         }
 
-                        return null;
+                        return default;
                     }
                 case OperatorDeclarationSyntax operatorDeclaration:
                     {
@@ -99,14 +99,14 @@ namespace Roslynator.CSharp.Refactorings
                         if (expressionBody != null)
                         {
                             if (ExpandExpressionBodyAnalysis.IsFixable(expressionBody))
-                                return RefactoringIdentifiers.ConvertExpressionBodyToBlockBody;
+                                return RefactoringDescriptors.ConvertExpressionBodyToBlockBody;
                         }
                         else if (ConvertBlockBodyToExpressionBodyRefactoring.CanRefactor(operatorDeclaration))
                         {
-                            return RefactoringIdentifiers.ConvertBlockBodyToExpressionBody;
+                            return RefactoringDescriptors.ConvertBlockBodyToExpressionBody;
                         }
 
-                        return null;
+                        return default;
                     }
                 case ConversionOperatorDeclarationSyntax conversionOperatorDeclaration:
                     {
@@ -115,14 +115,14 @@ namespace Roslynator.CSharp.Refactorings
                         if (expressionBody != null)
                         {
                             if (ExpandExpressionBodyAnalysis.IsFixable(expressionBody))
-                                return RefactoringIdentifiers.ConvertExpressionBodyToBlockBody;
+                                return RefactoringDescriptors.ConvertExpressionBodyToBlockBody;
                         }
                         else if (ConvertBlockBodyToExpressionBodyRefactoring.CanRefactor(conversionOperatorDeclaration))
                         {
-                            return RefactoringIdentifiers.ConvertBlockBodyToExpressionBody;
+                            return RefactoringDescriptors.ConvertBlockBodyToExpressionBody;
                         }
 
-                        return null;
+                        return default;
                     }
                 case ConstructorDeclarationSyntax constructorDeclaration:
                     {
@@ -131,14 +131,14 @@ namespace Roslynator.CSharp.Refactorings
                         if (expressionBody != null)
                         {
                             if (ExpandExpressionBodyAnalysis.IsFixable(expressionBody))
-                                return RefactoringIdentifiers.ConvertExpressionBodyToBlockBody;
+                                return RefactoringDescriptors.ConvertExpressionBodyToBlockBody;
                         }
                         else if (ConvertBlockBodyToExpressionBodyRefactoring.CanRefactor(constructorDeclaration))
                         {
-                            return RefactoringIdentifiers.ConvertBlockBodyToExpressionBody;
+                            return RefactoringDescriptors.ConvertBlockBodyToExpressionBody;
                         }
 
-                        return null;
+                        return default;
                     }
                 case DestructorDeclarationSyntax destructorDeclaration:
                     {
@@ -147,18 +147,18 @@ namespace Roslynator.CSharp.Refactorings
                         if (expressionBody != null)
                         {
                             if (ExpandExpressionBodyAnalysis.IsFixable(expressionBody))
-                                return RefactoringIdentifiers.ConvertExpressionBodyToBlockBody;
+                                return RefactoringDescriptors.ConvertExpressionBodyToBlockBody;
                         }
                         else if (ConvertBlockBodyToExpressionBodyRefactoring.CanRefactor(destructorDeclaration))
                         {
-                            return RefactoringIdentifiers.ConvertBlockBodyToExpressionBody;
+                            return RefactoringDescriptors.ConvertBlockBodyToExpressionBody;
                         }
 
-                        return null;
+                        return default;
                     }
             }
 
-            return null;
+            return default;
         }
     }
 }

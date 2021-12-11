@@ -481,9 +481,9 @@ namespace Roslynator.CSharp
             "CS0710");
 
         /// <summary>RCF0063 (fixes CS0173)</summary>
-        public static readonly CodeFixDescriptor AddCastExpression = new CodeFixDescriptor(
-            id:                 CodeFixIdentifiers.AddCastExpression, 
-            title:              "Add cast expression", 
+        public static readonly CodeFixDescriptor AddExplicitCast = new CodeFixDescriptor(
+            id:                 CodeFixIdentifiers.AddExplicitCast, 
+            title:              "Add explicit cast", 
             isEnabledByDefault: true, 
             "CS0173");
 
@@ -903,6 +903,14 @@ namespace Roslynator.CSharp
             title:              "Remove annotation for nullable reference types", 
             isEnabledByDefault: true, 
             "CS8632");
+
+        /// <summary>RCF0119 (fixes CS8618, CS8625)</summary>
+        public static readonly CodeFixDescriptor UseNullForgivingOperator = new CodeFixDescriptor(
+            id:                 CodeFixIdentifiers.UseNullForgivingOperator, 
+            title:              "Use null-forgiving operator", 
+            isEnabledByDefault: true, 
+            "CS8618", 
+            "CS8625");
 
     }
 }

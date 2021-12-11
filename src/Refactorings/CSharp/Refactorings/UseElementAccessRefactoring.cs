@@ -36,7 +36,7 @@ namespace Roslynator.CSharp.Refactorings
                         context.RegisterRefactoring(
                             "Use [] instead of calling 'First'",
                             ct => UseElementAccessInsteadOfEnumerableMethodRefactoring.UseElementAccessInsteadOfFirstAsync(context.Document, invocation, ct),
-                            RefactoringIdentifiers.UseElementAccessInsteadOfEnumerableMethod);
+                            RefactoringDescriptors.UseElementAccessInsteadOfLinqMethod);
 
                         break;
                     }
@@ -58,7 +58,7 @@ namespace Roslynator.CSharp.Refactorings
                         context.RegisterRefactoring(
                             "Use [] instead of calling 'Last'",
                             ct => UseElementAccessInsteadOfEnumerableMethodRefactoring.UseElementAccessInsteadOfLastAsync(context.Document, invocation, propertyName, ct),
-                            RefactoringIdentifiers.UseElementAccessInsteadOfEnumerableMethod);
+                            RefactoringDescriptors.UseElementAccessInsteadOfLinqMethod);
 
                         break;
                     }
@@ -75,7 +75,7 @@ namespace Roslynator.CSharp.Refactorings
                         context.RegisterRefactoring(
                             "Use [] instead of calling 'ElementAt'",
                             ct => UseElementAccessInsteadOfEnumerableMethodRefactoring.UseElementAccessInsteadOfElementAtAsync(context.Document, invocation, ct),
-                            RefactoringIdentifiers.UseElementAccessInsteadOfEnumerableMethod);
+                            RefactoringDescriptors.UseElementAccessInsteadOfLinqMethod);
 
                         break;
                     }

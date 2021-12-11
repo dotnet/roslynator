@@ -15,10 +15,10 @@ namespace Roslynator.CSharp.Refactorings
 
             await AttributeArgumentParameterNameRefactoring.ComputeRefactoringsAsync(context, argumentList).ConfigureAwait(false);
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.DuplicateArgument))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.DuplicateArgument))
                 DuplicateAttributeArgumentRefactoring.ComputeRefactoring(context, argumentList);
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapArguments)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.WrapArguments)
                 && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(argumentList))
             {
                 if (argumentList.IsSingleLine())
@@ -28,7 +28,7 @@ namespace Roslynator.CSharp.Refactorings
                         context.RegisterRefactoring(
                             "Wrap arguments",
                             ct => SyntaxFormatter.WrapArgumentsAsync(context.Document, argumentList, ct),
-                            RefactoringIdentifiers.WrapArguments);
+                            RefactoringDescriptors.WrapArguments);
                     }
                 }
                 else if (argumentList.DescendantTrivia(argumentList.Span).All(f => f.IsWhitespaceOrEndOfLineTrivia()))
@@ -36,7 +36,7 @@ namespace Roslynator.CSharp.Refactorings
                     context.RegisterRefactoring(
                         "Unwrap arguments",
                         ct => SyntaxFormatter.UnwrapExpressionAsync(context.Document, argumentList, ct),
-                        RefactoringIdentifiers.WrapArguments);
+                        RefactoringDescriptors.WrapArguments);
                 }
             }
         }

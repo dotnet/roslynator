@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.CodeFixes
         {
             Diagnostic diagnostic = context.Diagnostics[0];
 
-            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddCastExpression))
+            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddExplicitCast))
                 return;
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
@@ -53,7 +53,7 @@ namespace Roslynator.CSharp.CodeFixes
             if (destinationType == null)
                 return;
 
-            CodeFixRegistrator.AddCastExpression(context, diagnostic, whenTrue, destinationType, semanticModel);
+            CodeFixRegistrator.AddExplicitCast(context, diagnostic, whenTrue, destinationType, semanticModel);
         }
 
         private static ITypeSymbol FindDestinationType(ExpressionSyntax expression, ITypeSymbol type, SemanticModel semanticModel)

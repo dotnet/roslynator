@@ -13,6 +13,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CodeFixes;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.CodeFixes
 {
@@ -33,7 +34,8 @@ namespace Roslynator.CSharp.CodeFixes
                     CompilerDiagnosticIdentifiers.CS1597_SemicolonAfterMethodOrAccessorBlockIsNotValid,
                     CompilerDiagnosticIdentifiers.CS0030_CannotConvertType,
                     CompilerDiagnosticIdentifiers.CS1737_OptionalParametersMustAppearAfterAllRequiredParameters,
-                    CompilerDiagnosticIdentifiers.CS8632_AnnotationForNullableReferenceTypesShouldOnlyBeUsedWithinNullableAnnotationsContext);
+                    CompilerDiagnosticIdentifiers.CS8632_AnnotationForNullableReferenceTypesShouldOnlyBeUsedWithinNullableAnnotationsContext,
+                    CompilerDiagnosticIdentifiers.CS8618_NonNullableMemberIsUninitialized);
             }
         }
 
@@ -453,6 +455,69 @@ namespace Roslynator.CSharp.CodeFixes
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case CompilerDiagnosticIdentifiers.CS8618_NonNullableMemberIsUninitialized:
+                        {
+                            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.UseNullForgivingOperator))
+                                break;
+
+                            Debug.Assert(token.IsKind(SyntaxKind.IdentifierToken), token.Kind().ToString());
+
+                            if (!token.IsKind(SyntaxKind.IdentifierToken))
+                                return;
+
+                            if (token.IsParentKind(SyntaxKind.PropertyDeclaration))
+                            {
+                                CodeAction codeAction = CodeAction.Create(
+                                    "Use null-forgiving operator",
+                                    ct =>
+                                    {
+                                        var property = (PropertyDeclarationSyntax)token.Parent;
+
+                                        PropertyDeclarationSyntax newProperty = property
+                                            .WithoutTrailingTrivia()
+                                            .WithInitializer(EqualsValueClause(SuppressNullableWarningExpression(NullLiteralExpression())))
+                                            .WithSemicolonToken(SemicolonToken().WithTrailingTrivia(property.GetTrailingTrivia()));
+
+                                        return context.Document.ReplaceNodeAsync(property, newProperty, ct);
+                                    },
+                                    GetEquivalenceKey(diagnostic));
+
+                                context.RegisterCodeFix(codeAction, diagnostic);
+                            }
+                            else
+                            {
+                                SyntaxDebug.Assert(
+                                    token.IsParentKind(SyntaxKind.VariableDeclarator)
+                                        && token.Parent.IsParentKind(SyntaxKind.VariableDeclaration)
+                                        && token.Parent.Parent.IsParentKind(SyntaxKind.FieldDeclaration),
+                                    token);
+
+                                if (token.IsParentKind(SyntaxKind.VariableDeclarator)
+                                    && token.Parent.IsParentKind(SyntaxKind.VariableDeclaration)
+                                    && token.Parent.Parent.IsParentKind(SyntaxKind.FieldDeclaration))
+                                {
+                                    CodeAction codeAction = CodeAction.Create(
+                                        "Use null-forgiving operator",
+                                        ct =>
+                                        {
+                                            var declarator = (VariableDeclaratorSyntax)token.Parent;
+
+                                            VariableDeclaratorSyntax newDeclarator = declarator
+                                                .WithoutTrailingTrivia()
+                                                .WithInitializer(
+                                                    EqualsValueClause(SuppressNullableWarningExpression(NullLiteralExpression()))
+                                                        .WithTrailingTrivia(declarator.GetTrailingTrivia()));
+
+                                            return context.Document.ReplaceNodeAsync(declarator, newDeclarator, ct);
+                                        },
+                                        GetEquivalenceKey(diagnostic));
+
+                                    context.RegisterCodeFix(codeAction, diagnostic);
+                                }
+                            }
+
                             break;
                         }
                 }

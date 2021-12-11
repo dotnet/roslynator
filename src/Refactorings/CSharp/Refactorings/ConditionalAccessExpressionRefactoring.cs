@@ -9,7 +9,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringAsync(RefactoringContext context, ConditionalAccessExpressionSyntax conditionalAccessExpression)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapCallChain))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.WrapCallChain))
                 await WrapCallChainRefactoring.ComputeRefactoringsAsync(context, conditionalAccessExpression).ConfigureAwait(false);
         }
     }

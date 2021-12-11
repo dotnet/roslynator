@@ -38,7 +38,7 @@ namespace Roslynator.CSharp.Refactorings
             if (castTypeSymbol == null)
                 return;
 
-            ModifyExpressionRefactoring.ComputeRefactoring(context, expression, castTypeSymbol, semanticModel, addCastExpression: false);
+            AddExplicitCastRefactoring.ComputeRefactoring(context, expression, castTypeSymbol, semanticModel, addCastExpression: false);
         }
 
         private static ITypeSymbol GetCastTypeSymbol(

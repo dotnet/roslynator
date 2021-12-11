@@ -6,6 +6,8 @@
   </PropertyGroup>
 
   <PropertyGroup>
+    <AssemblyName>Roslynator.CodeGenerator</AssemblyName>
+    <RootNamespace>Roslynator.CodeGenerator</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

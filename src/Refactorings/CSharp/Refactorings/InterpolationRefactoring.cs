@@ -9,13 +9,13 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void ComputeRefactorings(RefactoringContext context, InterpolationSyntax interpolation)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveInterpolation)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.RemoveInterpolation)
                 && context.Span.IsContainedInSpan(interpolation.OpenBraceToken, interpolation.CloseBraceToken))
             {
                 context.RegisterRefactoring(
                     "Remove interpolation",
                     ct => context.Document.RemoveNodeAsync(interpolation, SyntaxRemoveOptions.KeepUnbalancedDirectives, ct),
-                    RefactoringIdentifiers.RemoveInterpolation);
+                    RefactoringDescriptors.RemoveInterpolation);
             }
         }
     }

@@ -8,7 +8,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void ComputeRefactorings(RefactoringContext context, VariableDeclaratorSyntax variableDeclarator)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.InitializeFieldFromConstructor)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.InitializeFieldFromConstructor)
                 && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(variableDeclarator.Identifier))
             {
                 InitializeFieldFromConstructorRefactoring.ComputeRefactoring(context, variableDeclarator);

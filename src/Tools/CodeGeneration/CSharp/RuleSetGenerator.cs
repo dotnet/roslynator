@@ -18,7 +18,7 @@ namespace Roslynator.CodeGeneration.CSharp
                     "Roslynator.VisualStudio",
                     ClassDeclaration(
                         Modifiers.Internal_Static_Partial(),
-                        "RuleSetHelpers",
+                        "DefaultRuleSet",
                         SingletonList<MemberDeclarationSyntax>(
                             FieldDeclaration(
                                 Modifiers.Private_Const(),

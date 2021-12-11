@@ -17,27 +17,27 @@ namespace Roslynator.CSharp.Refactorings
         public static void ComputeRefactorings(RefactoringContext context, MemberDeclarationSyntax member)
         {
             if (context.IsAnyRefactoringEnabled(
-                RefactoringIdentifiers.SplitAttributes,
-                RefactoringIdentifiers.MergeAttributes)
+                RefactoringDescriptors.SplitAttributes,
+                RefactoringDescriptors.MergeAttributes)
                 && !member.IsKind(SyntaxKind.NamespaceDeclaration, SyntaxKind.FileScopedNamespaceDeclaration)
                 && SyntaxListSelection<AttributeListSyntax>.TryCreate(member.GetAttributeLists(), context.Span, out SyntaxListSelection<AttributeListSyntax> selectedAttributeLists))
             {
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.SplitAttributes)
+                if (context.IsRefactoringEnabled(RefactoringDescriptors.SplitAttributes)
                     && selectedAttributeLists.Any(f => f.Attributes.Count > 1))
                 {
                     context.RegisterRefactoring(
                         "Split attributes",
                         ct => SplitAsync(context.Document, member, selectedAttributeLists.ToArray(), ct),
-                        RefactoringIdentifiers.SplitAttributes);
+                        RefactoringDescriptors.SplitAttributes);
                 }
 
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.MergeAttributes)
+                if (context.IsRefactoringEnabled(RefactoringDescriptors.MergeAttributes)
                     && selectedAttributeLists.Count > 1)
                 {
                     context.RegisterRefactoring(
                         "Merge attributes",
                         ct => MergeAsync(context.Document, member, selectedAttributeLists.ToArray(), ct),
-                        RefactoringIdentifiers.MergeAttributes);
+                        RefactoringDescriptors.MergeAttributes);
                 }
             }
         }

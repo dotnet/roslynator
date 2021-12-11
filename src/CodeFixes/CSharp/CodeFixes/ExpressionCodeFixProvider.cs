@@ -108,8 +108,8 @@ namespace Roslynator.CSharp.CodeFixes
                                 ChangeMemberTypeRefactoring.ComputeCodeFix(context, diagnostic, expression, semanticModel);
                             }
 
-                            if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddCastExpression))
-                                CodeFixRegistrator.AddCastExpression(context, diagnostic, expression, convertedType, semanticModel);
+                            if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddExplicitCast))
+                                CodeFixRegistrator.AddExplicitCast(context, diagnostic, expression, convertedType, semanticModel);
 
                             if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.ChangeTypeAccordingToInitializer))
                                 ChangeTypeAccordingToInitializerRefactoring.ComputeCodeFix(context, diagnostic, expression, semanticModel);
@@ -183,8 +183,8 @@ namespace Roslynator.CSharp.CodeFixes
                                 && fieldDeclaration.Modifiers.Contains(SyntaxKind.ConstKeyword))
                             {
                                 CodeAction codeAction = CodeAction.Create(
-                                    ReplaceConstantWithFieldRefactoring.Title,
-                                    ct => ReplaceConstantWithFieldRefactoring.RefactorAsync(context.Document, fieldDeclaration, ct),
+                                    UseReadOnlyFieldInsteadOfConstantRefactoring.Title,
+                                    ct => UseReadOnlyFieldInsteadOfConstantRefactoring.RefactorAsync(context.Document, fieldDeclaration, ct),
                                     GetEquivalenceKey(diagnostic));
 
                                 context.RegisterCodeFix(codeAction, diagnostic);

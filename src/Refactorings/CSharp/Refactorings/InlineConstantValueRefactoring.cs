@@ -52,7 +52,7 @@ namespace Roslynator.CSharp.Refactorings
             context.RegisterRefactoring(
                 "Inline constant value",
                 ct => RefactorAsync(context.Document, expression, symbol, optional, semanticModel, ct),
-                RefactoringIdentifiers.InlineConstantValue);
+                RefactoringDescriptors.InlineConstantValue);
         }
 
         private static Task<Document> RefactorAsync(

@@ -9,13 +9,13 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void ComputeRefactorings(RefactoringContext context, ElseClauseSyntax elseClause)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveConditionFromLastElse)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.RemoveConditionFromLastElse)
                 && context.Span.IsEmptyAndContainedInSpan(elseClause.ElseKeyword))
             {
                 RemoveConditionFromLastElseRefactoring.ComputeRefactorings(context, elseClause);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddBraces)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.AddBraces)
                 && elseClause.Statement?.Kind() == SyntaxKind.IfStatement)
             {
                 var ifStatement = (IfStatementSyntax)elseClause.Statement;

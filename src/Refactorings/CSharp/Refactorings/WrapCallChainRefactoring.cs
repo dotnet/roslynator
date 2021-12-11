@@ -38,14 +38,14 @@ namespace Roslynator.CSharp.Refactorings
                 context.RegisterRefactoring(
                     "Wrap call chain",
                     ct => SyntaxFormatter.WrapCallChainAsync(context.Document, expression, semanticModel, ct),
-                    RefactoringIdentifiers.WrapCallChain);
+                    RefactoringDescriptors.WrapCallChain);
             }
             else if (expression.DescendantTrivia(expression.Span).All(f => f.IsWhitespaceOrEndOfLineTrivia()))
             {
                 context.RegisterRefactoring(
                     "Unwrap call chain",
                     ct => SyntaxFormatter.UnwrapExpressionAsync(context.Document, expression, ct),
-                    RefactoringIdentifiers.WrapCallChain);
+                    RefactoringDescriptors.WrapCallChain);
             }
         }
 

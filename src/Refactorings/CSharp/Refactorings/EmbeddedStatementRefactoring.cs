@@ -12,20 +12,20 @@ namespace Roslynator.CSharp.Refactorings
             if (!statement.IsEmbedded(canBeIfInsideElse: false, canBeUsingInsideUsing: false))
                 return;
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInCondition))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.WrapStatementsInCondition))
             {
                 context.RegisterRefactoring(
                     WrapInIfStatementRefactoring.Title,
                     ct => WrapInIfStatementRefactoring.Instance.RefactorAsync(context.Document, statement, ct),
-                    RefactoringIdentifiers.WrapInCondition);
+                    RefactoringDescriptors.WrapStatementsInCondition);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInTryCatch))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.WrapLinesInTryCatch))
             {
                 context.RegisterRefactoring(
-                    WrapInTryCatchRefactoring.Title,
-                    ct => WrapInTryCatchRefactoring.Instance.RefactorAsync(context.Document, statement, ct),
-                    RefactoringIdentifiers.WrapInTryCatch);
+                    WrapLinesInTryCatchRefactoring.Title,
+                    ct => WrapLinesInTryCatchRefactoring.Instance.RefactorAsync(context.Document, statement, ct),
+                    RefactoringDescriptors.WrapLinesInTryCatch);
             }
         }
     }

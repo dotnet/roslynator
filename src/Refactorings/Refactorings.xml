@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Refactorings>
   <Refactoring Id="RR0002" Identifier="AddBraces" Title="Add braces">
+    <OptionKey>add_braces</OptionKey>
     <Syntaxes>
       <Syntax>do statement</Syntax>
       <Syntax>else clause</Syntax>
@@ -15,24 +16,28 @@
     <Span>embedded statement</Span>
   </Refactoring>
   <Refactoring Id="RR0003" Identifier="AddBracesToIfElse" Title="Add braces to if-else">
+    <OptionKey>add_braces_to_if_else</OptionKey>
     <Syntaxes>
       <Syntax>if-else chain</Syntax>
     </Syntaxes>
     <Span>embedded statement</Span>
   </Refactoring>
   <Refactoring Id="RR0004" Identifier="AddBracesToSwitchSection" Title="Add braces to switch section">
+    <OptionKey>add_braces_to_switch_section</OptionKey>
     <Syntaxes>
       <Syntax>switch section</Syntax>
     </Syntaxes>
     <Span>case or default keyword</Span>
   </Refactoring>
   <Refactoring Id="RR0005" Identifier="AddBracesToSwitchSections" Title="Add braces to switch sections">
+    <OptionKey>add_braces_to_switch_sections</OptionKey>
     <Syntaxes>
       <Syntax>switch statement</Syntax>
     </Syntaxes>
     <Span>case or default keyword</Span>
   </Refactoring>
-  <Refactoring Id="RR0006" Identifier="AddCastExpression" Title="Add cast expression">
+  <Refactoring Id="RR0006" Identifier="AddExplicitCast" Title="Add explicit cast">
+    <OptionKey>add_explicit_cast</OptionKey>
     <Syntaxes>
       <Syntax>argument</Syntax>
       <Syntax>assignment expression</Syntax>
@@ -47,6 +52,7 @@
     </Images>
   </Refactoring>
   <Refactoring Id="RR0007" Identifier="AddDefaultValueToParameter" Title="Add default value to parameter">
+    <OptionKey>add_default_value_to_parameter</OptionKey>
     <Syntaxes>
       <Syntax>parameter without default value</Syntax>
     </Syntaxes>
@@ -57,34 +63,38 @@
       <Syntax>return statement without expression</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0009" Identifier="AddExceptionToDocumentationComment" Title="Add exception to documentation comment">
+  <Refactoring Id="RR0009" Identifier="AddExceptionElementToDocumentationComment" Title="Add 'exception' element to documentation comment">
+    <OptionKey>add_exception_element_to_documentation_comment</OptionKey>
     <Syntaxes>
       <Syntax>throw statement</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0010" Identifier="AddIdentifierToVariableDeclaration" Title="Add identifier to variable declaration" IsEnabledByDefault="false">
+  <Refactoring Id="RR0010" Identifier="AddIdentifierToVariableDeclaration" Title="Add identifier to variable declaration" IsObsolete="true">
     <Syntaxes>
       <Syntax>variable declaration</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0011" Identifier="AddParameterNameToArgument" Title="Add parameter name to argument">
+  <Refactoring Id="RR0011" Identifier="AddArgumentName" Title="Add argument name">
+    <OptionKey>add_argument_name</OptionKey>
     <Syntaxes>
       <Syntax>argument list</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0012" Identifier="AddIdentifierToParameter" Title="Add identifier to parameter" IsEnabledByDefault="false">
+  <Refactoring Id="RR0012" Identifier="AddIdentifierToParameter" Title="Add identifier to parameter" IsObsolete="true">
     <Syntaxes>
       <Syntax>parameter</Syntax>
     </Syntaxes>
     <Span>missing identifier</Span>
   </Refactoring>
   <Refactoring Id="RR0013" Identifier="AddUsingDirective" Title="Add using directive">
+    <OptionKey>add_using_directive</OptionKey>
     <Syntaxes>
       <Syntax>qualified name</Syntax>
     </Syntaxes>
     <Span>selected namespace</Span>
   </Refactoring>
   <Refactoring Id="RR0014" Identifier="AddUsingStaticDirective" Title="Add using static directive">
+    <OptionKey>add_using_static_directive</OptionKey>
     <Syntaxes>
       <Syntax>member access expression (public or internal static class)</Syntax>
     </Syntaxes>
@@ -97,11 +107,12 @@
     <Span>method name</Span>
   </Refactoring>
   <Refactoring Id="RR0016" Identifier="CallExtensionMethodAsInstanceMethod" Title="Call extension method as instance method">
+    <OptionKey>call_extension_method_as_instance_method</OptionKey>
     <Syntaxes>
       <Syntax>method invocation</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0017" Identifier="CallToMethod" Title="Call 'To...' method (ToString, ToArray, ToList)">
+  <Refactoring Id="RR0017" Identifier="CallToMethod" Title="Call 'To...' method (ToString, ToArray, ToList)" IsObsolete="true">
     <Syntaxes>
       <Syntax>argument</Syntax>
       <Syntax>assignment expression</Syntax>
@@ -109,7 +120,8 @@
       <Syntax>variable declaration</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0018" Identifier="ChangeExplicitTypeToVar" Title="Change explicit type to 'var'">
+  <Refactoring Id="RR0018" Identifier="UseImplicitType" Title="Use implicit type">
+    <OptionKey>use_implicit_type</OptionKey>
     <Syntaxes>
       <Syntax>variable declaration</Syntax>
       <Syntax>foreach statement</Syntax>
@@ -127,12 +139,14 @@
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0021" Identifier="ChangeMethodReturnTypeToVoid" Title="Change method return type to 'void'">
+    <OptionKey>change_method_return_type_to_void</OptionKey>
     <Syntaxes>
       <Syntax>method</Syntax>
       <Syntax>local function</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0022" Identifier="ChangeTypeAccordingToExpression" Title="Change type according to expression">
+    <OptionKey>change_type_according_to_expression</OptionKey>
     <Syntaxes>
       <Syntax>variable declaration</Syntax>
       <Syntax>foreach statement</Syntax>
@@ -145,7 +159,8 @@
       </Sample>
     </Samples>
   </Refactoring>
-  <Refactoring Id="RR0023" Identifier="ChangeVarToExplicitType" Title="Change 'var' to explicit type">
+  <Refactoring Id="RR0023" Identifier="UseExplicitType" Title="Use explicit type">
+    <OptionKey>use_explicit_type</OptionKey>
     <Syntaxes>
       <Syntax>variable declaration</Syntax>
       <Syntax>foreach statement</Syntax>
@@ -153,24 +168,28 @@
     <Span>type</Span>
   </Refactoring>
   <Refactoring Id="RR0024" Identifier="CheckExpressionForNull" Title="Check expression for null">
+    <OptionKey>check_expression_for_null</OptionKey>
     <Syntaxes>
       <Syntax>local declaration (identifier)</Syntax>
       <Syntax>assignment expression (left)</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0025" Identifier="CheckParameterForNull" Title="Check parameter for null">
+    <OptionKey>check_parameter_for_null</OptionKey>
     <Syntaxes>
       <Syntax>parameter</Syntax>
     </Syntaxes>
     <Span>parameter identifier</Span>
   </Refactoring>
-  <Refactoring Id="RR0026" Identifier="CollapseToInitializer" Title="Collapse to initializer">
+  <Refactoring Id="RR0026" Identifier="UseObjectInitializer" Title="Use object initializer">
+    <OptionKey>use_object_initializer</OptionKey>
     <Syntaxes>
-      <Syntax>object creation followed with assignment(s)</Syntax>
+      <Syntax>selected statements (object creation followed with assignment(s))</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0027" Identifier="CommentOutMember" Title="Comment out member">
-    <Syntaxes>
+  <Refactoring Id="RR0027" Identifier="CommentOutMemberDeclaration" Title="Comment out member declaration">
+	  <OptionKey>comment_out_member_declaration</OptionKey>
+	  <Syntaxes>
       <Syntax>method</Syntax>
       <Syntax>constructor</Syntax>
       <Syntax>property</Syntax>
@@ -185,6 +204,7 @@
     <Span>opening or closing brace</Span>
   </Refactoring>
   <Refactoring Id="RR0028" Identifier="CommentOutStatement" Title="Comment out statement">
+    <OptionKey>comment_out_statement</OptionKey>
     <Syntaxes>
       <Syntax>do statement</Syntax>
       <Syntax>fixed statement</Syntax>
@@ -203,6 +223,7 @@
     <Span>opening or closing brace</Span>
   </Refactoring>
   <Refactoring Id="RR0029" Identifier="CopyDocumentationCommentFromBaseMember" Title="Copy documentation comment from base member">
+    <OptionKey>copy_documentation_comment_from_base_member</OptionKey>
     <Syntaxes>
       <Syntax>constructor</Syntax>
       <Syntax>method</Syntax>
@@ -216,11 +237,13 @@
     </Images>
   </Refactoring>
   <Refactoring Id="RR0030" Identifier="DuplicateArgument" Title="Duplicate argument">
+    <OptionKey>duplicate_argument</OptionKey>
     <Syntaxes>
       <Syntax>missing argument</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0031" Identifier="DuplicateMember" Title="Duplicate member">
+    <OptionKey>duplicate_member_declaration</OptionKey>
     <Syntaxes>
       <Syntax>method</Syntax>
       <Syntax>constructor</Syntax>
@@ -236,11 +259,13 @@
     <Span>opening or closing brace</Span>
   </Refactoring>
   <Refactoring Id="RR0032" Identifier="DuplicateParameter" Title="Duplicate parameter">
+    <OptionKey>duplicate_parameter</OptionKey>
     <Syntaxes>
       <Syntax>missing parameter</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0033" Identifier="DuplicateStatement" Title="Duplicate statement">
+    <OptionKey>duplicate_statement</OptionKey>
     <Syntaxes>
       <Syntax>do statement</Syntax>
       <Syntax>fixed statement</Syntax>
@@ -258,50 +283,59 @@
     </Syntaxes>
     <Span>opening or closing brace</Span>
   </Refactoring>
-  <Refactoring Id="RR0034" Identifier="ExpandCompoundAssignmentOperator" Title="Expand compound assignment operator">
+  <Refactoring Id="RR0034" Identifier="ExpandCompoundAssignment" Title="Expand compound assignment">
+    <OptionKey>expand_compound_assignment</OptionKey>
     <Syntaxes>
       <Syntax>compound assignment expression</Syntax>
     </Syntaxes>
     <Span>operator</Span>
   </Refactoring>
   <Refactoring Id="RR0035" Identifier="ExpandCoalesceExpression" Title="Expand coalesce expression">
+    <OptionKey>expand_coalesce_expression</OptionKey>
     <Syntaxes>
       <Syntax>coalesce expression</Syntax>
     </Syntaxes>
     <Span>?? operator</Span>
   </Refactoring>
-  <Refactoring Id="RR0036" Identifier="ExpandEvent" Title="Expand event">
+  <Refactoring Id="RR0036" Identifier="ExpandEventDeclaration" Title="Expand event declaration">
+    <OptionKey>expand_event_declaration</OptionKey>
     <Syntaxes>
       <Syntax>event field declaration</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0037" Identifier="ConvertExpressionBodyToBlockBody" Title="Convert expression-body to block body">
+  <Refactoring Id="RR0037" Identifier="ConvertExpressionBodyToBlockBody" Title="Convert expression body to block body">
+    <OptionKey>convert_expression_body_to_block_body</OptionKey>
     <Syntaxes>
       <Syntax>expression body</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0038" Identifier="ExpandInitializer" Title="Expand initializer" IsEnabledByDefault="false">
+    <OptionKey>expand_initializer</OptionKey>
     <Syntaxes>
       <Syntax>initializer</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0039" Identifier="ConvertLambdaExpressionBodyToBlockBody" Title="Convert lambda expression body to block body">
+    <OptionKey>convert_lambda_expression_body_to_block_body</OptionKey>
     <Syntaxes>
       <Syntax>lambda expression's expression body</Syntax>
     </Syntaxes>
     <Span>body</Span>
   </Refactoring>
-  <Refactoring Id="RR0040" Identifier="ExpandProperty" Title="Expand property">
+  <Refactoring Id="RR0040" Identifier="ConvertAutoPropertyToFullPropertyWithoutBackingField" Title="Convert auto-property to full property (without backing field)">
+    <OptionKey>convert_auto_property_to_full_property_without_backing_field</OptionKey>
     <Syntaxes>
       <Syntax>auto-property</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0041" Identifier="ExpandPropertyAndAddBackingField" Title="Expand property and add backing field">
+  <Refactoring Id="RR0041" Identifier="ConvertAutoPropertyToFullProperty" Title="Convert auto-property to full property">
+    <OptionKey>convert_auto_property_to_full_property</OptionKey>
     <Syntaxes>
       <Syntax>auto-property</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0043" Identifier="ExtractExpressionFromCondition" Title="Extract expression from condition">
+    <OptionKey>extract_expression_from_condition</OptionKey>
     <Syntaxes>
       <Syntax>if statement</Syntax>
       <Syntax>while statement</Syntax>
@@ -333,13 +367,14 @@ if (y)
       </Sample>
     </Samples>
   </Refactoring>
-  <Refactoring Id="RR0044" Identifier="ExtractGenericType" Title="Extract generic type">
+  <Refactoring Id="RR0044" Identifier="ExtractGenericType" Title="Extract generic type" IsObsolete="true">
     <Syntaxes>
       <Syntax>generic name with single type argument</Syntax>
     </Syntaxes>
     <Span>type argument</Span>
   </Refactoring>
-  <Refactoring Id="RR0045" Identifier="ExtractStatement" Title="Extract statement(s)">
+  <Refactoring Id="RR0045" Identifier="RemoveContainingStatement" Title="Remove containing statement">
+    <OptionKey>remove_containing_statement</OptionKey>
     <Syntaxes>
       <Syntax>else clause</Syntax>
       <Syntax>fixed statement</Syntax>
@@ -355,6 +390,7 @@ if (y)
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0046" Identifier="ExtractTypeDeclarationToNewFile" Title="Extract type declaration to a new file">
+    <OptionKey>extract_type_declaration_to_new_file</OptionKey>
     <Syntaxes>
       <Syntax>class declaration</Syntax>
       <Syntax>struct declaration</Syntax>
@@ -378,6 +414,7 @@ if (y)
     </Images>
   </Refactoring>
   <Refactoring Id="RR0048" Identifier="WrapArguments" Title="Wrap arguments">
+    <OptionKey>wrap_arguments</OptionKey>
     <Syntaxes>
       <Syntax>argument list</Syntax>
     </Syntaxes>
@@ -404,6 +441,7 @@ if (y)
     </Samples>
   </Refactoring>
   <Refactoring Id="RR0049" Identifier="WrapBinaryExpression" Title="Wrap binary expression">
+    <OptionKey>wrap_binary_expression</OptionKey>
     <Syntaxes>
       <Syntax>logical and/or expression</Syntax>
       <Syntax>bitwise and/or expression</Syntax>
@@ -436,6 +474,7 @@ if (y)
     </Samples>
   </Refactoring>
   <Refactoring Id="RR0050" Identifier="WrapConditionalExpression" Title="Wrap conditional expression">
+    <OptionKey>wrap_conditional_expression</OptionKey>
     <Syntaxes>
       <Syntax>conditional expression</Syntax>
     </Syntaxes>
@@ -457,6 +496,7 @@ if (y)
     </Samples>
   </Refactoring>
   <Refactoring Id="RR0051" Identifier="WrapCallChain" Title="Wrap call chain">
+    <OptionKey>wrap_call_chain</OptionKey>
     <Syntaxes>
       <Syntax>call chain</Syntax>
     </Syntaxes>
@@ -478,6 +518,7 @@ if (y)
     </Samples>
   </Refactoring>
   <Refactoring Id="RR0052" Identifier="WrapInitializerExpressions" Title="Wrap initializer expressions">
+    <OptionKey>wrap_initializer_expressions</OptionKey>
     <Syntaxes>
       <Syntax>initializer</Syntax>
     </Syntaxes>
@@ -503,6 +544,7 @@ if (y)
     </Samples>
   </Refactoring>
   <Refactoring Id="RR0053" Identifier="WrapParameters" Title="Wrap parameters">
+    <OptionKey>wrap_parameters</OptionKey>
     <Syntaxes>
       <Syntax>parameter list</Syntax>
     </Syntaxes>
@@ -537,33 +579,39 @@ if (y)
     </Samples>
   </Refactoring>
   <Refactoring Id="RR0054" Identifier="GenerateBaseConstructors" Title="Generate base constructors">
+    <OptionKey>generate_base_constructors</OptionKey>
     <Syntaxes>
       <Syntax>class declaration</Syntax>
     </Syntaxes>
     <Span>identifier</Span>
   </Refactoring>
   <Refactoring Id="RR0055" Identifier="GenerateCombinedEnumMember" Title="Generate combined enum member">
+    <OptionKey>generate_combined_enum_member</OptionKey>
     <Syntaxes>
       <Syntax>enum declaration (with FlagsAttribute)</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0056" Identifier="GenerateEnumMember" Title="Generate enum member">
+    <OptionKey>generate_enum_member</OptionKey>
     <Syntaxes>
       <Syntax>enum declaration (with FlagsAttribute)</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0057" Identifier="GenerateEnumValues" Title="Generate enum values">
+    <OptionKey>generate_enum_values</OptionKey>
     <Syntaxes>
       <Syntax>enum declaration (with FlagsAttribute)</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0058" Identifier="GenerateEventInvokingMethod" Title="Generate event invoking method">
+    <OptionKey>generate_event_invoking_method</OptionKey>
     <Syntaxes>
       <Syntax>event</Syntax>
     </Syntaxes>
     <Span>identifier</Span>
   </Refactoring>
-  <Refactoring Id="RR0059" Identifier="AddMissingCases" Title="Add missing cases to switch statement">
+  <Refactoring Id="RR0059" Identifier="AddMissingCasesToSwitchStatement" Title="Add missing cases to switch statement">
+    <OptionKey>add_missing_cases_to_switch</OptionKey>
     <Syntaxes>
       <Syntax>switch statement</Syntax>
     </Syntaxes>
@@ -603,24 +651,28 @@ if (y)
       </Sample>
     </Samples>
   </Refactoring>
-  <Refactoring Id="RR0060" Identifier="InitializeLocalWithDefaultValue" Title="Initialize local with default value">
+  <Refactoring Id="RR0060" Identifier="InitializeLocalVariableWithDefaultValue" Title="Initialize local variable with default value">
+    <OptionKey>initialize_local_variable_with_default_value</OptionKey>
     <Syntaxes>
       <Syntax>local declaration without initializer</Syntax>
     </Syntaxes>
     <Span>identifier</Span>
   </Refactoring>
   <Refactoring Id="RR0061" Identifier="InlineAliasExpression" Title="Inline alias expression">
+    <OptionKey>inline_alias_expression</OptionKey>
     <Syntaxes>
       <Syntax>using alias directive</Syntax>
     </Syntaxes>
     <Span>identifier</Span>
   </Refactoring>
   <Refactoring Id="RR0062" Identifier="InlineMethod" Title="Inline method">
+    <OptionKey>inline_method</OptionKey>
     <Syntaxes>
       <Syntax>method invocation</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0063" Identifier="InsertStringInterpolation" Title="Insert string interpolation">
+    <OptionKey>insert_string_interpolation</OptionKey>
     <Syntaxes>
       <Syntax>string literal</Syntax>
       <Syntax>interpolated string</Syntax>
@@ -631,16 +683,19 @@ if (y)
     </Images>
   </Refactoring>
   <Refactoring Id="RR0064" Identifier="IntroduceAndInitializeField" Title="Introduce and initialize field">
+    <OptionKey>introduce_and_initialize_field</OptionKey>
     <Syntaxes>
       <Syntax>constructor parameter</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0065" Identifier="IntroduceAndInitializeProperty" Title="Introduce and initialize property">
+    <OptionKey>introduce_and_initialize_property</OptionKey>
     <Syntaxes>
       <Syntax>constructor parameter</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0066" Identifier="IntroduceConstructor" Title="Introduce constructor" IsEnabledByDefault="false">
+    <OptionKey>introduce_constructor</OptionKey>
     <Syntaxes>
       <Syntax>field</Syntax>
       <Syntax>property</Syntax>
@@ -648,40 +703,47 @@ if (y)
     <Span></Span>
   </Refactoring>
   <Refactoring Id="RR0067" Identifier="IntroduceFieldToLockOn" Title="Introduce field to lock on">
+    <OptionKey>introduce_field_to_lock_on</OptionKey>
     <Syntaxes>
       <Syntax>lock statement</Syntax>
     </Syntaxes>
     <Span>missing expression</Span>
   </Refactoring>
   <Refactoring Id="RR0068" Identifier="IntroduceLocalVariable" Title="Introduce local variable">
+    <OptionKey>introduce_local_variable</OptionKey>
     <Syntaxes>
       <Syntax>expression statement</Syntax>
       <Syntax>expression in using statement</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0069" Identifier="MakeMemberAbstract" Title="Make member abstract">
+    <OptionKey>make_member_abstract</OptionKey>
     <Syntaxes>
       <Syntax>non-abstract indexer/method/property in abstract class</Syntax>
     </Syntaxes>
     <Span>indexer/method/property header</Span>
   </Refactoring>
   <Refactoring Id="RR0070" Identifier="MakeMemberVirtual" Title="Make member virtual">
+    <OptionKey>make_member_virtual</OptionKey>
     <Syntaxes>
       <Syntax>method declaration</Syntax>
       <Syntax>indexer declaration</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0073" Identifier="MergeAssignmentExpressionWithReturnStatement" Title="Merge assignment expression with return statement">
+  <Refactoring Id="RR0073" Identifier="RemoveUnnecessaryAssignment" Title="Remove unnecessary assignment">
+    <OptionKey>remove_unnecessary_assignment</OptionKey>
     <Syntaxes>
       <Syntax>assignment expression followed with return statement</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0074" Identifier="MergeAttributes" Title="Merge attributes">
+    <OptionKey>merge_attributes</OptionKey>
     <Syntaxes>
       <Syntax>selected attribute lists</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0075" Identifier="MergeIfStatements" Title="Merge 'if' statements">
+    <OptionKey>merge_if_statements</OptionKey>
     <Syntaxes>
       <Syntax>selected 'if' statements</Syntax>
     </Syntaxes>
@@ -708,16 +770,19 @@ return true;]]></After>
     </Samples>
   </Refactoring>
   <Refactoring Id="RR0076" Identifier="MergeInterpolationIntoInterpolatedString" Title="Merge interpolation into interpolated string" IsObsolete="true">
+    <OptionKey>merge_interpolation_into_interpolated_string</OptionKey>
     <Syntaxes>
       <Syntax>interpolation</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0077" Identifier="MergeLocalDeclarations" Title="Merge local declarations">
+    <OptionKey>merge_local_declarations</OptionKey>
     <Syntaxes>
       <Syntax>local declarations with same type</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0078" Identifier="JoinStringExpressions" Title="Join string expressions">
+    <OptionKey>join_string_expressions</OptionKey>
     <Syntaxes>
       <Syntax>concatenated string expressions</Syntax>
     </Syntaxes>
@@ -728,22 +793,26 @@ return true;]]></After>
     </Images>
   </Refactoring>
   <Refactoring Id="RR0079" Identifier="InvertBinaryExpression" Title="Invert binary expression">
+    <OptionKey>invert_binary_expression</OptionKey>
     <Syntaxes>
       <Syntax>logical and/or expression</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0080" Identifier="InvertBooleanLiteral" Title="Invert boolean literal">
+    <OptionKey>invert_boolean_literal</OptionKey>
     <Syntaxes>
       <Syntax>boolean literal</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0081" Identifier="InvertIsExpression" Title="Invert is expression">
+    <OptionKey>invert_is_expression</OptionKey>
     <Syntaxes>
       <Syntax>is expression</Syntax>
     </Syntaxes>
     <Span>operator</Span>
   </Refactoring>
   <Refactoring Id="RR0082" Identifier="InvertOperator" Title="Invert operator">
+    <OptionKey>invert_operator</OptionKey>
     <Syntaxes>
       <Syntax>!=</Syntax>
       <Syntax>&amp;&amp;</Syntax>
@@ -755,39 +824,46 @@ return true;]]></After>
       <Syntax>&gt;=</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0083" Identifier="NotifyWhenPropertyChange" Title="Notify when property change">
+  <Refactoring Id="RR0083" Identifier="NotifyWhenPropertyChanges" Title="Notify when property changes">
+    <OptionKey>notify_when_property_changes</OptionKey>
     <Syntaxes>
       <Syntax>property in class/struct that implements System.ComponentModel.INotifyPropertyChanged</Syntax>
     </Syntaxes>
     <Span>setter</Span>
   </Refactoring>
   <Refactoring Id="RR0084" Identifier="ParenthesizeExpression" Title="Parenthesize expression">
+    <OptionKey>parenthesize_expression</OptionKey>
     <Syntaxes>
       <Syntax>selected expression</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0085" Identifier="PromoteLocalToParameter" Title="Promote local to parameter">
+  <Refactoring Id="RR0085" Identifier="PromoteLocalVariableToParameter" Title="Promote local variable to parameter">
+    <OptionKey>promote_local_variable_to_parameter</OptionKey>
     <Syntaxes>
       <Syntax>local declaration in method</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0086" Identifier="RemoveAllComments" Title="Remove all comments">
+    <OptionKey>remove_all_comments</OptionKey>
     <Syntaxes>
       <Syntax>singleline/multiline comment</Syntax>
       <Syntax>singleline/multiline documentation documentation comment</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0087" Identifier="RemoveAllCommentsExceptDocumentationComments" Title="Remove all comments (except documentation comments)">
+    <OptionKey>remove_all_comments_except_documentation_comments</OptionKey>
     <Syntaxes>
       <Syntax>singleline/multiline comment</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0088" Identifier="RemoveAllDocumentationComments" Title="Remove all documentation comments" IsEnabledByDefault="false">
+    <OptionKey>remove_all_documentation_comments</OptionKey>
     <Syntaxes>
       <Syntax>singleline/multiline documentation comment</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0089" Identifier="RemoveAllMemberDeclarations" Title="Remove all member declarations">
+    <OptionKey>remove_all_member_declarations</OptionKey>
     <Syntaxes>
       <Syntax>namespace</Syntax>
       <Syntax>class</Syntax>
@@ -797,16 +873,19 @@ return true;]]></After>
     <Span>opening or closing brace</Span>
   </Refactoring>
   <Refactoring Id="RR0090" Identifier="RemoveAllPreprocessorDirectives" Title="Remove all preprocessor directives">
+    <OptionKey>remove_all_preprocessor_directives</OptionKey>
     <Syntaxes>
       <Syntax>preprocessor directive</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0091" Identifier="RemoveAllRegionDirectives" Title="Remove all region directives">
+    <OptionKey>remove_all_region_directives</OptionKey>
     <Syntaxes>
       <Syntax>region directive</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0092" Identifier="RemoveAllStatements" Title="Remove all statements">
+    <OptionKey>remove_all_statements</OptionKey>
     <Syntaxes>
       <Syntax>method</Syntax>
       <Syntax>constructor</Syntax>
@@ -815,12 +894,14 @@ return true;]]></After>
     <Span>opening or closing brace</Span>
   </Refactoring>
   <Refactoring Id="RR0093" Identifier="RemoveAllSwitchSections" Title="Remove all switch sections">
+    <OptionKey>remove_all_switch_sections</OptionKey>
     <Syntaxes>
       <Syntax>switch statement</Syntax>
     </Syntaxes>
     <Span>opening or closing brace</Span>
   </Refactoring>
   <Refactoring Id="RR0094" Identifier="RemoveBraces" Title="Remove braces">
+    <OptionKey>remove_braces</OptionKey>
     <Syntaxes>
       <Syntax>do statement</Syntax>
       <Syntax>else clause</Syntax>
@@ -835,53 +916,62 @@ return true;]]></After>
     <Span>block with a single statement</Span>
   </Refactoring>
   <Refactoring Id="RR0095" Identifier="RemoveBracesFromIfElse" Title="Remove braces from if-else">
+    <OptionKey>remove_braces_from_if_else</OptionKey>
     <Syntaxes>
       <Syntax>if-else chain</Syntax>
     </Syntaxes>
     <Span>embedded statement</Span>
   </Refactoring>
   <Refactoring Id="RR0096" Identifier="RemoveBracesFromSwitchSection" Title="Remove braces from switch section">
+    <OptionKey>remove_braces_from_switch_section</OptionKey>
     <Syntaxes>
       <Syntax>switch section</Syntax>
     </Syntaxes>
     <Span>case or default keyword</Span>
   </Refactoring>
   <Refactoring Id="RR0097" Identifier="RemoveBracesFromSwitchSections" Title="Remove braces from switch sections">
+    <OptionKey>remove_braces_from_switch_sections</OptionKey>
     <Syntaxes>
       <Syntax>switch statement</Syntax>
     </Syntaxes>
     <Span>case or default keyword</Span>
   </Refactoring>
   <Refactoring Id="RR0098" Identifier="RemoveComment" Title="Remove comment">
+    <OptionKey>remove_comment</OptionKey>
     <Syntaxes>
       <Syntax>singleline/multiline comment</Syntax>
       <Syntax>singleline/multiline xml documentation comment</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0099" Identifier="RemoveConditionFromLastElse" Title="Remove condition from last else clause">
+    <OptionKey>remove_condition_from_last_else</OptionKey>
     <Syntaxes>
       <Syntax>else clause</Syntax>
     </Syntaxes>
     <Span>else keyword</Span>
   </Refactoring>
   <Refactoring Id="RR0100" Identifier="RemovePreprocessorDirective" Title="Remove preprocessor directive">
+    <OptionKey>remove_preprocessor_directive</OptionKey>
     <Syntaxes>
       <Syntax>#if directive</Syntax>
       <Syntax>#region directive</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0101" Identifier="RemoveEmptyLines" Title="Remove empty lines">
+    <OptionKey>remove_empty_lines</OptionKey>
     <Syntaxes>
       <Syntax>selected lines</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0102" Identifier="RemoveInterpolation" Title="Remove interpolation">
+    <OptionKey>remove_interpolation</OptionKey>
     <Syntaxes>
       <Syntax>string interpolation</Syntax>
     </Syntaxes>
     <Span>opening or closing brace</Span>
   </Refactoring>
-  <Refactoring Id="RR0103" Identifier="RemoveMember" Title="Remove member">
+  <Refactoring Id="RR0103" Identifier="RemoveMemberDeclaration" Title="Remove member declaration">
+    <OptionKey>remove_member_declaration</OptionKey>
     <Syntaxes>
       <Syntax>method</Syntax>
       <Syntax>constructor</Syntax>
@@ -897,32 +987,38 @@ return true;]]></After>
     <Span>opening or closing brace</Span>
   </Refactoring>
   <Refactoring Id="RR0104" Identifier="RemoveMemberDeclarations" Title="Remove member declarations above/below">
+    <OptionKey>remove_member_declarations_above_or_below</OptionKey>
     <Syntaxes>
       <Syntax>empty line between member declarations</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0105" Identifier="RemoveParameterNameFromArgument" Title="Remove parameter name from argument">
+  <Refactoring Id="RR0105" Identifier="RemoveArgumentName" Title="Remove argument name">
+    <OptionKey>remove_argument_name</OptionKey>
     <Syntaxes>
       <Syntax>selected argument(s)</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0106" Identifier="RemoveParentheses" Title="Remove parentheses">
+    <OptionKey>remove_parentheses</OptionKey>
     <Syntaxes>
       <Syntax>parenthesized expression</Syntax>
     </Syntaxes>
     <Span>opening or closing parenthesis</Span>
   </Refactoring>
   <Refactoring Id="RR0107" Identifier="RemovePropertyInitializer" Title="Remove property initializer">
+    <OptionKey>remove_property_initializer</OptionKey>
     <Syntaxes>
       <Syntax>property initializer</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0108" Identifier="RemoveRegion" Title="Remove region">
+    <OptionKey>remove_region</OptionKey>
     <Syntaxes>
       <Syntax>region directive</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0109" Identifier="RemoveStatement" Title="Remove statement">
+    <OptionKey>remove_statement</OptionKey>
     <Syntaxes>
       <Syntax>do statement</Syntax>
       <Syntax>fixed statement</Syntax>
@@ -940,17 +1036,20 @@ return true;]]></After>
     </Syntaxes>
     <Span>open/close brace</Span>
   </Refactoring>
-  <Refactoring Id="RR0110" Identifier="RemoveStatementsFromSwitchSections" Title="Remove statements from switch sections">
+  <Refactoring Id="RR0110" Identifier="MergeSwitchSections" Title="Merge switch sections">
+    <OptionKey>merge_switch_sections</OptionKey>
     <Syntaxes>
       <Syntax>selected switch sections</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0111" Identifier="RenameBackingFieldAccordingToPropertyName" Title="Rename backing field according to property name">
+  <Refactoring Id="RR0111" Identifier="SyncPropertyNameAndBackingFieldName" Title="Synchronize property name and backing field name">
+    <OptionKey>sync_property_name_and_backing_field_name</OptionKey>
     <Syntaxes>
       <Syntax>field identifier inside property declaration</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0112" Identifier="RenameIdentifierAccordingToTypeName" Title="Rename identifier according to type name">
+    <OptionKey>rename_identifier_according_to_type_name</OptionKey>
     <Syntaxes>
       <Syntax>foreach statement</Syntax>
       <Syntax>local/field/constant declaration</Syntax>
@@ -962,22 +1061,26 @@ return true;]]></After>
     </Images>
   </Refactoring>
   <Refactoring Id="RR0113" Identifier="RenameMethodAccordingToTypeName" Title="Rename method according to type name">
+    <OptionKey>rename_method_according_to_type_name</OptionKey>
     <Syntaxes>
       <Syntax>method</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0114" Identifier="RenameParameterAccordingToTypeName" Title="Rename parameter according to its type name">
+    <OptionKey>rename_parameter_according_to_type_name</OptionKey>
     <Syntaxes>
       <Syntax>parameter</Syntax>
     </Syntaxes>
     <Span>parameter identifier</Span>
   </Refactoring>
   <Refactoring Id="RR0115" Identifier="RenamePropertyAccordingToTypeName" Title="Rename property according to type name">
+    <OptionKey>rename_property_according_to_type_name</OptionKey>
     <Syntaxes>
       <Syntax>property identifier</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0116" Identifier="InvertLinqMethodCall" Title="Invert LINQ method call">
+    <OptionKey>invert_linq_method_call</OptionKey>
     <Syntaxes>
       <Syntax>System.Linq.Enumerable.Any(Func&lt;T, bool&gt;) or System.Linq.Enumerable.All(Func&lt;T, bool&gt;)</Syntax>
     </Syntaxes>
@@ -1001,23 +1104,27 @@ return true;]]></After>
       </Sample>
     </Samples>
   </Refactoring>
-  <Refactoring Id="RR0117" Identifier="ReplaceAsWithCast" Title="Replace as expression with cast expression">
+  <Refactoring Id="RR0117" Identifier="ReplaceAsExpressionWithExplicitCast" Title="Replace 'as' expression with explicit cast">
+    <OptionKey>replace_as_expression_with_explicit_cast</OptionKey>
     <Syntaxes>
       <Syntax>as expression</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0118" Identifier="ReplaceCastWithAs" Title="Replace cast expression with as expression">
+  <Refactoring Id="RR0118" Identifier="ReplaceExplicitCastWithAsExpression" Title="Replace explicit cast expression 'as' expression">
+    <OptionKey>replace_explicit_cast_with_as_expression</OptionKey>
     <Syntaxes>
       <Syntax>cast expression</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0119" Identifier="ReplaceConditionalExpressionWithExpression" Title="Replace conditional expression with expression">
+  <Refactoring Id="RR0119" Identifier="ReplaceConditionalExpressionWithTrueOrFalseBranch" Title="Replace conditional expression with true/false branch">
+    <OptionKey>replace_conditional_expression_with_true_or_false_branch</OptionKey>
     <Syntaxes>
       <Syntax>conditional expression</Syntax>
     </Syntaxes>
     <Span>selected true/false expression</Span>
   </Refactoring>
-  <Refactoring Id="RR0120" Identifier="ConvertConditionalOperatorToIfElse" Title="Convert ?: to if-else">
+  <Refactoring Id="RR0120" Identifier="ConvertConditionalExpressionToIfElse" Title="Convert ?: to if-else">
+    <OptionKey>convert_conditional_expression_to_if_else</OptionKey>
     <Syntaxes>
       <Syntax>?: operator that is part of local declaration, assignment or (yield) return statement</Syntax>
     </Syntaxes>
@@ -1052,12 +1159,14 @@ else
       </Sample>
     </Samples>
   </Refactoring>
-  <Refactoring Id="RR0121" Identifier="ReplaceConstantWithField" Title="Replace constant with field">
+  <Refactoring Id="RR0121" Identifier="UseReadOnlyFieldInsteadOfConstant" Title="Use read-only field instead of constant">
+    <OptionKey>use_readonly_field_instead_of_constant</OptionKey>
     <Syntaxes>
       <Syntax>constant declaration</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0123" Identifier="ConvertDoToWhile" Title="Convert 'do' to 'while'">
+    <OptionKey>convert_do_to_while</OptionKey>
     <Syntaxes>
       <Syntax>do statement</Syntax>
     </Syntaxes>
@@ -1073,21 +1182,24 @@ else
       </Sample>
     </Samples>
   </Refactoring>
-  <Refactoring Id="RR0124" Identifier="ReplaceEqualsExpressionWithStringEquals" Title="Replace equals expression with string.Equals">
+  <Refactoring Id="RR0124" Identifier="ReplaceEqualityOperatorWithStringEquals" Title="Replace equality operator with string.Equals">
+    <OptionKey>replace_equality_operator_with_string_equals</OptionKey>
     <Syntaxes>
       <Syntax>equals expression</Syntax>
       <Syntax>not equals expression</Syntax>
     </Syntaxes>
     <Span>operator</Span>
   </Refactoring>
-  <Refactoring Id="RR0125" Identifier="ReplaceEqualsExpressionWithStringIsNullOrEmpty" Title="Replace equals expression with string.IsNullOrEmpty">
+  <Refactoring Id="RR0125" Identifier="ReplaceEqualityOperatorWithStringIsNullOrEmpty" Title="Replace equality operator with string.IsNullOrEmpty">
+    <OptionKey>replace_equality_operator_with_string_isnullorempty</OptionKey>
     <Syntaxes>
       <Syntax>equals expression</Syntax>
       <Syntax>not equals expression</Syntax>
     </Syntaxes>
     <Span>operator</Span>
   </Refactoring>
-  <Refactoring Id="RR0126" Identifier="ReplaceEqualsExpressionWithStringIsNullOrWhiteSpace" Title="Replace equals expression with string.IsNullOrWhiteSpace">
+  <Refactoring Id="RR0126" Identifier="ReplaceEqualityOperatorWithStringIsNullOrWhiteSpace" Title="Replace equality operator with string.IsNullOrWhiteSpace">
+    <OptionKey>replace_equality_operator_with_string_isnullorwhitespace</OptionKey>
     <Syntaxes>
       <Syntax>equals expression</Syntax>
       <Syntax>not equals expression</Syntax>
@@ -1095,6 +1207,7 @@ else
     <Span>operator</Span>
   </Refactoring>
   <Refactoring Id="RR0127" Identifier="InlineConstantValue" Title="Inline constant value">
+    <OptionKey>inline_constant_value</OptionKey>
     <Syntaxes>
       <Syntax>expression that has constant value</Syntax>
     </Syntaxes>
@@ -1115,33 +1228,39 @@ void Foo()
       </Sample>
     </Samples>
   </Refactoring>
-  <Refactoring Id="RR0128" Identifier="UseConstantInsteadOfField" Title="Use constant instead of field">
+  <Refactoring Id="RR0128" Identifier="UseConstantInsteadOfReadOnlyField" Title="Use constant instead of read-only field">
+    <OptionKey>use_constant_instead_of_readonly_field</OptionKey>
     <Syntaxes>
       <Syntax>read-only field</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0129" Identifier="ConvertForEachToFor" Title="Convert 'foreach' to 'for'">
+    <OptionKey>convert_foreach_to_for</OptionKey>
     <Syntaxes>
       <Syntax>foreach statement</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0130" Identifier="ConvertForToForEach" Title="Convert 'for' to 'foreach'">
+    <OptionKey>convert_for_to_foreach</OptionKey>
     <Syntaxes>
       <Syntax>for statement</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0131" Identifier="ConvertForToWhile" Title="Convert 'for' to 'while'">
+    <OptionKey>convert_for_to_while</OptionKey>
     <Syntaxes>
       <Syntax>for statement</Syntax>
     </Syntaxes>
     <Span>for keyword or selected for statement</Span>
   </Refactoring>
   <Refactoring Id="RR0132" Identifier="ConvertHexadecimalLiteralToDecimalLiteral" Title="Convert hexadecimal literal to decimal literal">
+    <OptionKey>convert_hexadecimal_literal_to_decimal_literal</OptionKey>
     <Syntaxes>
       <Syntax>hexadecimal literal</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0133" Identifier="ConvertIfToSwitch" Title="Convert 'if' to 'switch'">
+    <OptionKey>convert_if_to_switch</OptionKey>
     <Syntaxes>
       <Syntax>if statement</Syntax>
     </Syntaxes>
@@ -1178,6 +1297,7 @@ switch (ch)
     </Samples>
   </Refactoring>
   <Refactoring Id="RR0134" Identifier="InvertPrefixOrPostfixUnaryOperator" Title="Invert prefix/postfix unary operator">
+    <OptionKey>invert_prefix_or_postfix_unary_expression</OptionKey>
     <Syntaxes>
       <Syntax>prefix/postfix unary expression</Syntax>
     </Syntaxes>
@@ -1202,17 +1322,20 @@ i--;]]></After>
     </Samples>
   </Refactoring>
   <Refactoring Id="RR0135" Identifier="ReplaceInterpolatedStringWithInterpolationExpression" Title="Replace interpolated string with interpolation expression">
+    <OptionKey>replace_interpolated_string_with_interpolation_expression</OptionKey>
     <Syntaxes>
       <Syntax>interpolated string with single interpolation and no text</Syntax>
     </Syntaxes>
     <Span>interpolation</Span>
   </Refactoring>
   <Refactoring Id="RR0136" Identifier="ConvertInterpolatedStringToStringLiteral" Title="Convert interpolated string to string literal">
+    <OptionKey>convert_interpolated_string_to_string_literal</OptionKey>
     <Syntaxes>
       <Syntax>Interpolated string without any interpolation</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0137" Identifier="ConvertMethodGroupToLambda" Title="Convert method group to lambda">
+    <OptionKey>convert_method_group_to_lambda</OptionKey>
     <Syntaxes>
       <Syntax>method group</Syntax>
     </Syntaxes>
@@ -1224,33 +1347,39 @@ i--;]]></After>
     </Samples>
   </Refactoring>
   <Refactoring Id="RR0138" Identifier="ReplaceMethodWithProperty" Title="Replace method with property" IsEnabledByDefault="false">
+    <OptionKey>replace_method_with_property</OptionKey>
     <Syntaxes>
       <Syntax>method</Syntax>
     </Syntaxes>
     <Span>method header</Span>
   </Refactoring>
   <Refactoring Id="RR0139" Identifier="ConvertNullLiteralToDefaultExpression" Title="Convert null literal to default expression">
+    <OptionKey>convert_null_literal_to_default_expression</OptionKey>
     <Syntaxes>
       <Syntax>argument</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0140" Identifier="ReplacePrefixOperatorWithPostfixOperator" Title="Replace prefix operator to postfix operator">
+    <OptionKey>replace_prefix_operator_with_postfix_operator</OptionKey>
     <Syntaxes>
       <Syntax>prefix/postfix unary expression</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0141" Identifier="ReplacePropertyWithMethod" Title="Replace property with method">
+    <OptionKey>replace_property_with_method</OptionKey>
     <Syntaxes>
       <Syntax>read-only property</Syntax>
     </Syntaxes>
     <Span>property header</Span>
   </Refactoring>
   <Refactoring Id="RR0142" Identifier="ConvertRegularStringLiteralToVerbatimStringLiteral" Title="Convert regular string literal to verbatim string literal">
+    <OptionKey>convert_regular_string_literal_to_verbatim_string_literal</OptionKey>
     <Syntaxes>
       <Syntax>regular string literal</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0143" Identifier="ConvertReturnToIf" Title="Convert '(yield) return' to 'if'">
+  <Refactoring Id="RR0143" Identifier="ConvertReturnStatementToIf" Title="Convert 'return' statement to 'if'">
+    <OptionKey>convert_return_statement_to_if</OptionKey>
     <Syntaxes>
       <Syntax>return statement</Syntax>
       <Syntax>yield return statement</Syntax>
@@ -1261,6 +1390,7 @@ i--;]]></After>
     </Images>
   </Refactoring>
   <Refactoring Id="RR0144" Identifier="CallIndexOfInsteadOfContains" Title="Call string.IndexOf instead of string.Contains">
+    <OptionKey>call_indexof_instead_of_contains</OptionKey>
     <Syntaxes>
       <Syntax>method invocation</Syntax>
     </Syntaxes>
@@ -1277,27 +1407,32 @@ i--;]]></After>
     </Samples>
   </Refactoring>
   <Refactoring Id="RR0145" Identifier="ConvertStringFormatToInterpolatedString" Title="Convert 'string.Format' to interpolated string">
+    <OptionKey>convert_string_format_to_interpolated_string</OptionKey>
     <Syntaxes>
       <Syntax>string.Format method</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0147" Identifier="ConvertSwitchToIf" Title="Convert 'switch' to 'if'">
+    <OptionKey>convert_switch_to_if</OptionKey>
     <Syntaxes>
       <Syntax>switch statement</Syntax>
     </Syntaxes>
     <Span>switch keyword</Span>
   </Refactoring>
   <Refactoring Id="RR0148" Identifier="ConvertVerbatimStringLiteralToRegularStringLiteral" Title="Convert verbatim string literal to regular string literal">
+    <OptionKey>convert_verbatim_string_literal_to_regular_string_literal</OptionKey>
     <Syntaxes>
       <Syntax>verbatim string literal</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0149" Identifier="ConvertVerbatimStringLiteralToRegularStringLiterals" Title="Convert verbatim string literal to regular string literals">
+    <OptionKey>convert_verbatim_string_literal_to_regular_string_literals</OptionKey>
     <Syntaxes>
       <Syntax>multiline verbatim string literal</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0150" Identifier="ConvertWhileToDo" Title="Convert 'while' statement to 'do' statement">
+    <OptionKey>convert_while_to_do</OptionKey>
     <Syntaxes>
       <Syntax>while statement</Syntax>
     </Syntaxes>
@@ -1317,29 +1452,34 @@ i--;]]></After>
     </Samples>
   </Refactoring>
   <Refactoring Id="RR0151" Identifier="ConvertWhileToFor" Title="Convert 'while' statement to 'for' statement">
+    <OptionKey>convert_while_to_for</OptionKey>
     <Syntaxes>
       <Syntax>while statement</Syntax>
     </Syntaxes>
     <Span>while keyword or selected statement(s)</Span>
   </Refactoring>
   <Refactoring Id="RR0152" Identifier="ReverseForStatement" Title="Reverse 'for' statement">
+    <OptionKey>reverse_for_statement</OptionKey>
     <Syntaxes>
       <Syntax>for statement</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0153" Identifier="SimplifyIf" Title="Simplify if">
+    <OptionKey>simplify_if</OptionKey>
     <Syntaxes>
       <Syntax>if statement</Syntax>
     </Syntaxes>
     <Span>top if keyword or selected if statement</Span>
   </Refactoring>
-  <Refactoring Id="RR0154" Identifier="ConvertLambdaExpressionBodyToExpressionBody" Title="Convert lambda expression body to expression-body">
+  <Refactoring Id="RR0154" Identifier="ConvertLambdaBlockBodyToExpressionBody" Title="Convert lambda block body to expression body">
+    <OptionKey>convert_lambda_block_body_to_expression_body</OptionKey>
     <Syntaxes>
       <Syntax>lambda expression with block body with single single-line statement</Syntax>
     </Syntaxes>
     <Span>body</Span>
   </Refactoring>
   <Refactoring Id="RR0155" Identifier="SortMemberDeclarations" Title="Sort member declarations">
+	<OptionKey>sort_member_declarations</OptionKey>
     <Syntaxes>
       <Syntax>namespace declarations</Syntax>
       <Syntax>class declarations</Syntax>
@@ -1356,16 +1496,19 @@ i--;]]></After>
     </Images>
   </Refactoring>
   <Refactoring Id="RR0156" Identifier="SplitAttributes" Title="Split attributes">
+	<OptionKey>split_attributes</OptionKey>
     <Syntaxes>
       <Syntax>selected attribute list</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0157" Identifier="SplitSwitchLabels" Title="Split switch labels">
+	<OptionKey>split_switch_labels</OptionKey>
     <Syntaxes>
       <Syntax>selected switch labels</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0158" Identifier="SplitVariableDeclaration" Title="Split variable declaration">
+	<OptionKey>split_variable_declaration</OptionKey>
     <Syntaxes>
       <Syntax>local declaration</Syntax>
       <Syntax>field declaration</Syntax>
@@ -1376,6 +1519,7 @@ i--;]]></After>
     </Images>
   </Refactoring>
   <Refactoring Id="RR0159" Identifier="SwapBinaryOperands" Title="Swap binary operands">
+	<OptionKey>swap_binary_operands</OptionKey>
     <Syntaxes>
       <Syntax>binary expression</Syntax>
     </Syntaxes>
@@ -1396,56 +1540,66 @@ i--;]]></After>
     </Samples>
   </Refactoring>
   <Refactoring Id="RR0160" Identifier="InvertConditionalExpression" Title="Invert conditional expression">
+	<OptionKey>invert_conditional_expression</OptionKey>
     <Syntaxes>
       <Syntax>conditional expression</Syntax>
     </Syntaxes>
     <Span>condition</Span>
   </Refactoring>
   <Refactoring Id="RR0161" Identifier="SwapMemberDeclarations" Title="Swap member declarations">
+	<OptionKey>swap_member_declarations</OptionKey>
     <Syntaxes>
       <Syntax>empty line between member declarations</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0162" Identifier="InvertIfElse" Title="Invert if-else">
+	<OptionKey>invert_if_else</OptionKey>
     <Syntaxes>
       <Syntax>if-else statement</Syntax>
     </Syntaxes>
     <Span>if keyword</Span>
   </Refactoring>
   <Refactoring Id="RR0163" Identifier="UncommentSingleLineComment" Title="Uncomment single-line comment">
+	<OptionKey>uncomment_singleline_comment</OptionKey>
     <Syntaxes>
       <Syntax>single-line comment(s)</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0164" Identifier="ConvertHasFlagCallToBitwiseOperation" Title="Convert 'HasFlag' call to bitwise operation">
+	<OptionKey>convert_hasflag_call_to_bitwise_operation</OptionKey>
     <Syntaxes>
       <Syntax>Enum.HasFlag method invocation</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0165" Identifier="UseCoalesceExpressionInsteadOfIf" Title="Use coalesce expression instead of if">
+	<OptionKey>use_coalesce_expression_instead_of_if</OptionKey>
     <Syntaxes>
       <Syntax>if statement</Syntax>
     </Syntaxes>
     <Span>top if keyword or selected if statement</Span>
   </Refactoring>
-  <Refactoring Id="RR0166" Identifier="ConvertIfToConditionalOperator" Title="Convert 'if' to ?:">
+  <Refactoring Id="RR0166" Identifier="ConvertIfToConditionalExpression" Title="Convert 'if' to ?:">
+	<OptionKey>convert_if_to_conditional_expression</OptionKey>
     <Syntaxes>
       <Syntax>if statement</Syntax>
     </Syntaxes>
     <Span>top if keyword or selected if statement</Span>
   </Refactoring>
-  <Refactoring Id="RR0167" Identifier="UseElementAccessInsteadOfEnumerableMethod" Title="Use element access instead of 'First/Last'ElementAt' method">
+  <Refactoring Id="RR0167" Identifier="UseElementAccessInsteadOfLinqMethod" Title="Use element access instead of LINQ method">
+	<OptionKey>use_element_access_instead_of_linq_method</OptionKey>
     <Syntaxes>
       <Syntax>First/Last/ElementAt method invocation</Syntax>
     </Syntaxes>
     <Span>method name</Span>
   </Refactoring>
   <Refactoring Id="RR0168" Identifier="UseEmptyStringLiteralInsteadOfStringEmpty" Title="Use &quot;&quot; instead of string.Empty" IsObsolete="true">
+	<OptionKey>use_empty_string_literal_instead_of_string_empty</OptionKey>
     <Syntaxes>
       <Syntax>string.Empty field</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0169" Identifier="ConvertBlockBodyToExpressionBody" Title="Convert block body to expression-body">
+	<OptionKey>convert_block_body_to_expression_body</OptionKey>
     <Syntaxes>
       <Syntax>method</Syntax>
       <Syntax>property</Syntax>
@@ -1454,18 +1608,21 @@ i--;]]></After>
     </Syntaxes>
     <Span>body or accessor list</Span>
   </Refactoring>
-  <Refactoring Id="RR0170" Identifier="UseLambdaExpressionInsteadOfAnonymousMethod" Title="Use lambda expression instead of anonymous method">
+  <Refactoring Id="RR0170" Identifier="UseLambdaInsteadOfAnonymousMethod" Title="Use lambda instead of anonymous method">
+	<OptionKey>use_lambda_instead_of_anonymous_method</OptionKey>
     <Syntaxes>
       <Syntax>anonymous method</Syntax>
     </Syntaxes>
     <Span>delegate keyword</Span>
   </Refactoring>
-  <Refactoring Id="RR0171" Identifier="ConvertEmptyStringToStringEmpty" Title="Convert &quot;&quot; to string.Empty" IsEnabledByDefault="false">
+  <Refactoring Id="RR0171" Identifier="UseStringEmptyInsteadOfEmptyStringLiteral" Title="Convert &quot;&quot; to string.Empty" IsEnabledByDefault="false">
+	<OptionKey>use_string_empty_instead_of_empty_string_literal</OptionKey>
     <Syntaxes>
       <Syntax>empty string literal</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0172" Identifier="WrapInCondition" Title="Wrap in condition">
+  <Refactoring Id="RR0172" Identifier="WrapStatementsInCondition" Title="Wrap statements in condition">
+	<OptionKey>wrap_statements_in_condition</OptionKey>
     <Syntaxes>
       <Syntax>selected statements</Syntax>
     </Syntaxes>
@@ -1475,27 +1632,32 @@ i--;]]></After>
       <Syntax>statement</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0174" Identifier="WrapInIfDirective" Title="Wrap in #if directive">
+  <Refactoring Id="RR0174" Identifier="WrapLinesInPreprocessorDirective" Title="Wrap lines in preprocessor directive">
+	<OptionKey>wrap_lines_in_preprocessor_directive</OptionKey>
     <Syntaxes>
       <Syntax>selected lines</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0175" Identifier="WrapInRegion" Title="Wrap in #region directive">
+  <Refactoring Id="RR0175" Identifier="WrapLinesInRegion" Title="Wrap lines in #region directive">
+	<OptionKey>wrap_lines_in_region</OptionKey>
     <Syntaxes>
       <Syntax>selected lines</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0176" Identifier="WrapInTryCatch" Title="Wrap in try-catch">
-    <Syntaxes>
+  <Refactoring Id="RR0176" Identifier="WrapLinesInTryCatch" Title="Wrap lines in try-catch">
+	<OptionKey>wrap_lines_in_try_catch</OptionKey>
+	  <Syntaxes>
       <Syntax>selected statements</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0177" Identifier="WrapInUsingStatement" Title="Wrap in using statement">
-    <Syntaxes>
-      <Syntax>local declaration of type that implements IDisposable</Syntax>
+  <Refactoring Id="RR0177" Identifier="WrapStatementsInUsingStatement" Title="Wrap statements in 'using' statement">
+	<OptionKey>wrap_statements_in_using_statement</OptionKey>
+	  <Syntaxes>
+      <Syntax>selected statements where first is local declaration of type that implements IDisposable</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0178" Identifier="AddTypeParameter" Title="Add type parameter">
+  <Refactoring Id="RR0178" Identifier="AddGenericParameterToDeclaration" Title="Add generic parameter to a declaration">
+	<OptionKey>add_generic_parameter_to_declaration</OptionKey>
     <Syntaxes>
       <Syntax>class declaration</Syntax>
       <Syntax>struct declaration</Syntax>
@@ -1506,6 +1668,7 @@ i--;]]></After>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0179" Identifier="ImplementIEquatableOfT" Title="Implement IEquatable&lt;T&gt;">
+	<OptionKey>implement_iequatable</OptionKey>
     <Syntaxes>
       <Syntax>class declaration</Syntax>
       <Syntax>struct declaration</Syntax>
@@ -1513,36 +1676,42 @@ i--;]]></After>
     </Syntaxes>
     <Span>base list</Span>
   </Refactoring>
-  <Refactoring Id="RR0180" Identifier="InlineUsingStatic" Title="Inline using static">
+  <Refactoring Id="RR0180" Identifier="InlineUsingStaticDirective" Title="Inline using static directive">
+	<OptionKey>inline_using_static</OptionKey>
     <Syntaxes>
       <Syntax>using static directive</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0181" Identifier="InlineConstant" Title="Inline constant">
+  <Refactoring Id="RR0181" Identifier="InlineConstantDeclaration" Title="Inline constant declaration">
+	<OptionKey>inline_constant</OptionKey>
     <Syntaxes>
       <Syntax>constant declaration</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0182" Identifier="UseStringBuilderInsteadOfConcatenation" Title="Use StringBuilder instead of concatenation">
+	<OptionKey>use_stringbuilder_instead_of_concatenation</OptionKey>
     <Syntaxes>
       <Syntax>string concatenation</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0183" Identifier="UseListInsteadOfYield" Title="Use List&lt;T&gt; instead of yield">
+	<OptionKey>use_list_instead_of_yield</OptionKey>
     <Syntaxes>
       <Syntax>yield return</Syntax>
       <Syntax>yield break</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0184" Identifier="SplitIfStatement" Title="Split if statement">
+  <Refactoring Id="RR0184" Identifier="SplitIf" Title="Split if">
+	<OptionKey>split_if</OptionKey>
     <Syntaxes>
-      <Syntax>if statement that has logical or expression as a condition</Syntax>
+      <Syntax>if statement that has 'logical or' expression as a condition</Syntax>
     </Syntaxes>
     <Span>top if keyword or selected if statement</Span>
   </Refactoring>
-  <Refactoring Id="RR0185" Identifier="ReplaceObjectCreationWithDefaultValue" Title="Replace object creation with default value">
+  <Refactoring Id="RR0185" Identifier="RemoveInstantiationOfLocalVariable" Title="Remove instantiation of a local variable">
+	<OptionKey>remove_instantiation_of_local_variable</OptionKey>
     <Syntaxes>
-      <Syntax>object creation expression</Syntax>
+      <Syntax>local variable with a new object creation</Syntax>
     </Syntaxes>
     <Samples>
       <Sample>
@@ -1556,11 +1725,13 @@ i--;]]></After>
     </Samples>
   </Refactoring>
   <Refactoring Id="RR0186" Identifier="ChangeAccessibility" Title="Change accessibility">
+	<OptionKey>change_accessibility</OptionKey>
     <Syntaxes>
       <Syntax>access modifier</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0187" Identifier="WrapConstraintClauses" Title="Wrap constraint clauses">
+	<OptionKey>wrap_constraint_clauses</OptionKey>
     <Syntaxes>
       <Syntax>type parameter constraint clause</Syntax>
     </Syntaxes>
@@ -1579,6 +1750,7 @@ i--;]]></After>
     </Samples>
   </Refactoring>
   <Refactoring Id="RR0188" Identifier="ConvertForEachToForAndReverseLoop" Title="Convert 'foreach' to 'for' and reverse loop" IsEnabledByDefault="false">
+	<OptionKey>convert_foreach_to_for_and_reverse_loop</OptionKey>
     <Syntaxes>
       <Syntax>foreach statement</Syntax>
     </Syntaxes>
@@ -1596,6 +1768,7 @@ i--;]]></After>
     </Samples>
   </Refactoring>
   <Refactoring Id="RR0189" Identifier="InvertIf" Title="Invert if">
+	<OptionKey>invert_if</OptionKey>
     <Syntaxes>
       <Syntax>if statement</Syntax>
     </Syntaxes>
@@ -1644,6 +1817,7 @@ Foo();]]></Before>
   </Samples>
   </Refactoring>
   <Refactoring Id="RR0190" Identifier="SplitIfElse" Title="Split if-else">
+	<OptionKey>split_if_else</OptionKey>
     <Syntaxes>
       <Syntax>if statement</Syntax>
     </Syntaxes>
@@ -1674,7 +1848,8 @@ return false;]]></After>
       </Sample>
     </Samples>
   </Refactoring>
-  <Refactoring Id="RR0191" Identifier="UseCSharp6DictionaryInitializer" Title="Use C# 6.0 dictionary initializer">
+  <Refactoring Id="RR0191" Identifier="UseIndexInitializer" Title="Use index initializer">
+	<OptionKey>use_index_initializer</OptionKey>
     <Syntaxes>
       <Syntax>collection initializer</Syntax>
     </Syntaxes>
@@ -1686,6 +1861,7 @@ return false;]]></After>
     </Samples>
   </Refactoring>
   <Refactoring Id="RR0192" Identifier="ConvertCommentToDocumentationComment" Title="Convert comment to documentation comment">
+	<OptionKey>convert_comment_to_documentation_comment</OptionKey>
     <Syntaxes>
       <Syntax>single-line comment</Syntax>
     </Syntaxes>
@@ -1705,6 +1881,7 @@ public class Foo
     </Samples>
   </Refactoring>
   <Refactoring Id="RR0193" Identifier="ConvertInterpolatedStringToConcatenation" Title="Convert interpolated string to concatenation">
+	<OptionKey>convert_interpolated_string_to_concatenation</OptionKey>
     <Syntaxes>
       <Syntax>interpolated string</Syntax>
     </Syntaxes>
@@ -1715,7 +1892,7 @@ public class Foo
       </Sample>
     </Samples>
   </Refactoring>
-  <Refactoring Id="RR0194" Identifier="SplitDeclarationAndInitialization" Title="Split declaration and initialization">
+  <Refactoring Id="RR0194" Identifier="SplitDeclarationAndInitialization" Title="Split declaration and initialization" IsObsolete="true">
     <Syntaxes>
       <Syntax>local variable declaration</Syntax>
     </Syntaxes>
@@ -1729,6 +1906,7 @@ s = GetValue();]]></After>
     </Samples>
   </Refactoring>
   <Refactoring Id="RR0195" Identifier="AddMemberToInterface" Title="Add member to interface">
+	<OptionKey>add_member_to_interface</OptionKey>
     <Syntaxes>
       <Syntax>method</Syntax>
       <Syntax>property</Syntax>
@@ -1763,6 +1941,7 @@ public interface IFoo
     </Samples>
   </Refactoring>
   <Refactoring Id="RR0196" Identifier="MergeIfWithParentIf" Title="Merge if with parent if">
+	<OptionKey>merge_if_with_parent_if</OptionKey>
     <Syntaxes>
       <Syntax>if statement</Syntax>
     </Syntaxes>
@@ -1788,6 +1967,7 @@ else
     </Samples>
   </Refactoring>
   <Refactoring Id="RR0197" Identifier="InitializeFieldFromConstructor" Title="Initialize field from constructor">
+	<OptionKey>initialize_field_from_constructor</OptionKey>
     <Syntaxes>
       <Syntax>field declaration</Syntax>
     </Syntaxes>
@@ -1835,11 +2015,13 @@ else
     </Samples>
   </Refactoring>
   <Refactoring Id="RR0198" Identifier="InlineProperty" Title="Inline property">
+	<OptionKey>inline_property</OptionKey>
     <Syntaxes>
       <Syntax>property access</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0199" Identifier="RemoveEnumMemberValue" Title="Remove enum member value(s)">
+	<OptionKey>remove_enum_member_value</OptionKey>
     <Syntaxes>
       <Syntax>selected enum member(s)</Syntax>
     </Syntaxes>
@@ -1861,6 +2043,7 @@ else
     </Samples>
   </Refactoring>
   <Refactoring Id="RR0200" Identifier="UncommentMultiLineComment" Title="Uncomment multi-line comment">
+	<OptionKey>uncomment_multiline_comment</OptionKey>
     <Syntaxes>
       <Syntax>multi-line comment</Syntax>
     </Syntaxes>
@@ -1872,6 +2055,7 @@ else
     </Samples>
   </Refactoring>
   <Refactoring Id="RR0201" Identifier="ConvertInterpolatedStringToStringFormat" Title="Convert interpolated string to 'string.Format'">
+	<OptionKey>convert_interpolated_string_to_string_format</OptionKey>
     <Syntaxes>
       <Syntax>interpolated string</Syntax>
     </Syntaxes>
@@ -1883,6 +2067,7 @@ else
     </Samples>
   </Refactoring>
   <Refactoring Id="RR0202" Identifier="MoveUnsafeContextToContainingDeclaration" Title="Move unsafe context to containing declaration">
+	<OptionKey>move_unsafe_context_to_containing_declaration</OptionKey>
     <Syntaxes>
       <Syntax>unsafe declaration</Syntax>
     </Syntaxes>
@@ -1905,6 +2090,7 @@ else
     </Samples>
   </Refactoring>
   <Refactoring Id="RR0203" Identifier="ExtractEventHandlerMethod" Title="Extract event handler method">
+	<OptionKey>extract_event_handler_method</OptionKey>
     <Syntaxes>
       <Syntax>lambda expression</Syntax>
     </Syntaxes>
@@ -1927,6 +2113,7 @@ void OnChanged(object sender, EventArgs e)
     </Samples>
   </Refactoring>
   <Refactoring Id="RR0204" Identifier="GeneratePropertyForDebuggerDisplayAttribute" Title="Generate property for DebuggerDisplay attribute">
+	<OptionKey>generate_property_for_debuggerdisplay_attribute</OptionKey>
     <Syntaxes>
       <Syntax>DebuggerDisplay attribute</Syntax>
     </Syntaxes>
@@ -1964,6 +2151,7 @@ public class Foo
     </Samples>
   </Refactoring>
   <Refactoring Id="RR0205" Identifier="AddEmptyLineBetweenDeclarations" Title="Add empty line between declarations">
+	<OptionKey>add_empty_line_between_declarations</OptionKey>
     <Syntaxes>
       <Syntax>selected declarations</Syntax>
     </Syntaxes>
@@ -1981,6 +2169,7 @@ private object z;]]></After>
     </Samples>
   </Refactoring>
   <Refactoring Id="RR0206" Identifier="UseEnumeratorExplicitly" Title="Use enumerator explicitly">
+	<OptionKey>use_enumerator_explicitly</OptionKey>
     <Syntaxes>
       <Syntax>foreach statement</Syntax>
     </Syntaxes>
@@ -2006,6 +2195,7 @@ private object z;]]></After>
     </Samples>
   </Refactoring>
   <Refactoring Id="RR0207" Identifier="SortCaseLabels" Title="Sort case labels">
+	<OptionKey>sort_case_labels</OptionKey>
     <Syntaxes>
       <Syntax>selected case labels with string literal or enum field</Syntax>
     </Syntaxes>
@@ -2042,6 +2232,7 @@ private object z;]]></After>
     </Samples>
   </Refactoring>
   <Refactoring Id="RR0208" Identifier="AddTagToDocumentationComment" Title="Add tag to documentation comment">
+	<OptionKey>add_tag_to_documentation_comment</OptionKey>
     <Syntaxes>
       <Syntax>selected word(s) in documentation comment</Syntax>
     </Syntaxes>
@@ -2064,6 +2255,7 @@ public class Foo
     </Samples>
   </Refactoring>
   <Refactoring Id="RR0209" Identifier="RemoveAsyncAwait" Title="Remove async/await">
+	<OptionKey>remove_async_await</OptionKey>
     <Syntaxes>
       <Syntax>method declaration</Syntax>
       <Syntax>local function</Syntax>
@@ -2091,6 +2283,7 @@ public class Foo
     </Samples>
   </Refactoring>
   <Refactoring Id="RR0210" Identifier="ImplementCustomEnumerator" Title="Implement custom enumerator">
+	<OptionKey>implement_custom_enumerator</OptionKey>
     <Syntaxes>
       <Syntax>class that implements IEnumerable&lt;T&gt;</Syntax>
     </Syntaxes>
@@ -2220,6 +2413,7 @@ class C<T> : IEnumerable<T>
     </Samples>
   </Refactoring>
   <Refactoring Id="RR0211" Identifier="ConvertStatementsToIfElse" Title="Convert statements to if-else">
+	<OptionKey>convert_statements_to_if_else</OptionKey>
     <Syntaxes>
       <Syntax>selected statements (first statement must be 'if' statement)</Syntax>
     </Syntaxes>
@@ -2258,6 +2452,7 @@ else
     </Samples>
   </Refactoring>
   <Refactoring Id="RR0212" Identifier="DuplicateSwitchSection" Title="Duplicate switch section">
+	<OptionKey>duplicate_switch_section</OptionKey>
     <Syntaxes>
       <Syntax>switch section</Syntax>
     </Syntaxes>
@@ -2304,6 +2499,7 @@ else
     </Samples>
   </Refactoring>
   <Refactoring Id="RR0213" Identifier="AddParameterToInterfaceMember" Title="Add parameter to interface member">
+	<OptionKey>add_parameter_to_interface_member</OptionKey>
     <Syntaxes>
       <Syntax>method declaration</Syntax>
       <Syntax>indexer declaration</Syntax>
@@ -2337,6 +2533,7 @@ class Foo : IFoo
     </Samples>
   </Refactoring>
   <Refactoring Id="RR0214" Identifier="ConvertSwitchExpressionToSwitchStatement" Title="Convert 'switch' expression to 'switch' statement">
+	<OptionKey>convert_switch_expression_to_switch_statement</OptionKey>
     <Syntaxes>
       <Syntax>switch expression</Syntax>
     </Syntaxes>
@@ -2369,6 +2566,63 @@ class Foo : IFoo
         throw new Exception();
 }
 ]]></After>
+      </Sample>
+    </Samples>
+  </Refactoring>
+  <Refactoring Id="RR0215" Identifier="ExpandPositionalConstructor" Title="Expand positional constructor">
+	<OptionKey>expand_positional_constructor</OptionKey>
+    <Syntaxes>
+      <Syntax>positional record</Syntax>
+    </Syntaxes>
+    <Span>parameter list</Span>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[public record Foo([property: Obsolete] string Value1, string Value2);]]></Before>
+        <After><![CDATA[public record Foo
+{
+    public Foo(string value1, string value2)
+    {
+        Value1 = value1;
+        Value2 = value2;
+    }
+
+    [Obsolete]
+    public string Value1 { get; init; }
+    public string Value2 { get; init; }
+}
+]]></After>
+      </Sample>
+    </Samples>
+  </Refactoring>
+  <Refactoring Id="RR0216" Identifier="AddAllPropertiesToInitializer" Title="Add all properties to initializer">
+	<OptionKey>add_all_properties_to_initializer</OptionKey>
+    <Syntaxes>
+      <Syntax>object/record initializer</Syntax>
+    </Syntaxes>
+    <Span></Span>
+    <Summary></Summary>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[class C
+{
+  public string P1 { get; set; }
+  public string P2 { get; set; }
+
+  void M()
+  {
+      var x = new C() { };
+  }
+}]]></Before>
+        <After><![CDATA[class C
+{
+  public string P1 { get; set; }
+  public string P2 { get; set; }
+
+  void M()
+  {
+      var x = new C() { P1 = , P2 = };
+  }
+}]]></After>
       </Sample>
     </Samples>
   </Refactoring>

@@ -75,6 +75,7 @@ namespace Roslynator.Metadata
                 yield return new RefactoringMetadata(
                     element.Attribute("Id")?.Value,
                     element.Attribute("Identifier").Value,
+                    element.Element("OptionKey")?.Value,
                     element.Attribute("Title").Value,
                     element.AttributeValueAsBooleanOrDefault("IsEnabledByDefault", true),
                     element.AttributeValueAsBooleanOrDefault("IsObsolete", false),

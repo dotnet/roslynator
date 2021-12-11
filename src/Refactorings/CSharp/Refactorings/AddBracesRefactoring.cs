@@ -15,16 +15,16 @@ namespace Roslynator.CSharp.Refactorings
         public static void ComputeRefactoring(RefactoringContext context, StatementSyntax statement)
         {
             if (context.IsAnyRefactoringEnabled(
-                RefactoringIdentifiers.AddBraces,
-                RefactoringIdentifiers.AddBracesToIfElse)
+                RefactoringDescriptors.AddBraces,
+                RefactoringDescriptors.AddBracesToIfElse)
                 && CanRefactor(context, statement))
             {
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddBraces))
+                if (context.IsRefactoringEnabled(RefactoringDescriptors.AddBraces))
                 {
                     RegisterRefactoring(context, statement);
                 }
 
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddBracesToIfElse))
+                if (context.IsRefactoringEnabled(RefactoringDescriptors.AddBracesToIfElse))
                 {
                     IfStatementSyntax topmostIf = GetTopmostIf(statement);
 
@@ -34,7 +34,7 @@ namespace Roslynator.CSharp.Refactorings
                         context.RegisterRefactoring(
                             "Add braces to if-else",
                             ct => AddBracesToIfElseRefactoring.RefactorAsync(context.Document, topmostIf, ct),
-                            RefactoringIdentifiers.AddBracesToIfElse);
+                            RefactoringDescriptors.AddBracesToIfElse);
                     }
                 }
             }
@@ -56,7 +56,7 @@ namespace Roslynator.CSharp.Refactorings
             context.RegisterRefactoring(
                 "Add braces",
                 ct => RefactorAsync(context.Document, statement, ct),
-                RefactoringIdentifiers.AddBraces);
+                RefactoringDescriptors.AddBraces);
         }
 
         private static bool CanRefactor(RefactoringContext context, StatementSyntax statement)

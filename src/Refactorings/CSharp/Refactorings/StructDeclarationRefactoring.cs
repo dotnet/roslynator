@@ -11,16 +11,16 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, StructDeclarationSyntax structDeclaration)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddTypeParameter))
-                AddTypeParameterRefactoring.ComputeRefactoring(context, structDeclaration);
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.AddGenericParameterToDeclaration))
+                AddGenericParameterToDeclarationRefactoring.ComputeRefactoring(context, structDeclaration);
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExtractTypeDeclarationToNewFile))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.ExtractTypeDeclarationToNewFile))
                 ExtractTypeDeclarationToNewFileRefactoring.ComputeRefactorings(context, structDeclaration);
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ImplementIEquatableOfT))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.ImplementIEquatableOfT))
                 await ImplementIEquatableOfTRefactoring.ComputeRefactoringAsync(context, structDeclaration).ConfigureAwait(false);
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ImplementCustomEnumerator)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.ImplementCustomEnumerator)
                 && context.Span.IsEmptyAndContainedInSpan(structDeclaration.Identifier))
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
@@ -28,7 +28,7 @@ namespace Roslynator.CSharp.Refactorings
                 ImplementCustomEnumeratorRefactoring.ComputeRefactoring(context, structDeclaration, semanticModel);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.SortMemberDeclarations)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.SortMemberDeclarations)
                 && structDeclaration.BracesSpan().Contains(context.Span))
             {
                 SortMemberDeclarationsRefactoring.ComputeRefactoring(context, structDeclaration);

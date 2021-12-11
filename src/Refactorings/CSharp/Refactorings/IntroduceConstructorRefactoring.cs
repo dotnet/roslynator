@@ -18,7 +18,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, MemberDeclarationSyntax declaration)
         {
-            if (!context.IsRefactoringEnabled(RefactoringIdentifiers.IntroduceConstructor))
+            if (!context.IsRefactoringEnabled(RefactoringDescriptors.IntroduceConstructor))
                 return;
 
             List<MemberDeclarationSyntax> members = null;
@@ -62,7 +62,7 @@ namespace Roslynator.CSharp.Refactorings
             context.RegisterRefactoring(
                 "Introduce constructor",
                 ct => RefactorAsync(context.Document, declaration, members, ct),
-                RefactoringIdentifiers.IntroduceConstructor);
+                RefactoringDescriptors.IntroduceConstructor);
         }
 
         private static bool CanBeAssignedFromConstructor(

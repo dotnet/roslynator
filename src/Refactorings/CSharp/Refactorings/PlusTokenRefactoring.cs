@@ -13,8 +13,8 @@ namespace Roslynator.CSharp.Refactorings
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, SyntaxToken token)
         {
             if (context.IsAnyRefactoringEnabled(
-                RefactoringIdentifiers.JoinStringExpressions,
-                RefactoringIdentifiers.UseStringBuilderInsteadOfConcatenation)
+                RefactoringDescriptors.JoinStringExpressions,
+                RefactoringDescriptors.UseStringBuilderInsteadOfConcatenation)
                 && context.Span.IsEmptyAndContainedInSpan(token)
                 && token.IsParentKind(SyntaxKind.AddExpression))
             {
@@ -29,10 +29,10 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (concatenationInfo.Success)
                 {
-                    if (context.IsRefactoringEnabled(RefactoringIdentifiers.JoinStringExpressions))
+                    if (context.IsRefactoringEnabled(RefactoringDescriptors.JoinStringExpressions))
                         JoinStringExpressionsRefactoring.ComputeRefactoring(context, concatenationInfo);
 
-                    if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseStringBuilderInsteadOfConcatenation))
+                    if (context.IsRefactoringEnabled(RefactoringDescriptors.UseStringBuilderInsteadOfConcatenation))
                         UseStringBuilderInsteadOfConcatenationRefactoring.ComputeRefactoring(context, concatenationInfo);
                 }
             }

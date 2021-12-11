@@ -24,7 +24,7 @@ namespace Roslynator.CSharp.Refactorings
             context.RegisterRefactoring(
                 "Use enumerator explicitly",
                 ct => RefactorAsync(context.Document, forEachStatement, ct),
-                RefactoringIdentifiers.UseEnumeratorExplicitly);
+                RefactoringDescriptors.UseEnumeratorExplicitly);
         }
 
         private static async Task<Document> RefactorAsync(
