@@ -121,6 +121,16 @@ namespace Roslynator.CSharp
                             : DefaultInvert(expression);
                     }
                 case SyntaxKind.IsExpression:
+                    {
+                        var isExpression = (BinaryExpressionSyntax)expression;
+
+                        return IsPatternExpression(
+                            isExpression.Left,
+                            isExpression.OperatorToken.WithTrailingTrivia(Space),
+                            UnaryPattern(
+                                Token(SyntaxKind.NotKeyword).WithTrailingTrivia(isExpression.OperatorToken.TrailingTrivia),
+                                TypePattern((TypeSyntax)isExpression.Right)));
+                    }
                 case SyntaxKind.AsExpression:
                     {
                         return DefaultInvert(expression);
