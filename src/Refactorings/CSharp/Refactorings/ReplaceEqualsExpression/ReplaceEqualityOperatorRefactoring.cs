@@ -12,7 +12,7 @@ using static Roslynator.CSharp.CSharpTypeFactory;
 
 namespace Roslynator.CSharp.Refactorings.ReplaceEqualsExpression
 {
-    internal abstract class ReplaceEqualsExpressionRefactoring
+    internal abstract class ReplaceEqualityOperatorRefactoring
     {
         public abstract string GetEquivalenceKey();
 
@@ -35,11 +35,11 @@ namespace Roslynator.CSharp.Refactorings.ReplaceEqualsExpression
                 return;
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceEqualsExpressionWithStringIsNullOrEmpty))
-                ReplaceEqualsExpressionWithStringIsNullOrEmptyRefactoring.Instance.RegisterRefactoring(context, nullCheck);
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceEqualityOperatorWithStringIsNullOrEmpty))
+                ReplaceEqualityOperatorWithStringIsNullOrEmptyRefactoring.Instance.RegisterRefactoring(context, nullCheck);
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceEqualsExpressionWithStringIsNullOrWhiteSpace))
-                ReplaceEqualsExpressionWithStringIsNullOrWhiteSpaceRefactoring.Instance.RegisterRefactoring(context, nullCheck);
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceEqualityOperatorWithStringIsNullOrWhiteSpace))
+                ReplaceEqualityOperatorWithStringIsNullOrWhiteSpaceRefactoring.Instance.RegisterRefactoring(context, nullCheck);
         }
 
         private void RegisterRefactoring(RefactoringContext context, NullCheckExpressionInfo nullCheck)

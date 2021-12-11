@@ -11,7 +11,7 @@ using static Roslynator.CSharp.CSharpTypeFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class ReplaceEqualsExpressionWithStringEqualsRefactoring
+    internal static class ReplaceEqualityOperatorWithStringEqualsRefactoring
     {
         public static async Task ComputeRefactoringAsync(RefactoringContext context, BinaryExpressionSyntax binaryExpression)
         {
@@ -53,7 +53,7 @@ namespace Roslynator.CSharp.Refactorings
             context.RegisterRefactoring(
                 title,
                 ct => RefactorAsync(context.Document, binaryExpression, ct),
-                RefactoringIdentifiers.ReplaceEqualsExpressionWithStringEquals);
+                RefactoringIdentifiers.ReplaceEqualityOperatorWithStringEquals);
         }
 
         private static async Task<Document> RefactorAsync(

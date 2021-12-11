@@ -1073,21 +1073,21 @@ else
       </Sample>
     </Samples>
   </Refactoring>
-  <Refactoring Id="RR0124" Identifier="ReplaceEqualsExpressionWithStringEquals" Title="Replace equals expression with string.Equals">
+  <Refactoring Id="RR0124" Identifier="ReplaceEqualityOperatorWithStringEquals" Title="Replace equality operator with string.Equals">
     <Syntaxes>
       <Syntax>equals expression</Syntax>
       <Syntax>not equals expression</Syntax>
     </Syntaxes>
     <Span>operator</Span>
   </Refactoring>
-  <Refactoring Id="RR0125" Identifier="ReplaceEqualsExpressionWithStringIsNullOrEmpty" Title="Replace equals expression with string.IsNullOrEmpty">
+  <Refactoring Id="RR0125" Identifier="ReplaceEqualityOperatorWithStringIsNullOrEmpty" Title="Replace equality operator with string.IsNullOrEmpty">
     <Syntaxes>
       <Syntax>equals expression</Syntax>
       <Syntax>not equals expression</Syntax>
     </Syntaxes>
     <Span>operator</Span>
   </Refactoring>
-  <Refactoring Id="RR0126" Identifier="ReplaceEqualsExpressionWithStringIsNullOrWhiteSpace" Title="Replace equals expression with string.IsNullOrWhiteSpace">
+  <Refactoring Id="RR0126" Identifier="ReplaceEqualityOperatorWithStringIsNullOrWhiteSpace" Title="Replace equality operator with string.IsNullOrWhiteSpace">
     <Syntaxes>
       <Syntax>equals expression</Syntax>
       <Syntax>not equals expression</Syntax>

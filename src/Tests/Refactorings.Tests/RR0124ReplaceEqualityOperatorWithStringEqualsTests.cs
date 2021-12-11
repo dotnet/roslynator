@@ -6,11 +6,11 @@ using Xunit;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public class RR0124ReplaceEqualsExpressionWithStringEqualsTests : AbstractCSharpRefactoringVerifier
+    public class RR0124ReplaceEqualityOperatorWithStringEqualsTests : AbstractCSharpRefactoringVerifier
     {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.ReplaceEqualsExpressionWithStringEquals;
+        public override string RefactoringId { get; } = RefactoringIdentifiers.ReplaceEqualityOperatorWithStringEquals;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceEqualsExpressionWithStringEquals)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceEqualityOperatorWithStringEquals)]
         public async Task Test()
         {
             await VerifyRefactoringAsync(@"

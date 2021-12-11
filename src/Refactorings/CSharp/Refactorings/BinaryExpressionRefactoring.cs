@@ -98,14 +98,14 @@ namespace Roslynator.CSharp.Refactorings
 
             if (context.Span.IsContainedInSpanOrBetweenSpans(operatorToken))
             {
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceEqualsExpressionWithStringEquals))
-                    await ReplaceEqualsExpressionWithStringEqualsRefactoring.ComputeRefactoringAsync(context, binaryExpression).ConfigureAwait(false);
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceEqualityOperatorWithStringEquals))
+                    await ReplaceEqualityOperatorWithStringEqualsRefactoring.ComputeRefactoringAsync(context, binaryExpression).ConfigureAwait(false);
 
                 if (context.IsAnyRefactoringEnabled(
-                    RefactoringIdentifiers.ReplaceEqualsExpressionWithStringIsNullOrEmpty,
-                    RefactoringIdentifiers.ReplaceEqualsExpressionWithStringIsNullOrWhiteSpace))
+                    RefactoringIdentifiers.ReplaceEqualityOperatorWithStringIsNullOrEmpty,
+                    RefactoringIdentifiers.ReplaceEqualityOperatorWithStringIsNullOrWhiteSpace))
                 {
-                    await ReplaceEqualsExpressionRefactoring.ComputeRefactoringsAsync(context, binaryExpression).ConfigureAwait(false);
+                    await ReplaceEqualityOperatorRefactoring.ComputeRefactoringsAsync(context, binaryExpression).ConfigureAwait(false);
                 }
             }
         }
