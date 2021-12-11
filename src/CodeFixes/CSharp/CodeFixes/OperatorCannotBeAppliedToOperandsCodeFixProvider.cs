@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(OperatorCannotBeAppliedToOperandsCodeFixProvider))]
     [Shared]
-    public sealed class OperatorCannotBeAppliedToOperandsCodeFixProvider : BaseCodeFixProvider
+    public sealed class OperatorCannotBeAppliedToOperandsCodeFixProvider : CompilerDiagnosticCodeFixProvider
     {
         public override ImmutableArray<string> FixableDiagnosticIds
         {
@@ -25,10 +25,10 @@ namespace Roslynator.CSharp.CodeFixes
         {
             Diagnostic diagnostic = context.Diagnostics[0];
 
-            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddComparisonWithBooleanLiteral))
-                return;
-
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+            if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddComparisonWithBooleanLiteral, context.Document, root.SyntaxTree))
+                return;
 
             if (!TryFindNode(root, context.Span, out BinaryExpressionSyntax binaryExpression))
                 return;

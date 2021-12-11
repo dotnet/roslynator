@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ObjectReferenceIsRequiredForNonStaticMemberCodeFixProvider))]
     [Shared]
-    public sealed class ObjectReferenceIsRequiredForNonStaticMemberCodeFixProvider : BaseCodeFixProvider
+    public sealed class ObjectReferenceIsRequiredForNonStaticMemberCodeFixProvider : CompilerDiagnosticCodeFixProvider
     {
         public override ImmutableArray<string> FixableDiagnosticIds
         {
@@ -45,7 +45,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                     if (SyntaxInfo.ModifierListInfo(memberDeclaration).IsStatic)
                     {
-                        if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.MakeMemberNonStatic))
+                        if (IsEnabled(diagnostic.Id, CodeFixIdentifiers.MakeMemberNonStatic, context.Document, root.SyntaxTree))
                         {
                             ModifiersCodeFixRegistrator.RemoveModifier(
                                 context,
@@ -56,7 +56,7 @@ namespace Roslynator.CSharp.CodeFixes
                                 additionalKey: CodeFixIdentifiers.MakeMemberNonStatic);
                         }
 
-                        if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddStaticModifier))
+                        if (IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddStaticModifier, context.Document, root.SyntaxTree))
                             AddStaticModifier(context, diagnostic, node, semanticModel);
                     }
 
@@ -64,7 +64,7 @@ namespace Roslynator.CSharp.CodeFixes
                 }
                 else if (parent is ConstructorInitializerSyntax)
                 {
-                    if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddStaticModifier))
+                    if (IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddStaticModifier, context.Document, root.SyntaxTree))
                     {
                         SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 

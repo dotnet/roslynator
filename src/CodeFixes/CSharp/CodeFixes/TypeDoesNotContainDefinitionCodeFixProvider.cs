@@ -17,7 +17,7 @@ namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(TypeDoesNotContainDefinitionCodeFixProvider))]
     [Shared]
-    public sealed class TypeDoesNotContainDefinitionCodeFixProvider : BaseCodeFixProvider
+    public sealed class TypeDoesNotContainDefinitionCodeFixProvider : CompilerDiagnosticCodeFixProvider
     {
         public override ImmutableArray<string> FixableDiagnosticIds
         {
@@ -49,7 +49,7 @@ namespace Roslynator.CSharp.CodeFixes
                             if (memberAccessExpression.IsParentKind(SyntaxKind.InvocationExpression))
                             {
                                 if (!memberAccessExpression.Parent.IsParentKind(SyntaxKind.ConditionalAccessExpression)
-                                    && Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.ReplaceInvocationWithMemberAccessOrViceVersa))
+                                    && IsEnabled(diagnostic.Id, CodeFixIdentifiers.ReplaceInvocationWithMemberAccessOrViceVersa, context.Document, root.SyntaxTree))
                                 {
                                     var invocationExpression = (InvocationExpressionSyntax)memberAccessExpression.Parent;
 
@@ -61,7 +61,7 @@ namespace Roslynator.CSharp.CodeFixes
                             }
                             else
                             {
-                                if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.FixMemberAccessName))
+                                if (IsEnabled(diagnostic.Id, CodeFixIdentifiers.FixMemberAccessName, context.Document, root.SyntaxTree))
                                 {
                                     CodeFixRegistrationResult result = ReplaceCountWithLengthOrViceVersa(context, diagnostic, memberAccessExpression.Expression, simpleName, semanticModel);
 
@@ -70,7 +70,7 @@ namespace Roslynator.CSharp.CodeFixes
                                 }
 
                                 if (!memberAccessExpression.IsParentKind(SyntaxKind.ConditionalAccessExpression)
-                                    && Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.ReplaceInvocationWithMemberAccessOrViceVersa))
+                                    && IsEnabled(diagnostic.Id, CodeFixIdentifiers.ReplaceInvocationWithMemberAccessOrViceVersa, context.Document, root.SyntaxTree))
                                 {
                                     ReplaceMemberAccessWithInvocation(context, diagnostic, memberAccessExpression, semanticModel);
                                 }
@@ -81,7 +81,7 @@ namespace Roslynator.CSharp.CodeFixes
                     }
                 case MemberBindingExpressionSyntax memberBindingExpression:
                     {
-                        if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.FixMemberAccessName))
+                        if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.FixMemberAccessName, context.Document, root.SyntaxTree))
                             break;
 
                         if (memberBindingExpression.Parent is not ConditionalAccessExpressionSyntax conditionalAccessExpression)
@@ -95,7 +95,7 @@ namespace Roslynator.CSharp.CodeFixes
                     }
                 case AwaitExpressionSyntax awaitExpression:
                     {
-                        if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveAwaitKeyword))
+                        if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveAwaitKeyword, context.Document, root.SyntaxTree))
                             break;
 
                         CodeAction codeAction = CodeAction.Create(

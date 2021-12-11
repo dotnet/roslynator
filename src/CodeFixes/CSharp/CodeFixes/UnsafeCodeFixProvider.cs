@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UnsafeCodeFixProvider))]
     [Shared]
-    public sealed class UnsafeCodeFixProvider : BaseCodeFixProvider
+    public sealed class UnsafeCodeFixProvider : CompilerDiagnosticCodeFixProvider
     {
         public override ImmutableArray<string> FixableDiagnosticIds
         {
@@ -50,7 +50,7 @@ namespace Roslynator.CSharp.CodeFixes
                                 {
                                     fStatement = true;
 
-                                    if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.WrapInUnsafeStatement))
+                                    if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.WrapInUnsafeStatement, context.Document, root.SyntaxTree))
                                         continue;
 
                                     var statement = (StatementSyntax)ancestor;
@@ -85,7 +85,7 @@ namespace Roslynator.CSharp.CodeFixes
                                 {
                                     fMemberDeclaration = true;
 
-                                    if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.MakeContainingDeclarationUnsafe))
+                                    if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.MakeContainingDeclarationUnsafe, context.Document, root.SyntaxTree))
                                         continue;
 
                                     if (!CSharpFacts.CanHaveModifiers(ancestor.Kind()))

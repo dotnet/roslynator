@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(TypeParameterConstraintClauseCodeFixProvider))]
     [Shared]
-    public sealed class TypeParameterConstraintClauseCodeFixProvider : BaseCodeFixProvider
+    public sealed class TypeParameterConstraintClauseCodeFixProvider : CompilerDiagnosticCodeFixProvider
     {
         public override ImmutableArray<string> FixableDiagnosticIds
         {
@@ -39,7 +39,7 @@ namespace Roslynator.CSharp.CodeFixes
                 {
                     case CompilerDiagnosticIdentifiers.CS0080_ConstraintsAreNotAllowedOnNonGenericDeclarations:
                         {
-                            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveConstraintClauses))
+                            if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveConstraintClauses, context.Document, root.SyntaxTree))
                                 break;
 
                             GenericInfo genericInfo = SyntaxInfo.GenericInfo(constraintClause);
@@ -62,7 +62,7 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case CompilerDiagnosticIdentifiers.CS0409_ConstraintClauseHasAlreadyBeenSpecified:
                         {
-                            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.CombineConstraintClauses))
+                            if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.CombineConstraintClauses, context.Document, root.SyntaxTree))
                                 break;
 
                             GenericInfo genericInfo = SyntaxInfo.GenericInfo(constraintClause);

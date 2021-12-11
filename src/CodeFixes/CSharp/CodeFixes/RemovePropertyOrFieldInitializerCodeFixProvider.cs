@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(RemovePropertyOrFieldInitializerCodeFixProvider))]
     [Shared]
-    public sealed class RemovePropertyOrFieldInitializerCodeFixProvider : BaseCodeFixProvider
+    public sealed class RemovePropertyOrFieldInitializerCodeFixProvider : CompilerDiagnosticCodeFixProvider
     {
         private const string Title = "Remove initializer";
 
@@ -33,10 +33,10 @@ namespace Roslynator.CSharp.CodeFixes
         {
             Diagnostic diagnostic = context.Diagnostics[0];
 
-            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemovePropertyOrFieldInitializer))
-                return;
-
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+            if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemovePropertyOrFieldInitializer, context.Document, root.SyntaxTree))
+                return;
 
             if (!TryFindToken(root, context.Span.Start, out SyntaxToken token))
                 return;

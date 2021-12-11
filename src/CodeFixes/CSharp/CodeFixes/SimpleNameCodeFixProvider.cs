@@ -16,7 +16,7 @@ namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SimpleNameCodeFixProvider))]
     [Shared]
-    public sealed class SimpleNameCodeFixProvider : BaseCodeFixProvider
+    public sealed class SimpleNameCodeFixProvider : CompilerDiagnosticCodeFixProvider
     {
         public override ImmutableArray<string> FixableDiagnosticIds
         {
@@ -46,7 +46,7 @@ namespace Roslynator.CSharp.CodeFixes
             if (diagnosticId == CompilerDiagnosticIdentifiers.CS0428_CannotConvertMethodGroupToNonDelegateType
                 || diagnosticId == CompilerDiagnosticIdentifiers.CS0119_NameIsNotValidInGivenContext)
             {
-                if (!Settings.IsEnabled(diagnosticId, CodeFixIdentifiers.AddArgumentList))
+                if (!IsEnabled(diagnosticId, CodeFixIdentifiers.AddArgumentList, document, root.SyntaxTree))
                     return;
 
                 if (!simpleName.IsParentKind(SyntaxKind.SimpleMemberAccessExpression))
@@ -70,7 +70,7 @@ namespace Roslynator.CSharp.CodeFixes
             }
             else if (diagnosticId == CompilerDiagnosticIdentifiers.CS0246_TypeOrNamespaceNameCouldNotBeFound)
             {
-                if (Settings.IsEnabled(diagnosticId, CodeFixIdentifiers.ChangeArrayType)
+                if (IsEnabled(diagnosticId, CodeFixIdentifiers.ChangeArrayType, document, root.SyntaxTree)
                     && (simpleName.Parent is ArrayTypeSyntax arrayType)
                     && (arrayType.Parent is ArrayCreationExpressionSyntax arrayCreation)
                     && object.ReferenceEquals(simpleName, arrayType.ElementType))
@@ -100,7 +100,7 @@ namespace Roslynator.CSharp.CodeFixes
                     }
                 }
 
-                if (Settings.IsEnabled(diagnosticId, CodeFixIdentifiers.ChangeMemberTypeAccordingToReturnExpression))
+                if (IsEnabled(diagnosticId, CodeFixIdentifiers.ChangeMemberTypeAccordingToReturnExpression, document, root.SyntaxTree))
                 {
                     ExpressionSyntax expression = GetReturnExpression(simpleName);
 

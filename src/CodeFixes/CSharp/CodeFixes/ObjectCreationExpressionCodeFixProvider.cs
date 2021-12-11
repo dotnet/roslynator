@@ -18,7 +18,7 @@ namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ObjectCreationExpressionCodeFixProvider))]
     [Shared]
-    public sealed class ObjectCreationExpressionCodeFixProvider : BaseCodeFixProvider
+    public sealed class ObjectCreationExpressionCodeFixProvider : CompilerDiagnosticCodeFixProvider
     {
         public override ImmutableArray<string> FixableDiagnosticIds
         {
@@ -29,10 +29,10 @@ namespace Roslynator.CSharp.CodeFixes
         {
             Diagnostic diagnostic = context.Diagnostics[0];
 
-            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.MoveInitializerExpressionsToConstructor))
-                return;
-
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+            if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.MoveInitializerExpressionsToConstructor, context.Document, root.SyntaxTree))
+                return;
 
             ObjectCreationExpressionSyntax objectCreationExpression = root
                 .FindNode(context.Span, getInnermostNodeForTie: true)?
@@ -45,7 +45,7 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 case CompilerDiagnosticIdentifiers.CS7036_ThereIsNoArgumentGivenThatCorrespondsToRequiredFormalParameter:
                     {
-                        if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.MoveInitializerExpressionsToConstructor))
+                        if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.MoveInitializerExpressionsToConstructor, context.Document, root.SyntaxTree))
                             break;
 
                         if (!objectCreationExpression.Type.Span.Contains(diagnostic.Location.SourceSpan))

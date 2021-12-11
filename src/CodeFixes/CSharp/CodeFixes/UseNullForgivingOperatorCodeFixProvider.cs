@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UseNullForgivingOperatorCodeFixProvider))]
     [Shared]
-    public sealed class UseNullForgivingOperatorCodeFixProvider : BaseCodeFixProvider
+    public sealed class UseNullForgivingOperatorCodeFixProvider : CompilerDiagnosticCodeFixProvider
     {
         public override ImmutableArray<string> FixableDiagnosticIds
         {
@@ -46,7 +46,7 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 case CompilerDiagnosticIdentifiers.CS8625_CannotConvertNullLiteralToNonNullableReferenceType:
                     {
-                        if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.UseNullForgivingOperator))
+                        if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.UseNullForgivingOperator, context.Document, root.SyntaxTree))
                             break;
 
                         CodeAction codeAction = CodeAction.Create(
