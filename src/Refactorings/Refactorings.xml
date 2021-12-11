@@ -1454,7 +1454,7 @@ i--;]]></After>
     </Syntaxes>
     <Span>body or accessor list</Span>
   </Refactoring>
-  <Refactoring Id="RR0170" Identifier="UseLambdaExpressionInsteadOfAnonymousMethod" Title="Use lambda expression instead of anonymous method">
+  <Refactoring Id="RR0170" Identifier="UseLambdaInsteadOfAnonymousMethod" Title="Use lambda instead of anonymous method">
     <Syntaxes>
       <Syntax>anonymous method</Syntax>
     </Syntaxes>

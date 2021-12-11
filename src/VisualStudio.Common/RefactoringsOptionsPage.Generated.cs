@@ -175,7 +175,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertIfToConditionalExpression, "Convert 'if' to ?:", IsEnabled(RefactoringIdentifiers.ConvertIfToConditionalExpression)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.UseElementAccessInsteadOfLinqMethod, "Use element access instead of LINQ method", IsEnabled(RefactoringIdentifiers.UseElementAccessInsteadOfLinqMethod)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertBlockBodyToExpressionBody, "Convert block body to expression-body", IsEnabled(RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.UseLambdaExpressionInsteadOfAnonymousMethod, "Use lambda expression instead of anonymous method", IsEnabled(RefactoringIdentifiers.UseLambdaExpressionInsteadOfAnonymousMethod)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.UseLambdaInsteadOfAnonymousMethod, "Use lambda instead of anonymous method", IsEnabled(RefactoringIdentifiers.UseLambdaInsteadOfAnonymousMethod)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.UseStringEmptyInsteadOfEmptyStringLiteral, "Convert \"\" to string.Empty", IsEnabled(RefactoringIdentifiers.UseStringEmptyInsteadOfEmptyStringLiteral)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.WrapStatementsInCondition, "Wrap statements in condition", IsEnabled(RefactoringIdentifiers.WrapStatementsInCondition)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.WrapLinesInPreprocessorDirective, "Wrap lines in preprocessor directive", IsEnabled(RefactoringIdentifiers.WrapLinesInPreprocessorDirective)));

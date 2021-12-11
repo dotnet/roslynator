@@ -48,7 +48,7 @@ namespace Roslynator.CSharp.Analysis
         {
             var anonymousMethod = (AnonymousMethodExpressionSyntax)context.Node;
 
-            if (UseLambdaExpressionInsteadOfAnonymousMethodAnalysis.IsFixable(anonymousMethod))
+            if (UseLambdaInsteadOfAnonymousMethodAnalysis.IsFixable(anonymousMethod))
             {
                 DiagnosticHelpers.ReportDiagnostic(
                     context,

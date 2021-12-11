@@ -188,7 +188,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string UseExplicitType = Prefix + "0023";
         public const string UseImplicitType = Prefix + "0018";
         public const string UseIndexInitializer = Prefix + "0191";
-        public const string UseLambdaExpressionInsteadOfAnonymousMethod = Prefix + "0170";
+        public const string UseLambdaInsteadOfAnonymousMethod = Prefix + "0170";
         public const string UseListInsteadOfYield = Prefix + "0183";
         public const string UseReadOnlyFieldInsteadOfConstant = Prefix + "0121";
         public const string UseStringBuilderInsteadOfConcatenation = Prefix + "0182";

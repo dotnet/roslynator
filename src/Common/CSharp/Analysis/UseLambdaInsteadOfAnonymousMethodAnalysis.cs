@@ -4,7 +4,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Analysis
 {
-    internal static class UseLambdaExpressionInsteadOfAnonymousMethodAnalysis
+    internal static class UseLambdaInsteadOfAnonymousMethodAnalysis
     {
         public static bool IsFixable(AnonymousMethodExpressionSyntax anonymousMethod)
         {

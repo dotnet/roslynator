@@ -9,7 +9,7 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class UseLambdaExpressionInsteadOfAnonymousMethodRefactoring
+    internal static class UseLambdaInsteadOfAnonymousMethodRefactoring
     {
         public static Task<Document> RefactorAsync(
             Document document,
