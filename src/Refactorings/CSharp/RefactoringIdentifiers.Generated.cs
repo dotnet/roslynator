@@ -83,7 +83,6 @@ namespace Roslynator.CSharp.Refactorings
         public const string ExpandPositionalConstructor = Prefix + "0215";
         public const string ExtractEventHandlerMethod = Prefix + "0203";
         public const string ExtractExpressionFromCondition = Prefix + "0043";
-        public const string ExtractStatement = Prefix + "0045";
         public const string ExtractTypeDeclarationToNewFile = Prefix + "0046";
         public const string GenerateBaseConstructors = Prefix + "0054";
         public const string GenerateCombinedEnumMember = Prefix + "0055";
@@ -144,6 +143,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string RemoveBracesFromSwitchSections = Prefix + "0097";
         public const string RemoveComment = Prefix + "0098";
         public const string RemoveConditionFromLastElse = Prefix + "0099";
+        public const string RemoveContainingStatement = Prefix + "0045";
         public const string RemoveEmptyLines = Prefix + "0101";
         public const string RemoveEnumMemberValue = Prefix + "0199";
         public const string RemoveInstantiationOfLocalVariable = Prefix + "0185";

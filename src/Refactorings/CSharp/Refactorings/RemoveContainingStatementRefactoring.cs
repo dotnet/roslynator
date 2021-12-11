@@ -10,7 +10,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class ExtractStatementRefactoring
+    internal static class RemoveContainingStatementRefactoring
     {
         public static void ComputeRefactoring(RefactoringContext context, StatementSyntax statement)
         {
@@ -42,10 +42,10 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 (parent.Kind() == SyntaxKind.ElseClause)
-                    ? "Extract from containing else clause"
-                    : "Extract from containing statement",
+                    ? "Remove containing else clause"
+                    : "Remove containing statement",
                 ct => RefactorAsync(context.Document, statement, ct),
-                RefactoringIdentifiers.ExtractStatement);
+                RefactoringIdentifiers.RemoveContainingStatement);
         }
 
         private static SyntaxNode GetContainingBlock(SyntaxNode node)

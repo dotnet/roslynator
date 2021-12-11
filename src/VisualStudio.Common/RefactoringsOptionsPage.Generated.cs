@@ -61,7 +61,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertAutoPropertyToFullPropertyWithoutBackingField, "Convert auto-property to full property (without backing field)", IsEnabled(RefactoringIdentifiers.ConvertAutoPropertyToFullPropertyWithoutBackingField)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertAutoPropertyToFullProperty, "Convert auto-property to full property", IsEnabled(RefactoringIdentifiers.ConvertAutoPropertyToFullProperty)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ExtractExpressionFromCondition, "Extract expression from condition", IsEnabled(RefactoringIdentifiers.ExtractExpressionFromCondition)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.ExtractStatement, "Extract statement(s)", IsEnabled(RefactoringIdentifiers.ExtractStatement)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.RemoveContainingStatement, "Remove containing statement", IsEnabled(RefactoringIdentifiers.RemoveContainingStatement)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ExtractTypeDeclarationToNewFile, "Extract type declaration to a new file", IsEnabled(RefactoringIdentifiers.ExtractTypeDeclarationToNewFile)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.WrapArguments, "Wrap arguments", IsEnabled(RefactoringIdentifiers.WrapArguments)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.WrapBinaryExpression, "Wrap binary expression", IsEnabled(RefactoringIdentifiers.WrapBinaryExpression)));

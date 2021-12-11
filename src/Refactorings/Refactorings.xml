@@ -339,7 +339,7 @@ if (y)
     </Syntaxes>
     <Span>type argument</Span>
   </Refactoring>
-  <Refactoring Id="RR0045" Identifier="ExtractStatement" Title="Extract statement(s)">
+  <Refactoring Id="RR0045" Identifier="RemoveContainingStatement" Title="Remove containing statement">
     <Syntaxes>
       <Syntax>else clause</Syntax>
       <Syntax>fixed statement</Syntax>
