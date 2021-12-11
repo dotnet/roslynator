@@ -101,7 +101,7 @@
       <Syntax>method invocation</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0017" Identifier="CallToMethod" Title="Call 'To...' method (ToString, ToArray, ToList)">
+  <Refactoring Id="RR0017" Identifier="CallToMethod" Title="Call 'To...' method (ToString, ToArray, ToList)" IsObsolete="true">
     <Syntaxes>
       <Syntax>argument</Syntax>
       <Syntax>assignment expression</Syntax>
@@ -333,7 +333,7 @@ if (y)
       </Sample>
     </Samples>
   </Refactoring>
-  <Refactoring Id="RR0044" Identifier="ExtractGenericType" Title="Extract generic type">
+  <Refactoring Id="RR0044" Identifier="ExtractGenericType" Title="Extract generic type" IsObsolete="true">
     <Syntaxes>
       <Syntax>generic name with single type argument</Syntax>
     </Syntaxes>
@@ -1491,7 +1491,7 @@ i--;]]></After>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0177" Identifier="WrapInUsingStatement" Title="Wrap in using statement">
-    <Syntaxes>
+	<Syntaxes>
       <Syntax>local declaration of type that implements IDisposable</Syntax>
     </Syntaxes>
   </Refactoring>
@@ -1715,7 +1715,7 @@ public class Foo
       </Sample>
     </Samples>
   </Refactoring>
-  <Refactoring Id="RR0194" Identifier="SplitDeclarationAndInitialization" Title="Split declaration and initialization">
+  <Refactoring Id="RR0194" Identifier="SplitDeclarationAndInitialization" Title="Split declaration and initialization" IsObsolete="true">
     <Syntaxes>
       <Syntax>local variable declaration</Syntax>
     </Syntaxes>

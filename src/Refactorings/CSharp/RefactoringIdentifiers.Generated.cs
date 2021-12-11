@@ -29,7 +29,6 @@ namespace Roslynator.CSharp.Refactorings
         public const string AddUsingStaticDirective = Prefix + "0014";
         public const string CallExtensionMethodAsInstanceMethod = Prefix + "0016";
         public const string CallIndexOfInsteadOfContains = Prefix + "0144";
-        public const string CallToMethod = Prefix + "0017";
         public const string ChangeAccessibility = Prefix + "0186";
         public const string ChangeExplicitTypeToVar = Prefix + "0018";
         public const string ChangeMethodReturnTypeToVoid = Prefix + "0021";
@@ -85,7 +84,6 @@ namespace Roslynator.CSharp.Refactorings
         public const string ExpandPropertyAndAddBackingField = Prefix + "0041";
         public const string ExtractEventHandlerMethod = Prefix + "0203";
         public const string ExtractExpressionFromCondition = Prefix + "0043";
-        public const string ExtractGenericType = Prefix + "0044";
         public const string ExtractStatement = Prefix + "0045";
         public const string ExtractTypeDeclarationToNewFile = Prefix + "0046";
         public const string GenerateBaseConstructors = Prefix + "0054";
@@ -179,7 +177,6 @@ namespace Roslynator.CSharp.Refactorings
         public const string SortCaseLabels = Prefix + "0207";
         public const string SortMemberDeclarations = Prefix + "0155";
         public const string SplitAttributes = Prefix + "0156";
-        public const string SplitDeclarationAndInitialization = Prefix + "0194";
         public const string SplitIf = Prefix + "0184";
         public const string SplitIfElse = Prefix + "0190";
         public const string SplitSwitchLabels = Prefix + "0157";
