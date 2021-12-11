@@ -64,6 +64,9 @@
     <Content Include="RoslynatorPreview.png">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <Content Include="roslynator.editorconfig">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <None Include="source.extension.vsixmanifest">
       <SubType>Designer</SubType>
     </None>

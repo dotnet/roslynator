@@ -12,6 +12,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.Configuration;
 using Roslynator.CSharp;
 using Roslynator.CSharp.Syntax;
 using Roslynator.Formatting.CodeFixes.CSharp;
@@ -38,7 +39,7 @@ namespace Roslynator.Formatting.CodeFixes.LineIsTooLong
 
             SyntaxTree syntaxTree = await document.GetSyntaxTreeAsync(context.CancellationToken).ConfigureAwait(false);
 
-            int maxLength = AnalyzerOptions.MaxLineLength.GetInt32Value(syntaxTree, document.Project.AnalyzerOptions, AnalyzerSettings.Current.MaxLineLength);
+            int maxLength = AnalyzerOptions.MaxLineLength.GetInt32Value(syntaxTree, document.Project.AnalyzerOptions, CodeAnalysisConfig.Instance.MaxLineLength);
 
             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 

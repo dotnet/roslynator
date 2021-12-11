@@ -21,18 +21,18 @@ namespace Roslynator.CSharp.Refactorings
         private AnalyzerConfigOptions _configOptions;
         private bool? _globalIsEnabled;
 
-        public RefactoringContext(CodeRefactoringContext underlyingContext, SyntaxNode root, RefactoringSettings settings)
+        public RefactoringContext(CodeRefactoringContext underlyingContext, SyntaxNode root, CodeAnalysisConfig options)
         {
             UnderlyingContext = underlyingContext;
             Root = root;
-            Settings = settings;
+            Options = options;
         }
 
         public CodeRefactoringContext UnderlyingContext { get; }
 
         public SyntaxNode Root { get; }
 
-        public RefactoringSettings Settings { get; }
+        public CodeAnalysisConfig Options { get; }
 
         public CancellationToken CancellationToken
         {
@@ -175,7 +175,7 @@ namespace Roslynator.CSharp.Refactorings
 
         public bool IsRefactoringEnabled(RefactoringDescriptor refactoring)
         {
-            return Settings.IsEnabled(refactoring.Id)
+            return Options.IsRefactoringEnabled(refactoring.Id)
                 && GetValueFromConfig(refactoring);
         }
 
@@ -192,7 +192,7 @@ namespace Roslynator.CSharp.Refactorings
 
             bool GetDefaultValueFromConfig()
             {
-                if (_configOptions.TryGetValue(OptionKeys.RefactoringsEnabled, out string value)
+                if (_configOptions.TryGetValue(OptionKeys.RefactoringEnabled, out string value)
                     && bool.TryParse(value, out bool enabled))
                 {
                     return enabled;

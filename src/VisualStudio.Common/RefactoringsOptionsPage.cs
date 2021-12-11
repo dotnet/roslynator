@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.InteropServices;
+using Roslynator.Configuration;
 
 namespace Roslynator.VisualStudio
 {
@@ -37,17 +38,16 @@ namespace Roslynator.VisualStudio
 
             if (e.ApplyBehavior == ApplyKind.Apply)
             {
-                ApplyTo(Settings.Instance);
-                Settings.Instance.ApplyTo(RefactoringSettings.Current);
+                UpdateConfig();
             }
         }
 
-        internal void ApplyTo(Settings settings)
+        internal void UpdateConfig()
         {
             IEnumerable<KeyValuePair<string, bool>> refactorings = GetDisabledItems()
                 .Select(f => new KeyValuePair<string, bool>(f, false));
 
-            settings.VisualStudio = settings.VisualStudio.WithRefactorings(refactorings);
+            CodeAnalysisConfig.UpdateVisualStudioConfig(f => f.WithRefactorings(refactorings));
         }
     }
 }

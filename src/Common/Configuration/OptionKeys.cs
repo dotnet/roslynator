@@ -4,6 +4,11 @@ namespace Roslynator.Configuration
 {
     internal static class OptionKeys
     {
-        public const string RefactoringsEnabled = "roslynator.refactoring.enabled";
+        public const string CompilerDiagnosticFixEnabled = "roslynator.compiler_diagnostic_fix.enabled";
+        public const string CompilerDiagnosticFixPrefix = "roslynator.compiler_diagnostic_fix.";
+        public const string MaxLineLength = "roslynator.max_line_length";
+        public const string PrefixFieldIdentifierWithUnderscore = "roslynator.prefix_field_identifier_with_underscore";
+        public const string RefactoringEnabled = "roslynator.refactoring.enabled";
+        public const string RefactoringPrefix = "roslynator.refactoring.";
     }
 }

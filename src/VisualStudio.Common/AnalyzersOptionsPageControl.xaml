@@ -17,10 +17,10 @@
   <DockPanel Focusable="false" Margin="0,10,0,0">
     <WrapPanel DockPanel.Dock="Left">
       <TextBlock TextWrapping="WrapWithOverflow" Margin="0,0,0,10">
-      Default configuration of analyzers can be changed by using ruleset file at the following location: "%LOCALAPPDATA%\JosefPihrt\Roslynator\roslynator.ruleset"
+      Default configuration of analyzers can be changed by using roslynator.editorconfig file at the following location: "%LOCALAPPDATA%\JosefPihrt\Roslynator\roslynator.editorconfig"
       </TextBlock>
       <TextBlock TextWrapping="WrapWithOverflow" Margin="0,0,0,10">
-      IMPORTANT: Visual Studio restart is required for changes to take effect.
+      NOTE: Visual Studio restart is required for changes to take effect.
       </TextBlock>
       <Button Content="Open location" Click="OpenLocation_Click" />
     </WrapPanel>

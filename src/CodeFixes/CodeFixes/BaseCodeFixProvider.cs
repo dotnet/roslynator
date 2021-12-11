@@ -4,9 +4,9 @@ namespace Roslynator.CodeFixes
 {
     public abstract class BaseCodeFixProvider : AbstractCodeFixProvider
     {
-        protected virtual CodeFixSettings Settings
+        protected CompilerCodeFixOptions Settings
         {
-            get { return CodeFixSettings.Current; }
+            get { return CompilerCodeFixOptions.Current; }
         }
     }
 }

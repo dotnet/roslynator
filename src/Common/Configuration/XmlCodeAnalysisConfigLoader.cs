@@ -5,112 +5,23 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Xml;
 using System.Xml.Linq;
 
 namespace Roslynator.Configuration
 {
-    public class CodeAnalysisConfiguration
+    internal static class XmlCodeAnalysisConfigLoader
     {
-        public const string ConfigFileName = "roslynator.config";
-
-        private static readonly IEqualityComparer<string> _keyComparer = StringComparer.OrdinalIgnoreCase;
-
-        private static CodeAnalysisConfiguration _current;
-
-        public static CodeAnalysisConfiguration Empty { get; } = new CodeAnalysisConfiguration();
-
-        public static CodeAnalysisConfiguration Current
+        public static XmlCodeAnalysisConfig Load(string path)
         {
-            get
-            {
-                if (_current == null)
-                    Interlocked.CompareExchange(ref _current, LoadConfiguration() ?? Empty, null);
-
-                return _current;
-            }
+            return LoadAndCatchIfThrows(path, exceptionHandler: ex => Debug.Fail(ex.ToString()));
         }
 
-        public CodeAnalysisConfiguration(
-            IEnumerable<string> includes = null,
-            IEnumerable<KeyValuePair<string, bool>> analyzers = null,
-            IEnumerable<KeyValuePair<string, bool>> codeFixes = null,
-            IEnumerable<KeyValuePair<string, bool>> refactorings = null,
-            IEnumerable<string> ruleSets = null,
-            bool prefixFieldIdentifierWithUnderscore = false,
-            int maxLineLength = 125)
-        {
-            Includes = includes?.ToImmutableArray() ?? ImmutableArray<string>.Empty;
-            Analyzers = analyzers?.ToImmutableDictionary(_keyComparer) ?? ImmutableDictionary<string, bool>.Empty;
-            CodeFixes = codeFixes?.ToImmutableDictionary(_keyComparer) ?? ImmutableDictionary<string, bool>.Empty;
-            Refactorings = refactorings?.ToImmutableDictionary(_keyComparer) ?? ImmutableDictionary<string, bool>.Empty;
-            RuleSets = ruleSets?.ToImmutableArray() ?? ImmutableArray<string>.Empty;
-            PrefixFieldIdentifierWithUnderscore = prefixFieldIdentifierWithUnderscore;
-            MaxLineLength = maxLineLength;
-        }
-
-        public ImmutableArray<string> Includes { get; }
-
-        public ImmutableDictionary<string, bool> Analyzers { get; }
-
-        public ImmutableDictionary<string, bool> CodeFixes { get; }
-
-        public ImmutableDictionary<string, bool> Refactorings { get; }
-
-        public ImmutableArray<string> RuleSets { get; }
-
-        public bool PrefixFieldIdentifierWithUnderscore { get; }
-
-        public int MaxLineLength { get; }
-
-        internal IEnumerable<string> GetDisabledRefactorings()
-        {
-            foreach (KeyValuePair<string, bool> kvp in Refactorings)
-            {
-                if (!kvp.Value)
-                    yield return kvp.Key;
-            }
-        }
-
-        internal IEnumerable<string> GetDisabledCodeFixes()
-        {
-            foreach (KeyValuePair<string, bool> kvp in CodeFixes)
-            {
-                if (!kvp.Value)
-                    yield return kvp.Key;
-            }
-        }
-
-        private static CodeAnalysisConfiguration LoadConfiguration()
-        {
-            string path = typeof(CodeAnalysisConfiguration).Assembly.Location;
-
-            if (!string.IsNullOrEmpty(path))
-            {
-                path = Path.GetDirectoryName(path);
-
-                if (!string.IsNullOrEmpty(path))
-                {
-                    path = Path.Combine(path, ConfigFileName);
-
-                    if (File.Exists(path))
-                    {
-                        return LoadAndCatchIfThrows(path, ex => Debug.Fail(ex.ToString()));
-                    }
-                }
-            }
-
-            return null;
-        }
-
-        internal static CodeAnalysisConfiguration LoadAndCatchIfThrows(string uri, Action<Exception> exceptionHandler = null)
+        internal static XmlCodeAnalysisConfig LoadAndCatchIfThrows(string uri, XmlConfigLoadOptions options = XmlConfigLoadOptions.None, Action<Exception> exceptionHandler = null)
         {
             try
             {
-                return Load(uri);
+                return Load(uri, options);
             }
             catch (Exception ex) when (ex is IOException
                 || ex is UnauthorizedAccessException
@@ -121,28 +32,30 @@ namespace Roslynator.Configuration
             }
         }
 
-        public static CodeAnalysisConfiguration Load(string uri)
+        internal static XmlCodeAnalysisConfig Load(string path, XmlConfigLoadOptions options = XmlConfigLoadOptions.None)
         {
-            if (!TryGetNormalizedFullPath(uri, out uri))
+            if (!TryGetNormalizedFullPath(path, out path))
                 return null;
 
             Builder builder = null;
 
             Queue<string> queue = null;
 
-            Load(uri, ref builder, ref queue);
+            Load(path, ref builder, ref queue);
 
             ImmutableArray<string> includes = queue?.ToImmutableArray() ?? ImmutableArray<string>.Empty;
 
-            if (queue != null)
+            if (queue != null
+                && (options & XmlConfigLoadOptions.SkipIncludes) == 0)
             {
-                var loadedIncludes = new HashSet<string>(FileSystemHelpers.Comparer) { uri };
+                var loadedIncludes = new HashSet<string>(FileSystemHelpers.Comparer) { path };
 
                 do
                 {
                     string include = queue.Dequeue();
 
                     if (!loadedIncludes.Contains(include)
+                        && Path.GetFileName(include) == XmlCodeAnalysisConfig.FileName
                         && File.Exists(include))
                     {
                         try
@@ -163,9 +76,9 @@ namespace Roslynator.Configuration
             }
 
             if (builder == null)
-                return Empty;
+                return null;
 
-            return new CodeAnalysisConfiguration(
+            return new XmlCodeAnalysisConfig(
                 includes: includes,
                 analyzers: builder.Analyzers?.ToImmutable() ?? ImmutableDictionary<string, bool>.Empty,
                 codeFixes: builder.CodeFixes?.ToImmutable() ?? ImmutableDictionary<string, bool>.Empty,
@@ -450,124 +363,6 @@ namespace Roslynator.Configuration
                 : null;
         }
 
-        public CodeAnalysisConfiguration WithPrefixFieldIdentifierWithUnderscore(bool prefixFieldIdentifierWithUnderscore)
-        {
-            return new CodeAnalysisConfiguration(
-                includes: Includes,
-                analyzers: Analyzers,
-                codeFixes: CodeFixes,
-                refactorings: Refactorings,
-                ruleSets: RuleSets,
-                prefixFieldIdentifierWithUnderscore: prefixFieldIdentifierWithUnderscore,
-                maxLineLength: MaxLineLength);
-        }
-
-        public CodeAnalysisConfiguration WithAnalyzers(IEnumerable<KeyValuePair<string, bool>> analyzers)
-        {
-            return new CodeAnalysisConfiguration(
-                includes: Includes,
-                analyzers: analyzers,
-                codeFixes: CodeFixes,
-                refactorings: Refactorings,
-                ruleSets: RuleSets,
-                prefixFieldIdentifierWithUnderscore: PrefixFieldIdentifierWithUnderscore,
-                maxLineLength: MaxLineLength);
-        }
-
-        public CodeAnalysisConfiguration WithRefactorings(IEnumerable<KeyValuePair<string, bool>> refactorings)
-        {
-            return new CodeAnalysisConfiguration(
-                includes: Includes,
-                analyzers: Analyzers,
-                codeFixes: CodeFixes,
-                refactorings: refactorings,
-                ruleSets: RuleSets,
-                prefixFieldIdentifierWithUnderscore: PrefixFieldIdentifierWithUnderscore,
-                maxLineLength: MaxLineLength);
-        }
-
-        public CodeAnalysisConfiguration WithCodeFixes(IEnumerable<KeyValuePair<string, bool>> codeFixes)
-        {
-            return new CodeAnalysisConfiguration(
-                includes: Includes,
-                analyzers: Analyzers,
-                codeFixes: codeFixes,
-                refactorings: Refactorings,
-                ruleSets: RuleSets,
-                prefixFieldIdentifierWithUnderscore: PrefixFieldIdentifierWithUnderscore,
-                maxLineLength: MaxLineLength);
-        }
-
-        internal void Save(string path)
-        {
-            var settings = new XElement(
-                "Settings",
-                new XElement(
-                    "General",
-                    new XElement("PrefixFieldIdentifierWithUnderscore", PrefixFieldIdentifierWithUnderscore)),
-                new XElement(
-                    "Formatting",
-                    new XElement("MaxLineLength", MaxLineLength)));
-
-            if (Analyzers.Count > 0)
-            {
-                settings.Add(
-                    new XElement(
-                        "Analyzers",
-                        Analyzers
-                            .OrderBy(f => f.Key)
-                            .Select(f => new XElement("Analyzer", new XAttribute("Id", f.Key), new XAttribute("Value", f.Value)))
-                    ));
-            }
-
-            if (Refactorings.Any(f => !f.Value))
-            {
-                settings.Add(
-                    new XElement(
-                        "Refactorings",
-                        Refactorings
-                            .Where(f => !f.Value)
-                            .OrderBy(f => f.Key)
-                            .Select(f => new XElement("Refactoring", new XAttribute("Id", f.Key), new XAttribute("IsEnabled", f.Value)))
-                    ));
-            }
-
-            if (CodeFixes.Any(f => !f.Value))
-            {
-                settings.Add(
-                    new XElement(
-                        "CodeFixes",
-                        CodeFixes
-                            .Where(f => !f.Value)
-                            .OrderBy(f => f.Key)
-                            .Select(f => new XElement("CodeFix", new XAttribute("Id", f.Key), new XAttribute("IsEnabled", f.Value)))
-                    ));
-            }
-
-            if (RuleSets.Any())
-            {
-                settings.Add(
-                    new XElement(
-                        "RuleSets",
-                        RuleSets.Select(f => new XElement("RuleSet", new XAttribute("Path", f)))));
-            }
-
-            var doc = new XDocument(new XElement("Roslynator", settings));
-
-            var xmlWriterSettings = new XmlWriterSettings()
-            {
-                OmitXmlDeclaration = false,
-                NewLineChars = Environment.NewLine,
-                IndentChars = "  ",
-                Indent = true,
-            };
-
-            using (var fileStream = new FileStream(path, FileMode.Create))
-            using (var streamWriter = new StreamWriter(fileStream, Encoding.UTF8))
-            using (XmlWriter xmlWriter = XmlWriter.Create(streamWriter, xmlWriterSettings))
-                doc.WriteTo(xmlWriter);
-        }
-
         private class Builder
         {
             private ImmutableDictionary<string, bool>.Builder _analyzers;
@@ -595,9 +390,9 @@ namespace Roslynator.Configuration
                 get { return _ruleSets ??= ImmutableArray.CreateBuilder<string>(); }
             }
 
-            public bool PrefixFieldIdentifierWithUnderscore { get; set; } = Empty.PrefixFieldIdentifierWithUnderscore;
+            public bool PrefixFieldIdentifierWithUnderscore { get; set; } = OptionDefaultValues.PrefixFieldIdentifierWithUnderscore;
 
-            public int MaxLineLength { get; set; } = Empty.MaxLineLength;
+            public int MaxLineLength { get; set; } = OptionDefaultValues.MaxLineLength;
         }
 
         private static bool TryGetNormalizedFullPath(string path, out string result)

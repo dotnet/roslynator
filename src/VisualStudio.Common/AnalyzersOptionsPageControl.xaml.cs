@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using Roslynator.Configuration;
 
 namespace Roslynator.VisualStudio
 {
@@ -21,15 +22,13 @@ namespace Roslynator.VisualStudio
 
         private void OpenLocation_Click(object sender, RoutedEventArgs e)
         {
-            DefaultRuleSet.CreateFileIfNotExists();
+            string filePath = EditorConfigCodeAnalysisConfig.CreateDefaultConfigFileIfNotExists();
 
-            string ruleSetPath = DefaultRuleSet.GetFilePath();
-
-            if (File.Exists(ruleSetPath))
+            if (File.Exists(filePath))
             {
                 try
                 {
-                    Process.Start("explorer.exe", $"/select, \"{ruleSetPath}\"");
+                    Process.Start("explorer.exe", $"/select, \"{filePath}\"");
                 }
                 catch (Exception ex) when (ex is InvalidOperationException
                     || ex is FileNotFoundException

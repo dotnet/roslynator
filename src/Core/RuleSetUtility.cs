@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
+using System.Text;
 using System.Threading;
 
 namespace Roslynator
@@ -53,13 +54,16 @@ namespace Roslynator
         {
             if (!File.Exists(path))
                 return null;
-#if DEBUG
-            using (StreamWriter sw = File.CreateText(path + ".log"))
+
+            StreamWriter sw = null;
+            try
             {
-                sw.WriteLine($"{DateTime.Now.ToString()} loading rule set from {path}");
-                sw.WriteLine($"{DateTime.Now.ToString()} base directory {AppContext.BaseDirectory}");
-                sw.WriteLine($"{DateTime.Now.ToString()} current directory {Environment.CurrentDirectory}");
-#endif
+                //sw = File.CreateText(path + ".log");
+
+                sw?.WriteLine($"{DateTime.Now.ToString()} loading rule set from {path}");
+                sw?.WriteLine($"{DateTime.Now.ToString()} base directory {AppContext.BaseDirectory}");
+                sw?.WriteLine($"{DateTime.Now.ToString()} current directory {Environment.CurrentDirectory}");
+
                 if (File.Exists(path))
                 {
                     RuleSet ruleSet = null;
@@ -72,31 +76,33 @@ namespace Roslynator
                         || ex is UnauthorizedAccessException
                         || ex.GetType().FullName == "Microsoft.CodeAnalysis.InvalidRuleSetException")
                     {
+                        sw?.WriteLine($"{DateTime.Now.ToString()} {ex}");
 #if DEBUG
-                        sw.WriteLine($"{DateTime.Now.ToString()} {ex}");
                         throw;
 #endif
                     }
 
                     if (ruleSet != null)
                     {
-#if DEBUG
-                        sw.WriteLine($"{DateTime.Now.ToString()} rule set loaded");
-                        sw.WriteLine($"{DateTime.Now.ToString()} default action is {ruleSet.GeneralDiagnosticOption}");
+                        sw?.WriteLine($"{DateTime.Now.ToString()} rule set loaded");
+                        sw?.WriteLine($"{DateTime.Now.ToString()} default action is {ruleSet.GeneralDiagnosticOption}");
 
                         foreach (KeyValuePair<string, ReportDiagnostic> kvp in ruleSet.SpecificDiagnosticOptions)
-                            sw.WriteLine($"{DateTime.Now.ToString()} {kvp.Key} {kvp.Value}");
-#endif
+                            sw?.WriteLine($"{DateTime.Now.ToString()} {kvp.Key} {kvp.Value}");
+
                         return ruleSet;
                     }
                 }
-#if DEBUG
                 else
                 {
-                    sw.WriteLine($"{DateTime.Now.ToString()} rule set not found");
+                    sw?.WriteLine($"{DateTime.Now.ToString()} rule set not found");
                 }
             }
-#endif
+            finally
+            {
+                sw?.Dispose();
+            }
+
             return null;
         }
 

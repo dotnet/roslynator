@@ -10,7 +10,7 @@ namespace Roslynator.CodeAnalysis.CSharp
     public static partial class DiagnosticRules
     {
         /// <summary>RCS9001</summary>
-        public static readonly DiagnosticDescriptor UsePatternMatching = DiagnosticDescriptorFactory.Default.Create(
+        public static readonly DiagnosticDescriptor UsePatternMatching = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.UsePatternMatching, 
             title:              "Use pattern matching.", 
             messageFormat:      "Use pattern matching.", 
@@ -22,7 +22,7 @@ namespace Roslynator.CodeAnalysis.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS9002</summary>
-        public static readonly DiagnosticDescriptor UsePropertySyntaxNodeSpanStart = DiagnosticDescriptorFactory.Default.Create(
+        public static readonly DiagnosticDescriptor UsePropertySyntaxNodeSpanStart = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.UsePropertySyntaxNodeSpanStart, 
             title:              "Use property SyntaxNode.SpanStart.", 
             messageFormat:      "Use property SyntaxNode.SpanStart.", 
@@ -34,7 +34,7 @@ namespace Roslynator.CodeAnalysis.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS9003</summary>
-        public static readonly DiagnosticDescriptor UnnecessaryConditionalAccess = DiagnosticDescriptorFactory.Default.Create(
+        public static readonly DiagnosticDescriptor UnnecessaryConditionalAccess = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.UnnecessaryConditionalAccess, 
             title:              "Unnecessary conditional access.", 
             messageFormat:      "Unnecessary conditional access.", 
@@ -48,7 +48,7 @@ namespace Roslynator.CodeAnalysis.CSharp
         public static readonly DiagnosticDescriptor UnnecessaryConditionalAccessFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(UnnecessaryConditionalAccess);
 
         /// <summary>RCS9004</summary>
-        public static readonly DiagnosticDescriptor CallAnyInsteadOfAccessingCount = DiagnosticDescriptorFactory.Default.Create(
+        public static readonly DiagnosticDescriptor CallAnyInsteadOfAccessingCount = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.CallAnyInsteadOfAccessingCount, 
             title:              "Call 'Any' instead of accessing 'Count'.", 
             messageFormat:      "Call 'Any' instead of accessing 'Count'.", 
@@ -60,7 +60,7 @@ namespace Roslynator.CodeAnalysis.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS9005</summary>
-        public static readonly DiagnosticDescriptor UnnecessaryNullCheck = DiagnosticDescriptorFactory.Default.Create(
+        public static readonly DiagnosticDescriptor UnnecessaryNullCheck = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.UnnecessaryNullCheck, 
             title:              "Unnecessary null check.", 
             messageFormat:      "Unnecessary null check.", 
@@ -72,7 +72,7 @@ namespace Roslynator.CodeAnalysis.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS9006</summary>
-        public static readonly DiagnosticDescriptor UseElementAccess = DiagnosticDescriptorFactory.Default.Create(
+        public static readonly DiagnosticDescriptor UseElementAccess = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.UseElementAccess, 
             title:              "Use element access.", 
             messageFormat:      "Use element access.", 
@@ -84,7 +84,7 @@ namespace Roslynator.CodeAnalysis.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS9007</summary>
-        public static readonly DiagnosticDescriptor UseReturnValue = DiagnosticDescriptorFactory.Default.Create(
+        public static readonly DiagnosticDescriptor UseReturnValue = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.UseReturnValue, 
             title:              "Use return value.", 
             messageFormat:      "Use return value.", 
@@ -96,7 +96,7 @@ namespace Roslynator.CodeAnalysis.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS9008</summary>
-        public static readonly DiagnosticDescriptor CallLastInsteadOfUsingElementAccess = DiagnosticDescriptorFactory.Default.Create(
+        public static readonly DiagnosticDescriptor CallLastInsteadOfUsingElementAccess = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.CallLastInsteadOfUsingElementAccess, 
             title:              "Call 'Last' instead of using [].", 
             messageFormat:      "Call 'Last' instead of using [].", 
@@ -108,7 +108,7 @@ namespace Roslynator.CodeAnalysis.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS9009</summary>
-        public static readonly DiagnosticDescriptor UnknownLanguageName = DiagnosticDescriptorFactory.Default.Create(
+        public static readonly DiagnosticDescriptor UnknownLanguageName = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.UnknownLanguageName, 
             title:              "Unknown language name.", 
             messageFormat:      "Unknown language name.", 
@@ -120,7 +120,7 @@ namespace Roslynator.CodeAnalysis.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS9010</summary>
-        public static readonly DiagnosticDescriptor SpecifyExportCodeRefactoringProviderAttributeName = DiagnosticDescriptorFactory.Default.Create(
+        public static readonly DiagnosticDescriptor SpecifyExportCodeRefactoringProviderAttributeName = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.SpecifyExportCodeRefactoringProviderAttributeName, 
             title:              "Specify ExportCodeRefactoringProviderAttribute.Name.", 
             messageFormat:      "Specify ExportCodeRefactoringProviderAttribute.Name.", 
@@ -132,7 +132,7 @@ namespace Roslynator.CodeAnalysis.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS9011</summary>
-        public static readonly DiagnosticDescriptor SpecifyExportCodeFixProviderAttributeName = DiagnosticDescriptorFactory.Default.Create(
+        public static readonly DiagnosticDescriptor SpecifyExportCodeFixProviderAttributeName = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.SpecifyExportCodeFixProviderAttributeName, 
             title:              "Specify ExportCodeFixProviderAttribute.Name.", 
             messageFormat:      "Specify ExportCodeFixProviderAttribute.Name.", 

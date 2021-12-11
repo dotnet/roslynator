@@ -1410,7 +1410,7 @@ void M(
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Summary>This analyzer reports any line that is longer than maximal length.
     
-Default maximal length is 125.</Summary>
+Default maximal length is 140.</Summary>
     <Options>
       <Option Identifier="MaxLineLength">
         <Title>Max line length.</Title>

@@ -17,7 +17,6 @@ namespace Roslynator.VisualStudio
     public partial class GeneralOptionsPageControl : UserControl, INotifyPropertyChanged
     {
         private bool _prefixFieldIdentifierWithUnderscore;
-        private bool _useConfigFile;
 
         public GeneralOptionsPageControl()
         {
@@ -41,19 +40,6 @@ namespace Roslynator.VisualStudio
             }
         }
 
-        public bool UseConfigFile
-        {
-            get { return _useConfigFile; }
-            set
-            {
-                if (_useConfigFile != value)
-                {
-                    _useConfigFile = value;
-                    OnPropertyChanged(nameof(UseConfigFile));
-                }
-            }
-        }
-
         protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -69,9 +55,9 @@ namespace Roslynator.VisualStudio
         {
             var dialog = new SaveFileDialog()
             {
-                Filter = "All Files  (*.*)|*.*|Config Files (*.config)|*.config",
-                FileName = Path.GetFileName(CodeAnalysisConfiguration.ConfigFileName),
-                DefaultExt = "config",
+                Filter = "All Files  (*.*)|*.*",
+                FileName = Path.GetFileName(EditorConfigCodeAnalysisConfig.FileName),
+                DefaultExt = "editorconfig",
                 AddExtension = true,
                 CheckPathExists = true,
                 OverwritePrompt = true,
@@ -112,14 +98,18 @@ namespace Roslynator.VisualStudio
                 disabledCodeFixes = package.CodeFixesOptionsPage.GetDisabledItems();
             }
 
-            var configuration = new CodeAnalysisConfiguration(
-                refactorings: disabledRefactorings.Select(f => new KeyValuePair<string, bool>(f, false)),
-                codeFixes: disabledCodeFixes.Select(f => new KeyValuePair<string, bool>(f, false)),
-                prefixFieldIdentifierWithUnderscore: PrefixFieldIdentifierWithUnderscore);
+            var options = new Dictionary<string, string>()
+            {
+                [OptionKeys.PrefixFieldIdentifierWithUnderscore] = (PrefixFieldIdentifierWithUnderscore) ? "true" : "false"
+            };
 
             try
             {
-                configuration.Save(dialog.FileName);
+                EditorConfigCodeAnalysisConfig.Save(
+                    dialog.FileName,
+                    options: options,
+                    refactorings: disabledRefactorings.Select(f => new KeyValuePair<string, bool>(f, false)),
+                    codeFixes: disabledCodeFixes.Select(f => new KeyValuePair<string, bool>(f, false)));
             }
             catch (Exception ex) when (ex is IOException
                 || ex is UnauthorizedAccessException)
@@ -132,7 +122,7 @@ namespace Roslynator.VisualStudio
         {
             var dialog = new OpenFileDialog()
             {
-                Filter = "All Files  (*.*)|*.*|Config Files (*.config)|*.config",
+                Filter = "All Files  (*.*)|*.*",
                 CheckPathExists = true,
                 Multiselect = false,
             };
@@ -140,17 +130,17 @@ namespace Roslynator.VisualStudio
             if (dialog.ShowDialog() != true)
                 return;
 
-            CodeAnalysisConfiguration configuration = CodeAnalysisConfiguration.LoadAndCatchIfThrows(dialog.FileName, f => ShowErrorMessage(f));
+            EditorConfigCodeAnalysisConfig config = EditorConfigCodeAnalysisConfigLoader.LoadAndCatchIfThrows(new string[] { dialog.FileName }, ex => ShowErrorMessage(ex));
 
             AbstractPackage package = AbstractPackage.Instance;
 
             package.RefactoringsOptionsPage.Load();
             package.CodeFixesOptionsPage.Load();
 
-            PrefixFieldIdentifierWithUnderscore = configuration.PrefixFieldIdentifierWithUnderscore;
+            PrefixFieldIdentifierWithUnderscore = config.PrefixFieldIdentifierWithUnderscore ?? OptionDefaultValues.PrefixFieldIdentifierWithUnderscore;
 
-            Update(package.RefactoringsOptionsPage, configuration.GetDisabledRefactorings().ToHashSet());
-            Update(package.CodeFixesOptionsPage, configuration.GetDisabledCodeFixes().ToHashSet());
+            Update(package.RefactoringsOptionsPage, config.GetDisabledRefactorings().ToHashSet());
+            Update(package.CodeFixesOptionsPage, config.GetDisabledCodeFixes().ToHashSet());
 
             static void Update(BaseOptionsPage optionsPage, HashSet<string> disabledIds)
             {

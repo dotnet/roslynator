@@ -1,0 +1,12 @@
+﻿is_global = true
+
+roslnator.max_line_length = 140
+roslynator.prefix_field_identifier_with_underscore = false
+
+roslynator.refactoring.RR0010.enabled = false
+roslynator.refactoring.RR0012.enabled = false
+roslynator.refactoring.RR0066.enabled = false
+roslynator.refactoring.RR0088.enabled = false
+roslynator.refactoring.RR0138.enabled = false
+roslynator.refactoring.RR0171.enabled = false
+roslynator.refactoring.RR0188.enabled = false
