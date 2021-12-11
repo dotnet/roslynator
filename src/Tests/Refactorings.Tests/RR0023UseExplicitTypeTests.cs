@@ -6,11 +6,11 @@ using Xunit;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public class RR0023ChangeVarToExplicitTypeTests : AbstractCSharpRefactoringVerifier
+    public class RR0023UseExplicitTypeTests : AbstractCSharpRefactoringVerifier
     {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.ChangeVarToExplicitType;
+        public override string RefactoringId { get; } = RefactoringIdentifiers.UseExplicitType;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ChangeVarToExplicitType)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.UseExplicitType)]
         public async Task Test_NamespaceConflict()
         {
             await VerifyRefactoringAsync(@"

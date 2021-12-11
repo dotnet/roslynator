@@ -10,7 +10,7 @@ namespace Roslynator.CSharp.Refactorings.Tests
     {
         public override string RefactoringId { get; } = RefactoringIdentifiers.ChangeTypeAccordingToExpression;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ChangeVarToExplicitType)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ChangeTypeAccordingToExpression)]
         public async Task Test_LocalVariable()
         {
             await VerifyRefactoringAsync(@"
@@ -36,7 +36,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ChangeVarToExplicitType)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ChangeTypeAccordingToExpression)]
         public async Task Test_ForEachVariable()
         {
             await VerifyRefactoringAsync(@"
@@ -68,7 +68,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ChangeVarToExplicitType)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ChangeTypeAccordingToExpression)]
         public async Task Test_NoRefactoring_NullLiteral()
         {
             await VerifyNoRefactoringAsync(@"

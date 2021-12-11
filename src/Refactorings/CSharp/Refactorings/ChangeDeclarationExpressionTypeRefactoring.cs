@@ -15,8 +15,8 @@ namespace Roslynator.CSharp.Refactorings
         {
             if (declarationExpression.Type?.Span.Contains(context.Span) == true
                 && context.IsAnyRefactoringEnabled(
-                    RefactoringIdentifiers.ChangeExplicitTypeToVar,
-                    RefactoringIdentifiers.ChangeVarToExplicitType))
+                    RefactoringIdentifiers.UseImplicitType,
+                    RefactoringIdentifiers.UseExplicitType))
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
@@ -25,13 +25,13 @@ namespace Roslynator.CSharp.Refactorings
                 if (analysis.IsExplicit)
                 {
                     if (analysis.SupportsImplicit
-                        && context.IsRefactoringEnabled(RefactoringIdentifiers.ChangeExplicitTypeToVar))
+                        && context.IsRefactoringEnabled(RefactoringIdentifiers.UseImplicitType))
                     {
-                        context.RegisterRefactoring(CodeActionFactory.ChangeTypeToVar(context.Document, declarationExpression.Type, equivalenceKey: RefactoringIdentifiers.ChangeExplicitTypeToVar));
+                        context.RegisterRefactoring(CodeActionFactory.ChangeTypeToVar(context.Document, declarationExpression.Type, equivalenceKey: RefactoringIdentifiers.UseImplicitType));
                     }
                 }
                 else if (analysis.SupportsExplicit
-                    && context.IsRefactoringEnabled(RefactoringIdentifiers.ChangeVarToExplicitType))
+                    && context.IsRefactoringEnabled(RefactoringIdentifiers.UseExplicitType))
                 {
                     TypeSyntax type = declarationExpression.Type;
 
@@ -39,7 +39,7 @@ namespace Roslynator.CSharp.Refactorings
 
                     ITypeSymbol typeSymbol = localSymbol.Type;
 
-                    context.RegisterRefactoring(CodeActionFactory.ChangeType(context.Document, type, typeSymbol, semanticModel, equivalenceKey: RefactoringIdentifiers.ChangeVarToExplicitType));
+                    context.RegisterRefactoring(CodeActionFactory.UseExplicitType(context.Document, type, typeSymbol, semanticModel, equivalenceKey: RefactoringIdentifiers.UseExplicitType));
                 }
             }
         }

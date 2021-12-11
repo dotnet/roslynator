@@ -109,7 +109,7 @@
       <Syntax>variable declaration</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0018" Identifier="ChangeExplicitTypeToVar" Title="Change explicit type to 'var'">
+  <Refactoring Id="RR0018" Identifier="UseImplicitType" Title="Use implicit type">
     <Syntaxes>
       <Syntax>variable declaration</Syntax>
       <Syntax>foreach statement</Syntax>
@@ -145,7 +145,7 @@
       </Sample>
     </Samples>
   </Refactoring>
-  <Refactoring Id="RR0023" Identifier="ChangeVarToExplicitType" Title="Change 'var' to explicit type">
+  <Refactoring Id="RR0023" Identifier="UseExplicitType" Title="Use explicit type">
     <Syntaxes>
       <Syntax>variable declaration</Syntax>
       <Syntax>foreach statement</Syntax>

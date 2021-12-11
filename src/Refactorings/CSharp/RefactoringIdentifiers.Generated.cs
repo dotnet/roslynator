@@ -30,10 +30,8 @@ namespace Roslynator.CSharp.Refactorings
         public const string CallExtensionMethodAsInstanceMethod = Prefix + "0016";
         public const string CallIndexOfInsteadOfContains = Prefix + "0144";
         public const string ChangeAccessibility = Prefix + "0186";
-        public const string ChangeExplicitTypeToVar = Prefix + "0018";
         public const string ChangeMethodReturnTypeToVoid = Prefix + "0021";
         public const string ChangeTypeAccordingToExpression = Prefix + "0022";
-        public const string ChangeVarToExplicitType = Prefix + "0023";
         public const string CheckExpressionForNull = Prefix + "0024";
         public const string CheckParameterForNull = Prefix + "0025";
         public const string CommentOutMemberDeclaration = Prefix + "0027";
@@ -189,6 +187,8 @@ namespace Roslynator.CSharp.Refactorings
         public const string UseConstantInsteadOfReadOnlyField = Prefix + "0128";
         public const string UseElementAccessInsteadOfLinqMethod = Prefix + "0167";
         public const string UseEnumeratorExplicitly = Prefix + "0206";
+        public const string UseExplicitType = Prefix + "0023";
+        public const string UseImplicitType = Prefix + "0018";
         public const string UseIndexInitializer = Prefix + "0191";
         public const string UseLambdaExpressionInsteadOfAnonymousMethod = Prefix + "0170";
         public const string UseListInsteadOfYield = Prefix + "0183";

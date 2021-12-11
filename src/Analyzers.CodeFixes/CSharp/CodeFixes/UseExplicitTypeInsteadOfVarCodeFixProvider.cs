@@ -64,7 +64,7 @@ namespace Roslynator.CSharp.CodeFixes
         {
             foreach (Diagnostic diagnostic in context.Diagnostics)
             {
-                CodeAction codeAction = CodeActionFactory.ChangeType(context.Document, type, typeSymbol, semanticModel, equivalenceKey: GetEquivalenceKey(diagnostic));
+                CodeAction codeAction = CodeActionFactory.UseExplicitType(context.Document, type, typeSymbol, semanticModel, equivalenceKey: GetEquivalenceKey(diagnostic));
 
                 context.RegisterCodeFix(codeAction, diagnostic);
             }
