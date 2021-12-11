@@ -397,7 +397,7 @@ foreach (var item in items) // [|Id|]
       </Option>
     </Options>
   </Analyzer>
-  <Analyzer Identifier="AvoidMultilineExpressionBody">
+  <Analyzer Identifier="AvoidMultilineExpressionBody" IsObsolete="true">
     <Id>RCS1017</Id>
     <Title>[deprecated] Avoid multiline expression body.</Title>
     <MessageFormat>[deprecated] Use analyzer RCS1016a instead.</MessageFormat>

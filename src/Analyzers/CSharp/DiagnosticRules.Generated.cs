@@ -201,18 +201,6 @@ namespace Roslynator.CSharp
 
         public static readonly DiagnosticDescriptor ConvertBlockBodyToExpressionBodyOrViceVersaFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(ConvertBlockBodyToExpressionBodyOrViceVersa);
 
-        /// <summary>RCS1017</summary>
-        public static readonly DiagnosticDescriptor AvoidMultilineExpressionBody = DiagnosticDescriptorFactory.Default.Create(
-            id:                 DiagnosticIdentifiers.AvoidMultilineExpressionBody, 
-            title:              "[deprecated] Avoid multiline expression body.", 
-            messageFormat:      "[deprecated] Use analyzer RCS1016a instead.", 
-            category:           DiagnosticCategories.Style, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AvoidMultilineExpressionBody, 
-            customTags:         Array.Empty<string>());
-
         /// <summary>RCS1018</summary>
         public static readonly DiagnosticDescriptor AddAccessibilityModifiersOrViceVersa = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.AddAccessibilityModifiersOrViceVersa, 

@@ -10,6 +10,18 @@ namespace Roslynator.CSharp
     public static partial class DiagnosticRules
     {
         [Obsolete("", error: true)]
+        internal static readonly DiagnosticDescriptor AvoidMultilineExpressionBody = DiagnosticDescriptorFactory.Default.Create(
+            id:                 DiagnosticIdentifiers.AvoidMultilineExpressionBody, 
+            title:              "[deprecated] Avoid multiline expression body.", 
+            messageFormat:      "[deprecated] Use analyzer RCS1016a instead.", 
+            category:           DiagnosticCategories.Style, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: false, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.AvoidMultilineExpressionBody, 
+            customTags:         Array.Empty<string>());
+
+        [Obsolete("", error: true)]
         internal static readonly DiagnosticDescriptor SimplifyLambdaExpressionParameterList = DiagnosticDescriptorFactory.Default.Create(
             id:                 DiagnosticIdentifiers.SimplifyLambdaExpressionParameterList, 
             title:              "Simplify lambda expression parameter list.", 
