@@ -156,7 +156,6 @@ namespace Roslynator.CSharp.Refactorings
         public const string RemoveRegion = Prefix + "0108";
         public const string RemoveStatement = Prefix + "0109";
         public const string RemoveUnnecessaryAssignment = Prefix + "0073";
-        public const string RenameBackingFieldAccordingToPropertyName = Prefix + "0111";
         public const string RenameIdentifierAccordingToTypeName = Prefix + "0112";
         public const string RenameMethodAccordingToTypeName = Prefix + "0113";
         public const string RenameParameterAccordingToTypeName = Prefix + "0114";
@@ -183,6 +182,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string SplitVariableDeclaration = Prefix + "0158";
         public const string SwapBinaryOperands = Prefix + "0159";
         public const string SwapMemberDeclarations = Prefix + "0161";
+        public const string SyncPropertyNameAndBackingFieldName = Prefix + "0111";
         public const string UncommentMultiLineComment = Prefix + "0200";
         public const string UncommentSingleLineComment = Prefix + "0163";
         public const string UseCoalesceExpressionInsteadOfIf = Prefix + "0165";

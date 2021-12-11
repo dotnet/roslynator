@@ -945,7 +945,7 @@ return true;]]></After>
       <Syntax>selected switch sections</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0111" Identifier="RenameBackingFieldAccordingToPropertyName" Title="Rename backing field according to property name">
+  <Refactoring Id="RR0111" Identifier="SyncPropertyNameAndBackingFieldName" Title="Synchronize property name and backing field name">
     <Syntaxes>
       <Syntax>field identifier inside property declaration</Syntax>
     </Syntaxes>

@@ -15,8 +15,8 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, IdentifierNameSyntax identifierName)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RenameBackingFieldAccordingToPropertyName))
-                await RenameFieldAccordingToPropertyNameAsync(context, identifierName).ConfigureAwait(false);
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.SyncPropertyNameAndBackingFieldName))
+                await SyncPropertyNameAndBackingFieldNameAsync(context, identifierName).ConfigureAwait(false);
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddUsingDirective)
                 && context.Span.IsEmpty)
@@ -31,7 +31,7 @@ namespace Roslynator.CSharp.Refactorings
                 await ConvertMethodGroupToLambdaRefactoring.ComputeRefactoringAsync(context, identifierName).ConfigureAwait(false);
         }
 
-        private static async Task RenameFieldAccordingToPropertyNameAsync(
+        private static async Task SyncPropertyNameAndBackingFieldNameAsync(
             RefactoringContext context,
             IdentifierNameSyntax identifierName)
         {
@@ -82,7 +82,7 @@ namespace Roslynator.CSharp.Refactorings
             context.RegisterRefactoring(
                 $"Rename '{fieldSymbol.Name}' to '{newName}'",
                 ct => Renamer.RenameSymbolAsync(context.Solution, fieldSymbol, newName, default(OptionSet), ct),
-                RefactoringIdentifiers.RenameBackingFieldAccordingToPropertyName);
+                RefactoringIdentifiers.SyncPropertyNameAndBackingFieldName);
         }
 
         private static bool IsQualified(SimpleNameSyntax identifierName)
