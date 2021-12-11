@@ -164,9 +164,9 @@
     </Syntaxes>
     <Span>parameter identifier</Span>
   </Refactoring>
-  <Refactoring Id="RR0026" Identifier="CollapseToInitializer" Title="Collapse to initializer">
+  <Refactoring Id="RR0026" Identifier="InitializePropertiesInInitializer" Title="Initialize properties in a initializer">
     <Syntaxes>
-      <Syntax>object creation followed with assignment(s)</Syntax>
+      <Syntax>selected statements (object creation followed with assignment(s))</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0027" Identifier="CommentOutMemberDeclaration" Title="Comment out member declaration">

@@ -36,7 +36,6 @@ namespace Roslynator.CSharp.Refactorings
         public const string ChangeVarToExplicitType = Prefix + "0023";
         public const string CheckExpressionForNull = Prefix + "0024";
         public const string CheckParameterForNull = Prefix + "0025";
-        public const string CollapseToInitializer = Prefix + "0026";
         public const string CommentOutMemberDeclaration = Prefix + "0027";
         public const string CommentOutStatement = Prefix + "0028";
         public const string ConvertAutoPropertyToFullProperty = Prefix + "0041";
@@ -96,6 +95,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string ImplementIEquatableOfT = Prefix + "0179";
         public const string InitializeFieldFromConstructor = Prefix + "0197";
         public const string InitializeLocalVariableWithDefaultValue = Prefix + "0060";
+        public const string InitializePropertiesInInitializer = Prefix + "0026";
         public const string InlineAliasExpression = Prefix + "0061";
         public const string InlineConstantDeclaration = Prefix + "0181";
         public const string InlineConstantValue = Prefix + "0127";

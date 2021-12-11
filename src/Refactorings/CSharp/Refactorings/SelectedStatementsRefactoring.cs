@@ -12,7 +12,7 @@ namespace Roslynator.CSharp.Refactorings
         public static bool IsAnyRefactoringEnabled(RefactoringContext context)
         {
             return context.IsRefactoringEnabled(RefactoringIdentifiers.WrapStatementsInUsingStatement)
-                || context.IsRefactoringEnabled(RefactoringIdentifiers.CollapseToInitializer)
+                || context.IsRefactoringEnabled(RefactoringIdentifiers.InitializePropertiesInInitializer)
                 || context.IsRefactoringEnabled(RefactoringIdentifiers.MergeIfStatements)
                 || context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertStatementsToIfElse)
                 || context.IsRefactoringEnabled(RefactoringIdentifiers.MergeLocalDeclarations)
@@ -33,8 +33,8 @@ namespace Roslynator.CSharp.Refactorings
                 await refactoring.ComputeRefactoringAsync(context, selectedStatements).ConfigureAwait(false);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.CollapseToInitializer))
-                await CollapseToInitializerRefactoring.ComputeRefactoringsAsync(context, selectedStatements).ConfigureAwait(false);
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.InitializePropertiesInInitializer))
+                await InitializePropertiesInInitializerRefactoring.ComputeRefactoringsAsync(context, selectedStatements).ConfigureAwait(false);
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.MergeIfStatements))
                 MergeIfStatementsRefactoring.ComputeRefactorings(context, selectedStatements);
