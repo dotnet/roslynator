@@ -10,7 +10,7 @@ using Roslynator.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class InitializePropertiesInInitializerRefactoring
+    internal static class UseObjectInitializerRefactoring
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, StatementListSelection selectedStatements)
         {
@@ -73,9 +73,9 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             context.RegisterRefactoring(
-                "Simplify object initialization",
+                "Use object initializer",
                 ct => RefactorAsync(context.Document, objectCreation, selectedStatements, ct),
-                RefactoringIdentifiers.InitializePropertiesInInitializer);
+                RefactoringIdentifiers.UseObjectInitializer);
         }
 
         public static bool IsValidAssignmentStatement(

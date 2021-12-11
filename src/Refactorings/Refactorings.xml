@@ -164,7 +164,7 @@
     </Syntaxes>
     <Span>parameter identifier</Span>
   </Refactoring>
-  <Refactoring Id="RR0026" Identifier="InitializePropertiesInInitializer" Title="Initialize properties in a initializer">
+  <Refactoring Id="RR0026" Identifier="UseObjectInitializer" Title="Use object initializer">
     <Syntaxes>
       <Syntax>selected statements (object creation followed with assignment(s))</Syntax>
     </Syntaxes>

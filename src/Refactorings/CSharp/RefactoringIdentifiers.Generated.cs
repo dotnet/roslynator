@@ -90,7 +90,6 @@ namespace Roslynator.CSharp.Refactorings
         public const string ImplementIEquatableOfT = Prefix + "0179";
         public const string InitializeFieldFromConstructor = Prefix + "0197";
         public const string InitializeLocalVariableWithDefaultValue = Prefix + "0060";
-        public const string InitializePropertiesInInitializer = Prefix + "0026";
         public const string InlineAliasExpression = Prefix + "0061";
         public const string InlineConstantDeclaration = Prefix + "0181";
         public const string InlineConstantValue = Prefix + "0127";
@@ -190,6 +189,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string UseIndexInitializer = Prefix + "0191";
         public const string UseLambdaInsteadOfAnonymousMethod = Prefix + "0170";
         public const string UseListInsteadOfYield = Prefix + "0183";
+        public const string UseObjectInitializer = Prefix + "0026";
         public const string UseReadOnlyFieldInsteadOfConstant = Prefix + "0121";
         public const string UseStringBuilderInsteadOfConcatenation = Prefix + "0182";
         public const string UseStringEmptyInsteadOfEmptyStringLiteral = Prefix + "0171";
