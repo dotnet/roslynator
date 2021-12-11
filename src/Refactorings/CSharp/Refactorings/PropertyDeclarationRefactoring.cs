@@ -33,25 +33,25 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             if (context.IsAnyRefactoringEnabled(
-                RefactoringIdentifiers.ExpandProperty,
-                RefactoringIdentifiers.ExpandPropertyAndAddBackingField)
+                RefactoringIdentifiers.ConvertAutoPropertyToFullProperty,
+                RefactoringIdentifiers.ConvertAutoPropertyToFullPropertyWithoutBackingField)
                 && propertyDeclaration.Span.Contains(context.Span)
-                && ExpandPropertyRefactoring.CanRefactor(propertyDeclaration))
+                && ConvertAutoPropertyToFullPropertyWithoutBackingFieldRefactoring.CanRefactor(propertyDeclaration))
             {
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExpandProperty))
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertAutoPropertyToFullProperty))
                 {
                     context.RegisterRefactoring(
-                        "Expand property",
-                        ct => ExpandPropertyRefactoring.RefactorAsync(context.Document, propertyDeclaration, ct),
-                        RefactoringIdentifiers.ExpandProperty);
+                        "Convert to full property",
+                        ct => ConvertAutoPropertyToFullPropertyRefactoring.RefactorAsync(context.Document, propertyDeclaration, context.Settings.PrefixFieldIdentifierWithUnderscore, ct),
+                        RefactoringIdentifiers.ConvertAutoPropertyToFullProperty);
                 }
 
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExpandPropertyAndAddBackingField))
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertAutoPropertyToFullPropertyWithoutBackingField))
                 {
                     context.RegisterRefactoring(
-                        "Expand property and add backing field",
-                        ct => ExpandPropertyAndAddBackingFieldRefactoring.RefactorAsync(context.Document, propertyDeclaration, context.Settings.PrefixFieldIdentifierWithUnderscore, ct),
-                        RefactoringIdentifiers.ExpandPropertyAndAddBackingField);
+                        "Convert to full property (without backing field)",
+                        ct => ConvertAutoPropertyToFullPropertyWithoutBackingFieldRefactoring.RefactorAsync(context.Document, propertyDeclaration, ct),
+                        RefactoringIdentifiers.ConvertAutoPropertyToFullPropertyWithoutBackingField);
                 }
             }
 

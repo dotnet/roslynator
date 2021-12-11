@@ -11,7 +11,7 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class ExpandPropertyRefactoring
+    internal static class ConvertAutoPropertyToFullPropertyWithoutBackingFieldRefactoring
     {
         public static bool CanRefactor(PropertyDeclarationSyntax propertyDeclaration)
         {

@@ -291,12 +291,12 @@
     </Syntaxes>
     <Span>body</Span>
   </Refactoring>
-  <Refactoring Id="RR0040" Identifier="ExpandProperty" Title="Expand property">
+  <Refactoring Id="RR0040" Identifier="ConvertAutoPropertyToFullPropertyWithoutBackingField" Title="Convert auto-property to full property (without backing field)">
     <Syntaxes>
       <Syntax>auto-property</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0041" Identifier="ExpandPropertyAndAddBackingField" Title="Expand property and add backing field">
+  <Refactoring Id="RR0041" Identifier="ConvertAutoPropertyToFullProperty" Title="Convert auto-property to full property">
     <Syntaxes>
       <Syntax>auto-property</Syntax>
     </Syntaxes>

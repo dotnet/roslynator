@@ -6,11 +6,11 @@ using Xunit;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public class RR0041ExpandPropertyAndAddBackingFieldTests : AbstractCSharpRefactoringVerifier
+    public class RR0041ConvertAutoPropertyToFullPropertyTests : AbstractCSharpRefactoringVerifier
     {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.ExpandPropertyAndAddBackingField;
+        public override string RefactoringId { get; } = RefactoringIdentifiers.ConvertAutoPropertyToFullProperty;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ExpandPropertyAndAddBackingField)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertAutoPropertyToFullProperty)]
         public async Task Test_Property()
         {
             await VerifyRefactoringAsync(@"
@@ -35,7 +35,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ExpandPropertyAndAddBackingField)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertAutoPropertyToFullProperty)]
         public async Task Test_Property_InitSetter()
         {
             await VerifyRefactoringAsync(@"
@@ -60,7 +60,7 @@ class C
 ", equivalenceKey: RefactoringId, options: Options.AddAllowedCompilerDiagnosticId("CS0518"));
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ExpandPropertyAndAddBackingField)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertAutoPropertyToFullProperty)]
         public async Task Test_StaticProperty()
         {
             await VerifyRefactoringAsync(@"
@@ -85,7 +85,7 @@ static class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ExpandPropertyAndAddBackingField)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertAutoPropertyToFullProperty)]
         public async Task Test_ReadOnlyProperty()
         {
             await VerifyRefactoringAsync(@"
@@ -131,7 +131,7 @@ class B
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ExpandPropertyAndAddBackingField)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertAutoPropertyToFullProperty)]
         public async Task Test_Property_INotifyPropertyChanged()
         {
             await VerifyRefactoringAsync(@"

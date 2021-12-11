@@ -39,6 +39,8 @@ namespace Roslynator.CSharp.Refactorings
         public const string CollapseToInitializer = Prefix + "0026";
         public const string CommentOutMemberDeclaration = Prefix + "0027";
         public const string CommentOutStatement = Prefix + "0028";
+        public const string ConvertAutoPropertyToFullProperty = Prefix + "0041";
+        public const string ConvertAutoPropertyToFullPropertyWithoutBackingField = Prefix + "0040";
         public const string ConvertBlockBodyToExpressionBody = Prefix + "0169";
         public const string ConvertCommentToDocumentationComment = Prefix + "0192";
         public const string ConvertConditionalExpressionToIfElse = Prefix + "0120";
@@ -80,8 +82,6 @@ namespace Roslynator.CSharp.Refactorings
         public const string ExpandEventDeclaration = Prefix + "0036";
         public const string ExpandInitializer = Prefix + "0038";
         public const string ExpandPositionalConstructor = Prefix + "0215";
-        public const string ExpandProperty = Prefix + "0040";
-        public const string ExpandPropertyAndAddBackingField = Prefix + "0041";
         public const string ExtractEventHandlerMethod = Prefix + "0203";
         public const string ExtractExpressionFromCondition = Prefix + "0043";
         public const string ExtractStatement = Prefix + "0045";
