@@ -12,8 +12,6 @@ namespace Roslynator.VisualStudio
         protected override string MaxId { get; } = RefactoringIdentifiers.AddAllPropertiesToInitializer;
         internal static void SetRefactoringsDisabledByDefault(RefactoringSettings settings)
         {
-            settings.Disable(RefactoringIdentifiers.AddIdentifierToParameter);
-            settings.Disable(RefactoringIdentifiers.AddIdentifierToVariableDeclaration);
             settings.Disable(RefactoringIdentifiers.ConvertForEachToForAndReverseLoop);
             settings.Disable(RefactoringIdentifiers.ExpandInitializer);
             settings.Disable(RefactoringIdentifiers.IntroduceConstructor);
@@ -32,9 +30,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.AddExplicitCast, "Add explicit cast", IsEnabled(RefactoringIdentifiers.AddExplicitCast)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.AddDefaultValueToParameter, "Add default value to parameter", IsEnabled(RefactoringIdentifiers.AddDefaultValueToParameter)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.AddExceptionToDocumentationComment, "Add exception to documentation comment", IsEnabled(RefactoringIdentifiers.AddExceptionToDocumentationComment)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.AddIdentifierToVariableDeclaration, "Add identifier to variable declaration", IsEnabled(RefactoringIdentifiers.AddIdentifierToVariableDeclaration)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.AddParameterNameToArgument, "Add parameter name to argument", IsEnabled(RefactoringIdentifiers.AddParameterNameToArgument)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.AddIdentifierToParameter, "Add identifier to parameter", IsEnabled(RefactoringIdentifiers.AddIdentifierToParameter)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.AddUsingDirective, "Add using directive", IsEnabled(RefactoringIdentifiers.AddUsingDirective)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.AddUsingStaticDirective, "Add using static directive", IsEnabled(RefactoringIdentifiers.AddUsingStaticDirective)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.CallExtensionMethodAsInstanceMethod, "Call extension method as instance method", IsEnabled(RefactoringIdentifiers.CallExtensionMethodAsInstanceMethod)));

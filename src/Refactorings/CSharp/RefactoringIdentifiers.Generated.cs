@@ -18,8 +18,6 @@ namespace Roslynator.CSharp.Refactorings
         public const string AddExceptionToDocumentationComment = Prefix + "0009";
         public const string AddExplicitCast = Prefix + "0006";
         public const string AddGenericParameterToDeclaration = Prefix + "0178";
-        public const string AddIdentifierToParameter = Prefix + "0012";
-        public const string AddIdentifierToVariableDeclaration = Prefix + "0010";
         public const string AddMemberToInterface = Prefix + "0195";
         public const string AddMissingCasesToSwitchStatement = Prefix + "0059";
         public const string AddParameterNameToArgument = Prefix + "0011";

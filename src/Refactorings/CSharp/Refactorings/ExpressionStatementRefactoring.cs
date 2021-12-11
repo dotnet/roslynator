@@ -10,9 +10,6 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, ExpressionStatementSyntax expressionStatement)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddIdentifierToVariableDeclaration))
-                await AddIdentifierToLocalDeclarationRefactoring.ComputeRefactoringAsync(context, expressionStatement).ConfigureAwait(false);
-
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.IntroduceLocalVariable))
             {
                 ExpressionSyntax expression = expressionStatement.Expression;

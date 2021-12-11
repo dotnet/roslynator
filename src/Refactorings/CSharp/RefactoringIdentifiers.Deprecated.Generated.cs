@@ -11,6 +11,10 @@ namespace Roslynator.CSharp.Refactorings
         [Obsolete("", error: false)]
         public const string AddDefaultValueToReturnStatement = Prefix + "0008";
         [Obsolete("", error: false)]
+        public const string AddIdentifierToParameter = Prefix + "0012";
+        [Obsolete("", error: false)]
+        public const string AddIdentifierToVariableDeclaration = Prefix + "0010";
+        [Obsolete("", error: false)]
         public const string CallConfigureAwait = Prefix + "0015";
         [Obsolete("", error: false)]
         public const string CallToMethod = Prefix + "0017";

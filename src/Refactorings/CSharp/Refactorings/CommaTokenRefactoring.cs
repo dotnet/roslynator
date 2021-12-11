@@ -17,7 +17,6 @@ namespace Roslynator.CSharp.Refactorings
                 return;
 
             if (context.IsAnyRefactoringEnabled(
-                RefactoringIdentifiers.AddIdentifierToParameter,
                 RefactoringIdentifiers.RenameParameterAccordingToTypeName,
                 RefactoringIdentifiers.CheckParameterForNull,
                 RefactoringIdentifiers.IntroduceAndInitializeField,
