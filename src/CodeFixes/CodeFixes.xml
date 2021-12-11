@@ -280,7 +280,7 @@
       <Id>CS0214</Id>
     </FixableDiagnosticIds>
   </CodeFix>
-  <CodeFix Id="RCF0052" Identifier="RemoveReturnKeyword" Title="Remove 'return' keyword" IsEnabledByDefault="false">
+  <CodeFix Id="RCF0052" Identifier="RemoveReturnKeyword" Title="Remove 'return' keyword" IsObsolete="true">
     <FixableDiagnosticIds>
       <Id>CS0127</Id>
       <Id>CS1997</Id>
@@ -322,7 +322,7 @@
       <Id>CS0575</Id>
     </FixableDiagnosticIds>
   </CodeFix>
-  <CodeFix Id="RCF0057" Identifier="RemoveReturnExpression" Title="Remove return expression" IsEnabledByDefault="false">
+  <CodeFix Id="RCF0057" Identifier="RemoveReturnExpression" Title="Remove return expression" IsObsolete="true">
     <FixableDiagnosticIds>
       <Id>CS0127</Id>
       <Id>CS1997</Id>

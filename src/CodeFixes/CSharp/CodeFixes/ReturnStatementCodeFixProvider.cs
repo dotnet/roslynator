@@ -116,68 +116,6 @@ namespace Roslynator.CSharp.CodeFixes
                                 ChangeMemberTypeRefactoring.ComputeCodeFix(context, diagnostic, returnStatement.Expression, semanticModel);
                             }
 
-                            if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveReturnExpression))
-                            {
-                                ISymbol symbol = semanticModel.GetEnclosingSymbol(returnStatement.SpanStart, context.CancellationToken);
-
-                                if (symbol?.Kind == SymbolKind.Method)
-                                {
-                                    var methodSymbol = (IMethodSymbol)symbol;
-
-                                    if (methodSymbol.ReturnsVoid
-                                        || methodSymbol.ReturnType.HasMetadataName(MetadataNames.System_Threading_Tasks_Task))
-                                    {
-                                        CodeAction codeAction = CodeAction.Create(
-                                            "Remove return expression",
-                                            ct =>
-                                            {
-                                                ReturnStatementSyntax newNode = returnStatement
-                                                    .WithExpression(null)
-                                                    .WithFormatterAnnotation();
-
-                                                return context.Document.ReplaceNodeAsync(returnStatement, newNode, ct);
-                                            },
-                                            GetEquivalenceKey(diagnostic, CodeFixIdentifiers.RemoveReturnExpression));
-
-                                        context.RegisterCodeFix(codeAction, diagnostic);
-                                    }
-                                }
-                            }
-
-                            if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveReturnKeyword))
-                            {
-                                ExpressionSyntax expression = returnStatement.Expression;
-
-                                if (expression.IsKind(
-                                    SyntaxKind.InvocationExpression,
-                                    SyntaxKind.ObjectCreationExpression,
-                                    SyntaxKind.PreDecrementExpression,
-                                    SyntaxKind.PreIncrementExpression,
-                                    SyntaxKind.PostDecrementExpression,
-                                    SyntaxKind.PostIncrementExpression)
-                                    || expression is AssignmentExpressionSyntax)
-                                {
-                                    CodeAction codeAction = CodeAction.Create(
-                                        "Remove 'return'",
-                                        ct =>
-                                        {
-                                            SyntaxTriviaList leadingTrivia = returnStatement
-                                                .GetLeadingTrivia()
-                                                .AddRange(returnStatement.ReturnKeyword.TrailingTrivia.EmptyIfWhitespace())
-                                                .AddRange(expression.GetLeadingTrivia().EmptyIfWhitespace());
-
-                                            ExpressionStatementSyntax newNode = SyntaxFactory.ExpressionStatement(
-                                                expression.WithLeadingTrivia(leadingTrivia),
-                                                returnStatement.SemicolonToken);
-
-                                            return context.Document.ReplaceNodeAsync(returnStatement, newNode, ct);
-                                        },
-                                        GetEquivalenceKey(diagnostic, CodeFixIdentifiers.RemoveReturnKeyword));
-
-                                    context.RegisterCodeFix(codeAction, diagnostic);
-                                }
-                            }
-
                             break;
                         }
                 }

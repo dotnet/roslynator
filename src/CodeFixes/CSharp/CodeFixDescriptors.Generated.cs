@@ -378,14 +378,6 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true, 
             "CS0214");
 
-        /// <summary>RCF0052 (fixes CS0127, CS1997)</summary>
-        public static readonly CodeFixDescriptor RemoveReturnKeyword = new CodeFixDescriptor(
-            id:                 CodeFixIdentifiers.RemoveReturnKeyword, 
-            title:              "Remove 'return' keyword", 
-            isEnabledByDefault: true, 
-            "CS0127", 
-            "CS1997");
-
         /// <summary>RCF0053 (fixes CS0132)</summary>
         public static readonly CodeFixDescriptor RemoveParametersFromStaticConstructor = new CodeFixDescriptor(
             id:                 CodeFixIdentifiers.RemoveParametersFromStaticConstructor, 
@@ -429,14 +421,6 @@ namespace Roslynator.CSharp
             "CS0567", 
             "CS0568", 
             "CS0575");
-
-        /// <summary>RCF0057 (fixes CS0127, CS1997)</summary>
-        public static readonly CodeFixDescriptor RemoveReturnExpression = new CodeFixDescriptor(
-            id:                 CodeFixIdentifiers.RemoveReturnExpression, 
-            title:              "Remove return expression", 
-            isEnabledByDefault: true, 
-            "CS0127", 
-            "CS1997");
 
         /// <summary>RCF0058 (fixes CS0037, CS0403, CS1503, CS1750)</summary>
         public static readonly CodeFixDescriptor ReplaceNullLiteralExpressionWithDefaultValue = new CodeFixDescriptor(
