@@ -22,16 +22,21 @@ namespace Roslynator.CSharp.Refactorings
 
             var conditionalExpression = (ConditionalExpressionSyntax)parent;
 
-            if (expression != conditionalExpression.WhenTrue
-                && expression != conditionalExpression.WhenFalse)
-            {
-                return;
-            }
+            string title = null;
 
-            context.RegisterRefactoring(
-                $"Replace ?: with '{expression}'",
-                ct => RefactorAsync(context.Document, expression, ct),
-                RefactoringIdentifiers.ReplaceConditionalExpressionWithTrueOrFalseBranch);
+            if (expression == conditionalExpression.WhenTrue)
+                title = "Replace ?: with true branch";
+
+            if (expression == conditionalExpression.WhenFalse)
+                title = "Replace ?: with false branch";
+
+            if (title != null)
+            {
+                context.RegisterRefactoring(
+                    title,
+                    ct => RefactorAsync(context.Document, expression, ct),
+                    RefactoringIdentifiers.ReplaceConditionalExpressionWithTrueOrFalseBranch);
+            }
         }
 
         private static Task<Document> RefactorAsync(
