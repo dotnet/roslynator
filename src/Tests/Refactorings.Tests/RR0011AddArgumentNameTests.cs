@@ -6,11 +6,11 @@ using Xunit;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public class RR0011AddParameterNameToArgumentTests : AbstractCSharpRefactoringVerifier
+    public class RR0011AddArgumentNameTests : AbstractCSharpRefactoringVerifier
     {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.AddParameterNameToArgument;
+        public override string RefactoringId { get; } = RefactoringIdentifiers.AddArgumentName;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddParameterNameToArgument)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddArgumentName)]
         public async Task Test_MultilineArgumentListInArrayInitializer()
         {
             await VerifyRefactoringAsync(@"

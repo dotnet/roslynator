@@ -9,6 +9,7 @@ namespace Roslynator.CSharp.Refactorings
     public static partial class RefactoringIdentifiers
     {
         public const string AddAllPropertiesToInitializer = Prefix + "0216";
+        public const string AddArgumentName = Prefix + "0011";
         public const string AddBraces = Prefix + "0002";
         public const string AddBracesToIfElse = Prefix + "0003";
         public const string AddBracesToSwitchSection = Prefix + "0004";
@@ -20,7 +21,6 @@ namespace Roslynator.CSharp.Refactorings
         public const string AddGenericParameterToDeclaration = Prefix + "0178";
         public const string AddMemberToInterface = Prefix + "0195";
         public const string AddMissingCasesToSwitchStatement = Prefix + "0059";
-        public const string AddParameterNameToArgument = Prefix + "0011";
         public const string AddParameterToInterfaceMember = Prefix + "0213";
         public const string AddTagToDocumentationComment = Prefix + "0208";
         public const string AddUsingDirective = Prefix + "0013";
@@ -132,6 +132,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string RemoveAllRegionDirectives = Prefix + "0091";
         public const string RemoveAllStatements = Prefix + "0092";
         public const string RemoveAllSwitchSections = Prefix + "0093";
+        public const string RemoveArgumentName = Prefix + "0105";
         public const string RemoveAsyncAwait = Prefix + "0209";
         public const string RemoveBraces = Prefix + "0094";
         public const string RemoveBracesFromIfElse = Prefix + "0095";
@@ -146,7 +147,6 @@ namespace Roslynator.CSharp.Refactorings
         public const string RemoveInterpolation = Prefix + "0102";
         public const string RemoveMemberDeclaration = Prefix + "0103";
         public const string RemoveMemberDeclarations = Prefix + "0104";
-        public const string RemoveParameterNameFromArgument = Prefix + "0105";
         public const string RemoveParentheses = Prefix + "0106";
         public const string RemovePreprocessorDirective = Prefix + "0100";
         public const string RemovePropertyInitializer = Prefix + "0107";

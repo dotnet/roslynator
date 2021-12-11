@@ -67,7 +67,7 @@
       <Syntax>variable declaration</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0011" Identifier="AddParameterNameToArgument" Title="Add parameter name to argument">
+  <Refactoring Id="RR0011" Identifier="AddArgumentName" Title="Add argument name">
     <Syntaxes>
       <Syntax>argument list</Syntax>
     </Syntaxes>
@@ -901,7 +901,7 @@ return true;]]></After>
       <Syntax>empty line between member declarations</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0105" Identifier="RemoveParameterNameFromArgument" Title="Remove parameter name from argument">
+  <Refactoring Id="RR0105" Identifier="RemoveArgumentName" Title="Remove argument name">
     <Syntaxes>
       <Syntax>selected argument(s)</Syntax>
     </Syntaxes>

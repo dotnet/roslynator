@@ -8,7 +8,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings.AddOrRemoveParameterName
 {
-    internal static class AddParameterNameRefactoring
+    internal static class AddArgumentNameRefactoring
     {
         public static void ComputeRefactoring(
             RefactoringContext context,
@@ -20,9 +20,9 @@ namespace Roslynator.CSharp.Refactorings.AddOrRemoveParameterName
                 return;
 
             context.RegisterRefactoring(
-                "Add parameter name",
+                "Add argument name",
                 ct => RefactorAsync(context.Document, argumentList, selection, ct),
-                RefactoringIdentifiers.AddParameterNameToArgument);
+                RefactoringIdentifiers.AddArgumentName);
         }
 
         private static bool CanRefactor(

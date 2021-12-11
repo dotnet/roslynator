@@ -6,13 +6,13 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings.AddOrRemoveParameterName
 {
-    internal static class AddOrRemoveParameterNameRefactoring
+    internal static class AddOrRemoveArgumentNameRefactoring
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, ArgumentListSyntax argumentList)
         {
             if (!context.IsAnyRefactoringEnabled(
-                RefactoringIdentifiers.AddParameterNameToArgument,
-                RefactoringIdentifiers.RemoveParameterNameFromArgument))
+                RefactoringIdentifiers.AddArgumentName,
+                RefactoringIdentifiers.RemoveArgumentName))
             {
                 return;
             }
@@ -20,15 +20,15 @@ namespace Roslynator.CSharp.Refactorings.AddOrRemoveParameterName
             if (!SeparatedSyntaxListSelection<ArgumentSyntax>.TryCreate(argumentList.Arguments, context.Span, out SeparatedSyntaxListSelection<ArgumentSyntax> selection))
                 return;
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddParameterNameToArgument))
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddArgumentName))
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                AddParameterNameRefactoring.ComputeRefactoring(context, argumentList, selection, semanticModel);
+                AddArgumentNameRefactoring.ComputeRefactoring(context, argumentList, selection, semanticModel);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveParameterNameFromArgument))
-                RemoveParameterNameRefactoring.ComputeRefactoring(context, argumentList, selection);
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveArgumentName))
+                RemoveArgumentNameRefactoring.ComputeRefactoring(context, argumentList, selection);
         }
     }
 }

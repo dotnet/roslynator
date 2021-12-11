@@ -30,7 +30,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.AddExplicitCast, "Add explicit cast", IsEnabled(RefactoringIdentifiers.AddExplicitCast)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.AddDefaultValueToParameter, "Add default value to parameter", IsEnabled(RefactoringIdentifiers.AddDefaultValueToParameter)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.AddExceptionElementToDocumentationComment, "Add 'exception' element to documentation comment", IsEnabled(RefactoringIdentifiers.AddExceptionElementToDocumentationComment)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.AddParameterNameToArgument, "Add parameter name to argument", IsEnabled(RefactoringIdentifiers.AddParameterNameToArgument)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.AddArgumentName, "Add argument name", IsEnabled(RefactoringIdentifiers.AddArgumentName)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.AddUsingDirective, "Add using directive", IsEnabled(RefactoringIdentifiers.AddUsingDirective)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.AddUsingStaticDirective, "Add using static directive", IsEnabled(RefactoringIdentifiers.AddUsingStaticDirective)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.CallExtensionMethodAsInstanceMethod, "Call extension method as instance method", IsEnabled(RefactoringIdentifiers.CallExtensionMethodAsInstanceMethod)));
@@ -113,7 +113,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.RemoveInterpolation, "Remove interpolation", IsEnabled(RefactoringIdentifiers.RemoveInterpolation)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.RemoveMemberDeclaration, "Remove member declaration", IsEnabled(RefactoringIdentifiers.RemoveMemberDeclaration)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.RemoveMemberDeclarations, "Remove member declarations above/below", IsEnabled(RefactoringIdentifiers.RemoveMemberDeclarations)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.RemoveParameterNameFromArgument, "Remove parameter name from argument", IsEnabled(RefactoringIdentifiers.RemoveParameterNameFromArgument)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.RemoveArgumentName, "Remove argument name", IsEnabled(RefactoringIdentifiers.RemoveArgumentName)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.RemoveParentheses, "Remove parentheses", IsEnabled(RefactoringIdentifiers.RemoveParentheses)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.RemovePropertyInitializer, "Remove property initializer", IsEnabled(RefactoringIdentifiers.RemovePropertyInitializer)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.RemoveRegion, "Remove region", IsEnabled(RefactoringIdentifiers.RemoveRegion)));

@@ -18,7 +18,7 @@ namespace Roslynator.CSharp.Refactorings
             if (!arguments.Any())
                 return;
 
-            await AddOrRemoveParameterNameRefactoring.ComputeRefactoringsAsync(context, argumentList).ConfigureAwait(false);
+            await AddOrRemoveArgumentNameRefactoring.ComputeRefactoringsAsync(context, argumentList).ConfigureAwait(false);
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.DuplicateArgument))
             {
