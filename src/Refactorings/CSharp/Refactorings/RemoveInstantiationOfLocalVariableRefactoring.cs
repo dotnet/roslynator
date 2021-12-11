@@ -7,7 +7,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class ReplaceObjectCreationWithDefaultValueRefactoring
+    internal static class RemoveInstantiationOfLocalVariableRefactoring
     {
         internal static async Task ComputeRefactoringAsync(RefactoringContext context, LocalDeclarationStatementSyntax localDeclarationStatement)
         {
@@ -28,6 +28,8 @@ namespace Roslynator.CSharp.Refactorings
             if (value == null)
                 return;
 
+            const string title = "Remove instantiation";
+
             switch (value)
             {
                 case ObjectCreationExpressionSyntax objectCreation:
@@ -36,7 +38,7 @@ namespace Roslynator.CSharp.Refactorings
 
                         ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(objectCreation, context.CancellationToken);
 
-                        ComputeRefactoring(context, "Replace object creation with default value", typeSymbol, localDeclarationStatement, value);
+                        ComputeRefactoring(context, title, typeSymbol, localDeclarationStatement, value);
                         break;
                     }
                 case ArrayCreationExpressionSyntax arrayCreation:
@@ -45,7 +47,7 @@ namespace Roslynator.CSharp.Refactorings
 
                         ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(arrayCreation, context.CancellationToken);
 
-                        ComputeRefactoring(context, "Replace array creation with default value", typeSymbol, localDeclarationStatement, value);
+                        ComputeRefactoring(context, title, typeSymbol, localDeclarationStatement, value);
                         break;
                     }
                 case ImplicitArrayCreationExpressionSyntax implicitArrayCreation:
@@ -54,7 +56,7 @@ namespace Roslynator.CSharp.Refactorings
 
                         ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(implicitArrayCreation, context.CancellationToken);
 
-                        ComputeRefactoring(context, "Replace array creation with default value", typeSymbol, localDeclarationStatement, value);
+                        ComputeRefactoring(context, title, typeSymbol, localDeclarationStatement, value);
                         break;
                     }
             }
@@ -72,7 +74,7 @@ namespace Roslynator.CSharp.Refactorings
                 context.RegisterRefactoring(
                     title,
                     ct => RefactorAsync(context.Document, localDeclarationStatement, value, typeSymbol, ct),
-                    RefactoringIdentifiers.ReplaceObjectCreationWithDefaultValue);
+                    RefactoringIdentifiers.RemoveInstantiationOfLocalVariable);
             }
         }
 

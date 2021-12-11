@@ -1540,9 +1540,9 @@ i--;]]></After>
     </Syntaxes>
     <Span>top if keyword or selected if statement</Span>
   </Refactoring>
-  <Refactoring Id="RR0185" Identifier="ReplaceObjectCreationWithDefaultValue" Title="Replace object creation with default value">
+  <Refactoring Id="RR0185" Identifier="RemoveInstantiationOfLocalVariable" Title="Remove instantiation of a local variable">
     <Syntaxes>
-      <Syntax>object creation expression</Syntax>
+      <Syntax>local variable with a new object creation</Syntax>
     </Syntaxes>
     <Samples>
       <Sample>

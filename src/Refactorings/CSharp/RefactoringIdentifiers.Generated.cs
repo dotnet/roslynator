@@ -146,6 +146,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string RemoveConditionFromLastElse = Prefix + "0099";
         public const string RemoveEmptyLines = Prefix + "0101";
         public const string RemoveEnumMemberValue = Prefix + "0199";
+        public const string RemoveInstantiationOfLocalVariable = Prefix + "0185";
         public const string RemoveInterpolation = Prefix + "0102";
         public const string RemoveMemberDeclaration = Prefix + "0103";
         public const string RemoveMemberDeclarations = Prefix + "0104";
@@ -168,7 +169,6 @@ namespace Roslynator.CSharp.Refactorings
         public const string ReplaceExplicitCastWithAsExpression = Prefix + "0118";
         public const string ReplaceInterpolatedStringWithInterpolationExpression = Prefix + "0135";
         public const string ReplaceMethodWithProperty = Prefix + "0138";
-        public const string ReplaceObjectCreationWithDefaultValue = Prefix + "0185";
         public const string ReplacePrefixOperatorWithPostfixOperator = Prefix + "0140";
         public const string ReplacePropertyWithMethod = Prefix + "0141";
         public const string ReverseForStatement = Prefix + "0152";

@@ -22,8 +22,8 @@ namespace Roslynator.CSharp.Refactorings
                 PromoteLocalToParameterRefactoring.ComputeRefactoring(context, localDeclaration, semanticModel);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceObjectCreationWithDefaultValue))
-                await ReplaceObjectCreationWithDefaultValueRefactoring.ComputeRefactoringAsync(context, localDeclaration).ConfigureAwait(false);
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveInstantiationOfLocalVariable))
+                await RemoveInstantiationOfLocalVariableRefactoring.ComputeRefactoringAsync(context, localDeclaration).ConfigureAwait(false);
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.SplitDeclarationAndInitialization))
                 await SplitDeclarationAndInitializationRefactoring.ComputeRefactoringAsync(context, localDeclaration).ConfigureAwait(false);

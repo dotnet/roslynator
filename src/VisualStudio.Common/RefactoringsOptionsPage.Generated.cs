@@ -193,7 +193,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.UseStringBuilderInsteadOfConcatenation, "Use StringBuilder instead of concatenation", IsEnabled(RefactoringIdentifiers.UseStringBuilderInsteadOfConcatenation)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.UseListInsteadOfYield, "Use List<T> instead of yield", IsEnabled(RefactoringIdentifiers.UseListInsteadOfYield)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.SplitIf, "Split if", IsEnabled(RefactoringIdentifiers.SplitIf)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceObjectCreationWithDefaultValue, "Replace object creation with default value", IsEnabled(RefactoringIdentifiers.ReplaceObjectCreationWithDefaultValue)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.RemoveInstantiationOfLocalVariable, "Remove instantiation of a local variable", IsEnabled(RefactoringIdentifiers.RemoveInstantiationOfLocalVariable)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ChangeAccessibility, "Change accessibility", IsEnabled(RefactoringIdentifiers.ChangeAccessibility)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.WrapConstraintClauses, "Wrap constraint clauses", IsEnabled(RefactoringIdentifiers.WrapConstraintClauses)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertForEachToForAndReverseLoop, "Convert 'foreach' to 'for' and reverse loop", IsEnabled(RefactoringIdentifiers.ConvertForEachToForAndReverseLoop)));
