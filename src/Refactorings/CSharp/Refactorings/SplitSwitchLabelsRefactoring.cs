@@ -36,7 +36,7 @@ namespace Roslynator.CSharp.Refactorings
             context.RegisterRefactoring(
                 "Split labels",
                 ct => RefactorAsync(context.Document, switchSection, selectedLabels, ct),
-                RefactoringIdentifiers.SplitSwitchLabels);
+                RefactoringDescriptors.SplitSwitchLabels);
         }
 
         private static Task<Document> RefactorAsync(

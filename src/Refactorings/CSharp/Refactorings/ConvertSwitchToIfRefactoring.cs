@@ -76,7 +76,7 @@ namespace Roslynator.CSharp.Refactorings
             context.RegisterRefactoring(
                 "Convert to 'if'",
                 ct => ConvertSwitchToIfAsync(context.Document, switchStatement, ct),
-                RefactoringIdentifiers.ConvertSwitchToIf);
+                RefactoringDescriptors.ConvertSwitchToIf);
         }
 
         private static async Task<Document> ConvertSwitchToIfAsync(

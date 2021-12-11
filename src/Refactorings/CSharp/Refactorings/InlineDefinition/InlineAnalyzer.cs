@@ -72,22 +72,22 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
 
                 if (expression != null)
                 {
-                    context.RegisterRefactoring($"Inline {title}", ct => refactoring.InlineAsync(nodeIncludingConditionalAccess, expression, ct), GetEquivalenceKey());
+                    context.RegisterRefactoring($"Inline {title}", ct => refactoring.InlineAsync(nodeIncludingConditionalAccess, expression, ct), GetDescriptor());
 
-                    context.RegisterRefactoring($"Inline and remove {title}", ct => refactoring.InlineAndRemoveAsync(nodeIncludingConditionalAccess, expression, ct), EquivalenceKey.Join(GetEquivalenceKey(), "Remove"));
+                    context.RegisterRefactoring($"Inline and remove {title}", ct => refactoring.InlineAndRemoveAsync(nodeIncludingConditionalAccess, expression, ct), GetDescriptor(), "Remove");
                 }
                 else
                 {
                     var expressionStatement = (ExpressionStatementSyntax)nodeIncludingConditionalAccess.Parent;
 
-                    context.RegisterRefactoring($"Inline {title}", ct => refactoring.InlineAsync(expressionStatement, statements, ct), GetEquivalenceKey());
+                    context.RegisterRefactoring($"Inline {title}", ct => refactoring.InlineAsync(expressionStatement, statements, ct), GetDescriptor());
 
-                    context.RegisterRefactoring($"Inline and remove {title}", ct => refactoring.InlineAndRemoveAsync(expressionStatement, statements, ct), EquivalenceKey.Join(GetEquivalenceKey(), "Remove"));
+                    context.RegisterRefactoring($"Inline and remove {title}", ct => refactoring.InlineAndRemoveAsync(expressionStatement, statements, ct), GetDescriptor(), "Remove");
                 }
             }
         }
 
-        protected abstract string GetEquivalenceKey();
+        protected abstract RefactoringDescriptor GetDescriptor();
 
         protected abstract bool ValidateNode(TNode node, TextSpan span);
 

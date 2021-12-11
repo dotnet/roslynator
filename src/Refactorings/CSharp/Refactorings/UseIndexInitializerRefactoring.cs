@@ -58,7 +58,7 @@ namespace Roslynator.CSharp.Refactorings
             context.RegisterRefactoring(
                 "Use index initializer",
                 ct => RefactorAsync(context.Document, initializer, ct),
-                RefactoringIdentifiers.UseIndexInitializer);
+                RefactoringDescriptors.UseIndexInitializer);
         }
 
         private static bool CanRefactor(

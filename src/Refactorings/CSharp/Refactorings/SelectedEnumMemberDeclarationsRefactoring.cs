@@ -16,10 +16,10 @@ namespace Roslynator.CSharp.Refactorings
 
             if (selection.Count > 1)
             {
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.SortMemberDeclarations))
+                if (context.IsRefactoringEnabled(RefactoringDescriptors.SortMemberDeclarations))
                     await SortEnumMemberDeclarationsRefactoring.ComputeRefactoringAsync(context, enumDeclaration, selection).ConfigureAwait(false);
 
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.GenerateCombinedEnumMember))
+                if (context.IsRefactoringEnabled(RefactoringDescriptors.GenerateCombinedEnumMember))
                 {
                     SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
@@ -27,7 +27,7 @@ namespace Roslynator.CSharp.Refactorings
                 }
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveEnumMemberValue))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.RemoveEnumMemberValue))
                 RemoveEnumMemberValueRefactoring.ComputeRefactoring(context, enumDeclaration, selection);
         }
     }

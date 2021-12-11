@@ -43,7 +43,7 @@ namespace Roslynator.CSharp.Refactorings
             context.RegisterRefactoring(
                 "Implement custom enumerator",
                 ct => RefactorAsync(context.Document, typeDeclaration, symbol, ienumerableOfT.TypeArguments.Single(), ct),
-                RefactoringIdentifiers.ImplementCustomEnumerator);
+                RefactoringDescriptors.ImplementCustomEnumerator);
         }
 
         private static Task<Document> RefactorAsync(

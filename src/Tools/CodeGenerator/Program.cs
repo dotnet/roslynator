@@ -40,6 +40,10 @@ namespace Roslynator.CodeGeneration
             ImmutableArray<CompilerDiagnosticMetadata> compilerDiagnostics = metadata.CompilerDiagnostics;
 
             WriteCompilationUnit(
+                @"Refactorings\CSharp\RefactoringDescriptors.Generated.cs",
+                RefactoringDescriptorsGenerator.Generate(refactorings.Where(f => !f.IsObsolete), comparer: comparer));
+
+            WriteCompilationUnit(
                 @"Refactorings\CSharp\RefactoringIdentifiers.Generated.cs",
                 RefactoringIdentifiersGenerator.Generate(refactorings, obsolete: false, comparer: comparer));
 

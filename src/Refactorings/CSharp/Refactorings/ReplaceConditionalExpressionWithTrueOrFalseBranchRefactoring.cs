@@ -35,7 +35,7 @@ namespace Roslynator.CSharp.Refactorings
                 context.RegisterRefactoring(
                     title,
                     ct => RefactorAsync(context.Document, expression, ct),
-                    RefactoringIdentifiers.ReplaceConditionalExpressionWithTrueOrFalseBranch);
+                    RefactoringDescriptors.ReplaceConditionalExpressionWithTrueOrFalseBranch);
             }
         }
 

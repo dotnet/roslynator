@@ -9,13 +9,13 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void ComputeRefactorings(RefactoringContext context, AnonymousMethodExpressionSyntax anonymousMethod)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseLambdaInsteadOfAnonymousMethod)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.UseLambdaInsteadOfAnonymousMethod)
                 && UseLambdaInsteadOfAnonymousMethodAnalysis.IsFixable(anonymousMethod))
             {
                 context.RegisterRefactoring(
                     "Use lambda instead of anonymous method",
                     ct => UseLambdaInsteadOfAnonymousMethodRefactoring.RefactorAsync(context.Document, anonymousMethod, ct),
-                    RefactoringIdentifiers.UseLambdaInsteadOfAnonymousMethod);
+                    RefactoringDescriptors.UseLambdaInsteadOfAnonymousMethod);
             }
         }
     }

@@ -137,7 +137,7 @@ namespace Roslynator.CSharp.Refactorings
 
             Document document = context.Document;
             string title = $"Add to interface '{displayName}'";
-            string equivalenceKey = RefactoringIdentifiers.AddMemberToInterface + "." + displayName;
+            string equivalenceKey = RefactoringDescriptors.AddMemberToInterface + "." + displayName;
 
             if (memberDeclaration.SyntaxTree == interfaceDeclaration.SyntaxTree)
             {

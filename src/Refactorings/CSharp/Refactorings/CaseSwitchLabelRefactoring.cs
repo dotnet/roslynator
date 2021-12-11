@@ -10,7 +10,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, CaseSwitchLabelSyntax caseLabel)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddExplicitCast))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.AddExplicitCast))
             {
                 ExpressionSyntax value = caseLabel.Value;
 

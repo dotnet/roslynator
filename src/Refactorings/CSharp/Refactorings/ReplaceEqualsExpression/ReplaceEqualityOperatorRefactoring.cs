@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Refactorings.ReplaceEqualsExpression
 {
     internal abstract class ReplaceEqualityOperatorRefactoring
     {
-        public abstract string GetEquivalenceKey();
+        public abstract RefactoringDescriptor GetDescriptor();
 
         public abstract string MethodName { get; }
 
@@ -35,10 +35,10 @@ namespace Roslynator.CSharp.Refactorings.ReplaceEqualsExpression
                 return;
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceEqualityOperatorWithStringIsNullOrEmpty))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.ReplaceEqualityOperatorWithStringIsNullOrEmpty))
                 ReplaceEqualityOperatorWithStringIsNullOrEmptyRefactoring.Instance.RegisterRefactoring(context, nullCheck);
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceEqualityOperatorWithStringIsNullOrWhiteSpace))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.ReplaceEqualityOperatorWithStringIsNullOrWhiteSpace))
                 ReplaceEqualityOperatorWithStringIsNullOrWhiteSpaceRefactoring.Instance.RegisterRefactoring(context, nullCheck);
         }
 
@@ -51,7 +51,7 @@ namespace Roslynator.CSharp.Refactorings.ReplaceEqualsExpression
             context.RegisterRefactoring(
                 title,
                 ct => RefactorAsync(context.Document, nullCheck, ct),
-                GetEquivalenceKey());
+                GetDescriptor());
         }
 
         private Task<Document> RefactorAsync(

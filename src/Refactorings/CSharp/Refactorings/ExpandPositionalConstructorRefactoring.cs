@@ -24,7 +24,7 @@ namespace Roslynator.CSharp.Refactorings
                 context.RegisterRefactoring(
                     "Use explicit constructor",
                     ct => RefactorAsync(context.Document, recordDeclaration, ct),
-                    RefactoringIdentifiers.ExpandPositionalConstructor);
+                    RefactoringDescriptors.ExpandPositionalConstructor);
             }
         }
 

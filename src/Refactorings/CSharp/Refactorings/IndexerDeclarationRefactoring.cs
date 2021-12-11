@@ -13,29 +13,29 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, IndexerDeclarationSyntax indexerDeclaration)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.ConvertBlockBodyToExpressionBody)
                 && context.SupportsCSharp6
                 && ConvertBlockBodyToExpressionBodyRefactoring.CanRefactor(indexerDeclaration, context.Span))
             {
                 context.RegisterRefactoring(
                     ConvertBlockBodyToExpressionBodyRefactoring.Title,
                     ct => ConvertBlockBodyToExpressionBodyRefactoring.RefactorAsync(context.Document, indexerDeclaration, ct),
-                    RefactoringIdentifiers.ConvertBlockBodyToExpressionBody);
+                    RefactoringDescriptors.ConvertBlockBodyToExpressionBody);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.MakeMemberAbstract)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.MakeMemberAbstract)
                 && context.Span.IsEmptyAndContainedInSpan(indexerDeclaration.ThisKeyword))
             {
                 MakeIndexerAbstractRefactoring.ComputeRefactoring(context, indexerDeclaration);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.MakeMemberVirtual)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.MakeMemberVirtual)
                 && indexerDeclaration.HeaderSpan().Contains(context.Span))
             {
                 MakeIndexerVirtualRefactoring.ComputeRefactoring(context, indexerDeclaration);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.CopyDocumentationCommentFromBaseMember)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.CopyDocumentationCommentFromBaseMember)
                 && indexerDeclaration.HeaderSpan().Contains(context.Span)
                 && !indexerDeclaration.HasDocumentationComment())
             {
@@ -43,20 +43,20 @@ namespace Roslynator.CSharp.Refactorings
                 CopyDocumentationCommentFromBaseMemberRefactoring.ComputeRefactoring(context, indexerDeclaration, semanticModel);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddParameterToInterfaceMember)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.AddParameterToInterfaceMember)
                 && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(indexerDeclaration.ThisKeyword))
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                 foreach (CodeAction codeAction in AddParameterToInterfaceMemberRefactoring.ComputeRefactoringForImplicitImplementation(
-                    new CommonFixContext(context.Document, RefactoringIdentifiers.AddParameterToInterfaceMember, semanticModel, context.CancellationToken),
+                    new CommonFixContext(context.Document, EquivalenceKey.Create(RefactoringDescriptors.AddParameterToInterfaceMember), semanticModel, context.CancellationToken),
                     indexerDeclaration))
                 {
                     context.RegisterRefactoring(codeAction);
                 }
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddMemberToInterface)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.AddMemberToInterface)
                 && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(indexerDeclaration.ThisKeyword))
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);

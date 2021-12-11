@@ -28,7 +28,7 @@ namespace Roslynator.CSharp.Refactorings
 
                         return context.Document.ReplaceNodeAsync(binaryExpression, newBinaryExpression, ct);
                     },
-                    RefactoringIdentifiers.SwapBinaryOperands);
+                    RefactoringDescriptors.SwapBinaryOperands);
             }
 
             bool CanRefactor()

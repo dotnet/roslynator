@@ -9,13 +9,18 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeRefactorings;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.Configuration;
 using Roslynator.CSharp.Analysis;
 
 namespace Roslynator.CSharp.Refactorings
 {
     internal class RefactoringContext
     {
+        private AnalyzerConfigOptions _configOptions;
+        private bool? _globalIsEnabled;
+
         public RefactoringContext(CodeRefactoringContext underlyingContext, SyntaxNode root, RefactoringSettings settings)
         {
             UnderlyingContext = underlyingContext;
@@ -137,34 +142,94 @@ namespace Roslynator.CSharp.Refactorings
             RegisterRefactoring(CodeAction.Create(title, createChangedSolution, equivalenceKey));
         }
 
+        public void RegisterRefactoring(
+            string title,
+            Func<CancellationToken, Task<Document>> createChangedDocument,
+            RefactoringDescriptor descriptor,
+            string additionalEquivalenceKey1 = null,
+            string additionalEquivalenceKey2 = null)
+        {
+            RegisterRefactoring(
+                title,
+                createChangedDocument,
+                EquivalenceKey.Create(descriptor, additionalEquivalenceKey1, additionalEquivalenceKey2));
+        }
+
+        public void RegisterRefactoring(
+            string title,
+            Func<CancellationToken, Task<Solution>> createChangedSolution,
+            RefactoringDescriptor descriptor,
+            string additionalEquivalenceKey1 = null,
+            string additionalEquivalenceKey2 = null)
+        {
+            RegisterRefactoring(
+                title,
+                createChangedSolution,
+                EquivalenceKey.Create(descriptor, additionalEquivalenceKey1, additionalEquivalenceKey2));
+        }
+
         public void RegisterRefactoring(CodeAction codeAction)
         {
             UnderlyingContext.RegisterRefactoring(codeAction);
         }
 
-        public bool IsRefactoringEnabled(string identifier)
+        public bool IsRefactoringEnabled(RefactoringDescriptor refactoring)
         {
-            return Settings.IsEnabled(identifier);
+            return Settings.IsEnabled(refactoring.Id)
+                && GetValueFromConfig(refactoring);
         }
 
-        public bool IsAnyRefactoringEnabled(string identifier1, string identifier2)
+        private bool GetValueFromConfig(RefactoringDescriptor refactoring)
         {
-            return Settings.IsAnyEnabled(identifier1, identifier2);
+            if ((_configOptions ??= Project.AnalyzerOptions.AnalyzerConfigOptionsProvider.GetOptions(Root.SyntaxTree))
+                .TryGetValue(refactoring.OptionKey, out string value)
+                && bool.TryParse(value, out bool enabled))
+            {
+                return enabled;
+            }
+
+            return _globalIsEnabled ??= GetDefaultValueFromConfig();
+
+            bool GetDefaultValueFromConfig()
+            {
+                if (_configOptions.TryGetValue(OptionKeys.RefactoringsEnabled, out string value)
+                    && bool.TryParse(value, out bool enabled))
+                {
+                    return enabled;
+                }
+
+                return true;
+            }
         }
 
-        public bool IsAnyRefactoringEnabled(string identifier1, string identifier2, string identifier3)
+        public bool IsAnyRefactoringEnabled(RefactoringDescriptor refactoring1, RefactoringDescriptor refactoring2)
         {
-            return Settings.IsAnyEnabled(identifier1, identifier2, identifier3);
+            return IsRefactoringEnabled(refactoring1)
+                || IsRefactoringEnabled(refactoring2);
         }
 
-        public bool IsAnyRefactoringEnabled(string identifier1, string identifier2, string identifier3, string identifier4)
+        public bool IsAnyRefactoringEnabled(RefactoringDescriptor refactoring1, RefactoringDescriptor refactoring2, RefactoringDescriptor refactoring3)
         {
-            return Settings.IsAnyEnabled(identifier1, identifier2, identifier3, identifier4);
+            return IsRefactoringEnabled(refactoring1)
+                || IsRefactoringEnabled(refactoring2)
+                || IsRefactoringEnabled(refactoring3);
         }
 
-        public bool IsAnyRefactoringEnabled(string identifier1, string identifier2, string identifier3, string identifier4, string identifier5)
+        public bool IsAnyRefactoringEnabled(RefactoringDescriptor refactoring1, RefactoringDescriptor refactoring2, RefactoringDescriptor refactoring3, RefactoringDescriptor refactoring4)
         {
-            return Settings.IsAnyEnabled(identifier1, identifier2, identifier3, identifier4, identifier5);
+            return IsRefactoringEnabled(refactoring1)
+                || IsRefactoringEnabled(refactoring2)
+                || IsRefactoringEnabled(refactoring3)
+                || IsRefactoringEnabled(refactoring4);
+        }
+
+        public bool IsAnyRefactoringEnabled(RefactoringDescriptor refactoring1, RefactoringDescriptor refactoring2, RefactoringDescriptor refactoring3, RefactoringDescriptor refactoring4, RefactoringDescriptor refactoring5)
+        {
+            return IsRefactoringEnabled(refactoring1)
+                || IsRefactoringEnabled(refactoring2)
+                || IsRefactoringEnabled(refactoring3)
+                || IsRefactoringEnabled(refactoring4)
+                || IsRefactoringEnabled(refactoring5);
         }
 
         public async Task ComputeRefactoringsAsync()
@@ -198,7 +263,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 case SyntaxKind.XmlTextLiteralToken:
                     {
-                        if (IsRefactoringEnabled(RefactoringIdentifiers.AddTagToDocumentationComment)
+                        if (IsRefactoringEnabled(RefactoringDescriptors.AddTagToDocumentationComment)
                             && !Span.IsEmpty)
                         {
                             TextSpan span = token.Span;
@@ -218,7 +283,7 @@ namespace Roslynator.CSharp.Refactorings
                                         RegisterRefactoring(
                                             "Add tag 'c'",
                                             ct => Document.WithTextChangeAsync(Span, $"<c>{token.ToString(Span)}</c>", ct),
-                                            RefactoringIdentifiers.AddTagToDocumentationComment);
+                                            RefactoringDescriptors.AddTagToDocumentationComment);
                                     }
                                 }
                             }
@@ -297,14 +362,14 @@ namespace Roslynator.CSharp.Refactorings
                 case SyntaxKind.ProtectedKeyword:
                 case SyntaxKind.PrivateKeyword:
                     {
-                        if (IsRefactoringEnabled(RefactoringIdentifiers.ChangeAccessibility))
+                        if (IsRefactoringEnabled(RefactoringDescriptors.ChangeAccessibility))
                             await AccessModifierRefactoring.ComputeRefactoringsAsync(this, token).ConfigureAwait(false);
 
                         break;
                     }
                 case SyntaxKind.AsyncKeyword:
                     {
-                        if (IsRefactoringEnabled(RefactoringIdentifiers.RemoveAsyncAwait)
+                        if (IsRefactoringEnabled(RefactoringDescriptors.RemoveAsyncAwait)
                             && Span.IsEmptyAndContainedInSpan(token))
                         {
                             await RemoveAsyncAwaitRefactoring.ComputeRefactoringsAsync(this, token).ConfigureAwait(false);
@@ -323,15 +388,15 @@ namespace Roslynator.CSharp.Refactorings
 
             if (kind == SyntaxKind.SingleLineCommentTrivia)
             {
-                if (IsRefactoringEnabled(RefactoringIdentifiers.UncommentSingleLineComment))
+                if (IsRefactoringEnabled(RefactoringDescriptors.UncommentSingleLineComment))
                 {
                     RegisterRefactoring(
                         "Uncomment",
                         ct => UncommentSingleLineCommentRefactoring.RefactorAsync(Document, trivia, ct),
-                        RefactoringIdentifiers.UncommentSingleLineComment);
+                        RefactoringDescriptors.UncommentSingleLineComment);
                 }
 
-                if (IsRefactoringEnabled(RefactoringIdentifiers.ConvertCommentToDocumentationComment))
+                if (IsRefactoringEnabled(RefactoringDescriptors.ConvertCommentToDocumentationComment))
                 {
                     TextSpan fixableSpan = ConvertCommentToDocumentationCommentAnalysis.GetFixableSpan(trivia);
 
@@ -340,13 +405,13 @@ namespace Roslynator.CSharp.Refactorings
                         RegisterRefactoring(
                             ConvertCommentToDocumentationCommentRefactoring.Title,
                             ct => ConvertCommentToDocumentationCommentRefactoring.RefactorAsync(Document, (MemberDeclarationSyntax)trivia.Token.Parent, fixableSpan, ct),
-                            RefactoringIdentifiers.ConvertCommentToDocumentationComment);
+                            RefactoringDescriptors.ConvertCommentToDocumentationComment);
                     }
                 }
             }
             else if (kind == SyntaxKind.MultiLineCommentTrivia)
             {
-                if (IsRefactoringEnabled(RefactoringIdentifiers.UncommentMultiLineComment))
+                if (IsRefactoringEnabled(RefactoringDescriptors.UncommentMultiLineComment))
                     UncommentMultiLineCommentRefactoring.ComputeRefactoring(this, trivia);
             }
 
@@ -962,7 +1027,7 @@ namespace Roslynator.CSharp.Refactorings
                     AddBracesRefactoring.ComputeRefactoring(this, statement);
                     RemoveBracesRefactoring.ComputeRefactoring(this, statement);
 
-                    if (IsRefactoringEnabled(RefactoringIdentifiers.RemoveContainingStatement))
+                    if (IsRefactoringEnabled(RefactoringDescriptors.RemoveContainingStatement))
                         RemoveContainingStatementRefactoring.ComputeRefactoring(this, statement);
 
                     EmbeddedStatementRefactoring.ComputeRefactoring(this, statement);

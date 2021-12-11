@@ -45,7 +45,7 @@ namespace Roslynator.CSharp.Refactorings
                     ? "Remove containing else clause"
                     : "Remove containing statement",
                 ct => RefactorAsync(context.Document, statement, ct),
-                RefactoringIdentifiers.RemoveContainingStatement);
+                RefactoringDescriptors.RemoveContainingStatement);
         }
 
         private static SyntaxNode GetContainingBlock(SyntaxNode node)

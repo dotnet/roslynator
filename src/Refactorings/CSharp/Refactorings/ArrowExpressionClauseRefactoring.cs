@@ -12,14 +12,14 @@ namespace Roslynator.CSharp.Refactorings
         {
             ExpressionSyntax expression = arrowExpressionClause.Expression;
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertExpressionBodyToBlockBody)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.ConvertExpressionBodyToBlockBody)
                 && (context.Span.IsEmptyAndContainedInSpan(arrowExpressionClause) || context.Span.IsBetweenSpans(expression))
                 && ExpandExpressionBodyAnalysis.IsFixable(arrowExpressionClause))
             {
                 context.RegisterRefactoring(
                     ConvertExpressionBodyToBlockBodyRefactoring.Title,
                     ct => ConvertExpressionBodyToBlockBodyRefactoring.RefactorAsync(context.Document, arrowExpressionClause, ct),
-                    RefactoringIdentifiers.ConvertExpressionBodyToBlockBody);
+                    RefactoringDescriptors.ConvertExpressionBodyToBlockBody);
             }
         }
     }

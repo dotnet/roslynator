@@ -40,7 +40,7 @@ namespace Roslynator.CSharp.Refactorings
 
                     return context.Document.ReplaceNodeAsync(expression, lambda, ct);
                 },
-                RefactoringIdentifiers.ConvertMethodGroupToLambda);
+                RefactoringDescriptors.ConvertMethodGroupToLambda);
         }
     }
 }

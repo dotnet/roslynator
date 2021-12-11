@@ -36,7 +36,7 @@ namespace Roslynator.CSharp.Refactorings
             context.RegisterRefactoring(
                 $"Convert to 'default({SymbolDisplay.ToMinimalDisplayString(typeSymbol, semanticModel, expression.SpanStart, SymbolDisplayFormats.DisplayName)})'",
                 ct => RefactorAsync(context.Document, expression, typeSymbol, ct),
-                RefactoringIdentifiers.ConvertNullLiteralToDefaultExpression);
+                RefactoringDescriptors.ConvertNullLiteralToDefaultExpression);
         }
 
         public static async Task<Document> RefactorAsync(

@@ -24,7 +24,7 @@ namespace Roslynator.CSharp.Refactorings.MakeMemberVirtual
             context.RegisterRefactoring(
                 "Make indexer virtual",
                 ct => RefactorAsync(context.Document, indexerDeclaration, ct),
-                RefactoringIdentifiers.MakeMemberVirtual);
+                RefactoringDescriptors.MakeMemberVirtual);
         }
 
         private static Task<Document> RefactorAsync(

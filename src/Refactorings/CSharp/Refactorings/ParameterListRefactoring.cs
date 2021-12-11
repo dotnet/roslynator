@@ -17,13 +17,13 @@ namespace Roslynator.CSharp.Refactorings
 
             if (parameters.Any())
             {
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.DuplicateParameter))
+                if (context.IsRefactoringEnabled(RefactoringDescriptors.DuplicateParameter))
                 {
                     var refactoring = new DuplicateParameterRefactoring(parameterList);
-                    refactoring.ComputeRefactoring(context, RefactoringIdentifiers.DuplicateParameter);
+                    refactoring.ComputeRefactoring(context, RefactoringDescriptors.DuplicateParameter);
                 }
 
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.CheckParameterForNull)
+                if (context.IsRefactoringEnabled(RefactoringDescriptors.CheckParameterForNull)
                     && SeparatedSyntaxListSelection<ParameterSyntax>.TryCreate(parameterList.Parameters, context.Span, out SeparatedSyntaxListSelection<ParameterSyntax> selectedParameters))
                 {
                     SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
@@ -31,13 +31,13 @@ namespace Roslynator.CSharp.Refactorings
                 }
 
                 if (context.IsAnyRefactoringEnabled(
-                    RefactoringIdentifiers.IntroduceAndInitializeField,
-                    RefactoringIdentifiers.IntroduceAndInitializeProperty))
+                    RefactoringDescriptors.IntroduceAndInitializeField,
+                    RefactoringDescriptors.IntroduceAndInitializeProperty))
                 {
                     IntroduceAndInitializeRefactoring.ComputeRefactoring(context, parameterList);
                 }
 
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapParameters)
+                if (context.IsRefactoringEnabled(RefactoringDescriptors.WrapParameters)
                     && (context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(parameterList)))
                 {
                     if (parameterList.IsSingleLine())
@@ -47,7 +47,7 @@ namespace Roslynator.CSharp.Refactorings
                             context.RegisterRefactoring(
                                 "Wrap parameters",
                                 ct => SyntaxFormatter.WrapParametersAsync(context.Document, parameterList, ct),
-                                RefactoringIdentifiers.WrapParameters);
+                                RefactoringDescriptors.WrapParameters);
                         }
                     }
                     else if (parameterList.DescendantTrivia(parameterList.Span).All(f => f.IsWhitespaceOrEndOfLineTrivia()))
@@ -55,7 +55,7 @@ namespace Roslynator.CSharp.Refactorings
                         context.RegisterRefactoring(
                             "Unwrap parameters",
                             ct => SyntaxFormatter.UnwrapExpressionAsync(context.Document, parameterList, ct),
-                            RefactoringIdentifiers.WrapParameters);
+                            RefactoringDescriptors.WrapParameters);
                     }
                 }
             }

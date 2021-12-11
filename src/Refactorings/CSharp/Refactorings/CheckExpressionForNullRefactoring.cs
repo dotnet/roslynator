@@ -168,7 +168,7 @@ namespace Roslynator.CSharp.Refactorings
             context.RegisterRefactoring(
                 GetTitle(expression),
                 ct => RefactorAsync(context.Document, expression, statement, ct),
-                RefactoringIdentifiers.CheckExpressionForNull);
+                RefactoringDescriptors.CheckExpressionForNull);
         }
 
         private static void RegisterRefactoring(RefactoringContext context, ExpressionSyntax expression, StatementSyntax statement, int statementCount)
@@ -176,7 +176,7 @@ namespace Roslynator.CSharp.Refactorings
             context.RegisterRefactoring(
                 GetTitle(expression),
                 ct => RefactorAsync(context.Document, expression, statement, statementCount, ct),
-                RefactoringIdentifiers.CheckExpressionForNull);
+                RefactoringDescriptors.CheckExpressionForNull);
         }
 
         private static string GetTitle(ExpressionSyntax expression)

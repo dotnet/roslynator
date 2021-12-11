@@ -56,7 +56,7 @@ namespace Roslynator.CSharp.Refactorings
                 context.RegisterRefactoring(
                     ExtractTypeDeclarationToNewDocumentRefactoring.GetTitle(identifier.ValueText),
                     ct => ExtractTypeDeclarationToNewDocumentRefactoring.RefactorAsync(context.Document, memberDeclaration, ct),
-                    RefactoringIdentifiers.ExtractTypeDeclarationToNewFile);
+                    RefactoringDescriptors.ExtractTypeDeclarationToNewFile);
             }
         }
     }

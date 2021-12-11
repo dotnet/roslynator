@@ -31,9 +31,9 @@ namespace Roslynator.CSharp.Refactorings
                 case SyntaxKind.EnumDeclaration:
                     {
                         if (context.IsAnyRefactoringEnabled(
-                            RefactoringIdentifiers.RemoveMemberDeclaration,
-                            RefactoringIdentifiers.DuplicateMember,
-                            RefactoringIdentifiers.CommentOutMemberDeclaration)
+                            RefactoringDescriptors.RemoveMemberDeclaration,
+                            RefactoringDescriptors.DuplicateMember,
+                            RefactoringDescriptors.CommentOutMemberDeclaration)
                             && BraceContainsSpan(member, context.Span))
                         {
                             if (member.IsParentKind(
@@ -44,21 +44,21 @@ namespace Roslynator.CSharp.Refactorings
                                 SyntaxKind.InterfaceDeclaration,
                                 SyntaxKind.CompilationUnit))
                             {
-                                if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveMemberDeclaration))
+                                if (context.IsRefactoringEnabled(RefactoringDescriptors.RemoveMemberDeclaration))
                                 {
-                                    context.RegisterRefactoring(CodeActionFactory.RemoveMemberDeclaration(context.Document, member, equivalenceKey: RefactoringIdentifiers.RemoveMemberDeclaration));
+                                    context.RegisterRefactoring(CodeActionFactory.RemoveMemberDeclaration(context.Document, member, equivalenceKey: EquivalenceKey.Create(RefactoringDescriptors.RemoveMemberDeclaration)));
                                 }
 
-                                if (context.IsRefactoringEnabled(RefactoringIdentifiers.DuplicateMember))
+                                if (context.IsRefactoringEnabled(RefactoringDescriptors.DuplicateMember))
                                 {
                                     context.RegisterRefactoring(
                                         $"Duplicate {CSharpFacts.GetTitle(member)}",
                                         ct => DuplicateMemberDeclarationRefactoring.RefactorAsync(context.Document, member, ct),
-                                        RefactoringIdentifiers.DuplicateMember);
+                                        RefactoringDescriptors.DuplicateMember);
                                 }
                             }
 
-                            if (context.IsRefactoringEnabled(RefactoringIdentifiers.CommentOutMemberDeclaration))
+                            if (context.IsRefactoringEnabled(RefactoringDescriptors.CommentOutMemberDeclaration))
                                 CommentOutRefactoring.RegisterRefactoring(context, member);
                         }
 
@@ -66,15 +66,15 @@ namespace Roslynator.CSharp.Refactorings
                     }
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveAllStatements))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.RemoveAllStatements))
                 RemoveAllStatementsRefactoring.ComputeRefactoring(context, member);
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveAllMemberDeclarations))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.RemoveAllMemberDeclarations))
                 RemoveAllMemberDeclarationsRefactoring.ComputeRefactoring(context, member);
 
             if (context.IsAnyRefactoringEnabled(
-                RefactoringIdentifiers.SwapMemberDeclarations,
-                RefactoringIdentifiers.RemoveMemberDeclarations)
+                RefactoringDescriptors.SwapMemberDeclarations,
+                RefactoringDescriptors.RemoveMemberDeclarations)
                 && !member.Span.IntersectsWith(context.Span))
             {
                 MemberDeclarationsRefactoring.ComputeRefactoring(context, member);
@@ -200,33 +200,33 @@ namespace Roslynator.CSharp.Refactorings
                     }
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.MoveUnsafeContextToContainingDeclaration))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.MoveUnsafeContextToContainingDeclaration))
                 MoveUnsafeContextToContainingDeclarationRefactoring.ComputeRefactoring(context, member);
         }
 
         private static void ComputeRefactorings(RefactoringContext context, OperatorDeclarationSyntax operatorDeclaration)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.ConvertBlockBodyToExpressionBody)
                 && context.SupportsCSharp6
                 && ConvertBlockBodyToExpressionBodyRefactoring.CanRefactor(operatorDeclaration, context.Span))
             {
                 context.RegisterRefactoring(
                     ConvertBlockBodyToExpressionBodyRefactoring.Title,
                     ct => ConvertBlockBodyToExpressionBodyRefactoring.RefactorAsync(context.Document, operatorDeclaration, ct),
-                    RefactoringIdentifiers.ConvertBlockBodyToExpressionBody);
+                    RefactoringDescriptors.ConvertBlockBodyToExpressionBody);
             }
         }
 
         private static void ComputeRefactorings(RefactoringContext context, ConversionOperatorDeclarationSyntax operatorDeclaration)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.ConvertBlockBodyToExpressionBody)
                 && context.SupportsCSharp6
                 && ConvertBlockBodyToExpressionBodyRefactoring.CanRefactor(operatorDeclaration, context.Span))
             {
                 context.RegisterRefactoring(
                     ConvertBlockBodyToExpressionBodyRefactoring.Title,
                     ct => ConvertBlockBodyToExpressionBodyRefactoring.RefactorAsync(context.Document, operatorDeclaration, ct),
-                    RefactoringIdentifiers.ConvertBlockBodyToExpressionBody);
+                    RefactoringDescriptors.ConvertBlockBodyToExpressionBody);
             }
         }
 

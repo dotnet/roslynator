@@ -8,7 +8,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         internal static void ComputeRefactorings(RefactoringContext context, UnsafeStatementSyntax node)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.MoveUnsafeContextToContainingDeclaration))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.MoveUnsafeContextToContainingDeclaration))
                 MoveUnsafeContextToContainingDeclarationRefactoring.ComputeRefactoring(context, node);
         }
     }

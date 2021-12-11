@@ -8,14 +8,14 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void ComputeRefactorings(RefactoringContext context, AccessorDeclarationSyntax accessor)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.ConvertBlockBodyToExpressionBody)
                 && context.SupportsCSharp6
                 && ConvertBlockBodyToExpressionBodyRefactoring.CanRefactor(accessor, context.Span))
             {
                 context.RegisterRefactoring(
                     ConvertBlockBodyToExpressionBodyRefactoring.Title,
                     ct => ConvertBlockBodyToExpressionBodyRefactoring.RefactorAsync(context.Document, accessor, ct),
-                    RefactoringIdentifiers.ConvertBlockBodyToExpressionBody);
+                    RefactoringDescriptors.ConvertBlockBodyToExpressionBody);
             }
         }
     }

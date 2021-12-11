@@ -9,7 +9,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringAsync(RefactoringContext context, AttributeSyntax attribute)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.GeneratePropertyForDebuggerDisplayAttribute)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.GeneratePropertyForDebuggerDisplayAttribute)
                 && (context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(attribute)))
             {
                 await GeneratePropertyForDebuggerDisplayAttributeRefactoring.ComputeRefactoringAsync(context, attribute).ConfigureAwait(false);

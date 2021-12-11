@@ -10,16 +10,16 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, LocalDeclarationStatementSyntax localDeclaration)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.InitializeLocalVariableWithDefaultValue))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.InitializeLocalVariableWithDefaultValue))
                 await InitializeLocalVariableWithDefaultValueRefactoring.ComputeRefactoringAsync(context, localDeclaration).ConfigureAwait(false);
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.PromoteLocalVariableToParameter))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.PromoteLocalVariableToParameter))
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
                 PromoteLocalToParameterRefactoring.ComputeRefactoring(context, localDeclaration, semanticModel);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveInstantiationOfLocalVariable))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.RemoveInstantiationOfLocalVariable))
                 await RemoveInstantiationOfLocalVariableRefactoring.ComputeRefactoringAsync(context, localDeclaration).ConfigureAwait(false);
         }
     }

@@ -42,7 +42,7 @@ namespace Roslynator.CSharp.Refactorings.WrapStatements
             context.RegisterRefactoring(
                 "Wrap in 'using' statement",
                 ct => RefactorAsync(context.Document, selectedStatements, ct),
-                RefactoringIdentifiers.WrapStatementsInUsingStatement);
+                RefactoringDescriptors.WrapStatementsInUsingStatement);
         }
 
         public override UsingStatementSyntax CreateStatement(ImmutableArray<StatementSyntax> statements)

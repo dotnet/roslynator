@@ -9,19 +9,19 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void ComputeRefactorings(RefactoringContext context)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveAllRegionDirectives)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.RemoveAllRegionDirectives)
                 && context.IsRootCompilationUnit)
             {
                 context.RegisterRefactoring(
                     "Remove all region directives",
                     ct => context.Document.RemovePreprocessorDirectivesAsync(PreprocessorDirectiveFilter.Region | PreprocessorDirectiveFilter.EndRegion, ct),
-                    RefactoringIdentifiers.RemoveAllRegionDirectives);
+                    RefactoringDescriptors.RemoveAllRegionDirectives);
             }
         }
 
         public static void ComputeRefactorings(RefactoringContext context, RegionDirectiveTriviaSyntax regionDirective)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveRegion)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.RemoveRegion)
                 && context.IsRootCompilationUnit)
             {
                 RegionInfo region = SyntaxInfo.RegionInfo(regionDirective);
@@ -31,14 +31,14 @@ namespace Roslynator.CSharp.Refactorings
                     context.RegisterRefactoring(
                         "Remove region",
                         ct => context.Document.RemoveRegionAsync(region, ct),
-                        RefactoringIdentifiers.RemoveRegion);
+                        RefactoringDescriptors.RemoveRegion);
                 }
             }
         }
 
         public static void ComputeRefactorings(RefactoringContext context, EndRegionDirectiveTriviaSyntax endRegionDirective)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveRegion)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.RemoveRegion)
                 && context.IsRootCompilationUnit)
             {
                 RegionInfo region = SyntaxInfo.RegionInfo(endRegionDirective);
@@ -48,7 +48,7 @@ namespace Roslynator.CSharp.Refactorings
                     context.RegisterRefactoring(
                         "Remove region",
                         ct => context.Document.RemoveRegionAsync(region, ct),
-                        RefactoringIdentifiers.RemoveRegion);
+                        RefactoringDescriptors.RemoveRegion);
                 }
             }
         }

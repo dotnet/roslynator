@@ -22,7 +22,7 @@ namespace Roslynator.CSharp.Refactorings.SortMemberDeclarations
                 context.RegisterRefactoring(
                     "Sort enum members by name",
                     ct => SortByNameAsync(context.Document, enumDeclaration, selectedMembers, ct),
-                    RefactoringIdentifiers.SortMemberDeclarations);
+                    RefactoringDescriptors.SortMemberDeclarations);
             }
 
             if (selectedMembers.Any(f => f.EqualsValue?.Value != null))
@@ -34,7 +34,7 @@ namespace Roslynator.CSharp.Refactorings.SortMemberDeclarations
                     context.RegisterRefactoring(
                         "Sort enum members by value",
                         ct => SortByValueAsync(context.Document, enumDeclaration, selectedMembers, ct),
-                        RefactoringIdentifiers.SortMemberDeclarations);
+                        RefactoringDescriptors.SortMemberDeclarations);
                 }
             }
         }

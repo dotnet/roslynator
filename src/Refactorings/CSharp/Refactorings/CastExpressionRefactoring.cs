@@ -10,7 +10,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, CastExpressionSyntax castExpression)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceExplicitCastWithAsExpression)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.ReplaceExplicitCastWithAsExpression)
                 && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(castExpression))
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
@@ -32,7 +32,7 @@ namespace Roslynator.CSharp.Refactorings
 
                             return document.ReplaceNodeAsync(castExpression, newNode, ct);
                         },
-                        RefactoringIdentifiers.ReplaceExplicitCastWithAsExpression);
+                        RefactoringDescriptors.ReplaceExplicitCastWithAsExpression);
                 }
             }
         }

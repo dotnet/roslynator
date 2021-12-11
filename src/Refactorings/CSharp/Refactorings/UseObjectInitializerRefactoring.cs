@@ -75,7 +75,7 @@ namespace Roslynator.CSharp.Refactorings
             context.RegisterRefactoring(
                 "Use object initializer",
                 ct => RefactorAsync(context.Document, objectCreation, selectedStatements, ct),
-                RefactoringIdentifiers.UseObjectInitializer);
+                RefactoringDescriptors.UseObjectInitializer);
         }
 
         public static bool IsValidAssignmentStatement(

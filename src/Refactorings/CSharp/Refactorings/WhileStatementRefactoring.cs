@@ -12,7 +12,7 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class WhileStatementRefactoring
     {
-        internal static readonly string ConvertWhileToDoWithoutIfEquivalenceKey = EquivalenceKey.Create(RefactoringIdentifiers.ConvertWhileToDo, "WithoutIf");
+        internal static readonly string ConvertWhileToDoWithoutIfEquivalenceKey = EquivalenceKey.Create(RefactoringDescriptors.ConvertWhileToDo, "WithoutIf");
 
         public static void ComputeRefactorings(RefactoringContext context, WhileStatementSyntax whileStatement)
         {
@@ -21,13 +21,13 @@ namespace Roslynator.CSharp.Refactorings
 
             bool spanIsEmptyAndContainedInWhileKeyword = context.Span.IsEmptyAndContainedInSpan(whileKeyword);
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertWhileToDo)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.ConvertWhileToDo)
                 && spanIsEmptyAndContainedInWhileKeyword)
             {
                 context.RegisterRefactoring(
                     "Convert to 'do'",
                     ct => ConvertWhileToDoAsync(document, whileStatement, omitIfStatement: false, ct),
-                    RefactoringIdentifiers.ConvertWhileToDo);
+                    RefactoringDescriptors.ConvertWhileToDo);
 
                 context.RegisterRefactoring(
                     "Convert to 'do' (without 'if')",
@@ -35,13 +35,13 @@ namespace Roslynator.CSharp.Refactorings
                     ConvertWhileToDoWithoutIfEquivalenceKey);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertWhileToFor)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.ConvertWhileToFor)
                 && spanIsEmptyAndContainedInWhileKeyword)
             {
                 context.RegisterRefactoring(
                     ConvertWhileToForRefactoring.Title,
                     ct => ConvertWhileToForRefactoring.RefactorAsync(document, whileStatement, ct),
-                    RefactoringIdentifiers.ConvertWhileToFor);
+                    RefactoringDescriptors.ConvertWhileToFor);
             }
         }
 

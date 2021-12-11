@@ -9,26 +9,26 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, ForStatementSyntax forStatement)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertForToForEach)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.ConvertForToForEach)
                 && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(forStatement)
                 && (await ConvertForToForEachRefactoring.CanRefactorAsync(context, forStatement).ConfigureAwait(false)))
             {
                 context.RegisterRefactoring(
                     "Convert to 'foreach'",
                     ct => ConvertForToForEachRefactoring.RefactorAsync(context.Document, forStatement, ct),
-                    RefactoringIdentifiers.ConvertForToForEach);
+                    RefactoringDescriptors.ConvertForToForEach);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertForToWhile)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.ConvertForToWhile)
                 && (context.Span.IsEmptyAndContainedInSpan(forStatement.ForKeyword) || context.Span.IsBetweenSpans(forStatement)))
             {
                 context.RegisterRefactoring(
                     "Convert to 'while'",
                     ct => ConvertForToWhileRefactoring.RefactorAsync(context.Document, forStatement, ct),
-                    RefactoringIdentifiers.ConvertForToWhile);
+                    RefactoringDescriptors.ConvertForToWhile);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReverseForStatement)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.ReverseForStatement)
                 && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(forStatement))
             {
                 if (ReverseForStatementRefactoring.CanRefactor(forStatement))
@@ -36,14 +36,14 @@ namespace Roslynator.CSharp.Refactorings
                     context.RegisterRefactoring(
                         "Reverse 'for' statement",
                         ct => ReverseForStatementRefactoring.RefactorAsync(context.Document, forStatement, ct),
-                        RefactoringIdentifiers.ReverseForStatement);
+                        RefactoringDescriptors.ReverseForStatement);
                 }
                 else if (ReverseReversedForStatementRefactoring.CanRefactor(forStatement))
                 {
                     context.RegisterRefactoring(
                         "Reverse 'for' statement",
                         ct => ReverseReversedForStatementRefactoring.RefactorAsync(context.Document, forStatement, ct),
-                        RefactoringIdentifiers.ReverseForStatement);
+                        RefactoringDescriptors.ReverseForStatement);
                 }
             }
         }

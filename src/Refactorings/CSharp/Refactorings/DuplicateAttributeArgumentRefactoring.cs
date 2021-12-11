@@ -22,7 +22,7 @@ namespace Roslynator.CSharp.Refactorings
             context.RegisterRefactoring(
                 "Duplicate argument",
                 ct => RefactorAsync(context.Document, argument, ct),
-                RefactoringIdentifiers.DuplicateArgument);
+                RefactoringDescriptors.DuplicateArgument);
         }
 
         private static AttributeArgumentSyntax GetArgument(RefactoringContext context, AttributeArgumentListSyntax argumentList)

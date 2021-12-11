@@ -85,7 +85,7 @@ namespace Roslynator.CSharp.Refactorings
                     parameters,
                     semanticModel,
                     ct),
-                RefactoringIdentifiers.CheckParameterForNull);
+                RefactoringDescriptors.CheckParameterForNull);
         }
 
         public static bool CanRefactor(

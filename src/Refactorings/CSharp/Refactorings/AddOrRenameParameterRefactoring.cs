@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, ParameterSyntax parameter)
         {
-            if (!context.IsRefactoringEnabled(RefactoringIdentifiers.RenameParameterAccordingToTypeName))
+            if (!context.IsRefactoringEnabled(RefactoringDescriptors.RenameParameterAccordingToTypeName))
             {
                 return;
             }
@@ -28,7 +28,7 @@ namespace Roslynator.CSharp.Refactorings
                 return;
 
             if (!parameter.Identifier.IsMissing
-                && context.IsRefactoringEnabled(RefactoringIdentifiers.RenameParameterAccordingToTypeName)
+                && context.IsRefactoringEnabled(RefactoringDescriptors.RenameParameterAccordingToTypeName)
                 && parameter.Identifier.Span.Contains(context.Span))
             {
                 string oldName = parameter.Identifier.ValueText;
@@ -44,7 +44,7 @@ namespace Roslynator.CSharp.Refactorings
                     context.RegisterRefactoring(
                         $"Rename '{oldName}' to '{newName}'",
                         ct => Renamer.RenameSymbolAsync(context.Solution, parameterSymbol, newName, default(OptionSet), ct),
-                        RefactoringIdentifiers.RenameParameterAccordingToTypeName);
+                        RefactoringDescriptors.RenameParameterAccordingToTypeName);
                 }
             }
         }

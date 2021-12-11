@@ -14,9 +14,9 @@ namespace Roslynator.CSharp.Refactorings
         public static void ComputeRefactoring(RefactoringContext context, BlockSyntax block)
         {
             if (context.IsAnyRefactoringEnabled(
-                RefactoringIdentifiers.RemoveStatement,
-                RefactoringIdentifiers.DuplicateStatement,
-                RefactoringIdentifiers.CommentOutStatement))
+                RefactoringDescriptors.RemoveStatement,
+                RefactoringDescriptors.DuplicateStatement,
+                RefactoringDescriptors.CommentOutStatement))
             {
                 StatementSyntax statement = GetStatement(context, block, block.Parent);
 
@@ -32,13 +32,13 @@ namespace Roslynator.CSharp.Refactorings
             {
                 RegisterRefactoring(context, switchStatement);
 
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveAllSwitchSections)
+                if (context.IsRefactoringEnabled(RefactoringDescriptors.RemoveAllSwitchSections)
                     && switchStatement.Sections.Any())
                 {
                     context.RegisterRefactoring(
                         "Remove all sections",
                         ct => RemoveAllSwitchSectionsAsync(context.Document, switchStatement, ct),
-                        RefactoringIdentifiers.RemoveAllSwitchSections);
+                        RefactoringDescriptors.RemoveAllSwitchSections);
                 }
             }
         }
@@ -47,21 +47,21 @@ namespace Roslynator.CSharp.Refactorings
         {
             bool isEmbedded = statement.IsEmbedded();
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveStatement)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.RemoveStatement)
                 && !isEmbedded)
             {
-                context.RegisterRefactoring(CodeActionFactory.RemoveStatement(context.Document, statement, "Remove statement", RefactoringIdentifiers.RemoveStatement));
+                context.RegisterRefactoring(CodeActionFactory.RemoveStatement(context.Document, statement, "Remove statement", EquivalenceKey.Create(RefactoringDescriptors.RemoveStatement)));
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.DuplicateStatement))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.DuplicateStatement))
             {
                 context.RegisterRefactoring(
                     "Duplicate statement",
                     ct => DuplicateStatementAsync(context.Document, statement, ct),
-                    RefactoringIdentifiers.DuplicateStatement);
+                    RefactoringDescriptors.DuplicateStatement);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.CommentOutStatement)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.CommentOutStatement)
                 && !isEmbedded)
             {
                 CommentOutRefactoring.RegisterRefactoring(context, statement);

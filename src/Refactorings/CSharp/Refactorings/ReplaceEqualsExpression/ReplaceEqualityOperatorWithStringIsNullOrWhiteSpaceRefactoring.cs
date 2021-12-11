@@ -15,9 +15,9 @@ namespace Roslynator.CSharp.Refactorings.ReplaceEqualsExpression
             get { return "IsNullOrWhiteSpace"; }
         }
 
-        public override string GetEquivalenceKey()
+        public override RefactoringDescriptor GetDescriptor()
         {
-            return RefactoringIdentifiers.ReplaceEqualityOperatorWithStringIsNullOrWhiteSpace;
+            return RefactoringDescriptors.ReplaceEqualityOperatorWithStringIsNullOrWhiteSpace;
         }
     }
 }

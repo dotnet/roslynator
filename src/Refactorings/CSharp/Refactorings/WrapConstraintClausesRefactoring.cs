@@ -33,7 +33,7 @@ namespace Roslynator.CSharp.Refactorings
 
                             return context.Document.ReplaceNodeAsync(genericInfo.Node, newInfo.Node, ct);
                         },
-                        RefactoringIdentifiers.WrapConstraintClauses);
+                        RefactoringDescriptors.WrapConstraintClauses);
                 }
             }
             else if (constraintClause.DescendantTrivia(constraintClause.Span).All(f => f.IsWhitespaceOrEndOfLineTrivia())
@@ -47,7 +47,7 @@ namespace Roslynator.CSharp.Refactorings
 
                         return context.Document.ReplaceNodeAsync(genericInfo.Node, newInfo.Node, ct);
                     },
-                    RefactoringIdentifiers.WrapConstraintClauses);
+                    RefactoringDescriptors.WrapConstraintClauses);
             }
         }
 

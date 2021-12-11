@@ -58,7 +58,7 @@ namespace Roslynator.CSharp.Refactorings
             context.RegisterRefactoring(
                 "Convert to if-else",
                 ct => RefactorAsync(document, selectedStatements, ifStatementCount, ct),
-                RefactoringIdentifiers.ConvertStatementsToIfElse);
+                RefactoringDescriptors.ConvertStatementsToIfElse);
         }
 
         private static Task<Document> RefactorAsync(

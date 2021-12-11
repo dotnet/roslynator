@@ -9,7 +9,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void ComputeRefactorings(RefactoringContext context, InterpolatedStringExpressionSyntax interpolatedString)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.InsertStringInterpolation)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.InsertStringInterpolation)
                 && context.Span.IsEmpty
                 && InsertInterpolationRefactoring.CanRefactor(context, interpolatedString))
             {
@@ -24,10 +24,10 @@ namespace Roslynator.CSharp.Refactorings
                             addNameOf: false,
                             cancellationToken: ct);
                     },
-                    RefactoringIdentifiers.InsertStringInterpolation);
+                    RefactoringDescriptors.InsertStringInterpolation);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertInterpolatedStringToStringLiteral)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.ConvertInterpolatedStringToStringLiteral)
                 && ConvertInterpolatedStringToStringLiteralAnalysis.IsFixable(interpolatedString))
             {
                 context.RegisterRefactoring(
@@ -39,10 +39,10 @@ namespace Roslynator.CSharp.Refactorings
                             interpolatedString,
                             ct);
                     },
-                    RefactoringIdentifiers.ConvertInterpolatedStringToStringLiteral);
+                    RefactoringDescriptors.ConvertInterpolatedStringToStringLiteral);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceInterpolatedStringWithInterpolationExpression)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.ReplaceInterpolatedStringWithInterpolationExpression)
                 && interpolatedString.Span.Contains(context.Span)
                 && ReplaceInterpolatedStringWithInterpolationExpressionRefactoring.CanRefactor(interpolatedString))
             {
@@ -57,16 +57,16 @@ namespace Roslynator.CSharp.Refactorings
                             interpolatedString,
                             ct);
                     },
-                    RefactoringIdentifiers.ReplaceInterpolatedStringWithInterpolationExpression);
+                    RefactoringDescriptors.ReplaceInterpolatedStringWithInterpolationExpression);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertInterpolatedStringToConcatenation)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.ConvertInterpolatedStringToConcatenation)
                 && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(interpolatedString))
             {
                 ConvertInterpolatedStringToConcatenationRefactoring.ComputeRefactoring(context, interpolatedString);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertInterpolatedStringToStringFormat)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.ConvertInterpolatedStringToStringFormat)
                 && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(interpolatedString))
             {
                 ConvertInterpolatedStringToStringFormatRefactoring.ComputeRefactoring(context, interpolatedString);

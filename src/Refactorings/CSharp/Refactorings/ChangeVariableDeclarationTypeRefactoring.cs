@@ -17,9 +17,9 @@ namespace Roslynator.CSharp.Refactorings
 
             if (type?.Span.Contains(context.Span) == true
                 && context.IsAnyRefactoringEnabled(
-                    RefactoringIdentifiers.UseImplicitType,
-                    RefactoringIdentifiers.UseExplicitType,
-                    RefactoringIdentifiers.ChangeTypeAccordingToExpression))
+                    RefactoringDescriptors.UseImplicitType,
+                    RefactoringDescriptors.UseExplicitType,
+                    RefactoringDescriptors.ChangeTypeAccordingToExpression))
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
@@ -28,19 +28,19 @@ namespace Roslynator.CSharp.Refactorings
                 if (analysis.IsExplicit)
                 {
                     if (analysis.SupportsImplicit
-                        && context.IsRefactoringEnabled(RefactoringIdentifiers.UseImplicitType))
+                        && context.IsRefactoringEnabled(RefactoringDescriptors.UseImplicitType))
                     {
-                        context.RegisterRefactoring(CodeActionFactory.ChangeTypeToVar(context.Document, type, equivalenceKey: RefactoringIdentifiers.UseImplicitType));
+                        context.RegisterRefactoring(CodeActionFactory.ChangeTypeToVar(context.Document, type, equivalenceKey: EquivalenceKey.Create(RefactoringDescriptors.UseImplicitType)));
                     }
 
                     if (!variableDeclaration.ContainsDiagnostics
-                        && context.IsRefactoringEnabled(RefactoringIdentifiers.ChangeTypeAccordingToExpression))
+                        && context.IsRefactoringEnabled(RefactoringDescriptors.ChangeTypeAccordingToExpression))
                     {
                         ChangeTypeAccordingToExpression(context, variableDeclaration, analysis.Symbol, semanticModel);
                     }
                 }
                 else if (analysis.SupportsExplicit
-                    && context.IsRefactoringEnabled(RefactoringIdentifiers.UseExplicitType))
+                    && context.IsRefactoringEnabled(RefactoringDescriptors.UseExplicitType))
                 {
                     ITypeSymbol typeSymbol = analysis.Symbol;
 
@@ -63,7 +63,8 @@ namespace Roslynator.CSharp.Refactorings
                                 context.RegisterRefactoring(
                                     "Use explicit type (and add 'await')",
                                     createChangedDocument,
-                                    EquivalenceKey.Join(RefactoringIdentifiers.UseExplicitType, "AddAwait"));
+                                    RefactoringDescriptors.UseExplicitType,
+                                    "AddAwait");
                             }
                         }
 
@@ -71,7 +72,7 @@ namespace Roslynator.CSharp.Refactorings
 
                         if (typeSymbol != null)
                         {
-                            context.RegisterRefactoring(CodeActionFactory.UseExplicitType(context.Document, type, typeSymbol, semanticModel, equivalenceKey: RefactoringIdentifiers.UseExplicitType));
+                            context.RegisterRefactoring(CodeActionFactory.UseExplicitType(context.Document, type, typeSymbol, semanticModel, equivalenceKey: EquivalenceKey.Create(RefactoringDescriptors.UseExplicitType)));
                         }
                     }
                 }
@@ -105,7 +106,7 @@ namespace Roslynator.CSharp.Refactorings
             if (newTypeSymbol == null)
                 return;
 
-            context.RegisterRefactoring(CodeActionFactory.UseExplicitType(context.Document, variableDeclaration.Type, newTypeSymbol, semanticModel, equivalenceKey: RefactoringIdentifiers.ChangeTypeAccordingToExpression));
+            context.RegisterRefactoring(CodeActionFactory.UseExplicitType(context.Document, variableDeclaration.Type, newTypeSymbol, semanticModel, equivalenceKey: EquivalenceKey.Create(RefactoringDescriptors.ChangeTypeAccordingToExpression)));
         }
     }
 }

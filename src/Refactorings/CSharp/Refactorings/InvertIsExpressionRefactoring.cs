@@ -50,7 +50,7 @@ namespace Roslynator.CSharp.Refactorings
             context.RegisterRefactoring(
                 "Invert 'is'",
                 ct => RefactorAsync(context.Document, expression, ct),
-                RefactoringIdentifiers.InvertIsExpression);
+                RefactoringDescriptors.InvertIsExpression);
         }
 
         private static async Task<Document> RefactorAsync(

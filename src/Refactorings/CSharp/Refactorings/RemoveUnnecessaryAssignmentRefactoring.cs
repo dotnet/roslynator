@@ -32,7 +32,7 @@ namespace Roslynator.CSharp.Refactorings
             context.RegisterRefactoring(
                 "Remove unnecessary assignment",
                 ct => RefactorAsync(context.Document, simpleAssignment.Statement, returnStatement, ct),
-                RefactoringIdentifiers.RemoveUnnecessaryAssignment);
+                RefactoringDescriptors.RemoveUnnecessaryAssignment);
         }
 
         public static Task<Document> RefactorAsync(

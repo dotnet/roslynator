@@ -10,7 +10,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, ExpressionStatementSyntax expressionStatement)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.IntroduceLocalVariable))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.IntroduceLocalVariable))
             {
                 ExpressionSyntax expression = expressionStatement.Expression;
 
@@ -42,7 +42,7 @@ namespace Roslynator.CSharp.Refactorings
                             context.RegisterRefactoring(
                                 IntroduceLocalVariableRefactoring.GetTitle(expression),
                                 ct => IntroduceLocalVariableRefactoring.RefactorAsync(context.Document, expressionStatement, typeSymbol, addAwait, semanticModel, ct),
-                                RefactoringIdentifiers.IntroduceLocalVariable);
+                                RefactoringDescriptors.IntroduceLocalVariable);
                         }
                     }
                 }

@@ -10,9 +10,9 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void ComputeRefactorings(RefactoringContext context, SwitchStatementSyntax switchStatement)
         {
-            bool fRemoveStatements = context.IsRefactoringEnabled(RefactoringIdentifiers.MergeSwitchSections);
-            bool fAddBraces = context.IsRefactoringEnabled(RefactoringIdentifiers.AddBracesToSwitchSections);
-            bool fRemoveBraces = context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveBracesFromSwitchSections);
+            bool fRemoveStatements = context.IsRefactoringEnabled(RefactoringDescriptors.MergeSwitchSections);
+            bool fAddBraces = context.IsRefactoringEnabled(RefactoringDescriptors.AddBracesToSwitchSections);
+            bool fRemoveBraces = context.IsRefactoringEnabled(RefactoringDescriptors.RemoveBracesFromSwitchSections);
 
             if (!fRemoveStatements && !fAddBraces && !fRemoveBraces)
                 return;
@@ -62,7 +62,7 @@ namespace Roslynator.CSharp.Refactorings
                                 addBraces.ToArray(),
                                 ct);
                         },
-                        RefactoringIdentifiers.AddBracesToSwitchSections);
+                        RefactoringDescriptors.AddBracesToSwitchSections);
                 }
 
                 if (fRemoveBraces
@@ -83,7 +83,7 @@ namespace Roslynator.CSharp.Refactorings
                                 removeBraces.ToArray(),
                                 ct);
                         },
-                        RefactoringIdentifiers.RemoveBracesFromSwitchSections);
+                        RefactoringDescriptors.RemoveBracesFromSwitchSections);
                 }
             }
 
@@ -104,7 +104,7 @@ namespace Roslynator.CSharp.Refactorings
                             selectedSections.ToImmutableArray(),
                             ct);
                     },
-                    RefactoringIdentifiers.MergeSwitchSections);
+                    RefactoringDescriptors.MergeSwitchSections);
             }
         }
     }

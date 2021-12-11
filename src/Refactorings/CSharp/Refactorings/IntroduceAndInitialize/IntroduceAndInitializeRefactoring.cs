@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
 
         protected abstract string GetTitle();
 
-        protected abstract string GetEquivalenceKey();
+        protected abstract RefactoringDescriptor GetDescriptor();
 
         public static void ComputeRefactoring(RefactoringContext context, ParameterSyntax parameter)
         {
@@ -51,14 +51,14 @@ namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
             if (!IsValid(parameter))
                 return;
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.IntroduceAndInitializeProperty))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.IntroduceAndInitializeProperty))
             {
                 var propertyInfo = new IntroduceAndInitializePropertyInfo(parameter, context.SupportsCSharp6);
                 var refactoring = new IntroduceAndInitializePropertyRefactoring(propertyInfo);
                 refactoring.RegisterRefactoring(context);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.IntroduceAndInitializeField))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.IntroduceAndInitializeField))
             {
                 var fieldInfo = new IntroduceAndInitializeFieldInfo(parameter, context.Settings.PrefixFieldIdentifierWithUnderscore);
                 var refactoring = new IntroduceAndInitializeFieldRefactoring(fieldInfo);
@@ -78,7 +78,7 @@ namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
             if (!parameters.Any())
                 return;
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.IntroduceAndInitializeProperty))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.IntroduceAndInitializeProperty))
             {
                 IEnumerable<IntroduceAndInitializePropertyInfo> propertyInfos = parameters
                     .Select(parameter => new IntroduceAndInitializePropertyInfo(parameter, context.SupportsCSharp6));
@@ -87,7 +87,7 @@ namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
                 refactoring.RegisterRefactoring(context);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.IntroduceAndInitializeField))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.IntroduceAndInitializeField))
             {
                 IEnumerable<IntroduceAndInitializeFieldInfo> fieldInfos = parameters
                     .Select(parameter => new IntroduceAndInitializeFieldInfo(parameter, context.Settings.PrefixFieldIdentifierWithUnderscore));
@@ -102,7 +102,7 @@ namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
             context.RegisterRefactoring(
                 GetTitle(),
                 ct => RefactorAsync(context.Document, ct),
-                GetEquivalenceKey());
+                GetDescriptor());
         }
 
         protected string GetNames()

@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class GenerateAllEnumValuesRefactoring
     {
-        internal static readonly string EquivalenceKey = Roslynator.EquivalenceKey.Join(RefactoringIdentifiers.GenerateEnumValues, "OverwriteExistingValues");
+        internal static readonly string EquivalenceKey = Roslynator.EquivalenceKey.Create(RefactoringDescriptors.GenerateEnumValues, "OverwriteExistingValues");
 
         public static void ComputeRefactoring(
             RefactoringContext context,

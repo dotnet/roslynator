@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Refactorings
             ExpressionSyntax expression = returnStatement.Expression;
 
             if (expression != null
-                && context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertReturnStatementToIf)
+                && context.IsRefactoringEnabled(RefactoringDescriptors.ConvertReturnStatementToIf)
                 && (context.Span.IsEmptyAndContainedInSpan(returnStatement.ReturnKeyword)
                     || context.Span.IsBetweenSpans(returnStatement)))
             {

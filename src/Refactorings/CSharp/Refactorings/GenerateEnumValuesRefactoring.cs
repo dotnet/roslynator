@@ -14,9 +14,7 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class GenerateEnumValuesRefactoring
     {
-        internal const string EquivalenceKey = RefactoringIdentifiers.GenerateEnumValues;
-
-        internal static readonly string StartFromHighestExistingValueEquivalenceKey = Roslynator.EquivalenceKey.Join(EquivalenceKey, "StartFromHighestExistingValue");
+        internal static readonly string StartFromHighestExistingValueEquivalenceKey = EquivalenceKey.Create(RefactoringDescriptors.GenerateEnumValues, "StartFromHighestExistingValue");
 
         public static void ComputeRefactoring(
             RefactoringContext context,
@@ -48,7 +46,7 @@ namespace Roslynator.CSharp.Refactorings
             context.RegisterRefactoring(
                 "Declare explicit values",
                 ct => RefactorAsync(document, enumDeclaration, enumSymbol, values, startFromHighestExistingValue: false, cancellationToken: ct),
-                EquivalenceKey);
+                RefactoringDescriptors.GenerateEnumValues);
 
             if (members.Any(f => f.EqualsValue != null))
             {
@@ -60,7 +58,8 @@ namespace Roslynator.CSharp.Refactorings
                     context.RegisterRefactoring(
                         $"Declare explicit values (starting from {optional2.Value})",
                         ct => RefactorAsync(document, enumDeclaration, enumSymbol, values, startFromHighestExistingValue: true, cancellationToken: ct),
-                        StartFromHighestExistingValueEquivalenceKey);
+                        RefactoringDescriptors.GenerateEnumValues,
+                        "StartFromHighestExistingValue");
                 }
             }
         }

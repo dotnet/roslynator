@@ -11,41 +11,41 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static bool IsAnyRefactoringEnabled(RefactoringContext context)
         {
-            return context.IsRefactoringEnabled(RefactoringIdentifiers.WrapStatementsInUsingStatement)
-                || context.IsRefactoringEnabled(RefactoringIdentifiers.UseObjectInitializer)
-                || context.IsRefactoringEnabled(RefactoringIdentifiers.MergeIfStatements)
-                || context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertStatementsToIfElse)
-                || context.IsRefactoringEnabled(RefactoringIdentifiers.MergeLocalDeclarations)
-                || context.IsRefactoringEnabled(RefactoringIdentifiers.WrapStatementsInCondition)
-                || context.IsRefactoringEnabled(RefactoringIdentifiers.WrapLinesInTryCatch)
-                || context.IsRefactoringEnabled(RefactoringIdentifiers.UseCoalesceExpressionInsteadOfIf)
-                || context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertIfToConditionalExpression)
-                || context.IsRefactoringEnabled(RefactoringIdentifiers.SimplifyIf)
-                || context.IsRefactoringEnabled(RefactoringIdentifiers.CheckExpressionForNull)
-                || context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertWhileToFor);
+            return context.IsRefactoringEnabled(RefactoringDescriptors.WrapStatementsInUsingStatement)
+                || context.IsRefactoringEnabled(RefactoringDescriptors.UseObjectInitializer)
+                || context.IsRefactoringEnabled(RefactoringDescriptors.MergeIfStatements)
+                || context.IsRefactoringEnabled(RefactoringDescriptors.ConvertStatementsToIfElse)
+                || context.IsRefactoringEnabled(RefactoringDescriptors.MergeLocalDeclarations)
+                || context.IsRefactoringEnabled(RefactoringDescriptors.WrapStatementsInCondition)
+                || context.IsRefactoringEnabled(RefactoringDescriptors.WrapLinesInTryCatch)
+                || context.IsRefactoringEnabled(RefactoringDescriptors.UseCoalesceExpressionInsteadOfIf)
+                || context.IsRefactoringEnabled(RefactoringDescriptors.ConvertIfToConditionalExpression)
+                || context.IsRefactoringEnabled(RefactoringDescriptors.SimplifyIf)
+                || context.IsRefactoringEnabled(RefactoringDescriptors.CheckExpressionForNull)
+                || context.IsRefactoringEnabled(RefactoringDescriptors.ConvertWhileToFor);
         }
 
         public static async Task ComputeRefactoringAsync(RefactoringContext context, StatementListSelection selectedStatements)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapStatementsInUsingStatement))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.WrapStatementsInUsingStatement))
             {
                 var refactoring = new WrapStatementsInUsingStatementRefactoring();
                 await refactoring.ComputeRefactoringAsync(context, selectedStatements).ConfigureAwait(false);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseObjectInitializer))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.UseObjectInitializer))
                 await UseObjectInitializerRefactoring.ComputeRefactoringsAsync(context, selectedStatements).ConfigureAwait(false);
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.MergeIfStatements))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.MergeIfStatements))
                 MergeIfStatementsRefactoring.ComputeRefactorings(context, selectedStatements);
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertStatementsToIfElse))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.ConvertStatementsToIfElse))
                 ConvertStatementsToIfElseRefactoring.ComputeRefactorings(context, selectedStatements);
 
             if (context.IsAnyRefactoringEnabled(
-                RefactoringIdentifiers.UseCoalesceExpressionInsteadOfIf,
-                RefactoringIdentifiers.ConvertIfToConditionalExpression,
-                RefactoringIdentifiers.SimplifyIf))
+                RefactoringDescriptors.UseCoalesceExpressionInsteadOfIf,
+                RefactoringDescriptors.ConvertIfToConditionalExpression,
+                RefactoringDescriptors.SimplifyIf))
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
@@ -53,44 +53,44 @@ namespace Roslynator.CSharp.Refactorings
 
                 foreach (IfAnalysis analysis in IfAnalysis.Analyze(selectedStatements, options, semanticModel, context.CancellationToken))
                 {
-                    string refactoringId = IfStatementRefactoring.GetRefactoringIdentifier(analysis);
+                    RefactoringDescriptor refactoring = IfStatementRefactoring.GetRefactoringDescriptor(analysis);
 
-                    if (context.IsRefactoringEnabled(refactoringId))
+                    if (context.IsRefactoringEnabled(refactoring))
                     {
                         context.RegisterRefactoring(
                             analysis.Title,
                             ct => IfRefactoring.RefactorAsync(context.Document, analysis, ct),
-                            equivalenceKey: refactoringId);
+                            refactoring);
                     }
                 }
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.MergeLocalDeclarations))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.MergeLocalDeclarations))
                 await MergeLocalDeclarationsRefactoring.ComputeRefactoringsAsync(context, selectedStatements).ConfigureAwait(false);
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveUnnecessaryAssignment))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.RemoveUnnecessaryAssignment))
                 RemoveUnnecessaryAssignmentRefactoring.ComputeRefactorings(context, selectedStatements);
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.CheckExpressionForNull))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.CheckExpressionForNull))
                 await CheckExpressionForNullRefactoring.ComputeRefactoringAsync(context, selectedStatements).ConfigureAwait(false);
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertWhileToFor))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.ConvertWhileToFor))
                 await ConvertWhileToForRefactoring.ComputeRefactoringAsync(context, selectedStatements).ConfigureAwait(false);
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapStatementsInCondition))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.WrapStatementsInCondition))
             {
                 context.RegisterRefactoring(
                     WrapInIfStatementRefactoring.Title,
                     ct => WrapInIfStatementRefactoring.Instance.RefactorAsync(context.Document, selectedStatements, ct),
-                    RefactoringIdentifiers.WrapStatementsInCondition);
+                    RefactoringDescriptors.WrapStatementsInCondition);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapLinesInTryCatch))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.WrapLinesInTryCatch))
             {
                 context.RegisterRefactoring(
                     WrapLinesInTryCatchRefactoring.Title,
                     ct => WrapLinesInTryCatchRefactoring.Instance.RefactorAsync(context.Document, selectedStatements, ct),
-                    RefactoringIdentifiers.WrapLinesInTryCatch);
+                    RefactoringDescriptors.WrapLinesInTryCatch);
             }
         }
     }

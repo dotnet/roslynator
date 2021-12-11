@@ -55,7 +55,7 @@ namespace Roslynator.CSharp.Refactorings
             context.RegisterRefactoring(
                 "Convert to 'switch'",
                 ct => RefactorAsync(document, ifStatement, ct),
-                RefactoringIdentifiers.ConvertIfToSwitch);
+                RefactoringDescriptors.ConvertIfToSwitch);
         }
 
         private static (bool success, ExpressionSyntax switchExpression) Analyze(

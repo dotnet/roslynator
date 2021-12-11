@@ -66,7 +66,7 @@ namespace Roslynator.CSharp.Refactorings
             context.RegisterRefactoring(
                 "Notify when property changes",
                 ct => RefactorAsync(document, property, methodSymbol.Name, ct),
-                RefactoringIdentifiers.NotifyWhenPropertyChanges);
+                RefactoringDescriptors.NotifyWhenPropertyChanges);
 
             ExpressionSyntax GetExpression()
             {

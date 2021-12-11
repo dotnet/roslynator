@@ -47,7 +47,7 @@ namespace Roslynator.CSharp.Refactorings
             context.RegisterRefactoring(
                 "Convert to 'switch' statement",
                 ct => ConvertSwitchExpressionToSwitchStatement(context.Document, switchExpression, ct),
-                RefactoringIdentifiers.ConvertSwitchExpressionToSwitchStatement);
+                RefactoringDescriptors.ConvertSwitchExpressionToSwitchStatement);
         }
 
         private static Task<Document> ConvertSwitchExpressionToSwitchStatement(

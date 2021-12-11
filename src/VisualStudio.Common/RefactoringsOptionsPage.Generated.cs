@@ -51,7 +51,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ExpandCompoundAssignment, "Expand compound assignment", IsEnabled(RefactoringIdentifiers.ExpandCompoundAssignment)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ExpandCoalesceExpression, "Expand coalesce expression", IsEnabled(RefactoringIdentifiers.ExpandCoalesceExpression)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ExpandEventDeclaration, "Expand event declaration", IsEnabled(RefactoringIdentifiers.ExpandEventDeclaration)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertExpressionBodyToBlockBody, "Convert expression-body to block body", IsEnabled(RefactoringIdentifiers.ConvertExpressionBodyToBlockBody)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertExpressionBodyToBlockBody, "Convert expression body to block body", IsEnabled(RefactoringIdentifiers.ConvertExpressionBodyToBlockBody)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ExpandInitializer, "Expand initializer", IsEnabled(RefactoringIdentifiers.ExpandInitializer)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertLambdaExpressionBodyToBlockBody, "Convert lambda expression body to block body", IsEnabled(RefactoringIdentifiers.ConvertLambdaExpressionBodyToBlockBody)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertAutoPropertyToFullPropertyWithoutBackingField, "Convert auto-property to full property (without backing field)", IsEnabled(RefactoringIdentifiers.ConvertAutoPropertyToFullPropertyWithoutBackingField)));

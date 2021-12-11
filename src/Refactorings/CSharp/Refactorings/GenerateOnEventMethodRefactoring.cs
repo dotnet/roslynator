@@ -75,7 +75,7 @@ namespace Roslynator.CSharp.Refactorings
                             context.SupportsCSharp6,
                             ct);
                     },
-                    RefactoringIdentifiers.GenerateEventInvokingMethod);
+                    RefactoringDescriptors.GenerateEventInvokingMethod);
             }
         }
 

@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -13,6 +14,7 @@ namespace Roslynator.Metadata
         public RefactoringMetadata(
             string id,
             string identifier,
+            string optionKey,
             string title,
             bool isEnabledByDefault,
             bool isObsolete,
@@ -24,8 +26,17 @@ namespace Roslynator.Metadata
             IEnumerable<SampleMetadata> samples,
             IEnumerable<LinkMetadata> links)
         {
+            if (optionKey == null
+                && !isObsolete)
+            {
+                throw new ArgumentNullException(nameof(optionKey));
+            }
+
+            Debug.Assert(isObsolete || Regex.IsMatch(optionKey, @"\A[a-z]+(_[a-z]+)*\z"), $"{id} {identifier}: {optionKey}");
+
             Id = id;
             Identifier = identifier;
+            OptionKey = optionKey;
             Title = title;
             IsEnabledByDefault = isEnabledByDefault;
             IsObsolete = isObsolete;
@@ -41,6 +52,8 @@ namespace Roslynator.Metadata
         public string Id { get; }
 
         public string Identifier { get; }
+
+        public string OptionKey { get; }
 
         public string Title { get; }
 

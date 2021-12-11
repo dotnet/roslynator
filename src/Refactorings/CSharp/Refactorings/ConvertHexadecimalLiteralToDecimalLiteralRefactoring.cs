@@ -22,7 +22,7 @@ namespace Roslynator.CSharp.Refactorings
             context.RegisterRefactoring(
                 $"Convert to '{newLiteralExpression}'",
                 ct => RefactorAsync(context.Document, literalExpression, newLiteralExpression, ct),
-                RefactoringIdentifiers.ConvertHexadecimalLiteralToDecimalLiteral);
+                RefactoringDescriptors.ConvertHexadecimalLiteralToDecimalLiteral);
         }
 
         private static Task<Document> RefactorAsync(

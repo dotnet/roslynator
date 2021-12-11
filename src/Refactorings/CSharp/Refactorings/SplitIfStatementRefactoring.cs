@@ -25,7 +25,7 @@ namespace Roslynator.CSharp.Refactorings
                     context.RegisterRefactoring(
                         "Split if",
                         ct => SplitSimpleIfAsync(context.Document, ifStatement, ct),
-                        RefactoringIdentifiers.SplitIf);
+                        RefactoringDescriptors.SplitIf);
                 }
             }
             else if (ifStatement.Parent.IsKind(SyntaxKind.ElseClause)
@@ -35,7 +35,7 @@ namespace Roslynator.CSharp.Refactorings
                 context.RegisterRefactoring(
                     "Split if",
                     ct => SplitLastElseIfAsync(context.Document, ifStatement, ct),
-                    RefactoringIdentifiers.SplitIf);
+                    RefactoringDescriptors.SplitIf);
             }
         }
 

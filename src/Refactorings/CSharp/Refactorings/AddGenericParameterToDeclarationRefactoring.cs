@@ -226,12 +226,13 @@ namespace Roslynator.CSharp.Refactorings
             context.RegisterRefactoring(
                 "Add generic parameter",
                 ct => RefactorAsync(context.Document, node, ConstraintKind.None, ct),
-                RefactoringIdentifiers.AddGenericParameterToDeclaration);
+                RefactoringDescriptors.AddGenericParameterToDeclaration);
 
             context.RegisterRefactoring(
                 "Add generic parameter with type constraint",
                 ct => RefactorAsync(context.Document, node, ConstraintKind.Type, ct),
-                EquivalenceKey.Join(RefactoringIdentifiers.AddGenericParameterToDeclaration, "WithTypeConstraint"));
+                RefactoringDescriptors.AddGenericParameterToDeclaration,
+                "WithTypeConstraint");
         }
 
         private static async Task<Document> RefactorAsync(

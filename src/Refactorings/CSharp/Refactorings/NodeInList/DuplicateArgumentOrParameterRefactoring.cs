@@ -17,7 +17,7 @@ namespace Roslynator.CSharp.Refactorings.NodeInList
 
         protected abstract string GetTitle(params string[] args);
 
-        public void ComputeRefactoring(RefactoringContext context, string equivalenceKey)
+        public void ComputeRefactoring(RefactoringContext context, RefactoringDescriptor descriptor)
         {
             int index = FindNode(context.Span);
 
@@ -27,7 +27,7 @@ namespace Roslynator.CSharp.Refactorings.NodeInList
                 context.RegisterRefactoring(
                     GetTitle(),
                     ct => RefactorAsync(context.Document, index, ct),
-                    equivalenceKey: equivalenceKey);
+                    descriptor);
             }
         }
 

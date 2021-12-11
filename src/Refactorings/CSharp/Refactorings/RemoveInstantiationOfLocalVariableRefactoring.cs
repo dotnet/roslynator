@@ -74,7 +74,7 @@ namespace Roslynator.CSharp.Refactorings
                 context.RegisterRefactoring(
                     title,
                     ct => RefactorAsync(context.Document, localDeclarationStatement, value, typeSymbol, ct),
-                    RefactoringIdentifiers.RemoveInstantiationOfLocalVariable);
+                    RefactoringDescriptors.RemoveInstantiationOfLocalVariable);
             }
         }
 

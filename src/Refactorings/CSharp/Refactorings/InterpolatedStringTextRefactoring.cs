@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, InterpolatedStringTextSyntax interpolatedStringText)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.InsertStringInterpolation)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.InsertStringInterpolation)
                 && interpolatedStringText.IsParentKind(SyntaxKind.InterpolatedStringExpression))
             {
                 TextSpan span = context.Span;
@@ -38,7 +38,7 @@ namespace Roslynator.CSharp.Refactorings
                                 addNameOf: false,
                                 cancellationToken: ct);
                         },
-                        RefactoringIdentifiers.InsertStringInterpolation);
+                        RefactoringDescriptors.InsertStringInterpolation);
 
                     if (!span.IsEmpty)
                     {
@@ -66,7 +66,7 @@ namespace Roslynator.CSharp.Refactorings
                                             addNameOf: true,
                                             cancellationToken: ct);
                                     },
-                                    RefactoringIdentifiers.InsertStringInterpolation);
+                                    RefactoringDescriptors.InsertStringInterpolation);
 
                                 break;
                             }

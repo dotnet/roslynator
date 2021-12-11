@@ -78,7 +78,7 @@ namespace Roslynator.CSharp.Refactorings
             context.RegisterRefactoring(
                 GetTitle(),
                 ct => RefactorAsync(context.Document, memberDeclaration, data, semanticModel, ct),
-                RefactoringIdentifiers.CopyDocumentationCommentFromBaseMember);
+                RefactoringDescriptors.CopyDocumentationCommentFromBaseMember);
 
             string GetTitle()
             {

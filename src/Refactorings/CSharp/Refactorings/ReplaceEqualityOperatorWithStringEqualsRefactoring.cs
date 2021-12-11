@@ -53,7 +53,7 @@ namespace Roslynator.CSharp.Refactorings
             context.RegisterRefactoring(
                 title,
                 ct => RefactorAsync(context.Document, binaryExpression, ct),
-                RefactoringIdentifiers.ReplaceEqualityOperatorWithStringEquals);
+                RefactoringDescriptors.ReplaceEqualityOperatorWithStringEquals);
         }
 
         private static async Task<Document> RefactorAsync(

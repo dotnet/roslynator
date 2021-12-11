@@ -33,9 +33,9 @@ namespace Roslynator.CSharp.Refactorings
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, SyntaxNode node)
         {
             if (context.IsAnyRefactoringEnabled(
-                RefactoringIdentifiers.WrapLinesInRegion,
-                RefactoringIdentifiers.WrapLinesInPreprocessorDirective,
-                RefactoringIdentifiers.RemoveEmptyLines))
+                RefactoringDescriptors.WrapLinesInRegion,
+                RefactoringDescriptors.WrapLinesInPreprocessorDirective,
+                RefactoringDescriptors.RemoveEmptyLines))
             {
                 SyntaxNode root = context.Root;
                 TextSpan span = context.Span;
@@ -52,24 +52,24 @@ namespace Roslynator.CSharp.Refactorings
                 if (!IsInMultiLineDocumentationComment(root, span.Start)
                     && !IsInMultiLineDocumentationComment(root, span.End))
                 {
-                    if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapLinesInRegion))
+                    if (context.IsRefactoringEnabled(RefactoringDescriptors.WrapLinesInRegion))
                     {
                         context.RegisterRefactoring(
                             "Wrap in #region",
                             ct => WrapLinesInRegionRefactoring.Instance.RefactorAsync(document, selectedLines, ct),
-                            RefactoringIdentifiers.WrapLinesInRegion);
+                            RefactoringDescriptors.WrapLinesInRegion);
                     }
 
-                    if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapLinesInPreprocessorDirective))
+                    if (context.IsRefactoringEnabled(RefactoringDescriptors.WrapLinesInPreprocessorDirective))
                     {
                         context.RegisterRefactoring(
                             "Wrap in #if",
                             ct => WrapLinesInPreprocessorDirectiveRefactoring.Instance.RefactorAsync(document, selectedLines, ct),
-                            RefactoringIdentifiers.WrapLinesInPreprocessorDirective);
+                            RefactoringDescriptors.WrapLinesInPreprocessorDirective);
                     }
                 }
 
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveEmptyLines))
+                if (context.IsRefactoringEnabled(RefactoringDescriptors.RemoveEmptyLines))
                 {
                     var containsEmptyLine = false;
 
@@ -99,7 +99,7 @@ namespace Roslynator.CSharp.Refactorings
 
                                 return document.WithTextChangesAsync(textChanges, ct);
                             },
-                            RefactoringIdentifiers.RemoveEmptyLines);
+                            RefactoringDescriptors.RemoveEmptyLines);
                     }
                 }
             }

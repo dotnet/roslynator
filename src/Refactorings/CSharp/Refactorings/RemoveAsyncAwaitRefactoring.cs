@@ -78,7 +78,7 @@ namespace Roslynator.CSharp.Refactorings
 
             void RegisterRefactoring()
             {
-                CodeAction codeAction = CodeActionFactory.RemoveAsyncAwait(context.Document, token, equivalenceKey: RefactoringIdentifiers.RemoveAsyncAwait);
+                CodeAction codeAction = CodeActionFactory.RemoveAsyncAwait(context.Document, token, equivalenceKey: EquivalenceKey.Create(RefactoringDescriptors.RemoveAsyncAwait));
 
                 context.RegisterRefactoring(codeAction);
             }

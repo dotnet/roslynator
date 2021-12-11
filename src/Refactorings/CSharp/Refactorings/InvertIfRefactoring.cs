@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class InvertIfRefactoring
     {
-        public static readonly string RecursiveRefactoringIdentifier = EquivalenceKey.Join(RefactoringIdentifiers.InvertIf, "Recursive");
+        public static readonly string RecursiveRefactoringIdentifier = EquivalenceKey.Create(RefactoringDescriptors.InvertIf, "Recursive");
 
         public static void ComputeRefactoring(RefactoringContext context, IfStatementSyntax ifStatement)
         {
@@ -34,7 +34,7 @@ namespace Roslynator.CSharp.Refactorings
 
             if (elseClause != null)
             {
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.InvertIfElse))
+                if (context.IsRefactoringEnabled(RefactoringDescriptors.InvertIfElse))
                 {
                     StatementSyntax elseStatement = elseClause.Statement;
 
@@ -44,11 +44,11 @@ namespace Roslynator.CSharp.Refactorings
                         context.RegisterRefactoring(
                             "Invert if",
                             ct => InvertIfElseAsync(document, ifStatement, ct),
-                            RefactoringIdentifiers.InvertIfElse);
+                            RefactoringDescriptors.InvertIfElse);
                     }
                 }
             }
-            else if (context.IsRefactoringEnabled(RefactoringIdentifiers.InvertIf)
+            else if (context.IsRefactoringEnabled(RefactoringDescriptors.InvertIf)
                 && ifStatement.IsTopmostIf())
             {
                 InvertIfAnalysis analysis = InvertIfAnalysis.Create(ifStatement, statement);
@@ -58,7 +58,7 @@ namespace Roslynator.CSharp.Refactorings
                     context.RegisterRefactoring(
                         "Invert if",
                         ct => InvertIfAsync(document, ifStatement, recursive: false, ct),
-                        RefactoringIdentifiers.InvertIf);
+                        RefactoringDescriptors.InvertIf);
 
                     if (analysis.AnalyzeNextStatement().Success)
                     {

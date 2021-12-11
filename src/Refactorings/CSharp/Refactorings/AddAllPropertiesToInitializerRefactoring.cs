@@ -134,7 +134,7 @@ namespace Roslynator.CSharp.Refactorings
                             IEnumerable<IPropertySymbol> propertySymbols = namesToProperties.Select(f => f.Value);
                             return RefactorAsync(document, initializer, propertySymbols, initializeToDefault: false, ct);
                         },
-                        RefactoringIdentifiers.AddAllPropertiesToInitializer);
+                        RefactoringDescriptors.AddAllPropertiesToInitializer);
                 }
             }
             else if (HasAccessiblePropertySetter())
@@ -148,7 +148,7 @@ namespace Roslynator.CSharp.Refactorings
                         IEnumerable<IPropertySymbol> propertySymbols = GetInitializableProperties(initializer, symbols, semanticModel);
                         return RefactorAsync(document, initializer, propertySymbols, initializeToDefault: false, ct);
                     },
-                    RefactoringIdentifiers.AddAllPropertiesToInitializer);
+                    RefactoringDescriptors.AddAllPropertiesToInitializer);
             }
 
             bool HasAccessiblePropertySetter()

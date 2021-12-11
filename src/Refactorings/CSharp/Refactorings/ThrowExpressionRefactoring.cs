@@ -12,7 +12,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, ThrowExpressionSyntax throwExpression)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddExceptionElementToDocumentationComment)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.AddExceptionElementToDocumentationComment)
                 && context.Span.IsContainedInSpanOrBetweenSpans(throwExpression))
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
@@ -28,7 +28,7 @@ namespace Roslynator.CSharp.Refactorings
                     context.RegisterRefactoring(
                         "Add 'exception' element to documentation comment",
                         ct => AddExceptionElementToDocumentationCommentRefactoring.RefactorAsync(context.Document, analysis, ct),
-                        RefactoringIdentifiers.AddExceptionElementToDocumentationComment);
+                        RefactoringDescriptors.AddExceptionElementToDocumentationComment);
                 }
             }
         }

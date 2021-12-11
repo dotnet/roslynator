@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.Refactorings
             bool addCastExpression = true)
         {
             if (semanticModel.IsExplicitConversion(expression, destinationType)
-                && context.IsRefactoringEnabled(RefactoringIdentifiers.AddExplicitCast)
+                && context.IsRefactoringEnabled(RefactoringDescriptors.AddExplicitCast)
                 && addCastExpression)
             {
                 RegisterAddExplicitCastRefactoring(context, expression, destinationType, semanticModel);
@@ -36,7 +36,7 @@ namespace Roslynator.CSharp.Refactorings
                 .Where(destinationType => semanticModel.IsExplicitConversion(expression, destinationType))
                 .ToArray();
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddExplicitCast))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.AddExplicitCast))
             {
                 foreach (ITypeSymbol destinationType in convertibleDestinationTypes)
                     RegisterAddExplicitCastRefactoring(context, expression, destinationType, semanticModel);

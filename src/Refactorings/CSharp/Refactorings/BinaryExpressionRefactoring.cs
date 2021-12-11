@@ -17,38 +17,38 @@ namespace Roslynator.CSharp.Refactorings
         {
             SyntaxToken operatorToken = binaryExpression.OperatorToken;
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.InvertOperator)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.InvertOperator)
                 && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(operatorToken)
                 && InvertOperatorRefactoring.CanBeInverted(operatorToken))
             {
                 context.RegisterRefactoring(
                     "Invert operator",
                     ct => InvertOperatorRefactoring.RefactorAsync(context.Document, operatorToken, ct),
-                    RefactoringIdentifiers.InvertOperator);
+                    RefactoringDescriptors.InvertOperator);
             }
 
             if (context.Span.IsEmptyAndContainedInSpan(operatorToken))
             {
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.InvertBinaryExpression))
+                if (context.IsRefactoringEnabled(RefactoringDescriptors.InvertBinaryExpression))
                     InvertBinaryExpressionRefactoring.ComputeRefactoring(context, binaryExpression);
 
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.SwapBinaryOperands))
+                if (context.IsRefactoringEnabled(RefactoringDescriptors.SwapBinaryOperands))
                     SwapBinaryOperandsRefactoring.ComputeRefactoring(context, binaryExpression);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapBinaryExpression))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.WrapBinaryExpression))
                 WrapBinaryExpressionRefactoring.ComputeRefactorings(context, binaryExpression);
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExpandCoalesceExpression)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.ExpandCoalesceExpression)
                 && operatorToken.Span.Contains(context.Span))
             {
                 ExpandCoalesceExpressionRefactoring.ComputeRefactoring(context, binaryExpression);
             }
 
             if (context.IsAnyRefactoringEnabled(
-                RefactoringIdentifiers.ExtractExpressionFromCondition,
-                RefactoringIdentifiers.JoinStringExpressions,
-                RefactoringIdentifiers.UseStringBuilderInsteadOfConcatenation)
+                RefactoringDescriptors.ExtractExpressionFromCondition,
+                RefactoringDescriptors.JoinStringExpressions,
+                RefactoringDescriptors.UseStringBuilderInsteadOfConcatenation)
                 && !context.Span.IsEmpty
                 && binaryExpression.IsKind(SyntaxKind.AddExpression, SyntaxKind.LogicalAndExpression, SyntaxKind.LogicalOrExpression))
             {
@@ -59,7 +59,7 @@ namespace Roslynator.CSharp.Refactorings
                 if (en.MoveNext()
                     && en.MoveNext())
                 {
-                    if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExtractExpressionFromCondition))
+                    if (context.IsRefactoringEnabled(RefactoringDescriptors.ExtractExpressionFromCondition))
                         ExtractConditionRefactoring.ComputeRefactoring(context, chain);
 
                     if (binaryExpression.IsKind(SyntaxKind.AddExpression))
@@ -69,17 +69,17 @@ namespace Roslynator.CSharp.Refactorings
                         StringConcatenationExpressionInfo concatenationInfo = SyntaxInfo.StringConcatenationExpressionInfo(chain, semanticModel, context.CancellationToken);
                         if (concatenationInfo.Success)
                         {
-                            if (context.IsRefactoringEnabled(RefactoringIdentifiers.JoinStringExpressions))
+                            if (context.IsRefactoringEnabled(RefactoringDescriptors.JoinStringExpressions))
                                 JoinStringExpressionsRefactoring.ComputeRefactoring(context, concatenationInfo);
 
-                            if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseStringBuilderInsteadOfConcatenation))
+                            if (context.IsRefactoringEnabled(RefactoringDescriptors.UseStringBuilderInsteadOfConcatenation))
                                 UseStringBuilderInsteadOfConcatenationRefactoring.ComputeRefactoring(context, concatenationInfo);
                         }
                     }
                 }
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceAsExpressionWithExplicitCast)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.ReplaceAsExpressionWithExplicitCast)
                 && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(binaryExpression))
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
@@ -89,21 +89,21 @@ namespace Roslynator.CSharp.Refactorings
                     context.RegisterRefactoring(
                         ReplaceAsExpressionWithExplicitCastRefactoring.Title,
                         ct => ReplaceAsExpressionWithExplicitCastRefactoring.RefactorAsync(context.Document, binaryExpression, ct),
-                        RefactoringIdentifiers.ReplaceAsExpressionWithExplicitCast);
+                        RefactoringDescriptors.ReplaceAsExpressionWithExplicitCast);
                 }
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.InvertIsExpression))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.InvertIsExpression))
                 InvertIsExpressionRefactoring.ComputeRefactoring(context, binaryExpression);
 
             if (context.Span.IsContainedInSpanOrBetweenSpans(operatorToken))
             {
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceEqualityOperatorWithStringEquals))
+                if (context.IsRefactoringEnabled(RefactoringDescriptors.ReplaceEqualityOperatorWithStringEquals))
                     await ReplaceEqualityOperatorWithStringEqualsRefactoring.ComputeRefactoringAsync(context, binaryExpression).ConfigureAwait(false);
 
                 if (context.IsAnyRefactoringEnabled(
-                    RefactoringIdentifiers.ReplaceEqualityOperatorWithStringIsNullOrEmpty,
-                    RefactoringIdentifiers.ReplaceEqualityOperatorWithStringIsNullOrWhiteSpace))
+                    RefactoringDescriptors.ReplaceEqualityOperatorWithStringIsNullOrEmpty,
+                    RefactoringDescriptors.ReplaceEqualityOperatorWithStringIsNullOrWhiteSpace))
                 {
                     await ReplaceEqualityOperatorRefactoring.ComputeRefactoringsAsync(context, binaryExpression).ConfigureAwait(false);
                 }

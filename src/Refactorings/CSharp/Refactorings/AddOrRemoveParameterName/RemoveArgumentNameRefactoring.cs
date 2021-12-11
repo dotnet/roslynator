@@ -21,7 +21,7 @@ namespace Roslynator.CSharp.Refactorings.AddOrRemoveParameterName
             context.RegisterRefactoring(
                 "Remove argument name",
                 ct => RefactorAsync(context.Document, argumentList, selection, ct),
-                RefactoringIdentifiers.RemoveArgumentName);
+                RefactoringDescriptors.RemoveArgumentName);
         }
 
         private static bool CanRefactor(SeparatedSyntaxListSelection<ArgumentSyntax> selection)

@@ -10,7 +10,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void ComputeRefactorings(RefactoringContext context, DirectiveTriviaSyntax directive)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemovePreprocessorDirective)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.RemovePreprocessorDirective)
                 && directive.IsKind(
                     SyntaxKind.IfDirectiveTrivia,
                     SyntaxKind.ElseDirectiveTrivia,
@@ -27,7 +27,7 @@ namespace Roslynator.CSharp.Refactorings
                             directive.GetRelatedDirectives().ToImmutableArray(),
                             ct);
                     },
-                    RefactoringIdentifiers.RemovePreprocessorDirective);
+                    RefactoringDescriptors.RemovePreprocessorDirective);
             }
         }
     }

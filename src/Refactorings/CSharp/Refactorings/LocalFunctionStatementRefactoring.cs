@@ -19,44 +19,44 @@ namespace Roslynator.CSharp.Refactorings
                     if (body.OpenBraceToken.Span.Contains(context.Span)
                         || body.CloseBraceToken.Span.Contains(context.Span))
                     {
-                        if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveMemberDeclaration))
+                        if (context.IsRefactoringEnabled(RefactoringDescriptors.RemoveMemberDeclaration))
                         {
-                            context.RegisterRefactoring(CodeActionFactory.RemoveStatement(context.Document, localFunctionStatement, equivalenceKey: RefactoringIdentifiers.RemoveMemberDeclaration));
+                            context.RegisterRefactoring(CodeActionFactory.RemoveStatement(context.Document, localFunctionStatement, equivalenceKey: EquivalenceKey.Create(RefactoringDescriptors.RemoveMemberDeclaration)));
                         }
 
-                        if (context.IsRefactoringEnabled(RefactoringIdentifiers.DuplicateMember))
+                        if (context.IsRefactoringEnabled(RefactoringDescriptors.DuplicateMember))
                         {
                             context.RegisterRefactoring(
                                 "Duplicate local function",
                                 ct => DuplicateMemberDeclarationRefactoring.RefactorAsync(context.Document, localFunctionStatement, ct),
-                                RefactoringIdentifiers.DuplicateMember);
+                                RefactoringDescriptors.DuplicateMember);
                         }
 
-                        if (context.IsRefactoringEnabled(RefactoringIdentifiers.CommentOutMemberDeclaration))
+                        if (context.IsRefactoringEnabled(RefactoringDescriptors.CommentOutMemberDeclaration))
                             CommentOutRefactoring.RegisterRefactoring(context, localFunctionStatement);
                     }
                 }
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ChangeMethodReturnTypeToVoid)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.ChangeMethodReturnTypeToVoid)
                 && context.Span.IsEmptyAndContainedInSpan(localFunctionStatement))
             {
                 await ChangeMethodReturnTypeToVoidRefactoring.ComputeRefactoringAsync(context, localFunctionStatement).ConfigureAwait(false);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddGenericParameterToDeclaration))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.AddGenericParameterToDeclaration))
                 AddGenericParameterToDeclarationRefactoring.ComputeRefactoring(context, localFunctionStatement);
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.ConvertBlockBodyToExpressionBody)
                 && ConvertBlockBodyToExpressionBodyRefactoring.CanRefactor(localFunctionStatement, context.Span))
             {
                 context.RegisterRefactoring(
                     ConvertBlockBodyToExpressionBodyRefactoring.Title,
                     ct => ConvertBlockBodyToExpressionBodyRefactoring.RefactorAsync(context.Document, localFunctionStatement, ct),
-                    RefactoringIdentifiers.ConvertBlockBodyToExpressionBody);
+                    RefactoringDescriptors.ConvertBlockBodyToExpressionBody);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.MoveUnsafeContextToContainingDeclaration))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.MoveUnsafeContextToContainingDeclaration))
                 MoveUnsafeContextToContainingDeclarationRefactoring.ComputeRefactoring(context, localFunctionStatement);
         }
     }

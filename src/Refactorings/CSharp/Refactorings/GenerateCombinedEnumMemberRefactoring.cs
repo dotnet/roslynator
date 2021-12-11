@@ -55,7 +55,7 @@ namespace Roslynator.CSharp.Refactorings
             context.RegisterRefactoring(
                 $"Generate member '{name}'",
                 ct => RefactorAsync(context.Document, enumDeclaration, selectedMembers, enumSymbol, name, semanticModel, ct),
-                RefactoringIdentifiers.GenerateCombinedEnumMember);
+                RefactoringDescriptors.GenerateCombinedEnumMember);
 
             bool IsValueDefined(object value)
             {

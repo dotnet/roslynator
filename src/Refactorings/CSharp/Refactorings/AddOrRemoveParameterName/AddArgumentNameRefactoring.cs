@@ -22,7 +22,7 @@ namespace Roslynator.CSharp.Refactorings.AddOrRemoveParameterName
             context.RegisterRefactoring(
                 "Add argument name",
                 ct => RefactorAsync(context.Document, argumentList, selection, ct),
-                RefactoringIdentifiers.AddArgumentName);
+                RefactoringDescriptors.AddArgumentName);
         }
 
         private static bool CanRefactor(

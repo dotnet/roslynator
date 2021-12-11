@@ -97,17 +97,17 @@ namespace Roslynator.CSharp.Refactorings
                     context.RegisterRefactoring(
                         Title,
                         ct => AddCasesAsync(document, switchStatement, fieldsToValue.Select(f => f.Value), ct),
-                        RefactoringIdentifiers.AddMissingCasesToSwitchStatement);
+                        RefactoringDescriptors.AddMissingCasesToSwitchStatement);
                 }
             }
-            else if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddMissingCasesToSwitchStatement))
+            else if (context.IsRefactoringEnabled(RefactoringDescriptors.AddMissingCasesToSwitchStatement))
             {
                 Document document = context.Document;
 
                 context.RegisterRefactoring(
                     Title,
                     ct => AddCasesAsync(document, switchStatement, semanticModel, ct),
-                    RefactoringIdentifiers.AddMissingCasesToSwitchStatement);
+                    RefactoringDescriptors.AddMissingCasesToSwitchStatement);
             }
         }
 

@@ -12,7 +12,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, ArgumentSyntax argument)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddExplicitCast))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.AddExplicitCast))
             {
                 ExpressionSyntax expression = argument.Expression;
 

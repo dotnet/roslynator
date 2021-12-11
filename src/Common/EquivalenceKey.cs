@@ -11,6 +11,11 @@ namespace Roslynator
 
         private const string Separator = ".";
 
+        public static string Create(RefactoringDescriptor descriptor, string additionalKey1 = null, string additionalKey2 = null)
+        {
+            return Create(descriptor.Id, additionalKey1, additionalKey2);
+        }
+
         public static string Create(Diagnostic diagnostic, string additionalKey1 = null, string additionalKey2 = null)
         {
             return Create(diagnostic.Id, additionalKey1, additionalKey2);

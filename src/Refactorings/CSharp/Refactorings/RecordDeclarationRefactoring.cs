@@ -13,13 +13,13 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, RecordDeclarationSyntax recordDeclaration)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddGenericParameterToDeclaration))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.AddGenericParameterToDeclaration))
                 AddGenericParameterToDeclarationRefactoring.ComputeRefactoring(context, recordDeclaration);
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExtractTypeDeclarationToNewFile))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.ExtractTypeDeclarationToNewFile))
                 ExtractTypeDeclarationToNewFileRefactoring.ComputeRefactorings(context, recordDeclaration);
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.GenerateBaseConstructors)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.GenerateBaseConstructors)
                 && recordDeclaration.Identifier.Span.Contains(context.Span))
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
@@ -31,11 +31,11 @@ namespace Roslynator.CSharp.Refactorings
                     context.RegisterRefactoring(
                         (constructors.Count == 1) ? "Generate base constructor" : "Generate base constructors",
                         ct => GenerateBaseConstructorsRefactoring.RefactorAsync(context.Document, recordDeclaration, constructors.ToArray(), semanticModel, ct),
-                        RefactoringIdentifiers.GenerateBaseConstructors);
+                        RefactoringDescriptors.GenerateBaseConstructors);
                 }
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ImplementCustomEnumerator)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.ImplementCustomEnumerator)
                 && context.Span.IsEmptyAndContainedInSpan(recordDeclaration.Identifier))
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
@@ -43,14 +43,14 @@ namespace Roslynator.CSharp.Refactorings
                 ImplementCustomEnumeratorRefactoring.ComputeRefactoring(context, recordDeclaration, semanticModel);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExpandPositionalConstructor)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.ExpandPositionalConstructor)
                 && recordDeclaration.ParameterList != null
                 && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(recordDeclaration.ParameterList.Parameters))
             {
                 ExpandPositionalConstructorRefactoring.ComputeRefactoring(context, recordDeclaration);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.SortMemberDeclarations)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.SortMemberDeclarations)
                 && recordDeclaration.BracesSpan().Contains(context.Span))
             {
                 SortMemberDeclarationsRefactoring.ComputeRefactoring(context, recordDeclaration);

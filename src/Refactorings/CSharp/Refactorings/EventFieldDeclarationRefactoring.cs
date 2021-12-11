@@ -10,20 +10,20 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, EventFieldDeclarationSyntax eventFieldDeclaration)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.GenerateEventInvokingMethod))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.GenerateEventInvokingMethod))
                 await GenerateOnEventMethodRefactoring.ComputeRefactoringAsync(context, eventFieldDeclaration).ConfigureAwait(false);
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExpandEventDeclaration)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.ExpandEventDeclaration)
                 && eventFieldDeclaration.Span.Contains(context.Span)
                 && ExpandEventDeclarationRefactoring.CanRefactor(eventFieldDeclaration))
             {
                 context.RegisterRefactoring(
                     "Expand event",
                     ct => ExpandEventDeclarationRefactoring.RefactorAsync(context.Document, eventFieldDeclaration, ct),
-                    RefactoringIdentifiers.ExpandEventDeclaration);
+                    RefactoringDescriptors.ExpandEventDeclaration);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.CopyDocumentationCommentFromBaseMember)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.CopyDocumentationCommentFromBaseMember)
                 && eventFieldDeclaration.Span.Contains(context.Span)
                 && !eventFieldDeclaration.HasDocumentationComment())
             {
@@ -31,7 +31,7 @@ namespace Roslynator.CSharp.Refactorings
                 CopyDocumentationCommentFromBaseMemberRefactoring.ComputeRefactoring(context, eventFieldDeclaration, semanticModel);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddMemberToInterface))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.AddMemberToInterface))
             {
                 VariableDeclaratorSyntax variableDeclarator = eventFieldDeclaration.Declaration?.Variables.SingleOrDefault(shouldThrow: false);
 
