@@ -16,7 +16,7 @@ namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(IdentifierNameCodeFixProvider))]
     [Shared]
-    public sealed class IdentifierNameCodeFixProvider : BaseCodeFixProvider
+    public sealed class IdentifierNameCodeFixProvider : CompilerDiagnosticCodeFixProvider
     {
         public override ImmutableArray<string> FixableDiagnosticIds
         {
@@ -47,7 +47,7 @@ namespace Roslynator.CSharp.CodeFixes
                 {
                     case CompilerDiagnosticIdentifiers.CS0165_UseOfUnassignedLocalVariable:
                         {
-                            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.InitializeLocalVariableWithDefaultValue))
+                            if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.InitializeLocalVariableWithDefaultValue, context.Document, root.SyntaxTree))
                                 return;
 
                             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
@@ -96,7 +96,7 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case CompilerDiagnosticIdentifiers.CS0103_NameDoesNotExistInCurrentContext:
                         {
-                            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddVariableType))
+                            if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddVariableType, context.Document, root.SyntaxTree))
                                 return;
 
                             if (identifierName.Parent is not ArgumentSyntax argument)

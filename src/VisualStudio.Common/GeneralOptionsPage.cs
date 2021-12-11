@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Windows;
 using Microsoft.VisualStudio.Shell;
+using Roslynator.Configuration;
 using Roslynator.VisualStudio.TypeConverters;
 
 namespace Roslynator.VisualStudio
@@ -13,11 +14,6 @@ namespace Roslynator.VisualStudio
     public class GeneralOptionsPage : UIElementDialogPage
     {
         private bool _isActive;
-
-        public GeneralOptionsPage()
-        {
-            UseConfigFile = true;
-        }
 
         private readonly GeneralOptionsPageControl _control = new GeneralOptionsPageControl();
 
@@ -33,12 +29,6 @@ namespace Roslynator.VisualStudio
         public bool PrefixFieldIdentifierWithUnderscore { get; set; }
 
         [Category("General")]
-        [DisplayName("UseConfigFile")]
-        [Description("")]
-        [TypeConverter(typeof(YesNoConverter))]
-        public bool UseConfigFile { get; set; }
-
-        [Category("General")]
         [Browsable(false)]
         public string ApplicationVersion { get; set; }
 
@@ -49,7 +39,6 @@ namespace Roslynator.VisualStudio
             if (!_isActive)
             {
                 _control.PrefixFieldIdentifierWithUnderscore = PrefixFieldIdentifierWithUnderscore;
-                _control.UseConfigFile = UseConfigFile;
                 _isActive = true;
             }
         }
@@ -65,20 +54,14 @@ namespace Roslynator.VisualStudio
             if (e.ApplyBehavior == ApplyKind.Apply)
             {
                 PrefixFieldIdentifierWithUnderscore = _control.PrefixFieldIdentifierWithUnderscore;
-                UseConfigFile = _control.UseConfigFile;
-
-                ApplyTo(Settings.Instance);
-                Settings.Instance.ApplyTo(RefactoringSettings.Current);
             }
 
             base.OnApply(e);
         }
 
-        internal void ApplyTo(Settings settings)
+        internal void UpdateConfig()
         {
-            settings.UseConfigFile = UseConfigFile;
-
-            settings.VisualStudio = settings.VisualStudio.WithPrefixFieldIdentifierWithUnderscore(PrefixFieldIdentifierWithUnderscore);
+            CodeAnalysisConfig.UpdateVisualStudioConfig(f => f.WithPrefixfieldIdentifierWithUnderscore(PrefixFieldIdentifierWithUnderscore));
         }
     }
 }

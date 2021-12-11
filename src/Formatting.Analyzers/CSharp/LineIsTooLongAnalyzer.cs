@@ -5,6 +5,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.Configuration;
 using Roslynator.CSharp;
 using Roslynator.Formatting.CSharp;
 
@@ -40,7 +41,7 @@ namespace Roslynator.Formatting
             if (!tree.TryGetText(out SourceText sourceText))
                 return;
 
-            int maxLength = CSharp.AnalyzerOptions.MaxLineLength.GetInt32Value(context.Tree, context.Options, AnalyzerSettings.Current.MaxLineLength);
+            int maxLength = CSharp.AnalyzerOptions.MaxLineLength.GetInt32Value(context.Tree, context.Options, CodeAnalysisConfig.Instance.MaxLineLength);
 
             if (maxLength <= 0)
                 return;

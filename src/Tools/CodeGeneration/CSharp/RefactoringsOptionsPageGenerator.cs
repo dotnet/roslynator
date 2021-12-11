@@ -36,20 +36,6 @@ namespace Roslynator.CodeGeneration.CSharp
                 ParseExpression($"RefactoringIdentifiers.{refactorings.OrderBy(f => f.Id, comparer).Last().Identifier}"));
 
             yield return MethodDeclaration(
-                Modifiers.Internal_Static(),
-                VoidType(),
-                Identifier("SetRefactoringsDisabledByDefault"),
-                ParameterList(Parameter(IdentifierName("RefactoringSettings"), Identifier("settings"))),
-                Block(refactorings
-                    .Where(f => !f.IsEnabledByDefault)
-                    .OrderBy(f => f.Identifier, comparer)
-                    .Select(refactoring =>
-                    {
-                        return ExpressionStatement(
-                            ParseExpression($"settings.Disable(RefactoringIdentifiers.{refactoring.Identifier})"));
-                    })));
-
-            yield return MethodDeclaration(
                 Modifiers.Protected_Override(),
                 VoidType(),
                 Identifier("Fill"),

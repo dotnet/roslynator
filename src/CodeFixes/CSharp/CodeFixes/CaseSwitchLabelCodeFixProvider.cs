@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(CaseSwitchLabelCodeFixProvider))]
     [Shared]
-    public sealed class CaseSwitchLabelCodeFixProvider : BaseCodeFixProvider
+    public sealed class CaseSwitchLabelCodeFixProvider : CompilerDiagnosticCodeFixProvider
     {
         public override ImmutableArray<string> FixableDiagnosticIds
         {
@@ -26,10 +26,10 @@ namespace Roslynator.CSharp.CodeFixes
         {
             Diagnostic diagnostic = context.Diagnostics[0];
 
-            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveSwitchLabel))
-                return;
-
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+            if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveSwitchLabel, context.Document, root.SyntaxTree))
+                return;
 
             if (!TryFindFirstAncestorOrSelf(root, context.Span, out CaseSwitchLabelSyntax caseSwitchLabel))
                 return;

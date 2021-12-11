@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(BinaryExpressionCodeFixProvider))]
     [Shared]
-    public sealed class BinaryExpressionCodeFixProvider : BaseCodeFixProvider
+    public sealed class BinaryExpressionCodeFixProvider : CompilerDiagnosticCodeFixProvider
     {
         public override ImmutableArray<string> FixableDiagnosticIds
         {
@@ -26,10 +26,10 @@ namespace Roslynator.CSharp.CodeFixes
         {
             Diagnostic diagnostic = context.Diagnostics[0];
 
-            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.ReplaceAsExpressionWithCastExpression))
-                return;
-
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+            if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.ReplaceAsExpressionWithCastExpression, context.Document, root.SyntaxTree))
+                return;
 
             if (!TryFindFirstAncestorOrSelf(root, context.Span, out BinaryExpressionSyntax binaryExpression))
                 return;

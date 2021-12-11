@@ -24,7 +24,6 @@
         </Hyperlink>
       </TextBlock>
       <CheckBox DockPanel.Dock="Top" IsChecked="{Binding PrefixFieldIdentifierWithUnderscore}">Prefix field identifier with underscore</CheckBox>
-      <CheckBox DockPanel.Dock="Top" IsChecked="{Binding UseConfigFile}">Use config file</CheckBox>
       <WrapPanel DockPanel.Dock="Bottom" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Left">
         <Button Content="Export options" Click="ExportOptionsButton_Click" />
         <Button Content="Import options" Click="ImportOptionsButton_Click" />

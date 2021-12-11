@@ -18,7 +18,7 @@ namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UnreachableCodeCodeFixProvider))]
     [Shared]
-    public sealed class UnreachableCodeCodeFixProvider : BaseCodeFixProvider
+    public sealed class UnreachableCodeCodeFixProvider : CompilerDiagnosticCodeFixProvider
     {
         private const string Title = "Remove unreachable code";
 
@@ -31,10 +31,10 @@ namespace Roslynator.CSharp.CodeFixes
         {
             Diagnostic diagnostic = context.Diagnostics[0];
 
-            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveUnreachableCode))
-                return;
-
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+            if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveUnreachableCode, context.Document, root.SyntaxTree))
+                return;
 
             if (!TryFindFirstAncestorOrSelf(root, context.Span, out StatementSyntax statement))
                 return;

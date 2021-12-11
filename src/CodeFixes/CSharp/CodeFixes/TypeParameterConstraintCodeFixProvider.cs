@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(TypeParameterConstraintCodeFixProvider))]
     [Shared]
-    public sealed class TypeParameterConstraintCodeFixProvider : BaseCodeFixProvider
+    public sealed class TypeParameterConstraintCodeFixProvider : CompilerDiagnosticCodeFixProvider
     {
         public override ImmutableArray<string> FixableDiagnosticIds
         {
@@ -43,7 +43,7 @@ namespace Roslynator.CSharp.CodeFixes
                 {
                     case CompilerDiagnosticIdentifiers.CS0401_NewConstraintMustBeLastConstraintSpecified:
                         {
-                            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.MoveConstraint))
+                            if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.MoveConstraint, context.Document, root.SyntaxTree))
                                 break;
 
                             TypeParameterConstraintInfo constraintInfo = SyntaxInfo.TypeParameterConstraintInfo(constraint);
@@ -57,14 +57,14 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case CompilerDiagnosticIdentifiers.CS0405_DuplicateConstraintForTypeParameter:
                         {
-                            if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveConstraint))
+                            if (IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveConstraint, context.Document, root.SyntaxTree))
                                 RemoveConstraint(context, diagnostic, constraint);
 
                             break;
                         }
                     case CompilerDiagnosticIdentifiers.CS0449_ClassOrStructConstraintMustComeBeforeAnyOtherConstraints:
                         {
-                            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.MoveConstraint))
+                            if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.MoveConstraint, context.Document, root.SyntaxTree))
                                 break;
 
                             TypeParameterConstraintInfo constraintInfo = SyntaxInfo.TypeParameterConstraintInfo(constraint);
@@ -85,7 +85,7 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case CompilerDiagnosticIdentifiers.CS0450_CannotSpecifyBothConstraintClassAndClassOrStructConstraint:
                         {
-                            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveConstraint))
+                            if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveConstraint, context.Document, root.SyntaxTree))
                                 break;
 
                             TypeParameterConstraintInfo constraintInfo = SyntaxInfo.TypeParameterConstraintInfo(constraint);
@@ -109,7 +109,7 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case CompilerDiagnosticIdentifiers.CS0451_NewConstraintCannotBeUsedWithStructConstraint:
                         {
-                            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveConstraint))
+                            if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveConstraint, context.Document, root.SyntaxTree))
                                 break;
 
                             RemoveConstraint(context, diagnostic, constraint);

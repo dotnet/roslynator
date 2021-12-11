@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AttributeCodeFixProvider))]
     [Shared]
-    public sealed class AttributeCodeFixProvider : BaseCodeFixProvider
+    public sealed class AttributeCodeFixProvider : CompilerDiagnosticCodeFixProvider
     {
         public override ImmutableArray<string> FixableDiagnosticIds
         {
@@ -29,10 +29,10 @@ namespace Roslynator.CSharp.CodeFixes
         {
             Diagnostic diagnostic = context.Diagnostics[0];
 
-            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveAttribute))
-                return;
-
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+            if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveAttribute, context.Document, root.SyntaxTree))
+                return;
 
             if (!TryFindFirstAncestorOrSelf(root, context.Span, out AttributeSyntax attribute))
                 return;

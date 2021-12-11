@@ -56,12 +56,10 @@ namespace Roslynator.CSharp
         public const string RemoveAwaitKeyword = CodeFixIdentifier.CodeFixIdPrefix + "0049";
         public const string WrapInUnsafeStatement = CodeFixIdentifier.CodeFixIdPrefix + "0050";
         public const string MakeContainingDeclarationUnsafe = CodeFixIdentifier.CodeFixIdPrefix + "0051";
-        public const string RemoveReturnKeyword = CodeFixIdentifier.CodeFixIdPrefix + "0052";
         public const string RemoveParametersFromStaticConstructor = CodeFixIdentifier.CodeFixIdPrefix + "0053";
         public const string OrderModifiers = CodeFixIdentifier.CodeFixIdPrefix + "0054";
         public const string RemoveInvalidModifier = CodeFixIdentifier.CodeFixIdPrefix + "0055";
         public const string RemoveMemberDeclaration = CodeFixIdentifier.CodeFixIdPrefix + "0056";
-        public const string RemoveReturnExpression = CodeFixIdentifier.CodeFixIdPrefix + "0057";
         public const string ReplaceNullLiteralExpressionWithDefaultValue = CodeFixIdentifier.CodeFixIdPrefix + "0058";
         public const string ReplaceVariableDeclarationWithAssignment = CodeFixIdentifier.CodeFixIdPrefix + "0059";
         public const string RemoveThisModifier = CodeFixIdentifier.CodeFixIdPrefix + "0060";

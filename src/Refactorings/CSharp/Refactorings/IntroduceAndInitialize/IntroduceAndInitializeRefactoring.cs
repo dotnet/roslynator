@@ -60,7 +60,7 @@ namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
 
             if (context.IsRefactoringEnabled(RefactoringDescriptors.IntroduceAndInitializeField))
             {
-                var fieldInfo = new IntroduceAndInitializeFieldInfo(parameter, context.Settings.PrefixFieldIdentifierWithUnderscore);
+                var fieldInfo = new IntroduceAndInitializeFieldInfo(parameter, context.Options.PrefixFieldIdentifierWithUnderscore);
                 var refactoring = new IntroduceAndInitializeFieldRefactoring(fieldInfo);
                 refactoring.RegisterRefactoring(context);
             }
@@ -90,7 +90,7 @@ namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
             if (context.IsRefactoringEnabled(RefactoringDescriptors.IntroduceAndInitializeField))
             {
                 IEnumerable<IntroduceAndInitializeFieldInfo> fieldInfos = parameters
-                    .Select(parameter => new IntroduceAndInitializeFieldInfo(parameter, context.Settings.PrefixFieldIdentifierWithUnderscore));
+                    .Select(parameter => new IntroduceAndInitializeFieldInfo(parameter, context.Options.PrefixFieldIdentifierWithUnderscore));
 
                 var refactoring = new IntroduceAndInitializeFieldRefactoring(fieldInfos);
                 refactoring.RegisterRefactoring(context);

@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(TokenCodeFixProvider))]
     [Shared]
-    public sealed class TokenCodeFixProvider : BaseCodeFixProvider
+    public sealed class TokenCodeFixProvider : CompilerDiagnosticCodeFixProvider
     {
         public override ImmutableArray<string> FixableDiagnosticIds
         {
@@ -66,7 +66,7 @@ namespace Roslynator.CSharp.CodeFixes
                                 {
                                     if (typeSymbol.IsValueType)
                                     {
-                                        if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveConditionalAccess))
+                                        if (IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveConditionalAccess, context.Document, root.SyntaxTree))
                                         {
                                             CodeAction codeAction = CodeAction.Create(
                                                 "Remove '?' operator",
@@ -78,7 +78,7 @@ namespace Roslynator.CSharp.CodeFixes
                                     }
                                     else if (typeSymbol.IsReferenceType)
                                     {
-                                        if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddArgumentList)
+                                        if (IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddArgumentList, context.Document, root.SyntaxTree)
                                             && conditionalAccess.WhenNotNull is MemberBindingExpressionSyntax memberBindingExpression)
                                         {
                                             ConditionalAccessExpressionSyntax newNode = conditionalAccess.WithWhenNotNull(
@@ -101,7 +101,7 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case CompilerDiagnosticIdentifiers.CS0267_PartialModifierCanOnlyAppearImmediatelyBeforeClassStructInterfaceOrVoid:
                         {
-                            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.OrderModifiers))
+                            if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.OrderModifiers, context.Document, root.SyntaxTree))
                                 break;
 
                             ModifiersCodeFixRegistrator.MoveModifier(context, diagnostic, token.Parent, token);
@@ -119,7 +119,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                             if (value.IsKind(SyntaxKind.NullLiteralExpression))
                             {
-                                if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.ReplaceNullLiteralExpressionWithDefaultValue))
+                                if (IsEnabled(diagnostic.Id, CodeFixIdentifiers.ReplaceNullLiteralExpressionWithDefaultValue, context.Document, root.SyntaxTree))
                                 {
                                     SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
@@ -128,7 +128,7 @@ namespace Roslynator.CSharp.CodeFixes
                             }
                             else if (!value.IsKind(SyntaxKind.DefaultExpression, SyntaxKind.DefaultLiteralExpression))
                             {
-                                if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.ChangeParameterType))
+                                if (IsEnabled(diagnostic.Id, CodeFixIdentifiers.ChangeParameterType, context.Document, root.SyntaxTree))
                                 {
                                     SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
@@ -145,7 +145,7 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case CompilerDiagnosticIdentifiers.CS0126_ObjectOfTypeConvertibleToTypeIsRequired:
                         {
-                            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.ReturnDefaultValue))
+                            if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.ReturnDefaultValue, context.Document, root.SyntaxTree))
                                 break;
 
                             if (token.Kind() != SyntaxKind.ReturnKeyword)
@@ -223,7 +223,7 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case CompilerDiagnosticIdentifiers.CS1031_TypeExpected:
                         {
-                            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddMissingType))
+                            if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddMissingType, context.Document, root.SyntaxTree))
                                 break;
 
                             if (token.Kind() != SyntaxKind.CloseParenToken)
@@ -264,7 +264,7 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case CompilerDiagnosticIdentifiers.CS1597_SemicolonAfterMethodOrAccessorBlockIsNotValid:
                         {
-                            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveSemicolon))
+                            if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveSemicolon, context.Document, root.SyntaxTree))
                                 break;
 
                             if (token.Kind() != SyntaxKind.SemicolonToken)
@@ -362,7 +362,7 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case CompilerDiagnosticIdentifiers.CS0030_CannotConvertType:
                         {
-                            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.ChangeForEachType))
+                            if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.ChangeForEachType, context.Document, root.SyntaxTree))
                                 break;
 
                             if (token.Kind() != SyntaxKind.ForEachKeyword)
@@ -385,7 +385,7 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case CompilerDiagnosticIdentifiers.CS1737_OptionalParametersMustAppearAfterAllRequiredParameters:
                         {
-                            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddDefaultValueToParameter))
+                            if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddDefaultValueToParameter, context.Document, root.SyntaxTree))
                                 break;
 
                             if (token.Parent is not BaseParameterListSyntax parameterList)
@@ -438,7 +438,7 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case CompilerDiagnosticIdentifiers.CS8632_AnnotationForNullableReferenceTypesShouldOnlyBeUsedWithinNullableAnnotationsContext:
                         {
-                            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveAnnotationForNullableReferenceTypes))
+                            if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveAnnotationForNullableReferenceTypes, context.Document, root.SyntaxTree))
                                 break;
 
                             if (!token.IsKind(SyntaxKind.QuestionToken))
@@ -459,7 +459,7 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case CompilerDiagnosticIdentifiers.CS8618_NonNullableMemberIsUninitialized:
                         {
-                            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.UseNullForgivingOperator))
+                            if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.UseNullForgivingOperator, context.Document, root.SyntaxTree))
                                 break;
 
                             Debug.Assert(token.IsKind(SyntaxKind.IdentifierToken), token.Kind().ToString());

@@ -17,7 +17,7 @@ namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(TypeDeclarationCodeFixProvider))]
     [Shared]
-    public sealed class TypeDeclarationCodeFixProvider : BaseCodeFixProvider
+    public sealed class TypeDeclarationCodeFixProvider : CompilerDiagnosticCodeFixProvider
     {
         public override ImmutableArray<string> FixableDiagnosticIds
         {
@@ -43,7 +43,7 @@ namespace Roslynator.CSharp.CodeFixes
                 {
                     case CompilerDiagnosticIdentifiers.CS0660_TypeDefinesEqualityOperatorButDoesNotOverrideObjectEquals:
                         {
-                            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.DefineObjectEquals))
+                            if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.DefineObjectEquals, context.Document, root.SyntaxTree))
                                 break;
 
                             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
@@ -73,7 +73,7 @@ namespace Roslynator.CSharp.CodeFixes
                     case CompilerDiagnosticIdentifiers.CS0661_TypeDefinesEqualityOperatorButDoesNotOverrideObjectGetHashCode:
                     case CompilerDiagnosticIdentifiers.CS0659_TypeOverridesObjectEqualsButDoesNotOverrideObjectGetHashCode:
                         {
-                            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.DefineObjectGetHashCode))
+                            if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.DefineObjectGetHashCode, context.Document, root.SyntaxTree))
                                 break;
 
                             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);

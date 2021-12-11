@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeRefactorings;
+using Roslynator.Configuration;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -19,7 +20,7 @@ namespace Roslynator.CSharp.Refactorings
             try
             {
 #endif
-                var refactoringContext = new RefactoringContext(context, root, RefactoringSettings.Current);
+                var refactoringContext = new RefactoringContext(context, root, CodeAnalysisConfig.Instance);
 
                 await refactoringContext.ComputeRefactoringsAsync().ConfigureAwait(false);
 #if DEBUG

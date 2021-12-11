@@ -7,20 +7,22 @@ using Roslynator.Configuration;
 
 namespace Roslynator.CodeFixes
 {
-    public sealed class CodeFixSettings : CodeAnalysisSettings<CodeFixIdentifier>
+    public sealed class CompilerCodeFixOptions : OptionSet<CodeFixIdentifier>
     {
-        public static CodeFixSettings Current { get; } = LoadSettings();
+        public static CompilerCodeFixOptions Current { get; } = LoadSettings();
 
-        private static CodeFixSettings LoadSettings()
+        private static CompilerCodeFixOptions LoadSettings()
         {
-            var settings = new CodeFixSettings();
+            var options = new CompilerCodeFixOptions();
 
-            settings.Reset();
+            options.Reset(CodeAnalysisConfig.Instance);
 
-            return settings;
+            CodeAnalysisConfig.Updated += (sender, e) => options.Reset(CodeAnalysisConfig.Instance);
+
+            return options;
         }
 
-        protected override void SetValues(CodeAnalysisConfiguration configuration)
+        protected override void SetValues(CodeAnalysisConfig configuration)
         {
             if (configuration == null)
                 return;

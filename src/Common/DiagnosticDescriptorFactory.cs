@@ -1,23 +1,13 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using Microsoft.CodeAnalysis;
+using Roslynator.Configuration;
 
 namespace Roslynator
 {
-    internal class DiagnosticDescriptorFactory
+    internal static class DiagnosticDescriptorFactory
     {
-        private const string IdSuffix = "FadeOut";
-
-        public static DiagnosticDescriptorFactory Default { get; } = new DiagnosticDescriptorFactory(AnalyzerRules.Default);
-
-        public AnalyzerRules Rules { get; }
-
-        public DiagnosticDescriptorFactory(AnalyzerRules rules)
-        {
-            Rules = rules;
-        }
-
-        public DiagnosticDescriptor Create(
+        public static DiagnosticDescriptor Create(
             string id,
             string title,
             string messageFormat,
@@ -33,8 +23,8 @@ namespace Roslynator
                 title: title,
                 messageFormat: messageFormat,
                 category: category,
-                defaultSeverity: Rules.GetDiagnosticSeverityOrDefault(id, defaultSeverity),
-                isEnabledByDefault: Rules.IsDiagnosticEnabledOrDefault(id, isEnabledByDefault),
+                defaultSeverity: CodeAnalysisConfig.Instance.GetDiagnosticSeverity(id, category) ?? defaultSeverity,
+                isEnabledByDefault: CodeAnalysisConfig.Instance.IsDiagnosticEnabled(id, category) ?? isEnabledByDefault,
                 description: description,
                 helpLinkUri: DiagnosticDescriptorUtility.GetHelpLinkUri(helpLinkUri),
                 customTags: customTags);
@@ -43,7 +33,7 @@ namespace Roslynator
         public static DiagnosticDescriptor CreateFadeOut(DiagnosticDescriptor descriptor)
         {
             return new DiagnosticDescriptor(
-                descriptor.Id + IdSuffix,
+                descriptor.Id + "FadeOut",
                 descriptor.Title,
                 descriptor.MessageFormat,
                 descriptor.Category,

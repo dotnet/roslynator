@@ -39,8 +39,6 @@ namespace Roslynator.VisualStudio
         protected override async System.Threading.Tasks.Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
             await base.InitializeAsync(cancellationToken, progress);
-
-            DefaultRuleSet.CreateFileIfNotExists(showErrorMessage: true);
         }
     }
 }

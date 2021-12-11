@@ -6,31 +6,31 @@ using Roslynator.Configuration;
 
 namespace Roslynator
 {
-    public abstract class CodeAnalysisSettings<T>
+    public abstract class OptionSet<T>
     {
-        protected CodeAnalysisSettings()
+        protected OptionSet()
         {
             Disabled = new HashSet<T>();
         }
 
         public HashSet<T> Disabled { get; }
 
-        public void Reset()
+        public void Reset(CodeAnalysisConfig configuration)
         {
             Disabled.Clear();
 
-            SetValues(CodeAnalysisConfiguration.Current);
+            SetValues(configuration);
         }
 
-        public void Reset(CodeAnalysisConfiguration configuration1, CodeAnalysisConfiguration configuration2)
+        public void Reset(CodeAnalysisConfig configuration1, CodeAnalysisConfig configuration2)
         {
-            Reset();
+            Disabled.Clear();
 
             SetValues(configuration1);
             SetValues(configuration2);
         }
 
-        protected abstract void SetValues(CodeAnalysisConfiguration configuration);
+        protected abstract void SetValues(CodeAnalysisConfig configuration);
 
         public bool IsEnabled(T item)
         {

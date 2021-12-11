@@ -124,7 +124,7 @@ namespace Roslynator.CodeGeneration.CSharp
                 IdentifierName("DiagnosticDescriptor"),
                 analyzer.Identifier,
                 SimpleMemberInvocationExpression(
-                    SimpleMemberAccessExpression(IdentifierName("DiagnosticDescriptorFactory"), IdentifierName("Default")),
+                    IdentifierName("DiagnosticDescriptorFactory"),
                     IdentifierName("Create"),
                     ArgumentList(
                         Argument(

@@ -10,16 +10,6 @@ namespace Roslynator.VisualStudio
     public partial class RefactoringsOptionsPage
     {
         protected override string MaxId { get; } = RefactoringIdentifiers.AddAllPropertiesToInitializer;
-        internal static void SetRefactoringsDisabledByDefault(RefactoringSettings settings)
-        {
-            settings.Disable(RefactoringIdentifiers.ConvertForEachToForAndReverseLoop);
-            settings.Disable(RefactoringIdentifiers.ExpandInitializer);
-            settings.Disable(RefactoringIdentifiers.IntroduceConstructor);
-            settings.Disable(RefactoringIdentifiers.RemoveAllDocumentationComments);
-            settings.Disable(RefactoringIdentifiers.ReplaceMethodWithProperty);
-            settings.Disable(RefactoringIdentifiers.UseStringEmptyInsteadOfEmptyStringLiteral);
-        }
-
         protected override void Fill(ICollection<BaseModel> refactorings)
         {
             refactorings.Clear();

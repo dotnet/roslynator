@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ArgumentCodeFixProvider))]
     [Shared]
-    public sealed class ArgumentCodeFixProvider : BaseCodeFixProvider
+    public sealed class ArgumentCodeFixProvider : CompilerDiagnosticCodeFixProvider
     {
         public override ImmutableArray<string> FixableDiagnosticIds
         {
@@ -46,7 +46,7 @@ namespace Roslynator.CSharp.CodeFixes
                 {
                     case CompilerDiagnosticIdentifiers.CS1620_ArgumentMustBePassedWithRefOrOutKeyword:
                         {
-                            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddOutModifierToArgument))
+                            if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddOutModifierToArgument, context.Document, root.SyntaxTree))
                                 return;
 
                             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
@@ -88,7 +88,7 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case CompilerDiagnosticIdentifiers.CS1615_ArgumentShouldNotBePassedWithRefOrOutKeyword:
                         {
-                            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveRefModifier))
+                            if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveRefModifier, context.Document, root.SyntaxTree))
                                 return;
 
                             CodeAction codeAction = CodeAction.Create(
@@ -109,7 +109,7 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case CompilerDiagnosticIdentifiers.CS1503_CannotConvertArgumentType:
                         {
-                            if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.ReplaceNullLiteralExpressionWithDefaultValue))
+                            if (IsEnabled(diagnostic.Id, CodeFixIdentifiers.ReplaceNullLiteralExpressionWithDefaultValue, context.Document, root.SyntaxTree))
                             {
                                 ExpressionSyntax expression = argument.Expression;
 
@@ -141,7 +141,7 @@ namespace Roslynator.CSharp.CodeFixes
                                 }
                             }
 
-                            if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddArgumentList))
+                            if (IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddArgumentList, context.Document, root.SyntaxTree))
                             {
                                 ExpressionSyntax expression = argument.Expression;
 
@@ -174,7 +174,7 @@ namespace Roslynator.CSharp.CodeFixes
                                 }
                             }
 
-                            if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.CreateSingletonArray))
+                            if (IsEnabled(diagnostic.Id, CodeFixIdentifiers.CreateSingletonArray, context.Document, root.SyntaxTree))
                             {
                                 ExpressionSyntax expression = argument.Expression;
 
@@ -209,7 +209,7 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case CompilerDiagnosticIdentifiers.CS0192_ReadOnlyFieldCannotBePassedAsRefOrOutValue:
                         {
-                            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.MakeFieldWritable))
+                            if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.MakeFieldWritable, context.Document, root.SyntaxTree))
                                 return;
 
                             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);

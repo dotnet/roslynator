@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ParameterCodeFixProvider))]
     [Shared]
-    public sealed class ParameterCodeFixProvider : BaseCodeFixProvider
+    public sealed class ParameterCodeFixProvider : CompilerDiagnosticCodeFixProvider
     {
         public override ImmutableArray<string> FixableDiagnosticIds
         {
@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.CodeFixes
                 {
                     case CompilerDiagnosticIdentifiers.CS0225_ParamsParameterMustBeSingleDimensionalArray:
                         {
-                            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.ChangeTypeOfParamsParameter))
+                            if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.ChangeTypeOfParamsParameter, context.Document, root.SyntaxTree))
                                 break;
 
                             TypeSyntax type = parameter.Type;
@@ -73,7 +73,7 @@ namespace Roslynator.CSharp.CodeFixes
                     case CompilerDiagnosticIdentifiers.CS1741_RefOrOutParameterCannotHaveDefaultValue:
                     case CompilerDiagnosticIdentifiers.CS1743_CannotSpecifyDefaultValueForThisParameter:
                         {
-                            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveDefaultValueFromParameter))
+                            if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveDefaultValueFromParameter, context.Document, root.SyntaxTree))
                                 break;
 
                             EqualsValueClauseSyntax defaultValue = parameter.Default;
