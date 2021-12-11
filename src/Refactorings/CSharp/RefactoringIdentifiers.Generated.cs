@@ -57,7 +57,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string ConvertMethodGroupToLambda = Prefix + "0137";
         public const string ConvertNullLiteralToDefaultExpression = Prefix + "0139";
         public const string ConvertRegularStringLiteralToVerbatimStringLiteral = Prefix + "0142";
-        public const string ConvertReturnToIf = Prefix + "0143";
+        public const string ConvertReturnStatementToIf = Prefix + "0143";
         public const string ConvertStatementsToIfElse = Prefix + "0211";
         public const string ConvertStringFormatToInterpolatedString = Prefix + "0145";
         public const string ConvertSwitchExpressionToSwitchStatement = Prefix + "0214";

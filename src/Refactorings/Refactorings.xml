@@ -1250,7 +1250,7 @@ i--;]]></After>
       <Syntax>regular string literal</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0143" Identifier="ConvertReturnToIf" Title="Convert '(yield) return' to 'if'">
+  <Refactoring Id="RR0143" Identifier="ConvertReturnStatementToIf" Title="Convert 'return' statement to 'if'">
     <Syntaxes>
       <Syntax>return statement</Syntax>
       <Syntax>yield return statement</Syntax>

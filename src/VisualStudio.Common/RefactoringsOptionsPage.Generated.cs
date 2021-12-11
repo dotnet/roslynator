@@ -150,7 +150,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplacePrefixOperatorWithPostfixOperator, "Replace prefix operator to postfix operator", IsEnabled(RefactoringIdentifiers.ReplacePrefixOperatorWithPostfixOperator)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplacePropertyWithMethod, "Replace property with method", IsEnabled(RefactoringIdentifiers.ReplacePropertyWithMethod)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertRegularStringLiteralToVerbatimStringLiteral, "Convert regular string literal to verbatim string literal", IsEnabled(RefactoringIdentifiers.ConvertRegularStringLiteralToVerbatimStringLiteral)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertReturnToIf, "Convert '(yield) return' to 'if'", IsEnabled(RefactoringIdentifiers.ConvertReturnToIf)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertReturnStatementToIf, "Convert 'return' statement to 'if'", IsEnabled(RefactoringIdentifiers.ConvertReturnStatementToIf)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.CallIndexOfInsteadOfContains, "Call string.IndexOf instead of string.Contains", IsEnabled(RefactoringIdentifiers.CallIndexOfInsteadOfContains)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertStringFormatToInterpolatedString, "Convert 'string.Format' to interpolated string", IsEnabled(RefactoringIdentifiers.ConvertStringFormatToInterpolatedString)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertSwitchToIf, "Convert 'switch' to 'if'", IsEnabled(RefactoringIdentifiers.ConvertSwitchToIf)));

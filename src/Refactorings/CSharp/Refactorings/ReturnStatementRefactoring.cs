@@ -13,11 +13,11 @@ namespace Roslynator.CSharp.Refactorings
             ExpressionSyntax expression = returnStatement.Expression;
 
             if (expression != null
-                && context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertReturnToIf)
+                && context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertReturnStatementToIf)
                 && (context.Span.IsEmptyAndContainedInSpan(returnStatement.ReturnKeyword)
                     || context.Span.IsBetweenSpans(returnStatement)))
             {
-                await ConvertReturnToIfRefactoring.ConvertReturnToIfElse.ComputeRefactoringAsync(context, returnStatement).ConfigureAwait(false);
+                await ConvertReturnStatementToIfRefactoring.ConvertReturnToIfElse.ComputeRefactoringAsync(context, returnStatement).ConfigureAwait(false);
             }
         }
     }

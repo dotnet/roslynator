@@ -13,12 +13,12 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, YieldStatementSyntax yieldStatement)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertReturnToIf)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertReturnStatementToIf)
                 && (context.Span.IsEmptyAndContainedInSpan(yieldStatement.YieldKeyword)
                     || context.Span.IsEmptyAndContainedInSpan(yieldStatement.ReturnOrBreakKeyword)
                     || context.Span.IsBetweenSpans(yieldStatement)))
             {
-                await ConvertReturnToIfRefactoring.ConvertYieldReturnToIfElse.ComputeRefactoringAsync(context, yieldStatement).ConfigureAwait(false);
+                await ConvertReturnStatementToIfRefactoring.ConvertYieldReturnToIfElse.ComputeRefactoringAsync(context, yieldStatement).ConfigureAwait(false);
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseListInsteadOfYield)
