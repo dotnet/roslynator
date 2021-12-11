@@ -13,7 +13,7 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class UseCSharp6DictionaryInitializerRefactoring
+    internal static class UseIndexInitializerRefactoring
     {
         public static async Task ComputeRefactoringAsync(RefactoringContext context, InitializerExpressionSyntax initializer)
         {
@@ -56,9 +56,9 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             context.RegisterRefactoring(
-                "Use C# 6.0 dictionary initializer",
+                "Use index initializer",
                 ct => RefactorAsync(context.Document, initializer, ct),
-                RefactoringIdentifiers.UseCSharp6DictionaryInitializer);
+                RefactoringIdentifiers.UseIndexInitializer);
         }
 
         private static bool CanRefactor(

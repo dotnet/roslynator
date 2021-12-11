@@ -1674,7 +1674,7 @@ return false;]]></After>
       </Sample>
     </Samples>
   </Refactoring>
-  <Refactoring Id="RR0191" Identifier="UseCSharp6DictionaryInitializer" Title="Use C# 6.0 dictionary initializer">
+  <Refactoring Id="RR0191" Identifier="UseIndexInitializer" Title="Use index initializer">
     <Syntaxes>
       <Syntax>collection initializer</Syntax>
     </Syntaxes>
