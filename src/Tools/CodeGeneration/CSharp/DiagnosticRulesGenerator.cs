@@ -21,7 +21,8 @@ namespace Roslynator.CodeGeneration.CSharp
             IComparer<string> comparer,
             string @namespace,
             string className,
-            string identifiersClassName)
+            string identifiersClassName,
+            string categoryName)
         {
             analyzers = analyzers
                 .Where(f => f.IsObsolete == obsolete)
@@ -30,7 +31,8 @@ namespace Roslynator.CodeGeneration.CSharp
             ClassDeclarationSyntax classDeclaration = CreateClassDeclaration(
                 analyzers,
                 className,
-                identifiersClassName);
+                identifiersClassName,
+                categoryName);
 
             CompilationUnitSyntax compilationUnit = CompilationUnit(
                 UsingDirectives("System", "Microsoft.CodeAnalysis"),
@@ -43,7 +45,11 @@ namespace Roslynator.CodeGeneration.CSharp
             return (CompilationUnitSyntax)Rewriter.Instance.Visit(compilationUnit);
         }
 
-        private IEnumerable<MemberDeclarationSyntax> CreateMembers(IEnumerable<AnalyzerMetadata> analyzers, string identifiersClassName, bool useParentProperties = false)
+        private IEnumerable<MemberDeclarationSyntax> CreateMembers(
+            IEnumerable<AnalyzerMetadata> analyzers,
+            string identifiersClassName,
+            string categoryName,
+            bool useParentProperties = false)
         {
             foreach (AnalyzerMetadata analyzer in analyzers)
             {
@@ -58,6 +64,7 @@ namespace Roslynator.CodeGeneration.CSharp
                 yield return CreateMember(
                     analyzer,
                     identifiersClassName,
+                    categoryName,
                     useParentProperties);
 
                 if (analyzer.SupportsFadeOutAnalyzer)
@@ -78,7 +85,7 @@ namespace Roslynator.CodeGeneration.CSharp
 
             if (optionAnalyzers.Any())
             {
-                yield return CreateClassDeclaration(optionAnalyzers, "ReportOnly", identifiersClassName, useParentProperties = true);
+                yield return CreateClassDeclaration(optionAnalyzers, "ReportOnly", identifiersClassName, categoryName, useParentProperties = true);
             }
         }
 
@@ -86,6 +93,7 @@ namespace Roslynator.CodeGeneration.CSharp
             IEnumerable<AnalyzerMetadata> analyzers,
             string className,
             string identifiersClassName,
+            string categoryName,
             bool useParentProperties = false)
         {
             return ClassDeclaration(
@@ -95,12 +103,14 @@ namespace Roslynator.CodeGeneration.CSharp
                     CreateMembers(
                         analyzers,
                         identifiersClassName,
+                        categoryName,
                         useParentProperties)));
         }
 
         private MemberDeclarationSyntax CreateMember(
             AnalyzerMetadata analyzer,
             string identifiersClassName,
+            string categoryName,
             bool useParentProperties = false)
         {
             AnalyzerMetadata parent = (useParentProperties) ? analyzer.Parent : null;
@@ -128,7 +138,7 @@ namespace Roslynator.CodeGeneration.CSharp
                             StringLiteralExpression(analyzer.MessageFormat)),
                         Argument(
                             NameColon("category"),
-                            SimpleMemberAccessExpression(IdentifierName("DiagnosticCategories"), IdentifierName(parent?.Category ?? analyzer.Category))),
+                            SimpleMemberAccessExpression(IdentifierName("DiagnosticCategories"), IdentifierName(categoryName ?? parent?.Category ?? analyzer.Category))),
                         Argument(
                             NameColon("defaultSeverity"),
                             SimpleMemberAccessExpression(IdentifierName("DiagnosticSeverity"), IdentifierName(parent?.DefaultSeverity ?? analyzer.DefaultSeverity))),

@@ -13,7 +13,7 @@ namespace Roslynator
             id: CommonDiagnosticIdentifiers.AnalyzerIsObsolete,
             title: "Analyzer is obsolete.",
             messageFormat: "Analyzer {0} is obsolete.{1}",
-            category: DiagnosticCategories.Usage,
+            category: DiagnosticCategories.Roslynator,
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: true,
             description: null,
