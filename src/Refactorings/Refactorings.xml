@@ -57,7 +57,7 @@
       <Syntax>return statement without expression</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0009" Identifier="AddExceptionToDocumentationComment" Title="Add exception to documentation comment">
+  <Refactoring Id="RR0009" Identifier="AddExceptionElementToDocumentationComment" Title="Add 'exception' element to documentation comment">
     <Syntaxes>
       <Syntax>throw statement</Syntax>
     </Syntaxes>

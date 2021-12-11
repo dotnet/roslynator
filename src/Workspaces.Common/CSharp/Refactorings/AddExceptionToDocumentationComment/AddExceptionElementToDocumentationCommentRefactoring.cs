@@ -16,7 +16,7 @@ using Roslynator.Text;
 
 namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
 {
-    internal static class AddExceptionToDocumentationCommentRefactoring
+    internal static class AddExceptionElementToDocumentationCommentRefactoring
     {
         private static IEnumerable<ThrowInfo> GetOtherUndocumentedExceptions(
             MemberDeclarationSyntax declaration,
