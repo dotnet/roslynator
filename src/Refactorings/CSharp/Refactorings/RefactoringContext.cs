@@ -635,7 +635,6 @@ namespace Roslynator.CSharp.Refactorings
                             if (flags.IsSet(Flag.GenericName))
                                 continue;
 
-                            GenericNameRefactoring.ComputeRefactorings(this, (GenericNameSyntax)node);
                             flags.Set(Flag.GenericName);
                             continue;
                         }

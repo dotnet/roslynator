@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.Refactorings
                     RefactoringIdentifiers.ExpandCompoundAssignment);
             }
 
-            if (context.IsAnyRefactoringEnabled(RefactoringIdentifiers.AddExplicitCast, RefactoringIdentifiers.CallToMethod)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddExplicitCast)
                 && assignmentExpression.IsKind(SyntaxKind.SimpleAssignmentExpression))
             {
                 SimpleAssignmentExpressionInfo simpleAssignment = SyntaxInfo.SimpleAssignmentExpressionInfo(assignmentExpression);
@@ -44,7 +44,7 @@ namespace Roslynator.CSharp.Refactorings
                         if (rightSymbol?.IsErrorType() == false
                             && !SymbolEqualityComparer.Default.Equals(leftSymbol, rightSymbol))
                         {
-                            ModifyExpressionRefactoring.ComputeRefactoring(context, right, leftSymbol, semanticModel);
+                            AddExplicitCastRefactoring.ComputeRefactoring(context, right, leftSymbol, semanticModel);
                         }
                     }
                 }

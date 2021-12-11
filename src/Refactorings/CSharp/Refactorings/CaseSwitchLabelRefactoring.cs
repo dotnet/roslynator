@@ -10,7 +10,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, CaseSwitchLabelSyntax caseLabel)
         {
-            if (context.IsAnyRefactoringEnabled(RefactoringIdentifiers.AddExplicitCast, RefactoringIdentifiers.CallToMethod))
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddExplicitCast))
             {
                 ExpressionSyntax value = caseLabel.Value;
 
@@ -26,7 +26,7 @@ namespace Roslynator.CSharp.Refactorings
                         ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, context.CancellationToken);
 
                         if (typeSymbol?.IsErrorType() == false)
-                            ModifyExpressionRefactoring.ComputeRefactoring(context, value, typeSymbol, semanticModel);
+                            AddExplicitCastRefactoring.ComputeRefactoring(context, value, typeSymbol, semanticModel);
                     }
                 }
             }

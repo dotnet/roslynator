@@ -12,9 +12,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, ArgumentSyntax argument)
         {
-            if (context.IsAnyRefactoringEnabled(
-                RefactoringIdentifiers.AddExplicitCast,
-                RefactoringIdentifiers.CallToMethod))
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddExplicitCast))
             {
                 ExpressionSyntax expression = argument.Expression;
 
@@ -29,7 +27,7 @@ namespace Roslynator.CSharp.Refactorings
                         IEnumerable<ITypeSymbol> newTypes = DetermineParameterTypeHelper.DetermineParameterTypes(argument, semanticModel, context.CancellationToken)
                             .Where(f => !SymbolEqualityComparer.Default.Equals(typeSymbol, f));
 
-                        ModifyExpressionRefactoring.ComputeRefactoring(context, expression, newTypes, semanticModel);
+                        AddExplicitCastRefactoring.ComputeRefactoring(context, expression, newTypes, semanticModel);
                     }
                 }
             }

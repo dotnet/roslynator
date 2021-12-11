@@ -20,9 +20,6 @@ namespace Roslynator.CSharp.Refactorings
 
             await ChangeVariableDeclarationTypeRefactoring.ComputeRefactoringsAsync(context, variableDeclaration).ConfigureAwait(false);
 
-            if (context.IsAnyRefactoringEnabled(RefactoringIdentifiers.AddExplicitCast, RefactoringIdentifiers.CallToMethod))
-                await AddExplicitCastnAsync(context, variableDeclaration).ConfigureAwait(false);
-
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.CheckExpressionForNull))
                 await CheckExpressionForNullRefactoring.ComputeRefactoringAsync(context, variableDeclaration).ConfigureAwait(false);
 
@@ -110,7 +107,7 @@ namespace Roslynator.CSharp.Refactorings
             if (SymbolEqualityComparer.Default.Equals(declarationType, expressionType))
                 return;
 
-            ModifyExpressionRefactoring.ComputeRefactoring(context, declarator.Initializer.Value, declarationType, semanticModel);
+            AddExplicitCastRefactoring.ComputeRefactoring(context, declarator.Initializer.Value, declarationType, semanticModel);
         }
     }
 }
