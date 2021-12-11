@@ -1490,9 +1490,9 @@ i--;]]></After>
       <Syntax>selected statements</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0177" Identifier="WrapInUsingStatement" Title="Wrap in using statement">
-	<Syntaxes>
-      <Syntax>local declaration of type that implements IDisposable</Syntax>
+  <Refactoring Id="RR0177" Identifier="WrapStatementsInUsingStatement" Title="Wrap statements in 'using' statement">
+	  <Syntaxes>
+      <Syntax>selected statements where first is local declaration of type that implements IDisposable</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0178" Identifier="AddGenericParameterToDeclaration" Title="Add generic parameter to a declaration">

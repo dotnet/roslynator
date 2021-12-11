@@ -11,7 +11,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static bool IsAnyRefactoringEnabled(RefactoringContext context)
         {
-            return context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInUsingStatement)
+            return context.IsRefactoringEnabled(RefactoringIdentifiers.WrapStatementsInUsingStatement)
                 || context.IsRefactoringEnabled(RefactoringIdentifiers.CollapseToInitializer)
                 || context.IsRefactoringEnabled(RefactoringIdentifiers.MergeIfStatements)
                 || context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertStatementsToIfElse)
@@ -27,9 +27,9 @@ namespace Roslynator.CSharp.Refactorings
 
         public static async Task ComputeRefactoringAsync(RefactoringContext context, StatementListSelection selectedStatements)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInUsingStatement))
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapStatementsInUsingStatement))
             {
-                var refactoring = new WrapStatements.WrapInUsingStatementRefactoring();
+                var refactoring = new WrapStatementsInUsingStatementRefactoring();
                 await refactoring.ComputeRefactoringAsync(context, selectedStatements).ConfigureAwait(false);
             }
 

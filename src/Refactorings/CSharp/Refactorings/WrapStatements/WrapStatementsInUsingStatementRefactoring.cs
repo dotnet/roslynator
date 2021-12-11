@@ -12,7 +12,7 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings.WrapStatements
 {
-    internal class WrapInUsingStatementRefactoring : WrapStatementsRefactoring<UsingStatementSyntax>
+    internal class WrapStatementsInUsingStatementRefactoring : WrapStatementsRefactoring<UsingStatementSyntax>
     {
         public async Task ComputeRefactoringAsync(RefactoringContext context, StatementListSelection selectedStatements)
         {
@@ -40,9 +40,9 @@ namespace Roslynator.CSharp.Refactorings.WrapStatements
                 return;
 
             context.RegisterRefactoring(
-                $"Using '{localInfo.IdentifierText}'",
+                "Wrap in 'using' statement",
                 ct => RefactorAsync(context.Document, selectedStatements, ct),
-                RefactoringIdentifiers.WrapInUsingStatement);
+                RefactoringIdentifiers.WrapStatementsInUsingStatement);
         }
 
         public override UsingStatementSyntax CreateStatement(ImmutableArray<StatementSyntax> statements)
