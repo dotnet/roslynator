@@ -36,73 +36,77 @@ namespace Roslynator.Configuration
 
         private static EditorConfigCodeAnalysisConfig LoadInternal(IEnumerable<string> paths)
         {
-            using (IEnumerator<string> en = paths.GetEnumerator())
+            Dictionary<string, bool> refactorings = null;
+            Dictionary<string, bool> codeFixes = null;
+            Dictionary<string, ReportDiagnostic> categories = null;
+            Dictionary<string, string> options = null;
+
+            ImmutableDictionary<string, string> allOptions = ImmutableDictionary<string, string>.Empty;
+            ImmutableDictionary<string, ReportDiagnostic> analyzerOptions = ImmutableDictionary<string, ReportDiagnostic>.Empty;
+
+            foreach (string path in paths)
             {
-                if (!en.MoveNext())
-                    return null;
+                EditorConfigData config = LoadFile(path);
 
-                EditorConfigData config = LoadFile(en.Current);
+                if (config.Options.Count > 0)
+                    allOptions = allOptions.SetItems(config.Options);
 
-                var options = new Dictionary<string, string>();
-                var categories = new Dictionary<string, ReportDiagnostic>();
-                var refactorings = new Dictionary<string, bool>();
-                var codeFixes = new Dictionary<string, bool>();
+                if (config.AnalyzerOptions.Count > 0)
+                    analyzerOptions = analyzerOptions.SetItems(config.AnalyzerOptions);
+            }
 
-                ImmutableDictionary<string, string> allOptions = config.Options;
-                ImmutableDictionary<string, ReportDiagnostic> analyzerOptions = config.AnalyzerOptions;
+            foreach (KeyValuePair<string, string> option in allOptions)
+            {
+                Match match = Regexes.RefactoringOption.Match(option.Key);
 
-                while (en.MoveNext())
+                if (match.Success)
                 {
-                    EditorConfigData nextConfig = LoadFile(en.Current);
-
-                    if (nextConfig.Options != null)
-                        allOptions = allOptions.SetItems(nextConfig.Options);
-
-                    if (nextConfig.AnalyzerOptions != null)
-                        analyzerOptions = analyzerOptions.SetItems(nextConfig.AnalyzerOptions);
+                    if (bool.TryParse(option.Value, out bool enabled))
+                    {
+                        string key = match.Groups["id"].Value;
+                        (refactorings ??= new Dictionary<string, bool>()).Add(key, enabled);
+                    }
                 }
-
-                foreach (KeyValuePair<string, string> option in allOptions)
+                else
                 {
-                    Match match = Regexes.RefactoringOption.Match(option.Key);
+                    match = Regexes.CodeFixOption.Match(option.Key);
 
                     if (match.Success)
                     {
                         if (bool.TryParse(option.Value, out bool enabled))
-                            refactorings.Add(match.Groups["id"].Value, enabled);
+                        {
+                            string key = match.Groups["id"].Value;
+                            (codeFixes ??= new Dictionary<string, bool>()).Add(key, enabled);
+                        }
                     }
                     else
                     {
-                        match = Regexes.CodeFixOption.Match(option.Key);
+                        match = Regexes.CategoryOption.Match(option.Key);
 
                         if (match.Success)
                         {
-                            if (bool.TryParse(option.Value, out bool enabled))
-                                codeFixes.Add(match.Groups["id"].Value, enabled);
+                            ReportDiagnostic? reportDiagnostic = ParseReportDiagnostic(option.Value);
+
+                            if (reportDiagnostic != null)
+                            {
+                                string category = match.Groups["category"].Value;
+                                (categories ??= new Dictionary<string, ReportDiagnostic>()).Add(category, reportDiagnostic.Value);
+                            }
                         }
                         else
                         {
-                            match = Regexes.CategoryOption.Match(option.Key);
-
-                            if (match.Success)
-                            {
-                                string category = match.Groups["category"].Value;
-                                ReportDiagnostic? reportDiagnostic = ParseReportDiagnostic(option.Value);
-
-                                if (reportDiagnostic != null)
-                                    categories.Add(category, reportDiagnostic.Value);
-                            }
+                            (options ??= new Dictionary<string, string>()).Add(option.Key, option.Value);
                         }
                     }
                 }
-
-                return new EditorConfigCodeAnalysisConfig(
-                    options,
-                    analyzerOptions,
-                    categories,
-                    refactorings,
-                    codeFixes);
             }
+
+            return new EditorConfigCodeAnalysisConfig(
+                options,
+                analyzerOptions,
+                categories,
+                refactorings,
+                codeFixes);
 
             static ReportDiagnostic? ParseReportDiagnostic(string value)
             {
@@ -130,7 +134,7 @@ namespace Roslynator.Configuration
         private static EditorConfigData LoadFile(string path)
         {
             if (!File.Exists(path))
-                return default;
+                return EditorConfigData.Empty;
 
             string text = File.ReadAllText(path);
 
@@ -148,6 +152,10 @@ namespace Roslynator.Configuration
 
         private readonly struct EditorConfigData
         {
+            public static EditorConfigData Empty { get; } = new EditorConfigData(
+                ImmutableDictionary<string, string>.Empty,
+                ImmutableDictionary<string, ReportDiagnostic>.Empty);
+
             public EditorConfigData(
                 ImmutableDictionary<string, string> options,
                 ImmutableDictionary<string, ReportDiagnostic> analyzerOptions)
