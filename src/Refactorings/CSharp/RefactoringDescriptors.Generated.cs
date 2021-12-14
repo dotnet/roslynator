@@ -15,7 +15,6 @@ namespace Roslynator.CSharp.Refactorings
         public static RefactoringDescriptor AddDefaultValueToParameter = new RefactoringDescriptor("RR0007", "roslynator.refactoring.add_default_value_to_parameter.enabled");
         public static RefactoringDescriptor AddEmptyLineBetweenDeclarations = new RefactoringDescriptor("RR0205", "roslynator.refactoring.add_empty_line_between_declarations.enabled");
         public static RefactoringDescriptor AddExceptionElementToDocumentationComment = new RefactoringDescriptor("RR0009", "roslynator.refactoring.add_exception_element_to_documentation_comment.enabled");
-        public static RefactoringDescriptor AddExplicitCast = new RefactoringDescriptor("RR0006", "roslynator.refactoring.add_explicit_cast.enabled");
         public static RefactoringDescriptor AddGenericParameterToDeclaration = new RefactoringDescriptor("RR0178", "roslynator.refactoring.add_generic_parameter_to_declaration.enabled");
         public static RefactoringDescriptor AddMemberToInterface = new RefactoringDescriptor("RR0195", "roslynator.refactoring.add_member_to_interface.enabled");
         public static RefactoringDescriptor AddMissingCasesToSwitchStatement = new RefactoringDescriptor("RR0059", "roslynator.refactoring.add_missing_cases_to_switch.enabled");
