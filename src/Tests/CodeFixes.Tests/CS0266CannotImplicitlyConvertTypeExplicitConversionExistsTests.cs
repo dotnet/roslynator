@@ -45,5 +45,22 @@ public class Foo
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId, additionalKey1: CodeFixIdentifiers.ChangeTypeAccordingToInitializer));
         }
+
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0266_CannotImplicitlyConvertTypeExplicitConversionExists)]
+        public async Task TestNoDiagnostic()
+        {
+            await VerifyNoFixAsync(@"
+class C
+{
+    void M()
+    {
+        bool? x = null;
+        bool y = false;
+
+        y = x;
+    }
+}
+", equivalenceKey: EquivalenceKey.Create(DiagnosticId, additionalKey1: CodeFixIdentifiers.AddComparisonWithBooleanLiteral));
+        }
     }
 }

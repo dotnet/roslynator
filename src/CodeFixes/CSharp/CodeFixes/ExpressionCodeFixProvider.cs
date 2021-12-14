@@ -65,17 +65,23 @@ namespace Roslynator.CSharp.CodeFixes
                                 if (convertedType?.SpecialType == SpecialType.System_Boolean
                                     || AddComparisonWithBooleanLiteralRefactoring.IsCondition(expression))
                                 {
-                                    if (IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddComparisonWithBooleanLiteral, context.Document, root.SyntaxTree))
+                                    if (!IsRightExpressionOfAssignment(expression)
+                                        && IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddComparisonWithBooleanLiteral, context.Document, root.SyntaxTree))
                                     {
                                         CodeAction codeAction = CodeAction.Create(
                                             AddComparisonWithBooleanLiteralRefactoring.GetTitle(expression),
                                             ct => AddComparisonWithBooleanLiteralRefactoring.RefactorAsync(context.Document, expression, ct),
                                             GetEquivalenceKey(
                                                 diagnostic,
-                                                CodeFixIdentifiers.AddComparisonWithBooleanLiteral,
-                                                AddComparisonWithBooleanLiteralRefactoring.GetEquivalenceKey(expression)));
+                                                CodeFixIdentifiers.AddComparisonWithBooleanLiteral));
 
                                         context.RegisterCodeFix(codeAction, diagnostic);
+                                    }
+
+                                    static bool IsRightExpressionOfAssignment(ExpressionSyntax expression)
+                                    {
+                                        return expression.IsParentKind(SyntaxKind.SimpleAssignmentExpression)
+                                            && ((AssignmentExpressionSyntax)expression.Parent).Right == expression;
                                     }
                                 }
                                 else if (SymbolEqualityComparer.Default.Equals(namedType.TypeArguments[0], convertedType))
