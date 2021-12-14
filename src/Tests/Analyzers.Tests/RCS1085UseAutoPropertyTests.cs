@@ -901,5 +901,25 @@ class C
 }
 ", options: Options.AddAllowedCompilerDiagnosticId("CS0518"));
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
+        public async Task TestNoDiagnostic_BackingFieldHasAttibute()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System;
+
+class C
+{
+    [MyAttribute]
+    private bool _p;
+
+    public bool P { get => _p; set { _p = value; } }
+}
+
+class MyAttribute : Attribute
+{
+}
+");
+        }
     }
 }
