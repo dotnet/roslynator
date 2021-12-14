@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -20,35 +21,6 @@ namespace Roslynator.CodeGeneration.Markdown
         private static void AddFootnote(this MDocument document)
         {
             document.Add(NewLine, Italic("(Generated with ", Link("DotMarkdown", "http://github.com/JosefPihrt/DotMarkdown"), ")"));
-        }
-
-        public static string CreateListOfAnalyzerOptions(RoslynatorMetadata metadata)
-        {
-            IEnumerable<string> options = metadata.GetAllAnalyzers()
-                .SelectMany(f => f.Options)
-                .Select(analyzerOption =>
-                {
-                    string optionKey = analyzerOption.OptionKey;
-
-                    if (!optionKey.StartsWith("roslynator.", StringComparison.Ordinal))
-                        optionKey = $"roslynator.{analyzerOption.ParentId}.{optionKey}";
-
-                    return (analyzerOption, value: optionKey + " = " + (analyzerOption.OptionValue ?? "true"));
-                })
-                .OrderBy(f => f.value)
-                .Select(f => $"# {f.analyzerOption.Title}{NewLine}{f.value}");
-
-            MDocument document = Document(
-                Heading1("List of EditorConfig Options"),
-                FencedCodeBlock(
-                    string.Join(NewLine + NewLine, options),
-                    "editorconfig"));
-
-            document.AddFootnote();
-
-            var format = new MarkdownFormat(tableOptions: MarkdownFormat.Default.TableOptions | TableOptions.FormatContent);
-
-            return document.ToString(format);
         }
 
         public static string CreateReadMe(IEnumerable<AnalyzerMetadata> analyzers, IEnumerable<RefactoringMetadata> refactorings, IComparer<string> comparer)
@@ -217,7 +189,7 @@ namespace Roslynator.CodeGeneration.Markdown
             return document.ToString(format);
         }
 
-        public static string CreateAnalyzerMarkdown(AnalyzerMetadata analyzer, IEnumerable<(string title, string url)> appliesTo = null)
+        public static string CreateAnalyzerMarkdown(AnalyzerMetadata analyzer, ImmutableArray<OptionDescriptor> globalOptions, IEnumerable<(string title, string url)> appliesTo = null)
         {
             var format = new MarkdownFormat(tableOptions: MarkdownFormat.Default.TableOptions | TableOptions.FormatContent);
 
@@ -231,7 +203,7 @@ namespace Roslynator.CodeGeneration.Markdown
                     (!string.IsNullOrEmpty(analyzer.MinLanguageVersion)) ? TableRow("Minimal Language Version", analyzer.MinLanguageVersion) : null),
                 CreateSummary(analyzer.Summary),
                 GetAnalyzerSamples(analyzer),
-                CreateOptions(analyzer),
+                CreateOptions(analyzer, globalOptions),
                 CreateRemarks(analyzer.Remarks),
                 CreateAppliesTo(appliesTo),
                 CreateSeeAlso(
@@ -431,8 +403,54 @@ namespace Roslynator.CodeGeneration.Markdown
             }
         }
 
-        private static IEnumerable<MElement> CreateOptions(AnalyzerMetadata analyzer)
+        private static IEnumerable<MElement> CreateOptions(AnalyzerMetadata analyzer, ImmutableArray<OptionDescriptor> globalOptions)
         {
+            IEnumerable<(string OptionKey, string Title, string Summary, string DefaultValue)> values = analyzer
+                .Options
+                .Select(f => ($"roslynator.{f.ParentId}.{f.OptionKey}", f.Title, f.Summary, f.OptionValue));
+
+            IEnumerable<(string optionKey, string title, string summary, string defaultValue)> analyzerOptions = analyzer.GlobalOptions
+                .Join(globalOptions, f => f, f => f.Key, (_, g) => g)
+                .OrderBy(f => f.Key)
+                .Select(f => (f.Key, f.Description, default(string), f.ValuePlaceholder));
+
+            using (IEnumerator<(string, string, string, string)> en = values
+                .Concat(analyzerOptions)
+                .OrderBy(f => f.Item1)
+                .GetEnumerator())
+            {
+                if (en.MoveNext())
+                {
+                    yield return Heading2("Options");
+
+                    do
+                    {
+                        string optionKey = en.Current.Item1;
+                        string title = en.Current.Item2;
+                        string summary = en.Current.Item3;
+                        string defaultValue = en.Current.Item4;
+
+                        yield return Heading3(title?.TrimEnd('.'));
+
+                        if (!string.IsNullOrEmpty(summary))
+                        {
+                            yield return new MText(summary);
+                            yield return new MText(NewLine);
+                        }
+
+                        string helpValue = optionKey;
+
+                        helpValue += " = ";
+                        helpValue += defaultValue ?? "true";
+
+                        yield return FencedCodeBlock(
+                            helpValue,
+                            "editorconfig");
+
+                    } while (en.MoveNext());
+                }
+            }
+
             using (IEnumerator<AnalyzerOptionMetadata> en = analyzer.Options.GetEnumerator())
             {
                 if (en.MoveNext())

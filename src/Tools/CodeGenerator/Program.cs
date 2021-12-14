@@ -10,6 +10,7 @@ using Roslynator.CodeGeneration.CSharp;
 using Roslynator.Metadata;
 using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
+using Roslynator.CodeGeneration.EditorConfig;
 
 namespace Roslynator.CodeGeneration
 {
@@ -91,11 +92,11 @@ namespace Roslynator.CodeGeneration
                 @"CSharp\CSharp\SyntaxWalkers\CSharpSyntaxNodeWalker.cs",
                 CSharpSyntaxNodeWalkerGenerator.Generate());
 
-            string ruleSetXml = File.ReadAllText(Path.Combine(rootPath, @"Tools\CodeGeneration\DefaultRuleSet.xml"));
+            File.WriteAllText(
+                Path.Combine(rootPath, "../docs/.roslynatorconfig"),
+                EditorConfigGenerator.GenerateEditorConfig(metadata));
 
-            WriteCompilationUnit(
-                @"VisualStudio.Common\DefaultRuleSet.Generated.cs",
-                RuleSetGenerator.Generate(ruleSetXml));
+            string ruleSetXml = File.ReadAllText(Path.Combine(rootPath, @"Tools\CodeGeneration\DefaultRuleSet.xml"));
 
             File.WriteAllText(
                 Path.Combine(rootPath, @"VisualStudioCode\package\src\configurationFiles.generated.ts"),

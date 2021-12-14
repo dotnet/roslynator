@@ -43,6 +43,7 @@ namespace Roslynator.Metadata
                 IEnumerable<SampleMetadata> samples = LoadSamples(element)?.Select(f => f.WithBefore(f.Before.Replace("[|Id|]", id)));
                 IEnumerable<LinkMetadata> links = LoadLinks(element);
                 IEnumerable<AnalyzerOptionMetadata> options = LoadOptions(element, id);
+                IEnumerable<string> globalOptions = LoadGlobalOptions(element);
 
                 yield return new AnalyzerMetadata(
                     id: id,
@@ -60,6 +61,7 @@ namespace Roslynator.Metadata
                     remarks: remarks,
                     samples: samples,
                     links: links,
+                    globalOptions: globalOptions,
                     options: options,
                     kind: AnalyzerOptionKind.None,
                     parent: null);
@@ -129,6 +131,14 @@ namespace Roslynator.Metadata
                 .Element("Options")?
                 .Elements("Option")
                 .Select(f => LoadOption(f, parentId));
+        }
+
+        private static IEnumerable<string> LoadGlobalOptions(XElement element)
+        {
+            return element
+                .Element("GlobalOptions")?
+                .Elements("Option")
+                .Select(f => f.Attribute("Key").Value);
         }
 
         private static AnalyzerOptionMetadata LoadOption(XElement element, string parentId)

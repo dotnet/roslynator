@@ -73,7 +73,7 @@ namespace Roslynator
         }
 
         public static bool TryGetInt32Value(
-            this AnalyzerOptionDescriptor analyzerOption,
+            this OptionDescriptor option,
             SyntaxTree syntaxTree,
             AnalyzerOptions analyzerOptions,
             out int result)
@@ -81,7 +81,7 @@ namespace Roslynator
             if (analyzerOptions
                 .AnalyzerConfigOptionsProvider
                 .GetOptions(syntaxTree)
-                .TryGetValue(analyzerOption.OptionKey, out string textValue)
+                .TryGetValue(option.Key, out string textValue)
                 && int.TryParse(textValue, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, CultureInfo.CurrentCulture, out int value))
             {
                 result = value;
@@ -93,12 +93,12 @@ namespace Roslynator
         }
 
         public static int GetInt32Value(
-            this AnalyzerOptionDescriptor analyzerOption,
+            this OptionDescriptor option,
             SyntaxTree syntaxTree,
             AnalyzerOptions analyzerOptions,
             int defaultValue)
         {
-            return (TryGetInt32Value(analyzerOption, syntaxTree, analyzerOptions, out int result))
+            return (TryGetInt32Value(option, syntaxTree, analyzerOptions, out int result))
                 ? result
                 : defaultValue;
         }

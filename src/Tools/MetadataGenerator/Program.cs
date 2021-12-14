@@ -49,10 +49,6 @@ namespace Roslynator.CodeGeneration
             ImmutableArray<CodeFixMetadata> codeFixes = metadata.CodeFixes;
             ImmutableArray<CompilerDiagnosticMetadata> compilerDiagnostics = metadata.CompilerDiagnostics;
 
-            WriteAllText(
-                @"..\docs\Options.md",
-                MarkdownGenerator.CreateListOfAnalyzerOptions(metadata));
-
             WriteAnalyzersReadMe(@"Analyzers\README.md", analyzers, "Roslynator.Analyzers");
 
             WriteAnalyzersReadMe(@"CodeAnalysis.Analyzers\README.md", codeAnalysisAnalyzers, "Roslynator.CodeAnalysis.Analyzers");
@@ -176,7 +172,7 @@ namespace Roslynator.CodeGeneration
             {
                 WriteAllText(
                     $@"..\docs\analyzers\{analyzer.Id}.md",
-                    MarkdownGenerator.CreateAnalyzerMarkdown(analyzer, appliesTo),
+                    MarkdownGenerator.CreateAnalyzerMarkdown(analyzer, metadata.Options, appliesTo),
                     fileMustExists: false);
 
                 foreach (AnalyzerOptionMetadata option in analyzer.Options
