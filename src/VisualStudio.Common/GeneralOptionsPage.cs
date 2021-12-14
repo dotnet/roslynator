@@ -5,8 +5,6 @@ using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Windows;
 using Microsoft.VisualStudio.Shell;
-using Roslynator.Configuration;
-using Roslynator.VisualStudio.TypeConverters;
 
 namespace Roslynator.VisualStudio
 {
@@ -23,12 +21,6 @@ namespace Roslynator.VisualStudio
         }
 
         [Category("General")]
-        [DisplayName("Prefix field identifier with underscore")]
-        [Description("")]
-        [TypeConverter(typeof(YesNoConverter))]
-        public bool PrefixFieldIdentifierWithUnderscore { get; set; }
-
-        [Category("General")]
         [Browsable(false)]
         public string ApplicationVersion { get; set; }
 
@@ -38,7 +30,6 @@ namespace Roslynator.VisualStudio
 
             if (!_isActive)
             {
-                _control.PrefixFieldIdentifierWithUnderscore = PrefixFieldIdentifierWithUnderscore;
                 _isActive = true;
             }
         }
@@ -47,21 +38,6 @@ namespace Roslynator.VisualStudio
         {
             base.OnClosed(e);
             _isActive = false;
-        }
-
-        protected override void OnApply(PageApplyEventArgs e)
-        {
-            if (e.ApplyBehavior == ApplyKind.Apply)
-            {
-                PrefixFieldIdentifierWithUnderscore = _control.PrefixFieldIdentifierWithUnderscore;
-            }
-
-            base.OnApply(e);
-        }
-
-        internal void UpdateConfig()
-        {
-            CodeAnalysisConfig.UpdateVisualStudioConfig(f => f.WithPrefixfieldIdentifierWithUnderscore(PrefixFieldIdentifierWithUnderscore));
         }
     }
 }

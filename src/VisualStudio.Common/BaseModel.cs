@@ -8,9 +8,9 @@ namespace Roslynator.VisualStudio
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public class BaseModel : INotifyPropertyChanged
     {
-        private bool _enabled;
+        private bool? _enabled;
 
-        public BaseModel(string name, string title, bool enabled = false)
+        public BaseModel(string name, string title, bool? enabled = false)
         {
             Name = name;
             Title = title;
@@ -31,7 +31,7 @@ namespace Roslynator.VisualStudio
             get { return null; }
         }
 
-        public bool Enabled
+        public bool? Enabled
         {
             get { return _enabled; }
 

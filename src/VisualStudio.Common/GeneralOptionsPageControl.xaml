@@ -19,11 +19,23 @@
     </UserControl.Resources>
     <DockPanel Focusable="false" Margin="0,15,0,0">
       <TextBlock DockPanel.Dock="Right" Margin="0,0,10,0">
-        <Hyperlink NavigateUri="http://pihrt.net/roslynator/donate" RequestNavigate="Hyperlink_RequestNavigate">
-          Donate
-        </Hyperlink>
+        <Bold>
+          <Hyperlink NavigateUri="http://pihrt.net/roslynator/donate" RequestNavigate="Hyperlink_RequestNavigate">
+            Donate
+          </Hyperlink>
+        </Bold>
       </TextBlock>
-      <CheckBox DockPanel.Dock="Top" IsChecked="{Binding PrefixFieldIdentifierWithUnderscore}">Prefix field identifier with underscore</CheckBox>
+      <WrapPanel HorizontalAlignment="Left" DockPanel.Dock="Top" Orientation="Vertical">
+        <TextBlock TextWrapping="WrapWithOverflow" Margin="0,0,0,10">
+        DEFAULT configuration of analyzers, refactorings and code fixes can be changed by using .roslynatorconfig file at the following location: "%LOCALAPPDATA%\JosefPihrt\Roslynator\.roslynatorconfig"
+        </TextBlock>
+        <TextBlock TextWrapping="WrapWithOverflow" Margin="0,0,0,10">
+        NOTE: Visual Studio restart is required for changes to take effect.
+        </TextBlock>
+        <StackPanel Orientation="Horizontal">
+          <Button Content="Open location" Click="OpenLocation_Click" />
+        </StackPanel>
+      </WrapPanel>
       <WrapPanel DockPanel.Dock="Bottom" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Left">
         <Button Content="Export options" Click="ExportOptionsButton_Click" />
         <Button Content="Import options" Click="ImportOptionsButton_Click" />

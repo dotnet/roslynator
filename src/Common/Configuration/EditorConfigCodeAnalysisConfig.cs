@@ -13,7 +13,7 @@ namespace Roslynator.Configuration
 {
     internal class EditorConfigCodeAnalysisConfig
     {
-        public const string FileName = "roslynator.editorconfig";
+        public const string FileName = ".roslynatorconfig";
 
         internal static EditorConfigCodeAnalysisConfig Empty { get; } = new EditorConfigCodeAnalysisConfig();
 
@@ -57,6 +57,16 @@ namespace Roslynator.Configuration
 
         public ImmutableDictionary<string, bool> CodeFixes { get; }
 
+        internal IReadOnlyDictionary<string, bool> GetRefactorings()
+        {
+            return Refactorings;
+        }
+
+        internal IReadOnlyDictionary<string, bool> GetCodeFixes()
+        {
+            return CodeFixes;
+        }
+
         public static string GetDefaultConfigFilePath()
         {
             string path = typeof(EditorConfigCodeAnalysisConfig).Assembly.Location;
@@ -70,24 +80,6 @@ namespace Roslynator.Configuration
             }
 
             return null;
-        }
-
-        internal IEnumerable<string> GetDisabledRefactorings()
-        {
-            foreach (KeyValuePair<string, bool> kvp in Refactorings)
-            {
-                if (!kvp.Value)
-                    yield return kvp.Key;
-            }
-        }
-
-        internal IEnumerable<string> GetDisabledCodeFixes()
-        {
-            foreach (KeyValuePair<string, bool> kvp in CodeFixes)
-            {
-                if (!kvp.Value)
-                    yield return kvp.Key;
-            }
         }
 
         public DiagnosticSeverity? GetDiagnosticSeverity(string id, string category)
@@ -198,11 +190,11 @@ namespace Roslynator.Configuration
             writer.WriteLine();
             writer.WriteEntry(OptionKeys.RefactoringEnabled, true);
             writer.WriteCommentChar();
-            writer.WriteRefactoring("RR0001", true);
+            writer.WriteRefactoring("<REFACTORING_NAME>", true);
             writer.WriteLine();
             writer.WriteEntry(OptionKeys.CompilerDiagnosticFixEnabled, true);
             writer.WriteCommentChar();
-            writer.WriteCompilerDiagnosticFix("CS0001", true);
+            writer.WriteCompilerDiagnosticFix("<COMPILER_DIAGNOSTIC_ID>", true);
             writer.WriteLine();
 
             const string allSeverities = "default|none|silent|suggestion|warning|error";
