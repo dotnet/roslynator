@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -158,7 +159,17 @@ namespace Roslynator.Configuration
                     "<!-- IMPORTANT: THIS CONFIGURATION HAS BEEN MIGRATED TO .roslynatorconfig file -->" + Environment.NewLine);
 
                 File.WriteAllText(path, content);
-                File.Move(path, path + ".migrated");
+
+                const string suffix = ".migrated";
+                string newPath = path + suffix;
+
+                for (int i = 2; File.Exists(newPath); i++)
+                {
+                    newPath = path + suffix + i.ToString(CultureInfo.InvariantCulture);
+                }
+
+                if (!File.Exists(newPath))
+                   File.Move(path, newPath);
             }
 
             static string MapRuleSetOptionToEditorConfigOption(string id)
