@@ -205,10 +205,7 @@ namespace Roslynator.CodeGeneration.Markdown
                 GetAnalyzerSamples(analyzer),
                 CreateOptions(analyzer, globalOptions),
                 CreateRemarks(analyzer.Remarks),
-                CreateAppliesTo(appliesTo),
-                CreateSeeAlso(
-                    analyzer.Links.Select(f => CreateLink(f)),
-                    Link("How to Suppress a Diagnostic", "../HowToConfigureAnalyzers.md#how-to-suppress-a-diagnostic")));
+                CreateAppliesTo(appliesTo));
 
             document.AddFootnote();
 

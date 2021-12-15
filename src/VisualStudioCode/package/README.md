@@ -4,50 +4,54 @@ A collection of 500+ [analyzers](https://github.com/JosefPihrt/Roslynator/blob/m
 
 For further information please with Roslynator [repo](https://github.com/JosefPihrt/Roslynator).
 
-## Configuration of Analyzers
+## Configuration
 
-Standard rulesets are used to configure analyzers on a project-wide basis.
+Use EditorConfig file to configure analyzers, refactoring and compiler diagnostic fixes.
 
-If you want to configure analyzers on a user-wide basis you have to use Roslynator ruleset.
+```editorconfig
+# Set severity for all analyzers
+dotnet_analyzer_diagnostic.category-roslynator.severity = default|none|silent|suggestion|warning|error
 
-How to open ruleset:
+# Set severity for a specific analyzer
+dotnet_diagnostic.<ANALYZER_ID>.severity = default|none|silent|suggestion|warning|error
 
-1) Press Ctrl + Shift + P
-2) Type "roslynator"
-3) Select "Roslynator: Open Configuration of Analyzers (roslynator.ruleset)"
+# Enable/disable all refactorings
+roslynator.refactorings.enabled = true|false
 
-Ruleset can be used to:
+# Enable/disable specific refactoring
+roslynator.refactoring.<REFACTORING_NAME>.enabled = true|false
 
-1. Enable/disable analyzer(s) by DEFAULT.
-2. Change DEFAULT severity (action) of the analyzer(s).
+# Enable/disable all fixes for compiler diagnostics
+roslynator.compiler_diagnostic_fixes.enabled = true|false
 
-Ruleset is applied once when the extension is loaded. Therefore, it may be necessary to restart IDE for changes to take effect.
+# Enable/disable fix for a specific compiler diagnostics
+roslynator.compiler_diagnostic_fix.<COMPILER_DIAGNOSTIC_ID>.enabled = true|false
+```
 
-## Configuration of Refactorings and Fixes
+Full list of available options is [here](https://github.com/josefpihrt/roslynator/docs/options.editorconfig)
+
+## Default Configuration
+
+If you want to configure Roslynator on a user-wide basis you have to use Roslynator config file.
 
 How to open config file:
 
 1) Press Ctrl + Shift + P
 2) Type "roslynator"
-3) Select "Roslynator: Open Configuration of Refactorings and Fixes (roslynator.config)"
+3) Select "Roslynator: Open Default Configuration File (.roslynatorconfig)"
 
-Config file is applied once when the extension is loaded. Therefore, it may be necessary to restart IDE for changes to take effect.
+## Location of Configuration File
 
-Full list of refactorings identifiers can be found [here](https://github.com/JosefPihrt/Roslynator/blob/master/src/Refactorings/README.md). Full list of fixes identifiers can be found [here](https://github.com/JosefPihrt/Roslynator/blob/master/src/CodeFixes/README.md).
-
-## Location of Configuration Files
-
-Configuration files are located at `%LOCALAPPDATA%\JosefPihrt\Roslynator\VisualStudioCode`.
+Configuration file is located at `%LOCALAPPDATA%/JosefPihrt/Roslynator/.roslynatorconfig`.
 Location of `%LOCALAPPDATA%` depends on the operating system:
 
 | OS | Path |
 | -------- | ------- |
-| Windows | `C:\Users\JohnDoe\AppData\Local` |
-| Linux | `/home/JohnDoe/.local/share` |
-| OSX | `/Users/JohnDoe/.local/share` |
+| Windows | `C:/Users/<USERNAME>/AppData/Local/.roslynatorconfig` |
+| Linux | `/home/<USERNAME>/.local/share/.roslynatorconfig` |
+| OSX | `/Users/<USERNAME>/.local/share/.roslynatorconfig` |
 
-Ruleset file is located at **%LOCALAPPDATA%\JosefPihrt\Roslynator\VisualStudioCode\roslynator.ruleset**.
-Config file is located at **%LOCALAPPDATA%\JosefPihrt\Roslynator\VisualStudioCode\roslynator.config**.
+Default configuration is loaded once when IDE starts. Therefore, it may be necessary to restart IDE for changes to take effect.
 
 ## Requirements
 

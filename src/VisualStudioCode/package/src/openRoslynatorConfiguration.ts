@@ -7,7 +7,7 @@ export async function openRoslynatorConfiguration(fileName: string, content: str
 		return;
 	}
 
-	const configurationDirectoryPath = path.join(localAppDataPath, 'JosefPihrt', 'Roslynator', 'VisualStudioCode');
+	const configurationDirectoryPath = path.join(localAppDataPath, 'JosefPihrt', 'Roslynator');
 
 	if (!fs.existsSync(configurationDirectoryPath)) {
 		fs.mkdirSync(configurationDirectoryPath, { recursive: true });

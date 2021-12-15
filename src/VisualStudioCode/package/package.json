@@ -40,12 +40,8 @@
   "contributes": {
     "commands": [
       {
-        "title": "Roslynator: Open Configuration of Analyzers (roslynator.ruleset)",
-        "command": "roslynator.openConfigurationOfAnalyzers"
-      },
-      {
-        "title": "Roslynator: Open Configuration of Refactorings and Fixes (roslynator.config)",
-        "command": "roslynator.openConfigurationOfRefactoringsAndFixes"
+        "title": "Roslynator: Open Default Configuration File (.roslynatorconfig)",
+        "command": "roslynator.openDefaultConfigurationFile"
       }
     ],
     "configuration": {

@@ -15,6 +15,33 @@ namespace Roslynator.Configuration
     {
         public const string FileName = ".roslynatorconfig";
 
+        private const string _fileDefaultContent = @"# Roslynator Config File
+
+is_global = true
+
+# Options in this file can be used to change DEFAULT configuration of analyzers, refactorings and compiler diagnostic fixes.
+# Default configuration is loaded once when IDE starts. Therefore, it may be necessary to restart IDE for changes to take effect.
+# Full list of available options: https://github.com/josefpihrt/roslynator/docs/options.editorconfig
+
+## Set severity for all analyzers
+#dotnet_analyzer_diagnostic.category-roslynator.severity = default|none|silent|suggestion|warning|error
+
+## Set severity for a specific analyzer
+#dotnet_diagnostic.<ANALYZER_ID>.severity = default|none|silent|suggestion|warning|error
+
+## Enable/disable all refactorings
+#roslynator.refactorings.enabled = true|false
+
+## Enable/disable specific refactoring
+#roslynator.refactoring.<REFACTORING_NAME>.enabled = true|false
+
+## Enable/disable all fixes for compiler diagnostics
+#roslynator.compiler_diagnostic_fixes.enabled = true|false
+
+## Enable/disable fix for a specific compiler diagnostics
+#roslynator.compiler_diagnostic_fix.<COMPILER_DIAGNOSTIC_ID>.enabled = true|false
+";
+
         internal static EditorConfigCodeAnalysisConfig Empty { get; } = new EditorConfigCodeAnalysisConfig();
 
         public EditorConfigCodeAnalysisConfig(
@@ -160,7 +187,7 @@ namespace Roslynator.Configuration
                 {
                     Directory.CreateDirectory(Path.GetDirectoryName(path));
 
-                    File.WriteAllText(path, CreateDefaultContent(), Encoding.UTF8);
+                    File.WriteAllText(path, _fileDefaultContent, Encoding.UTF8);
                 }
                 catch (Exception ex) when (ex is IOException
                     || ex is UnauthorizedAccessException)
@@ -172,6 +199,7 @@ namespace Roslynator.Configuration
             return path;
         }
 
+        //TODO: delete
         private static string CreateDefaultContent()
         {
             using var writer = new EditorConfigWriter(new StringWriter());

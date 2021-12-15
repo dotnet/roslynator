@@ -30,6 +30,7 @@ namespace Roslynator.CodeGeneration.EditorConfig
 
             using (var w = new EditorConfigWriter(new StringWriter()))
             {
+                w.WriteLine();
                 w.WriteLine("# Options");
                 w.WriteLine();
 
@@ -89,6 +90,18 @@ namespace Roslynator.CodeGeneration.EditorConfig
                 }
 
                 const string content = @"# Roslynator Config File
+
+is_global = true
+
+# Options in this file can be used
+#  1) In a standard.editorconfig file
+#  2) In a Roslynator default configuration file
+#     Location of the file depends on the operation system:
+#       Windows: C:/Users/<USERNAME>/AppData/Local/.roslynatorconfig
+#       Linux: /home/<<USERNAME>>/.local/share/.roslynatorconfig
+#       OSX: /Users/<<USERNAME>>/.local/share/.roslynatorconfig
+#     The file must contain ""is_global = true"" directive
+#     Default configuration is loaded once when IDE starts. Therefore, it may be necessary to restart IDE for changes to take effect.
 
 ## Set severity for all analyzers
 #dotnet_analyzer_diagnostic.category-roslynator.severity = default|none|silent|suggestion|warning|error
