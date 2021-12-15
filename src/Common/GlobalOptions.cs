@@ -15,7 +15,7 @@ namespace Roslynator
         public static readonly OptionDescriptor PrefixFieldIdentifierWithUnderscore = new OptionDescriptor(
             OptionKeys.PrefixFieldIdentifierWithUnderscore,
             defaultValue: OptionDefaultValues.PrefixFieldIdentifierWithUnderscore.ToString().ToLowerInvariant(),
-            description: "Prefi field identifier with underscore",
+            description: "Prefix field identifier with underscore",
             valuePlaceholder: "true|false");
     }
 }
