@@ -1598,7 +1598,7 @@ i--;]]></After>
       <Syntax>string.Empty field</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0169" Identifier="ConvertBlockBodyToExpressionBody" Title="Convert block body to expression-body">
+  <Refactoring Id="RR0169" Identifier="ConvertBlockBodyToExpressionBody" Title="Convert block body to expression body">
 	<OptionKey>convert_block_body_to_expression_body</OptionKey>
     <Syntaxes>
       <Syntax>method</Syntax>

@@ -529,7 +529,7 @@ namespace N
   </Analyzer>
   <Analyzer Identifier="AddNewLineAfterExpressionBodyArrowInsteadOfBeforeIt2" IsObsolete="true">
     <Id>RCS0019</Id>
-    <Title>Add newline after expression-body arrow instead of before it.</Title>
+    <Title>Add newline after expression body arrow instead of before it.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -795,8 +795,8 @@ namespace N
   </Analyzer>
   <Analyzer Identifier="AddNewLineBeforeExpressionBodyArrowInsteadOfAfterItOrViceVersa">
     <Id>RCS0032</Id>
-    <Title>Add newline before expression-body arrow instead of after it (or vice versa).</Title>
-    <MessageFormat>Add newline before expression-body arrow instead of after it.</MessageFormat>
+    <Title>Add newline before expression body arrow instead of after it (or vice versa).</Title>
+    <MessageFormat>Add newline before expression body arrow instead of after it.</MessageFormat>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -810,7 +810,7 @@ namespace N
     </Samples>
     <Options>
       <Option Identifier="AddNewLineAfterExpressionBodyArrowInsteadOfBeforeIt">
-        <Title>Add newline after expression-body arrow instead of before it.</Title>
+        <Title>Add newline after expression body arrow instead of before it.</Title>
         <Id>i</Id>
         <OptionKey>invert</OptionKey>
         <Kind>Invert</Kind>

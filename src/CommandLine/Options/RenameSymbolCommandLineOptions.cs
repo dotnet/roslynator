@@ -50,7 +50,7 @@ namespace Roslynator.CommandLine
 
         [Option(
             longName: OptionNames.Match,
-            HelpText = "C# expression that can be used as a expression-body of a method 'bool M(ISymbol symbol)'.",
+            HelpText = "C# expression that can be used as a expression body of a method 'bool M(ISymbol symbol)'.",
             MetaValue = "<EXPRESSION>")]
         public string Match { get; set; }
 
@@ -68,7 +68,7 @@ namespace Roslynator.CommandLine
 
         [Option(
             longName: OptionNames.NewName,
-            HelpText = "C# expression that can be used as a expression-body of a method 'string M(ISymbol symbol)'",
+            HelpText = "C# expression that can be used as a expression body of a method 'string M(ISymbol symbol)'",
             MetaValue = "<EXPRESSION>")]
         public string NewName { get; set; }
 
