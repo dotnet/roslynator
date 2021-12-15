@@ -39,7 +39,7 @@ namespace Roslynator.CSharp.Refactorings
                     .FirstOrDefault(f => f.FullSpan.End == commaToken.FullSpan.Start);
 
                 if (argument != null)
-                    await ArgumentRefactoring.ComputeRefactoringsAsync(context, argument).ConfigureAwait(false);
+                    ArgumentRefactoring.ComputeRefactorings(context, argument);
             }
         }
     }

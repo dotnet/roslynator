@@ -17,7 +17,7 @@ namespace Roslynator.VisualStudio
 
         protected abstract string MaxId { get; }
 
-        protected HashSet<string> DisabledItems { get; } = new HashSet<string>();
+        protected Dictionary<string, bool> Items { get; } = new Dictionary<string, bool>();
 
         internal BaseOptionsPageControl Control { get; } = new BaseOptionsPageControl();
 
@@ -34,10 +34,10 @@ namespace Roslynator.VisualStudio
             }
         }
 
-        internal IEnumerable<string> GetDisabledItems()
+        internal IEnumerable<KeyValuePair<string, bool>> GetItems()
         {
-            foreach (string id in DisabledItems)
-                yield return id;
+            foreach (KeyValuePair<string, bool> kvp in Items)
+                yield return kvp;
         }
 
         public void CheckNewItemsDisabledByDefault(IEnumerable<string> itemsDisabledByDefault)
@@ -46,10 +46,10 @@ namespace Roslynator.VisualStudio
 
             if (string.IsNullOrEmpty(LastMaxId))
             {
-                if (DisabledItems.Count == 0)
+                if (Items.Count == 0)
                 {
                     foreach (string id in itemsDisabledByDefault)
-                        DisabledItems.Add(id);
+                        Items.Add(id, false);
                 }
 
                 shouldSave = true;
@@ -59,7 +59,7 @@ namespace Roslynator.VisualStudio
                 foreach (string id in itemsDisabledByDefault)
                 {
                     if (string.CompareOrdinal(LastMaxId, id) < 0)
-                        DisabledItems.Add(id);
+                        Items[id] = false;
                 }
 
                 shouldSave = true;
@@ -88,33 +88,31 @@ namespace Roslynator.VisualStudio
         {
             if (e.ApplyBehavior == ApplyKind.Apply)
             {
-                OnApply();
+                foreach (BaseModel model in Control.Items)
+                    SetIsEnabled(model.Id, model.Enabled);
             }
 
             base.OnApply(e);
         }
 
-        protected virtual void OnApply()
+        protected void SetIsEnabled(string id, bool? isEnabled)
         {
-            foreach (BaseModel model in Control.Items)
-                SetIsEnabled(model.Id, model.Enabled);
-        }
-
-        protected void SetIsEnabled(string id, bool isEnabled)
-        {
-            if (isEnabled)
+            if (isEnabled.HasValue)
             {
-                DisabledItems.Remove(id);
+                Items[id] = isEnabled.Value;
             }
             else
             {
-                DisabledItems.Add(id);
+                Items.Remove(id);
             }
         }
 
-        protected bool IsEnabled(string id)
+        protected bool? IsEnabled(string id)
         {
-            return !DisabledItems.Contains(id);
+            if (Items.TryGetValue(id, out bool enabled))
+                return enabled;
+
+            return null;
         }
     }
 }

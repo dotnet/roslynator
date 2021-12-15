@@ -65,7 +65,7 @@
             </GridViewColumn.Header>
             <GridViewColumn.CellTemplate>
               <DataTemplate>
-                <CheckBox IsChecked="{Binding Enabled}" />
+                <CheckBox IsChecked="{Binding Enabled}" IsThreeState="True" />
               </DataTemplate>
             </GridViewColumn.CellTemplate>
           </GridViewColumn>

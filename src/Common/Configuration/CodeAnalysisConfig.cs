@@ -120,24 +120,6 @@ namespace Roslynator.Configuration
             return (!Refactorings.TryGetValue(id, out bool enabled)) || enabled;
         }
 
-        internal IEnumerable<string> GetDisabledRefactorings()
-        {
-            foreach (KeyValuePair<string, bool> kvp in Refactorings)
-            {
-                if (!kvp.Value)
-                    yield return kvp.Key;
-            }
-        }
-
-        internal IEnumerable<string> GetDisabledCodeFixes()
-        {
-            foreach (KeyValuePair<string, bool> kvp in CodeFixes)
-            {
-                if (!kvp.Value)
-                    yield return kvp.Key;
-            }
-        }
-
         public DiagnosticSeverity? GetDiagnosticSeverity(string id, string category)
         {
             return EditorConfig.GetDiagnosticSeverity(id, category)

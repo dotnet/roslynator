@@ -472,7 +472,7 @@ namespace Roslynator.CSharp.Refactorings
                             if (flags.IsSet(Flag.Argument))
                                 continue;
 
-                            await ArgumentRefactoring.ComputeRefactoringsAsync(this, (ArgumentSyntax)node).ConfigureAwait(false);
+                            ArgumentRefactoring.ComputeRefactorings(this, (ArgumentSyntax)node);
                             flags.Set(Flag.Argument);
                             continue;
                         }
@@ -499,7 +499,7 @@ namespace Roslynator.CSharp.Refactorings
                             if (flags.IsSet(Flag.ArrowExpressionClause))
                                 continue;
 
-                            await ArrowExpressionClauseRefactoring.ComputeRefactoringsAsync(this, (ArrowExpressionClauseSyntax)node).ConfigureAwait(false);
+                            ArrowExpressionClauseRefactoring.ComputeRefactorings(this, (ArrowExpressionClauseSyntax)node);
                             flags.Set(Flag.ArrowExpressionClause);
                             continue;
                         }
@@ -580,7 +580,6 @@ namespace Roslynator.CSharp.Refactorings
                             if (flags.IsSet(Flag.CaseSwitchLabel))
                                 continue;
 
-                            await CaseSwitchLabelRefactoring.ComputeRefactoringsAsync(this, (CaseSwitchLabelSyntax)node).ConfigureAwait(false);
                             flags.Set(Flag.CaseSwitchLabel);
                             continue;
                         }

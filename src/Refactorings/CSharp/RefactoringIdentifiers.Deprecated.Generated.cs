@@ -11,6 +11,8 @@ namespace Roslynator.CSharp.Refactorings
         [Obsolete("", error: false)]
         public const string AddDefaultValueToReturnStatement = Prefix + "0008";
         [Obsolete("", error: false)]
+        public const string AddExplicitCast = Prefix + "0006";
+        [Obsolete("", error: false)]
         public const string AddIdentifierToParameter = Prefix + "0012";
         [Obsolete("", error: false)]
         public const string AddIdentifierToVariableDeclaration = Prefix + "0010";

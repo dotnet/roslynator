@@ -16,8 +16,6 @@ namespace Roslynator.VisualStudio
 {
     public partial class GeneralOptionsPageControl : UserControl, INotifyPropertyChanged
     {
-        private bool _prefixFieldIdentifierWithUnderscore;
-
         public GeneralOptionsPageControl()
         {
             InitializeComponent();
@@ -26,19 +24,6 @@ namespace Roslynator.VisualStudio
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-
-        public bool PrefixFieldIdentifierWithUnderscore
-        {
-            get { return _prefixFieldIdentifierWithUnderscore; }
-            set
-            {
-                if (_prefixFieldIdentifierWithUnderscore != value)
-                {
-                    _prefixFieldIdentifierWithUnderscore = value;
-                    OnPropertyChanged(nameof(PrefixFieldIdentifierWithUnderscore));
-                }
-            }
-        }
 
         protected virtual void OnPropertyChanged(string propertyName)
         {
@@ -68,48 +53,45 @@ namespace Roslynator.VisualStudio
 
             AbstractPackage package = AbstractPackage.Instance;
 
-            IEnumerable<string> disabledRefactorings = null;
+            IEnumerable<KeyValuePair<string, bool>> refactorings = null;
 
             if (package.RefactoringsOptionsPage.IsLoaded)
             {
-                disabledRefactorings = package.RefactoringsOptionsPage
+                refactorings = package.RefactoringsOptionsPage
                     .Control
                     .Items
-                    .Where(f => !f.Enabled)
-                    .Select(f => f.Id);
+                    .Where(f => f.Enabled.HasValue)
+                    .Select(f => new KeyValuePair<string, bool>(f.Id, f.Enabled.Value));
             }
             else
             {
-                disabledRefactorings = package.RefactoringsOptionsPage.GetDisabledItems();
+                refactorings = package.RefactoringsOptionsPage.GetItems();
             }
 
-            IEnumerable<string> disabledCodeFixes = null;
+            IEnumerable<KeyValuePair<string, bool>> codeFixes = null;
 
             if (package.CodeFixesOptionsPage.IsLoaded)
             {
-                disabledCodeFixes = package.CodeFixesOptionsPage
+                codeFixes = package.CodeFixesOptionsPage
                     .Control
                     .Items
-                    .Where(f => !f.Enabled)
-                    .Select(f => f.Id);
+                    .Where(f => f.Enabled.HasValue)
+                    .Select(f => new KeyValuePair<string, bool>(f.Id, f.Enabled.Value));
             }
             else
             {
-                disabledCodeFixes = package.CodeFixesOptionsPage.GetDisabledItems();
+                codeFixes = package.CodeFixesOptionsPage.GetItems();
             }
 
-            var options = new Dictionary<string, string>()
-            {
-                [OptionKeys.PrefixFieldIdentifierWithUnderscore] = (PrefixFieldIdentifierWithUnderscore) ? "true" : "false"
-            };
+            var options = new Dictionary<string, string>();
 
             try
             {
                 EditorConfigCodeAnalysisConfig.Save(
                     dialog.FileName,
                     options: options,
-                    refactorings: disabledRefactorings.Select(f => new KeyValuePair<string, bool>(f, false)),
-                    codeFixes: disabledCodeFixes.Select(f => new KeyValuePair<string, bool>(f, false)));
+                    refactorings: refactorings,
+                    codeFixes: codeFixes);
             }
             catch (Exception ex) when (ex is IOException
                 || ex is UnauthorizedAccessException)
@@ -137,16 +119,21 @@ namespace Roslynator.VisualStudio
             package.RefactoringsOptionsPage.Load();
             package.CodeFixesOptionsPage.Load();
 
-            PrefixFieldIdentifierWithUnderscore = config.PrefixFieldIdentifierWithUnderscore ?? OptionDefaultValues.PrefixFieldIdentifierWithUnderscore;
+            Update(package.RefactoringsOptionsPage, config.GetRefactorings());
+            Update(package.CodeFixesOptionsPage, config.GetCodeFixes());
 
-            Update(package.RefactoringsOptionsPage, config.GetDisabledRefactorings().ToHashSet());
-            Update(package.CodeFixesOptionsPage, config.GetDisabledCodeFixes().ToHashSet());
-
-            static void Update(BaseOptionsPage optionsPage, HashSet<string> disabledIds)
+            static void Update(BaseOptionsPage optionsPage, IReadOnlyDictionary<string, bool> values)
             {
                 foreach (BaseModel model in optionsPage.Control.Items)
                 {
-                    model.Enabled = !disabledIds.Contains(model.Id);
+                    if (values.TryGetValue(model.Id, out bool enabled))
+                    {
+                        model.Enabled = enabled;
+                    }
+                    else
+                    {
+                        model.Enabled = null;
+                    }
                 }
             }
         }
@@ -154,6 +141,27 @@ namespace Roslynator.VisualStudio
         private static void ShowErrorMessage(Exception ex)
         {
             MessageBox.Show(ex.Message, null, MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+
+        private void OpenLocation_Click(object sender, RoutedEventArgs e)
+        {
+            string filePath = EditorConfigCodeAnalysisConfig.CreateDefaultConfigFileIfNotExists();
+
+            if (File.Exists(filePath))
+            {
+                try
+                {
+                    Process.Start("explorer.exe", $"/select, \"{filePath}\"");
+                }
+                catch (Exception ex) when (ex is InvalidOperationException
+                    || ex is FileNotFoundException
+                    || ex is Win32Exception)
+                {
+                    MessageBox.Show(ex.Message, null, MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+
+            e.Handled = true;
         }
     }
 }

@@ -155,7 +155,7 @@ namespace Roslynator.Configuration
 
                 content = content.Insert(
                     (match.Success) ? match.Length : 0,
-                    "<!-- IMPORTANT: THIS CONFIGURATION HAS BEEN MIGRATED TO roslynator.editorconfig -->" + Environment.NewLine);
+                    "<!-- IMPORTANT: THIS CONFIGURATION HAS BEEN MIGRATED TO .roslynatorconfig file -->" + Environment.NewLine);
 
                 File.WriteAllText(path, content);
                 File.Move(path, path + ".migrated");

@@ -29,7 +29,7 @@ namespace Roslynator.VisualStudio
 
         public string Comment { get; set; }
 
-        public ListSortDirection DefaultSortDirection { get; set; }
+        public ListSortDirection DefaultSortDirection { get; set; } = ListSortDirection.Descending;
 
         public ObservableCollection<BaseModel> Items { get; } = new ObservableCollection<BaseModel>();
 

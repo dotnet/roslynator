@@ -20,11 +20,8 @@ export function activate(context: vscode.ExtensionContext) {
 
 	context.subscriptions.push(
 		vscode.commands.registerCommand(
-			'roslynator.openConfigurationOfAnalyzers',
-			() => openRoslynatorConfiguration('roslynator.ruleset', configurationFileContent.ruleset, localAppDataPath)),
-		vscode.commands.registerCommand(
-			'roslynator.openConfigurationOfRefactoringsAndFixes',
-			() => openRoslynatorConfiguration('roslynator.config', configurationFileContent.config, localAppDataPath))
+			'roslynator.openDefaultConfigurationFile',
+			() => openRoslynatorConfiguration('.roslynatorconfig', configurationFileContent.roslynatorconfig, localAppDataPath))
 	);
 }
 

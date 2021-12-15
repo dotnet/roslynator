@@ -116,7 +116,7 @@ namespace Roslynator.CSharp
             TypeSyntax newType = ParseTypeName(typeName);
 
             return CodeAction.Create(
-                title ?? $"Cast to '{typeName}'",
+                title ?? "Add explicit cast",
                 ct => DocumentRefactorings.AddExplicitCastAsync(document, expression, newType, ct),
                 equivalenceKey);
         }

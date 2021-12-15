@@ -57,6 +57,7 @@ namespace Roslynator.Metadata
                 remarks: null,
                 samples: Samples,
                 links: null,
+                globalOptions: null,
                 options: null,
                 kind: Kind,
                 parent: parent);

@@ -102,6 +102,13 @@ namespace Roslynator.CSharp.Analysis
             if (variableDeclarator.SyntaxTree != property.SyntaxTree)
                 return;
 
+            if (variableDeclarator.IsParentKind(SyntaxKind.VariableDeclaration)
+                && variableDeclarator.Parent.Parent is FieldDeclarationSyntax fieldDeclaration
+                && fieldDeclaration.AttributeLists.Any())
+            {
+                return;
+            }
+
             if (!CheckPreprocessorDirectives(property))
                 return;
 

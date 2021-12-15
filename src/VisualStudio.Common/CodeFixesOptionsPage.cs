@@ -21,34 +21,49 @@ namespace Roslynator.VisualStudio
         }
 
         [Browsable(false)]
-        public string DisabledCodeFixes
+        public string DisabledCodeFixes { get; set; }
+
+        [Browsable(false)]
+        public string CodeFixes
         {
-            get { return string.Join(",", DisabledItems); }
+            get { return string.Join(",", Items.Select(f => (f.Value) ? f.Key : (f.Key + "!"))); }
             set
             {
-                DisabledItems.Clear();
+                Items.Clear();
 
                 if (!string.IsNullOrEmpty(value))
                 {
-                    foreach (string id in value.Split(','))
+                    foreach (string s in value.Split(','))
                     {
-                        if (id.Contains("."))
+                        string id = s;
+                        var enabled = true;
+
+                        if (s.EndsWith("!"))
                         {
-                            DisabledItems.Add(id);
+                            id = s.Remove(s.Length - 1);
+                            enabled = false;
                         }
-                        else if (id.StartsWith(CodeFixIdentifier.CodeFixIdPrefix, StringComparison.Ordinal))
+
+                        if (id.Length > 0)
                         {
-                            foreach (string compilerDiagnosticId in CodeFixMap.GetCompilerDiagnosticIds(id))
-                                DisabledItems.Add($"{compilerDiagnosticId}.{id}");
-                        }
-                        else if (id.StartsWith("CS", StringComparison.Ordinal))
-                        {
-                            foreach (string codeFixId in CodeFixMap.GetCodeFixIds(id))
-                                DisabledItems.Add($"{id}.{codeFixId}");
-                        }
-                        else
-                        {
-                            Debug.Fail(id);
+                            if (id.Contains("."))
+                            {
+                                Items[id] = enabled;
+                            }
+                            else if (id.StartsWith(CodeFixIdentifier.CodeFixIdPrefix, StringComparison.Ordinal))
+                            {
+                                foreach (string compilerDiagnosticId in CodeFixMap.GetCompilerDiagnosticIds(id))
+                                    Items[$"{compilerDiagnosticId}.{id}"] = enabled;
+                            }
+                            else if (id.StartsWith("CS", StringComparison.Ordinal))
+                            {
+                                foreach (string codeFixId in CodeFixMap.GetCodeFixIds(id))
+                                    Items[$"{id}.{codeFixId}"] = enabled;
+                            }
+                            else
+                            {
+                                Debug.Fail(id);
+                            }
                         }
                     }
                 }
@@ -65,18 +80,9 @@ namespace Roslynator.VisualStudio
             }
         }
 
-        protected override void OnApply()
-        {
-            foreach (BaseModel model in Control.Items)
-                SetIsEnabled(model.Id, model.Enabled);
-        }
-
         internal void UpdateConfig()
         {
-            IEnumerable<KeyValuePair<string, bool>> codeFixes = GetDisabledItems()
-                .Select(f => new KeyValuePair<string, bool>(f, false));
-
-            CodeAnalysisConfig.UpdateVisualStudioConfig(f =>  f.WithCodeFixes(codeFixes));
+            CodeAnalysisConfig.UpdateVisualStudioConfig(f =>  f.WithCodeFixes(GetItems()));
         }
 
         protected override void Fill(ICollection<BaseModel> items)

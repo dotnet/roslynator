@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -17,17 +16,34 @@ namespace Roslynator.VisualStudio
 
         [Category(RefactoringCategory)]
         [Browsable(false)]
-        public string DisabledRefactorings
+        public string DisabledRefactorings { get; set; }
+
+        [Category(RefactoringCategory)]
+        [Browsable(false)]
+        public string Refactorings
         {
-            get { return string.Join(",", DisabledItems); }
+            get { return string.Join(",", Items.Select(f => (f.Value) ? f.Key : (f.Key + "!"))); }
             set
             {
-                DisabledItems.Clear();
+                Items.Clear();
 
                 if (!string.IsNullOrEmpty(value))
                 {
                     foreach (string id in value.Split(','))
-                        DisabledItems.Add(id);
+                    {
+                        if (!string.IsNullOrWhiteSpace(id))
+                        {
+                            if (id.EndsWith("!"))
+                            {
+                                if (id.Length > 1)
+                                    Items[id.Remove(id.Length - 1)] = false;
+                            }
+                            else
+                            {
+                                Items[id] = true;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -44,10 +60,7 @@ namespace Roslynator.VisualStudio
 
         internal void UpdateConfig()
         {
-            IEnumerable<KeyValuePair<string, bool>> refactorings = GetDisabledItems()
-                .Select(f => new KeyValuePair<string, bool>(f, false));
-
-            CodeAnalysisConfig.UpdateVisualStudioConfig(f => f.WithRefactorings(refactorings));
+            CodeAnalysisConfig.UpdateVisualStudioConfig(f => f.WithRefactorings(GetItems()));
         }
     }
 }

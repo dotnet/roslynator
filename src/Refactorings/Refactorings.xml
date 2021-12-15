@@ -36,7 +36,7 @@
     </Syntaxes>
     <Span>case or default keyword</Span>
   </Refactoring>
-  <Refactoring Id="RR0006" Identifier="AddExplicitCast" Title="Add explicit cast">
+  <Refactoring Id="RR0006" Identifier="AddExplicitCast" Title="Add explicit cast" IsObsolete="true">
     <OptionKey>add_explicit_cast</OptionKey>
     <Syntaxes>
       <Syntax>argument</Syntax>

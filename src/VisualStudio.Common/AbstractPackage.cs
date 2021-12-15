@@ -1,10 +1,16 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 using System.Threading;
 using Microsoft.VisualStudio.Shell;
+using Roslynator.CodeFixes;
 using Roslynator.Configuration;
+using Roslynator.CSharp;
+using Roslynator.CSharp.Refactorings;
 
 #pragma warning disable RCS1090
 
@@ -63,12 +69,61 @@ namespace Roslynator.VisualStudio
                 generalOptionsPage.SaveSettingsToStorage();
             }
 
+            string disabledRefactorings = refactoringsOptionsPage.DisabledRefactorings;
+
+            if (!string.IsNullOrEmpty(disabledRefactorings))
+            {
+                disabledRefactorings = string.Join(",", disabledRefactorings.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Where(f => Regex.IsMatch(f, @"\ARR\d{4}\z")).Select(f => f + "!"));
+
+                disabledRefactorings = "RR0001!,RR0002!";
+
+                if (!string.IsNullOrEmpty(disabledRefactorings))
+                {
+                    string refactorings = refactoringsOptionsPage.Refactorings;
+
+                    if (!string.IsNullOrEmpty(refactorings))
+                        disabledRefactorings = "," + disabledRefactorings;
+
+                    refactoringsOptionsPage.Refactorings = disabledRefactorings;
+                }
+
+                refactoringsOptionsPage.DisabledRefactorings = "";
+            }
+
+            string disabledCodeFixes = codeFixesOptionsPage.DisabledCodeFixes;
+
+            if (!string.IsNullOrEmpty(disabledCodeFixes))
+            {
+                disabledCodeFixes = string.Join(",", disabledCodeFixes.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(f => f + "!"));
+
+                if (!string.IsNullOrEmpty(disabledCodeFixes))
+                {
+                    string codeFixes = codeFixesOptionsPage.CodeFixes;
+
+                    if (!string.IsNullOrEmpty(codeFixes))
+                        disabledCodeFixes = "," + disabledCodeFixes;
+
+                    codeFixesOptionsPage.CodeFixes = disabledCodeFixes;
+                }
+
+                codeFixesOptionsPage.DisabledCodeFixes = "";
+            }
+
             ConfigMigrator.MigrateToEditorConfig();
 
-            refactoringsOptionsPage.CheckNewItemsDisabledByDefault(CodeAnalysisConfig.Instance.GetDisabledRefactorings());
-            codeFixesOptionsPage.CheckNewItemsDisabledByDefault(CodeAnalysisConfig.Instance.GetDisabledCodeFixes());
+            List<string> refactoringsDisabledByDefault = typeof(RefactoringDescriptors)
+                .GetFields()
+                .Where(f => f.IsPublic)
+                .Select(f => (RefactoringDescriptor)f.GetValue(null))
+                .Where(f => !f.IsEnabledByDefault)
+                .Select(f => f.Id)
+                .ToList();
 
-            generalOptionsPage.UpdateConfig();
+            List<string> codeFixesDisabledByDefault = CodeFixDescriptors.GetCodeFixesDisabledByDefault().ToList();
+
+            refactoringsOptionsPage.CheckNewItemsDisabledByDefault(refactoringsDisabledByDefault);
+            codeFixesOptionsPage.CheckNewItemsDisabledByDefault(codeFixesDisabledByDefault);
+
             refactoringsOptionsPage.UpdateConfig();
             codeFixesOptionsPage.UpdateConfig();
         }

@@ -10,6 +10,7 @@ using Roslynator.CodeGeneration.CSharp;
 using Roslynator.Metadata;
 using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
+using Roslynator.CodeGeneration.EditorConfig;
 
 namespace Roslynator.CodeGeneration
 {
@@ -91,34 +92,19 @@ namespace Roslynator.CodeGeneration
                 @"CSharp\CSharp\SyntaxWalkers\CSharpSyntaxNodeWalker.cs",
                 CSharpSyntaxNodeWalkerGenerator.Generate());
 
-            string ruleSetXml = File.ReadAllText(Path.Combine(rootPath, @"Tools\CodeGeneration\DefaultRuleSet.xml"));
+            string configFileContent = EditorConfigGenerator.GenerateEditorConfig(metadata);
 
-            WriteCompilationUnit(
-                @"VisualStudio.Common\DefaultRuleSet.Generated.cs",
-                RuleSetGenerator.Generate(ruleSetXml));
+            File.WriteAllText(
+                Path.Combine(rootPath, "../docs/options.editorconfig"),
+                configFileContent);
 
             File.WriteAllText(
                 Path.Combine(rootPath, @"VisualStudioCode\package\src\configurationFiles.generated.ts"),
                 @"export const configurationFileContent = {
-	ruleset: `"
-                    + ruleSetXml
-                    + @"`,
-	config: `<?xml version=""1.0"" encoding=""utf-8""?>
-<Roslynator>
-  <Settings>
-    <General>
-      <!-- <PrefixFieldIdentifierWithUnderscore>true</PrefixFieldIdentifierWithUnderscore> -->
-    </General>
-    <Refactorings>
-      <!-- <Refactoring Id=""RRxxxx"" IsEnabled=""false"" /> -->
-    </Refactorings>
-    <CodeFixes>
-      <!-- <CodeFix Id=""CSxxxx.RCFxxxx"" IsEnabled=""false"" /> -->
-      <!-- <CodeFix Id=""CSxxxx"" IsEnabled=""false"" /> -->
-      <!-- <CodeFix Id=""RCFxxxx"" IsEnabled=""false"" /> -->
-    </CodeFixes>
-  </Settings>
-</Roslynator>`
+	roslynatorconfig: `is_global = true
+"
+                    + configFileContent
+                    + @"`
 };",
                 new UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
 

@@ -3,6 +3,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings
@@ -78,7 +79,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        private static Task<Document> RefactorAsync(
+        private static async Task<Document> RefactorAsync(
             Document document,
             LocalDeclarationStatementSyntax localDeclarationStatement,
             ExpressionSyntax value,
@@ -95,12 +96,23 @@ namespace Roslynator.CSharp.Refactorings
             {
                 TypeSyntax oldType = newNode.Declaration.Type;
 
-                TypeSyntax type = typeSymbol.ToTypeSyntax().WithSimplifierAnnotation().WithTriviaFrom(oldType);
+                TypeSyntax type = typeSymbol.ToTypeSyntax();
+
+                if (!type.IsKind(SyntaxKind.NullableType)
+                    && typeSymbol.IsReferenceType)
+                {
+                    SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
+                    if ((semanticModel.GetNullableContext(localDeclarationStatement.SpanStart) & NullableContext.AnnotationsEnabled) != 0)
+                        type = SyntaxFactory.NullableType(type);
+                }
+
+                type = type.WithSimplifierAnnotation().WithTriviaFrom(oldType);
 
                 newNode = newNode.ReplaceNode(oldType, type);
             }
 
-            return document.ReplaceNodeAsync(localDeclarationStatement, newNode, cancellationToken);
+            return await document.ReplaceNodeAsync(localDeclarationStatement, newNode, cancellationToken).ConfigureAwait(false);
         }
     }
 }

@@ -22,33 +22,6 @@ namespace Roslynator.CSharp.Refactorings
                     ct => ExpandCompoundAssignmentRefactoring.RefactorAsync(context.Document, assignmentExpression, ct),
                     RefactoringDescriptors.ExpandCompoundAssignment);
             }
-
-            if (context.IsRefactoringEnabled(RefactoringDescriptors.AddExplicitCast)
-                && assignmentExpression.IsKind(SyntaxKind.SimpleAssignmentExpression))
-            {
-                SimpleAssignmentExpressionInfo simpleAssignment = SyntaxInfo.SimpleAssignmentExpressionInfo(assignmentExpression);
-
-                ExpressionSyntax right = simpleAssignment.Right;
-
-                if (simpleAssignment.Success
-                    && right.Span.Contains(context.Span))
-                {
-                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                    ITypeSymbol leftSymbol = semanticModel.GetTypeSymbol(simpleAssignment.Left, context.CancellationToken);
-
-                    if (leftSymbol?.IsErrorType() == false)
-                    {
-                        ITypeSymbol rightSymbol = semanticModel.GetTypeSymbol(right, context.CancellationToken);
-
-                        if (rightSymbol?.IsErrorType() == false
-                            && !SymbolEqualityComparer.Default.Equals(leftSymbol, rightSymbol))
-                        {
-                            AddExplicitCastRefactoring.ComputeRefactoring(context, right, leftSymbol, semanticModel);
-                        }
-                    }
-                }
-            }
         }
     }
 }

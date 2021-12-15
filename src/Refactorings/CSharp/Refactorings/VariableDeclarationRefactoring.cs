@@ -20,9 +20,6 @@ namespace Roslynator.CSharp.Refactorings
 
             await ChangeVariableDeclarationTypeRefactoring.ComputeRefactoringsAsync(context, variableDeclaration).ConfigureAwait(false);
 
-           if (context.IsRefactoringEnabled(RefactoringDescriptors.AddExplicitCast))
-                await AddExplicitCastAsync(context, variableDeclaration).ConfigureAwait(false);
-
             if (context.IsRefactoringEnabled(RefactoringDescriptors.CheckExpressionForNull))
                 await CheckExpressionForNullRefactoring.ComputeRefactoringAsync(context, variableDeclaration).ConfigureAwait(false);
 
@@ -79,38 +76,6 @@ namespace Roslynator.CSharp.Refactorings
                 $"Rename '{oldName}' to '{newName}'",
                 ct => Renamer.RenameSymbolAsync(context.Solution, localSymbol, newName, default(OptionSet), ct),
                 RefactoringDescriptors.RenameIdentifierAccordingToTypeName);
-        }
-
-        private static async Task AddExplicitCastAsync(
-            RefactoringContext context,
-            VariableDeclarationSyntax variableDeclaration)
-        {
-            if (variableDeclaration.Type?.IsVar != false)
-                return;
-
-            VariableDeclaratorSyntax declarator = variableDeclaration
-                .Variables
-                .FirstOrDefault(f => f.Initializer?.Value?.Span.Contains(context.Span) == true);
-
-            if (declarator == null)
-                return;
-
-            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-            ITypeSymbol declarationType = semanticModel.GetTypeSymbol(variableDeclaration.Type, context.CancellationToken);
-
-            if (declarationType?.IsErrorType() != false)
-                return;
-
-            ITypeSymbol expressionType = semanticModel.GetTypeSymbol(declarator.Initializer.Value, context.CancellationToken);
-
-            if (expressionType?.IsErrorType() != false)
-                return;
-
-            if (SymbolEqualityComparer.Default.Equals(declarationType, expressionType))
-                return;
-
-            AddExplicitCastRefactoring.ComputeRefactoring(context, declarator.Initializer.Value, declarationType, semanticModel);
         }
     }
 }
