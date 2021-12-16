@@ -3224,40 +3224,10 @@ namespace Roslynator.CSharp
                             return false;
                         }
 #if DEBUG
-                    case SyntaxKind.AddAssignmentExpression:
-                    case SyntaxKind.AndAssignmentExpression:
                     case SyntaxKind.Argument:
                     case SyntaxKind.ArgumentList:
-                    case SyntaxKind.AwaitExpression:
-                    case SyntaxKind.CoalesceAssignmentExpression:
-                    case SyntaxKind.CoalesceExpression:
-                    case SyntaxKind.ConditionalAccessExpression:
-                    case SyntaxKind.ConditionalExpression:
-                    case SyntaxKind.DivideAssignmentExpression:
-                    case SyntaxKind.ElementAccessExpression:
-                    case SyntaxKind.EqualsExpression:
                     case SyntaxKind.EqualsValueClause:
-                    case SyntaxKind.ExclusiveOrAssignmentExpression:
-                    case SyntaxKind.ImplicitObjectCreationExpression:
-                    case SyntaxKind.InterpolatedStringExpression:
                     case SyntaxKind.Interpolation:
-                    case SyntaxKind.InvocationExpression:
-                    case SyntaxKind.LeftShiftAssignmentExpression:
-                    case SyntaxKind.LogicalAndExpression:
-                    case SyntaxKind.LogicalNotExpression:
-                    case SyntaxKind.LogicalOrExpression:
-                    case SyntaxKind.ModuloAssignmentExpression:
-                    case SyntaxKind.MultiplyAssignmentExpression:
-                    case SyntaxKind.NotEqualsExpression:
-                    case SyntaxKind.ObjectCreationExpression:
-                    case SyntaxKind.ObjectInitializerExpression:
-                    case SyntaxKind.OrAssignmentExpression:
-                    case SyntaxKind.ParenthesizedExpression:
-                    case SyntaxKind.RightShiftAssignmentExpression:
-                    case SyntaxKind.SimpleAssignmentExpression:
-                    case SyntaxKind.SimpleMemberAccessExpression:
-                    case SyntaxKind.SubtractAssignmentExpression:
-                    case SyntaxKind.SwitchExpression:
                     case SyntaxKind.SwitchExpressionArm:
                     case SyntaxKind.VariableDeclaration:
                     case SyntaxKind.VariableDeclarator:
@@ -3266,7 +3236,7 @@ namespace Roslynator.CSharp
                         }
                     default:
                         {
-                            SyntaxDebug.Fail(current);
+                            SyntaxDebug.Assert(current is ExpressionSyntax, current);
                             break;
                         }
 #endif
