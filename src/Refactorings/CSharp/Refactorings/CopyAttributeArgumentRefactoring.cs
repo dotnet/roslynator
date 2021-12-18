@@ -7,7 +7,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class DuplicateAttributeArgumentRefactoring
+    internal static class CopyAttributeArgumentRefactoring
     {
         public static void ComputeRefactoring(RefactoringContext context, AttributeArgumentListSyntax argumentList)
         {
@@ -20,9 +20,9 @@ namespace Roslynator.CSharp.Refactorings
                 return;
 
             context.RegisterRefactoring(
-                "Duplicate argument",
+                "Copy argument",
                 ct => RefactorAsync(context.Document, argument, ct),
-                RefactoringDescriptors.DuplicateArgument);
+                RefactoringDescriptors.CopyArgument);
         }
 
         private static AttributeArgumentSyntax GetArgument(RefactoringContext context, AttributeArgumentListSyntax argumentList)

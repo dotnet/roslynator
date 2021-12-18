@@ -20,10 +20,10 @@ namespace Roslynator.CSharp.Refactorings
 
             await AddOrRemoveArgumentNameRefactoring.ComputeRefactoringsAsync(context, argumentList).ConfigureAwait(false);
 
-            if (context.IsRefactoringEnabled(RefactoringDescriptors.DuplicateArgument))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.CopyArgument))
             {
-                var refactoring = new DuplicateArgumentRefactoring(argumentList);
-                refactoring.ComputeRefactoring(context, RefactoringDescriptors.DuplicateArgument);
+                var refactoring = new CopyArgumentRefactoring(argumentList);
+                refactoring.ComputeRefactoring(context, RefactoringDescriptors.CopyArgument);
             }
 
             if (context.IsRefactoringEnabled(RefactoringDescriptors.WrapArguments)

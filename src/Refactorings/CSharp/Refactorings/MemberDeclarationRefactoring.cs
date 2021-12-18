@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Text;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -33,7 +32,7 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         if (context.IsAnyRefactoringEnabled(
                             RefactoringDescriptors.RemoveMemberDeclaration,
-                            RefactoringDescriptors.DuplicateMemberDeclaration,
+                            RefactoringDescriptors.CopyMemberDeclaration,
                             RefactoringDescriptors.CommentOutMemberDeclaration))
                         {
                             (SyntaxToken openBrace, SyntaxToken closeBrace) = GetBraces(member);
@@ -51,16 +50,16 @@ namespace Roslynator.CSharp.Refactorings
                                         context.RegisterRefactoring(CodeActionFactory.RemoveMemberDeclaration(context.Document, member, equivalenceKey: EquivalenceKey.Create(RefactoringDescriptors.RemoveMemberDeclaration)));
                                     }
 
-                                    if (context.IsRefactoringEnabled(RefactoringDescriptors.DuplicateMemberDeclaration))
+                                    if (context.IsRefactoringEnabled(RefactoringDescriptors.CopyMemberDeclaration))
                                     {
                                         context.RegisterRefactoring(
-                                            $"Duplicate {CSharpFacts.GetTitle(member)}",
-                                            ct => DuplicateMemberDeclarationRefactoring.RefactorAsync(
+                                            $"Copy {CSharpFacts.GetTitle(member)}",
+                                            ct => CopyMemberDeclarationRefactoring.RefactorAsync(
                                                 context.Document,
                                                 member,
                                                 copyAfter: closeBrace.Span.Contains(context.Span),
                                                 ct),
-                                            RefactoringDescriptors.DuplicateMemberDeclaration);
+                                            RefactoringDescriptors.CopyMemberDeclaration);
                                     }
                                 }
 

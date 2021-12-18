@@ -236,14 +236,14 @@
       <Image>CopyDocumentationCommentFromImplementedMember</Image>
     </Images>
   </Refactoring>
-  <Refactoring Id="RR0030" Identifier="DuplicateArgument" Title="Duplicate argument">
-    <OptionKey>duplicate_argument</OptionKey>
+  <Refactoring Id="RR0030" Identifier="CopyArgument" Title="Copy argument">
+    <OptionKey>copy_argument</OptionKey>
     <Syntaxes>
       <Syntax>missing argument</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0031" Identifier="DuplicateMemberDeclaration" Title="Duplicate member declaration">
-    <OptionKey>duplicate_member_declaration</OptionKey>
+  <Refactoring Id="RR0031" Identifier="CopyMemberDeclaration" Title="Copy member declaration">
+    <OptionKey>copy_member_declaration</OptionKey>
     <Syntaxes>
       <Syntax>method</Syntax>
       <Syntax>constructor</Syntax>
@@ -258,14 +258,14 @@
     </Syntaxes>
     <Span>opening or closing brace</Span>
   </Refactoring>
-  <Refactoring Id="RR0032" Identifier="DuplicateParameter" Title="Duplicate parameter">
-    <OptionKey>duplicate_parameter</OptionKey>
+  <Refactoring Id="RR0032" Identifier="CopyParameter" Title="Copy parameter">
+    <OptionKey>copy_parameter</OptionKey>
     <Syntaxes>
       <Syntax>missing parameter</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0033" Identifier="DuplicateStatement" Title="Duplicate statement">
-    <OptionKey>duplicate_statement</OptionKey>
+  <Refactoring Id="RR0033" Identifier="CopyStatement" Title="Copy statement">
+    <OptionKey>copy_statement</OptionKey>
     <Syntaxes>
       <Syntax>do statement</Syntax>
       <Syntax>fixed statement</Syntax>
@@ -2451,8 +2451,8 @@ else
       </Sample>
     </Samples>
   </Refactoring>
-  <Refactoring Id="RR0212" Identifier="DuplicateSwitchSection" Title="Duplicate switch section">
-	<OptionKey>duplicate_switch_section</OptionKey>
+  <Refactoring Id="RR0212" Identifier="CopySwitchSection" Title="Copy switch section">
+	<OptionKey>copy_switch_section</OptionKey>
     <Syntaxes>
       <Syntax>switch section</Syntax>
     </Syntaxes>

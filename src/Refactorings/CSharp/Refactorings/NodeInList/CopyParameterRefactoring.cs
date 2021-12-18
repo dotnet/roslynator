@@ -5,10 +5,10 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings.NodeInList
 {
-    internal class DuplicateArgumentRefactoring : DuplicateArgumentOrParameterRefactoring<ArgumentSyntax, ArgumentListSyntax>
+    internal class CopyParameterRefactoring : CopyArgumentOrParameterRefactoring<ParameterSyntax, ParameterListSyntax>
     {
-        public DuplicateArgumentRefactoring(ArgumentListSyntax listSyntax)
-            : base(listSyntax, listSyntax.Arguments)
+        public CopyParameterRefactoring(ParameterListSyntax listSyntax)
+            : base(listSyntax, listSyntax.Parameters)
         {
         }
 
@@ -22,14 +22,14 @@ namespace Roslynator.CSharp.Refactorings.NodeInList
             return ListSyntax.CloseParenToken;
         }
 
-        protected override NodeSyntaxRewriter<ArgumentSyntax> GetRewriter(RewriterInfo<ArgumentSyntax> info)
-        {
-            return new ArgumentSyntaxRewriter(info);
-        }
-
         protected override string GetTitle(params string[] args)
         {
-            return "Duplicate argument";
+            return "Copy parameter";
+        }
+
+        protected override NodeSyntaxRewriter<ParameterSyntax> GetRewriter(RewriterInfo<ParameterSyntax> info)
+        {
+            return new ParameterSyntaxRewriter(info);
         }
     }
 }

@@ -13,7 +13,7 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class DuplicateMemberDeclarationRefactoring
+    internal static class CopyMemberDeclarationRefactoring
     {
         public static async Task<Document> RefactorAsync(
             Document document,

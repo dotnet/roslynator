@@ -17,10 +17,10 @@ namespace Roslynator.CSharp.Refactorings
 
             if (parameters.Any())
             {
-                if (context.IsRefactoringEnabled(RefactoringDescriptors.DuplicateParameter))
+                if (context.IsRefactoringEnabled(RefactoringDescriptors.CopyParameter))
                 {
-                    var refactoring = new DuplicateParameterRefactoring(parameterList);
-                    refactoring.ComputeRefactoring(context, RefactoringDescriptors.DuplicateParameter);
+                    var refactoring = new CopyParameterRefactoring(parameterList);
+                    refactoring.ComputeRefactoring(context, RefactoringDescriptors.CopyParameter);
                 }
 
                 if (context.IsRefactoringEnabled(RefactoringDescriptors.CheckParameterForNull)
