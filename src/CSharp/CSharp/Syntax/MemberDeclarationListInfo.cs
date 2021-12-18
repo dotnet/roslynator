@@ -173,8 +173,9 @@ namespace Roslynator.CSharp.Syntax
                         return new MemberDeclarationListInfo(compilationUnit, compilationUnit.Members);
                     }
                 case SyntaxKind.NamespaceDeclaration:
+                case SyntaxKind.FileScopedNamespaceDeclaration:
                     {
-                        var namespaceDeclaration = (NamespaceDeclarationSyntax)node;
+                        var namespaceDeclaration = (BaseNamespaceDeclarationSyntax)node;
                         return new MemberDeclarationListInfo(namespaceDeclaration, namespaceDeclaration.Members);
                     }
                 case SyntaxKind.ClassDeclaration:
@@ -222,8 +223,9 @@ namespace Roslynator.CSharp.Syntax
                         return new MemberDeclarationListInfo(compilationUnit, compilationUnit.Members);
                     }
                 case SyntaxKind.NamespaceDeclaration:
+                case SyntaxKind.FileScopedNamespaceDeclaration:
                     {
-                        var declaration = (NamespaceDeclarationSyntax)Parent;
+                        var declaration = (BaseNamespaceDeclarationSyntax)Parent;
                         declaration = declaration.WithMembers(members);
                         return new MemberDeclarationListInfo(declaration, declaration.Members);
                     }
@@ -275,8 +277,9 @@ namespace Roslynator.CSharp.Syntax
                         return new MemberDeclarationListInfo(compilationUnit, compilationUnit.Members);
                     }
                 case SyntaxKind.NamespaceDeclaration:
+                case SyntaxKind.FileScopedNamespaceDeclaration:
                     {
-                        var declaration = (NamespaceDeclarationSyntax)Parent;
+                        var declaration = (BaseNamespaceDeclarationSyntax)Parent;
                         declaration = declaration.RemoveNode(node, options);
                         return new MemberDeclarationListInfo(declaration, declaration.Members);
                     }
@@ -328,8 +331,9 @@ namespace Roslynator.CSharp.Syntax
                         return new MemberDeclarationListInfo(compilationUnit, compilationUnit.Members);
                     }
                 case SyntaxKind.NamespaceDeclaration:
+                case SyntaxKind.FileScopedNamespaceDeclaration:
                     {
-                        var declaration = (NamespaceDeclarationSyntax)Parent;
+                        var declaration = (BaseNamespaceDeclarationSyntax)Parent;
                         declaration = declaration.ReplaceNode(oldNode, newNode);
                         return new MemberDeclarationListInfo(declaration, declaration.Members);
                     }

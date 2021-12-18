@@ -242,7 +242,7 @@
       <Syntax>missing argument</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0031" Identifier="DuplicateMember" Title="Duplicate member">
+  <Refactoring Id="RR0031" Identifier="DuplicateMemberDeclaration" Title="Duplicate member declaration">
     <OptionKey>duplicate_member_declaration</OptionKey>
     <Syntaxes>
       <Syntax>method</Syntax>

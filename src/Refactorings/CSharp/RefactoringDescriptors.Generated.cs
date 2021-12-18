@@ -65,7 +65,7 @@ namespace Roslynator.CSharp.Refactorings
         public static RefactoringDescriptor ConvertWhileToFor = new RefactoringDescriptor("RR0151", "roslynator.refactoring.convert_while_to_for.enabled", isEnabledByDefault: true);
         public static RefactoringDescriptor CopyDocumentationCommentFromBaseMember = new RefactoringDescriptor("RR0029", "roslynator.refactoring.copy_documentation_comment_from_base_member.enabled", isEnabledByDefault: true);
         public static RefactoringDescriptor DuplicateArgument = new RefactoringDescriptor("RR0030", "roslynator.refactoring.duplicate_argument.enabled", isEnabledByDefault: true);
-        public static RefactoringDescriptor DuplicateMember = new RefactoringDescriptor("RR0031", "roslynator.refactoring.duplicate_member_declaration.enabled", isEnabledByDefault: true);
+        public static RefactoringDescriptor DuplicateMemberDeclaration = new RefactoringDescriptor("RR0031", "roslynator.refactoring.duplicate_member_declaration.enabled", isEnabledByDefault: true);
         public static RefactoringDescriptor DuplicateParameter = new RefactoringDescriptor("RR0032", "roslynator.refactoring.duplicate_parameter.enabled", isEnabledByDefault: true);
         public static RefactoringDescriptor DuplicateStatement = new RefactoringDescriptor("RR0033", "roslynator.refactoring.duplicate_statement.enabled", isEnabledByDefault: true);
         public static RefactoringDescriptor DuplicateSwitchSection = new RefactoringDescriptor("RR0212", "roslynator.refactoring.duplicate_switch_section.enabled", isEnabledByDefault: true);

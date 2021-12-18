@@ -67,7 +67,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string ConvertWhileToFor = Prefix + "0151";
         public const string CopyDocumentationCommentFromBaseMember = Prefix + "0029";
         public const string DuplicateArgument = Prefix + "0030";
-        public const string DuplicateMember = Prefix + "0031";
+        public const string DuplicateMemberDeclaration = Prefix + "0031";
         public const string DuplicateParameter = Prefix + "0032";
         public const string DuplicateStatement = Prefix + "0033";
         public const string DuplicateSwitchSection = Prefix + "0212";
