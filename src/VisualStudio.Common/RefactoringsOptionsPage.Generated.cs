@@ -33,10 +33,10 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.CommentOutMemberDeclaration, "Comment out member declaration", IsEnabled(RefactoringIdentifiers.CommentOutMemberDeclaration)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.CommentOutStatement, "Comment out statement", IsEnabled(RefactoringIdentifiers.CommentOutStatement)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.CopyDocumentationCommentFromBaseMember, "Copy documentation comment from base member", IsEnabled(RefactoringIdentifiers.CopyDocumentationCommentFromBaseMember)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.DuplicateArgument, "Duplicate argument", IsEnabled(RefactoringIdentifiers.DuplicateArgument)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.DuplicateMember, "Duplicate member", IsEnabled(RefactoringIdentifiers.DuplicateMember)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.DuplicateParameter, "Duplicate parameter", IsEnabled(RefactoringIdentifiers.DuplicateParameter)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.DuplicateStatement, "Duplicate statement", IsEnabled(RefactoringIdentifiers.DuplicateStatement)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.CopyArgument, "Copy argument", IsEnabled(RefactoringIdentifiers.CopyArgument)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.CopyMemberDeclaration, "Copy member declaration", IsEnabled(RefactoringIdentifiers.CopyMemberDeclaration)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.CopyParameter, "Copy parameter", IsEnabled(RefactoringIdentifiers.CopyParameter)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.CopyStatement, "Copy statement", IsEnabled(RefactoringIdentifiers.CopyStatement)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ExpandCompoundAssignment, "Expand compound assignment", IsEnabled(RefactoringIdentifiers.ExpandCompoundAssignment)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ExpandCoalesceExpression, "Expand coalesce expression", IsEnabled(RefactoringIdentifiers.ExpandCoalesceExpression)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ExpandEventDeclaration, "Expand event declaration", IsEnabled(RefactoringIdentifiers.ExpandEventDeclaration)));
@@ -163,7 +163,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.UseCoalesceExpressionInsteadOfIf, "Use coalesce expression instead of if", IsEnabled(RefactoringIdentifiers.UseCoalesceExpressionInsteadOfIf)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertIfToConditionalExpression, "Convert 'if' to ?:", IsEnabled(RefactoringIdentifiers.ConvertIfToConditionalExpression)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.UseElementAccessInsteadOfLinqMethod, "Use element access instead of LINQ method", IsEnabled(RefactoringIdentifiers.UseElementAccessInsteadOfLinqMethod)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertBlockBodyToExpressionBody, "Convert block body to expression-body", IsEnabled(RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertBlockBodyToExpressionBody, "Convert block body to expression body", IsEnabled(RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.UseLambdaInsteadOfAnonymousMethod, "Use lambda instead of anonymous method", IsEnabled(RefactoringIdentifiers.UseLambdaInsteadOfAnonymousMethod)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.UseStringEmptyInsteadOfEmptyStringLiteral, "Convert \"\" to string.Empty", IsEnabled(RefactoringIdentifiers.UseStringEmptyInsteadOfEmptyStringLiteral)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.WrapStatementsInCondition, "Wrap statements in condition", IsEnabled(RefactoringIdentifiers.WrapStatementsInCondition)));
@@ -204,7 +204,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.RemoveAsyncAwait, "Remove async/await", IsEnabled(RefactoringIdentifiers.RemoveAsyncAwait)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ImplementCustomEnumerator, "Implement custom enumerator", IsEnabled(RefactoringIdentifiers.ImplementCustomEnumerator)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertStatementsToIfElse, "Convert statements to if-else", IsEnabled(RefactoringIdentifiers.ConvertStatementsToIfElse)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.DuplicateSwitchSection, "Duplicate switch section", IsEnabled(RefactoringIdentifiers.DuplicateSwitchSection)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.CopySwitchSection, "Copy switch section", IsEnabled(RefactoringIdentifiers.CopySwitchSection)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.AddParameterToInterfaceMember, "Add parameter to interface member", IsEnabled(RefactoringIdentifiers.AddParameterToInterfaceMember)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertSwitchExpressionToSwitchStatement, "Convert 'switch' expression to 'switch' statement", IsEnabled(RefactoringIdentifiers.ConvertSwitchExpressionToSwitchStatement)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ExpandPositionalConstructor, "Expand positional constructor", IsEnabled(RefactoringIdentifiers.ExpandPositionalConstructor)));

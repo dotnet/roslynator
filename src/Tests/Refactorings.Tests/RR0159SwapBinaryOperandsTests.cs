@@ -34,7 +34,7 @@ class C
         if ([||]) { }
     }
 }
-", source, expected, equivalenceKey: RefactoringId);
+", source, expected, equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Theory, Trait(Traits.Refactoring, RefactoringIdentifiers.SwapBinaryOperands)]
@@ -50,7 +50,7 @@ class C
         int k = [||];
     }
 }
-", source, expected, equivalenceKey: RefactoringId);
+", source, expected, equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SwapBinaryOperands)]
@@ -72,7 +72,7 @@ class C
         bool f = f2 {|n:&|} f1;
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SwapBinaryOperands)]
@@ -94,7 +94,7 @@ class C
         bool f = f2 | f1;
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SwapBinaryOperands)]
@@ -116,7 +116,7 @@ class C
         bool f = f2 ^ f1;
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SwapBinaryOperands)]
@@ -133,7 +133,7 @@ class C
         if (f =[||]= true) { }
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
     }
 }

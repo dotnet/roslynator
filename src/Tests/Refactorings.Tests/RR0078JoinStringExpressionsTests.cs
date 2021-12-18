@@ -29,7 +29,7 @@ class C
         s = s + ""ab"";
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.JoinStringExpressions)]
@@ -51,7 +51,7 @@ class C
         s1 = $""{s1}a{s2}b{s3}"";
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.JoinStringExpressions)]
@@ -75,7 +75,7 @@ class C
         s = $""{{}}{s}"";
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.JoinStringExpressions)]
@@ -99,7 +99,7 @@ class C
         s = $"" \"" {{}}  \"" {s} "";
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.JoinStringExpressions)]
@@ -123,7 +123,7 @@ class C
         s = $"" \"" {{}}  \"" {s} "";
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.JoinStringExpressions)]
@@ -148,7 +148,7 @@ class C
         s = "" \r\n \r\n"";
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.JoinStringExpressions)]
@@ -174,7 +174,7 @@ class C
  "";
     }
 }
-", equivalenceKey: EquivalenceKey.Join(RefactoringId, "Multiline"));
+", equivalenceKey: EquivalenceKey.Create(RefactoringId, "Multiline"));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.JoinStringExpressions)]
@@ -200,7 +200,7 @@ class C
             ""abc"";
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.JoinStringExpressions)]
@@ -228,7 +228,7 @@ class C
 ;
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.JoinStringExpressions)]
@@ -256,7 +256,7 @@ class C
     }
 #endif
 }
-", equivalenceKey: RefactoringId, options: Options.WithDebugPreprocessorSymbol());
+", equivalenceKey: EquivalenceKey.Create(RefactoringId), options: Options.WithDebugPreprocessorSymbol());
         }
     }
 }

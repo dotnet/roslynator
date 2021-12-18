@@ -33,7 +33,7 @@ class C
         var y = (C)x;
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
     }
 }

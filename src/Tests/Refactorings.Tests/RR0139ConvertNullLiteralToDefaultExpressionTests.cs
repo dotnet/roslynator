@@ -29,7 +29,7 @@ class C
         M(default(C));
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertNullLiteralToDefaultExpression)]
@@ -51,7 +51,7 @@ class C
         return default(object);
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertNullLiteralToDefaultExpression)]
@@ -64,7 +64,7 @@ class C
     {
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
     }
 }

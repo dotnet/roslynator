@@ -28,8 +28,8 @@ namespace Roslynator.CSharp.Refactorings
                 }
             }
 
-            if (context.IsRefactoringEnabled(RefactoringDescriptors.DuplicateSwitchSection))
-                DuplicateSwitchSectionRefactoring.ComputeRefactoring(context, switchStatement);
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.CopySwitchSection))
+                CopySwitchSectionRefactoring.ComputeRefactoring(context, switchStatement);
         }
     }
 }

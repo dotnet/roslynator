@@ -43,7 +43,7 @@ class C
         var x = new C() { P1 = , P2 = , P3 = , P4 = };
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddAllPropertiesToInitializer)]
@@ -83,7 +83,7 @@ record C
 }
 
 namespace System.Runtime.CompilerServices { internal static class IsExternalInit {} }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddAllPropertiesToInitializer)]
@@ -123,7 +123,7 @@ class C2 : C
         var x = new C2() { P0 = null, P1 = , P2 = };
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddAllPropertiesToInitializer)]
@@ -159,7 +159,7 @@ class C2 : C
         var x = new C2() { P0 = null, P1 = , P2 = };
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddAllPropertiesToInitializer)]
@@ -199,7 +199,7 @@ class C2 : C
         };
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddAllPropertiesToInitializer)]
@@ -216,7 +216,7 @@ class C
         var x = new C() { P1 = null, P2 = 0 [||] };
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddAllPropertiesToInitializer)]
@@ -230,7 +230,7 @@ class C
         var x = new {[||] P = 0 };
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
     }
 }

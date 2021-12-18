@@ -37,9 +37,8 @@
     <WrapPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Left">
       <TextBox Text="{Binding Comment}" Margin="0,5,0,0" IsReadOnly="true" TextWrapping="WrapWithOverflow" AcceptsReturn="true" />
     </WrapPanel>
-    <WrapPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Left">
-      <Button Content="Check All" Click="CheckAllButton_Click" />
-      <Button Content="Uncheck All" Click="UncheckAllButton_Click" />
+    <WrapPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
+      <Button Content="Enable/Disable All" MinWidth="125" Click="EnableDisableAllButton_Click" />
     </WrapPanel>
     <ListView Name="lsvItems"
               DockPanel.Dock="Top"

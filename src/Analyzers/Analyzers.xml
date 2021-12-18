@@ -316,7 +316,7 @@ foreach (var item in items) // [|Id|]
   </Analyzer>
   <Analyzer Identifier="ConvertBlockBodyToExpressionBodyOrViceVersa">
     <Id>RCS1016</Id>
-    <Title>Convert block body to expression-body (or vice versa).</Title>
+    <Title>Convert block body to expression body (or vice versa).</Title>
     <MessageFormat>Use expression-bodied member.</MessageFormat>
     <Category>Usage</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
@@ -334,7 +334,7 @@ foreach (var item in items) // [|Id|]
     </Samples>
     <Options>
       <Option Identifier="ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine">
-        <Title>Convert expression-body to block body when expression is multi-line.</Title>
+        <Title>Convert expression body to block body when expression is multi-line.</Title>
         <Id>a</Id>
         <OptionKey>use_block_body_when_expression_is_multiline</OptionKey>
         <Kind>Change</Kind>
@@ -359,7 +359,7 @@ foreach (var item in items) // [|Id|]
         </Samples>
       </Option>
       <Option Identifier="ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine">
-        <Title>Convert expression-body to block body when declaration is multi-line.</Title>
+        <Title>Convert expression body to block body when declaration is multi-line.</Title>
         <Id>b</Id>
         <OptionKey>use_block_body_when_declaration_is_multiline</OptionKey>
         <Kind>Change</Kind>
@@ -380,7 +380,7 @@ foreach (var item in items) // [|Id|]
         </Samples>
       </Option>
       <Option Identifier="ConvertExpressionBodyToBlockBody">
-        <Title>Convert expression-body to block body.</Title>
+        <Title>Convert expression body to block body.</Title>
         <Id>i</Id>
         <OptionKey>invert</OptionKey>
         <Kind>Invert</Kind>
@@ -511,7 +511,7 @@ protected internal class Foo
   </Analyzer>
   <Analyzer Identifier="ConvertLambdaExpressionBodyToExpressionBody">
     <Id>RCS1021</Id>
-    <Title>Convert lambda expression body to expression-body.</Title>
+    <Title>Convert lambda expression body to expression body.</Title>
     <MessageFormat>Use expression-bodied lambda.</MessageFormat>
     <Category>Simplification</Category>
     <DefaultSeverity>Info</DefaultSeverity>

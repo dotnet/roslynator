@@ -35,7 +35,7 @@ enum Foo
     B = 2,
     C = 4,
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.GenerateEnumValues)]

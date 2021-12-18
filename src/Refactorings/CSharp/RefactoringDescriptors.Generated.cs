@@ -63,12 +63,12 @@ namespace Roslynator.CSharp.Refactorings
         public static RefactoringDescriptor ConvertVerbatimStringLiteralToRegularStringLiterals = new RefactoringDescriptor("RR0149", "roslynator.refactoring.convert_verbatim_string_literal_to_regular_string_literals.enabled", isEnabledByDefault: true);
         public static RefactoringDescriptor ConvertWhileToDo = new RefactoringDescriptor("RR0150", "roslynator.refactoring.convert_while_to_do.enabled", isEnabledByDefault: true);
         public static RefactoringDescriptor ConvertWhileToFor = new RefactoringDescriptor("RR0151", "roslynator.refactoring.convert_while_to_for.enabled", isEnabledByDefault: true);
+        public static RefactoringDescriptor CopyArgument = new RefactoringDescriptor("RR0030", "roslynator.refactoring.copy_argument.enabled", isEnabledByDefault: true);
         public static RefactoringDescriptor CopyDocumentationCommentFromBaseMember = new RefactoringDescriptor("RR0029", "roslynator.refactoring.copy_documentation_comment_from_base_member.enabled", isEnabledByDefault: true);
-        public static RefactoringDescriptor DuplicateArgument = new RefactoringDescriptor("RR0030", "roslynator.refactoring.duplicate_argument.enabled", isEnabledByDefault: true);
-        public static RefactoringDescriptor DuplicateMember = new RefactoringDescriptor("RR0031", "roslynator.refactoring.duplicate_member_declaration.enabled", isEnabledByDefault: true);
-        public static RefactoringDescriptor DuplicateParameter = new RefactoringDescriptor("RR0032", "roslynator.refactoring.duplicate_parameter.enabled", isEnabledByDefault: true);
-        public static RefactoringDescriptor DuplicateStatement = new RefactoringDescriptor("RR0033", "roslynator.refactoring.duplicate_statement.enabled", isEnabledByDefault: true);
-        public static RefactoringDescriptor DuplicateSwitchSection = new RefactoringDescriptor("RR0212", "roslynator.refactoring.duplicate_switch_section.enabled", isEnabledByDefault: true);
+        public static RefactoringDescriptor CopyMemberDeclaration = new RefactoringDescriptor("RR0031", "roslynator.refactoring.copy_member_declaration.enabled", isEnabledByDefault: true);
+        public static RefactoringDescriptor CopyParameter = new RefactoringDescriptor("RR0032", "roslynator.refactoring.copy_parameter.enabled", isEnabledByDefault: true);
+        public static RefactoringDescriptor CopyStatement = new RefactoringDescriptor("RR0033", "roslynator.refactoring.copy_statement.enabled", isEnabledByDefault: true);
+        public static RefactoringDescriptor CopySwitchSection = new RefactoringDescriptor("RR0212", "roslynator.refactoring.copy_switch_section.enabled", isEnabledByDefault: true);
         public static RefactoringDescriptor ExpandCoalesceExpression = new RefactoringDescriptor("RR0035", "roslynator.refactoring.expand_coalesce_expression.enabled", isEnabledByDefault: true);
         public static RefactoringDescriptor ExpandCompoundAssignment = new RefactoringDescriptor("RR0034", "roslynator.refactoring.expand_compound_assignment.enabled", isEnabledByDefault: true);
         public static RefactoringDescriptor ExpandEventDeclaration = new RefactoringDescriptor("RR0036", "roslynator.refactoring.expand_event_declaration.enabled", isEnabledByDefault: true);

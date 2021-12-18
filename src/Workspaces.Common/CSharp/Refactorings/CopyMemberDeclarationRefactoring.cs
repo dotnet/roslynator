@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Immutable;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,11 +13,12 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class DuplicateMemberDeclarationRefactoring
+    internal static class CopyMemberDeclarationRefactoring
     {
         public static async Task<Document> RefactorAsync(
             Document document,
             MemberDeclarationSyntax member,
+            bool copyAfter = true,
             CancellationToken cancellationToken = default)
         {
             MemberDeclarationSyntax newMember = member;
@@ -71,21 +71,34 @@ namespace Roslynator.CSharp.Refactorings
 
             if (index == 0)
             {
-                SyntaxToken? openBrace = memberList.OpenBraceToken;
-
-                if (openBrace != null
-                    && openBrace.Value.GetFullSpanEndLine() == member.GetFullSpanStartLine())
+                if (copyAfter)
                 {
-                    newMember = newMember.WithLeadingTrivia(member.GetLeadingTrivia().Insert(0, NewLine()));
+                    SyntaxToken? openBrace = memberList.OpenBraceToken;
+
+                    if (openBrace != null
+                        && openBrace.Value.GetFullSpanEndLine() == member.GetFullSpanStartLine())
+                    {
+                        newMember = newMember.WithLeadingTrivia(member.GetLeadingTrivia().Insert(0, NewLine()));
+                    }
+                }
+                else
+                {
+                    SyntaxToken? closeBrace = memberList.CloseBraceToken;
+
+                    if (closeBrace != null)
+                        newMember = newMember.WithTrailingTrivia(member.GetTrailingTrivia().Add(NewLine()));
                 }
             }
 
-            return await document.ReplaceMembersAsync(memberList, memberList.Members.Insert(index + 1, newMember), cancellationToken).ConfigureAwait(false);
+            int insertIndex = (copyAfter) ? index + 1 : index;
+
+            return await document.ReplaceMembersAsync(memberList, memberList.Members.Insert(insertIndex, newMember), cancellationToken).ConfigureAwait(false);
         }
 
         public static Task<Document> RefactorAsync(
             Document document,
             LocalFunctionStatementSyntax localFunction,
+            bool copyAfter = true,
             CancellationToken cancellationToken = default)
         {
             StatementListInfo statementsInfos = SyntaxInfo.StatementListInfo(localFunction);
@@ -93,13 +106,24 @@ namespace Roslynator.CSharp.Refactorings
             SyntaxList<StatementSyntax> statements = statementsInfos.Statements;
             int index = statements.IndexOf(localFunction);
 
-            if (index == 0
-                && statementsInfos.ParentAsBlock.OpenBraceToken.GetFullSpanEndLine() == localFunction.GetFullSpanStartLine())
+            if (index == 0)
             {
-                localFunction = localFunction.WithLeadingTrivia(localFunction.GetLeadingTrivia().Insert(0, NewLine()));
+                if (copyAfter)
+                {
+                    if (statementsInfos.ParentAsBlock.OpenBraceToken.GetFullSpanEndLine() == localFunction.GetFullSpanStartLine())
+                    {
+                        localFunction = localFunction.WithLeadingTrivia(localFunction.GetLeadingTrivia().Insert(0, NewLine()));
+                    }
+                }
+                else
+                {
+                    localFunction = localFunction.WithTrailingTrivia(localFunction.GetTrailingTrivia().Add(NewLine()));
+                }
             }
 
-            SyntaxList<StatementSyntax> newStatements = statements.Insert(index + 1, localFunction.WithNavigationAnnotation());
+            int insertIndex = (copyAfter) ? index + 1 : index;
+
+            SyntaxList<StatementSyntax> newStatements = statements.Insert(insertIndex, localFunction.WithNavigationAnnotation());
 
             return document.ReplaceStatementsAsync(statementsInfos, newStatements, cancellationToken);
         }

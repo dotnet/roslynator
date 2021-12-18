@@ -36,8 +36,8 @@ namespace Roslynator.Formatting.CSharp
         [Obsolete("", error: true)]
         internal static readonly DiagnosticDescriptor AddNewLineAfterExpressionBodyArrowInsteadOfBeforeIt2 = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.AddNewLineAfterExpressionBodyArrowInsteadOfBeforeIt2, 
-            title:              "Add newline after expression-body arrow instead of before it.", 
-            messageFormat:      "Add newline after expression-body arrow instead of before it.", 
+            title:              "Add newline after expression body arrow instead of before it.", 
+            messageFormat:      "Add newline after expression body arrow instead of before it.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 

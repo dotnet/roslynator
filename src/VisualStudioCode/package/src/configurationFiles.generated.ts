@@ -128,9 +128,9 @@ dotnet_diagnostic.RCS0030.severity = none
 # Add newline before enum member
 dotnet_diagnostic.RCS0031.severity = none
 
-# Add newline before expression-body arrow instead of after it (or vice versa)
+# Add newline before expression body arrow instead of after it (or vice versa)
 dotnet_diagnostic.RCS0032.severity = none
-# Add newline after expression-body arrow instead of before it
+# Add newline after expression body arrow instead of before it
 roslynator.RCS0032.invert = false
 
 # Add newline before statement
@@ -246,13 +246,13 @@ roslynator.RCS1014.use_implicit_type_when_obvious = false
 # Use nameof operator
 dotnet_diagnostic.RCS1015.severity = suggestion
 
-# Convert block body to expression-body (or vice versa)
+# Convert block body to expression body (or vice versa)
 dotnet_diagnostic.RCS1016.severity = none
-# Convert expression-body to block body
+# Convert expression body to block body
 roslynator.RCS1016.invert = false
-# Convert expression-body to block body when declaration is multi-line
+# Convert expression body to block body when declaration is multi-line
 roslynator.RCS1016.use_block_body_when_declaration_is_multiline = false
-# Convert expression-body to block body when expression is multi-line
+# Convert expression body to block body when expression is multi-line
 roslynator.RCS1016.use_block_body_when_expression_is_multiline = false
 
 # Add accessibility modifiers (or vice versa)
@@ -266,7 +266,7 @@ dotnet_diagnostic.RCS1019.severity = none
 # Simplify Nullable<T> to T?
 dotnet_diagnostic.RCS1020.severity = suggestion
 
-# Convert lambda expression body to expression-body
+# Convert lambda expression body to expression body
 dotnet_diagnostic.RCS1021.severity = suggestion
 
 # Remove unnecessary braces
@@ -918,12 +918,12 @@ roslynator.refactoring.convert_verbatim_string_literal_to_regular_string_literal
 roslynator.refactoring.convert_verbatim_string_literal_to_regular_string_literals.enabled = true
 roslynator.refactoring.convert_while_to_do.enabled = true
 roslynator.refactoring.convert_while_to_for.enabled = true
+roslynator.refactoring.copy_argument.enabled = true
 roslynator.refactoring.copy_documentation_comment_from_base_member.enabled = true
-roslynator.refactoring.duplicate_argument.enabled = true
-roslynator.refactoring.duplicate_member_declaration.enabled = true
-roslynator.refactoring.duplicate_parameter.enabled = true
-roslynator.refactoring.duplicate_statement.enabled = true
-roslynator.refactoring.duplicate_switch_section.enabled = true
+roslynator.refactoring.copy_member_declaration.enabled = true
+roslynator.refactoring.copy_parameter.enabled = true
+roslynator.refactoring.copy_statement.enabled = true
+roslynator.refactoring.copy_switch_section.enabled = true
 roslynator.refactoring.expand_coalesce_expression.enabled = true
 roslynator.refactoring.expand_compound_assignment.enabled = true
 roslynator.refactoring.expand_event_declaration.enabled = true

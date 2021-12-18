@@ -39,7 +39,7 @@ class C
         if (string.Equals(s1, s2, StringComparison.CurrentCulture)) { }
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
     }
 }

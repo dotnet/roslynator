@@ -46,7 +46,7 @@ class C
 
     public string P { get; set; }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
     }
 }

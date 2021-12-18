@@ -24,12 +24,16 @@ namespace Roslynator.CSharp.Refactorings
                             context.RegisterRefactoring(CodeActionFactory.RemoveStatement(context.Document, localFunctionStatement, equivalenceKey: EquivalenceKey.Create(RefactoringDescriptors.RemoveMemberDeclaration)));
                         }
 
-                        if (context.IsRefactoringEnabled(RefactoringDescriptors.DuplicateMember))
+                        if (context.IsRefactoringEnabled(RefactoringDescriptors.CopyMemberDeclaration))
                         {
                             context.RegisterRefactoring(
-                                "Duplicate local function",
-                                ct => DuplicateMemberDeclarationRefactoring.RefactorAsync(context.Document, localFunctionStatement, ct),
-                                RefactoringDescriptors.DuplicateMember);
+                                "Copy local function",
+                                ct => CopyMemberDeclarationRefactoring.RefactorAsync(
+                                    context.Document,
+                                    localFunctionStatement,
+                                    copyAfter: body.CloseBraceToken.Span.Contains(context.Span),
+                                    ct),
+                                RefactoringDescriptors.CopyMemberDeclaration);
                         }
 
                         if (context.IsRefactoringEnabled(RefactoringDescriptors.CommentOutMemberDeclaration))

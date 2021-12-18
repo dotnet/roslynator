@@ -42,7 +42,7 @@ class C
         Enumerable.Empty<object>();
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
     }
 }

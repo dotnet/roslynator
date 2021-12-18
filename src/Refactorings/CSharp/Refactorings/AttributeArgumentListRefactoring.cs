@@ -15,8 +15,8 @@ namespace Roslynator.CSharp.Refactorings
 
             await AttributeArgumentParameterNameRefactoring.ComputeRefactoringsAsync(context, argumentList).ConfigureAwait(false);
 
-            if (context.IsRefactoringEnabled(RefactoringDescriptors.DuplicateArgument))
-                DuplicateAttributeArgumentRefactoring.ComputeRefactoring(context, argumentList);
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.CopyArgument))
+                CopyAttributeArgumentRefactoring.ComputeRefactoring(context, argumentList);
 
             if (context.IsRefactoringEnabled(RefactoringDescriptors.WrapArguments)
                 && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(argumentList))

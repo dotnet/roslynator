@@ -33,7 +33,7 @@ class C
             throw new ArgumentNullException(nameof(p));
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CheckParameterForNull)]
@@ -59,7 +59,7 @@ class C
             throw new ArgumentNullException(nameof(p));
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CheckParameterForNull)]
@@ -90,7 +90,7 @@ class C
             throw new ArgumentNullException(nameof(p2));
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CheckParameterForNull)]
@@ -130,7 +130,7 @@ class C
             throw new ArgumentNullException(nameof(pi));
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CheckParameterForNull)]
@@ -147,7 +147,7 @@ class C
             throw new ArgumentNullException(nameof(p));
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CheckParameterForNull)]
@@ -167,7 +167,7 @@ class C
             throw new ArgumentNullException(nameof(p2));
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CheckParameterForNull)]
@@ -180,7 +180,7 @@ class C
     {
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CheckParameterForNull)]
@@ -193,7 +193,7 @@ class C
     {
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CheckParameterForNull)]
@@ -206,7 +206,7 @@ class C
     {
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CheckParameterForNull)]
@@ -219,7 +219,7 @@ class C
     {
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
     }
 }

@@ -134,7 +134,7 @@ class C<T> : IEnumerable<T>
         }
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ImplementCustomEnumerator)]
@@ -149,7 +149,7 @@ class [||]C : List<object>
     {
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
     }
 }

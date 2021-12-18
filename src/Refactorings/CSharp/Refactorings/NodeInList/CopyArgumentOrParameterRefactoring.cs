@@ -6,11 +6,11 @@ using Microsoft.CodeAnalysis;
 
 namespace Roslynator.CSharp.Refactorings.NodeInList
 {
-    internal abstract class DuplicateArgumentOrParameterRefactoring<TSyntax, TListSyntax> : NodeInListRefactoring<TSyntax, TListSyntax>
+    internal abstract class CopyArgumentOrParameterRefactoring<TSyntax, TListSyntax> : NodeInListRefactoring<TSyntax, TListSyntax>
         where TSyntax : SyntaxNode
         where TListSyntax : SyntaxNode
     {
-        protected DuplicateArgumentOrParameterRefactoring(TListSyntax listSyntax, SeparatedSyntaxList<TSyntax> list)
+        protected CopyArgumentOrParameterRefactoring(TListSyntax listSyntax, SeparatedSyntaxList<TSyntax> list)
             : base(listSyntax, list)
         {
         }

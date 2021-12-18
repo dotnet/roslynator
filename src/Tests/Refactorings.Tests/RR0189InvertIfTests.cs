@@ -45,7 +45,7 @@ class C
         }
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InvertIf)]
@@ -221,7 +221,7 @@ class C
     void M2() => M();
     void M3() => M();
 }
-", equivalenceKey: EquivalenceKey.Join(RefactoringId, "Recursive"));
+", equivalenceKey: EquivalenceKey.Create(RefactoringId, "Recursive"));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InvertIf)]
@@ -251,7 +251,7 @@ class C
         }
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InvertIf)]
@@ -279,7 +279,7 @@ class C
         }
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InvertIf)]
@@ -318,7 +318,7 @@ class C
 
     void M2() => M();
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InvertIf)]
@@ -354,7 +354,7 @@ class C
 
     void M2() => M();
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InvertIf)]
@@ -401,7 +401,7 @@ class C
     void M2() => M();
     void M3() => M();
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InvertIf)]
@@ -439,7 +439,7 @@ class C
 
     void M2() => M();
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InvertIf)]
@@ -464,7 +464,7 @@ class C
         M();
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
     }
 }

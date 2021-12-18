@@ -42,7 +42,7 @@ class C : IFoo
     {
     }
 }
-", equivalenceKey: EquivalenceKey.Join(RefactoringId, "M:IFoo.M(System.Object)"));
+", equivalenceKey: EquivalenceKey.Create(RefactoringId, "M:IFoo.M(System.Object)"));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddParameterToInterfaceMember)]
@@ -74,7 +74,7 @@ class C : IFoo
         p2 = null;
     }
 }
-", equivalenceKey: EquivalenceKey.Join(RefactoringId, "M:IFoo.M(System.Object)"));
+", equivalenceKey: EquivalenceKey.Create(RefactoringId, "M:IFoo.M(System.Object)"));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddParameterToInterfaceMember)]
@@ -106,7 +106,7 @@ class C : IFoo
         p2 = 0;
     }
 }
-", equivalenceKey: EquivalenceKey.Join(RefactoringId, "M:IFoo.M(System.Object)"));
+", equivalenceKey: EquivalenceKey.Create(RefactoringId, "M:IFoo.M(System.Object)"));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddParameterToInterfaceMember)]
@@ -136,7 +136,7 @@ class C : IFoo<string>
     {
     }
 }
-", equivalenceKey: EquivalenceKey.Join(RefactoringId, "M:IFoo`1.M(`0)"));
+", equivalenceKey: EquivalenceKey.Create(RefactoringId, "M:IFoo`1.M(`0)"));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddParameterToInterfaceMember)]
@@ -162,7 +162,7 @@ class C : IFoo
 {
     public object this[object p, object p2] => null;
 }
-", equivalenceKey: EquivalenceKey.Join(RefactoringId, "P:IFoo.Item(System.Object)"));
+", equivalenceKey: EquivalenceKey.Create(RefactoringId, "P:IFoo.Item(System.Object)"));
         }
     }
 }

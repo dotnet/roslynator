@@ -23,7 +23,7 @@ class C
         [||]
     }
 }
-", source, expected, equivalenceKey: RefactoringId);
+", source, expected, equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToConditionalExpression)]
@@ -53,7 +53,7 @@ class C
         z = (f) ? x : y;
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToConditionalExpression)]
@@ -79,7 +79,7 @@ class C
         z = (f) ? x : y;
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToConditionalExpression)]
@@ -109,7 +109,7 @@ class C
         string z = (f) ? x : y;
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Theory, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToConditionalExpression)]
@@ -127,7 +127,7 @@ class C
         [||]
     }
 }
-", source, expected, equivalenceKey: RefactoringId);
+", source, expected, equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Theory, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToConditionalExpression)]
@@ -145,7 +145,7 @@ class C
         [||]
     }
 }
-", source, expected, equivalenceKey: RefactoringId);
+", source, expected, equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToConditionalExpression)]
@@ -167,7 +167,7 @@ class C
         }
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToConditionalExpression)]
@@ -189,7 +189,7 @@ class C
         }|]
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToConditionalExpression)]
@@ -212,7 +212,7 @@ class C
         }|]
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToConditionalExpression)]
@@ -235,7 +235,7 @@ class C
         }|]
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToConditionalExpression)]
@@ -256,7 +256,7 @@ class C
         }|]
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToConditionalExpression)]
@@ -275,7 +275,7 @@ class C
         return 1;|]
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
     }
 }

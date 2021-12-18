@@ -75,7 +75,7 @@ abstract class RowCollection : ICollection
     public abstract void CopyTo(Array array, int index);
     public abstract IEnumerator GetEnumerator();
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
     }
 }

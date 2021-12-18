@@ -28,7 +28,7 @@ enum Foo
     C = 3,
     EnumMember
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.GenerateEnumMember)]
@@ -57,7 +57,7 @@ enum Foo
     C = 4,
     EnumMember = 8
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
     }
 }

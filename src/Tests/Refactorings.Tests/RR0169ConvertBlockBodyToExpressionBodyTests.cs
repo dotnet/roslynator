@@ -30,7 +30,7 @@ class C
 
     void M() { }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
@@ -53,7 +53,7 @@ class C
 
     void M() { }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
@@ -72,7 +72,7 @@ class C
 {
     string M() => null;
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
@@ -91,7 +91,7 @@ class C
 {
     void M() => M();
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
@@ -116,7 +116,7 @@ class C
         string LF() => null;
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
@@ -141,7 +141,7 @@ class C
         void LF() => M();
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
@@ -160,7 +160,7 @@ class C
 {
     string P => null;
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
@@ -188,7 +188,7 @@ class C
         set { _f = value; }
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
@@ -216,7 +216,7 @@ class C
         set => _f = value;
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
@@ -244,7 +244,7 @@ class C
         init => _f = value;
     }
 }
-", equivalenceKey: RefactoringId, options: Options.AddAllowedCompilerDiagnosticId("CS0518"));
+", equivalenceKey: EquivalenceKey.Create(RefactoringId), options: Options.AddAllowedCompilerDiagnosticId("CS0518"));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
@@ -263,7 +263,7 @@ class C
 {
     string this[int index] => null;
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
@@ -291,7 +291,7 @@ class C
         set { _f = value; }
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
@@ -319,7 +319,7 @@ class C
         set => _f = value;
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
@@ -338,7 +338,7 @@ class C
 {
     public static C operator !(C value) => value;
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
@@ -357,7 +357,7 @@ class C
 {
     public static explicit operator C(string value) => new C();
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
@@ -380,7 +380,7 @@ class C
 
     void M() { }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
@@ -399,7 +399,7 @@ class C
 {
     ~C() => throw new System.NotImplementedException();
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
@@ -418,7 +418,7 @@ class C
 {
     string M() => throw new System.NotImplementedException();
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
@@ -437,7 +437,7 @@ class C
 {
     void M() => throw new System.NotImplementedException();
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
@@ -462,7 +462,7 @@ class C
         string LF() => throw new System.NotImplementedException();
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
@@ -487,7 +487,7 @@ class C
         void LF() => throw new System.NotImplementedException();
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
@@ -506,7 +506,7 @@ class C
 {
     string P => throw new System.NotImplementedException();
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
@@ -534,7 +534,7 @@ class C
         set { throw new System.NotImplementedException(); }
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
@@ -562,7 +562,7 @@ class C
         set => throw new System.NotImplementedException();
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
@@ -581,7 +581,7 @@ class C
 {
     string this[int index] => throw new System.NotImplementedException();
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
@@ -609,7 +609,7 @@ class C
         set { throw new System.NotImplementedException(); }
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
@@ -637,7 +637,7 @@ class C
         set => throw new System.NotImplementedException();
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
@@ -656,7 +656,7 @@ class C
 {
     public static C operator !(C value) => throw new System.NotImplementedException();
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
@@ -675,7 +675,7 @@ class C
 {
     public static explicit operator C(string value) => throw new System.NotImplementedException();
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
@@ -743,7 +743,7 @@ class C
 
     public static C operator !(C value) => default;
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
@@ -773,7 +773,7 @@ class C
 
     public string P => default;
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
@@ -789,7 +789,7 @@ class C
 
     string M2() => default;|]
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
@@ -804,7 +804,7 @@ class C
         return null;
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
@@ -818,7 +818,7 @@ class C
 [||]        void LF() { }
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
@@ -831,7 +831,7 @@ class C
     {[||]
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
@@ -846,7 +846,7 @@ class C
         M();
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
@@ -866,7 +866,7 @@ class C
 
     string M() => null;
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
@@ -886,7 +886,7 @@ class C
         }
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertBlockBodyToExpressionBody)]
@@ -908,7 +908,7 @@ class C
 
     string M() => null;
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
     }
 }

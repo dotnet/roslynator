@@ -6,16 +6,16 @@ using Xunit;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public class RR0212DuplicateSwitchSectionTests : AbstractCSharpRefactoringVerifier
+    public class RR0212CopySwitchSectionTests : AbstractCSharpRefactoringVerifier
     {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.DuplicateSwitchSection;
+        public override string RefactoringId { get; } = RefactoringIdentifiers.CopySwitchSection;
 
         public override CSharpTestOptions Options
         {
             get { return base.Options.AddAllowedCompilerDiagnosticId("CS0152"); }
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.DuplicateSwitchSection)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CopySwitchSection)]
         public async Task Test_OnCloseBrace()
         {
             await VerifyRefactoringAsync(@"
@@ -61,10 +61,10 @@ class C
         }
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.DuplicateSwitchSection)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CopySwitchSection)]
         public async Task Test_OnEmptyLine()
         {
             await VerifyRefactoringAsync(@"
@@ -107,10 +107,10 @@ class C
         }
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.DuplicateSwitchSection)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CopySwitchSection)]
         public async Task Test_OnWhitespaceLine()
         {
             await VerifyRefactoringAsync(@"
@@ -153,10 +153,10 @@ class C
         }
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.DuplicateSwitchSection)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CopySwitchSection)]
         public async Task Test_OnEmptyLineAfterLastSection()
         {
             await VerifyRefactoringAsync(@"
@@ -194,7 +194,7 @@ class C
         }
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
     }
 }

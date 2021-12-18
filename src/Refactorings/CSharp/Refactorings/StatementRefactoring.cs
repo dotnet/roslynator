@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             if (context.IsAnyRefactoringEnabled(
                 RefactoringDescriptors.RemoveStatement,
-                RefactoringDescriptors.DuplicateStatement,
+                RefactoringDescriptors.CopyStatement,
                 RefactoringDescriptors.CommentOutStatement))
             {
                 StatementSyntax statement = GetStatement(context, block, block.Parent);
@@ -53,12 +53,12 @@ namespace Roslynator.CSharp.Refactorings
                 context.RegisterRefactoring(CodeActionFactory.RemoveStatement(context.Document, statement, "Remove statement", EquivalenceKey.Create(RefactoringDescriptors.RemoveStatement)));
             }
 
-            if (context.IsRefactoringEnabled(RefactoringDescriptors.DuplicateStatement))
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.CopyStatement))
             {
                 context.RegisterRefactoring(
-                    "Duplicate statement",
-                    ct => DuplicateStatementAsync(context.Document, statement, ct),
-                    RefactoringDescriptors.DuplicateStatement);
+                    "Copy statement",
+                    ct => CopyStatementAsync(context.Document, statement, ct),
+                    RefactoringDescriptors.CopyStatement);
             }
 
             if (context.IsRefactoringEnabled(RefactoringDescriptors.CommentOutStatement)
@@ -175,7 +175,7 @@ namespace Roslynator.CSharp.Refactorings
             return null;
         }
 
-        private static Task<Document> DuplicateStatementAsync(
+        private static Task<Document> CopyStatementAsync(
             Document document,
             StatementSyntax statement,
             CancellationToken cancellationToken = default)

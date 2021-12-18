@@ -157,6 +157,7 @@ namespace Roslynator.CSharp
             {
                 case SyntaxKind.CompilationUnit:
                 case SyntaxKind.NamespaceDeclaration:
+                case SyntaxKind.FileScopedNamespaceDeclaration:
                 case SyntaxKind.ClassDeclaration:
                 case SyntaxKind.StructDeclaration:
                 case SyntaxKind.RecordStructDeclaration:

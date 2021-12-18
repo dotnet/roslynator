@@ -10,7 +10,7 @@ using Microsoft.CodeAnalysis.Text;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class DuplicateSwitchSectionRefactoring
+    internal static class CopySwitchSectionRefactoring
     {
         public static void ComputeRefactoring(RefactoringContext context, SwitchSectionSyntax switchSection)
         {
@@ -83,12 +83,12 @@ namespace Roslynator.CSharp.Refactorings
         private static void RegisterRefactoring(RefactoringContext context, SwitchSectionSyntax switchSection, bool insertNewLine = false)
         {
             context.RegisterRefactoring(
-                "Duplicate section",
-                ct => DuplicateSwitchSectionAsync(context.Document, switchSection, insertNewLine, ct),
-                RefactoringDescriptors.DuplicateSwitchSection);
+                "Copy section",
+                ct => CopySwitchSectionAsync(context.Document, switchSection, insertNewLine, ct),
+                RefactoringDescriptors.CopySwitchSection);
         }
 
-        private static Task<Document> DuplicateSwitchSectionAsync(
+        private static Task<Document> CopySwitchSectionAsync(
             Document document,
             SwitchSectionSyntax switchSection,
             bool insertNewLine,
