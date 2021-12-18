@@ -53,7 +53,7 @@ class C2
         C c = default(C);
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.DuplicateMember)]
@@ -77,7 +77,7 @@ class C
     {
     }
 }
-", equivalenceKey: RefactoringId, options: Options.AddAllowedCompilerDiagnosticId("CS0111"));
+", equivalenceKey: EquivalenceKey.Create(RefactoringId), options: Options.AddAllowedCompilerDiagnosticId("CS0111"));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.DuplicateMember)]
@@ -115,7 +115,7 @@ class C
         set { }
     }
 }
-", equivalenceKey: RefactoringId, options: Options.AddAllowedCompilerDiagnosticId("CS0111"));
+", equivalenceKey: EquivalenceKey.Create(RefactoringId), options: Options.AddAllowedCompilerDiagnosticId("CS0111"));
         }
     }
 }

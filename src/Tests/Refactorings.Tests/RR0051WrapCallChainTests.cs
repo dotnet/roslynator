@@ -71,7 +71,7 @@ namespace A.B
         public Foo this[int index] => null;
     }
 }
-", fixableCode, fixedCode, equivalenceKey: RefactoringId);
+", fixableCode, fixedCode, equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapCallChain)]
@@ -102,7 +102,7 @@ class C
             x.M().M();
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapCallChain)]
@@ -143,7 +143,7 @@ namespace A.B
         public Foo this[int index] => null;
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
     }
 }

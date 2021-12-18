@@ -30,7 +30,7 @@ class C
     }
 }
 ",
-equivalenceKey: RefactoringId, options: Options.AddAllowedCompilerDiagnosticId("CS1733"));
+equivalenceKey: EquivalenceKey.Create(RefactoringId), options: Options.AddAllowedCompilerDiagnosticId("CS1733"));
         }
 
 
@@ -54,7 +54,7 @@ class C
     }
 }
 ",
-equivalenceKey: RefactoringId, options: Options.AddAllowedCompilerDiagnosticId("CS1733"));
+equivalenceKey: EquivalenceKey.Create(RefactoringId), options: Options.AddAllowedCompilerDiagnosticId("CS1733"));
         }
     }
 }

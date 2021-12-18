@@ -73,7 +73,7 @@ class C
     {
         return default;
     }
-}", equivalenceKey: RefactoringId);
+}", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertExpressionBodyToBlockBody)]
@@ -107,7 +107,7 @@ class C
     {
         get { return default; }
     }
-}", equivalenceKey: RefactoringId);
+}", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertExpressionBodyToBlockBody)]
@@ -140,7 +140,7 @@ class C
         }
     }
 }
-", equivalenceKey: RefactoringId, options: Options.AddAllowedCompilerDiagnosticId("CS0518"));
+", equivalenceKey: EquivalenceKey.Create(RefactoringId), options: Options.AddAllowedCompilerDiagnosticId("CS0518"));
         }
     }
 }

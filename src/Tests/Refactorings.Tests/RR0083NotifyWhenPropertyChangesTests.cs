@@ -61,7 +61,7 @@ class C : INotifyPropertyChanged
         PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.NotifyWhenPropertyChanges)]
@@ -115,7 +115,7 @@ class C : INotifyPropertyChanged
         PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.NotifyWhenPropertyChanges)]
@@ -169,7 +169,7 @@ class C : INotifyPropertyChanged
         PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
     }
 }

@@ -32,7 +32,7 @@ class C
         set { value2 = value; }
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertAutoPropertyToFullProperty)]
@@ -57,7 +57,7 @@ class C
         init { value2 = value; }
     }
 }
-", equivalenceKey: RefactoringId, options: Options.AddAllowedCompilerDiagnosticId("CS0518"));
+", equivalenceKey: EquivalenceKey.Create(RefactoringId), options: Options.AddAllowedCompilerDiagnosticId("CS0518"));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertAutoPropertyToFullProperty)]
@@ -82,7 +82,7 @@ static class C
         set { value2 = value; }
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertAutoPropertyToFullProperty)]
@@ -128,7 +128,7 @@ class B
 {
     public virtual string Value { get; }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertAutoPropertyToFullProperty)]
@@ -175,7 +175,7 @@ class C : INotifyPropertyChanged
         PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
     }
 }

@@ -55,7 +55,7 @@ namespace N
     static class B
     {
     }
-}", equivalenceKey: RefactoringId);
+}", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InlineMethod)]
@@ -101,7 +101,7 @@ namespace N
         public static C<T> EM<T>(this T _) => new C<T>();
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InlineMethod)]
@@ -167,7 +167,7 @@ namespace N2
     {
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InlineMethod)]
@@ -213,7 +213,7 @@ public static class E
         return Attribute.IsDefined(mi, typeof(T));
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InlineMethod)]
@@ -239,7 +239,7 @@ class C
         get { return null; }
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
     }
 }

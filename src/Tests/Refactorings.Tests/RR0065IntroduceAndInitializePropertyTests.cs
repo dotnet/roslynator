@@ -30,7 +30,7 @@ class C
 
     public string P { get; }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.IntroduceAndInitializeProperty)]
@@ -63,7 +63,7 @@ class C
     public object P1 { get; }
     public string P2 { get; }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.IntroduceAndInitializeProperty)]
@@ -81,7 +81,7 @@ class C
     {
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
     }
 }

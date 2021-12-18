@@ -63,7 +63,7 @@ class C
     }
 }
 ",
-equivalenceKey: RefactoringId);
+equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddMissingCasesToSwitchStatement)]
@@ -116,7 +116,7 @@ class C
     }
 }
 ",
-equivalenceKey: RefactoringId);
+equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddMissingCasesToSwitchStatement)]
@@ -174,7 +174,7 @@ class C
         }
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddMissingCasesToSwitchStatement)]
@@ -254,7 +254,7 @@ class C
         }
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddMissingCasesToSwitchStatement)]
@@ -308,7 +308,7 @@ class C
         }
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddMissingCasesToSwitchStatement)]
@@ -344,7 +344,7 @@ class C
         }
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
     }
 }

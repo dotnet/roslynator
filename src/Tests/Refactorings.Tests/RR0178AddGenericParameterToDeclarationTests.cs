@@ -21,7 +21,7 @@ class C[||]
 class C<T>
 {
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddGenericParameterToDeclaration)]
@@ -31,7 +31,7 @@ class C<T>
 class C
 [||]{
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
     }
 }

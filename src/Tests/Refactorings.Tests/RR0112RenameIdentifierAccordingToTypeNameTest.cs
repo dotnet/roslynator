@@ -35,7 +35,7 @@ class C
             DateTime dateTime = default(DateTime);
         }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RenameIdentifierAccordingToTypeName)]
@@ -63,7 +63,7 @@ class C
             CompilationUnitSyntax compilationUnit = default(CompilationUnitSyntax);
         }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
     }
 }

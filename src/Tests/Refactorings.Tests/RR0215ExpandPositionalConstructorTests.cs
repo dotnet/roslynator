@@ -31,7 +31,7 @@ public record R
 }
 
 namespace System.Runtime.CompilerServices { internal static class IsExternalInit {} }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertSwitchExpressionToSwitchStatement)]
@@ -55,7 +55,7 @@ public record struct R
 }
 
 namespace System.Runtime.CompilerServices { internal static class IsExternalInit {} }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertSwitchExpressionToSwitchStatement)]
@@ -79,7 +79,7 @@ public readonly record struct R
 }
 
 namespace System.Runtime.CompilerServices { internal static class IsExternalInit {} }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertSwitchExpressionToSwitchStatement)]
@@ -113,7 +113,7 @@ public record R
 public sealed class FooAttribute : Attribute { }
 
 namespace System.Runtime.CompilerServices { internal static class IsExternalInit {} }
-", options: Options.AddAllowedCompilerDiagnosticId("CS0612"), equivalenceKey: RefactoringId);
+", options: Options.AddAllowedCompilerDiagnosticId("CS0612"), equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertSwitchExpressionToSwitchStatement)]
@@ -142,7 +142,7 @@ public record R
 }
 
 namespace System.Runtime.CompilerServices { internal static class IsExternalInit {} }
-", options: Options.AddAllowedCompilerDiagnosticId("CS0612"), equivalenceKey: RefactoringId);
+", options: Options.AddAllowedCompilerDiagnosticId("CS0612"), equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertSwitchExpressionToSwitchStatement)]
@@ -181,7 +181,7 @@ namespace N
 }
 
 namespace System.Runtime.CompilerServices { internal static class IsExternalInit {} }
-", options: Options.AddAllowedCompilerDiagnosticId("CS0612"), equivalenceKey: RefactoringId);
+", options: Options.AddAllowedCompilerDiagnosticId("CS0612"), equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertSwitchExpressionToSwitchStatement)]
@@ -207,7 +207,7 @@ public record R
 }
 
 namespace System.Runtime.CompilerServices { internal static class IsExternalInit {} }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertSwitchExpressionToSwitchStatement)]
@@ -241,7 +241,7 @@ namespace N
 }
 
 namespace System.Runtime.CompilerServices { internal static class IsExternalInit {} }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertSwitchExpressionToSwitchStatement)]
@@ -268,7 +268,7 @@ public record C : B
 public record B(string P);
 
 namespace System.Runtime.CompilerServices { internal static class IsExternalInit { } }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
     }
 }

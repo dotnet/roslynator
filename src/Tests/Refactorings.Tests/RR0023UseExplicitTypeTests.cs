@@ -55,7 +55,7 @@ namespace B
     class X
     {
     }
-}", equivalenceKey: RefactoringId);
+}", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
     }
 }

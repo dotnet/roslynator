@@ -33,7 +33,7 @@ class C
         var y = x as C;
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceExplicitCastWithAsExpression)]
@@ -48,7 +48,7 @@ class C
         int j = (int)[||]i;
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
     }
 }

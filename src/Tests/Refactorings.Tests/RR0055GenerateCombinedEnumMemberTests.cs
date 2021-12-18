@@ -36,7 +36,7 @@ enum Foo
     C = 4,
     BC = B | C
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.GenerateCombinedEnumMember)]
@@ -67,7 +67,7 @@ enum Foo
     C = 4,
     BC = B | C
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.GenerateCombinedEnumMember)]
@@ -80,7 +80,7 @@ enum Foo
     [|B = 2,
     C = 3|]
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
     }
 }

@@ -24,7 +24,7 @@ class C
 {
     internal string M() => null;
 }
-", equivalenceKey: EquivalenceKey.Join(RefactoringId, nameof(Accessibility.Internal)));
+", equivalenceKey: EquivalenceKey.Create(RefactoringId, nameof(Accessibility.Internal)));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ChangeAccessibility)]
@@ -48,7 +48,7 @@ class C : B
 {
     internal override string M() => null;
 }
-", equivalenceKey: EquivalenceKey.Join(RefactoringId, nameof(Accessibility.Internal)));
+", equivalenceKey: EquivalenceKey.Create(RefactoringId, nameof(Accessibility.Internal)));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ChangeAccessibility)]
@@ -66,7 +66,7 @@ class C
     public override string ToString() => null;
     public string M() => null;
 }
-", equivalenceKey: EquivalenceKey.Join(RefactoringId, nameof(Accessibility.Public)));
+", equivalenceKey: EquivalenceKey.Create(RefactoringId, nameof(Accessibility.Public)));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ChangeAccessibility)]
@@ -84,7 +84,7 @@ class C
     private object M1() => null;
     private object M2() => null;
 }
-", equivalenceKey: EquivalenceKey.Join(RefactoringId, nameof(Accessibility.Private)));
+", equivalenceKey: EquivalenceKey.Create(RefactoringId, nameof(Accessibility.Private)));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ChangeAccessibility)]
@@ -102,7 +102,7 @@ class C
     private object M1() => null;
     private object M2() => null;
 }
-", equivalenceKey: EquivalenceKey.Join(RefactoringId, nameof(Accessibility.Private)));
+", equivalenceKey: EquivalenceKey.Create(RefactoringId, nameof(Accessibility.Private)));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ChangeAccessibility)]
@@ -113,7 +113,7 @@ class C
 {
     [||]public override string ToString() => null;
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ChangeAccessibility)]
@@ -125,7 +125,7 @@ class C
 [|    public override string ToString() => null;
     public override int GetHashCode() => 0;|]
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ChangeAccessibility)]
@@ -136,7 +136,7 @@ abstract class C
 {
     [||]public abstract string M();
 }
-", equivalenceKey: EquivalenceKey.Join(RefactoringId, nameof(Accessibility.Private)));
+", equivalenceKey: EquivalenceKey.Create(RefactoringId, nameof(Accessibility.Private)));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ChangeAccessibility)]
@@ -147,7 +147,7 @@ class C
 {
     [||]public virtual string M() => null;
 }
-", equivalenceKey: EquivalenceKey.Join(RefactoringId, nameof(Accessibility.Private)));
+", equivalenceKey: EquivalenceKey.Create(RefactoringId, nameof(Accessibility.Private)));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ChangeAccessibility)]
@@ -161,7 +161,7 @@ class B
 class C : B
 {
     [||]public override string M() => null;
-}", equivalenceKey: EquivalenceKey.Join(RefactoringId, nameof(Accessibility.Private)));
+}", equivalenceKey: EquivalenceKey.Create(RefactoringId, nameof(Accessibility.Private)));
         }
     }
 }

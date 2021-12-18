@@ -27,7 +27,7 @@ class C
     }
 }
 ", @"
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         //[Theory, Trait(Traits.Refactoring, RefactoringIdentifiers.AddBraces)]
@@ -46,7 +46,7 @@ class C
     {
     }
 }
-", source, expected, equivalenceKey: RefactoringId);
+", source, expected, equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         //[Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddBraces)]
@@ -64,7 +64,7 @@ class C
     {
     }
 }
-", equivalenceKey: RefactoringId);
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
     }
 }
