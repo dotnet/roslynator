@@ -1,9 +1,8 @@
 @echo off
 
-set _programFiles=%ProgramFiles(x86)%
-if not defined _programFiles set _programFiles=%ProgramFiles%
+set _programFiles=%ProgramFiles%
 
-"%_programFiles%\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\MSBuild" "..\src\Tools\Tools.sln" ^
+"%_programFiles%\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\MSBuild" "..\src\Tools\Tools.sln" ^
  /t:Build ^
  /p:Configuration=Debug,RunCodeAnalysis=false ^
  /v:minimal ^
