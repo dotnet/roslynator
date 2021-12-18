@@ -453,6 +453,18 @@ namespace Roslynator.CSharp
 
                 return isPattern.WithPattern(pattern.PrependToLeadingTrivia(notPattern.GetLeadingTrivia()));
             }
+            else if (pattern.IsKind(SyntaxKind.DeclarationPattern))
+            {
+                if (Options.UseNotPattern)
+                {
+                    return IsPatternExpression(
+                        isPattern.Expression,
+                        isPattern.IsKeyword.WithTrailingTrivia(Space),
+                        UnaryPattern(
+                            Token(SyntaxKind.NotKeyword).WithTrailingTrivia(isPattern.IsKeyword.TrailingTrivia),
+                            isPattern.Pattern));
+                }
+            }
             else if (pattern is ConstantPatternSyntax constantPattern)
             {
                 ExpressionSyntax constantExpression = constantPattern.Expression;
