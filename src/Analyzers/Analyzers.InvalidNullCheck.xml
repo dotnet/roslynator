@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Analyzers>
+  <Analyzer Identifier="InvalidNullCheck" IsDevelopment="true">
+    <Id>RCS1251</Id>
+    <Title>Invalid null check.</Title>
+    <Category>Roslynator</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <Links />
+  </Analyzer>
+</Analyzers>

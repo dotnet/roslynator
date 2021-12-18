@@ -42,24 +42,12 @@ namespace Roslynator.CSharp.CodeFixes
             Diagnostic diagnostic = context.Diagnostics[0];
             Document document = context.Document;
 
-            if (context.Span == statement.Span)
-            {
-                CodeAction codeAction = CodeAction.Create(
-                    "Remove null check",
-                    ct => RemoveUnnecessaryNullCheckAsync(document, (IfStatementSyntax)statement, ct),
-                    GetEquivalenceKey(diagnostic));
+            CodeAction codeAction = CodeAction.Create(
+                "Validate arguments correctly",
+                ct => AddLocalFunctionWithIteratorAsync(document, statement, ct),
+                GetEquivalenceKey(diagnostic));
 
-                context.RegisterCodeFix(codeAction, diagnostic);
-            }
-            else
-            {
-                CodeAction codeAction = CodeAction.Create(
-                    "Validate arguments correctly",
-                    ct => AddLocalFunctionWithIteratorAsync(document, statement, ct),
-                    GetEquivalenceKey(diagnostic));
-
-                context.RegisterCodeFix(codeAction, diagnostic);
-            }
+            context.RegisterCodeFix(codeAction, diagnostic);
         }
 
         private static async Task<Document> AddLocalFunctionWithIteratorAsync(
@@ -116,14 +104,6 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 return await document.ReplaceStatementsAsync(statementsInfo, newStatements, cancellationToken).ConfigureAwait(false);
             }
-        }
-
-        private static Task<Document> RemoveUnnecessaryNullCheckAsync(
-            Document document,
-            IfStatementSyntax ifStatement,
-            CancellationToken cancellationToken)
-        {
-            return document.RemoveStatementAsync(ifStatement, cancellationToken);
         }
     }
 }

@@ -69,8 +69,6 @@ namespace Roslynator.CSharp.Analysis
             if (statementCount == 0)
                 return;
 
-            AnalyzeUnnecessaryNullCheck(context, parameters, statements);
-
             int index = -1;
             for (int i = 0; i < statementCount; i++)
             {
@@ -115,72 +113,6 @@ namespace Roslynator.CSharp.Analysis
                 context,
                 DiagnosticRules.ValidateArgumentsCorrectly,
                 Location.Create(body.SyntaxTree, new TextSpan(statements[index + 1].SpanStart, 0)));
-        }
-
-        private static void AnalyzeUnnecessaryNullCheck(
-            SyntaxNodeAnalysisContext context,
-            SeparatedSyntaxList<ParameterSyntax> parameters,
-            SyntaxList<StatementSyntax> statements)
-        {
-            int lastIndex = -1;
-
-            foreach (ParameterSyntax parameter in parameters)
-            {
-                if (parameter.IsParams())
-                    break;
-
-                lastIndex++;
-            }
-
-            if (lastIndex == -1)
-                return;
-
-            foreach (StatementSyntax statement in statements)
-            {
-                if (statement is IfStatementSyntax ifStatement
-                    && ifStatement.IsSimpleIf()
-                    && ifStatement.SingleNonBlockStatementOrDefault() is ThrowStatementSyntax throwStatement)
-                {
-                    NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(ifStatement.Condition, context.SemanticModel, NullCheckStyles.CheckingNull);
-
-                    if (nullCheck.Success)
-                    {
-                        ParameterSyntax parameter = GetParameter(nullCheck.Expression);
-
-                        if (parameter?.Default?.Value.IsKind(
-                            SyntaxKind.NullLiteralExpression,
-                            SyntaxKind.DefaultLiteralExpression,
-                            SyntaxKind.DefaultExpression) == true)
-                        {
-                            ITypeSymbol exceptionSymbol = context.SemanticModel.GetTypeSymbol(throwStatement.Expression, context.CancellationToken);
-
-                            if (exceptionSymbol.HasMetadataName(MetadataNames.System_ArgumentNullException))
-                            {
-                                context.ReportDiagnostic(DiagnosticRules.ValidateArgumentsCorrectly, ifStatement);
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    break;
-                }
-            }
-
-            ParameterSyntax GetParameter(ExpressionSyntax expression)
-            {
-                if (expression is IdentifierNameSyntax identifierName)
-                {
-                    string identifierText = identifierName.Identifier.ValueText;
-                    for (int i = 0; i <= lastIndex; i++)
-                    {
-                        if (parameters[i].Identifier.ValueText == identifierText)
-                            return parameters[i];
-                    }
-                }
-
-                return null;
-            }
         }
 
         private static bool IsConditionWithThrow(StatementSyntax statement)

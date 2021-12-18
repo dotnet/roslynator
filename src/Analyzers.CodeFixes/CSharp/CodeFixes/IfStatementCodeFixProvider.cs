@@ -33,7 +33,8 @@ namespace Roslynator.CSharp.CodeFixes
                     DiagnosticIdentifiers.ConvertIfToReturnStatement,
                     DiagnosticIdentifiers.ConvertIfToAssignment,
                     DiagnosticIdentifiers.ReduceIfNesting,
-                    DiagnosticIdentifiers.UseExceptionFilter);
+                    DiagnosticIdentifiers.UseExceptionFilter,
+                    DiagnosticIdentifiers.InvalidNullCheck);
             }
         }
 
@@ -108,6 +109,16 @@ namespace Roslynator.CSharp.CodeFixes
                                         ifStatement,
                                         cancellationToken: ct);
                                 },
+                                GetEquivalenceKey(diagnostic));
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.InvalidNullCheck:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Remove null check",
+                                ct => context.Document.RemoveStatementAsync(ifStatement, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);

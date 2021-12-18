@@ -2441,6 +2441,18 @@ namespace Roslynator.CSharp
             helpLinkUri:        DiagnosticIdentifiers.UsePatternMatchingToCheckForNullOrViceVersa, 
             customTags:         Array.Empty<string>());
 
+        /// <summary>RCS1251</summary>
+        public static readonly DiagnosticDescriptor InvalidNullCheck = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.InvalidNullCheck, 
+            title:              "Invalid null check.", 
+            messageFormat:      "Invalid null check.", 
+            category:           DiagnosticCategories.Roslynator, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.InvalidNullCheck, 
+            customTags:         Array.Empty<string>());
+
         public static partial class ReportOnly
         {
             /// <summary>RCS1014a</summary>

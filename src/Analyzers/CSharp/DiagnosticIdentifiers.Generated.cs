@@ -206,5 +206,6 @@ namespace Roslynator.CSharp
         public const string UseElementAccess = "RCS1246";
         public const string FixDocumentationCommentTag = "RCS1247";
         public const string UsePatternMatchingToCheckForNullOrViceVersa = "RCS1248";
+        public const string InvalidNullCheck = "RCS1251";
     }
 }
