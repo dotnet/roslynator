@@ -190,7 +190,7 @@ namespace Roslynator.CSharp
         /// <summary>RCS1016</summary>
         public static readonly DiagnosticDescriptor ConvertBlockBodyToExpressionBodyOrViceVersa = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa, 
-            title:              "Convert block body to expression-body (or vice versa).", 
+            title:              "Convert block body to expression body (or vice versa).", 
             messageFormat:      "Use expression-bodied member.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
@@ -240,7 +240,7 @@ namespace Roslynator.CSharp
         /// <summary>RCS1021</summary>
         public static readonly DiagnosticDescriptor ConvertLambdaExpressionBodyToExpressionBody = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.ConvertLambdaExpressionBodyToExpressionBody, 
-            title:              "Convert lambda expression body to expression-body.", 
+            title:              "Convert lambda expression body to expression body.", 
             messageFormat:      "Use expression-bodied lambda.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
@@ -2470,8 +2470,8 @@ namespace Roslynator.CSharp
             /// <summary>RCS1016a</summary>
             public static readonly DiagnosticDescriptor ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine = DiagnosticDescriptorFactory.Create(
                 id:                 DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa, 
-                title:              "Convert block body to expression-body (or vice versa).", 
-                messageFormat:      "Convert expression-body to block body when expression is multi-line.", 
+                title:              "Convert block body to expression body (or vice versa).", 
+                messageFormat:      "Convert expression body to block body when expression is multi-line.", 
                 category:           DiagnosticCategories.Roslynator, 
                 defaultSeverity:    DiagnosticSeverity.Hidden, 
                 isEnabledByDefault: false, 
@@ -2482,8 +2482,8 @@ namespace Roslynator.CSharp
             /// <summary>RCS1016b</summary>
             public static readonly DiagnosticDescriptor ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine = DiagnosticDescriptorFactory.Create(
                 id:                 DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa, 
-                title:              "Convert block body to expression-body (or vice versa).", 
-                messageFormat:      "Convert expression-body to block body when declaration is multi-line.", 
+                title:              "Convert block body to expression body (or vice versa).", 
+                messageFormat:      "Convert expression body to block body when declaration is multi-line.", 
                 category:           DiagnosticCategories.Roslynator, 
                 defaultSeverity:    DiagnosticSeverity.Hidden, 
                 isEnabledByDefault: false, 
@@ -2494,8 +2494,8 @@ namespace Roslynator.CSharp
             /// <summary>RCS1016i</summary>
             public static readonly DiagnosticDescriptor ConvertExpressionBodyToBlockBody = DiagnosticDescriptorFactory.Create(
                 id:                 DiagnosticIdentifiers.ConvertBlockBodyToExpressionBodyOrViceVersa, 
-                title:              "Convert block body to expression-body (or vice versa).", 
-                messageFormat:      "Convert expression-body to block body.", 
+                title:              "Convert block body to expression body (or vice versa).", 
+                messageFormat:      "Convert expression body to block body.", 
                 category:           DiagnosticCategories.Roslynator, 
                 defaultSeverity:    DiagnosticSeverity.Hidden, 
                 isEnabledByDefault: false, 

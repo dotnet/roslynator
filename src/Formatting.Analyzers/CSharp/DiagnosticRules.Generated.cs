@@ -336,8 +336,8 @@ namespace Roslynator.Formatting.CSharp
         /// <summary>RCS0032</summary>
         public static readonly DiagnosticDescriptor AddNewLineBeforeExpressionBodyArrowInsteadOfAfterItOrViceVersa = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.AddNewLineBeforeExpressionBodyArrowInsteadOfAfterItOrViceVersa, 
-            title:              "Add newline before expression-body arrow instead of after it (or vice versa).", 
-            messageFormat:      "Add newline before expression-body arrow instead of after it.", 
+            title:              "Add newline before expression body arrow instead of after it (or vice versa).", 
+            messageFormat:      "Add newline before expression body arrow instead of after it.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
@@ -650,8 +650,8 @@ namespace Roslynator.Formatting.CSharp
             /// <summary>RCS0032i</summary>
             public static readonly DiagnosticDescriptor AddNewLineAfterExpressionBodyArrowInsteadOfBeforeIt = DiagnosticDescriptorFactory.Create(
                 id:                 DiagnosticIdentifiers.AddNewLineBeforeExpressionBodyArrowInsteadOfAfterItOrViceVersa, 
-                title:              "Add newline before expression-body arrow instead of after it (or vice versa).", 
-                messageFormat:      "Add newline after expression-body arrow instead of before it.", 
+                title:              "Add newline before expression body arrow instead of after it (or vice versa).", 
+                messageFormat:      "Add newline after expression body arrow instead of before it.", 
                 category:           DiagnosticCategories.Roslynator, 
                 defaultSeverity:    DiagnosticSeverity.Info, 
                 isEnabledByDefault: false, 
