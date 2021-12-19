@@ -133,6 +133,18 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         [Obsolete("", error: true)]
+        internal static readonly DiagnosticDescriptor RenamePrivateFieldToCamelCaseWithUnderscore = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.RenamePrivateFieldToCamelCaseWithUnderscore, 
+            title:              "Rename private field to camel case with underscore.", 
+            messageFormat:      "Rename private field to camel case with underscore.", 
+            category:           DiagnosticCategories.Roslynator, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: false, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.RenamePrivateFieldToCamelCaseWithUnderscore, 
+            customTags:         Array.Empty<string>());
+
+        [Obsolete("", error: true)]
         internal static readonly DiagnosticDescriptor ReplaceForEachWithFor = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.ReplaceForEachWithFor, 
             title:              "Replace foreach statement with for statement.", 
