@@ -40,7 +40,7 @@ namespace Roslynator.FindSymbols
             private static readonly MetadataName _defaultMemberAttribute = MetadataName.Parse("System.Reflection.DefaultMemberAttribute");
 
 #if DEBUG
-            private static readonly MetadataNameSet _knownVisibleAttributes = new MetadataNameSet(new[]
+            private static readonly MetadataNameSet _knownVisibleAttributes = new(new[]
                 {
                     "Microsoft.CodeAnalysis.CommitHashAttribute",
                     "System.AttributeUsageAttribute",
@@ -75,7 +75,7 @@ namespace Roslynator.FindSymbols
                 });
 #endif
 
-            public static DefaultIgnoredAttributeNameFilterRule Instance { get; } = new DefaultIgnoredAttributeNameFilterRule(GetIgnoredAttributes().Select(f => MetadataName.Parse(f)).ToImmutableArray());
+            public static DefaultIgnoredAttributeNameFilterRule Instance { get; } = new(GetIgnoredAttributes().Select(f => MetadataName.Parse(f)).ToImmutableArray());
 
             public DefaultIgnoredAttributeNameFilterRule(IEnumerable<MetadataName> values)
                 : base(values)

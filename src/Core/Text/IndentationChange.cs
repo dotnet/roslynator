@@ -15,7 +15,7 @@ namespace Roslynator.Text
             Replacement = replacement;
         }
 
-        public static IndentationChange Empty { get; } = new IndentationChange(ImmutableArray<IndentationInfo>.Empty, null);
+        public static IndentationChange Empty { get; } = new(ImmutableArray<IndentationInfo>.Empty, null);
 
         public ImmutableArray<IndentationInfo> Indentations { get; }
 

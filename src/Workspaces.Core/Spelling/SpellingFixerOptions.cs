@@ -6,7 +6,7 @@ namespace Roslynator.Spelling
 {
     internal class SpellingFixerOptions
     {
-        public static SpellingFixerOptions Default { get; } = new SpellingFixerOptions();
+        public static SpellingFixerOptions Default { get; } = new();
 
         public SpellingFixerOptions(
             SpellingScopeFilter scopeFilter = SpellingScopeFilter.All,

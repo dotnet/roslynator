@@ -9,7 +9,7 @@ namespace Roslynator.CodeFixes
 {
     public abstract class CompilerDiagnosticCodeFixProvider : AbstractCodeFixProvider
     {
-        private static readonly ConcurrentDictionary<string, string> _optionKeysMap = new ConcurrentDictionary<string, string>();
+        private static readonly ConcurrentDictionary<string, string> _optionKeysMap = new();
 
         protected bool IsEnabled(string compilerDiagnosticId, string codeFixId, Document document, SyntaxTree syntaxTree)
         {

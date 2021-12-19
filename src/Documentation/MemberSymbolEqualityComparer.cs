@@ -9,7 +9,7 @@ namespace Roslynator.Documentation
 {
     internal class MemberSymbolEqualityComparer : EqualityComparer<ISymbol>
     {
-        public static MemberSymbolEqualityComparer Instance { get; } = new MemberSymbolEqualityComparer();
+        public static MemberSymbolEqualityComparer Instance { get; } = new();
 
         public override bool Equals(ISymbol x, ISymbol y)
         {
@@ -142,7 +142,7 @@ namespace Roslynator.Documentation
 
         private class ParameterEqualityComparer : EqualityComparer<IParameterSymbol>
         {
-            public static ParameterEqualityComparer Instance { get; } = new ParameterEqualityComparer();
+            public static ParameterEqualityComparer Instance { get; } = new();
 
             public static bool ParametersEqual(ImmutableArray<IParameterSymbol> parameters1, ImmutableArray<IParameterSymbol> parameters2)
             {

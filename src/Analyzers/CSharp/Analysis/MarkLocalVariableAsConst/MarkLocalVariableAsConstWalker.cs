@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis.MarkLocalVariableAsConst
         [ThreadStatic]
         private static MarkLocalVariableAsConstWalker _cachedInstance;
 
-        public HashSet<string> Identifiers { get; } = new HashSet<string>();
+        public HashSet<string> Identifiers { get; } = new();
 
         public bool Result { get; set; }
 

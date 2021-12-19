@@ -19,7 +19,7 @@ namespace Roslynator.FindSymbols
             UnusedOnly = unusedOnly;
         }
 
-        new public static SymbolFinderOptions Default { get; } = new SymbolFinderOptions();
+        new public static SymbolFinderOptions Default { get; } = new();
 
         public bool IgnoreGeneratedCode { get; }
 

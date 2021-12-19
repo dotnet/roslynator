@@ -14,7 +14,7 @@ namespace Roslynator.Configuration
 
         private static readonly IEqualityComparer<string> _keyComparer = StringComparer.OrdinalIgnoreCase;
 
-        public static XmlCodeAnalysisConfig Empty { get; } = new XmlCodeAnalysisConfig();
+        public static XmlCodeAnalysisConfig Empty { get; } = new();
 
         internal XmlCodeAnalysisConfig(
             IEnumerable<string> includes = null,

@@ -12,7 +12,7 @@ namespace Roslynator.Documentation
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public class SymbolXmlDocumentation
     {
-        private static readonly Regex _simpleElementRegex = new Regex(
+        private static readonly Regex _simpleElementRegex = new(
             @"
             (?<=^\<(?<name>\w+)\>)
             \r?\n
@@ -23,7 +23,7 @@ namespace Roslynator.Documentation
 
         private readonly XElement _element;
 
-        internal static SymbolXmlDocumentation Default { get; } = new SymbolXmlDocumentation(null, null);
+        internal static SymbolXmlDocumentation Default { get; } = new(null, null);
 
         public SymbolXmlDocumentation(ISymbol symbol, XElement element)
         {

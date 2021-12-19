@@ -245,7 +245,7 @@ namespace Roslynator.CSharp.Analysis
             private int _localFunctionDepth;
             private int _anonymousFunctionDepth;
 
-            public Dictionary<string, IParameterSymbol> Parameters { get; } = new Dictionary<string, IParameterSymbol>();
+            public Dictionary<string, IParameterSymbol> Parameters { get; } = new();
 
             public SemanticModel SemanticModel { get; set; }
 

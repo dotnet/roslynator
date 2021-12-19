@@ -211,7 +211,7 @@ namespace Roslynator.CSharp.Analysis
 
             private int _usingOrTryStatementDepth;
             private bool _shouldVisit = true;
-            private readonly List<int> _usingDeclarations = new List<int>();
+            private readonly List<int> _usingDeclarations = new();
 
             public override bool ShouldVisit => _shouldVisit;
 

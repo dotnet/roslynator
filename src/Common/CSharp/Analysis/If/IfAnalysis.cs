@@ -17,7 +17,7 @@ namespace Roslynator.CSharp.Analysis.If
 {
     internal abstract class IfAnalysis
     {
-        public static IfAnalysisOptions DefaultOptions { get; } = new IfAnalysisOptions();
+        public static IfAnalysisOptions DefaultOptions { get; } = new();
 
         private static ImmutableArray<IfAnalysis> Empty
         {

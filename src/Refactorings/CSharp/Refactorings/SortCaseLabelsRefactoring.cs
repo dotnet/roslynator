@@ -123,7 +123,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private sealed class StringLiteralExpressionLabelComparer : IComparer<SwitchLabelSyntax>
         {
-            public static StringLiteralExpressionLabelComparer Instance { get; } = new StringLiteralExpressionLabelComparer();
+            public static StringLiteralExpressionLabelComparer Instance { get; } = new();
 
             public int Compare(SwitchLabelSyntax x, SwitchLabelSyntax y)
             {
@@ -148,7 +148,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private sealed class SimpleMemberAccessExpressionLabelComparer : IComparer<SwitchLabelSyntax>
         {
-            public static SimpleMemberAccessExpressionLabelComparer Instance { get; } = new SimpleMemberAccessExpressionLabelComparer();
+            public static SimpleMemberAccessExpressionLabelComparer Instance { get; } = new();
 
             public int Compare(SwitchLabelSyntax x, SwitchLabelSyntax y)
             {

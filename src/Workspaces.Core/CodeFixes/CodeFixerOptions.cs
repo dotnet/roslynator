@@ -14,7 +14,7 @@ namespace Roslynator.CodeFixes
     {
         private ImmutableArray<string> _fileBannerLines;
 
-        public static CodeFixerOptions Default { get; } = new CodeFixerOptions();
+        public static CodeFixerOptions Default { get; } = new();
 
         public CodeFixerOptions(
             DiagnosticSeverity severityLevel = DiagnosticSeverity.Info,

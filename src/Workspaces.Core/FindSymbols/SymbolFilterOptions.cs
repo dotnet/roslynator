@@ -11,7 +11,7 @@ namespace Roslynator.FindSymbols
 {
     internal class SymbolFilterOptions
     {
-        public static SymbolFilterOptions Default { get; } = new SymbolFilterOptions();
+        public static SymbolFilterOptions Default { get; } = new();
 
         internal SymbolFilterOptions(
             VisibilityFilter visibility = VisibilityFilter.All,

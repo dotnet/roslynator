@@ -13,10 +13,10 @@ namespace Roslynator
 {
     internal class AnalyzerLoader
     {
-        private readonly Dictionary<string, AnalyzerAssembly> _cache = new Dictionary<string, AnalyzerAssembly>();
-        private readonly Dictionary<string, AnalyzerAssembly> _defaultAssemblies = new Dictionary<string, AnalyzerAssembly>();
-        private readonly Dictionary<string, ImmutableArray<DiagnosticAnalyzer>> _defaultAnalyzers = new Dictionary<string, ImmutableArray<DiagnosticAnalyzer>>();
-        private readonly Dictionary<string, ImmutableArray<CodeFixProvider>> _defaultFixers = new Dictionary<string, ImmutableArray<CodeFixProvider>>();
+        private readonly Dictionary<string, AnalyzerAssembly> _cache = new();
+        private readonly Dictionary<string, AnalyzerAssembly> _defaultAssemblies = new();
+        private readonly Dictionary<string, ImmutableArray<DiagnosticAnalyzer>> _defaultAnalyzers = new();
+        private readonly Dictionary<string, ImmutableArray<CodeFixProvider>> _defaultFixers = new();
 
         public AnalyzerLoader(IEnumerable<AnalyzerAssembly> defaultAssemblies, CodeAnalysisOptions options)
         {

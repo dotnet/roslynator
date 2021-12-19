@@ -40,25 +40,25 @@ namespace Roslynator.FindSymbols
                 yield return (invert) ? IsNotExtension : IsExtension;
         }
 
-        public static PredicateSymbolFilterRule IsConst { get; } = new PredicateSymbolFilterRule(f => ((IFieldSymbol)f).IsConst, f => f.IsKind(SymbolKind.Field), SymbolFilterReason.Other);
+        public static PredicateSymbolFilterRule IsConst { get; } = new(f => ((IFieldSymbol)f).IsConst, f => f.IsKind(SymbolKind.Field), SymbolFilterReason.Other);
         public static PredicateSymbolFilterRule IsNotConst { get; } = IsConst.Invert();
 
-        public static PredicateSymbolFilterRule IsStatic { get; } = new PredicateSymbolFilterRule(f => f.IsStatic, f => !f.IsKind(SymbolKind.Namespace), SymbolFilterReason.Other);
+        public static PredicateSymbolFilterRule IsStatic { get; } = new(f => f.IsStatic, f => !f.IsKind(SymbolKind.Namespace), SymbolFilterReason.Other);
         public static PredicateSymbolFilterRule IsNotStatic { get; } = IsStatic.Invert();
 
-        public static PredicateSymbolFilterRule IsVirtual { get; } = new PredicateSymbolFilterRule(f => f.IsVirtual, f => f.IsKind(SymbolKind.Event, SymbolKind.Method, SymbolKind.Property), SymbolFilterReason.Other);
+        public static PredicateSymbolFilterRule IsVirtual { get; } = new(f => f.IsVirtual, f => f.IsKind(SymbolKind.Event, SymbolKind.Method, SymbolKind.Property), SymbolFilterReason.Other);
         public static PredicateSymbolFilterRule IsNotVirtual { get; } = IsVirtual.Invert();
 
-        public static PredicateSymbolFilterRule IsSealed { get; } = new PredicateSymbolFilterRule(f => f.IsSealed, f => !f.IsKind(SymbolKind.Namespace), SymbolFilterReason.Other);
+        public static PredicateSymbolFilterRule IsSealed { get; } = new(f => f.IsSealed, f => !f.IsKind(SymbolKind.Namespace), SymbolFilterReason.Other);
         public static PredicateSymbolFilterRule IsNotSealed { get; } = IsSealed.Invert();
 
-        public static PredicateSymbolFilterRule IsOverride { get; } = new PredicateSymbolFilterRule(f => f.IsOverride, f => f.IsKind(SymbolKind.Event, SymbolKind.Method, SymbolKind.Property), SymbolFilterReason.Other);
+        public static PredicateSymbolFilterRule IsOverride { get; } = new(f => f.IsOverride, f => f.IsKind(SymbolKind.Event, SymbolKind.Method, SymbolKind.Property), SymbolFilterReason.Other);
         public static PredicateSymbolFilterRule IsNotOverride { get; } = IsOverride.Invert();
 
-        public static PredicateSymbolFilterRule IsAbstract { get; } = new PredicateSymbolFilterRule(f => f.IsAbstract, f => !f.IsKind(SymbolKind.Namespace), SymbolFilterReason.Other);
+        public static PredicateSymbolFilterRule IsAbstract { get; } = new(f => f.IsAbstract, f => !f.IsKind(SymbolKind.Namespace), SymbolFilterReason.Other);
         public static PredicateSymbolFilterRule IsNotAbstract { get; } = IsAbstract.Invert();
 
-        public static PredicateSymbolFilterRule IsReadOnly { get; } = new PredicateSymbolFilterRule(
+        public static PredicateSymbolFilterRule IsReadOnly { get; } = new(
             symbol =>
             {
                 switch (symbol.Kind)
@@ -76,13 +76,13 @@ namespace Roslynator.FindSymbols
 
         public static PredicateSymbolFilterRule IsNotReadOnly { get; } = IsReadOnly.Invert();
 
-        public static PredicateSymbolFilterRule IsExtern { get; } = new PredicateSymbolFilterRule(f => f.IsExtern, f => f.IsKind(SymbolKind.Event, SymbolKind.Method, SymbolKind.Property), SymbolFilterReason.Other);
+        public static PredicateSymbolFilterRule IsExtern { get; } = new(f => f.IsExtern, f => f.IsKind(SymbolKind.Event, SymbolKind.Method, SymbolKind.Property), SymbolFilterReason.Other);
         public static PredicateSymbolFilterRule IsNotExtern { get; } = IsExtern.Invert();
 
-        public static PredicateSymbolFilterRule IsAsync { get; } = new PredicateSymbolFilterRule(f => ((IMethodSymbol)f).IsAsync, f => f.IsKind(SymbolKind.Method), SymbolFilterReason.Other);
+        public static PredicateSymbolFilterRule IsAsync { get; } = new(f => ((IMethodSymbol)f).IsAsync, f => f.IsKind(SymbolKind.Method), SymbolFilterReason.Other);
         public static PredicateSymbolFilterRule IsNotAsync { get; } = IsAsync.Invert();
 
-        public static PredicateSymbolFilterRule IsExtension { get; } = new PredicateSymbolFilterRule(f => ((IMethodSymbol)f).IsExtensionMethod, f => f.IsKind(SymbolKind.Method), SymbolFilterReason.Other);
+        public static PredicateSymbolFilterRule IsExtension { get; } = new(f => ((IMethodSymbol)f).IsExtensionMethod, f => f.IsKind(SymbolKind.Method), SymbolFilterReason.Other);
         public static PredicateSymbolFilterRule IsNotExtension { get; } = IsExtension.Invert();
     }
 }

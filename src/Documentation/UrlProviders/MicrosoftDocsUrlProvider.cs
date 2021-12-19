@@ -15,7 +15,7 @@ namespace Roslynator.Documentation
         {
         }
 
-        public static MicrosoftDocsUrlProvider Instance { get; } = new MicrosoftDocsUrlProvider();
+        public static MicrosoftDocsUrlProvider Instance { get; } = new();
 
         public override string Name => "Microsoft Docs";
 

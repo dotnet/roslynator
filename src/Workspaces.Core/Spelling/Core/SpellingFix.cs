@@ -24,7 +24,7 @@ namespace Roslynator.Spelling
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string DebuggerDisplay => $"{Kind}  {Value}";
 
-        public SpellingFix WithValue(string value) => new SpellingFix(value, Kind);
+        public SpellingFix WithValue(string value) => new(value, Kind);
 
         public override bool Equals(object obj) => obj is SpellingFix fix && Equals(fix);
 

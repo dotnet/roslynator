@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.SyntaxWalkers
 
         private bool _shouldVisit = true;
 
-        public HashSet<AwaitExpressionSyntax> AwaitExpressions { get; } = new HashSet<AwaitExpressionSyntax>();
+        public HashSet<AwaitExpressionSyntax> AwaitExpressions { get; } = new();
 
         private bool StopOnFirstAwaitExpression { get; set; }
 

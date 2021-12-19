@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class AttributeArgumentParameterNameRefactoring
     {
-        private static readonly SymbolDisplayFormat _symbolDisplayFormat = new SymbolDisplayFormat(
+        private static readonly SymbolDisplayFormat _symbolDisplayFormat = new(
             miscellaneousOptions: SymbolDisplayMiscellaneousOptions.EscapeKeywordIdentifiers,
             parameterOptions: SymbolDisplayParameterOptions.IncludeName);
 
@@ -169,7 +169,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private class RemoveParameterNameSyntaxRewriter : CSharpSyntaxRewriter
         {
-            private static readonly RemoveParameterNameSyntaxRewriter _instance = new RemoveParameterNameSyntaxRewriter();
+            private static readonly RemoveParameterNameSyntaxRewriter _instance = new();
 
             private readonly AttributeArgumentSyntax[] _arguments;
 

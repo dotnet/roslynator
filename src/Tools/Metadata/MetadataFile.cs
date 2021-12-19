@@ -14,7 +14,7 @@ namespace Roslynator.Metadata
 {
     public static class MetadataFile
     {
-        private static readonly Regex _lfWithoutCr = new Regex(@"(?<!\r)\n");
+        private static readonly Regex _lfWithoutCr = new(@"(?<!\r)\n");
 
         private static string NormalizeNewLine(this string value)
         {

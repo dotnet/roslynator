@@ -28,7 +28,7 @@ namespace Roslynator.Documentation
             IndentChars = indentChars;
         }
 
-        public static DefinitionListFormat Default { get; } = new DefinitionListFormat();
+        public static DefinitionListFormat Default { get; } = new();
 
         public SymbolDefinitionListLayout Layout { get; }
 

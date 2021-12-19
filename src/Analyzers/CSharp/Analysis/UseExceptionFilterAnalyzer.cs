@@ -96,7 +96,7 @@ namespace Roslynator.CSharp.Analysis
             [ThreadStatic]
             private static UseExceptionFilterWalker _cachedInstance;
 
-            private static readonly Regex _exceptionElementRegex = new Regex(@"\<(?i:exception)\ +cref=(?:""|')");
+            private static readonly Regex _exceptionElementRegex = new(@"\<(?i:exception)\ +cref=(?:""|')");
 
             public bool CanUseExceptionFilter { get; set; } = true;
 

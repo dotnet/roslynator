@@ -4,10 +4,10 @@ namespace Roslynator
 {
     internal static class NameGenerators
     {
-        public static AsyncMethodNameGenerator AsyncMethod { get; } = new AsyncMethodNameGenerator();
+        public static AsyncMethodNameGenerator AsyncMethod { get; } = new();
 
-        public static NumberSuffixNameGenerator NumberSuffix { get; } = new NumberSuffixNameGenerator();
+        public static NumberSuffixNameGenerator NumberSuffix { get; } = new();
 
-        public static UnderscoreSuffixNameGenerator UnderscoreSuffix { get; } = new UnderscoreSuffixNameGenerator();
+        public static UnderscoreSuffixNameGenerator UnderscoreSuffix { get; } = new();
     }
 }

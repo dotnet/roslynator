@@ -16,7 +16,7 @@ namespace Roslynator.Spelling
     [Obsolete]
     internal class SpellingFixHelpers
     {
-        private static readonly Regex _lowercasedSeparatedWithUnderscoresRegex = new Regex(@"\A_*\p{Ll}+(_+\p{Ll}+)+\z");
+        private static readonly Regex _lowercasedSeparatedWithUnderscoresRegex = new(@"\A_*\p{Ll}+(_+\p{Ll}+)+\z");
 
         public SpellingFix ChooseFix(
             SpellingDiagnostic diagnostic,

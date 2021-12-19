@@ -69,7 +69,7 @@ namespace Roslynator.CSharp.CodeFixes
             {
             }
 
-            public static SyntaxRewriter Instance { get; } = new SyntaxRewriter();
+            public static SyntaxRewriter Instance { get; } = new();
 
             public override SyntaxNode VisitBinaryExpression(BinaryExpressionSyntax node)
             {

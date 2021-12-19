@@ -16,7 +16,7 @@ namespace Roslynator.Documentation
             AdditionalOptions = additionalOptions;
         }
 
-        internal static SymbolComparer TypeWithoutNamespace { get; } = new SymbolComparer(TypeSymbolDisplayFormats.Name_ContainingTypes_TypeParameters, systemNamespaceFirst: false, includeNamespaces: false, SymbolDisplayAdditionalMemberOptions.None);
+        internal static SymbolComparer TypeWithoutNamespace { get; } = new(TypeSymbolDisplayFormats.Name_ContainingTypes_TypeParameters, systemNamespaceFirst: false, includeNamespaces: false, SymbolDisplayAdditionalMemberOptions.None);
 
         public static SymbolComparer Create(
             bool systemNamespaceFirst = true,

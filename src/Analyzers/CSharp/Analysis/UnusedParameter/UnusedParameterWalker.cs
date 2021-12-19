@@ -20,7 +20,7 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
 
         private bool _isEmpty;
 
-        public Dictionary<string, NodeSymbolInfo> Nodes { get; } = new Dictionary<string, NodeSymbolInfo>(_ordinalComparer);
+        public Dictionary<string, NodeSymbolInfo> Nodes { get; } = new(_ordinalComparer);
 
         public SemanticModel SemanticModel { get; set; }
 

@@ -396,7 +396,7 @@ namespace Roslynator.CommandLine
 
         protected class ConsoleProgressReporter : IProgress<ProjectLoadProgress>
         {
-            public static ConsoleProgressReporter Default { get; } = new ConsoleProgressReporter();
+            public static ConsoleProgressReporter Default { get; } = new();
 
             public Dictionary<string, List<string>> Projects { get; }
 

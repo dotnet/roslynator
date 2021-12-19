@@ -8,7 +8,7 @@ namespace Roslynator.CSharp.Refactorings.WrapSelectedLines
         {
         }
 
-        public static WrapLinesInRegionRefactoring Instance { get; } = new WrapLinesInRegionRefactoring();
+        public static WrapLinesInRegionRefactoring Instance { get; } = new();
 
         public override bool Indent
         {

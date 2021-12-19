@@ -12,7 +12,7 @@ namespace Roslynator
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public class OptionValueProvider
     {
-        public static readonly Regex MetaValueRegex = new Regex(@"\<\p{Lu}+(_\p{Lu}+)*\>");
+        public static readonly Regex MetaValueRegex = new(@"\<\p{Lu}+(_\p{Lu}+)*\>");
 
         public OptionValueProvider(string name, params OptionValue[] values)
             : this(name, null, values)

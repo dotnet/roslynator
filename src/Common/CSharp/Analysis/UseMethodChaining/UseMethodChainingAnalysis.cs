@@ -10,9 +10,9 @@ namespace Roslynator.CSharp.Analysis.UseMethodChaining
 {
     internal abstract class UseMethodChainingAnalysis
     {
-        public static MethodChainingWithoutAssignmentAnalysis WithoutAssignmentAnalysis { get; } = new MethodChainingWithoutAssignmentAnalysis();
+        public static MethodChainingWithoutAssignmentAnalysis WithoutAssignmentAnalysis { get; } = new();
 
-        public static MethodChainingWithAssignmentAnalysis WithAssignmentAnalysis { get; } = new MethodChainingWithAssignmentAnalysis();
+        public static MethodChainingWithAssignmentAnalysis WithAssignmentAnalysis { get; } = new();
 
         public static bool IsFixable(
             in SimpleMemberInvocationExpressionInfo invocationInfo,

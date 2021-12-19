@@ -10,6 +10,6 @@ namespace Roslynator.CodeActions
     {
         public const string Kind = "CodeAction_Navigation";
 
-        public static SyntaxAnnotation Annotation { get; } = new SyntaxAnnotation(Kind);
+        public static SyntaxAnnotation Annotation { get; } = new(Kind);
     }
 }

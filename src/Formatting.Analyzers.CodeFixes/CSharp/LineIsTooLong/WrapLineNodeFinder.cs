@@ -693,7 +693,7 @@ namespace Roslynator.Formatting.CodeFixes.LineIsTooLong
 
         private class SyntaxKindComparer : IComparer<SyntaxNode>
         {
-            public static SyntaxKindComparer Instance { get; } = new SyntaxKindComparer();
+            public static SyntaxKindComparer Instance { get; } = new();
 
             public int Compare(SyntaxNode x, SyntaxNode y)
             {

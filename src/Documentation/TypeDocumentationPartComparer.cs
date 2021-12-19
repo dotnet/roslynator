@@ -11,7 +11,7 @@ namespace Roslynator.Documentation
         {
         }
 
-        public static TypeDocumentationPartComparer Instance { get; } = new TypeDocumentationPartComparer();
+        public static TypeDocumentationPartComparer Instance { get; } = new();
 
         public int Compare(TypeDocumentationParts x, TypeDocumentationParts y)
         {

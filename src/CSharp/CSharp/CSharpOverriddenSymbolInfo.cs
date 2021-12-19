@@ -10,7 +10,7 @@ namespace Roslynator.CSharp
 {
     internal static class CSharpOverriddenSymbolInfo
     {
-        private static OverriddenSymbolInfo Default { get; } = new OverriddenSymbolInfo();
+        private static OverriddenSymbolInfo Default { get; } = new();
 
         public static bool CanCreate(SyntaxNode node)
         {

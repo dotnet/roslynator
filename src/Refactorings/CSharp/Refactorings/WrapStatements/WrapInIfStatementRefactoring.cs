@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Refactorings.WrapStatements
         {
         }
 
-        public static WrapInIfStatementRefactoring Instance { get; } = new WrapInIfStatementRefactoring();
+        public static WrapInIfStatementRefactoring Instance { get; } = new();
 
         public const string Title = "Wrap in condition";
 

@@ -8,7 +8,7 @@ namespace Roslynator.CSharp.Analysis.RemoveRedundantStatement
 {
     internal sealed class RemoveRedundantReturnStatementAnalysis : RemoveRedundantStatementAnalysis<ReturnStatementSyntax>
     {
-        public static RemoveRedundantReturnStatementAnalysis Instance { get; } = new RemoveRedundantReturnStatementAnalysis();
+        public static RemoveRedundantReturnStatementAnalysis Instance { get; } = new();
 
         private RemoveRedundantReturnStatementAnalysis()
         {

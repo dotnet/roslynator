@@ -12,9 +12,9 @@ namespace Roslynator.VisualStudio
     {
         protected override UIElement Child => Control;
 
-        protected Dictionary<string, bool> Items { get; } = new Dictionary<string, bool>();
+        protected Dictionary<string, bool> Items { get; } = new();
 
-        internal BaseOptionsPageControl Control { get; } = new BaseOptionsPageControl();
+        internal BaseOptionsPageControl Control { get; } = new();
 
         public bool IsLoaded { get; private set; }
 

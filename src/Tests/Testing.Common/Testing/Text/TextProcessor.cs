@@ -13,7 +13,7 @@ namespace Roslynator.Testing.Text
 {
     internal static class TextProcessor
     {
-        private static readonly Regex _annotatedSpanRegex = new Regex(@"(?s)\{\|(?<identifier>[^:]+):(?<content>.*?)\|\}");
+        private static readonly Regex _annotatedSpanRegex = new(@"(?s)\{\|(?<identifier>[^:]+):(?<content>.*?)\|\}");
 
         public static (string source, ImmutableArray<TextSpan> spans) FindAnnotatedSpansAndRemove(string text, string annotationIdentifier)
         {

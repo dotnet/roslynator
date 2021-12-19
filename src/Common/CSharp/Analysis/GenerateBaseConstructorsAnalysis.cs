@@ -107,7 +107,7 @@ namespace Roslynator.CSharp.Analysis
 
         private class ParametersComparer : EqualityComparer<IMethodSymbol>
         {
-            public static ParametersComparer Instance { get; } = new ParametersComparer();
+            public static ParametersComparer Instance { get; } = new();
 
             public override bool Equals(IMethodSymbol x, IMethodSymbol y)
             {

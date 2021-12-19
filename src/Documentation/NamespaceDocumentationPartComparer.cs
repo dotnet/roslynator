@@ -11,7 +11,7 @@ namespace Roslynator.Documentation
         {
         }
 
-        public static NamespaceDocumentationPartComparer Instance { get; } = new NamespaceDocumentationPartComparer();
+        public static NamespaceDocumentationPartComparer Instance { get; } = new();
 
         public int Compare(NamespaceDocumentationParts x, NamespaceDocumentationParts y)
         {

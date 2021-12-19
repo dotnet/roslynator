@@ -22,7 +22,7 @@ namespace Roslynator.CSharp.CodeFixes
     [Shared]
     public sealed class SingleLineDocumentationCommentTriviaCodeFixProvider : BaseCodeFixProvider
     {
-        private static readonly Regex _formatSummaryOnSingleLineRegex = new Regex(
+        private static readonly Regex _formatSummaryOnSingleLineRegex = new(
             @"
             ^
             (

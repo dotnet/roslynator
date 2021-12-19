@@ -634,7 +634,7 @@ namespace Roslynator.CodeFixes
 
         private class FixResult
         {
-            internal static FixResult Skipped { get; } = new FixResult(ProjectFixKind.Skipped);
+            internal static FixResult Skipped { get; } = new(ProjectFixKind.Skipped);
 
             internal FixResult(
                 ProjectFixKind kind,

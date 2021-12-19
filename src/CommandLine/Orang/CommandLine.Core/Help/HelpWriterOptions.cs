@@ -4,7 +4,7 @@ namespace Roslynator.CommandLine.Help
 {
     public class HelpWriterOptions
     {
-        public static HelpWriterOptions Default { get; } = new HelpWriterOptions();
+        public static HelpWriterOptions Default { get; } = new();
 
         public HelpWriterOptions(
             string indent = "  ",

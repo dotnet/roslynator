@@ -8,7 +8,7 @@ namespace Roslynator.CSharp.Refactorings.ReplaceEqualsExpression
         {
         }
 
-        public static ReplaceEqualityOperatorWithStringIsNullOrEmptyRefactoring Instance { get; } = new ReplaceEqualityOperatorWithStringIsNullOrEmptyRefactoring();
+        public static ReplaceEqualityOperatorWithStringIsNullOrEmptyRefactoring Instance { get; } = new();
 
         public override string MethodName
         {

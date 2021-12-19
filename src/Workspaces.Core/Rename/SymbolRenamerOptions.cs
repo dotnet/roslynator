@@ -29,7 +29,7 @@ namespace Roslynator.Rename
             Interactive = interactive;
         }
 
-        public static SymbolRenamerOptions Default { get; } = new SymbolRenamerOptions();
+        public static SymbolRenamerOptions Default { get; } = new();
 
         public RenameScopeFilter ScopeFilter { get; }
 

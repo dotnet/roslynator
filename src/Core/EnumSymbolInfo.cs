@@ -113,7 +113,7 @@ namespace Roslynator
 
         private class EnumFieldSymbolInfoComparer : IComparer<EnumFieldSymbolInfo>
         {
-            public static EnumFieldSymbolInfoComparer Instance { get; } = new EnumFieldSymbolInfoComparer();
+            public static EnumFieldSymbolInfoComparer Instance { get; } = new();
 
             public int Compare(EnumFieldSymbolInfo x, EnumFieldSymbolInfo y)
             {

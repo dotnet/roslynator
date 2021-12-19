@@ -9,7 +9,7 @@ namespace Roslynator
 {
     internal static class CommonDiagnosticRules
     {
-        public static readonly DiagnosticDescriptor AnalyzerIsObsolete = new DiagnosticDescriptor(
+        public static readonly DiagnosticDescriptor AnalyzerIsObsolete = new(
             id: CommonDiagnosticIdentifiers.AnalyzerIsObsolete,
             title: "Analyzer is obsolete.",
             messageFormat: "Analyzer {0} is obsolete.{1}",

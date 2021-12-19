@@ -13,7 +13,7 @@ namespace Roslynator.CommandLine
 {
     internal static class ParseHelpers
     {
-        private static readonly Regex _lowerLetterUpperLetterRegex = new Regex(@"\p{Ll}\p{Lu}");
+        private static readonly Regex _lowerLetterUpperLetterRegex = new(@"\p{Ll}\p{Lu}");
 
         public static bool TryParseCodeExpression<T>(
             string expression,

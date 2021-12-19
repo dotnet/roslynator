@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.SyntaxRewriters
             Span = span;
         }
 
-        private static TriviaRemover Default { get; } = new TriviaRemover();
+        private static TriviaRemover Default { get; } = new();
 
         public TextSpan? Span { get; }
 

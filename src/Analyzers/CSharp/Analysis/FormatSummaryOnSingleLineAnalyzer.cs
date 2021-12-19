@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Analysis
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class FormatSummaryOnSingleLineAnalyzer : BaseDiagnosticAnalyzer
     {
-        private static readonly Regex _regex = new Regex(
+        private static readonly Regex _regex = new(
             @"
             ^
             (

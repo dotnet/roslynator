@@ -18,9 +18,9 @@ namespace Roslynator.CSharp
     /// </summary>
     public class SyntaxLogicalInverter
     {
-        public static SyntaxLogicalInverter Default { get; } = new SyntaxLogicalInverter(SyntaxLogicalInverterOptions.Default);
+        public static SyntaxLogicalInverter Default { get; } = new(SyntaxLogicalInverterOptions.Default);
 
-        internal static SyntaxLogicalInverter CSharp8 { get; } = new SyntaxLogicalInverter(SyntaxLogicalInverterOptions.CSharp8);
+        internal static SyntaxLogicalInverter CSharp8 { get; } = new(SyntaxLogicalInverterOptions.CSharp8);
 
         public SyntaxLogicalInverter(SyntaxLogicalInverterOptions options)
         {

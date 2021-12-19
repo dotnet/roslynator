@@ -54,9 +54,9 @@ namespace Roslynator
             return true;
         }
 
-        public Interval ShiftLeft(int value) => new Interval(Min - value, Max - value);
+        public Interval ShiftLeft(int value) => new(Min - value, Max - value);
 
-        public Interval ShiftRight(int value) => new Interval(Min + value, Max + value);
+        public Interval ShiftRight(int value) => new(Min + value, Max + value);
 
         public static bool operator ==(Interval left, Interval right) => left.Equals(right);
 

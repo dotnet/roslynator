@@ -19,7 +19,7 @@ namespace Roslynator.Documentation
             SingleLineSummary = singleLineSummary;
         }
 
-        public static DocumentationCommentGeneratorSettings Default { get; } = new DocumentationCommentGeneratorSettings();
+        public static DocumentationCommentGeneratorSettings Default { get; } = new();
 
         public ImmutableArray<string> IgnoredTags { get; }
 

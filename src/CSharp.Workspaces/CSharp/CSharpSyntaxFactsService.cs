@@ -14,7 +14,7 @@ namespace Roslynator.CSharp
     [ExportMetadata("ServiceType", "Roslynator.ISyntaxFactsService")]
     internal sealed class CSharpSyntaxFactsService : ISyntaxFactsService
     {
-        public static CSharpSyntaxFactsService Instance { get; } = new CSharpSyntaxFactsService();
+        public static CSharpSyntaxFactsService Instance { get; } = new();
 
         public string SingleLineCommentStart => "//";
 

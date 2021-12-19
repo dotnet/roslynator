@@ -11,7 +11,7 @@ namespace Roslynator.Configuration
 {
     public sealed class CodeAnalysisConfig
     {
-        public static CodeAnalysisConfig Instance { get; private set; } = new CodeAnalysisConfig();
+        public static CodeAnalysisConfig Instance { get; private set; } = new();
 
         private CodeAnalysisConfig(
             XmlCodeAnalysisConfig xmlConfig = null,

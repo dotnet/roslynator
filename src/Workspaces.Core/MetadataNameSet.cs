@@ -9,7 +9,7 @@ namespace Roslynator
 {
     internal class MetadataNameSet
     {
-        public static MetadataNameSet Empty { get; } = new MetadataNameSet(ImmutableArray<MetadataName>.Empty);
+        public static MetadataNameSet Empty { get; } = new(ImmutableArray<MetadataName>.Empty);
 
         public ImmutableArray<MetadataName> Values { get; }
 

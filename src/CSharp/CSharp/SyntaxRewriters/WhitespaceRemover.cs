@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.SyntaxRewriters
             Span = span;
         }
 
-        private static WhitespaceRemover Default { get; } = new WhitespaceRemover();
+        private static WhitespaceRemover Default { get; } = new();
 
         public TextSpan? Span { get; }
 

@@ -4,7 +4,7 @@ namespace Roslynator.Testing.CSharp.Xunit
 {
     internal class XunitAssert : IAssert
     {
-        public static XunitAssert Instance { get; } = new XunitAssert();
+        public static XunitAssert Instance { get; } = new();
 
         public void Equal(string expected, string actual)
         {

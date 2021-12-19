@@ -11,7 +11,7 @@ namespace Roslynator.Documentation
 {
     public abstract class DocumentationUrlProvider
     {
-        private static readonly Regex _notWordCharOrUnderscoreRegex = new Regex(@"[^\w_]");
+        private static readonly Regex _notWordCharOrUnderscoreRegex = new(@"[^\w_]");
 
         protected DocumentationUrlProvider(IEnumerable<ExternalUrlProvider> externalProviders = null)
         {
