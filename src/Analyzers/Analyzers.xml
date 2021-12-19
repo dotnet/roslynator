@@ -1018,7 +1018,7 @@ catch (Exception ex)
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="RenamePrivateFieldToCamelCaseWithUnderscore">
+  <Analyzer Identifier="RenamePrivateFieldToCamelCaseWithUnderscore" IsObsolete="true">
     <Id>RCS1045</Id>
     <Title>Rename private field to camel case with underscore.</Title>
     <Category>Naming</Category>
@@ -5507,7 +5507,7 @@ public class C
       </Sample>
     </Samples>
     <Options>
-      <Option Identifier="DoNotUseElementAccessWhenExpressionIsInvocation">
+      <Option Identifier="DoNotUseElementAccessWhenExpressionIsInvocation" IsObsolete="true">
         <Title>Do not use element access when expression is invocation.</Title>
         <Id>a</Id>
         <OptionKey>suppress_when_expression_is_invocation</OptionKey>

@@ -443,6 +443,40 @@ class C
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InvertIf)]
+        public async Task Test_InvertIsPattern()
+        {
+            await VerifyRefactoringAsync(@"
+class C
+{
+    void M()
+    {
+        object x = null;
+
+        [||]if (x is string s)
+        {
+            return;
+        }
+
+        M();
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+        object x = null;
+
+        if (x is not string s)
+        {
+            M();
+        }
+    }
+}
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
+        }
+
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InvertIf)]
         public async Task TestNoRefactoring_NotTopmostIf()
         {
             await VerifyNoRefactoringAsync(@"

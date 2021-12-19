@@ -27,6 +27,7 @@ namespace Roslynator.CodeGeneration.CSharp
                         Modifiers.Public_Static_Partial(),
                         className,
                         analyzers
+                            .Where(f => !f.IsObsolete)
                             .SelectMany(f => f.Options)
                             .Where(f => f.IsObsolete == obsolete)
                             .OrderBy(f => f.Id, comparer)

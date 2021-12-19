@@ -22,7 +22,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void ComputeRefactoring(RefactoringContext context, ParameterSyntax parameter, SemanticModel semanticModel)
         {
-            if (!IsValid(parameter))
+            if (!IsValid(parameter, semanticModel, context.CancellationToken))
                 return;
 
             if (!CanRefactor(parameter, semanticModel, context.CancellationToken))
@@ -39,7 +39,7 @@ namespace Roslynator.CSharp.Refactorings
 
             foreach (ParameterSyntax parameter in selectedParameters)
             {
-                if (IsValid(parameter)
+                if (IsValid(parameter, semanticModel, context.CancellationToken)
                     && CanRefactor(parameter, semanticModel, context.CancellationToken))
                 {
                     if (singleParameter == null)
@@ -278,12 +278,13 @@ namespace Roslynator.CSharp.Refactorings
             return null;
         }
 
-        private static bool IsValid(ParameterSyntax parameter)
+        private static bool IsValid(ParameterSyntax parameter, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
             return parameter.Type != null
                 && !parameter.Identifier.IsMissing
                 && parameter.IsParentKind(SyntaxKind.ParameterList)
-                && parameter.Default?.Value?.IsKind(SyntaxKind.NullLiteralExpression, SyntaxKind.DefaultLiteralExpression, SyntaxKind.DefaultExpression) != true;
+                && parameter.Default?.Value?.IsKind(SyntaxKind.NullLiteralExpression, SyntaxKind.DefaultLiteralExpression, SyntaxKind.DefaultExpression) != true
+                && !CSharpUtility.IsNullableReferenceType(parameter.Type, semanticModel, cancellationToken);
         }
     }
 }

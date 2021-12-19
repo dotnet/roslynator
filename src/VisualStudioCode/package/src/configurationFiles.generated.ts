@@ -313,11 +313,6 @@ dotnet_diagnostic.RCS1043.severity = silent
 # Remove original exception from throw statement
 dotnet_diagnostic.RCS1044.severity = warning
 
-# Rename private field to camel case with underscore
-dotnet_diagnostic.RCS1045.severity = none
-# Do not rename private static field to camel case with underscore
-roslynator.RCS1045.suppress_when_field_is_static = false
-
 # Asynchronous method name should end with 'Async'
 dotnet_diagnostic.RCS1046.severity = none
 

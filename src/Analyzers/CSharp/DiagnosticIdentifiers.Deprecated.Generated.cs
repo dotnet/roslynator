@@ -29,6 +29,8 @@ namespace Roslynator.CSharp
         [Obsolete("", error: true)]
         public const string AddEmptyLineAfterEmbeddedStatement = "RCS1030";
         [Obsolete("", error: true)]
+        public const string RenamePrivateFieldToCamelCaseWithUnderscore = "RCS1045";
+        [Obsolete("", error: true)]
         public const string ReplaceForEachWithFor = "RCS1053";
         [Obsolete("", error: true)]
         public const string MergeLocalDeclarationWithReturnStatement = "RCS1054";

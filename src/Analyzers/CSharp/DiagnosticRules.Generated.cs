@@ -423,18 +423,6 @@ namespace Roslynator.CSharp
             helpLinkUri:        DiagnosticIdentifiers.RemoveOriginalExceptionFromThrowStatement, 
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
-        /// <summary>RCS1045</summary>
-        public static readonly DiagnosticDescriptor RenamePrivateFieldToCamelCaseWithUnderscore = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.RenamePrivateFieldToCamelCaseWithUnderscore, 
-            title:              "Rename private field to camel case with underscore.", 
-            messageFormat:      "Rename private field to camel case with underscore.", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.RenamePrivateFieldToCamelCaseWithUnderscore, 
-            customTags:         Array.Empty<string>());
-
         /// <summary>RCS1046</summary>
         public static readonly DiagnosticDescriptor AsynchronousMethodNameShouldEndWithAsync = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.AsynchronousMethodNameShouldEndWithAsync, 

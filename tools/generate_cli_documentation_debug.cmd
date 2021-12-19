@@ -1,9 +1,8 @@
 @echo off
 
-set _programFiles=%ProgramFiles(x86)%
-if not defined _programFiles set _programFiles=%ProgramFiles%
+set _programFiles=%ProgramFiles%
 
-set _msbuildPath="%_programFiles%\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\MSBuild"
+set _msbuildPath="%_programFiles%\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\MSBuild"
 set _properties=Configuration=Debug,Deterministic=true
 
 %_msbuildPath% "..\src\CommandLine.DocumentationGenerator\CommandLine.DocumentationGenerator.csproj" ^
