@@ -121,7 +121,7 @@ namespace Roslynator.CSharp.Analysis
                 {
                     ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(type, context.CancellationToken);
 
-                    if (!typeSymbol.IsKind(SymbolKind.ErrorType)
+                    if (typeSymbol?.IsKind(SymbolKind.ErrorType) == false
                         && typeSymbol.IsReferenceType)
                     {
                         return true;
