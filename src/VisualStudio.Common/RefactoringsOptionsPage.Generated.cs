@@ -9,7 +9,6 @@ namespace Roslynator.VisualStudio
 {
     public partial class RefactoringsOptionsPage
     {
-        protected override string MaxId { get; } = RefactoringIdentifiers.AddAllPropertiesToInitializer;
         protected override void Fill(ICollection<BaseModel> refactorings)
         {
             refactorings.Clear();
