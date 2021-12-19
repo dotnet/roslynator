@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -12,6 +11,22 @@ namespace Roslynator.CSharp
 {
     internal static class CSharpUtility
     {
+        public static bool IsNullableReferenceType(
+            TypeSyntax type,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken = default)
+        {
+            if (type.IsKind(SyntaxKind.NullableType))
+            {
+                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, cancellationToken);
+
+                return !typeSymbol.IsKind(SymbolKind.ErrorType)
+                    && typeSymbol.IsReferenceType;
+            }
+
+            return false;
+        }
+
         public static string GetCountOrLengthPropertyName(
             ExpressionSyntax expression,
             SemanticModel semanticModel,

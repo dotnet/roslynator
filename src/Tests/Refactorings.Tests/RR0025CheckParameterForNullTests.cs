@@ -221,5 +221,20 @@ class C
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
+
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CheckParameterForNull)]
+        public async Task TestNoRefactoring_NullableReferenceType()
+        {
+            await VerifyNoRefactoringAsync(@"
+#nullable enable
+
+class C
+{
+    void M(object? [||]p)
+    {
+    }
+}
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
+        }
     }
 }
