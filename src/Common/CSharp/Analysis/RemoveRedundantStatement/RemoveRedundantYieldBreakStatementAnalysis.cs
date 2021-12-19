@@ -9,7 +9,7 @@ namespace Roslynator.CSharp.Analysis.RemoveRedundantStatement
 {
     internal sealed class RemoveRedundantYieldBreakStatementAnalysis : RemoveRedundantStatementAnalysis<YieldStatementSyntax>
     {
-        public static RemoveRedundantYieldBreakStatementAnalysis Instance { get; } = new RemoveRedundantYieldBreakStatementAnalysis();
+        public static RemoveRedundantYieldBreakStatementAnalysis Instance { get; } = new();
 
         private RemoveRedundantYieldBreakStatementAnalysis()
         {

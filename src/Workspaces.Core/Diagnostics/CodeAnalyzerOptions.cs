@@ -7,7 +7,7 @@ namespace Roslynator.Diagnostics
 {
     internal class CodeAnalyzerOptions : CodeAnalysisOptions
     {
-        public static CodeAnalyzerOptions Default { get; } = new CodeAnalyzerOptions();
+        public static CodeAnalyzerOptions Default { get; } = new();
 
         public CodeAnalyzerOptions(
             bool ignoreAnalyzerReferences = false,

@@ -4,6 +4,6 @@ namespace Roslynator.CodeGeneration.CSharp
 {
     public static class DiagnosticRulesGenerators
     {
-        public static DiagnosticRulesGenerator Default { get; } = new DiagnosticRulesGenerator();
+        public static DiagnosticRulesGenerator Default { get; } = new();
     }
 }

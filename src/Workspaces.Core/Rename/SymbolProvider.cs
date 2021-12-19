@@ -64,7 +64,7 @@ namespace Roslynator.Rename
         private class Analyzer : DiagnosticAnalyzer
         {
             [SuppressMessage("MicrosoftCodeAnalysisReleaseTracking", "RS2008:Enable analyzer release tracking")]
-            public static readonly DiagnosticDescriptor DiagnosticDescriptor = new DiagnosticDescriptor(
+            public static readonly DiagnosticDescriptor DiagnosticDescriptor = new(
                 id: "Roslynator.FindSymbols.FindSymbolAnalyzer",
                 title: "",
                 messageFormat: "",
@@ -85,7 +85,7 @@ namespace Roslynator.Rename
 
             public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => _supportedDiagnostics;
 
-            public ConcurrentBag<ISymbol> Symbols { get; } = new ConcurrentBag<ISymbol>();
+            public ConcurrentBag<ISymbol> Symbols { get; } = new();
 
             public ImmutableArray<SymbolKind> SymbolKinds { get; }
 

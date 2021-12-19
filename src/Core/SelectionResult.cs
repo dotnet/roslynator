@@ -26,7 +26,7 @@ namespace Roslynator
                 && count <= maxCount;
         }
 
-        public static SelectionResult Fail { get; } = new SelectionResult();
+        public static SelectionResult Fail { get; } = new();
 
         public int FirstIndex { get; }
 

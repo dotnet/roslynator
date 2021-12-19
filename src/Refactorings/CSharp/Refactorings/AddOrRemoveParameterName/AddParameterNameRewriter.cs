@@ -11,7 +11,7 @@ namespace Roslynator.CSharp.Refactorings.AddOrRemoveParameterName
 {
     internal class AddParameterNameRewriter : CSharpSyntaxRewriter
     {
-        private static readonly SymbolDisplayFormat _symbolDisplayFormat = new SymbolDisplayFormat(
+        private static readonly SymbolDisplayFormat _symbolDisplayFormat = new(
             miscellaneousOptions: SymbolDisplayMiscellaneousOptions.EscapeKeywordIdentifiers,
             parameterOptions: SymbolDisplayParameterOptions.IncludeName);
 

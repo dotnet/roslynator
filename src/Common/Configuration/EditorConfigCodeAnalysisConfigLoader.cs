@@ -152,7 +152,7 @@ namespace Roslynator.Configuration
 
         private readonly struct EditorConfigData
         {
-            public static EditorConfigData Empty { get; } = new EditorConfigData(
+            public static EditorConfigData Empty { get; } = new(
                 ImmutableDictionary<string, string>.Empty,
                 ImmutableDictionary<string, ReportDiagnostic>.Empty);
 

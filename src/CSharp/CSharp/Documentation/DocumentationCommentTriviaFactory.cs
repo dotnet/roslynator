@@ -16,7 +16,7 @@ namespace Roslynator.CSharp.Documentation
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
     internal static class DocumentationCommentTriviaFactory
     {
-        private static readonly Regex _commentedEmptyLineRegex = new Regex(@"^///\s*(\r?\n|$)", RegexOptions.Multiline);
+        private static readonly Regex _commentedEmptyLineRegex = new(@"^///\s*(\r?\n|$)", RegexOptions.Multiline);
 
         public static SyntaxTrivia Parse(string xml, SemanticModel semanticModel, int position)
         {

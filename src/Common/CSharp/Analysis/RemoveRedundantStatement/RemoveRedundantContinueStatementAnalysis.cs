@@ -7,7 +7,7 @@ namespace Roslynator.CSharp.Analysis.RemoveRedundantStatement
 {
     internal sealed class RemoveRedundantContinueStatementAnalysis : RemoveRedundantStatementAnalysis<ContinueStatementSyntax>
     {
-        public static RemoveRedundantContinueStatementAnalysis Instance { get; } = new RemoveRedundantContinueStatementAnalysis();
+        public static RemoveRedundantContinueStatementAnalysis Instance { get; } = new();
 
         private RemoveRedundantContinueStatementAnalysis()
         {

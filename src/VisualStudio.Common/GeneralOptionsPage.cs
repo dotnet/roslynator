@@ -13,7 +13,7 @@ namespace Roslynator.VisualStudio
     {
         private bool _isActive;
 
-        private readonly GeneralOptionsPageControl _control = new GeneralOptionsPageControl();
+        private readonly GeneralOptionsPageControl _control = new();
 
         protected override UIElement Child
         {

@@ -13,9 +13,9 @@ namespace Roslynator.CodeGeneration
 {
     internal static class Program
     {
-        private static readonly Regex _analyzerIdRegex = new Regex(@"^RCS\d+", RegexOptions.IgnoreCase);
-        private static readonly Regex _refactoringIdRegex = new Regex(@"^RR\d+", RegexOptions.IgnoreCase);
-        private static readonly Regex _codeFixIdRegex = new Regex(@"^(CS|VB)\d+", RegexOptions.IgnoreCase);
+        private static readonly Regex _analyzerIdRegex = new(@"^RCS\d+", RegexOptions.IgnoreCase);
+        private static readonly Regex _refactoringIdRegex = new(@"^RR\d+", RegexOptions.IgnoreCase);
+        private static readonly Regex _codeFixIdRegex = new(@"^(CS|VB)\d+", RegexOptions.IgnoreCase);
 
         private static void Main(string[] args)
         {

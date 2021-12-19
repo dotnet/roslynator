@@ -111,19 +111,6 @@ namespace Roslynator.VisualStudio
 
             ConfigMigrator.MigrateToEditorConfig();
 
-            List<string> refactoringsDisabledByDefault = typeof(RefactoringDescriptors)
-                .GetFields()
-                .Where(f => f.IsPublic)
-                .Select(f => (RefactoringDescriptor)f.GetValue(null))
-                .Where(f => !f.IsEnabledByDefault)
-                .Select(f => f.Id)
-                .ToList();
-
-            List<string> codeFixesDisabledByDefault = CodeFixDescriptors.GetCodeFixesDisabledByDefault().ToList();
-
-            refactoringsOptionsPage.CheckNewItemsDisabledByDefault(refactoringsDisabledByDefault);
-            codeFixesOptionsPage.CheckNewItemsDisabledByDefault(codeFixesDisabledByDefault);
-
             refactoringsOptionsPage.UpdateConfig();
             codeFixesOptionsPage.UpdateConfig();
         }

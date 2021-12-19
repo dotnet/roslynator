@@ -22,7 +22,7 @@ namespace Roslynator.CSharp.CodeFixes
     [Shared]
     public sealed class UseAutoPropertyCodeFixProvider : BaseCodeFixProvider
     {
-        private static readonly SyntaxAnnotation _removeAnnotation = new SyntaxAnnotation();
+        private static readonly SyntaxAnnotation _removeAnnotation = new();
 
         public override ImmutableArray<string> FixableDiagnosticIds
         {

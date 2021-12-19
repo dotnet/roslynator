@@ -26,7 +26,7 @@ namespace Roslynator.CSharp.Analysis.MakeMemberReadOnly
 
         public CancellationToken CancellationToken { get; set; }
 
-        public Dictionary<string, (SyntaxNode, ISymbol)> Symbols { get; } = new Dictionary<string, (SyntaxNode, ISymbol)>();
+        public Dictionary<string, (SyntaxNode, ISymbol)> Symbols { get; } = new();
 
         public static MakeMemberReadOnlyWalker GetInstance()
         {

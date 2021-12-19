@@ -28,13 +28,6 @@ namespace Roslynator.CodeGeneration.CSharp
 
         private static IEnumerable<MemberDeclarationSyntax> CreateMembers(IEnumerable<RefactoringMetadata> refactorings, IComparer<string> comparer)
         {
-            yield return PropertyDeclaration(
-                Modifiers.Protected_Override(),
-                PredefinedStringType(),
-                Identifier("MaxId"),
-                AccessorList(AutoGetAccessorDeclaration()),
-                ParseExpression($"RefactoringIdentifiers.{refactorings.OrderBy(f => f.Id, comparer).Last().Identifier}"));
-
             yield return MethodDeclaration(
                 Modifiers.Protected_Override(),
                 VoidType(),

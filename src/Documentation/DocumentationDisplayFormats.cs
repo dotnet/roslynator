@@ -6,7 +6,7 @@ namespace Roslynator.Documentation
 {
     internal static class DocumentationDisplayFormats
     {
-        internal static SymbolDisplayFormat Default { get; } = new SymbolDisplayFormat(
+        internal static SymbolDisplayFormat Default { get; } = new(
             globalNamespaceStyle: DefaultGlobalNamespaceStyle,
             typeQualificationStyle: DefaultTypeQualificationStyle,
             genericsOptions: DefaultGenericsOptions,

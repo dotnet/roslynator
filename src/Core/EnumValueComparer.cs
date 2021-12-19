@@ -39,7 +39,7 @@ namespace Roslynator
             {
             }
 
-            public static readonly SByteValueComparer Instance = new SByteValueComparer();
+            public static readonly SByteValueComparer Instance = new();
 
             public int Compare(object x, object y)
             {
@@ -68,7 +68,7 @@ namespace Roslynator
             {
             }
 
-            public static readonly ByteValueComparer Instance = new ByteValueComparer();
+            public static readonly ByteValueComparer Instance = new();
 
             public int Compare(object x, object y)
             {
@@ -97,7 +97,7 @@ namespace Roslynator
             {
             }
 
-            public static readonly ShortValueComparer Instance = new ShortValueComparer();
+            public static readonly ShortValueComparer Instance = new();
 
             public int Compare(object x, object y)
             {
@@ -126,7 +126,7 @@ namespace Roslynator
             {
             }
 
-            public static readonly UShortValueComparer Instance = new UShortValueComparer();
+            public static readonly UShortValueComparer Instance = new();
 
             public int Compare(object x, object y)
             {
@@ -155,7 +155,7 @@ namespace Roslynator
             {
             }
 
-            public static readonly IntValueComparer Instance = new IntValueComparer();
+            public static readonly IntValueComparer Instance = new();
 
             public int Compare(object x, object y)
             {
@@ -184,7 +184,7 @@ namespace Roslynator
             {
             }
 
-            public static readonly UIntValueComparer Instance = new UIntValueComparer();
+            public static readonly UIntValueComparer Instance = new();
 
             public int Compare(object x, object y)
             {
@@ -213,7 +213,7 @@ namespace Roslynator
             {
             }
 
-            public static readonly LongValueComparer Instance = new LongValueComparer();
+            public static readonly LongValueComparer Instance = new();
 
             public int Compare(object x, object y)
             {
@@ -242,7 +242,7 @@ namespace Roslynator
             {
             }
 
-            public static readonly ULongValueComparer Instance = new ULongValueComparer();
+            public static readonly ULongValueComparer Instance = new();
 
             public int Compare(object x, object y)
             {

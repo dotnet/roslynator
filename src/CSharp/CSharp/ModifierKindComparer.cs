@@ -8,7 +8,7 @@ namespace Roslynator.CSharp
 {
     internal class ModifierKindComparer : IComparer<SyntaxKind>
     {
-        public static ModifierKindComparer Default { get; } = new ModifierKindComparer();
+        public static ModifierKindComparer Default { get; } = new();
 
         public int Compare(SyntaxKind x, SyntaxKind y)
         {

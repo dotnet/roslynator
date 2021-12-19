@@ -7,7 +7,7 @@ namespace Roslynator.CodeFixes
 {
     internal class ProjectFixResult
     {
-        internal static ProjectFixResult Skipped { get; } = new ProjectFixResult(ProjectFixKind.Skipped);
+        internal static ProjectFixResult Skipped { get; } = new(ProjectFixKind.Skipped);
 
         internal ProjectFixResult(
             ProjectFixKind kind,

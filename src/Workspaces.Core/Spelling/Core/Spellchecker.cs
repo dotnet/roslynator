@@ -7,7 +7,7 @@ namespace Roslynator.Spelling
 {
     internal class Spellchecker
     {
-        private static readonly Regex _wordRegex = new Regex(
+        private static readonly Regex _wordRegex = new(
             @"
 \b
 \p{L}{2,}
@@ -40,11 +40,11 @@ namespace Roslynator.Spelling
     )
 ";
 
-        private static readonly Regex _splitIdentifierRegex = new Regex(
+        private static readonly Regex _splitIdentifierRegex = new(
             @"\P{L}+|" + _splitCasePattern,
             RegexOptions.IgnorePatternWhitespace);
 
-        private static readonly Regex _urlRegex = new Regex(
+        private static readonly Regex _urlRegex = new(
             @"\bhttps?://[^\s]+(?=\s|\z)", RegexOptions.IgnoreCase);
 
         private readonly Regex _splitRegex;

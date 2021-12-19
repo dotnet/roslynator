@@ -11,7 +11,7 @@ namespace Roslynator.VisualStudio
     [Guid("9851B486-A654-4F6A-B1BA-9E1071DCCA25")]
     public class AnalyzersOptionsPage : UIElementDialogPage
     {
-        private readonly AnalyzersOptionsPageControl _control = new AnalyzersOptionsPageControl();
+        private readonly AnalyzersOptionsPageControl _control = new();
 
         protected override UIElement Child => _control;
     }

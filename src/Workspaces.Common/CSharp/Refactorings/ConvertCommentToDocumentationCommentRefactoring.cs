@@ -18,7 +18,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         public const string Title = "Convert comment to documentation comment";
 
-        private static readonly Regex _leadingSlashesRegex = new Regex(@"^//\s*");
+        private static readonly Regex _leadingSlashesRegex = new(@"^//\s*");
 
         public static Task<Document> RefactorAsync(
             Document document,

@@ -81,7 +81,7 @@ namespace Roslynator.CodeGeneration.CSharp
 
         private class Rewriter : CSharpSyntaxRewriter
         {
-            public static Rewriter Instance { get; } = new Rewriter();
+            public static Rewriter Instance { get; } = new();
 
             public override SyntaxNode VisitFieldDeclaration(FieldDeclarationSyntax node)
             {

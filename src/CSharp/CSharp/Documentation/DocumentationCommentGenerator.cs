@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.Documentation
 {
     internal static class DocumentationCommentGenerator
     {
-        private static readonly XmlReaderSettings _xmlReaderSettings = new XmlReaderSettings() { ConformanceLevel = ConformanceLevel.Fragment };
+        private static readonly XmlReaderSettings _xmlReaderSettings = new() { ConformanceLevel = ConformanceLevel.Fragment };
 
         public static SyntaxTriviaList Generate(MemberDeclarationSyntax memberDeclaration, DocumentationCommentGeneratorSettings settings = null)
         {

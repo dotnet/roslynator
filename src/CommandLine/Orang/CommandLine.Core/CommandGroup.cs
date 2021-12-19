@@ -4,7 +4,7 @@ namespace Roslynator
 {
     public readonly struct CommandGroup
     {
-        public static CommandGroup Default { get; } = new CommandGroup("", -1);
+        public static CommandGroup Default { get; } = new("", -1);
 
         public CommandGroup(string name, int ordinal)
         {

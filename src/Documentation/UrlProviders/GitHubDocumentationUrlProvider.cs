@@ -21,13 +21,13 @@ namespace Roslynator.Documentation
         {
         }
 
-        public static GitHubDocumentationUrlProvider Instance { get; } = new GitHubDocumentationUrlProvider(ImmutableArray.Create(MicrosoftDocsUrlProvider.Instance));
+        public static GitHubDocumentationUrlProvider Instance { get; } = new(ImmutableArray.Create(MicrosoftDocsUrlProvider.Instance));
 
         public const string ReadMeFileName = "README.md";
 
         private const string LinkToSelf = "./" + ReadMeFileName;
 
-        private static readonly Regex _notWordCharOrHyphenOrSpaceRegex = new Regex(@"[^\w- ]");
+        private static readonly Regex _notWordCharOrHyphenOrSpaceRegex = new(@"[^\w- ]");
 
         private Dictionary<ISymbol, ImmutableArray<string>> _symbolToFoldersMap;
 

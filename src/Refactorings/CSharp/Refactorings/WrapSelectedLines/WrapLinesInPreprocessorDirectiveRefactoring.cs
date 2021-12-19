@@ -8,7 +8,7 @@ namespace Roslynator.CSharp.Refactorings.WrapSelectedLines
         {
         }
 
-        public static WrapLinesInPreprocessorDirectiveRefactoring Instance { get; } = new WrapLinesInPreprocessorDirectiveRefactoring();
+        public static WrapLinesInPreprocessorDirectiveRefactoring Instance { get; } = new();
 
         public override string GetFirstLineText()
         {

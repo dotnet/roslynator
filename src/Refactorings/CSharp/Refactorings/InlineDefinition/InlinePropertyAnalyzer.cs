@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
 {
     internal class InlinePropertyAnalyzer : InlineAnalyzer<IdentifierNameSyntax, PropertyDeclarationSyntax, IPropertySymbol>
     {
-        public static InlinePropertyAnalyzer Instance { get; } = new InlinePropertyAnalyzer();
+        public static InlinePropertyAnalyzer Instance { get; } = new();
 
         protected override bool ValidateNode(IdentifierNameSyntax node, TextSpan span)
         {

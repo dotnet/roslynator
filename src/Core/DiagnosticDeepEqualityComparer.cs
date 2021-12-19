@@ -9,7 +9,7 @@ namespace Roslynator
 {
     internal sealed class DiagnosticDeepEqualityComparer : IEqualityComparer<Diagnostic>
     {
-        public static DiagnosticDeepEqualityComparer Instance { get; } = new DiagnosticDeepEqualityComparer();
+        public static DiagnosticDeepEqualityComparer Instance { get; } = new();
 
         internal static bool Equals(ImmutableArray<Diagnostic> first, ImmutableArray<Diagnostic> second)
         {

@@ -6,8 +6,8 @@ namespace Roslynator.CommandLine
 {
     internal static class Versions
     {
-        public static Version Version_1_0_0 { get; } = new Version(1, 0, 0);
+        public static Version Version_1_0_0 { get; } = new(1, 0, 0);
 
-        public static Version Version_3_0_0 { get; } = new Version(3, 0, 0);
+        public static Version Version_3_0_0 { get; } = new(3, 0, 0);
     }
 }

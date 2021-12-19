@@ -7,7 +7,7 @@ namespace Roslynator.Configuration
 {
     internal class VisualStudioCodeAnalysisConfig
     {
-        internal static VisualStudioCodeAnalysisConfig Empty { get; } = new VisualStudioCodeAnalysisConfig();
+        internal static VisualStudioCodeAnalysisConfig Empty { get; } = new();
 
         public VisualStudioCodeAnalysisConfig(
             bool prefixFieldIdentifierWithUnderscore = OptionDefaultValues.PrefixFieldIdentifierWithUnderscore,

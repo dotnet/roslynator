@@ -8,7 +8,7 @@ namespace Roslynator.CSharp
 {
     internal class MemberDeclarationKindComparer : IComparer<SyntaxKind>
     {
-        public static MemberDeclarationKindComparer Default { get; } = new MemberDeclarationKindComparer();
+        public static MemberDeclarationKindComparer Default { get; } = new();
 
         public int Compare(SyntaxKind x, SyntaxKind y)
         {

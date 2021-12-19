@@ -7,7 +7,7 @@ namespace Roslynator.Collections
 {
     internal class ReadOnlyList<T> : ReadOnlyCollection<T>, IList<T>, IReadOnlyList<T>
     {
-        new public static readonly ReadOnlyList<T> Instance = new ReadOnlyList<T>();
+        new public static readonly ReadOnlyList<T> Instance = new();
 
         protected ReadOnlyList()
         {

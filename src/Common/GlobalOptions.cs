@@ -6,13 +6,13 @@ namespace Roslynator
 {
     public static class GlobalOptions
     {
-        public static readonly OptionDescriptor MaxLineLength = new OptionDescriptor(
+        public static readonly OptionDescriptor MaxLineLength = new(
             OptionKeys.MaxLineLength,
             defaultValue: OptionDefaultValues.MaxLineLength.ToString(),
             description: "Max line length",
             valuePlaceholder: "<MAX_LINE_LENGTH>");
 
-        public static readonly OptionDescriptor PrefixFieldIdentifierWithUnderscore = new OptionDescriptor(
+        public static readonly OptionDescriptor PrefixFieldIdentifierWithUnderscore = new(
             OptionKeys.PrefixFieldIdentifierWithUnderscore,
             defaultValue: OptionDefaultValues.PrefixFieldIdentifierWithUnderscore.ToString().ToLowerInvariant(),
             description: "Prefix field identifier with underscore",

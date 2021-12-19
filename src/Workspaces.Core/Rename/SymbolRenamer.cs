@@ -19,7 +19,7 @@ namespace Roslynator.Rename
 {
     internal class SymbolRenamer
     {
-        private readonly DiffTracker _diffTracker = new DiffTracker();
+        private readonly DiffTracker _diffTracker = new();
         private readonly Func<ISymbol, bool> _predicate;
         private readonly Func<ISymbol, string> _getNewName;
 

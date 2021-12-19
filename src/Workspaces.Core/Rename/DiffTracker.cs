@@ -10,7 +10,7 @@ namespace Roslynator.Rename
 {
     internal class DiffTracker
     {
-        private readonly Dictionary<DocumentId, List<DiffSpan>> _dic = new Dictionary<DocumentId, List<DiffSpan>>();
+        private readonly Dictionary<DocumentId, List<DiffSpan>> _dic = new();
 
         public int Count => _dic.Count;
 
@@ -194,7 +194,7 @@ namespace Roslynator.Rename
 
         private class DiffSpanComparer : IComparer<DiffSpan>
         {
-            public static DiffSpanComparer Instance { get; } = new DiffSpanComparer();
+            public static DiffSpanComparer Instance { get; } = new();
 
             public int Compare(DiffSpan x, DiffSpan y) => x.Span.CompareTo(y.Span);
         }

@@ -23,6 +23,6 @@ namespace Roslynator.Rename
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string DebuggerDisplay => $"{Start}  {Diff}";
 
-        public DiffSpan Offset(int value) => new DiffSpan(Span.Offset(value), Diff);
+        public DiffSpan Offset(int value) => new(Span.Offset(value), Diff);
     }
 }

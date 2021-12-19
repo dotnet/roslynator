@@ -23,13 +23,13 @@ namespace Roslynator.Spelling
     )
 ";
 
-        private static readonly Regex _splitCaseRegex = new Regex(
+        private static readonly Regex _splitCaseRegex = new(
             _splitCasePattern,
             RegexOptions.IgnorePatternWhitespace);
 
-        private static readonly Regex _splitHyphenRegex = new Regex("-");
+        private static readonly Regex _splitHyphenRegex = new("-");
 
-        private static readonly Regex _splitCaseAndHyphenRegex = new Regex(
+        private static readonly Regex _splitCaseAndHyphenRegex = new(
             "-|" + _splitCasePattern,
             RegexOptions.IgnorePatternWhitespace);
 

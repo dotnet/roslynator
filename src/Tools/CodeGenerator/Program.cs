@@ -78,7 +78,7 @@ namespace Roslynator.CodeGeneration
 
             WriteCompilationUnit(
                 @"VisualStudio.Common\CodeFixesOptionsPage.Generated.cs",
-                CodeFixesOptionsPageGenerator.Generate(codeFixes, comparer));
+                CodeFixesOptionsPageGenerator.Generate());
 
             WriteCompilationUnit(
                 @"CSharp\CSharp\CompilerDiagnosticIdentifiers.Generated.cs",

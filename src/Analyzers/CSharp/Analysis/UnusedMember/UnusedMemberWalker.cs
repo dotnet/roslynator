@@ -21,7 +21,7 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
 
         private IMethodSymbol _containingMethodSymbol;
 
-        public Collection<NodeSymbolInfo> Nodes { get; } = new Collection<NodeSymbolInfo>();
+        public Collection<NodeSymbolInfo> Nodes { get; } = new();
 
         public SemanticModel SemanticModel { get; set; }
 

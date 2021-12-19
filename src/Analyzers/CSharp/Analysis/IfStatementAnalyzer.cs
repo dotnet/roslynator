@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class IfStatementAnalyzer : BaseDiagnosticAnalyzer
     {
-        internal static IfAnalysisOptions AnalysisOptions { get; } = new IfAnalysisOptions(
+        internal static IfAnalysisOptions AnalysisOptions { get; } = new(
             useCoalesceExpression: true,
             useConditionalExpression: false,
             useBooleanExpression: false,

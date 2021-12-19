@@ -17,9 +17,9 @@ namespace Roslynator.CommandLine
 {
     internal class MigrateCommand
     {
-        private static readonly Regex _versionRegex = new Regex(@"\A(?<version>\d+\.\d+\.\d+)(?<suffix>-.*)?\z");
+        private static readonly Regex _versionRegex = new(@"\A(?<version>\d+\.\d+\.\d+)(?<suffix>-.*)?\z");
 
-        private static readonly Regex _editorConfigRegex = new Regex(
+        private static readonly Regex _editorConfigRegex = new(
             @"
             dotnet_diagnostic\.
             (?<id>

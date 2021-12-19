@@ -8,7 +8,7 @@ namespace Roslynator.CodeMetrics
 {
     internal readonly struct CodeMetricsInfo : IEquatable<CodeMetricsInfo>
     {
-        internal static CodeMetricsInfo NotAvailable { get; } = new CodeMetricsInfo(-1, 0, 0, 0, 0, 0);
+        internal static CodeMetricsInfo NotAvailable { get; } = new(-1, 0, 0, 0, 0, 0);
 
         internal CodeMetricsInfo(
             int totalLineCount,

@@ -4,8 +4,8 @@ namespace Roslynator.CSharp.Refactorings.ConvertReturnToIf
 {
     internal static class ConvertReturnStatementToIfRefactoring
     {
-        public static ConvertReturnToIfElseRefactoring ConvertReturnToIfElse { get; } = new ConvertReturnToIfElseRefactoring();
+        public static ConvertReturnToIfElseRefactoring ConvertReturnToIfElse { get; } = new();
 
-        public static ConvertYieldReturnToIfElseRefactoring ConvertYieldReturnToIfElse { get; } = new ConvertYieldReturnToIfElseRefactoring();
+        public static ConvertYieldReturnToIfElseRefactoring ConvertYieldReturnToIfElse { get; } = new();
     }
 }

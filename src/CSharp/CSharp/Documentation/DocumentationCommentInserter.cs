@@ -17,7 +17,7 @@ namespace Roslynator.CSharp.Documentation
             Indent = indent;
         }
 
-        public static DocumentationCommentInserter Default { get; } = new DocumentationCommentInserter(default(SyntaxTriviaList), 0, "");
+        public static DocumentationCommentInserter Default { get; } = new(default(SyntaxTriviaList), 0, "");
 
         public SyntaxTriviaList LeadingTrivia { get; }
 

@@ -12,14 +12,9 @@ namespace Roslynator.VisualStudio
     {
         protected override UIElement Child => Control;
 
-        [Browsable(false)]
-        public string LastMaxId { get; set; }
+        protected Dictionary<string, bool> Items { get; } = new();
 
-        protected abstract string MaxId { get; }
-
-        protected Dictionary<string, bool> Items { get; } = new Dictionary<string, bool>();
-
-        internal BaseOptionsPageControl Control { get; } = new BaseOptionsPageControl();
+        internal BaseOptionsPageControl Control { get; } = new();
 
         public bool IsLoaded { get; private set; }
 
@@ -38,38 +33,6 @@ namespace Roslynator.VisualStudio
         {
             foreach (KeyValuePair<string, bool> kvp in Items)
                 yield return kvp;
-        }
-
-        public void CheckNewItemsDisabledByDefault(IEnumerable<string> itemsDisabledByDefault)
-        {
-            var shouldSave = false;
-
-            if (string.IsNullOrEmpty(LastMaxId))
-            {
-                if (Items.Count == 0)
-                {
-                    foreach (string id in itemsDisabledByDefault)
-                        Items.Add(id, false);
-                }
-
-                shouldSave = true;
-            }
-            else if (string.CompareOrdinal(LastMaxId, MaxId) < 0)
-            {
-                foreach (string id in itemsDisabledByDefault)
-                {
-                    if (string.CompareOrdinal(LastMaxId, id) < 0)
-                        Items[id] = false;
-                }
-
-                shouldSave = true;
-            }
-
-            if (shouldSave)
-            {
-                LastMaxId = MaxId;
-                SaveSettingsToStorage();
-            }
         }
 
         protected override void OnActivate(CancelEventArgs e)

@@ -9,7 +9,7 @@ namespace Roslynator
 {
     public abstract class OptionValue
     {
-        private protected static readonly Regex _lowerLetterUpperLetterRegex = new Regex(@"\p{Ll}\p{Lu}");
+        private protected static readonly Regex _lowerLetterUpperLetterRegex = new(@"\p{Ll}\p{Lu}");
 
         protected OptionValue(
             string name,

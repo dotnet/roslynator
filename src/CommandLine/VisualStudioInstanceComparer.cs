@@ -7,7 +7,7 @@ namespace Roslynator.CommandLine
 {
     public sealed class VisualStudioInstanceComparer : EqualityComparer<VisualStudioInstance>
     {
-        public static VisualStudioInstanceComparer MSBuildPath { get; } = new VisualStudioInstanceComparer();
+        public static VisualStudioInstanceComparer MSBuildPath { get; } = new();
 
         private VisualStudioInstanceComparer()
         {

@@ -11,9 +11,9 @@ namespace Roslynator.CSharp
             UseNotPattern = useNotPattern;
         }
 
-        public static SyntaxLogicalInverterOptions Default { get; } = new SyntaxLogicalInverterOptions();
+        public static SyntaxLogicalInverterOptions Default { get; } = new();
 
-        internal static SyntaxLogicalInverterOptions CSharp8 { get; } = new SyntaxLogicalInverterOptions(useNotPattern: false);
+        internal static SyntaxLogicalInverterOptions CSharp8 { get; } = new(useNotPattern: false);
 
         public bool UseNotPattern { get; }
     }

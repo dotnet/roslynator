@@ -6,7 +6,7 @@ namespace Roslynator.Documentation
 {
     internal static class TextUtility
     {
-        private static readonly Regex _newLineAndSpacesRegex = new Regex(@"\r?\n[\s-[\r\n]]*");
+        private static readonly Regex _newLineAndSpacesRegex = new(@"\r?\n[\s-[\r\n]]*");
 
         public static string RemoveLeadingTrailingNewLine(
             string s,

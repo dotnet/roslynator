@@ -228,7 +228,7 @@ namespace Roslynator.CSharp.Analysis
 
         private readonly struct ParameterInfo
         {
-            public static ParameterInfo Empty { get; } = new ParameterInfo();
+            public static ParameterInfo Empty { get; } = new();
 
             private ParameterInfo(SyntaxNode node, ParameterSyntax parameter)
             {

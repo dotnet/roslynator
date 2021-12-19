@@ -10,7 +10,7 @@ namespace Roslynator.CSharp.Analysis.AddExceptionToDocumentationComment
 {
     internal static class AddExceptionToDocumentationCommentAnalysis
     {
-        private static AddExceptionToDocumentationCommentAnalysisResult Fail { get; } = new AddExceptionToDocumentationCommentAnalysisResult();
+        private static AddExceptionToDocumentationCommentAnalysisResult Fail { get; } = new();
 
         public static AddExceptionToDocumentationCommentAnalysisResult Analyze(
             ThrowStatementSyntax throwStatement,

@@ -8,7 +8,7 @@ namespace Roslynator.Rename
 {
     internal sealed class LocalSymbolComparer : IComparer<ISymbol>
     {
-        public static LocalSymbolComparer Instance { get; } = new LocalSymbolComparer();
+        public static LocalSymbolComparer Instance { get; } = new();
 
         public int Compare(ISymbol x, ISymbol y)
         {

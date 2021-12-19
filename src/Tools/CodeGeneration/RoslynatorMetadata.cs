@@ -26,7 +26,7 @@ namespace Roslynator.CodeGeneration
         private ImmutableArray<CompilerDiagnosticMetadata> _compilerDiagnostics;
         private ImmutableArray<OptionDescriptor> _options;
 
-        private static readonly Regex _analyzersFileNameRegex = new Regex(@"\A(\w+\.)?Analyzers(?!\.Template)(\.\w+)?\z");
+        private static readonly Regex _analyzersFileNameRegex = new(@"\A(\w+\.)?Analyzers(?!\.Template)(\.\w+)?\z");
 
         public IEnumerable<AnalyzerMetadata> GetAllAnalyzers()
         {

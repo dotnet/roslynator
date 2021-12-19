@@ -6,7 +6,7 @@ namespace Roslynator
 {
     internal sealed class ConsoleWriter : TextWriterWithVerbosity
     {
-        public static ConsoleWriter Instance { get; } = new ConsoleWriter();
+        public static ConsoleWriter Instance { get; } = new();
 
         private ConsoleWriter() : base(Console.Out, Console.Out.FormatProvider)
         {

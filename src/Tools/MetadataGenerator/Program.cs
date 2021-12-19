@@ -23,7 +23,7 @@ namespace Roslynator.CodeGeneration
 {
     internal static class Program
     {
-        private static readonly UTF8Encoding _utf8NoBom = new UTF8Encoding(encoderShouldEmitUTF8Identifier: false);
+        private static readonly UTF8Encoding _utf8NoBom = new(encoderShouldEmitUTF8Identifier: false);
 
         private static async Task Main(string[] args)
         {

@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
 {
     internal class InlineMethodAnalyzer : InlineAnalyzer<InvocationExpressionSyntax, MethodDeclarationSyntax, IMethodSymbol>
     {
-        public static InlineMethodAnalyzer Instance { get; } = new InlineMethodAnalyzer();
+        public static InlineMethodAnalyzer Instance { get; } = new();
 
         protected override bool ValidateNode(InvocationExpressionSyntax node, TextSpan span)
         {

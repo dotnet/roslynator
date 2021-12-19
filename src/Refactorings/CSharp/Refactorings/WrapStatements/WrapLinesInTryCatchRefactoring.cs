@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Refactorings.WrapStatements
         {
         }
 
-        public static WrapLinesInTryCatchRefactoring Instance { get; } = new WrapLinesInTryCatchRefactoring();
+        public static WrapLinesInTryCatchRefactoring Instance { get; } = new();
 
         public override TryStatementSyntax CreateStatement(ImmutableArray<StatementSyntax> statements)
         {

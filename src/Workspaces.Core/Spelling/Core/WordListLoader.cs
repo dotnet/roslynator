@@ -15,7 +15,7 @@ namespace Roslynator.Spelling
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
     internal static class WordListLoader
     {
-        private static readonly Regex _splitRegex = new Regex(" +");
+        private static readonly Regex _splitRegex = new(" +");
 
         public static WordListLoaderResult Load(
             IEnumerable<string> paths,

@@ -182,7 +182,7 @@ namespace Roslynator.CodeGeneration.CSharp
         {
             private int _classDeclarationDepth;
 
-            public static Rewriter Instance { get; } = new Rewriter();
+            public static Rewriter Instance { get; } = new();
 
             public override SyntaxNode VisitClassDeclaration(ClassDeclarationSyntax node)
             {

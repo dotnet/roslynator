@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class InlineConstantDeclarationRefactoring
     {
-        private static readonly SyntaxAnnotation _removeAnnotation = new SyntaxAnnotation();
+        private static readonly SyntaxAnnotation _removeAnnotation = new();
 
         public static async Task<Solution> RefactorAsync(
             Document document,

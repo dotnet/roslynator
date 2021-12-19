@@ -12,7 +12,7 @@ namespace Roslynator.CSharp
         {
         }
 
-        public static readonly EnumMemberDeclarationNameComparer Instance = new EnumMemberDeclarationNameComparer();
+        public static readonly EnumMemberDeclarationNameComparer Instance = new();
 
         public int Compare(EnumMemberDeclarationSyntax x, EnumMemberDeclarationSyntax y)
         {

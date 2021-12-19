@@ -14,7 +14,7 @@ namespace Roslynator.Documentation
     {
         private const string DefaultIndentChars = "            ";
 
-        private static readonly Regex _indentationRegex = new Regex("(?<=\n)" + DefaultIndentChars);
+        private static readonly Regex _indentationRegex = new("(?<=\n)" + DefaultIndentChars);
 
         private readonly XElement _membersElement;
         private ImmutableDictionary<string, XElement> _elementsById;

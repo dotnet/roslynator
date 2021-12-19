@@ -8,7 +8,7 @@ namespace Roslynator.Documentation
 {
     internal class DocumentationFilterOptions : SymbolFilterOptions
     {
-        public static DocumentationFilterOptions Instance { get; } = new DocumentationFilterOptions(
+        public static DocumentationFilterOptions Instance { get; } = new(
             visibility: VisibilityFilter.Public,
             symbolGroups: SymbolGroupFilter.TypeOrMember,
             rules: null,

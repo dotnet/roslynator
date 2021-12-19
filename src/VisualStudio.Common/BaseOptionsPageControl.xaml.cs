@@ -32,7 +32,7 @@ namespace Roslynator.VisualStudio
 
         public ListSortDirection DefaultSortDirection { get; set; } = ListSortDirection.Descending;
 
-        public ObservableCollection<BaseModel> Items { get; } = new ObservableCollection<BaseModel>();
+        public ObservableCollection<BaseModel> Items { get; } = new();
 
         private void GridViewColumnHeader_Click(object sender, RoutedEventArgs e)
         {

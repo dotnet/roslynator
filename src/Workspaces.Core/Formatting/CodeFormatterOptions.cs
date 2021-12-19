@@ -4,7 +4,7 @@ namespace Roslynator.Formatting
 {
     internal class CodeFormatterOptions
     {
-        public static CodeFormatterOptions Default { get; } = new CodeFormatterOptions();
+        public static CodeFormatterOptions Default { get; } = new();
 
         public CodeFormatterOptions(
             bool includeGeneratedCode = false)

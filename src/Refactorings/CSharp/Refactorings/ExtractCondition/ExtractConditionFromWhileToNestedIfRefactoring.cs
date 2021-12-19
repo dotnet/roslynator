@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Refactorings.ExtractCondition
         {
         }
 
-        public static ExtractConditionFromWhileToNestedIfRefactoring Instance { get; } = new ExtractConditionFromWhileToNestedIfRefactoring();
+        public static ExtractConditionFromWhileToNestedIfRefactoring Instance { get; } = new();
 
         public override string Title
         {

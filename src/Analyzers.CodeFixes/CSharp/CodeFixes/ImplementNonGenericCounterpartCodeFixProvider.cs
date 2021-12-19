@@ -111,15 +111,15 @@ public int global::System.Collections.IEqualityComparer.GetHashCode(object obj)
 }
 ";
 
-        private static readonly Lazy<MethodDeclarationSyntax> _lazyIComparableCompare = new Lazy<MethodDeclarationSyntax>(() => CreateMethodDeclaration(IComparableCompareText, explicitInterfaceImplementation: false));
-        private static readonly Lazy<MethodDeclarationSyntax> _lazyIComparerCompare = new Lazy<MethodDeclarationSyntax>(() => CreateMethodDeclaration(IComparerCompareText, explicitInterfaceImplementation: false));
-        private static readonly Lazy<MethodDeclarationSyntax> _lazyIEqualityComparerEquals = new Lazy<MethodDeclarationSyntax>(() => CreateMethodDeclaration(IEqualityComparerEqualsText, explicitInterfaceImplementation: false));
-        private static readonly Lazy<MethodDeclarationSyntax> _lazyIEqualityComparerGetHashCode = new Lazy<MethodDeclarationSyntax>(() => CreateMethodDeclaration(IEqualityComparerGetHashCodeText, explicitInterfaceImplementation: false));
+        private static readonly Lazy<MethodDeclarationSyntax> _lazyIComparableCompare = new(() => CreateMethodDeclaration(IComparableCompareText, explicitInterfaceImplementation: false));
+        private static readonly Lazy<MethodDeclarationSyntax> _lazyIComparerCompare = new(() => CreateMethodDeclaration(IComparerCompareText, explicitInterfaceImplementation: false));
+        private static readonly Lazy<MethodDeclarationSyntax> _lazyIEqualityComparerEquals = new(() => CreateMethodDeclaration(IEqualityComparerEqualsText, explicitInterfaceImplementation: false));
+        private static readonly Lazy<MethodDeclarationSyntax> _lazyIEqualityComparerGetHashCode = new(() => CreateMethodDeclaration(IEqualityComparerGetHashCodeText, explicitInterfaceImplementation: false));
 
-        private static readonly Lazy<MethodDeclarationSyntax> _lazyIComparableCompareExplicit = new Lazy<MethodDeclarationSyntax>(() => CreateMethodDeclaration(IComparableCompareText, explicitInterfaceImplementation: true));
-        private static readonly Lazy<MethodDeclarationSyntax> _lazyIComparerCompareExplicit = new Lazy<MethodDeclarationSyntax>(() => CreateMethodDeclaration(IComparerCompareText, explicitInterfaceImplementation: true));
-        private static readonly Lazy<MethodDeclarationSyntax> _lazyIEqualityComparerEqualsExplicit = new Lazy<MethodDeclarationSyntax>(() => CreateMethodDeclaration(IEqualityComparerEqualsText, explicitInterfaceImplementation: true));
-        private static readonly Lazy<MethodDeclarationSyntax> _lazyIEqualityComparerGetHashCodeExplicit = new Lazy<MethodDeclarationSyntax>(() => CreateMethodDeclaration(IEqualityComparerGetHashCodeText, explicitInterfaceImplementation: true));
+        private static readonly Lazy<MethodDeclarationSyntax> _lazyIComparableCompareExplicit = new(() => CreateMethodDeclaration(IComparableCompareText, explicitInterfaceImplementation: true));
+        private static readonly Lazy<MethodDeclarationSyntax> _lazyIComparerCompareExplicit = new(() => CreateMethodDeclaration(IComparerCompareText, explicitInterfaceImplementation: true));
+        private static readonly Lazy<MethodDeclarationSyntax> _lazyIEqualityComparerEqualsExplicit = new(() => CreateMethodDeclaration(IEqualityComparerEqualsText, explicitInterfaceImplementation: true));
+        private static readonly Lazy<MethodDeclarationSyntax> _lazyIEqualityComparerGetHashCodeExplicit = new(() => CreateMethodDeclaration(IEqualityComparerGetHashCodeText, explicitInterfaceImplementation: true));
 
         public override ImmutableArray<string> FixableDiagnosticIds
         {
@@ -333,7 +333,7 @@ public int global::System.Collections.IEqualityComparer.GetHashCode(object obj)
 
         private class AddSimplifierAnnotationRewriter : CSharpSyntaxRewriter
         {
-            public static AddSimplifierAnnotationRewriter Instance { get; } = new AddSimplifierAnnotationRewriter();
+            public static AddSimplifierAnnotationRewriter Instance { get; } = new();
 
             public override SyntaxNode VisitQualifiedName(QualifiedNameSyntax node)
             {
@@ -343,7 +343,7 @@ public int global::System.Collections.IEqualityComparer.GetHashCode(object obj)
 
         private class RemoveExplicitInterfaceSpecifierAddSimplifierAnnotationRewriter : CSharpSyntaxRewriter
         {
-            public static AddSimplifierAnnotationRewriter Instance { get; } = new AddSimplifierAnnotationRewriter();
+            public static AddSimplifierAnnotationRewriter Instance { get; } = new();
 
             public override SyntaxNode VisitQualifiedName(QualifiedNameSyntax node)
             {

@@ -8,17 +8,17 @@ namespace Roslynator
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
     internal readonly struct ConsoleColors : IEquatable<ConsoleColors>
     {
-        public static ConsoleColors Cyan { get; } = new ConsoleColors(ConsoleColor.Cyan);
+        public static ConsoleColors Cyan { get; } = new(ConsoleColor.Cyan);
 
-        public static ConsoleColors DarkGray { get; } = new ConsoleColors(ConsoleColor.DarkGray);
+        public static ConsoleColors DarkGray { get; } = new(ConsoleColor.DarkGray);
 
-        public static ConsoleColors Gray { get; } = new ConsoleColors(ConsoleColor.Gray);
+        public static ConsoleColors Gray { get; } = new(ConsoleColor.Gray);
 
-        public static ConsoleColors Green { get; } = new ConsoleColors(ConsoleColor.Green);
+        public static ConsoleColors Green { get; } = new(ConsoleColor.Green);
 
-        public static ConsoleColors Magenta { get; } = new ConsoleColors(ConsoleColor.Magenta);
+        public static ConsoleColors Magenta { get; } = new(ConsoleColor.Magenta);
 
-        public static ConsoleColors Yellow { get; } = new ConsoleColors(ConsoleColor.Yellow);
+        public static ConsoleColors Yellow { get; } = new(ConsoleColor.Yellow);
 
         public ConsoleColors(ConsoleColor? foreground)
             : this(foreground, null)

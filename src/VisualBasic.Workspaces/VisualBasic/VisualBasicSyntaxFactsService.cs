@@ -13,7 +13,7 @@ namespace Roslynator.VisualBasic
     [ExportMetadata("ServiceType", "Roslynator.ISyntaxFactsService")]
     internal sealed class VisualBasicSyntaxFactsService : ISyntaxFactsService
     {
-        public static VisualBasicSyntaxFactsService Instance { get; } = new VisualBasicSyntaxFactsService();
+        public static VisualBasicSyntaxFactsService Instance { get; } = new();
 
         public string SingleLineCommentStart => "'";
 

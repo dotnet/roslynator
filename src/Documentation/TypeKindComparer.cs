@@ -10,7 +10,7 @@ namespace Roslynator.Documentation
 {
     internal class TypeKindComparer : IComparer<TypeKind>, IEqualityComparer<TypeKind>, IComparer, IEqualityComparer
     {
-        public static TypeKindComparer Instance { get; } = new TypeKindComparer();
+        public static TypeKindComparer Instance { get; } = new();
 
         public int Compare(object x, object y)
         {

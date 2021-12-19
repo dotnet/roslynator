@@ -73,7 +73,7 @@ namespace Roslynator.Documentation
             ScrollToContent = scrollToContent;
         }
 
-        public static DocumentationOptions Default { get; } = new DocumentationOptions();
+        public static DocumentationOptions Default { get; } = new();
 
         public ImmutableArray<string> IgnoredNames { get; }
 

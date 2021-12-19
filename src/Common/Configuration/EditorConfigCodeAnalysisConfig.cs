@@ -42,7 +42,7 @@ is_global = true
 #roslynator.compiler_diagnostic_fix.<COMPILER_DIAGNOSTIC_ID>.enabled = true|false
 ";
 
-        internal static EditorConfigCodeAnalysisConfig Empty { get; } = new EditorConfigCodeAnalysisConfig();
+        internal static EditorConfigCodeAnalysisConfig Empty { get; } = new();
 
         public EditorConfigCodeAnalysisConfig(
             IEnumerable<KeyValuePair<string, string>> options = null,

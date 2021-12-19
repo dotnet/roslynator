@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class IfStatementRefactoring
     {
-        private static IfAnalysisOptions DefaultIfAnalysisOptions { get; } = new IfAnalysisOptions(
+        private static IfAnalysisOptions DefaultIfAnalysisOptions { get; } = new(
             useCoalesceExpression: true,
             useConditionalExpression: true,
             useBooleanExpression: true,
