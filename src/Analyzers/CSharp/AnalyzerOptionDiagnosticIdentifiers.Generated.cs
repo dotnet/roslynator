@@ -22,7 +22,6 @@ namespace Roslynator.CSharp
         public const string ConvertBitwiseOperationToHasFlagCall = "RCS1096i";
         public const string DoNotSimplifyConditionalExpressionWhenConditionIsInverted = "RCS1104a";
         public const string ConvertMethodGroupToAnonymousFunction = "RCS1207i";
-        public const string DoNotUseElementAccessWhenExpressionIsInvocation = "RCS1246a";
         public const string UseComparisonInsteadPatternMatchingToCheckForNull = "RCS1248i";
     }
 }

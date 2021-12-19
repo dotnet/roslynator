@@ -174,35 +174,6 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
-        public async Task TestNoDiagnostic_UseElementAccessOnInvocation()
-        {
-            await VerifyNoDiagnosticAsync(@"
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-
-class C
-{
-    void M()
-    {
-        object x = null;
-
-        x = ((List<object>)x).ToList().First();
-        x = ((object[])x).ToArray().First();
-        x = ((ImmutableArray<object>)x).ToImmutableArray().First();
-        x = ((string)x).ToString().First();
-
-        x = ((List<object>)x).ToList().ElementAt(1);
-        x = ((object[])x).ToArray().ElementAt(1);
-        x = ((ImmutableArray<object>)x).ToImmutableArray().ElementAt(1);
-        x = ((string)x).ToString().ElementAt(1);
-    }
-}
-", options: Options.EnableConfigOption(AnalyzerOptions.DoNotUseElementAccessWhenExpressionIsInvocation.OptionKey));
-        }
-
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
         public async Task TestNoDiagnostic_UseElementAccessOnElementAccess()
         {
             await VerifyNoDiagnosticAsync(@"

@@ -119,7 +119,7 @@ namespace Roslynator.CSharp.Analysis
                                 {
                                     if (DiagnosticRules.OptimizeLinqMethodCall.IsEffective(context))
                                     {
-                                        if (CanUseElementAccess(context, invocationInfo)
+                                        if (!invocationInfo.Expression.IsKind(SyntaxKind.ElementAccessExpression, SyntaxKind.InvocationExpression)
                                             && UseElementAccessAnalysis.IsFixableFirst(invocationInfo, context.SemanticModel, context.CancellationToken))
                                         {
                                             DiagnosticHelpers.ReportDiagnostic(
@@ -249,7 +249,7 @@ namespace Roslynator.CSharp.Analysis
                             case "ElementAt":
                                 {
                                     if (DiagnosticRules.OptimizeLinqMethodCall.IsEffective(context)
-                                        && CanUseElementAccess(context, invocationInfo)
+                                        && !invocationInfo.Expression.IsKind(SyntaxKind.ElementAccessExpression, SyntaxKind.InvocationExpression)
                                         && UseElementAccessAnalysis.IsFixableElementAt(invocationInfo, context.SemanticModel, context.CancellationToken))
                                     {
                                         DiagnosticHelpers.ReportDiagnostic(
@@ -465,13 +465,6 @@ namespace Roslynator.CSharp.Analysis
             {
                 DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseMethodChaining, invocationInfo.InvocationExpression);
             }
-        }
-
-        public static bool CanUseElementAccess(SyntaxNodeAnalysisContext context, in SimpleMemberInvocationExpressionInfo invocationInfo)
-        {
-            return !invocationInfo.Expression.IsKind(SyntaxKind.ElementAccessExpression)
-                && (!invocationInfo.Expression.IsKind(SyntaxKind.InvocationExpression)
-                    || !AnalyzerOptions.DoNotUseElementAccessWhenExpressionIsInvocation.IsEnabled(context));
         }
     }
 }
