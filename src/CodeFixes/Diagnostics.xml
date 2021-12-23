@@ -1177,6 +1177,13 @@
     Message="Instance fields of readonly structs must be readonly"
     HelpUrl="" />
   <Diagnostic
+    Id="CS8403"
+    Identifier="MethodWithIteratorBlockMustBeAsyncToReturnIAsyncEnumerableOfT"
+    Severity="Error"
+    Title="Method with an iterator block must be 'async' to return 'IAsyncEnumerable&lt;T&lt;'."
+    Message="Method '{0}' with an iterator block must be 'async' to return '{1}'"
+    HelpUrl="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs8403" />
+  <Diagnostic
 	Id="CS8618"
     Identifier="NonNullableMemberIsUninitialized"
 	Severity="Warning"

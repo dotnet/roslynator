@@ -1228,6 +1228,7 @@ roslynator.compiler_diagnostic_fix.CS8070.enabled = true
 roslynator.compiler_diagnostic_fix.CS8112.enabled = true
 roslynator.compiler_diagnostic_fix.CS8139.enabled = true
 roslynator.compiler_diagnostic_fix.CS8340.enabled = true
+roslynator.compiler_diagnostic_fix.CS8403.enabled = true
 roslynator.compiler_diagnostic_fix.CS8618.enabled = true
 roslynator.compiler_diagnostic_fix.CS8625.enabled = true
 roslynator.compiler_diagnostic_fix.CS8632.enabled = true

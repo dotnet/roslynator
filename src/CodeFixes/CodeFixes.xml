@@ -678,4 +678,9 @@
 	  <Id>CS8625</Id>
 	</FixableDiagnosticIds>
   </CodeFix>
+	  <CodeFix Id="RCF0120" Identifier="AddAsyncModifier" Title="Add 'async' modifier">
+    <FixableDiagnosticIds>
+      <Id>CS8403</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
 </CodeFixes>

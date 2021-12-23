@@ -122,5 +122,6 @@ namespace Roslynator.CSharp
         public const string MoveInitializerExpressionsToConstructor = CodeFixIdentifier.CodeFixIdPrefix + "0117";
         public const string RemoveAnnotationForNullableReferenceTypes = CodeFixIdentifier.CodeFixIdPrefix + "0118";
         public const string UseNullForgivingOperator = CodeFixIdentifier.CodeFixIdPrefix + "0119";
+        public const string AddAsyncModifier = CodeFixIdentifier.CodeFixIdPrefix + "0120";
     }
 }
