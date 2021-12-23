@@ -242,38 +242,31 @@ namespace Roslynator.CSharp.Refactorings
             {
                 case SyntaxKind.MethodDeclaration:
                     {
-                        BlockSyntax body = ((MethodDeclarationSyntax)member).Body;
-                        return (body.OpenBraceToken, body.CloseBraceToken);
+                        return FromBody(((MethodDeclarationSyntax)member).Body);
                     }
                 case SyntaxKind.IndexerDeclaration:
                     {
-                        AccessorListSyntax accessorList = ((IndexerDeclarationSyntax)member).AccessorList;
-                        return (accessorList.OpenBraceToken, accessorList.CloseBraceToken);
+                        return FromAccessorList(((IndexerDeclarationSyntax)member).AccessorList);
                     }
                 case SyntaxKind.OperatorDeclaration:
                     {
-                        BlockSyntax body1 = ((OperatorDeclarationSyntax)member).Body;
-                        return (body1.OpenBraceToken, body1.CloseBraceToken);
+                        return FromBody(((OperatorDeclarationSyntax)member).Body);
                     }
                 case SyntaxKind.ConversionOperatorDeclaration:
                     {
-                        BlockSyntax body2 = ((ConversionOperatorDeclarationSyntax)member).Body;
-                        return (body2.OpenBraceToken, body2.CloseBraceToken);
+                        return FromBody(((ConversionOperatorDeclarationSyntax)member).Body);
                     }
                 case SyntaxKind.ConstructorDeclaration:
                     {
-                        BlockSyntax body3 = ((ConstructorDeclarationSyntax)member).Body;
-                        return (body3.OpenBraceToken, body3.CloseBraceToken);
+                        return FromBody(((ConstructorDeclarationSyntax)member).Body);
                     }
                 case SyntaxKind.PropertyDeclaration:
                     {
-                        AccessorListSyntax accessorList1 = ((PropertyDeclarationSyntax)member).AccessorList;
-                        return (accessorList1.OpenBraceToken, accessorList1.CloseBraceToken);
+                        return FromAccessorList(((PropertyDeclarationSyntax)member).AccessorList);
                     }
                 case SyntaxKind.EventDeclaration:
                     {
-                        AccessorListSyntax accessorList2 = ((EventDeclarationSyntax)member).AccessorList;
-                        return (accessorList2.OpenBraceToken, accessorList2.CloseBraceToken);
+                        return FromAccessorList(((EventDeclarationSyntax)member).AccessorList);
                     }
                 case SyntaxKind.NamespaceDeclaration:
                     {
@@ -309,6 +302,20 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             return default;
+
+            (SyntaxToken openBrace, SyntaxToken closeBrace) FromBody(BlockSyntax body)
+            {
+                return (body != null)
+                    ? (body.OpenBraceToken, body.CloseBraceToken)
+                    : default;
+            }
+
+            (SyntaxToken openBrace, SyntaxToken closeBrace) FromAccessorList(AccessorListSyntax accessorList)
+            {
+                return (accessorList != null)
+                    ? (accessorList.OpenBraceToken, accessorList.CloseBraceToken)
+                    : default;
+            }
         }
     }
 }
