@@ -48,9 +48,6 @@ dotnet_diagnostic.RCS0002.severity = none
 # Add empty line after using directive list
 dotnet_diagnostic.RCS0003.severity = none
 
-# Add empty line before closing brace of 'do' statement
-dotnet_diagnostic.RCS0004.severity = none
-
 # Add empty line before #endregion
 dotnet_diagnostic.RCS0005.severity = none
 

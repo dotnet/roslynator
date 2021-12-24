@@ -303,6 +303,35 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantEmptyLine)]
+        public async Task Test_LastEmptyLineInDoStatement()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+        do
+        {
+            M();
+[|
+|]        } while (true);
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+        do
+        {
+            M();
+        } while (true);
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantEmptyLine)]
         public async Task TestNoDiagnostic_ObjectInitializer()
         {
             await VerifyNoDiagnosticAsync(@"

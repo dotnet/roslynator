@@ -76,7 +76,7 @@ namespace N
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AddEmptyLineBeforeClosingBraceOfDoStatement">
+  <Analyzer Identifier="AddEmptyLineBeforeClosingBraceOfDoStatement" IsObsolete="true">
     <Id>RCS0004</Id>
     <Title>Add empty line before closing brace of 'do' statement.</Title>
     <Category>Formatting</Category>

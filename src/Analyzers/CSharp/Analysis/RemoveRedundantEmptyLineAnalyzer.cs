@@ -581,9 +581,6 @@ namespace Roslynator.CSharp.Analysis
             if (span == null)
                 return;
 
-            if (IsEmptyLastLineInDoStatement(node, braceLine, span.Value))
-                return;
-
             DiagnosticHelpers.ReportDiagnostic(
                 context,
                 DiagnosticRules.RemoveRedundantEmptyLine,
@@ -615,31 +612,6 @@ namespace Roslynator.CSharp.Analysis
                 context,
                 DiagnosticRules.RemoveRedundantEmptyLine,
                 Location.Create(tree, span.Value));
-        }
-
-        private static bool IsEmptyLastLineInDoStatement(
-            SyntaxNode node,
-            int closeBraceLine,
-            TextSpan span)
-        {
-            SyntaxNode parent = node.Parent;
-
-            if (parent?.Kind() != SyntaxKind.Block)
-                return false;
-
-            parent = parent.Parent;
-
-            if (parent is not DoStatementSyntax doStatement)
-                return false;
-
-            int emptyLine = doStatement.SyntaxTree.GetLineSpan(span).EndLine();
-
-            if (emptyLine != closeBraceLine)
-                return false;
-
-            int whileKeywordLine = doStatement.WhileKeyword.GetSpanStartLine();
-
-            return closeBraceLine == whileKeywordLine;
         }
 
         private static TextSpan? GetEmptyLineSpan(

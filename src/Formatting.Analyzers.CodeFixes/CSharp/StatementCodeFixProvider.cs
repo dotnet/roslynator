@@ -26,8 +26,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                     DiagnosticIdentifiers.AddNewLineBeforeStatement,
                     DiagnosticIdentifiers.AddNewLineBeforeEmbeddedStatement,
                     DiagnosticIdentifiers.AddNewLineAfterSwitchLabel,
-                    DiagnosticIdentifiers.AddEmptyLineAfterEmbeddedStatement,
-                    DiagnosticIdentifiers.AddEmptyLineBeforeClosingBraceOfDoStatement);
+                    DiagnosticIdentifiers.AddEmptyLineAfterEmbeddedStatement);
             }
         }
 
@@ -56,16 +55,6 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                         break;
                     }
                 case DiagnosticIdentifiers.AddEmptyLineAfterEmbeddedStatement:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            CodeFixTitles.AddEmptyLine,
-                            ct => CodeFixHelpers.AppendEndOfLineAsync(document, statement, ct),
-                            GetEquivalenceKey(diagnostic));
-
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
-                case DiagnosticIdentifiers.AddEmptyLineBeforeClosingBraceOfDoStatement:
                     {
                         CodeAction codeAction = CodeAction.Create(
                             CodeFixTitles.AddEmptyLine,

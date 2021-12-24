@@ -45,18 +45,6 @@ namespace Roslynator.Formatting.CSharp
             helpLinkUri:        DiagnosticIdentifiers.AddEmptyLineAfterUsingDirectiveList, 
             customTags:         Array.Empty<string>());
 
-        /// <summary>RCS0004</summary>
-        public static readonly DiagnosticDescriptor AddEmptyLineBeforeClosingBraceOfDoStatement = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.AddEmptyLineBeforeClosingBraceOfDoStatement, 
-            title:              "Add empty line before closing brace of 'do' statement.", 
-            messageFormat:      "Add empty line before closing brace of 'do' statement.", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddEmptyLineBeforeClosingBraceOfDoStatement, 
-            customTags:         Array.Empty<string>());
-
         /// <summary>RCS0005</summary>
         public static readonly DiagnosticDescriptor AddEmptyLineBeforeEndRegionDirective = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.AddEmptyLineBeforeEndRegionDirective, 
