@@ -173,24 +173,6 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyConditionalExpression)]
-        public async Task TestNoDiagnostic_DoNotSimplifyWhenConditionIsInverted()
-        {
-            await VerifyNoDiagnosticAsync(@"
-class C
-{
-    void M()
-    {
-        bool x = false, y = false;
-
-        bool z1 = x ? false : y;
-
-        bool z2 = x ? y : true;
-    }
-}
-", options: Options.EnableConfigOption(AnalyzerOptions.DoNotSimplifyConditionalExpressionWhenConditionIsInverted.OptionKey));
-        }
-
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyConditionalExpression)]
         public async Task TestNoDiagnostic_ThrowExpression()
         {
             await VerifyNoDiagnosticAsync(@"
