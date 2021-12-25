@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp;
 
 namespace Roslynator.Formatting.CSharp
 {
@@ -30,41 +31,100 @@ namespace Roslynator.Formatting.CSharp
         {
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(
-                f => AnalyzeBaseTypeDeclaration(f),
-                SyntaxKind.ClassDeclaration,
-                SyntaxKind.EnumDeclaration,
-                SyntaxKind.InterfaceDeclaration,
-                SyntaxKind.StructDeclaration,
-                SyntaxKind.RecordStructDeclaration);
-
-            context.RegisterSyntaxNodeAction(f => AnalyzeBaseMethodDeclaration(f), SyntaxKind.ConstructorDeclaration);
-            context.RegisterSyntaxNodeAction(f => AnalyzeBaseMethodDeclaration(f), SyntaxKind.ConversionOperatorDeclaration);
+            context.RegisterSyntaxNodeAction(f => AnalyzeClassDeclaration(f), SyntaxKind.ClassDeclaration);
+            context.RegisterSyntaxNodeAction(f => AnalyzeEnumDeclaration(f), SyntaxKind.EnumDeclaration);
+            context.RegisterSyntaxNodeAction(f => AnalyzeInterfaceDeclaration(f), SyntaxKind.InterfaceDeclaration);
+            context.RegisterSyntaxNodeAction(f => AnalyzeStructDeclaration(f), SyntaxKind.StructDeclaration);
+            context.RegisterSyntaxNodeAction(f => AnalyzeRecordDeclaration(f), SyntaxKind.RecordDeclaration, SyntaxKind.RecordStructDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeDelegateDeclaration(f), SyntaxKind.DelegateDeclaration);
-            context.RegisterSyntaxNodeAction(f => AnalyzeBaseMethodDeclaration(f), SyntaxKind.DestructorDeclaration);
-            context.RegisterSyntaxNodeAction(f => AnalyzeEnumMemberDeclaration(f), SyntaxKind.EnumMemberDeclaration);
-            context.RegisterSyntaxNodeAction(f => AnalyzeBasePropertyDeclaration(f), SyntaxKind.EventDeclaration);
-            context.RegisterSyntaxNodeAction(f => AnalyzeBaseFieldDeclaration(f), SyntaxKind.EventFieldDeclaration);
-            context.RegisterSyntaxNodeAction(f => AnalyzeBaseFieldDeclaration(f), SyntaxKind.FieldDeclaration);
-            context.RegisterSyntaxNodeAction(f => AnalyzeBasePropertyDeclaration(f), SyntaxKind.IndexerDeclaration);
-            context.RegisterSyntaxNodeAction(f => AnalyzeBaseMethodDeclaration(f), SyntaxKind.MethodDeclaration);
-            context.RegisterSyntaxNodeAction(f => AnalyzeBaseMethodDeclaration(f), SyntaxKind.OperatorDeclaration);
-            context.RegisterSyntaxNodeAction(f => AnalyzeBasePropertyDeclaration(f), SyntaxKind.PropertyDeclaration);
-            context.RegisterSyntaxNodeAction(f => AnalyzeAccessorDeclaration(f), SyntaxKind.GetAccessorDeclaration);
-            context.RegisterSyntaxNodeAction(f => AnalyzeAccessorDeclaration(f), SyntaxKind.SetAccessorDeclaration);
-            context.RegisterSyntaxNodeAction(f => AnalyzeAccessorDeclaration(f), SyntaxKind.InitAccessorDeclaration);
-            context.RegisterSyntaxNodeAction(f => AnalyzeAccessorDeclaration(f), SyntaxKind.AddAccessorDeclaration);
-            context.RegisterSyntaxNodeAction(f => AnalyzeAccessorDeclaration(f), SyntaxKind.RemoveAccessorDeclaration);
+            context.RegisterSyntaxNodeAction(f => AnalyzeEventFieldDeclaration(f), SyntaxKind.EventFieldDeclaration);
+            context.RegisterSyntaxNodeAction(f => AnalyzeFieldDeclaration(f), SyntaxKind.FieldDeclaration);
+            context.RegisterSyntaxNodeAction(f => AnalyzeMethodDeclaration(f), SyntaxKind.MethodDeclaration);
+            context.RegisterSyntaxNodeAction(f => AnalyzeConstructorDeclaration(f), SyntaxKind.ConstructorDeclaration);
+            context.RegisterSyntaxNodeAction(f => AnalyzeConversionOperatorDeclaration(f), SyntaxKind.ConversionOperatorDeclaration);
+            context.RegisterSyntaxNodeAction(f => AnalyzeDestructorDeclaration(f), SyntaxKind.DestructorDeclaration);
+            context.RegisterSyntaxNodeAction(f => AnalyzeEventDeclaration(f), SyntaxKind.EventDeclaration);
+            context.RegisterSyntaxNodeAction(f => AnalyzeOperatorDeclaration(f), SyntaxKind.OperatorDeclaration);
+            context.RegisterSyntaxNodeAction(f => AnalyzePropertyDeclaration(f), SyntaxKind.PropertyDeclaration);
+            context.RegisterSyntaxNodeAction(f => AnalyzeIndexerDeclaration(f), SyntaxKind.IndexerDeclaration);
+        }
+
+        private void AnalyzeClassDeclaration(SyntaxNodeAnalysisContext context)
+        {
+            var classDeclaration = (ClassDeclarationSyntax)context.Node;
+
+            SyntaxTokenList modifiers = classDeclaration.Modifiers;
+
+            SyntaxToken token = (modifiers.Any())
+                ? modifiers.First()
+                : classDeclaration.Keyword;
+
+            Analyze(context, classDeclaration.AttributeLists, token);
+        }
+
+        private void AnalyzeEnumDeclaration(SyntaxNodeAnalysisContext context)
+        {
+            var enumDeclaration = (EnumDeclarationSyntax)context.Node;
+
+            SyntaxTokenList modifiers = enumDeclaration.Modifiers;
+
+            SyntaxToken token = (modifiers.Any())
+                ? modifiers.First()
+                : enumDeclaration.EnumKeyword;
+
+            Analyze(context, enumDeclaration.AttributeLists, token);
+
+            if (!enumDeclaration.IsSingleLine())
+            {
+                foreach (EnumMemberDeclarationSyntax enumMember in enumDeclaration.Members)
+                {
+                    Analyze(context, enumMember.AttributeLists, enumMember.Identifier);
+                }
+            }
+        }
+
+        private void AnalyzeInterfaceDeclaration(SyntaxNodeAnalysisContext context)
+        {
+            var interfaceDeclaration = (InterfaceDeclarationSyntax)context.Node;
+
+            SyntaxTokenList modifiers = interfaceDeclaration.Modifiers;
+
+            SyntaxToken token = (modifiers.Any())
+                ? modifiers.First()
+                : interfaceDeclaration.Keyword;
+
+            Analyze(context, interfaceDeclaration.AttributeLists, token);
+        }
+
+        private void AnalyzeStructDeclaration(SyntaxNodeAnalysisContext context)
+        {
+            var structDeclaration = (StructDeclarationSyntax)context.Node;
+
+            SyntaxTokenList modifiers = structDeclaration.Modifiers;
+
+            SyntaxToken token = (modifiers.Any())
+                ? modifiers.First()
+                : structDeclaration.Keyword;
+
+            Analyze(context, structDeclaration.AttributeLists, token);
+        }
+
+        private void AnalyzeRecordDeclaration(SyntaxNodeAnalysisContext context)
+        {
+            var recordDeclaration = (RecordDeclarationSyntax)context.Node;
+
+            SyntaxTokenList modifiers = recordDeclaration.Modifiers;
+
+            SyntaxToken token = (modifiers.Any())
+                ? modifiers.First()
+                : recordDeclaration.Keyword;
+
+            Analyze(context, recordDeclaration.AttributeLists, token);
         }
 
         private static void AnalyzeDelegateDeclaration(SyntaxNodeAnalysisContext context)
         {
             var delegateDeclaration = (DelegateDeclarationSyntax)context.Node;
-
-            AttributeListSyntax attributeList = delegateDeclaration.AttributeLists.LastOrDefault();
-
-            if (attributeList == null)
-                return;
 
             SyntaxTokenList modifiers = delegateDeclaration.Modifiers;
 
@@ -72,174 +132,190 @@ namespace Roslynator.Formatting.CSharp
                 ? modifiers[0]
                 : delegateDeclaration.DelegateKeyword;
 
-            Analyze(context, attributeList, token);
+            Analyze(context, delegateDeclaration.AttributeLists, token);
         }
 
-        private static void AnalyzeEnumMemberDeclaration(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeEventFieldDeclaration(SyntaxNodeAnalysisContext context)
         {
-            var enumMemberDeclaration = (EnumMemberDeclarationSyntax)context.Node;
+            var eventFieldDeclaration = (EventFieldDeclarationSyntax)context.Node;
 
-            AttributeListSyntax attributeList = enumMemberDeclaration.AttributeLists.LastOrDefault();
-
-            if (attributeList == null)
-                return;
-
-            SyntaxToken token = enumMemberDeclaration.Identifier;
-
-            Analyze(context, attributeList, token);
-        }
-
-        private static void AnalyzeBaseFieldDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            var baseFieldDeclaration = (BaseFieldDeclarationSyntax)context.Node;
-
-            AttributeListSyntax attributeList = baseFieldDeclaration.AttributeLists.LastOrDefault();
-
-            if (attributeList == null)
-                return;
-
-            SyntaxTokenList modifiers = baseFieldDeclaration.Modifiers;
-
-            SyntaxToken token;
-
-            if (modifiers.Any())
-            {
-                token = modifiers[0];
-            }
-            else if (baseFieldDeclaration is EventFieldDeclarationSyntax eventFieldDeclaration)
-            {
-                token = eventFieldDeclaration.EventKeyword;
-            }
-            else
-            {
-                token = attributeList.CloseBracketToken.GetNextToken();
-            }
-
-            Analyze(context, attributeList, token);
-        }
-
-        private static void AnalyzeBaseMethodDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            var baseMethodDeclaration = (BaseMethodDeclarationSyntax)context.Node;
-
-            AttributeListSyntax attributeList = baseMethodDeclaration.AttributeLists.LastOrDefault();
-
-            if (attributeList == null)
-                return;
-
-            SyntaxTokenList modifiers = baseMethodDeclaration.Modifiers;
-
-            SyntaxToken token;
-
-            if (modifiers.Any())
-            {
-                token = modifiers[0];
-            }
-            else if (baseMethodDeclaration is ConstructorDeclarationSyntax constructorDeclaration)
-            {
-                token = constructorDeclaration.Identifier;
-            }
-            else if (baseMethodDeclaration is ConversionOperatorDeclarationSyntax conversionOperatorDeclaration)
-            {
-                token = conversionOperatorDeclaration.ImplicitOrExplicitKeyword;
-            }
-            else if (baseMethodDeclaration is DestructorDeclarationSyntax destructorDeclaration)
-            {
-                token = destructorDeclaration.TildeToken;
-            }
-            else
-            {
-                token = attributeList.CloseBracketToken.GetNextToken();
-            }
-
-            Analyze(context, attributeList, token);
-        }
-
-        private static void AnalyzeBasePropertyDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            var basePropertyDeclaration = (BasePropertyDeclarationSyntax)context.Node;
-
-            AttributeListSyntax attributeList = basePropertyDeclaration.AttributeLists.LastOrDefault();
-
-            if (attributeList == null)
-                return;
-
-            SyntaxTokenList modifiers = basePropertyDeclaration.Modifiers;
+            SyntaxTokenList modifiers = eventFieldDeclaration.Modifiers;
 
             SyntaxToken token = (modifiers.Any())
                 ? modifiers[0]
-                : attributeList.CloseBracketToken.GetNextToken();
+                : eventFieldDeclaration.EventKeyword;
 
-            Analyze(context, attributeList, token);
+            Analyze(context, eventFieldDeclaration.AttributeLists, token);
         }
 
-        private static void AnalyzeBaseTypeDeclaration(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeFieldDeclaration(SyntaxNodeAnalysisContext context)
         {
-            var baseTypeDeclaration = (BaseTypeDeclarationSyntax)context.Node;
+            var fieldDeclaration = (FieldDeclarationSyntax)context.Node;
 
-            AttributeListSyntax attributeList = baseTypeDeclaration.AttributeLists.LastOrDefault();
+            SyntaxTokenList modifiers = fieldDeclaration.Modifiers;
 
-            if (attributeList == null)
-                return;
+            SyntaxNodeOrToken nodeOrToken = (modifiers.Any())
+                ? modifiers.First()
+                : fieldDeclaration.Declaration.Type;
 
-            SyntaxTokenList modifiers = baseTypeDeclaration.Modifiers;
-
-            SyntaxToken token;
-
-            if (modifiers.Any())
-            {
-                token = modifiers[0];
-            }
-            else if (baseTypeDeclaration is ClassDeclarationSyntax classDeclaration)
-            {
-                token = classDeclaration.Keyword;
-            }
-            else if (baseTypeDeclaration is InterfaceDeclarationSyntax interfaceDeclaration)
-            {
-                token = interfaceDeclaration.Keyword;
-            }
-            else if (baseTypeDeclaration is StructDeclarationSyntax structDeclaration)
-            {
-                token = structDeclaration.Keyword;
-            }
-            else if (baseTypeDeclaration is EnumDeclarationSyntax enumDeclaration)
-            {
-                token = enumDeclaration.EnumKeyword;
-            }
-            else
-            {
-                throw new InvalidOperationException("");
-            }
-
-            Analyze(context, attributeList, token);
+            Analyze(context, fieldDeclaration.AttributeLists, nodeOrToken);
         }
 
-        private static void AnalyzeAccessorDeclaration(SyntaxNodeAnalysisContext context)
+        private void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
         {
-            var accessorDeclaration = (AccessorDeclarationSyntax)context.Node;
+            var methodDeclaration = (MethodDeclarationSyntax)context.Node;
 
-            AttributeListSyntax attributeList = accessorDeclaration.AttributeLists.LastOrDefault();
+            SyntaxTokenList modifiers = methodDeclaration.Modifiers;
 
-            if (attributeList == null)
-                return;
+            SyntaxNodeOrToken nodeOrToken = (modifiers.Any())
+                ? modifiers.First()
+                : methodDeclaration.ReturnType;
 
-            SyntaxTokenList modifiers = accessorDeclaration.Modifiers;
+            Analyze(context, methodDeclaration.AttributeLists, nodeOrToken);
+        }
+
+        private void AnalyzeConstructorDeclaration(SyntaxNodeAnalysisContext context)
+        {
+            var constructorDeclaration = (ConstructorDeclarationSyntax)context.Node;
+
+            SyntaxTokenList modifiers = constructorDeclaration.Modifiers;
 
             SyntaxToken token = (modifiers.Any())
-                ? modifiers[0]
-                : accessorDeclaration.Keyword;
+                ? modifiers.First()
+                : constructorDeclaration.Identifier;
 
-            Analyze(context, attributeList, token);
+            Analyze(context, constructorDeclaration.AttributeLists, token);
         }
 
-        private static void Analyze(SyntaxNodeAnalysisContext context, AttributeListSyntax attributeList, SyntaxToken token)
+        private void AnalyzeConversionOperatorDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (attributeList.SyntaxTree.IsSingleLineSpan(TextSpan.FromBounds(attributeList.Span.End, token.SpanStart)))
+            var conversionOperatorDeclaration = (ConversionOperatorDeclarationSyntax)context.Node;
+
+            SyntaxTokenList modifiers = conversionOperatorDeclaration.Modifiers;
+
+            SyntaxToken token = (modifiers.Any())
+                ? modifiers.First()
+                : conversionOperatorDeclaration.ImplicitOrExplicitKeyword;
+
+            Analyze(context, conversionOperatorDeclaration.AttributeLists, token);
+        }
+
+        private void AnalyzeDestructorDeclaration(SyntaxNodeAnalysisContext context)
+        {
+            var destructorDeclaration = (DestructorDeclarationSyntax)context.Node;
+
+            SyntaxTokenList modifiers = destructorDeclaration.Modifiers;
+
+            SyntaxToken token = (modifiers.Any())
+                ? modifiers.First()
+                : destructorDeclaration.TildeToken;
+
+            Analyze(context, destructorDeclaration.AttributeLists, token);
+        }
+
+        private void AnalyzeEventDeclaration(SyntaxNodeAnalysisContext context)
+        {
+            var eventDeclaration = (EventDeclarationSyntax)context.Node;
+
+            SyntaxTokenList modifiers = eventDeclaration.Modifiers;
+
+            SyntaxToken token = (modifiers.Any())
+                ? modifiers.First()
+                : eventDeclaration.EventKeyword;
+
+            Analyze(context, eventDeclaration.AttributeLists, token);
+
+            if (!eventDeclaration.IsSingleLine())
+                AnalyzeAccessorList(context, eventDeclaration.AccessorList);
+        }
+
+        private void AnalyzeOperatorDeclaration(SyntaxNodeAnalysisContext context)
+        {
+            var operatorDeclaration = (OperatorDeclarationSyntax)context.Node;
+
+            SyntaxTokenList modifiers = operatorDeclaration.Modifiers;
+
+            SyntaxNodeOrToken token = (modifiers.Any())
+                ? modifiers.First()
+                : operatorDeclaration.ReturnType;
+
+            Analyze(context, operatorDeclaration.AttributeLists, token);
+        }
+
+        private void AnalyzePropertyDeclaration(SyntaxNodeAnalysisContext context)
+        {
+            var propertyDeclaration = (PropertyDeclarationSyntax)context.Node;
+
+            SyntaxTokenList modifiers = propertyDeclaration.Modifiers;
+
+            SyntaxNodeOrToken token = (modifiers.Any())
+                ? modifiers.First()
+                : propertyDeclaration.Type;
+
+            Analyze(context, propertyDeclaration.AttributeLists, token);
+
+            if (!propertyDeclaration.IsSingleLine())
+                AnalyzeAccessorList(context, propertyDeclaration.AccessorList);
+        }
+
+        private void AnalyzeIndexerDeclaration(SyntaxNodeAnalysisContext context)
+        {
+            var indexerDeclaration = (IndexerDeclarationSyntax)context.Node;
+
+            SyntaxTokenList modifiers = indexerDeclaration.Modifiers;
+
+            SyntaxNodeOrToken nodeOrToken = (modifiers.Any())
+                ? modifiers.First()
+                : indexerDeclaration.Type;
+
+            Analyze(context, indexerDeclaration.AttributeLists, nodeOrToken);
+
+            if (!indexerDeclaration.IsSingleLine())
+                AnalyzeAccessorList(context, indexerDeclaration.AccessorList);
+        }
+
+        private void AnalyzeAccessorList(SyntaxNodeAnalysisContext context, AccessorListSyntax accessorList)
+        {
+            if (accessorList == null)
+                return;
+
+            foreach (AccessorDeclarationSyntax accessor in accessorList.Accessors)
+            {
+                SyntaxTokenList modifiers = accessor.Modifiers;
+
+                SyntaxToken token = (modifiers.Any())
+                    ? modifiers[0]
+                    : accessor.Keyword;
+
+                Analyze(context, accessor.AttributeLists, token);
+            }
+        }
+
+        private static void Analyze(SyntaxNodeAnalysisContext context, SyntaxList<AttributeListSyntax> attributeLists, SyntaxNodeOrToken nodeOrToken)
+        {
+            AttributeListSyntax first = attributeLists.FirstOrDefault();
+
+            if (first == null)
+                return;
+
+            for (int i = 1; i < attributeLists.Count; i++)
+            {
+                AttributeListSyntax second = attributeLists[i];
+                Analyze(context, first, second);
+                first = second;
+            }
+
+            Analyze(context, attributeLists.Last(), nodeOrToken);
+        }
+
+        private static void Analyze(SyntaxNodeAnalysisContext context, AttributeListSyntax attributeList, SyntaxNodeOrToken nodeOrToken)
+        {
+            if (attributeList.SyntaxTree.IsSingleLineSpan(TextSpan.FromBounds(attributeList.Span.End, nodeOrToken.SpanStart)))
             {
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
                     DiagnosticRules.AddNewLineAfterAttributeList,
-                    Location.Create(token.SyntaxTree, token.Span.WithLength(0)));
+                    Location.Create(nodeOrToken.SyntaxTree, nodeOrToken.Span.WithLength(0)));
             }
         }
     }
