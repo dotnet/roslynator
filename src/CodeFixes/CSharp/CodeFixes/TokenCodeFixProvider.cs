@@ -492,7 +492,7 @@ namespace Roslynator.CSharp.CodeFixes
                             SyntaxDebug.Assert(
                                 (token.IsParentKind(SyntaxKind.VariableDeclarator)
                                     && token.Parent.IsParentKind(SyntaxKind.VariableDeclaration)
-                                    && token.Parent.Parent.IsParentKind(SyntaxKind.FieldDeclaration))
+                                    && token.Parent.Parent.IsParentKind(SyntaxKind.FieldDeclaration, SyntaxKind.EventFieldDeclaration))
                                     || token.IsParentKind(SyntaxKind.ConstructorDeclaration),
                                 token);
 
