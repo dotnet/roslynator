@@ -829,6 +829,9 @@ dotnet_diagnostic.RCS1248.severity = none
 # Use comparison instead of pattern matching to check for null
 roslynator.RCS1248.invert = false
 
+# Unnecessary null-forgiving operator
+dotnet_diagnostic.RCS1249.severity = suggestion
+
 # Use pattern matching
 dotnet_diagnostic.RCS9001.severity = silent
 
