@@ -1423,4 +1423,17 @@ Default maximal length is 140.</Summary>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Summary>This analyzer enforces no whitespace at the beginning of a file.</Summary>
   </Analyzer>
+  <Analyzer Identifier="NormalizeWhitespaceAtEndOfFile">
+    <Id>RCS0058</Id>
+    <Title>Normalize whitespace at the end of a file.</Title>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <Summary>This analyzer enforces:
+* new line at the end of a file
+* no new line at the end of a file if the option `roslynator.prefer_no_new_line_at_end_of_file` is set to `true`.</Summary>
+    <GlobalOptions>
+      <Option Key="roslynator.prefer_no_new_line_at_end_of_file" />
+    </GlobalOptions>
+  </Analyzer>
 </Analyzers>

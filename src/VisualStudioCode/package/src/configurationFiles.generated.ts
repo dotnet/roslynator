@@ -35,6 +35,7 @@ is_global = true
 # Options
 
 roslynator.max_line_length = 140
+roslynator.prefer_no_new_line_at_end_of_file = false
 roslynator.prefix_field_identifier_with_underscore = false
 
 # Analyzers
@@ -199,6 +200,9 @@ dotnet_diagnostic.RCS0056.severity = none
 
 # Normalize whitespace at the beginning of a file
 dotnet_diagnostic.RCS0057.severity = none
+
+# Normalize whitespace at the end of a file
+dotnet_diagnostic.RCS0058.severity = none
 
 # Add braces (when expression spans over multiple lines)
 dotnet_diagnostic.RCS1001.severity = suggestion

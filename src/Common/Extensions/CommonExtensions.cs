@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Globalization;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -60,10 +59,33 @@ namespace Roslynator
             SyntaxTree syntaxTree,
             AnalyzerOptions analyzerOptions)
         {
+            return IsEnabled(analyzerOption.OptionKey, syntaxTree, analyzerOptions);
+        }
+
+        public static bool IsEnabled(
+            this OptionDescriptor analyzerOption,
+            SyntaxNodeAnalysisContext context)
+        {
+            return IsEnabled(analyzerOption, context.Node.SyntaxTree, context.Options);
+        }
+
+        public static bool IsEnabled(
+            this OptionDescriptor analyzerOption,
+            SyntaxTree syntaxTree,
+            AnalyzerOptions analyzerOptions)
+        {
+            return IsEnabled(analyzerOption.Key, syntaxTree, analyzerOptions);
+        }
+
+        private static bool IsEnabled(
+            string optionKey,
+            SyntaxTree syntaxTree,
+            AnalyzerOptions analyzerOptions)
+        {
             if (analyzerOptions
                 .AnalyzerConfigOptionsProvider
                 .GetOptions(syntaxTree)
-                .TryGetValue(analyzerOption.OptionKey, out string value)
+                .TryGetValue(optionKey, out string value)
                 && bool.TryParse(value, out bool result))
             {
                 return result;
