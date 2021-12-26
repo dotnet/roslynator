@@ -585,6 +585,18 @@ namespace Roslynator.Formatting.CSharp
             helpLinkUri:        DiagnosticIdentifiers.LineIsTooLong, 
             customTags:         Array.Empty<string>());
 
+        /// <summary>RCS0057</summary>
+        public static readonly DiagnosticDescriptor NormalizeWhitespaceAtBeginningOfFile = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.NormalizeWhitespaceAtBeginningOfFile, 
+            title:              "Normalize whitespace at the beginning of a file.", 
+            messageFormat:      "Normalize whitespace at the beginning of a file.", 
+            category:           DiagnosticCategories.Roslynator, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: false, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.NormalizeWhitespaceAtBeginningOfFile, 
+            customTags:         Array.Empty<string>());
+
         public static partial class ReportOnly
         {
             /// <summary>RCS0011i</summary>

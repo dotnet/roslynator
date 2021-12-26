@@ -1415,4 +1415,12 @@ Default maximal length is 140.</Summary>
       <Option Key="roslynator.max_line_length" />
     </GlobalOptions>
   </Analyzer>
+  <Analyzer Identifier="NormalizeWhitespaceAtBeginningOfFile">
+    <Id>RCS0057</Id>
+    <Title>Normalize whitespace at the beginning of a file.</Title>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <Summary>This analyzer enforces no whitespace at the beginning of a file.</Summary>
+  </Analyzer>
 </Analyzers>
