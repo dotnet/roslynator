@@ -2024,6 +2024,18 @@ namespace Roslynator.CSharp
             helpLinkUri:        "", 
             customTags:         WellKnownDiagnosticTags.Compiler);
 
+        /// <summary>CS8403</summary>
+        public static readonly DiagnosticDescriptor MethodWithIteratorBlockMustBeAsyncToReturnIAsyncEnumerableOfT = new DiagnosticDescriptor(
+            id:                 CompilerDiagnosticIdentifiers.CS8403_MethodWithIteratorBlockMustBeAsyncToReturnIAsyncEnumerableOfT, 
+            title:              "Method with an iterator block must be 'async' to return 'IAsyncEnumerable<T<'.", 
+            messageFormat:      "Method '{0}' with an iterator block must be 'async' to return '{1}'", 
+            category:           "Compiler", 
+            defaultSeverity:    DiagnosticSeverity.Error, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        "https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs8403", 
+            customTags:         WellKnownDiagnosticTags.Compiler);
+
         /// <summary>CS8618</summary>
         public static readonly DiagnosticDescriptor NonNullableMemberIsUninitialized = new DiagnosticDescriptor(
             id:                 CompilerDiagnosticIdentifiers.CS8618_NonNullableMemberIsUninitialized, 

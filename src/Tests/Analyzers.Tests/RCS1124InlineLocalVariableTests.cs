@@ -67,6 +67,41 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InlineLocalVariable)]
+        public async Task Test_VarType()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+#nullable enable
+
+class C
+{
+    public string P { get; set; } = null!;
+
+    void M()
+    {
+        var c = new C();
+
+        [|var p = c.P;|]
+        var s = p;
+    }
+}
+", @"
+#nullable enable
+
+class C
+{
+    public string P { get; set; } = null!;
+
+    void M()
+    {
+        var c = new C();
+
+        var s = c.P;
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InlineLocalVariable)]
         public async Task TestNoDiagnostic_YieldReturnIsNotLastStatement()
         {
             await VerifyNoDiagnosticAsync(@"

@@ -69,59 +69,6 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
-        public async Task Test_UseElementAccessOnInvocationExpression()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-
-class C
-{
-    void M()
-    {
-        object x = null;
-
-        x = ((List<object>)x).ToList().[|First()|];
-        x = ((object[])x).ToArray().[|First()|];
-        x = ((ImmutableArray<object>)x).ToImmutableArray().[|First()|];
-        x = ((string)x).ToString().[|First()|];
-
-        x = ((List<object>)x).ToList().[|ElementAt(1)|];
-        x = ((object[])x).ToArray().[|ElementAt(1)|];
-        x = ((ImmutableArray<object>)x).ToImmutableArray().[|ElementAt(1)|];
-        x = ((string)x).ToString().[|ElementAt(1)|];
-    }
-}
-",
-@"
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-
-class C
-{
-    void M()
-    {
-        object x = null;
-
-        x = ((List<object>)x).ToList()[0];
-        x = ((object[])x).ToArray()[0];
-        x = ((ImmutableArray<object>)x).ToImmutableArray()[0];
-        x = ((string)x).ToString()[0];
-
-        x = ((List<object>)x).ToList()[1];
-        x = ((object[])x).ToArray()[1];
-        x = ((ImmutableArray<object>)x).ToImmutableArray()[1];
-        x = ((string)x).ToString()[1];
-    }
-}
-");
-        }
-
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseElementAccess)]
         public async Task TestNoDiagnostic_UseElementAccessInsteadOfElementAt()
         {
             await VerifyNoDiagnosticAsync(@"

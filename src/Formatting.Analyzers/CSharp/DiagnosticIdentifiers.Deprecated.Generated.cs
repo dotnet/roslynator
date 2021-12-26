@@ -9,6 +9,8 @@ namespace Roslynator.Formatting.CSharp
     public static partial class DiagnosticIdentifiers
     {
         [Obsolete("", error: true)]
+        public const string AddEmptyLineBeforeClosingBraceOfDoStatement = "RCS0004";
+        [Obsolete("", error: true)]
         public const string AddNewLineAfterBinaryOperatorInsteadOfBeforeIt2 = "RCS0017";
         [Obsolete("", error: true)]
         public const string AddNewLineAfterConditionalOperatorInsteadOfBeforeIt2 = "RCS0018";

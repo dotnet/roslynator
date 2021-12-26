@@ -38,6 +38,34 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkLocalVariableAsConst)]
+        public async Task Test_NullableReferenceType()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+#nullable enable
+
+class C
+{
+    void M()
+    {
+        [|var|] s = ""a"";
+        string s2 = s + ""b"";
+    }
+}
+", @"
+#nullable enable
+
+class C
+{
+    void M()
+    {
+        const string s = ""a"";
+        string s2 = s + ""b"";
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkLocalVariableAsConst)]
         public async Task TestNoDiagnostic_InterpolatedString()
         {
             await VerifyNoDiagnosticAsync(@"

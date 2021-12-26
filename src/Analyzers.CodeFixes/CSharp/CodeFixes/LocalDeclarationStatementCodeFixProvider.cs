@@ -114,7 +114,11 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 expression = expression.Parenthesize();
 
-                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(variableDeclaration.Type, cancellationToken);
+                ExpressionSyntax typeExpression = (variableDeclaration.Type.IsVar)
+                    ? variableDeclaration.Variables.First().Initializer.Value
+                    : variableDeclaration.Type;
+
+                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(typeExpression, cancellationToken);
 
                 if (typeSymbol.SupportsExplicitDeclaration())
                 {

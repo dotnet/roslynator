@@ -33,6 +33,32 @@ namespace Roslynator
                     document.Project.AnalyzerOptions);
         }
 
+        public static bool IsEnabled(
+            this OptionDescriptor analyzerOption,
+            Document document,
+            SyntaxNode node)
+        {
+            return IsEnabled(analyzerOption, document, node.SyntaxTree);
+        }
+
+        public static bool IsEnabled(
+            this OptionDescriptor analyzerOption,
+            Document document,
+            SyntaxToken token)
+        {
+            return IsEnabled(analyzerOption, document, token.SyntaxTree);
+        }
+
+        public static bool IsEnabled(
+            this OptionDescriptor analyzerOption,
+            Document document,
+            SyntaxTree syntaxTree)
+        {
+            return analyzerOption.IsEnabled(
+                syntaxTree,
+                document.Project.AnalyzerOptions);
+        }
+
         public static bool TryGetAnalyzerOptionValue(
             this Document document,
             SyntaxNode node,

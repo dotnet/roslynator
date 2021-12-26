@@ -2369,7 +2369,7 @@ else
       </Sample>
     </Samples>
     <Options>
-      <Option Identifier="DoNotSimplifyConditionalExpressionWhenConditionIsInverted">
+      <Option Identifier="DoNotSimplifyConditionalExpressionWhenConditionIsInverted" IsObsolete="true">
         <Title>Do not simplify conditional expression when condition is inverted.</Title>
         <Id>a</Id>
         <OptionKey>suppress_when_condition_is_inverted</OptionKey>

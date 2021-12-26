@@ -47,6 +47,32 @@ namespace N
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterAttributeList)]
+        public async Task Test_ClassWithMultipleAttributeLists()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System;
+
+namespace N
+{
+    [Serializable][||][Obsolete] [||]class C
+    {
+    }
+}
+", @"
+using System;
+
+namespace N
+{
+    [Serializable]
+    [Obsolete]
+    class C
+    {
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterAttributeList)]
         public async Task Test_Constructor()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -651,6 +677,60 @@ class C
 public sealed class FooAttribute : Attribute
 {
 }
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterAttributeList)]
+        public async Task TestNoDiagnostic_SingleLineIndexer()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System;
+
+class C
+{
+    public string this[int index] { get => null; [Obsolete] set => value = null; }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterAttributeList)]
+        public async Task TestNoDiagnostic_SingleLineProperty()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System;
+
+class C
+{
+    public string P { get; [Obsolete] set; }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterAttributeList)]
+        public async Task TestNoDiagnostic_SingleLineEvent()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System;
+
+class C
+{
+        public event EventHandler E { add { } [Foo] remove { } }
+}
+
+[AttributeUsage(AttributeTargets.All)]
+public sealed class FooAttribute : Attribute
+{
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterAttributeList)]
+        public async Task TestNoDiagnostic_SingleLineEnumDeclaration()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System;
+
+enum E { A, [Obsolete] B, C }
 ");
         }
     }

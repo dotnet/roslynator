@@ -896,5 +896,12 @@ namespace Roslynator.CSharp
             "CS8618", 
             "CS8625");
 
+        /// <summary>RCF0120 (fixes CS8403)</summary>
+        public static readonly CodeFixDescriptor AddAsyncModifier = new CodeFixDescriptor(
+            id:                 CodeFixIdentifiers.AddAsyncModifier, 
+            title:              "Add 'async' modifier", 
+            isEnabledByDefault: true, 
+            "CS8403");
+
     }
 }

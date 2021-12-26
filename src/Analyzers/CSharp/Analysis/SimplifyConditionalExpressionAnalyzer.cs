@@ -70,7 +70,6 @@ namespace Roslynator.CSharp.Analysis
                 }
                 /// a ? false : b >>> !a && b
                 else if (falseKind != SyntaxKind.ThrowExpression
-                    && !AnalyzerOptions.DoNotSimplifyConditionalExpressionWhenConditionIsInverted.IsEnabled(context)
                     && context.SemanticModel.GetTypeInfo(info.WhenFalse, context.CancellationToken).ConvertedType?.SpecialType == SpecialType.System_Boolean)
                 {
                     DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.SimplifyConditionalExpression, conditionalExpression);
@@ -80,7 +79,6 @@ namespace Roslynator.CSharp.Analysis
             {
                 // a ? b : true >>> !a || b
                 if (trueKind != SyntaxKind.ThrowExpression
-                    && !AnalyzerOptions.DoNotSimplifyConditionalExpressionWhenConditionIsInverted.IsEnabled(context)
                     && context.SemanticModel.GetTypeInfo(info.WhenTrue, context.CancellationToken).ConvertedType?.SpecialType == SpecialType.System_Boolean)
                 {
                     DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.SimplifyConditionalExpression, conditionalExpression);

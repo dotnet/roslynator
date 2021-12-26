@@ -10,6 +10,18 @@ namespace Roslynator.Formatting.CSharp
     public static partial class DiagnosticRules
     {
         [Obsolete("", error: true)]
+        internal static readonly DiagnosticDescriptor AddEmptyLineBeforeClosingBraceOfDoStatement = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.AddEmptyLineBeforeClosingBraceOfDoStatement, 
+            title:              "Add empty line before closing brace of 'do' statement.", 
+            messageFormat:      "Add empty line before closing brace of 'do' statement.", 
+            category:           DiagnosticCategories.Roslynator, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: false, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.AddEmptyLineBeforeClosingBraceOfDoStatement, 
+            customTags:         Array.Empty<string>());
+
+        [Obsolete("", error: true)]
         internal static readonly DiagnosticDescriptor AddNewLineAfterBinaryOperatorInsteadOfBeforeIt2 = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.AddNewLineAfterBinaryOperatorInsteadOfBeforeIt2, 
             title:              "Add newline after binary operator instead of before it.", 

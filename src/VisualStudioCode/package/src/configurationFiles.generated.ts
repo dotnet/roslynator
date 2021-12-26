@@ -35,6 +35,7 @@ is_global = true
 # Options
 
 roslynator.max_line_length = 140
+roslynator.prefer_no_new_line_at_end_of_file = false
 roslynator.prefix_field_identifier_with_underscore = false
 
 # Analyzers
@@ -47,9 +48,6 @@ dotnet_diagnostic.RCS0002.severity = none
 
 # Add empty line after using directive list
 dotnet_diagnostic.RCS0003.severity = none
-
-# Add empty line before closing brace of 'do' statement
-dotnet_diagnostic.RCS0004.severity = none
 
 # Add empty line before #endregion
 dotnet_diagnostic.RCS0005.severity = none
@@ -199,6 +197,12 @@ dotnet_diagnostic.RCS0055.severity = none
 
 # A line is too long
 dotnet_diagnostic.RCS0056.severity = none
+
+# Normalize whitespace at the beginning of a file
+dotnet_diagnostic.RCS0057.severity = none
+
+# Normalize whitespace at the end of a file
+dotnet_diagnostic.RCS0058.severity = none
 
 # Add braces (when expression spans over multiple lines)
 dotnet_diagnostic.RCS1001.severity = suggestion
@@ -1228,6 +1232,7 @@ roslynator.compiler_diagnostic_fix.CS8070.enabled = true
 roslynator.compiler_diagnostic_fix.CS8112.enabled = true
 roslynator.compiler_diagnostic_fix.CS8139.enabled = true
 roslynator.compiler_diagnostic_fix.CS8340.enabled = true
+roslynator.compiler_diagnostic_fix.CS8403.enabled = true
 roslynator.compiler_diagnostic_fix.CS8618.enabled = true
 roslynator.compiler_diagnostic_fix.CS8625.enabled = true
 roslynator.compiler_diagnostic_fix.CS8632.enabled = true
