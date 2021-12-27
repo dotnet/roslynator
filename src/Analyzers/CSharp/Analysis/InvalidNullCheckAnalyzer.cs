@@ -96,18 +96,21 @@ namespace Roslynator.CSharp.Analysis
 
                     if (nullCheck.Success)
                     {
-                        ParameterSyntax parameter = GetParameter(nullCheck.Expression);
+                        ParameterSyntax parameter = FindParameter(nullCheck.Expression);
 
-                        if (parameter?.Default?.Value.IsKind(
-                            SyntaxKind.NullLiteralExpression,
-                            SyntaxKind.DefaultLiteralExpression,
-                            SyntaxKind.DefaultExpression) == true
-                            || IsNullableReferenceType(context, parameter))
+                        if (parameter != null)
                         {
-                            ITypeSymbol exceptionSymbol = context.SemanticModel.GetTypeSymbol(throwStatement.Expression, context.CancellationToken);
+                            if (parameter.Default?.Value.IsKind(
+                                SyntaxKind.NullLiteralExpression,
+                                SyntaxKind.DefaultLiteralExpression,
+                                SyntaxKind.DefaultExpression) == true
+                                || IsNullableReferenceType(context, parameter))
+                            {
+                                ITypeSymbol exceptionSymbol = context.SemanticModel.GetTypeSymbol(throwStatement.Expression, context.CancellationToken);
 
-                            if (exceptionSymbol.HasMetadataName(MetadataNames.System_ArgumentNullException))
-                                context.ReportDiagnostic(DiagnosticRules.InvalidNullCheck, ifStatement);
+                                if (exceptionSymbol.HasMetadataName(MetadataNames.System_ArgumentNullException))
+                                    context.ReportDiagnostic(DiagnosticRules.InvalidNullCheck, ifStatement);
+                            }
                         }
                     }
                 }
@@ -131,7 +134,7 @@ namespace Roslynator.CSharp.Analysis
                 return false;
             }
 
-            ParameterSyntax GetParameter(ExpressionSyntax expression)
+            ParameterSyntax FindParameter(ExpressionSyntax expression)
             {
                 if (expression is IdentifierNameSyntax identifierName)
                 {
