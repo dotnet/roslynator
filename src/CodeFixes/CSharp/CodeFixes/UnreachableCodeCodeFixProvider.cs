@@ -79,7 +79,7 @@ namespace Roslynator.CSharp.CodeFixes
                                 ct);
                         }
                     },
-                    base.GetEquivalenceKey(diagnostic));
+                    GetEquivalenceKey(diagnostic));
 
                 context.RegisterCodeFix(codeAction, diagnostic);
             }

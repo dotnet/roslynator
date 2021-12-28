@@ -109,7 +109,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                                         return context.Document.ReplaceNodeAsync(classDeclaration, newNode, ct);
                                     },
-                                    base.GetEquivalenceKey(diagnostic, CodeFixIdentifiers.RemoveBaseList));
+                                    GetEquivalenceKey(diagnostic, CodeFixIdentifiers.RemoveBaseList));
 
                                 context.RegisterCodeFix(codeAction, diagnostic);
                             }

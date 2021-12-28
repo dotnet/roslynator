@@ -38,7 +38,7 @@ namespace Roslynator.Formatting.CodeFixes
                         CodeAction codeAction = CodeAction.Create(
                             "Use linefeed as newline",
                             ct => document.WithTextChangeAsync(span, "\n", ct),
-                            base.GetEquivalenceKey(diagnostic));
+                            GetEquivalenceKey(diagnostic));
 
                         context.RegisterCodeFix(codeAction, diagnostic);
                         break;
@@ -48,7 +48,7 @@ namespace Roslynator.Formatting.CodeFixes
                         CodeAction codeAction = CodeAction.Create(
                             "Use carriage return + linefeed as newline",
                             ct => document.WithTextChangeAsync(span, "\r\n", ct),
-                            base.GetEquivalenceKey(diagnostic));
+                            GetEquivalenceKey(diagnostic));
 
                         context.RegisterCodeFix(codeAction, diagnostic);
                         break;

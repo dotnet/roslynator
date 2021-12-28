@@ -23,12 +23,12 @@ namespace Roslynator.CodeFixes
             return WellKnownFixAllProviders.BatchFixer;
         }
 
-        protected virtual string GetEquivalenceKey(Diagnostic diagnostic, string additionalKey1 = null, string additionalKey2 = null)
+        protected string GetEquivalenceKey(Diagnostic diagnostic, string additionalKey1 = null, string additionalKey2 = null)
         {
             return EquivalenceKey.Create(diagnostic, additionalKey1, additionalKey2);
         }
 
-        protected virtual string GetEquivalenceKey(string key, string additionalKey1 = null, string additionalKey2 = null)
+        protected string GetEquivalenceKey(string key, string additionalKey1 = null, string additionalKey2 = null)
         {
             return EquivalenceKey.Create(key, additionalKey1, additionalKey2);
         }

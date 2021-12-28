@@ -68,7 +68,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                     return context.Document.ReplaceNodeAsync(memberDeclaration, newNode, ct);
                 },
-                base.GetEquivalenceKey(diagnostic));
+                GetEquivalenceKey(diagnostic));
 
             context.RegisterCodeFix(codeAction, diagnostic);
         }
