@@ -172,6 +172,50 @@ static class Foo
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertAnonymousFunctionToMethodGroupOrViceVersa)]
+        public async Task Test_SwitchExpressionArm()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System;
+
+class C
+{
+    Func<string, string> M(string s)
+    {
+        return """" switch
+        {
+            """" => [|f => M2(f)|],
+            _ => throw new NotImplementedException(),
+        };
+    }
+
+    string M2(string s)
+    {
+        return default;
+    }
+}
+", @"
+using System;
+
+class C
+{
+    Func<string, string> M(string s)
+    {
+        return """" switch
+        {
+            """" => M2,
+            _ => throw new NotImplementedException(),
+        };
+    }
+
+    string M2(string s)
+    {
+        return default;
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertAnonymousFunctionToMethodGroupOrViceVersa)]
         public async Task TestNoDiagnostic_NullReferenceException()
         {
             await VerifyNoDiagnosticAsync(@"

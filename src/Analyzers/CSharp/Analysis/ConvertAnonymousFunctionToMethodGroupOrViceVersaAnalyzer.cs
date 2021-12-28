@@ -724,7 +724,6 @@ namespace Roslynator.CSharp.Analysis
             DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.ReportOnly.ConvertMethodGroupToAnonymousFunction, expression);
         }
 
-        //TODO: test
         private static void AnalyzeSwitchExpressionArm(SyntaxNodeAnalysisContext context)
         {
             if (!DiagnosticRules.ConvertAnonymousFunctionToMethodGroupOrViceVersa.IsEffective(context))
