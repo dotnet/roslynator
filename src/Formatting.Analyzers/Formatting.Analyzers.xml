@@ -1431,9 +1431,9 @@ Default maximal length is 140.</Summary>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <Summary>This analyzer enforces:
 * new line at the end of a file
-* no new line at the end of a file if the option `roslynator.prefer_no_new_line_at_end_of_file` is set to `true`.</Summary>
+* no new line at the end of a file if the option `roslynator.prefer_new_line_at_end_of_file` is set to `false`.</Summary>
     <GlobalOptions>
-      <Option Key="roslynator.prefer_no_new_line_at_end_of_file" />
+      <Option Key="roslynator.prefer_new_line_at_end_of_file" />
     </GlobalOptions>
   </Analyzer>
 </Analyzers>

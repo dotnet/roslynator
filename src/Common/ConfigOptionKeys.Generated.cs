@@ -7,7 +7,7 @@ namespace Roslynator
     internal static partial class ConfigOptionKeys
     {
         public const string MaxLineLength = "roslynator.max_line_length";
-        public const string PreferNoNewLineAtEndOfFile = "roslynator.prefer_no_new_line_at_end_of_file";
+        public const string PreferNewLineAtEndOfFile = "roslynator.prefer_new_line_at_end_of_file";
         public const string PrefixFieldIdentifierWithUnderscore = "roslynator.prefix_field_identifier_with_underscore";
     }
 }

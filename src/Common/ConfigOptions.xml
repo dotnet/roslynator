@@ -10,8 +10,8 @@
     <ValuePlaceholder>true|false</ValuePlaceholder>
     <Description>Prefix field identifier with underscore</Description>
   </Option>
-  <Option Id="PreferNoNewLineAtEndOfFile">
-    <DefaultValue>false</DefaultValue>
+  <Option Id="PreferNewLineAtEndOfFile">
+    <DefaultValue>true</DefaultValue>
     <ValuePlaceholder>true|false</ValuePlaceholder>
     <Description>Prefer no new line at the end of a file</Description>
   </Option>

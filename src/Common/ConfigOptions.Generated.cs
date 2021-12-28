@@ -7,7 +7,7 @@ namespace Roslynator
     public static class ConfigOptions
     {
         public static readonly ConfigOptionDescriptor MaxLineLength = new(key: ConfigOptionKeys.MaxLineLength, defaultValue: "140", description: "Max line length", valuePlaceholder: "<MAX_LINE_LENGTH>");
-        public static readonly ConfigOptionDescriptor PreferNoNewLineAtEndOfFile = new(key: ConfigOptionKeys.PreferNoNewLineAtEndOfFile, defaultValue: "false", description: "Prefer no new line at the end of a file", valuePlaceholder: "true|false");
+        public static readonly ConfigOptionDescriptor PreferNewLineAtEndOfFile = new(key: ConfigOptionKeys.PreferNewLineAtEndOfFile, defaultValue: "true", description: "Prefer no new line at the end of a file", valuePlaceholder: "true|false");
         public static readonly ConfigOptionDescriptor PrefixFieldIdentifierWithUnderscore = new(key: ConfigOptionKeys.PrefixFieldIdentifierWithUnderscore, defaultValue: "false", description: "Prefix field identifier with underscore", valuePlaceholder: "true|false");
     }
 }
