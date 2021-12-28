@@ -6,11 +6,11 @@ using Xunit;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public class RR0139ConvertNullLiteralToDefaultExpressionTests : AbstractCSharpRefactoringVerifier
+    public class RR0139ReplaceNullLiteralWithDefaultExpressionTests : AbstractCSharpRefactoringVerifier
     {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.ConvertNullLiteralToDefaultExpression;
+        public override string RefactoringId { get; } = RefactoringIdentifiers.ReplaceNullLiteralWithDefaultExpression;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertNullLiteralToDefaultExpression)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceNullLiteralWithDefaultExpression)]
         public async Task Test_Argument()
         {
             await VerifyRefactoringAsync(@"
@@ -32,7 +32,7 @@ class C
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertNullLiteralToDefaultExpression)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceNullLiteralWithDefaultExpression)]
         public async Task Test_ReturnExpression()
         {
             await VerifyRefactoringAsync(@"
@@ -54,7 +54,33 @@ class C
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertNullLiteralToDefaultExpression)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceNullLiteralWithDefaultExpression)]
+        public async Task Test_LocalDeclaration()
+        {
+            await VerifyRefactoringAsync(@"
+#nullable enable
+
+class C
+{
+    void M()
+    {
+        string? s = [||]null;
+    }
+}
+", @"
+#nullable enable
+
+class C
+{
+    void M()
+    {
+        string? s = default(string);
+    }
+}
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
+        }
+
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceNullLiteralWithDefaultExpression)]
         public async Task TestNoRefactoring_ParameterDefaultValue()
         {
             await VerifyNoRefactoringAsync(@"

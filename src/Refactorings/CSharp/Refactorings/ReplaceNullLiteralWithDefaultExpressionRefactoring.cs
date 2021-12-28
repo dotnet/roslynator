@@ -9,7 +9,7 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class ConvertNullLiteralToDefaultExpressionRefactoring
+    internal static class ReplaceNullLiteralWithDefaultExpressionRefactoring
     {
         public static async Task ComputeRefactoringAsync(RefactoringContext context, ExpressionSyntax expression)
         {
@@ -34,9 +34,9 @@ namespace Roslynator.CSharp.Refactorings
                 return;
 
             context.RegisterRefactoring(
-                $"Convert to 'default({SymbolDisplay.ToMinimalDisplayString(typeSymbol, semanticModel, expression.SpanStart, SymbolDisplayFormats.DisplayName)})'",
+                "Replace 'null' with 'default(...)'",
                 ct => RefactorAsync(context.Document, expression, typeSymbol, ct),
-                RefactoringDescriptors.ConvertNullLiteralToDefaultExpression);
+                RefactoringDescriptors.ReplaceNullLiteralWithDefaultExpression);
         }
 
         public static async Task<Document> RefactorAsync(
@@ -47,7 +47,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            TypeSyntax type = typeSymbol.ToMinimalTypeSyntax(semanticModel, expression.SpanStart);
+            TypeSyntax type = typeSymbol.ToMinimalTypeSyntax(semanticModel, expression.SpanStart, SymbolDisplayFormats.FullName_WithoutNullableReferenceTypeModifier);
 
             DefaultExpressionSyntax defaultExpression = DefaultExpression(type).WithTriviaFrom(expression);
 

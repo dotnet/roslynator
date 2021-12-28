@@ -913,7 +913,6 @@ roslynator.refactoring.convert_interpolated_string_to_string_literal.enabled = t
 roslynator.refactoring.convert_lambda_block_body_to_expression_body.enabled = true
 roslynator.refactoring.convert_lambda_expression_body_to_block_body.enabled = true
 roslynator.refactoring.convert_method_group_to_lambda.enabled = true
-roslynator.refactoring.convert_null_literal_to_default_expression.enabled = true
 roslynator.refactoring.convert_regular_string_literal_to_verbatim_string_literal.enabled = true
 roslynator.refactoring.convert_return_statement_to_if.enabled = true
 roslynator.refactoring.convert_statements_to_if_else.enabled = true
@@ -1027,6 +1026,7 @@ roslynator.refactoring.replace_equality_operator_with_string_isnullorwhitespace.
 roslynator.refactoring.replace_explicit_cast_with_as_expression.enabled = true
 roslynator.refactoring.replace_interpolated_string_with_interpolation_expression.enabled = true
 roslynator.refactoring.replace_method_with_property.enabled = false
+roslynator.refactoring.replace_null_literal_with_default_expression.enabled = true
 roslynator.refactoring.replace_prefix_operator_with_postfix_operator.enabled = true
 roslynator.refactoring.replace_property_with_method.enabled = true
 roslynator.refactoring.reverse_for_statement.enabled = true
