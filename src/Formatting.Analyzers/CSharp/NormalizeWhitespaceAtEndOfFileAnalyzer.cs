@@ -41,7 +41,7 @@ namespace Roslynator.Formatting.CSharp
             SyntaxToken endOfFile = compilationUnit.EndOfFileToken;
             SyntaxTriviaList.Reversed.Enumerator en = endOfFile.LeadingTrivia.Reverse().GetEnumerator();
 
-            if (ConfigOptions.PreferNoNewLineAtEndOfFile.IsEnabled(context))
+            if (context.IsEnabled(ConfigOptions.PreferNoNewLineAtEndOfFile))
             {
                 if (en.MoveNext()
                     && (!en.Current.IsWhitespaceTrivia()

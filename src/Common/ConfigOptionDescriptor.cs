@@ -14,11 +14,18 @@ namespace Roslynator
             DefaultValue = defaultValue;
             Description = description;
             ValuePlaceholder = valuePlaceholder;
+
+            if (bool.TryParse(defaultValue, out bool defaultValueAsBool))
+            {
+                DefaultValueAsBool = defaultValueAsBool;
+            }
         }
 
         public string Key { get; }
 
         public string DefaultValue { get; }
+
+        internal bool? DefaultValueAsBool { get; }
 
         public string Description { get; }
 
