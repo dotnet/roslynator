@@ -2429,6 +2429,18 @@ namespace Roslynator.CSharp
             helpLinkUri:        DiagnosticIdentifiers.UsePatternMatchingToCheckForNullOrViceVersa, 
             customTags:         Array.Empty<string>());
 
+        /// <summary>RCS1249</summary>
+        public static readonly DiagnosticDescriptor UnnecessaryNullForgivingOperator = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.UnnecessaryNullForgivingOperator, 
+            title:              "Unnecessary null-forgiving operator.", 
+            messageFormat:      "Unnecessary null-forgiving operator.", 
+            category:           DiagnosticCategories.Roslynator, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.UnnecessaryNullForgivingOperator, 
+            customTags:         WellKnownDiagnosticTags.Unnecessary);
+
         /// <summary>RCS1251</summary>
         public static readonly DiagnosticDescriptor InvalidNullCheck = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.InvalidNullCheck, 

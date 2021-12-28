@@ -207,6 +207,21 @@ namespace Roslynator.Metadata
             }
         }
 
+        public static IEnumerable<OptionMetadata> ReadOptions(string filePath)
+        {
+            XDocument doc = XDocument.Load(filePath);
+
+            foreach (XElement element in doc.Root.Elements("Option"))
+            {
+                yield return new OptionMetadata(
+                    element.Attribute("Id").Value,
+                    element.Element("Key")?.Value,
+                    element.Element("DefaultValue").Value,
+                    element.Element("ValuePlaceholder").Value,
+                    element.Element("Description").Value);
+            }
+        }
+
         public static void SaveCompilerDiagnostics(IEnumerable<CompilerDiagnosticMetadata> diagnostics, string path)
         {
             var doc = new XDocument(

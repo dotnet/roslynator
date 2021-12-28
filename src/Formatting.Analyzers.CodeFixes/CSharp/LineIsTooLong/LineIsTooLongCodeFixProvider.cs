@@ -39,7 +39,7 @@ namespace Roslynator.Formatting.CodeFixes.LineIsTooLong
 
             SyntaxTree syntaxTree = await document.GetSyntaxTreeAsync(context.CancellationToken).ConfigureAwait(false);
 
-            int maxLength = GlobalOptions.MaxLineLength.GetInt32Value(syntaxTree, document.Project.AnalyzerOptions, CodeAnalysisConfig.Instance.MaxLineLength);
+            int maxLength = document.Project.AnalyzerOptions.GetOptionAsInt(ConfigOptions.MaxLineLength, syntaxTree, CodeAnalysisConfig.Instance.MaxLineLength);
 
             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 

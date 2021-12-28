@@ -5602,4 +5602,13 @@ void M()
       </Option>
     </Options>
   </Analyzer>
+  <Analyzer Identifier="UnnecessaryNullForgivingOperator">
+    <Id>RCS1249</Id>
+    <Title>Unnecessary null-forgiving operator.</Title>
+    <Category>General</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>true</SupportsFadeOut>
+    <MinLanguageVersion>8.0</MinLanguageVersion>
+  </Analyzer>
 </Analyzers>

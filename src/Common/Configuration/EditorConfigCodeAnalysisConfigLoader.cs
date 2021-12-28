@@ -175,7 +175,7 @@ namespace Roslynator.Configuration
                 @"
 \A
 "
-                    + Regex.Escape(OptionKeys.RefactoringPrefix)
+                    + Regex.Escape(ConfigOptionKeys.RefactoringPrefix)
                     + @"
 (?<id>(?i:RR){2}[0-9]{4})
 .enabled
@@ -187,7 +187,7 @@ namespace Roslynator.Configuration
                 @"
 \A
 "
-                    + Regex.Escape(OptionKeys.CompilerDiagnosticFixPrefix)
+                    + Regex.Escape(ConfigOptionKeys.CompilerDiagnosticFixPrefix)
                     + @"
 (?<id>(?i:CS)[0-9]{4})
 .enabled

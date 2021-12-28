@@ -34,8 +34,12 @@ is_global = true
 
 # Options
 
+# Applicable to: RCS0056
 roslynator.max_line_length = 140
-roslynator.prefer_no_new_line_at_end_of_file = false
+
+# Applicable to: RCS0058
+roslynator.prefer_new_line_at_end_of_file = true
+
 roslynator.prefix_field_identifier_with_underscore = false
 
 # Analyzers
@@ -828,6 +832,9 @@ dotnet_diagnostic.RCS1247.severity = suggestion
 dotnet_diagnostic.RCS1248.severity = none
 # Use comparison instead of pattern matching to check for null
 roslynator.RCS1248.invert = false
+
+# Unnecessary null-forgiving operator
+dotnet_diagnostic.RCS1249.severity = suggestion
 
 # Use pattern matching
 dotnet_diagnostic.RCS9001.severity = silent

@@ -11,6 +11,8 @@ namespace Roslynator.Configuration
 {
     public sealed class CodeAnalysisConfig
     {
+        private ImmutableDictionary<string, bool> _editorConfigBoolOptions;
+
         public static CodeAnalysisConfig Instance { get; private set; } = new();
 
         private CodeAnalysisConfig(
@@ -48,6 +50,18 @@ namespace Roslynator.Configuration
                 EditorConfig = EditorConfigCodeAnalysisConfigLoader.Load(editorConfigPaths);
             }
 
+            _editorConfigBoolOptions = EditorConfig.Options.Select(f =>
+            {
+                if (bool.TryParse(f.Value, out bool value))
+                {
+                    return (key: f.Key, value);
+                }
+
+                return default;
+            })
+            .Where(f => f.key != null)
+            .ToImmutableDictionary(f => f.key, f => f.value);
+
             VisualStudioConfig = visualStudioConfig ?? VisualStudioCodeAnalysisConfig.Empty;
 
             bool? prefixFieldIdentifierWithUnderscore = XmlConfig.PrefixFieldIdentifierWithUnderscore;
@@ -55,17 +69,17 @@ namespace Roslynator.Configuration
             if (EditorConfig.PrefixFieldIdentifierWithUnderscore != null)
                 prefixFieldIdentifierWithUnderscore = EditorConfig.PrefixFieldIdentifierWithUnderscore;
 
-            if (VisualStudioConfig.PrefixFieldIdentifierWithUnderscore != OptionDefaultValues.PrefixFieldIdentifierWithUnderscore)
+            if (VisualStudioConfig.PrefixFieldIdentifierWithUnderscore != ConfigOptionDefaultValues.PrefixFieldIdentifierWithUnderscore)
                 prefixFieldIdentifierWithUnderscore = VisualStudioConfig.PrefixFieldIdentifierWithUnderscore;
 
-            PrefixFieldIdentifierWithUnderscore = prefixFieldIdentifierWithUnderscore ?? OptionDefaultValues.PrefixFieldIdentifierWithUnderscore;
+            PrefixFieldIdentifierWithUnderscore = prefixFieldIdentifierWithUnderscore ?? ConfigOptionDefaultValues.PrefixFieldIdentifierWithUnderscore;
 
             int? maxLineLength = XmlConfig.MaxLineLength;
 
             if (EditorConfig.MaxLineLength != null)
                 maxLineLength = EditorConfig.MaxLineLength;
 
-            MaxLineLength = maxLineLength ?? OptionDefaultValues.MaxLineLength;
+            MaxLineLength = maxLineLength ?? ConfigOptionDefaultValues.MaxLineLength;
 
             var refactorings = new Dictionary<string, bool>();
             SetRefactorings(refactorings, XmlConfig.Refactorings);
@@ -107,6 +121,14 @@ namespace Roslynator.Configuration
         public ImmutableDictionary<string, bool> CodeFixes { get; }
 
         public static event EventHandler Updated;
+
+        public bool? GetOptionAsBool(string key)
+        {
+            if (_editorConfigBoolOptions.TryGetValue(key, out bool value))
+                return value;
+
+            return null;
+        }
 
         internal static void UpdateVisualStudioConfig(Func<VisualStudioCodeAnalysisConfig, VisualStudioCodeAnalysisConfig> config)
         {

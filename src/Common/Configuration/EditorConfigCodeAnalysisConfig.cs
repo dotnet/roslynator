@@ -57,13 +57,13 @@ is_global = true
             Refactorings = refactorings?.ToImmutableDictionary() ?? ImmutableDictionary<string, bool>.Empty;
             CodeFixes = codeFixes?.ToImmutableDictionary() ?? ImmutableDictionary<string, bool>.Empty;
 
-            if (Options.TryGetValue(OptionKeys.MaxLineLength, out string maxLineLengthRaw)
+            if (Options.TryGetValue(ConfigOptionKeys.MaxLineLength, out string maxLineLengthRaw)
                 && int.TryParse(maxLineLengthRaw, out int maxLineLength))
             {
                 MaxLineLength = maxLineLength;
             }
 
-            if (Options.TryGetValue(OptionKeys.PrefixFieldIdentifierWithUnderscore, out string prefixFieldIdentifierWithUnderscoreRaw)
+            if (Options.TryGetValue(ConfigOptionKeys.PrefixFieldIdentifierWithUnderscore, out string prefixFieldIdentifierWithUnderscoreRaw)
                 && bool.TryParse(prefixFieldIdentifierWithUnderscoreRaw, out bool prefixFieldIdentifierWithUnderscore))
             {
                 PrefixFieldIdentifierWithUnderscore = prefixFieldIdentifierWithUnderscore;
@@ -213,14 +213,14 @@ is_global = true
 
             writer.WriteGlobalDirective();
             writer.WriteLine();
-            writer.WriteEntry(OptionKeys.MaxLineLength, OptionDefaultValues.MaxLineLength.ToString());
-            writer.WriteEntry(OptionKeys.PrefixFieldIdentifierWithUnderscore, OptionDefaultValues.PrefixFieldIdentifierWithUnderscore.ToString().ToLowerInvariant());
+            writer.WriteEntry(ConfigOptionKeys.MaxLineLength, ConfigOptionDefaultValues.MaxLineLength.ToString());
+            writer.WriteEntry(ConfigOptionKeys.PrefixFieldIdentifierWithUnderscore, ConfigOptionDefaultValues.PrefixFieldIdentifierWithUnderscore.ToString().ToLowerInvariant());
             writer.WriteLine();
-            writer.WriteEntry(OptionKeys.RefactoringEnabled, true);
+            writer.WriteEntry(ConfigOptionKeys.RefactoringEnabled, true);
             writer.WriteCommentChar();
             writer.WriteRefactoring("<REFACTORING_NAME>", true);
             writer.WriteLine();
-            writer.WriteEntry(OptionKeys.CompilerDiagnosticFixEnabled, true);
+            writer.WriteEntry(ConfigOptionKeys.CompilerDiagnosticFixEnabled, true);
             writer.WriteCommentChar();
             writer.WriteCompilerDiagnosticFix("<COMPILER_DIAGNOSTIC_ID>", true);
             writer.WriteLine();

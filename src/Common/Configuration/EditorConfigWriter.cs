@@ -41,7 +41,7 @@ namespace Roslynator.Configuration
 
         public void WriteRefactoring(string id, bool enabled)
         {
-            _writer.Write(OptionKeys.RefactoringPrefix);
+            _writer.Write(ConfigOptionKeys.RefactoringPrefix);
             _writer.Write(id);
             _writer.Write(".enabled");
             WriteSeparator();
@@ -57,7 +57,7 @@ namespace Roslynator.Configuration
 
         public void WriteCompilerDiagnosticFix(string id, bool enabled)
         {
-            _writer.Write(OptionKeys.CompilerDiagnosticFixPrefix);
+            _writer.Write(ConfigOptionKeys.CompilerDiagnosticFixPrefix);
             _writer.Write(id);
             _writer.Write(".enabled");
             WriteSeparator();

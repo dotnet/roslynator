@@ -22,8 +22,8 @@ namespace Roslynator.Configuration
             IEnumerable<KeyValuePair<string, bool>> codeFixes = null,
             IEnumerable<KeyValuePair<string, bool>> refactorings = null,
             IEnumerable<string> ruleSets = null,
-            bool? prefixFieldIdentifierWithUnderscore = OptionDefaultValues.PrefixFieldIdentifierWithUnderscore,
-            int? maxLineLength = OptionDefaultValues.MaxLineLength)
+            bool? prefixFieldIdentifierWithUnderscore = ConfigOptionDefaultValues.PrefixFieldIdentifierWithUnderscore,
+            int? maxLineLength = ConfigOptionDefaultValues.MaxLineLength)
         {
             Includes = includes?.ToImmutableArray() ?? ImmutableArray<string>.Empty;
             Analyzers = analyzers?.ToImmutableDictionary(_keyComparer) ?? ImmutableDictionary<string, bool>.Empty;

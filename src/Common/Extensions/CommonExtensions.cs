@@ -3,6 +3,7 @@
 using System.Globalization;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.Configuration;
 
 namespace Roslynator
 {
@@ -59,33 +60,10 @@ namespace Roslynator
             SyntaxTree syntaxTree,
             AnalyzerOptions analyzerOptions)
         {
-            return IsEnabled(analyzerOption.OptionKey, syntaxTree, analyzerOptions);
-        }
-
-        public static bool IsEnabled(
-            this OptionDescriptor analyzerOption,
-            SyntaxNodeAnalysisContext context)
-        {
-            return IsEnabled(analyzerOption, context.Node.SyntaxTree, context.Options);
-        }
-
-        public static bool IsEnabled(
-            this OptionDescriptor analyzerOption,
-            SyntaxTree syntaxTree,
-            AnalyzerOptions analyzerOptions)
-        {
-            return IsEnabled(analyzerOption.Key, syntaxTree, analyzerOptions);
-        }
-
-        private static bool IsEnabled(
-            string optionKey,
-            SyntaxTree syntaxTree,
-            AnalyzerOptions analyzerOptions)
-        {
             if (analyzerOptions
                 .AnalyzerConfigOptionsProvider
                 .GetOptions(syntaxTree)
-                .TryGetValue(optionKey, out string value)
+                .TryGetValue(analyzerOption.OptionKey, out string value)
                 && bool.TryParse(value, out bool result))
             {
                 return result;
@@ -94,10 +72,39 @@ namespace Roslynator
             return false;
         }
 
-        public static bool TryGetInt32Value(
-            this OptionDescriptor option,
+        public static bool IsEnabled(
+            this SyntaxNodeAnalysisContext context,
+            ConfigOptionDescriptor option,
+            bool? defaultValue = null)
+        {
+            return IsEnabled(context.Options, option, context.Node.SyntaxTree, defaultValue);
+        }
+
+        public static bool IsEnabled(
+            this AnalyzerOptions analyzerOptions,
+            ConfigOptionDescriptor option,
             SyntaxTree syntaxTree,
-            AnalyzerOptions analyzerOptions,
+            bool? defaultValue = null)
+        {
+            if (analyzerOptions
+                .AnalyzerConfigOptionsProvider
+                .GetOptions(syntaxTree)
+                .TryGetValue(option.Key, out string value)
+                && bool.TryParse(value, out bool result))
+            {
+                return result;
+            }
+
+            return defaultValue
+                ?? CodeAnalysisConfig.Instance.GetOptionAsBool(option.Key)
+                ?? option.DefaultValueAsBool
+                ?? false;
+        }
+
+        public static bool TryGetOptionAsInt(
+            this AnalyzerOptions analyzerOptions,
+            ConfigOptionDescriptor option,
+            SyntaxTree syntaxTree,
             out int result)
         {
             if (analyzerOptions
@@ -114,13 +121,13 @@ namespace Roslynator
             return false;
         }
 
-        public static int GetInt32Value(
-            this OptionDescriptor option,
+        public static int GetOptionAsInt(
+            this AnalyzerOptions analyzerOptions,
+            ConfigOptionDescriptor option,
             SyntaxTree syntaxTree,
-            AnalyzerOptions analyzerOptions,
             int defaultValue)
         {
-            return (TryGetInt32Value(option, syntaxTree, analyzerOptions, out int result))
+            return (TryGetOptionAsInt(analyzerOptions, option, syntaxTree, out int result))
                 ? result
                 : defaultValue;
         }
