@@ -12,7 +12,7 @@ namespace Roslynator.Formatting.CSharp.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.LineIsTooLong;
 
-        public override CSharpTestOptions Options => base.Options.AddConfigOption(GlobalOptions.MaxLineLength.Key, "125");
+        public override CSharpTestOptions Options => base.Options.AddConfigOption(OptionKeys.MaxLineLength, "125");
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
         public async Task Test_ExpressionBody_AddNewLineBeforeArrow()
