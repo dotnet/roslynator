@@ -33,7 +33,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
             if (DiagnosticProperties.ContainsInvert(diagnostic.Properties))
             {
                 CodeAction codeAction = CodeAction.Create(
-                    $"Add newline after '{binaryExpression.OperatorToken.ToString()}' instead of before it",
+                    $"Add new line after '{binaryExpression.OperatorToken.ToString()}' instead of before it",
                     ct => CodeFixHelpers.AddNewLineAfterInsteadOfBeforeAsync(document, binaryExpression.Left, binaryExpression.OperatorToken, binaryExpression.Right, ct),
                     GetEquivalenceKey(diagnostic));
 
@@ -42,7 +42,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
             else
             {
                 CodeAction codeAction = CodeAction.Create(
-                    $"Add newline before '{binaryExpression.OperatorToken.ToString()}' instead of after it",
+                    $"Add new line before '{binaryExpression.OperatorToken.ToString()}' instead of after it",
                     ct => CodeFixHelpers.AddNewLineBeforeInsteadOfAfterAsync(document, binaryExpression.Left, binaryExpression.OperatorToken, binaryExpression.Right, ct),
                     GetEquivalenceKey(diagnostic));
 

@@ -65,12 +65,12 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                             if (token.IsKind(SyntaxKind.QuestionToken))
                             {
                                 title = (SyntaxTriviaAnalysis.IsTokenFollowedWithNewLineAndNotPrecededWithNewLine(conditionalExpression.WhenTrue, conditionalExpression.ColonToken, conditionalExpression.WhenFalse))
-                                    ? "Add newline after '?' and ':' instead of before it"
-                                    : "Add newline after '?' instead of before it";
+                                    ? "Add new line after '?' and ':' instead of before it"
+                                    : "Add new line after '?' instead of before it";
                             }
                             else
                             {
-                                title = "Add newline after ':' instead of before it";
+                                title = "Add new line after ':' instead of before it";
                             }
 
                             CodeAction codeAction = CodeAction.Create(
@@ -88,12 +88,12 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                             if (token.IsKind(SyntaxKind.QuestionToken))
                             {
                                 title = (SyntaxTriviaAnalysis.IsTokenFollowedWithNewLineAndNotPrecededWithNewLine(conditionalExpression.WhenTrue, conditionalExpression.ColonToken, conditionalExpression.WhenFalse))
-                                    ? "Add newline before '?' and ':' instead of after it"
-                                    : "Add newline before '?' instead of after it";
+                                    ? "Add new line before '?' and ':' instead of after it"
+                                    : "Add new line before '?' instead of after it";
                             }
                             else
                             {
-                                title = "Add newline before ':' instead of after it";
+                                title = "Add new line before ':' instead of after it";
                             }
 
                             CodeAction codeAction = CodeAction.Create(
@@ -152,7 +152,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                 if (DiagnosticProperties.ContainsInvert(diagnostic.Properties))
                 {
                     CodeAction codeAction = CodeAction.Create(
-                        $"Add newline after '{token}' instead of before it",
+                        $"Add new line after '{token}' instead of before it",
                         ct => CodeFixHelpers.AddNewLineAfterInsteadOfBeforeAsync(document, token, ct),
                         GetEquivalenceKey(diagnostic));
 
@@ -161,7 +161,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                 else
                 {
                     CodeAction codeAction = CodeAction.Create(
-                        $"Add newline before '{token}' instead of after it",
+                        $"Add new line before '{token}' instead of after it",
                         ct => CodeFixHelpers.AddNewLineBeforeInsteadOfAfterAsync(document, token, ct),
                         GetEquivalenceKey(diagnostic));
 

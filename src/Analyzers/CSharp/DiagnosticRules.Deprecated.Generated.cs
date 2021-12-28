@@ -249,8 +249,8 @@ namespace Roslynator.CSharp
         [Obsolete("", error: true)]
         internal static readonly DiagnosticDescriptor UseLinefeedAsNewLine = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.UseLinefeedAsNewLine, 
-            title:              "Use linefeed as newline.", 
-            messageFormat:      "Use linefeed as newline.", 
+            title:              "Use linefeed as new line.", 
+            messageFormat:      "Use linefeed as new line.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
@@ -261,8 +261,8 @@ namespace Roslynator.CSharp
         [Obsolete("", error: true)]
         internal static readonly DiagnosticDescriptor UseCarriageReturnAndLinefeedAsNewLine = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.UseCarriageReturnAndLinefeedAsNewLine, 
-            title:              "Use carriage return + linefeed as newline.", 
-            messageFormat:      "Use carriage return + linefeed as newline.", 
+            title:              "Use carriage return + linefeed as new line.", 
+            messageFormat:      "Use carriage return + linefeed as new line.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 

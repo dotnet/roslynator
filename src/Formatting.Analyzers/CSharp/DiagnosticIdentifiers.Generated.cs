@@ -47,7 +47,7 @@ namespace Roslynator.Formatting.CSharp
         public const string UseLinefeedAsNewLine = "RCS0045";
         public const string UseSpacesInsteadOfTab = "RCS0046";
         public const string WrapAndIndentEachNodeInList = "RCS0047";
-        public const string RemoveNewlinesFromInitializerWithSingleLineExpression = "RCS0048";
+        public const string RemoveNewLinesFromInitializerWithSingleLineExpression = "RCS0048";
         public const string AddEmptyLineAfterTopComment = "RCS0049";
         public const string AddEmptyLineBeforeTopDeclaration = "RCS0050";
         public const string AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersa = "RCS0051";

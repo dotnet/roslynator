@@ -90,55 +90,55 @@ dotnet_diagnostic.RCS0015.severity = none
 # Remove empty line between using directives with different root namespace
 roslynator.RCS0015.invert = false
 
-# Add newline after attribute list
+# Add new line after attribute list
 dotnet_diagnostic.RCS0016.severity = none
 
-# Add newline after opening brace of accessor
+# Add new line after opening brace of accessor
 dotnet_diagnostic.RCS0020.severity = none
 
-# Add newline after opening brace of block
+# Add new line after opening brace of block
 dotnet_diagnostic.RCS0021.severity = none
 
-# Add newline after opening brace of empty block
+# Add new line after opening brace of empty block
 dotnet_diagnostic.RCS0022.severity = none
 
-# Add newline after opening brace of type declaration
+# Add new line after opening brace of type declaration
 dotnet_diagnostic.RCS0023.severity = none
 
-# Add newline after switch label
+# Add new line after switch label
 dotnet_diagnostic.RCS0024.severity = none
 
-# Add newline before accessor of full property
+# Add new line before accessor of full property
 dotnet_diagnostic.RCS0025.severity = none
 
-# Add newline before binary operator instead of after it (or vice versa)
+# Add new line before binary operator instead of after it (or vice versa)
 dotnet_diagnostic.RCS0027.severity = none
-# Add newline after binary operator instead of before it
+# Add new line after binary operator instead of before it
 roslynator.RCS0027.invert = false
 
-# Add newline before conditional operator instead of after it (or vice versa)
+# Add new line before conditional operator instead of after it (or vice versa)
 dotnet_diagnostic.RCS0028.severity = none
-# Add newline after conditional operator instead of before it
+# Add new line after conditional operator instead of before it
 roslynator.RCS0028.invert = false
 
-# Add newline before constructor initializer
+# Add new line before constructor initializer
 dotnet_diagnostic.RCS0029.severity = none
 
-# Add newline before embedded statement
+# Add new line before embedded statement
 dotnet_diagnostic.RCS0030.severity = none
 
-# Add newline before enum member
+# Add new line before enum member
 dotnet_diagnostic.RCS0031.severity = none
 
-# Add newline before expression body arrow instead of after it (or vice versa)
+# Add new line before expression body arrow instead of after it (or vice versa)
 dotnet_diagnostic.RCS0032.severity = none
-# Add newline after expression body arrow instead of before it
+# Add new line after expression body arrow instead of before it
 roslynator.RCS0032.invert = false
 
-# Add newline before statement
+# Add new line before statement
 dotnet_diagnostic.RCS0033.severity = none
 
-# Add newline before type parameter constraint
+# Add new line before type parameter constraint
 dotnet_diagnostic.RCS0034.severity = none
 
 # Remove empty line between single-line declarations of same kind
@@ -147,22 +147,22 @@ dotnet_diagnostic.RCS0036.severity = none
 # Remove empty line between using directives with same root namespace
 dotnet_diagnostic.RCS0038.severity = none
 
-# Remove newline before base list
+# Remove new line before base list
 dotnet_diagnostic.RCS0039.severity = none
 
-# Remove newline between 'if' keyword and 'else' keyword
+# Remove new line between 'if' keyword and 'else' keyword
 dotnet_diagnostic.RCS0041.severity = none
 
-# Remove newlines from accessor list of auto-property
+# Remove new lines from accessor list of auto-property
 dotnet_diagnostic.RCS0042.severity = none
 
-# Remove newlines from accessor with single-line expression
+# Remove new lines from accessor with single-line expression
 dotnet_diagnostic.RCS0043.severity = none
 
-# Use carriage return + linefeed as newline
+# Use carriage return + linefeed as new line
 dotnet_diagnostic.RCS0044.severity = none
 
-# Use linefeed as newline
+# Use linefeed as new line
 dotnet_diagnostic.RCS0045.severity = none
 
 # Use spaces instead of tab
@@ -171,7 +171,7 @@ dotnet_diagnostic.RCS0046.severity = none
 # [deprecated] Wrap and indent each node in list
 dotnet_diagnostic.RCS0047.severity = none
 
-# Remove newlines from initializer with single-line expression
+# Remove new lines from initializer with single-line expression
 dotnet_diagnostic.RCS0048.severity = none
 
 # Add empty line after top comment
@@ -180,14 +180,14 @@ dotnet_diagnostic.RCS0049.severity = none
 # Add empty line before top declaration
 dotnet_diagnostic.RCS0050.severity = none
 
-# Add newline between closing brace and 'while' keyword (or vice versa)
+# Add new line between closing brace and 'while' keyword (or vice versa)
 dotnet_diagnostic.RCS0051.severity = none
-# Remove newline between closing brace and 'while' keyword
+# Remove new line between closing brace and 'while' keyword
 roslynator.RCS0051.invert = false
 
-# Add newline before equals sign instead of after it (or vice versa)
+# Add new line before equals sign instead of after it (or vice versa)
 dotnet_diagnostic.RCS0052.severity = none
-# Add newline after equals sign instead of before it
+# Add new line after equals sign instead of before it
 roslynator.RCS0052.invert = false
 
 # Fix formatting of a list

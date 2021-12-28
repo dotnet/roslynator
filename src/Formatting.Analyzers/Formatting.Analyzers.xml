@@ -467,7 +467,7 @@ namespace N
   </Analyzer>
   <Analyzer Identifier="AddNewLineAfterAttributeList">
     <Id>RCS0016</Id>
-    <Title>Add newline after attribute list.</Title>
+    <Title>Add new line after attribute list.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -491,7 +491,7 @@ namespace N
   </Analyzer>
   <Analyzer Identifier="AddNewLineAfterBinaryOperatorInsteadOfBeforeIt2" IsObsolete="true">
     <Id>RCS0017</Id>
-    <Title>Add newline after binary operator instead of before it.</Title>
+    <Title>Add new line after binary operator instead of before it.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -512,7 +512,7 @@ namespace N
   </Analyzer>
   <Analyzer Identifier="AddNewLineAfterConditionalOperatorInsteadOfBeforeIt2" IsObsolete="true">
     <Id>RCS0018</Id>
-    <Title>Add newline after conditional operator instead of before it.</Title>
+    <Title>Add new line after conditional operator instead of before it.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -529,7 +529,7 @@ namespace N
   </Analyzer>
   <Analyzer Identifier="AddNewLineAfterExpressionBodyArrowInsteadOfBeforeIt2" IsObsolete="true">
     <Id>RCS0019</Id>
-    <Title>Add newline after expression body arrow instead of before it.</Title>
+    <Title>Add new line after expression body arrow instead of before it.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -544,7 +544,7 @@ namespace N
   </Analyzer>
   <Analyzer Identifier="AddNewLineAfterOpeningBraceOfAccessor">
     <Id>RCS0020</Id>
-    <Title>Add newline after opening brace of accessor.</Title>
+    <Title>Add new line after opening brace of accessor.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -566,7 +566,7 @@ namespace N
   </Analyzer>
   <Analyzer Identifier="AddNewLineAfterOpeningBraceOfBlock">
     <Id>RCS0021</Id>
-    <Title>Add newline after opening brace of block.</Title>
+    <Title>Add new line after opening brace of block.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -583,7 +583,7 @@ namespace N
   </Analyzer>
   <Analyzer Identifier="AddNewLineAfterOpeningBraceOfEmptyBlock">
     <Id>RCS0022</Id>
-    <Title>Add newline after opening brace of empty block.</Title>
+    <Title>Add new line after opening brace of empty block.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -600,7 +600,7 @@ namespace N
   </Analyzer>
   <Analyzer Identifier="AddNewLineAfterOpeningBraceOfTypeDeclaration">
     <Id>RCS0023</Id>
-    <Title>Add newline after opening brace of type declaration.</Title>
+    <Title>Add new line after opening brace of type declaration.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -617,7 +617,7 @@ namespace N
   </Analyzer>
   <Analyzer Identifier="AddNewLineAfterSwitchLabel">
     <Id>RCS0024</Id>
-    <Title>Add newline after switch label.</Title>
+    <Title>Add new line after switch label.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -641,7 +641,7 @@ namespace N
   </Analyzer>
   <Analyzer Identifier="AddNewLineBeforeAccessorOfFullProperty">
     <Id>RCS0025</Id>
-    <Title>Add newline before accessor of full property.</Title>
+    <Title>Add new line before accessor of full property.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -659,8 +659,8 @@ namespace N
   </Analyzer>
   <Analyzer Identifier="AddNewLineBeforeBinaryOperatorInsteadOfAfterItOrViceVersa">
     <Id>RCS0027</Id>
-    <Title>Add newline before binary operator instead of after it (or vice versa).</Title>
-    <MessageFormat>Add newline before binary operator instead of after it.</MessageFormat>
+    <Title>Add new line before binary operator instead of after it (or vice versa).</Title>
+    <MessageFormat>Add new line before binary operator instead of after it.</MessageFormat>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -680,7 +680,7 @@ namespace N
     </Samples>
     <Options>
       <Option Identifier="AddNewLineAfterBinaryOperatorInsteadOfBeforeIt">
-        <Title>Add newline after binary operator instead of before it.</Title>
+        <Title>Add new line after binary operator instead of before it.</Title>
         <Id>i</Id>
         <OptionKey>invert</OptionKey>
         <Kind>Invert</Kind>
@@ -704,8 +704,8 @@ namespace N
   </Analyzer>
   <Analyzer Identifier="AddNewLineBeforeConditionalOperatorInsteadOfAfterItOrViceVersa">
     <Id>RCS0028</Id>
-    <Title>Add newline before conditional operator instead of after it (or vice versa).</Title>
-    <MessageFormat>Add newline before conditional operator instead of after it.</MessageFormat>
+    <Title>Add new line before conditional operator instead of after it (or vice versa).</Title>
+    <MessageFormat>Add new line before conditional operator instead of after it.</MessageFormat>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -721,7 +721,7 @@ namespace N
     </Samples>
     <Options>
       <Option Identifier="AddNewLineAfterConditionalOperatorInsteadOfBeforeIt">
-        <Title>Add newline after conditional operator instead of before it.</Title>
+        <Title>Add new line after conditional operator instead of before it.</Title>
         <Id>i</Id>
         <OptionKey>invert</OptionKey>
         <Kind>Invert</Kind>
@@ -741,7 +741,7 @@ namespace N
   </Analyzer>
   <Analyzer Identifier="AddNewLineBeforeConstructorInitializer">
     <Id>RCS0029</Id>
-    <Title>Add newline before constructor initializer.</Title>
+    <Title>Add new line before constructor initializer.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -761,7 +761,7 @@ namespace N
   </Analyzer>
   <Analyzer Identifier="AddNewLineBeforeEmbeddedStatement">
     <Id>RCS0030</Id>
-    <Title>Add newline before embedded statement.</Title>
+    <Title>Add new line before embedded statement.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -776,7 +776,7 @@ namespace N
   </Analyzer>
   <Analyzer Identifier="AddNewLineBeforeEnumMember">
     <Id>RCS0031</Id>
-    <Title>Add newline before enum member.</Title>
+    <Title>Add new line before enum member.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -795,8 +795,8 @@ namespace N
   </Analyzer>
   <Analyzer Identifier="AddNewLineBeforeExpressionBodyArrowInsteadOfAfterItOrViceVersa">
     <Id>RCS0032</Id>
-    <Title>Add newline before expression body arrow instead of after it (or vice versa).</Title>
-    <MessageFormat>Add newline before expression body arrow instead of after it.</MessageFormat>
+    <Title>Add new line before expression body arrow instead of after it (or vice versa).</Title>
+    <MessageFormat>Add new line before expression body arrow instead of after it.</MessageFormat>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -810,7 +810,7 @@ namespace N
     </Samples>
     <Options>
       <Option Identifier="AddNewLineAfterExpressionBodyArrowInsteadOfBeforeIt">
-        <Title>Add newline after expression body arrow instead of before it.</Title>
+        <Title>Add new line after expression body arrow instead of before it.</Title>
         <Id>i</Id>
         <OptionKey>invert</OptionKey>
         <Kind>Invert</Kind>
@@ -827,7 +827,7 @@ namespace N
   </Analyzer>
   <Analyzer Identifier="AddNewLineBeforeStatement">
     <Id>RCS0033</Id>
-    <Title>Add newline before statement.</Title>
+    <Title>Add new line before statement.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -842,7 +842,7 @@ Bar();]]></After>
   </Analyzer>
   <Analyzer Identifier="AddNewLineBeforeTypeParameterConstraint">
     <Id>RCS0034</Id>
-    <Title>Add newline before type parameter constraint.</Title>
+    <Title>Add new line before type parameter constraint.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -950,7 +950,7 @@ namespace N
   </Analyzer>
   <Analyzer Identifier="RemoveNewLineBeforeBaseList">
     <Id>RCS0039</Id>
-    <Title>Remove newline before base list.</Title>
+    <Title>Remove new line before base list.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -968,7 +968,7 @@ namespace N
   </Analyzer>
   <Analyzer Identifier="RemoveNewLineBetweenClosingBraceAndWhileKeyword2" IsObsolete="true">
     <Id>RCS0040</Id>
-    <Title>Remove newline between closing brace and 'while' keyword.</Title>
+    <Title>Remove new line between closing brace and 'while' keyword.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -988,7 +988,7 @@ while (x);]]></Before>
   </Analyzer>
   <Analyzer Identifier="RemoveNewLineBetweenIfKeywordAndElseKeyword">
     <Id>RCS0041</Id>
-    <Title>Remove newline between 'if' keyword and 'else' keyword.</Title>
+    <Title>Remove new line between 'if' keyword and 'else' keyword.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -1016,7 +1016,7 @@ else if (y)
   </Analyzer>
   <Analyzer Identifier="RemoveNewLinesFromAccessorListOfAutoProperty">
     <Id>RCS0042</Id>
-    <Title>Remove newlines from accessor list of auto-property.</Title>
+    <Title>Remove new lines from accessor list of auto-property.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -1034,7 +1034,7 @@ else if (y)
   </Analyzer>
   <Analyzer Identifier="RemoveNewLinesFromAccessorWithSingleLineExpression">
     <Id>RCS0043</Id>
-    <Title>Remove newlines from accessor with single-line expression.</Title>
+    <Title>Remove new lines from accessor with single-line expression.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -1062,7 +1062,7 @@ else if (y)
   </Analyzer>
   <Analyzer Identifier="UseCarriageReturnAndLinefeedAsNewLine">
     <Id>RCS0044</Id>
-    <Title>Use carriage return + linefeed as newline.</Title>
+    <Title>Use carriage return + linefeed as new line.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -1070,7 +1070,7 @@ else if (y)
   </Analyzer>
   <Analyzer Identifier="UseLinefeedAsNewLine">
     <Id>RCS0045</Id>
-    <Title>Use linefeed as newline.</Title>
+    <Title>Use linefeed as new line.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -1121,9 +1121,9 @@ else if (y)
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="RemoveNewlinesFromInitializerWithSingleLineExpression">
+  <Analyzer Identifier="RemoveNewLinesFromInitializerWithSingleLineExpression">
     <Id>RCS0048</Id>
-    <Title>Remove newlines from initializer with single-line expression.</Title>
+    <Title>Remove new lines from initializer with single-line expression.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -1183,8 +1183,8 @@ namespace Foo
   </Analyzer>
   <Analyzer Identifier="AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersa">
     <Id>RCS0051</Id>
-    <Title>Add newline between closing brace and 'while' keyword (or vice versa).</Title>
-    <MessageFormat>Add newline between closing brace and 'while' keyword.</MessageFormat>
+    <Title>Add new line between closing brace and 'while' keyword (or vice versa).</Title>
+    <MessageFormat>Add new line between closing brace and 'while' keyword.</MessageFormat>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -1203,7 +1203,7 @@ while (x);]]></After>
     </Samples>
     <Options>
       <Option Identifier="RemoveNewLineBetweenClosingBraceAndWhileKeyword">
-        <Title>Remove newline between closing brace and 'while' keyword.</Title>
+        <Title>Remove new line between closing brace and 'while' keyword.</Title>
         <Id>i</Id>
         <OptionKey>invert</OptionKey>
         <Kind>Invert</Kind>
@@ -1225,8 +1225,8 @@ while (x);]]></Before>
   </Analyzer>
   <Analyzer Identifier="AddNewLineBeforeEqualsSignInsteadOfAfterItOrViceVersa">
     <Id>RCS0052</Id>
-    <Title>Add newline before equals sign instead of after it (or vice versa).</Title>
-    <MessageFormat>Add newline before equals sign instead of after it.</MessageFormat>
+    <Title>Add new line before equals sign instead of after it (or vice versa).</Title>
+    <MessageFormat>Add new line before equals sign instead of after it.</MessageFormat>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -1240,7 +1240,7 @@ while (x);]]></Before>
     </Samples>
     <Options>
       <Option Identifier="AddNewLineAfterEqualsSignInsteadOfBeforeIt">
-        <Title>Add newline after equals sign instead of before it.</Title>
+        <Title>Add new line after equals sign instead of before it.</Title>
         <Id>i</Id>
         <OptionKey>invert</OptionKey>
         <Kind>Invert</Kind>

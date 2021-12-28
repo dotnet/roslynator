@@ -2001,14 +2001,14 @@ public string Foo // [|Id|]
   </Analyzer>
   <Analyzer Identifier="UseLinefeedAsNewLine" IsObsolete="true">
     <Id>RCS1086</Id>
-    <Title>Use linefeed as newline.</Title>
+    <Title>Use linefeed as new line.</Title>
     <Category>General</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
   </Analyzer>
   <Analyzer Identifier="UseCarriageReturnAndLinefeedAsNewLine" IsObsolete="true">
     <Id>RCS1087</Id>
-    <Title>Use carriage return + linefeed as newline.</Title>
+    <Title>Use carriage return + linefeed as new line.</Title>
     <Category>General</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
