@@ -84,7 +84,7 @@ namespace Roslynator.CSharp.Analysis
             int index = -1;
             int endIndex = -1;
             int index2 = -1;
-            int endIndex2 = -1;
+            int endIndex2;
 
             List<TextSpan> spans = null;
 

@@ -634,7 +634,7 @@ namespace Roslynator.CSharp.Refactorings
                             if (flags.IsSet(Flag.AssignmentExpression))
                                 continue;
 
-                            await AssignmentExpressionRefactoring.ComputeRefactoringsAsync(this, (AssignmentExpressionSyntax)node).ConfigureAwait(false);
+                            AssignmentExpressionRefactoring.ComputeRefactorings(this, (AssignmentExpressionSyntax)node);
                             flags.Set(Flag.AssignmentExpression);
                             continue;
                         }

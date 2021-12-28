@@ -158,7 +158,6 @@ namespace Roslynator.CSharp.Refactorings
                     statement = ifStatement.Statement;
                     Refactor();
                     lastStatementIndex = firstLastStatementIndex + newStatements.Count - statements.Count;
-                    lastStatement = (statement is BlockSyntax block) ? block.Statements.Last() : statement;
                     index--;
                 }
             }

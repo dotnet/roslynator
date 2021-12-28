@@ -36,7 +36,7 @@ namespace Roslynator.VisualStudio
 
         private void GridViewColumnHeader_Click(object sender, RoutedEventArgs e)
         {
-            if (!(e.OriginalSource is GridViewColumnHeader clickedHeader))
+            if (e.OriginalSource is not GridViewColumnHeader clickedHeader)
                 return;
 
             if (clickedHeader.Role == GridViewColumnHeaderRole.Padding)

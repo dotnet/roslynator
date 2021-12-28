@@ -56,9 +56,9 @@ namespace Roslynator.CSharp.CodeFixes
                                     var statement = (StatementSyntax)ancestor;
 
                                     if (statement.IsKind(SyntaxKind.Block)
-                                        && statement.Parent is StatementSyntax)
+                                        && statement.Parent is StatementSyntax statement2)
                                     {
-                                        statement = (StatementSyntax)statement.Parent;
+                                        statement = statement2;
                                     }
 
                                     if (statement.IsKind(SyntaxKind.UnsafeStatement))
