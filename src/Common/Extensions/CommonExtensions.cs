@@ -75,7 +75,7 @@ namespace Roslynator
         public static bool IsEnabled(
             this SyntaxNodeAnalysisContext context,
             ConfigOptionDescriptor option,
-            bool? defaultValue = false)
+            bool? defaultValue = null)
         {
             return IsEnabled(context.Options, option, context.Node.SyntaxTree, defaultValue);
         }
@@ -84,7 +84,7 @@ namespace Roslynator
             this AnalyzerOptions analyzerOptions,
             ConfigOptionDescriptor option,
             SyntaxTree syntaxTree,
-            bool? defaultValue = false)
+            bool? defaultValue = null)
         {
             if (analyzerOptions
                 .AnalyzerConfigOptionsProvider
