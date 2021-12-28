@@ -34,8 +34,12 @@ is_global = true
 
 # Options
 
+# Applicable to: RCS0056
 roslynator.max_line_length = 140
+
+# Applicable to: RCS0058
 roslynator.prefer_no_new_line_at_end_of_file = false
+
 roslynator.prefix_field_identifier_with_underscore = false
 
 # Analyzers

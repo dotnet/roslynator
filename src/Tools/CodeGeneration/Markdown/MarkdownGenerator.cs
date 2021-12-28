@@ -189,7 +189,7 @@ namespace Roslynator.CodeGeneration.Markdown
             return document.ToString(format);
         }
 
-        public static string CreateAnalyzerMarkdown(AnalyzerMetadata analyzer, ImmutableArray<OptionDescriptor> globalOptions, IEnumerable<(string title, string url)> appliesTo = null)
+        public static string CreateAnalyzerMarkdown(AnalyzerMetadata analyzer, ImmutableArray<OptionMetadata> options, IEnumerable<(string title, string url)> appliesTo = null)
         {
             var format = new MarkdownFormat(tableOptions: MarkdownFormat.Default.TableOptions | TableOptions.FormatContent);
 
@@ -203,7 +203,7 @@ namespace Roslynator.CodeGeneration.Markdown
                     (!string.IsNullOrEmpty(analyzer.MinLanguageVersion)) ? TableRow("Minimal Language Version", analyzer.MinLanguageVersion) : null),
                 CreateSummary(analyzer.Summary),
                 GetAnalyzerSamples(analyzer),
-                CreateOptions(analyzer, globalOptions),
+                CreateOptions(analyzer, options),
                 CreateRemarks(analyzer.Remarks),
                 CreateAppliesTo(appliesTo));
 
@@ -400,14 +400,14 @@ namespace Roslynator.CodeGeneration.Markdown
             }
         }
 
-        private static IEnumerable<MElement> CreateOptions(AnalyzerMetadata analyzer, ImmutableArray<OptionDescriptor> globalOptions)
+        private static IEnumerable<MElement> CreateOptions(AnalyzerMetadata analyzer, ImmutableArray<OptionMetadata> options)
         {
             IEnumerable<(string OptionKey, string Title, string Summary, string DefaultValue)> values = analyzer
                 .Options
                 .Select(f => ($"roslynator.{f.ParentId}.{f.OptionKey}", f.Title, f.Summary, f.OptionValue));
 
             IEnumerable<(string optionKey, string title, string summary, string defaultValue)> analyzerOptions = analyzer.GlobalOptions
-                .Join(globalOptions, f => f, f => f.Key, (_, g) => g)
+                .Join(options, f => f, f => f.Key, (_, g) => g)
                 .OrderBy(f => f.Key)
                 .Select(f => (f.Key, f.Description, default(string), f.ValuePlaceholder));
 

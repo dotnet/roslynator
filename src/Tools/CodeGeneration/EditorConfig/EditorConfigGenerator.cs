@@ -16,7 +16,7 @@ namespace Roslynator.CodeGeneration.EditorConfig
         {
             var optionMap = new Dictionary<string, HashSet<AnalyzerMetadata>>();
 
-            foreach (AnalyzerMetadata analyzer in metadata.Analyzers)
+            foreach (AnalyzerMetadata analyzer in metadata.GetAllAnalyzers())
             {
                 foreach (string option in analyzer.GlobalOptions)
                 {
@@ -34,14 +34,18 @@ namespace Roslynator.CodeGeneration.EditorConfig
                 w.WriteLine("# Options");
                 w.WriteLine();
 
-                foreach (OptionDescriptor option in metadata.Options.OrderBy(f => f.Key))
+                foreach (OptionMetadata option in metadata.Options.OrderBy(f => f.Key))
                 {
+                    var addEmptyLine = false;
+
                     if (optionMap.TryGetValue(option.Key, out HashSet<AnalyzerMetadata> analyzers))
                     {
                         w.WriteLine("# Applicable to: " + string.Join(", ", analyzers.OrderBy(f => f.Id).Select(f => f.Id)));
+                        addEmptyLine = true;
                     }
 
                     w.WriteEntry(option.Key, option.DefaultValue);
+                    w.WriteLineIf(addEmptyLine);
                 }
 
                 w.WriteLine();

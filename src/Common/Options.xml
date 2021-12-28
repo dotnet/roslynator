@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Options>
+  <Option Id="MaxLineLength">
+    <DefaultValue>140</DefaultValue>
+    <ValuePlaceholder>&lt;MAX_LINE_LENGTH&gt;</ValuePlaceholder>
+    <Description>Max line length</Description>
+  </Option>
+  <Option Id="PrefixFieldIdentifierWithUnderscore">
+    <DefaultValue>false</DefaultValue>
+    <ValuePlaceholder>true|false</ValuePlaceholder>
+    <Description>Prefix field identifier with underscore</Description>
+  </Option>
+  <Option Id="PreferNoNewLineAtEndOfFile">
+    <DefaultValue>false</DefaultValue>
+    <ValuePlaceholder>true|false</ValuePlaceholder>
+    <Description>Prefer no new line at the end of a file</Description>
+  </Option>
+  <!--
+  <Option Id="">
+    <Key></Key>
+    <DefaultValue></DefaultValue>
+    <ValuePlaceholder></ValuePlaceholder>
+    <Description></Description>
+  </Option>
+  -->
+</Options>
