@@ -2,7 +2,7 @@
 
 namespace Roslynator
 {
-    internal static partial class OptionKeys
+    internal static partial class ConfigOptionKeys
     {
         public const string CompilerDiagnosticFixEnabled = "roslynator.compiler_diagnostic_fix.enabled";
         public const string CompilerDiagnosticFixPrefix = "roslynator.compiler_diagnostic_fix.";

@@ -86,12 +86,12 @@ namespace Roslynator.CodeGeneration
                 CompilerDiagnosticIdentifiersGenerator.Generate(compilerDiagnostics, comparer));
 
             WriteCompilationUnit(
-                @"Common\GlobalOptions.Generated.cs",
-                CodeGenerator.GenerateGlobalOptions(options));
+                @"Common\ConfigOptions.Generated.cs",
+                CodeGenerator.GenerateConfigOptions(options));
 
             WriteCompilationUnit(
-                @"Common\OptionKeys.Generated.cs",
-                CodeGenerator.GenerateOptionKeys(options));
+                @"Common\ConfigOptionKeys.Generated.cs",
+                CodeGenerator.GenerateConfigOptionKeys(options));
 
             WriteCompilationUnit(
                 @"Tools\CodeGeneration\CSharp\Symbols.Generated.cs",

@@ -104,7 +104,7 @@ namespace Roslynator.CodeGeneration
             get
             {
                 if (_options.IsDefault)
-                    _options = MetadataFile.ReadOptions(GetPath(@"Common\Options.xml")).ToImmutableArray();
+                    _options = MetadataFile.ReadOptions(GetPath(@"Common\ConfigOptions.xml")).ToImmutableArray();
 
                 return _options;
             }

@@ -2,7 +2,7 @@
 
 namespace Roslynator
 {
-    internal static class OptionDefaultValues
+    internal static class ConfigOptionDefaultValues
     {
         public const int MaxLineLength = 140;
         public const bool PrefixFieldIdentifierWithUnderscore = false;

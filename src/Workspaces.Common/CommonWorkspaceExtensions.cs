@@ -34,7 +34,7 @@ namespace Roslynator
         }
 
         public static bool IsEnabled(
-            this OptionDescriptor analyzerOption,
+            this ConfigOptionDescriptor analyzerOption,
             Document document,
             SyntaxNode node)
         {
@@ -42,7 +42,7 @@ namespace Roslynator
         }
 
         public static bool IsEnabled(
-            this OptionDescriptor analyzerOption,
+            this ConfigOptionDescriptor analyzerOption,
             Document document,
             SyntaxToken token)
         {
@@ -50,7 +50,7 @@ namespace Roslynator
         }
 
         public static bool IsEnabled(
-            this OptionDescriptor analyzerOption,
+            this ConfigOptionDescriptor analyzerOption,
             Document document,
             SyntaxTree syntaxTree)
         {

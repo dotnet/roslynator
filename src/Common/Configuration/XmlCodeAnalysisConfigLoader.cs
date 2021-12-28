@@ -390,9 +390,9 @@ namespace Roslynator.Configuration
                 get { return _ruleSets ??= ImmutableArray.CreateBuilder<string>(); }
             }
 
-            public bool PrefixFieldIdentifierWithUnderscore { get; set; } = OptionDefaultValues.PrefixFieldIdentifierWithUnderscore;
+            public bool PrefixFieldIdentifierWithUnderscore { get; set; } = ConfigOptionDefaultValues.PrefixFieldIdentifierWithUnderscore;
 
-            public int MaxLineLength { get; set; } = OptionDefaultValues.MaxLineLength;
+            public int MaxLineLength { get; set; } = ConfigOptionDefaultValues.MaxLineLength;
         }
 
         private static bool TryGetNormalizedFullPath(string path, out string result)

@@ -12,7 +12,7 @@ namespace Roslynator.CodeGeneration.CSharp
 {
     public static class CodeGenerator
     {
-        public static CompilationUnitSyntax GenerateGlobalOptions(IEnumerable<OptionMetadata> options)
+        public static CompilationUnitSyntax GenerateConfigOptions(IEnumerable<OptionMetadata> options)
         {
             return CompilationUnit(
                 UsingDirectives(),
@@ -20,18 +20,18 @@ namespace Roslynator.CodeGeneration.CSharp
                     "Roslynator",
                     ClassDeclaration(
                         Modifiers.Public_Static(),
-                        "GlobalOptions",
+                        "ConfigOptions",
                         options
                             .OrderBy(f => f.Id)
                             .Select(f =>
                             {
                                 return FieldDeclaration(
                                     Modifiers.Public_Static_ReadOnly(),
-                                    IdentifierName("OptionDescriptor"),
+                                    IdentifierName("ConfigOptionDescriptor"),
                                     f.Id,
                                     ImplicitObjectCreationExpression(
                                         ArgumentList(
-                                            Argument(NameColon("key"), ParseExpression($"OptionKeys.{f.Id}")),
+                                            Argument(NameColon("key"), ParseExpression($"ConfigOptionKeys.{f.Id}")),
                                             Argument(NameColon("defaultValue"), StringLiteralExpression(f.DefaultValue)),
                                             Argument(NameColon("description"), StringLiteralExpression(f.Description)),
                                             Argument(NameColon("valuePlaceholder"), StringLiteralExpression(f.ValuePlaceholder))),
@@ -40,7 +40,7 @@ namespace Roslynator.CodeGeneration.CSharp
                             .ToSyntaxList<MemberDeclarationSyntax>())));
         }
 
-        public static CompilationUnitSyntax GenerateOptionKeys(IEnumerable<OptionMetadata> options)
+        public static CompilationUnitSyntax GenerateConfigOptionKeys(IEnumerable<OptionMetadata> options)
         {
             return CompilationUnit(
                 UsingDirectives(),
@@ -48,7 +48,7 @@ namespace Roslynator.CodeGeneration.CSharp
                     "Roslynator",
                     ClassDeclaration(
                         Modifiers.Internal_Static_Partial(),
-                        "OptionKeys",
+                        "ConfigOptionKeys",
                         options
                             .OrderBy(f => f.Id)
                             .Select(f =>

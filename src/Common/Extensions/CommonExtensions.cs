@@ -63,14 +63,14 @@ namespace Roslynator
         }
 
         public static bool IsEnabled(
-            this OptionDescriptor analyzerOption,
+            this ConfigOptionDescriptor analyzerOption,
             SyntaxNodeAnalysisContext context)
         {
             return IsEnabled(analyzerOption, context.Node.SyntaxTree, context.Options);
         }
 
         public static bool IsEnabled(
-            this OptionDescriptor analyzerOption,
+            this ConfigOptionDescriptor analyzerOption,
             SyntaxTree syntaxTree,
             AnalyzerOptions analyzerOptions)
         {
@@ -95,7 +95,7 @@ namespace Roslynator
         }
 
         public static bool TryGetInt32Value(
-            this OptionDescriptor option,
+            this ConfigOptionDescriptor option,
             SyntaxTree syntaxTree,
             AnalyzerOptions analyzerOptions,
             out int result)
@@ -115,7 +115,7 @@ namespace Roslynator
         }
 
         public static int GetInt32Value(
-            this OptionDescriptor option,
+            this ConfigOptionDescriptor option,
             SyntaxTree syntaxTree,
             AnalyzerOptions analyzerOptions,
             int defaultValue)

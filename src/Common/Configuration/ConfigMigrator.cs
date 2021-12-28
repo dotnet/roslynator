@@ -49,10 +49,10 @@ namespace Roslynator.Configuration
                     writer.WriteLine();
 
                     if (config.MaxLineLength != null)
-                        writer.WriteEntry(OptionKeys.MaxLineLength, config.MaxLineLength.ToString());
+                        writer.WriteEntry(ConfigOptionKeys.MaxLineLength, config.MaxLineLength.ToString());
 
                     if (config.PrefixFieldIdentifierWithUnderscore != null)
-                        writer.WriteEntry(OptionKeys.PrefixFieldIdentifierWithUnderscore, config.PrefixFieldIdentifierWithUnderscore.Value);
+                        writer.WriteEntry(ConfigOptionKeys.PrefixFieldIdentifierWithUnderscore, config.PrefixFieldIdentifierWithUnderscore.Value);
 
                     writer.WriteLineIf(config.MaxLineLength != null || config.PrefixFieldIdentifierWithUnderscore != null);
 

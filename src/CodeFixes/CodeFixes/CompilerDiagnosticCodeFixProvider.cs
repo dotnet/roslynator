@@ -24,7 +24,7 @@ namespace Roslynator.CodeFixes
                 return enabled;
             }
 
-            if (configOptions.TryGetValue(OptionKeys.CompilerDiagnosticFixEnabled, out string globalEnabledRaw)
+            if (configOptions.TryGetValue(ConfigOptionKeys.CompilerDiagnosticFixEnabled, out string globalEnabledRaw)
                 && bool.TryParse(globalEnabledRaw, out bool globalEnabled))
             {
                 return globalEnabled;
@@ -35,7 +35,7 @@ namespace Roslynator.CodeFixes
 
         private static string CreateOptionKey(string compilerDiagnosticId)
         {
-            return OptionKeys.CompilerDiagnosticFixPrefix + compilerDiagnosticId + ".enabled";
+            return ConfigOptionKeys.CompilerDiagnosticFixPrefix + compilerDiagnosticId + ".enabled";
         }
     }
 }

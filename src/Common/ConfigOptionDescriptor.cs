@@ -2,9 +2,9 @@
 
 namespace Roslynator
 {
-    public class OptionDescriptor
+    public class ConfigOptionDescriptor
     {
-        public OptionDescriptor(
+        public ConfigOptionDescriptor(
             string key,
             string defaultValue = null,
             string description = null,

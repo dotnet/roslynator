@@ -55,17 +55,17 @@ namespace Roslynator.Configuration
             if (EditorConfig.PrefixFieldIdentifierWithUnderscore != null)
                 prefixFieldIdentifierWithUnderscore = EditorConfig.PrefixFieldIdentifierWithUnderscore;
 
-            if (VisualStudioConfig.PrefixFieldIdentifierWithUnderscore != OptionDefaultValues.PrefixFieldIdentifierWithUnderscore)
+            if (VisualStudioConfig.PrefixFieldIdentifierWithUnderscore != ConfigOptionDefaultValues.PrefixFieldIdentifierWithUnderscore)
                 prefixFieldIdentifierWithUnderscore = VisualStudioConfig.PrefixFieldIdentifierWithUnderscore;
 
-            PrefixFieldIdentifierWithUnderscore = prefixFieldIdentifierWithUnderscore ?? OptionDefaultValues.PrefixFieldIdentifierWithUnderscore;
+            PrefixFieldIdentifierWithUnderscore = prefixFieldIdentifierWithUnderscore ?? ConfigOptionDefaultValues.PrefixFieldIdentifierWithUnderscore;
 
             int? maxLineLength = XmlConfig.MaxLineLength;
 
             if (EditorConfig.MaxLineLength != null)
                 maxLineLength = EditorConfig.MaxLineLength;
 
-            MaxLineLength = maxLineLength ?? OptionDefaultValues.MaxLineLength;
+            MaxLineLength = maxLineLength ?? ConfigOptionDefaultValues.MaxLineLength;
 
             var refactorings = new Dictionary<string, bool>();
             SetRefactorings(refactorings, XmlConfig.Refactorings);
