@@ -201,6 +201,34 @@ namespace Roslynator.CSharp.Analysis
 
                         break;
                     }
+                case SyntaxKind.SimpleLambdaExpression:
+                case SyntaxKind.ParenthesizedLambdaExpression:
+                    {
+                        switch (parent.Parent.Kind())
+                        {
+                            case SyntaxKind.ParenthesizedExpression:
+                            case SyntaxKind.ArrowExpressionClause:
+                            case SyntaxKind.Argument:
+                            case SyntaxKind.ReturnStatement:
+                            case SyntaxKind.YieldReturnStatement:
+                            case SyntaxKind.SimpleAssignmentExpression:
+                            case SyntaxKind.AddAssignmentExpression:
+                            case SyntaxKind.SubtractAssignmentExpression:
+                                {
+                                    ReportDiagnostic();
+                                    break;
+                                }
+#if DEBUG
+                            default:
+                                {
+                                    SyntaxDebug.Fail(parent.Parent);
+                                    break;
+                                }
+#endif
+                        }
+
+                        break;
+                    }
             }
 
             void ReportDiagnostic()
