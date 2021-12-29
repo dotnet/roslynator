@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
@@ -59,10 +60,7 @@ namespace Roslynator
         {
             ReportDiagnostic(
                 context,
-                Diagnostic.Create(
-                    descriptor: descriptor,
-                    location: location,
-                    messageArgs: messageArgs));
+                CreateDiagnostic(descriptor, location, messageArgs));
         }
 
         public static void ReportDiagnostic(
@@ -74,11 +72,7 @@ namespace Roslynator
         {
             ReportDiagnostic(
                 context,
-                Diagnostic.Create(
-                    descriptor: descriptor,
-                    location: location,
-                    additionalLocations: additionalLocations,
-                    messageArgs: messageArgs));
+                CreateDiagnostic(descriptor, location, additionalLocations, messageArgs));
         }
 
         public static void ReportDiagnostic(
@@ -90,11 +84,7 @@ namespace Roslynator
         {
             ReportDiagnostic(
                 context,
-                Diagnostic.Create(
-                    descriptor: descriptor,
-                    location: location,
-                    properties: properties,
-                    messageArgs: messageArgs));
+                CreateDiagnostic(descriptor, location, properties, messageArgs));
         }
 
         public static void ReportDiagnostic(
@@ -107,12 +97,7 @@ namespace Roslynator
         {
             ReportDiagnostic(
                 context,
-                Diagnostic.Create(
-                    descriptor: descriptor,
-                    location: location,
-                    additionalLocations: additionalLocations,
-                    properties: properties,
-                    messageArgs: messageArgs));
+                CreateDiagnostic(descriptor, location, additionalLocations, properties, messageArgs));
         }
 
         private static void ReportDiagnostic(SymbolAnalysisContext context, Diagnostic diagnostic)
@@ -191,10 +176,7 @@ namespace Roslynator
         {
             ReportDiagnostic(
                 context,
-                Diagnostic.Create(
-                    descriptor: descriptor,
-                    location: location,
-                    messageArgs: messageArgs));
+                CreateDiagnostic(descriptor, location, messageArgs));
         }
 
         public static void ReportDiagnostic(
@@ -206,11 +188,7 @@ namespace Roslynator
         {
             ReportDiagnostic(
                 context,
-                Diagnostic.Create(
-                    descriptor: descriptor,
-                    location: location,
-                    additionalLocations: additionalLocations,
-                    messageArgs: messageArgs));
+                CreateDiagnostic(descriptor, location, additionalLocations, messageArgs));
         }
 
         public static void ReportDiagnostic(
@@ -222,11 +200,7 @@ namespace Roslynator
         {
             ReportDiagnostic(
                 context,
-                Diagnostic.Create(
-                    descriptor: descriptor,
-                    location: location,
-                    properties: properties,
-                    messageArgs: messageArgs));
+                CreateDiagnostic(descriptor, location, properties, messageArgs));
         }
 
         public static void ReportDiagnostic(
@@ -239,12 +213,7 @@ namespace Roslynator
         {
             ReportDiagnostic(
                 context,
-                Diagnostic.Create(
-                    descriptor: descriptor,
-                    location: location,
-                    additionalLocations: additionalLocations,
-                    properties: properties,
-                    messageArgs: messageArgs));
+                CreateDiagnostic(descriptor, location, additionalLocations, properties, messageArgs));
         }
 
         public static void ReportToken(SyntaxNodeAnalysisContext context, DiagnosticDescriptor descriptor, SyntaxToken token, params object[] messageArgs)
@@ -315,10 +284,7 @@ namespace Roslynator
         {
             ReportDiagnostic(
                 context,
-                Diagnostic.Create(
-                    descriptor: descriptor,
-                    location: location,
-                    messageArgs: messageArgs));
+                CreateDiagnostic(descriptor, location, messageArgs));
         }
 
         public static void ReportDiagnostic(
@@ -330,11 +296,7 @@ namespace Roslynator
         {
             ReportDiagnostic(
                 context,
-                Diagnostic.Create(
-                    descriptor: descriptor,
-                    location: location,
-                    additionalLocations: additionalLocations,
-                    messageArgs: messageArgs));
+                CreateDiagnostic(descriptor, location, additionalLocations, messageArgs));
         }
 
         public static void ReportDiagnostic(
@@ -346,11 +308,7 @@ namespace Roslynator
         {
             ReportDiagnostic(
                 context,
-                Diagnostic.Create(
-                    descriptor: descriptor,
-                    location: location,
-                    properties: properties,
-                    messageArgs: messageArgs));
+                CreateDiagnostic(descriptor, location, properties, messageArgs));
         }
 
         public static void ReportDiagnostic(
@@ -363,12 +321,7 @@ namespace Roslynator
         {
             ReportDiagnostic(
                 context,
-                Diagnostic.Create(
-                    descriptor: descriptor,
-                    location: location,
-                    additionalLocations: additionalLocations,
-                    properties: properties,
-                    messageArgs: messageArgs));
+                CreateDiagnostic(descriptor, location, additionalLocations, properties, messageArgs));
         }
 
         private static void ReportDiagnostic(SyntaxTreeAnalysisContext context, Diagnostic diagnostic)
@@ -422,6 +375,64 @@ namespace Roslynator
             return descriptor1.IsEffective(compilation)
                 || descriptor2.IsEffective(compilation)
                 || descriptor3.IsEffective(compilation);
+        }
+
+        private static Diagnostic CreateDiagnostic(DiagnosticDescriptor descriptor, Location location, object[] messageArgs)
+        {
+            VerifyMessageArgs(descriptor, messageArgs);
+
+            return Diagnostic.Create(
+                descriptor: descriptor,
+                location: location,
+                messageArgs: messageArgs);
+        }
+
+        private static Diagnostic CreateDiagnostic(DiagnosticDescriptor descriptor, Location location, IEnumerable<Location> additionalLocations, object[] messageArgs)
+        {
+            VerifyMessageArgs(descriptor, messageArgs);
+
+            return Diagnostic.Create(
+                descriptor: descriptor,
+                location: location,
+                additionalLocations: additionalLocations,
+                messageArgs: messageArgs);
+        }
+
+        private static Diagnostic CreateDiagnostic(DiagnosticDescriptor descriptor, Location location, ImmutableDictionary<string, string> properties, object[] messageArgs)
+        {
+            VerifyMessageArgs(descriptor, messageArgs);
+
+            return Diagnostic.Create(
+                descriptor: descriptor,
+                location: location,
+                properties: properties,
+                messageArgs: messageArgs);
+        }
+
+        private static Diagnostic CreateDiagnostic(DiagnosticDescriptor descriptor, Location location, IEnumerable<Location> additionalLocations, ImmutableDictionary<string, string> properties, object[] messageArgs)
+        {
+            VerifyMessageArgs(descriptor, messageArgs);
+
+            return Diagnostic.Create(
+                descriptor: descriptor,
+                location: location,
+                additionalLocations: additionalLocations,
+                properties: properties,
+                messageArgs: messageArgs);
+        }
+
+        [Conditional("DEBUG")]
+        private static void VerifyMessageArgs(DiagnosticDescriptor descriptor, object[] messageArgs)
+        {
+            string message = descriptor.MessageFormat.ToString();
+            int count = Regex.Matches(message, @"\{\d\}").Count;
+
+            if (count != messageArgs.Length)
+            {
+                throw new InvalidOperationException("Invalid number of message arguments. "
+                    + $"Message: {message}, "
+                    + $"Arguments: { string.Join(", ", messageArgs)}");
+            }
         }
     }
 }
