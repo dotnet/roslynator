@@ -2349,7 +2349,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor ImplementNonGenericCounterpart = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.ImplementNonGenericCounterpart, 
             title:              "Implement non-generic counterpart.", 
-            messageFormat:      "Implement {0} when implementing {0}<T>.", 
+            messageFormat:      "Implement {0} when implementing {1}<T>.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
             isEnabledByDefault: true, 

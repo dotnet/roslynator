@@ -521,7 +521,7 @@ namespace Roslynator.CSharp.Analysis
                 if (CanBeReplacedWithMemberAccessExpression(invocationExpression)
                     && CheckInfiniteRecursion(typeSymbol, propertyName, invocationExpression.SpanStart, semanticModel, cancellationToken))
                 {
-                    ReportNameWithArgumentList(context, invocationInfo, properties: Properties.GetCountOrLength(propertyName), messageArgs: propertyName);
+                    ReportNameWithArgumentList(context, invocationInfo, properties: Properties.GetCountOrLength(propertyName));
                 }
 
                 return;
@@ -750,7 +750,7 @@ namespace Roslynator.CSharp.Analysis
             {
                 TextSpan span = TextSpan.FromBounds(invocationInfo2.Name.SpanStart, invocationExpression.Span.End);
 
-                Report(context, invocationExpression, span, checkDirectives: true, properties: Properties.GetSumCountOrLength(propertyName), messageArgs: propertyName);
+                Report(context, invocationExpression, span, checkDirectives: true, properties: Properties.GetSumCountOrLength(propertyName));
                 return true;
             }
 

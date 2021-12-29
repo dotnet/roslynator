@@ -5219,7 +5219,7 @@ while (x) // [|Id|]
   <Analyzer Identifier="ImplementNonGenericCounterpart">
     <Id>RCS1241</Id>
     <Title>Implement non-generic counterpart.</Title>
-    <MessageFormat>Implement {0} when implementing {0}&lt;T&gt;.</MessageFormat>
+    <MessageFormat>Implement {0} when implementing {1}&lt;T&gt;.</MessageFormat>
     <Category>Design</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>

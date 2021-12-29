@@ -71,9 +71,8 @@ namespace Roslynator.CSharp.Analysis
             {
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
-                    DiagnosticRules.UsePatternMatchingToCheckForNullOrViceVersa,
-                    binaryExpression,
-                    "==");
+                    DiagnosticRules.ReportOnly.UseComparisonInsteadPatternMatchingToCheckForNull,
+                    binaryExpression);
             }
         }
 
@@ -90,9 +89,8 @@ namespace Roslynator.CSharp.Analysis
             {
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
-                    DiagnosticRules.UsePatternMatchingToCheckForNullOrViceVersa,
-                    binaryExpression,
-                    "!=");
+                    DiagnosticRules.ReportOnly.UseComparisonInsteadPatternMatchingToCheckForNull,
+                    binaryExpression);
             }
         }
 
