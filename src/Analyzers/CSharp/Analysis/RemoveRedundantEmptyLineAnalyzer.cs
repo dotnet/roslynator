@@ -34,6 +34,7 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(f => AnalyzeStructDeclaration(f), SyntaxKind.StructDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeRecordDeclaration(f), SyntaxKind.RecordDeclaration, SyntaxKind.RecordStructDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeInterfaceDeclaration(f), SyntaxKind.InterfaceDeclaration);
+            context.RegisterSyntaxNodeAction(f => AnalyzeEnumDeclaration(f), SyntaxKind.EnumDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeNamespaceDeclaration(f), SyntaxKind.NamespaceDeclaration);
             context.RegisterSyntaxNodeAction(f => AnalyzeSwitchStatement(f), SyntaxKind.SwitchStatement);
             context.RegisterSyntaxNodeAction(f => AnalyzeTryStatement(f), SyntaxKind.TryStatement);
@@ -102,6 +103,17 @@ namespace Roslynator.CSharp.Analysis
                 interfaceDeclaration.Members,
                 interfaceDeclaration.OpenBraceToken,
                 interfaceDeclaration.CloseBraceToken);
+        }
+
+        private static void AnalyzeEnumDeclaration(SyntaxNodeAnalysisContext context)
+        {
+            var enumDeclaration = (EnumDeclarationSyntax)context.Node;
+
+            AnalyzeDeclaration(
+                context,
+                enumDeclaration.Members,
+                enumDeclaration.OpenBraceToken,
+                enumDeclaration.CloseBraceToken);
         }
 
         private static void AnalyzeNamespaceDeclaration(SyntaxNodeAnalysisContext context)
@@ -370,16 +382,40 @@ namespace Roslynator.CSharp.Analysis
             }
         }
 
-        private static void AnalyzeDeclaration(
+        private static void AnalyzeDeclaration<TMember>(
             SyntaxNodeAnalysisContext context,
-            SyntaxList<MemberDeclarationSyntax> members,
+            SyntaxList<TMember> members,
             SyntaxToken openBrace,
-            SyntaxToken closeBrace)
+            SyntaxToken closeBrace) where TMember : MemberDeclarationSyntax
         {
             if (members.Any())
             {
                 AnalyzeStart(context, members[0], openBrace);
                 AnalyzeEnd(context, members.Last(), closeBrace);
+            }
+            else
+            {
+                AnalyzeEmptyBraces(context, openBrace, closeBrace);
+            }
+        }
+
+        private static void AnalyzeDeclaration<TMember>(
+            SyntaxNodeAnalysisContext context,
+            SeparatedSyntaxList<TMember> members,
+            SyntaxToken openBrace,
+            SyntaxToken closeBrace) where TMember : MemberDeclarationSyntax
+        {
+            if (members.Any())
+            {
+                AnalyzeStart(context, members[0], openBrace);
+
+                int count = members.SeparatorCount;
+
+                SyntaxNodeOrToken nodeOrToken = (count == members.Count)
+                    ? members.GetSeparator(count - 1)
+                    : members.Last();
+
+                AnalyzeEnd(context, nodeOrToken, closeBrace);
             }
             else
             {
@@ -565,15 +601,16 @@ namespace Roslynator.CSharp.Analysis
 
         private static void AnalyzeEnd(
             SyntaxNodeAnalysisContext context,
-            SyntaxNode node,
+            SyntaxNodeOrToken nodeOrToken,
             SyntaxToken brace)
         {
             if (brace.IsMissing)
                 return;
 
             int braceLine = brace.GetSpanStartLine();
+            int nodeOrTokenLine = nodeOrToken.SyntaxTree.GetLineSpan(nodeOrToken.Span).EndLine();
 
-            if (braceLine - node.GetSpanEndLine() <= 1)
+            if (braceLine - nodeOrTokenLine <= 1)
                 return;
 
             TextSpan? span = GetEmptyLineSpan(brace.LeadingTrivia, isEnd: true);

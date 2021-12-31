@@ -332,6 +332,81 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantEmptyLine)]
+        public async Task Test_EmptyLineAfterLastEnumMember_NoTrailingComma()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    enum E
+    {
+        A,
+        B
+[|
+|]    }
+}
+", @"
+class C
+{
+    enum E
+    {
+        A,
+        B
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantEmptyLine)]
+        public async Task Test_EmptyLineAfterLastEnumMember_TrailingComma()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    enum E
+    {
+        A,
+        B,
+[|
+|]    }
+}
+", @"
+class C
+{
+    enum E
+    {
+        A,
+        B,
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantEmptyLine)]
+        public async Task Test_EmptyLineBeforeFirstEnumMember()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    enum E
+    {
+[|
+|]        A,
+        B,
+    }
+}
+", @"
+class C
+{
+    enum E
+    {
+        A,
+        B,
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantEmptyLine)]
         public async Task TestNoDiagnostic_ObjectInitializer()
         {
             await VerifyNoDiagnosticAsync(@"
