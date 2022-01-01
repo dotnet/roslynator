@@ -335,6 +335,10 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                         {
                             return declarator.Expression;
                         }
+                        else if (nameEquals.Parent is UsingDirectiveSyntax usingDirective)
+                        {
+                            return usingDirective.Name;
+                        }
 
                         break;
                     }

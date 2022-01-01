@@ -66,6 +66,13 @@ namespace Roslynator.Formatting.CSharp
                         Analyze(context, declarator.NameEquals.EqualsToken, declarator.Expression);
                         break;
                     }
+                case SyntaxKind.UsingDirective:
+                    {
+                        var usingDirective = (UsingDirectiveSyntax)node.Parent;
+
+                        Analyze(context, usingDirective.Alias.EqualsToken, usingDirective.Name);
+                        break;
+                    }
                 default:
                     {
                         SyntaxDebug.Fail(node.Parent);

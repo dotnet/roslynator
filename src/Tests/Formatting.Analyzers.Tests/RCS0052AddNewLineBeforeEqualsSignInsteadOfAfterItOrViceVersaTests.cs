@@ -341,6 +341,46 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeEqualsSignInsteadOfAfterItOrViceVersa)]
+        public async Task Test_AttributeArgument_UsingAlias_Before()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using S [|=|]
+    System.String;
+
+class C
+{
+}
+", @"
+using S
+    = System.String;
+
+class C
+{
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.EqualsTokenNewLine, "before"));
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsToken)]
+        public async Task Test_AttributeArgument_UsingAlias_After()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using S
+    [|=|] System.String;
+
+class C
+{
+}
+", @"
+using S =
+    System.String;
+
+class C
+{
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.EqualsTokenNewLine, "after"));
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsToken)]
         public async Task TestNoDiagnostic_BeforeInsteadOfAfter_Comment()
         {
             await VerifyNoDiagnosticAsync(@"
