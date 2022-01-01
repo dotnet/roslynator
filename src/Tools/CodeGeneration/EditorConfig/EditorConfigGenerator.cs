@@ -18,13 +18,13 @@ namespace Roslynator.CodeGeneration.EditorConfig
 
             foreach (AnalyzerMetadata analyzer in metadata.GetAllAnalyzers())
             {
-                foreach (string option in analyzer.GlobalOptions)
+                foreach (ConfigOptionKeyMetadata option in analyzer.ConfigOptions)
                 {
-                    if (!optionMap.TryGetValue(option, out HashSet<AnalyzerMetadata> optionAnalyzers))
+                    if (!optionMap.TryGetValue(option.Key, out HashSet<AnalyzerMetadata> optionAnalyzers))
                         optionAnalyzers = new HashSet<AnalyzerMetadata>();
 
                     optionAnalyzers.Add(analyzer);
-                    optionMap[option] = optionAnalyzers;
+                    optionMap[option.Key] = optionAnalyzers;
                 }
             }
 
@@ -34,18 +34,15 @@ namespace Roslynator.CodeGeneration.EditorConfig
                 w.WriteLine("# Options");
                 w.WriteLine();
 
-                foreach (OptionMetadata option in metadata.Options.OrderBy(f => f.Key))
+                foreach (ConfigOptionMetadata option in metadata.ConfigOptions.OrderBy(f => f.Key))
                 {
-                    var addEmptyLine = false;
+                    w.WriteEntry(option.Key, option.DefaultValue ?? option.DefaultValuePlaceholder);
 
                     if (optionMap.TryGetValue(option.Key, out HashSet<AnalyzerMetadata> analyzers))
                     {
                         w.WriteLine("# Applicable to: " + string.Join(", ", analyzers.OrderBy(f => f.Id).Select(f => f.Id)));
-                        addEmptyLine = true;
+                        w.WriteLine();
                     }
-
-                    w.WriteEntry(option.Key, option.DefaultValue);
-                    w.WriteLineIf(addEmptyLine);
                 }
 
                 w.WriteLine();

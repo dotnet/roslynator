@@ -189,7 +189,7 @@ namespace Roslynator.CodeGeneration.Markdown
             return document.ToString(format);
         }
 
-        public static string CreateAnalyzerMarkdown(AnalyzerMetadata analyzer, ImmutableArray<OptionMetadata> options, IEnumerable<(string title, string url)> appliesTo = null)
+        public static string CreateAnalyzerMarkdown(AnalyzerMetadata analyzer, ImmutableArray<ConfigOptionMetadata> options, IEnumerable<(string title, string url)> appliesTo = null)
         {
             var format = new MarkdownFormat(tableOptions: MarkdownFormat.Default.TableOptions | TableOptions.FormatContent);
 
@@ -400,20 +400,13 @@ namespace Roslynator.CodeGeneration.Markdown
             }
         }
 
-        private static IEnumerable<MElement> CreateOptions(AnalyzerMetadata analyzer, ImmutableArray<OptionMetadata> options)
+        private static IEnumerable<MElement> CreateOptions(AnalyzerMetadata analyzer, ImmutableArray<ConfigOptionMetadata> options)
         {
-            IEnumerable<(string OptionKey, string Title, string Summary, string DefaultValue)> values = analyzer
-                .Options
-                .Select(f => ($"roslynator.{f.ParentId}.{f.OptionKey}", f.Title, f.Summary, f.OptionValue));
+            IEnumerable<ConfigOptionMetadata> analyzerOptions = analyzer.ConfigOptions
+                .Join(options, f => f.Key, f => f.Key, (_, g) => g)
+                .OrderBy(f => f.Key);
 
-            IEnumerable<(string optionKey, string title, string summary, string defaultValue)> analyzerOptions = analyzer.GlobalOptions
-                .Join(options, f => f, f => f.Key, (_, g) => g)
-                .OrderBy(f => f.Key)
-                .Select(f => (f.Key, f.Description, default(string), f.ValuePlaceholder));
-
-            using (IEnumerator<(string, string, string, string)> en = values
-                .Concat(analyzerOptions)
-                .OrderBy(f => f.Item1)
+            using (IEnumerator<ConfigOptionMetadata> en = analyzerOptions
                 .GetEnumerator())
             {
                 if (en.MoveNext())
@@ -422,10 +415,10 @@ namespace Roslynator.CodeGeneration.Markdown
 
                     do
                     {
-                        string optionKey = en.Current.Item1;
-                        string title = en.Current.Item2;
-                        string summary = en.Current.Item3;
-                        string defaultValue = en.Current.Item4;
+                        string optionKey = en.Current.Key;
+                        string title = en.Current.Description;
+                        string summary = null;
+                        string defaultValue = en.Current.DefaultValuePlaceholder;
 
                         yield return Heading3(title?.TrimEnd('.'));
 
@@ -439,38 +432,6 @@ namespace Roslynator.CodeGeneration.Markdown
 
                         helpValue += " = ";
                         helpValue += defaultValue ?? "true";
-
-                        yield return FencedCodeBlock(
-                            helpValue,
-                            "editorconfig");
-
-                    } while (en.MoveNext());
-                }
-            }
-
-            using (IEnumerator<AnalyzerOptionMetadata> en = analyzer.Options.GetEnumerator())
-            {
-                if (en.MoveNext())
-                {
-                    yield return Heading2("Options");
-
-                    do
-                    {
-                        yield return Heading3(en.Current.Title.TrimEnd('.'));
-
-                        if (!string.IsNullOrEmpty(en.Current.Summary))
-                        {
-                            yield return new MText(en.Current.Summary);
-                            yield return new MText(NewLine);
-                        }
-
-                        string helpValue = en.Current.OptionKey;
-
-                        if (!helpValue.StartsWith("roslynator.", StringComparison.Ordinal))
-                            helpValue = $"roslynator.{en.Current.ParentId}.{helpValue}";
-
-                        helpValue += " = ";
-                        helpValue += en.Current.OptionValue ?? "true";
 
                         yield return FencedCodeBlock(
                             helpValue,

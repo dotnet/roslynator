@@ -1,19 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Options>
+  <Option Id="AccessibilityModifiers">
+	<ValuePlaceholder>explicit|implicit</ValuePlaceholder>
+	<Description>Prefer explicit/implicit accessibility modifiers</Description>
+  </Option>
+  <Option Id="AnonymousFunctionOrMethodGroup">
+	<ValuePlaceholder>anonymous_function|method_group</ValuePlaceholder>
+	<Description>Use anonymous function or method group</Description>
+  </Option>
+  <Option Id="ArrayCreationTypeStyle">
+	<ValuePlaceholder>explicit|implicit|implicit_when_type_is_obvious</ValuePlaceholder>
+	<Description>Prefer explicitly/implicitly typed array</Description>
+  </Option>
+  <Option Id="ArrowTokenNewLine">
+	<ValuePlaceholder>after|before</ValuePlaceholder>
+	<Description>Place new line after/before arrow token</Description>
+  </Option>
+  <Option Id="BinaryOperatorNewLine">
+	<ValuePlaceholder>after|before</ValuePlaceholder>
+	<Description>Place new line after/before binary operator</Description>
+  </Option>
+  <Option Id="BlankLineBetweenClosingBraceAndSwitchSection">
+	<ValuePlaceholder>true|false</ValuePlaceholder>
+	<Description>Add/remove blank line between closing brace and switch section</Description>
+  </Option>
+  <Option Id="BlankLineBetweenSingleLineAccessors">
+	<ValuePlaceholder>true|false</ValuePlaceholder>
+	<Description>Add/remove blank line between single-line accessors</Description>
+  </Option>
+  <Option Id="BlankLineBetweenUsingDirectiveGroups">
+	<ValuePlaceholder>true|false</ValuePlaceholder>
+	<Description>Add/remove blank line between using directive groups</Description>
+  </Option>
+  <Option Id="BodyStyle">
+	<ValuePlaceholder>block|expression</ValuePlaceholder>
+	<Description>Prefer block body or expression body</Description>
+  </Option>
+  <Option Id="ConditionalOperatorNewLine">
+	<ValuePlaceholder>after|before</ValuePlaceholder>
+	<Description>Place new line after/before '?:' operator</Description>
+  </Option>
+  <Option Id="ConditionInConditionalOperatorParenthesesStyle">
+	<ValuePlaceholder>include|omit||omit_when_condition_is_single_token</ValuePlaceholder>
+	<Description>Add/remove parentheses to condition in conditional operator</Description>
+  </Option>
+  <Option Id="ConfigureAwait">
+	<ValuePlaceholder>true|false</ValuePlaceholder>
+	<Description>Add/remove 'ConfigureAwait(false)' call</Description>
+  </Option>
+  <Option Id="EmptyStringStyle">
+	<ValuePlaceholder>field|literal</ValuePlaceholder>
+	<Description>Prefer 'string.Empty' or empty string literal</Description>
+  </Option>
+  <Option Id="EnumHasFlagStyle">
+	<ValuePlaceholder>method|operator</ValuePlaceholder>
+	<Description>Use 'HasFlag' method or bitwise operator</Description>
+  </Option>
+  <Option Id="EqualsTokenNewLine">
+	<ValuePlaceholder>after|before</ValuePlaceholder>
+	<Description>Place new line after/before equals sign</Description>
+  </Option>
   <Option Id="MaxLineLength">
     <DefaultValue>140</DefaultValue>
-    <ValuePlaceholder>&lt;MAX_LINE_LENGTH&gt;</ValuePlaceholder>
+    <ValuePlaceholder>&lt;NUM&gt;</ValuePlaceholder>
     <Description>Max line length</Description>
+  </Option>
+  <Option Id="NewLineAtEndOfFile">
+    <ValuePlaceholder>true|false</ValuePlaceholder>
+    <Description>Include/omit new line at the end of a file</Description>
+  </Option>
+  <Option Id="NewLineBeforeWhileInDoStatement">
+	<ValuePlaceholder>true|false</ValuePlaceholder>
+	<Description>Include/omit new line before 'while' in 'do' statement</Description>
+  </Option>
+  <Option Id="NullCheckStyle">
+	<ValuePlaceholder>equality_operator|pattern_matching</ValuePlaceholder>
+	<Description>Use equality operator or pattern matchding as a null check</Description>
+  </Option>
+  <Option Id="ObjectCreationParenthesesStyle">
+	<ValuePlaceholder>include|omit</ValuePlaceholder>
+	<Description>Include/omit parentheses when creating new object</Description>
+  </Option>
+  <Option Id="PreferBlockBodyWhenDeclarationSpansOverMultipleLines">
+	<ValuePlaceholder>true|false</ValuePlaceholder>
+	<Description>Prefer block body when declaration spans over multiple lines</Description>
+  </Option>
+  <Option Id="PreferBlockBodyWhenExpressionSpansOverMultipleLines">
+	<ValuePlaceholder>true|false</ValuePlaceholder>
+	<Description>Prefer block body when expression spans over multiple lines</Description>
   </Option>
   <Option Id="PrefixFieldIdentifierWithUnderscore">
     <DefaultValue>false</DefaultValue>
     <ValuePlaceholder>true|false</ValuePlaceholder>
     <Description>Prefix field identifier with underscore</Description>
   </Option>
-  <Option Id="PreferNewLineAtEndOfFile">
-    <DefaultValue>true</DefaultValue>
-    <ValuePlaceholder>true|false</ValuePlaceholder>
-    <Description>Prefer no new line at the end of a file</Description>
+  <Option Id="SuppressUnityScriptMethods">
+	<ValuePlaceholder>true|false</ValuePlaceholder>
+	<Description>Suppress Unity script methods</Description>
   </Option>
   <!--
   <Option Id="">

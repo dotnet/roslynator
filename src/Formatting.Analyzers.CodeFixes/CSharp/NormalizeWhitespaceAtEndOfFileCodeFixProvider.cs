@@ -35,7 +35,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
             {
                 case DiagnosticIdentifiers.NormalizeWhitespaceAtEndOfFile:
                     {
-                        bool preferNewLineAtEndOfFile = document.Project.AnalyzerOptions.IsEnabled(ConfigOptions.PreferNewLineAtEndOfFile, compilationUnit.SyntaxTree);
+                        bool preferNewLineAtEndOfFile = document.Project.AnalyzerOptions.IsEnabled(ConfigOptions.NewLineAtEndOfFile, compilationUnit.SyntaxTree);
 
                         CodeAction codeAction = CodeAction.Create(
                             (preferNewLineAtEndOfFile) ? CodeFixTitles.AddNewLine : CodeFixTitles.RemoveNewLine,

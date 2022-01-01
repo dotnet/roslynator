@@ -246,10 +246,10 @@ foreach (var item in items) // [|Id|]
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="UseExplicitlyTypedArrayOrViceVersa">
+  <Analyzer Identifier="UseExplicitlyOrImplicitlyTypedArray">
     <Id>RCS1014</Id>
-    <Title>Use explicitly typed array (or vice versa).</Title>
-    <MessageFormat>Use explicitly typed array.</MessageFormat>
+    <Title>Use explicitly/implicitly typed array.</Title>
+    <MessageFormat>Use {0} typed array.</MessageFormat>
     <Category>Readability</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -259,11 +259,15 @@ foreach (var item in items) // [|Id|]
         <After><![CDATA[var items = new string[] { "a", B };]]></After>
       </Sample>
     </Samples>
+    <ConfigOptions>
+      <Option Key="array_creation_type_style" IsRequired="true" />
+    </ConfigOptions>
     <Options>
       <Option Identifier="UseImplicitlyTypedArrayWhenTypeIsObvious">
         <Title>Use implicitly typed array (when type is obvious).</Title>
         <Id>a</Id>
         <OptionKey>use_implicit_type_when_obvious</OptionKey>
+        <NewOptionKey>array_creation_style.type</NewOptionKey>
         <Kind>Change</Kind>
         <SupportsFadeOut>true</SupportsFadeOut>
         <Samples>
@@ -277,6 +281,7 @@ foreach (var item in items) // [|Id|]
         <Title>Use implicitly typed array.</Title>
         <Id>i</Id>
         <OptionKey>invert</OptionKey>
+        <NewOptionKey>array_creation_style.type</NewOptionKey>
         <Kind>Invert</Kind>
         <Samples>
           <Sample>
@@ -314,14 +319,13 @@ foreach (var item in items) // [|Id|]
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="ConvertBlockBodyToExpressionBodyOrViceVersa">
+  <Analyzer Identifier="UseBlockBodyOrExpressionBody">
     <Id>RCS1016</Id>
-    <Title>Convert block body to expression body (or vice versa).</Title>
-    <MessageFormat>Use expression-bodied member.</MessageFormat>
+    <Title>Use block body or expression body.</Title>
+    <MessageFormat>Use {0} body.</MessageFormat>
     <Category>Usage</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
-    <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
     <MinLanguageVersion>6.0</MinLanguageVersion>
     <Samples>
       <Sample>
@@ -332,11 +336,17 @@ foreach (var item in items) // [|Id|]
         <After><![CDATA[public string Foo() => "";]]></After>
       </Sample>
     </Samples>
+    <ConfigOptions>
+      <Option Key="body_style" IsRequired="true" />
+      <Option Key="prefer_block_body_when_declaration_spans_over_multiple_lines" />
+      <Option Key="prefer_block_body_when_expression_spans_over_multiple_lines" />
+    </ConfigOptions>
     <Options>
       <Option Identifier="ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine">
         <Title>Convert expression body to block body when expression is multi-line.</Title>
         <Id>a</Id>
         <OptionKey>use_block_body_when_expression_is_multiline</OptionKey>
+        <NewOptionKey>prefer_block_body_when_expression_spans_over_multiple_lines</NewOptionKey>
         <Kind>Change</Kind>
         <Samples>
           <Sample>
@@ -362,6 +372,7 @@ foreach (var item in items) // [|Id|]
         <Title>Convert expression body to block body when declaration is multi-line.</Title>
         <Id>b</Id>
         <OptionKey>use_block_body_when_declaration_is_multiline</OptionKey>
+        <NewOptionKey>prefer_block_body_when_declaration_spans_over_multiple_lines</NewOptionKey>
         <Kind>Change</Kind>
         <Samples>
           <Sample>
@@ -383,6 +394,7 @@ foreach (var item in items) // [|Id|]
         <Title>Convert expression body to block body.</Title>
         <Id>i</Id>
         <OptionKey>invert</OptionKey>
+        <NewOptionKey>body_style</NewOptionKey>
         <Kind>Invert</Kind>
         <Samples>
           <Sample>
@@ -404,7 +416,7 @@ foreach (var item in items) // [|Id|]
     <Category>Style</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
-    <Summary>This analyzer has been deprecated. Use EditorConfig option `use_block_body_when_expression_is_multiline = true` instead.</Summary>
+    <Summary>This analyzer has been deprecated. Use EditorConfig option `roslynator.prefer_block_body_when_expression_spans_over_multiple_lines = true` instead.</Summary>
     <Samples>
       <Sample>
         <Before><![CDATA[public string[] Foo() => new string[] // [|Id|]
@@ -425,10 +437,10 @@ foreach (var item in items) // [|Id|]
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AddAccessibilityModifiersOrViceVersa">
+  <Analyzer Identifier="AddOrRemoveAccessibilityModifiers">
     <Id>RCS1018</Id>
-    <Title>Add accessibility modifiers (or vice versa).</Title>
-    <MessageFormat>Add accessibility modifiers.</MessageFormat>
+    <Title>Add/remove accessibility modifiers.</Title>
+    <MessageFormat>{0} accessibility modifiers.</MessageFormat>
     <Category>Readability</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -448,11 +460,15 @@ foreach (var item in items) // [|Id|]
 }]]></After>
       </Sample>
     </Samples>
+    <ConfigOptions>
+      <Option Key="accessibility_modifiers" IsRequired="true" />
+    </ConfigOptions>
     <Options>
       <Option Identifier="RemoveAccessibilityModifiers">
         <Title>Remove accessibility modifiers.</Title>
         <Id>i</Id>
         <OptionKey>invert</OptionKey>
+        <NewOptionKey>accessibility_modifiers</NewOptionKey>
         <Kind>Invert</Kind>
         <SupportsFadeOut>true</SupportsFadeOut>
         <Samples>
@@ -835,11 +851,15 @@ if (f)
 }]]></After>
       </Sample>
     </Samples>
+    <ConfigOptions>
+      <Option Key="blank_line_between_closing_brace_and_switch_section" />
+    </ConfigOptions>
     <Options>
       <Option Identifier="RemoveEmptyLineBetweenClosingBraceAndSwitchSection">
         <Id>a</Id>
         <Title>Remove empty line between closing brace and switch section.</Title>
         <OptionKey>remove_empty_line_between_closing_brace_and_switch_section</OptionKey>
+        <NewOptionKey>blank_line_between_closing_brace_and_switch_section</NewOptionKey>
         <Kind>Enable</Kind>
         <Samples>
           <Sample>
@@ -1133,10 +1153,10 @@ if (!f)
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AddArgumentListToObjectCreationOrViceVersa">
+  <Analyzer Identifier="IncludeParenthesesWhenCreatingNewObject">
     <Id>RCS1050</Id>
-    <Title>Add argument list to object creation expression (or vice versa).</Title>
-    <MessageFormat>Add argument list to object creation expression.</MessageFormat>
+    <Title>Include/omit parentheses when creating new object.</Title>
+    <MessageFormat>{0} parentheses when creating new object.</MessageFormat>
     <Category>Style</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -1147,11 +1167,15 @@ if (!f)
         <After><![CDATA[var items = new List<string>() { "a", "b", "c"  };]]></After>
       </Sample>
     </Samples>
+    <ConfigOptions>
+      <Option Key="object_creation_parentheses_style" IsRequired="true" />
+    </ConfigOptions>
     <Options>
-      <Option Identifier="RemoveArgumentListFromObjectCreation">
-        <Title>Remove argument list from object creation expression.</Title>
+      <Option Identifier="RemoveParenthesesWhenCreatingNewObject">
+        <Title>Remove parentheses when creating new object.</Title>
         <Id>i</Id>
         <OptionKey>invert</OptionKey>
+        <NewOptionKey>object_creation_style.parentheses</NewOptionKey>
         <Kind>Invert</Kind>
         <Samples>
           <Sample>
@@ -1162,9 +1186,10 @@ if (!f)
       </Option>
     </Options>
   </Analyzer>
-  <Analyzer Identifier="ParenthesizeConditionOfConditionalExpression">
+  <Analyzer Identifier="AddOrRemoveParenthesesFromConditionInConditionalOperator">
     <Id>RCS1051</Id>
-    <Title>Parenthesize condition of conditional expression.</Title>
+    <Title>Add/remove parentheses from condition in conditional operator.</Title>
+    <MessageFormat>{0} parentheses {1} condition.</MessageFormat>
     <Category>Style</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -1174,12 +1199,16 @@ if (!f)
         <After><![CDATA[x = (y != null) ? "true" : "false"]]></After>
       </Sample>
     </Samples>
+    <ConfigOptions>
+      <Option Key="condition_in_conditional_operator_parentheses_style" IsRequired="true" />
+    </ConfigOptions>
     <Options>
       <Option Identifier="RemoveParenthesesFromConditionOfConditionalExpressionWhenExpressionIsSingleToken">
         <Id>a</Id>
         <Title>Remove parentheses from condition of conditional expression (when condition is a single token).</Title>
         <MessageFormat>Remove parentheses from condition of conditional expression.</MessageFormat>
         <OptionKey>do_not_parenthesize_single_token</OptionKey>
+        <NewOptionKey>conditional_expression_style.condition_parentheses</NewOptionKey>
         <Kind>Change</Kind>
         <Samples>
           <Sample>
@@ -1854,10 +1883,10 @@ object x = items.Peek();]]></After>
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="UseEmptyStringLiteralInsteadOfStringEmptyOrViceVersa">
+  <Analyzer Identifier="UseEmptyStringLiteralOrStringEmpty">
     <Id>RCS1078</Id>
-    <Title>Use "" instead of string.Empty (or vice versa).</Title>
-    <MessageFormat>Use "" instead of string.Empty</MessageFormat>
+    <Title>Use "" or 'string.Empty'.</Title>
+    <MessageFormat>Use {0}</MessageFormat>
     <Category>General</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -1868,11 +1897,15 @@ object x = items.Peek();]]></After>
         <After><![CDATA[string s = "";]]></After>
       </Sample>
     </Samples>
+    <ConfigOptions>
+      <Option Key="empty_string_style" IsRequired="true" />
+    </ConfigOptions>
     <Options>
       <Option Identifier="UseStringEmptyInsteadOfEmptyStringLiteral">
         <Title>Use string.Empty instead of "".</Title>
         <Id>i</Id>
         <OptionKey>invert</OptionKey>
+        <NewOptionKey>empty_string_style</NewOptionKey>
         <Kind>Invert</Kind>
         <Samples>
           <Sample>
@@ -2039,10 +2072,10 @@ public string Foo // [|Id|]
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AddCallToConfigureAwaitOrViceVersa">
+  <Analyzer Identifier="ConfigureAwait">
     <Id>RCS1090</Id>
-    <Title>Add call to 'ConfigureAwait' (or vice versa).</Title>
-    <MessageFormat>Add call to 'ConfigureAwait'.</MessageFormat>
+    <Title>Add/remove 'ConfigureAwait(false)' call.</Title>
+    <MessageFormat>{0} 'ConfigureAwait(false)' call.</MessageFormat>
     <Category>Design</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -2058,11 +2091,15 @@ public string Foo // [|Id|]
 }]]></After>
       </Sample>
     </Samples>
+    <ConfigOptions>
+      <Option Key="configure_await" IsRequired="true" />
+    </ConfigOptions>
     <Options>
       <Option Identifier="RemoveCallToConfigureAwait">
         <Title>Remove call to 'ConfigureAwait'.</Title>
         <Id>i</Id>
         <OptionKey>invert</OptionKey>
+        <NewOptionKey>configure_await</NewOptionKey>
         <Kind>Invert</Kind>
         <SupportsFadeOut>true</SupportsFadeOut>
         <Samples>
@@ -2149,10 +2186,10 @@ namespace Foo
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
   </Analyzer>
-  <Analyzer Identifier="ConvertHasFlagCallToBitwiseOperationOrViceVersa">
+  <Analyzer Identifier="UseHasFlagMethodOrBitwiseOperator">
     <Id>RCS1096</Id>
-    <Title>Convert 'HasFlag' call to bitwise operation (or vice versa).</Title>
-    <MessageFormat>Convert 'HasFlag' call to bitwise operation.</MessageFormat>
+    <Title>Use 'HasFlag' method or bitwise operator.</Title>
+    <MessageFormat>Use {0}.</MessageFormat>
     <Category>Performance</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -2162,11 +2199,15 @@ namespace Foo
         <After><![CDATA[(options & RegexOptions.IgnoreCase) != 0]]></After>
       </Sample>
     </Samples>
+    <ConfigOptions>
+      <Option Key="enum_has_flag_style" IsRequired="true" />
+    </ConfigOptions>
     <Options>
       <Option Identifier="ConvertBitwiseOperationToHasFlagCall">
         <Title>Convert bitwise operation to 'HasFlag' call.</Title>
         <Id>i</Id>
         <OptionKey>invert</OptionKey>
+        <NewOptionKey>enum_flag_operation_style</NewOptionKey>
         <Kind>Invert</Kind>
         <Samples>
           <Sample>
@@ -4257,25 +4298,28 @@ int i = (x != null) ? x.Value.GetHashCode() : 0; // [|Id|]]]></Before>
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="ConvertAnonymousFunctionToMethodGroupOrViceVersa">
+  <Analyzer Identifier="UseAnonymousFunctionOrMethodGroup">
     <Id>RCS1207</Id>
-    <Title>Convert anonymous function to method group (or vice versa).</Title>
-    <MessageFormat>Convert anonymous function to method group.</MessageFormat>
+    <Title>Use anonymous function or method group.</Title>
+    <MessageFormat>Use {0}.</MessageFormat>
     <Category>Simplification</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
-    <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
         <Before><![CDATA[var x = items.Select(f => Foo(f));]]></Before>
         <After><![CDATA[var x = items.Select(Foo);]]></After>
       </Sample>
     </Samples>
+    <ConfigOptions>
+      <Option Key="anonymous_function_or_method_group" IsRequired="true" />
+    </ConfigOptions>
     <Options>
       <Option Identifier="ConvertMethodGroupToAnonymousFunction">
         <Title>Convert method group to anonymous function.</Title>
         <Id>i</Id>
         <OptionKey>invert</OptionKey>
+        <NewOptionKey>anonymous_function_or_method_group</NewOptionKey>
         <Kind>Invert</Kind>
         <Samples>
           <Sample>
@@ -4455,10 +4499,14 @@ x = "";]]></Before>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
+    <ConfigOptions>
+      <Option Key="supress_unity_script_methods" />
+    </ConfigOptions>
     <Options>
       <Option Identifier="SuppressUnityScriptMethods">
         <Title>Suppress Unity script methods.</Title>
         <OptionKey>suppress_unity_script_methods</OptionKey>
+        <NewOptionKey>supress_unity_script_methods</NewOptionKey>
         <Kind>Disable</Kind>
         <Summary>Suppress diagnostic from [Unity script methods](https://docs.unity3d.com/ScriptReference/MonoBehaviour.html).</Summary>
       </Option>
@@ -5565,10 +5613,10 @@ void M()
       </Link>
     </Links>
   </Analyzer>
-  <Analyzer Identifier="UsePatternMatchingToCheckForNullOrViceVersa">
+  <Analyzer Identifier="NormalizeNullCheck">
     <Id>RCS1248</Id>
-    <Title>Use pattern matching to check for null (or vice versa).</Title>
-    <MessageFormat>Use pattern matching to check for null.</MessageFormat>
+    <Title>Normalize null check.</Title>
+    <MessageFormat>Use {0} to check for null.</MessageFormat>
     <Category>Style</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -5579,11 +5627,15 @@ void M()
         <After><![CDATA[x is null]]></After>
       </Sample>
     </Samples>
+    <ConfigOptions>
+      <Option Key="null_check_style" IsRequired="true" />
+    </ConfigOptions>
     <Options>
       <Option Identifier="UseComparisonInsteadPatternMatchingToCheckForNull">
         <Id>i</Id>
         <Title>Use comparison instead of pattern matching to check for null.</Title>
         <OptionKey>invert</OptionKey>
+        <NewOptionKey>null_check_style</NewOptionKey>
         <Kind>Invert</Kind>
         <Samples>
           <Sample>

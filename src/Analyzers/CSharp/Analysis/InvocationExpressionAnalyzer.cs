@@ -44,8 +44,7 @@ namespace Roslynator.CSharp.Analysis
                         DiagnosticRules.RemoveRedundantCast,
                         DiagnosticRules.SimplifyLogicalNegation,
                         DiagnosticRules.UseCoalesceExpression,
-                        DiagnosticRules.OptimizeMethodCall,
-                        CommonDiagnosticRules.AnalyzerIsObsolete);
+                        DiagnosticRules.OptimizeMethodCall);
                 }
 
                 return _supportedDiagnostics;

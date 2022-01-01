@@ -14,6 +14,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.Configuration;
 using Roslynator.CSharp;
+using Roslynator.CSharp.CodeStyle;
 using Roslynator.CSharp.Syntax;
 using Roslynator.Formatting.CodeFixes.CSharp;
 using Roslynator.Formatting.CSharp;
@@ -184,7 +185,7 @@ namespace Roslynator.Formatting.CodeFixes.LineIsTooLong
             return AddNewLineBeforeOrAfterAsync(
                 document,
                 arrowExpressionClause.ArrowToken,
-                AnalyzerOptions.AddNewLineAfterExpressionBodyArrowInsteadOfBeforeIt.IsEnabled(document, arrowExpressionClause),
+                document.GetConfigOptions(arrowExpressionClause.SyntaxTree).GetArrowTokenNewLinePosition() == NewLinePosition.After,
                 cancellationToken);
         }
 
@@ -196,7 +197,7 @@ namespace Roslynator.Formatting.CodeFixes.LineIsTooLong
             return AddNewLineBeforeOrAfterAsync(
                 document,
                 operatorToken,
-                AnalyzerOptions.AddNewLineAfterEqualsSignInsteadOfBeforeIt.IsEnabled(document, operatorToken),
+                document.GetConfigOptions(operatorToken.SyntaxTree).GetEqualsTokenNewLinePosition() == NewLinePosition.After,
                 cancellationToken);
         }
 
@@ -207,7 +208,7 @@ namespace Roslynator.Formatting.CodeFixes.LineIsTooLong
         {
             string indentation = SyntaxTriviaAnalysis.GetIncreasedIndentation(conditionalExpression, cancellationToken);
 
-            if (AnalyzerOptions.AddNewLineAfterEqualsSignInsteadOfBeforeIt.IsEnabled(document, conditionalExpression))
+            if (document.GetConfigOptions(conditionalExpression.SyntaxTree).GetEqualsTokenNewLinePosition() == NewLinePosition.After)
             {
                 return document.WithTextChangesAsync(
                     new TextChange[]

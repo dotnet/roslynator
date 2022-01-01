@@ -15,6 +15,7 @@ namespace Roslynator.Metadata
             string parentId,
             string optionKey,
             string optionValue,
+            string newOptionKey,
             AnalyzerOptionKind kind,
             string title,
             bool isEnabledByDefault,
@@ -22,13 +23,15 @@ namespace Roslynator.Metadata
             string minLanguageVersion,
             string summary,
             IEnumerable<SampleMetadata> samples,
-            bool isObsolete)
+            bool isObsolete,
+            IEnumerable<string> tags)
         {
             Identifier = identifier;
             Id = id;
             ParentId = parentId;
             OptionKey = optionKey;
             OptionValue = optionValue;
+            NewOptionKey = newOptionKey;
             Kind = kind;
             Title = title;
             IsEnabledByDefault = isEnabledByDefault;
@@ -37,6 +40,7 @@ namespace Roslynator.Metadata
             Summary = summary;
             Samples = new ReadOnlyCollection<SampleMetadata>(samples?.ToArray() ?? Array.Empty<SampleMetadata>());
             IsObsolete = isObsolete;
+            Tags = new ReadOnlyCollection<string>(tags?.ToArray() ?? Array.Empty<string>());
         }
 
         public AnalyzerMetadata CreateAnalyzerMetadata(AnalyzerMetadata parent)
@@ -57,8 +61,9 @@ namespace Roslynator.Metadata
                 remarks: null,
                 samples: Samples,
                 links: null,
-                globalOptions: null,
+                configOptions: null,
                 options: null,
+                tags: parent.Tags.Concat(Tags),
                 kind: Kind,
                 parent: parent);
         }
@@ -72,6 +77,8 @@ namespace Roslynator.Metadata
         public string OptionKey { get; }
 
         public string OptionValue { get; }
+
+        public string NewOptionKey { get; }
 
         public AnalyzerOptionKind Kind { get; }
 
@@ -88,5 +95,7 @@ namespace Roslynator.Metadata
         public IReadOnlyList<SampleMetadata> Samples { get; }
 
         public bool IsObsolete { get; }
+
+        public IReadOnlyList<string> Tags { get; }
     }
 }

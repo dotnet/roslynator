@@ -1,38 +1,12 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace Roslynator
 {
     internal static class CommonWorkspaceExtensions
     {
-        public static bool IsEnabled(
-            this AnalyzerOptionDescriptor analyzerOption,
-            Document document,
-            SyntaxNode node)
-        {
-            return IsEnabled(analyzerOption, document, node.SyntaxTree);
-        }
-
-        public static bool IsEnabled(
-            this AnalyzerOptionDescriptor analyzerOption,
-            Document document,
-            SyntaxToken token)
-        {
-            return IsEnabled(analyzerOption, document, token.SyntaxTree);
-        }
-
-        public static bool IsEnabled(
-            this AnalyzerOptionDescriptor analyzerOption,
-            Document document,
-            SyntaxTree syntaxTree)
-        {
-            return analyzerOption.Descriptor.IsEffective(syntaxTree, document.Project.CompilationOptions)
-                && analyzerOption.IsEnabled(
-                    syntaxTree,
-                    document.Project.AnalyzerOptions);
-        }
-
         public static bool TryGetAnalyzerOptionValue(
             this Document document,
             SyntaxNode node,
@@ -69,6 +43,11 @@ namespace Roslynator
 
             value = null;
             return false;
+        }
+
+        internal static AnalyzerConfigOptions GetConfigOptions(this Document document, SyntaxTree syntaxTree)
+        {
+            return document.Project.AnalyzerOptions.AnalyzerConfigOptionsProvider.GetOptions(syntaxTree);
         }
     }
 }

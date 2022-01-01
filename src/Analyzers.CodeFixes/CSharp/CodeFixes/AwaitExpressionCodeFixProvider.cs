@@ -24,7 +24,7 @@ namespace Roslynator.CSharp.CodeFixes
     {
         public override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.AddCallToConfigureAwaitOrViceVersa); }
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.ConfigureAwait); }
         }
 
         public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -37,10 +37,10 @@ namespace Roslynator.CSharp.CodeFixes
             Document document = context.Document;
             Diagnostic diagnostic = context.Diagnostics[0];
 
-            if (AddCallToConfigureAwaitOrViceVersaAnalyzer.IsConfigureAwait(awaitExpression.Expression))
+            if (ConfigureAwaitAnalyzer.IsConfigureAwait(awaitExpression.Expression))
             {
                 CodeAction codeAction = CodeAction.Create(
-                    "Remove call to 'ConfigureAwait'",
+                    "Remove 'ConfigureAwait' call",
                     ct => RemoveCallToConfigureAwaitRefactorAsync(document, awaitExpression, ct),
                     GetEquivalenceKey(diagnostic));
 
@@ -49,7 +49,7 @@ namespace Roslynator.CSharp.CodeFixes
             else
             {
                 CodeAction codeAction = CodeAction.Create(
-                    "Add to call 'ConfigureAwait'",
+                    "Call 'ConfigureAwait'",
                     ct => AddCallToConfigureAwaitRefactorAsync(document, awaitExpression, ct),
                     GetEquivalenceKey(diagnostic));
 

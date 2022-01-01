@@ -42,7 +42,9 @@ namespace Roslynator.CodeGeneration.CSharp
 
             compilationUnit = compilationUnit.NormalizeWhitespace();
 
-            return (CompilationUnitSyntax)Rewriter.Instance.Visit(compilationUnit);
+            var rewriter = new WrapRewriter(WrapRewriterOptions.WrapArguments);
+
+            return (CompilationUnitSyntax)rewriter.Visit(compilationUnit);
         }
 
         private IEnumerable<MemberDeclarationSyntax> CreateMembers(
@@ -57,9 +59,6 @@ namespace Roslynator.CodeGeneration.CSharp
                     continue;
 
                 string identifier = analyzer.Identifier;
-                string title = analyzer.Title;
-                string messageFormat = analyzer.MessageFormat;
-                bool isEnabledByDefault = analyzer.IsEnabledByDefault;
 
                 yield return CreateMember(
                     analyzer,
@@ -79,13 +78,6 @@ namespace Roslynator.CodeGeneration.CSharp
                             ArgumentList(Argument(IdentifierName(identifier)))))
                         .AddObsoleteAttributeIf(analyzer.IsObsolete, error: true);
                 }
-            }
-
-            IEnumerable<AnalyzerMetadata> optionAnalyzers = analyzers.SelectMany(f => f.OptionAnalyzers.Where(f => f.Kind == AnalyzerOptionKind.Change || f.Kind == AnalyzerOptionKind.Invert));
-
-            if (optionAnalyzers.Any())
-            {
-                yield return CreateClassDeclaration(optionAnalyzers, "ReportOnly", identifiersClassName, categoryName, useParentProperties = true);
             }
         }
 
@@ -178,44 +170,6 @@ namespace Roslynator.CodeGeneration.CSharp
             return expression;
         }
 
-        private class Rewriter : CSharpSyntaxRewriter
-        {
-            private int _classDeclarationDepth;
 
-            public static Rewriter Instance { get; } = new();
-
-            public override SyntaxNode VisitClassDeclaration(ClassDeclarationSyntax node)
-            {
-                _classDeclarationDepth++;
-                SyntaxNode result = base.VisitClassDeclaration(node);
-                _classDeclarationDepth--;
-
-                return result;
-            }
-
-            public override SyntaxNode VisitFieldDeclaration(FieldDeclarationSyntax node)
-            {
-                node = (FieldDeclarationSyntax)base.VisitFieldDeclaration(node);
-
-                return node.AppendToTrailingTrivia(NewLine());
-            }
-
-            public override SyntaxNode VisitArgument(ArgumentSyntax node)
-            {
-                if (node.NameColon != null)
-                {
-                    return node
-                        .WithNameColon(node.NameColon.AppendToLeadingTrivia(TriviaList(NewLine(), Whitespace(new string(' ', 4 * (2 + _classDeclarationDepth))))))
-                        .WithExpression(node.Expression.PrependToLeadingTrivia(Whitespace(new string(' ', 18 - node.NameColon.Name.Identifier.ValueText.Length))));
-                }
-
-                return node;
-            }
-
-            public override SyntaxNode VisitAttribute(AttributeSyntax node)
-            {
-                return node;
-            }
-        }
     }
 }

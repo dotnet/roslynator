@@ -23,8 +23,8 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                     DiagnosticIdentifiers.AddEmptyLineAfterTopComment,
                     DiagnosticIdentifiers.AddEmptyLineBeforeTopDeclaration,
                     DiagnosticIdentifiers.AddEmptyLineBetweenAccessors,
-                    DiagnosticIdentifiers.AddEmptyLineBetweenSingleLineAccessorsOrViceVersa,
-                    DiagnosticIdentifiers.AddEmptyLineBetweenUsingDirectivesWithDifferentRootNamespaceOrViceVersa,
+                    DiagnosticIdentifiers.BlankLineBetweenSingleLineAccessors,
+                    DiagnosticIdentifiers.BlankLineBetweenUsingDirectiveGroups,
                     DiagnosticIdentifiers.RemoveEmptyLineBetweenUsingDirectivesWithSameRootNamespace,
                     DiagnosticIdentifiers.RemoveNewLineBetweenIfKeywordAndElseKeyword,
                     DiagnosticIdentifiers.RemoveNewLineBeforeBaseList);
@@ -64,8 +64,8 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                         context.RegisterCodeFix(codeAction, diagnostic);
                         break;
                     }
-                case DiagnosticIdentifiers.AddEmptyLineBetweenSingleLineAccessorsOrViceVersa:
-                case DiagnosticIdentifiers.AddEmptyLineBetweenUsingDirectivesWithDifferentRootNamespaceOrViceVersa:
+                case DiagnosticIdentifiers.BlankLineBetweenSingleLineAccessors:
+                case DiagnosticIdentifiers.BlankLineBetweenUsingDirectiveGroups:
                     {
                         if (DiagnosticProperties.ContainsInvert(diagnostic.Properties))
                         {

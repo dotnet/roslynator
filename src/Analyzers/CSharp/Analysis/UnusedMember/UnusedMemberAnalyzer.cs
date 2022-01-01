@@ -23,7 +23,9 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
             get
             {
                 if (_supportedDiagnostics.IsDefault)
+                {
                     Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.RemoveUnusedMemberDeclaration);
+                }
 
                 return _supportedDiagnostics;
             }
@@ -157,7 +159,7 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
                                 break;
 
                             if (declaration.ReturnsVoid()
-                                && AnalyzerOptions.SuppressUnityScriptMethods.IsEnabled(context))
+                                && context.GetSuppressUnityScriptMethods() == true)
                             {
                                 if (canContainUnityScriptMethods == null)
                                 {

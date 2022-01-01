@@ -20,10 +20,10 @@ namespace Roslynator.CSharp
         public const string UseVarInsteadOfExplicitTypeWhenTypeIsObvious = "RCS1010";
         public const string UseExplicitTypeInsteadOfVarWhenTypeIsObvious = "RCS1012";
         public const string UsePredefinedType = "RCS1013";
-        public const string UseExplicitlyTypedArrayOrViceVersa = "RCS1014";
+        public const string UseExplicitlyOrImplicitlyTypedArray = "RCS1014";
         public const string UseNameOfOperator = "RCS1015";
-        public const string ConvertBlockBodyToExpressionBodyOrViceVersa = "RCS1016";
-        public const string AddAccessibilityModifiersOrViceVersa = "RCS1018";
+        public const string UseBlockBodyOrExpressionBody = "RCS1016";
+        public const string AddOrRemoveAccessibilityModifiers = "RCS1018";
         public const string OrderModifiers = "RCS1019";
         public const string SimplifyNullableOfT = "RCS1020";
         public const string ConvertLambdaExpressionBodyToExpressionBody = "RCS1021";
@@ -45,8 +45,8 @@ namespace Roslynator.CSharp
         public const string NonAsynchronousMethodNameShouldNotEndWithAsync = "RCS1047";
         public const string UseLambdaExpressionInsteadOfAnonymousMethod = "RCS1048";
         public const string SimplifyBooleanComparison = "RCS1049";
-        public const string AddArgumentListToObjectCreationOrViceVersa = "RCS1050";
-        public const string ParenthesizeConditionOfConditionalExpression = "RCS1051";
+        public const string IncludeParenthesesWhenCreatingNewObject = "RCS1050";
+        public const string AddOrRemoveParenthesesFromConditionInConditionalOperator = "RCS1051";
         public const string DeclareEachAttributeSeparately = "RCS1052";
         public const string AvoidSemicolonAtEndOfDeclaration = "RCS1055";
         public const string AvoidUsageOfUsingAliasDirective = "RCS1056";
@@ -67,18 +67,18 @@ namespace Roslynator.CSharp
         public const string RemoveRedundantConstructor = "RCS1074";
         public const string AvoidEmptyCatchClauseThatCatchesSystemException = "RCS1075";
         public const string OptimizeLinqMethodCall = "RCS1077";
-        public const string UseEmptyStringLiteralInsteadOfStringEmptyOrViceVersa = "RCS1078";
+        public const string UseEmptyStringLiteralOrStringEmpty = "RCS1078";
         public const string ThrowingOfNewNotImplementedException = "RCS1079";
         public const string UseCountOrLengthPropertyInsteadOfAnyMethod = "RCS1080";
         public const string SplitVariableDeclaration = "RCS1081";
         public const string UseCoalesceExpressionInsteadOfConditionalExpression = "RCS1084";
         public const string UseAutoProperty = "RCS1085";
         public const string UseUnaryOperatorInsteadOfAssignment = "RCS1089";
-        public const string AddCallToConfigureAwaitOrViceVersa = "RCS1090";
+        public const string ConfigureAwait = "RCS1090";
         public const string RemoveEmptyRegion = "RCS1091";
         public const string RemoveFileWithNoCode = "RCS1093";
         public const string DeclareUsingDirectiveOnTopLevel = "RCS1094";
-        public const string ConvertHasFlagCallToBitwiseOperationOrViceVersa = "RCS1096";
+        public const string UseHasFlagMethodOrBitwiseOperator = "RCS1096";
         public const string RemoveRedundantToStringCall = "RCS1097";
         public const string ConstantValuesShouldBePlacedOnRightSideOfComparisons = "RCS1098";
         public const string DefaultLabelShouldBeLastLabelInSwitchSection = "RCS1099";
@@ -165,7 +165,7 @@ namespace Roslynator.CSharp
         public const string UseEventArgsEmpty = "RCS1204";
         public const string OrderNamedArguments = "RCS1205";
         public const string UseConditionalAccessInsteadOfConditionalExpression = "RCS1206";
-        public const string ConvertAnonymousFunctionToMethodGroupOrViceVersa = "RCS1207";
+        public const string UseAnonymousFunctionOrMethodGroup = "RCS1207";
         public const string ReduceIfNesting = "RCS1208";
         public const string OrderTypeParameterConstraints = "RCS1209";
         public const string ReturnCompletedTaskInsteadOfNull = "RCS1210";
@@ -204,7 +204,7 @@ namespace Roslynator.CSharp
         public const string SimplifyDefaultExpression = "RCS1244";
         public const string UseElementAccess = "RCS1246";
         public const string FixDocumentationCommentTag = "RCS1247";
-        public const string UsePatternMatchingToCheckForNullOrViceVersa = "RCS1248";
+        public const string NormalizeNullCheck = "RCS1248";
         public const string UnnecessaryNullForgivingOperator = "RCS1249";
     }
 }

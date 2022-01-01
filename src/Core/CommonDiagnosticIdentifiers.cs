@@ -5,6 +5,8 @@ namespace Roslynator
     internal static class CommonDiagnosticIdentifiers
     {
         public const string AnalyzerIsObsolete = "ROS0001";
+        public const string AnalyzerOptionIsObsolete = "ROS0002";
+        public const string RequiredConfigOptionNotSet = "ROS0003";
         public const string PossibleMisspellingOrTypo = "RCS2001";
     }
 }

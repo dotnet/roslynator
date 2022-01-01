@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp;
+using Roslynator.CSharp.CodeStyle;
 using static Roslynator.CSharp.SyntaxTriviaAnalysis;
 
 namespace Roslynator.Formatting.CSharp
@@ -20,7 +21,7 @@ namespace Roslynator.Formatting.CSharp
             get
             {
                 if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.FixFormattingOfBinaryExpressionChain, CommonDiagnosticRules.AnalyzerIsObsolete);
+                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.FixFormattingOfBinaryExpressionChain);
 
                 return _supportedDiagnostics;
             }
@@ -162,7 +163,7 @@ namespace Roslynator.Formatting.CSharp
 
                 if (leadingTrivia.Any()
                     && leadingTrivia.Last() == indentationAnalysis.Indentation
-                    && AnalyzerOptions.AddNewLineAfterBinaryOperatorInsteadOfBeforeIt.IsEnabled(context, checkParent: true) == true)
+                    && context.GetConfigOptions().GetBinaryOperatorNewLinePosition() == NewLinePosition.After)
                 {
                     return indentationAnalysis.IndentationLength;
                 }

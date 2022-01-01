@@ -8,6 +8,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp;
+using Roslynator.CSharp.CodeStyle;
 using Roslynator.Formatting.CSharp;
 
 namespace Roslynator.Formatting.CodeFixes.LineIsTooLong
@@ -139,8 +140,7 @@ namespace Roslynator.Formatting.CodeFixes.LineIsTooLong
                         if (previousToken.SpanStart < Span.Start)
                             return null;
 
-                        bool addNewLineAfter = AnalyzerOptions.AddNewLineAfterExpressionBodyArrowInsteadOfBeforeIt.IsEnabled(Document, node);
-
+                        bool addNewLineAfter = Document.GetConfigOptions(node.SyntaxTree).GetArrowTokenNewLinePosition() == NewLinePosition.After;
                         int wrapPosition = (addNewLineAfter) ? arrowToken.Span.End : previousToken.Span.End;
                         int start = (addNewLineAfter) ? expressionBody.Expression.SpanStart : arrowToken.SpanStart;
                         int longestLength = expressionBody.GetLastToken().GetNextToken().Span.End - start;
@@ -160,7 +160,7 @@ namespace Roslynator.Formatting.CodeFixes.LineIsTooLong
                         if (previousToken.SpanStart < Span.Start)
                             return null;
 
-                        bool addNewLineAfter = AnalyzerOptions.AddNewLineAfterEqualsSignInsteadOfBeforeIt.IsEnabled(Document, node);
+                        bool addNewLineAfter = Document.GetConfigOptions(node.SyntaxTree).GetEqualsTokenNewLinePosition() == NewLinePosition.After;
 
                         int wrapPosition = (addNewLineAfter) ? equalsToken.Span.End : previousToken.Span.End;
                         int start = (addNewLineAfter) ? equalsValueClause.Value.SpanStart : equalsToken.SpanStart;
@@ -300,7 +300,7 @@ namespace Roslynator.Formatting.CodeFixes.LineIsTooLong
                         SyntaxToken questionToken = conditionalExpression.QuestionToken;
                         SyntaxToken colonToken = conditionalExpression.ColonToken;
 
-                        bool addNewLineAfter = AnalyzerOptions.AddNewLineAfterConditionalOperatorInsteadOfBeforeIt.IsEnabled(Document, node);
+                        bool addNewLineAfter = Document.GetConfigOptions(node.SyntaxTree).GetConditionalOperatorNewLinePosition() == NewLinePosition.After;
 
                         int wrapPosition = (addNewLineAfter)
                             ? questionToken.Span.End
@@ -356,7 +356,7 @@ namespace Roslynator.Formatting.CodeFixes.LineIsTooLong
 
                         SyntaxToken operatorToken = binaryExpression.OperatorToken;
 
-                        bool addNewLineAfter = AnalyzerOptions.AddNewLineAfterBinaryOperatorInsteadOfBeforeIt.IsEnabled(Document, node);
+                        bool addNewLineAfter = Document.GetConfigOptions(node.SyntaxTree).GetBinaryOperatorNewLinePosition() == NewLinePosition.After;
 
                         int wrapPosition = (addNewLineAfter)
                             ? operatorToken.Span.End
@@ -422,8 +422,7 @@ namespace Roslynator.Formatting.CodeFixes.LineIsTooLong
                         if (left.SpanStart < Span.Start)
                             return null;
 
-                        bool addNewLineAfter = AnalyzerOptions.AddNewLineAfterEqualsSignInsteadOfBeforeIt.IsEnabled(Document, node);
-
+                        bool addNewLineAfter = Document.GetConfigOptions(node.SyntaxTree).GetEqualsTokenNewLinePosition() == NewLinePosition.After;
                         int wrapPosition = (addNewLineAfter) ? operatorToken.Span.End : left.Span.End;
                         int start = (addNewLineAfter) ? assignment.Right.SpanStart : operatorToken.SpanStart;
                         int longestLength = Span.End - start;

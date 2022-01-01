@@ -47,9 +47,7 @@ class C
     string M(object pppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp) =>
         null;
 }
-", options: Options
-                .EnableDiagnostic(DiagnosticRules.AddNewLineBeforeExpressionBodyArrowInsteadOfAfterItOrViceVersa)
-                .EnableConfigOption(AnalyzerOptions.AddNewLineAfterExpressionBodyArrowInsteadOfBeforeIt.OptionKey));
+", options: Options.AddConfigOption(ConfigOptionKeys.ArrowTokenNewLine, "after"));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
@@ -74,9 +72,7 @@ class C
     {
     }
 }
-", options: Options
-                .EnableDiagnostic(DiagnosticRules.AddNewLineBeforeExpressionBodyArrowInsteadOfAfterItOrViceVersa)
-                .EnableConfigOption(AnalyzerOptions.AddNewLineAfterExpressionBodyArrowInsteadOfBeforeIt.OptionKey));
+", options: Options.AddConfigOption(ConfigOptionKeys.ArrowTokenNewLine, "after"));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]
@@ -970,9 +966,7 @@ class C
 {
 [|    string Fooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo() => null;|]
 }
-", options: Options
-                .EnableDiagnostic(DiagnosticRules.AddNewLineBeforeExpressionBodyArrowInsteadOfAfterItOrViceVersa)
-                .EnableConfigOption(AnalyzerOptions.AddNewLineAfterExpressionBodyArrowInsteadOfBeforeIt.OptionKey));
+", options: Options.AddConfigOption(ConfigOptionKeys.ArrowTokenNewLine, "after"));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.LineIsTooLong)]

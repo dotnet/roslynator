@@ -11,13 +11,35 @@ namespace Roslynator
     {
         public static readonly DiagnosticDescriptor AnalyzerIsObsolete = new(
             id: CommonDiagnosticIdentifiers.AnalyzerIsObsolete,
-            title: "Analyzer is obsolete.",
+            title: "Analyzer is obsolete",
             messageFormat: "Analyzer {0} is obsolete.{1}",
             category: DiagnosticCategories.Roslynator,
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: true,
             description: null,
             helpLinkUri: DiagnosticDescriptorUtility.GetHelpLinkUri(CommonDiagnosticIdentifiers.AnalyzerIsObsolete),
+            customTags: Array.Empty<string>());
+
+        public static readonly DiagnosticDescriptor AnalyzerOptionIsObsolete = new(
+            id: CommonDiagnosticIdentifiers.AnalyzerOptionIsObsolete,
+            title: "Analyzer option is obsolete",
+            messageFormat: "Analyzer option '{0}' is obsolete{1}",
+            category: DiagnosticCategories.Roslynator,
+            defaultSeverity: DiagnosticSeverity.Warning,
+            isEnabledByDefault: true,
+            description: null,
+            helpLinkUri: DiagnosticDescriptorUtility.GetHelpLinkUri(CommonDiagnosticIdentifiers.AnalyzerOptionIsObsolete),
+            customTags: Array.Empty<string>());
+
+        public static readonly DiagnosticDescriptor RequiredConfigOptionNotSet = new(
+            id: CommonDiagnosticIdentifiers.RequiredConfigOptionNotSet,
+            title: "Required option not set for an analyzer",
+            messageFormat: "Required option not set for analyzer {0}, allowed values: {1}",
+            category: DiagnosticCategories.Roslynator,
+            defaultSeverity: DiagnosticSeverity.Warning,
+            isEnabledByDefault: true,
+            description: null,
+            helpLinkUri: DiagnosticDescriptorUtility.GetHelpLinkUri(CommonDiagnosticIdentifiers.RequiredConfigOptionNotSet),
             customTags: Array.Empty<string>());
     }
 }

@@ -118,15 +118,15 @@ namespace Roslynator.Formatting.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0011</summary>
-        public static readonly DiagnosticDescriptor AddEmptyLineBetweenSingleLineAccessorsOrViceVersa = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.AddEmptyLineBetweenSingleLineAccessorsOrViceVersa, 
-            title:              "Add empty line between single-line accessors (or vice versa).", 
-            messageFormat:      "Add empty line between single-line accessors.", 
+        public static readonly DiagnosticDescriptor BlankLineBetweenSingleLineAccessors = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.BlankLineBetweenSingleLineAccessors, 
+            title:              "Add/remove blank line between single-line accessors.", 
+            messageFormat:      "{0} blank line between single-line accessors.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddEmptyLineBetweenSingleLineAccessorsOrViceVersa, 
+            helpLinkUri:        DiagnosticIdentifiers.BlankLineBetweenSingleLineAccessors, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0012</summary>
@@ -166,15 +166,15 @@ namespace Roslynator.Formatting.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0015</summary>
-        public static readonly DiagnosticDescriptor AddEmptyLineBetweenUsingDirectivesWithDifferentRootNamespaceOrViceVersa = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.AddEmptyLineBetweenUsingDirectivesWithDifferentRootNamespaceOrViceVersa, 
-            title:              "Add empty line between using directives with different root namespace (or vice versa).", 
-            messageFormat:      "Add empty line between using directives.", 
+        public static readonly DiagnosticDescriptor BlankLineBetweenUsingDirectiveGroups = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.BlankLineBetweenUsingDirectiveGroups, 
+            title:              "Add/remove empty line between using directive groups.", 
+            messageFormat:      "{0} empty line between using directive groups.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddEmptyLineBetweenUsingDirectivesWithDifferentRootNamespaceOrViceVersa, 
+            helpLinkUri:        DiagnosticIdentifiers.BlankLineBetweenUsingDirectiveGroups, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0016</summary>
@@ -262,27 +262,27 @@ namespace Roslynator.Formatting.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0027</summary>
-        public static readonly DiagnosticDescriptor AddNewLineBeforeBinaryOperatorInsteadOfAfterItOrViceVersa = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.AddNewLineBeforeBinaryOperatorInsteadOfAfterItOrViceVersa, 
-            title:              "Add new line before binary operator instead of after it (or vice versa).", 
-            messageFormat:      "Add new line before binary operator instead of after it.", 
+        public static readonly DiagnosticDescriptor PlaceNewLineAfterOrBeforeBinaryOperator = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeBinaryOperator, 
+            title:              "Place new line after/before binary operator.", 
+            messageFormat:      "Place new line {0} binary operator.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddNewLineBeforeBinaryOperatorInsteadOfAfterItOrViceVersa, 
+            helpLinkUri:        DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeBinaryOperator, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0028</summary>
-        public static readonly DiagnosticDescriptor AddNewLineBeforeConditionalOperatorInsteadOfAfterItOrViceVersa = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.AddNewLineBeforeConditionalOperatorInsteadOfAfterItOrViceVersa, 
-            title:              "Add new line before conditional operator instead of after it (or vice versa).", 
-            messageFormat:      "Add new line before conditional operator instead of after it.", 
+        public static readonly DiagnosticDescriptor PlaceNewLineAfterOrBeforeConditionalOperator = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeConditionalOperator, 
+            title:              "Place new line after/before '?:' operator.", 
+            messageFormat:      "Place new line {0} operator.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddNewLineBeforeConditionalOperatorInsteadOfAfterItOrViceVersa, 
+            helpLinkUri:        DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeConditionalOperator, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0029</summary>
@@ -322,15 +322,15 @@ namespace Roslynator.Formatting.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0032</summary>
-        public static readonly DiagnosticDescriptor AddNewLineBeforeExpressionBodyArrowInsteadOfAfterItOrViceVersa = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.AddNewLineBeforeExpressionBodyArrowInsteadOfAfterItOrViceVersa, 
-            title:              "Add new line before expression body arrow instead of after it (or vice versa).", 
-            messageFormat:      "Add new line before expression body arrow instead of after it.", 
+        public static readonly DiagnosticDescriptor PlaceNewLineAfterOrBeforeArrowToken = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeArrowToken, 
+            title:              "Place new line after/before arrow token.", 
+            messageFormat:      "Place new line {0} arrow token.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddNewLineBeforeExpressionBodyArrowInsteadOfAfterItOrViceVersa, 
+            helpLinkUri:        DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeArrowToken, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0033</summary>
@@ -514,27 +514,27 @@ namespace Roslynator.Formatting.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0051</summary>
-        public static readonly DiagnosticDescriptor AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersa = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersa, 
-            title:              "Add new line between closing brace and 'while' keyword (or vice versa).", 
-            messageFormat:      "Add new line between closing brace and 'while' keyword.", 
+        public static readonly DiagnosticDescriptor AddOrRemoveNewLineBeforeWhileInDoStatement = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.AddOrRemoveNewLineBeforeWhileInDoStatement, 
+            title:              "Add/remove new line before 'while' in 'do' statement.", 
+            messageFormat:      "{0} new line before 'while' in 'do' statement.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersa, 
+            helpLinkUri:        DiagnosticIdentifiers.AddOrRemoveNewLineBeforeWhileInDoStatement, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0052</summary>
-        public static readonly DiagnosticDescriptor AddNewLineBeforeEqualsSignInsteadOfAfterItOrViceVersa = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.AddNewLineBeforeEqualsSignInsteadOfAfterItOrViceVersa, 
-            title:              "Add new line before equals sign instead of after it (or vice versa).", 
-            messageFormat:      "Add new line before equals sign instead of after it.", 
+        public static readonly DiagnosticDescriptor PlaceNewLineAfterOrBeforeEqualsToken = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsToken, 
+            title:              "Place new line after/before equals token.", 
+            messageFormat:      "Place new line {0} equals token.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddNewLineBeforeEqualsSignInsteadOfAfterItOrViceVersa, 
+            helpLinkUri:        DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsToken, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0053</summary>
@@ -609,92 +609,5 @@ namespace Roslynator.Formatting.CSharp
             helpLinkUri:        DiagnosticIdentifiers.NormalizeWhitespaceAtEndOfFile, 
             customTags:         Array.Empty<string>());
 
-        public static partial class ReportOnly
-        {
-            /// <summary>RCS0011i</summary>
-            public static readonly DiagnosticDescriptor RemoveEmptyLineBetweenSingleLineAccessors = DiagnosticDescriptorFactory.Create(
-                id:                 DiagnosticIdentifiers.AddEmptyLineBetweenSingleLineAccessorsOrViceVersa, 
-                title:              "Add empty line between single-line accessors (or vice versa).", 
-                messageFormat:      "Remove empty line between single-line accessors.", 
-                category:           DiagnosticCategories.Roslynator, 
-                defaultSeverity:    DiagnosticSeverity.Info, 
-                isEnabledByDefault: false, 
-                description:        null, 
-                helpLinkUri:        DiagnosticIdentifiers.AddEmptyLineBetweenSingleLineAccessorsOrViceVersa, 
-                customTags:         Array.Empty<string>());
-
-            /// <summary>RCS0015i</summary>
-            public static readonly DiagnosticDescriptor RemoveEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace = DiagnosticDescriptorFactory.Create(
-                id:                 DiagnosticIdentifiers.AddEmptyLineBetweenUsingDirectivesWithDifferentRootNamespaceOrViceVersa, 
-                title:              "Add empty line between using directives with different root namespace (or vice versa).", 
-                messageFormat:      "Remove empty line between using directives with different root namespace.", 
-                category:           DiagnosticCategories.Roslynator, 
-                defaultSeverity:    DiagnosticSeverity.Info, 
-                isEnabledByDefault: false, 
-                description:        null, 
-                helpLinkUri:        DiagnosticIdentifiers.AddEmptyLineBetweenUsingDirectivesWithDifferentRootNamespaceOrViceVersa, 
-                customTags:         Array.Empty<string>());
-
-            /// <summary>RCS0027i</summary>
-            public static readonly DiagnosticDescriptor AddNewLineAfterBinaryOperatorInsteadOfBeforeIt = DiagnosticDescriptorFactory.Create(
-                id:                 DiagnosticIdentifiers.AddNewLineBeforeBinaryOperatorInsteadOfAfterItOrViceVersa, 
-                title:              "Add new line before binary operator instead of after it (or vice versa).", 
-                messageFormat:      "Add new line after binary operator instead of before it.", 
-                category:           DiagnosticCategories.Roslynator, 
-                defaultSeverity:    DiagnosticSeverity.Info, 
-                isEnabledByDefault: false, 
-                description:        null, 
-                helpLinkUri:        DiagnosticIdentifiers.AddNewLineBeforeBinaryOperatorInsteadOfAfterItOrViceVersa, 
-                customTags:         Array.Empty<string>());
-
-            /// <summary>RCS0028i</summary>
-            public static readonly DiagnosticDescriptor AddNewLineAfterConditionalOperatorInsteadOfBeforeIt = DiagnosticDescriptorFactory.Create(
-                id:                 DiagnosticIdentifiers.AddNewLineBeforeConditionalOperatorInsteadOfAfterItOrViceVersa, 
-                title:              "Add new line before conditional operator instead of after it (or vice versa).", 
-                messageFormat:      "Add new line after conditional operator instead of before it.", 
-                category:           DiagnosticCategories.Roslynator, 
-                defaultSeverity:    DiagnosticSeverity.Info, 
-                isEnabledByDefault: false, 
-                description:        null, 
-                helpLinkUri:        DiagnosticIdentifiers.AddNewLineBeforeConditionalOperatorInsteadOfAfterItOrViceVersa, 
-                customTags:         Array.Empty<string>());
-
-            /// <summary>RCS0032i</summary>
-            public static readonly DiagnosticDescriptor AddNewLineAfterExpressionBodyArrowInsteadOfBeforeIt = DiagnosticDescriptorFactory.Create(
-                id:                 DiagnosticIdentifiers.AddNewLineBeforeExpressionBodyArrowInsteadOfAfterItOrViceVersa, 
-                title:              "Add new line before expression body arrow instead of after it (or vice versa).", 
-                messageFormat:      "Add new line after expression body arrow instead of before it.", 
-                category:           DiagnosticCategories.Roslynator, 
-                defaultSeverity:    DiagnosticSeverity.Info, 
-                isEnabledByDefault: false, 
-                description:        null, 
-                helpLinkUri:        DiagnosticIdentifiers.AddNewLineBeforeExpressionBodyArrowInsteadOfAfterItOrViceVersa, 
-                customTags:         Array.Empty<string>());
-
-            /// <summary>RCS0051i</summary>
-            public static readonly DiagnosticDescriptor RemoveNewLineBetweenClosingBraceAndWhileKeyword = DiagnosticDescriptorFactory.Create(
-                id:                 DiagnosticIdentifiers.AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersa, 
-                title:              "Add new line between closing brace and 'while' keyword (or vice versa).", 
-                messageFormat:      "Remove new line between closing brace and 'while' keyword.", 
-                category:           DiagnosticCategories.Roslynator, 
-                defaultSeverity:    DiagnosticSeverity.Info, 
-                isEnabledByDefault: false, 
-                description:        null, 
-                helpLinkUri:        DiagnosticIdentifiers.AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersa, 
-                customTags:         Array.Empty<string>());
-
-            /// <summary>RCS0052i</summary>
-            public static readonly DiagnosticDescriptor AddNewLineAfterEqualsSignInsteadOfBeforeIt = DiagnosticDescriptorFactory.Create(
-                id:                 DiagnosticIdentifiers.AddNewLineBeforeEqualsSignInsteadOfAfterItOrViceVersa, 
-                title:              "Add new line before equals sign instead of after it (or vice versa).", 
-                messageFormat:      "Add new line after equals sign instead of before it.", 
-                category:           DiagnosticCategories.Roslynator, 
-                defaultSeverity:    DiagnosticSeverity.Info, 
-                isEnabledByDefault: false, 
-                description:        null, 
-                helpLinkUri:        DiagnosticIdentifiers.AddNewLineBeforeEqualsSignInsteadOfAfterItOrViceVersa, 
-                customTags:         Array.Empty<string>());
-
-        }
     }
 }
