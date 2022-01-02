@@ -81,6 +81,10 @@
 	<ValuePlaceholder>include|omit</ValuePlaceholder>
 	<Description>Include/omit parentheses when creating new object</Description>
   </Option>
+  <Option Id="ObjectCreationTypeStyle">
+	<ValuePlaceholder>explicit|implicit|implicit_when_type_is_obvious</ValuePlaceholder>
+	<Description>Prefer explicit/implicit object creation</Description>
+  </Option>
   <Option Id="PreferBlockBodyWhenDeclarationSpansOverMultipleLines">
 	<ValuePlaceholder>true|false</ValuePlaceholder>
 	<Description>Prefer block body when declaration spans over multiple lines</Description>
@@ -97,6 +101,11 @@
   <Option Id="SuppressUnityScriptMethods">
 	<ValuePlaceholder>true|false</ValuePlaceholder>
 	<Description>Suppress Unity script methods</Description>
+  </Option>
+  <Option Id="UseVarInsteadOfImplicitObjectCreation">
+	<DefaultValue>true</DefaultValue>
+	<ValuePlaceholder>true|false</ValuePlaceholder>
+	<Description>Use 'var' instead of implicit object creation</Description>
   </Option>
   <!--
   <Option Id="">

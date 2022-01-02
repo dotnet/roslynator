@@ -128,6 +128,12 @@ namespace Roslynator
             defaultValuePlaceholder: "include|omit", 
             description:             "Include/omit parentheses when creating new object");
 
+        public static readonly ConfigOptionDescriptor ObjectCreationTypeStyle = new(
+            key:                     ConfigOptionKeys.ObjectCreationTypeStyle, 
+            defaultValue:            null, 
+            defaultValuePlaceholder: "explicit|implicit|implicit_when_type_is_obvious", 
+            description:             "Prefer explicit/implicit object creation");
+
         public static readonly ConfigOptionDescriptor PreferBlockBodyWhenDeclarationSpansOverMultipleLines = new(
             key:                     ConfigOptionKeys.PreferBlockBodyWhenDeclarationSpansOverMultipleLines, 
             defaultValue:            null, 
@@ -152,6 +158,12 @@ namespace Roslynator
             defaultValuePlaceholder: "true|false", 
             description:             "Suppress Unity script methods");
 
+        public static readonly ConfigOptionDescriptor UseVarInsteadOfImplicitObjectCreation = new(
+            key:                     ConfigOptionKeys.UseVarInsteadOfImplicitObjectCreation, 
+            defaultValue:            "true", 
+            defaultValuePlaceholder: "true|false", 
+            description:             "Use 'var' instead of implicit object creation");
+
         private static IEnumerable<KeyValuePair<string, string>> GetRequiredOptions()
         {
             yield return new KeyValuePair<string, string>("RCS0011", JoinOptionKeys(ConfigOptionKeys.BlankLineBetweenSingleLineAccessors));
@@ -172,6 +184,7 @@ namespace Roslynator
             yield return new KeyValuePair<string, string>("RCS1096", JoinOptionKeys(ConfigOptionKeys.EnumHasFlagStyle));
             yield return new KeyValuePair<string, string>("RCS1207", JoinOptionKeys(ConfigOptionKeys.AnonymousFunctionOrMethodGroup));
             yield return new KeyValuePair<string, string>("RCS1248", JoinOptionKeys(ConfigOptionKeys.NullCheckStyle));
+            yield return new KeyValuePair<string, string>("RCS1250", JoinOptionKeys(ConfigOptionKeys.ObjectCreationTypeStyle));
         }
     }
 }

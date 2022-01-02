@@ -259,6 +259,29 @@ namespace Roslynator.CSharp
             return AccessibilityModifierStyle.None;
         }
 
+        public static ObjectCreationTypeStyle GetObjectCreationTypeStyle(this SyntaxNodeAnalysisContext context)
+        {
+            AnalyzerConfigOptions configOptions = context.GetConfigOptions();
+
+            if (configOptions.TryGetValue(ConfigOptionKeys.ObjectCreationTypeStyle, out string rawValue))
+            {
+                if (string.Equals(rawValue, ConfigOptionValues.ObjectCreationTypeStyle_Implicit, StringComparison.OrdinalIgnoreCase))
+                {
+                    return ObjectCreationTypeStyle.Implicit;
+                }
+                else if (string.Equals(rawValue, ConfigOptionValues.ObjectCreationTypeStyle_Explicit, StringComparison.OrdinalIgnoreCase))
+                {
+                    return ObjectCreationTypeStyle.Explicit;
+                }
+                else if (string.Equals(rawValue, ConfigOptionValues.ObjectCreationTypeStyle_ImplicitWhenTypeIsObvious, StringComparison.OrdinalIgnoreCase))
+                {
+                    return ObjectCreationTypeStyle.ImplicitWhenTypeIsObvious;
+                }
+            }
+
+            return ObjectCreationTypeStyle.None;
+        }
+
         public static ArrayCreationTypeStyle GetArrayCreationTypeStyle(this SyntaxNodeAnalysisContext context)
         {
             AnalyzerConfigOptions configOptions = context.GetConfigOptions();

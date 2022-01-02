@@ -31,6 +31,7 @@ namespace Roslynator.CSharp.Analysis
                         DiagnosticRules.UseExplicitlyOrImplicitlyTypedArray,
                         DiagnosticRules.UseBlockBodyOrExpressionBody,
                         DiagnosticRules.RemoveUnusedMemberDeclaration,
+                        DiagnosticRules.UseImplicitOrExplicitObjectCreation,
                         CommonDiagnosticRules.AnalyzerOptionIsObsolete,
                         CommonDiagnosticRules.RequiredConfigOptionNotSet);
                 }
@@ -127,6 +128,11 @@ namespace Roslynator.CSharp.Analysis
                     if (DiagnosticRules.RemoveUnusedMemberDeclaration.IsEffective(context.Tree, compilationOptions, context.CancellationToken))
                     {
                         context.ReportObsoleteOption(configOptions, LegacyConfigOptions.SuppressUnityScriptMethods, ConfigOptions.SuppressUnityScriptMethods, "true");
+                    }
+
+                    if (DiagnosticRules.UseImplicitOrExplicitObjectCreation.IsEffective(context.Tree, compilationOptions, context.CancellationToken))
+                    {
+                        context.ReportMissingRequiredOption(configOptions, DiagnosticRules.UseImplicitOrExplicitObjectCreation, ConfigOptions.ObjectCreationTypeStyle);
                     }
                 });
             });

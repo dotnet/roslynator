@@ -2437,5 +2437,17 @@ namespace Roslynator.CSharp
             helpLinkUri:        DiagnosticIdentifiers.UnnecessaryNullForgivingOperator, 
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
+        /// <summary>RCS1250</summary>
+        public static readonly DiagnosticDescriptor UseImplicitOrExplicitObjectCreation = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation, 
+            title:              "Use implicit/explicit object creation.", 
+            messageFormat:      "Use {0} object creation.", 
+            category:           DiagnosticCategories.Roslynator, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation, 
+            customTags:         Array.Empty<string>());
+
     }
 }

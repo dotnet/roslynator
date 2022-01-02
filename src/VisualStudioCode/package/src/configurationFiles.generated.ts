@@ -94,6 +94,9 @@ roslynator.null_check_style = equality_operator|pattern_matching
 roslynator.object_creation_parentheses_style = include|omit
 # Applicable to: RCS1050
 
+roslynator.object_creation_type_style = explicit|implicit|implicit_when_type_is_obvious
+# Applicable to: RCS1250
+
 roslynator.prefer_block_body_when_declaration_spans_over_multiple_lines = true|false
 # Applicable to: RCS1016
 
@@ -102,6 +105,9 @@ roslynator.prefer_block_body_when_expression_spans_over_multiple_lines = true|fa
 
 roslynator.prefix_field_identifier_with_underscore = false
 roslynator.suppress_unity_script_methods = true|false
+roslynator.use_var_instead_of_implicit_object_creation = true
+# Applicable to: RCS1250
+
 
 # Analyzers
 
@@ -896,6 +902,9 @@ roslynator.RCS1248.invert = false
 
 # Unnecessary null-forgiving operator
 dotnet_diagnostic.RCS1249.severity = suggestion
+
+# Use implicit/explicit object creation
+dotnet_diagnostic.RCS1250.severity = suggestion
 
 # Use pattern matching
 dotnet_diagnostic.RCS9001.severity = silent

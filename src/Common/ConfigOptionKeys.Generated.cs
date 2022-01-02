@@ -26,9 +26,11 @@ namespace Roslynator
         public const string NewLineBeforeWhileInDoStatement                      = "roslynator.new_line_before_while_in_do_statement";
         public const string NullCheckStyle                                       = "roslynator.null_check_style";
         public const string ObjectCreationParenthesesStyle                       = "roslynator.object_creation_parentheses_style";
+        public const string ObjectCreationTypeStyle                              = "roslynator.object_creation_type_style";
         public const string PreferBlockBodyWhenDeclarationSpansOverMultipleLines = "roslynator.prefer_block_body_when_declaration_spans_over_multiple_lines";
         public const string PreferBlockBodyWhenExpressionSpansOverMultipleLines  = "roslynator.prefer_block_body_when_expression_spans_over_multiple_lines";
         public const string PrefixFieldIdentifierWithUnderscore                  = "roslynator.prefix_field_identifier_with_underscore";
         public const string SuppressUnityScriptMethods                           = "roslynator.suppress_unity_script_methods";
+        public const string UseVarInsteadOfImplicitObjectCreation                = "roslynator.use_var_instead_of_implicit_object_creation";
     }
 }

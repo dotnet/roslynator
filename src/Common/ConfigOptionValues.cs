@@ -18,11 +18,14 @@ namespace Roslynator
         public const string ConditionInConditionalExpressionParenthesesStyle_OmitWhenConditionIsSingleToken = "omit_when_condition_is_single_token";
         public const string EmptyStringStyle_Field = "field";
         public const string EmptyStringStyle_Literal = "literal";
-        public const string EnumHasFlagStyle_Operator = "operator";
         public const string EnumHasFlagStyle_Method = "method";
+        public const string EnumHasFlagStyle_Operator = "operator";
         public const string NullCheckStyle_EqualityOperator = "equality_operator";
         public const string NullCheckStyle_PatternMatching = "pattern_matching";
         public const string ObjectCreationParenthesesStyle_Include = "include";
         public const string ObjectCreationParenthesesStyle_Omit = "omit";
+        public const string ObjectCreationTypeStyle_Explicit = "explicit";
+        public const string ObjectCreationTypeStyle_Implicit = "implicit";
+        public const string ObjectCreationTypeStyle_ImplicitWhenTypeIsObvious = "implicit_when_type_is_obvious";
     }
 }
