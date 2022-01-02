@@ -104,7 +104,10 @@ roslynator.prefer_block_body_when_expression_spans_over_multiple_lines = true|fa
 # Applicable to: RCS1016
 
 roslynator.prefix_field_identifier_with_underscore = false
+
 roslynator.suppress_unity_script_methods = true|false
+# Applicable to: RCS1213
+
 roslynator.use_var_instead_of_implicit_object_creation = true
 # Applicable to: RCS1250
 

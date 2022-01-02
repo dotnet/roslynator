@@ -4500,7 +4500,7 @@ x = "";]]></Before>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
     <ConfigOptions>
-      <Option Key="supress_unity_script_methods" />
+      <Option Key="suppress_unity_script_methods" />
     </ConfigOptions>
     <Options>
       <Option Identifier="SuppressUnityScriptMethods">

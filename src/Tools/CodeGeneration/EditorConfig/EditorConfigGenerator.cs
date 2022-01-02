@@ -34,14 +34,27 @@ namespace Roslynator.CodeGeneration.EditorConfig
                 w.WriteLine("# Options");
                 w.WriteLine();
 
+                var isSeparatedWithNewLine = true;
+
                 foreach (ConfigOptionMetadata option in metadata.ConfigOptions.OrderBy(f => f.Key))
                 {
+                    if (optionMap.TryGetValue(option.Key, out HashSet<AnalyzerMetadata> analyzers)
+                        && !isSeparatedWithNewLine)
+                    {
+                        w.WriteLine();
+                    }
+
                     w.WriteEntry(option.Key, option.DefaultValue ?? option.DefaultValuePlaceholder);
 
-                    if (optionMap.TryGetValue(option.Key, out HashSet<AnalyzerMetadata> analyzers))
+                    if (analyzers?.Count > 0)
                     {
                         w.WriteLine("# Applicable to: " + string.Join(", ", analyzers.OrderBy(f => f.Id).Select(f => f.Id)));
                         w.WriteLine();
+                        isSeparatedWithNewLine = true;
+                    }
+                    else
+                    {
+                        isSeparatedWithNewLine = false;
                     }
                 }
 
