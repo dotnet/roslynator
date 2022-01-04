@@ -255,5 +255,19 @@ class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseHasFlagMethodOrBitwiseOperator)]
+        public async Task TestNoDiagnostic_NotEnumType()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    bool M(int value)
+    {
+        return (value & (value - 1)) == 0;
+    }
+}
+");
+        }
     }
 }
