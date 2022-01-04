@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -7,7 +8,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class OptionValidationAnalyzer : BaseDiagnosticAnalyzer
+    internal sealed class OptionValidationAnalyzer : AbstractOptionValidationAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 
@@ -19,18 +20,17 @@ namespace Roslynator.CSharp.Analysis
                 {
                     Immutable.InterlockedInitialize(
                         ref _supportedDiagnostics,
-                        DiagnosticRules.UseBlockBodyOrExpressionBody,
-                        DiagnosticRules.UseAnonymousFunctionOrMethodGroup,
-                        DiagnosticRules.UseHasFlagMethodOrBitwiseOperator,
-                        DiagnosticRules.ConfigureAwait,
-                        DiagnosticRules.UseEmptyStringLiteralOrStringEmpty,
-                        DiagnosticRules.NormalizeNullCheck,
-                        DiagnosticRules.AddOrRemoveParenthesesFromConditionInConditionalOperator,
-                        DiagnosticRules.IncludeParenthesesWhenCreatingNewObject,
                         DiagnosticRules.AddOrRemoveAccessibilityModifiers,
-                        DiagnosticRules.UseExplicitlyOrImplicitlyTypedArray,
-                        DiagnosticRules.UseBlockBodyOrExpressionBody,
+                        DiagnosticRules.AddOrRemoveParenthesesFromConditionInConditionalOperator,
+                        DiagnosticRules.ConfigureAwait,
+                        DiagnosticRules.IncludeParenthesesWhenCreatingNewObject,
+                        DiagnosticRules.NormalizeNullCheck,
                         DiagnosticRules.RemoveUnusedMemberDeclaration,
+                        DiagnosticRules.UseAnonymousFunctionOrMethodGroup,
+                        DiagnosticRules.UseBlockBodyOrExpressionBody,
+                        DiagnosticRules.UseEmptyStringLiteralOrStringEmpty,
+                        DiagnosticRules.UseExplicitlyOrImplicitlyTypedArray,
+                        DiagnosticRules.UseHasFlagMethodOrBitwiseOperator,
                         DiagnosticRules.UseImplicitOrExplicitObjectCreation,
                         CommonDiagnosticRules.AnalyzerOptionIsObsolete,
                         CommonDiagnosticRules.RequiredConfigOptionNotSet);
@@ -42,100 +42,126 @@ namespace Roslynator.CSharp.Analysis
 
         public override void Initialize(AnalysisContext context)
         {
-            base.Initialize(context);
+            context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
 
-            context.RegisterCompilationStartAction(startContext =>
+            context.RegisterCompilationStartAction(compilationContext =>
             {
-                CompilationOptions compilationOptions = startContext.Compilation.Options;
+                var missingFlags = MissingFlags.None;
+                var obsoleteFlags = ObsoleteFlags.None;
 
-                startContext.RegisterSyntaxTreeAction(context =>
+                CompilationOptions compilationOptions = compilationContext.Compilation.Options;
+
+                compilationContext.RegisterSyntaxTreeAction(context =>
                 {
-                    AnalyzerConfigOptions configOptions = context.GetConfigOptions();
+                    if (compilationOptions.SyntaxTreeOptionsProvider.IsGenerated(context.Tree, compilationContext.CancellationToken) == GeneratedKind.MarkedGenerated)
+                        return;
 
-                    if (DiagnosticRules.UseBlockBodyOrExpressionBody.IsEffective(context.Tree, compilationOptions, context.CancellationToken))
-                    {
-                        context.ReportMissingRequiredOption(configOptions, DiagnosticRules.UseBlockBodyOrExpressionBody, ConfigOptions.BodyStyle);
-                        context.ReportObsoleteOption(configOptions, LegacyConfigOptions.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine, ConfigOptions.PreferBlockBodyWhenDeclarationSpansOverMultipleLines, "true");
-                        context.ReportObsoleteOption(configOptions, LegacyConfigOptions.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine, ConfigOptions.PreferBlockBodyWhenExpressionSpansOverMultipleLines, "true");
-                    }
+                    AnalyzerConfigOptions options = context.GetConfigOptions();
 
-                    if (DiagnosticRules.UseAnonymousFunctionOrMethodGroup.IsEffective(context.Tree, compilationOptions, context.CancellationToken))
-                    {
-                        context.ReportMissingRequiredOption(configOptions, DiagnosticRules.UseAnonymousFunctionOrMethodGroup, ConfigOptions.AnonymousFunctionOrMethodGroup);
-                        context.ReportObsoleteOption(configOptions, LegacyConfigOptions.ConvertMethodGroupToAnonymousFunction, ConfigOptions.AnonymousFunctionOrMethodGroup, ConfigOptionValues.AnonymousFunctionOrMethodGroup_AnonymousFunction);
-                    }
+                    ValidateMissing(ref context, compilationOptions, options, MissingFlags.AddOrRemoveAccessibilityModifiers, ref missingFlags, DiagnosticRules.AddOrRemoveAccessibilityModifiers, ConfigOptions.AccessibilityModifiers);
+                    ValidateMissing(ref context, compilationOptions, options, MissingFlags.AddOrRemoveParenthesesFromConditionInConditionalOperator, ref missingFlags, DiagnosticRules.AddOrRemoveParenthesesFromConditionInConditionalOperator, ConfigOptions.ConditionInConditionalOperatorParenthesesStyle);
+                    ValidateMissing(ref context, compilationOptions, options, MissingFlags.ConfigureAwait, ref missingFlags, DiagnosticRules.ConfigureAwait, ConfigOptions.ConfigureAwait);
+                    ValidateMissing(ref context, compilationOptions, options, MissingFlags.IncludeParenthesesWhenCreatingNewObject, ref missingFlags, DiagnosticRules.IncludeParenthesesWhenCreatingNewObject, ConfigOptions.ObjectCreationParenthesesStyle);
+                    ValidateMissing(ref context, compilationOptions, options, MissingFlags.NormalizeNullCheck, ref missingFlags, DiagnosticRules.NormalizeNullCheck, ConfigOptions.NullCheckStyle);
+                    ValidateMissing(ref context, compilationOptions, options, MissingFlags.UseAnonymousFunctionOrMethodGroup, ref missingFlags, DiagnosticRules.UseAnonymousFunctionOrMethodGroup, ConfigOptions.AnonymousFunctionOrMethodGroup);
+                    ValidateMissing(ref context, compilationOptions, options, MissingFlags.UseBlockBodyOrExpressionBody, ref missingFlags, DiagnosticRules.UseBlockBodyOrExpressionBody, ConfigOptions.BodyStyle);
+                    ValidateMissing(ref context, compilationOptions, options, MissingFlags.UseEmptyStringLiteralOrStringEmpty, ref missingFlags, DiagnosticRules.UseEmptyStringLiteralOrStringEmpty, ConfigOptions.EmptyStringStyle);
+                    ValidateMissing(ref context, compilationOptions, options, MissingFlags.UseExplicitlyOrImplicitlyTypedArray, ref missingFlags, DiagnosticRules.UseExplicitlyOrImplicitlyTypedArray, ConfigOptions.ArrayCreationTypeStyle);
+                    ValidateMissing(ref context, compilationOptions, options, MissingFlags.UseHasFlagMethodOrBitwiseOperator, ref missingFlags, DiagnosticRules.UseHasFlagMethodOrBitwiseOperator, ConfigOptions.EnumHasFlagStyle);
+                    ValidateMissing(ref context, compilationOptions, options, MissingFlags.UseImplicitOrExplicitObjectCreation, ref missingFlags, DiagnosticRules.UseImplicitOrExplicitObjectCreation, ConfigOptions.ObjectCreationTypeStyle);
 
-                    if (DiagnosticRules.UseHasFlagMethodOrBitwiseOperator.IsEffective(context.Tree, compilationOptions, context.CancellationToken))
-                    {
-                        context.ReportMissingRequiredOption(configOptions, DiagnosticRules.UseHasFlagMethodOrBitwiseOperator, ConfigOptions.EnumHasFlagStyle);
-                        context.ReportObsoleteOption(configOptions, LegacyConfigOptions.ConvertBitwiseOperationToHasFlagCall, ConfigOptions.EnumHasFlagStyle, ConfigOptionValues.EnumHasFlagStyle_Method);
-                    }
-
-                    if (DiagnosticRules.ConfigureAwait.IsEffective(context.Tree, compilationOptions, context.CancellationToken))
-                    {
-                        context.ReportMissingRequiredOption(configOptions, DiagnosticRules.ConfigureAwait, ConfigOptions.ConfigureAwait);
-                        context.ReportObsoleteOption(configOptions, LegacyConfigOptions.RemoveCallToConfigureAwait, ConfigOptions.ConfigureAwait, "false");
-                    }
-
-                    if (DiagnosticRules.UseEmptyStringLiteralOrStringEmpty.IsEffective(context.Tree, compilationOptions, context.CancellationToken))
-                    {
-                        context.ReportMissingRequiredOption(configOptions, DiagnosticRules.UseEmptyStringLiteralOrStringEmpty, ConfigOptions.EmptyStringStyle);
-                        context.ReportObsoleteOption(configOptions, LegacyConfigOptions.UseStringEmptyInsteadOfEmptyStringLiteral, ConfigOptions.EmptyStringStyle, ConfigOptionValues.EmptyStringStyle_Field);
-                    }
-
-                    if (DiagnosticRules.NormalizeNullCheck.IsEffective(context.Tree, compilationOptions, context.CancellationToken))
-                    {
-                        context.ReportMissingRequiredOption(configOptions, DiagnosticRules.NormalizeNullCheck, ConfigOptions.NullCheckStyle);
-                        context.ReportObsoleteOption(configOptions, LegacyConfigOptions.UseComparisonInsteadPatternMatchingToCheckForNull, ConfigOptions.NullCheckStyle, ConfigOptionValues.NullCheckStyle_EqualityOperator);
-                    }
-
-                    if (DiagnosticRules.AddOrRemoveParenthesesFromConditionInConditionalOperator.IsEffective(context.Tree, compilationOptions, context.CancellationToken))
-                    {
-                        context.ReportMissingRequiredOption(configOptions, DiagnosticRules.AddOrRemoveParenthesesFromConditionInConditionalOperator, ConfigOptions.ConditionInConditionalOperatorParenthesesStyle);
-                        context.ReportObsoleteOption(configOptions, LegacyConfigOptions.RemoveParenthesesFromConditionOfConditionalExpressionWhenExpressionIsSingleToken, ConfigOptions.ConditionInConditionalOperatorParenthesesStyle, ConfigOptionValues.ConditionInConditionalExpressionParenthesesStyle_OmitWhenConditionIsSingleToken);
-                    }
-
-                    if (DiagnosticRules.IncludeParenthesesWhenCreatingNewObject.IsEffective(context.Tree, compilationOptions, context.CancellationToken))
-                    {
-                        context.ReportMissingRequiredOption(configOptions, DiagnosticRules.IncludeParenthesesWhenCreatingNewObject, ConfigOptions.ObjectCreationParenthesesStyle);
-                        context.ReportObsoleteOption(configOptions, LegacyConfigOptions.RemoveParenthesesWhenCreatingNewObject, ConfigOptions.ObjectCreationParenthesesStyle, ConfigOptionValues.ObjectCreationParenthesesStyle_Omit);
-                    }
-
-                    if (DiagnosticRules.AddOrRemoveAccessibilityModifiers.IsEffective(context.Tree, compilationOptions, context.CancellationToken))
-                    {
-                        context.ReportMissingRequiredOption(configOptions, DiagnosticRules.AddOrRemoveAccessibilityModifiers, ConfigOptions.AccessibilityModifiers);
-                        context.ReportObsoleteOption(configOptions, LegacyConfigOptions.RemoveAccessibilityModifiers, ConfigOptions.AccessibilityModifiers, ConfigOptionValues.AccessibilityModifiers_Implicit);
-                    }
-
-                    if (DiagnosticRules.UseExplicitlyOrImplicitlyTypedArray.IsEffective(context.Tree, compilationOptions, context.CancellationToken))
-                    {
-                        context.ReportMissingRequiredOption(configOptions, DiagnosticRules.UseExplicitlyOrImplicitlyTypedArray, ConfigOptions.ArrayCreationTypeStyle);
-                        context.ReportObsoleteOption(configOptions, LegacyConfigOptions.UseImplicitlyTypedArray, ConfigOptions.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Implicit);
-                        context.ReportObsoleteOption(configOptions, LegacyConfigOptions.UseImplicitlyTypedArrayWhenTypeIsObvious, ConfigOptions.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_ImplicitWhenTypeIsObvious);
-                    }
-
-                    if (DiagnosticRules.UseBlockBodyOrExpressionBody.IsEffective(context.Tree, compilationOptions, context.CancellationToken))
-                    {
-                        context.ReportMissingRequiredOption(configOptions, DiagnosticRules.UseBlockBodyOrExpressionBody, ConfigOptions.BodyStyle);
-                        context.ReportObsoleteOption(configOptions, LegacyConfigOptions.ConvertExpressionBodyToBlockBody, ConfigOptions.BodyStyle, ConfigOptionValues.BodyStyle_Block);
-                    }
-
-                    if (DiagnosticRules.RemoveRedundantEmptyLine.IsEffective(context.Tree, compilationOptions, context.CancellationToken))
-                    {
-                        context.ReportObsoleteOption(configOptions, LegacyConfigOptions.RemoveEmptyLineBetweenClosingBraceAndSwitchSection, ConfigOptions.BlankLineBetweenClosingBraceAndSwitchSection, "false");
-                    }
-
-                    if (DiagnosticRules.RemoveUnusedMemberDeclaration.IsEffective(context.Tree, compilationOptions, context.CancellationToken))
-                    {
-                        context.ReportObsoleteOption(configOptions, LegacyConfigOptions.SuppressUnityScriptMethods, ConfigOptions.SuppressUnityScriptMethods, "true");
-                    }
-
-                    if (DiagnosticRules.UseImplicitOrExplicitObjectCreation.IsEffective(context.Tree, compilationOptions, context.CancellationToken))
-                    {
-                        context.ReportMissingRequiredOption(configOptions, DiagnosticRules.UseImplicitOrExplicitObjectCreation, ConfigOptions.ObjectCreationTypeStyle);
-                    }
+                    ValidateObsolete(ref context, compilationOptions, options, ObsoleteFlags.ConvertBitwiseOperationToHasFlagCall, ref obsoleteFlags, DiagnosticRules.UseHasFlagMethodOrBitwiseOperator, ConfigOptions.EnumHasFlagStyle, LegacyConfigOptions.ConvertBitwiseOperationToHasFlagCall, ConfigOptionValues.EnumHasFlagStyle_Method);
+                    ValidateObsolete(ref context, compilationOptions, options, ObsoleteFlags.ConvertExpressionBodyToBlockBody, ref obsoleteFlags, DiagnosticRules.UseBlockBodyOrExpressionBody, ConfigOptions.BodyStyle, LegacyConfigOptions.ConvertExpressionBodyToBlockBody, ConfigOptionValues.BodyStyle_Block);
+                    ValidateObsolete(ref context, compilationOptions, options, ObsoleteFlags.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine, ref obsoleteFlags, DiagnosticRules.UseBlockBodyOrExpressionBody, ConfigOptions.BodyStyle, LegacyConfigOptions.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine, "true");
+                    ValidateObsolete(ref context, compilationOptions, options, ObsoleteFlags.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine, ref obsoleteFlags, DiagnosticRules.UseBlockBodyOrExpressionBody, ConfigOptions.BodyStyle, LegacyConfigOptions.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine, "true");
+                    ValidateObsolete(ref context, compilationOptions, options, ObsoleteFlags.ConvertMethodGroupToAnonymousFunction, ref obsoleteFlags, DiagnosticRules.UseAnonymousFunctionOrMethodGroup, ConfigOptions.AnonymousFunctionOrMethodGroup, LegacyConfigOptions.ConvertMethodGroupToAnonymousFunction, ConfigOptionValues.AnonymousFunctionOrMethodGroup_AnonymousFunction);
+                    ValidateObsolete(ref context, compilationOptions, options, ObsoleteFlags.RemoveCallToConfigureAwait, ref obsoleteFlags, DiagnosticRules.ConfigureAwait, ConfigOptions.ConfigureAwait, LegacyConfigOptions.RemoveCallToConfigureAwait, "false");
+                    ValidateObsolete(ref context, compilationOptions, options, ObsoleteFlags.RemoveAccessibilityModifiers, ref obsoleteFlags, DiagnosticRules.AddOrRemoveAccessibilityModifiers, ConfigOptions.AccessibilityModifiers, LegacyConfigOptions.RemoveAccessibilityModifiers, ConfigOptionValues.AccessibilityModifiers_Implicit);
+                    ValidateObsolete(ref context, compilationOptions, options, ObsoleteFlags.RemoveEmptyLineBetweenClosingBraceAndSwitchSection, ref obsoleteFlags, DiagnosticRules.RemoveRedundantEmptyLine, ConfigOptions.BlankLineBetweenClosingBraceAndSwitchSection, LegacyConfigOptions.RemoveEmptyLineBetweenClosingBraceAndSwitchSection, "false");
+                    ValidateObsolete(ref context, compilationOptions, options, ObsoleteFlags.RemoveParenthesesFromConditionOfConditionalExpressionWhenExpressionIsSingleToken, ref obsoleteFlags, DiagnosticRules.AddOrRemoveParenthesesFromConditionInConditionalOperator, ConfigOptions.ConditionInConditionalOperatorParenthesesStyle, LegacyConfigOptions.RemoveParenthesesFromConditionOfConditionalExpressionWhenExpressionIsSingleToken, ConfigOptionValues.ConditionInConditionalExpressionParenthesesStyle_OmitWhenConditionIsSingleToken);
+                    ValidateObsolete(ref context, compilationOptions, options, ObsoleteFlags.RemoveParenthesesWhenCreatingNewObject, ref obsoleteFlags, DiagnosticRules.UseImplicitOrExplicitObjectCreation, ConfigOptions.ObjectCreationParenthesesStyle, LegacyConfigOptions.RemoveParenthesesWhenCreatingNewObject, ConfigOptionValues.ObjectCreationParenthesesStyle_Omit);
+                    ValidateObsolete(ref context, compilationOptions, options, ObsoleteFlags.SuppressUnityScriptMethods, ref obsoleteFlags, DiagnosticRules.RemoveUnusedMemberDeclaration, ConfigOptions.SuppressUnityScriptMethods, LegacyConfigOptions.SuppressUnityScriptMethods, "true");
+                    ValidateObsolete(ref context, compilationOptions, options, ObsoleteFlags.UseComparisonInsteadPatternMatchingToCheckForNull, ref obsoleteFlags, DiagnosticRules.NormalizeNullCheck, ConfigOptions.NullCheckStyle, LegacyConfigOptions.UseComparisonInsteadPatternMatchingToCheckForNull, ConfigOptionValues.NullCheckStyle_EqualityOperator);
+                    ValidateObsolete(ref context, compilationOptions, options, ObsoleteFlags.UseImplicitlyTypedArray, ref obsoleteFlags, DiagnosticRules.UseExplicitlyOrImplicitlyTypedArray, ConfigOptions.ArrayCreationTypeStyle, LegacyConfigOptions.UseImplicitlyTypedArray, ConfigOptionValues.ArrayCreationTypeStyle_Implicit);
+                    ValidateObsolete(ref context, compilationOptions, options, ObsoleteFlags.UseImplicitlyTypedArrayWhenTypeIsObvious, ref obsoleteFlags, DiagnosticRules.UseExplicitlyOrImplicitlyTypedArray, ConfigOptions.ArrayCreationTypeStyle, LegacyConfigOptions.UseImplicitlyTypedArrayWhenTypeIsObvious, ConfigOptionValues.ArrayCreationTypeStyle_ImplicitWhenTypeIsObvious);
+                    ValidateObsolete(ref context, compilationOptions, options, ObsoleteFlags.UseStringEmptyInsteadOfEmptyStringLiteral, ref obsoleteFlags, DiagnosticRules.UseEmptyStringLiteralOrStringEmpty, ConfigOptions.EmptyStringStyle, LegacyConfigOptions.UseStringEmptyInsteadOfEmptyStringLiteral, ConfigOptionValues.EmptyStringStyle_Field);
                 });
             });
+        }
+
+        private static void ValidateMissing(
+            ref SyntaxTreeAnalysisContext context,
+            CompilationOptions compilationOptions,
+            AnalyzerConfigOptions configOptions,
+            MissingFlags flag,
+            ref MissingFlags flags,
+            DiagnosticDescriptor analyzer,
+            ConfigOptionDescriptor option)
+        {
+            if (!flags.HasFlag(flag)
+                && analyzer.IsEffective(context.Tree, compilationOptions, context.CancellationToken)
+                && TryReportMissingRequiredOption(context, configOptions, analyzer, option))
+            {
+                flags |= flag;
+            }
+        }
+
+        private static void ValidateObsolete(
+            ref SyntaxTreeAnalysisContext context,
+            CompilationOptions compilationOptions,
+            AnalyzerConfigOptions configOptions,
+            ObsoleteFlags flag,
+            ref ObsoleteFlags flags,
+            DiagnosticDescriptor analyzer,
+            ConfigOptionDescriptor option,
+            LegacyConfigOptionDescriptor legacyOption,
+            string newValue)
+        {
+            if (!flags.HasFlag(flag)
+                && analyzer.IsEffective(context.Tree, compilationOptions, context.CancellationToken)
+                && TryReportObsoleteOption(context, configOptions, legacyOption, option, newValue))
+            {
+                flags |= flag;
+            }
+        }
+
+        [Flags]
+        private enum MissingFlags
+        {
+            None,
+            AddOrRemoveAccessibilityModifiers,
+            AddOrRemoveParenthesesFromConditionInConditionalOperator,
+            ConfigureAwait,
+            IncludeParenthesesWhenCreatingNewObject,
+            NormalizeNullCheck,
+            RemoveUnusedMemberDeclaration,
+            UseAnonymousFunctionOrMethodGroup,
+            UseBlockBodyOrExpressionBody,
+            UseEmptyStringLiteralOrStringEmpty,
+            UseExplicitlyOrImplicitlyTypedArray,
+            UseHasFlagMethodOrBitwiseOperator,
+            UseImplicitOrExplicitObjectCreation,
+        }
+
+        [Flags]
+        private enum ObsoleteFlags
+        {
+            None,
+            ConvertBitwiseOperationToHasFlagCall,
+            ConvertExpressionBodyToBlockBody,
+            ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine,
+            ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine,
+            ConvertMethodGroupToAnonymousFunction,
+            RemoveAccessibilityModifiers,
+            RemoveCallToConfigureAwait,
+            RemoveEmptyLineBetweenClosingBraceAndSwitchSection,
+            RemoveParenthesesFromConditionOfConditionalExpressionWhenExpressionIsSingleToken,
+            RemoveParenthesesWhenCreatingNewObject,
+            SuppressUnityScriptMethods,
+            UseComparisonInsteadPatternMatchingToCheckForNull,
+            UseImplicitlyTypedArray,
+            UseImplicitlyTypedArrayWhenTypeIsObvious,
+            UseStringEmptyInsteadOfEmptyStringLiteral,
         }
     }
 }

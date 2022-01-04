@@ -43,10 +43,12 @@ namespace Roslynator.Formatting.CSharp
             SyntaxToken endOfFile = compilationUnit.EndOfFileToken;
             SyntaxTriviaList.Reversed.Enumerator en = endOfFile.LeadingTrivia.Reverse().GetEnumerator();
 
-            if (!context.TryGetOptionAsBool(ConfigOptions.NewLineAtEndOfFile, out bool preferNewLineAtEndOfFile))
+            bool? preferNewLineAtEndOfFile = context.PreferNewLineAtEndOfFile();
+
+            if (preferNewLineAtEndOfFile == null)
                 return;
 
-            if (!preferNewLineAtEndOfFile)
+            if (preferNewLineAtEndOfFile == false)
             {
                 if (en.MoveNext()
                     && (!en.Current.IsWhitespaceTrivia()

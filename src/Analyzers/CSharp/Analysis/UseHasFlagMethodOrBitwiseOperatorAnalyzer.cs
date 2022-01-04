@@ -37,7 +37,7 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(
                 c =>
                 {
-                    EnumFlagOperationStyle style = c.GetEnumFlagOperationStyle();
+                    EnumFlagOperationStyle style = c.GetEnumHasFlagStyle();
 
                     if (style == EnumFlagOperationStyle.HasFlagMethod)
                         AnalyzeBitwiseAndExpression(c);
@@ -47,7 +47,7 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(
                 c =>
                 {
-                    EnumFlagOperationStyle style = c.GetEnumFlagOperationStyle();
+                    EnumFlagOperationStyle style = c.GetEnumHasFlagStyle();
 
                     if (style == EnumFlagOperationStyle.BitwiseOperator)
                         AnalyzeInvocationExpression(c);

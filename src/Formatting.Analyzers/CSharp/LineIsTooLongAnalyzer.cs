@@ -41,7 +41,7 @@ namespace Roslynator.Formatting
             if (!tree.TryGetText(out SourceText sourceText))
                 return;
 
-            int maxLength = context.Options.GetOptionAsInt(ConfigOptions.MaxLineLength, context.Tree, CodeAnalysisConfig.Instance.MaxLineLength);
+            int maxLength = context.GetConfigOptions().GetMaxLineLength();
 
             if (maxLength <= 0)
                 return;

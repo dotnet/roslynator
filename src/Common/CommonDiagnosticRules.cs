@@ -26,7 +26,7 @@ namespace Roslynator
             messageFormat: "Analyzer option '{0}' is obsolete{1}",
             category: DiagnosticCategories.Roslynator,
             defaultSeverity: DiagnosticSeverity.Warning,
-            isEnabledByDefault: true,
+            isEnabledByDefault: false,
             description: null,
             helpLinkUri: DiagnosticDescriptorUtility.GetHelpLinkUri(CommonDiagnosticIdentifiers.AnalyzerOptionIsObsolete),
             customTags: Array.Empty<string>());
@@ -34,7 +34,7 @@ namespace Roslynator
         public static readonly DiagnosticDescriptor RequiredConfigOptionNotSet = new(
             id: CommonDiagnosticIdentifiers.RequiredConfigOptionNotSet,
             title: "Required option not set for an analyzer",
-            messageFormat: "Required option not set for analyzer {0}, allowed values: {1}",
+            messageFormat: "Required option '{0}' not set for analyzer {1}",
             category: DiagnosticCategories.Roslynator,
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: true,

@@ -1,19 +1,46 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using Microsoft.CodeAnalysis;
+using System.Globalization;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.Configuration;
 using Roslynator.CSharp.CodeStyle;
 
 namespace Roslynator.CSharp
 {
     internal static class CodeStyleExtensions
     {
+        public static int GetMaxLineLength(this AnalyzerConfigOptions configOptions)
+        {
+            if (configOptions.TryGetValue(ConfigOptions.MaxLineLength.Key, out string rawValue)
+                && int.TryParse(rawValue, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, CultureInfo.CurrentCulture, out int intValue))
+            {
+                return intValue;
+            }
+
+            return CodeAnalysisConfig.Instance.MaxLineLength;
+        }
+
+        public static bool? UseVarInsteadOfImplicitObjectCreation(this SyntaxNodeAnalysisContext context)
+        {
+            return ConfigOptions.GetValueAsBool(context.GetConfigOptions(), ConfigOptions.UseVarInsteadOfImplicitObjectCreation);
+        }
+
+        public static bool? PreferNewLineAtEndOfFile(this SyntaxNodeAnalysisContext context)
+        {
+            return context.GetConfigOptions().PreferNewLineAtEndOfFile();
+        }
+
+        public static bool? PreferNewLineAtEndOfFile(this AnalyzerConfigOptions configOptions)
+        {
+            return ConfigOptions.GetValueAsBool(configOptions, ConfigOptions.NewLineAtEndOfFile);
+        }
+
         public static NewLineStyle GetNewLineBeforeWhileInDoStatement(this SyntaxNodeAnalysisContext context)
         {
             AnalyzerConfigOptions configOptions = context.GetConfigOptions();
 
-            if (configOptions.TryGetValueAsBool(ConfigOptions.NewLineBeforeWhileInDoStatement, out bool addNewLine))
+            if (ConfigOptions.TryGetValueAsBool(configOptions, ConfigOptions.NewLineBeforeWhileInDoStatement, out bool addNewLine))
                 return (addNewLine) ? NewLineStyle.Add : NewLineStyle.Remove;
 
             if (configOptions.TryGetValueAsBool(LegacyConfigOptions.RemoveNewLineBetweenClosingBraceAndWhileKeyword, out bool removeLine))
@@ -70,10 +97,10 @@ namespace Roslynator.CSharp
         {
             AnalyzerConfigOptions configOptions = context.GetConfigOptions();
 
-            if (configOptions.TryGetValueAsBool(ConfigOptions.BlankLineBetweenUsingDirectiveGroups, out bool addLine))
+            if (ConfigOptions.TryGetValueAsBool(configOptions, ConfigOptions.BlankLineBetweenUsingDirectiveGroups, out bool addLine))
                 return (addLine) ? BlankLineStyle.Add : BlankLineStyle.Remove;
 
-            if (configOptions.TryGetValueAsBool(LegacyConfigOptions.RemoveEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace, out bool removeLine))
+            if (ConfigOptions.TryGetValueAsBool(configOptions, LegacyConfigOptions.RemoveEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace, out bool removeLine))
                 return (removeLine) ? BlankLineStyle.Remove : BlankLineStyle.Add;
 
             return BlankLineStyle.None;
@@ -83,10 +110,10 @@ namespace Roslynator.CSharp
         {
             AnalyzerConfigOptions configOptions = context.GetConfigOptions();
 
-            if (configOptions.TryGetValueAsBool(ConfigOptions.BlankLineBetweenSingleLineAccessors, out bool addLine))
+            if (ConfigOptions.TryGetValueAsBool(configOptions, ConfigOptions.BlankLineBetweenSingleLineAccessors, out bool addLine))
                 return (addLine) ? BlankLineStyle.Add : BlankLineStyle.Remove;
 
-            if (configOptions.TryGetValueAsBool(LegacyConfigOptions.RemoveEmptyLineBetweenSingleLineAccessors, out bool removeLine))
+            if (ConfigOptions.TryGetValueAsBool(configOptions, LegacyConfigOptions.RemoveEmptyLineBetweenSingleLineAccessors, out bool removeLine))
                 return (removeLine) ? BlankLineStyle.Remove : BlankLineStyle.Add;
 
             return BlankLineStyle.None;
@@ -96,7 +123,7 @@ namespace Roslynator.CSharp
         {
             AnalyzerConfigOptions configOptions = context.GetConfigOptions();
 
-            if (configOptions.TryGetValue(ConfigOptionKeys.AnonymousFunctionOrMethodGroup, out string rawValue))
+            if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.AnonymousFunctionOrMethodGroup, out string rawValue))
             {
                 if (string.Equals(rawValue, ConfigOptionValues.AnonymousFunctionOrMethodGroup_AnonymousFunction, StringComparison.OrdinalIgnoreCase))
                 {
@@ -114,11 +141,11 @@ namespace Roslynator.CSharp
             return null;
         }
 
-        public static EnumFlagOperationStyle GetEnumFlagOperationStyle(this SyntaxNodeAnalysisContext context)
+        public static EnumFlagOperationStyle GetEnumHasFlagStyle(this SyntaxNodeAnalysisContext context)
         {
             AnalyzerConfigOptions configOptions = context.GetConfigOptions();
 
-            if (configOptions.TryGetValue(ConfigOptionKeys.EnumHasFlagStyle, out string rawValue))
+            if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.EnumHasFlagStyle, out string rawValue))
             {
                 if (string.Equals(rawValue, ConfigOptionValues.EnumHasFlagStyle_Method, StringComparison.OrdinalIgnoreCase))
                 {
@@ -140,7 +167,7 @@ namespace Roslynator.CSharp
         {
             AnalyzerConfigOptions configOptions = context.GetConfigOptions();
 
-            if (configOptions.TryGetValueAsBool(ConfigOptions.ConfigureAwait, out bool value))
+            if (ConfigOptions.TryGetValueAsBool(configOptions, ConfigOptions.ConfigureAwait, out bool value))
             {
                 return (value) ? ConfigureAwaitStyle.Include : ConfigureAwaitStyle.Omit;
             }
@@ -155,7 +182,7 @@ namespace Roslynator.CSharp
         {
             AnalyzerConfigOptions configOptions = context.GetConfigOptions();
 
-            if (configOptions.TryGetValue(ConfigOptions.EmptyStringStyle.Key, out string rawValue))
+            if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.EmptyStringStyle, out string rawValue))
             {
                 if (string.Equals(rawValue, ConfigOptionValues.EmptyStringStyle_Field, StringComparison.OrdinalIgnoreCase))
                     return EmptyStringStyle.Field;
@@ -174,7 +201,7 @@ namespace Roslynator.CSharp
         {
             AnalyzerConfigOptions configOptions = context.GetConfigOptions();
 
-            if (configOptions.TryGetValue(ConfigOptions.NullCheckStyle.Key, out string rawValue))
+            if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.NullCheckStyle, out string rawValue))
             {
                 if (string.Equals(rawValue, ConfigOptionValues.NullCheckStyle_EqualityOperator, StringComparison.OrdinalIgnoreCase))
                     return NullCheckStyle.EqualityOperator;
@@ -193,7 +220,7 @@ namespace Roslynator.CSharp
         {
             AnalyzerConfigOptions configOptions = context.GetConfigOptions();
 
-            if (configOptions.TryGetValue(ConfigOptionKeys.ConditionInConditionalOperatorParenthesesStyle, out string rawValue))
+            if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.ConditionInConditionalOperatorParenthesesStyle, out string rawValue))
             {
                 if (string.Equals(rawValue, ConfigOptionValues.ConditionInConditionalExpressionParenthesesStyle_Include, StringComparison.OrdinalIgnoreCase))
                 {
@@ -219,7 +246,7 @@ namespace Roslynator.CSharp
         {
             AnalyzerConfigOptions configOptions = context.GetConfigOptions();
 
-            if (configOptions.TryGetValue(ConfigOptionKeys.ObjectCreationParenthesesStyle, out string rawValue))
+            if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.ObjectCreationParenthesesStyle, out string rawValue))
             {
                 if (string.Equals(rawValue, ConfigOptionValues.ObjectCreationParenthesesStyle_Include, StringComparison.OrdinalIgnoreCase))
                 {
@@ -241,7 +268,7 @@ namespace Roslynator.CSharp
         {
             AnalyzerConfigOptions configOptions = context.GetConfigOptions();
 
-            if (configOptions.TryGetValue(ConfigOptionKeys.AccessibilityModifiers, out string rawValue))
+            if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.AccessibilityModifiers, out string rawValue))
             {
                 if (string.Equals(rawValue, ConfigOptionValues.AccessibilityModifiers_Explicit, StringComparison.OrdinalIgnoreCase))
                 {
@@ -253,7 +280,7 @@ namespace Roslynator.CSharp
                 }
             }
 
-            if (configOptions.TryGetValueAsBool(LegacyConfigOptions.RemoveAccessibilityModifiers, out bool useImplicit))
+            if (ConfigOptions.TryGetValueAsBool(configOptions, LegacyConfigOptions.RemoveAccessibilityModifiers, out bool useImplicit))
                 return (useImplicit) ? AccessibilityModifierStyle.Implicit : AccessibilityModifierStyle.Explicit;
 
             return AccessibilityModifierStyle.None;
@@ -263,7 +290,7 @@ namespace Roslynator.CSharp
         {
             AnalyzerConfigOptions configOptions = context.GetConfigOptions();
 
-            if (configOptions.TryGetValue(ConfigOptionKeys.ObjectCreationTypeStyle, out string rawValue))
+            if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.ObjectCreationTypeStyle, out string rawValue))
             {
                 if (string.Equals(rawValue, ConfigOptionValues.ObjectCreationTypeStyle_Implicit, StringComparison.OrdinalIgnoreCase))
                 {
@@ -286,7 +313,7 @@ namespace Roslynator.CSharp
         {
             AnalyzerConfigOptions configOptions = context.GetConfigOptions();
 
-            if (configOptions.TryGetValue(ConfigOptionKeys.ArrayCreationTypeStyle, out string rawValue))
+            if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.ArrayCreationTypeStyle, out string rawValue))
             {
                 if (string.Equals(rawValue, ConfigOptionValues.ArrayCreationTypeStyle_Implicit, StringComparison.OrdinalIgnoreCase))
                 {
@@ -318,7 +345,7 @@ namespace Roslynator.CSharp
 
         public static bool? GetBlankLineBetweenClosingBraceAndSwitchSection(this SyntaxNodeAnalysisContext context)
         {
-            if (context.TryGetOptionAsBool(ConfigOptions.BlankLineBetweenClosingBraceAndSwitchSection, out bool value))
+            if (ConfigOptions.TryGetValueAsBool(context.GetConfigOptions(), ConfigOptions.BlankLineBetweenClosingBraceAndSwitchSection, out bool value))
             {
                 return value;
             }
@@ -331,7 +358,7 @@ namespace Roslynator.CSharp
 
         public static bool? GetSuppressUnityScriptMethods(this SyntaxNodeAnalysisContext context)
         {
-            if (context.TryGetOptionAsBool(ConfigOptions.SuppressUnityScriptMethods, out bool value))
+            if (ConfigOptions.TryGetValueAsBool(context.GetConfigOptions(), ConfigOptions.SuppressUnityScriptMethods, out bool value))
             {
                 return value;
             }
@@ -367,7 +394,7 @@ namespace Roslynator.CSharp
             ConfigOptionDescriptor option,
             out NewLinePosition newLinePosition)
         {
-            if (configOptions.TryGetValue(option.Key, out string rawValue))
+            if (ConfigOptions.TryGetValue(configOptions, option, out string rawValue))
             {
                 if (string.Equals(rawValue, "before", StringComparison.OrdinalIgnoreCase))
                 {
@@ -383,53 +410,6 @@ namespace Roslynator.CSharp
 
             newLinePosition = NewLinePosition.None;
             return false;
-        }
-
-        internal static void ReportObsoleteOption(
-            this SyntaxTreeAnalysisContext context,
-            AnalyzerConfigOptions configOptions,
-            LegacyConfigOptionDescriptor legacyOption,
-            ConfigOptionDescriptor newOption,
-            string newValue)
-        {
-            if (configOptions.IsEnabled(legacyOption))
-                context.ReportObsoleteOption(legacyOption, newOption, newValue);
-        }
-
-        internal static void ReportObsoleteOption(
-            this SyntaxTreeAnalysisContext context,
-            LegacyConfigOptionDescriptor legacyOption,
-            ConfigOptionDescriptor newOption,
-            string newValue)
-        {
-            context.ReportDiagnostic(
-                CommonDiagnosticRules.AnalyzerOptionIsObsolete,
-                Location.None,
-                legacyOption.Key,
-                $", use option '{newOption.Key} = {newValue}' instead");
-        }
-
-        internal static void ReportMissingRequiredOption(
-            this SyntaxTreeAnalysisContext context,
-            AnalyzerConfigOptions configOptions,
-            DiagnosticDescriptor descriptor,
-            ConfigOptionDescriptor option)
-        {
-            if (!configOptions.ContainsKey(option))
-                ReportMissingRequiredOption(context, descriptor);
-        }
-
-        internal static void ReportMissingRequiredOption(
-            this SyntaxTreeAnalysisContext context,
-            DiagnosticDescriptor descriptor)
-        {
-            Diagnostic diagnostic = Diagnostic.Create(
-                CommonDiagnosticRules.RequiredConfigOptionNotSet,
-                Location.None,
-                descriptor.Id,
-                ConfigOptions.GetRequiredOptions(descriptor));
-
-            context.ReportDiagnostic(diagnostic);
         }
     }
 }

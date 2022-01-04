@@ -9,22 +9,22 @@ namespace Roslynator.CSharp.CodeStyle
     {
         private readonly BodyStyleOption _option;
 
-        private BodyStyle(BodyStyleOption option, bool useBlockWhenDeclarationIsMultiLine, bool useBlockWhenExpressionIsMultiLine)
+        private BodyStyle(BodyStyleOption option, bool? useBlockWhenDeclarationIsMultiLine, bool? useBlockWhenExpressionIsMultiLine)
         {
             _option = option;
             UseBlockWhenDeclarationIsMultiLine = useBlockWhenDeclarationIsMultiLine;
             UseBlockWhenExpressionIsMultiLine = useBlockWhenExpressionIsMultiLine;
         }
 
-        public bool IsDefault => _option == BodyStyleOption.None && !UseBlockWhenDeclarationIsMultiLine && !UseBlockWhenExpressionIsMultiLine;
+        public bool IsDefault => _option == BodyStyleOption.None && UseBlockWhenDeclarationIsMultiLine == null && UseBlockWhenExpressionIsMultiLine == null;
 
         public bool UseExpression => _option == BodyStyleOption.Expression;
 
         public bool UseBlock => _option == BodyStyleOption.Block;
 
-        public bool UseBlockWhenDeclarationIsMultiLine { get; }
+        public bool? UseBlockWhenDeclarationIsMultiLine { get; }
 
-        public bool UseBlockWhenExpressionIsMultiLine { get; }
+        public bool? UseBlockWhenExpressionIsMultiLine { get; }
 
         public static BodyStyle Create(SyntaxNodeAnalysisContext context)
         {
@@ -32,7 +32,7 @@ namespace Roslynator.CSharp.CodeStyle
 
             var option = BodyStyleOption.None;
 
-            if (configOptions.TryGetValue(ConfigOptionKeys.BodyStyle, out string rawValue))
+            if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.BodyStyle, out string rawValue))
             {
                 if (string.Equals(rawValue, ConfigOptionValues.BodyStyle_Block, StringComparison.OrdinalIgnoreCase))
                 {
@@ -48,13 +48,13 @@ namespace Roslynator.CSharp.CodeStyle
                 option = (useBlockBody) ? BodyStyleOption.Block : BodyStyleOption.Expression;
             }
 
-            bool useBlockBodyWhenDeclarationIsMultiLine = configOptions.IsEnabled(ConfigOptions.PreferBlockBodyWhenDeclarationSpansOverMultipleLines)
-                || configOptions.IsEnabled(LegacyConfigOptions.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine);
+            bool? useBlockBodyWhenDeclarationIsMultiLine = ConfigOptions.GetValueAsBool(configOptions, ConfigOptions.PreferBlockBodyWhenDeclarationSpansOverMultipleLines)
+                ?? (bool?)configOptions.IsEnabled(LegacyConfigOptions.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine);
 
-            bool UseBlockBodyWhenExpressionIsMultiline = configOptions.IsEnabled(ConfigOptions.PreferBlockBodyWhenExpressionSpansOverMultipleLines)
-                || configOptions.IsEnabled(LegacyConfigOptions.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine);
+            bool? useBlockBodyWhenExpressionIsMultiline = ConfigOptions.GetValueAsBool(configOptions, ConfigOptions.PreferBlockBodyWhenExpressionSpansOverMultipleLines)
+                ?? (bool?)configOptions.IsEnabled(LegacyConfigOptions.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine);
 
-            return new BodyStyle(option, useBlockBodyWhenDeclarationIsMultiLine, UseBlockBodyWhenExpressionIsMultiline);
+            return new BodyStyle(option, useBlockBodyWhenDeclarationIsMultiLine, useBlockBodyWhenExpressionIsMultiline);
         }
 
         internal enum BodyStyleOption

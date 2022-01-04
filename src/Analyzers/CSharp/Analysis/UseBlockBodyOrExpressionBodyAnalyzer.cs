@@ -79,7 +79,7 @@ namespace Roslynator.CSharp.Analysis
                 if (style.UseBlock)
                     return;
 
-                if (style.UseBlockWhenDeclarationIsMultiLine
+                if (style.UseBlockWhenDeclarationIsMultiLine == true
                     && methodDeclaration.SyntaxTree.IsMultiLineSpan(methodDeclaration.HeaderSpan()))
                 {
                     return;
@@ -104,14 +104,14 @@ namespace Roslynator.CSharp.Analysis
                         return;
                     }
 
-                    if (style.UseBlockWhenDeclarationIsMultiLine
+                    if (style.UseBlockWhenDeclarationIsMultiLine == true
                         && methodDeclaration.SyntaxTree.IsMultiLineSpan(methodDeclaration.HeaderSpan()))
                     {
                         ReportDiagnostic(context, expressionBody);
                         return;
                     }
 
-                    if (style.UseBlockWhenExpressionIsMultiLine
+                    if (style.UseBlockWhenExpressionIsMultiLine == true
                         && expressionBody.Expression?.IsMultiLine() == true)
                     {
                         ReportDiagnostic(context, expressionBody);
@@ -139,14 +139,14 @@ namespace Roslynator.CSharp.Analysis
                     return;
                 }
 
-                if (style.UseBlockWhenDeclarationIsMultiLine
+                if (style.UseBlockWhenDeclarationIsMultiLine == true
                     && propertyDeclaration.SyntaxTree.IsMultiLineSpan(propertyDeclaration.HeaderSpan()))
                 {
                     ReportDiagnostic(context, expressionBody);
                     return;
                 }
 
-                if (style.UseBlockWhenExpressionIsMultiLine
+                if (style.UseBlockWhenExpressionIsMultiLine == true
                     && expressionBody.Expression?.IsMultiLine() == true)
                 {
                     ReportDiagnostic(context, expressionBody);
@@ -173,14 +173,14 @@ namespace Roslynator.CSharp.Analysis
                     return;
                 }
 
-                if (style.UseBlockWhenDeclarationIsMultiLine
+                if (style.UseBlockWhenDeclarationIsMultiLine == true
                     && indexerDeclaration.SyntaxTree.IsMultiLineSpan(indexerDeclaration.HeaderSpan()))
                 {
                     ReportDiagnostic(context, expressionBody);
                     return;
                 }
 
-                if (style.UseBlockWhenExpressionIsMultiLine
+                if (style.UseBlockWhenExpressionIsMultiLine == true
                     && expressionBody.Expression?.IsMultiLine() == true)
                 {
                     ReportDiagnostic(context, expressionBody);
@@ -211,7 +211,7 @@ namespace Roslynator.CSharp.Analysis
                 if (style.UseBlock)
                     return;
 
-                if (style.UseBlockWhenDeclarationIsMultiLine
+                if (style.UseBlockWhenDeclarationIsMultiLine == true
                     && operatorDeclaration.SyntaxTree.IsMultiLineSpan(operatorDeclaration.HeaderSpan()))
                 {
                     return;
@@ -236,14 +236,14 @@ namespace Roslynator.CSharp.Analysis
                         return;
                     }
 
-                    if (style.UseBlockWhenDeclarationIsMultiLine
+                    if (style.UseBlockWhenDeclarationIsMultiLine == true
                         && operatorDeclaration.SyntaxTree.IsMultiLineSpan(operatorDeclaration.HeaderSpan()))
                     {
                         ReportDiagnostic(context, expressionBody);
                         return;
                     }
 
-                    if (style.UseBlockWhenExpressionIsMultiLine
+                    if (style.UseBlockWhenExpressionIsMultiLine == true
                         && expressionBody.Expression?.IsMultiLine() == true)
                     {
                         ReportDiagnostic(context, expressionBody);
@@ -275,7 +275,7 @@ namespace Roslynator.CSharp.Analysis
                 if (style.UseBlock)
                     return;
 
-                if (style.UseBlockWhenDeclarationIsMultiLine
+                if (style.UseBlockWhenDeclarationIsMultiLine == true
                     && operatorDeclaration.SyntaxTree.IsMultiLineSpan(operatorDeclaration.HeaderSpan()))
                 {
                     return;
@@ -300,14 +300,14 @@ namespace Roslynator.CSharp.Analysis
                         return;
                     }
 
-                    if (style.UseBlockWhenDeclarationIsMultiLine
+                    if (style.UseBlockWhenDeclarationIsMultiLine == true
                         && operatorDeclaration.SyntaxTree.IsMultiLineSpan(operatorDeclaration.HeaderSpan()))
                     {
                         ReportDiagnostic(context, expressionBody);
                         return;
                     }
 
-                    if (style.UseBlockWhenExpressionIsMultiLine
+                    if (style.UseBlockWhenExpressionIsMultiLine == true
                         && expressionBody.Expression?.IsMultiLine() == true)
                     {
                         ReportDiagnostic(context, expressionBody);
@@ -339,7 +339,7 @@ namespace Roslynator.CSharp.Analysis
                 if (style.UseBlock)
                     return;
 
-                if (style.UseBlockWhenDeclarationIsMultiLine
+                if (style.UseBlockWhenDeclarationIsMultiLine == true
                     && constructorDeclaration.SyntaxTree.IsMultiLineSpan(constructorDeclaration.HeaderSpan()))
                 {
                     return;
@@ -364,14 +364,14 @@ namespace Roslynator.CSharp.Analysis
                         return;
                     }
 
-                    if (style.UseBlockWhenDeclarationIsMultiLine
+                    if (style.UseBlockWhenDeclarationIsMultiLine == true
                         && constructorDeclaration.SyntaxTree.IsMultiLineSpan(constructorDeclaration.HeaderSpan()))
                     {
                         ReportDiagnostic(context, expressionBody);
                         return;
                     }
 
-                    if (style.UseBlockWhenExpressionIsMultiLine
+                    if (style.UseBlockWhenExpressionIsMultiLine == true
                         && expressionBody.Expression?.IsMultiLine() == true)
                     {
                         ReportDiagnostic(context, expressionBody);
@@ -403,7 +403,7 @@ namespace Roslynator.CSharp.Analysis
                 if (style.UseBlock)
                     return;
 
-                if (style.UseBlockWhenDeclarationIsMultiLine
+                if (style.UseBlockWhenDeclarationIsMultiLine == true
                     && destructorDeclaration.SyntaxTree.IsMultiLineSpan(destructorDeclaration.HeaderSpan()))
                 {
                     return;
@@ -428,14 +428,14 @@ namespace Roslynator.CSharp.Analysis
                         return;
                     }
 
-                    if (style.UseBlockWhenDeclarationIsMultiLine
+                    if (style.UseBlockWhenDeclarationIsMultiLine == true
                         && destructorDeclaration.SyntaxTree.IsMultiLineSpan(destructorDeclaration.HeaderSpan()))
                     {
                         ReportDiagnostic(context, expressionBody);
                         return;
                     }
 
-                    if (style.UseBlockWhenExpressionIsMultiLine
+                    if (style.UseBlockWhenExpressionIsMultiLine == true
                         && expressionBody.Expression?.IsMultiLine() == true)
                     {
                         ReportDiagnostic(context, expressionBody);
@@ -467,7 +467,7 @@ namespace Roslynator.CSharp.Analysis
                 if (style.UseBlock)
                     return;
 
-                if (style.UseBlockWhenDeclarationIsMultiLine
+                if (style.UseBlockWhenDeclarationIsMultiLine == true
                     && localFunction.SyntaxTree.IsMultiLineSpan(localFunction.HeaderSpan()))
                 {
                     return;
@@ -492,14 +492,14 @@ namespace Roslynator.CSharp.Analysis
                         return;
                     }
 
-                    if (style.UseBlockWhenDeclarationIsMultiLine
+                    if (style.UseBlockWhenDeclarationIsMultiLine == true
                         && localFunction.SyntaxTree.IsMultiLineSpan(localFunction.HeaderSpan()))
                     {
                         ReportDiagnostic(context, expressionBody);
                         return;
                     }
 
-                    if (style.UseBlockWhenExpressionIsMultiLine
+                    if (style.UseBlockWhenExpressionIsMultiLine == true
                         && expressionBody.Expression?.IsMultiLine() == true)
                     {
                         ReportDiagnostic(context, expressionBody);
@@ -535,7 +535,7 @@ namespace Roslynator.CSharp.Analysis
                         return;
                     }
 
-                    if (style.UseBlockWhenExpressionIsMultiLine
+                    if (style.UseBlockWhenExpressionIsMultiLine == true
                         && expressionBody.Expression?.IsMultiLine() == true)
                     {
                         ReportDiagnostic(context, expressionBody);
@@ -572,7 +572,7 @@ namespace Roslynator.CSharp.Analysis
             if (style.UseBlock)
                 return;
 
-            if (style.UseBlockWhenExpressionIsMultiLine
+            if (style.UseBlockWhenExpressionIsMultiLine == true
                 && expression.IsMultiLine())
             {
                 return;
@@ -591,7 +591,7 @@ namespace Roslynator.CSharp.Analysis
                 if (!SyntaxTriviaAnalysis.IsExteriorTriviaEmptyOrWhitespace(body.OpenBraceToken))
                     return;
 
-                if (style.UseBlockWhenDeclarationIsMultiLine)
+                if (style.UseBlockWhenDeclarationIsMultiLine == true)
                 {
                     switch (accessorList.Parent.Kind())
                     {
@@ -637,7 +637,7 @@ namespace Roslynator.CSharp.Analysis
 
         private static void AnalyzeBlock(SyntaxNodeAnalysisContext context, BlockSyntax block, BlockExpressionAnalysis analysis, BodyStyle style)
         {
-            if (style.UseBlockWhenExpressionIsMultiLine
+            if (style.UseBlockWhenExpressionIsMultiLine == true
                 && analysis.Expression.IsMultiLine())
             {
                 return;

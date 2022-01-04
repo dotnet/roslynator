@@ -94,7 +94,6 @@
 	<Description>Prefer block body when expression spans over multiple lines</Description>
   </Option>
   <Option Id="PrefixFieldIdentifierWithUnderscore">
-    <DefaultValue>false</DefaultValue>
     <ValuePlaceholder>true|false</ValuePlaceholder>
     <Description>Prefix field identifier with underscore</Description>
   </Option>
@@ -103,7 +102,6 @@
 	<Description>Suppress Unity script methods</Description>
   </Option>
   <Option Id="UseVarInsteadOfImplicitObjectCreation">
-	<DefaultValue>true</DefaultValue>
 	<ValuePlaceholder>true|false</ValuePlaceholder>
 	<Description>Use 'var' instead of implicit object creation</Description>
   </Option>

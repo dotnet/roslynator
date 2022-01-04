@@ -84,7 +84,7 @@ namespace Roslynator.CSharp.Analysis
                                 }
                                 else if (parent.IsParentKind(SyntaxKind.LocalDeclarationStatement, SyntaxKind.UsingStatement))
                                 {
-                                    if (!UseVarInsteadOfImplicitObjectCreation(context))
+                                    if (context.UseVarInsteadOfImplicitObjectCreation() == false)
                                     {
                                         if (variableDeclaration.Type.IsVar)
                                         {
@@ -252,7 +252,7 @@ namespace Roslynator.CSharp.Analysis
                                 else if (parent.IsParentKind(SyntaxKind.LocalDeclarationStatement, SyntaxKind.UsingStatement)
                                     && variableDeclaration.Variables.Count == 1
                                     && !variableDeclaration.Type.IsVar
-                                    && UseVarInsteadOfImplicitObjectCreation(context))
+                                    && context.UseVarInsteadOfImplicitObjectCreation() == true)
                                 {
                                     DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseImplicitOrExplicitObjectCreation, variableDeclaration, "explicit");
                                 }
@@ -354,11 +354,6 @@ namespace Roslynator.CSharp.Analysis
                     }
 #endif
             }
-        }
-
-        private static bool UseVarInsteadOfImplicitObjectCreation(SyntaxNodeAnalysisContext context)
-        {
-            return context.IsEnabled(ConfigOptions.UseVarInsteadOfImplicitObjectCreation);
         }
 
         private static bool UseExplicitObjectCreation(SyntaxNodeAnalysisContext context)

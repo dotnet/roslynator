@@ -57,12 +57,15 @@ namespace Roslynator.CodeGeneration.CSharp
 
                                                     Debug.Assert(mismatch.Key == null, mismatch.Key);
 
-                                                    IEnumerable<string> optionIdentifiers = f.keys
+                                                    string[] optionIdentifiers = f.keys
                                                         .Select(f => options.Single(o => o.Key == f.Key))
-                                                        .Select(f => $"ConfigOptionKeys.{f.Id}");
+                                                        .Select(f => $"ConfigOptionKeys.{f.Id}")
+                                                        .ToArray();
+
+                                                    Debug.Assert(optionIdentifiers.Length == 1, string.Join(", ", optionIdentifiers));
 
                                                     return YieldReturnStatement(
-                                                        ParseExpression($"new KeyValuePair<string, string>(\"{f.id}\", JoinOptionKeys({string.Join(", ", optionIdentifiers)}))"));
+                                                        ParseExpression($"new KeyValuePair<string, string>(\"{f.id}\", {optionIdentifiers[0]})"));
                                                 })))
                                 })
                             .ToSyntaxList())));
