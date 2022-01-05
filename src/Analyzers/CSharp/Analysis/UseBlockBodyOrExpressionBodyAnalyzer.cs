@@ -643,6 +643,9 @@ namespace Roslynator.CSharp.Analysis
                 return;
             }
 
+            if (!style.UseExpression)
+                return;
+
             if (!SyntaxTriviaAnalysis.IsExteriorTriviaEmptyOrWhitespace(block.OpenBraceToken))
                 return;
 

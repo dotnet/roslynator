@@ -48,11 +48,21 @@ namespace Roslynator.CSharp.CodeStyle
                 option = (useBlockBody) ? BodyStyleOption.Block : BodyStyleOption.Expression;
             }
 
-            bool? useBlockBodyWhenDeclarationIsMultiLine = ConfigOptions.GetValueAsBool(configOptions, ConfigOptions.PreferBlockBodyWhenDeclarationSpansOverMultipleLines)
-                ?? (bool?)configOptions.IsEnabled(LegacyConfigOptions.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine);
+            bool? useBlockBodyWhenDeclarationIsMultiLine = null;
 
-            bool? useBlockBodyWhenExpressionIsMultiline = ConfigOptions.GetValueAsBool(configOptions, ConfigOptions.PreferBlockBodyWhenExpressionSpansOverMultipleLines)
-                ?? (bool?)configOptions.IsEnabled(LegacyConfigOptions.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine);
+            if (ConfigOptions.GetValueAsBool(configOptions, ConfigOptions.PreferBlockBodyWhenDeclarationSpansOverMultipleLines) == true
+                || configOptions.IsEnabled(LegacyConfigOptions.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine))
+            {
+                useBlockBodyWhenDeclarationIsMultiLine = true;
+            }
+
+            bool? useBlockBodyWhenExpressionIsMultiline = null;
+
+            if (ConfigOptions.GetValueAsBool(configOptions, ConfigOptions.PreferBlockBodyWhenExpressionSpansOverMultipleLines) == true
+                || configOptions.IsEnabled(LegacyConfigOptions.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine))
+            {
+                useBlockBodyWhenExpressionIsMultiline = true;
+            }
 
             return new BodyStyle(option, useBlockBodyWhenDeclarationIsMultiLine, useBlockBodyWhenExpressionIsMultiline);
         }
