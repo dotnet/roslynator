@@ -30,8 +30,6 @@ namespace Roslynator.Testing.CSharp
         {
             var code = TestCode.Parse(source);
 
-            Debug.Assert(code.Spans.Length > 0);
-
             var data = new DiagnosticTestData(
                 Descriptor,
                 code.Value,
@@ -53,8 +51,6 @@ namespace Roslynator.Testing.CSharp
             CancellationToken cancellationToken = default)
         {
             var code = TestCode.Parse(source, sourceData);
-
-            Debug.Assert(code.Spans.Length > 0);
 
             var data = new DiagnosticTestData(
                 Descriptor,
@@ -159,8 +155,6 @@ namespace Roslynator.Testing.CSharp
         {
             var code = TestCode.Parse(source);
 
-            Debug.Assert(code.Spans.Length > 0);
-
             var expected = ExpectedTestState.Parse(expectedSource);
 
             var data = new DiagnosticTestData(
@@ -183,8 +177,6 @@ namespace Roslynator.Testing.CSharp
         {
             var code = TestCode.Parse(source);
 
-            Debug.Assert(code.Spans.Length > 0);
-
             var data = new DiagnosticTestData(
                 Descriptor,
                 code.Value,
@@ -206,8 +198,6 @@ namespace Roslynator.Testing.CSharp
             CancellationToken cancellationToken = default)
         {
             var code = TestCode.Parse(source, sourceData, expectedData);
-
-            Debug.Assert(code.Spans.Length > 0);
 
             var expected = ExpectedTestState.Parse(code.ExpectedValue);
 
