@@ -17,7 +17,7 @@ namespace Roslynator
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: true,
             description: null,
-            helpLinkUri: DiagnosticDescriptorUtility.GetHelpLinkUri(CommonDiagnosticIdentifiers.AnalyzerIsObsolete),
+            helpLinkUri: null,
             customTags: Array.Empty<string>());
 
         public static readonly DiagnosticDescriptor AnalyzerOptionIsObsolete = new(
@@ -28,7 +28,7 @@ namespace Roslynator
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: false,
             description: null,
-            helpLinkUri: DiagnosticDescriptorUtility.GetHelpLinkUri(CommonDiagnosticIdentifiers.AnalyzerOptionIsObsolete),
+            helpLinkUri: null,
             customTags: Array.Empty<string>());
 
         public static readonly DiagnosticDescriptor RequiredConfigOptionNotSet = new(
@@ -39,7 +39,7 @@ namespace Roslynator
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: true,
             description: null,
-            helpLinkUri: DiagnosticDescriptorUtility.GetHelpLinkUri(CommonDiagnosticIdentifiers.RequiredConfigOptionNotSet),
+            helpLinkUri: null,
             customTags: Array.Empty<string>());
     }
 }
