@@ -30,16 +30,16 @@ is_global = true
 #dotnet_diagnostic.<ANALYZER_ID>.severity = default|none|silent|suggestion|warning|error
 
 ## Enable/disable all refactorings
-#roslynator.refactorings.enabled = true|false
+#roslynator_refactorings.enabled = true|false
 
 ## Enable/disable specific refactoring
-#roslynator.refactoring.<REFACTORING_NAME>.enabled = true|false
+#roslynator_refactoring.<REFACTORING_NAME>.enabled = true|false
 
 ## Enable/disable all fixes for compiler diagnostics
-#roslynator.compiler_diagnostic_fixes.enabled = true|false
+#roslynator_compiler_diagnostic_fixes.enabled = true|false
 
 ## Enable/disable fix for a specific compiler diagnostics
-#roslynator.compiler_diagnostic_fix.<COMPILER_DIAGNOSTIC_ID>.enabled = true|false
+#roslynator_compiler_diagnostic_fix.<COMPILER_DIAGNOSTIC_ID>.enabled = true|false
 ";
 
         internal static EditorConfigCodeAnalysisConfig Empty { get; } = new();

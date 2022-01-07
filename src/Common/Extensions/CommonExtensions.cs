@@ -117,9 +117,14 @@ namespace Roslynator
 
         internal static bool TryGetValueAsBool(this AnalyzerConfigOptions analyzerConfigOptions, ConfigOptionDescriptor option, out bool value)
         {
+            return TryGetValueAsBool(analyzerConfigOptions, option.Key, out value);
+        }
+
+        internal static bool TryGetValueAsBool(this AnalyzerConfigOptions analyzerConfigOptions, string key, out bool value)
+        {
             value = false;
 
-            return analyzerConfigOptions.TryGetValue(option.Key, out string rawValue)
+            return analyzerConfigOptions.TryGetValue(key, out string rawValue)
                 && bool.TryParse(rawValue, out value);
         }
 

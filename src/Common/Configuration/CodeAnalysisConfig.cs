@@ -65,6 +65,12 @@ namespace Roslynator.Configuration
 
             VisualStudioConfig = visualStudioConfig ?? VisualStudioCodeAnalysisConfig.Empty;
 
+            if (_editorConfigBoolOptions.TryGetValue(ConfigOptionKeys.RefactoringsEnabled, out bool refactoringsEnabled))
+                RefactoringsEnabled = refactoringsEnabled;
+
+            if (_editorConfigBoolOptions.TryGetValue(ConfigOptionKeys.CompilerDiagnosticFixesEnabled, out bool compilerDiagnosticFixesEnabled))
+                CompilerDiagnosticFixesEnabled = compilerDiagnosticFixesEnabled;
+
             bool? prefixFieldIdentifierWithUnderscore = XmlConfig.PrefixFieldIdentifierWithUnderscore;
 
             if (EditorConfig.PrefixFieldIdentifierWithUnderscore != null)
@@ -73,14 +79,10 @@ namespace Roslynator.Configuration
             if (VisualStudioConfig.PrefixFieldIdentifierWithUnderscore != ConfigOptionDefaultValues.PrefixFieldIdentifierWithUnderscore)
                 prefixFieldIdentifierWithUnderscore = VisualStudioConfig.PrefixFieldIdentifierWithUnderscore;
 
-            PrefixFieldIdentifierWithUnderscore = prefixFieldIdentifierWithUnderscore ?? ConfigOptionDefaultValues.PrefixFieldIdentifierWithUnderscore;
-
             int? maxLineLength = XmlConfig.MaxLineLength;
 
             if (EditorConfig.MaxLineLength != null)
                 maxLineLength = EditorConfig.MaxLineLength;
-
-            MaxLineLength = maxLineLength ?? ConfigOptionDefaultValues.MaxLineLength;
 
             var refactorings = new Dictionary<string, bool>();
             SetRefactorings(refactorings, XmlConfig.Refactorings);
@@ -113,9 +115,13 @@ namespace Roslynator.Configuration
 
         internal VisualStudioCodeAnalysisConfig VisualStudioConfig { get; }
 
-        public int MaxLineLength { get; }
+        public int? MaxLineLength { get; }
 
-        public bool PrefixFieldIdentifierWithUnderscore { get; }
+        public bool? PrefixFieldIdentifierWithUnderscore { get; }
+
+        public bool? RefactoringsEnabled { get; }
+
+        public bool? CompilerDiagnosticFixesEnabled { get; }
 
         public ImmutableDictionary<string, bool> Refactorings { get; }
 

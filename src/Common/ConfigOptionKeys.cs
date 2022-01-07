@@ -4,9 +4,10 @@ namespace Roslynator
 {
     internal static partial class ConfigOptionKeys
     {
-        public const string CompilerDiagnosticFixEnabled = "roslynator.compiler_diagnostic_fix.enabled";
-        public const string CompilerDiagnosticFixPrefix = "roslynator.compiler_diagnostic_fix.";
-        public const string RefactoringEnabled = "roslynator.refactoring.enabled";
-        public const string RefactoringPrefix = "roslynator.refactoring.";
+        public const string Prefix = "roslynator_";
+        public const string CompilerDiagnosticFixesEnabled = "roslynator_compiler_diagnostic_fixes.enabled";
+        public const string CompilerDiagnosticFixPrefix = "roslynator_compiler_diagnostic_fix.";
+        public const string RefactoringsEnabled = "roslynator_refactorings.enabled";
+        public const string RefactoringPrefix = "roslynator_refactoring.";
     }
 }

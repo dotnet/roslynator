@@ -73,10 +73,10 @@ namespace Roslynator.CodeGeneration.EditorConfig
                             ? ((DiagnosticSeverity)Enum.Parse(typeof(DiagnosticSeverity), analyzer.DefaultSeverity)).ToReportDiagnostic()
                             : ReportDiagnostic.Suppress);
 
-                    foreach (AnalyzerOptionMetadata option in analyzer.Options.OrderBy(f => f.OptionKey))
+                    foreach (ConfigOptionKeyMetadata optionKey in analyzer.ConfigOptions.OrderBy(f => f.Key))
                     {
-                        w.WriteLine($"# {option.Title.TrimEnd('.')}");
-                        w.WriteEntry($"roslynator.{analyzer.Id}.{option.OptionKey}", false);
+                        ConfigOptionMetadata option = metadata.ConfigOptions.First(f => f.Key == optionKey.Key);
+                        w.WriteEntry($"#{option.Key}", option.DefaultValuePlaceholder);
                     }
 
                     w.WriteLine();

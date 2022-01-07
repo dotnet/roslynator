@@ -19,20 +19,22 @@ namespace Roslynator.CSharp.Refactorings
     internal class RefactoringContext
     {
         private AnalyzerConfigOptions _configOptions;
-        private bool? _globalIsEnabled;
+        private readonly bool? _globalIsEnabled;
 
-        public RefactoringContext(CodeRefactoringContext underlyingContext, SyntaxNode root, CodeAnalysisConfig options)
+        public RefactoringContext(CodeRefactoringContext underlyingContext, SyntaxNode root)
         {
             UnderlyingContext = underlyingContext;
             Root = root;
-            Options = options;
+
+            _configOptions = Document.GetConfigOptions(Root.SyntaxTree);
+
+            if (_configOptions.TryGetValueAsBool(ConfigOptionKeys.RefactoringsEnabled, out bool globalIsEnabled))
+                _globalIsEnabled = globalIsEnabled;
         }
 
         public CodeRefactoringContext UnderlyingContext { get; }
 
         public SyntaxNode Root { get; }
-
-        public CodeAnalysisConfig Options { get; }
 
         public CancellationToken CancellationToken
         {
@@ -116,6 +118,8 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
+        public bool PrefixFieldIdentifierWithUnderscore => (_configOptions ??= Document.GetConfigOptions(Root.SyntaxTree)).GetPrefixFieldIdentifierWithUnderscore();
+
         public void ThrowIfCancellationRequested()
         {
             CancellationToken.ThrowIfCancellationRequested();
@@ -175,31 +179,19 @@ namespace Roslynator.CSharp.Refactorings
 
         public bool IsRefactoringEnabled(RefactoringDescriptor refactoring)
         {
-            return Options.IsRefactoringEnabled(refactoring.Id)
-                && GetValueFromConfig(refactoring);
-        }
-
-        private bool GetValueFromConfig(RefactoringDescriptor refactoring)
-        {
-            if ((_configOptions ??= Project.AnalyzerOptions.AnalyzerConfigOptionsProvider.GetOptions(Root.SyntaxTree))
-                .TryGetValue(refactoring.OptionKey, out string value)
+            if (_configOptions.TryGetValue(refactoring.OptionKey, out string value)
                 && bool.TryParse(value, out bool enabled))
             {
                 return enabled;
             }
 
-            return _globalIsEnabled ??= GetDefaultValueFromConfig();
+            if (_globalIsEnabled != null)
+                return _globalIsEnabled.Value;
 
-            bool GetDefaultValueFromConfig()
-            {
-                if (_configOptions.TryGetValue(ConfigOptionKeys.RefactoringEnabled, out string value)
-                    && bool.TryParse(value, out bool enabled))
-                {
-                    return enabled;
-                }
+            if (CodeAnalysisConfig.Instance.Refactorings.TryGetValue(refactoring.OptionKey, out enabled))
+                return enabled;
 
-                return true;
-            }
+            return CodeAnalysisConfig.Instance.RefactoringsEnabled ?? true;
         }
 
         public bool IsAnyRefactoringEnabled(RefactoringDescriptor refactoring1, RefactoringDescriptor refactoring2)

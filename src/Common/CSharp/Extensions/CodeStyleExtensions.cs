@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Globalization;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.Configuration;
 using Roslynator.CSharp.CodeStyle;
@@ -10,15 +9,38 @@ namespace Roslynator.CSharp
 {
     internal static class CodeStyleExtensions
     {
+        public static bool GetPrefixFieldIdentifierWithUnderscore(this AnalyzerConfigOptions configOptions)
+        {
+            if (configOptions.TryGetValueAsBool(ConfigOptions.PrefixFieldIdentifierWithUnderscore, out bool value))
+                return value;
+
+            if (CodeAnalysisConfig.Instance.PrefixFieldIdentifierWithUnderscore != null)
+                return CodeAnalysisConfig.Instance.PrefixFieldIdentifierWithUnderscore.Value;
+
+            if (configOptions.TryGetValueAsBool(LegacyConfigOptions.PrefixFieldIdentifierWithUnderscore, out value))
+                return value;
+
+            return ConfigOptionDefaultValues.PrefixFieldIdentifierWithUnderscore;
+        }
+
         public static int GetMaxLineLength(this AnalyzerConfigOptions configOptions)
         {
-            if (configOptions.TryGetValue(ConfigOptions.MaxLineLength.Key, out string rawValue)
-                && int.TryParse(rawValue, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite, CultureInfo.CurrentCulture, out int intValue))
+            if (configOptions.TryGetValue(ConfigOptionKeys.MaxLineLength, out string rawValue)
+                && int.TryParse(rawValue, out int value))
             {
-                return intValue;
+                return value;
             }
 
-            return CodeAnalysisConfig.Instance.MaxLineLength;
+            if (CodeAnalysisConfig.Instance.MaxLineLength != null)
+                return CodeAnalysisConfig.Instance.MaxLineLength.Value;
+
+            if (configOptions.TryGetValue(LegacyConfigOptions.MaxLineLength.Key, out rawValue)
+                && int.TryParse(rawValue, out value))
+            {
+                return value;
+            }
+
+            return ConfigOptionDefaultValues.MaxLineLength;
         }
 
         public static bool? UseVarInsteadOfImplicitObjectCreation(this SyntaxNodeAnalysisContext context)

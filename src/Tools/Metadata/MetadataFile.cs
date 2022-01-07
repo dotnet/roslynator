@@ -140,7 +140,7 @@ namespace Roslynator.Metadata
             return element
                 .Element("ConfigOptions")?
                 .Elements("Option")
-                .Select(f => new ConfigOptionKeyMetadata("roslynator." + f.Attribute("Key").Value, bool.Parse(f.Attribute("IsRequired")?.Value ?? bool.FalseString)));
+                .Select(f => new ConfigOptionKeyMetadata("roslynator_" + f.Attribute("Key").Value, bool.Parse(f.Attribute("IsRequired")?.Value ?? bool.FalseString)));
         }
 
         private static AnalyzerOptionMetadata LoadOption(XElement element, string parentId)
@@ -162,8 +162,8 @@ namespace Roslynator.Metadata
 
             string newOptionKey = element.Element("NewOptionKey")?.Value;
 
-            if (newOptionKey?.StartsWith("roslynator.") == false)
-                newOptionKey = "roslynator." + newOptionKey;
+            if (newOptionKey?.StartsWith("roslynator_") == false)
+                newOptionKey = "roslynator_" + newOptionKey;
 
             return new AnalyzerOptionMetadata(
                 identifier: identifier,
@@ -230,7 +230,7 @@ namespace Roslynator.Metadata
 
                 yield return new ConfigOptionMetadata(
                     id,
-                    "roslynator." + key,
+                    "roslynator_" + key,
                     element.Element("DefaultValue")?.Value,
                     element.Element("ValuePlaceholder").Value,
                     element.Element("Description").Value);
