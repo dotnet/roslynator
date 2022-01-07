@@ -338,8 +338,8 @@ foreach (var item in items) // [|Id|]
     </Samples>
     <ConfigOptions>
       <Option Key="body_style" IsRequired="true" />
-      <Option Key="prefer_block_body_when_declaration_spans_over_multiple_lines" />
-      <Option Key="prefer_block_body_when_expression_spans_over_multiple_lines" />
+      <Option Key="prefer_block_body_when_declaration_spans_over_multiple_lines" IsRequired="true" />
+      <Option Key="prefer_block_body_when_expression_spans_over_multiple_lines" IsRequired="true" />
     </ConfigOptions>
     <Options>
       <Option Identifier="ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine">

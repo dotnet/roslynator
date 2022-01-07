@@ -33,8 +33,8 @@ namespace Roslynator
 
         public static readonly DiagnosticDescriptor RequiredConfigOptionNotSet = new(
             id: CommonDiagnosticIdentifiers.RequiredConfigOptionNotSet,
-            title: "Required option not set for an analyzer",
-            messageFormat: "Required option '{0}' not set for analyzer {1}",
+            title: "Analyzer requires config option to be specified",
+            messageFormat: "Analyzer {0} requires config option to be specified: {1}",
             category: DiagnosticCategories.Roslynator,
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: true,

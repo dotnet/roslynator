@@ -191,9 +191,9 @@ namespace Roslynator.CodeGeneration.Markdown
 
         public static string CreateAnalyzerMarkdown(AnalyzerMetadata analyzer, ImmutableArray<ConfigOptionMetadata> options, IEnumerable<(string title, string url)> appliesTo = null)
         {
-            IEnumerable<ConfigOptionKeyMetadata> requiredOptions = analyzer.ConfigOptions.Where(f => f.IsRequired);
-
-            Debug.Assert(requiredOptions.Count() <= 1, requiredOptions.Count().ToString());
+            IEnumerable<MInlineCode> requiredOptions = analyzer.ConfigOptions
+                .Where(f => f.IsRequired)
+                .Select(f => InlineCode(f.Key));
 
             var format = new MarkdownFormat(tableOptions: MarkdownFormat.Default.TableOptions | TableOptions.FormatContent);
 
@@ -205,7 +205,7 @@ namespace Roslynator.CodeGeneration.Markdown
                     TableRow("Category", analyzer.Category),
                     TableRow("Severity", (analyzer.IsEnabledByDefault) ? analyzer.DefaultSeverity : "None"),
                     (!string.IsNullOrEmpty(analyzer.MinLanguageVersion)) ? TableRow("Minimum language version", analyzer.MinLanguageVersion) : null,
-                    (requiredOptions.Any()) ? TableRow("Required option", requiredOptions.First().Key) : null
+                    (requiredOptions.Any()) ? TableRow("Required option", Join(" or ", requiredOptions)) : null
                 ),
                 CreateSummary(analyzer.Summary),
                 GetAnalyzerSamples(analyzer),

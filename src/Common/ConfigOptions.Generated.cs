@@ -166,25 +166,25 @@ namespace Roslynator
 
         private static IEnumerable<KeyValuePair<string, string>> GetRequiredOptions()
         {
-            yield return new KeyValuePair<string, string>("RCS0011", ConfigOptionKeys.BlankLineBetweenSingleLineAccessors);
-            yield return new KeyValuePair<string, string>("RCS0015", ConfigOptionKeys.BlankLineBetweenUsingDirectiveGroups);
-            yield return new KeyValuePair<string, string>("RCS0027", ConfigOptionKeys.BinaryOperatorNewLine);
-            yield return new KeyValuePair<string, string>("RCS0028", ConfigOptionKeys.ConditionalOperatorNewLine);
-            yield return new KeyValuePair<string, string>("RCS0032", ConfigOptionKeys.ArrowTokenNewLine);
-            yield return new KeyValuePair<string, string>("RCS0051", ConfigOptionKeys.NewLineBeforeWhileInDoStatement);
-            yield return new KeyValuePair<string, string>("RCS0052", ConfigOptionKeys.EqualsTokenNewLine);
-            yield return new KeyValuePair<string, string>("RCS0058", ConfigOptionKeys.NewLineAtEndOfFile);
-            yield return new KeyValuePair<string, string>("RCS1014", ConfigOptionKeys.ArrayCreationTypeStyle);
-            yield return new KeyValuePair<string, string>("RCS1016", ConfigOptionKeys.BodyStyle);
-            yield return new KeyValuePair<string, string>("RCS1018", ConfigOptionKeys.AccessibilityModifiers);
-            yield return new KeyValuePair<string, string>("RCS1050", ConfigOptionKeys.ObjectCreationParenthesesStyle);
-            yield return new KeyValuePair<string, string>("RCS1051", ConfigOptionKeys.ConditionInConditionalOperatorParenthesesStyle);
-            yield return new KeyValuePair<string, string>("RCS1078", ConfigOptionKeys.EmptyStringStyle);
-            yield return new KeyValuePair<string, string>("RCS1090", ConfigOptionKeys.ConfigureAwait);
-            yield return new KeyValuePair<string, string>("RCS1096", ConfigOptionKeys.EnumHasFlagStyle);
-            yield return new KeyValuePair<string, string>("RCS1207", ConfigOptionKeys.AnonymousFunctionOrMethodGroup);
-            yield return new KeyValuePair<string, string>("RCS1248", ConfigOptionKeys.NullCheckStyle);
-            yield return new KeyValuePair<string, string>("RCS1250", ConfigOptionKeys.ObjectCreationTypeStyle);
+            yield return new KeyValuePair<string, string>("RCS0011", JoinOptionKeys(ConfigOptionKeys.BlankLineBetweenSingleLineAccessors));
+            yield return new KeyValuePair<string, string>("RCS0015", JoinOptionKeys(ConfigOptionKeys.BlankLineBetweenUsingDirectiveGroups));
+            yield return new KeyValuePair<string, string>("RCS0027", JoinOptionKeys(ConfigOptionKeys.BinaryOperatorNewLine));
+            yield return new KeyValuePair<string, string>("RCS0028", JoinOptionKeys(ConfigOptionKeys.ConditionalOperatorNewLine));
+            yield return new KeyValuePair<string, string>("RCS0032", JoinOptionKeys(ConfigOptionKeys.ArrowTokenNewLine));
+            yield return new KeyValuePair<string, string>("RCS0051", JoinOptionKeys(ConfigOptionKeys.NewLineBeforeWhileInDoStatement));
+            yield return new KeyValuePair<string, string>("RCS0052", JoinOptionKeys(ConfigOptionKeys.EqualsTokenNewLine));
+            yield return new KeyValuePair<string, string>("RCS0058", JoinOptionKeys(ConfigOptionKeys.NewLineAtEndOfFile));
+            yield return new KeyValuePair<string, string>("RCS1014", JoinOptionKeys(ConfigOptionKeys.ArrayCreationTypeStyle));
+            yield return new KeyValuePair<string, string>("RCS1016", JoinOptionKeys(ConfigOptionKeys.BodyStyle, ConfigOptionKeys.PreferBlockBodyWhenDeclarationSpansOverMultipleLines, ConfigOptionKeys.PreferBlockBodyWhenExpressionSpansOverMultipleLines));
+            yield return new KeyValuePair<string, string>("RCS1018", JoinOptionKeys(ConfigOptionKeys.AccessibilityModifiers));
+            yield return new KeyValuePair<string, string>("RCS1050", JoinOptionKeys(ConfigOptionKeys.ObjectCreationParenthesesStyle));
+            yield return new KeyValuePair<string, string>("RCS1051", JoinOptionKeys(ConfigOptionKeys.ConditionInConditionalOperatorParenthesesStyle));
+            yield return new KeyValuePair<string, string>("RCS1078", JoinOptionKeys(ConfigOptionKeys.EmptyStringStyle));
+            yield return new KeyValuePair<string, string>("RCS1090", JoinOptionKeys(ConfigOptionKeys.ConfigureAwait));
+            yield return new KeyValuePair<string, string>("RCS1096", JoinOptionKeys(ConfigOptionKeys.EnumHasFlagStyle));
+            yield return new KeyValuePair<string, string>("RCS1207", JoinOptionKeys(ConfigOptionKeys.AnonymousFunctionOrMethodGroup));
+            yield return new KeyValuePair<string, string>("RCS1248", JoinOptionKeys(ConfigOptionKeys.NullCheckStyle));
+            yield return new KeyValuePair<string, string>("RCS1250", JoinOptionKeys(ConfigOptionKeys.ObjectCreationTypeStyle));
         }
     }
 }

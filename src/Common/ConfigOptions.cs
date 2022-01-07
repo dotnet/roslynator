@@ -12,11 +12,16 @@ namespace Roslynator
     {
         private static readonly ImmutableDictionary<string, string> _requiredOptions = GetRequiredOptions().ToImmutableDictionary(f => f.Key, f => f.Value);
 
-        public static string GetRequiredOption(DiagnosticDescriptor descriptor)
+        public static string GetRequiredOptions(DiagnosticDescriptor descriptor)
         {
             Debug.Assert(_requiredOptions.ContainsKey(descriptor.Id), descriptor.Id);
 
             return _requiredOptions.GetValueOrDefault(descriptor.Id);
+        }
+
+        private static string JoinOptionKeys(params string[] values)
+        {
+            return string.Join(" or ", values);
         }
 
         public static bool TryGetValue(AnalyzerConfigOptions configOptions, ConfigOptionDescriptor option, out string value, string defaultValue = null)

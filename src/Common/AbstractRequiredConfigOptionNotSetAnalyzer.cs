@@ -21,8 +21,8 @@ namespace Roslynator
                     context,
                     CommonDiagnosticRules.RequiredConfigOptionNotSet,
                     Location.None,
-                    ConfigOptions.GetRequiredOption(descriptor),
-                    descriptor.Id);
+                    descriptor.Id,
+                    ConfigOptions.GetRequiredOptions(descriptor));
 
                 return true;
             }
