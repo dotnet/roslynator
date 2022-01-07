@@ -28,12 +28,53 @@ namespace Roslynator.CSharp.CodeFixes
             if (!TryFindNode(root, context.Span, out SyntaxNode node))
                 return;
 
+            var document = context.Document;
+
             foreach (Diagnostic diagnostic in context.Diagnostics)
             {
                 switch (diagnostic.Id)
                 {
                     case CompilerDiagnosticIdentifiers.CS0214_PointersAndFixedSizeBuffersMayOnlyBeUsedInUnsafeContext:
                         {
+                            if (IsEnabled(diagnostic.Id, CodeFixIdentifiers.UseExplicitTypeInsteadOfVar, document, root.SyntaxTree)
+                                && node is StackAllocArrayCreationExpressionSyntax stackAllocArrayCreation
+                                && node.IsParentKind(SyntaxKind.EqualsValueClause)
+                                && node.Parent.IsParentKind(SyntaxKind.VariableDeclarator)
+                                && node.Parent.Parent.Parent is VariableDeclarationSyntax variableDeclaration
+                                && variableDeclaration.Type.IsVar)
+                            {
+                                TypeSyntax type = stackAllocArrayCreation.Type;
+
+                                if (type is ArrayTypeSyntax arrayType)
+                                    type = arrayType.ElementType;
+
+                                CodeAction spanCodeAction = CodeAction.Create(
+                                    "Use Span<T>",
+                                    ct =>
+                                    {
+                                        TypeSyntax spanOfT = SyntaxFactory.ParseTypeName($"global::System.Span<{type}>")
+                                            .WithSimplifierAnnotation();
+
+                                        return document.ReplaceNodeAsync(variableDeclaration.Type, spanOfT, ct);
+                                    },
+                                    GetEquivalenceKey(diagnostic, CodeFixIdentifiers.UseExplicitTypeInsteadOfVar, "System_Span_T"));
+
+                                context.RegisterCodeFix(spanCodeAction, diagnostic);
+
+                                CodeAction readOnlySpanCodeAction = CodeAction.Create(
+                                    "Use ReadOnlySpan<T>",
+                                    ct =>
+                                    {
+                                        TypeSyntax spanOfT = SyntaxFactory.ParseTypeName($"global::System.ReadOnlySpan<{type}>")
+                                            .WithSimplifierAnnotation();
+
+                                        return document.ReplaceNodeAsync(variableDeclaration.Type, spanOfT, ct);
+                                    },
+                                    GetEquivalenceKey(diagnostic, CodeFixIdentifiers.UseExplicitTypeInsteadOfVar, "System_ReadOnlySpan_T"));
+
+                                context.RegisterCodeFix(readOnlySpanCodeAction, diagnostic);
+                            }
+
                             var fStatement = false;
                             var fMemberDeclaration = false;
 
@@ -50,7 +91,7 @@ namespace Roslynator.CSharp.CodeFixes
                                 {
                                     fStatement = true;
 
-                                    if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.WrapInUnsafeStatement, context.Document, root.SyntaxTree))
+                                    if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.WrapInUnsafeStatement, document, root.SyntaxTree))
                                         continue;
 
                                     var statement = (StatementSyntax)ancestor;
@@ -74,7 +115,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                                             UnsafeStatementSyntax unsafeStatement = SyntaxFactory.UnsafeStatement(block).WithFormatterAnnotation();
 
-                                            return context.Document.ReplaceNodeAsync(statement, unsafeStatement, ct);
+                                            return document.ReplaceNodeAsync(statement, unsafeStatement, ct);
                                         },
                                         GetEquivalenceKey(diagnostic, CodeFixIdentifiers.WrapInUnsafeStatement));
 
@@ -85,7 +126,7 @@ namespace Roslynator.CSharp.CodeFixes
                                 {
                                     fMemberDeclaration = true;
 
-                                    if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.MakeContainingDeclarationUnsafe, context.Document, root.SyntaxTree))
+                                    if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.MakeContainingDeclarationUnsafe, document, root.SyntaxTree))
                                         continue;
 
                                     if (!CSharpFacts.CanHaveModifiers(ancestor.Kind()))
