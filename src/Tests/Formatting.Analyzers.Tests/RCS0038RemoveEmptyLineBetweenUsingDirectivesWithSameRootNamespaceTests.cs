@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Roslynator.Formatting.CSharp.Tests
 {
-    public class RCS0038RemoveEmptyLineBetweenUsingDirectivesWithSameRootNamespaceTests : AbstractCSharpDiagnosticVerifier<AddOrRemoveEmptyLineBetweenUsingDirectiveAnalyzer, SyntaxTriviaCodeFixProvider>
+    public class RCS0038RemoveEmptyLineBetweenUsingDirectivesWithSameRootNamespaceTests : AbstractCSharpDiagnosticVerifier<BlankLineBetweenUsingDirectiveGroupsAnalyzer, SyntaxTriviaCodeFixProvider>
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveEmptyLineBetweenUsingDirectivesWithSameRootNamespace;
 

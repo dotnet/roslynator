@@ -11,6 +11,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Text;
 
 namespace Roslynator.Testing
 {
@@ -481,6 +482,26 @@ namespace Roslynator.Testing
                 Location expectedLocation,
                 Location actualLocation)
             {
+                if (object.ReferenceEquals(expectedLocation, Location.None))
+                {
+                    if (object.ReferenceEquals(actualLocation, Location.None))
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        LinePosition linePosition = actualLocation.GetLineSpan().StartLinePosition;
+
+                        Fail($"Diagnostic expected to have no location, actual location start on line {linePosition.Line + 1} at column {linePosition.Character + 1}");
+                    }
+                }
+                else if (object.ReferenceEquals(actualLocation, Location.None))
+                {
+                    LinePosition linePosition = expectedLocation.GetLineSpan().StartLinePosition;
+
+                    Fail($"Diagnostic's location expected to start on line {linePosition.Line + 1} at column {linePosition.Character + 1}, actual diagnostic has no location");
+                }
+
                 VerifyFileLinePositionSpan(expectedLocation.GetLineSpan(), actualLocation.GetLineSpan());
             }
 

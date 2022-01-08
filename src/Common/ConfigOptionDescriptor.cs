@@ -7,18 +7,16 @@ namespace Roslynator
         public ConfigOptionDescriptor(
             string key,
             string defaultValue = null,
-            string description = null,
-            string valuePlaceholder = null)
+            string defaultValuePlaceholder = null,
+            string description = null)
         {
             Key = key;
             DefaultValue = defaultValue;
+            DefaultValuePlaceholder = defaultValuePlaceholder;
             Description = description;
-            ValuePlaceholder = valuePlaceholder;
 
             if (bool.TryParse(defaultValue, out bool defaultValueAsBool))
-            {
                 DefaultValueAsBool = defaultValueAsBool;
-            }
         }
 
         public string Key { get; }
@@ -27,8 +25,8 @@ namespace Roslynator
 
         internal bool? DefaultValueAsBool { get; }
 
-        public string Description { get; }
+        public string DefaultValuePlaceholder { get; }
 
-        public string ValuePlaceholder { get; }
+        public string Description { get; }
     }
 }

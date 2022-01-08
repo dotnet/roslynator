@@ -22,7 +22,7 @@ namespace Roslynator.CodeGeneration.CSharp
                         "RefactoringDescriptors",
                         refactorings
                             .OrderBy(f => f.Identifier, comparer)
-                            .Select(r => ParseMemberDeclaration($"public static RefactoringDescriptor {r.Identifier} = new RefactoringDescriptor(\"{r.Id}\", \"roslynator.refactoring.{r.OptionKey}.enabled\", isEnabledByDefault: {r.IsEnabledByDefault.ToString().ToLowerInvariant()});"))
+                            .Select(r => ParseMemberDeclaration($"public static RefactoringDescriptor {r.Identifier} = new RefactoringDescriptor(\"{r.Id}\", \"{ConfigOptionKeys.RefactoringPrefix}{r.OptionKey}.enabled\", isEnabledByDefault: {r.IsEnabledByDefault.ToString().ToLowerInvariant()});"))
                             .ToSyntaxList())));
         }
     }

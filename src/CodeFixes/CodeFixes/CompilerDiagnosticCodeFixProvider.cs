@@ -13,24 +13,20 @@ namespace Roslynator.CodeFixes
 
         protected bool IsEnabled(string compilerDiagnosticId, string codeFixId, Document document, SyntaxTree syntaxTree)
         {
-            AnalyzerConfigOptions configOptions = document.Project.AnalyzerOptions.AnalyzerConfigOptionsProvider.GetOptions(syntaxTree);
+            AnalyzerConfigOptions configOptions = document.GetConfigOptions(syntaxTree);
 
             string optionKey = _optionKeysMap.GetOrAdd(compilerDiagnosticId, id => CreateOptionKey(id));
 
-            if (configOptions
-                .TryGetValue(optionKey, out string enabledRaw)
-                && bool.TryParse(enabledRaw, out bool enabled))
-            {
+            if (configOptions.TryGetValueAsBool(optionKey, out bool enabled))
                 return enabled;
-            }
 
-            if (configOptions.TryGetValue(ConfigOptionKeys.CompilerDiagnosticFixEnabled, out string globalEnabledRaw)
-                && bool.TryParse(globalEnabledRaw, out bool globalEnabled))
-            {
+            if (configOptions.TryGetValueAsBool(ConfigOptionKeys.CompilerDiagnosticFixesEnabled, out bool globalEnabled))
                 return globalEnabled;
-            }
 
-            return CompilerCodeFixOptions.Current.IsEnabled(compilerDiagnosticId, codeFixId);
+            if (CompilerCodeFixOptions.Current.Disabled.Contains(new CodeFixIdentifier(compilerDiagnosticId, codeFixId)))
+                return false;
+
+            return CodeAnalysisConfig.Instance.CompilerDiagnosticFixesEnabled ?? true;
         }
 
         private static string CreateOptionKey(string compilerDiagnosticId)

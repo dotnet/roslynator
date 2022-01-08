@@ -25,7 +25,7 @@ namespace Roslynator.CSharp.Refactorings
 
             string name = NameGenerator.CreateName(typeSymbol, firstCharToLower: true) ?? DefaultNames.Variable;
 
-            if (CodeAnalysisConfig.Instance.PrefixFieldIdentifierWithUnderscore)
+            if (document.GetConfigOptions(expressionStatement.SyntaxTree).GetPrefixFieldIdentifierWithUnderscore())
                 name = "_" + name;
 
             name = NameGenerator.Default.EnsureUniqueLocalName(

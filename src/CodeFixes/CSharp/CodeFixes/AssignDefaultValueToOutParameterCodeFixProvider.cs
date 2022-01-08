@@ -116,7 +116,7 @@ namespace Roslynator.CSharp.CodeFixes
                     ? $"Assign default value to parameter '{singleParameter.Name}'"
                     : "Assign default value to parameters",
                 ct => RefactorAsync(context.Document, node, statement, bodyOrExpressionBody, parameters, alwaysAssigned, semanticModel, ct),
-                base.GetEquivalenceKey(diagnostic));
+                GetEquivalenceKey(diagnostic));
 
             context.RegisterCodeFix(codeAction, diagnostic);
         }

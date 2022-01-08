@@ -20,7 +20,7 @@ namespace Roslynator.CSharp.Refactorings
             try
             {
 #endif
-                var refactoringContext = new RefactoringContext(context, root, CodeAnalysisConfig.Instance);
+                var refactoringContext = new RefactoringContext(context, root);
 
                 await refactoringContext.ComputeRefactoringsAsync().ConfigureAwait(false);
 #if DEBUG

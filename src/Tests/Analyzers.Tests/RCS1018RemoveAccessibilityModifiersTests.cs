@@ -8,16 +8,16 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1018RemoveAccessibilityModifiersTests : AbstractCSharpDiagnosticVerifier<AddAccessibilityModifiersOrViceVersaAnalyzer, MemberDeclarationCodeFixProvider>
+    public class RCS1018RemoveAccessibilityModifiersTests : AbstractCSharpDiagnosticVerifier<AddOrRemoveAccessibilityModifiersAnalyzer, MemberDeclarationCodeFixProvider>
     {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddAccessibilityModifiersOrViceVersa;
+        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddOrRemoveAccessibilityModifiers;
 
         public override CSharpTestOptions Options
         {
-            get { return base.Options.EnableConfigOption(AnalyzerOptions.RemoveAccessibilityModifiers.OptionKey); }
+            get { return base.Options.AddConfigOption(ConfigOptionKeys.AccessibilityModifiers, ConfigOptionValues.AccessibilityModifiers_Implicit); }
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddAccessibilityModifiersOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
         public async Task Test_NonNestedType()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -59,7 +59,7 @@ namespace N
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddAccessibilityModifiersOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
         public async Task Test_MemberDeclaration()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -147,7 +147,7 @@ namespace N
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddAccessibilityModifiersOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
         public async Task Test_PartialClass()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -175,7 +175,7 @@ namespace N
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddAccessibilityModifiersOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
         public async Task Test_PartialClass2()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -203,7 +203,7 @@ namespace N
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddAccessibilityModifiersOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
         public async Task TestNoDiagnostic_OperatorDeclaration()
         {
             await VerifyNoDiagnosticAsync(@"

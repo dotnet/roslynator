@@ -8,11 +8,11 @@ using Xunit;
 
 namespace Roslynator.Formatting.CSharp.Tests
 {
-    public class RCS0048RemoveNewlinesFromInitializerWithSingleLineExpressionTests : AbstractCSharpDiagnosticVerifier<RemoveNewlinesFromInitializerWithSingleLineExpressionAnalyzer, InitializerCodeFixProvider>
+    public class RCS0048RemoveNewLinesFromInitializerWithSingleLineExpressionTests : AbstractCSharpDiagnosticVerifier<RemoveNewLinesFromInitializerWithSingleLineExpressionAnalyzer, InitializerCodeFixProvider>
     {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveNewlinesFromInitializerWithSingleLineExpression;
+        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveNewLinesFromInitializerWithSingleLineExpression;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewlinesFromInitializerWithSingleLineExpression)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewLinesFromInitializerWithSingleLineExpression)]
         public async Task Test_ObjectInitializer()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -41,7 +41,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewlinesFromInitializerWithSingleLineExpression)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewLinesFromInitializerWithSingleLineExpression)]
         public async Task Test_ObjectInitializer_TrailingComma()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -70,7 +70,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewlinesFromInitializerWithSingleLineExpression)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewLinesFromInitializerWithSingleLineExpression)]
         public async Task Test_ObjectInitializer_TrailingComma2()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -119,7 +119,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewlinesFromInitializerWithSingleLineExpression)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewLinesFromInitializerWithSingleLineExpression)]
         public async Task Test_ObjectInitializer_AssignmentExpression()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -160,7 +160,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewlinesFromInitializerWithSingleLineExpression)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewLinesFromInitializerWithSingleLineExpression)]
         public async Task Test_ObjectInitializer_TrailingComma_AssignmentExpression()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -201,7 +201,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewlinesFromInitializerWithSingleLineExpression)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewLinesFromInitializerWithSingleLineExpression)]
         public async Task Test_DictionaryInitializer()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -230,7 +230,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewlinesFromInitializerWithSingleLineExpression)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewLinesFromInitializerWithSingleLineExpression)]
         public async Task Test_DictionaryInitializer_CSharp6()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -259,7 +259,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewlinesFromInitializerWithSingleLineExpression)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewLinesFromInitializerWithSingleLineExpression)]
         public async Task Test_CollectionInitializer()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -288,7 +288,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewlinesFromInitializerWithSingleLineExpression)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewLinesFromInitializerWithSingleLineExpression)]
         public async Task Test_ArrayInitializer()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -313,7 +313,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewlinesFromInitializerWithSingleLineExpression)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewLinesFromInitializerWithSingleLineExpression)]
         public async Task Test_ArrayInitializer_Field()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -332,7 +332,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewlinesFromInitializerWithSingleLineExpression)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewLinesFromInitializerWithSingleLineExpression)]
         public async Task Test_ArrayInitializer_TrailingComma_Field()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -351,7 +351,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewlinesFromInitializerWithSingleLineExpression)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewLinesFromInitializerWithSingleLineExpression)]
         public async Task Test_ArrayInitializer_Local()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -376,7 +376,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewlinesFromInitializerWithSingleLineExpression)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewLinesFromInitializerWithSingleLineExpression)]
         public async Task Test_ArrayInitializer_TrailingComma_Local()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -401,7 +401,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewlinesFromInitializerWithSingleLineExpression)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewLinesFromInitializerWithSingleLineExpression)]
         public async Task Test_ImplicitObjectCreationInitializer()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -430,7 +430,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewlinesFromInitializerWithSingleLineExpression)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewLinesFromInitializerWithSingleLineExpression)]
         public async Task TestNoDiagnostic_MultipleExpressions()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -451,7 +451,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewlinesFromInitializerWithSingleLineExpression)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewLinesFromInitializerWithSingleLineExpression)]
         public async Task TestNoDiagnostic_MultilineExpression()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -472,7 +472,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewlinesFromInitializerWithSingleLineExpression)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewLinesFromInitializerWithSingleLineExpression)]
         public async Task TestNoDiagnostic_CommentAfterCloseParenthesis()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -491,7 +491,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewlinesFromInitializerWithSingleLineExpression)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewLinesFromInitializerWithSingleLineExpression)]
         public async Task TestNoDiagnostic_CommentBeforeOpenBrace()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -510,7 +510,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewlinesFromInitializerWithSingleLineExpression)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewLinesFromInitializerWithSingleLineExpression)]
         public async Task TestNoDiagnostic_CommentAfterOpenBrace()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -529,7 +529,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewlinesFromInitializerWithSingleLineExpression)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewLinesFromInitializerWithSingleLineExpression)]
         public async Task TestNoDiagnostic_CommentBeforeExpression()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -548,7 +548,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewlinesFromInitializerWithSingleLineExpression)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewLinesFromInitializerWithSingleLineExpression)]
         public async Task TestNoDiagnostic_CommentAfterExpression()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -567,7 +567,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewlinesFromInitializerWithSingleLineExpression)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewLinesFromInitializerWithSingleLineExpression)]
         public async Task TestNoDiagnostic_CommentAfterComma()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -586,7 +586,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewlinesFromInitializerWithSingleLineExpression)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewLinesFromInitializerWithSingleLineExpression)]
         public async Task TestNoDiagnostic_CommentBeforeCloseBrace()
         {
             await VerifyNoDiagnosticAsync(@"

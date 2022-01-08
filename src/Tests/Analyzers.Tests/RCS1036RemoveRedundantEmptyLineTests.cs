@@ -268,7 +268,7 @@ class C
         }
     }
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.RemoveEmptyLineBetweenClosingBraceAndSwitchSection.OptionKey));
+", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenClosingBraceAndSwitchSection, false));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantEmptyLine)]
@@ -283,7 +283,7 @@ class C
 class C
 {
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.RemoveEmptyLineBetweenClosingBraceAndSwitchSection.OptionKey));
+", options: Options.EnableConfigOption(ConfigOptionKeys.BlankLineBetweenClosingBraceAndSwitchSection));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantEmptyLine)]
@@ -299,7 +299,7 @@ class C
 class C
 {
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.RemoveEmptyLineBetweenClosingBraceAndSwitchSection.OptionKey));
+", options: Options.EnableConfigOption(ConfigOptionKeys.BlankLineBetweenClosingBraceAndSwitchSection));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantEmptyLine)]
@@ -326,6 +326,81 @@ class C
         {
             M();
         } while (true);
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantEmptyLine)]
+        public async Task Test_EmptyLineAfterLastEnumMember_NoTrailingComma()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    enum E
+    {
+        A,
+        B
+[|
+|]    }
+}
+", @"
+class C
+{
+    enum E
+    {
+        A,
+        B
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantEmptyLine)]
+        public async Task Test_EmptyLineAfterLastEnumMember_TrailingComma()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    enum E
+    {
+        A,
+        B,
+[|
+|]    }
+}
+", @"
+class C
+{
+    enum E
+    {
+        A,
+        B,
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantEmptyLine)]
+        public async Task Test_EmptyLineBeforeFirstEnumMember()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    enum E
+    {
+[|
+|]        A,
+        B,
+    }
+}
+", @"
+class C
+{
+    enum E
+    {
+        A,
+        B,
     }
 }
 ");

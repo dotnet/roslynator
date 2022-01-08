@@ -49,7 +49,7 @@ namespace Roslynator.CSharp.CodeFixes
                             CodeAction codeAction = CodeAction.Create(
                                 "Declare value as combination of names",
                                 ct => DeclareEnumValueAsCombinationOfNamesAsync(document, enumMemberDeclaration, ct),
-                                base.GetEquivalenceKey(diagnostic));
+                                GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;

@@ -30,16 +30,16 @@ is_global = true
 #dotnet_diagnostic.<ANALYZER_ID>.severity = default|none|silent|suggestion|warning|error
 
 ## Enable/disable all refactorings
-#roslynator.refactorings.enabled = true|false
+#roslynator_refactorings.enabled = true|false
 
 ## Enable/disable specific refactoring
-#roslynator.refactoring.<REFACTORING_NAME>.enabled = true|false
+#roslynator_refactoring.<REFACTORING_NAME>.enabled = true|false
 
 ## Enable/disable all fixes for compiler diagnostics
-#roslynator.compiler_diagnostic_fixes.enabled = true|false
+#roslynator_compiler_diagnostic_fixes.enabled = true|false
 
 ## Enable/disable fix for a specific compiler diagnostics
-#roslynator.compiler_diagnostic_fix.<COMPILER_DIAGNOSTIC_ID>.enabled = true|false
+#roslynator_compiler_diagnostic_fix.<COMPILER_DIAGNOSTIC_ID>.enabled = true|false
 ";
 
         internal static EditorConfigCodeAnalysisConfig Empty { get; } = new();
@@ -197,43 +197,6 @@ is_global = true
             }
 
             return path;
-        }
-
-        //TODO: delete
-        private static string CreateDefaultContent()
-        {
-            using var writer = new EditorConfigWriter(new StringWriter());
-
-            writer.WriteCommentChar();
-            writer.WriteLine("This config file enables to change DEFAULT configuration of analyzers, refactorings and code fixes.");
-
-            writer.WriteCommentChar();
-            writer.WriteLine("Config is loaded once when the IDE starts. Therefore a restart of the IDE is required for changes to take effect.");
-            writer.WriteLine();
-
-            writer.WriteGlobalDirective();
-            writer.WriteLine();
-            writer.WriteEntry(ConfigOptionKeys.MaxLineLength, ConfigOptionDefaultValues.MaxLineLength.ToString());
-            writer.WriteEntry(ConfigOptionKeys.PrefixFieldIdentifierWithUnderscore, ConfigOptionDefaultValues.PrefixFieldIdentifierWithUnderscore.ToString().ToLowerInvariant());
-            writer.WriteLine();
-            writer.WriteEntry(ConfigOptionKeys.RefactoringEnabled, true);
-            writer.WriteCommentChar();
-            writer.WriteRefactoring("<REFACTORING_NAME>", true);
-            writer.WriteLine();
-            writer.WriteEntry(ConfigOptionKeys.CompilerDiagnosticFixEnabled, true);
-            writer.WriteCommentChar();
-            writer.WriteCompilerDiagnosticFix("<COMPILER_DIAGNOSTIC_ID>", true);
-            writer.WriteLine();
-
-            const string allSeverities = "default|none|silent|suggestion|warning|error";
-
-            writer.WriteCommentChar();
-            writer.WriteAnalyzerCategory(DiagnosticCategories.Roslynator.ToLowerInvariant(), allSeverities);
-            writer.WriteLine();
-
-            writer.WriteEntry("dotnet_diagnostic.RCS0001.severity", allSeverities);
-
-            return writer.ToString();
         }
     }
 }

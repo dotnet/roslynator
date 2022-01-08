@@ -14,10 +14,10 @@ namespace Roslynator.VisualStudio.TypeConverters
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
-            if (value is bool
+            if (value is bool boolValue
                 && destinationType == typeof(string))
             {
-                return ((bool)value) ? TrueText : FalseText;
+                return boolValue ? TrueText : FalseText;
             }
 
             return base.ConvertTo(context, culture, value, destinationType);

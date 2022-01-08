@@ -25,11 +25,19 @@ namespace Roslynator
         {
             var enumTypeSymbol = (INamedTypeSymbol)semanticModel.GetTypeSymbol(node, cancellationToken);
 
-            Optional<object> constantValue = semanticModel.GetConstantValue(node, cancellationToken);
+            if (enumTypeSymbol.EnumUnderlyingType != null)
+            {
+                Optional<object> constantValue = semanticModel.GetConstantValue(node, cancellationToken);
 
-            ulong value = SymbolUtility.GetEnumValueAsUInt64(constantValue.Value, enumTypeSymbol);
+                if (constantValue.HasValue)
+                {
+                    ulong value = SymbolUtility.GetEnumValueAsUInt64(constantValue.Value, enumTypeSymbol);
 
-            return FlagsUtility<ulong>.Instance.IsComposite(value);
+                    return FlagsUtility<ulong>.Instance.IsComposite(value);
+                }
+            }
+
+            return false;
         }
     }
 }

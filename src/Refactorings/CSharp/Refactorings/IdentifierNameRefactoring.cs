@@ -64,7 +64,7 @@ namespace Roslynator.CSharp.Refactorings
             if (!SymbolEqualityComparer.Default.Equals(fieldSymbol.ContainingType, propertySymbol.ContainingType))
                 return;
 
-            string newName = StringUtility.ToCamelCase(propertySymbol.Name, context.Options.PrefixFieldIdentifierWithUnderscore);
+            string newName = StringUtility.ToCamelCase(propertySymbol.Name, context.PrefixFieldIdentifierWithUnderscore);
 
             if (string.Equals(fieldSymbol.Name, newName, StringComparison.Ordinal))
                 return;

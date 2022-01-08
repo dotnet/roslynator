@@ -12,6 +12,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp;
+using Roslynator.CSharp.CodeStyle;
 using Roslynator.Formatting.CSharp;
 using Roslynator.Text;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
@@ -335,6 +336,10 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                         {
                             return declarator.Expression;
                         }
+                        else if (nameEquals.Parent is UsingDirectiveSyntax usingDirective)
+                        {
+                            return usingDirective.Name;
+                        }
 
                         break;
                     }
@@ -562,7 +567,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
 
             string indentation;
             if (indentationAnalysis.Indentation == binaryExpression.GetLeadingTrivia().LastOrDefault()
-                && AnalyzerOptions.AddNewLineAfterBinaryOperatorInsteadOfBeforeIt.IsEnabled(document, binaryExpression))
+                && document.GetConfigOptions(binaryExpression.SyntaxTree).GetBinaryOperatorNewLinePosition() == NewLinePosition.After)
             {
                 indentation = indentationAnalysis.Indentation.ToString();
             }
@@ -606,7 +611,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                 else if (leftTrailing.IsEmptyOrWhitespace()
                     && tokenTrailing.IsEmptyOrWhitespace())
                 {
-                    if (AnalyzerOptions.AddNewLineAfterBinaryOperatorInsteadOfBeforeIt.IsEnabled(document, binaryExpression))
+                    if (document.GetConfigOptions(binaryExpression.SyntaxTree).GetBinaryOperatorNewLinePosition() == NewLinePosition.After)
                     {
                         if (!SetIndentation(right))
                             break;

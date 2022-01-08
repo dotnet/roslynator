@@ -25,11 +25,11 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
             {
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.AddEmptyLineBetweenBlockAndStatement,
-                    DiagnosticIdentifiers.AddNewLineBeforeConditionalOperatorInsteadOfAfterItOrViceVersa,
-                    DiagnosticIdentifiers.AddNewLineBeforeExpressionBodyArrowInsteadOfAfterItOrViceVersa,
-                    DiagnosticIdentifiers.AddNewLineBeforeEqualsSignInsteadOfAfterItOrViceVersa,
+                    DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeConditionalOperator,
+                    DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeArrowToken,
+                    DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsToken,
                     DiagnosticIdentifiers.AddNewLineAfterAttributeList,
-                    DiagnosticIdentifiers.AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersa);
+                    DiagnosticIdentifiers.AddOrRemoveNewLineBeforeWhileInDoStatement);
             }
         }
 
@@ -55,7 +55,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                         context.RegisterCodeFix(codeAction, diagnostic);
                         break;
                     }
-                case DiagnosticIdentifiers.AddNewLineBeforeConditionalOperatorInsteadOfAfterItOrViceVersa:
+                case DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeConditionalOperator:
                     {
                         if (DiagnosticProperties.ContainsInvert(diagnostic.Properties))
                         {
@@ -65,12 +65,12 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                             if (token.IsKind(SyntaxKind.QuestionToken))
                             {
                                 title = (SyntaxTriviaAnalysis.IsTokenFollowedWithNewLineAndNotPrecededWithNewLine(conditionalExpression.WhenTrue, conditionalExpression.ColonToken, conditionalExpression.WhenFalse))
-                                    ? "Add newline after '?' and ':' instead of before it"
-                                    : "Add newline after '?' instead of before it";
+                                    ? "Place new line after '?' and ':'"
+                                    : "Place new line after '?'";
                             }
                             else
                             {
-                                title = "Add newline after ':' instead of before it";
+                                title = "Place new line after ':'";
                             }
 
                             CodeAction codeAction = CodeAction.Create(
@@ -88,12 +88,12 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                             if (token.IsKind(SyntaxKind.QuestionToken))
                             {
                                 title = (SyntaxTriviaAnalysis.IsTokenFollowedWithNewLineAndNotPrecededWithNewLine(conditionalExpression.WhenTrue, conditionalExpression.ColonToken, conditionalExpression.WhenFalse))
-                                    ? "Add newline before '?' and ':' instead of after it"
-                                    : "Add newline before '?' instead of after it";
+                                    ? "Place new line before '?' and ':'"
+                                    : "Place new line before '?'";
                             }
                             else
                             {
-                                title = "Add newline before ':' instead of after it";
+                                title = "Place new line before ':'";
                             }
 
                             CodeAction codeAction = CodeAction.Create(
@@ -106,8 +106,8 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
 
                         break;
                     }
-                case DiagnosticIdentifiers.AddNewLineBeforeExpressionBodyArrowInsteadOfAfterItOrViceVersa:
-                case DiagnosticIdentifiers.AddNewLineBeforeEqualsSignInsteadOfAfterItOrViceVersa:
+                case DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeArrowToken:
+                case DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsToken:
                     {
                         AddNewLineBeforeOrAfter();
                         break;
@@ -122,7 +122,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                         context.RegisterCodeFix(codeAction, diagnostic);
                         break;
                     }
-                case DiagnosticIdentifiers.AddNewLineBetweenClosingBraceAndWhileKeywordOrViceVersa:
+                case DiagnosticIdentifiers.AddOrRemoveNewLineBeforeWhileInDoStatement:
                     {
                         if (DiagnosticProperties.ContainsInvert(diagnostic.Properties))
                         {
@@ -152,7 +152,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                 if (DiagnosticProperties.ContainsInvert(diagnostic.Properties))
                 {
                     CodeAction codeAction = CodeAction.Create(
-                        $"Add newline after '{token}' instead of before it",
+                        $"Place new line after '{token}'",
                         ct => CodeFixHelpers.AddNewLineAfterInsteadOfBeforeAsync(document, token, ct),
                         GetEquivalenceKey(diagnostic));
 
@@ -161,7 +161,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                 else
                 {
                     CodeAction codeAction = CodeAction.Create(
-                        $"Add newline before '{token}' instead of after it",
+                        $"Place new line before '{token}'",
                         ct => CodeFixHelpers.AddNewLineBeforeInsteadOfAfterAsync(document, token, ct),
                         GetEquivalenceKey(diagnostic));
 

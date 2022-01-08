@@ -42,7 +42,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     context.RegisterRefactoring(
                         "Convert to full property",
-                        ct => ConvertAutoPropertyToFullPropertyRefactoring.RefactorAsync(context.Document, propertyDeclaration, context.Options.PrefixFieldIdentifierWithUnderscore, ct),
+                        ct => ConvertAutoPropertyToFullPropertyRefactoring.RefactorAsync(context.Document, propertyDeclaration, context.PrefixFieldIdentifierWithUnderscore, ct),
                         RefactoringDescriptors.ConvertAutoPropertyToFullProperty);
                 }
 

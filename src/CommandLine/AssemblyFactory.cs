@@ -60,9 +60,9 @@ namespace Roslynator.CommandLine
                                         default,
                                         TokenList(Token(SyntaxKind.PublicKeyword), Token(SyntaxKind.StaticKeyword)),
                                         ParseTypeName(returnTypeName),
-                                        default!,
+                                        default,
                                         Identifier(methodName),
-                                        default!,
+                                        default,
                                         ParameterList(
                                             SingletonSeparatedList(
                                                 Parameter(

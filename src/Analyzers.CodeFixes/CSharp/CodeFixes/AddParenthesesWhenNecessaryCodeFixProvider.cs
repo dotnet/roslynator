@@ -46,7 +46,7 @@ namespace Roslynator.CSharp.CodeFixes
                         return AddParenthesesAccordingToOperatorPrecedenceAsync(document, expression, ct);
                     }
                 },
-                base.GetEquivalenceKey(DiagnosticIdentifiers.AddParenthesesWhenNecessary));
+                GetEquivalenceKey(DiagnosticIdentifiers.AddParenthesesWhenNecessary));
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }

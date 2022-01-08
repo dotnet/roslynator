@@ -26,8 +26,8 @@ namespace Roslynator.CSharp.Refactorings
                     RefactoringDescriptors.ParenthesizeExpression);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringDescriptors.ConvertNullLiteralToDefaultExpression))
-                await ConvertNullLiteralToDefaultExpressionRefactoring.ComputeRefactoringAsync(context, expression).ConfigureAwait(false);
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.ReplaceNullLiteralWithDefaultExpression))
+                await ReplaceNullLiteralWithDefaultExpressionRefactoring.ComputeRefactoringAsync(context, expression).ConfigureAwait(false);
 
             if (context.IsRefactoringEnabled(RefactoringDescriptors.ReplaceConditionalExpressionWithTrueOrFalseBranch))
                 ReplaceConditionalExpressionWithTrueOrFalseBranchRefactoring.ComputeRefactoring(context, expression);

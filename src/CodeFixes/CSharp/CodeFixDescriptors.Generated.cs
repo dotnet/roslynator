@@ -349,11 +349,12 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true, 
             "CS0201");
 
-        /// <summary>RCF0048 (fixes CS0819, CS0822)</summary>
+        /// <summary>RCF0048 (fixes CS0214, CS0819, CS0822)</summary>
         public static readonly CodeFixDescriptor UseExplicitTypeInsteadOfVar = new CodeFixDescriptor(
             id:                 CodeFixIdentifiers.UseExplicitTypeInsteadOfVar, 
             title:              "Use explicit type instead of 'var'", 
             isEnabledByDefault: true, 
+            "CS0214", 
             "CS0819", 
             "CS0822");
 

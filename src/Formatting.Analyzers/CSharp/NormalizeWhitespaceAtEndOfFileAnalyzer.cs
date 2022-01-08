@@ -21,7 +21,9 @@ namespace Roslynator.Formatting.CSharp
             get
             {
                 if (_supportedDiagnostics.IsDefault)
+                {
                     Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.NormalizeWhitespaceAtEndOfFile);
+                }
 
                 return _supportedDiagnostics;
             }
@@ -41,7 +43,12 @@ namespace Roslynator.Formatting.CSharp
             SyntaxToken endOfFile = compilationUnit.EndOfFileToken;
             SyntaxTriviaList.Reversed.Enumerator en = endOfFile.LeadingTrivia.Reverse().GetEnumerator();
 
-            if (!context.IsEnabled(ConfigOptions.PreferNewLineAtEndOfFile))
+            bool? preferNewLineAtEndOfFile = context.PreferNewLineAtEndOfFile();
+
+            if (preferNewLineAtEndOfFile == null)
+                return;
+
+            if (preferNewLineAtEndOfFile == false)
             {
                 if (en.MoveNext()
                     && (!en.Current.IsWhitespaceTrivia()

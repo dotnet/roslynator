@@ -8,16 +8,16 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1207ConvertMethodGroupToAnonymousFunctionTests : AbstractCSharpDiagnosticVerifier<ConvertAnonymousFunctionToMethodGroupOrViceVersaAnalyzer, ConvertAnonymousFunctionToMethodGroupOrViceVersaCodeFixProvider>
+    public class RCS1207ConvertMethodGroupToAnonymousFunctionTests : AbstractCSharpDiagnosticVerifier<UseAnonymousFunctionOrMethodGroupAnalyzer, UseAnonymousFunctionOrMethodGroupCodeFixProvider>
     {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.ConvertAnonymousFunctionToMethodGroupOrViceVersa;
+        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseAnonymousFunctionOrMethodGroup;
 
         public override CSharpTestOptions Options
         {
-            get { return base.Options.EnableConfigOption(AnalyzerOptions.ConvertMethodGroupToAnonymousFunction.OptionKey); }
+            get { return base.Options.AddConfigOption(ConfigOptionKeys.AnonymousFunctionOrMethodGroup, ConfigOptionValues.AnonymousFunctionOrMethodGroup_AnonymousFunction); }
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertAnonymousFunctionToMethodGroupOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
         public async Task Test_Argument()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -47,7 +47,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertAnonymousFunctionToMethodGroupOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
         public async Task Test_Argument_OneParameter()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -77,7 +77,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertAnonymousFunctionToMethodGroupOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
         public async Task Test_Argument_TwoParameters()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -107,7 +107,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertAnonymousFunctionToMethodGroupOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
         public async Task Test_Argument_TwoParameters2()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -143,7 +143,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertAnonymousFunctionToMethodGroupOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
         public async Task Test_Argument_WithClassName()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -173,7 +173,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertAnonymousFunctionToMethodGroupOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
         public async Task Test_Argument_WithNamespaceName()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -209,7 +209,7 @@ namespace N
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertAnonymousFunctionToMethodGroupOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
         public async Task Test_Argument_WithGlobalName()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -245,7 +245,7 @@ namespace N
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertAnonymousFunctionToMethodGroupOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
         public async Task Test_LocalDeclaration()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -275,7 +275,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertAnonymousFunctionToMethodGroupOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
         public async Task Test_Assignment()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -315,7 +315,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertAnonymousFunctionToMethodGroupOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
         public async Task Test_ObjectInitializer()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -349,7 +349,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertAnonymousFunctionToMethodGroupOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
         public async Task Test_PropertyInitializer()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -373,7 +373,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertAnonymousFunctionToMethodGroupOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
         public async Task Test_FieldInitializer()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -397,7 +397,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertAnonymousFunctionToMethodGroupOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
         public async Task Test_ReturnStatement()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -427,7 +427,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertAnonymousFunctionToMethodGroupOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
         public async Task Test_ArrowExpressionClause()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -451,7 +451,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertAnonymousFunctionToMethodGroupOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
         public async Task Test_ArrayInitializer()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -481,7 +481,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertAnonymousFunctionToMethodGroupOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
         public async Task Test_CollectionInitializer()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -513,7 +513,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertAnonymousFunctionToMethodGroupOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
         public async Task Test_YieldReturnStatement()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -545,7 +545,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertAnonymousFunctionToMethodGroupOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
         public async Task Test_SwitchExpressionArm()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -581,7 +581,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertAnonymousFunctionToMethodGroupOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
         public async Task TestNoDiagnostic_AnalyzerOptionDisabled()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -596,7 +596,7 @@ class C
         M2(M);
     }
 }
-", options: Options.AddConfigOption(AnalyzerOptions.ConvertMethodGroupToAnonymousFunction.OptionKey, false));
+", options: Options.AddConfigOption(ConfigOptionKeys.AnonymousFunctionOrMethodGroup, ConfigOptionValues.AnonymousFunctionOrMethodGroup_MethodGroup));
         }
     }
 }

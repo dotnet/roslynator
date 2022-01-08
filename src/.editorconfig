@@ -5,7 +5,8 @@ root = true
 
 # Code files
 [*.{cs,csx}]
-roslynator.prefer_target_typed_new_expression_when_type_is_obvious = true
+roslynator.prefer_implicit_object_creation_when_type_is_obvious = true
+roslynator.prefer_var_instead_of_implicit_object_creation = true
 roslynator.RCS0011.invert = true
 roslynator.RCS0015.invert = true
 roslynator.RCS0051.invert = true

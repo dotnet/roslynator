@@ -24,8 +24,8 @@ namespace Roslynator.Formatting.CSharp
         [Obsolete("", error: true)]
         internal static readonly DiagnosticDescriptor AddNewLineAfterBinaryOperatorInsteadOfBeforeIt2 = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.AddNewLineAfterBinaryOperatorInsteadOfBeforeIt2, 
-            title:              "Add newline after binary operator instead of before it.", 
-            messageFormat:      "Add newline after binary operator instead of before it.", 
+            title:              "Add new line after binary operator instead of before it.", 
+            messageFormat:      "Add new line after binary operator instead of before it.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
@@ -36,8 +36,8 @@ namespace Roslynator.Formatting.CSharp
         [Obsolete("", error: true)]
         internal static readonly DiagnosticDescriptor AddNewLineAfterConditionalOperatorInsteadOfBeforeIt2 = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.AddNewLineAfterConditionalOperatorInsteadOfBeforeIt2, 
-            title:              "Add newline after conditional operator instead of before it.", 
-            messageFormat:      "Add newline after conditional operator instead of before it.", 
+            title:              "Add new line after conditional operator instead of before it.", 
+            messageFormat:      "Add new line after conditional operator instead of before it.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
@@ -48,8 +48,8 @@ namespace Roslynator.Formatting.CSharp
         [Obsolete("", error: true)]
         internal static readonly DiagnosticDescriptor AddNewLineAfterExpressionBodyArrowInsteadOfBeforeIt2 = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.AddNewLineAfterExpressionBodyArrowInsteadOfBeforeIt2, 
-            title:              "Add newline after expression body arrow instead of before it.", 
-            messageFormat:      "Add newline after expression body arrow instead of before it.", 
+            title:              "Add new line after expression body arrow instead of before it.", 
+            messageFormat:      "Add new line after expression body arrow instead of before it.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
@@ -84,8 +84,8 @@ namespace Roslynator.Formatting.CSharp
         [Obsolete("", error: true)]
         internal static readonly DiagnosticDescriptor RemoveNewLineBetweenClosingBraceAndWhileKeyword2 = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.RemoveNewLineBetweenClosingBraceAndWhileKeyword2, 
-            title:              "Remove newline between closing brace and 'while' keyword.", 
-            messageFormat:      "Remove newline between closing brace and 'while' keyword.", 
+            title:              "Remove new line between closing brace and 'while' keyword.", 
+            messageFormat:      "Remove new line between closing brace and 'while' keyword.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 

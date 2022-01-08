@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Roslynator.Formatting.CSharp.Tests
 {
-    public class RCS0007AddEmptyLineBetweenAccessorsTests : AbstractCSharpDiagnosticVerifier<AddOrRemoveEmptyLineBetweenAccessorsAnalyzer, SyntaxTriviaCodeFixProvider>
+    public class RCS0007AddEmptyLineBetweenAccessorsTests : AbstractCSharpDiagnosticVerifier<BlankLineBetweenAccessorsAnalyzer, SyntaxTriviaCodeFixProvider>
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddEmptyLineBetweenAccessors;
 

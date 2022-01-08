@@ -13,7 +13,7 @@ namespace Roslynator.Formatting.CSharp.Tests
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.NormalizeWhitespaceAtEndOfFile;
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeWhitespaceAtEndOfFile)]
-        public async Task Test_NewlineAtEndOfFile()
+        public async Task Test_NewLineAtEndOfFile()
         {
             await VerifyDiagnosticAndFixAsync(@"
 class C
@@ -22,19 +22,19 @@ class C
 class C
 {
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.NewLineAtEndOfFile, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeWhitespaceAtEndOfFile)]
-        public async Task Test_NewlineAtEndOfFile_EmptyFile()
+        public async Task Test_NewLineAtEndOfFile_EmptyFile()
         {
             await VerifyDiagnosticAndFixAsync(@"
 [||]",
-"");
+"", options: Options.AddConfigOption(ConfigOptionKeys.NewLineAtEndOfFile, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeWhitespaceAtEndOfFile)]
-        public async Task Test_NewlineAtEndOfFile_TrailingWhitespace()
+        public async Task Test_NewLineAtEndOfFile_TrailingWhitespace()
         {
             await VerifyDiagnosticAndFixAsync(@"
 class C
@@ -43,11 +43,11 @@ class C
 class C
 {
 } 
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.NewLineAtEndOfFile, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeWhitespaceAtEndOfFile)]
-        public async Task Test_NewlineAtEndOfFile_TrailingMany()
+        public async Task Test_NewLineAtEndOfFile_TrailingMany()
         {
             await VerifyDiagnosticAndFixAsync(@"
 class C
@@ -56,11 +56,11 @@ class C
 class C
 {
 } 
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.NewLineAtEndOfFile, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeWhitespaceAtEndOfFile)]
-        public async Task Test_NewlineAtEndOfFile_SingleLineComment()
+        public async Task Test_NewLineAtEndOfFile_SingleLineComment()
         {
             await VerifyDiagnosticAndFixAsync(@"
 class C
@@ -71,11 +71,11 @@ class C
 {
 }
 //x
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.NewLineAtEndOfFile, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeWhitespaceAtEndOfFile)]
-        public async Task Test_NewlineAtEndOfFile_MultiLineComment()
+        public async Task Test_NewLineAtEndOfFile_MultiLineComment()
         {
             await VerifyDiagnosticAndFixAsync(@"
 class C
@@ -86,11 +86,11 @@ class C
 {
 }
 /** x **/
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.NewLineAtEndOfFile, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeWhitespaceAtEndOfFile)]
-        public async Task Test_NewlineAtEndOfFile_Directive()
+        public async Task Test_NewLineAtEndOfFile_Directive()
         {
             await VerifyDiagnosticAndFixAsync(@"
 class C
@@ -103,11 +103,11 @@ class C
 }
 #if DEBUG
 #endif
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.NewLineAtEndOfFile, true));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeWhitespaceAtEndOfFile)]
-        public async Task Test_NoNewlineAtEndOfFile()
+        public async Task Test_NoNewLineAtEndOfFile()
         {
             await VerifyDiagnosticAndFixAsync(@"
 class C
@@ -116,19 +116,19 @@ class C
 [||]", @"
 class C
 {
-}", options: Options.AddConfigOption(ConfigOptionKeys.PreferNewLineAtEndOfFile, false));
+}", options: Options.AddConfigOption(ConfigOptionKeys.NewLineAtEndOfFile, false));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeWhitespaceAtEndOfFile)]
-        public async Task Test_NoNewlineAtEndOfFile_EmptyFile()
+        public async Task Test_NoNewLineAtEndOfFile_EmptyFile()
         {
             await VerifyDiagnosticAndFixAsync(@"
 [||]",
-"", options: Options.AddConfigOption(ConfigOptionKeys.PreferNewLineAtEndOfFile, false));
+"", options: Options.AddConfigOption(ConfigOptionKeys.NewLineAtEndOfFile, false));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeWhitespaceAtEndOfFile)]
-        public async Task Test_NoNewlineAtEndOfFile_TrailingWhitespace()
+        public async Task Test_NoNewLineAtEndOfFile_TrailingWhitespace()
         {
             await VerifyDiagnosticAndFixAsync(@"
 class C
@@ -137,11 +137,11 @@ class C
  [||]", @"
 class C
 {
-}", options: Options.AddConfigOption(ConfigOptionKeys.PreferNewLineAtEndOfFile, false));
+}", options: Options.AddConfigOption(ConfigOptionKeys.NewLineAtEndOfFile, false));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeWhitespaceAtEndOfFile)]
-        public async Task Test_NoNewlineAtEndOfFile_TrailingMany()
+        public async Task Test_NoNewLineAtEndOfFile_TrailingMany()
         {
             await VerifyDiagnosticAndFixAsync(@"
 class C
@@ -152,11 +152,11 @@ class C
   [||]", @"
 class C
 {
-}", options: Options.AddConfigOption(ConfigOptionKeys.PreferNewLineAtEndOfFile, false));
+}", options: Options.AddConfigOption(ConfigOptionKeys.NewLineAtEndOfFile, false));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeWhitespaceAtEndOfFile)]
-        public async Task Test_NoNewlineAtEndOfFile_SingleLineComment()
+        public async Task Test_NoNewLineAtEndOfFile_SingleLineComment()
         {
             await VerifyDiagnosticAndFixAsync(@"
 class C
@@ -167,11 +167,11 @@ class C
 class C
 {
 }
-//x", options: Options.AddConfigOption(ConfigOptionKeys.PreferNewLineAtEndOfFile, false));
+//x", options: Options.AddConfigOption(ConfigOptionKeys.NewLineAtEndOfFile, false));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeWhitespaceAtEndOfFile)]
-        public async Task Test_NoNewlineAtEndOfFile_MultiLineComment()
+        public async Task Test_NoNewLineAtEndOfFile_MultiLineComment()
         {
             await VerifyDiagnosticAndFixAsync(@"
 class C
@@ -182,11 +182,11 @@ class C
 class C
 {
 }
-/** x **/", options: Options.AddConfigOption(ConfigOptionKeys.PreferNewLineAtEndOfFile, false));
+/** x **/", options: Options.AddConfigOption(ConfigOptionKeys.NewLineAtEndOfFile, false));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeWhitespaceAtEndOfFile)]
-        public async Task Test_NoNewlineAtEndOfFile_Directive()
+        public async Task Test_NoNewLineAtEndOfFile_Directive()
         {
             await VerifyDiagnosticAndFixAsync(@"
 class C
@@ -199,11 +199,11 @@ class C
 {
 }
 #if DEBUG
-#endif", options: Options.AddConfigOption(ConfigOptionKeys.PreferNewLineAtEndOfFile, false));
+#endif", options: Options.AddConfigOption(ConfigOptionKeys.NewLineAtEndOfFile, false));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeWhitespaceAtEndOfFile)]
-        public async Task TestNoDiagnostic_NewlineAtEndOfFile()
+        public async Task TestNoDiagnostic_NewLineAtEndOfFile()
         {
             await VerifyNoDiagnosticAsync(@"
 class C
@@ -213,12 +213,12 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeWhitespaceAtEndOfFile)]
-        public async Task TestNoDiagnostic_NoNewlineAtEndOfFile()
+        public async Task TestNoDiagnostic_NoNewLineAtEndOfFile()
         {
             await VerifyNoDiagnosticAsync(@"
 class C
 {
-}", options: Options.AddConfigOption(ConfigOptionKeys.PreferNewLineAtEndOfFile, false));
+}", options: Options.AddConfigOption(ConfigOptionKeys.NewLineAtEndOfFile, false));
         }
     }
 }

@@ -6,20 +6,5 @@ namespace Roslynator.CSharp
 {
     public static partial class AnalyzerOptions
     {
-        internal static readonly AnalyzerOptionDescriptor SuppressUnityScriptMethods = new AnalyzerOptionDescriptor("roslynator.RCS1213.suppress_unity_script_methods", DiagnosticRules.RemoveUnusedMemberDeclaration);
-        internal static readonly AnalyzerOptionDescriptor UseImplicitlyTypedArrayWhenTypeIsObvious = new AnalyzerOptionDescriptor("roslynator.RCS1014.use_implicit_type_when_obvious", DiagnosticRules.UseExplicitlyTypedArrayOrViceVersa);
-        internal static readonly AnalyzerOptionDescriptor ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine = new AnalyzerOptionDescriptor("roslynator.RCS1016.use_block_body_when_expression_is_multiline", DiagnosticRules.ConvertBlockBodyToExpressionBodyOrViceVersa);
-        internal static readonly AnalyzerOptionDescriptor RemoveEmptyLineBetweenClosingBraceAndSwitchSection = new AnalyzerOptionDescriptor("roslynator.RCS1036.remove_empty_line_between_closing_brace_and_switch_section", DiagnosticRules.RemoveRedundantEmptyLine);
-        internal static readonly AnalyzerOptionDescriptor RemoveParenthesesFromConditionOfConditionalExpressionWhenExpressionIsSingleToken = new AnalyzerOptionDescriptor("roslynator.RCS1051.do_not_parenthesize_single_token", DiagnosticRules.ParenthesizeConditionOfConditionalExpression);
-        internal static readonly AnalyzerOptionDescriptor ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine = new AnalyzerOptionDescriptor("roslynator.RCS1016.use_block_body_when_declaration_is_multiline", DiagnosticRules.ConvertBlockBodyToExpressionBodyOrViceVersa);
-        internal static readonly AnalyzerOptionDescriptor UseImplicitlyTypedArray = new AnalyzerOptionDescriptor("roslynator.RCS1014.invert", DiagnosticRules.UseExplicitlyTypedArrayOrViceVersa);
-        internal static readonly AnalyzerOptionDescriptor ConvertExpressionBodyToBlockBody = new AnalyzerOptionDescriptor("roslynator.RCS1016.invert", DiagnosticRules.ConvertBlockBodyToExpressionBodyOrViceVersa);
-        internal static readonly AnalyzerOptionDescriptor RemoveAccessibilityModifiers = new AnalyzerOptionDescriptor("roslynator.RCS1018.invert", DiagnosticRules.AddAccessibilityModifiersOrViceVersa);
-        internal static readonly AnalyzerOptionDescriptor RemoveArgumentListFromObjectCreation = new AnalyzerOptionDescriptor("roslynator.RCS1050.invert", DiagnosticRules.AddArgumentListToObjectCreationOrViceVersa);
-        internal static readonly AnalyzerOptionDescriptor UseStringEmptyInsteadOfEmptyStringLiteral = new AnalyzerOptionDescriptor("roslynator.RCS1078.invert", DiagnosticRules.UseEmptyStringLiteralInsteadOfStringEmptyOrViceVersa);
-        internal static readonly AnalyzerOptionDescriptor RemoveCallToConfigureAwait = new AnalyzerOptionDescriptor("roslynator.RCS1090.invert", DiagnosticRules.AddCallToConfigureAwaitOrViceVersa);
-        internal static readonly AnalyzerOptionDescriptor ConvertBitwiseOperationToHasFlagCall = new AnalyzerOptionDescriptor("roslynator.RCS1096.invert", DiagnosticRules.ConvertHasFlagCallToBitwiseOperationOrViceVersa);
-        internal static readonly AnalyzerOptionDescriptor ConvertMethodGroupToAnonymousFunction = new AnalyzerOptionDescriptor("roslynator.RCS1207.invert", DiagnosticRules.ConvertAnonymousFunctionToMethodGroupOrViceVersa);
-        internal static readonly AnalyzerOptionDescriptor UseComparisonInsteadPatternMatchingToCheckForNull = new AnalyzerOptionDescriptor("roslynator.RCS1248.invert", DiagnosticRules.UsePatternMatchingToCheckForNullOrViceVersa);
     }
 }

@@ -261,8 +261,9 @@
   </CodeFix>
   <CodeFix Id="RCF0048" Identifier="UseExplicitTypeInsteadOfVar" Title="Use explicit type instead of 'var'">
     <FixableDiagnosticIds>
+	  <Id>CS0214</Id>
       <Id>CS0819</Id>
-      <Id>CS0822</Id>
+	  <Id>CS0822</Id>
     </FixableDiagnosticIds>
   </CodeFix>
   <CodeFix Id="RCF0049" Identifier="RemoveAwaitKeyword" Title="Remove 'await' keyword">

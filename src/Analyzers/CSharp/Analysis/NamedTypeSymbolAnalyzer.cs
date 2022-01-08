@@ -110,26 +110,26 @@ namespace Roslynator.CSharp.Analysis
                         if (fIComparableOfT
                             && !fIComparable)
                         {
-                            ReportDiagnostic(context, symbol, "IComparable");
+                            ReportDiagnostic(context, symbol, "IComparable", "IComparable<T>");
                         }
 
                         if (fIComparerOfT
                             && !fIComparer)
                         {
-                            ReportDiagnostic(context, symbol, "IComparer");
+                            ReportDiagnostic(context, symbol, "IComparer", "IComparer<T>");
                         }
 
                         if (fIEqualityComparerOfT
                             && !fIEqualityComparer)
                         {
-                            ReportDiagnostic(context, symbol, "IEqualityComparer");
+                            ReportDiagnostic(context, symbol, "IEqualityComparer", "IEqualityComparer<T>");
                         }
                     }
                 }
             }
         }
 
-        private static void ReportDiagnostic(SymbolAnalysisContext context, INamedTypeSymbol symbol, string interfaceName)
+        private static void ReportDiagnostic(SymbolAnalysisContext context, INamedTypeSymbol symbol, string interfaceName, string genericInterfaceName)
         {
             SyntaxToken identifier = default;
 
@@ -151,7 +151,8 @@ namespace Roslynator.CSharp.Analysis
                 DiagnosticRules.ImplementNonGenericCounterpart,
                 identifier.GetLocation(),
                 ImmutableDictionary.CreateRange(new[] { new KeyValuePair<string, string>("InterfaceName", interfaceName) }),
-                interfaceName);
+                interfaceName,
+                genericInterfaceName);
         }
     }
 }

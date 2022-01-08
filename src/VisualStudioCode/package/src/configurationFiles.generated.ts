@@ -34,13 +34,83 @@ is_global = true
 
 # Options
 
+roslynator_accessibility_modifiers = explicit|implicit
+# Applicable to: RCS1018
+
+roslynator_anonymous_function_or_method_group = anonymous_function|method_group
+# Applicable to: RCS1207
+
+roslynator_array_creation_type_style = explicit|implicit|implicit_when_type_is_obvious
+# Applicable to: RCS1014
+
+roslynator_arrow_token_new_line = after|before
+# Applicable to: RCS0032
+
+roslynator_binary_operator_new_line = after|before
+# Applicable to: RCS0027
+
+roslynator_blank_line_between_closing_brace_and_switch_section = true|false
+# Applicable to: RCS1036
+
+roslynator_blank_line_between_single_line_accessors = true|false
+# Applicable to: RCS0011
+
+roslynator_blank_line_between_using_directive_groups = true|false
+# Applicable to: RCS0015
+
+roslynator_body_style = block|expression
+# Applicable to: RCS1016
+
+roslynator_condition_in_conditional_operator_parentheses_style = include|omit||omit_when_condition_is_single_token
+# Applicable to: RCS1051
+
+roslynator_conditional_operator_new_line = after|before
+# Applicable to: RCS0028
+
+roslynator_configure_await = true|false
+# Applicable to: RCS1090
+
+roslynator_empty_string_style = field|literal
+# Applicable to: RCS1078
+
+roslynator_enum_has_flag_style = method|operator
+# Applicable to: RCS1096
+
+roslynator_equals_token_new_line = after|before
+# Applicable to: RCS0052
+
+roslynator_max_line_length = 140
 # Applicable to: RCS0056
-roslynator.max_line_length = 140
 
+roslynator_new_line_at_end_of_file = true|false
 # Applicable to: RCS0058
-roslynator.prefer_new_line_at_end_of_file = true
 
-roslynator.prefix_field_identifier_with_underscore = false
+roslynator_new_line_before_while_in_do_statement = true|false
+# Applicable to: RCS0051
+
+roslynator_null_check_style = equality_operator|pattern_matching
+# Applicable to: RCS1248
+
+roslynator_object_creation_parentheses_style = include|omit
+# Applicable to: RCS1050
+
+roslynator_object_creation_type_style = explicit|implicit|implicit_when_type_is_obvious
+# Applicable to: RCS1250
+
+roslynator_prefer_block_body_when_declaration_spans_over_multiple_lines = true|false
+# Applicable to: RCS1016
+
+roslynator_prefer_block_body_when_expression_spans_over_multiple_lines = true|false
+# Applicable to: RCS1016
+
+roslynator_prefix_field_identifier_with_underscore = true|false
+
+roslynator_suppress_unity_script_methods = true|false
+# Applicable to: RCS1213
+
+roslynator_use_var_instead_of_implicit_object_creation = true|false
+# Applicable to: RCS1250
+
 
 # Analyzers
 
@@ -71,10 +141,9 @@ dotnet_diagnostic.RCS0009.severity = none
 # Add empty line between declarations
 dotnet_diagnostic.RCS0010.severity = none
 
-# Add empty line between single-line accessors (or vice versa)
+# Add/remove blank line between single-line accessors
 dotnet_diagnostic.RCS0011.severity = none
-# Remove empty line between single-line accessors
-roslynator.RCS0011.invert = false
+#roslynator_blank_line_between_single_line_accessors = true|false
 
 # Add empty line between single-line declarations
 dotnet_diagnostic.RCS0012.severity = none
@@ -85,60 +154,56 @@ dotnet_diagnostic.RCS0013.severity = none
 # Add empty line between switch sections
 dotnet_diagnostic.RCS0014.severity = none
 
-# Add empty line between using directives with different root namespace (or vice versa)
+# Add/remove empty line between using directive groups
 dotnet_diagnostic.RCS0015.severity = none
-# Remove empty line between using directives with different root namespace
-roslynator.RCS0015.invert = false
+#roslynator_blank_line_between_using_directive_groups = true|false
 
-# Add newline after attribute list
+# Add new line after attribute list
 dotnet_diagnostic.RCS0016.severity = none
 
-# Add newline after opening brace of accessor
+# Add new line after opening brace of accessor
 dotnet_diagnostic.RCS0020.severity = none
 
-# Add newline after opening brace of block
+# Add new line after opening brace of block
 dotnet_diagnostic.RCS0021.severity = none
 
-# Add newline after opening brace of empty block
+# Add new line after opening brace of empty block
 dotnet_diagnostic.RCS0022.severity = none
 
-# Add newline after opening brace of type declaration
+# Add new line after opening brace of type declaration
 dotnet_diagnostic.RCS0023.severity = none
 
-# Add newline after switch label
+# Add new line after switch label
 dotnet_diagnostic.RCS0024.severity = none
 
-# Add newline before accessor of full property
+# Add new line before accessor of full property
 dotnet_diagnostic.RCS0025.severity = none
 
-# Add newline before binary operator instead of after it (or vice versa)
+# Place new line after/before binary operator
 dotnet_diagnostic.RCS0027.severity = none
-# Add newline after binary operator instead of before it
-roslynator.RCS0027.invert = false
+#roslynator_binary_operator_new_line = after|before
 
-# Add newline before conditional operator instead of after it (or vice versa)
+# Place new line after/before '?:' operator
 dotnet_diagnostic.RCS0028.severity = none
-# Add newline after conditional operator instead of before it
-roslynator.RCS0028.invert = false
+#roslynator_conditional_operator_new_line = after|before
 
-# Add newline before constructor initializer
+# Add new line before constructor initializer
 dotnet_diagnostic.RCS0029.severity = none
 
-# Add newline before embedded statement
+# Add new line before embedded statement
 dotnet_diagnostic.RCS0030.severity = none
 
-# Add newline before enum member
+# Add new line before enum member
 dotnet_diagnostic.RCS0031.severity = none
 
-# Add newline before expression body arrow instead of after it (or vice versa)
+# Place new line after/before arrow token
 dotnet_diagnostic.RCS0032.severity = none
-# Add newline after expression body arrow instead of before it
-roslynator.RCS0032.invert = false
+#roslynator_arrow_token_new_line = after|before
 
-# Add newline before statement
+# Add new line before statement
 dotnet_diagnostic.RCS0033.severity = none
 
-# Add newline before type parameter constraint
+# Add new line before type parameter constraint
 dotnet_diagnostic.RCS0034.severity = none
 
 # Remove empty line between single-line declarations of same kind
@@ -147,22 +212,22 @@ dotnet_diagnostic.RCS0036.severity = none
 # Remove empty line between using directives with same root namespace
 dotnet_diagnostic.RCS0038.severity = none
 
-# Remove newline before base list
+# Remove new line before base list
 dotnet_diagnostic.RCS0039.severity = none
 
-# Remove newline between 'if' keyword and 'else' keyword
+# Remove new line between 'if' keyword and 'else' keyword
 dotnet_diagnostic.RCS0041.severity = none
 
-# Remove newlines from accessor list of auto-property
+# Remove new lines from accessor list of auto-property
 dotnet_diagnostic.RCS0042.severity = none
 
-# Remove newlines from accessor with single-line expression
+# Remove new lines from accessor with single-line expression
 dotnet_diagnostic.RCS0043.severity = none
 
-# Use carriage return + linefeed as newline
+# Use carriage return + linefeed as new line
 dotnet_diagnostic.RCS0044.severity = none
 
-# Use linefeed as newline
+# Use linefeed as new line
 dotnet_diagnostic.RCS0045.severity = none
 
 # Use spaces instead of tab
@@ -171,7 +236,7 @@ dotnet_diagnostic.RCS0046.severity = none
 # [deprecated] Wrap and indent each node in list
 dotnet_diagnostic.RCS0047.severity = none
 
-# Remove newlines from initializer with single-line expression
+# Remove new lines from initializer with single-line expression
 dotnet_diagnostic.RCS0048.severity = none
 
 # Add empty line after top comment
@@ -180,15 +245,13 @@ dotnet_diagnostic.RCS0049.severity = none
 # Add empty line before top declaration
 dotnet_diagnostic.RCS0050.severity = none
 
-# Add newline between closing brace and 'while' keyword (or vice versa)
+# Add/remove new line before 'while' in 'do' statement
 dotnet_diagnostic.RCS0051.severity = none
-# Remove newline between closing brace and 'while' keyword
-roslynator.RCS0051.invert = false
+#roslynator_new_line_before_while_in_do_statement = true|false
 
-# Add newline before equals sign instead of after it (or vice versa)
+# Place new line after/before equals token
 dotnet_diagnostic.RCS0052.severity = none
-# Add newline after equals sign instead of before it
-roslynator.RCS0052.invert = false
+#roslynator_equals_token_new_line = after|before
 
 # Fix formatting of a list
 dotnet_diagnostic.RCS0053.severity = none
@@ -201,12 +264,14 @@ dotnet_diagnostic.RCS0055.severity = none
 
 # A line is too long
 dotnet_diagnostic.RCS0056.severity = none
+#roslynator_max_line_length = <NUM>
 
 # Normalize whitespace at the beginning of a file
 dotnet_diagnostic.RCS0057.severity = none
 
 # Normalize whitespace at the end of a file
 dotnet_diagnostic.RCS0058.severity = none
+#roslynator_new_line_at_end_of_file = true|false
 
 # Add braces (when expression spans over multiple lines)
 dotnet_diagnostic.RCS1001.severity = suggestion
@@ -244,29 +309,22 @@ dotnet_diagnostic.RCS1012.severity = none
 # Use predefined type
 dotnet_diagnostic.RCS1013.severity = none
 
-# Use explicitly typed array (or vice versa)
+# Use explicitly/implicitly typed array
 dotnet_diagnostic.RCS1014.severity = none
-# Use implicitly typed array
-roslynator.RCS1014.invert = false
-# Use implicitly typed array (when type is obvious)
-roslynator.RCS1014.use_implicit_type_when_obvious = false
+#roslynator_array_creation_type_style = explicit|implicit|implicit_when_type_is_obvious
 
 # Use nameof operator
 dotnet_diagnostic.RCS1015.severity = suggestion
 
-# Convert block body to expression body (or vice versa)
+# Use block body or expression body
 dotnet_diagnostic.RCS1016.severity = none
-# Convert expression body to block body
-roslynator.RCS1016.invert = false
-# Convert expression body to block body when declaration is multi-line
-roslynator.RCS1016.use_block_body_when_declaration_is_multiline = false
-# Convert expression body to block body when expression is multi-line
-roslynator.RCS1016.use_block_body_when_expression_is_multiline = false
+#roslynator_body_style = block|expression
+#roslynator_prefer_block_body_when_declaration_spans_over_multiple_lines = true|false
+#roslynator_prefer_block_body_when_expression_spans_over_multiple_lines = true|false
 
-# Add accessibility modifiers (or vice versa)
+# Add/remove accessibility modifiers
 dotnet_diagnostic.RCS1018.severity = suggestion
-# Remove accessibility modifiers
-roslynator.RCS1018.invert = false
+#roslynator_accessibility_modifiers = explicit|implicit
 
 # Order modifiers
 dotnet_diagnostic.RCS1019.severity = none
@@ -294,8 +352,7 @@ dotnet_diagnostic.RCS1035.severity = none
 
 # Remove redundant empty line
 dotnet_diagnostic.RCS1036.severity = suggestion
-# Remove empty line between closing brace and switch section
-roslynator.RCS1036.remove_empty_line_between_closing_brace_and_switch_section = false
+#roslynator_blank_line_between_closing_brace_and_switch_section = true|false
 
 # Remove trailing white-space
 dotnet_diagnostic.RCS1037.severity = suggestion
@@ -333,15 +390,13 @@ dotnet_diagnostic.RCS1048.severity = suggestion
 # Simplify boolean comparison
 dotnet_diagnostic.RCS1049.severity = suggestion
 
-# Add argument list to object creation expression (or vice versa)
+# Include/omit parentheses when creating new object
 dotnet_diagnostic.RCS1050.severity = none
-# Remove argument list from object creation expression
-roslynator.RCS1050.invert = false
+#roslynator_object_creation_parentheses_style = include|omit
 
-# Parenthesize condition of conditional expression
+# Add/remove parentheses from condition in conditional operator
 dotnet_diagnostic.RCS1051.severity = none
-# Remove parentheses from condition of conditional expression (when condition is a single token)
-roslynator.RCS1051.do_not_parenthesize_single_token = false
+#roslynator_condition_in_conditional_operator_parentheses_style = include|omit||omit_when_condition_is_single_token
 
 # Declare each attribute separately
 dotnet_diagnostic.RCS1052.severity = none
@@ -403,10 +458,9 @@ dotnet_diagnostic.RCS1075.severity = warning
 # Optimize LINQ method call
 dotnet_diagnostic.RCS1077.severity = suggestion
 
-# Use "" instead of string.Empty (or vice versa)
+# Use "" or 'string.Empty'
 dotnet_diagnostic.RCS1078.severity = none
-# Use string.Empty instead of ""
-roslynator.RCS1078.invert = false
+#roslynator_empty_string_style = field|literal
 
 # Throwing of new NotImplementedException
 dotnet_diagnostic.RCS1079.severity = none
@@ -426,10 +480,9 @@ dotnet_diagnostic.RCS1085.severity = suggestion
 # Use --/++ operator instead of assignment
 dotnet_diagnostic.RCS1089.severity = suggestion
 
-# Add call to 'ConfigureAwait' (or vice versa)
+# Add/remove 'ConfigureAwait(false)' call
 dotnet_diagnostic.RCS1090.severity = none
-# Remove call to 'ConfigureAwait'
-roslynator.RCS1090.invert = false
+#roslynator_configure_await = true|false
 
 # Remove empty region
 dotnet_diagnostic.RCS1091.severity = silent
@@ -440,10 +493,9 @@ dotnet_diagnostic.RCS1093.severity = suggestion
 # Declare using directive on top level
 dotnet_diagnostic.RCS1094.severity = none
 
-# Convert 'HasFlag' call to bitwise operation (or vice versa)
+# Use 'HasFlag' method or bitwise operator
 dotnet_diagnostic.RCS1096.severity = suggestion
-# Convert bitwise operation to 'HasFlag' call
-roslynator.RCS1096.invert = false
+#roslynator_enum_has_flag_style = method|operator
 
 # Remove redundant 'ToString' call
 dotnet_diagnostic.RCS1097.severity = suggestion
@@ -468,8 +520,6 @@ dotnet_diagnostic.RCS1103.severity = suggestion
 
 # Simplify conditional expression
 dotnet_diagnostic.RCS1104.severity = suggestion
-# Do not simplify conditional expression when condition is inverted
-roslynator.RCS1104.suppress_when_condition_is_inverted = false
 
 # Unnecessary interpolation
 dotnet_diagnostic.RCS1105.severity = suggestion
@@ -705,10 +755,9 @@ dotnet_diagnostic.RCS1205.severity = suggestion
 # Use conditional access instead of conditional expression
 dotnet_diagnostic.RCS1206.severity = suggestion
 
-# Convert anonymous function to method group (or vice versa)
+# Use anonymous function or method group
 dotnet_diagnostic.RCS1207.severity = none
-# Convert method group to anonymous function
-roslynator.RCS1207.invert = false
+#roslynator_anonymous_function_or_method_group = anonymous_function|method_group
 
 # Reduce 'if' nesting
 dotnet_diagnostic.RCS1208.severity = none
@@ -727,8 +776,7 @@ dotnet_diagnostic.RCS1212.severity = suggestion
 
 # Remove unused member declaration
 dotnet_diagnostic.RCS1213.severity = suggestion
-# Suppress Unity script methods
-roslynator.RCS1213.suppress_unity_script_methods = false
+#roslynator_suppress_unity_script_methods = true|false
 
 # Unnecessary interpolated string
 dotnet_diagnostic.RCS1214.severity = suggestion
@@ -822,19 +870,24 @@ dotnet_diagnostic.RCS1244.severity = silent
 
 # Use element access
 dotnet_diagnostic.RCS1246.severity = suggestion
-# Do not use element access when expression is invocation
-roslynator.RCS1246.suppress_when_expression_is_invocation = false
 
 # Fix documentation comment tag
 dotnet_diagnostic.RCS1247.severity = suggestion
 
-# Use pattern matching to check for null (or vice versa)
+# Normalize null check
 dotnet_diagnostic.RCS1248.severity = none
-# Use comparison instead of pattern matching to check for null
-roslynator.RCS1248.invert = false
+#roslynator_null_check_style = equality_operator|pattern_matching
 
 # Unnecessary null-forgiving operator
 dotnet_diagnostic.RCS1249.severity = suggestion
+
+# Use implicit/explicit object creation
+dotnet_diagnostic.RCS1250.severity = suggestion
+#roslynator_object_creation_type_style = explicit|implicit|implicit_when_type_is_obvious
+#roslynator_use_var_instead_of_implicit_object_creation = true|false
+
+# Invalid null check
+dotnet_diagnostic.RCS1251.severity = suggestion
 
 # Use pattern matching
 dotnet_diagnostic.RCS9001.severity = silent
@@ -872,376 +925,376 @@ dotnet_diagnostic.RCS9011.severity = silent
 
 # Refactorings
 
-roslynator.refactoring.add_all_properties_to_initializer.enabled = true
-roslynator.refactoring.add_argument_name.enabled = true
-roslynator.refactoring.add_braces.enabled = true
-roslynator.refactoring.add_braces_to_if_else.enabled = true
-roslynator.refactoring.add_braces_to_switch_section.enabled = true
-roslynator.refactoring.add_braces_to_switch_sections.enabled = true
-roslynator.refactoring.add_default_value_to_parameter.enabled = true
-roslynator.refactoring.add_empty_line_between_declarations.enabled = true
-roslynator.refactoring.add_exception_element_to_documentation_comment.enabled = true
-roslynator.refactoring.add_generic_parameter_to_declaration.enabled = true
-roslynator.refactoring.add_member_to_interface.enabled = true
-roslynator.refactoring.add_missing_cases_to_switch.enabled = true
-roslynator.refactoring.add_parameter_to_interface_member.enabled = true
-roslynator.refactoring.add_tag_to_documentation_comment.enabled = true
-roslynator.refactoring.add_using_directive.enabled = true
-roslynator.refactoring.add_using_static_directive.enabled = true
-roslynator.refactoring.call_extension_method_as_instance_method.enabled = true
-roslynator.refactoring.call_indexof_instead_of_contains.enabled = true
-roslynator.refactoring.comment_out_member_declaration.enabled = true
-roslynator.refactoring.comment_out_statement.enabled = true
-roslynator.refactoring.convert_auto_property_to_full_property.enabled = true
-roslynator.refactoring.convert_auto_property_to_full_property_without_backing_field.enabled = true
-roslynator.refactoring.convert_block_body_to_expression_body.enabled = true
-roslynator.refactoring.convert_comment_to_documentation_comment.enabled = true
-roslynator.refactoring.convert_conditional_expression_to_if_else.enabled = true
-roslynator.refactoring.convert_do_to_while.enabled = true
-roslynator.refactoring.convert_expression_body_to_block_body.enabled = true
-roslynator.refactoring.convert_for_to_foreach.enabled = true
-roslynator.refactoring.convert_for_to_while.enabled = true
-roslynator.refactoring.convert_foreach_to_for.enabled = true
-roslynator.refactoring.convert_foreach_to_for_and_reverse_loop.enabled = false
-roslynator.refactoring.convert_hasflag_call_to_bitwise_operation.enabled = true
-roslynator.refactoring.convert_hexadecimal_literal_to_decimal_literal.enabled = true
-roslynator.refactoring.convert_if_to_conditional_expression.enabled = true
-roslynator.refactoring.convert_if_to_switch.enabled = true
-roslynator.refactoring.convert_interpolated_string_to_concatenation.enabled = true
-roslynator.refactoring.convert_interpolated_string_to_string_format.enabled = true
-roslynator.refactoring.convert_interpolated_string_to_string_literal.enabled = true
-roslynator.refactoring.convert_lambda_block_body_to_expression_body.enabled = true
-roslynator.refactoring.convert_lambda_expression_body_to_block_body.enabled = true
-roslynator.refactoring.convert_method_group_to_lambda.enabled = true
-roslynator.refactoring.convert_null_literal_to_default_expression.enabled = true
-roslynator.refactoring.convert_regular_string_literal_to_verbatim_string_literal.enabled = true
-roslynator.refactoring.convert_return_statement_to_if.enabled = true
-roslynator.refactoring.convert_statements_to_if_else.enabled = true
-roslynator.refactoring.convert_string_format_to_interpolated_string.enabled = true
-roslynator.refactoring.convert_switch_expression_to_switch_statement.enabled = true
-roslynator.refactoring.convert_switch_to_if.enabled = true
-roslynator.refactoring.convert_verbatim_string_literal_to_regular_string_literal.enabled = true
-roslynator.refactoring.convert_verbatim_string_literal_to_regular_string_literals.enabled = true
-roslynator.refactoring.convert_while_to_do.enabled = true
-roslynator.refactoring.convert_while_to_for.enabled = true
-roslynator.refactoring.copy_argument.enabled = true
-roslynator.refactoring.copy_documentation_comment_from_base_member.enabled = true
-roslynator.refactoring.copy_member_declaration.enabled = true
-roslynator.refactoring.copy_parameter.enabled = true
-roslynator.refactoring.copy_statement.enabled = true
-roslynator.refactoring.copy_switch_section.enabled = true
-roslynator.refactoring.expand_coalesce_expression.enabled = true
-roslynator.refactoring.expand_compound_assignment.enabled = true
-roslynator.refactoring.expand_event_declaration.enabled = true
-roslynator.refactoring.expand_initializer.enabled = false
-roslynator.refactoring.expand_positional_constructor.enabled = true
-roslynator.refactoring.extract_event_handler_method.enabled = true
-roslynator.refactoring.extract_expression_from_condition.enabled = true
-roslynator.refactoring.extract_type_declaration_to_new_file.enabled = true
-roslynator.refactoring.generate_base_constructors.enabled = true
-roslynator.refactoring.generate_combined_enum_member.enabled = true
-roslynator.refactoring.generate_enum_member.enabled = true
-roslynator.refactoring.generate_enum_values.enabled = true
-roslynator.refactoring.generate_event_invoking_method.enabled = true
-roslynator.refactoring.generate_property_for_debuggerdisplay_attribute.enabled = true
-roslynator.refactoring.change_accessibility.enabled = true
-roslynator.refactoring.change_method_return_type_to_void.enabled = true
-roslynator.refactoring.change_type_according_to_expression.enabled = true
-roslynator.refactoring.check_expression_for_null.enabled = true
-roslynator.refactoring.check_parameter_for_null.enabled = true
-roslynator.refactoring.implement_custom_enumerator.enabled = true
-roslynator.refactoring.implement_iequatable.enabled = true
-roslynator.refactoring.initialize_field_from_constructor.enabled = true
-roslynator.refactoring.initialize_local_variable_with_default_value.enabled = true
-roslynator.refactoring.inline_alias_expression.enabled = true
-roslynator.refactoring.inline_constant.enabled = true
-roslynator.refactoring.inline_constant_value.enabled = true
-roslynator.refactoring.inline_method.enabled = true
-roslynator.refactoring.inline_property.enabled = true
-roslynator.refactoring.inline_using_static.enabled = true
-roslynator.refactoring.insert_string_interpolation.enabled = true
-roslynator.refactoring.introduce_and_initialize_field.enabled = true
-roslynator.refactoring.introduce_and_initialize_property.enabled = true
-roslynator.refactoring.introduce_constructor.enabled = false
-roslynator.refactoring.introduce_field_to_lock_on.enabled = true
-roslynator.refactoring.introduce_local_variable.enabled = true
-roslynator.refactoring.invert_binary_expression.enabled = true
-roslynator.refactoring.invert_boolean_literal.enabled = true
-roslynator.refactoring.invert_conditional_expression.enabled = true
-roslynator.refactoring.invert_if.enabled = true
-roslynator.refactoring.invert_if_else.enabled = true
-roslynator.refactoring.invert_is_expression.enabled = true
-roslynator.refactoring.invert_linq_method_call.enabled = true
-roslynator.refactoring.invert_operator.enabled = true
-roslynator.refactoring.invert_prefix_or_postfix_unary_expression.enabled = true
-roslynator.refactoring.join_string_expressions.enabled = true
-roslynator.refactoring.make_member_abstract.enabled = true
-roslynator.refactoring.make_member_virtual.enabled = true
-roslynator.refactoring.merge_attributes.enabled = true
-roslynator.refactoring.merge_if_statements.enabled = true
-roslynator.refactoring.merge_if_with_parent_if.enabled = true
-roslynator.refactoring.merge_local_declarations.enabled = true
-roslynator.refactoring.merge_switch_sections.enabled = true
-roslynator.refactoring.move_unsafe_context_to_containing_declaration.enabled = true
-roslynator.refactoring.notify_when_property_changes.enabled = true
-roslynator.refactoring.parenthesize_expression.enabled = true
-roslynator.refactoring.promote_local_variable_to_parameter.enabled = true
-roslynator.refactoring.remove_all_comments.enabled = true
-roslynator.refactoring.remove_all_comments_except_documentation_comments.enabled = true
-roslynator.refactoring.remove_all_documentation_comments.enabled = false
-roslynator.refactoring.remove_all_member_declarations.enabled = true
-roslynator.refactoring.remove_all_preprocessor_directives.enabled = true
-roslynator.refactoring.remove_all_region_directives.enabled = true
-roslynator.refactoring.remove_all_statements.enabled = true
-roslynator.refactoring.remove_all_switch_sections.enabled = true
-roslynator.refactoring.remove_argument_name.enabled = true
-roslynator.refactoring.remove_async_await.enabled = true
-roslynator.refactoring.remove_braces.enabled = true
-roslynator.refactoring.remove_braces_from_if_else.enabled = true
-roslynator.refactoring.remove_braces_from_switch_section.enabled = true
-roslynator.refactoring.remove_braces_from_switch_sections.enabled = true
-roslynator.refactoring.remove_comment.enabled = true
-roslynator.refactoring.remove_condition_from_last_else.enabled = true
-roslynator.refactoring.remove_containing_statement.enabled = true
-roslynator.refactoring.remove_empty_lines.enabled = true
-roslynator.refactoring.remove_enum_member_value.enabled = true
-roslynator.refactoring.remove_instantiation_of_local_variable.enabled = true
-roslynator.refactoring.remove_interpolation.enabled = true
-roslynator.refactoring.remove_member_declaration.enabled = true
-roslynator.refactoring.remove_member_declarations_above_or_below.enabled = true
-roslynator.refactoring.remove_parentheses.enabled = true
-roslynator.refactoring.remove_preprocessor_directive.enabled = true
-roslynator.refactoring.remove_property_initializer.enabled = true
-roslynator.refactoring.remove_region.enabled = true
-roslynator.refactoring.remove_statement.enabled = true
-roslynator.refactoring.remove_unnecessary_assignment.enabled = true
-roslynator.refactoring.rename_identifier_according_to_type_name.enabled = true
-roslynator.refactoring.rename_method_according_to_type_name.enabled = true
-roslynator.refactoring.rename_parameter_according_to_type_name.enabled = true
-roslynator.refactoring.rename_property_according_to_type_name.enabled = true
-roslynator.refactoring.replace_as_expression_with_explicit_cast.enabled = true
-roslynator.refactoring.replace_conditional_expression_with_true_or_false_branch.enabled = true
-roslynator.refactoring.replace_equality_operator_with_string_equals.enabled = true
-roslynator.refactoring.replace_equality_operator_with_string_isnullorempty.enabled = true
-roslynator.refactoring.replace_equality_operator_with_string_isnullorwhitespace.enabled = true
-roslynator.refactoring.replace_explicit_cast_with_as_expression.enabled = true
-roslynator.refactoring.replace_interpolated_string_with_interpolation_expression.enabled = true
-roslynator.refactoring.replace_method_with_property.enabled = false
-roslynator.refactoring.replace_prefix_operator_with_postfix_operator.enabled = true
-roslynator.refactoring.replace_property_with_method.enabled = true
-roslynator.refactoring.reverse_for_statement.enabled = true
-roslynator.refactoring.simplify_if.enabled = true
-roslynator.refactoring.sort_case_labels.enabled = true
-roslynator.refactoring.sort_member_declarations.enabled = true
-roslynator.refactoring.split_attributes.enabled = true
-roslynator.refactoring.split_if.enabled = true
-roslynator.refactoring.split_if_else.enabled = true
-roslynator.refactoring.split_switch_labels.enabled = true
-roslynator.refactoring.split_variable_declaration.enabled = true
-roslynator.refactoring.swap_binary_operands.enabled = true
-roslynator.refactoring.swap_member_declarations.enabled = true
-roslynator.refactoring.sync_property_name_and_backing_field_name.enabled = true
-roslynator.refactoring.uncomment_multiline_comment.enabled = true
-roslynator.refactoring.uncomment_singleline_comment.enabled = true
-roslynator.refactoring.use_coalesce_expression_instead_of_if.enabled = true
-roslynator.refactoring.use_constant_instead_of_readonly_field.enabled = true
-roslynator.refactoring.use_element_access_instead_of_linq_method.enabled = true
-roslynator.refactoring.use_enumerator_explicitly.enabled = true
-roslynator.refactoring.use_explicit_type.enabled = true
-roslynator.refactoring.use_implicit_type.enabled = true
-roslynator.refactoring.use_index_initializer.enabled = true
-roslynator.refactoring.use_lambda_instead_of_anonymous_method.enabled = true
-roslynator.refactoring.use_list_instead_of_yield.enabled = true
-roslynator.refactoring.use_object_initializer.enabled = true
-roslynator.refactoring.use_readonly_field_instead_of_constant.enabled = true
-roslynator.refactoring.use_string_empty_instead_of_empty_string_literal.enabled = false
-roslynator.refactoring.use_stringbuilder_instead_of_concatenation.enabled = true
-roslynator.refactoring.wrap_arguments.enabled = true
-roslynator.refactoring.wrap_binary_expression.enabled = true
-roslynator.refactoring.wrap_call_chain.enabled = true
-roslynator.refactoring.wrap_conditional_expression.enabled = true
-roslynator.refactoring.wrap_constraint_clauses.enabled = true
-roslynator.refactoring.wrap_initializer_expressions.enabled = true
-roslynator.refactoring.wrap_lines_in_preprocessor_directive.enabled = true
-roslynator.refactoring.wrap_lines_in_region.enabled = true
-roslynator.refactoring.wrap_lines_in_try_catch.enabled = true
-roslynator.refactoring.wrap_parameters.enabled = true
-roslynator.refactoring.wrap_statements_in_condition.enabled = true
-roslynator.refactoring.wrap_statements_in_using_statement.enabled = true
+roslynator_refactoring.add_all_properties_to_initializer.enabled = true
+roslynator_refactoring.add_argument_name.enabled = true
+roslynator_refactoring.add_braces.enabled = true
+roslynator_refactoring.add_braces_to_if_else.enabled = true
+roslynator_refactoring.add_braces_to_switch_section.enabled = true
+roslynator_refactoring.add_braces_to_switch_sections.enabled = true
+roslynator_refactoring.add_default_value_to_parameter.enabled = true
+roslynator_refactoring.add_empty_line_between_declarations.enabled = true
+roslynator_refactoring.add_exception_element_to_documentation_comment.enabled = true
+roslynator_refactoring.add_generic_parameter_to_declaration.enabled = true
+roslynator_refactoring.add_member_to_interface.enabled = true
+roslynator_refactoring.add_missing_cases_to_switch.enabled = true
+roslynator_refactoring.add_parameter_to_interface_member.enabled = true
+roslynator_refactoring.add_tag_to_documentation_comment.enabled = true
+roslynator_refactoring.add_using_directive.enabled = true
+roslynator_refactoring.add_using_static_directive.enabled = true
+roslynator_refactoring.call_extension_method_as_instance_method.enabled = true
+roslynator_refactoring.call_indexof_instead_of_contains.enabled = true
+roslynator_refactoring.comment_out_member_declaration.enabled = true
+roslynator_refactoring.comment_out_statement.enabled = true
+roslynator_refactoring.convert_auto_property_to_full_property.enabled = true
+roslynator_refactoring.convert_auto_property_to_full_property_without_backing_field.enabled = true
+roslynator_refactoring.convert_block_body_to_expression_body.enabled = true
+roslynator_refactoring.convert_comment_to_documentation_comment.enabled = true
+roslynator_refactoring.convert_conditional_expression_to_if_else.enabled = true
+roslynator_refactoring.convert_do_to_while.enabled = true
+roslynator_refactoring.convert_expression_body_to_block_body.enabled = true
+roslynator_refactoring.convert_for_to_foreach.enabled = true
+roslynator_refactoring.convert_for_to_while.enabled = true
+roslynator_refactoring.convert_foreach_to_for.enabled = true
+roslynator_refactoring.convert_foreach_to_for_and_reverse_loop.enabled = false
+roslynator_refactoring.convert_hasflag_call_to_bitwise_operation.enabled = true
+roslynator_refactoring.convert_hexadecimal_literal_to_decimal_literal.enabled = true
+roslynator_refactoring.convert_if_to_conditional_expression.enabled = true
+roslynator_refactoring.convert_if_to_switch.enabled = true
+roslynator_refactoring.convert_interpolated_string_to_concatenation.enabled = true
+roslynator_refactoring.convert_interpolated_string_to_string_format.enabled = true
+roslynator_refactoring.convert_interpolated_string_to_string_literal.enabled = true
+roslynator_refactoring.convert_lambda_block_body_to_expression_body.enabled = true
+roslynator_refactoring.convert_lambda_expression_body_to_block_body.enabled = true
+roslynator_refactoring.convert_method_group_to_lambda.enabled = true
+roslynator_refactoring.convert_regular_string_literal_to_verbatim_string_literal.enabled = true
+roslynator_refactoring.convert_return_statement_to_if.enabled = true
+roslynator_refactoring.convert_statements_to_if_else.enabled = true
+roslynator_refactoring.convert_string_format_to_interpolated_string.enabled = true
+roslynator_refactoring.convert_switch_expression_to_switch_statement.enabled = true
+roslynator_refactoring.convert_switch_to_if.enabled = true
+roslynator_refactoring.convert_verbatim_string_literal_to_regular_string_literal.enabled = true
+roslynator_refactoring.convert_verbatim_string_literal_to_regular_string_literals.enabled = true
+roslynator_refactoring.convert_while_to_do.enabled = true
+roslynator_refactoring.convert_while_to_for.enabled = true
+roslynator_refactoring.copy_argument.enabled = true
+roslynator_refactoring.copy_documentation_comment_from_base_member.enabled = true
+roslynator_refactoring.copy_member_declaration.enabled = true
+roslynator_refactoring.copy_parameter.enabled = true
+roslynator_refactoring.copy_statement.enabled = true
+roslynator_refactoring.copy_switch_section.enabled = true
+roslynator_refactoring.expand_coalesce_expression.enabled = true
+roslynator_refactoring.expand_compound_assignment.enabled = true
+roslynator_refactoring.expand_event_declaration.enabled = true
+roslynator_refactoring.expand_initializer.enabled = false
+roslynator_refactoring.expand_positional_constructor.enabled = true
+roslynator_refactoring.extract_event_handler_method.enabled = true
+roslynator_refactoring.extract_expression_from_condition.enabled = true
+roslynator_refactoring.extract_type_declaration_to_new_file.enabled = true
+roslynator_refactoring.generate_base_constructors.enabled = true
+roslynator_refactoring.generate_combined_enum_member.enabled = true
+roslynator_refactoring.generate_enum_member.enabled = true
+roslynator_refactoring.generate_enum_values.enabled = true
+roslynator_refactoring.generate_event_invoking_method.enabled = true
+roslynator_refactoring.generate_property_for_debuggerdisplay_attribute.enabled = true
+roslynator_refactoring.change_accessibility.enabled = true
+roslynator_refactoring.change_method_return_type_to_void.enabled = true
+roslynator_refactoring.change_type_according_to_expression.enabled = true
+roslynator_refactoring.check_expression_for_null.enabled = true
+roslynator_refactoring.check_parameter_for_null.enabled = true
+roslynator_refactoring.implement_custom_enumerator.enabled = true
+roslynator_refactoring.implement_iequatable.enabled = true
+roslynator_refactoring.initialize_field_from_constructor.enabled = true
+roslynator_refactoring.initialize_local_variable_with_default_value.enabled = true
+roslynator_refactoring.inline_alias_expression.enabled = true
+roslynator_refactoring.inline_constant.enabled = true
+roslynator_refactoring.inline_constant_value.enabled = true
+roslynator_refactoring.inline_method.enabled = true
+roslynator_refactoring.inline_property.enabled = true
+roslynator_refactoring.inline_using_static.enabled = true
+roslynator_refactoring.insert_string_interpolation.enabled = true
+roslynator_refactoring.introduce_and_initialize_field.enabled = true
+roslynator_refactoring.introduce_and_initialize_property.enabled = true
+roslynator_refactoring.introduce_constructor.enabled = false
+roslynator_refactoring.introduce_field_to_lock_on.enabled = true
+roslynator_refactoring.introduce_local_variable.enabled = true
+roslynator_refactoring.invert_binary_expression.enabled = true
+roslynator_refactoring.invert_boolean_literal.enabled = true
+roslynator_refactoring.invert_conditional_expression.enabled = true
+roslynator_refactoring.invert_if.enabled = true
+roslynator_refactoring.invert_if_else.enabled = true
+roslynator_refactoring.invert_is_expression.enabled = true
+roslynator_refactoring.invert_linq_method_call.enabled = true
+roslynator_refactoring.invert_operator.enabled = true
+roslynator_refactoring.invert_prefix_or_postfix_unary_expression.enabled = true
+roslynator_refactoring.join_string_expressions.enabled = true
+roslynator_refactoring.make_member_abstract.enabled = true
+roslynator_refactoring.make_member_virtual.enabled = true
+roslynator_refactoring.merge_attributes.enabled = true
+roslynator_refactoring.merge_if_statements.enabled = true
+roslynator_refactoring.merge_if_with_parent_if.enabled = true
+roslynator_refactoring.merge_local_declarations.enabled = true
+roslynator_refactoring.merge_switch_sections.enabled = true
+roslynator_refactoring.move_unsafe_context_to_containing_declaration.enabled = true
+roslynator_refactoring.notify_when_property_changes.enabled = true
+roslynator_refactoring.parenthesize_expression.enabled = true
+roslynator_refactoring.promote_local_variable_to_parameter.enabled = true
+roslynator_refactoring.remove_all_comments.enabled = true
+roslynator_refactoring.remove_all_comments_except_documentation_comments.enabled = true
+roslynator_refactoring.remove_all_documentation_comments.enabled = false
+roslynator_refactoring.remove_all_member_declarations.enabled = true
+roslynator_refactoring.remove_all_preprocessor_directives.enabled = true
+roslynator_refactoring.remove_all_region_directives.enabled = true
+roslynator_refactoring.remove_all_statements.enabled = true
+roslynator_refactoring.remove_all_switch_sections.enabled = true
+roslynator_refactoring.remove_argument_name.enabled = true
+roslynator_refactoring.remove_async_await.enabled = true
+roslynator_refactoring.remove_braces.enabled = true
+roslynator_refactoring.remove_braces_from_if_else.enabled = true
+roslynator_refactoring.remove_braces_from_switch_section.enabled = true
+roslynator_refactoring.remove_braces_from_switch_sections.enabled = true
+roslynator_refactoring.remove_comment.enabled = true
+roslynator_refactoring.remove_condition_from_last_else.enabled = true
+roslynator_refactoring.remove_containing_statement.enabled = true
+roslynator_refactoring.remove_empty_lines.enabled = true
+roslynator_refactoring.remove_enum_member_value.enabled = true
+roslynator_refactoring.remove_instantiation_of_local_variable.enabled = true
+roslynator_refactoring.remove_interpolation.enabled = true
+roslynator_refactoring.remove_member_declaration.enabled = true
+roslynator_refactoring.remove_member_declarations_above_or_below.enabled = true
+roslynator_refactoring.remove_parentheses.enabled = true
+roslynator_refactoring.remove_preprocessor_directive.enabled = true
+roslynator_refactoring.remove_property_initializer.enabled = true
+roslynator_refactoring.remove_region.enabled = true
+roslynator_refactoring.remove_statement.enabled = true
+roslynator_refactoring.remove_unnecessary_assignment.enabled = true
+roslynator_refactoring.rename_identifier_according_to_type_name.enabled = true
+roslynator_refactoring.rename_method_according_to_type_name.enabled = true
+roslynator_refactoring.rename_parameter_according_to_type_name.enabled = true
+roslynator_refactoring.rename_property_according_to_type_name.enabled = true
+roslynator_refactoring.replace_as_expression_with_explicit_cast.enabled = true
+roslynator_refactoring.replace_conditional_expression_with_true_or_false_branch.enabled = true
+roslynator_refactoring.replace_equality_operator_with_string_equals.enabled = true
+roslynator_refactoring.replace_equality_operator_with_string_isnullorempty.enabled = true
+roslynator_refactoring.replace_equality_operator_with_string_isnullorwhitespace.enabled = true
+roslynator_refactoring.replace_explicit_cast_with_as_expression.enabled = true
+roslynator_refactoring.replace_interpolated_string_with_interpolation_expression.enabled = true
+roslynator_refactoring.replace_method_with_property.enabled = false
+roslynator_refactoring.replace_null_literal_with_default_expression.enabled = true
+roslynator_refactoring.replace_prefix_operator_with_postfix_operator.enabled = true
+roslynator_refactoring.replace_property_with_method.enabled = true
+roslynator_refactoring.reverse_for_statement.enabled = true
+roslynator_refactoring.simplify_if.enabled = true
+roslynator_refactoring.sort_case_labels.enabled = true
+roslynator_refactoring.sort_member_declarations.enabled = true
+roslynator_refactoring.split_attributes.enabled = true
+roslynator_refactoring.split_if.enabled = true
+roslynator_refactoring.split_if_else.enabled = true
+roslynator_refactoring.split_switch_labels.enabled = true
+roslynator_refactoring.split_variable_declaration.enabled = true
+roslynator_refactoring.swap_binary_operands.enabled = true
+roslynator_refactoring.swap_member_declarations.enabled = true
+roslynator_refactoring.sync_property_name_and_backing_field_name.enabled = true
+roslynator_refactoring.uncomment_multiline_comment.enabled = true
+roslynator_refactoring.uncomment_singleline_comment.enabled = true
+roslynator_refactoring.use_coalesce_expression_instead_of_if.enabled = true
+roslynator_refactoring.use_constant_instead_of_readonly_field.enabled = true
+roslynator_refactoring.use_element_access_instead_of_linq_method.enabled = true
+roslynator_refactoring.use_enumerator_explicitly.enabled = true
+roslynator_refactoring.use_explicit_type.enabled = true
+roslynator_refactoring.use_implicit_type.enabled = true
+roslynator_refactoring.use_index_initializer.enabled = true
+roslynator_refactoring.use_lambda_instead_of_anonymous_method.enabled = true
+roslynator_refactoring.use_list_instead_of_yield.enabled = true
+roslynator_refactoring.use_object_initializer.enabled = true
+roslynator_refactoring.use_readonly_field_instead_of_constant.enabled = true
+roslynator_refactoring.use_string_empty_instead_of_empty_string_literal.enabled = false
+roslynator_refactoring.use_stringbuilder_instead_of_concatenation.enabled = true
+roslynator_refactoring.wrap_arguments.enabled = true
+roslynator_refactoring.wrap_binary_expression.enabled = true
+roslynator_refactoring.wrap_call_chain.enabled = true
+roslynator_refactoring.wrap_conditional_expression.enabled = true
+roslynator_refactoring.wrap_constraint_clauses.enabled = true
+roslynator_refactoring.wrap_initializer_expressions.enabled = true
+roslynator_refactoring.wrap_lines_in_preprocessor_directive.enabled = true
+roslynator_refactoring.wrap_lines_in_region.enabled = true
+roslynator_refactoring.wrap_lines_in_try_catch.enabled = true
+roslynator_refactoring.wrap_parameters.enabled = true
+roslynator_refactoring.wrap_statements_in_condition.enabled = true
+roslynator_refactoring.wrap_statements_in_using_statement.enabled = true
 
 # Compiler diagnostic fixes
 
-roslynator.compiler_diagnostic_fix.CS0019.enabled = true
-roslynator.compiler_diagnostic_fix.CS0021.enabled = true
-roslynator.compiler_diagnostic_fix.CS0023.enabled = true
-roslynator.compiler_diagnostic_fix.CS0029.enabled = true
-roslynator.compiler_diagnostic_fix.CS0030.enabled = true
-roslynator.compiler_diagnostic_fix.CS0037.enabled = true
-roslynator.compiler_diagnostic_fix.CS0069.enabled = true
-roslynator.compiler_diagnostic_fix.CS0077.enabled = true
-roslynator.compiler_diagnostic_fix.CS0080.enabled = true
-roslynator.compiler_diagnostic_fix.CS0101.enabled = true
-roslynator.compiler_diagnostic_fix.CS0102.enabled = true
-roslynator.compiler_diagnostic_fix.CS0103.enabled = true
-roslynator.compiler_diagnostic_fix.CS0106.enabled = true
-roslynator.compiler_diagnostic_fix.CS0107.enabled = true
-roslynator.compiler_diagnostic_fix.CS0108.enabled = true
-roslynator.compiler_diagnostic_fix.CS0109.enabled = true
-roslynator.compiler_diagnostic_fix.CS0112.enabled = true
-roslynator.compiler_diagnostic_fix.CS0114.enabled = true
-roslynator.compiler_diagnostic_fix.CS0115.enabled = true
-roslynator.compiler_diagnostic_fix.CS0119.enabled = true
-roslynator.compiler_diagnostic_fix.CS0120.enabled = true
-roslynator.compiler_diagnostic_fix.CS0123.enabled = true
-roslynator.compiler_diagnostic_fix.CS0126.enabled = true
-roslynator.compiler_diagnostic_fix.CS0127.enabled = true
-roslynator.compiler_diagnostic_fix.CS0128.enabled = true
-roslynator.compiler_diagnostic_fix.CS0131.enabled = true
-roslynator.compiler_diagnostic_fix.CS0132.enabled = true
-roslynator.compiler_diagnostic_fix.CS0133.enabled = true
-roslynator.compiler_diagnostic_fix.CS0136.enabled = true
-roslynator.compiler_diagnostic_fix.CS0139.enabled = true
-roslynator.compiler_diagnostic_fix.CS0152.enabled = true
-roslynator.compiler_diagnostic_fix.CS0161.enabled = true
-roslynator.compiler_diagnostic_fix.CS0162.enabled = true
-roslynator.compiler_diagnostic_fix.CS0163.enabled = true
-roslynator.compiler_diagnostic_fix.CS0164.enabled = true
-roslynator.compiler_diagnostic_fix.CS0165.enabled = true
-roslynator.compiler_diagnostic_fix.CS0168.enabled = true
-roslynator.compiler_diagnostic_fix.CS0173.enabled = true
-roslynator.compiler_diagnostic_fix.CS0177.enabled = true
-roslynator.compiler_diagnostic_fix.CS0191.enabled = true
-roslynator.compiler_diagnostic_fix.CS0192.enabled = true
-roslynator.compiler_diagnostic_fix.CS0201.enabled = true
-roslynator.compiler_diagnostic_fix.CS0214.enabled = true
-roslynator.compiler_diagnostic_fix.CS0216.enabled = true
-roslynator.compiler_diagnostic_fix.CS0219.enabled = true
-roslynator.compiler_diagnostic_fix.CS0221.enabled = true
-roslynator.compiler_diagnostic_fix.CS0225.enabled = true
-roslynator.compiler_diagnostic_fix.CS0238.enabled = true
-roslynator.compiler_diagnostic_fix.CS0246.enabled = true
-roslynator.compiler_diagnostic_fix.CS0260.enabled = true
-roslynator.compiler_diagnostic_fix.CS0262.enabled = true
-roslynator.compiler_diagnostic_fix.CS0266.enabled = true
-roslynator.compiler_diagnostic_fix.CS0267.enabled = true
-roslynator.compiler_diagnostic_fix.CS0272.enabled = true
-roslynator.compiler_diagnostic_fix.CS0275.enabled = true
-roslynator.compiler_diagnostic_fix.CS0305.enabled = true
-roslynator.compiler_diagnostic_fix.CS0401.enabled = true
-roslynator.compiler_diagnostic_fix.CS0403.enabled = true
-roslynator.compiler_diagnostic_fix.CS0405.enabled = true
-roslynator.compiler_diagnostic_fix.CS0407.enabled = true
-roslynator.compiler_diagnostic_fix.CS0409.enabled = true
-roslynator.compiler_diagnostic_fix.CS0428.enabled = true
-roslynator.compiler_diagnostic_fix.CS0441.enabled = true
-roslynator.compiler_diagnostic_fix.CS0442.enabled = true
-roslynator.compiler_diagnostic_fix.CS0449.enabled = true
-roslynator.compiler_diagnostic_fix.CS0450.enabled = true
-roslynator.compiler_diagnostic_fix.CS0451.enabled = true
-roslynator.compiler_diagnostic_fix.CS0472.enabled = true
-roslynator.compiler_diagnostic_fix.CS0500.enabled = true
-roslynator.compiler_diagnostic_fix.CS0501.enabled = true
-roslynator.compiler_diagnostic_fix.CS0507.enabled = true
-roslynator.compiler_diagnostic_fix.CS0508.enabled = true
-roslynator.compiler_diagnostic_fix.CS0513.enabled = true
-roslynator.compiler_diagnostic_fix.CS0515.enabled = true
-roslynator.compiler_diagnostic_fix.CS0524.enabled = true
-roslynator.compiler_diagnostic_fix.CS0525.enabled = true
-roslynator.compiler_diagnostic_fix.CS0527.enabled = true
-roslynator.compiler_diagnostic_fix.CS0531.enabled = true
-roslynator.compiler_diagnostic_fix.CS0539.enabled = true
-roslynator.compiler_diagnostic_fix.CS0541.enabled = true
-roslynator.compiler_diagnostic_fix.CS0549.enabled = true
-roslynator.compiler_diagnostic_fix.CS0558.enabled = true
-roslynator.compiler_diagnostic_fix.CS0567.enabled = true
-roslynator.compiler_diagnostic_fix.CS0568.enabled = true
-roslynator.compiler_diagnostic_fix.CS0573.enabled = true
-roslynator.compiler_diagnostic_fix.CS0574.enabled = true
-roslynator.compiler_diagnostic_fix.CS0575.enabled = true
-roslynator.compiler_diagnostic_fix.CS0579.enabled = true
-roslynator.compiler_diagnostic_fix.CS0592.enabled = true
-roslynator.compiler_diagnostic_fix.CS0621.enabled = true
-roslynator.compiler_diagnostic_fix.CS0628.enabled = true
-roslynator.compiler_diagnostic_fix.CS0659.enabled = true
-roslynator.compiler_diagnostic_fix.CS0660.enabled = true
-roslynator.compiler_diagnostic_fix.CS0661.enabled = true
-roslynator.compiler_diagnostic_fix.CS0678.enabled = true
-roslynator.compiler_diagnostic_fix.CS0693.enabled = true
-roslynator.compiler_diagnostic_fix.CS0708.enabled = true
-roslynator.compiler_diagnostic_fix.CS0710.enabled = true
-roslynator.compiler_diagnostic_fix.CS0713.enabled = true
-roslynator.compiler_diagnostic_fix.CS0714.enabled = true
-roslynator.compiler_diagnostic_fix.CS0718.enabled = true
-roslynator.compiler_diagnostic_fix.CS0750.enabled = true
-roslynator.compiler_diagnostic_fix.CS0751.enabled = true
-roslynator.compiler_diagnostic_fix.CS0753.enabled = true
-roslynator.compiler_diagnostic_fix.CS0756.enabled = true
-roslynator.compiler_diagnostic_fix.CS0759.enabled = true
-roslynator.compiler_diagnostic_fix.CS0766.enabled = true
-roslynator.compiler_diagnostic_fix.CS0815.enabled = true
-roslynator.compiler_diagnostic_fix.CS0819.enabled = true
-roslynator.compiler_diagnostic_fix.CS0822.enabled = true
-roslynator.compiler_diagnostic_fix.CS1002.enabled = true
-roslynator.compiler_diagnostic_fix.CS1003.enabled = true
-roslynator.compiler_diagnostic_fix.CS1004.enabled = true
-roslynator.compiler_diagnostic_fix.CS1012.enabled = true
-roslynator.compiler_diagnostic_fix.CS1023.enabled = true
-roslynator.compiler_diagnostic_fix.CS1031.enabled = true
-roslynator.compiler_diagnostic_fix.CS1057.enabled = true
-roslynator.compiler_diagnostic_fix.CS1061.enabled = true
-roslynator.compiler_diagnostic_fix.CS1100.enabled = true
-roslynator.compiler_diagnostic_fix.CS1105.enabled = true
-roslynator.compiler_diagnostic_fix.CS1106.enabled = true
-roslynator.compiler_diagnostic_fix.CS1503.enabled = true
-roslynator.compiler_diagnostic_fix.CS1522.enabled = true
-roslynator.compiler_diagnostic_fix.CS1526.enabled = true
-roslynator.compiler_diagnostic_fix.CS1527.enabled = true
-roslynator.compiler_diagnostic_fix.CS1591.enabled = true
-roslynator.compiler_diagnostic_fix.CS1597.enabled = true
-roslynator.compiler_diagnostic_fix.CS1609.enabled = true
-roslynator.compiler_diagnostic_fix.CS1615.enabled = true
-roslynator.compiler_diagnostic_fix.CS1620.enabled = true
-roslynator.compiler_diagnostic_fix.CS1621.enabled = true
-roslynator.compiler_diagnostic_fix.CS1622.enabled = true
-roslynator.compiler_diagnostic_fix.CS1623.enabled = true
-roslynator.compiler_diagnostic_fix.CS1624.enabled = true
-roslynator.compiler_diagnostic_fix.CS1643.enabled = true
-roslynator.compiler_diagnostic_fix.CS1674.enabled = true
-roslynator.compiler_diagnostic_fix.CS1689.enabled = true
-roslynator.compiler_diagnostic_fix.CS1715.enabled = true
-roslynator.compiler_diagnostic_fix.CS1717.enabled = true
-roslynator.compiler_diagnostic_fix.CS1722.enabled = true
-roslynator.compiler_diagnostic_fix.CS1737.enabled = true
-roslynator.compiler_diagnostic_fix.CS1741.enabled = true
-roslynator.compiler_diagnostic_fix.CS1743.enabled = true
-roslynator.compiler_diagnostic_fix.CS1750.enabled = true
-roslynator.compiler_diagnostic_fix.CS1751.enabled = true
-roslynator.compiler_diagnostic_fix.CS1955.enabled = true
-roslynator.compiler_diagnostic_fix.CS1983.enabled = true
-roslynator.compiler_diagnostic_fix.CS1988.enabled = true
-roslynator.compiler_diagnostic_fix.CS1994.enabled = true
-roslynator.compiler_diagnostic_fix.CS1997.enabled = true
-roslynator.compiler_diagnostic_fix.CS3000.enabled = true
-roslynator.compiler_diagnostic_fix.CS3001.enabled = true
-roslynator.compiler_diagnostic_fix.CS3002.enabled = true
-roslynator.compiler_diagnostic_fix.CS3003.enabled = true
-roslynator.compiler_diagnostic_fix.CS3005.enabled = true
-roslynator.compiler_diagnostic_fix.CS3006.enabled = true
-roslynator.compiler_diagnostic_fix.CS3007.enabled = true
-roslynator.compiler_diagnostic_fix.CS3008.enabled = true
-roslynator.compiler_diagnostic_fix.CS3009.enabled = true
-roslynator.compiler_diagnostic_fix.CS3016.enabled = true
-roslynator.compiler_diagnostic_fix.CS3024.enabled = true
-roslynator.compiler_diagnostic_fix.CS3027.enabled = true
-roslynator.compiler_diagnostic_fix.CS7036.enabled = true
-roslynator.compiler_diagnostic_fix.CS8050.enabled = true
-roslynator.compiler_diagnostic_fix.CS8070.enabled = true
-roslynator.compiler_diagnostic_fix.CS8112.enabled = true
-roslynator.compiler_diagnostic_fix.CS8139.enabled = true
-roslynator.compiler_diagnostic_fix.CS8340.enabled = true
-roslynator.compiler_diagnostic_fix.CS8403.enabled = true
-roslynator.compiler_diagnostic_fix.CS8618.enabled = true
-roslynator.compiler_diagnostic_fix.CS8625.enabled = true
-roslynator.compiler_diagnostic_fix.CS8632.enabled = true
+roslynator_compiler_diagnostic_fix.CS0019.enabled = true
+roslynator_compiler_diagnostic_fix.CS0021.enabled = true
+roslynator_compiler_diagnostic_fix.CS0023.enabled = true
+roslynator_compiler_diagnostic_fix.CS0029.enabled = true
+roslynator_compiler_diagnostic_fix.CS0030.enabled = true
+roslynator_compiler_diagnostic_fix.CS0037.enabled = true
+roslynator_compiler_diagnostic_fix.CS0069.enabled = true
+roslynator_compiler_diagnostic_fix.CS0077.enabled = true
+roslynator_compiler_diagnostic_fix.CS0080.enabled = true
+roslynator_compiler_diagnostic_fix.CS0101.enabled = true
+roslynator_compiler_diagnostic_fix.CS0102.enabled = true
+roslynator_compiler_diagnostic_fix.CS0103.enabled = true
+roslynator_compiler_diagnostic_fix.CS0106.enabled = true
+roslynator_compiler_diagnostic_fix.CS0107.enabled = true
+roslynator_compiler_diagnostic_fix.CS0108.enabled = true
+roslynator_compiler_diagnostic_fix.CS0109.enabled = true
+roslynator_compiler_diagnostic_fix.CS0112.enabled = true
+roslynator_compiler_diagnostic_fix.CS0114.enabled = true
+roslynator_compiler_diagnostic_fix.CS0115.enabled = true
+roslynator_compiler_diagnostic_fix.CS0119.enabled = true
+roslynator_compiler_diagnostic_fix.CS0120.enabled = true
+roslynator_compiler_diagnostic_fix.CS0123.enabled = true
+roslynator_compiler_diagnostic_fix.CS0126.enabled = true
+roslynator_compiler_diagnostic_fix.CS0127.enabled = true
+roslynator_compiler_diagnostic_fix.CS0128.enabled = true
+roslynator_compiler_diagnostic_fix.CS0131.enabled = true
+roslynator_compiler_diagnostic_fix.CS0132.enabled = true
+roslynator_compiler_diagnostic_fix.CS0133.enabled = true
+roslynator_compiler_diagnostic_fix.CS0136.enabled = true
+roslynator_compiler_diagnostic_fix.CS0139.enabled = true
+roslynator_compiler_diagnostic_fix.CS0152.enabled = true
+roslynator_compiler_diagnostic_fix.CS0161.enabled = true
+roslynator_compiler_diagnostic_fix.CS0162.enabled = true
+roslynator_compiler_diagnostic_fix.CS0163.enabled = true
+roslynator_compiler_diagnostic_fix.CS0164.enabled = true
+roslynator_compiler_diagnostic_fix.CS0165.enabled = true
+roslynator_compiler_diagnostic_fix.CS0168.enabled = true
+roslynator_compiler_diagnostic_fix.CS0173.enabled = true
+roslynator_compiler_diagnostic_fix.CS0177.enabled = true
+roslynator_compiler_diagnostic_fix.CS0191.enabled = true
+roslynator_compiler_diagnostic_fix.CS0192.enabled = true
+roslynator_compiler_diagnostic_fix.CS0201.enabled = true
+roslynator_compiler_diagnostic_fix.CS0214.enabled = true
+roslynator_compiler_diagnostic_fix.CS0216.enabled = true
+roslynator_compiler_diagnostic_fix.CS0219.enabled = true
+roslynator_compiler_diagnostic_fix.CS0221.enabled = true
+roslynator_compiler_diagnostic_fix.CS0225.enabled = true
+roslynator_compiler_diagnostic_fix.CS0238.enabled = true
+roslynator_compiler_diagnostic_fix.CS0246.enabled = true
+roslynator_compiler_diagnostic_fix.CS0260.enabled = true
+roslynator_compiler_diagnostic_fix.CS0262.enabled = true
+roslynator_compiler_diagnostic_fix.CS0266.enabled = true
+roslynator_compiler_diagnostic_fix.CS0267.enabled = true
+roslynator_compiler_diagnostic_fix.CS0272.enabled = true
+roslynator_compiler_diagnostic_fix.CS0275.enabled = true
+roslynator_compiler_diagnostic_fix.CS0305.enabled = true
+roslynator_compiler_diagnostic_fix.CS0401.enabled = true
+roslynator_compiler_diagnostic_fix.CS0403.enabled = true
+roslynator_compiler_diagnostic_fix.CS0405.enabled = true
+roslynator_compiler_diagnostic_fix.CS0407.enabled = true
+roslynator_compiler_diagnostic_fix.CS0409.enabled = true
+roslynator_compiler_diagnostic_fix.CS0428.enabled = true
+roslynator_compiler_diagnostic_fix.CS0441.enabled = true
+roslynator_compiler_diagnostic_fix.CS0442.enabled = true
+roslynator_compiler_diagnostic_fix.CS0449.enabled = true
+roslynator_compiler_diagnostic_fix.CS0450.enabled = true
+roslynator_compiler_diagnostic_fix.CS0451.enabled = true
+roslynator_compiler_diagnostic_fix.CS0472.enabled = true
+roslynator_compiler_diagnostic_fix.CS0500.enabled = true
+roslynator_compiler_diagnostic_fix.CS0501.enabled = true
+roslynator_compiler_diagnostic_fix.CS0507.enabled = true
+roslynator_compiler_diagnostic_fix.CS0508.enabled = true
+roslynator_compiler_diagnostic_fix.CS0513.enabled = true
+roslynator_compiler_diagnostic_fix.CS0515.enabled = true
+roslynator_compiler_diagnostic_fix.CS0524.enabled = true
+roslynator_compiler_diagnostic_fix.CS0525.enabled = true
+roslynator_compiler_diagnostic_fix.CS0527.enabled = true
+roslynator_compiler_diagnostic_fix.CS0531.enabled = true
+roslynator_compiler_diagnostic_fix.CS0539.enabled = true
+roslynator_compiler_diagnostic_fix.CS0541.enabled = true
+roslynator_compiler_diagnostic_fix.CS0549.enabled = true
+roslynator_compiler_diagnostic_fix.CS0558.enabled = true
+roslynator_compiler_diagnostic_fix.CS0567.enabled = true
+roslynator_compiler_diagnostic_fix.CS0568.enabled = true
+roslynator_compiler_diagnostic_fix.CS0573.enabled = true
+roslynator_compiler_diagnostic_fix.CS0574.enabled = true
+roslynator_compiler_diagnostic_fix.CS0575.enabled = true
+roslynator_compiler_diagnostic_fix.CS0579.enabled = true
+roslynator_compiler_diagnostic_fix.CS0592.enabled = true
+roslynator_compiler_diagnostic_fix.CS0621.enabled = true
+roslynator_compiler_diagnostic_fix.CS0628.enabled = true
+roslynator_compiler_diagnostic_fix.CS0659.enabled = true
+roslynator_compiler_diagnostic_fix.CS0660.enabled = true
+roslynator_compiler_diagnostic_fix.CS0661.enabled = true
+roslynator_compiler_diagnostic_fix.CS0678.enabled = true
+roslynator_compiler_diagnostic_fix.CS0693.enabled = true
+roslynator_compiler_diagnostic_fix.CS0708.enabled = true
+roslynator_compiler_diagnostic_fix.CS0710.enabled = true
+roslynator_compiler_diagnostic_fix.CS0713.enabled = true
+roslynator_compiler_diagnostic_fix.CS0714.enabled = true
+roslynator_compiler_diagnostic_fix.CS0718.enabled = true
+roslynator_compiler_diagnostic_fix.CS0750.enabled = true
+roslynator_compiler_diagnostic_fix.CS0751.enabled = true
+roslynator_compiler_diagnostic_fix.CS0753.enabled = true
+roslynator_compiler_diagnostic_fix.CS0756.enabled = true
+roslynator_compiler_diagnostic_fix.CS0759.enabled = true
+roslynator_compiler_diagnostic_fix.CS0766.enabled = true
+roslynator_compiler_diagnostic_fix.CS0815.enabled = true
+roslynator_compiler_diagnostic_fix.CS0819.enabled = true
+roslynator_compiler_diagnostic_fix.CS0822.enabled = true
+roslynator_compiler_diagnostic_fix.CS1002.enabled = true
+roslynator_compiler_diagnostic_fix.CS1003.enabled = true
+roslynator_compiler_diagnostic_fix.CS1004.enabled = true
+roslynator_compiler_diagnostic_fix.CS1012.enabled = true
+roslynator_compiler_diagnostic_fix.CS1023.enabled = true
+roslynator_compiler_diagnostic_fix.CS1031.enabled = true
+roslynator_compiler_diagnostic_fix.CS1057.enabled = true
+roslynator_compiler_diagnostic_fix.CS1061.enabled = true
+roslynator_compiler_diagnostic_fix.CS1100.enabled = true
+roslynator_compiler_diagnostic_fix.CS1105.enabled = true
+roslynator_compiler_diagnostic_fix.CS1106.enabled = true
+roslynator_compiler_diagnostic_fix.CS1503.enabled = true
+roslynator_compiler_diagnostic_fix.CS1522.enabled = true
+roslynator_compiler_diagnostic_fix.CS1526.enabled = true
+roslynator_compiler_diagnostic_fix.CS1527.enabled = true
+roslynator_compiler_diagnostic_fix.CS1591.enabled = true
+roslynator_compiler_diagnostic_fix.CS1597.enabled = true
+roslynator_compiler_diagnostic_fix.CS1609.enabled = true
+roslynator_compiler_diagnostic_fix.CS1615.enabled = true
+roslynator_compiler_diagnostic_fix.CS1620.enabled = true
+roslynator_compiler_diagnostic_fix.CS1621.enabled = true
+roslynator_compiler_diagnostic_fix.CS1622.enabled = true
+roslynator_compiler_diagnostic_fix.CS1623.enabled = true
+roslynator_compiler_diagnostic_fix.CS1624.enabled = true
+roslynator_compiler_diagnostic_fix.CS1643.enabled = true
+roslynator_compiler_diagnostic_fix.CS1674.enabled = true
+roslynator_compiler_diagnostic_fix.CS1689.enabled = true
+roslynator_compiler_diagnostic_fix.CS1715.enabled = true
+roslynator_compiler_diagnostic_fix.CS1717.enabled = true
+roslynator_compiler_diagnostic_fix.CS1722.enabled = true
+roslynator_compiler_diagnostic_fix.CS1737.enabled = true
+roslynator_compiler_diagnostic_fix.CS1741.enabled = true
+roslynator_compiler_diagnostic_fix.CS1743.enabled = true
+roslynator_compiler_diagnostic_fix.CS1750.enabled = true
+roslynator_compiler_diagnostic_fix.CS1751.enabled = true
+roslynator_compiler_diagnostic_fix.CS1955.enabled = true
+roslynator_compiler_diagnostic_fix.CS1983.enabled = true
+roslynator_compiler_diagnostic_fix.CS1988.enabled = true
+roslynator_compiler_diagnostic_fix.CS1994.enabled = true
+roslynator_compiler_diagnostic_fix.CS1997.enabled = true
+roslynator_compiler_diagnostic_fix.CS3000.enabled = true
+roslynator_compiler_diagnostic_fix.CS3001.enabled = true
+roslynator_compiler_diagnostic_fix.CS3002.enabled = true
+roslynator_compiler_diagnostic_fix.CS3003.enabled = true
+roslynator_compiler_diagnostic_fix.CS3005.enabled = true
+roslynator_compiler_diagnostic_fix.CS3006.enabled = true
+roslynator_compiler_diagnostic_fix.CS3007.enabled = true
+roslynator_compiler_diagnostic_fix.CS3008.enabled = true
+roslynator_compiler_diagnostic_fix.CS3009.enabled = true
+roslynator_compiler_diagnostic_fix.CS3016.enabled = true
+roslynator_compiler_diagnostic_fix.CS3024.enabled = true
+roslynator_compiler_diagnostic_fix.CS3027.enabled = true
+roslynator_compiler_diagnostic_fix.CS7036.enabled = true
+roslynator_compiler_diagnostic_fix.CS8050.enabled = true
+roslynator_compiler_diagnostic_fix.CS8070.enabled = true
+roslynator_compiler_diagnostic_fix.CS8112.enabled = true
+roslynator_compiler_diagnostic_fix.CS8139.enabled = true
+roslynator_compiler_diagnostic_fix.CS8340.enabled = true
+roslynator_compiler_diagnostic_fix.CS8403.enabled = true
+roslynator_compiler_diagnostic_fix.CS8618.enabled = true
+roslynator_compiler_diagnostic_fix.CS8625.enabled = true
+roslynator_compiler_diagnostic_fix.CS8632.enabled = true
 `
 };

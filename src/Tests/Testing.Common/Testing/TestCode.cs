@@ -24,9 +24,6 @@ namespace Roslynator.Testing
             Value = value ?? throw new ArgumentNullException(nameof(value));
             ExpectedValue = expectedValue;
 
-            if (spans.Length == 0)
-                throw new ArgumentException("'spans' cannot be empty.", nameof(spans));
-
             Spans = spans;
             AdditionalSpans = (additionalSpans.IsDefault) ? ImmutableArray<TextSpan>.Empty : additionalSpans;
         }

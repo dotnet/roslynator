@@ -5,9 +5,9 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
     internal static class CodeFixTitles
     {
         public const string AddEmptyLine = "Add empty line";
-        public const string AddNewLine = "Add newline";
+        public const string AddNewLine = "Add new line";
         public const string RemoveEmptyLine = "Remove empty line";
-        public const string RemoveNewLine = "Remove newline";
-        public const string RemoveNewLines = "Remove newlines";
+        public const string RemoveNewLine = "Remove new line";
+        public const string RemoveNewLines = "Remove new lines";
     }
 }

@@ -24,7 +24,7 @@ namespace Roslynator.CodeGeneration
         private ImmutableArray<RefactoringMetadata> _refactorings;
         private ImmutableArray<CodeFixMetadata> _codeFixes;
         private ImmutableArray<CompilerDiagnosticMetadata> _compilerDiagnostics;
-        private ImmutableArray<OptionMetadata> _options;
+        private ImmutableArray<ConfigOptionMetadata> _configOptions;
 
         private static readonly Regex _analyzersFileNameRegex = new(@"\A(\w+\.)?Analyzers(?!\.Template)(\.\w+)?\z");
 
@@ -99,14 +99,14 @@ namespace Roslynator.CodeGeneration
             }
         }
 
-        public ImmutableArray<OptionMetadata> Options
+        public ImmutableArray<ConfigOptionMetadata> ConfigOptions
         {
             get
             {
-                if (_options.IsDefault)
-                    _options = MetadataFile.ReadOptions(GetPath(@"Common\ConfigOptions.xml")).ToImmutableArray();
+                if (_configOptions.IsDefault)
+                    _configOptions = MetadataFile.ReadOptions(GetPath(@"Common\ConfigOptions.xml")).ToImmutableArray();
 
-                return _options;
+                return _configOptions;
             }
         }
 

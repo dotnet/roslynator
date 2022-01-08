@@ -8,7 +8,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Xml.Linq;
 using Microsoft.CodeAnalysis;
 
 namespace Roslynator.Configuration
@@ -104,16 +103,11 @@ namespace Roslynator.Configuration
                             .Where(kvp => Regex.IsMatch(kvp.Key, @"\ARCS\d{4}[a-z]\z"))
                             .Select(kvp =>
                             {
-                                string key = MapRuleSetOptionToEditorConfigOption(kvp.Key);
+                                (string key, string value) = MapRuleSetOptionToEditorConfigOption(kvp);
 
-                                if (key != null)
-                                {
-                                    string value = (kvp.Value == ReportDiagnostic.Suppress) ? "false" : "true";
-
-                                    return new KeyValuePair<string, string>(key, value);
-                                }
-
-                                return default;
+                                return (key != null)
+                                    ? new KeyValuePair<string, string>(key, value)
+                                    : default;
                             })
                             .Where(f => f.Key != null)
                             .OrderBy(f => f.Key))
@@ -172,62 +166,140 @@ namespace Roslynator.Configuration
                    File.Move(path, newPath);
             }
 
-            static string MapRuleSetOptionToEditorConfigOption(string id)
+            static (string, string) MapRuleSetOptionToEditorConfigOption(KeyValuePair<string, ReportDiagnostic> kvp)
             {
-                switch (id)
+                switch (kvp.Key)
                 {
                     case "RCS0011i":
-                        return "roslynator.RCS0011.invert";
+                        {
+                            return (kvp.Value == ReportDiagnostic.Suppress)
+                                ? (ConfigOptionKeys.BlankLineBetweenSingleLineAccessors, "true")
+                                : (ConfigOptionKeys.BlankLineBetweenSingleLineAccessors, "false");
+                        }
                     case "RCS0015i":
-                        return "roslynator.RCS0015.invert";
+                        {
+                            return (kvp.Value == ReportDiagnostic.Suppress)
+                                ? (ConfigOptionKeys.BlankLineBetweenUsingDirectiveGroups, "true")
+                                : (ConfigOptionKeys.BlankLineBetweenUsingDirectiveGroups, "false");
+                        }
                     case "RCS0027i":
-                        return "roslynator.RCS0027.invert";
+                        {
+                            return (kvp.Value == ReportDiagnostic.Suppress)
+                                ? (ConfigOptionKeys.BinaryOperatorNewLine, "before")
+                                : (ConfigOptionKeys.BinaryOperatorNewLine, "after");
+                        }
                     case "RCS0028i":
-                        return "roslynator.RCS0028.invert";
+                        {
+                            return (kvp.Value == ReportDiagnostic.Suppress)
+                                ? (ConfigOptionKeys.ConditionalOperatorNewLine, "before")
+                                : (ConfigOptionKeys.ConditionalOperatorNewLine, "after");
+                        }
                     case "RCS0032i":
-                        return "roslynator.RCS0032.invert";
+                        {
+                            return (kvp.Value == ReportDiagnostic.Suppress)
+                                ? (ConfigOptionKeys.ArrowTokenNewLine, "before")
+                                : (ConfigOptionKeys.ArrowTokenNewLine, "after");
+                        }
                     case "RCS0051i":
-                        return "roslynator.RCS0051.invert";
+                        {
+                            return (kvp.Value == ReportDiagnostic.Suppress)
+                                ? (ConfigOptionKeys.NewLineBeforeWhileInDoStatement, "true")
+                                : (ConfigOptionKeys.NewLineBeforeWhileInDoStatement, "false");
+                        }
                     case "RCS0052i":
-                        return "roslynator.RCS0052.invert";
+                        {
+                            return (kvp.Value == ReportDiagnostic.Suppress)
+                                ? (ConfigOptionKeys.EqualsTokenNewLine, "before")
+                                : (ConfigOptionKeys.EqualsTokenNewLine, "after");
+                        }
                     case "RCS1014a":
-                        return "roslynator.RCS1014.use_implicit_type_when_obvious";
+                        {
+                            return (kvp.Value == ReportDiagnostic.Suppress)
+                                ? (ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Explicit)
+                                : (ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_ImplicitWhenTypeIsObvious);
+                        }
                     case "RCS1014i":
-                        return "roslynator.RCS1014.invert";
+                        {
+                            return (kvp.Value == ReportDiagnostic.Suppress)
+                                ? (ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Explicit)
+                                : (ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Implicit);
+                        }
                     case "RCS1016a":
-                        return "roslynator.RCS1016.use_block_body_when_expression_is_multiline";
+                        {
+                            return (kvp.Value == ReportDiagnostic.Suppress)
+                                ? (ConfigOptionKeys.PreferBlockBodyWhenExpressionSpansOverMultipleLines, "false")
+                                : (ConfigOptionKeys.PreferBlockBodyWhenExpressionSpansOverMultipleLines, "true");
+                        }
                     case "RCS1016b":
-                        return "roslynator.RCS1016.use_block_body_when_declaration_is_multiline";
+                        {
+                            return (kvp.Value == ReportDiagnostic.Suppress)
+                                ? (ConfigOptionKeys.PreferBlockBodyWhenDeclarationSpansOverMultipleLines, "false")
+                                : (ConfigOptionKeys.PreferBlockBodyWhenDeclarationSpansOverMultipleLines, "true");
+                        }
                     case "RCS1016i":
-                        return "roslynator.RCS1016.invert";
+                        {
+                            return (kvp.Value == ReportDiagnostic.Suppress)
+                                ? (ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Expression)
+                                : (ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Block);
+                        }
                     case "RCS1018i":
-                        return "roslynator.RCS1018.invert";
+                        {
+                            return (kvp.Value == ReportDiagnostic.Suppress)
+                                ? (ConfigOptionKeys.AccessibilityModifiers, ConfigOptionValues.AccessibilityModifiers_Explicit)
+                                : (ConfigOptionKeys.AccessibilityModifiers, ConfigOptionValues.AccessibilityModifiers_Implicit);
+                        }
                     case "RCS1036a":
-                        return "roslynator.RCS1036.remove_empty_line_between_closing_brace_and_switch_section";
-                    case "RCS1045a":
-                        return "roslynator.RCS1045.suppress_when_field_is_static";
+                        {
+                            return (kvp.Value == ReportDiagnostic.Suppress)
+                                ? (ConfigOptionKeys.BlankLineBetweenClosingBraceAndSwitchSection, "true")
+                                : (ConfigOptionKeys.BlankLineBetweenClosingBraceAndSwitchSection, "false");
+                        }
                     case "RCS1050i":
-                        return "roslynator.RCS1050.invert";
+                        {
+                            return (kvp.Value == ReportDiagnostic.Suppress)
+                                ? (ConfigOptionKeys.ObjectCreationParenthesesStyle, ConfigOptionValues.ObjectCreationParenthesesStyle_Include)
+                                : (ConfigOptionKeys.ObjectCreationParenthesesStyle, ConfigOptionValues.ObjectCreationParenthesesStyle_Omit);
+                        }
                     case "RCS1051a":
-                        return "roslynator.RCS1051.do_not_parenthesize_single_token";
+                        {
+                            return (kvp.Value == ReportDiagnostic.Suppress)
+                                ? (ConfigOptionKeys.ConditionInConditionalOperatorParenthesesStyle, ConfigOptionValues.ConditionInConditionalExpressionParenthesesStyle_Include)
+                                : (ConfigOptionKeys.ConditionInConditionalOperatorParenthesesStyle, ConfigOptionValues.ConditionInConditionalExpressionParenthesesStyle_OmitWhenConditionIsSingleToken);
+                        }
                     case "RCS1078i":
-                        return "roslynator.RCS1078.invert";
+                        {
+                            return (kvp.Value == ReportDiagnostic.Suppress)
+                                ? (ConfigOptionKeys.EmptyStringStyle, ConfigOptionValues.EmptyStringStyle_Literal)
+                                : (ConfigOptionKeys.EmptyStringStyle, ConfigOptionValues.EmptyStringStyle_Field);
+                        }
                     case "RCS1090i":
-                        return "roslynator.RCS1090.invert";
+                        {
+                            return (kvp.Value == ReportDiagnostic.Suppress)
+                                ? (ConfigOptionKeys.ConfigureAwait, "true")
+                                : (ConfigOptionKeys.ConfigureAwait, "false");
+                        }
                     case "RCS1096i":
-                        return "roslynator.RCS1096.invert";
-                    case "RCS1104a":
-                        return "roslynator.RCS1104.suppress_when_condition_is_inverted";
+                        {
+                            return (kvp.Value == ReportDiagnostic.Suppress)
+                                ? (ConfigOptionKeys.EnumHasFlagStyle, ConfigOptionValues.EnumHasFlagStyle_Operator)
+                                : (ConfigOptionKeys.EnumHasFlagStyle, ConfigOptionValues.EnumHasFlagStyle_Method);
+                        }
                     case "RCS1207i":
-                        return "roslynator.RCS1207.invert";
-                        case "RCS1246a":
-                        return "roslynator.RCS1246.suppress_when_expression_is_invocation";
+                        {
+                            return (kvp.Value == ReportDiagnostic.Suppress)
+                                ? (ConfigOptionKeys.AnonymousFunctionOrMethodGroup, ConfigOptionValues.AnonymousFunctionOrMethodGroup_MethodGroup)
+                                : (ConfigOptionKeys.AnonymousFunctionOrMethodGroup, ConfigOptionValues.AnonymousFunctionOrMethodGroup_AnonymousFunction);
+                        }
                     case "RCS1248i":
-                        return "roslynator.RCS1248.invert";
+                        {
+                            return (kvp.Value == ReportDiagnostic.Suppress)
+                                ? (ConfigOptionKeys.NullCheckStyle, ConfigOptionValues.NullCheckStyle_PatternMatching)
+                                : (ConfigOptionKeys.NullCheckStyle, ConfigOptionValues.NullCheckStyle_EqualityOperator);
+                        }
                 }
 
-                Debug.Fail(id);
-                return null;
+                Debug.Fail(kvp.Key);
+                return default;
             }
         }
     }

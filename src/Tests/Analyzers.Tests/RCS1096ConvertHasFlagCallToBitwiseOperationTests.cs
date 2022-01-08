@@ -8,11 +8,11 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1096ConvertHasFlagCallToBitwiseOperationTests : AbstractCSharpDiagnosticVerifier<ConvertHasFlagCallToBitwiseOperationOrViceVersaAnalyzer, ConvertHasFlagCallToBitwiseOperationOrViceVersaCodeFixProvider>
+    public class RCS1096ConvertHasFlagCallToBitwiseOperationTests : AbstractCSharpDiagnosticVerifier<UseHasFlagMethodOrBitwiseOperatorAnalyzer, UseHasFlagMethodOrBitwiseOperatorCodeFixProvider>
     {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.ConvertHasFlagCallToBitwiseOperationOrViceVersa;
+        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseHasFlagMethodOrBitwiseOperator;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertHasFlagCallToBitwiseOperationOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseHasFlagMethodOrBitwiseOperator)]
         public async Task Test_HasFlag()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -39,10 +39,10 @@ class C
         if ((options & StringSplitOptions.RemoveEmptyEntries) != 0) { }
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.EnumHasFlagStyle, ConfigOptionValues.EnumHasFlagStyle_Operator));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertHasFlagCallToBitwiseOperationOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseHasFlagMethodOrBitwiseOperator)]
         public async Task Test_HasFlag_Flag()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -69,10 +69,10 @@ class C
         if ((x & RegexOptions.Singleline) != 0) { }
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.EnumHasFlagStyle, ConfigOptionValues.EnumHasFlagStyle_Operator));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertHasFlagCallToBitwiseOperationOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseHasFlagMethodOrBitwiseOperator)]
         public async Task Test_HasFlags()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -99,10 +99,10 @@ class C
         if ((x & (RegexOptions.Singleline | RegexOptions.Multiline)) == (RegexOptions.Singleline | RegexOptions.Multiline)) { }
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.EnumHasFlagStyle, ConfigOptionValues.EnumHasFlagStyle_Operator));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertHasFlagCallToBitwiseOperationOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseHasFlagMethodOrBitwiseOperator)]
         public async Task Test_HasFlag_Parentheses()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -129,10 +129,10 @@ class C
         if ((options & (StringSplitOptions.None | StringSplitOptions.RemoveEmptyEntries)) != 0) { }
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.EnumHasFlagStyle, ConfigOptionValues.EnumHasFlagStyle_Operator));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertHasFlagCallToBitwiseOperationOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseHasFlagMethodOrBitwiseOperator)]
         public async Task Test_NotHasFlag()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -159,10 +159,10 @@ class C
         if ((options & StringSplitOptions.RemoveEmptyEntries) == 0) { }
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.EnumHasFlagStyle, ConfigOptionValues.EnumHasFlagStyle_Operator));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertHasFlagCallToBitwiseOperationOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseHasFlagMethodOrBitwiseOperator)]
         public async Task Test_NotHasFlag_Flag()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -189,10 +189,10 @@ class C
         if ((x & RegexOptions.Singleline) == 0) { }
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.EnumHasFlagStyle, ConfigOptionValues.EnumHasFlagStyle_Operator));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertHasFlagCallToBitwiseOperationOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseHasFlagMethodOrBitwiseOperator)]
         public async Task Test_NotHasFlags()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -219,10 +219,10 @@ class C
         if ((x & (RegexOptions.Singleline | RegexOptions.Multiline)) != (RegexOptions.Singleline | RegexOptions.Multiline)) { }
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.EnumHasFlagStyle, ConfigOptionValues.EnumHasFlagStyle_Operator));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertHasFlagCallToBitwiseOperationOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseHasFlagMethodOrBitwiseOperator)]
         public async Task Test_HasFlag_EqualsTrue()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -249,10 +249,10 @@ class C
         if ((options & StringSplitOptions.RemoveEmptyEntries) != 0) { }
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.EnumHasFlagStyle, ConfigOptionValues.EnumHasFlagStyle_Operator));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertHasFlagCallToBitwiseOperationOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseHasFlagMethodOrBitwiseOperator)]
         public async Task Test_HasFlags_EqualsTrue()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -279,10 +279,10 @@ class C
         if ((x & (RegexOptions.Singleline | RegexOptions.Multiline)) == (RegexOptions.Singleline | RegexOptions.Multiline)) { }
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.EnumHasFlagStyle, ConfigOptionValues.EnumHasFlagStyle_Operator));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertHasFlagCallToBitwiseOperationOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseHasFlagMethodOrBitwiseOperator)]
         public async Task Test_HasFlag_EqualsFalse()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -309,10 +309,10 @@ class C
         if ((options & StringSplitOptions.RemoveEmptyEntries) == 0) { }
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.EnumHasFlagStyle, ConfigOptionValues.EnumHasFlagStyle_Operator));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertHasFlagCallToBitwiseOperationOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseHasFlagMethodOrBitwiseOperator)]
         public async Task Test_HasFlags_EqualsFalse()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -339,10 +339,10 @@ class C
         if ((x & (RegexOptions.Singleline | RegexOptions.Multiline)) != (RegexOptions.Singleline | RegexOptions.Multiline)) { }
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.EnumHasFlagStyle, ConfigOptionValues.EnumHasFlagStyle_Operator));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertHasFlagCallToBitwiseOperationOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseHasFlagMethodOrBitwiseOperator)]
         public async Task Test_HasFlag_WithTrivia()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -369,10 +369,10 @@ class C
         if ( /*lt*/ ((options & StringSplitOptions.RemoveEmptyEntries /*tt*/ ) != 0).Equals(true)) { }
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.EnumHasFlagStyle, ConfigOptionValues.EnumHasFlagStyle_Operator));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertHasFlagCallToBitwiseOperationOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseHasFlagMethodOrBitwiseOperator)]
         public async Task TestNoDiagnostic_TypeIsSystemEnum()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -390,10 +390,10 @@ class C
         if (@enum.HasFlag(options)) { }
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.EnumHasFlagStyle, ConfigOptionValues.EnumHasFlagStyle_Operator));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertHasFlagCallToBitwiseOperationOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseHasFlagMethodOrBitwiseOperator)]
         public async Task TestNoDiagnostic_ConditionalAccess()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -410,10 +410,10 @@ class C
         if (c?.P.HasFlag(StringSplitOptions.RemoveEmptyEntries) == true) { }
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.EnumHasFlagStyle, ConfigOptionValues.EnumHasFlagStyle_Operator));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertHasFlagCallToBitwiseOperationOrViceVersa)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseHasFlagMethodOrBitwiseOperator)]
         public async Task TestNoDiagnostic_ConvertBitwiseOperationToHasFlagCall()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -428,7 +428,7 @@ class C
         if (options.HasFlag(StringSplitOptions.RemoveEmptyEntries)) { }
     }
 }
-", options: Options.EnableConfigOption(AnalyzerOptions.ConvertBitwiseOperationToHasFlagCall.OptionKey));
+", options: Options.AddConfigOption(ConfigOptionKeys.EnumHasFlagStyle, ConfigOptionValues.EnumHasFlagStyle_Method));
         }
     }
 }

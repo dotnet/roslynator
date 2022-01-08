@@ -120,12 +120,19 @@ namespace Roslynator.Testing
 
         internal ImmutableArray<Diagnostic> GetDiagnostics(SyntaxTree tree)
         {
-            return ImmutableArray.CreateRange(
-                Spans,
-                span => Diagnostic.Create(
-                    Descriptor,
-                    Location.Create(tree, span),
-                    additionalLocations: AdditionalSpans.Select(span => Location.Create(tree, span)).ToImmutableArray()));
+            if (Spans.IsEmpty)
+            {
+                return ImmutableArray.Create(Diagnostic.Create(Descriptor, Location.None));
+            }
+            else
+            {
+                return ImmutableArray.CreateRange(
+                    Spans,
+                    span => Diagnostic.Create(
+                        Descriptor,
+                        Location.Create(tree, span),
+                        additionalLocations: AdditionalSpans.Select(span => Location.Create(tree, span)).ToImmutableArray()));
+            }
         }
 
         /// <summary>

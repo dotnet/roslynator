@@ -412,6 +412,34 @@ class Foo
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantParentheses)]
+        public async Task TestDiagnostic_LambdaInArgument()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System.Collections.Generic;
+using System.Linq;
+
+class C
+{
+    void M()
+    {
+        var items = new List<string>().Select(f => [|(|]f));
+    }
+}
+", @"
+using System.Collections.Generic;
+using System.Linq;
+
+class C
+{
+    void M()
+    {
+        var items = new List<string>().Select(f => f);
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantParentheses)]
         public async Task TestNoDiagnostic_AssignmentInInitializer()
         {
             await VerifyNoDiagnosticAsync(@"

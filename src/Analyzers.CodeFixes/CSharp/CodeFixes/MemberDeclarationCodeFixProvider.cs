@@ -27,7 +27,7 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.RemoveRedundantOverridingMember,
-                    DiagnosticIdentifiers.AddAccessibilityModifiersOrViceVersa,
+                    DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers,
                     DiagnosticIdentifiers.RemoveRedundantSealedModifier,
                     DiagnosticIdentifiers.AvoidSemicolonAtEndOfDeclaration,
                     DiagnosticIdentifiers.OrderModifiers,
@@ -57,7 +57,7 @@ namespace Roslynator.CSharp.CodeFixes
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
-                    case DiagnosticIdentifiers.AddAccessibilityModifiersOrViceVersa:
+                    case DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers:
                         {
                             if (diagnostic.Properties.TryGetValue(nameof(Accessibility), out string accessibilityText))
                             {

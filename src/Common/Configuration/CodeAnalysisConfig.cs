@@ -11,7 +11,7 @@ namespace Roslynator.Configuration
 {
     public sealed class CodeAnalysisConfig
     {
-        private ImmutableDictionary<string, bool> _editorConfigBoolOptions;
+        private readonly ImmutableDictionary<string, bool> _editorConfigBoolOptions;
 
         public static CodeAnalysisConfig Instance { get; private set; } = new();
 
@@ -50,19 +50,26 @@ namespace Roslynator.Configuration
                 EditorConfig = EditorConfigCodeAnalysisConfigLoader.Load(editorConfigPaths);
             }
 
-            _editorConfigBoolOptions = EditorConfig.Options.Select(f =>
-            {
-                if (bool.TryParse(f.Value, out bool value))
+            _editorConfigBoolOptions = EditorConfig.Options
+                .Select(f =>
                 {
-                    return (key: f.Key, value);
-                }
+                    if (bool.TryParse(f.Value, out bool value))
+                    {
+                        return (key: f.Key, value);
+                    }
 
-                return default;
-            })
-            .Where(f => f.key != null)
-            .ToImmutableDictionary(f => f.key, f => f.value);
+                    return default;
+                })
+                .Where(f => f.key != null)
+                .ToImmutableDictionary(f => f.key, f => f.value);
 
             VisualStudioConfig = visualStudioConfig ?? VisualStudioCodeAnalysisConfig.Empty;
+
+            if (_editorConfigBoolOptions.TryGetValue(ConfigOptionKeys.RefactoringsEnabled, out bool refactoringsEnabled))
+                RefactoringsEnabled = refactoringsEnabled;
+
+            if (_editorConfigBoolOptions.TryGetValue(ConfigOptionKeys.CompilerDiagnosticFixesEnabled, out bool compilerDiagnosticFixesEnabled))
+                CompilerDiagnosticFixesEnabled = compilerDiagnosticFixesEnabled;
 
             bool? prefixFieldIdentifierWithUnderscore = XmlConfig.PrefixFieldIdentifierWithUnderscore;
 
@@ -72,14 +79,10 @@ namespace Roslynator.Configuration
             if (VisualStudioConfig.PrefixFieldIdentifierWithUnderscore != ConfigOptionDefaultValues.PrefixFieldIdentifierWithUnderscore)
                 prefixFieldIdentifierWithUnderscore = VisualStudioConfig.PrefixFieldIdentifierWithUnderscore;
 
-            PrefixFieldIdentifierWithUnderscore = prefixFieldIdentifierWithUnderscore ?? ConfigOptionDefaultValues.PrefixFieldIdentifierWithUnderscore;
-
             int? maxLineLength = XmlConfig.MaxLineLength;
 
             if (EditorConfig.MaxLineLength != null)
                 maxLineLength = EditorConfig.MaxLineLength;
-
-            MaxLineLength = maxLineLength ?? ConfigOptionDefaultValues.MaxLineLength;
 
             var refactorings = new Dictionary<string, bool>();
             SetRefactorings(refactorings, XmlConfig.Refactorings);
@@ -112,9 +115,13 @@ namespace Roslynator.Configuration
 
         internal VisualStudioCodeAnalysisConfig VisualStudioConfig { get; }
 
-        public int MaxLineLength { get; }
+        public int? MaxLineLength { get; }
 
-        public bool PrefixFieldIdentifierWithUnderscore { get; }
+        public bool? PrefixFieldIdentifierWithUnderscore { get; }
+
+        public bool? RefactoringsEnabled { get; }
+
+        public bool? CompilerDiagnosticFixesEnabled { get; }
 
         public ImmutableDictionary<string, bool> Refactorings { get; }
 

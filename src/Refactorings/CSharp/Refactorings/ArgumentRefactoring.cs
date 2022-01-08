@@ -2,6 +2,8 @@
 
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
+#pragma warning disable IDE0060, RCS1163
+
 namespace Roslynator.CSharp.Refactorings
 {
     internal static class ArgumentRefactoring

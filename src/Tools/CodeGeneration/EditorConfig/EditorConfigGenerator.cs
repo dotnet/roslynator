@@ -18,13 +18,13 @@ namespace Roslynator.CodeGeneration.EditorConfig
 
             foreach (AnalyzerMetadata analyzer in metadata.GetAllAnalyzers())
             {
-                foreach (string option in analyzer.GlobalOptions)
+                foreach (ConfigOptionKeyMetadata option in analyzer.ConfigOptions)
                 {
-                    if (!optionMap.TryGetValue(option, out HashSet<AnalyzerMetadata> optionAnalyzers))
+                    if (!optionMap.TryGetValue(option.Key, out HashSet<AnalyzerMetadata> optionAnalyzers))
                         optionAnalyzers = new HashSet<AnalyzerMetadata>();
 
                     optionAnalyzers.Add(analyzer);
-                    optionMap[option] = optionAnalyzers;
+                    optionMap[option.Key] = optionAnalyzers;
                 }
             }
 
@@ -34,18 +34,28 @@ namespace Roslynator.CodeGeneration.EditorConfig
                 w.WriteLine("# Options");
                 w.WriteLine();
 
-                foreach (OptionMetadata option in metadata.Options.OrderBy(f => f.Key))
-                {
-                    var addEmptyLine = false;
+                var isSeparatedWithNewLine = true;
 
-                    if (optionMap.TryGetValue(option.Key, out HashSet<AnalyzerMetadata> analyzers))
+                foreach (ConfigOptionMetadata option in metadata.ConfigOptions.OrderBy(f => f.Key))
+                {
+                    if (optionMap.TryGetValue(option.Key, out HashSet<AnalyzerMetadata> analyzers)
+                        && !isSeparatedWithNewLine)
                     {
-                        w.WriteLine("# Applicable to: " + string.Join(", ", analyzers.OrderBy(f => f.Id).Select(f => f.Id)));
-                        addEmptyLine = true;
+                        w.WriteLine();
                     }
 
-                    w.WriteEntry(option.Key, option.DefaultValue);
-                    w.WriteLineIf(addEmptyLine);
+                    w.WriteEntry(option.Key, option.DefaultValue ?? option.DefaultValuePlaceholder);
+
+                    if (analyzers?.Count > 0)
+                    {
+                        w.WriteLine("# Applicable to: " + string.Join(", ", analyzers.OrderBy(f => f.Id).Select(f => f.Id)));
+                        w.WriteLine();
+                        isSeparatedWithNewLine = true;
+                    }
+                    else
+                    {
+                        isSeparatedWithNewLine = false;
+                    }
                 }
 
                 w.WriteLine();
@@ -63,10 +73,10 @@ namespace Roslynator.CodeGeneration.EditorConfig
                             ? ((DiagnosticSeverity)Enum.Parse(typeof(DiagnosticSeverity), analyzer.DefaultSeverity)).ToReportDiagnostic()
                             : ReportDiagnostic.Suppress);
 
-                    foreach (AnalyzerOptionMetadata option in analyzer.Options.OrderBy(f => f.OptionKey))
+                    foreach (ConfigOptionKeyMetadata optionKey in analyzer.ConfigOptions.OrderBy(f => f.Key))
                     {
-                        w.WriteLine($"# {option.Title.TrimEnd('.')}");
-                        w.WriteEntry($"roslynator.{analyzer.Id}.{option.OptionKey}", false);
+                        ConfigOptionMetadata option = metadata.ConfigOptions.First(f => f.Key == optionKey.Key);
+                        w.WriteEntry($"#{option.Key}", option.DefaultValuePlaceholder);
                     }
 
                     w.WriteLine();

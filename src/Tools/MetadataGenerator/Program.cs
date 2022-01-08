@@ -172,7 +172,7 @@ namespace Roslynator.CodeGeneration
             {
                 WriteAllText(
                     $@"..\docs\analyzers\{analyzer.Id}.md",
-                    MarkdownGenerator.CreateAnalyzerMarkdown(analyzer, metadata.Options, appliesTo),
+                    MarkdownGenerator.CreateAnalyzerMarkdown(analyzer, metadata.ConfigOptions, appliesTo),
                     fileMustExists: false);
 
                 foreach (AnalyzerOptionMetadata option in analyzer.Options

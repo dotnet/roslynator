@@ -17,7 +17,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
     {
         public override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.AddNewLineBeforeBinaryOperatorInsteadOfAfterItOrViceVersa); }
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeBinaryOperator); }
         }
 
         public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -33,7 +33,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
             if (DiagnosticProperties.ContainsInvert(diagnostic.Properties))
             {
                 CodeAction codeAction = CodeAction.Create(
-                    $"Add newline after '{binaryExpression.OperatorToken.ToString()}' instead of before it",
+                    $"Place new line after '{binaryExpression.OperatorToken.ToString()}'",
                     ct => CodeFixHelpers.AddNewLineAfterInsteadOfBeforeAsync(document, binaryExpression.Left, binaryExpression.OperatorToken, binaryExpression.Right, ct),
                     GetEquivalenceKey(diagnostic));
 
@@ -42,7 +42,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
             else
             {
                 CodeAction codeAction = CodeAction.Create(
-                    $"Add newline before '{binaryExpression.OperatorToken.ToString()}' instead of after it",
+                    $"Place new line before '{binaryExpression.OperatorToken.ToString()}'",
                     ct => CodeFixHelpers.AddNewLineBeforeInsteadOfAfterAsync(document, binaryExpression.Left, binaryExpression.OperatorToken, binaryExpression.Right, ct),
                     GetEquivalenceKey(diagnostic));
 

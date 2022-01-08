@@ -54,7 +54,6 @@ namespace Roslynator.CSharp.Refactorings
         public const string ConvertLambdaBlockBodyToExpressionBody = Prefix + "0154";
         public const string ConvertLambdaExpressionBodyToBlockBody = Prefix + "0039";
         public const string ConvertMethodGroupToLambda = Prefix + "0137";
-        public const string ConvertNullLiteralToDefaultExpression = Prefix + "0139";
         public const string ConvertRegularStringLiteralToVerbatimStringLiteral = Prefix + "0142";
         public const string ConvertReturnStatementToIf = Prefix + "0143";
         public const string ConvertStatementsToIfElse = Prefix + "0211";
@@ -163,6 +162,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string ReplaceExplicitCastWithAsExpression = Prefix + "0118";
         public const string ReplaceInterpolatedStringWithInterpolationExpression = Prefix + "0135";
         public const string ReplaceMethodWithProperty = Prefix + "0138";
+        public const string ReplaceNullLiteralWithDefaultExpression = Prefix + "0139";
         public const string ReplacePrefixOperatorWithPostfixOperator = Prefix + "0140";
         public const string ReplacePropertyWithMethod = Prefix + "0141";
         public const string ReverseForStatement = Prefix + "0152";
