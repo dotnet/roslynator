@@ -1121,9 +1121,9 @@ else if (y)
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="RemoveNewLinesFromInitializerWithSingleLineExpression">
+  <Analyzer Identifier="PutInitializerOnSingleLine">
     <Id>RCS0048</Id>
-    <Title>Remove new lines from initializer with single-line expression.</Title>
+    <Title>Put initializer on a single line.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>

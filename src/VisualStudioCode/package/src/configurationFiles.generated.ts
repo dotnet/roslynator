@@ -236,7 +236,7 @@ dotnet_diagnostic.RCS0046.severity = none
 # [deprecated] Wrap and indent each node in list
 dotnet_diagnostic.RCS0047.severity = none
 
-# Remove new lines from initializer with single-line expression
+# Put initializer on a single line
 dotnet_diagnostic.RCS0048.severity = none
 
 # Add empty line after top comment

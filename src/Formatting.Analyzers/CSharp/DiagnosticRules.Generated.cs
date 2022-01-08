@@ -478,15 +478,15 @@ namespace Roslynator.Formatting.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0048</summary>
-        public static readonly DiagnosticDescriptor RemoveNewLinesFromInitializerWithSingleLineExpression = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.RemoveNewLinesFromInitializerWithSingleLineExpression, 
-            title:              "Remove new lines from initializer with single-line expression.", 
-            messageFormat:      "Remove new lines from initializer with single-line expression.", 
+        public static readonly DiagnosticDescriptor PutInitializerOnSingleLine = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.PutInitializerOnSingleLine, 
+            title:              "Put initializer on a single line.", 
+            messageFormat:      "Put initializer on a single line.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.RemoveNewLinesFromInitializerWithSingleLineExpression, 
+            helpLinkUri:        DiagnosticIdentifiers.PutInitializerOnSingleLine, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0049</summary>
