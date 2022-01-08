@@ -178,15 +178,15 @@ namespace Roslynator.Formatting.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0016</summary>
-        public static readonly DiagnosticDescriptor AddNewLineAfterAttributeList = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.AddNewLineAfterAttributeList, 
-            title:              "Add new line after attribute list.", 
-            messageFormat:      "Add new line after attribute list.", 
+        public static readonly DiagnosticDescriptor PutAttributeListOnItsOwnLine = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.PutAttributeListOnItsOwnLine, 
+            title:              "Put attribute list on its own line.", 
+            messageFormat:      "Put attribute list on its own line.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddNewLineAfterAttributeList, 
+            helpLinkUri:        DiagnosticIdentifiers.PutAttributeListOnItsOwnLine, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0020</summary>

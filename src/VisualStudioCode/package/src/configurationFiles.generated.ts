@@ -158,7 +158,7 @@ dotnet_diagnostic.RCS0014.severity = none
 dotnet_diagnostic.RCS0015.severity = none
 #roslynator_blank_line_between_using_directive_groups = true|false
 
-# Add new line after attribute list
+# Put attribute list on its own line
 dotnet_diagnostic.RCS0016.severity = none
 
 # Add new line after opening brace of accessor

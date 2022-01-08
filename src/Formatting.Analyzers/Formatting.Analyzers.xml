@@ -468,9 +468,9 @@ namespace N
       </Option>
     </Options>
   </Analyzer>
-  <Analyzer Identifier="AddNewLineAfterAttributeList">
+  <Analyzer Identifier="PutAttributeListOnItsOwnLine">
     <Id>RCS0016</Id>
-    <Title>Add new line after attribute list.</Title>
+    <Title>Put attribute list on its own line.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>

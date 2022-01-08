@@ -28,7 +28,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                     DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeConditionalOperator,
                     DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeArrowToken,
                     DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsToken,
-                    DiagnosticIdentifiers.AddNewLineAfterAttributeList,
+                    DiagnosticIdentifiers.PutAttributeListOnItsOwnLine,
                     DiagnosticIdentifiers.AddOrRemoveNewLineBeforeWhileInDoStatement);
             }
         }
@@ -112,10 +112,10 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                         AddNewLineBeforeOrAfter();
                         break;
                     }
-                case DiagnosticIdentifiers.AddNewLineAfterAttributeList:
+                case DiagnosticIdentifiers.PutAttributeListOnItsOwnLine:
                     {
                         CodeAction codeAction = CodeAction.Create(
-                            CodeFixTitles.AddNewLine,
+                            "Put attribute on its own line",
                             ct => CodeFixHelpers.AddNewLineBeforeAsync(document, token, ct),
                             GetEquivalenceKey(diagnostic));
 

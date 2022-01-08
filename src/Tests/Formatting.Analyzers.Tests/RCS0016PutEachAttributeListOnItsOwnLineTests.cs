@@ -8,11 +8,11 @@ using Xunit;
 
 namespace Roslynator.Formatting.CSharp.Tests
 {
-    public class RCS0016AddNewLineAfterAttributeListTests : AbstractCSharpDiagnosticVerifier<AddNewLineAfterAttributeListAnalyzer, SyntaxTokenCodeFixProvider>
+    public class RCS0016PutEachAttributeListOnItsOwnLineTests : AbstractCSharpDiagnosticVerifier<PutAttributeListOnItsOwnLineAnalyzer, SyntaxTokenCodeFixProvider>
     {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddNewLineAfterAttributeList;
+        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.PutAttributeListOnItsOwnLine;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterAttributeList)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
         public async Task Test_Class()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -46,7 +46,7 @@ namespace N
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterAttributeList)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
         public async Task Test_ClassWithMultipleAttributeLists()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -72,7 +72,7 @@ namespace N
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterAttributeList)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
         public async Task Test_Constructor()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -106,7 +106,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterAttributeList)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
         public async Task Test_ConversionOperator()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -127,7 +127,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterAttributeList)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
         public async Task Test_Delegate()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -148,7 +148,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterAttributeList)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
         public async Task Test_Destructor()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -173,7 +173,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterAttributeList)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
         public async Task Test_Enum()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -207,7 +207,7 @@ namespace N
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterAttributeList)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
         public async Task Test_EnumMember()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -228,7 +228,7 @@ enum E
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterAttributeList)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
         public async Task Test_Event()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -270,7 +270,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterAttributeList)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
         public async Task Test_EventField()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -296,7 +296,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterAttributeList)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
         public async Task Test_Field()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -322,7 +322,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterAttributeList)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
         public async Task Test_Indexer()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -364,7 +364,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterAttributeList)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
         public async Task Test_Interface()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -398,7 +398,7 @@ namespace N
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterAttributeList)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
         public async Task Test_Method()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -432,7 +432,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterAttributeList)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
         public async Task Test_Operator()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -453,7 +453,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterAttributeList)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
         public async Task Test_Property()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -495,7 +495,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterAttributeList)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
         public async Task Test_Struct()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -529,7 +529,7 @@ namespace N
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterAttributeList)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
         public async Task Test_GetSetAccessor()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -597,7 +597,7 @@ public sealed class FooAttribute : Attribute
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterAttributeList)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
         public async Task Test_InitSetter()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -640,7 +640,7 @@ public sealed class FooAttribute : Attribute
 ", options: Options.AddAllowedCompilerDiagnosticId("CS0518"));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterAttributeList)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
         public async Task Test_AddRemoveAccessor()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -680,7 +680,7 @@ public sealed class FooAttribute : Attribute
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterAttributeList)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
         public async Task TestNoDiagnostic_SingleLineIndexer()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -693,7 +693,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterAttributeList)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
         public async Task TestNoDiagnostic_SingleLineProperty()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -706,7 +706,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterAttributeList)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
         public async Task TestNoDiagnostic_SingleLineEvent()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -724,7 +724,7 @@ public sealed class FooAttribute : Attribute
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterAttributeList)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
         public async Task TestNoDiagnostic_SingleLineEnumDeclaration()
         {
             await VerifyNoDiagnosticAsync(@"

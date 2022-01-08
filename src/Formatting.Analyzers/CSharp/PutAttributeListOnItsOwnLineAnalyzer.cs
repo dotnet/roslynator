@@ -12,7 +12,7 @@ using Roslynator.CSharp;
 namespace Roslynator.Formatting.CSharp
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class AddNewLineAfterAttributeListAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class PutAttributeListOnItsOwnLineAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 
@@ -21,7 +21,7 @@ namespace Roslynator.Formatting.CSharp
             get
             {
                 if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddNewLineAfterAttributeList);
+                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.PutAttributeListOnItsOwnLine);
 
                 return _supportedDiagnostics;
             }
@@ -314,7 +314,7 @@ namespace Roslynator.Formatting.CSharp
             {
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
-                    DiagnosticRules.AddNewLineAfterAttributeList,
+                    DiagnosticRules.PutAttributeListOnItsOwnLine,
                     Location.Create(nodeOrToken.SyntaxTree, nodeOrToken.Span.WithLength(0)));
             }
         }

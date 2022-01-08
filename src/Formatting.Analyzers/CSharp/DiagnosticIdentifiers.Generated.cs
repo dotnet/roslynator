@@ -22,7 +22,7 @@ namespace Roslynator.Formatting.CSharp
         public const string AddEmptyLineBetweenSingleLineDeclarationsOfDifferentKind = "RCS0013";
         public const string AddEmptyLineBetweenSwitchSections = "RCS0014";
         public const string BlankLineBetweenUsingDirectiveGroups = "RCS0015";
-        public const string AddNewLineAfterAttributeList = "RCS0016";
+        public const string PutAttributeListOnItsOwnLine = "RCS0016";
         public const string AddNewLineAfterOpeningBraceOfAccessor = "RCS0020";
         public const string AddNewLineAfterOpeningBraceOfBlock = "RCS0021";
         public const string AddNewLineAfterOpeningBraceOfEmptyBlock = "RCS0022";
