@@ -1036,9 +1036,9 @@ else if (y)
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="RemoveNewLinesFromAccessorWithSingleLineExpression">
+  <Analyzer Identifier="PutAccessorOnSingleLine">
     <Id>RCS0043</Id>
-    <Title>Remove new lines from accessor with single-line expression.</Title>
+    <Title>Put accessor on a single line.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>

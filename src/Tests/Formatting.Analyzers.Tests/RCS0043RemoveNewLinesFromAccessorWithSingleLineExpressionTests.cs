@@ -10,9 +10,9 @@ namespace Roslynator.Formatting.CSharp.Tests
 {
     public class RCS0043RemoveNewLinesFromAccessorWithSingleLineExpressionTests : AbstractCSharpDiagnosticVerifier<AccessorListAnalyzer, AccessorDeclarationCodeFixProvider>
     {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveNewLinesFromAccessorWithSingleLineExpression;
+        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.PutAccessorOnSingleLine;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewLinesFromAccessorWithSingleLineExpression)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAccessorOnSingleLine)]
         public async Task Test_Getter_Setter()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -46,7 +46,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewLinesFromAccessorWithSingleLineExpression)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAccessorOnSingleLine)]
         public async Task Test_Getter()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -77,7 +77,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewLinesFromAccessorWithSingleLineExpression)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAccessorOnSingleLine)]
         public async Task Test_Setter()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -108,7 +108,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewLinesFromAccessorWithSingleLineExpression)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAccessorOnSingleLine)]
         public async Task TestNoDiagnostic_FullProperty()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -125,7 +125,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewLinesFromAccessorWithSingleLineExpression)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAccessorOnSingleLine)]
         public async Task TestNoDiagnostic_AutoProperty()
         {
             await VerifyNoDiagnosticAsync(@"

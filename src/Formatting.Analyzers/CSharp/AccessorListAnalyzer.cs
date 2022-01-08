@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
-using System.Diagnostics;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -27,7 +26,7 @@ namespace Roslynator.Formatting.CSharp
                         ref _supportedDiagnostics,
                         DiagnosticRules.RemoveNewLinesFromAccessorListOfAutoProperty,
                         DiagnosticRules.AddNewLineBeforeAccessorOfFullProperty,
-                        DiagnosticRules.RemoveNewLinesFromAccessorWithSingleLineExpression);
+                        DiagnosticRules.PutAccessorOnSingleLine);
                 }
 
                 return _supportedDiagnostics;
@@ -73,13 +72,13 @@ namespace Roslynator.Formatting.CSharp
                     }
                 }
 
-                if (DiagnosticRules.RemoveNewLinesFromAccessorWithSingleLineExpression.IsEffective(context)
+                if (DiagnosticRules.PutAccessorOnSingleLine.IsEffective(context)
                     && !accessorList.IsSingleLine(includeExteriorTrivia: false))
                 {
                     foreach (AccessorDeclarationSyntax accessor in accessors)
                     {
                         if (CanRemoveNewLinesFromAccessor(accessor))
-                            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveNewLinesFromAccessorWithSingleLineExpression, accessor);
+                            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.PutAccessorOnSingleLine, accessor);
                     }
                 }
             }

@@ -22,7 +22,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticIdentifiers.RemoveNewLinesFromAccessorWithSingleLineExpression,
+                    DiagnosticIdentifiers.PutAccessorOnSingleLine,
                     DiagnosticIdentifiers.AddNewLineBeforeAccessorOfFullProperty);
             }
         }
@@ -39,11 +39,11 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
 
             switch (diagnostic.Id)
             {
-                case DiagnosticIdentifiers.RemoveNewLinesFromAccessorWithSingleLineExpression:
+                case DiagnosticIdentifiers.PutAccessorOnSingleLine:
                     {
                         CodeAction codeAction = CodeAction.Create(
-                            CodeFixTitles.RemoveNewLines,
-                            ct => RemoveNewLinesFromAccessorWithSingleLineExpressionAsync(document, accessorDeclaration, ct),
+                            "Put accessor on a single line",
+                            ct => PutAccessorOnSingleLineAsync(document, accessorDeclaration, ct),
                             GetEquivalenceKey(diagnostic));
 
                         context.RegisterCodeFix(codeAction, diagnostic);
@@ -62,7 +62,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
             }
         }
 
-        private static Task<Document> RemoveNewLinesFromAccessorWithSingleLineExpressionAsync(
+        private static Task<Document> PutAccessorOnSingleLineAsync(
             Document document,
             AccessorDeclarationSyntax accessorDeclaration,
             CancellationToken cancellationToken)

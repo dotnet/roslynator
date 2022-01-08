@@ -221,7 +221,7 @@ dotnet_diagnostic.RCS0041.severity = none
 # Remove new lines from accessor list of auto-property
 dotnet_diagnostic.RCS0042.severity = none
 
-# Remove new lines from accessor with single-line expression
+# Put accessor on a single line
 dotnet_diagnostic.RCS0043.severity = none
 
 # Use carriage return + linefeed as new line

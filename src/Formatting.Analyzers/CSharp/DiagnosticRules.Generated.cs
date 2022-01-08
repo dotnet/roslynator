@@ -418,15 +418,15 @@ namespace Roslynator.Formatting.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0043</summary>
-        public static readonly DiagnosticDescriptor RemoveNewLinesFromAccessorWithSingleLineExpression = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.RemoveNewLinesFromAccessorWithSingleLineExpression, 
-            title:              "Remove new lines from accessor with single-line expression.", 
-            messageFormat:      "Remove new lines from accessor with single-line expression.", 
+        public static readonly DiagnosticDescriptor PutAccessorOnSingleLine = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.PutAccessorOnSingleLine, 
+            title:              "Put accessor on a single line.", 
+            messageFormat:      "Put accessor on a single line.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.RemoveNewLinesFromAccessorWithSingleLineExpression, 
+            helpLinkUri:        DiagnosticIdentifiers.PutAccessorOnSingleLine, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0044</summary>

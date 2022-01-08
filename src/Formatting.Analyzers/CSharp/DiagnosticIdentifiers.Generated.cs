@@ -42,7 +42,7 @@ namespace Roslynator.Formatting.CSharp
         public const string RemoveNewLineBeforeBaseList = "RCS0039";
         public const string RemoveNewLineBetweenIfKeywordAndElseKeyword = "RCS0041";
         public const string RemoveNewLinesFromAccessorListOfAutoProperty = "RCS0042";
-        public const string RemoveNewLinesFromAccessorWithSingleLineExpression = "RCS0043";
+        public const string PutAccessorOnSingleLine = "RCS0043";
         public const string UseCarriageReturnAndLinefeedAsNewLine = "RCS0044";
         public const string UseLinefeedAsNewLine = "RCS0045";
         public const string UseSpacesInsteadOfTab = "RCS0046";
