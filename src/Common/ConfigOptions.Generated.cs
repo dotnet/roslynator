@@ -71,7 +71,7 @@ namespace Roslynator
         public static readonly ConfigOptionDescriptor ConditionInConditionalOperatorParenthesesStyle = new(
             key:                     ConfigOptionKeys.ConditionInConditionalOperatorParenthesesStyle, 
             defaultValue:            null, 
-            defaultValuePlaceholder: "include|omit|fomit_when_condition_is_single_token", 
+            defaultValuePlaceholder: "include|omit|omit_when_condition_is_single_token", 
             description:             "Add/remove parentheses to condition in conditional operator");
 
         public static readonly ConfigOptionDescriptor ConfigureAwait = new(

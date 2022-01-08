@@ -61,7 +61,7 @@ roslynator_blank_line_between_using_directive_groups = true|false
 roslynator_body_style = block|expression
 # Applicable to: RCS1016
 
-roslynator_condition_in_conditional_operator_parentheses_style = include|omit|fomit_when_condition_is_single_token
+roslynator_condition_in_conditional_operator_parentheses_style = include|omit|omit_when_condition_is_single_token
 # Applicable to: RCS1051
 
 roslynator_conditional_operator_new_line = after|before
@@ -397,7 +397,7 @@ dotnet_diagnostic.RCS1050.severity = none
 
 # Add/remove parentheses from condition in conditional operator
 dotnet_diagnostic.RCS1051.severity = none
-#roslynator_condition_in_conditional_operator_parentheses_style = include|omit|fomit_when_condition_is_single_token
+#roslynator_condition_in_conditional_operator_parentheses_style = include|omit|omit_when_condition_is_single_token
 
 # Declare each attribute separately
 dotnet_diagnostic.RCS1052.severity = none
