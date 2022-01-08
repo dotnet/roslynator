@@ -63,7 +63,7 @@ namespace Roslynator.Configuration
                     xmlConfigMigrated = true;
                 }
 
-                string ruleSetPath = Path.Combine(Path.GetDirectoryName(path), RuleSetUtility.DefaultRuleSetName);
+                string ruleSetPath = Path.Combine(Path.GetDirectoryName(path), RuleSetLoader.DefaultRuleSetName);
 
                 if (File.Exists(ruleSetPath))
                 {

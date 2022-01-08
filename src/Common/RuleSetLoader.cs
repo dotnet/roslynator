@@ -5,12 +5,11 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
-using System.Text;
 using System.Threading;
 
 namespace Roslynator
 {
-    internal static class RuleSetUtility
+    internal static class RuleSetLoader
     {
         private static RuleSet _emptyRuleSet;
 

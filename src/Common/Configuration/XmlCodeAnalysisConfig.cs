@@ -36,9 +36,9 @@ namespace Roslynator.Configuration
             string path = typeof(XmlCodeAnalysisConfig).Assembly.Location;
 
             if (!string.IsNullOrEmpty(path))
-                path = Path.Combine(Path.GetDirectoryName(path), RuleSetUtility.DefaultRuleSetName);
+                path = Path.Combine(Path.GetDirectoryName(path), RuleSetLoader.DefaultRuleSetName);
 
-            RuleSet ruleSet = RuleSetUtility.Load(path, RuleSets) ?? RuleSetUtility.EmptyRuleSet;
+            RuleSet ruleSet = RuleSetLoader.Load(path, RuleSets) ?? RuleSetLoader.EmptyRuleSet;
 
             GeneralDiagnosticOption = ruleSet.GeneralDiagnosticOption;
             SpecificDiagnosticOptions = ruleSet.SpecificDiagnosticOptions;
