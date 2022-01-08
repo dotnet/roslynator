@@ -186,9 +186,9 @@ namespace N
     </Samples>
     <Remarks>This rule does not enforce an empty line between two single-line accessors.</Remarks>
   </Analyzer>
-  <Analyzer Identifier="AddEmptyLineBetweenBlockAndStatement">
+  <Analyzer Identifier="AddBlankLineBetweenClosingBraceAndNextStatement">
     <Id>RCS0008</Id>
-    <Title>Add empty line between block and statement.</Title>
+    <Title>Add blank line between closing brace and next statement.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>

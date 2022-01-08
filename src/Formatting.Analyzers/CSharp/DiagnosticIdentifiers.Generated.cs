@@ -14,7 +14,7 @@ namespace Roslynator.Formatting.CSharp
         public const string AddEmptyLineBeforeEndRegionDirective = "RCS0005";
         public const string AddEmptyLineBeforeUsingDirectiveList = "RCS0006";
         public const string AddEmptyLineBetweenAccessors = "RCS0007";
-        public const string AddEmptyLineBetweenBlockAndStatement = "RCS0008";
+        public const string AddBlankLineBetweenClosingBraceAndNextStatement = "RCS0008";
         public const string AddEmptyLineBetweenDeclarationAndDocumentationComment = "RCS0009";
         public const string AddEmptyLineBetweenDeclarations = "RCS0010";
         public const string BlankLineBetweenSingleLineAccessors = "RCS0011";

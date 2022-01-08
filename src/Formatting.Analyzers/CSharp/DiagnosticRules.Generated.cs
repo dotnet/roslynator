@@ -82,15 +82,15 @@ namespace Roslynator.Formatting.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0008</summary>
-        public static readonly DiagnosticDescriptor AddEmptyLineBetweenBlockAndStatement = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.AddEmptyLineBetweenBlockAndStatement, 
-            title:              "Add empty line between block and statement.", 
-            messageFormat:      "Add empty line between block and statement.", 
+        public static readonly DiagnosticDescriptor AddBlankLineBetweenClosingBraceAndNextStatement = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.AddBlankLineBetweenClosingBraceAndNextStatement, 
+            title:              "Add blank line between closing brace and next statement.", 
+            messageFormat:      "Add blank line between closing brace and next statement.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddEmptyLineBetweenBlockAndStatement, 
+            helpLinkUri:        DiagnosticIdentifiers.AddBlankLineBetweenClosingBraceAndNextStatement, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0009</summary>

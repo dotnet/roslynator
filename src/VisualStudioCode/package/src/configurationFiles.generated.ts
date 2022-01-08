@@ -132,7 +132,7 @@ dotnet_diagnostic.RCS0006.severity = none
 # Add empty line between accessors
 dotnet_diagnostic.RCS0007.severity = none
 
-# Add empty line between block and statement
+# Add blank line between closing brace and next statement
 dotnet_diagnostic.RCS0008.severity = none
 
 # Add empty line between declaration and documentation comment

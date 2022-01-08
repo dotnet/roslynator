@@ -5,6 +5,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
     internal static class CodeFixTitles
     {
         public const string AddEmptyLine = "Add empty line";
+        public const string AddBlankLine = "Add blank line";
         public const string AddNewLine = "Add new line";
         public const string RemoveEmptyLine = "Remove empty line";
         public const string RemoveNewLine = "Remove new line";

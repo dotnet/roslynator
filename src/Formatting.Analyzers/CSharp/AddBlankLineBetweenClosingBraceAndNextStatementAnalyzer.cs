@@ -12,7 +12,7 @@ using Roslynator.CSharp;
 namespace Roslynator.Formatting.CSharp
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class AddEmptyLineBetweenBlockAndStatementAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class AddBlankLineBetweenClosingBraceAndNextStatementAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 
@@ -21,7 +21,7 @@ namespace Roslynator.Formatting.CSharp
             get
             {
                 if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddEmptyLineBetweenBlockAndStatement);
+                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddBlankLineBetweenClosingBraceAndNextStatement);
 
                 return _supportedDiagnostics;
             }
@@ -139,7 +139,7 @@ namespace Roslynator.Formatting.CSharp
                 {
                     DiagnosticHelpers.ReportDiagnostic(
                         context,
-                        DiagnosticRules.AddEmptyLineBetweenBlockAndStatement,
+                        DiagnosticRules.AddBlankLineBetweenClosingBraceAndNextStatement,
                         Location.Create(endOfLine.SyntaxTree, endOfLine.Span.WithLength(0)));
                 }
             }

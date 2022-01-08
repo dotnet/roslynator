@@ -24,7 +24,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticIdentifiers.AddEmptyLineBetweenBlockAndStatement,
+                    DiagnosticIdentifiers.AddBlankLineBetweenClosingBraceAndNextStatement,
                     DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeConditionalOperator,
                     DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeArrowToken,
                     DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsToken,
@@ -45,10 +45,10 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
 
             switch (diagnostic.Id)
             {
-                case DiagnosticIdentifiers.AddEmptyLineBetweenBlockAndStatement:
+                case DiagnosticIdentifiers.AddBlankLineBetweenClosingBraceAndNextStatement:
                     {
                         CodeAction codeAction = CodeAction.Create(
-                            CodeFixTitles.AddEmptyLine,
+                            CodeFixTitles.AddBlankLine,
                             ct => CodeFixHelpers.AppendEndOfLineAsync(document, token, ct),
                             GetEquivalenceKey(diagnostic));
 
