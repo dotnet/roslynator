@@ -41,7 +41,7 @@
 	<Description>Place new line after/before '?:' operator</Description>
   </Option>
   <Option Id="ConditionInConditionalOperatorParenthesesStyle">
-	<ValuePlaceholder>include|omit||omit_when_condition_is_single_token</ValuePlaceholder>
+	<ValuePlaceholder>include|omit|fomit_when_condition_is_single_token</ValuePlaceholder>
 	<Description>Add/remove parentheses to condition in conditional operator</Description>
   </Option>
   <Option Id="ConfigureAwait">
