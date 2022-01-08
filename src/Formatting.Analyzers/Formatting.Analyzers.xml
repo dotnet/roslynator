@@ -17,7 +17,6 @@ Bar();]]></Before>
 Bar();]]></After>
       </Sample>
     </Samples>
-    <Remarks>This rule was originally introduced as [RCS1030](RCS1030.md)</Remarks>
   </Analyzer>
   <Analyzer Identifier="AddEmptyLineAfterRegionDirective">
     <Id>RCS0002</Id>
@@ -95,7 +94,6 @@ namespace N
 } while (x);]]></After>
       </Sample>
     </Samples>
-    <Remarks>This rule was originally introduced as [RCS1092](RCS1092.md)</Remarks>
   </Analyzer>
   <Analyzer Identifier="AddEmptyLineBeforeEndRegionDirective">
     <Id>RCS0005</Id>
@@ -207,7 +205,6 @@ Foo();]]></Before>
 Foo();]]></After>
       </Sample>
     </Samples>
-    <Remarks>This rule was originally introduced as [RCS1153](RCS1153.md)</Remarks>
   </Analyzer>
   <Analyzer Identifier="AddEmptyLineBetweenDeclarationAndDocumentationComment">
     <Id>RCS0009</Id>
@@ -304,9 +301,7 @@ enum Bar
 }]]></After>
       </Sample>
     </Samples>
-    <Remarks>This rule was originally introduced as [RCS1057](RCS1057.md).
-
-This rule does not enforce an empty line between two single-line declaration.</Remarks>
+    <Remarks>This rule does not enforce an empty line between two single-line declaration.</Remarks>
   </Analyzer>
   <Analyzer Identifier="BlankLineBetweenSingleLineAccessors">
     <Id>RCS0011</Id>
@@ -587,7 +582,6 @@ namespace N
 }]]></After>
       </Sample>
     </Samples>
-    <Remarks>This rule was originally introduced as [RCS1185](RCS1185.md)</Remarks>
   </Analyzer>
   <Analyzer Identifier="AddNewLineAfterOpeningBraceOfEmptyBlock">
     <Id>RCS0022</Id>
@@ -604,7 +598,6 @@ namespace N
 }]]></After>
       </Sample>
     </Samples>
-    <Remarks>This rule was originally introduced as [RCS1023](RCS1023.md)</Remarks>
   </Analyzer>
   <Analyzer Identifier="AddNewLineAfterOpeningBraceOfTypeDeclaration">
     <Id>RCS0023</Id>
@@ -621,7 +614,6 @@ namespace N
 }]]></After>
       </Sample>
     </Samples>
-    <Remarks>This rule was originally introduced as [RCS1076](RCS1076.md)</Remarks>
   </Analyzer>
   <Analyzer Identifier="AddNewLineAfterSwitchLabel">
     <Id>RCS0024</Id>
@@ -645,7 +637,6 @@ namespace N
 }]]></After>
       </Sample>
     </Samples>
-    <Remarks>This rule was originally introduced as [RCS1028](RCS1028.md)</Remarks>
   </Analyzer>
   <Analyzer Identifier="AddNewLineBeforeAccessorOfFullProperty">
     <Id>RCS0025</Id>
@@ -663,7 +654,6 @@ namespace N
 }]]></After>
       </Sample>
     </Samples>
-    <Remarks>This rule was derived from [RCS1024](RCS1024.md).</Remarks>
   </Analyzer>
   <Analyzer Identifier="PlaceNewLineAfterOrBeforeBinaryOperator">
     <Id>RCS0027</Id>
@@ -712,7 +702,6 @@ namespace N
         </Samples>
       </Option>
     </Options>
-    <Remarks>This rule was originally introduced as [RCS1029](RCS1029.md)</Remarks>
   </Analyzer>
   <Analyzer Identifier="PlaceNewLineAfterOrBeforeConditionalOperator">
     <Id>RCS0028</Id>
@@ -753,7 +742,6 @@ namespace N
         </Samples>
       </Option>
     </Options>
-    <Remarks>This rule was originally introduced as [RCS1184](RCS1184.md)</Remarks>
   </Analyzer>
   <Analyzer Identifier="AddNewLineBeforeConstructorInitializer">
     <Id>RCS0029</Id>
@@ -788,7 +776,6 @@ namespace N
     Foo();]]></After>
       </Sample>
     </Samples>
-    <Remarks>This rule was originally introduced as [RCS1027](RCS1027.md)</Remarks>
   </Analyzer>
   <Analyzer Identifier="AddNewLineBeforeEnumMember">
     <Id>RCS0031</Id>
@@ -807,7 +794,6 @@ namespace N
 }]]></After>
       </Sample>
     </Samples>
-    <Remarks>This rule was originally introduced as [RCS1025](RCS1025.md)</Remarks>
   </Analyzer>
   <Analyzer Identifier="PlaceNewLineAfterOrBeforeArrowToken">
     <Id>RCS0032</Id>
@@ -858,7 +844,6 @@ namespace N
 Bar();]]></After>
       </Sample>
     </Samples>
-    <Remarks>This rule was originally introduced as [RCS1026](RCS1026.md)</Remarks>
   </Analyzer>
   <Analyzer Identifier="AddNewLineBeforeTypeParameterConstraint">
     <Id>RCS0034</Id>
@@ -1050,7 +1035,6 @@ else if (y)
         <After><![CDATA[string Foo { get; set; }]]></After>
       </Sample>
     </Samples>
-    <Remarks>This rule was derived from [RCS1024](RCS1024.md).</Remarks>
   </Analyzer>
   <Analyzer Identifier="RemoveNewLinesFromAccessorWithSingleLineExpression">
     <Id>RCS0043</Id>
@@ -1078,7 +1062,6 @@ else if (y)
 }]]></After>
       </Sample>
     </Samples>
-    <Remarks>This rule was derived from [RCS1024](RCS1024.md).</Remarks>
   </Analyzer>
   <Analyzer Identifier="UseCarriageReturnAndLinefeedAsNewLine">
     <Id>RCS0044</Id>
@@ -1086,7 +1069,6 @@ else if (y)
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
-    <Remarks>This rule was originally introduced as [RCS1087](RCS1087.md)</Remarks>
   </Analyzer>
   <Analyzer Identifier="UseLinefeedAsNewLine">
     <Id>RCS0045</Id>
@@ -1094,7 +1076,6 @@ else if (y)
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
-    <Remarks>This rule was originally introduced as [RCS1086](RCS1086.md)</Remarks>
   </Analyzer>
   <Analyzer Identifier="UseSpacesInsteadOfTab">
     <Id>RCS0046</Id>
@@ -1102,7 +1083,6 @@ else if (y)
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
-    <Remarks>This rule was originally introduced as [RCS1088](RCS1088.md)</Remarks>
   </Analyzer>
   <Analyzer Identifier="WrapAndIndentEachNodeInList">
     <Id>RCS0047</Id>
