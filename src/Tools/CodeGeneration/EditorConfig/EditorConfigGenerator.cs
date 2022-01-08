@@ -132,7 +132,7 @@ is_global = true
 ## Enable/disable all fixes for compiler diagnostics
 #roslynator.compiler_diagnostic_fixes.enabled = true|false
 
-## Enable/disable fix for a specific compiler diagnostics
+## Enable/disable fix for a specific compiler diagnostic
 #roslynator.compiler_diagnostic_fix.<COMPILER_DIAGNOSTIC_ID>.enabled = true|false
 ";
 
