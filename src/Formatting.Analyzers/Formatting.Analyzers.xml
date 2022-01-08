@@ -385,12 +385,15 @@ object this[int index] { get; }]]></After>
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AddEmptyLineBetweenSwitchSections">
+  <Analyzer Identifier="AddBlankLineBetweenSwitchSections">
     <Id>RCS0014</Id>
-    <Title>Add empty line between switch sections.</Title>
+    <Title>Add blank line between switch sections.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
+    <ConfigOptions>
+      <Option Key="blank_line_between_closing_brace_and_switch_section" />
+    </ConfigOptions>
     <Samples>
       <Sample>
         <Before><![CDATA[switch (x)

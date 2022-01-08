@@ -50,7 +50,7 @@ roslynator_binary_operator_new_line = after|before
 # Applicable to: RCS0027
 
 roslynator_blank_line_between_closing_brace_and_switch_section = true|false
-# Applicable to: RCS1036
+# Applicable to: RCS0014, RCS1036
 
 roslynator_blank_line_between_single_line_accessors = true|false
 # Applicable to: RCS0011
@@ -151,8 +151,9 @@ dotnet_diagnostic.RCS0012.severity = none
 # Add empty line between single-line declarations of different kind
 dotnet_diagnostic.RCS0013.severity = none
 
-# Add empty line between switch sections
+# Add blank line between switch sections
 dotnet_diagnostic.RCS0014.severity = none
+#roslynator_blank_line_between_closing_brace_and_switch_section = true|false
 
 # Add/remove empty line between using directive groups
 dotnet_diagnostic.RCS0015.severity = none

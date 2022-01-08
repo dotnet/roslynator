@@ -10,7 +10,7 @@ using Roslynator.CSharp;
 namespace Roslynator.Formatting.CSharp
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class AddEmptyLineBetweenSwitchSectionsAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class AddBlankLineBetweenSwitchSectionsAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 
@@ -19,7 +19,7 @@ namespace Roslynator.Formatting.CSharp
             get
             {
                 if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddEmptyLineBetweenSwitchSections);
+                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddBlankLineBetweenSwitchSections);
 
                 return _supportedDiagnostics;
             }
@@ -45,6 +45,8 @@ namespace Roslynator.Formatting.CSharp
 
             SwitchSectionSyntax previousSection = en.Current;
 
+            var previousBlock = previousSection.Statements.SingleOrDefault(shouldThrow: false) as BlockSyntax;
+
             while (en.MoveNext())
             {
                 SyntaxTriviaList leadingTrivia = en.Current.Labels[0].GetLeadingTrivia();
@@ -53,16 +55,19 @@ namespace Roslynator.Formatting.CSharp
                 {
                     SyntaxTriviaList trailingTrivia = previousSection.GetTrailingTrivia();
 
-                    if (SyntaxTriviaAnalysis.IsOptionalWhitespaceThenOptionalSingleLineCommentThenEndOfLineTrivia(trailingTrivia))
+                    if (SyntaxTriviaAnalysis.IsOptionalWhitespaceThenOptionalSingleLineCommentThenEndOfLineTrivia(trailingTrivia)
+                        && context.GetBlankLineBetweenClosingBraceAndSwitchSection() != false)
                     {
                         DiagnosticHelpers.ReportDiagnostic(
                             context,
-                            DiagnosticRules.AddEmptyLineBetweenSwitchSections,
+                            DiagnosticRules.AddBlankLineBetweenSwitchSections,
                             Location.Create(switchStatement.SyntaxTree, trailingTrivia.Last().Span.WithLength(0)));
                     }
                 }
 
                 previousSection = en.Current;
+
+                previousBlock = en.Current.Statements.SingleOrDefault(shouldThrow: false) as BlockSyntax;
             }
         }
     }

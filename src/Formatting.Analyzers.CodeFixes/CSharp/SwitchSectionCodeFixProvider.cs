@@ -17,7 +17,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
     {
         public override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.AddEmptyLineBetweenSwitchSections); }
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.AddBlankLineBetweenSwitchSections); }
         }
 
         public override async Task RegisterCodeFixesAsync(CodeFixContext context)

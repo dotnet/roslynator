@@ -154,15 +154,15 @@ namespace Roslynator.Formatting.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0014</summary>
-        public static readonly DiagnosticDescriptor AddEmptyLineBetweenSwitchSections = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.AddEmptyLineBetweenSwitchSections, 
-            title:              "Add empty line between switch sections.", 
-            messageFormat:      "Add empty line between switch sections.", 
+        public static readonly DiagnosticDescriptor AddBlankLineBetweenSwitchSections = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.AddBlankLineBetweenSwitchSections, 
+            title:              "Add blank line between switch sections.", 
+            messageFormat:      "Add blank line between switch sections.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddEmptyLineBetweenSwitchSections, 
+            helpLinkUri:        DiagnosticIdentifiers.AddBlankLineBetweenSwitchSections, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0015</summary>
