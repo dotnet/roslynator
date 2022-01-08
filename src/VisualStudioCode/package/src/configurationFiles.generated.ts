@@ -187,7 +187,7 @@ dotnet_diagnostic.RCS0027.severity = none
 dotnet_diagnostic.RCS0028.severity = none
 #roslynator_conditional_operator_new_line = after|before
 
-# Add new line before constructor initializer
+# Put constructor initializer on its own line
 dotnet_diagnostic.RCS0029.severity = none
 
 # Add new line before embedded statement

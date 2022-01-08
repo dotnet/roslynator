@@ -286,15 +286,15 @@ namespace Roslynator.Formatting.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0029</summary>
-        public static readonly DiagnosticDescriptor AddNewLineBeforeConstructorInitializer = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.AddNewLineBeforeConstructorInitializer, 
-            title:              "Add new line before constructor initializer.", 
-            messageFormat:      "Add new line before constructor initializer.", 
+        public static readonly DiagnosticDescriptor PutConstructorInitializerOnItsOwnLine = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.PutConstructorInitializerOnItsOwnLine, 
+            title:              "Put constructor initializer on its own line.", 
+            messageFormat:      "Put constructor initializer on its own line.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddNewLineBeforeConstructorInitializer, 
+            helpLinkUri:        DiagnosticIdentifiers.PutConstructorInitializerOnItsOwnLine, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0030</summary>

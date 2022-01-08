@@ -10,7 +10,7 @@ using Roslynator.CSharp;
 namespace Roslynator.Formatting.CSharp
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class AddNewLineBeforeConstructorInitializerAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class PutConstructorInitializerOnItsOwnLineAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 
@@ -19,7 +19,7 @@ namespace Roslynator.Formatting.CSharp
             get
             {
                 if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddNewLineBeforeConstructorInitializer);
+                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.PutConstructorInitializerOnItsOwnLine);
 
                 return _supportedDiagnostics;
             }
@@ -49,7 +49,7 @@ namespace Roslynator.Formatting.CSharp
 
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticRules.AddNewLineBeforeConstructorInitializer,
+                DiagnosticRules.PutConstructorInitializerOnItsOwnLine,
                 Location.Create(colonToken.SyntaxTree, colonToken.Span.WithLength(0)));
         }
     }

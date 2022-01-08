@@ -743,9 +743,9 @@ namespace N
       </Option>
     </Options>
   </Analyzer>
-  <Analyzer Identifier="AddNewLineBeforeConstructorInitializer">
+  <Analyzer Identifier="PutConstructorInitializerOnItsOwnLine">
     <Id>RCS0029</Id>
-    <Title>Add new line before constructor initializer.</Title>
+    <Title>Put constructor initializer on its own line.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>

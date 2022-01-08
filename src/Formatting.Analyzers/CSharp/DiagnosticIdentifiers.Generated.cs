@@ -31,7 +31,7 @@ namespace Roslynator.Formatting.CSharp
         public const string AddNewLineBeforeAccessorOfFullProperty = "RCS0025";
         public const string PlaceNewLineAfterOrBeforeBinaryOperator = "RCS0027";
         public const string PlaceNewLineAfterOrBeforeConditionalOperator = "RCS0028";
-        public const string AddNewLineBeforeConstructorInitializer = "RCS0029";
+        public const string PutConstructorInitializerOnItsOwnLine = "RCS0029";
         public const string AddNewLineBeforeEmbeddedStatement = "RCS0030";
         public const string AddNewLineBeforeEnumMember = "RCS0031";
         public const string PlaceNewLineAfterOrBeforeArrowToken = "RCS0032";

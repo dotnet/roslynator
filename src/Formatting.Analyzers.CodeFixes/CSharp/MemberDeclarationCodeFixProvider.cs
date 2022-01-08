@@ -24,7 +24,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
             {
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.AddNewLineAfterOpeningBraceOfTypeDeclaration,
-                    DiagnosticIdentifiers.AddNewLineBeforeConstructorInitializer);
+                    DiagnosticIdentifiers.PutConstructorInitializerOnItsOwnLine);
             }
         }
 
@@ -50,10 +50,10 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                         context.RegisterCodeFix(codeAction, diagnostic);
                         break;
                     }
-                case DiagnosticIdentifiers.AddNewLineBeforeConstructorInitializer:
+                case DiagnosticIdentifiers.PutConstructorInitializerOnItsOwnLine:
                     {
                         CodeAction codeAction = CodeAction.Create(
-                            CodeFixTitles.AddNewLine,
+                            "Put constructor initializer on its own line",
                             ct =>
                             {
                                 return CodeFixHelpers.AddNewLineBeforeAndIncreaseIndentationAsync(
