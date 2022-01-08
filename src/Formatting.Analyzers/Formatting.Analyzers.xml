@@ -1019,9 +1019,9 @@ else if (y)
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="RemoveNewLinesFromAccessorListOfAutoProperty">
+  <Analyzer Identifier="PutAutoAccessorsOnSingleLine">
     <Id>RCS0042</Id>
-    <Title>Remove new lines from accessor list of auto-property.</Title>
+    <Title>Put auto-accessors on a single line.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>

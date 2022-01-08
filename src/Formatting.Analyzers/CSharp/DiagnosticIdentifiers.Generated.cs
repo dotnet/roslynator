@@ -41,7 +41,7 @@ namespace Roslynator.Formatting.CSharp
         public const string RemoveEmptyLineBetweenUsingDirectivesWithSameRootNamespace = "RCS0038";
         public const string RemoveNewLineBeforeBaseList = "RCS0039";
         public const string RemoveNewLineBetweenIfKeywordAndElseKeyword = "RCS0041";
-        public const string RemoveNewLinesFromAccessorListOfAutoProperty = "RCS0042";
+        public const string PutAutoAccessorsOnSingleLine = "RCS0042";
         public const string PutAccessorOnSingleLine = "RCS0043";
         public const string UseCarriageReturnAndLinefeedAsNewLine = "RCS0044";
         public const string UseLinefeedAsNewLine = "RCS0045";

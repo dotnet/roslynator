@@ -24,7 +24,7 @@ namespace Roslynator.Formatting.CSharp
                 {
                     Immutable.InterlockedInitialize(
                         ref _supportedDiagnostics,
-                        DiagnosticRules.RemoveNewLinesFromAccessorListOfAutoProperty,
+                        DiagnosticRules.PutAutoAccessorsOnSingleLine,
                         DiagnosticRules.AddNewLineBeforeAccessorOfFullProperty,
                         DiagnosticRules.PutAccessorOnSingleLine);
                 }
@@ -82,7 +82,7 @@ namespace Roslynator.Formatting.CSharp
                     }
                 }
             }
-            else if (DiagnosticRules.RemoveNewLinesFromAccessorListOfAutoProperty.IsEffective(context))
+            else if (DiagnosticRules.PutAutoAccessorsOnSingleLine.IsEffective(context))
             {
                 SyntaxNode parent = accessorList.Parent;
 
@@ -108,7 +108,7 @@ namespace Roslynator.Formatting.CSharp
                                             .DescendantTrivia(span)
                                             .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                                         {
-                                            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveNewLinesFromAccessorListOfAutoProperty, accessorList);
+                                            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.PutAutoAccessorsOnSingleLine, accessorList);
                                         }
                                     }
                                 }
@@ -141,7 +141,7 @@ namespace Roslynator.Formatting.CSharp
                                                 .DescendantTrivia(span)
                                                 .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                                             {
-                                                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveNewLinesFromAccessorListOfAutoProperty, accessorList);
+                                                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.PutAutoAccessorsOnSingleLine, accessorList);
                                             }
                                         }
                                     }

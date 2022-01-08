@@ -406,15 +406,15 @@ namespace Roslynator.Formatting.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0042</summary>
-        public static readonly DiagnosticDescriptor RemoveNewLinesFromAccessorListOfAutoProperty = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.RemoveNewLinesFromAccessorListOfAutoProperty, 
-            title:              "Remove new lines from accessor list of auto-property.", 
-            messageFormat:      "Remove new lines from accessor list of auto-property.", 
+        public static readonly DiagnosticDescriptor PutAutoAccessorsOnSingleLine = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.PutAutoAccessorsOnSingleLine, 
+            title:              "Put auto-accessors on a single line.", 
+            messageFormat:      "Put auto-accessors on a single line.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.RemoveNewLinesFromAccessorListOfAutoProperty, 
+            helpLinkUri:        DiagnosticIdentifiers.PutAutoAccessorsOnSingleLine, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0043</summary>

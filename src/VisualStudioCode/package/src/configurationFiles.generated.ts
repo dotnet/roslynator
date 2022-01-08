@@ -218,7 +218,7 @@ dotnet_diagnostic.RCS0039.severity = none
 # Remove new line between 'if' keyword and 'else' keyword
 dotnet_diagnostic.RCS0041.severity = none
 
-# Remove new lines from accessor list of auto-property
+# Put auto-accessors on a single line
 dotnet_diagnostic.RCS0042.severity = none
 
 # Put accessor on a single line
