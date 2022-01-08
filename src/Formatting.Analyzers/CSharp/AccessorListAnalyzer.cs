@@ -25,7 +25,7 @@ namespace Roslynator.Formatting.CSharp
                     Immutable.InterlockedInitialize(
                         ref _supportedDiagnostics,
                         DiagnosticRules.PutAutoAccessorsOnSingleLine,
-                        DiagnosticRules.AddNewLineBeforeAccessorOfFullProperty,
+                        DiagnosticRules.PutFullAccessorOnItsOwnLine,
                         DiagnosticRules.PutAccessorOnSingleLine);
                 }
 
@@ -48,7 +48,7 @@ namespace Roslynator.Formatting.CSharp
 
             if (accessors.Any(f => f.BodyOrExpressionBody() != null))
             {
-                if (DiagnosticRules.AddNewLineBeforeAccessorOfFullProperty.IsEffective(context))
+                if (DiagnosticRules.PutFullAccessorOnItsOwnLine.IsEffective(context))
                 {
                     SyntaxToken token = accessorList.OpenBraceToken;
 
@@ -59,7 +59,7 @@ namespace Roslynator.Formatting.CSharp
                         {
                             DiagnosticHelpers.ReportDiagnostic(
                                 context,
-                                DiagnosticRules.AddNewLineBeforeAccessorOfFullProperty,
+                                DiagnosticRules.PutFullAccessorOnItsOwnLine,
                                 Location.Create(accessor.SyntaxTree, new TextSpan(accessor.SpanStart, 0)));
 
                             break;

@@ -176,7 +176,7 @@ dotnet_diagnostic.RCS0023.severity = none
 # Add new line after switch label
 dotnet_diagnostic.RCS0024.severity = none
 
-# Add new line before accessor of full property
+# Put full accessor on its own line
 dotnet_diagnostic.RCS0025.severity = none
 
 # Place new line after/before binary operator

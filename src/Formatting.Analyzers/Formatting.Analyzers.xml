@@ -638,9 +638,9 @@ namespace N
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AddNewLineBeforeAccessorOfFullProperty">
+  <Analyzer Identifier="PutFullAccessorOnItsOwnLine">
     <Id>RCS0025</Id>
-    <Title>Add new line before accessor of full property.</Title>
+    <Title>Put full accessor on its own line.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>

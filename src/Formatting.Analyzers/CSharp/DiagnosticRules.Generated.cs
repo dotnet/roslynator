@@ -250,15 +250,15 @@ namespace Roslynator.Formatting.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0025</summary>
-        public static readonly DiagnosticDescriptor AddNewLineBeforeAccessorOfFullProperty = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.AddNewLineBeforeAccessorOfFullProperty, 
-            title:              "Add new line before accessor of full property.", 
-            messageFormat:      "Add new line before accessor of full property.", 
+        public static readonly DiagnosticDescriptor PutFullAccessorOnItsOwnLine = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.PutFullAccessorOnItsOwnLine, 
+            title:              "Put full accessor on its own line.", 
+            messageFormat:      "Put full accessor on its own line.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddNewLineBeforeAccessorOfFullProperty, 
+            helpLinkUri:        DiagnosticIdentifiers.PutFullAccessorOnItsOwnLine, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0027</summary>

@@ -23,7 +23,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
             {
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.PutAccessorOnSingleLine,
-                    DiagnosticIdentifiers.AddNewLineBeforeAccessorOfFullProperty);
+                    DiagnosticIdentifiers.PutFullAccessorOnItsOwnLine);
             }
         }
 
@@ -49,10 +49,10 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                         context.RegisterCodeFix(codeAction, diagnostic);
                         break;
                     }
-                case DiagnosticIdentifiers.AddNewLineBeforeAccessorOfFullProperty:
+                case DiagnosticIdentifiers.PutFullAccessorOnItsOwnLine:
                     {
                         CodeAction codeAction = CodeAction.Create(
-                            CodeFixTitles.AddNewLine,
+                            "Put accessor on its own line",
                             ct => AddNewLineBeforeAccessorOfFullPropertyAsync(accessorDeclaration, document, ct),
                             GetEquivalenceKey(diagnostic));
 

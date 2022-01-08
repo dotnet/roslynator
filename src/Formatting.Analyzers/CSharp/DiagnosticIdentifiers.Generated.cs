@@ -28,7 +28,7 @@ namespace Roslynator.Formatting.CSharp
         public const string AddNewLineAfterOpeningBraceOfEmptyBlock = "RCS0022";
         public const string AddNewLineAfterOpeningBraceOfTypeDeclaration = "RCS0023";
         public const string AddNewLineAfterSwitchLabel = "RCS0024";
-        public const string AddNewLineBeforeAccessorOfFullProperty = "RCS0025";
+        public const string PutFullAccessorOnItsOwnLine = "RCS0025";
         public const string PlaceNewLineAfterOrBeforeBinaryOperator = "RCS0027";
         public const string PlaceNewLineAfterOrBeforeConditionalOperator = "RCS0028";
         public const string PutConstructorInitializerOnItsOwnLine = "RCS0029";
