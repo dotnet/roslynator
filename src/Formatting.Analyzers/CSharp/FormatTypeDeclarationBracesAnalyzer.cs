@@ -10,7 +10,7 @@ using Microsoft.CodeAnalysis.Text;
 namespace Roslynator.Formatting.CSharp
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class AddNewLineAfterOpeningBraceOfTypeDeclarationAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class FormatTypeDeclarationBracesAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 
@@ -19,7 +19,7 @@ namespace Roslynator.Formatting.CSharp
             get
             {
                 if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddNewLineAfterOpeningBraceOfTypeDeclaration);
+                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.FormatTypeDeclarationBraces);
 
                 return _supportedDiagnostics;
             }
@@ -51,8 +51,8 @@ namespace Roslynator.Formatting.CSharp
 
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticRules.AddNewLineAfterOpeningBraceOfTypeDeclaration,
-                Location.Create(typeDeclaration.SyntaxTree, new TextSpan(openBrace.Span.End, 0)));
+                DiagnosticRules.FormatTypeDeclarationBraces,
+                openBrace);
         }
     }
 }

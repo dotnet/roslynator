@@ -8,16 +8,16 @@ using Xunit;
 
 namespace Roslynator.Formatting.CSharp.Tests
 {
-    public class RCS0023AddNewLineAfterOpeningBraceOfTypeDeclarationTests : AbstractCSharpDiagnosticVerifier<AddNewLineAfterOpeningBraceOfTypeDeclarationAnalyzer, MemberDeclarationCodeFixProvider>
+    public class RCS0023FormatTypeDeclarationBracesTests : AbstractCSharpDiagnosticVerifier<FormatTypeDeclarationBracesAnalyzer, MemberDeclarationCodeFixProvider>
     {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddNewLineAfterOpeningBraceOfTypeDeclaration;
+        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.FormatTypeDeclarationBraces;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterOpeningBraceOfTypeDeclaration)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatTypeDeclarationBraces)]
         public async Task Test()
         {
             await VerifyDiagnosticAndFixAsync(@"
 class C
-{[||]}
+[|{|]}
 ", @"
 class C
 {
@@ -25,12 +25,12 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterOpeningBraceOfTypeDeclaration)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatTypeDeclarationBraces)]
         public async Task Test_WithWhitespace()
         {
             await VerifyDiagnosticAndFixAsync(@"
 class C
-{[||] }
+[|{|] }
 ", @"
 class C
 {
@@ -38,7 +38,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterOpeningBraceOfTypeDeclaration)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatTypeDeclarationBraces)]
         public async Task TestNoDiagnostic_EmptyLine()
         {
             await VerifyNoDiagnosticAsync(@"

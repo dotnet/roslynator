@@ -226,15 +226,15 @@ namespace Roslynator.Formatting.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0023</summary>
-        public static readonly DiagnosticDescriptor AddNewLineAfterOpeningBraceOfTypeDeclaration = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.AddNewLineAfterOpeningBraceOfTypeDeclaration, 
-            title:              "Add new line after opening brace of type declaration.", 
-            messageFormat:      "Add new line after opening brace of type declaration.", 
+        public static readonly DiagnosticDescriptor FormatTypeDeclarationBraces = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.FormatTypeDeclarationBraces, 
+            title:              "Format type declaration's braces.", 
+            messageFormat:      "Format type declaration's braces.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddNewLineAfterOpeningBraceOfTypeDeclaration, 
+            helpLinkUri:        DiagnosticIdentifiers.FormatTypeDeclarationBraces, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0024</summary>

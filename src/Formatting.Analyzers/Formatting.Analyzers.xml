@@ -611,9 +611,9 @@ namespace N
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AddNewLineAfterOpeningBraceOfTypeDeclaration">
+  <Analyzer Identifier="FormatTypeDeclarationBraces">
     <Id>RCS0023</Id>
-    <Title>Add new line after opening brace of type declaration.</Title>
+    <Title>Format type declaration's braces.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>

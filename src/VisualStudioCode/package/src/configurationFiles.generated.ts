@@ -178,7 +178,7 @@ dotnet_diagnostic.RCS0021.severity = none
 # Add new line after opening brace of empty block
 dotnet_diagnostic.RCS0022.severity = none
 
-# Add new line after opening brace of type declaration
+# Format type declaration's braces
 dotnet_diagnostic.RCS0023.severity = none
 
 # Add new line after switch label
