@@ -56,7 +56,8 @@ namespace Roslynator.Formatting.CSharp
                     SyntaxTriviaList trailingTrivia = previousSection.GetTrailingTrivia();
 
                     if (SyntaxTriviaAnalysis.IsOptionalWhitespaceThenOptionalSingleLineCommentThenEndOfLineTrivia(trailingTrivia)
-                        && context.GetBlankLineBetweenClosingBraceAndSwitchSection() != false)
+                        && (context.GetBlankLineBetweenClosingBraceAndSwitchSection() != false
+                            || previousBlock == null))
                     {
                         DiagnosticHelpers.ReportDiagnostic(
                             context,

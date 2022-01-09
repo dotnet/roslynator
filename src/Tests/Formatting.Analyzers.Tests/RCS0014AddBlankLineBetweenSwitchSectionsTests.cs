@@ -164,6 +164,49 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenSwitchSections)]
+        public async Task Test_ClosingBraceAndSection3()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    string M()
+    {
+        string s = null;
+
+        switch (s)
+        {
+            case ""a"":
+                return """";[||]
+            case ""b"":
+                return """";
+        }
+
+        return null;
+    }
+}
+", @"
+class C
+{
+    string M()
+    {
+        string s = null;
+
+        switch (s)
+        {
+            case ""a"":
+                return """";
+
+            case ""b"":
+                return """";
+        }
+
+        return null;
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenClosingBraceAndSwitchSection, false));
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenSwitchSections)]
         public async Task TestNoDiagnostic_NoEmptyLineBetweenClosingBraceAndSwitchSection()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -179,6 +222,58 @@ class C
                 {
                     return """";
                 }
+            case ""b"":
+                return """";
+        }
+
+        return null;
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenClosingBraceAndSwitchSection, false));
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenSwitchSections)]
+        public async Task TestNoDiagnostic_NoEmptyLineBetweenClosingBraceAndSwitchSection2()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    string M()
+    {
+        string s = null;
+
+        switch (s)
+        {
+            case ""a"":
+                {
+                    return """";
+                }
+
+            case ""b"":
+                return """";
+        }
+
+        return null;
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenClosingBraceAndSwitchSection, true));
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenSwitchSections)]
+        public async Task TestNoDiagnostic_NoEmptyLineBetweenClosingBraceAndSwitchSection3()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    string M()
+    {
+        string s = null;
+
+        switch (s)
+        {
+            case ""a"":
+                return """";
+
             case ""b"":
                 return """";
         }
