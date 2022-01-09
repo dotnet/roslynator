@@ -29,11 +29,13 @@ namespace Roslynator.Formatting.CSharp
         {
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeAccessorDeclaration(f), SyntaxKind.GetAccessorDeclaration);
-            context.RegisterSyntaxNodeAction(f => AnalyzeAccessorDeclaration(f), SyntaxKind.SetAccessorDeclaration);
-            context.RegisterSyntaxNodeAction(f => AnalyzeAccessorDeclaration(f), SyntaxKind.InitAccessorDeclaration);
-            context.RegisterSyntaxNodeAction(f => AnalyzeAccessorDeclaration(f), SyntaxKind.AddAccessorDeclaration);
-            context.RegisterSyntaxNodeAction(f => AnalyzeAccessorDeclaration(f), SyntaxKind.RemoveAccessorDeclaration);
+            context.RegisterSyntaxNodeAction(
+                f => AnalyzeAccessorDeclaration(f),
+                SyntaxKind.GetAccessorDeclaration,
+                SyntaxKind.SetAccessorDeclaration,
+                SyntaxKind.InitAccessorDeclaration,
+                SyntaxKind.AddAccessorDeclaration,
+                SyntaxKind.RemoveAccessorDeclaration);
         }
 
         private static void AnalyzeAccessorDeclaration(SyntaxNodeAnalysisContext context)
