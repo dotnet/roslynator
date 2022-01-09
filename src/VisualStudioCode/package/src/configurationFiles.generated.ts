@@ -38,7 +38,7 @@ roslynator_accessibility_modifiers = explicit|implicit
 # Applicable to: RCS1018
 
 roslynator_accessor_braces_style = multi_line|single_line_when_statement_is_on_single_line
-# Applicable to: RCS0020
+# Applicable to: RCS0020, RCS0021
 
 roslynator_anonymous_function_or_method_group = anonymous_function|method_group
 # Applicable to: RCS1207
@@ -60,6 +60,8 @@ roslynator_blank_line_between_single_line_accessors = true|false
 
 roslynator_blank_line_between_using_directives = never|separate_groups
 # Applicable to: RCS0015
+
+roslynator_block_braces_style = multi_line|single_line_when_empty
 
 roslynator_body_style = block|expression
 # Applicable to: RCS1016
@@ -169,8 +171,9 @@ dotnet_diagnostic.RCS0016.severity = none
 dotnet_diagnostic.RCS0020.severity = none
 #roslynator_accessor_braces_style = multi_line|single_line_when_statement_is_on_single_line
 
-# Add new line after opening brace of block
+# Format block's braces on a single line or multiple lines
 dotnet_diagnostic.RCS0021.severity = none
+#roslynator_accessor_braces_style = multi_line|single_line_when_statement_is_on_single_line
 
 # Add new line after opening brace of empty block
 dotnet_diagnostic.RCS0022.severity = none

@@ -62,6 +62,12 @@ namespace Roslynator
             defaultValuePlaceholder: "never|separate_groups", 
             description:             "Add/remove blank line between using directives");
 
+        public static readonly ConfigOptionDescriptor BlockBracesStyle = new(
+            key:                     ConfigOptionKeys.BlockBracesStyle, 
+            defaultValue:            null, 
+            defaultValuePlaceholder: "multi_line|single_line_when_empty", 
+            description:             "Format block's braces on single line or multiple lines");
+
         public static readonly ConfigOptionDescriptor BodyStyle = new(
             key:                     ConfigOptionKeys.BodyStyle, 
             defaultValue:            null, 
@@ -175,6 +181,7 @@ namespace Roslynator
             yield return new KeyValuePair<string, string>("RCS0011", JoinOptionKeys(ConfigOptionKeys.BlankLineBetweenSingleLineAccessors));
             yield return new KeyValuePair<string, string>("RCS0015", JoinOptionKeys(ConfigOptionKeys.BlankLineBetweenUsingDirectives));
             yield return new KeyValuePair<string, string>("RCS0020", JoinOptionKeys(ConfigOptionKeys.AccessorBracesStyle));
+            yield return new KeyValuePair<string, string>("RCS0021", JoinOptionKeys(ConfigOptionKeys.AccessorBracesStyle));
             yield return new KeyValuePair<string, string>("RCS0027", JoinOptionKeys(ConfigOptionKeys.BinaryOperatorNewLine));
             yield return new KeyValuePair<string, string>("RCS0028", JoinOptionKeys(ConfigOptionKeys.ConditionalOperatorNewLine));
             yield return new KeyValuePair<string, string>("RCS0032", JoinOptionKeys(ConfigOptionKeys.ArrowTokenNewLine));

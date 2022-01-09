@@ -574,12 +574,16 @@ namespace N
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AddNewLineAfterOpeningBraceOfBlock">
+  <Analyzer Identifier="FormatBlockBraces">
     <Id>RCS0021</Id>
-    <Title>Add new line after opening brace of block.</Title>
+    <Title>Format block's braces on a single line or multiple lines.</Title>
+    <MessageFormat>Format braces on {0}.</MessageFormat>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
+    <ConfigOptions>
+      <Option Key="accessor_braces_style" IsRequired="true" />
+    </ConfigOptions>
     <Samples>
       <Sample>
         <Before><![CDATA[void Foo() { Bar(); }]]></Before>
@@ -593,6 +597,7 @@ namespace N
   <Analyzer Identifier="AddNewLineAfterOpeningBraceOfEmptyBlock">
     <Id>RCS0022</Id>
     <Title>Add new line after opening brace of empty block.</Title>
+    <MessageFormat>(This analyzer is obsolete, use RCS0021 instead) Format braces on a single line.</MessageFormat>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>

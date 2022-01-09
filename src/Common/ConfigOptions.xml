@@ -36,6 +36,10 @@
 	<ValuePlaceholder>never|separate_groups</ValuePlaceholder>
 	<Description>Add/remove blank line between using directives</Description>
   </Option>
+  <Option Id="BlockBracesStyle">
+	<ValuePlaceholder>multi_line|single_line_when_empty</ValuePlaceholder>
+	<Description>Format block's braces on single line or multiple lines</Description>
+  </Option>
   <Option Id="BodyStyle">
 	<ValuePlaceholder>block|expression</ValuePlaceholder>
 	<Description>Prefer block body or expression body</Description>

@@ -24,7 +24,7 @@ namespace Roslynator.Formatting.CSharp
         public const string BlankLineBetweenUsingDirectives = "RCS0015";
         public const string PutAttributeListOnItsOwnLine = "RCS0016";
         public const string FormatAccessorBraces = "RCS0020";
-        public const string AddNewLineAfterOpeningBraceOfBlock = "RCS0021";
+        public const string FormatBlockBraces = "RCS0021";
         public const string AddNewLineAfterOpeningBraceOfEmptyBlock = "RCS0022";
         public const string AddNewLineAfterOpeningBraceOfTypeDeclaration = "RCS0023";
         public const string AddNewLineAfterSwitchLabel = "RCS0024";

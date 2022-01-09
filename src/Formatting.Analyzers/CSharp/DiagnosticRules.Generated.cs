@@ -202,22 +202,22 @@ namespace Roslynator.Formatting.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0021</summary>
-        public static readonly DiagnosticDescriptor AddNewLineAfterOpeningBraceOfBlock = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.AddNewLineAfterOpeningBraceOfBlock, 
-            title:              "Add new line after opening brace of block.", 
-            messageFormat:      "Add new line after opening brace of block.", 
+        public static readonly DiagnosticDescriptor FormatBlockBraces = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.FormatBlockBraces, 
+            title:              "Format block's braces on a single line or multiple lines.", 
+            messageFormat:      "Format braces on {0}.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddNewLineAfterOpeningBraceOfBlock, 
+            helpLinkUri:        DiagnosticIdentifiers.FormatBlockBraces, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0022</summary>
         public static readonly DiagnosticDescriptor AddNewLineAfterOpeningBraceOfEmptyBlock = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.AddNewLineAfterOpeningBraceOfEmptyBlock, 
             title:              "Add new line after opening brace of empty block.", 
-            messageFormat:      "Add new line after opening brace of empty block.", 
+            messageFormat:      "(This analyzer is obsolete, use RCS0021 instead) Format braces on a single line.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 

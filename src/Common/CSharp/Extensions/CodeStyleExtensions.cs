@@ -156,6 +156,25 @@ namespace Roslynator.CSharp
             return AccessorBracesStyle.None;
         }
 
+        public static BlockBracesStyle GetBlockBracesStyle(this SyntaxNodeAnalysisContext context)
+        {
+            AnalyzerConfigOptions configOptions = context.GetConfigOptions();
+
+            if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.BlockBracesStyle, out string rawValue))
+            {
+                if (string.Equals(rawValue, ConfigOptionValues.BlockBracesStyle_MultiLine, StringComparison.OrdinalIgnoreCase))
+                {
+                    return BlockBracesStyle.MultiLine;
+                }
+                else if (string.Equals(rawValue, ConfigOptionValues.BlockBracesStyle_SingleLineWhenEmpty, StringComparison.OrdinalIgnoreCase))
+                {
+                    return BlockBracesStyle.SingleLineWhenEmpty;
+                }
+            }
+
+            return BlockBracesStyle.None;
+        }
+
         public static BlankLineStyle GetBlankLineBetweenSingleLineAccessors(this SyntaxNodeAnalysisContext context)
         {
             AnalyzerConfigOptions configOptions = context.GetConfigOptions();

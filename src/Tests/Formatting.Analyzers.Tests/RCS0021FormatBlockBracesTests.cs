@@ -8,17 +8,17 @@ using Xunit;
 
 namespace Roslynator.Formatting.CSharp.Tests
 {
-    public class RCS0021AddNewLineAfterOpeningBraceOfBlockTests : AbstractCSharpDiagnosticVerifier<AddNewLineAfterOpeningBraceOfBlockAnalyzer, BlockCodeFixProvider>
+    public class RCS0021FormatBlockBracesTests : AbstractCSharpDiagnosticVerifier<FormatBlockBracesAnalyzer, BlockCodeFixProvider>
     {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddNewLineAfterOpeningBraceOfBlock;
+        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.FormatBlockBraces;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterOpeningBraceOfBlock)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatBlockBraces)]
         public async Task Test_Constructor()
         {
             await VerifyDiagnosticAndFixAsync(@"
 class C
 {
-    public C() {[||] M(); }
+    public C() [|{|] M(); }
 
     public void M()
     {
@@ -36,16 +36,16 @@ class C
     {
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.BlockBracesStyle, ConfigOptionValues.BlockBracesStyle_MultiLine));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterOpeningBraceOfBlock)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatBlockBraces)]
         public async Task Test_Destructor()
         {
             await VerifyDiagnosticAndFixAsync(@"
 class C
 {
-    ~C() {[||] M(); }
+    ~C() [|{|] M(); }
 
     public void M()
     {
@@ -63,10 +63,10 @@ class C
     {
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.BlockBracesStyle, ConfigOptionValues.BlockBracesStyle_MultiLine));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterOpeningBraceOfBlock)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatBlockBraces)]
         public async Task Test_Method()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -74,7 +74,7 @@ using System;
 
 class C
 {
-    public void M(object p = null) {[||] if (p == null) {[||] throw new ArgumentNullException(nameof(p)); } }
+    public void M(object p = null) [|{|] if (p == null) [|{|] throw new ArgumentNullException(nameof(p)); } }
 }
 ", @"
 using System;
@@ -89,16 +89,39 @@ class C
         }
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.BlockBracesStyle, ConfigOptionValues.BlockBracesStyle_MultiLine));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterOpeningBraceOfBlock)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatBlockBraces)]
+        public async Task Test_Method_ToSingleLine()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System;
+
+class C
+{
+    public void M(object p = null)
+    [|{|]
+    }
+}
+", @"
+using System;
+
+class C
+{
+    public void M(object p = null)
+    { }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.BlockBracesStyle, ConfigOptionValues.BlockBracesStyle_SingleLineWhenEmpty));
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatBlockBraces)]
         public async Task Test_ExplicitOperator()
         {
             await VerifyDiagnosticAndFixAsync(@"
 class C
 {
-    public static explicit operator C(string value) {[||] return new C(); }
+    public static explicit operator C(string value) [|{|] return new C(); }
 }
 ", @"
 class C
@@ -108,16 +131,16 @@ class C
         return new C();
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.BlockBracesStyle, ConfigOptionValues.BlockBracesStyle_MultiLine));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterOpeningBraceOfBlock)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatBlockBraces)]
         public async Task Test_Operator()
         {
             await VerifyDiagnosticAndFixAsync(@"
 class C
 {
-    public static C operator !(C value) {[||] return new C(); }
+    public static C operator !(C value) [|{|] return new C(); }
 }
 ", @"
 class C
@@ -127,10 +150,10 @@ class C
         return new C();
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.BlockBracesStyle, ConfigOptionValues.BlockBracesStyle_MultiLine));
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterOpeningBraceOfBlock)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatBlockBraces)]
         public async Task TestNoDiagnostic_SingleLineAccessorList()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -155,7 +178,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterOpeningBraceOfBlock)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatBlockBraces)]
         public async Task TestNoDiagnostic()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -219,7 +242,7 @@ class C
 
     public class C2 { }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.BlockBracesStyle, ConfigOptionValues.BlockBracesStyle_SingleLineWhenEmpty));
         }
     }
 }

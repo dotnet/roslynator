@@ -69,10 +69,13 @@ namespace Roslynator.Formatting.CSharp
                 legacyOnSingleLine = DiagnosticRules.FormatAccessorBracesOnSingleLineWhenStatementIsOnSingleLine.IsEffective(context);
 
                 if (legacyOnSingleLine)
+                {
                     style = AccessorBracesStyle.SingleLineWhenStatementIsOnSingleLine;
-
-                if (style == AccessorBracesStyle.None)
+                }
+                else
+                {
                     return;
+                }
             }
 
             if (accessor.SyntaxTree.IsSingleLineSpan(TextSpan.FromBounds(accessor.Keyword.SpanStart, accessor.Span.End)))
