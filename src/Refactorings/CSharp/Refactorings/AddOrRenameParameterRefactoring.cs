@@ -1,13 +1,11 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Options;
 using Microsoft.CodeAnalysis.Rename;
-using Microsoft.CodeAnalysis.Text;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -47,20 +45,6 @@ namespace Roslynator.CSharp.Refactorings
                         RefactoringDescriptors.RenameParameterAccordingToTypeName);
                 }
             }
-        }
-
-        private static Task<Document> AddParameterNameToParameterAsync(
-            Document document,
-            ParameterSyntax parameter,
-            string name,
-            CancellationToken cancellationToken = default)
-        {
-            ParameterSyntax newParameter = parameter
-                .WithType(parameter.Type.WithoutTrailingTrivia())
-                .WithIdentifier(SyntaxFactory.Identifier(name).WithTrailingTrivia(parameter.Type.GetTrailingTrivia()))
-                .WithFormatterAnnotation();
-
-            return document.ReplaceNodeAsync(parameter, newParameter, cancellationToken);
         }
     }
 }
