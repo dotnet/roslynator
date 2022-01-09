@@ -14,6 +14,12 @@ namespace Roslynator
             defaultValuePlaceholder: "explicit|implicit", 
             description:             "Prefer explicit/implicit accessibility modifiers");
 
+        public static readonly ConfigOptionDescriptor AccessorBracesStyle = new(
+            key:                     ConfigOptionKeys.AccessorBracesStyle, 
+            defaultValue:            null, 
+            defaultValuePlaceholder: "multi_line|single_line_when_statement_is_on_single_line", 
+            description:             "Format accessor's braces on single line or multiple lines");
+
         public static readonly ConfigOptionDescriptor AnonymousFunctionOrMethodGroup = new(
             key:                     ConfigOptionKeys.AnonymousFunctionOrMethodGroup, 
             defaultValue:            null, 
@@ -168,6 +174,7 @@ namespace Roslynator
         {
             yield return new KeyValuePair<string, string>("RCS0011", JoinOptionKeys(ConfigOptionKeys.BlankLineBetweenSingleLineAccessors));
             yield return new KeyValuePair<string, string>("RCS0015", JoinOptionKeys(ConfigOptionKeys.BlankLineBetweenUsingDirectives));
+            yield return new KeyValuePair<string, string>("RCS0020", JoinOptionKeys(ConfigOptionKeys.AccessorBracesStyle));
             yield return new KeyValuePair<string, string>("RCS0027", JoinOptionKeys(ConfigOptionKeys.BinaryOperatorNewLine));
             yield return new KeyValuePair<string, string>("RCS0028", JoinOptionKeys(ConfigOptionKeys.ConditionalOperatorNewLine));
             yield return new KeyValuePair<string, string>("RCS0032", JoinOptionKeys(ConfigOptionKeys.ArrowTokenNewLine));

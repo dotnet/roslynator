@@ -7,6 +7,7 @@ namespace Roslynator
     internal static partial class ConfigOptionKeys
     {
         public const string AccessibilityModifiers                               = "roslynator_accessibility_modifiers";
+        public const string AccessorBracesStyle                                  = "roslynator_accessor_braces_style";
         public const string AnonymousFunctionOrMethodGroup                       = "roslynator_anonymous_function_or_method_group";
         public const string ArrayCreationTypeStyle                               = "roslynator_array_creation_type_style";
         public const string ArrowTokenNewLine                                    = "roslynator_arrow_token_new_line";

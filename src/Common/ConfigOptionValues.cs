@@ -6,6 +6,8 @@ namespace Roslynator
     {
         public const string AccessibilityModifiers_Explicit = "explicit";
         public const string AccessibilityModifiers_Implicit = "implicit";
+        public const string AccessorBracesStyle_MultiLine = "multi_line";
+        public const string AccessorBracesStyle_SingleLineWhenStatementIsOnSingleLine = "single_line_when_statement_is_on_single_line";
         public const string AnonymousFunctionOrMethodGroup_AnonymousFunction = "anonymous_function";
         public const string AnonymousFunctionOrMethodGroup_MethodGroup = "anonymous_group";
         public const string ArrayCreationTypeStyle_Explicit = "explicit";

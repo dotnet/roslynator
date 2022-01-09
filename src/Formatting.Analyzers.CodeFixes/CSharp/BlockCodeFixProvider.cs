@@ -21,8 +21,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
             {
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.AddNewLineAfterOpeningBraceOfBlock,
-                    DiagnosticIdentifiers.AddNewLineAfterOpeningBraceOfEmptyBlock,
-                    DiagnosticIdentifiers.AddNewLineAfterOpeningBraceOfAccessor);
+                    DiagnosticIdentifiers.AddNewLineAfterOpeningBraceOfEmptyBlock);
             }
         }
 
@@ -40,7 +39,6 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
             {
                 case DiagnosticIdentifiers.AddNewLineAfterOpeningBraceOfBlock:
                 case DiagnosticIdentifiers.AddNewLineAfterOpeningBraceOfEmptyBlock:
-                case DiagnosticIdentifiers.AddNewLineAfterOpeningBraceOfAccessor:
                     {
                         CodeAction codeAction = CodeAction.Create(
                             CodeFixTitles.AddNewLine,

@@ -25,8 +25,7 @@ namespace Roslynator.Formatting.CSharp
                     Immutable.InterlockedInitialize(
                         ref _supportedDiagnostics,
                         DiagnosticRules.PutAutoAccessorsOnSingleLine,
-                        DiagnosticRules.PutFullAccessorOnItsOwnLine,
-                        DiagnosticRules.PutAccessorOnSingleLine);
+                        DiagnosticRules.PutFullAccessorOnItsOwnLine);
                 }
 
                 return _supportedDiagnostics;
@@ -69,16 +68,6 @@ namespace Roslynator.Formatting.CSharp
 
                         if (!token.Equals(accessor.GetLastToken()))
                             break;
-                    }
-                }
-
-                if (DiagnosticRules.PutAccessorOnSingleLine.IsEffective(context)
-                    && !accessorList.IsSingleLine(includeExteriorTrivia: false))
-                {
-                    foreach (AccessorDeclarationSyntax accessor in accessors)
-                    {
-                        if (CanRemoveNewLinesFromAccessor(accessor))
-                            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.PutAccessorOnSingleLine, accessor);
                     }
                 }
             }
@@ -152,40 +141,6 @@ namespace Roslynator.Formatting.CSharp
                         }
                 }
             }
-        }
-
-        private static bool CanRemoveNewLinesFromAccessor(AccessorDeclarationSyntax accessor)
-        {
-            BlockSyntax body = accessor.Body;
-
-            if (body != null)
-            {
-                SyntaxList<StatementSyntax> statements = body.Statements;
-
-                if (statements.Count <= 1
-                    && accessor.SyntaxTree.IsMultiLineSpan(TextSpan.FromBounds(accessor.Keyword.SpanStart, accessor.Span.End))
-                    && (!statements.Any() || statements[0].IsSingleLine()))
-                {
-                    return accessor
-                        .DescendantTrivia(accessor.Span, descendIntoTrivia: true)
-                        .All(f => f.IsWhitespaceOrEndOfLineTrivia());
-                }
-            }
-            else
-            {
-                ArrowExpressionClauseSyntax expressionBody = accessor.ExpressionBody;
-
-                if (expressionBody != null
-                    && accessor.SyntaxTree.IsMultiLineSpan(TextSpan.FromBounds(accessor.Keyword.SpanStart, accessor.Span.End))
-                    && expressionBody.Expression?.IsSingleLine() == true)
-                {
-                    return accessor
-                        .DescendantTrivia(accessor.Span, descendIntoTrivia: true)
-                        .All(f => f.IsWhitespaceOrEndOfLineTrivia());
-                }
-            }
-
-            return false;
         }
     }
 }

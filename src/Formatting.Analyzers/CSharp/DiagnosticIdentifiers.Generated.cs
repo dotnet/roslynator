@@ -23,7 +23,7 @@ namespace Roslynator.Formatting.CSharp
         public const string AddBlankLineBetweenSwitchSections = "RCS0014";
         public const string BlankLineBetweenUsingDirectives = "RCS0015";
         public const string PutAttributeListOnItsOwnLine = "RCS0016";
-        public const string AddNewLineAfterOpeningBraceOfAccessor = "RCS0020";
+        public const string FormatAccessorBraces = "RCS0020";
         public const string AddNewLineAfterOpeningBraceOfBlock = "RCS0021";
         public const string AddNewLineAfterOpeningBraceOfEmptyBlock = "RCS0022";
         public const string AddNewLineAfterOpeningBraceOfTypeDeclaration = "RCS0023";
@@ -42,7 +42,7 @@ namespace Roslynator.Formatting.CSharp
         public const string RemoveNewLineBeforeBaseList = "RCS0039";
         public const string RemoveNewLineBetweenIfKeywordAndElseKeyword = "RCS0041";
         public const string PutAutoAccessorsOnSingleLine = "RCS0042";
-        public const string PutAccessorOnSingleLine = "RCS0043";
+        public const string FormatAccessorBracesOnSingleLineWhenStatementIsOnSingleLine = "RCS0043";
         public const string UseCarriageReturnAndLinefeedAsNewLine = "RCS0044";
         public const string UseLinefeedAsNewLine = "RCS0045";
         public const string UseSpacesInsteadOfTab = "RCS0046";

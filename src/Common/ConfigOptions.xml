@@ -4,6 +4,10 @@
 	<ValuePlaceholder>explicit|implicit</ValuePlaceholder>
 	<Description>Prefer explicit/implicit accessibility modifiers</Description>
   </Option>
+  <Option Id="AccessorBracesStyle">
+	<ValuePlaceholder>multi_line|single_line_when_statement_is_on_single_line</ValuePlaceholder>
+	<Description>Format accessor's braces on single line or multiple lines</Description>
+  </Option>
   <Option Id="AnonymousFunctionOrMethodGroup">
 	<ValuePlaceholder>anonymous_function|method_group</ValuePlaceholder>
 	<Description>Use anonymous function or method group</Description>

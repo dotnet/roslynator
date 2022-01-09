@@ -37,6 +37,9 @@ is_global = true
 roslynator_accessibility_modifiers = explicit|implicit
 # Applicable to: RCS1018
 
+roslynator_accessor_braces_style = multi_line|single_line_when_statement_is_on_single_line
+# Applicable to: RCS0020
+
 roslynator_anonymous_function_or_method_group = anonymous_function|method_group
 # Applicable to: RCS1207
 
@@ -162,8 +165,9 @@ dotnet_diagnostic.RCS0015.severity = none
 # Put attribute list on its own line
 dotnet_diagnostic.RCS0016.severity = none
 
-# Add new line after opening brace of accessor
+# Format accessor's braces on a single line or multiple lines
 dotnet_diagnostic.RCS0020.severity = none
+#roslynator_accessor_braces_style = multi_line|single_line_when_statement_is_on_single_line
 
 # Add new line after opening brace of block
 dotnet_diagnostic.RCS0021.severity = none
@@ -222,7 +226,7 @@ dotnet_diagnostic.RCS0041.severity = none
 # Put auto-accessors on a single line
 dotnet_diagnostic.RCS0042.severity = none
 
-# Put accessor on a single line
+# Format accessor's braces on a single line when statement is on single line
 dotnet_diagnostic.RCS0043.severity = none
 
 # Use carriage return + linefeed as new line

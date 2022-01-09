@@ -548,12 +548,16 @@ namespace N
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AddNewLineAfterOpeningBraceOfAccessor">
+  <Analyzer Identifier="FormatAccessorBraces">
     <Id>RCS0020</Id>
-    <Title>Add new line after opening brace of accessor.</Title>
+    <Title>Format accessor's braces on a single line or multiple lines.</Title>
+    <MessageFormat>Format braces on {0}.</MessageFormat>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
+    <ConfigOptions>
+      <Option Key="accessor_braces_style" IsRequired="true" />
+    </ConfigOptions>
     <Samples>
       <Sample>
         <Before><![CDATA[string Foo
@@ -1039,9 +1043,10 @@ else if (y)
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="PutAccessorOnSingleLine">
+  <Analyzer Identifier="FormatAccessorBracesOnSingleLineWhenStatementIsOnSingleLine">
     <Id>RCS0043</Id>
-    <Title>Put accessor on a single line.</Title>
+    <Title>Format accessor's braces on a single line when statement is on single line.</Title>
+    <MessageFormat>(This analyzer is obsolete, use RCS0020 with option 'roslynator_accessor_braces_style = single_line_when_statement_is_on_single_line) Format braces on a single line.</MessageFormat>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>

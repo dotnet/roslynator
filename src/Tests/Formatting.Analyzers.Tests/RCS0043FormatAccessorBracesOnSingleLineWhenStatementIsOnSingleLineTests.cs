@@ -8,11 +8,11 @@ using Xunit;
 
 namespace Roslynator.Formatting.CSharp.Tests
 {
-    public class RCS0043RemoveNewLinesFromAccessorWithSingleLineExpressionTests : AbstractCSharpDiagnosticVerifier<AccessorListAnalyzer, AccessorDeclarationCodeFixProvider>
+    public class RCS0043FormatAccessorBracesOnSingleLineWhenStatementIsOnSingleLineTests : AbstractCSharpDiagnosticVerifier<FormatAccessorBracesAnalyzer, AccessorDeclarationCodeFixProvider>
     {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.PutAccessorOnSingleLine;
+        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.FormatAccessorBracesOnSingleLineWhenStatementIsOnSingleLine;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAccessorOnSingleLine)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatAccessorBracesOnSingleLineWhenStatementIsOnSingleLine)]
         public async Task Test_Getter_Setter()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -46,7 +46,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAccessorOnSingleLine)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatAccessorBracesOnSingleLineWhenStatementIsOnSingleLine)]
         public async Task Test_Getter()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -77,7 +77,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAccessorOnSingleLine)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatAccessorBracesOnSingleLineWhenStatementIsOnSingleLine)]
         public async Task Test_Setter()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -108,7 +108,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAccessorOnSingleLine)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatAccessorBracesOnSingleLineWhenStatementIsOnSingleLine)]
         public async Task TestNoDiagnostic_FullProperty()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -125,7 +125,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAccessorOnSingleLine)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatAccessorBracesOnSingleLineWhenStatementIsOnSingleLine)]
         public async Task TestNoDiagnostic_AutoProperty()
         {
             await VerifyNoDiagnosticAsync(@"

@@ -22,8 +22,9 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticIdentifiers.PutAccessorOnSingleLine,
-                    DiagnosticIdentifiers.PutFullAccessorOnItsOwnLine);
+                    DiagnosticIdentifiers.PutFullAccessorOnItsOwnLine,
+                    DiagnosticIdentifiers.FormatAccessorBraces,
+                    DiagnosticIdentifiers.FormatAccessorBracesOnSingleLineWhenStatementIsOnSingleLine);
             }
         }
 
@@ -39,11 +40,19 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
 
             switch (diagnostic.Id)
             {
-                case DiagnosticIdentifiers.PutAccessorOnSingleLine:
+                case DiagnosticIdentifiers.FormatAccessorBraces:
+                case DiagnosticIdentifiers.FormatAccessorBracesOnSingleLineWhenStatementIsOnSingleLine:
                     {
+                        bool isSingleLine = accessorDeclaration.IsSingleLine(includeExteriorTrivia: false);
+                        string title = isSingleLine
+                            ? "Format braces on multiple lines"
+                            : "Format braces on a single line";
+
                         CodeAction codeAction = CodeAction.Create(
-                            "Put accessor on a single line",
-                            ct => PutAccessorOnSingleLineAsync(document, accessorDeclaration, ct),
+                            title,
+                            ct => (isSingleLine)
+                                ? FormatAccessorBracesOnMultipleLinesAsync(document, accessorDeclaration, ct)
+                                : FormatAccessorBracesOnSingleLineAsync(document, accessorDeclaration, ct),
                             GetEquivalenceKey(diagnostic));
 
                         context.RegisterCodeFix(codeAction, diagnostic);
@@ -53,7 +62,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                     {
                         CodeAction codeAction = CodeAction.Create(
                             "Put accessor on its own line",
-                            ct => AddNewLineBeforeAccessorOfFullPropertyAsync(accessorDeclaration, document, ct),
+                            ct => PutAccessorOnItsOwnLineAsync(accessorDeclaration, document, ct),
                             GetEquivalenceKey(diagnostic));
 
                         context.RegisterCodeFix(codeAction, diagnostic);
@@ -62,19 +71,33 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
             }
         }
 
-        private static Task<Document> PutAccessorOnSingleLineAsync(
+        private static Task<Document> FormatAccessorBracesOnSingleLineAsync(
             Document document,
-            AccessorDeclarationSyntax accessorDeclaration,
+            AccessorDeclarationSyntax accessor,
             CancellationToken cancellationToken)
         {
-            AccessorDeclarationSyntax newAccessorDeclaration = accessorDeclaration
-                .RemoveWhitespace(accessorDeclaration.Span)
+            AccessorDeclarationSyntax newAccessorDeclaration = accessor
+                .RemoveWhitespace(accessor.Span)
                 .WithFormatterAnnotation();
 
-            return document.ReplaceNodeAsync(accessorDeclaration, newAccessorDeclaration, cancellationToken);
+            return document.ReplaceNodeAsync(accessor, newAccessorDeclaration, cancellationToken);
         }
 
-        private static Task<Document> AddNewLineBeforeAccessorOfFullPropertyAsync(
+        private static Task<Document> FormatAccessorBracesOnMultipleLinesAsync(
+            Document document,
+            AccessorDeclarationSyntax accessor,
+            CancellationToken cancellationToken)
+        {
+            BlockSyntax body = accessor.Body;
+
+            AccessorDeclarationSyntax newAccessorDeclaration = accessor
+                .WithBody(body.WithCloseBraceToken(body.CloseBraceToken.AppendEndOfLineToLeadingTrivia()))
+                .WithFormatterAnnotation();
+
+            return document.ReplaceNodeAsync(accessor, newAccessorDeclaration, cancellationToken);
+        }
+
+        private static Task<Document> PutAccessorOnItsOwnLineAsync(
             AccessorDeclarationSyntax accessorDeclaration,
             Document document,
             CancellationToken cancellationToken)
