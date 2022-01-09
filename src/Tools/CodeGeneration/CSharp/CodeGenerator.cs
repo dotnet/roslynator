@@ -96,7 +96,7 @@ namespace Roslynator.CodeGeneration.CSharp
                                     ImplicitObjectCreationExpression(
                                         ArgumentList(
                                             Argument(NameColon("key"), StringLiteralExpression($"roslynator.{f.ParentId}.{f.OptionKey}")),
-                                            Argument(NameColon("defaultValue"), StringLiteralExpression("false")),
+                                            Argument(NameColon("defaultValue"), NullLiteralExpression()),
                                             Argument(NameColon("defaultValuePlaceholder"), StringLiteralExpression("true|false")),
                                             Argument(NameColon("description"), StringLiteralExpression(""))),
                                         default(InitializerExpressionSyntax)));

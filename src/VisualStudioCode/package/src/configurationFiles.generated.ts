@@ -55,7 +55,7 @@ roslynator_blank_line_between_closing_brace_and_switch_section = true|false
 roslynator_blank_line_between_single_line_accessors = true|false
 # Applicable to: RCS0011
 
-roslynator_blank_line_between_using_directive_groups = true|false
+roslynator_blank_line_between_using_directives = never|separate_groups
 # Applicable to: RCS0015
 
 roslynator_body_style = block|expression
@@ -155,9 +155,9 @@ dotnet_diagnostic.RCS0013.severity = none
 dotnet_diagnostic.RCS0014.severity = none
 #roslynator_blank_line_between_closing_brace_and_switch_section = true|false
 
-# Add/remove empty line between using directive groups
+# Add/remove empty line between using directives
 dotnet_diagnostic.RCS0015.severity = none
-#roslynator_blank_line_between_using_directive_groups = true|false
+#roslynator_blank_line_between_using_directives = never|separate_groups
 
 # Put attribute list on its own line
 dotnet_diagnostic.RCS0016.severity = none
@@ -210,7 +210,7 @@ dotnet_diagnostic.RCS0034.severity = none
 # Remove empty line between single-line declarations of same kind
 dotnet_diagnostic.RCS0036.severity = none
 
-# Remove empty line between using directives with same root namespace
+# Remove blank line between using directives with same root namespace
 dotnet_diagnostic.RCS0038.severity = none
 
 # Remove new line before base list

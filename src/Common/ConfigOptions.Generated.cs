@@ -50,11 +50,11 @@ namespace Roslynator
             defaultValuePlaceholder: "true|false", 
             description:             "Add/remove blank line between single-line accessors");
 
-        public static readonly ConfigOptionDescriptor BlankLineBetweenUsingDirectiveGroups = new(
-            key:                     ConfigOptionKeys.BlankLineBetweenUsingDirectiveGroups, 
+        public static readonly ConfigOptionDescriptor BlankLineBetweenUsingDirectives = new(
+            key:                     ConfigOptionKeys.BlankLineBetweenUsingDirectives, 
             defaultValue:            null, 
-            defaultValuePlaceholder: "true|false", 
-            description:             "Add/remove blank line between using directive groups");
+            defaultValuePlaceholder: "never|separate_groups", 
+            description:             "Add/remove blank line between using directives");
 
         public static readonly ConfigOptionDescriptor BodyStyle = new(
             key:                     ConfigOptionKeys.BodyStyle, 
@@ -167,7 +167,7 @@ namespace Roslynator
         private static IEnumerable<KeyValuePair<string, string>> GetRequiredOptions()
         {
             yield return new KeyValuePair<string, string>("RCS0011", JoinOptionKeys(ConfigOptionKeys.BlankLineBetweenSingleLineAccessors));
-            yield return new KeyValuePair<string, string>("RCS0015", JoinOptionKeys(ConfigOptionKeys.BlankLineBetweenUsingDirectiveGroups));
+            yield return new KeyValuePair<string, string>("RCS0015", JoinOptionKeys(ConfigOptionKeys.BlankLineBetweenUsingDirectives));
             yield return new KeyValuePair<string, string>("RCS0027", JoinOptionKeys(ConfigOptionKeys.BinaryOperatorNewLine));
             yield return new KeyValuePair<string, string>("RCS0028", JoinOptionKeys(ConfigOptionKeys.ConditionalOperatorNewLine));
             yield return new KeyValuePair<string, string>("RCS0032", JoinOptionKeys(ConfigOptionKeys.ArrowTokenNewLine));

@@ -115,17 +115,26 @@ namespace Roslynator.CSharp
             return NewLinePosition.None;
         }
 
-        public static BlankLineStyle GetBlankLineBetweenUsingDirectiveGroups(this SyntaxNodeAnalysisContext context)
+        public static UsingDirectiveBlankLineStyle GetBlankLineBetweenUsingDirectives(this SyntaxNodeAnalysisContext context)
         {
             AnalyzerConfigOptions configOptions = context.GetConfigOptions();
 
-            if (ConfigOptions.TryGetValueAsBool(configOptions, ConfigOptions.BlankLineBetweenUsingDirectiveGroups, out bool addLine))
-                return (addLine) ? BlankLineStyle.Add : BlankLineStyle.Remove;
+            if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.BlankLineBetweenUsingDirectives, out string rawValue))
+            {
+                if (string.Equals(rawValue, ConfigOptionValues.BlankLineBetweenUsingDirectiveGroups_Never, StringComparison.OrdinalIgnoreCase))
+                {
+                    return UsingDirectiveBlankLineStyle.Never;
+                }
+                else if (string.Equals(rawValue, ConfigOptionValues.BlankLineBetweenUsingDirectiveGroups_SeparateGroups, StringComparison.OrdinalIgnoreCase))
+                {
+                    return UsingDirectiveBlankLineStyle.SeparateGroups;
+                }
+            }
 
             if (ConfigOptions.TryGetValueAsBool(configOptions, LegacyConfigOptions.RemoveEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace, out bool removeLine))
-                return (removeLine) ? BlankLineStyle.Remove : BlankLineStyle.Add;
+                return (removeLine) ? UsingDirectiveBlankLineStyle.Never : UsingDirectiveBlankLineStyle.SeparateGroups;
 
-            return BlankLineStyle.None;
+            return UsingDirectiveBlankLineStyle.None;
         }
 
         public static BlankLineStyle GetBlankLineBetweenSingleLineAccessors(this SyntaxNodeAnalysisContext context)

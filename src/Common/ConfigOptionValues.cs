@@ -11,6 +11,8 @@ namespace Roslynator
         public const string ArrayCreationTypeStyle_Explicit = "explicit";
         public const string ArrayCreationTypeStyle_Implicit = "implicit";
         public const string ArrayCreationTypeStyle_ImplicitWhenTypeIsObvious = "implicit_when_type_is_obvious";
+        public const string BlankLineBetweenUsingDirectiveGroups_Never = "never";
+        public const string BlankLineBetweenUsingDirectiveGroups_SeparateGroups = "separate_groups";
         public const string BodyStyle_Block = "block";
         public const string BodyStyle_Expression = "expression";
         public const string ConditionInConditionalExpressionParenthesesStyle_Include = "include";

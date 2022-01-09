@@ -12,7 +12,7 @@ using Roslynator.CSharp.CodeStyle;
 namespace Roslynator.Formatting.CSharp
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class BlankLineBetweenUsingDirectiveGroupsAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class BlankLineBetweenUsingDirectivesAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 
@@ -24,8 +24,8 @@ namespace Roslynator.Formatting.CSharp
                 {
                     Immutable.InterlockedInitialize(
                         ref _supportedDiagnostics,
-                        DiagnosticRules.RemoveEmptyLineBetweenUsingDirectivesWithSameRootNamespace,
-                        DiagnosticRules.BlankLineBetweenUsingDirectiveGroups);
+                        DiagnosticRules.RemoveBlankLineBetweenUsingDirectivesWithSameRootNamespace,
+                        DiagnosticRules.BlankLineBetweenUsingDirectives);
                 }
 
                 return _supportedDiagnostics;
@@ -102,33 +102,47 @@ namespace Roslynator.Formatting.CSharp
                 {
                     if (isEmptyLine)
                     {
-                        DiagnosticHelpers.ReportDiagnosticIfEffective(
-                            context,
-                            DiagnosticRules.RemoveEmptyLineBetweenUsingDirectivesWithSameRootNamespace,
-                            Location.Create(context.Node.SyntaxTree, leadingTrivia[0].Span.WithLength(0)));
-                    }
-                }
-                else if (DiagnosticRules.BlankLineBetweenUsingDirectiveGroups.IsEffective(context))
-                {
-                    BlankLineStyle style = context.GetBlankLineBetweenUsingDirectiveGroups();
-
-                    if (isEmptyLine)
-                    {
-                        if (style == BlankLineStyle.Remove)
+                        if (DiagnosticRules.RemoveBlankLineBetweenUsingDirectivesWithSameRootNamespace.IsEffective(context))
                         {
                             DiagnosticHelpers.ReportDiagnostic(
                                 context,
-                                DiagnosticRules.BlankLineBetweenUsingDirectiveGroups,
+                                DiagnosticRules.RemoveBlankLineBetweenUsingDirectivesWithSameRootNamespace,
+                                Location.Create(context.Node.SyntaxTree, leadingTrivia[0].Span.WithLength(0)));
+                        }
+
+                        if (DiagnosticRules.BlankLineBetweenUsingDirectives.IsEffective(context)
+                            && context.GetBlankLineBetweenUsingDirectives() == UsingDirectiveBlankLineStyle.Never)
+                        {
+                            DiagnosticHelpers.ReportDiagnostic(
+                                context,
+                                DiagnosticRules.BlankLineBetweenUsingDirectives,
                                 Location.Create(context.Node.SyntaxTree, leadingTrivia[0].Span.WithLength(0)),
                                 properties: DiagnosticProperties.AnalyzerOption_Invert,
                                 "Remove");
                         }
                     }
-                    else if (style == BlankLineStyle.Add)
+                }
+                else if (DiagnosticRules.BlankLineBetweenUsingDirectives.IsEffective(context))
+                {
+                    UsingDirectiveBlankLineStyle style = context.GetBlankLineBetweenUsingDirectives();
+
+                    if (isEmptyLine)
+                    {
+                        if (style == UsingDirectiveBlankLineStyle.Never)
+                        {
+                            DiagnosticHelpers.ReportDiagnostic(
+                                context,
+                                DiagnosticRules.BlankLineBetweenUsingDirectives,
+                                Location.Create(context.Node.SyntaxTree, leadingTrivia[0].Span.WithLength(0)),
+                                properties: DiagnosticProperties.AnalyzerOption_Invert,
+                                "Remove");
+                        }
+                    }
+                    else if (style == UsingDirectiveBlankLineStyle.SeparateGroups)
                     {
                         DiagnosticHelpers.ReportDiagnostic(
                             context,
-                            DiagnosticRules.BlankLineBetweenUsingDirectiveGroups,
+                            DiagnosticRules.BlankLineBetweenUsingDirectives,
                             Location.Create(context.Node.SyntaxTree, trailingTrivia.Last().Span.WithLength(0)),
                             "Add");
                     }

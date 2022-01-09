@@ -166,15 +166,15 @@ namespace Roslynator.Formatting.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0015</summary>
-        public static readonly DiagnosticDescriptor BlankLineBetweenUsingDirectiveGroups = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.BlankLineBetweenUsingDirectiveGroups, 
-            title:              "Add/remove empty line between using directive groups.", 
-            messageFormat:      "{0} empty line between using directive groups.", 
+        public static readonly DiagnosticDescriptor BlankLineBetweenUsingDirectives = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.BlankLineBetweenUsingDirectives, 
+            title:              "Add/remove empty line between using directives.", 
+            messageFormat:      "{0} empty line between using directives.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.BlankLineBetweenUsingDirectiveGroups, 
+            helpLinkUri:        DiagnosticIdentifiers.BlankLineBetweenUsingDirectives, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0016</summary>
@@ -370,15 +370,15 @@ namespace Roslynator.Formatting.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0038</summary>
-        public static readonly DiagnosticDescriptor RemoveEmptyLineBetweenUsingDirectivesWithSameRootNamespace = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.RemoveEmptyLineBetweenUsingDirectivesWithSameRootNamespace, 
-            title:              "Remove empty line between using directives with same root namespace.", 
-            messageFormat:      "Remove empty line between using directives.", 
+        public static readonly DiagnosticDescriptor RemoveBlankLineBetweenUsingDirectivesWithSameRootNamespace = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.RemoveBlankLineBetweenUsingDirectivesWithSameRootNamespace, 
+            title:              "Remove blank line between using directives with same root namespace.", 
+            messageFormat:      "(This analyzer is obsolete, use RCS0015 instead) Remove blank line between using directives.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.RemoveEmptyLineBetweenUsingDirectivesWithSameRootNamespace, 
+            helpLinkUri:        DiagnosticIdentifiers.RemoveBlankLineBetweenUsingDirectivesWithSameRootNamespace, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0039</summary>

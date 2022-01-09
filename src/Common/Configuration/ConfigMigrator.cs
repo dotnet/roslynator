@@ -179,8 +179,8 @@ namespace Roslynator.Configuration
                     case "RCS0015i":
                         {
                             return (kvp.Value == ReportDiagnostic.Suppress)
-                                ? (ConfigOptionKeys.BlankLineBetweenUsingDirectiveGroups, "true")
-                                : (ConfigOptionKeys.BlankLineBetweenUsingDirectiveGroups, "false");
+                                ? (ConfigOptionKeys.BlankLineBetweenUsingDirectives, "never")
+                                : (ConfigOptionKeys.BlankLineBetweenUsingDirectives, "separate_groups");
                         }
                     case "RCS0027i":
                         {

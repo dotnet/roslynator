@@ -28,9 +28,9 @@
 	<ValuePlaceholder>true|false</ValuePlaceholder>
 	<Description>Add/remove blank line between single-line accessors</Description>
   </Option>
-  <Option Id="BlankLineBetweenUsingDirectiveGroups">
-	<ValuePlaceholder>true|false</ValuePlaceholder>
-	<Description>Add/remove blank line between using directive groups</Description>
+  <Option Id="BlankLineBetweenUsingDirectives">
+	<ValuePlaceholder>never|separate_groups</ValuePlaceholder>
+	<Description>Add/remove blank line between using directives</Description>
   </Option>
   <Option Id="BodyStyle">
 	<ValuePlaceholder>block|expression</ValuePlaceholder>

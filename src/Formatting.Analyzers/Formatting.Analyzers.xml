@@ -416,10 +416,10 @@ object this[int index] { get; }]]></After>
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="BlankLineBetweenUsingDirectiveGroups">
+  <Analyzer Identifier="BlankLineBetweenUsingDirectives">
     <Id>RCS0015</Id>
-    <Title>Add/remove empty line between using directive groups.</Title>
-    <MessageFormat>{0} empty line between using directive groups.</MessageFormat>
+    <Title>Add/remove empty line between using directives.</Title>
+    <MessageFormat>{0} empty line between using directives.</MessageFormat>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -441,7 +441,7 @@ namespace N
       </Sample>
     </Samples>
     <ConfigOptions>
-      <Option Key="blank_line_between_using_directive_groups" IsRequired="true" />
+      <Option Key="blank_line_between_using_directives" IsRequired="true" />
     </ConfigOptions>
     <Options>
       <Option Identifier="RemoveEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace">
@@ -449,7 +449,7 @@ namespace N
         <MessageFormat>Remove empty line between using directives.</MessageFormat>
         <Id>i</Id>
         <OptionKey>invert</OptionKey>
-        <NewOptionKey>blank_line_between_using_directive_groups</NewOptionKey>
+        <NewOptionKey>blank_line_between_using_directives</NewOptionKey>
         <Kind>Invert</Kind>
         <Samples>
           <Sample>
@@ -931,10 +931,10 @@ namespace N
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="RemoveEmptyLineBetweenUsingDirectivesWithSameRootNamespace">
+  <Analyzer Identifier="RemoveBlankLineBetweenUsingDirectivesWithSameRootNamespace">
     <Id>RCS0038</Id>
-    <Title>Remove empty line between using directives with same root namespace.</Title>
-    <MessageFormat>Remove empty line between using directives.</MessageFormat>
+    <Title>Remove blank line between using directives with same root namespace.</Title>
+    <MessageFormat>(This analyzer is obsolete, use RCS0015 instead) Remove blank line between using directives.</MessageFormat>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>

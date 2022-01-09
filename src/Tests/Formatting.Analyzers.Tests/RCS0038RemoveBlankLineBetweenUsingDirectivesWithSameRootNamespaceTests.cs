@@ -8,11 +8,11 @@ using Xunit;
 
 namespace Roslynator.Formatting.CSharp.Tests
 {
-    public class RCS0038RemoveEmptyLineBetweenUsingDirectivesWithSameRootNamespaceTests : AbstractCSharpDiagnosticVerifier<BlankLineBetweenUsingDirectiveGroupsAnalyzer, SyntaxTriviaCodeFixProvider>
+    public class RCS0038RemoveBlankLineBetweenUsingDirectivesWithSameRootNamespaceTests : AbstractCSharpDiagnosticVerifier<BlankLineBetweenUsingDirectivesAnalyzer, SyntaxTriviaCodeFixProvider>
     {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveEmptyLineBetweenUsingDirectivesWithSameRootNamespace;
+        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveBlankLineBetweenUsingDirectivesWithSameRootNamespace;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptyLineBetweenUsingDirectivesWithSameRootNamespace)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveBlankLineBetweenUsingDirectivesWithSameRootNamespace)]
         public async Task Test_EmptyLine()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -36,7 +36,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptyLineBetweenUsingDirectivesWithSameRootNamespace)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveBlankLineBetweenUsingDirectivesWithSameRootNamespace)]
         public async Task Test_EmptyLines()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -58,7 +58,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptyLineBetweenUsingDirectivesWithSameRootNamespace)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveBlankLineBetweenUsingDirectivesWithSameRootNamespace)]
         public async Task TestNoDiagnostic_DifferentRootNamespace()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -72,7 +72,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptyLineBetweenUsingDirectivesWithSameRootNamespace)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveBlankLineBetweenUsingDirectivesWithSameRootNamespace)]
         public async Task TestNoDiagnostic_UsingStatic()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -86,7 +86,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptyLineBetweenUsingDirectivesWithSameRootNamespace)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveBlankLineBetweenUsingDirectivesWithSameRootNamespace)]
         public async Task TestNoDiagnostic_Alias()
         {
             await VerifyNoDiagnosticAsync(@"

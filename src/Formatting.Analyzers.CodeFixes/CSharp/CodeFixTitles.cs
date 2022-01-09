@@ -8,6 +8,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
         public const string AddBlankLine = "Add blank line";
         public const string AddNewLine = "Add new line";
         public const string RemoveEmptyLine = "Remove empty line";
+        public const string RemoveBlankLine = "Remove blank line";
         public const string RemoveNewLine = "Remove new line";
     }
 }

@@ -13,7 +13,7 @@ namespace Roslynator
         public const string BinaryOperatorNewLine                                = "roslynator_binary_operator_new_line";
         public const string BlankLineBetweenClosingBraceAndSwitchSection         = "roslynator_blank_line_between_closing_brace_and_switch_section";
         public const string BlankLineBetweenSingleLineAccessors                  = "roslynator_blank_line_between_single_line_accessors";
-        public const string BlankLineBetweenUsingDirectiveGroups                 = "roslynator_blank_line_between_using_directive_groups";
+        public const string BlankLineBetweenUsingDirectives                      = "roslynator_blank_line_between_using_directives";
         public const string BodyStyle                                            = "roslynator_body_style";
         public const string ConditionalOperatorNewLine                           = "roslynator_conditional_operator_new_line";
         public const string ConditionInConditionalOperatorParenthesesStyle       = "roslynator_condition_in_conditional_operator_parentheses_style";
