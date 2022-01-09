@@ -17,7 +17,7 @@ namespace Roslynator.VisualStudio.TypeConverters
             if (value is bool boolValue
                 && destinationType == typeof(string))
             {
-                return boolValue ? TrueText : FalseText;
+                return (boolValue) ? TrueText : FalseText;
             }
 
             return base.ConvertTo(context, culture, value, destinationType);

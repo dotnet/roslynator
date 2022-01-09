@@ -58,7 +58,7 @@ namespace Roslynator.CodeGeneration.CSharp
                                                     Debug.Assert(mismatch.Key == null, mismatch.Key);
 
                                                     IEnumerable<string> optionKeys = f.keys
-                                                        .Join(options, f => f.Key, f => f.Key, (f, g) => g)
+                                                        .Join(options, f => f.Key, f => f.Key, (_, g) => g)
                                                         .Select(f => $"ConfigOptionKeys.{f.Id}");
 
                                                     return YieldReturnStatement(

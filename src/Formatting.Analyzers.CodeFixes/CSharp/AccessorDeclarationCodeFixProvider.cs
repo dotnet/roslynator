@@ -44,7 +44,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                 case DiagnosticIdentifiers.FormatAccessorBracesOnSingleLineWhenStatementIsOnSingleLine:
                     {
                         bool isSingleLine = accessorDeclaration.IsSingleLine(includeExteriorTrivia: false);
-                        string title = isSingleLine
+                        string title = (isSingleLine)
                             ? "Format braces on multiple lines"
                             : "Format braces on a single line";
 

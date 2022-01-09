@@ -43,7 +43,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                 case DiagnosticIdentifiers.AddNewLineAfterOpeningBraceOfEmptyBlock:
                     {
                         bool isSingleLine = block.IsSingleLine(includeExteriorTrivia: false);
-                        string title = isSingleLine
+                        string title = (isSingleLine)
                             ? "Format braces on multiple lines"
                             : "Format braces on a single line";
 

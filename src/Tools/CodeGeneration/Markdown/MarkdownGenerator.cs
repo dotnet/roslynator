@@ -423,7 +423,7 @@ namespace Roslynator.CodeGeneration.Markdown
                     {
                         string optionKey = en.Current.Key;
                         string title = en.Current.Description;
-                        string summary = null;
+                        const string summary = null;
                         string defaultValue = en.Current.DefaultValuePlaceholder;
 
                         yield return Heading3(title?.TrimEnd('.'));
