@@ -128,6 +128,12 @@ namespace Roslynator
             defaultValuePlaceholder: "true|false", 
             description:             "Include/omit new line before 'while' in 'do' statement");
 
+        public static readonly ConfigOptionDescriptor NullConditionalOperatorNewLine = new(
+            key:                     ConfigOptionKeys.NullConditionalOperatorNewLine, 
+            defaultValue:            null, 
+            defaultValuePlaceholder: "after|before", 
+            description:             "Place new line after/before null-conditional operator");
+
         public static readonly ConfigOptionDescriptor NullCheckStyle = new(
             key:                     ConfigOptionKeys.NullCheckStyle, 
             defaultValue:            null, 
@@ -186,6 +192,7 @@ namespace Roslynator
             yield return new KeyValuePair<string, string>("RCS0051", JoinOptionKeys(ConfigOptionKeys.NewLineBeforeWhileInDoStatement));
             yield return new KeyValuePair<string, string>("RCS0052", JoinOptionKeys(ConfigOptionKeys.EqualsTokenNewLine));
             yield return new KeyValuePair<string, string>("RCS0058", JoinOptionKeys(ConfigOptionKeys.NewLineAtEndOfFile));
+            yield return new KeyValuePair<string, string>("RCS0059", JoinOptionKeys(ConfigOptionKeys.NullConditionalOperatorNewLine));
             yield return new KeyValuePair<string, string>("RCS1014", JoinOptionKeys(ConfigOptionKeys.ArrayCreationTypeStyle));
             yield return new KeyValuePair<string, string>("RCS1016", JoinOptionKeys(ConfigOptionKeys.BodyStyle, ConfigOptionKeys.PreferBlockBodyWhenDeclarationSpansOverMultipleLines, ConfigOptionKeys.PreferBlockBodyWhenExpressionSpansOverMultipleLines));
             yield return new KeyValuePair<string, string>("RCS1018", JoinOptionKeys(ConfigOptionKeys.AccessibilityModifiers));

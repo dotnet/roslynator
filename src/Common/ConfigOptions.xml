@@ -87,6 +87,10 @@
 	<ValuePlaceholder>equality_operator|pattern_matching</ValuePlaceholder>
 	<Description>Use equality operator or pattern matchding as a null check</Description>
   </Option>
+  <Option Id="NullConditionalOperatorNewLine">
+	<ValuePlaceholder>after|before</ValuePlaceholder>
+	<Description>Place new line after/before null-conditional operator</Description>
+  </Option>
   <Option Id="ObjectCreationParenthesesStyle">
 	<ValuePlaceholder>include|omit</ValuePlaceholder>
 	<Description>Include/omit parentheses when creating new object</Description>

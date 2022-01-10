@@ -4034,6 +4034,12 @@ namespace Roslynator.CSharp
             return true;
         }
 
+        internal static bool IsEmptyOrSingleWhitespaceTrivia(this SyntaxTriviaList triviaList)
+        {
+            return triviaList.Count == 0
+                || (triviaList.Count == 1 && triviaList[0].IsWhitespaceTrivia());
+        }
+
         internal static SyntaxTriviaList EmptyIfWhitespace(this SyntaxTriviaList triviaList)
         {
             return (triviaList.IsEmptyOrWhitespace()) ? default : triviaList;

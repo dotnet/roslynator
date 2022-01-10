@@ -609,5 +609,17 @@ namespace Roslynator.Formatting.CSharp
             helpLinkUri:        DiagnosticIdentifiers.NormalizeWhitespaceAtEndOfFile, 
             customTags:         Array.Empty<string>());
 
+        /// <summary>RCS0059</summary>
+        public static readonly DiagnosticDescriptor PlaceNewLineAfterOrBeforeNullConditionalOperator = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeNullConditionalOperator, 
+            title:              "Place new line after/before null-conditional operator.", 
+            messageFormat:      "Place new line {0} null-conditional operator.", 
+            category:           DiagnosticCategories.Roslynator, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: false, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeNullConditionalOperator, 
+            customTags:         Array.Empty<string>());
+
     }
 }

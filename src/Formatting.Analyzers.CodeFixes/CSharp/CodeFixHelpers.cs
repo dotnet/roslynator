@@ -248,7 +248,9 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
         {
             StringBuilder sb = StringBuilderCache.GetInstance();
 
-            sb.Append(" ");
+            if (!middle.Parent.IsKind(SyntaxKind.ConditionalAccessExpression))
+                sb.Append(" ");
+
             sb.Append(middle.ToString());
 
             SyntaxTriviaList trailingTrivia = left.GetTrailingTrivia();
@@ -302,7 +304,9 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
 
             sb.Append(right.GetLeadingTrivia().ToString());
             sb.Append(middle.ToString());
-            sb.Append(" ");
+
+            if (!middle.Parent.IsKind(SyntaxKind.ConditionalAccessExpression))
+                sb.Append(" ");
 
             return document.WithTextChangeAsync(
                 TextSpan.FromBounds(left.Span.End, right.SpanStart),
@@ -424,6 +428,8 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
             TextSpan span,
             CancellationToken cancellationToken = default)
         {
+            NewLinePosition conditionalAccessOperatorNewLinePosition = document.GetConfigOptions(expression.SyntaxTree).GetNullConditionalOperatorNewLinePosition(NewLinePosition.After);
+
             IndentationAnalysis indentationAnalysis = AnalyzeIndentation(expression, cancellationToken);
             string indentation = indentationAnalysis.GetIncreasedIndentation();
             string endOfLineAndIndentation = DetermineEndOfLine(expression).ToString() + indentation;
@@ -446,8 +452,36 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                 {
                     var memberBinding = (MemberBindingExpressionSyntax)node;
 
-                    if (!SetIndentation(memberBinding.OperatorToken))
+                    if (!memberBinding.HasLeadingTrivia)
+                    {
+                        SyntaxToken prevToken = memberBinding.GetFirstToken().GetPreviousToken();
+
+                        if (prevToken.IsKind(SyntaxKind.QuestionToken)
+                            && prevToken.IsParentKind(SyntaxKind.ConditionalAccessExpression))
+                        {
+                            var conditionalAccess = (ConditionalAccessExpressionSyntax)prevToken.Parent;
+
+                            if (expression.SyntaxTree.IsMultiLineSpan(TextSpan.FromBounds(conditionalAccess.Expression.Span.End, conditionalAccess.OperatorToken.SpanStart)))
+                                continue;
+                        }
+                    }
+
+                    if (conditionalAccessOperatorNewLinePosition == NewLinePosition.After
+                        && !SetIndentation(memberBinding.OperatorToken))
+                    {
                         break;
+                    }
+                }
+                else if (kind == SyntaxKind.ConditionalAccessExpression)
+                {
+                    var conditionalAccess = (ConditionalAccessExpressionSyntax)node;
+
+                    if (conditionalAccessOperatorNewLinePosition == NewLinePosition.Before
+                        || expression.SyntaxTree.IsMultiLineSpan(TextSpan.FromBounds(conditionalAccess.Expression.Span.End, conditionalAccess.OperatorToken.SpanStart)))
+                    {
+                        if (!SetIndentation(conditionalAccess.OperatorToken))
+                            break;
+                    }
                 }
             }
 

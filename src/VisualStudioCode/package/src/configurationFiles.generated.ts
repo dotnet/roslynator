@@ -97,6 +97,9 @@ is_global = true
 #roslynator_new_line_before_while_in_do_statement = true|false
 # Applicable to: RCS0051
 
+#roslynator_null_conditional_operator_new_line = after|before
+# Applicable to: RCS0059
+
 #roslynator_null_check_style = equality_operator|pattern_matching
 # Applicable to: RCS1248
 
@@ -284,6 +287,10 @@ dotnet_diagnostic.RCS0057.severity = none
 # Normalize whitespace at the end of a file
 dotnet_diagnostic.RCS0058.severity = none
 #roslynator_new_line_at_end_of_file = true|false
+
+# Place new line after/before null-conditional operator
+dotnet_diagnostic.RCS0059.severity = none
+#roslynator_null_conditional_operator_new_line = after|before
 
 # Add braces (when expression spans over multiple lines)
 dotnet_diagnostic.RCS1001.severity = suggestion

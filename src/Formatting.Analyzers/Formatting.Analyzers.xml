@@ -1457,4 +1457,29 @@ Default maximal length is 140.</Summary>
       <Option Key="new_line_at_end_of_file" IsRequired="true" />
     </ConfigOptions>
   </Analyzer>
+  <Analyzer Identifier="PlaceNewLineAfterOrBeforeNullConditionalOperator">
+    <Id>RCS0059</Id>
+    <Title>Place new line after/before null-conditional operator.</Title>
+    <MessageFormat>Place new line {0} null-conditional operator.</MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[items
+    .Select(selector)
+	.FirstOrDefault()
+	?.ToString()
+	]]></Before>
+        <After><![CDATA[items
+    .Select(selector)
+	.FirstOrDefault()?
+	.ToString()
+	]]></After>
+      </Sample>
+    </Samples>
+    <ConfigOptions>
+      <Option Key="null_conditional_operator_new_line" IsRequired="true" />
+    </ConfigOptions>
+  </Analyzer>
 </Analyzers>

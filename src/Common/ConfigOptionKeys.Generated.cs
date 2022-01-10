@@ -26,6 +26,7 @@ namespace Roslynator
         public const string MaxLineLength                                        = "roslynator_max_line_length";
         public const string NewLineAtEndOfFile                                   = "roslynator_new_line_at_end_of_file";
         public const string NewLineBeforeWhileInDoStatement                      = "roslynator_new_line_before_while_in_do_statement";
+        public const string NullConditionalOperatorNewLine                       = "roslynator_null_conditional_operator_new_line";
         public const string NullCheckStyle                                       = "roslynator_null_check_style";
         public const string ObjectCreationParenthesesStyle                       = "roslynator_object_creation_parentheses_style";
         public const string ObjectCreationTypeStyle                              = "roslynator_object_creation_type_style";

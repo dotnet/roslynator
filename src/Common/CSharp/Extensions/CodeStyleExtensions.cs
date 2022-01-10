@@ -115,6 +115,13 @@ namespace Roslynator.CSharp
             return NewLinePosition.None;
         }
 
+        public static NewLinePosition GetNullConditionalOperatorNewLinePosition(this AnalyzerConfigOptions configOptions, NewLinePosition defaultValue = NewLinePosition.None)
+        {
+            return (TryGetNewLinePosition(configOptions, ConfigOptions.NullConditionalOperatorNewLine, out NewLinePosition newLinePosition))
+                ? newLinePosition
+                : defaultValue;
+        }
+
         public static UsingDirectiveBlankLineStyle GetBlankLineBetweenUsingDirectives(this SyntaxNodeAnalysisContext context)
         {
             AnalyzerConfigOptions configOptions = context.GetConfigOptions();
@@ -456,6 +463,11 @@ namespace Roslynator.CSharp
         public static NewLinePosition GetBinaryExpressionNewLinePosition(this SyntaxNodeAnalysisContext context)
         {
             return context.GetConfigOptions().GetBinaryOperatorNewLinePosition();
+        }
+
+        public static NewLinePosition GetNullConditionalOperatorNewLinePosition(this SyntaxNodeAnalysisContext context, NewLinePosition defaultValue = NewLinePosition.None)
+        {
+            return context.GetConfigOptions().GetNullConditionalOperatorNewLinePosition(defaultValue);
         }
 
         private static bool TryGetNewLinePosition(

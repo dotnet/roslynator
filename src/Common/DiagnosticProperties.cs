@@ -8,6 +8,8 @@ namespace Roslynator
 {
     internal static class DiagnosticProperties
     {
+        public static ImmutableDictionary<string, string> NewLinePosition_After = ImmutableDictionary.CreateRange(new[] { new KeyValuePair<string, string>("NewLinePosition", "After") });
+
         private static ImmutableDictionary<string, string> _analyzerOption_Invert;
 
         private const string AnalyzerOptionKey = "AnalyzerOption";
