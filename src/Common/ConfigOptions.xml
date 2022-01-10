@@ -5,6 +5,7 @@
 	<Description>Prefer explicit/implicit accessibility modifiers</Description>
   </Option>
   <Option Id="AccessorBracesStyle">
+	<DefaultValue>multi_line</DefaultValue>
 	<ValuePlaceholder>multi_line|single_line_when_statement_is_on_single_line</ValuePlaceholder>
 	<Description>Format accessor's braces on single line or multiple lines</Description>
   </Option>
@@ -37,6 +38,7 @@
 	<Description>Add/remove blank line between using directives</Description>
   </Option>
   <Option Id="BlockBracesStyle">
+	<DefaultValue>multi_line</DefaultValue>
 	<ValuePlaceholder>multi_line|single_line_when_empty</ValuePlaceholder>
 	<Description>Format block's braces on single line or multiple lines</Description>
   </Option>

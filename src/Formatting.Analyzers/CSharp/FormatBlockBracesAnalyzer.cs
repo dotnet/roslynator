@@ -54,48 +54,34 @@ namespace Roslynator.Formatting.CSharp
             if (openBrace.IsMissing)
                 return;
 
+            if (DiagnosticRules.AddNewLineAfterOpeningBraceOfEmptyBlock.IsEffective(context)
+                && block.SyntaxTree.IsSingleLineSpan(block.Span))
+            {
+                DiagnosticHelpers.ReportDiagnostic(
+                    context,
+                    DiagnosticRules.AddNewLineAfterOpeningBraceOfEmptyBlock,
+                    Location.Create(block.SyntaxTree, new TextSpan(openBrace.Span.End, 0)));
+            }
+
             BlockBracesStyle style = context.GetBlockBracesStyle();
 
-            var legacyMultiLine = false;
-
             if (style == BlockBracesStyle.None)
-            {
-                legacyMultiLine = DiagnosticRules.AddNewLineAfterOpeningBraceOfEmptyBlock.IsEffective(context);
-
-                if (legacyMultiLine)
-                {
-                    style = BlockBracesStyle.MultiLine;
-                }
-                else
-                {
-                    return;
-                }
-            }
+                return;
 
             if (block.SyntaxTree.IsSingleLineSpan(block.Span))
             {
                 if (style == BlockBracesStyle.MultiLine
-                    || !CanBeMadeSingleLine(block))
+                    || !IsEmptyBlock(block))
                 {
-                    if (legacyMultiLine)
-                    {
-                        DiagnosticHelpers.ReportDiagnostic(
-                            context,
-                            DiagnosticRules.AddNewLineAfterOpeningBraceOfEmptyBlock,
-                            Location.Create(block.SyntaxTree, new TextSpan(openBrace.Span.End, 0)));
-                    }
-                    else
-                    {
-                        DiagnosticHelpers.ReportDiagnostic(
-                            context,
-                            DiagnosticRules.FormatBlockBraces,
-                            block.OpenBraceToken,
-                            "multiple lines");
-                    }
+                    DiagnosticHelpers.ReportDiagnostic(
+                        context,
+                        DiagnosticRules.FormatBlockBraces,
+                        block.OpenBraceToken,
+                        "multiple lines");
                 }
             }
             else if (style == BlockBracesStyle.SingleLineWhenEmpty
-                && CanBeMadeSingleLine(block))
+                && IsEmptyBlock(block))
             {
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
@@ -105,7 +91,7 @@ namespace Roslynator.Formatting.CSharp
             }
         }
 
-        private static bool CanBeMadeSingleLine(BlockSyntax block)
+        private static bool IsEmptyBlock(BlockSyntax block)
         {
             return !block.Statements.Any()
                 && block.OpenBraceToken.TrailingTrivia.IsEmptyOrWhitespace()

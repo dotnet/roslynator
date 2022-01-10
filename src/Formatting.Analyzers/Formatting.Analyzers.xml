@@ -556,7 +556,7 @@ namespace N
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <ConfigOptions>
-      <Option Key="accessor_braces_style" IsRequired="true" />
+      <Option Key="accessor_braces_style" />
     </ConfigOptions>
     <Samples>
       <Sample>
@@ -582,7 +582,7 @@ namespace N
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <ConfigOptions>
-      <Option Key="accessor_braces_style" IsRequired="true" />
+      <Option Key="block_braces_style" />
     </ConfigOptions>
     <Samples>
       <Sample>

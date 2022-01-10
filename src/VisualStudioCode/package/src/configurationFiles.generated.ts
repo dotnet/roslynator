@@ -34,86 +34,90 @@ is_global = true
 
 # Options
 
-roslynator_accessibility_modifiers = explicit|implicit
+#roslynator_accessibility_modifiers = explicit|implicit
 # Applicable to: RCS1018
 
-roslynator_accessor_braces_style = multi_line|single_line_when_statement_is_on_single_line
-# Applicable to: RCS0020, RCS0021
+#roslynator_accessor_braces_style = multi_line|single_line_when_statement_is_on_single_line
+# Default: multi_line
+# Applicable to: RCS0020
 
-roslynator_anonymous_function_or_method_group = anonymous_function|method_group
+#roslynator_anonymous_function_or_method_group = anonymous_function|method_group
 # Applicable to: RCS1207
 
-roslynator_array_creation_type_style = explicit|implicit|implicit_when_type_is_obvious
+#roslynator_array_creation_type_style = explicit|implicit|implicit_when_type_is_obvious
 # Applicable to: RCS1014
 
-roslynator_arrow_token_new_line = after|before
+#roslynator_arrow_token_new_line = after|before
 # Applicable to: RCS0032
 
-roslynator_binary_operator_new_line = after|before
+#roslynator_binary_operator_new_line = after|before
 # Applicable to: RCS0027
 
-roslynator_blank_line_between_closing_brace_and_switch_section = true|false
+#roslynator_blank_line_between_closing_brace_and_switch_section = true|false
 # Applicable to: RCS0014, RCS1036
 
-roslynator_blank_line_between_single_line_accessors = true|false
+#roslynator_blank_line_between_single_line_accessors = true|false
 # Applicable to: RCS0011
 
-roslynator_blank_line_between_using_directives = never|separate_groups
+#roslynator_blank_line_between_using_directives = never|separate_groups
 # Applicable to: RCS0015
 
-roslynator_block_braces_style = multi_line|single_line_when_empty
+#roslynator_block_braces_style = multi_line|single_line_when_empty
+# Default: multi_line
+# Applicable to: RCS0021
 
-roslynator_body_style = block|expression
+#roslynator_body_style = block|expression
 # Applicable to: RCS1016
 
-roslynator_condition_in_conditional_operator_parentheses_style = include|omit|omit_when_condition_is_single_token
+#roslynator_condition_in_conditional_operator_parentheses_style = include|omit|omit_when_condition_is_single_token
 # Applicable to: RCS1051
 
-roslynator_conditional_operator_new_line = after|before
+#roslynator_conditional_operator_new_line = after|before
 # Applicable to: RCS0028
 
-roslynator_configure_await = true|false
+#roslynator_configure_await = true|false
 # Applicable to: RCS1090
 
-roslynator_empty_string_style = field|literal
+#roslynator_empty_string_style = field|literal
 # Applicable to: RCS1078
 
-roslynator_enum_has_flag_style = method|operator
+#roslynator_enum_has_flag_style = method|operator
 # Applicable to: RCS1096
 
-roslynator_equals_token_new_line = after|before
+#roslynator_equals_token_new_line = after|before
 # Applicable to: RCS0052
 
-roslynator_max_line_length = 140
+#roslynator_max_line_length = <NUM>
+# Default: 140
 # Applicable to: RCS0056
 
-roslynator_new_line_at_end_of_file = true|false
+#roslynator_new_line_at_end_of_file = true|false
 # Applicable to: RCS0058
 
-roslynator_new_line_before_while_in_do_statement = true|false
+#roslynator_new_line_before_while_in_do_statement = true|false
 # Applicable to: RCS0051
 
-roslynator_null_check_style = equality_operator|pattern_matching
+#roslynator_null_check_style = equality_operator|pattern_matching
 # Applicable to: RCS1248
 
-roslynator_object_creation_parentheses_style = include|omit
+#roslynator_object_creation_parentheses_style = include|omit
 # Applicable to: RCS1050
 
-roslynator_object_creation_type_style = explicit|implicit|implicit_when_type_is_obvious
+#roslynator_object_creation_type_style = explicit|implicit|implicit_when_type_is_obvious
 # Applicable to: RCS1250
 
-roslynator_prefer_block_body_when_declaration_spans_over_multiple_lines = true|false
+#roslynator_prefer_block_body_when_declaration_spans_over_multiple_lines = true|false
 # Applicable to: RCS1016
 
-roslynator_prefer_block_body_when_expression_spans_over_multiple_lines = true|false
+#roslynator_prefer_block_body_when_expression_spans_over_multiple_lines = true|false
 # Applicable to: RCS1016
 
-roslynator_prefix_field_identifier_with_underscore = true|false
+#roslynator_prefix_field_identifier_with_underscore = true|false
 
-roslynator_suppress_unity_script_methods = true|false
+#roslynator_suppress_unity_script_methods = true|false
 # Applicable to: RCS1213
 
-roslynator_use_var_instead_of_implicit_object_creation = true|false
+#roslynator_use_var_instead_of_implicit_object_creation = true|false
 # Applicable to: RCS1250
 
 
@@ -173,7 +177,7 @@ dotnet_diagnostic.RCS0020.severity = none
 
 # Format block's braces on a single line or multiple lines
 dotnet_diagnostic.RCS0021.severity = none
-#roslynator_accessor_braces_style = multi_line|single_line_when_statement_is_on_single_line
+#roslynator_block_braces_style = multi_line|single_line_when_empty
 
 # Add new line after opening brace of empty block
 dotnet_diagnostic.RCS0022.severity = none

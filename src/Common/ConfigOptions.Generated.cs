@@ -16,7 +16,7 @@ namespace Roslynator
 
         public static readonly ConfigOptionDescriptor AccessorBracesStyle = new(
             key:                     ConfigOptionKeys.AccessorBracesStyle, 
-            defaultValue:            null, 
+            defaultValue:            "multi_line", 
             defaultValuePlaceholder: "multi_line|single_line_when_statement_is_on_single_line", 
             description:             "Format accessor's braces on single line or multiple lines");
 
@@ -64,7 +64,7 @@ namespace Roslynator
 
         public static readonly ConfigOptionDescriptor BlockBracesStyle = new(
             key:                     ConfigOptionKeys.BlockBracesStyle, 
-            defaultValue:            null, 
+            defaultValue:            "multi_line", 
             defaultValuePlaceholder: "multi_line|single_line_when_empty", 
             description:             "Format block's braces on single line or multiple lines");
 
@@ -180,8 +180,6 @@ namespace Roslynator
         {
             yield return new KeyValuePair<string, string>("RCS0011", JoinOptionKeys(ConfigOptionKeys.BlankLineBetweenSingleLineAccessors));
             yield return new KeyValuePair<string, string>("RCS0015", JoinOptionKeys(ConfigOptionKeys.BlankLineBetweenUsingDirectives));
-            yield return new KeyValuePair<string, string>("RCS0020", JoinOptionKeys(ConfigOptionKeys.AccessorBracesStyle));
-            yield return new KeyValuePair<string, string>("RCS0021", JoinOptionKeys(ConfigOptionKeys.AccessorBracesStyle));
             yield return new KeyValuePair<string, string>("RCS0027", JoinOptionKeys(ConfigOptionKeys.BinaryOperatorNewLine));
             yield return new KeyValuePair<string, string>("RCS0028", JoinOptionKeys(ConfigOptionKeys.ConditionalOperatorNewLine));
             yield return new KeyValuePair<string, string>("RCS0032", JoinOptionKeys(ConfigOptionKeys.ArrowTokenNewLine));

@@ -60,23 +60,20 @@ namespace Roslynator.Formatting.CSharp
             if (openBrace.IsMissing)
                 return;
 
+            if (DiagnosticRules.FormatAccessorBracesOnSingleLineWhenStatementIsOnSingleLine.IsEffective(context)
+                && accessor.SyntaxTree.IsMultiLineSpan(TextSpan.FromBounds(accessor.Keyword.SpanStart, accessor.Span.End))
+                && CanBeMadeSingleLine(accessor))
+            {
+                DiagnosticHelpers.ReportDiagnostic(
+                    context,
+                    DiagnosticRules.FormatAccessorBracesOnSingleLineWhenStatementIsOnSingleLine,
+                    accessor);
+            }
+
             AccessorBracesStyle style = context.GetAccessorBracesStyle();
 
-            var legacyOnSingleLine = false;
-
             if (style == AccessorBracesStyle.None)
-            {
-                legacyOnSingleLine = DiagnosticRules.FormatAccessorBracesOnSingleLineWhenStatementIsOnSingleLine.IsEffective(context);
-
-                if (legacyOnSingleLine)
-                {
-                    style = AccessorBracesStyle.SingleLineWhenStatementIsOnSingleLine;
-                }
-                else
-                {
-                    return;
-                }
-            }
+                return;
 
             if (accessor.SyntaxTree.IsSingleLineSpan(TextSpan.FromBounds(accessor.Keyword.SpanStart, accessor.Span.End)))
             {
@@ -93,21 +90,11 @@ namespace Roslynator.Formatting.CSharp
             else if (style == AccessorBracesStyle.SingleLineWhenStatementIsOnSingleLine
                 && CanBeMadeSingleLine(accessor))
             {
-                if (legacyOnSingleLine)
-                {
-                    DiagnosticHelpers.ReportDiagnostic(
-                        context,
-                        DiagnosticRules.FormatAccessorBracesOnSingleLineWhenStatementIsOnSingleLine,
-                        accessor);
-                }
-                else
-                {
-                    DiagnosticHelpers.ReportDiagnostic(
-                        context,
-                        DiagnosticRules.FormatAccessorBraces,
-                        block.OpenBraceToken,
-                        "a single line");
-                }
+                DiagnosticHelpers.ReportDiagnostic(
+                    context,
+                    DiagnosticRules.FormatAccessorBraces,
+                    block.OpenBraceToken,
+                    "a single line");
             }
         }
 

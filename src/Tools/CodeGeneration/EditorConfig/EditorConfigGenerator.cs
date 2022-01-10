@@ -44,7 +44,12 @@ namespace Roslynator.CodeGeneration.EditorConfig
                         w.WriteLine();
                     }
 
-                    w.WriteEntry(option.Key, option.DefaultValue ?? option.DefaultValuePlaceholder);
+                    w.WriteEntry($"#{option.Key}", option.DefaultValuePlaceholder);
+
+                    string defaultValue = option.DefaultValue;
+
+                    if (defaultValue != null)
+                        w.WriteLine($"# Default: {defaultValue}");
 
                     if (analyzers?.Count > 0)
                     {
