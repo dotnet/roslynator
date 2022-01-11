@@ -818,9 +818,9 @@ if (f)
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="RemoveRedundantEmptyLine">
+  <Analyzer Identifier="RemoveUnnecessaryBlankLine">
     <Id>RCS1036</Id>
-    <Title>Remove redundant empty line.</Title>
+    <Title>Remove unnecessary blank line.</Title>
     <Category>Redundancy</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>

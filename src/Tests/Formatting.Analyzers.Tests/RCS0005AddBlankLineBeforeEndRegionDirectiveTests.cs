@@ -8,11 +8,11 @@ using Xunit;
 
 namespace Roslynator.Formatting.CSharp.Tests
 {
-    public class RCS0005AddEmptyLineBeforeEndRegionDirectiveTests : AbstractCSharpDiagnosticVerifier<AddEmptyLineBeforeEndRegionDirectiveAnalyzer, DirectiveTriviaCodeFixProvider>
+    public class RCS0005AddBlankLineBeforeEndRegionDirectiveTests : AbstractCSharpDiagnosticVerifier<AddBlankLineBeforeEndRegionDirectiveAnalyzer, DirectiveTriviaCodeFixProvider>
     {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddEmptyLineBeforeEndRegionDirective;
+        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddBlankLineBeforeEndRegionDirective;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddEmptyLineBeforeEndRegionDirective)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeEndRegionDirective)]
         public async Task Test()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -39,7 +39,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddEmptyLineBeforeEndRegionDirective)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeEndRegionDirective)]
         public async Task Test_NoIndentation()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -66,7 +66,7 @@ void M()
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddEmptyLineBeforeEndRegionDirective)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeEndRegionDirective)]
         public async Task Test_Comment()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -97,7 +97,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddEmptyLineBeforeEndRegionDirective)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeEndRegionDirective)]
         public async Task Test_DocumentationComment()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -130,7 +130,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddEmptyLineBeforeEndRegionDirective)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeEndRegionDirective)]
         public async Task TestNoDiagnostic()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -146,7 +146,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddEmptyLineBeforeEndRegionDirective)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeEndRegionDirective)]
         public async Task TestNoDiagnostic_EmptyRegion()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -158,7 +158,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddEmptyLineBeforeEndRegionDirective)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeEndRegionDirective)]
         public async Task TestNoDiagnostic_Comment()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -176,7 +176,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddEmptyLineBeforeEndRegionDirective)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeEndRegionDirective)]
         public async Task TestNoDiagnostic_DocumentationComment()
         {
             await VerifyNoDiagnosticAsync(@"

@@ -14,17 +14,17 @@ using Roslynator.Formatting.CSharp;
 
 namespace Roslynator.Formatting.CodeFixes.CSharp
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AddEmptyLineBeforeAndAfterUsingDirectiveListCodeFixProvider))]
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AddBlankLineBeforeAndAfterUsingDirectiveListCodeFixProvider))]
     [Shared]
-    public sealed class AddEmptyLineBeforeAndAfterUsingDirectiveListCodeFixProvider : BaseCodeFixProvider
+    public sealed class AddBlankLineBeforeAndAfterUsingDirectiveListCodeFixProvider : BaseCodeFixProvider
     {
         public override ImmutableArray<string> FixableDiagnosticIds
         {
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticIdentifiers.AddEmptyLineBeforeUsingDirectiveList,
-                    DiagnosticIdentifiers.AddEmptyLineAfterUsingDirectiveList);
+                    DiagnosticIdentifiers.AddBlankLineBeforeUsingDirectiveList,
+                    DiagnosticIdentifiers.AddBlankLineAfterUsingDirectiveList);
             }
         }
 
@@ -52,8 +52,8 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                         if (context.Span.Start == usingDirective.SpanStart)
                         {
                             CodeAction codeAction = CodeAction.Create(
-                                CodeFixTitles.AddEmptyLine,
-                                ct => AddEmptyLineBeforeUsingDirectiveAsync(document, usingDirective, ct),
+                                CodeFixTitles.AddBlankLine,
+                                ct => AddBlankLineBeforeUsingDirectiveAsync(document, usingDirective, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -61,7 +61,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                         else
                         {
                             CodeAction codeAction = CodeAction.Create(
-                                CodeFixTitles.AddEmptyLine,
+                                CodeFixTitles.AddBlankLine,
                                 ct => CodeFixHelpers.AppendEndOfLineAsync(document, usingDirective, ct),
                                 GetEquivalenceKey(diagnostic));
 
@@ -73,8 +73,8 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                 case RegionDirectiveTriviaSyntax regionDirective:
                     {
                         CodeAction codeAction = CodeAction.Create(
-                            CodeFixTitles.AddEmptyLine,
-                            ct => CodeFixHelpers.AddEmptyLineBeforeDirectiveAsync(document, regionDirective, ct),
+                            CodeFixTitles.AddBlankLine,
+                            ct => CodeFixHelpers.AddBlankLineBeforeDirectiveAsync(document, regionDirective, ct),
                             GetEquivalenceKey(diagnostic));
 
                         context.RegisterCodeFix(codeAction, diagnostic);
@@ -83,8 +83,8 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                 case EndRegionDirectiveTriviaSyntax endRegionDirective:
                     {
                         CodeAction codeAction = CodeAction.Create(
-                            CodeFixTitles.AddEmptyLine,
-                            ct => CodeFixHelpers.AddEmptyLineAfterDirectiveAsync(document, endRegionDirective, ct),
+                            CodeFixTitles.AddBlankLine,
+                            ct => CodeFixHelpers.AddBlankLineAfterDirectiveAsync(document, endRegionDirective, ct),
                             GetEquivalenceKey(diagnostic));
 
                         context.RegisterCodeFix(codeAction, diagnostic);
@@ -93,7 +93,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
             }
         }
 
-        private static Task<Document> AddEmptyLineBeforeUsingDirectiveAsync(
+        private static Task<Document> AddBlankLineBeforeUsingDirectiveAsync(
             Document document,
             UsingDirectiveSyntax usingDirective,
             CancellationToken cancellationToken)

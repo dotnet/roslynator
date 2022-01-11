@@ -8,11 +8,11 @@ using Xunit;
 
 namespace Roslynator.Formatting.CSharp.Tests
 {
-    public class RCS0007AddEmptyLineBetweenAccessorsTests : AbstractCSharpDiagnosticVerifier<BlankLineBetweenAccessorsAnalyzer, SyntaxTriviaCodeFixProvider>
+    public class RCS0007AddBlankLineBetweenAccessorsTests : AbstractCSharpDiagnosticVerifier<BlankLineBetweenAccessorsAnalyzer, SyntaxTriviaCodeFixProvider>
     {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddEmptyLineBetweenAccessors;
+        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddBlankLineBetweenAccessors;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddEmptyLineBetweenAccessors)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenAccessors)]
         public async Task Test_FirstIsMultiline()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -47,7 +47,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddEmptyLineBetweenAccessors)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenAccessors)]
         public async Task Test_SecondIsMultiline()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -82,7 +82,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddEmptyLineBetweenAccessors)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenAccessors)]
         public async Task Test_BothAreMultiline()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -123,7 +123,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddEmptyLineBetweenAccessors)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenAccessors)]
         public async Task TestNoDiagnostic_SingleLine()
         {
             await VerifyNoDiagnosticAsync(@"

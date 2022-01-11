@@ -8,16 +8,16 @@ using Xunit;
 
 namespace Roslynator.Formatting.CSharp.Tests
 {
-    public class RCS0006AddEmptyLineBeforeUsingDirectiveListTests : AbstractCSharpDiagnosticVerifier<AddEmptyLineBeforeUsingDirectiveListAnalyzer, AddEmptyLineBeforeAndAfterUsingDirectiveListCodeFixProvider>
+    public class RCS0006AddEmptyLineBeforeUsingDirectiveListTests : AbstractCSharpDiagnosticVerifier<AddBlankLineBeforeUsingDirectiveListAnalyzer, AddBlankLineBeforeAndAfterUsingDirectiveListCodeFixProvider>
     {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddEmptyLineBeforeUsingDirectiveList;
+        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddBlankLineBeforeUsingDirectiveList;
 
         public override CSharpTestOptions Options
         {
             get { return base.Options.AddAllowedCompilerDiagnosticId("CS0430"); }
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddEmptyLineBeforeUsingDirectiveList)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeUsingDirectiveList)]
         public async Task Test_Comment_Before()
         {
             await VerifyDiagnosticAndFixAsync(@"// x
@@ -38,7 +38,7 @@ namespace N
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddEmptyLineBeforeUsingDirectiveList)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeUsingDirectiveList)]
         public async Task Test_CommentAndExternAlias_Before()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -61,7 +61,7 @@ namespace N
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddEmptyLineBeforeUsingDirectiveList)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeUsingDirectiveList)]
         public async Task Test_Comment_ExternAliasAndComment_Before()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -84,7 +84,7 @@ namespace N
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddEmptyLineBeforeUsingDirectiveList)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeUsingDirectiveList)]
         public async Task Test_ExternAliasAndRegionDirective_Before()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -100,7 +100,7 @@ namespace N
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddEmptyLineBeforeUsingDirectiveList)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeUsingDirectiveList)]
         public async Task TestNoDiagnostic_CommentAndRegionDirective_Before()
         {
             await VerifyNoDiagnosticAsync(@"// x
@@ -115,7 +115,7 @@ namespace N
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddEmptyLineBeforeUsingDirectiveList)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeUsingDirectiveList)]
         public async Task TestNoDiagnostic_CommentAndPragmaDirective_Before()
         {
             await VerifyNoDiagnosticAsync(@"

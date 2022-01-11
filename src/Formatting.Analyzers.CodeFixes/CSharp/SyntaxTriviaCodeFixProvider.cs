@@ -20,9 +20,9 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticIdentifiers.AddEmptyLineAfterTopComment,
-                    DiagnosticIdentifiers.AddEmptyLineBeforeTopDeclaration,
-                    DiagnosticIdentifiers.AddEmptyLineBetweenAccessors,
+                    DiagnosticIdentifiers.AddBlankLineAfterTopComment,
+                    DiagnosticIdentifiers.AddBlankLineBeforeTopDeclaration,
+                    DiagnosticIdentifiers.AddBlankLineBetweenAccessors,
                     DiagnosticIdentifiers.BlankLineBetweenSingleLineAccessors,
                     DiagnosticIdentifiers.BlankLineBetweenUsingDirectives,
                     DiagnosticIdentifiers.RemoveBlankLineBetweenUsingDirectivesWithSameRootNamespace,
@@ -43,21 +43,21 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
 
             switch (diagnostic.Id)
             {
-                case DiagnosticIdentifiers.AddEmptyLineAfterTopComment:
+                case DiagnosticIdentifiers.AddBlankLineAfterTopComment:
                     {
                         CodeAction codeAction = CodeAction.Create(
-                            CodeFixTitles.AddEmptyLine,
+                            CodeFixTitles.AddBlankLine,
                             ct => document.ReplaceTokenAsync(trivia.Token, trivia.Token.AppendEndOfLineToLeadingTrivia(), ct),
                             GetEquivalenceKey(diagnostic));
 
                         context.RegisterCodeFix(codeAction, diagnostic);
                         break;
                     }
-                case DiagnosticIdentifiers.AddEmptyLineBeforeTopDeclaration:
-                case DiagnosticIdentifiers.AddEmptyLineBetweenAccessors:
+                case DiagnosticIdentifiers.AddBlankLineBeforeTopDeclaration:
+                case DiagnosticIdentifiers.AddBlankLineBetweenAccessors:
                     {
                         CodeAction codeAction = CodeAction.Create(
-                            CodeFixTitles.AddEmptyLine,
+                            CodeFixTitles.AddBlankLine,
                             ct => CodeFixHelpers.AppendEndOfLineAsync(document, trivia.Token, ct),
                             GetEquivalenceKey(diagnostic));
 
@@ -71,7 +71,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 CodeFixTitles.RemoveBlankLine,
-                                ct => CodeFixHelpers.RemoveEmptyLinesBeforeAsync(document, trivia.Token, ct),
+                                ct => CodeFixHelpers.RemoveBlankLinesBeforeAsync(document, trivia.Token, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -92,7 +92,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                     {
                         CodeAction codeAction = CodeAction.Create(
                             CodeFixTitles.RemoveBlankLine,
-                            ct => CodeFixHelpers.RemoveEmptyLinesBeforeAsync(document, trivia.Token, ct),
+                            ct => CodeFixHelpers.RemoveBlankLinesBeforeAsync(document, trivia.Token, ct),
                             GetEquivalenceKey(diagnostic));
 
                         context.RegisterCodeFix(codeAction, diagnostic);

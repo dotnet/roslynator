@@ -10,20 +10,20 @@ using Roslynator.Formatting.CSharp;
 
 namespace Roslynator.Formatting.CodeFixes.CSharp
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(EmptyLineBetweenDeclarationsCodeFixProvider))]
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(BlankLineBetweenDeclarationsCodeFixProvider))]
     [Shared]
-    public sealed class EmptyLineBetweenDeclarationsCodeFixProvider : BaseCodeFixProvider
+    public sealed class BlankLineBetweenDeclarationsCodeFixProvider : BaseCodeFixProvider
     {
         public override ImmutableArray<string> FixableDiagnosticIds
         {
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticIdentifiers.AddEmptyLineBetweenDeclarations,
-                    DiagnosticIdentifiers.AddEmptyLineBetweenSingleLineDeclarations,
-                    DiagnosticIdentifiers.AddEmptyLineBetweenDeclarationAndDocumentationComment,
-                    DiagnosticIdentifiers.AddEmptyLineBetweenSingleLineDeclarationsOfDifferentKind,
-                    DiagnosticIdentifiers.RemoveEmptyLineBetweenSingleLineDeclarationsOfSameKind);
+                    DiagnosticIdentifiers.AddBlankLineBetweenDeclarations,
+                    DiagnosticIdentifiers.AddBlankLineBetweenSingleLineDeclarations,
+                    DiagnosticIdentifiers.AddBlankLineBetweenDeclarationAndDocumentationComment,
+                    DiagnosticIdentifiers.AddBlankLineBetweenSingleLineDeclarationsOfDifferentKind,
+                    DiagnosticIdentifiers.RemoveBlankLineBetweenSingleLineDeclarationsOfSameKind);
             }
         }
 
@@ -39,24 +39,24 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
 
             switch (diagnostic.Id)
             {
-                case DiagnosticIdentifiers.AddEmptyLineBetweenDeclarations:
-                case DiagnosticIdentifiers.AddEmptyLineBetweenSingleLineDeclarations:
-                case DiagnosticIdentifiers.AddEmptyLineBetweenDeclarationAndDocumentationComment:
-                case DiagnosticIdentifiers.AddEmptyLineBetweenSingleLineDeclarationsOfDifferentKind:
+                case DiagnosticIdentifiers.AddBlankLineBetweenDeclarations:
+                case DiagnosticIdentifiers.AddBlankLineBetweenSingleLineDeclarations:
+                case DiagnosticIdentifiers.AddBlankLineBetweenDeclarationAndDocumentationComment:
+                case DiagnosticIdentifiers.AddBlankLineBetweenSingleLineDeclarationsOfDifferentKind:
                     {
                         CodeAction codeAction = CodeAction.Create(
-                            CodeFixTitles.AddEmptyLine,
+                            CodeFixTitles.AddBlankLine,
                             ct => CodeFixHelpers.AppendEndOfLineAsync(document, trivia.Token, ct),
                             GetEquivalenceKey(diagnostic));
 
                         context.RegisterCodeFix(codeAction, diagnostic);
                         break;
                     }
-                case DiagnosticIdentifiers.RemoveEmptyLineBetweenSingleLineDeclarationsOfSameKind:
+                case DiagnosticIdentifiers.RemoveBlankLineBetweenSingleLineDeclarationsOfSameKind:
                     {
                         CodeAction codeAction = CodeAction.Create(
-                            CodeFixTitles.RemoveEmptyLine,
-                            ct => CodeFixHelpers.RemoveEmptyLinesBeforeAsync(document, trivia.Token, ct),
+                            CodeFixTitles.RemoveBlankLine,
+                            ct => CodeFixHelpers.RemoveBlankLinesBeforeAsync(document, trivia.Token, ct),
                             GetEquivalenceKey(diagnostic));
 
                         context.RegisterCodeFix(codeAction, diagnostic);

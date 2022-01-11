@@ -11,7 +11,7 @@ using Microsoft.CodeAnalysis.Text;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class RemoveRedundantEmptyLineAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class RemoveUnnecessaryBlankLineAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 
@@ -21,7 +21,7 @@ namespace Roslynator.CSharp.Analysis
             {
                 if (_supportedDiagnostics.IsDefault)
                 {
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.RemoveRedundantEmptyLine);
+                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.RemoveUnnecessaryBlankLine);
                 }
 
                 return _supportedDiagnostics;
@@ -328,7 +328,7 @@ namespace Roslynator.CSharp.Analysis
 
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticRules.RemoveRedundantEmptyLine,
+                DiagnosticRules.RemoveUnnecessaryBlankLine,
                 Location.Create(node1.SyntaxTree, TextSpan.FromBounds(node2.FullSpan.Start, trivia.Span.End)));
         }
 
@@ -373,7 +373,7 @@ namespace Roslynator.CSharp.Analysis
 
             Location location = Location.Create(token.SyntaxTree, TextSpan.FromBounds(node.FullSpan.Start, trivia.Span.End));
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveRedundantEmptyLine, location);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveUnnecessaryBlankLine, location);
         }
 
         private static void AnalyzeDeclaration<TMember>(
@@ -451,7 +451,7 @@ namespace Roslynator.CSharp.Analysis
                 {
                     DiagnosticHelpers.ReportDiagnostic(
                         context,
-                        DiagnosticRules.RemoveRedundantEmptyLine,
+                        DiagnosticRules.RemoveUnnecessaryBlankLine,
                         leadingTrivia[index + 1].GetLocation());
                 }
             }
@@ -589,7 +589,7 @@ namespace Roslynator.CSharp.Analysis
 
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticRules.RemoveRedundantEmptyLine,
+                DiagnosticRules.RemoveUnnecessaryBlankLine,
                 Location.Create(context.Node.SyntaxTree, span.Value));
         }
 
@@ -614,7 +614,7 @@ namespace Roslynator.CSharp.Analysis
 
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticRules.RemoveRedundantEmptyLine,
+                DiagnosticRules.RemoveUnnecessaryBlankLine,
                 Location.Create(context.Node.SyntaxTree, span.Value));
         }
 
@@ -641,7 +641,7 @@ namespace Roslynator.CSharp.Analysis
 
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticRules.RemoveRedundantEmptyLine,
+                DiagnosticRules.RemoveUnnecessaryBlankLine,
                 Location.Create(tree, span.Value));
         }
 
@@ -709,7 +709,7 @@ namespace Roslynator.CSharp.Analysis
         {
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticRules.RemoveRedundantEmptyLine,
+                DiagnosticRules.RemoveUnnecessaryBlankLine,
                 Location.Create(context.Node.SyntaxTree, span));
         }
     }

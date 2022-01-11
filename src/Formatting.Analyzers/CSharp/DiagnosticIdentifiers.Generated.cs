@@ -8,18 +8,18 @@ namespace Roslynator.Formatting.CSharp
 {
     public static partial class DiagnosticIdentifiers
     {
-        public const string AddEmptyLineAfterEmbeddedStatement = "RCS0001";
-        public const string AddEmptyLineAfterRegionDirective = "RCS0002";
-        public const string AddEmptyLineAfterUsingDirectiveList = "RCS0003";
-        public const string AddEmptyLineBeforeEndRegionDirective = "RCS0005";
-        public const string AddEmptyLineBeforeUsingDirectiveList = "RCS0006";
-        public const string AddEmptyLineBetweenAccessors = "RCS0007";
+        public const string AddBlankLineAfterEmbeddedStatement = "RCS0001";
+        public const string AddBlankLineAfterRegionDirective = "RCS0002";
+        public const string AddBlankLineAfterUsingDirectiveList = "RCS0003";
+        public const string AddBlankLineBeforeEndRegionDirective = "RCS0005";
+        public const string AddBlankLineBeforeUsingDirectiveList = "RCS0006";
+        public const string AddBlankLineBetweenAccessors = "RCS0007";
         public const string AddBlankLineBetweenClosingBraceAndNextStatement = "RCS0008";
-        public const string AddEmptyLineBetweenDeclarationAndDocumentationComment = "RCS0009";
-        public const string AddEmptyLineBetweenDeclarations = "RCS0010";
+        public const string AddBlankLineBetweenDeclarationAndDocumentationComment = "RCS0009";
+        public const string AddBlankLineBetweenDeclarations = "RCS0010";
         public const string BlankLineBetweenSingleLineAccessors = "RCS0011";
-        public const string AddEmptyLineBetweenSingleLineDeclarations = "RCS0012";
-        public const string AddEmptyLineBetweenSingleLineDeclarationsOfDifferentKind = "RCS0013";
+        public const string AddBlankLineBetweenSingleLineDeclarations = "RCS0012";
+        public const string AddBlankLineBetweenSingleLineDeclarationsOfDifferentKind = "RCS0013";
         public const string AddBlankLineBetweenSwitchSections = "RCS0014";
         public const string BlankLineBetweenUsingDirectives = "RCS0015";
         public const string PutAttributeListOnItsOwnLine = "RCS0016";
@@ -37,7 +37,7 @@ namespace Roslynator.Formatting.CSharp
         public const string PlaceNewLineAfterOrBeforeArrowToken = "RCS0032";
         public const string AddNewLineBeforeStatement = "RCS0033";
         public const string AddNewLineBeforeTypeParameterConstraint = "RCS0034";
-        public const string RemoveEmptyLineBetweenSingleLineDeclarationsOfSameKind = "RCS0036";
+        public const string RemoveBlankLineBetweenSingleLineDeclarationsOfSameKind = "RCS0036";
         public const string RemoveBlankLineBetweenUsingDirectivesWithSameRootNamespace = "RCS0038";
         public const string RemoveNewLineBeforeBaseList = "RCS0039";
         public const string RemoveNewLineBetweenIfKeywordAndElseKeyword = "RCS0041";
@@ -48,8 +48,8 @@ namespace Roslynator.Formatting.CSharp
         public const string UseSpacesInsteadOfTab = "RCS0046";
         public const string WrapAndIndentEachNodeInList = "RCS0047";
         public const string PutInitializerOnSingleLine = "RCS0048";
-        public const string AddEmptyLineAfterTopComment = "RCS0049";
-        public const string AddEmptyLineBeforeTopDeclaration = "RCS0050";
+        public const string AddBlankLineAfterTopComment = "RCS0049";
+        public const string AddBlankLineBeforeTopDeclaration = "RCS0050";
         public const string AddOrRemoveNewLineBeforeWhileInDoStatement = "RCS0051";
         public const string PlaceNewLineAfterOrBeforeEqualsToken = "RCS0052";
         public const string FixFormattingOfList = "RCS0053";

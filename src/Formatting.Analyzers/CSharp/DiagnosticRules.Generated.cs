@@ -10,75 +10,75 @@ namespace Roslynator.Formatting.CSharp
     public static partial class DiagnosticRules
     {
         /// <summary>RCS0001</summary>
-        public static readonly DiagnosticDescriptor AddEmptyLineAfterEmbeddedStatement = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.AddEmptyLineAfterEmbeddedStatement, 
-            title:              "Add empty line after embedded statement.", 
-            messageFormat:      "Add empty line after embedded statement.", 
+        public static readonly DiagnosticDescriptor AddBlankLineAfterEmbeddedStatement = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.AddBlankLineAfterEmbeddedStatement, 
+            title:              "Add blank line after embedded statement.", 
+            messageFormat:      "Add blank line after embedded statement.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddEmptyLineAfterEmbeddedStatement, 
+            helpLinkUri:        DiagnosticIdentifiers.AddBlankLineAfterEmbeddedStatement, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0002</summary>
-        public static readonly DiagnosticDescriptor AddEmptyLineAfterRegionDirective = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.AddEmptyLineAfterRegionDirective, 
-            title:              "Add empty line after #region.", 
-            messageFormat:      "Add empty after #region.", 
+        public static readonly DiagnosticDescriptor AddBlankLineAfterRegionDirective = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.AddBlankLineAfterRegionDirective, 
+            title:              "Add blank line after #region.", 
+            messageFormat:      "Add blank line after #region.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddEmptyLineAfterRegionDirective, 
+            helpLinkUri:        DiagnosticIdentifiers.AddBlankLineAfterRegionDirective, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0003</summary>
-        public static readonly DiagnosticDescriptor AddEmptyLineAfterUsingDirectiveList = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.AddEmptyLineAfterUsingDirectiveList, 
-            title:              "Add empty line after using directive list.", 
-            messageFormat:      "Add empty line after using directive list.", 
+        public static readonly DiagnosticDescriptor AddBlankLineAfterUsingDirectiveList = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.AddBlankLineAfterUsingDirectiveList, 
+            title:              "Add blank line after using directive list.", 
+            messageFormat:      "Add blank line after using directive list.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddEmptyLineAfterUsingDirectiveList, 
+            helpLinkUri:        DiagnosticIdentifiers.AddBlankLineAfterUsingDirectiveList, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0005</summary>
-        public static readonly DiagnosticDescriptor AddEmptyLineBeforeEndRegionDirective = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.AddEmptyLineBeforeEndRegionDirective, 
-            title:              "Add empty line before #endregion.", 
-            messageFormat:      "Add empty line before #endregion.", 
+        public static readonly DiagnosticDescriptor AddBlankLineBeforeEndRegionDirective = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.AddBlankLineBeforeEndRegionDirective, 
+            title:              "Add blank line before #endregion.", 
+            messageFormat:      "Add blank line before #endregion.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddEmptyLineBeforeEndRegionDirective, 
+            helpLinkUri:        DiagnosticIdentifiers.AddBlankLineBeforeEndRegionDirective, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0006</summary>
-        public static readonly DiagnosticDescriptor AddEmptyLineBeforeUsingDirectiveList = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.AddEmptyLineBeforeUsingDirectiveList, 
-            title:              "Add empty line before using directive list.", 
-            messageFormat:      "Add empty line before using directive list.", 
+        public static readonly DiagnosticDescriptor AddBlankLineBeforeUsingDirectiveList = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.AddBlankLineBeforeUsingDirectiveList, 
+            title:              "Add blank line before using directive list.", 
+            messageFormat:      "Add blank line before using directive list.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddEmptyLineBeforeUsingDirectiveList, 
+            helpLinkUri:        DiagnosticIdentifiers.AddBlankLineBeforeUsingDirectiveList, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0007</summary>
-        public static readonly DiagnosticDescriptor AddEmptyLineBetweenAccessors = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.AddEmptyLineBetweenAccessors, 
-            title:              "Add empty line between accessors.", 
-            messageFormat:      "Add empty line between accessors.", 
+        public static readonly DiagnosticDescriptor AddBlankLineBetweenAccessors = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.AddBlankLineBetweenAccessors, 
+            title:              "Add blank line between accessors.", 
+            messageFormat:      "Add blank line between accessors.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddEmptyLineBetweenAccessors, 
+            helpLinkUri:        DiagnosticIdentifiers.AddBlankLineBetweenAccessors, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0008</summary>
@@ -94,27 +94,27 @@ namespace Roslynator.Formatting.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0009</summary>
-        public static readonly DiagnosticDescriptor AddEmptyLineBetweenDeclarationAndDocumentationComment = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.AddEmptyLineBetweenDeclarationAndDocumentationComment, 
-            title:              "Add empty line between declaration and documentation comment.", 
-            messageFormat:      "Add empty line between declaration and documentation comment.", 
+        public static readonly DiagnosticDescriptor AddBlankLineBetweenDeclarationAndDocumentationComment = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.AddBlankLineBetweenDeclarationAndDocumentationComment, 
+            title:              "Add blank line between declaration and documentation comment.", 
+            messageFormat:      "Add blank line between declaration and documentation comment.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddEmptyLineBetweenDeclarationAndDocumentationComment, 
+            helpLinkUri:        DiagnosticIdentifiers.AddBlankLineBetweenDeclarationAndDocumentationComment, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0010</summary>
-        public static readonly DiagnosticDescriptor AddEmptyLineBetweenDeclarations = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.AddEmptyLineBetweenDeclarations, 
-            title:              "Add empty line between declarations.", 
-            messageFormat:      "Add empty line between declarations.", 
+        public static readonly DiagnosticDescriptor AddBlankLineBetweenDeclarations = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.AddBlankLineBetweenDeclarations, 
+            title:              "Add blank line between declarations.", 
+            messageFormat:      "Add blank line between declarations.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddEmptyLineBetweenDeclarations, 
+            helpLinkUri:        DiagnosticIdentifiers.AddBlankLineBetweenDeclarations, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0011</summary>
@@ -130,27 +130,27 @@ namespace Roslynator.Formatting.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0012</summary>
-        public static readonly DiagnosticDescriptor AddEmptyLineBetweenSingleLineDeclarations = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.AddEmptyLineBetweenSingleLineDeclarations, 
-            title:              "Add empty line between single-line declarations.", 
-            messageFormat:      "Add empty line between single-line declarations.", 
+        public static readonly DiagnosticDescriptor AddBlankLineBetweenSingleLineDeclarations = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.AddBlankLineBetweenSingleLineDeclarations, 
+            title:              "Add blank line between single-line declarations.", 
+            messageFormat:      "Add blank line between single-line declarations.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddEmptyLineBetweenSingleLineDeclarations, 
+            helpLinkUri:        DiagnosticIdentifiers.AddBlankLineBetweenSingleLineDeclarations, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0013</summary>
-        public static readonly DiagnosticDescriptor AddEmptyLineBetweenSingleLineDeclarationsOfDifferentKind = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.AddEmptyLineBetweenSingleLineDeclarationsOfDifferentKind, 
-            title:              "Add empty line between single-line declarations of different kind.", 
-            messageFormat:      "Add empty line between single-line declarations of different kind.", 
+        public static readonly DiagnosticDescriptor AddBlankLineBetweenSingleLineDeclarationsOfDifferentKind = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.AddBlankLineBetweenSingleLineDeclarationsOfDifferentKind, 
+            title:              "Add blank line between single-line declarations of different kind.", 
+            messageFormat:      "Add blank line between single-line declarations of different kind.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddEmptyLineBetweenSingleLineDeclarationsOfDifferentKind, 
+            helpLinkUri:        DiagnosticIdentifiers.AddBlankLineBetweenSingleLineDeclarationsOfDifferentKind, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0014</summary>
@@ -168,8 +168,8 @@ namespace Roslynator.Formatting.CSharp
         /// <summary>RCS0015</summary>
         public static readonly DiagnosticDescriptor BlankLineBetweenUsingDirectives = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.BlankLineBetweenUsingDirectives, 
-            title:              "Add/remove empty line between using directives.", 
-            messageFormat:      "{0} empty line between using directives.", 
+            title:              "Add/remove blank line between using directives.", 
+            messageFormat:      "{0} blank line between using directives.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
@@ -358,15 +358,15 @@ namespace Roslynator.Formatting.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0036</summary>
-        public static readonly DiagnosticDescriptor RemoveEmptyLineBetweenSingleLineDeclarationsOfSameKind = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.RemoveEmptyLineBetweenSingleLineDeclarationsOfSameKind, 
-            title:              "Remove empty line between single-line declarations of same kind.", 
-            messageFormat:      "Remove empty line between single-line declarations of same kind.", 
+        public static readonly DiagnosticDescriptor RemoveBlankLineBetweenSingleLineDeclarationsOfSameKind = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.RemoveBlankLineBetweenSingleLineDeclarationsOfSameKind, 
+            title:              "Remove blank line between single-line declarations of same kind.", 
+            messageFormat:      "Remove blank line between single-line declarations of same kind.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.RemoveEmptyLineBetweenSingleLineDeclarationsOfSameKind, 
+            helpLinkUri:        DiagnosticIdentifiers.RemoveBlankLineBetweenSingleLineDeclarationsOfSameKind, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0038</summary>
@@ -490,27 +490,27 @@ namespace Roslynator.Formatting.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0049</summary>
-        public static readonly DiagnosticDescriptor AddEmptyLineAfterTopComment = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.AddEmptyLineAfterTopComment, 
-            title:              "Add empty line after top comment.", 
-            messageFormat:      "Add empty line after top comment.", 
+        public static readonly DiagnosticDescriptor AddBlankLineAfterTopComment = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.AddBlankLineAfterTopComment, 
+            title:              "Add blank line after top comment.", 
+            messageFormat:      "Add blank line after top comment.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddEmptyLineAfterTopComment, 
+            helpLinkUri:        DiagnosticIdentifiers.AddBlankLineAfterTopComment, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0050</summary>
-        public static readonly DiagnosticDescriptor AddEmptyLineBeforeTopDeclaration = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.AddEmptyLineBeforeTopDeclaration, 
-            title:              "Add empty line before top declaration.", 
-            messageFormat:      "Add empty line before top declaration.", 
+        public static readonly DiagnosticDescriptor AddBlankLineBeforeTopDeclaration = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.AddBlankLineBeforeTopDeclaration, 
+            title:              "Add blank line before top declaration.", 
+            messageFormat:      "Add blank line before top declaration.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddEmptyLineBeforeTopDeclaration, 
+            helpLinkUri:        DiagnosticIdentifiers.AddBlankLineBeforeTopDeclaration, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0051</summary>

@@ -10,7 +10,7 @@ using Roslynator.CSharp;
 namespace Roslynator.Formatting.CSharp
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class AddEmptyLineBeforeEndRegionDirectiveAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class AddBlankLineBeforeEndRegionDirectiveAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 
@@ -19,7 +19,7 @@ namespace Roslynator.Formatting.CSharp
             get
             {
                 if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddEmptyLineBeforeEndRegionDirective);
+                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddBlankLineBeforeEndRegionDirective);
 
                 return _supportedDiagnostics;
             }
@@ -41,7 +41,7 @@ namespace Roslynator.Formatting.CSharp
 
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticRules.AddEmptyLineBeforeEndRegionDirective,
+                DiagnosticRules.AddBlankLineBeforeEndRegionDirective,
                 Location.Create(endRegionDirective.SyntaxTree, endRegionDirective.Span.WithLength(0)));
 
             bool IsPrecededWithEmptyLineOrRegionDirective()

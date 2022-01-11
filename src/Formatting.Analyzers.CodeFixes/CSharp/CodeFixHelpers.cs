@@ -187,7 +187,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                 right.WithLeadingTrivia(token.LeadingTrivia));
         }
 
-        public static Task<Document> AddEmptyLineBeforeDirectiveAsync(
+        public static Task<Document> AddBlankLineBeforeDirectiveAsync(
             Document document,
             DirectiveTriviaSyntax directiveTrivia,
             CancellationToken cancellationToken = default)
@@ -211,7 +211,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
             return document.ReplaceTokenAsync(token, newToken, cancellationToken);
         }
 
-        public static Task<Document> AddEmptyLineAfterDirectiveAsync(
+        public static Task<Document> AddBlankLineAfterDirectiveAsync(
             Document document,
             DirectiveTriviaSyntax directiveTrivia,
             CancellationToken cancellationToken = default)
@@ -352,7 +352,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
             throw new InvalidOperationException();
         }
 
-        public static Task<Document> RemoveEmptyLinesBeforeAsync(
+        public static Task<Document> RemoveBlankLinesBeforeAsync(
             Document document,
             SyntaxToken token,
             CancellationToken cancellationToken = default)

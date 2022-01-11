@@ -126,48 +126,48 @@ is_global = true
 
 # Analyzers
 
-# Add empty line after embedded statement
+# Add blank line after embedded statement
 dotnet_diagnostic.RCS0001.severity = none
 
-# Add empty line after #region
+# Add blank line after #region
 dotnet_diagnostic.RCS0002.severity = none
 
-# Add empty line after using directive list
+# Add blank line after using directive list
 dotnet_diagnostic.RCS0003.severity = none
 
-# Add empty line before #endregion
+# Add blank line before #endregion
 dotnet_diagnostic.RCS0005.severity = none
 
-# Add empty line before using directive list
+# Add blank line before using directive list
 dotnet_diagnostic.RCS0006.severity = none
 
-# Add empty line between accessors
+# Add blank line between accessors
 dotnet_diagnostic.RCS0007.severity = none
 
 # Add blank line between closing brace and next statement
 dotnet_diagnostic.RCS0008.severity = none
 
-# Add empty line between declaration and documentation comment
+# Add blank line between declaration and documentation comment
 dotnet_diagnostic.RCS0009.severity = none
 
-# Add empty line between declarations
+# Add blank line between declarations
 dotnet_diagnostic.RCS0010.severity = none
 
 # Add/remove blank line between single-line accessors
 dotnet_diagnostic.RCS0011.severity = none
 #roslynator_blank_line_between_single_line_accessors = true|false
 
-# Add empty line between single-line declarations
+# Add blank line between single-line declarations
 dotnet_diagnostic.RCS0012.severity = none
 
-# Add empty line between single-line declarations of different kind
+# Add blank line between single-line declarations of different kind
 dotnet_diagnostic.RCS0013.severity = none
 
 # Add blank line between switch sections
 dotnet_diagnostic.RCS0014.severity = none
 #roslynator_blank_line_between_closing_brace_and_switch_section = true|false
 
-# Add/remove empty line between using directives
+# Add/remove blank line between using directives
 dotnet_diagnostic.RCS0015.severity = none
 #roslynator_blank_line_between_using_directives = never|separate_groups
 
@@ -221,7 +221,7 @@ dotnet_diagnostic.RCS0033.severity = none
 # Add new line before type parameter constraint
 dotnet_diagnostic.RCS0034.severity = none
 
-# Remove empty line between single-line declarations of same kind
+# Remove blank line between single-line declarations of same kind
 dotnet_diagnostic.RCS0036.severity = none
 
 # Remove blank line between using directives with same root namespace
@@ -254,10 +254,10 @@ dotnet_diagnostic.RCS0047.severity = none
 # Put initializer on a single line
 dotnet_diagnostic.RCS0048.severity = none
 
-# Add empty line after top comment
+# Add blank line after top comment
 dotnet_diagnostic.RCS0049.severity = none
 
-# Add empty line before top declaration
+# Add blank line before top declaration
 dotnet_diagnostic.RCS0050.severity = none
 
 # Add/remove new line before 'while' in 'do' statement
@@ -369,7 +369,7 @@ dotnet_diagnostic.RCS1034.severity = silent
 # Remove redundant comma in initializer
 dotnet_diagnostic.RCS1035.severity = none
 
-# Remove redundant empty line
+# Remove unnecessary blank line
 dotnet_diagnostic.RCS1036.severity = suggestion
 #roslynator_blank_line_between_closing_brace_and_switch_section = true|false
 

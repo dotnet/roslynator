@@ -11,7 +11,7 @@ using Roslynator.CSharp;
 namespace Roslynator.Formatting.CSharp
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class AddEmptyLineBeforeTopDeclarationAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class AddBlankLineBeforeTopDeclarationAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 
@@ -20,7 +20,7 @@ namespace Roslynator.Formatting.CSharp
             get
             {
                 if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddEmptyLineBeforeTopDeclaration);
+                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddBlankLineBeforeTopDeclaration);
 
                 return _supportedDiagnostics;
             }
@@ -57,7 +57,7 @@ namespace Roslynator.Formatting.CSharp
 
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticRules.AddEmptyLineBeforeTopDeclaration,
+                DiagnosticRules.AddBlankLineBeforeTopDeclaration,
                 Location.Create(compilationUnit.SyntaxTree, new TextSpan(node.GetTrailingTrivia().Last().SpanStart, 0)));
         }
     }

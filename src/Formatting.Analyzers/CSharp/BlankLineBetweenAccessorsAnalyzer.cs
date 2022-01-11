@@ -25,7 +25,7 @@ namespace Roslynator.Formatting.CSharp
                 {
                     Immutable.InterlockedInitialize(
                         ref _supportedDiagnostics,
-                        DiagnosticRules.AddEmptyLineBetweenAccessors,
+                        DiagnosticRules.AddBlankLineBetweenAccessors,
                         DiagnosticRules.BlankLineBetweenSingleLineAccessors);
                 }
 
@@ -103,7 +103,7 @@ namespace Roslynator.Formatting.CSharp
             {
                 DiagnosticHelpers.ReportDiagnosticIfEffective(
                     context,
-                    DiagnosticRules.AddEmptyLineBetweenAccessors,
+                    DiagnosticRules.AddBlankLineBetweenAccessors,
                     Location.Create(context.Node.SyntaxTree, trailingTrivia.Last().Span.WithLength(0)));
             }
         }

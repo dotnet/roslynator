@@ -314,15 +314,15 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1036</summary>
-        public static readonly DiagnosticDescriptor RemoveRedundantEmptyLine = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.RemoveRedundantEmptyLine, 
-            title:              "Remove redundant empty line.", 
-            messageFormat:      "Remove redundant empty line.", 
+        public static readonly DiagnosticDescriptor RemoveUnnecessaryBlankLine = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.RemoveUnnecessaryBlankLine, 
+            title:              "Remove unnecessary blank line.", 
+            messageFormat:      "Remove unnecessary blank line.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.RemoveRedundantEmptyLine, 
+            helpLinkUri:        DiagnosticIdentifiers.RemoveUnnecessaryBlankLine, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1037</summary>

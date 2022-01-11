@@ -8,11 +8,11 @@ using Xunit;
 
 namespace Roslynator.Formatting.CSharp.Tests
 {
-    public class RCS0009AddEmptyLineBetweenDeclarationAndDocumentationCommentTests : AbstractCSharpDiagnosticVerifier<EmptyLineBetweenDeclarationsAnalyzer, EmptyLineBetweenDeclarationsCodeFixProvider>
+    public class RCS0009AddEmptyLineBetweenDeclarationAndDocumentationCommentTests : AbstractCSharpDiagnosticVerifier<BlankLineBetweenDeclarationsAnalyzer, BlankLineBetweenDeclarationsCodeFixProvider>
     {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddEmptyLineBetweenDeclarationAndDocumentationComment;
+        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddBlankLineBetweenDeclarationAndDocumentationComment;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddEmptyLineBetweenDeclarationAndDocumentationComment)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenDeclarationAndDocumentationComment)]
         public async Task Test_MemberDeclaration_SingleLine()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -37,7 +37,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddEmptyLineBetweenDeclarationAndDocumentationComment)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenDeclarationAndDocumentationComment)]
         public async Task Test_MemberDeclaration_Multiline()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -70,7 +70,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddEmptyLineBetweenDeclarationAndDocumentationComment)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenDeclarationAndDocumentationComment)]
         public async Task Test_EnumMemberDeclaration_SingleLine()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -95,7 +95,7 @@ enum E
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddEmptyLineBetweenDeclarationAndDocumentationComment)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenDeclarationAndDocumentationComment)]
         public async Task Test_EnumMemberDeclaration_Multiline()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -128,7 +128,7 @@ enum E
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddEmptyLineBetweenDeclarationAndDocumentationComment)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenDeclarationAndDocumentationComment)]
         public async Task TestNoDiagnostic_MemberDeclaration()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -144,7 +144,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddEmptyLineBetweenDeclarationAndDocumentationComment)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenDeclarationAndDocumentationComment)]
         public async Task TestNoDiagnostic_EnumMemberDeclaration()
         {
             await VerifyNoDiagnosticAsync(@"

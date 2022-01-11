@@ -11,7 +11,7 @@ using Roslynator.CSharp;
 namespace Roslynator.Formatting.CSharp
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class AddEmptyLineAfterUsingDirectiveListAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class AddBlankLineAfterUsingDirectiveListAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 
@@ -20,7 +20,7 @@ namespace Roslynator.Formatting.CSharp
             get
             {
                 if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddEmptyLineAfterUsingDirectiveList);
+                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddBlankLineAfterUsingDirectiveList);
 
                 return _supportedDiagnostics;
             }
@@ -112,7 +112,7 @@ namespace Roslynator.Formatting.CSharp
             {
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
-                    DiagnosticRules.AddEmptyLineAfterUsingDirectiveList,
+                    DiagnosticRules.AddBlankLineAfterUsingDirectiveList,
                     Location.Create(usingDirective.SyntaxTree, new TextSpan(position, 0)));
             }
         }

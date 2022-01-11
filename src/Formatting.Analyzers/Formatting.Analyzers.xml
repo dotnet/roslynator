@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Analyzers>
-  <Analyzer Identifier="AddEmptyLineAfterEmbeddedStatement">
+  <Analyzer Identifier="AddBlankLineAfterEmbeddedStatement">
     <Id>RCS0001</Id>
-    <Title>Add empty line after embedded statement.</Title>
+    <Title>Add blank line after embedded statement.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -18,10 +18,9 @@ Bar();]]></After>
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AddEmptyLineAfterRegionDirective">
+  <Analyzer Identifier="AddBlankLineAfterRegionDirective">
     <Id>RCS0002</Id>
-    <Title>Add empty line after #region.</Title>
-    <MessageFormat>Add empty after #region.</MessageFormat>
+    <Title>Add blank line after #region.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -49,9 +48,9 @@ Bar();]]></After>
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AddEmptyLineAfterUsingDirectiveList">
+  <Analyzer Identifier="AddBlankLineAfterUsingDirectiveList">
     <Id>RCS0003</Id>
-    <Title>Add empty line after using directive list.</Title>
+    <Title>Add blank line after using directive list.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -95,9 +94,9 @@ namespace N
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AddEmptyLineBeforeEndRegionDirective">
+  <Analyzer Identifier="AddBlankLineBeforeEndRegionDirective">
     <Id>RCS0005</Id>
-    <Title>Add empty line before #endregion.</Title>
+    <Title>Add blank line before #endregion.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -125,9 +124,9 @@ namespace N
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AddEmptyLineBeforeUsingDirectiveList">
+  <Analyzer Identifier="AddBlankLineBeforeUsingDirectiveList">
     <Id>RCS0006</Id>
-    <Title>Add empty line before using directive list.</Title>
+    <Title>Add blank line before using directive list.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -151,9 +150,9 @@ namespace N
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AddEmptyLineBetweenAccessors">
+  <Analyzer Identifier="AddBlankLineBetweenAccessors">
     <Id>RCS0007</Id>
-    <Title>Add empty line between accessors.</Title>
+    <Title>Add blank line between accessors.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -184,7 +183,7 @@ namespace N
 }]]></After>
       </Sample>
     </Samples>
-    <Remarks>This rule does not enforce an empty line between two single-line accessors.</Remarks>
+    <Remarks>This rule does not enforce an blank line between two single-line accessors.</Remarks>
   </Analyzer>
   <Analyzer Identifier="AddBlankLineBetweenClosingBraceAndNextStatement">
     <Id>RCS0008</Id>
@@ -206,9 +205,9 @@ Foo();]]></After>
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AddEmptyLineBetweenDeclarationAndDocumentationComment">
+  <Analyzer Identifier="AddBlankLineBetweenDeclarationAndDocumentationComment">
     <Id>RCS0009</Id>
-    <Title>Add empty line between declaration and documentation comment.</Title>
+    <Title>Add blank line between declaration and documentation comment.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -228,9 +227,9 @@ object P2 { get; }]]></After>
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AddEmptyLineBetweenDeclarations">
+  <Analyzer Identifier="AddBlankLineBetweenDeclarations">
     <Id>RCS0010</Id>
-    <Title>Add empty line between declarations.</Title>
+    <Title>Add blank line between declarations.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -301,7 +300,7 @@ enum Bar
 }]]></After>
       </Sample>
     </Samples>
-    <Remarks>This rule does not enforce an empty line between two single-line declaration.</Remarks>
+    <Remarks>This rule does not enforce an blank line between two single-line declaration.</Remarks>
   </Analyzer>
   <Analyzer Identifier="BlankLineBetweenSingleLineAccessors">
     <Id>RCS0011</Id>
@@ -353,9 +352,9 @@ enum Bar
       </Option>
     </Options>
   </Analyzer>
-  <Analyzer Identifier="AddEmptyLineBetweenSingleLineDeclarations">
+  <Analyzer Identifier="AddBlankLineBetweenSingleLineDeclarations">
     <Id>RCS0012</Id>
-    <Title>Add empty line between single-line declarations.</Title>
+    <Title>Add blank line between single-line declarations.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -369,9 +368,9 @@ object P2 { get; }]]></After>
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AddEmptyLineBetweenSingleLineDeclarationsOfDifferentKind">
+  <Analyzer Identifier="AddBlankLineBetweenSingleLineDeclarationsOfDifferentKind">
     <Id>RCS0013</Id>
-    <Title>Add empty line between single-line declarations of different kind.</Title>
+    <Title>Add blank line between single-line declarations of different kind.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -418,8 +417,8 @@ object this[int index] { get; }]]></After>
   </Analyzer>
   <Analyzer Identifier="BlankLineBetweenUsingDirectives">
     <Id>RCS0015</Id>
-    <Title>Add/remove empty line between using directives.</Title>
-    <MessageFormat>{0} empty line between using directives.</MessageFormat>
+    <Title>Add/remove blank line between using directives.</Title>
+    <MessageFormat>{0} blank line between using directives.</MessageFormat>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -898,9 +897,9 @@ Bar();]]></After>
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="RemoveEmptyLineBetweenSingleLineDeclarationsOfSameKind">
+  <Analyzer Identifier="RemoveBlankLineBetweenSingleLineDeclarationsOfSameKind">
     <Id>RCS0036</Id>
-    <Title>Remove empty line between single-line declarations of same kind.</Title>
+    <Title>Remove blank line between single-line declarations of same kind.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -1150,9 +1149,9 @@ else if (y)
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AddEmptyLineAfterTopComment">
+  <Analyzer Identifier="AddBlankLineAfterTopComment">
     <Id>RCS0049</Id>
-    <Title>Add empty line after top comment.</Title>
+    <Title>Add blank line after top comment.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -1174,9 +1173,9 @@ namespace Foo
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AddEmptyLineBeforeTopDeclaration">
+  <Analyzer Identifier="AddBlankLineBeforeTopDeclaration">
     <Id>RCS0050</Id>
-    <Title>Add empty line before top declaration.</Title>
+    <Title>Add blank line before top declaration.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>

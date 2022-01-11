@@ -32,7 +32,7 @@ namespace Roslynator.CSharp
         public const string RemoveRedundantBooleanLiteral = "RCS1033";
         public const string RemoveRedundantSealedModifier = "RCS1034";
         public const string RemoveRedundantCommaInInitializer = "RCS1035";
-        public const string RemoveRedundantEmptyLine = "RCS1036";
+        public const string RemoveUnnecessaryBlankLine = "RCS1036";
         public const string RemoveTrailingWhitespace = "RCS1037";
         public const string RemoveEmptyStatement = "RCS1038";
         public const string RemoveArgumentListFromAttribute = "RCS1039";

@@ -13,7 +13,7 @@ using Roslynator.CSharp.Syntax;
 namespace Roslynator.Formatting.CSharp
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class AddEmptyLineAfterEmbeddedStatementAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class AddBlankLineAfterEmbeddedStatementAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 
@@ -22,7 +22,7 @@ namespace Roslynator.Formatting.CSharp
             get
             {
                 if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddEmptyLineAfterEmbeddedStatement);
+                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddBlankLineAfterEmbeddedStatement);
 
                 return _supportedDiagnostics;
             }
@@ -151,7 +151,7 @@ namespace Roslynator.Formatting.CSharp
 
             DiagnosticHelpers.ReportDiagnostic(
                 context,
-                DiagnosticRules.AddEmptyLineAfterEmbeddedStatement,
+                DiagnosticRules.AddBlankLineAfterEmbeddedStatement,
                 Location.Create(syntaxTree, trivia.Span.WithLength(0)));
         }
     }
