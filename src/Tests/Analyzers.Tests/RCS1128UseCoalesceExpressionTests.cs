@@ -325,6 +325,40 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
+        public async Task Test_NullableReferenceType()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+#nullable enable
+
+public class C
+{
+    public void M()
+    {
+        [|var s = GetValue();|]
+        if (s is null)
+        {
+            s = new string(' ', 1);
+        }
+    }
+
+    string? GetValue() => """";
+}
+", @"
+#nullable enable
+
+public class C
+{
+    public void M()
+    {
+        var s = GetValue() ?? new string(' ', 1);
+    }
+
+    string? GetValue() => """";
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
         public async Task TestNoDiagnostic_NotEqualsToNull()
         {
             await VerifyNoDiagnosticAsync(@"
