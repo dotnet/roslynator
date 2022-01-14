@@ -154,9 +154,9 @@ namespace Roslynator.CSharp
                 {
                     return AccessorBracesStyle.MultiLine;
                 }
-                else if (string.Equals(rawValue, ConfigOptionValues.AccessorBracesStyle_SingleLineWhenStatementIsOnSingleLine, StringComparison.OrdinalIgnoreCase))
+                else if (string.Equals(rawValue, ConfigOptionValues.AccessorBracesStyle_SingleLineWhenExpressionIsOnSingleLine, StringComparison.OrdinalIgnoreCase))
                 {
-                    return AccessorBracesStyle.SingleLineWhenStatementIsOnSingleLine;
+                    return AccessorBracesStyle.SingleLineWhenExpressionIsOnSingleLine;
                 }
             }
 
@@ -199,7 +199,7 @@ namespace Roslynator.CSharp
         {
             AnalyzerConfigOptions configOptions = context.GetConfigOptions();
 
-            if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.AnonymousFunctionOrMethodGroup, out string rawValue))
+            if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.UseAnonymousFunctionOrMethodGroup, out string rawValue))
             {
                 if (string.Equals(rawValue, ConfigOptionValues.AnonymousFunctionOrMethodGroup_AnonymousFunction, StringComparison.OrdinalIgnoreCase))
                 {
@@ -296,7 +296,7 @@ namespace Roslynator.CSharp
         {
             AnalyzerConfigOptions configOptions = context.GetConfigOptions();
 
-            if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.ConditionInConditionalOperatorParenthesesStyle, out string rawValue))
+            if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.ConditionalOperatorConditionParenthesesStyle, out string rawValue))
             {
                 if (string.Equals(rawValue, ConfigOptionValues.ConditionInConditionalExpressionParenthesesStyle_Include, StringComparison.OrdinalIgnoreCase))
                 {

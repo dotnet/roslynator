@@ -67,7 +67,7 @@ class C
         get { return _p; }
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.AccessorBracesStyle, ConfigOptionValues.AccessorBracesStyle_SingleLineWhenStatementIsOnSingleLine));
+", options: Options.AddConfigOption(ConfigOptionKeys.AccessorBracesStyle, ConfigOptionValues.AccessorBracesStyle_SingleLineWhenExpressionIsOnSingleLine));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatAccessorBraces)]
@@ -200,7 +200,7 @@ class C
         remove { }
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.AccessorBracesStyle, ConfigOptionValues.AccessorBracesStyle_SingleLineWhenStatementIsOnSingleLine));
+", options: Options.AddConfigOption(ConfigOptionKeys.AccessorBracesStyle, ConfigOptionValues.AccessorBracesStyle_SingleLineWhenExpressionIsOnSingleLine));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatAccessorBraces)]
@@ -216,7 +216,7 @@ class C
         get { return _p; }
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.AccessorBracesStyle, ConfigOptionValues.AccessorBracesStyle_SingleLineWhenStatementIsOnSingleLine));
+", options: Options.AddConfigOption(ConfigOptionKeys.AccessorBracesStyle, ConfigOptionValues.AccessorBracesStyle_SingleLineWhenExpressionIsOnSingleLine));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatAccessorBraces)]
@@ -236,7 +236,7 @@ class C
         }
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.AccessorBracesStyle, ConfigOptionValues.AccessorBracesStyle_SingleLineWhenStatementIsOnSingleLine));
+", options: Options.AddConfigOption(ConfigOptionKeys.AccessorBracesStyle, ConfigOptionValues.AccessorBracesStyle_SingleLineWhenExpressionIsOnSingleLine));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatAccessorBraces)]

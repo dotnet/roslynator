@@ -26,7 +26,7 @@ namespace Roslynator.Formatting.CSharp
                     Immutable.InterlockedInitialize(
                         ref _supportedDiagnostics,
                         DiagnosticRules.FormatAccessorBraces,
-                        DiagnosticRules.FormatAccessorBracesOnSingleLineWhenStatementIsOnSingleLine);
+                        DiagnosticRules.FormatAccessorBracesOnSingleLineWhenExpressionIsOnSingleLine);
                 }
 
                 return _supportedDiagnostics;
@@ -60,13 +60,13 @@ namespace Roslynator.Formatting.CSharp
             if (openBrace.IsMissing)
                 return;
 
-            if (DiagnosticRules.FormatAccessorBracesOnSingleLineWhenStatementIsOnSingleLine.IsEffective(context)
+            if (DiagnosticRules.FormatAccessorBracesOnSingleLineWhenExpressionIsOnSingleLine.IsEffective(context)
                 && accessor.SyntaxTree.IsMultiLineSpan(TextSpan.FromBounds(accessor.Keyword.SpanStart, accessor.Span.End))
                 && CanBeMadeSingleLine(accessor))
             {
                 DiagnosticHelpers.ReportDiagnostic(
                     context,
-                    DiagnosticRules.FormatAccessorBracesOnSingleLineWhenStatementIsOnSingleLine,
+                    DiagnosticRules.FormatAccessorBracesOnSingleLineWhenExpressionIsOnSingleLine,
                     accessor);
             }
 
@@ -87,7 +87,7 @@ namespace Roslynator.Formatting.CSharp
                         "multiple lines");
                 }
             }
-            else if (style == AccessorBracesStyle.SingleLineWhenStatementIsOnSingleLine
+            else if (style == AccessorBracesStyle.SingleLineWhenExpressionIsOnSingleLine
                 && CanBeMadeSingleLine(accessor))
             {
                 DiagnosticHelpers.ReportDiagnostic(

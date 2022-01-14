@@ -217,7 +217,7 @@ namespace Roslynator.Formatting.CSharp
         public static readonly DiagnosticDescriptor AddNewLineAfterOpeningBraceOfEmptyBlock = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.AddNewLineAfterOpeningBraceOfEmptyBlock, 
             title:              "Add new line after opening brace of empty block.", 
-            messageFormat:      "(This analyzer is obsolete, use RCS0021 instead) Format braces on a single line.", 
+            messageFormat:      "([deprecated] Use RCS0021 instead) Format braces on a single line.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
@@ -373,7 +373,7 @@ namespace Roslynator.Formatting.CSharp
         public static readonly DiagnosticDescriptor RemoveBlankLineBetweenUsingDirectivesWithSameRootNamespace = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.RemoveBlankLineBetweenUsingDirectivesWithSameRootNamespace, 
             title:              "Remove blank line between using directives with same root namespace.", 
-            messageFormat:      "(This analyzer is obsolete, use RCS0015 instead) Remove blank line between using directives.", 
+            messageFormat:      "([deprecated] Use RCS0015 instead) Remove blank line between using directives.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
@@ -418,15 +418,15 @@ namespace Roslynator.Formatting.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0043</summary>
-        public static readonly DiagnosticDescriptor FormatAccessorBracesOnSingleLineWhenStatementIsOnSingleLine = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.FormatAccessorBracesOnSingleLineWhenStatementIsOnSingleLine, 
-            title:              "Format accessor's braces on a single line when statement is on single line.", 
-            messageFormat:      "(This analyzer is obsolete, use RCS0020 with option 'roslynator_accessor_braces_style = single_line_when_statement_is_on_single_line) Format braces on a single line.", 
+        public static readonly DiagnosticDescriptor FormatAccessorBracesOnSingleLineWhenExpressionIsOnSingleLine = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.FormatAccessorBracesOnSingleLineWhenExpressionIsOnSingleLine, 
+            title:              "Format accessor's braces on a single line when expression is on single line.", 
+            messageFormat:      "([deprecated] Use RCS0020 with option 'roslynator_accessor_braces_style = single_line_when_expression_is_on_single_line) Format braces on a single line.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.FormatAccessorBracesOnSingleLineWhenStatementIsOnSingleLine, 
+            helpLinkUri:        DiagnosticIdentifiers.FormatAccessorBracesOnSingleLineWhenExpressionIsOnSingleLine, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0044</summary>

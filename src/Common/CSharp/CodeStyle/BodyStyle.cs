@@ -50,7 +50,7 @@ namespace Roslynator.CSharp.CodeStyle
 
             bool? useBlockBodyWhenDeclarationIsMultiLine = null;
 
-            if (ConfigOptions.GetValueAsBool(configOptions, ConfigOptions.PreferBlockBodyWhenDeclarationSpansOverMultipleLines) == true
+            if (ConfigOptions.GetValueAsBool(configOptions, ConfigOptions.UseBlockBodyWhenDeclarationSpansOverMultipleLines) == true
                 || configOptions.IsEnabled(LegacyConfigOptions.ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine))
             {
                 useBlockBodyWhenDeclarationIsMultiLine = true;
@@ -58,7 +58,7 @@ namespace Roslynator.CSharp.CodeStyle
 
             bool? useBlockBodyWhenExpressionIsMultiline = null;
 
-            if (ConfigOptions.GetValueAsBool(configOptions, ConfigOptions.PreferBlockBodyWhenExpressionSpansOverMultipleLines) == true
+            if (ConfigOptions.GetValueAsBool(configOptions, ConfigOptions.UseBlockBodyWhenExpressionSpansOverMultipleLines) == true
                 || configOptions.IsEnabled(LegacyConfigOptions.ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine))
             {
                 useBlockBodyWhenExpressionIsMultiline = true;

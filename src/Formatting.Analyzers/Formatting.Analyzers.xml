@@ -596,7 +596,7 @@ namespace N
   <Analyzer Identifier="AddNewLineAfterOpeningBraceOfEmptyBlock">
     <Id>RCS0022</Id>
     <Title>Add new line after opening brace of empty block.</Title>
-    <MessageFormat>(This analyzer is obsolete, use RCS0021 instead) Format braces on a single line.</MessageFormat>
+    <MessageFormat>([deprecated] Use RCS0021 instead) Format braces on a single line.</MessageFormat>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -942,7 +942,7 @@ namespace N
   <Analyzer Identifier="RemoveBlankLineBetweenUsingDirectivesWithSameRootNamespace">
     <Id>RCS0038</Id>
     <Title>Remove blank line between using directives with same root namespace.</Title>
-    <MessageFormat>(This analyzer is obsolete, use RCS0015 instead) Remove blank line between using directives.</MessageFormat>
+    <MessageFormat>([deprecated] Use RCS0015 instead) Remove blank line between using directives.</MessageFormat>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -1047,10 +1047,10 @@ else if (y)
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="FormatAccessorBracesOnSingleLineWhenStatementIsOnSingleLine">
+  <Analyzer Identifier="FormatAccessorBracesOnSingleLineWhenExpressionIsOnSingleLine">
     <Id>RCS0043</Id>
-    <Title>Format accessor's braces on a single line when statement is on single line.</Title>
-    <MessageFormat>(This analyzer is obsolete, use RCS0020 with option 'roslynator_accessor_braces_style = single_line_when_statement_is_on_single_line) Format braces on a single line.</MessageFormat>
+    <Title>Format accessor's braces on a single line when expression is on single line.</Title>
+    <MessageFormat>([deprecated] Use RCS0020 with option 'roslynator_accessor_braces_style = single_line_when_expression_is_on_single_line) Format braces on a single line.</MessageFormat>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>

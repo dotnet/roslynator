@@ -17,14 +17,14 @@ namespace Roslynator.CSharp.Analysis.Tests
 
         public override CSharpTestOptions Options
         {
-            get { return base.Options.EnableConfigOption(ConfigOptionKeys.PreferBlockBodyWhenExpressionSpansOverMultipleLines); }
+            get { return base.Options.EnableConfigOption(ConfigOptionKeys.UseBlockBodyWhenExpressionSpansOverMultipleLines); }
         }
 
         private CSharpTestOptions Options_ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine
-            => _options_ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine ??= Options.EnableConfigOption(ConfigOptionKeys.PreferBlockBodyWhenExpressionSpansOverMultipleLines);
+            => _options_ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine ??= Options.EnableConfigOption(ConfigOptionKeys.UseBlockBodyWhenExpressionSpansOverMultipleLines);
 
         private CSharpTestOptions Options_ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine
-            => _options_ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine ??= Options.EnableConfigOption(ConfigOptionKeys.PreferBlockBodyWhenDeclarationSpansOverMultipleLines);
+            => _options_ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine ??= Options.EnableConfigOption(ConfigOptionKeys.UseBlockBodyWhenDeclarationSpansOverMultipleLines);
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
         public async Task Test_Method_MultilineExpression()

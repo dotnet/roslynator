@@ -37,12 +37,9 @@ is_global = true
 #roslynator_accessibility_modifiers = explicit|implicit
 # Applicable to: RCS1018
 
-#roslynator_accessor_braces_style = multi_line|single_line_when_statement_is_on_single_line
+#roslynator_accessor_braces_style = multi_line|single_line_when_expression_is_on_single_line
 # Default: multi_line
 # Applicable to: RCS0020
-
-#roslynator_anonymous_function_or_method_group = anonymous_function|method_group
-# Applicable to: RCS1207
 
 #roslynator_array_creation_type_style = explicit|implicit|implicit_when_type_is_obvious
 # Applicable to: RCS1014
@@ -69,7 +66,7 @@ is_global = true
 #roslynator_body_style = block|expression
 # Applicable to: RCS1016
 
-#roslynator_condition_in_conditional_operator_parentheses_style = include|omit|omit_when_condition_is_single_token
+#roslynator_conditional_operator_condition_parentheses_style = include|omit|omit_when_condition_is_single_token
 # Applicable to: RCS1051
 
 #roslynator_conditional_operator_new_line = after|before
@@ -109,16 +106,19 @@ is_global = true
 #roslynator_object_creation_type_style = explicit|implicit|implicit_when_type_is_obvious
 # Applicable to: RCS1250
 
-#roslynator_prefer_block_body_when_declaration_spans_over_multiple_lines = true|false
-# Applicable to: RCS1016
-
-#roslynator_prefer_block_body_when_expression_spans_over_multiple_lines = true|false
-# Applicable to: RCS1016
-
 #roslynator_prefix_field_identifier_with_underscore = true|false
 
 #roslynator_suppress_unity_script_methods = true|false
 # Applicable to: RCS1213
+
+#roslynator_use_anonymous_function_or_method_group = anonymous_function|method_group
+# Applicable to: RCS1207
+
+#roslynator_use_block_body_when_declaration_spans_over_multiple_lines = true|false
+# Applicable to: RCS1016
+
+#roslynator_use_block_body_when_expression_spans_over_multiple_lines = true|false
+# Applicable to: RCS1016
 
 #roslynator_use_var_instead_of_implicit_object_creation = true|false
 # Applicable to: RCS1250
@@ -176,7 +176,7 @@ dotnet_diagnostic.RCS0016.severity = none
 
 # Format accessor's braces on a single line or multiple lines
 dotnet_diagnostic.RCS0020.severity = none
-#roslynator_accessor_braces_style = multi_line|single_line_when_statement_is_on_single_line
+#roslynator_accessor_braces_style = multi_line|single_line_when_expression_is_on_single_line
 
 # Format block's braces on a single line or multiple lines
 dotnet_diagnostic.RCS0021.severity = none
@@ -236,7 +236,7 @@ dotnet_diagnostic.RCS0041.severity = none
 # Put auto-accessors on a single line
 dotnet_diagnostic.RCS0042.severity = none
 
-# Format accessor's braces on a single line when statement is on single line
+# Format accessor's braces on a single line when expression is on single line
 dotnet_diagnostic.RCS0043.severity = none
 
 # Use carriage return + linefeed as new line
@@ -338,8 +338,8 @@ dotnet_diagnostic.RCS1015.severity = suggestion
 # Use block body or expression body
 dotnet_diagnostic.RCS1016.severity = none
 #roslynator_body_style = block|expression
-#roslynator_prefer_block_body_when_declaration_spans_over_multiple_lines = true|false
-#roslynator_prefer_block_body_when_expression_spans_over_multiple_lines = true|false
+#roslynator_use_block_body_when_declaration_spans_over_multiple_lines = true|false
+#roslynator_use_block_body_when_expression_spans_over_multiple_lines = true|false
 
 # Add/remove accessibility modifiers
 dotnet_diagnostic.RCS1018.severity = suggestion
@@ -415,7 +415,7 @@ dotnet_diagnostic.RCS1050.severity = none
 
 # Add/remove parentheses from condition in conditional operator
 dotnet_diagnostic.RCS1051.severity = none
-#roslynator_condition_in_conditional_operator_parentheses_style = include|omit|omit_when_condition_is_single_token
+#roslynator_conditional_operator_condition_parentheses_style = include|omit|omit_when_condition_is_single_token
 
 # Declare each attribute separately
 dotnet_diagnostic.RCS1052.severity = none
@@ -776,7 +776,7 @@ dotnet_diagnostic.RCS1206.severity = suggestion
 
 # Use anonymous function or method group
 dotnet_diagnostic.RCS1207.severity = none
-#roslynator_anonymous_function_or_method_group = anonymous_function|method_group
+#roslynator_use_anonymous_function_or_method_group = anonymous_function|method_group
 
 # Reduce 'if' nesting
 dotnet_diagnostic.RCS1208.severity = none

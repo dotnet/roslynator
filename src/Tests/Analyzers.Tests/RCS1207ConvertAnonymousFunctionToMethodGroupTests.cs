@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis.Tests
 
         public override CSharpTestOptions Options
         {
-            get { return base.Options.AddConfigOption(ConfigOptionKeys.AnonymousFunctionOrMethodGroup, ConfigOptionValues.AnonymousFunctionOrMethodGroup_MethodGroup); }
+            get { return base.Options.AddConfigOption(ConfigOptionKeys.UseAnonymousFunctionOrMethodGroup, ConfigOptionValues.AnonymousFunctionOrMethodGroup_MethodGroup); }
         }
 
         [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]
@@ -297,7 +297,7 @@ class C
     private static ImmutableArray<int> M2(string s) => throw new NotImplementedException();
 }
 ", options: WellKnownCSharpTestOptions.Default_CSharp7_3
-                .AddConfigOption(ConfigOptionKeys.AnonymousFunctionOrMethodGroup, ConfigOptionValues.AnonymousFunctionOrMethodGroup_MethodGroup));
+                .AddConfigOption(ConfigOptionKeys.UseAnonymousFunctionOrMethodGroup, ConfigOptionValues.AnonymousFunctionOrMethodGroup_MethodGroup));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAnonymousFunctionOrMethodGroup)]

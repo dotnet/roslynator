@@ -6,6 +6,6 @@ namespace Roslynator.CSharp.CodeStyle
     {
         None,
         MultiLine,
-        SingleLineWhenStatementIsOnSingleLine
+        SingleLineWhenExpressionIsOnSingleLine
     }
 }

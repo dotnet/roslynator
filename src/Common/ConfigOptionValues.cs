@@ -7,7 +7,7 @@ namespace Roslynator
         public const string AccessibilityModifiers_Explicit = "explicit";
         public const string AccessibilityModifiers_Implicit = "implicit";
         public const string AccessorBracesStyle_MultiLine = "multi_line";
-        public const string AccessorBracesStyle_SingleLineWhenStatementIsOnSingleLine = "single_line_when_statement_is_on_single_line";
+        public const string AccessorBracesStyle_SingleLineWhenExpressionIsOnSingleLine = "single_line_when_expression_is_on_single_line";
         public const string BlockBracesStyle_MultiLine = "multi_line";
         public const string BlockBracesStyle_SingleLineWhenEmpty = "single_line_when_empty";
         public const string AnonymousFunctionOrMethodGroup_AnonymousFunction = "anonymous_function";

@@ -24,7 +24,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.PutFullAccessorOnItsOwnLine,
                     DiagnosticIdentifiers.FormatAccessorBraces,
-                    DiagnosticIdentifiers.FormatAccessorBracesOnSingleLineWhenStatementIsOnSingleLine);
+                    DiagnosticIdentifiers.FormatAccessorBracesOnSingleLineWhenExpressionIsOnSingleLine);
             }
         }
 
@@ -41,7 +41,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
             switch (diagnostic.Id)
             {
                 case DiagnosticIdentifiers.FormatAccessorBraces:
-                case DiagnosticIdentifiers.FormatAccessorBracesOnSingleLineWhenStatementIsOnSingleLine:
+                case DiagnosticIdentifiers.FormatAccessorBracesOnSingleLineWhenExpressionIsOnSingleLine:
                     {
                         bool isSingleLine = accessorDeclaration.IsSingleLine(includeExteriorTrivia: false);
                         string title = (isSingleLine)

@@ -17,14 +17,8 @@ namespace Roslynator
         public static readonly ConfigOptionDescriptor AccessorBracesStyle = new(
             key:                     ConfigOptionKeys.AccessorBracesStyle, 
             defaultValue:            "multi_line", 
-            defaultValuePlaceholder: "multi_line|single_line_when_statement_is_on_single_line", 
+            defaultValuePlaceholder: "multi_line|single_line_when_expression_is_on_single_line", 
             description:             "Format accessor's braces on single line or multiple lines");
-
-        public static readonly ConfigOptionDescriptor AnonymousFunctionOrMethodGroup = new(
-            key:                     ConfigOptionKeys.AnonymousFunctionOrMethodGroup, 
-            defaultValue:            null, 
-            defaultValuePlaceholder: "anonymous_function|method_group", 
-            description:             "Use anonymous function or method group");
 
         public static readonly ConfigOptionDescriptor ArrayCreationTypeStyle = new(
             key:                     ConfigOptionKeys.ArrayCreationTypeStyle, 
@@ -74,17 +68,17 @@ namespace Roslynator
             defaultValuePlaceholder: "block|expression", 
             description:             "Prefer block body or expression body");
 
+        public static readonly ConfigOptionDescriptor ConditionalOperatorConditionParenthesesStyle = new(
+            key:                     ConfigOptionKeys.ConditionalOperatorConditionParenthesesStyle, 
+            defaultValue:            null, 
+            defaultValuePlaceholder: "include|omit|omit_when_condition_is_single_token", 
+            description:             "Add/remove parentheses to/from condition in conditional operator");
+
         public static readonly ConfigOptionDescriptor ConditionalOperatorNewLine = new(
             key:                     ConfigOptionKeys.ConditionalOperatorNewLine, 
             defaultValue:            null, 
             defaultValuePlaceholder: "after|before", 
             description:             "Place new line after/before '?:' operator");
-
-        public static readonly ConfigOptionDescriptor ConditionInConditionalOperatorParenthesesStyle = new(
-            key:                     ConfigOptionKeys.ConditionInConditionalOperatorParenthesesStyle, 
-            defaultValue:            null, 
-            defaultValuePlaceholder: "include|omit|omit_when_condition_is_single_token", 
-            description:             "Add/remove parentheses to condition in conditional operator");
 
         public static readonly ConfigOptionDescriptor ConfigureAwait = new(
             key:                     ConfigOptionKeys.ConfigureAwait, 
@@ -152,18 +146,6 @@ namespace Roslynator
             defaultValuePlaceholder: "explicit|implicit|implicit_when_type_is_obvious", 
             description:             "Prefer explicit/implicit object creation");
 
-        public static readonly ConfigOptionDescriptor PreferBlockBodyWhenDeclarationSpansOverMultipleLines = new(
-            key:                     ConfigOptionKeys.PreferBlockBodyWhenDeclarationSpansOverMultipleLines, 
-            defaultValue:            null, 
-            defaultValuePlaceholder: "true|false", 
-            description:             "Prefer block body when declaration spans over multiple lines");
-
-        public static readonly ConfigOptionDescriptor PreferBlockBodyWhenExpressionSpansOverMultipleLines = new(
-            key:                     ConfigOptionKeys.PreferBlockBodyWhenExpressionSpansOverMultipleLines, 
-            defaultValue:            null, 
-            defaultValuePlaceholder: "true|false", 
-            description:             "Prefer block body when expression spans over multiple lines");
-
         public static readonly ConfigOptionDescriptor PrefixFieldIdentifierWithUnderscore = new(
             key:                     ConfigOptionKeys.PrefixFieldIdentifierWithUnderscore, 
             defaultValue:            null, 
@@ -175,6 +157,24 @@ namespace Roslynator
             defaultValue:            null, 
             defaultValuePlaceholder: "true|false", 
             description:             "Suppress Unity script methods");
+
+        public static readonly ConfigOptionDescriptor UseAnonymousFunctionOrMethodGroup = new(
+            key:                     ConfigOptionKeys.UseAnonymousFunctionOrMethodGroup, 
+            defaultValue:            null, 
+            defaultValuePlaceholder: "anonymous_function|method_group", 
+            description:             "Use anonymous function or method group");
+
+        public static readonly ConfigOptionDescriptor UseBlockBodyWhenDeclarationSpansOverMultipleLines = new(
+            key:                     ConfigOptionKeys.UseBlockBodyWhenDeclarationSpansOverMultipleLines, 
+            defaultValue:            null, 
+            defaultValuePlaceholder: "true|false", 
+            description:             "Use block body when declaration spans over multiple lines");
+
+        public static readonly ConfigOptionDescriptor UseBlockBodyWhenExpressionSpansOverMultipleLines = new(
+            key:                     ConfigOptionKeys.UseBlockBodyWhenExpressionSpansOverMultipleLines, 
+            defaultValue:            null, 
+            defaultValuePlaceholder: "true|false", 
+            description:             "Use block body when expression spans over multiple lines");
 
         public static readonly ConfigOptionDescriptor UseVarInsteadOfImplicitObjectCreation = new(
             key:                     ConfigOptionKeys.UseVarInsteadOfImplicitObjectCreation, 
@@ -194,14 +194,14 @@ namespace Roslynator
             yield return new KeyValuePair<string, string>("RCS0058", JoinOptionKeys(ConfigOptionKeys.NewLineAtEndOfFile));
             yield return new KeyValuePair<string, string>("RCS0059", JoinOptionKeys(ConfigOptionKeys.NullConditionalOperatorNewLine));
             yield return new KeyValuePair<string, string>("RCS1014", JoinOptionKeys(ConfigOptionKeys.ArrayCreationTypeStyle));
-            yield return new KeyValuePair<string, string>("RCS1016", JoinOptionKeys(ConfigOptionKeys.BodyStyle, ConfigOptionKeys.PreferBlockBodyWhenDeclarationSpansOverMultipleLines, ConfigOptionKeys.PreferBlockBodyWhenExpressionSpansOverMultipleLines));
+            yield return new KeyValuePair<string, string>("RCS1016", JoinOptionKeys(ConfigOptionKeys.BodyStyle, ConfigOptionKeys.UseBlockBodyWhenDeclarationSpansOverMultipleLines, ConfigOptionKeys.UseBlockBodyWhenExpressionSpansOverMultipleLines));
             yield return new KeyValuePair<string, string>("RCS1018", JoinOptionKeys(ConfigOptionKeys.AccessibilityModifiers));
             yield return new KeyValuePair<string, string>("RCS1050", JoinOptionKeys(ConfigOptionKeys.ObjectCreationParenthesesStyle));
-            yield return new KeyValuePair<string, string>("RCS1051", JoinOptionKeys(ConfigOptionKeys.ConditionInConditionalOperatorParenthesesStyle));
+            yield return new KeyValuePair<string, string>("RCS1051", JoinOptionKeys(ConfigOptionKeys.ConditionalOperatorConditionParenthesesStyle));
             yield return new KeyValuePair<string, string>("RCS1078", JoinOptionKeys(ConfigOptionKeys.EmptyStringStyle));
             yield return new KeyValuePair<string, string>("RCS1090", JoinOptionKeys(ConfigOptionKeys.ConfigureAwait));
             yield return new KeyValuePair<string, string>("RCS1096", JoinOptionKeys(ConfigOptionKeys.EnumHasFlagStyle));
-            yield return new KeyValuePair<string, string>("RCS1207", JoinOptionKeys(ConfigOptionKeys.AnonymousFunctionOrMethodGroup));
+            yield return new KeyValuePair<string, string>("RCS1207", JoinOptionKeys(ConfigOptionKeys.UseAnonymousFunctionOrMethodGroup));
             yield return new KeyValuePair<string, string>("RCS1248", JoinOptionKeys(ConfigOptionKeys.NullCheckStyle));
             yield return new KeyValuePair<string, string>("RCS1250", JoinOptionKeys(ConfigOptionKeys.ObjectCreationTypeStyle));
         }
