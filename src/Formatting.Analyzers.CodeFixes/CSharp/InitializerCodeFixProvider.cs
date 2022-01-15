@@ -18,7 +18,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
     {
         public override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveNewLinesFromInitializerWithSingleLineExpression); }
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.PutInitializerOnSingleLine); }
         }
 
         public override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -33,10 +33,10 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
 
             switch (diagnostic.Id)
             {
-                case DiagnosticIdentifiers.RemoveNewLinesFromInitializerWithSingleLineExpression:
+                case DiagnosticIdentifiers.PutInitializerOnSingleLine:
                     {
                         CodeAction codeAction = CodeAction.Create(
-                            CodeFixTitles.RemoveNewLines,
+                            "Put initializer on a single line",
                             ct => SyntaxFormatter.ToSingleLineAsync(document, initializer, removeTrailingComma: true, ct),
                             GetEquivalenceKey(diagnostic));
 

@@ -6,11 +6,17 @@ namespace Roslynator
     {
         public const string AccessibilityModifiers_Explicit = "explicit";
         public const string AccessibilityModifiers_Implicit = "implicit";
+        public const string AccessorBracesStyle_MultiLine = "multi_line";
+        public const string AccessorBracesStyle_SingleLineWhenExpressionIsOnSingleLine = "single_line_when_expression_is_on_single_line";
+        public const string BlockBracesStyle_MultiLine = "multi_line";
+        public const string BlockBracesStyle_SingleLineWhenEmpty = "single_line_when_empty";
         public const string AnonymousFunctionOrMethodGroup_AnonymousFunction = "anonymous_function";
         public const string AnonymousFunctionOrMethodGroup_MethodGroup = "anonymous_group";
         public const string ArrayCreationTypeStyle_Explicit = "explicit";
         public const string ArrayCreationTypeStyle_Implicit = "implicit";
         public const string ArrayCreationTypeStyle_ImplicitWhenTypeIsObvious = "implicit_when_type_is_obvious";
+        public const string BlankLineBetweenUsingDirectiveGroups_Never = "never";
+        public const string BlankLineBetweenUsingDirectiveGroups_SeparateGroups = "separate_groups";
         public const string BodyStyle_Block = "block";
         public const string BodyStyle_Expression = "expression";
         public const string ConditionInConditionalExpressionParenthesesStyle_Include = "include";

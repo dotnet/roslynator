@@ -2,11 +2,13 @@
 
 using System.Collections.Immutable;
 using System.Composition;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp;
 using Roslynator.Formatting.CSharp;
 
 namespace Roslynator.Formatting.CodeFixes.CSharp
@@ -20,9 +22,8 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticIdentifiers.AddNewLineAfterOpeningBraceOfBlock,
-                    DiagnosticIdentifiers.AddNewLineAfterOpeningBraceOfEmptyBlock,
-                    DiagnosticIdentifiers.AddNewLineAfterOpeningBraceOfAccessor);
+                    DiagnosticIdentifiers.FormatBlockBraces,
+                    DiagnosticIdentifiers.AddNewLineAfterOpeningBraceOfEmptyBlock);
             }
         }
 
@@ -38,19 +39,49 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
 
             switch (diagnostic.Id)
             {
-                case DiagnosticIdentifiers.AddNewLineAfterOpeningBraceOfBlock:
+                case DiagnosticIdentifiers.FormatBlockBraces:
                 case DiagnosticIdentifiers.AddNewLineAfterOpeningBraceOfEmptyBlock:
-                case DiagnosticIdentifiers.AddNewLineAfterOpeningBraceOfAccessor:
                     {
+                        bool isSingleLine = block.IsSingleLine(includeExteriorTrivia: false);
+                        string title = (isSingleLine)
+                            ? "Format braces on multiple lines"
+                            : "Format braces on a single line";
+
                         CodeAction codeAction = CodeAction.Create(
-                            CodeFixTitles.AddNewLine,
-                            ct => CodeFixHelpers.AddNewLineAfterOpeningBraceAsync(document, block, ct),
+                            title,
+                            ct => (isSingleLine)
+                                ? FormatBlockBracesOnMultipleLinesAsync(document, block, ct)
+                                : FormatBlockBracesOnSingleLineAsync(document, block, ct),
                             GetEquivalenceKey(diagnostic));
 
                         context.RegisterCodeFix(codeAction, diagnostic);
                         break;
                     }
             }
+        }
+
+        private static Task<Document> FormatBlockBracesOnSingleLineAsync(
+            Document document,
+            BlockSyntax block,
+            CancellationToken cancellationToken)
+        {
+            BlockSyntax newBlock = block
+                .RemoveWhitespace(block.Span)
+                .WithFormatterAnnotation();
+
+            return document.ReplaceNodeAsync(block, newBlock, cancellationToken);
+        }
+
+        private static Task<Document> FormatBlockBracesOnMultipleLinesAsync(
+            Document document,
+            BlockSyntax block,
+            CancellationToken cancellationToken)
+        {
+            BlockSyntax newBlock = block
+                .WithCloseBraceToken(block.CloseBraceToken.AppendEndOfLineToLeadingTrivia())
+                .WithFormatterAnnotation();
+
+            return document.ReplaceNodeAsync(block, newBlock, cancellationToken);
         }
     }
 }

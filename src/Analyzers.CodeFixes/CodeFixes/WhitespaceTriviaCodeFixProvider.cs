@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.RemoveTrailingWhitespace,
-                    DiagnosticIdentifiers.RemoveRedundantEmptyLine);
+                    DiagnosticIdentifiers.RemoveUnnecessaryBlankLine);
             }
         }
 
@@ -54,10 +54,10 @@ namespace Roslynator.CSharp.CodeFixes
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
-                    case DiagnosticIdentifiers.RemoveRedundantEmptyLine:
+                    case DiagnosticIdentifiers.RemoveUnnecessaryBlankLine:
                         {
                             CodeAction codeAction = CodeAction.Create(
-                                "Remove empty line",
+                                "Remove blank line",
                                 ct => context.Document.WithTextChangeAsync(span, "", ct),
                                 GetEquivalenceKey(diagnostic));
 

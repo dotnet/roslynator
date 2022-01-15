@@ -56,11 +56,11 @@ namespace Roslynator.CSharp.Analysis
                     AnalyzerConfigOptions options = context.GetConfigOptions();
 
                     Validate(ref context, compilationOptions, options, Flags.AddOrRemoveAccessibilityModifiers, ref flags, DiagnosticRules.AddOrRemoveAccessibilityModifiers, ConfigOptions.AccessibilityModifiers);
-                    Validate(ref context, compilationOptions, options, Flags.AddOrRemoveParenthesesFromConditionInConditionalOperator, ref flags, DiagnosticRules.AddOrRemoveParenthesesFromConditionInConditionalOperator, ConfigOptions.ConditionInConditionalOperatorParenthesesStyle);
+                    Validate(ref context, compilationOptions, options, Flags.AddOrRemoveParenthesesFromConditionInConditionalOperator, ref flags, DiagnosticRules.AddOrRemoveParenthesesFromConditionInConditionalOperator, ConfigOptions.ConditionalOperatorConditionParenthesesStyle);
                     Validate(ref context, compilationOptions, options, Flags.ConfigureAwait, ref flags, DiagnosticRules.ConfigureAwait, ConfigOptions.ConfigureAwait);
                     Validate(ref context, compilationOptions, options, Flags.IncludeParenthesesWhenCreatingNewObject, ref flags, DiagnosticRules.IncludeParenthesesWhenCreatingNewObject, ConfigOptions.ObjectCreationParenthesesStyle);
                     Validate(ref context, compilationOptions, options, Flags.NormalizeNullCheck, ref flags, DiagnosticRules.NormalizeNullCheck, ConfigOptions.NullCheckStyle);
-                    Validate(ref context, compilationOptions, options, Flags.UseAnonymousFunctionOrMethodGroup, ref flags, DiagnosticRules.UseAnonymousFunctionOrMethodGroup, ConfigOptions.AnonymousFunctionOrMethodGroup);
+                    Validate(ref context, compilationOptions, options, Flags.UseAnonymousFunctionOrMethodGroup, ref flags, DiagnosticRules.UseAnonymousFunctionOrMethodGroup, ConfigOptions.UseAnonymousFunctionOrMethodGroup);
                     Validate(ref context, compilationOptions, options, Flags.UseBlockBodyOrExpressionBody, ref flags, DiagnosticRules.UseBlockBodyOrExpressionBody, ConfigOptions.BodyStyle);
                     Validate(ref context, compilationOptions, options, Flags.UseEmptyStringLiteralOrStringEmpty, ref flags, DiagnosticRules.UseEmptyStringLiteralOrStringEmpty, ConfigOptions.EmptyStringStyle);
                     Validate(ref context, compilationOptions, options, Flags.UseExplicitlyOrImplicitlyTypedArray, ref flags, DiagnosticRules.UseExplicitlyOrImplicitlyTypedArray, ConfigOptions.ArrayCreationTypeStyle);

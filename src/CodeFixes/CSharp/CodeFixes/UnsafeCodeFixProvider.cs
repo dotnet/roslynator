@@ -28,7 +28,7 @@ namespace Roslynator.CSharp.CodeFixes
             if (!TryFindNode(root, context.Span, out SyntaxNode node))
                 return;
 
-            var document = context.Document;
+            Document document = context.Document;
 
             foreach (Diagnostic diagnostic in context.Diagnostics)
             {

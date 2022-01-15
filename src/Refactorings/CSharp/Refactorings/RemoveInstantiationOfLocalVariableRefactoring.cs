@@ -12,19 +12,19 @@ namespace Roslynator.CSharp.Refactorings
     {
         internal static async Task ComputeRefactoringAsync(RefactoringContext context, LocalDeclarationStatementSyntax localDeclarationStatement)
         {
-            EqualsValueClauseSyntax initializer = localDeclarationStatement
+            EqualsValueClauseSyntax equalsValueClause = localDeclarationStatement
                 .Declaration
                 .Variables
                 .SingleOrDefault(shouldThrow: false)?
                 .Initializer;
 
-            if (initializer == null)
+            if (equalsValueClause == null)
                 return;
 
-            if (!context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(initializer))
+            if (!context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(equalsValueClause))
                 return;
 
-            ExpressionSyntax value = initializer.Value;
+            ExpressionSyntax value = equalsValueClause.Value;
 
             if (value == null)
                 return;
@@ -35,6 +35,11 @@ namespace Roslynator.CSharp.Refactorings
             {
                 case ObjectCreationExpressionSyntax objectCreation:
                     {
+                        InitializerExpressionSyntax initializer = objectCreation.Initializer;
+
+                        if (initializer?.Span.Contains(context.Span) == true)
+                            return;
+
                         SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                         ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(objectCreation, context.CancellationToken);
@@ -44,6 +49,11 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 case ArrayCreationExpressionSyntax arrayCreation:
                     {
+                        InitializerExpressionSyntax initializer = arrayCreation.Initializer;
+
+                        if (initializer?.Span.Contains(context.Span) == true)
+                            return;
+
                         SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                         ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(arrayCreation, context.CancellationToken);
@@ -53,6 +63,11 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 case ImplicitArrayCreationExpressionSyntax implicitArrayCreation:
                     {
+                        InitializerExpressionSyntax initializer = implicitArrayCreation.Initializer;
+
+                        if (initializer?.Span.Contains(context.Span) == true)
+                            return;
+
                         SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                         ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(implicitArrayCreation, context.CancellationToken);

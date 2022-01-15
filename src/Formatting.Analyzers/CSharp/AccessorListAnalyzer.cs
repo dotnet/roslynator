@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
-using System.Diagnostics;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -25,9 +24,8 @@ namespace Roslynator.Formatting.CSharp
                 {
                     Immutable.InterlockedInitialize(
                         ref _supportedDiagnostics,
-                        DiagnosticRules.RemoveNewLinesFromAccessorListOfAutoProperty,
-                        DiagnosticRules.AddNewLineBeforeAccessorOfFullProperty,
-                        DiagnosticRules.RemoveNewLinesFromAccessorWithSingleLineExpression);
+                        DiagnosticRules.PutAutoAccessorsOnSingleLine,
+                        DiagnosticRules.PutFullAccessorOnItsOwnLine);
                 }
 
                 return _supportedDiagnostics;
@@ -49,7 +47,7 @@ namespace Roslynator.Formatting.CSharp
 
             if (accessors.Any(f => f.BodyOrExpressionBody() != null))
             {
-                if (DiagnosticRules.AddNewLineBeforeAccessorOfFullProperty.IsEffective(context))
+                if (DiagnosticRules.PutFullAccessorOnItsOwnLine.IsEffective(context))
                 {
                     SyntaxToken token = accessorList.OpenBraceToken;
 
@@ -60,7 +58,7 @@ namespace Roslynator.Formatting.CSharp
                         {
                             DiagnosticHelpers.ReportDiagnostic(
                                 context,
-                                DiagnosticRules.AddNewLineBeforeAccessorOfFullProperty,
+                                DiagnosticRules.PutFullAccessorOnItsOwnLine,
                                 Location.Create(accessor.SyntaxTree, new TextSpan(accessor.SpanStart, 0)));
 
                             break;
@@ -72,18 +70,8 @@ namespace Roslynator.Formatting.CSharp
                             break;
                     }
                 }
-
-                if (DiagnosticRules.RemoveNewLinesFromAccessorWithSingleLineExpression.IsEffective(context)
-                    && !accessorList.IsSingleLine(includeExteriorTrivia: false))
-                {
-                    foreach (AccessorDeclarationSyntax accessor in accessors)
-                    {
-                        if (CanRemoveNewLinesFromAccessor(accessor))
-                            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveNewLinesFromAccessorWithSingleLineExpression, accessor);
-                    }
-                }
             }
-            else if (DiagnosticRules.RemoveNewLinesFromAccessorListOfAutoProperty.IsEffective(context))
+            else if (DiagnosticRules.PutAutoAccessorsOnSingleLine.IsEffective(context))
             {
                 SyntaxNode parent = accessorList.Parent;
 
@@ -109,7 +97,7 @@ namespace Roslynator.Formatting.CSharp
                                             .DescendantTrivia(span)
                                             .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                                         {
-                                            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveNewLinesFromAccessorListOfAutoProperty, accessorList);
+                                            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.PutAutoAccessorsOnSingleLine, accessorList);
                                         }
                                     }
                                 }
@@ -142,7 +130,7 @@ namespace Roslynator.Formatting.CSharp
                                                 .DescendantTrivia(span)
                                                 .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                                             {
-                                                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveNewLinesFromAccessorListOfAutoProperty, accessorList);
+                                                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.PutAutoAccessorsOnSingleLine, accessorList);
                                             }
                                         }
                                     }
@@ -153,40 +141,6 @@ namespace Roslynator.Formatting.CSharp
                         }
                 }
             }
-        }
-
-        private static bool CanRemoveNewLinesFromAccessor(AccessorDeclarationSyntax accessor)
-        {
-            BlockSyntax body = accessor.Body;
-
-            if (body != null)
-            {
-                SyntaxList<StatementSyntax> statements = body.Statements;
-
-                if (statements.Count <= 1
-                    && accessor.SyntaxTree.IsMultiLineSpan(TextSpan.FromBounds(accessor.Keyword.SpanStart, accessor.Span.End))
-                    && (!statements.Any() || statements[0].IsSingleLine()))
-                {
-                    return accessor
-                        .DescendantTrivia(accessor.Span, descendIntoTrivia: true)
-                        .All(f => f.IsWhitespaceOrEndOfLineTrivia());
-                }
-            }
-            else
-            {
-                ArrowExpressionClauseSyntax expressionBody = accessor.ExpressionBody;
-
-                if (expressionBody != null
-                    && accessor.SyntaxTree.IsMultiLineSpan(TextSpan.FromBounds(accessor.Keyword.SpanStart, accessor.Span.End))
-                    && expressionBody.Expression?.IsSingleLine() == true)
-                {
-                    return accessor
-                        .DescendantTrivia(accessor.Span, descendIntoTrivia: true)
-                        .All(f => f.IsWhitespaceOrEndOfLineTrivia());
-                }
-            }
-
-            return false;
         }
     }
 }

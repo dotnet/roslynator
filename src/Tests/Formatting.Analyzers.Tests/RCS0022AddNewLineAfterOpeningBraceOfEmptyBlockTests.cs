@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Roslynator.Formatting.CSharp.Tests
 {
-    public class RCS0022AddNewLineAfterOpeningBraceOfEmptyBlockTests : AbstractCSharpDiagnosticVerifier<AddNewLineAfterOpeningBraceOfEmptyBlockAnalyzer, BlockCodeFixProvider>
+    public class RCS0022AddNewLineAfterOpeningBraceOfEmptyBlockTests : AbstractCSharpDiagnosticVerifier<FormatBlockBracesAnalyzer, BlockCodeFixProvider>
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddNewLineAfterOpeningBraceOfEmptyBlock;
 

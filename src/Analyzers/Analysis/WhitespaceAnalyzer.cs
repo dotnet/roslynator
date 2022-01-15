@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.Analysis
                     Immutable.InterlockedInitialize(
                         ref _supportedDiagnostics,
                         DiagnosticRules.RemoveTrailingWhitespace,
-                        DiagnosticRules.RemoveRedundantEmptyLine);
+                        DiagnosticRules.RemoveUnnecessaryBlankLine);
                 }
 
                 return _supportedDiagnostics;
@@ -84,7 +84,7 @@ namespace Roslynator.CSharp.Analysis
                     {
                         DiagnosticHelpers.ReportDiagnostic(
                             context,
-                            DiagnosticRules.RemoveRedundantEmptyLine,
+                            DiagnosticRules.RemoveUnnecessaryBlankLine,
                             Location.Create(context.Tree, emptyLines));
                     }
 

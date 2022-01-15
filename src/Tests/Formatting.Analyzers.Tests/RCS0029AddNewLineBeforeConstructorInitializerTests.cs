@@ -8,11 +8,11 @@ using Xunit;
 
 namespace Roslynator.Formatting.CSharp.Tests
 {
-    public class RCS0029AddNewLineBeforeConstructorInitializerTests : AbstractCSharpDiagnosticVerifier<AddNewLineBeforeConstructorInitializerAnalyzer, MemberDeclarationCodeFixProvider>
+    public class RCS0029AddNewLineBeforeConstructorInitializerTests : AbstractCSharpDiagnosticVerifier<PutConstructorInitializerOnItsOwnLineAnalyzer, MemberDeclarationCodeFixProvider>
     {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddNewLineBeforeConstructorInitializer;
+        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.PutConstructorInitializerOnItsOwnLine;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeConstructorInitializer)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutConstructorInitializerOnItsOwnLine)]
         public async Task Test_ThisInitializer()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -41,7 +41,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeConstructorInitializer)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutConstructorInitializerOnItsOwnLine)]
         public async Task Test_ThisInitializer_Multiline()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -74,7 +74,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeConstructorInitializer)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutConstructorInitializerOnItsOwnLine)]
         public async Task Test_BaseInitializer()
         {
             await VerifyDiagnosticAndFixAsync(@"

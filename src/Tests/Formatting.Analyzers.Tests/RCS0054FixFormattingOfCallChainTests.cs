@@ -41,6 +41,34 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfCallChain)]
+        public async Task Test_WrongIndentation_NullConditionalOperator()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    C M() 
+    {
+        var x = new C();
+
+        return [|x.M().M()
+        ?.M()|];
+    }
+}
+", @"
+class C
+{
+    C M() 
+    {
+        var x = new C();
+
+        return x.M().M()
+            ?.M();
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfCallChain)]
         public async Task Test_Invocation_NoIndentation()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -107,7 +135,36 @@ class C
         var x = new C();
 
         return [|x.M()
-            .M().M()|];
+            .M()?.M()|];
+    }
+}
+", @"
+class C
+{
+    C M() 
+    {
+        var x = new C();
+
+        return x.M()
+            .M()?
+            .M();
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfCallChain)]
+        public async Task Test_Invocation_WrapAndIndent_NullConditionalOperator_NewLineBefore()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    C M() 
+    {
+        var x = new C();
+
+        return [|x.M()
+            .M()?.M()|];
     }
 }
 ", @"
@@ -119,10 +176,39 @@ class C
 
         return x.M()
             .M()
+            ?.M();
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.NullConditionalOperatorNewLine, "before"));
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfCallChain)]
+        public async Task Test_Invocation_WrapAndIndent_NullConditionalOperator_NewLineAfter()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    C M() 
+    {
+        var x = new C();
+
+        return [|x.M()
+            .M()?.M()|];
+    }
+}
+", @"
+class C
+{
+    C M() 
+    {
+        var x = new C();
+
+        return x.M()
+            .M()?
             .M();
     }
 }
-");
+", options: Options.AddConfigOption(ConfigOptionKeys.NullConditionalOperatorNewLine, "after"));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfCallChain)]

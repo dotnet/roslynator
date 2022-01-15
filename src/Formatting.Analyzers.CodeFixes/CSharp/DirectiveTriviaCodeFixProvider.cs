@@ -23,8 +23,8 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticIdentifiers.AddEmptyLineAfterRegionDirective,
-                    DiagnosticIdentifiers.AddEmptyLineBeforeEndRegionDirective);
+                    DiagnosticIdentifiers.AddBlankLineAfterRegionDirective,
+                    DiagnosticIdentifiers.AddBlankLineBeforeEndRegionDirective);
             }
         }
 
@@ -40,12 +40,12 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
 
             switch (diagnostic.Id)
             {
-                case DiagnosticIdentifiers.AddEmptyLineAfterRegionDirective:
-                case DiagnosticIdentifiers.AddEmptyLineBeforeEndRegionDirective:
+                case DiagnosticIdentifiers.AddBlankLineAfterRegionDirective:
+                case DiagnosticIdentifiers.AddBlankLineBeforeEndRegionDirective:
                     {
                         CodeAction codeAction = CodeAction.Create(
-                            CodeFixTitles.AddEmptyLine,
-                            ct => AddEmptyLineAfterRegionDirectiveAndBeforeEndRegionAsync(document, directiveTrivia, ct),
+                            CodeFixTitles.AddBlankLine,
+                            ct => AddBlankLineAfterRegionDirectiveAndBeforeEndRegionAsync(document, directiveTrivia, ct),
                             GetEquivalenceKey(diagnostic));
 
                         context.RegisterCodeFix(codeAction, diagnostic);
@@ -54,7 +54,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
             }
         }
 
-        private static Task<Document> AddEmptyLineAfterRegionDirectiveAndBeforeEndRegionAsync(
+        private static Task<Document> AddBlankLineAfterRegionDirectiveAndBeforeEndRegionAsync(
             Document document,
             DirectiveTriviaSyntax directiveTrivia,
             CancellationToken cancellationToken)
@@ -62,9 +62,9 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
             switch (directiveTrivia.Kind())
             {
                 case SyntaxKind.RegionDirectiveTrivia:
-                    return CodeFixHelpers.AddEmptyLineAfterDirectiveAsync(document, directiveTrivia, cancellationToken);
+                    return CodeFixHelpers.AddBlankLineAfterDirectiveAsync(document, directiveTrivia, cancellationToken);
                 case SyntaxKind.EndRegionDirectiveTrivia:
-                    return CodeFixHelpers.AddEmptyLineBeforeDirectiveAsync(document, directiveTrivia, cancellationToken);
+                    return CodeFixHelpers.AddBlankLineBeforeDirectiveAsync(document, directiveTrivia, cancellationToken);
                 default:
                     throw new InvalidOperationException();
             }

@@ -10,9 +10,9 @@ namespace Roslynator.Formatting.CSharp.Tests
 {
     public class RCS0042RemoveNewLinesFromAccessorListOfAutoPropertyTests : AbstractCSharpDiagnosticVerifier<AccessorListAnalyzer, AccessorListCodeFixProvider>
     {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveNewLinesFromAccessorListOfAutoProperty;
+        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.PutAutoAccessorsOnSingleLine;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewLinesFromAccessorListOfAutoProperty)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAutoAccessorsOnSingleLine)]
         public async Task Test_ReadOnlyProperty()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -31,7 +31,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewLinesFromAccessorListOfAutoProperty)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAutoAccessorsOnSingleLine)]
         public async Task Test_Property()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -51,7 +51,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewLinesFromAccessorListOfAutoProperty)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAutoAccessorsOnSingleLine)]
         public async Task Test_ReadOnlyIndexer()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -70,7 +70,7 @@ interface I
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewLinesFromAccessorListOfAutoProperty)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAutoAccessorsOnSingleLine)]
         public async Task Test_Indexer()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -90,7 +90,7 @@ interface I
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveNewLinesFromAccessorListOfAutoProperty)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAutoAccessorsOnSingleLine)]
         public async Task TestNoDiagnostic()
         {
             await VerifyNoDiagnosticAsync(@"

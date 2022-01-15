@@ -63,7 +63,7 @@ namespace Roslynator.Configuration
                     xmlConfigMigrated = true;
                 }
 
-                string ruleSetPath = Path.Combine(Path.GetDirectoryName(path), RuleSetUtility.DefaultRuleSetName);
+                string ruleSetPath = Path.Combine(Path.GetDirectoryName(path), RuleSetLoader.DefaultRuleSetName);
 
                 if (File.Exists(ruleSetPath))
                 {
@@ -179,8 +179,8 @@ namespace Roslynator.Configuration
                     case "RCS0015i":
                         {
                             return (kvp.Value == ReportDiagnostic.Suppress)
-                                ? (ConfigOptionKeys.BlankLineBetweenUsingDirectiveGroups, "true")
-                                : (ConfigOptionKeys.BlankLineBetweenUsingDirectiveGroups, "false");
+                                ? (ConfigOptionKeys.BlankLineBetweenUsingDirectives, "never")
+                                : (ConfigOptionKeys.BlankLineBetweenUsingDirectives, "separate_groups");
                         }
                     case "RCS0027i":
                         {
@@ -227,14 +227,14 @@ namespace Roslynator.Configuration
                     case "RCS1016a":
                         {
                             return (kvp.Value == ReportDiagnostic.Suppress)
-                                ? (ConfigOptionKeys.PreferBlockBodyWhenExpressionSpansOverMultipleLines, "false")
-                                : (ConfigOptionKeys.PreferBlockBodyWhenExpressionSpansOverMultipleLines, "true");
+                                ? (ConfigOptionKeys.UseBlockBodyWhenExpressionSpansOverMultipleLines, "false")
+                                : (ConfigOptionKeys.UseBlockBodyWhenExpressionSpansOverMultipleLines, "true");
                         }
                     case "RCS1016b":
                         {
                             return (kvp.Value == ReportDiagnostic.Suppress)
-                                ? (ConfigOptionKeys.PreferBlockBodyWhenDeclarationSpansOverMultipleLines, "false")
-                                : (ConfigOptionKeys.PreferBlockBodyWhenDeclarationSpansOverMultipleLines, "true");
+                                ? (ConfigOptionKeys.UseBlockBodyWhenDeclarationSpansOverMultipleLines, "false")
+                                : (ConfigOptionKeys.UseBlockBodyWhenDeclarationSpansOverMultipleLines, "true");
                         }
                     case "RCS1016i":
                         {
@@ -263,8 +263,8 @@ namespace Roslynator.Configuration
                     case "RCS1051a":
                         {
                             return (kvp.Value == ReportDiagnostic.Suppress)
-                                ? (ConfigOptionKeys.ConditionInConditionalOperatorParenthesesStyle, ConfigOptionValues.ConditionInConditionalExpressionParenthesesStyle_Include)
-                                : (ConfigOptionKeys.ConditionInConditionalOperatorParenthesesStyle, ConfigOptionValues.ConditionInConditionalExpressionParenthesesStyle_OmitWhenConditionIsSingleToken);
+                                ? (ConfigOptionKeys.ConditionalOperatorConditionParenthesesStyle, ConfigOptionValues.ConditionInConditionalExpressionParenthesesStyle_Include)
+                                : (ConfigOptionKeys.ConditionalOperatorConditionParenthesesStyle, ConfigOptionValues.ConditionInConditionalExpressionParenthesesStyle_OmitWhenConditionIsSingleToken);
                         }
                     case "RCS1078i":
                         {
@@ -287,8 +287,8 @@ namespace Roslynator.Configuration
                     case "RCS1207i":
                         {
                             return (kvp.Value == ReportDiagnostic.Suppress)
-                                ? (ConfigOptionKeys.AnonymousFunctionOrMethodGroup, ConfigOptionValues.AnonymousFunctionOrMethodGroup_MethodGroup)
-                                : (ConfigOptionKeys.AnonymousFunctionOrMethodGroup, ConfigOptionValues.AnonymousFunctionOrMethodGroup_AnonymousFunction);
+                                ? (ConfigOptionKeys.UseAnonymousFunctionOrMethodGroup, ConfigOptionValues.AnonymousFunctionOrMethodGroup_MethodGroup)
+                                : (ConfigOptionKeys.UseAnonymousFunctionOrMethodGroup, ConfigOptionValues.AnonymousFunctionOrMethodGroup_AnonymousFunction);
                         }
                     case "RCS1248i":
                         {

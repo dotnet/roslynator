@@ -24,11 +24,11 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticIdentifiers.AddEmptyLineBetweenBlockAndStatement,
+                    DiagnosticIdentifiers.AddBlankLineBetweenClosingBraceAndNextStatement,
                     DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeConditionalOperator,
                     DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeArrowToken,
                     DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeEqualsToken,
-                    DiagnosticIdentifiers.AddNewLineAfterAttributeList,
+                    DiagnosticIdentifiers.PutAttributeListOnItsOwnLine,
                     DiagnosticIdentifiers.AddOrRemoveNewLineBeforeWhileInDoStatement);
             }
         }
@@ -45,10 +45,10 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
 
             switch (diagnostic.Id)
             {
-                case DiagnosticIdentifiers.AddEmptyLineBetweenBlockAndStatement:
+                case DiagnosticIdentifiers.AddBlankLineBetweenClosingBraceAndNextStatement:
                     {
                         CodeAction codeAction = CodeAction.Create(
-                            CodeFixTitles.AddEmptyLine,
+                            CodeFixTitles.AddBlankLine,
                             ct => CodeFixHelpers.AppendEndOfLineAsync(document, token, ct),
                             GetEquivalenceKey(diagnostic));
 
@@ -112,10 +112,10 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                         AddNewLineBeforeOrAfter();
                         break;
                     }
-                case DiagnosticIdentifiers.AddNewLineAfterAttributeList:
+                case DiagnosticIdentifiers.PutAttributeListOnItsOwnLine:
                     {
                         CodeAction codeAction = CodeAction.Create(
-                            CodeFixTitles.AddNewLine,
+                            "Put attribute on its own line",
                             ct => CodeFixHelpers.AddNewLineBeforeAsync(document, token, ct),
                             GetEquivalenceKey(diagnostic));
 

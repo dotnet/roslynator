@@ -4,9 +4,10 @@
 	<ValuePlaceholder>explicit|implicit</ValuePlaceholder>
 	<Description>Prefer explicit/implicit accessibility modifiers</Description>
   </Option>
-  <Option Id="AnonymousFunctionOrMethodGroup">
-	<ValuePlaceholder>anonymous_function|method_group</ValuePlaceholder>
-	<Description>Use anonymous function or method group</Description>
+  <Option Id="AccessorBracesStyle">
+	<DefaultValue>multi_line</DefaultValue>
+	<ValuePlaceholder>multi_line|single_line_when_expression_is_on_single_line</ValuePlaceholder>
+	<Description>Format accessor's braces on single line or multiple lines</Description>
   </Option>
   <Option Id="ArrayCreationTypeStyle">
 	<ValuePlaceholder>explicit|implicit|implicit_when_type_is_obvious</ValuePlaceholder>
@@ -28,21 +29,26 @@
 	<ValuePlaceholder>true|false</ValuePlaceholder>
 	<Description>Add/remove blank line between single-line accessors</Description>
   </Option>
-  <Option Id="BlankLineBetweenUsingDirectiveGroups">
-	<ValuePlaceholder>true|false</ValuePlaceholder>
-	<Description>Add/remove blank line between using directive groups</Description>
+  <Option Id="BlankLineBetweenUsingDirectives">
+	<ValuePlaceholder>never|separate_groups</ValuePlaceholder>
+	<Description>Add/remove blank line between using directives</Description>
+  </Option>
+  <Option Id="BlockBracesStyle">
+	<DefaultValue>multi_line</DefaultValue>
+	<ValuePlaceholder>multi_line|single_line_when_empty</ValuePlaceholder>
+	<Description>Format block's braces on single line or multiple lines</Description>
   </Option>
   <Option Id="BodyStyle">
 	<ValuePlaceholder>block|expression</ValuePlaceholder>
 	<Description>Prefer block body or expression body</Description>
   </Option>
+  <Option Id="ConditionalOperatorConditionParenthesesStyle">
+	<ValuePlaceholder>include|omit|omit_when_condition_is_single_token</ValuePlaceholder>
+	<Description>Add/remove parentheses to/from condition in conditional operator</Description>
+  </Option>
   <Option Id="ConditionalOperatorNewLine">
 	<ValuePlaceholder>after|before</ValuePlaceholder>
 	<Description>Place new line after/before '?:' operator</Description>
-  </Option>
-  <Option Id="ConditionInConditionalOperatorParenthesesStyle">
-	<ValuePlaceholder>include|omit||omit_when_condition_is_single_token</ValuePlaceholder>
-	<Description>Add/remove parentheses to condition in conditional operator</Description>
   </Option>
   <Option Id="ConfigureAwait">
 	<ValuePlaceholder>true|false</ValuePlaceholder>
@@ -77,6 +83,10 @@
 	<ValuePlaceholder>equality_operator|pattern_matching</ValuePlaceholder>
 	<Description>Use equality operator or pattern matchding as a null check</Description>
   </Option>
+  <Option Id="NullConditionalOperatorNewLine">
+	<ValuePlaceholder>after|before</ValuePlaceholder>
+	<Description>Place new line after/before null-conditional operator</Description>
+  </Option>
   <Option Id="ObjectCreationParenthesesStyle">
 	<ValuePlaceholder>include|omit</ValuePlaceholder>
 	<Description>Include/omit parentheses when creating new object</Description>
@@ -85,14 +95,6 @@
 	<ValuePlaceholder>explicit|implicit|implicit_when_type_is_obvious</ValuePlaceholder>
 	<Description>Prefer explicit/implicit object creation</Description>
   </Option>
-  <Option Id="PreferBlockBodyWhenDeclarationSpansOverMultipleLines">
-	<ValuePlaceholder>true|false</ValuePlaceholder>
-	<Description>Prefer block body when declaration spans over multiple lines</Description>
-  </Option>
-  <Option Id="PreferBlockBodyWhenExpressionSpansOverMultipleLines">
-	<ValuePlaceholder>true|false</ValuePlaceholder>
-	<Description>Prefer block body when expression spans over multiple lines</Description>
-  </Option>
   <Option Id="PrefixFieldIdentifierWithUnderscore">
     <ValuePlaceholder>true|false</ValuePlaceholder>
     <Description>Prefix field identifier with underscore</Description>
@@ -100,6 +102,18 @@
   <Option Id="SuppressUnityScriptMethods">
 	<ValuePlaceholder>true|false</ValuePlaceholder>
 	<Description>Suppress Unity script methods</Description>
+  </Option>
+  <Option Id="UseAnonymousFunctionOrMethodGroup">
+	<ValuePlaceholder>anonymous_function|method_group</ValuePlaceholder>
+	<Description>Use anonymous function or method group</Description>
+  </Option>
+  <Option Id="UseBlockBodyWhenDeclarationSpansOverMultipleLines">
+	<ValuePlaceholder>true|false</ValuePlaceholder>
+	<Description>Use block body when declaration spans over multiple lines</Description>
+  </Option>
+  <Option Id="UseBlockBodyWhenExpressionSpansOverMultipleLines">
+	<ValuePlaceholder>true|false</ValuePlaceholder>
+	<Description>Use block body when expression spans over multiple lines</Description>
   </Option>
   <Option Id="UseVarInsteadOfImplicitObjectCreation">
 	<ValuePlaceholder>true|false</ValuePlaceholder>

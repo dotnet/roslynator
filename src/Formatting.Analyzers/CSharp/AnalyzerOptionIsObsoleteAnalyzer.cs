@@ -22,7 +22,7 @@ namespace Roslynator.Formatting.CSharp
                         ref _supportedDiagnostics,
                         DiagnosticRules.AddOrRemoveNewLineBeforeWhileInDoStatement,
                         DiagnosticRules.BlankLineBetweenSingleLineAccessors,
-                        DiagnosticRules.BlankLineBetweenUsingDirectiveGroups,
+                        DiagnosticRules.BlankLineBetweenUsingDirectives,
                         DiagnosticRules.PlaceNewLineAfterOrBeforeArrowToken,
                         DiagnosticRules.PlaceNewLineAfterOrBeforeBinaryOperator,
                         DiagnosticRules.PlaceNewLineAfterOrBeforeConditionalOperator,
@@ -53,7 +53,7 @@ namespace Roslynator.Formatting.CSharp
 
                     Validate(ref context, compilationOptions, configOptions, Flags.AddOrRemoveNewLineBeforeWhileInDoStatement, ref flags, DiagnosticRules.AddOrRemoveNewLineBeforeWhileInDoStatement, ConfigOptions.NewLineBeforeWhileInDoStatement, LegacyConfigOptions.RemoveNewLineBetweenClosingBraceAndWhileKeyword, "false");
                     Validate(ref context, compilationOptions, configOptions, Flags.BlankLineBetweenSingleLineAccessors, ref flags, DiagnosticRules.BlankLineBetweenSingleLineAccessors, ConfigOptions.BlankLineBetweenSingleLineAccessors, LegacyConfigOptions.RemoveEmptyLineBetweenSingleLineAccessors, "false");
-                    Validate(ref context, compilationOptions, configOptions, Flags.BlankLineBetweenUsingDirectiveGroups, ref flags, DiagnosticRules.BlankLineBetweenUsingDirectiveGroups, ConfigOptions.BlankLineBetweenUsingDirectiveGroups, LegacyConfigOptions.RemoveEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace, "false");
+                    Validate(ref context, compilationOptions, configOptions, Flags.BlankLineBetweenUsingDirectives, ref flags, DiagnosticRules.BlankLineBetweenUsingDirectives, ConfigOptions.BlankLineBetweenUsingDirectives, LegacyConfigOptions.RemoveEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace, ConfigOptionValues.BlankLineBetweenUsingDirectiveGroups_Never);
                     Validate(ref context, compilationOptions, configOptions, Flags.PlaceNewLineAfterOrBeforeArrowToken, ref flags, DiagnosticRules.PlaceNewLineAfterOrBeforeArrowToken, ConfigOptions.ArrowTokenNewLine, LegacyConfigOptions.AddNewLineAfterExpressionBodyArrowInsteadOfBeforeIt, "after");
                     Validate(ref context, compilationOptions, configOptions, Flags.PlaceNewLineAfterOrBeforeConditionalOperator, ref flags, DiagnosticRules.PlaceNewLineAfterOrBeforeConditionalOperator, ConfigOptions.ConditionalOperatorNewLine, LegacyConfigOptions.AddNewLineAfterConditionalOperatorInsteadOfBeforeIt, "after");
                     Validate(ref context, compilationOptions, configOptions, Flags.PlaceNewLineAfterOrBeforeBinaryOperator, ref flags, DiagnosticRules.PlaceNewLineAfterOrBeforeBinaryOperator, ConfigOptions.BinaryOperatorNewLine, LegacyConfigOptions.AddNewLineAfterBinaryOperatorInsteadOfBeforeIt, "after");
@@ -87,7 +87,7 @@ namespace Roslynator.Formatting.CSharp
             None,
             AddOrRemoveNewLineBeforeWhileInDoStatement,
             BlankLineBetweenSingleLineAccessors,
-            BlankLineBetweenUsingDirectiveGroups,
+            BlankLineBetweenUsingDirectives,
             PlaceNewLineAfterOrBeforeArrowToken,
             PlaceNewLineAfterOrBeforeBinaryOperator,
             PlaceNewLineAfterOrBeforeConditionalOperator,

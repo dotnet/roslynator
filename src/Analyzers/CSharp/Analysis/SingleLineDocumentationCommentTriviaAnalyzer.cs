@@ -145,7 +145,7 @@ namespace Roslynator.CSharp.Analysis
                             }
                         default:
                             {
-                                Debug.Fail(info.GetTag().ToString());
+                                SyntaxDebug.Fail(content[i]);
                                 break;
                             }
                     }

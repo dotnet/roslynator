@@ -774,7 +774,7 @@ class C
             b"";
     }
 }
-", options: Options.EnableConfigOption(ConfigOptionKeys.PreferBlockBodyWhenExpressionSpansOverMultipleLines));
+", options: Options.EnableConfigOption(ConfigOptionKeys.UseBlockBodyWhenExpressionSpansOverMultipleLines));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]

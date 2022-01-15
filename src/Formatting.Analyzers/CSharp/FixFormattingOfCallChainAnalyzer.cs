@@ -72,11 +72,37 @@ namespace Roslynator.Formatting.CSharp
                     if (AnalyzeToken(memberAccess.OperatorToken))
                         return;
                 }
-                else if (en.Current.Kind() == SyntaxKind.MemberBindingExpression)
+                else if (kind == SyntaxKind.MemberBindingExpression)
                 {
                     var memberBinding = (MemberBindingExpressionSyntax)en.Current;
 
+                        if (!memberBinding.HasLeadingTrivia)
+                        {
+                            SyntaxToken prevToken = memberBinding.GetFirstToken().GetPreviousToken();
+
+                            if (prevToken.IsKind(SyntaxKind.QuestionToken)
+                                && prevToken.IsParentKind(SyntaxKind.ConditionalAccessExpression)
+                                && prevToken.HasLeadingTrivia
+                                && prevToken.TrailingTrivia.IsEmptyOrSingleWhitespaceTrivia())
+                            {
+                                continue;
+                            }
+                        }
+
                     if (AnalyzeToken(memberBinding.OperatorToken))
+                        return;
+                }
+                else if (kind == SyntaxKind.ConditionalAccessExpression)
+                {
+                    var conditionalAccess = (ConditionalAccessExpressionSyntax)en.Current;
+
+                    if (conditionalAccess.Expression.GetTrailingTrivia().IsEmptyOrSingleWhitespaceTrivia()
+                        && !conditionalAccess.OperatorToken.HasLeadingTrivia)
+                    {
+                        continue;
+                    }
+
+                    if (AnalyzeToken(conditionalAccess.OperatorToken))
                         return;
                 }
 

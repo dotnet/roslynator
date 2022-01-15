@@ -29,154 +29,169 @@ is_global = true
 ## Enable/disable all fixes for compiler diagnostics
 #roslynator.compiler_diagnostic_fixes.enabled = true|false
 
-## Enable/disable fix for a specific compiler diagnostics
+## Enable/disable fix for a specific compiler diagnostic
 #roslynator.compiler_diagnostic_fix.<COMPILER_DIAGNOSTIC_ID>.enabled = true|false
 
 # Options
 
-roslynator_accessibility_modifiers = explicit|implicit
+#roslynator_accessibility_modifiers = explicit|implicit
 # Applicable to: RCS1018
 
-roslynator_anonymous_function_or_method_group = anonymous_function|method_group
-# Applicable to: RCS1207
+#roslynator_accessor_braces_style = multi_line|single_line_when_expression_is_on_single_line
+# Default: multi_line
+# Applicable to: RCS0020
 
-roslynator_array_creation_type_style = explicit|implicit|implicit_when_type_is_obvious
+#roslynator_array_creation_type_style = explicit|implicit|implicit_when_type_is_obvious
 # Applicable to: RCS1014
 
-roslynator_arrow_token_new_line = after|before
+#roslynator_arrow_token_new_line = after|before
 # Applicable to: RCS0032
 
-roslynator_binary_operator_new_line = after|before
+#roslynator_binary_operator_new_line = after|before
 # Applicable to: RCS0027
 
-roslynator_blank_line_between_closing_brace_and_switch_section = true|false
-# Applicable to: RCS1036
+#roslynator_blank_line_between_closing_brace_and_switch_section = true|false
+# Applicable to: RCS0014, RCS1036
 
-roslynator_blank_line_between_single_line_accessors = true|false
+#roslynator_blank_line_between_single_line_accessors = true|false
 # Applicable to: RCS0011
 
-roslynator_blank_line_between_using_directive_groups = true|false
+#roslynator_blank_line_between_using_directives = never|separate_groups
 # Applicable to: RCS0015
 
-roslynator_body_style = block|expression
+#roslynator_block_braces_style = multi_line|single_line_when_empty
+# Default: multi_line
+# Applicable to: RCS0021
+
+#roslynator_body_style = block|expression
 # Applicable to: RCS1016
 
-roslynator_condition_in_conditional_operator_parentheses_style = include|omit||omit_when_condition_is_single_token
+#roslynator_conditional_operator_condition_parentheses_style = include|omit|omit_when_condition_is_single_token
 # Applicable to: RCS1051
 
-roslynator_conditional_operator_new_line = after|before
+#roslynator_conditional_operator_new_line = after|before
 # Applicable to: RCS0028
 
-roslynator_configure_await = true|false
+#roslynator_configure_await = true|false
 # Applicable to: RCS1090
 
-roslynator_empty_string_style = field|literal
+#roslynator_empty_string_style = field|literal
 # Applicable to: RCS1078
 
-roslynator_enum_has_flag_style = method|operator
+#roslynator_enum_has_flag_style = method|operator
 # Applicable to: RCS1096
 
-roslynator_equals_token_new_line = after|before
+#roslynator_equals_token_new_line = after|before
 # Applicable to: RCS0052
 
-roslynator_max_line_length = 140
+#roslynator_max_line_length = <NUM>
+# Default: 140
 # Applicable to: RCS0056
 
-roslynator_new_line_at_end_of_file = true|false
+#roslynator_new_line_at_end_of_file = true|false
 # Applicable to: RCS0058
 
-roslynator_new_line_before_while_in_do_statement = true|false
+#roslynator_new_line_before_while_in_do_statement = true|false
 # Applicable to: RCS0051
 
-roslynator_null_check_style = equality_operator|pattern_matching
+#roslynator_null_conditional_operator_new_line = after|before
+# Applicable to: RCS0059
+
+#roslynator_null_check_style = equality_operator|pattern_matching
 # Applicable to: RCS1248
 
-roslynator_object_creation_parentheses_style = include|omit
+#roslynator_object_creation_parentheses_style = include|omit
 # Applicable to: RCS1050
 
-roslynator_object_creation_type_style = explicit|implicit|implicit_when_type_is_obvious
+#roslynator_object_creation_type_style = explicit|implicit|implicit_when_type_is_obvious
 # Applicable to: RCS1250
 
-roslynator_prefer_block_body_when_declaration_spans_over_multiple_lines = true|false
-# Applicable to: RCS1016
+#roslynator_prefix_field_identifier_with_underscore = true|false
 
-roslynator_prefer_block_body_when_expression_spans_over_multiple_lines = true|false
-# Applicable to: RCS1016
-
-roslynator_prefix_field_identifier_with_underscore = true|false
-
-roslynator_suppress_unity_script_methods = true|false
+#roslynator_suppress_unity_script_methods = true|false
 # Applicable to: RCS1213
 
-roslynator_use_var_instead_of_implicit_object_creation = true|false
+#roslynator_use_anonymous_function_or_method_group = anonymous_function|method_group
+# Applicable to: RCS1207
+
+#roslynator_use_block_body_when_declaration_spans_over_multiple_lines = true|false
+# Applicable to: RCS1016
+
+#roslynator_use_block_body_when_expression_spans_over_multiple_lines = true|false
+# Applicable to: RCS1016
+
+#roslynator_use_var_instead_of_implicit_object_creation = true|false
 # Applicable to: RCS1250
 
 
 # Analyzers
 
-# Add empty line after embedded statement
+# Add blank line after embedded statement
 dotnet_diagnostic.RCS0001.severity = none
 
-# Add empty line after #region
+# Add blank line after #region
 dotnet_diagnostic.RCS0002.severity = none
 
-# Add empty line after using directive list
+# Add blank line after using directive list
 dotnet_diagnostic.RCS0003.severity = none
 
-# Add empty line before #endregion
+# Add blank line before #endregion
 dotnet_diagnostic.RCS0005.severity = none
 
-# Add empty line before using directive list
+# Add blank line before using directive list
 dotnet_diagnostic.RCS0006.severity = none
 
-# Add empty line between accessors
+# Add blank line between accessors
 dotnet_diagnostic.RCS0007.severity = none
 
-# Add empty line between block and statement
+# Add blank line between closing brace and next statement
 dotnet_diagnostic.RCS0008.severity = none
 
-# Add empty line between declaration and documentation comment
+# Add blank line between declaration and documentation comment
 dotnet_diagnostic.RCS0009.severity = none
 
-# Add empty line between declarations
+# Add blank line between declarations
 dotnet_diagnostic.RCS0010.severity = none
 
 # Add/remove blank line between single-line accessors
 dotnet_diagnostic.RCS0011.severity = none
 #roslynator_blank_line_between_single_line_accessors = true|false
 
-# Add empty line between single-line declarations
+# Add blank line between single-line declarations
 dotnet_diagnostic.RCS0012.severity = none
 
-# Add empty line between single-line declarations of different kind
+# Add blank line between single-line declarations of different kind
 dotnet_diagnostic.RCS0013.severity = none
 
-# Add empty line between switch sections
+# Add blank line between switch sections
 dotnet_diagnostic.RCS0014.severity = none
+#roslynator_blank_line_between_closing_brace_and_switch_section = true|false
 
-# Add/remove empty line between using directive groups
+# Add/remove blank line between using directives
 dotnet_diagnostic.RCS0015.severity = none
-#roslynator_blank_line_between_using_directive_groups = true|false
+#roslynator_blank_line_between_using_directives = never|separate_groups
 
-# Add new line after attribute list
+# Put attribute list on its own line
 dotnet_diagnostic.RCS0016.severity = none
 
-# Add new line after opening brace of accessor
+# Format accessor's braces on a single line or multiple lines
 dotnet_diagnostic.RCS0020.severity = none
+#roslynator_accessor_braces_style = multi_line|single_line_when_expression_is_on_single_line
 
-# Add new line after opening brace of block
+# Format block's braces on a single line or multiple lines
 dotnet_diagnostic.RCS0021.severity = none
+#roslynator_block_braces_style = multi_line|single_line_when_empty
 
 # Add new line after opening brace of empty block
 dotnet_diagnostic.RCS0022.severity = none
 
-# Add new line after opening brace of type declaration
+# Format type declaration's braces
 dotnet_diagnostic.RCS0023.severity = none
 
 # Add new line after switch label
 dotnet_diagnostic.RCS0024.severity = none
 
-# Add new line before accessor of full property
+# Put full accessor on its own line
 dotnet_diagnostic.RCS0025.severity = none
 
 # Place new line after/before binary operator
@@ -187,7 +202,7 @@ dotnet_diagnostic.RCS0027.severity = none
 dotnet_diagnostic.RCS0028.severity = none
 #roslynator_conditional_operator_new_line = after|before
 
-# Add new line before constructor initializer
+# Put constructor initializer on its own line
 dotnet_diagnostic.RCS0029.severity = none
 
 # Add new line before embedded statement
@@ -206,10 +221,10 @@ dotnet_diagnostic.RCS0033.severity = none
 # Add new line before type parameter constraint
 dotnet_diagnostic.RCS0034.severity = none
 
-# Remove empty line between single-line declarations of same kind
+# Remove blank line between single-line declarations of same kind
 dotnet_diagnostic.RCS0036.severity = none
 
-# Remove empty line between using directives with same root namespace
+# Remove blank line between using directives with same root namespace
 dotnet_diagnostic.RCS0038.severity = none
 
 # Remove new line before base list
@@ -218,10 +233,10 @@ dotnet_diagnostic.RCS0039.severity = none
 # Remove new line between 'if' keyword and 'else' keyword
 dotnet_diagnostic.RCS0041.severity = none
 
-# Remove new lines from accessor list of auto-property
+# Put auto-accessors on a single line
 dotnet_diagnostic.RCS0042.severity = none
 
-# Remove new lines from accessor with single-line expression
+# Format accessor's braces on a single line when expression is on single line
 dotnet_diagnostic.RCS0043.severity = none
 
 # Use carriage return + linefeed as new line
@@ -236,13 +251,13 @@ dotnet_diagnostic.RCS0046.severity = none
 # [deprecated] Wrap and indent each node in list
 dotnet_diagnostic.RCS0047.severity = none
 
-# Remove new lines from initializer with single-line expression
+# Put initializer on a single line
 dotnet_diagnostic.RCS0048.severity = none
 
-# Add empty line after top comment
+# Add blank line after top comment
 dotnet_diagnostic.RCS0049.severity = none
 
-# Add empty line before top declaration
+# Add blank line before top declaration
 dotnet_diagnostic.RCS0050.severity = none
 
 # Add/remove new line before 'while' in 'do' statement
@@ -272,6 +287,10 @@ dotnet_diagnostic.RCS0057.severity = none
 # Normalize whitespace at the end of a file
 dotnet_diagnostic.RCS0058.severity = none
 #roslynator_new_line_at_end_of_file = true|false
+
+# Place new line after/before null-conditional operator
+dotnet_diagnostic.RCS0059.severity = none
+#roslynator_null_conditional_operator_new_line = after|before
 
 # Add braces (when expression spans over multiple lines)
 dotnet_diagnostic.RCS1001.severity = suggestion
@@ -319,8 +338,8 @@ dotnet_diagnostic.RCS1015.severity = suggestion
 # Use block body or expression body
 dotnet_diagnostic.RCS1016.severity = none
 #roslynator_body_style = block|expression
-#roslynator_prefer_block_body_when_declaration_spans_over_multiple_lines = true|false
-#roslynator_prefer_block_body_when_expression_spans_over_multiple_lines = true|false
+#roslynator_use_block_body_when_declaration_spans_over_multiple_lines = true|false
+#roslynator_use_block_body_when_expression_spans_over_multiple_lines = true|false
 
 # Add/remove accessibility modifiers
 dotnet_diagnostic.RCS1018.severity = suggestion
@@ -350,7 +369,7 @@ dotnet_diagnostic.RCS1034.severity = silent
 # Remove redundant comma in initializer
 dotnet_diagnostic.RCS1035.severity = none
 
-# Remove redundant empty line
+# Remove unnecessary blank line
 dotnet_diagnostic.RCS1036.severity = suggestion
 #roslynator_blank_line_between_closing_brace_and_switch_section = true|false
 
@@ -396,7 +415,7 @@ dotnet_diagnostic.RCS1050.severity = none
 
 # Add/remove parentheses from condition in conditional operator
 dotnet_diagnostic.RCS1051.severity = none
-#roslynator_condition_in_conditional_operator_parentheses_style = include|omit||omit_when_condition_is_single_token
+#roslynator_conditional_operator_condition_parentheses_style = include|omit|omit_when_condition_is_single_token
 
 # Declare each attribute separately
 dotnet_diagnostic.RCS1052.severity = none
@@ -757,7 +776,7 @@ dotnet_diagnostic.RCS1206.severity = suggestion
 
 # Use anonymous function or method group
 dotnet_diagnostic.RCS1207.severity = none
-#roslynator_anonymous_function_or_method_group = anonymous_function|method_group
+#roslynator_use_anonymous_function_or_method_group = anonymous_function|method_group
 
 # Reduce 'if' nesting
 dotnet_diagnostic.RCS1208.severity = none

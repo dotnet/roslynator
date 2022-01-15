@@ -23,8 +23,8 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticIdentifiers.AddNewLineAfterOpeningBraceOfTypeDeclaration,
-                    DiagnosticIdentifiers.AddNewLineBeforeConstructorInitializer);
+                    DiagnosticIdentifiers.FormatTypeDeclarationBraces,
+                    DiagnosticIdentifiers.PutConstructorInitializerOnItsOwnLine);
             }
         }
 
@@ -40,20 +40,20 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
 
             switch (diagnostic.Id)
             {
-                case DiagnosticIdentifiers.AddNewLineAfterOpeningBraceOfTypeDeclaration:
+                case DiagnosticIdentifiers.FormatTypeDeclarationBraces:
                     {
                         CodeAction codeAction = CodeAction.Create(
-                            CodeFixTitles.AddNewLine,
-                            ct => AddNewLineAfterOpeningBraceOfTypeDeclarationAsync(document, memberDeclaration, ct),
+                            "Format braces on multiple lines",
+                            ct => FormatTypeDeclarationBracesOnMultipleLinesAsync(document, memberDeclaration, ct),
                             GetEquivalenceKey(diagnostic));
 
                         context.RegisterCodeFix(codeAction, diagnostic);
                         break;
                     }
-                case DiagnosticIdentifiers.AddNewLineBeforeConstructorInitializer:
+                case DiagnosticIdentifiers.PutConstructorInitializerOnItsOwnLine:
                     {
                         CodeAction codeAction = CodeAction.Create(
-                            CodeFixTitles.AddNewLine,
+                            "Put constructor initializer on its own line",
                             ct =>
                             {
                                 return CodeFixHelpers.AddNewLineBeforeAndIncreaseIndentationAsync(
@@ -70,7 +70,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
             }
         }
 
-        private static Task<Document> AddNewLineAfterOpeningBraceOfTypeDeclarationAsync(
+        private static Task<Document> FormatTypeDeclarationBracesOnMultipleLinesAsync(
             Document document,
             MemberDeclarationSyntax declaration,
             CancellationToken cancellationToken)
@@ -84,21 +84,15 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                 switch (declaration)
                 {
                     case ClassDeclarationSyntax classDeclaration:
-                        {
-                            return classDeclaration.WithOpenBraceToken(classDeclaration.OpenBraceToken.AppendEndOfLineToTrailingTrivia());
-                        }
+                        return classDeclaration.WithCloseBraceToken(classDeclaration.CloseBraceToken.AppendEndOfLineToLeadingTrivia());
                     case StructDeclarationSyntax structDeclaration:
-                        {
-                            return structDeclaration.WithOpenBraceToken(structDeclaration.OpenBraceToken.AppendEndOfLineToTrailingTrivia());
-                        }
+                        return structDeclaration.WithCloseBraceToken(structDeclaration.CloseBraceToken.AppendEndOfLineToLeadingTrivia());
                     case InterfaceDeclarationSyntax interfaceDeclaration:
-                        {
-                            return interfaceDeclaration.WithOpenBraceToken(interfaceDeclaration.OpenBraceToken.AppendEndOfLineToTrailingTrivia());
-                        }
+                        return interfaceDeclaration.WithCloseBraceToken(interfaceDeclaration.CloseBraceToken.AppendEndOfLineToLeadingTrivia());
+                    case RecordDeclarationSyntax recordDeclaration:
+                        return recordDeclaration.WithCloseBraceToken(recordDeclaration.CloseBraceToken.AppendEndOfLineToLeadingTrivia());
                     default:
-                        {
-                            throw new InvalidOperationException();
-                        }
+                        throw new InvalidOperationException();
                 }
             }
         }

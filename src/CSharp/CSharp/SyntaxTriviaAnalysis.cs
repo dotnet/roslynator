@@ -122,7 +122,7 @@ namespace Roslynator.CSharp
         {
             return IsOptionalWhitespaceThenEndOfLineTrivia(left.GetTrailingTrivia())
                 && token.LeadingTrivia.IsEmptyOrWhitespace()
-                && token.TrailingTrivia.SingleOrDefault(shouldThrow: false).IsWhitespaceTrivia()
+                && token.TrailingTrivia.SingleOrDefault(shouldThrow: false).IsKind(SyntaxKind.None, SyntaxKind.WhitespaceTrivia)
                 && !right.GetLeadingTrivia().Any();
         }
 
@@ -131,7 +131,7 @@ namespace Roslynator.CSharp
             SyntaxToken token,
             ExpressionSyntax right)
         {
-            return left.GetTrailingTrivia().SingleOrDefault(shouldThrow: false).IsWhitespaceTrivia()
+            return left.GetTrailingTrivia().SingleOrDefault(shouldThrow: false).IsKind(SyntaxKind.None, SyntaxKind.WhitespaceTrivia)
                 && !token.LeadingTrivia.Any()
                 && IsOptionalWhitespaceThenEndOfLineTrivia(token.TrailingTrivia)
                 && right.GetLeadingTrivia().IsEmptyOrWhitespace();

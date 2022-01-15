@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Analyzers>
-  <Analyzer Identifier="AddEmptyLineAfterEmbeddedStatement">
+  <Analyzer Identifier="AddBlankLineAfterEmbeddedStatement">
     <Id>RCS0001</Id>
-    <Title>Add empty line after embedded statement.</Title>
+    <Title>Add blank line after embedded statement.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -17,12 +17,10 @@ Bar();]]></Before>
 Bar();]]></After>
       </Sample>
     </Samples>
-    <Remarks>This rule was originally introduced as [RCS1030](RCS1030.md)</Remarks>
   </Analyzer>
-  <Analyzer Identifier="AddEmptyLineAfterRegionDirective">
+  <Analyzer Identifier="AddBlankLineAfterRegionDirective">
     <Id>RCS0002</Id>
-    <Title>Add empty line after #region.</Title>
-    <MessageFormat>Add empty after #region.</MessageFormat>
+    <Title>Add blank line after #region.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -50,9 +48,9 @@ Bar();]]></After>
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AddEmptyLineAfterUsingDirectiveList">
+  <Analyzer Identifier="AddBlankLineAfterUsingDirectiveList">
     <Id>RCS0003</Id>
-    <Title>Add empty line after using directive list.</Title>
+    <Title>Add blank line after using directive list.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -95,11 +93,10 @@ namespace N
 } while (x);]]></After>
       </Sample>
     </Samples>
-    <Remarks>This rule was originally introduced as [RCS1092](RCS1092.md)</Remarks>
   </Analyzer>
-  <Analyzer Identifier="AddEmptyLineBeforeEndRegionDirective">
+  <Analyzer Identifier="AddBlankLineBeforeEndRegionDirective">
     <Id>RCS0005</Id>
-    <Title>Add empty line before #endregion.</Title>
+    <Title>Add blank line before #endregion.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -127,9 +124,9 @@ namespace N
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AddEmptyLineBeforeUsingDirectiveList">
+  <Analyzer Identifier="AddBlankLineBeforeUsingDirectiveList">
     <Id>RCS0006</Id>
-    <Title>Add empty line before using directive list.</Title>
+    <Title>Add blank line before using directive list.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -153,9 +150,9 @@ namespace N
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AddEmptyLineBetweenAccessors">
+  <Analyzer Identifier="AddBlankLineBetweenAccessors">
     <Id>RCS0007</Id>
-    <Title>Add empty line between accessors.</Title>
+    <Title>Add blank line between accessors.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -186,11 +183,11 @@ namespace N
 }]]></After>
       </Sample>
     </Samples>
-    <Remarks>This rule does not enforce an empty line between two single-line accessors.</Remarks>
+    <Remarks>This rule does not enforce an blank line between two single-line accessors.</Remarks>
   </Analyzer>
-  <Analyzer Identifier="AddEmptyLineBetweenBlockAndStatement">
+  <Analyzer Identifier="AddBlankLineBetweenClosingBraceAndNextStatement">
     <Id>RCS0008</Id>
-    <Title>Add empty line between block and statement.</Title>
+    <Title>Add blank line between closing brace and next statement.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -207,11 +204,10 @@ Foo();]]></Before>
 Foo();]]></After>
       </Sample>
     </Samples>
-    <Remarks>This rule was originally introduced as [RCS1153](RCS1153.md)</Remarks>
   </Analyzer>
-  <Analyzer Identifier="AddEmptyLineBetweenDeclarationAndDocumentationComment">
+  <Analyzer Identifier="AddBlankLineBetweenDeclarationAndDocumentationComment">
     <Id>RCS0009</Id>
-    <Title>Add empty line between declaration and documentation comment.</Title>
+    <Title>Add blank line between declaration and documentation comment.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -231,9 +227,9 @@ object P2 { get; }]]></After>
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AddEmptyLineBetweenDeclarations">
+  <Analyzer Identifier="AddBlankLineBetweenDeclarations">
     <Id>RCS0010</Id>
-    <Title>Add empty line between declarations.</Title>
+    <Title>Add blank line between declarations.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -304,9 +300,7 @@ enum Bar
 }]]></After>
       </Sample>
     </Samples>
-    <Remarks>This rule was originally introduced as [RCS1057](RCS1057.md).
-
-This rule does not enforce an empty line between two single-line declaration.</Remarks>
+    <Remarks>This rule does not enforce an blank line between two single-line declaration.</Remarks>
   </Analyzer>
   <Analyzer Identifier="BlankLineBetweenSingleLineAccessors">
     <Id>RCS0011</Id>
@@ -358,9 +352,9 @@ This rule does not enforce an empty line between two single-line declaration.</R
       </Option>
     </Options>
   </Analyzer>
-  <Analyzer Identifier="AddEmptyLineBetweenSingleLineDeclarations">
+  <Analyzer Identifier="AddBlankLineBetweenSingleLineDeclarations">
     <Id>RCS0012</Id>
-    <Title>Add empty line between single-line declarations.</Title>
+    <Title>Add blank line between single-line declarations.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -374,9 +368,9 @@ object P2 { get; }]]></After>
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AddEmptyLineBetweenSingleLineDeclarationsOfDifferentKind">
+  <Analyzer Identifier="AddBlankLineBetweenSingleLineDeclarationsOfDifferentKind">
     <Id>RCS0013</Id>
-    <Title>Add empty line between single-line declarations of different kind.</Title>
+    <Title>Add blank line between single-line declarations of different kind.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -390,12 +384,15 @@ object this[int index] { get; }]]></After>
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AddEmptyLineBetweenSwitchSections">
+  <Analyzer Identifier="AddBlankLineBetweenSwitchSections">
     <Id>RCS0014</Id>
-    <Title>Add empty line between switch sections.</Title>
+    <Title>Add blank line between switch sections.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
+    <ConfigOptions>
+      <Option Key="blank_line_between_closing_brace_and_switch_section" />
+    </ConfigOptions>
     <Samples>
       <Sample>
         <Before><![CDATA[switch (x)
@@ -418,10 +415,10 @@ object this[int index] { get; }]]></After>
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="BlankLineBetweenUsingDirectiveGroups">
+  <Analyzer Identifier="BlankLineBetweenUsingDirectives">
     <Id>RCS0015</Id>
-    <Title>Add/remove empty line between using directive groups.</Title>
-    <MessageFormat>{0} empty line between using directive groups.</MessageFormat>
+    <Title>Add/remove blank line between using directives.</Title>
+    <MessageFormat>{0} blank line between using directives.</MessageFormat>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -443,7 +440,7 @@ namespace N
       </Sample>
     </Samples>
     <ConfigOptions>
-      <Option Key="blank_line_between_using_directive_groups" IsRequired="true" />
+      <Option Key="blank_line_between_using_directives" IsRequired="true" />
     </ConfigOptions>
     <Options>
       <Option Identifier="RemoveEmptyLineBetweenUsingDirectivesWithDifferentRootNamespace">
@@ -451,7 +448,7 @@ namespace N
         <MessageFormat>Remove empty line between using directives.</MessageFormat>
         <Id>i</Id>
         <OptionKey>invert</OptionKey>
-        <NewOptionKey>blank_line_between_using_directive_groups</NewOptionKey>
+        <NewOptionKey>blank_line_between_using_directives</NewOptionKey>
         <Kind>Invert</Kind>
         <Samples>
           <Sample>
@@ -473,9 +470,9 @@ namespace N
       </Option>
     </Options>
   </Analyzer>
-  <Analyzer Identifier="AddNewLineAfterAttributeList">
+  <Analyzer Identifier="PutAttributeListOnItsOwnLine">
     <Id>RCS0016</Id>
-    <Title>Add new line after attribute list.</Title>
+    <Title>Put attribute list on its own line.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -550,12 +547,16 @@ namespace N
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AddNewLineAfterOpeningBraceOfAccessor">
+  <Analyzer Identifier="FormatAccessorBraces">
     <Id>RCS0020</Id>
-    <Title>Add new line after opening brace of accessor.</Title>
+    <Title>Format accessor's braces on a single line or multiple lines.</Title>
+    <MessageFormat>Format braces on {0}.</MessageFormat>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
+    <ConfigOptions>
+      <Option Key="accessor_braces_style" />
+    </ConfigOptions>
     <Samples>
       <Sample>
         <Before><![CDATA[string Foo
@@ -572,12 +573,16 @@ namespace N
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AddNewLineAfterOpeningBraceOfBlock">
+  <Analyzer Identifier="FormatBlockBraces">
     <Id>RCS0021</Id>
-    <Title>Add new line after opening brace of block.</Title>
+    <Title>Format block's braces on a single line or multiple lines.</Title>
+    <MessageFormat>Format braces on {0}.</MessageFormat>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
+    <ConfigOptions>
+      <Option Key="block_braces_style" />
+    </ConfigOptions>
     <Samples>
       <Sample>
         <Before><![CDATA[void Foo() { Bar(); }]]></Before>
@@ -587,11 +592,11 @@ namespace N
 }]]></After>
       </Sample>
     </Samples>
-    <Remarks>This rule was originally introduced as [RCS1185](RCS1185.md)</Remarks>
   </Analyzer>
   <Analyzer Identifier="AddNewLineAfterOpeningBraceOfEmptyBlock">
     <Id>RCS0022</Id>
     <Title>Add new line after opening brace of empty block.</Title>
+    <MessageFormat>([deprecated] Use RCS0021 instead) Format braces on a single line.</MessageFormat>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -604,11 +609,10 @@ namespace N
 }]]></After>
       </Sample>
     </Samples>
-    <Remarks>This rule was originally introduced as [RCS1023](RCS1023.md)</Remarks>
   </Analyzer>
-  <Analyzer Identifier="AddNewLineAfterOpeningBraceOfTypeDeclaration">
+  <Analyzer Identifier="FormatTypeDeclarationBraces">
     <Id>RCS0023</Id>
-    <Title>Add new line after opening brace of type declaration.</Title>
+    <Title>Format type declaration's braces.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -621,7 +625,6 @@ namespace N
 }]]></After>
       </Sample>
     </Samples>
-    <Remarks>This rule was originally introduced as [RCS1076](RCS1076.md)</Remarks>
   </Analyzer>
   <Analyzer Identifier="AddNewLineAfterSwitchLabel">
     <Id>RCS0024</Id>
@@ -645,11 +648,10 @@ namespace N
 }]]></After>
       </Sample>
     </Samples>
-    <Remarks>This rule was originally introduced as [RCS1028](RCS1028.md)</Remarks>
   </Analyzer>
-  <Analyzer Identifier="AddNewLineBeforeAccessorOfFullProperty">
+  <Analyzer Identifier="PutFullAccessorOnItsOwnLine">
     <Id>RCS0025</Id>
-    <Title>Add new line before accessor of full property.</Title>
+    <Title>Put full accessor on its own line.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -663,7 +665,6 @@ namespace N
 }]]></After>
       </Sample>
     </Samples>
-    <Remarks>This rule was derived from [RCS1024](RCS1024.md).</Remarks>
   </Analyzer>
   <Analyzer Identifier="PlaceNewLineAfterOrBeforeBinaryOperator">
     <Id>RCS0027</Id>
@@ -712,7 +713,6 @@ namespace N
         </Samples>
       </Option>
     </Options>
-    <Remarks>This rule was originally introduced as [RCS1029](RCS1029.md)</Remarks>
   </Analyzer>
   <Analyzer Identifier="PlaceNewLineAfterOrBeforeConditionalOperator">
     <Id>RCS0028</Id>
@@ -753,11 +753,10 @@ namespace N
         </Samples>
       </Option>
     </Options>
-    <Remarks>This rule was originally introduced as [RCS1184](RCS1184.md)</Remarks>
   </Analyzer>
-  <Analyzer Identifier="AddNewLineBeforeConstructorInitializer">
+  <Analyzer Identifier="PutConstructorInitializerOnItsOwnLine">
     <Id>RCS0029</Id>
-    <Title>Add new line before constructor initializer.</Title>
+    <Title>Put constructor initializer on its own line.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -788,7 +787,6 @@ namespace N
     Foo();]]></After>
       </Sample>
     </Samples>
-    <Remarks>This rule was originally introduced as [RCS1027](RCS1027.md)</Remarks>
   </Analyzer>
   <Analyzer Identifier="AddNewLineBeforeEnumMember">
     <Id>RCS0031</Id>
@@ -807,7 +805,6 @@ namespace N
 }]]></After>
       </Sample>
     </Samples>
-    <Remarks>This rule was originally introduced as [RCS1025](RCS1025.md)</Remarks>
   </Analyzer>
   <Analyzer Identifier="PlaceNewLineAfterOrBeforeArrowToken">
     <Id>RCS0032</Id>
@@ -858,7 +855,6 @@ namespace N
 Bar();]]></After>
       </Sample>
     </Samples>
-    <Remarks>This rule was originally introduced as [RCS1026](RCS1026.md)</Remarks>
   </Analyzer>
   <Analyzer Identifier="AddNewLineBeforeTypeParameterConstraint">
     <Id>RCS0034</Id>
@@ -901,9 +897,9 @@ Bar();]]></After>
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="RemoveEmptyLineBetweenSingleLineDeclarationsOfSameKind">
+  <Analyzer Identifier="RemoveBlankLineBetweenSingleLineDeclarationsOfSameKind">
     <Id>RCS0036</Id>
-    <Title>Remove empty line between single-line declarations of same kind.</Title>
+    <Title>Remove blank line between single-line declarations of same kind.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -943,10 +939,10 @@ namespace N
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="RemoveEmptyLineBetweenUsingDirectivesWithSameRootNamespace">
+  <Analyzer Identifier="RemoveBlankLineBetweenUsingDirectivesWithSameRootNamespace">
     <Id>RCS0038</Id>
-    <Title>Remove empty line between using directives with same root namespace.</Title>
-    <MessageFormat>Remove empty line between using directives.</MessageFormat>
+    <Title>Remove blank line between using directives with same root namespace.</Title>
+    <MessageFormat>([deprecated] Use RCS0015 instead) Remove blank line between using directives.</MessageFormat>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -1034,9 +1030,9 @@ else if (y)
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="RemoveNewLinesFromAccessorListOfAutoProperty">
+  <Analyzer Identifier="PutAutoAccessorsOnSingleLine">
     <Id>RCS0042</Id>
-    <Title>Remove new lines from accessor list of auto-property.</Title>
+    <Title>Put auto-accessors on a single line.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -1050,11 +1046,11 @@ else if (y)
         <After><![CDATA[string Foo { get; set; }]]></After>
       </Sample>
     </Samples>
-    <Remarks>This rule was derived from [RCS1024](RCS1024.md).</Remarks>
   </Analyzer>
-  <Analyzer Identifier="RemoveNewLinesFromAccessorWithSingleLineExpression">
+  <Analyzer Identifier="FormatAccessorBracesOnSingleLineWhenExpressionIsOnSingleLine">
     <Id>RCS0043</Id>
-    <Title>Remove new lines from accessor with single-line expression.</Title>
+    <Title>Format accessor's braces on a single line when expression is on single line.</Title>
+    <MessageFormat>([deprecated] Use RCS0020 with option 'roslynator_accessor_braces_style = single_line_when_expression_is_on_single_line) Format braces on a single line.</MessageFormat>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -1078,7 +1074,6 @@ else if (y)
 }]]></After>
       </Sample>
     </Samples>
-    <Remarks>This rule was derived from [RCS1024](RCS1024.md).</Remarks>
   </Analyzer>
   <Analyzer Identifier="UseCarriageReturnAndLinefeedAsNewLine">
     <Id>RCS0044</Id>
@@ -1086,7 +1081,6 @@ else if (y)
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
-    <Remarks>This rule was originally introduced as [RCS1087](RCS1087.md)</Remarks>
   </Analyzer>
   <Analyzer Identifier="UseLinefeedAsNewLine">
     <Id>RCS0045</Id>
@@ -1094,7 +1088,6 @@ else if (y)
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
-    <Remarks>This rule was originally introduced as [RCS1086](RCS1086.md)</Remarks>
   </Analyzer>
   <Analyzer Identifier="UseSpacesInsteadOfTab">
     <Id>RCS0046</Id>
@@ -1102,7 +1095,6 @@ else if (y)
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
-    <Remarks>This rule was originally introduced as [RCS1088](RCS1088.md)</Remarks>
   </Analyzer>
   <Analyzer Identifier="WrapAndIndentEachNodeInList">
     <Id>RCS0047</Id>
@@ -1141,9 +1133,9 @@ else if (y)
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="RemoveNewLinesFromInitializerWithSingleLineExpression">
+  <Analyzer Identifier="PutInitializerOnSingleLine">
     <Id>RCS0048</Id>
-    <Title>Remove new lines from initializer with single-line expression.</Title>
+    <Title>Put initializer on a single line.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -1157,9 +1149,9 @@ else if (y)
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AddEmptyLineAfterTopComment">
+  <Analyzer Identifier="AddBlankLineAfterTopComment">
     <Id>RCS0049</Id>
-    <Title>Add empty line after top comment.</Title>
+    <Title>Add blank line after top comment.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -1181,9 +1173,9 @@ namespace Foo
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AddEmptyLineBeforeTopDeclaration">
+  <Analyzer Identifier="AddBlankLineBeforeTopDeclaration">
     <Id>RCS0050</Id>
-    <Title>Add empty line before top declaration.</Title>
+    <Title>Add blank line before top declaration.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -1462,6 +1454,31 @@ Default maximal length is 140.</Summary>
 * no new line at the end of a file if the option `roslynator.prefer_new_line_at_end_of_file` is set to `false`.</Summary>
     <ConfigOptions>
       <Option Key="new_line_at_end_of_file" IsRequired="true" />
+    </ConfigOptions>
+  </Analyzer>
+  <Analyzer Identifier="PlaceNewLineAfterOrBeforeNullConditionalOperator">
+    <Id>RCS0059</Id>
+    <Title>Place new line after/before null-conditional operator.</Title>
+    <MessageFormat>Place new line {0} null-conditional operator.</MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[items
+    .Select(selector)
+	.FirstOrDefault()
+	?.ToString()
+	]]></Before>
+        <After><![CDATA[items
+    .Select(selector)
+	.FirstOrDefault()?
+	.ToString()
+	]]></After>
+      </Sample>
+    </Samples>
+    <ConfigOptions>
+      <Option Key="null_conditional_operator_new_line" IsRequired="true" />
     </ConfigOptions>
   </Analyzer>
 </Analyzers>

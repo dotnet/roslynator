@@ -57,5 +57,19 @@ class C
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringDescriptors.RemoveInstantiationOfLocalVariable));
         }
+
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveInstantiationOfLocalVariable)]
+        public async Task TestNoDiagnostic_SpanInInitializer()
+        {
+            await VerifyNoRefactoringAsync(@"
+class C
+{
+    void M()
+    {
+        var x = new string(' ', 1) { [||] };
+    }
+}
+", equivalenceKey: EquivalenceKey.Create(RefactoringDescriptors.RemoveInstantiationOfLocalVariable));
+        }
     }
 }
