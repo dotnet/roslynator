@@ -68,7 +68,7 @@ namespace Roslynator.Testing
         public ImmutableArray<string> AllowedCompilerDiagnosticIds { get; protected set; }
 
         /// <summary>
-        /// Gets a collection of EditorConfig options.
+        /// Gets a collection of config options.
         /// </summary>
         public ImmutableDictionary<string, string> ConfigOptions { get; protected set; }
 
