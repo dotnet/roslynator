@@ -3220,6 +3220,8 @@ namespace Roslynator.CSharp
                     case SyntaxKind.WhileStatement:
                     case SyntaxKind.YieldBreakStatement:
                     case SyntaxKind.YieldReturnStatement:
+                    case SyntaxKind.IfDirectiveTrivia:
+                    case SyntaxKind.ElifDirectiveTrivia:
                         {
                             return false;
                         }
@@ -3231,6 +3233,7 @@ namespace Roslynator.CSharp
                     case SyntaxKind.SwitchExpressionArm:
                     case SyntaxKind.VariableDeclaration:
                     case SyntaxKind.VariableDeclarator:
+                    case SyntaxKind.QueryBody:
                         {
                             break;
                         }
