@@ -21,6 +21,6 @@ if errorlevel 1 (
  /v:minimal ^
  /m
 
-dotnet "..\src\Tools\LogParser\bin\Release\netcoreapp2.1\LogParser.dll" "msbuild.log"
+dotnet "..\src\Tools\LogParser\bin\Release\netcoreapp3.1\LogParser.dll" "msbuild.log"
 
 pause
