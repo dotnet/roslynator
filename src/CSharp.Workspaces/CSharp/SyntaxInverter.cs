@@ -11,10 +11,10 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp
 {
-    [Obsolete("SyntaxInverter is obsolete, use SyntaxLogicalInverter instead.")]
     /// <summary>
     /// Provides static methods for syntax inversion.
     /// </summary>
+    [Obsolete("SyntaxInverter is obsolete, use SyntaxLogicalInverter instead.")]
     public static class SyntaxInverter
     {
         /// <summary>

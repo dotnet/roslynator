@@ -18,6 +18,7 @@ namespace Roslynator.Testing
         /// <param name="metadataReferences"></param>
         /// <param name="allowedCompilerDiagnosticIds"></param>
         /// <param name="allowedCompilerDiagnosticSeverity"></param>
+        /// <param name="configOptions"></param>
         internal TestOptions(
             IEnumerable<MetadataReference> metadataReferences = null,
             IEnumerable<string> allowedCompilerDiagnosticIds = null,

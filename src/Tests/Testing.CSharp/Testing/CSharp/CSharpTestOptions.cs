@@ -24,6 +24,7 @@ namespace Roslynator.Testing.CSharp
         /// <param name="metadataReferences"></param>
         /// <param name="allowedCompilerDiagnosticIds"></param>
         /// <param name="allowedCompilerDiagnosticSeverity"></param>
+        /// <param name="configOptions"></param>
         public CSharpTestOptions(
             CSharpCompilationOptions compilationOptions = null,
             CSharpParseOptions parseOptions = null,
