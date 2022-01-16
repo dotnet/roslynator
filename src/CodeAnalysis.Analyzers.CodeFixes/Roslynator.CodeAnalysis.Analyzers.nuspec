@@ -14,7 +14,7 @@
   - This package is dependent on Microsoft.CodeAnalysis.CSharp.Workspaces 4.0.1.
   - This package is applicable for projects that use Roslyn API (Microsoft.CodeAnalysis* packages)</description>
     <summary>A collection of analyzers for Roslyn API.</summary>
-    <copyright>Copyright (c) 2016-2021 Josef Pihrt</copyright>
+    <copyright>Copyright (c) 2016-2022 Josef Pihrt</copyright>
     <tags>Roslyn Analyzer CodeAnalysis C# CSharp</tags>
     <developmentDependency>true</developmentDependency>
     <repository type="git" url="https://github.com/JosefPihrt/Roslynator.git" />

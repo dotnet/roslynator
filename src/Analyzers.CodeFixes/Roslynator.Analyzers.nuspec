@@ -13,7 +13,7 @@
 
   - This package is dependent on Microsoft.CodeAnalysis.CSharp.Workspaces 4.0.1.</description>
     <summary>A collection of 200+ analyzers for C#, powered by Roslyn.</summary>
-    <copyright>Copyright (c) 2016-2021 Josef Pihrt</copyright>
+    <copyright>Copyright (c) 2016-2022 Josef Pihrt</copyright>
     <tags>Roslyn Analyzer Refactoring Productivity CodeAnalysis C# CSharp</tags>
     <developmentDependency>true</developmentDependency>
     <repository type="git" url="https://github.com/JosefPihrt/Roslynator.git" />

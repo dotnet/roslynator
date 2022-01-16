@@ -11,7 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Roslynator command line tool</description>
     <summary>Roslynator command line tool</summary>
-    <copyright>Copyright (c) 2017-2021 Josef Pihrt</copyright>
+    <copyright>Copyright (c) 2017-2022 Josef Pihrt</copyright>
     <tags>CLI Roslyn C# CSharp VB VisualBasic</tags>
     <developmentDependency>true</developmentDependency>
     <repository type="git" url="https://github.com/JosefPihrt/Roslynator.git" />

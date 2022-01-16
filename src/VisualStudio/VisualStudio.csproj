@@ -3,6 +3,7 @@
   <Import Sdk="Microsoft.NET.Sdk" Project="Sdk.props" />
 
   <PropertyGroup>
+    <Version>$(RoslynatorVersion)</Version>
     <TargetFramework>net472</TargetFramework>
     <RootNamespace>Roslynator.VisualStudio</RootNamespace>
     <AssemblyName>Roslynator.VisualStudio</AssemblyName>
