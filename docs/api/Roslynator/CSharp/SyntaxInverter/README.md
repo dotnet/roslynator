@@ -6,12 +6,18 @@
 
 **Assembly**: Roslynator\.CSharp\.Workspaces\.dll
 
-\
-Provides static methods for syntax inversion\.
+**WARNING: This API is now obsolete\.**
+
+SyntaxInverter is obsolete, use SyntaxLogicalInverter instead\.
 
 ```csharp
+[Obsolete("SyntaxInverter is obsolete, use SyntaxLogicalInverter instead.")]
 public static class SyntaxInverter
 ```
+
+### Attributes
+
+* [ObsoleteAttribute](https://docs.microsoft.com/en-us/dotnet/api/system.obsoleteattribute)
 
 ## Methods
 

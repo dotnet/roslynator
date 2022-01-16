@@ -165,6 +165,9 @@
 | [CS8112](../../docs/cs/CS8112.md) | 'function' is a local function and must therefore always have a body\. |
 | [CS8139](../../docs/cs/CS8139.md) | Cannot change tuple element names when overriding inherited member\. |
 | [CS8340](../../docs/cs/CS8340.md) | Instance fields of read\-only structs must be read\-only\. |
+| [CS8403](../../docs/cs/CS8403.md) | Method with an iterator block must be 'async' to return 'IAsyncEnumerable\<T\<'\. |
+| [CS8618](../../docs/cs/CS8618.md) | Non\-nullable member is uninitialized\. Consider declaring the member as nullable\. |
+| [CS8625](../../docs/cs/CS8625.md) | Cannot convert null literal to non\-nullable reference type\. |
 | [CS8632](../../docs/cs/CS8632.md) | The annotation for nullable reference types should only be used in code within a '\#nullable' annotations context\. |
 
 

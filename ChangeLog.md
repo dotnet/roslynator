@@ -1,3 +1,23 @@
+### 4.0.0 (2022-01-16)
+
+* Bump Roslyn version to 4.0.1
+* Change category of all analyzers to 'Roslynator'
+* Migrate all options to EditorConfig
+  * Enable/disable all analyzers
+  * Enable/disable all refactorings
+  * Enable/disable specific refactoring
+  * Enable/disable all compiler diagnostics fixes
+  * Enable/disable specific compiler diagnostic fix
+
+* Add analyzer [RCS0057](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS0057.md) (Normalize whitespace at the beginning of a file)
+* Add analyzer [RCS0058](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS0058.md) (Normalize whitespace at the end of a file)
+* Add analyzer [RCS0059](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS0059.md) (Place new line after/before null-conditional operator)
+* Add analyzer [RCS1249](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1249.md) (Unnecessary null-forgiving operator)
+* Add analyzer [RCS1250](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1250.md) (Use implicit/explicit object creation)
+* Add refactoring ExpandPositionalRecord (RR0215)
+* Add refactoring AddAllPropertiesToInitializer (RR0216)
+* Add code fix for CS8403, CS8618 and CS8625
+
 ### 3.3.0 (2021-11-14)
 
 * Bunch of bug fixes and small improvements

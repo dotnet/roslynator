@@ -13,7 +13,7 @@ set _rootDirectoryUrl="../../docs/api/"
  -m %_msbuildPath% ^
  --properties %_msbuildProperties% ^
  -o "..\docs\api" ^
- -h "Roslynator API Reference"
+ --heading "Roslynator API Reference"
 
 %_roslynatorExe% list-symbols "..\src\Core.sln" ^
  -m %_msbuildPath% ^
@@ -28,7 +28,7 @@ set _rootDirectoryUrl="../../docs/api/"
  --properties %_msbuildProperties% ^
  --projects Core ^
  -o "..\src\Core\README.md" ^
- -h "Roslynator.Core" ^
+ --heading "Roslynator.Core" ^
  --root-directory-url %_rootDirectoryUrl%
 
 %_roslynatorExe% generate-doc-root "..\src\Core.sln" ^
@@ -36,7 +36,7 @@ set _rootDirectoryUrl="../../docs/api/"
  --properties %_msbuildProperties% ^
  --projects CSharp ^
  -o "..\src\CSharp\README.md" ^
- -h "Roslynator.CSharp" ^
+ --heading "Roslynator.CSharp" ^
  --root-directory-url %_rootDirectoryUrl%
 
 %_roslynatorExe% generate-doc-root "..\src\Core.sln" ^
@@ -44,7 +44,7 @@ set _rootDirectoryUrl="../../docs/api/"
  --properties %_msbuildProperties% ^
  --projects Workspaces.Core ^
  -o "..\src\Workspaces.Core\README.md" ^
- -h "Roslynator.CSharp.Workspaces" ^
+ --heading "Roslynator.CSharp.Workspaces" ^
  --root-directory-url %_rootDirectoryUrl%
 
 %_roslynatorExe% generate-doc-root "..\src\Core.sln" ^
@@ -52,7 +52,7 @@ set _rootDirectoryUrl="../../docs/api/"
  --properties %_msbuildProperties% ^
  --projects CSharp.Workspaces ^
  -o "..\src\CSharp.Workspaces\README.md" ^
- -h "Roslynator.CSharp.Workspaces" ^
+ --heading "Roslynator.CSharp.Workspaces" ^
  --root-directory-url %_rootDirectoryUrl%
 
 %_roslynatorExe% generate-doc-root "..\src\Core.sln" ^
@@ -60,7 +60,7 @@ set _rootDirectoryUrl="../../docs/api/"
  --properties %_msbuildProperties% ^
  --projects Testing.Common Testing.CSharp Testing.CSharp.Xunit ^
  -o "..\src\Tests\README.md" ^
- -h "Roslynator Testing Framework" ^
+ --heading "Roslynator Testing Framework" ^
  --root-directory-url %_rootDirectoryUrl%
 
 pause

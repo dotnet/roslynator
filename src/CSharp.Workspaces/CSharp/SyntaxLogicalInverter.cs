@@ -29,7 +29,7 @@ namespace Roslynator.CSharp
 
         public SyntaxLogicalInverterOptions Options { get; }
 
-        public static SyntaxLogicalInverter GetInstance(Document document)
+        internal static SyntaxLogicalInverter GetInstance(Document document)
         {
             return (document.SupportsLanguageFeature(CSharpLanguageFeature.NotPattern))
                 ? Default

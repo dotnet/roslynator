@@ -15,8 +15,8 @@ namespace Roslynator.Spelling
         [SuppressMessage("MicrosoftCodeAnalysisReleaseTracking", "RS2008:Enable analyzer release tracking")]
         public static readonly DiagnosticDescriptor DiagnosticDescriptor = new(
             id: CommonDiagnosticIdentifiers.PossibleMisspellingOrTypo,
-            title: "Possible misspelling or typo.",
-            messageFormat: "Possible misspelling or typo in '{0}'.",
+            title: "Possible misspelling or typo",
+            messageFormat: "Possible misspelling or typo in '{0}'",
             category: "Spelling",
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true,

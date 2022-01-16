@@ -133,11 +133,11 @@ namespace Roslynator.CommandLine
                         Math.Max(totalPreprocessorDirectiveLines.Length, totalLines.Length))));
 
             WriteLine(Verbosity.Minimal);
-            WriteLine($"{totalCodeLines.PadLeft(maxDigits)} {totalCodeLineCount / (double)totalLineCount,4:P0} logical lines of code", ConsoleColors.Green, Verbosity.Minimal);
-            WriteLine($"{totalWhitespaceLines.PadLeft(maxDigits)} {totalWhitespaceLineCount / (double)totalLineCount,4:P0} white-space lines", Verbosity.Minimal);
-            WriteLine($"{totalCommentLines.PadLeft(maxDigits)} {totalCommentLineCount / (double)totalLineCount,4:P0} comment lines", Verbosity.Minimal);
-            WriteLine($"{totalPreprocessorDirectiveLines.PadLeft(maxDigits)} {totalPreprocessorDirectiveLineCount / (double)totalLineCount,4:P0} preprocessor directive lines", Verbosity.Minimal);
-            WriteLine($"{totalLines.PadLeft(maxDigits)} {totalLineCount / (double)totalLineCount,4:P0} total lines", Verbosity.Minimal);
+            WriteLine($"{totalCodeLines.PadLeft(maxDigits)} {totalCodeLineCount / (double)totalLineCount,5:P0} logical lines of code", ConsoleColors.Green, Verbosity.Minimal);
+            WriteLine($"{totalWhitespaceLines.PadLeft(maxDigits)} {totalWhitespaceLineCount / (double)totalLineCount,5:P0} white-space lines", Verbosity.Minimal);
+            WriteLine($"{totalCommentLines.PadLeft(maxDigits)} {totalCommentLineCount / (double)totalLineCount,5:P0} comment lines", Verbosity.Minimal);
+            WriteLine($"{totalPreprocessorDirectiveLines.PadLeft(maxDigits)} {totalPreprocessorDirectiveLineCount / (double)totalLineCount,5:P0} preprocessor directive lines", Verbosity.Minimal);
+            WriteLine($"{totalLines.PadLeft(maxDigits)} {totalLineCount / (double)totalLineCount,5:P0} total lines", Verbosity.Minimal);
         }
 
         protected override void ProcessResults(IEnumerable<LinesOfCodeCommandResult> results)

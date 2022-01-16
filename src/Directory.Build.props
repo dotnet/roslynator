@@ -6,23 +6,23 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)Roslynator.snk</AssemblyOriginatorKeyFile>
     <Authors>Josef Pihrt</Authors>
-    <Copyright>Copyright (c) 2017-2021 Josef Pihrt</Copyright>
+    <Copyright>Copyright (c) 2016-2022 Josef Pihrt</Copyright>
     <EnableNETAnalyzers>false</EnableNETAnalyzers>
   </PropertyGroup>
 
   <PropertyGroup>
-    <RoslynatorVersion>3.3.0.1</RoslynatorVersion>
-    <RoslynatorAnalyzersPackageVersion>3.3.0</RoslynatorAnalyzersPackageVersion>
-    <RoslynatorCoreVersion>2.2.0.1</RoslynatorCoreVersion>
-    <RoslynatorCorePackageVersion>2.2.0</RoslynatorCorePackageVersion>
-    <RoslynatorCliVersion>0.3.0.0</RoslynatorCliVersion>
-    <RoslynatorCliPackageVersion>0.3.0</RoslynatorCliPackageVersion>
-    <RoslynatorFormattingAnalyzersVersion>3.3.0.1</RoslynatorFormattingAnalyzersVersion>
-    <RoslynatorFormattingAnalyzersPackageVersion>3.3.0</RoslynatorFormattingAnalyzersPackageVersion>
-    <RoslynatorCodeAnalysisAnalyzersVersion>3.3.0.1</RoslynatorCodeAnalysisAnalyzersVersion>
-    <RoslynatorCodeAnalysisAnalyzersPackageVersion>3.3.0</RoslynatorCodeAnalysisAnalyzersPackageVersion>
-    <RoslynatorTestingVersion>1.0.0.1</RoslynatorTestingVersion>
-    <RoslynatorTestingPackageVersion>1.0.0</RoslynatorTestingPackageVersion>
+    <RoslynatorVersion>4.0.0.0</RoslynatorVersion>
+    <RoslynatorAnalyzersPackageVersion>4.0.0-rc</RoslynatorAnalyzersPackageVersion>
+    <RoslynatorCoreVersion>4.0.0.0</RoslynatorCoreVersion>
+    <RoslynatorCorePackageVersion>4.0.0-rc</RoslynatorCorePackageVersion>
+    <RoslynatorCliVersion>0.3.1.0</RoslynatorCliVersion>
+    <RoslynatorCliPackageVersion>0.3.1</RoslynatorCliPackageVersion>
+    <RoslynatorFormattingAnalyzersVersion>4.0.0.0</RoslynatorFormattingAnalyzersVersion>
+    <RoslynatorFormattingAnalyzersPackageVersion>4.0.0-rc</RoslynatorFormattingAnalyzersPackageVersion>
+    <RoslynatorCodeAnalysisAnalyzersVersion>4.0.0.0</RoslynatorCodeAnalysisAnalyzersVersion>
+    <RoslynatorCodeAnalysisAnalyzersPackageVersion>4.0.0-rc</RoslynatorCodeAnalysisAnalyzersPackageVersion>
+    <RoslynatorTestingVersion>4.0.0.0</RoslynatorTestingVersion>
+    <RoslynatorTestingPackageVersion>4.0.0-rc</RoslynatorTestingPackageVersion>
     <RoslynatorCodeFixesPackageVersion>2.0.0</RoslynatorCodeFixesPackageVersion>
     <RoslynatorDocumentationPackageVersion>1.0.0</RoslynatorDocumentationPackageVersion>
   </PropertyGroup>

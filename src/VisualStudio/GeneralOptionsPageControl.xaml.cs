@@ -51,7 +51,7 @@ namespace Roslynator.VisualStudio
             if (dialog.ShowDialog() != true)
                 return;
 
-            AbstractPackage package = AbstractPackage.Instance;
+            VSPackage package = VSPackage.Instance;
 
             IEnumerable<KeyValuePair<string, bool>> refactorings = null;
 
@@ -114,7 +114,7 @@ namespace Roslynator.VisualStudio
 
             EditorConfigCodeAnalysisConfig config = EditorConfigCodeAnalysisConfigLoader.LoadAndCatchIfThrows(new string[] { dialog.FileName }, ex => ShowErrorMessage(ex));
 
-            AbstractPackage package = AbstractPackage.Instance;
+            VSPackage package = VSPackage.Instance;
 
             package.RefactoringsOptionsPage.Load();
             package.CodeFixesOptionsPage.Load();

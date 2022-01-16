@@ -17,5 +17,5 @@ Although Roslynator Refactorings is free of charge, any [donation](https://www.p
 
 ## Documentation
 
+* [How to Configure Roslynator](http://github.com/JosefPihrt/Roslynator/blob/master/docs/Configuration.md)
 * [Analyzers vs. Refactorings](http://github.com/JosefPihrt/Roslynator/blob/master/docs/AnalyzersVsRefactorings.md)
-* [How to Configure Refactorings](http://github.com/JosefPihrt/Roslynator/blob/master/docs/HowToConfigureRefactorings.md)

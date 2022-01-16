@@ -1,10 +1,10 @@
-﻿assembly Roslynator.Core, Version=2.1.0.0, Culture=neutral, PublicKeyToken=926ea54d246a765e
-assembly Roslynator.CSharp, Version=2.1.0.0, Culture=neutral, PublicKeyToken=926ea54d246a765e
-assembly Roslynator.CSharp.Workspaces, Version=2.1.0.0, Culture=neutral, PublicKeyToken=926ea54d246a765e
-assembly Roslynator.Testing.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=926ea54d246a765e
-assembly Roslynator.Testing.CSharp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=926ea54d246a765e
-assembly Roslynator.Testing.CSharp.Xunit, Version=1.0.0.0, Culture=neutral, PublicKeyToken=926ea54d246a765e
-assembly Roslynator.Workspaces.Core, Version=2.1.0.0, Culture=neutral, PublicKeyToken=926ea54d246a765e
+﻿assembly Roslynator.Core, Version=2.2.0.1, Culture=neutral, PublicKeyToken=926ea54d246a765e
+assembly Roslynator.CSharp, Version=2.2.0.1, Culture=neutral, PublicKeyToken=926ea54d246a765e
+assembly Roslynator.CSharp.Workspaces, Version=2.2.0.1, Culture=neutral, PublicKeyToken=926ea54d246a765e
+assembly Roslynator.Testing.Common, Version=1.0.0.1, Culture=neutral, PublicKeyToken=926ea54d246a765e
+assembly Roslynator.Testing.CSharp, Version=1.0.0.1, Culture=neutral, PublicKeyToken=926ea54d246a765e
+assembly Roslynator.Testing.CSharp.Xunit, Version=1.0.0.1, Culture=neutral, PublicKeyToken=926ea54d246a765e
+assembly Roslynator.Workspaces.Core, Version=2.2.0.1, Culture=neutral, PublicKeyToken=926ea54d246a765e
 
 namespace Roslynator
 
@@ -397,6 +397,7 @@ namespace Roslynator.CSharp
     public static AttributeListSyntax AttributeList(AttributeSyntax attribute);
     public static AttributeListSyntax AttributeList(params AttributeSyntax[] attributes);
     public static AccessorDeclarationSyntax AutoGetAccessorDeclaration(SyntaxTokenList modifiers = default);
+    public static AccessorDeclarationSyntax AutoInitAccessorDeclaration(SyntaxTokenList modifiers = default);
     public static AccessorDeclarationSyntax AutoSetAccessorDeclaration(SyntaxTokenList modifiers = default);
     public static ConstructorInitializerSyntax BaseConstructorInitializer(ArgumentListSyntax argumentList = null);
     public static ConstructorInitializerSyntax BaseConstructorInitializer(SyntaxToken semicolonToken, ArgumentListSyntax argumentList);
@@ -603,6 +604,8 @@ namespace Roslynator.CSharp
     public static AssignmentExpressionSyntax SubtractAssignmentExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right);
     public static BinaryExpressionSyntax SubtractExpression(ExpressionSyntax left, ExpressionSyntax right);
     public static BinaryExpressionSyntax SubtractExpression(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right);
+    public static PostfixUnaryExpressionSyntax SuppressNullableWarningExpression(ExpressionSyntax operand);
+    public static PostfixUnaryExpressionSyntax SuppressNullableWarningExpression(ExpressionSyntax operand, SyntaxToken operatorToken);
     public static SwitchSectionSyntax SwitchSection(SwitchLabelSyntax switchLabel, StatementSyntax statement);
     public static SwitchSectionSyntax SwitchSection(SwitchLabelSyntax switchLabel, SyntaxList<StatementSyntax> statements);
     public static SwitchSectionSyntax SwitchSection(SyntaxList<SwitchLabelSyntax> switchLabels, StatementSyntax statement);
@@ -1027,10 +1030,28 @@ namespace Roslynator.CSharp
     public static UsingDirectiveListInfo UsingDirectiveListInfo(SyntaxNode node);
     public static XmlElementInfo XmlElementInfo(XmlNodeSyntax xmlNode);
 
+  [Obsolete("SyntaxInverter is obsolete, use SyntaxLogicalInverter instead.")]
   public static class SyntaxInverter
 
     public static ExpressionSyntax LogicallyInvert(ExpressionSyntax expression, CancellationToken cancellationToken = default);
     public static ExpressionSyntax LogicallyInvert(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken = default);
+
+  public class SyntaxLogicalInverter
+
+    public SyntaxLogicalInverter(SyntaxLogicalInverterOptions options);
+
+    public static SyntaxLogicalInverter Default { get; }
+    public SyntaxLogicalInverterOptions Options { get; }
+
+    public ExpressionSyntax LogicallyInvert(ExpressionSyntax expression, CancellationToken cancellationToken = default);
+    public ExpressionSyntax LogicallyInvert(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken = default);
+
+  public class SyntaxLogicalInverterOptions
+
+    public SyntaxLogicalInverterOptions(bool useNotPattern = true);
+
+    public static SyntaxLogicalInverterOptions Default { get; }
+    public bool UseNotPattern { get; }
 
   public static class WorkspaceExtensions
 
@@ -1675,15 +1696,18 @@ namespace Roslynator.Testing
     protected abstract CompilationOptions CommonCompilationOptions { get; }
     protected abstract ParseOptions CommonParseOptions { get; }
     public CompilationOptions CompilationOptions { get; }
+    public ImmutableDictionary<string, string> ConfigOptions { get; protected set; }
     public abstract string Language { get; }
     public ImmutableArray<MetadataReference> MetadataReferences { get; protected set; }
     public ParseOptions ParseOptions { get; }
 
     protected abstract TestOptions CommonWithAllowedCompilerDiagnosticIds(IEnumerable<string> values);
     protected abstract TestOptions CommonWithAllowedCompilerDiagnosticSeverity(DiagnosticSeverity value);
+    protected abstract TestOptions CommonWithConfigOptions(IEnumerable<KeyValuePair<string, string>> values);
     protected abstract TestOptions CommonWithMetadataReferences(IEnumerable<MetadataReference> values);
     public TestOptions WithAllowedCompilerDiagnosticIds(IEnumerable<string> values);
     public TestOptions WithAllowedCompilerDiagnosticSeverity(DiagnosticSeverity value);
+    public TestOptions WithConfigOptions(IEnumerable<KeyValuePair<string, string>> values);
     public TestOptions WithMetadataReferences(IEnumerable<MetadataReference> values);
 
   public readonly struct AdditionalFile
@@ -1722,7 +1746,7 @@ namespace Roslynator.Testing.CSharp
 
   public sealed class CSharpTestOptions : TestOptions
 
-    public CSharpTestOptions(CSharpCompilationOptions compilationOptions = null, CSharpParseOptions parseOptions = null, IEnumerable<MetadataReference> metadataReferences = null, IEnumerable<string> allowedCompilerDiagnosticIds = null, DiagnosticSeverity allowedCompilerDiagnosticSeverity = Info);
+    public CSharpTestOptions(CSharpCompilationOptions compilationOptions = null, CSharpParseOptions parseOptions = null, IEnumerable<MetadataReference> metadataReferences = null, IEnumerable<string> allowedCompilerDiagnosticIds = null, DiagnosticSeverity allowedCompilerDiagnosticSeverity = Info, IEnumerable<KeyValuePair<string, string>> configOptions = null);
 
     protected override CompilationOptions CommonCompilationOptions { get; }
     protected override ParseOptions CommonParseOptions { get; }
@@ -1735,10 +1759,12 @@ namespace Roslynator.Testing.CSharp
     public CSharpTestOptions AddAllowedCompilerDiagnosticIds(IEnumerable<string> diagnosticIds);
     protected override TestOptions CommonWithAllowedCompilerDiagnosticIds(IEnumerable<string> values);
     protected override TestOptions CommonWithAllowedCompilerDiagnosticSeverity(DiagnosticSeverity value);
+    protected override TestOptions CommonWithConfigOptions(IEnumerable<KeyValuePair<string, string>> values);
     protected override TestOptions CommonWithMetadataReferences(IEnumerable<MetadataReference> values);
     public CSharpTestOptions WithAllowedCompilerDiagnosticIds(IEnumerable<string> values);
     public CSharpTestOptions WithAllowedCompilerDiagnosticSeverity(DiagnosticSeverity value);
     public CSharpTestOptions WithCompilationOptions(CSharpCompilationOptions compilationOptions);
+    public CSharpTestOptions WithConfigOptions(IEnumerable<KeyValuePair<string, string>> values);
     public CSharpTestOptions WithMetadataReferences(IEnumerable<MetadataReference> values);
     public CSharpTestOptions WithParseOptions(CSharpParseOptions parseOptions);
 

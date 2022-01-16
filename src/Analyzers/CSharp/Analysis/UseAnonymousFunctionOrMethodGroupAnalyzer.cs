@@ -709,7 +709,7 @@ namespace Roslynator.CSharp.Analysis
 
             ConvertMethodGroupToAnonymousFunctionAnalysis.IsFixable(simpleMemberAccess, context.SemanticModel, context.CancellationToken);
         }
-
+#endif
         private static bool ConvertToAnonymousFunction(SyntaxNodeAnalysisContext context)
         {
             return context.PreferAnonymousFunctionOrMethodGroup() == true;
@@ -719,7 +719,6 @@ namespace Roslynator.CSharp.Analysis
         {
             return context.PreferAnonymousFunctionOrMethodGroup() == false;
         }
-#endif
 
         private static void ReportAnonymousFunction(SyntaxNodeAnalysisContext context, AnonymousFunctionExpressionSyntax anonymousMethod)
         {

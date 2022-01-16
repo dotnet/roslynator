@@ -37,6 +37,8 @@
 * &ensp; [&bull;](#class-hierarchy-System_Object "Object") &ensp; [SyntaxListSelection\<TNode>](Roslynator/SyntaxListSelection-1/README.md)<a id="class-hierarchy-Roslynator_SyntaxListSelection_1"></a>
 * &ensp; [&bull;](#class-hierarchy-System_Object "Object") &ensp; [&bull;](#class-hierarchy-Roslynator_SyntaxListSelection_1 "SyntaxListSelection<TNode>") &ensp; [MemberDeclarationListSelection](Roslynator/CSharp/MemberDeclarationListSelection/README.md)<a id="class-hierarchy-Roslynator_CSharp_MemberDeclarationListSelection"></a>
 * &ensp; [&bull;](#class-hierarchy-System_Object "Object") &ensp; [&bull;](#class-hierarchy-Roslynator_SyntaxListSelection_1 "SyntaxListSelection<TNode>") &ensp; [StatementListSelection](Roslynator/CSharp/StatementListSelection/README.md)<a id="class-hierarchy-Roslynator_CSharp_StatementListSelection"></a>
+* &ensp; [&bull;](#class-hierarchy-System_Object "Object") &ensp; [SyntaxLogicalInverter](Roslynator/CSharp/SyntaxLogicalInverter/README.md)<a id="class-hierarchy-Roslynator_CSharp_SyntaxLogicalInverter"></a>
+* &ensp; [&bull;](#class-hierarchy-System_Object "Object") &ensp; [SyntaxLogicalInverterOptions](Roslynator/CSharp/SyntaxLogicalInverterOptions/README.md)<a id="class-hierarchy-Roslynator_CSharp_SyntaxLogicalInverterOptions"></a>
 * &ensp; [&bull;](#class-hierarchy-System_Object "Object") &ensp; [SyntaxNodeTextBuilder](Roslynator/Text/SyntaxNodeTextBuilder/README.md)<a id="class-hierarchy-Roslynator_Text_SyntaxNodeTextBuilder"></a>
 * &ensp; [&bull;](#class-hierarchy-System_Object "Object") &ensp; [TestOptions](Roslynator/Testing/TestOptions/README.md)<a id="class-hierarchy-Roslynator_Testing_TestOptions"></a>
 * &ensp; [&bull;](#class-hierarchy-System_Object "Object") &ensp; [&bull;](#class-hierarchy-Roslynator_Testing_TestOptions "TestOptions") &ensp; [CSharpTestOptions](Roslynator/Testing/CSharp/CSharpTestOptions/README.md)<a id="class-hierarchy-Roslynator_Testing_CSharp_CSharpTestOptions"></a>
@@ -90,7 +92,9 @@
 * [SyntaxAccessibility](Roslynator/CSharp/SyntaxAccessibility/README.md)
 * [SyntaxExtensions](Roslynator/CSharp/SyntaxExtensions/README.md)
 * [SyntaxInfo](Roslynator/CSharp/SyntaxInfo/README.md)
-* [SyntaxInverter](Roslynator/CSharp/SyntaxInverter/README.md)
+* \[deprecated\] [SyntaxInverter](Roslynator/CSharp/SyntaxInverter/README.md)
+* [SyntaxLogicalInverter](Roslynator/CSharp/SyntaxLogicalInverter/README.md)
+* [SyntaxLogicalInverterOptions](Roslynator/CSharp/SyntaxLogicalInverterOptions/README.md)
 * [WorkspaceExtensions](Roslynator/CSharp/WorkspaceExtensions/README.md)
 * [WorkspaceSymbolExtensions](Roslynator/CSharp/WorkspaceSymbolExtensions/README.md)
 * [WorkspaceSyntaxExtensions](Roslynator/CSharp/WorkspaceSyntaxExtensions/README.md)

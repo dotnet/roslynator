@@ -17,6 +17,5 @@ Although Roslynator is free of charge, any [donation](https://www.paypal.com/cgi
 
 ## Documentation
 
+* [How to Configure Roslynator](http://github.com/JosefPihrt/Roslynator/blob/master/docs/Configuration.md)
 * [Analyzers vs. Refactorings](http://github.com/JosefPihrt/Roslynator/blob/master/docs/AnalyzersVsRefactorings.md)
-* [How to Configure Analyzers](http://github.com/JosefPihrt/Roslynator/blob/master/docs/HowToConfigureAnalyzers.md)
-* [How to Configure Refactorings](http://github.com/JosefPihrt/Roslynator/blob/master/docs/HowToConfigureRefactorings.md)

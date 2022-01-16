@@ -18,6 +18,7 @@ namespace Roslynator.Testing
         /// <param name="metadataReferences"></param>
         /// <param name="allowedCompilerDiagnosticIds"></param>
         /// <param name="allowedCompilerDiagnosticSeverity"></param>
+        /// <param name="configOptions"></param>
         internal TestOptions(
             IEnumerable<MetadataReference> metadataReferences = null,
             IEnumerable<string> allowedCompilerDiagnosticIds = null,
@@ -68,7 +69,7 @@ namespace Roslynator.Testing
         public ImmutableArray<string> AllowedCompilerDiagnosticIds { get; protected set; }
 
         /// <summary>
-        /// Gets a collection of EditorConfig options.
+        /// Gets a collection of config options.
         /// </summary>
         public ImmutableDictionary<string, string> ConfigOptions { get; protected set; }
 

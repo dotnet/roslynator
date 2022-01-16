@@ -4,8 +4,6 @@ VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{CC69BDBB-35E9-43A9-9397-4B2832270BB8}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "VisualStudio", "VisualStudio", "{087B51E1-CD20-42E4-9CBF-CB2D779FC7D3}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{228E25E1-FDE6-40C1-98AF-8E636D174D94}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
@@ -24,16 +22,11 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{97FBDF71-F240-48F2-B29A-E6B27597E38B}"
 	ProjectSection(SolutionItems) = preProject
 		..\docs\AnalyzersVsRefactorings.md = ..\docs\AnalyzersVsRefactorings.md
-		..\docs\HowToConfigureAnalyzers.md = ..\docs\HowToConfigureAnalyzers.md
-		..\docs\HowToConfigureRefactorings.md = ..\docs\HowToConfigureRefactorings.md
-		..\docs\HowToConfigureRulesetFile.md = ..\docs\HowToConfigureRulesetFile.md
-		..\docs\HowToCustomizeRulesForProject.md = ..\docs\HowToCustomizeRulesForProject.md
+		..\docs\Configuration.md = ..\docs\Configuration.md
 		..\docs\HowToDebugRoslynator.md = ..\docs\HowToDebugRoslynator.md
 		..\docs\HowToFixAllDiagnostics.md = ..\docs\HowToFixAllDiagnostics.md
 		..\docs\HowToGenerateDocumentation.md = ..\docs\HowToGenerateDocumentation.md
-		..\docs\HowToMigrateAnalyzersToVersion3.md = ..\docs\HowToMigrateAnalyzersToVersion3.md
 		..\docs\HowToUpdateDocumentation.md = ..\docs\HowToUpdateDocumentation.md
-		..\docs\HowToUseBothVsixAndNuGet.md = ..\docs\HowToUseBothVsixAndNuGet.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CLI", "CLI", "{A16068FE-9E6C-45D2-8114-CC189600AFA2}"
@@ -57,9 +50,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Analyzers", "Analyzers\Anal
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeGenerator", "Tools\CodeGenerator\CodeGenerator.csproj", "{BCCA00EB-08E2-4B22-BECF-10864A6BB456}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualStudio.Common", "VisualStudio.Common\VisualStudio.Common.csproj", "{4AD2A192-847E-4942-8A72-D99C5602D5A7}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VisualStudio", "VisualStudio\VisualStudio.csproj", "{6CCFB4D4-21DF-4991-831D-DDAA5B2E58D9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualStudio", "VisualStudio\VisualStudio.csproj", "{6CCFB4D4-21DF-4991-831D-DDAA5B2E58D9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Metadata", "Tools\Metadata\Metadata.csproj", "{7F6F6533-E406-4225-A435-DEE22C717F48}"
 EndProject
@@ -153,9 +144,6 @@ Global
 		{BCCA00EB-08E2-4B22-BECF-10864A6BB456}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BCCA00EB-08E2-4B22-BECF-10864A6BB456}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BCCA00EB-08E2-4B22-BECF-10864A6BB456}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4AD2A192-847E-4942-8A72-D99C5602D5A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4AD2A192-847E-4942-8A72-D99C5602D5A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4AD2A192-847E-4942-8A72-D99C5602D5A7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6CCFB4D4-21DF-4991-831D-DDAA5B2E58D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6CCFB4D4-21DF-4991-831D-DDAA5B2E58D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6CCFB4D4-21DF-4991-831D-DDAA5B2E58D9}.Release|Any CPU.Build.0 = Release|Any CPU
@@ -299,8 +287,6 @@ Global
 		{97FBDF71-F240-48F2-B29A-E6B27597E38B} = {228E25E1-FDE6-40C1-98AF-8E636D174D94}
 		{A16068FE-9E6C-45D2-8114-CC189600AFA2} = {228E25E1-FDE6-40C1-98AF-8E636D174D94}
 		{BCCA00EB-08E2-4B22-BECF-10864A6BB456} = {CC69BDBB-35E9-43A9-9397-4B2832270BB8}
-		{4AD2A192-847E-4942-8A72-D99C5602D5A7} = {087B51E1-CD20-42E4-9CBF-CB2D779FC7D3}
-		{6CCFB4D4-21DF-4991-831D-DDAA5B2E58D9} = {087B51E1-CD20-42E4-9CBF-CB2D779FC7D3}
 		{7F6F6533-E406-4225-A435-DEE22C717F48} = {CC69BDBB-35E9-43A9-9397-4B2832270BB8}
 		{62ABFF60-67FC-4D33-91BD-ED1CD7DB5007} = {CC69BDBB-35E9-43A9-9397-4B2832270BB8}
 		{DD303EB5-1C57-4588-980C-C55A401DB125} = {CC69BDBB-35E9-43A9-9397-4B2832270BB8}
