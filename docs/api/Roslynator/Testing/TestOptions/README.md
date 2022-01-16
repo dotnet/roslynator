@@ -30,6 +30,7 @@ public abstract class TestOptions
 | [CommonCompilationOptions](CommonCompilationOptions/README.md) | Gets a common compilation options\. |
 | [CommonParseOptions](CommonParseOptions/README.md) | Gets a common parse options\. |
 | [CompilationOptions](CompilationOptions/README.md) | Gets a compilation options that should be used to compile test project\. |
+| [ConfigOptions](ConfigOptions/README.md) | Gets a collection of config options\. |
 | [Language](Language/README.md) | Gets a programming language identifier\. |
 | [MetadataReferences](MetadataReferences/README.md) | Gets metadata references of a test project\. |
 | [ParseOptions](ParseOptions/README.md) | Gets a parse options that should be used to parse tested source code\. |
@@ -40,6 +41,7 @@ public abstract class TestOptions
 | ------ | ------- |
 | [CommonWithAllowedCompilerDiagnosticIds(IEnumerable\<String>)](CommonWithAllowedCompilerDiagnosticIds/README.md) | |
 | [CommonWithAllowedCompilerDiagnosticSeverity(DiagnosticSeverity)](CommonWithAllowedCompilerDiagnosticSeverity/README.md) | |
+| [CommonWithConfigOptions(IEnumerable\<KeyValuePair\<String, String>>)](CommonWithConfigOptions/README.md) | |
 | [CommonWithMetadataReferences(IEnumerable\<MetadataReference>)](CommonWithMetadataReferences/README.md) | |
 | [Equals(Object)](https://docs.microsoft.com/en-us/dotnet/api/system.object.equals) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
 | [GetHashCode()](https://docs.microsoft.com/en-us/dotnet/api/system.object.gethashcode) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
@@ -48,5 +50,6 @@ public abstract class TestOptions
 | [ToString()](https://docs.microsoft.com/en-us/dotnet/api/system.object.tostring) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
 | [WithAllowedCompilerDiagnosticIds(IEnumerable\<String>)](WithAllowedCompilerDiagnosticIds/README.md) | |
 | [WithAllowedCompilerDiagnosticSeverity(DiagnosticSeverity)](WithAllowedCompilerDiagnosticSeverity/README.md) | |
+| [WithConfigOptions(IEnumerable\<KeyValuePair\<String, String>>)](WithConfigOptions/README.md) | |
 | [WithMetadataReferences(IEnumerable\<MetadataReference>)](WithMetadataReferences/README.md) | |
 

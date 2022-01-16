@@ -20,7 +20,9 @@
 | [SyntaxAccessibility](SyntaxAccessibility/README.md) | A set of static methods that are related to C\# accessibility\. |
 | [SyntaxExtensions](SyntaxExtensions/README.md) | A set of extension methods for syntax \(types derived from [CSharpSyntaxNode](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.csharpsyntaxnode)\)\. |
 | [SyntaxInfo](SyntaxInfo/README.md) | Serves as a factory for types in Roslynator\.CSharp\.Syntax namespace\. |
-| [SyntaxInverter](SyntaxInverter/README.md) | Provides static methods for syntax inversion\. |
+| [SyntaxInverter](SyntaxInverter/README.md) | \[deprecated\]  |
+| [SyntaxLogicalInverter](SyntaxLogicalInverter/README.md) | Provides static methods for syntax inversion\. |
+| [SyntaxLogicalInverterOptions](SyntaxLogicalInverterOptions/README.md) | |
 | [WorkspaceExtensions](WorkspaceExtensions/README.md) | A set of extension methods for the workspace layer\. |
 | [WorkspaceSymbolExtensions](WorkspaceSymbolExtensions/README.md) | |
 | [WorkspaceSyntaxExtensions](WorkspaceSyntaxExtensions/README.md) | A set of extension methods for syntax\. These methods are dependent on the workspace layer\. |

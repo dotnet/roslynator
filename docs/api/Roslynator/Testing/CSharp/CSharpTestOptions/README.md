@@ -21,7 +21,7 @@ public sealed class CSharpTestOptions : Roslynator.Testing.TestOptions
 
 | Constructor | Summary |
 | ----------- | ------- |
-| [CSharpTestOptions(CSharpCompilationOptions, CSharpParseOptions, IEnumerable\<MetadataReference>, IEnumerable\<String>, DiagnosticSeverity)](-ctor/README.md) | Initializes a new instance of [CSharpTestOptions](./README.md)\. |
+| [CSharpTestOptions(CSharpCompilationOptions, CSharpParseOptions, IEnumerable\<MetadataReference>, IEnumerable\<String>, DiagnosticSeverity, IEnumerable\<KeyValuePair\<String, String>>)](-ctor/README.md) | Initializes a new instance of [CSharpTestOptions](./README.md)\. |
 
 ## Properties
 
@@ -32,6 +32,7 @@ public sealed class CSharpTestOptions : Roslynator.Testing.TestOptions
 | [CommonCompilationOptions](CommonCompilationOptions/README.md) | Gets a common compilation options\. \(Overrides [TestOptions.CommonCompilationOptions](../../TestOptions/CommonCompilationOptions/README.md)\) |
 | [CommonParseOptions](CommonParseOptions/README.md) | Gets a common parse options\. \(Overrides [TestOptions.CommonParseOptions](../../TestOptions/CommonParseOptions/README.md)\) |
 | [CompilationOptions](CompilationOptions/README.md) | Gets a compilation options that should be used to compile test project\. |
+| [ConfigOptions](../../TestOptions/ConfigOptions/README.md) | Gets a collection of config options\. \(Inherited from [TestOptions](../../TestOptions/README.md)\) |
 | [Default](Default/README.md) | Gets a default code verification options\. |
 | [Language](Language/README.md) | Gets C\# programming language identifier\. \(Overrides [TestOptions.Language](../../TestOptions/Language/README.md)\) |
 | [MetadataReferences](../../TestOptions/MetadataReferences/README.md) | Gets metadata references of a test project\. \(Inherited from [TestOptions](../../TestOptions/README.md)\) |
@@ -45,6 +46,7 @@ public sealed class CSharpTestOptions : Roslynator.Testing.TestOptions
 | [AddAllowedCompilerDiagnosticIds(IEnumerable\<String>)](AddAllowedCompilerDiagnosticIds/README.md) | Adds a list of specified compiler diagnostic IDs to the list of allowed compiler diagnostic IDs\. |
 | [CommonWithAllowedCompilerDiagnosticIds(IEnumerable\<String>)](CommonWithAllowedCompilerDiagnosticIds/README.md) |  \(Overrides [TestOptions.CommonWithAllowedCompilerDiagnosticIds](../../TestOptions/CommonWithAllowedCompilerDiagnosticIds/README.md)\) |
 | [CommonWithAllowedCompilerDiagnosticSeverity(DiagnosticSeverity)](CommonWithAllowedCompilerDiagnosticSeverity/README.md) |  \(Overrides [TestOptions.CommonWithAllowedCompilerDiagnosticSeverity](../../TestOptions/CommonWithAllowedCompilerDiagnosticSeverity/README.md)\) |
+| [CommonWithConfigOptions(IEnumerable\<KeyValuePair\<String, String>>)](CommonWithConfigOptions/README.md) |  \(Overrides [TestOptions.CommonWithConfigOptions](../../TestOptions/CommonWithConfigOptions/README.md)\) |
 | [CommonWithMetadataReferences(IEnumerable\<MetadataReference>)](CommonWithMetadataReferences/README.md) |  \(Overrides [TestOptions.CommonWithMetadataReferences](../../TestOptions/CommonWithMetadataReferences/README.md)\) |
 | [Equals(Object)](https://docs.microsoft.com/en-us/dotnet/api/system.object.equals) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
 | [GetHashCode()](https://docs.microsoft.com/en-us/dotnet/api/system.object.gethashcode) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
@@ -54,6 +56,7 @@ public sealed class CSharpTestOptions : Roslynator.Testing.TestOptions
 | [WithAllowedCompilerDiagnosticIds(IEnumerable\<String>)](WithAllowedCompilerDiagnosticIds/README.md) | |
 | [WithAllowedCompilerDiagnosticSeverity(DiagnosticSeverity)](WithAllowedCompilerDiagnosticSeverity/README.md) | |
 | [WithCompilationOptions(CSharpCompilationOptions)](WithCompilationOptions/README.md) | |
+| [WithConfigOptions(IEnumerable\<KeyValuePair\<String, String>>)](WithConfigOptions/README.md) | |
 | [WithMetadataReferences(IEnumerable\<MetadataReference>)](WithMetadataReferences/README.md) | |
 | [WithParseOptions(CSharpParseOptions)](WithParseOptions/README.md) | |
 
