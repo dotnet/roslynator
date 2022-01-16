@@ -1,5 +1,44 @@
 ## Roslynator Refactorings
 
+#### Add all properties to initializer \(RR0216\)
+
+* **Syntax**: object/record initializer
+
+#### Before
+
+```csharp
+class C
+{
+  public string P1 { get; set; }
+  public string P2 { get; set; }
+
+  void M()
+  {
+      var x = new C() { };
+  }
+}
+```
+
+#### After
+
+```csharp
+class C
+{
+  public string P1 { get; set; }
+  public string P2 { get; set; }
+
+  void M()
+  {
+      var x = new C() { P1 = , P2 = };
+  }
+}
+```
+
+#### Add argument name \(RR0011\)
+
+* **Syntax**: argument list
+![Add argument name](../../images/refactorings/AddArgumentName.png)
+
 #### Add braces \(RR0002\)
 
 * **Syntax**: do statement, else clause, fixed statement, for statement, foreach statement, if statement, lock statement, using statement, while statement
@@ -23,17 +62,6 @@
 * **Syntax**: switch statement
 * **Span**: case or default keyword
 ![Add braces to switch sections](../../images/refactorings/AddBracesToSwitchSections.png)
-
-#### Add cast expression \(RR0006\)
-
-* **Syntax**: argument, assignment expression, return statement, variable declaration
-![Add cast expression](../../images/refactorings/AddCastExpressionToArgument.png)
-
-![Add cast expression](../../images/refactorings/AddCastExpressionToAssignmentExpression.png)
-
-![Add cast expression](../../images/refactorings/AddCastExpressionToReturnStatement.png)
-
-![Add cast expression](../../images/refactorings/AddCastExpressionToVariableDeclaration.png)
 
 #### Add default value to parameter \(RR0007\)
 
@@ -68,10 +96,26 @@ private object y;
 private object z;
 ```
 
-#### Add exception to documentation comment \(RR0009\)
+#### Add 'exception' element to documentation comment \(RR0009\)
 
 * **Syntax**: throw statement
-![Add exception to documentation comment](../../images/refactorings/AddExceptionToDocumentationComment.png)
+![Add 'exception' element to documentation comment](../../images/refactorings/AddExceptionElementToDocumentationComment.png)
+
+#### Add explicit cast \(RR0006\)
+
+* **Syntax**: argument, assignment expression, return statement, variable declaration
+![Add explicit cast](../../images/refactorings/AddCastExpressionToArgument.png)
+
+![Add explicit cast](../../images/refactorings/AddCastExpressionToAssignmentExpression.png)
+
+![Add explicit cast](../../images/refactorings/AddCastExpressionToReturnStatement.png)
+
+![Add explicit cast](../../images/refactorings/AddCastExpressionToVariableDeclaration.png)
+
+#### Add generic parameter to a declaration \(RR0178\)
+
+* **Syntax**: class declaration, struct declaration, interface declaration, delegate declaration, method declaration, local function
+![Add generic parameter to a declaration](../../images/refactorings/AddGenericParameterToDeclaration.png)
 
 #### Add identifier to parameter \(RR0012\)
 
@@ -164,11 +208,6 @@ switch (dayOfWeek)
 }
 ```
 
-#### Add parameter name to argument \(RR0011\)
-
-* **Syntax**: argument list
-![Add parameter name to argument](../../images/refactorings/AddParameterNameToArgument.png)
-
 #### Add parameter to interface member \(RR0213\)
 
 * **Syntax**: method declaration, indexer declaration
@@ -232,11 +271,6 @@ public class Foo
 }
 ```
 
-#### Add type parameter \(RR0178\)
-
-* **Syntax**: class declaration, struct declaration, interface declaration, delegate declaration, method declaration, local function
-![Add type parameter](../../images/refactorings/AddTypeParameter.png)
-
 #### Add using directive \(RR0013\)
 
 * **Syntax**: qualified name
@@ -291,12 +325,6 @@ if (s.IndexOf("a", StringComparison.OrdinalIgnoreCase) != -1)
 * **Syntax**: access modifier
 ![Change accessibility](../../images/refactorings/ChangeAccessibility.png)
 
-#### Change explicit type to 'var' \(RR0018\)
-
-* **Syntax**: variable declaration, foreach statement
-* **Span**: type
-![Change explicit type to 'var'](../../images/refactorings/ChangeExplicitTypeToVar.png)
-
 #### Change method return type to 'void' \(RR0021\)
 
 * **Syntax**: method, local function
@@ -329,12 +357,6 @@ IEnumerable<object> items = new List<object>();
 List<object> items = new List<object>();
 ```
 
-#### Change 'var' to explicit type \(RR0023\)
-
-* **Syntax**: variable declaration, foreach statement
-* **Span**: type
-![Change 'var' to explicit type](../../images/refactorings/ChangeVarToExplicitType.png)
-
 #### Check expression for null \(RR0024\)
 
 * **Syntax**: local declaration \(identifier\), assignment expression \(left\)
@@ -346,16 +368,11 @@ List<object> items = new List<object>();
 * **Span**: parameter identifier
 ![Check parameter for null](../../images/refactorings/CheckParameterForNull.png)
 
-#### Collapse to initializer \(RR0026\)
-
-* **Syntax**: object creation followed with assignment\(s\)
-![Collapse to initializer](../../images/refactorings/CollapseToInitializer.png)
-
-#### Comment out member \(RR0027\)
+#### Comment out member declaration \(RR0027\)
 
 * **Syntax**: method, constructor, property, indexer, operator, event, namespace, class, struct, interface
 * **Span**: opening or closing brace
-![Comment out member](../../images/refactorings/CommentOutMember.png)
+![Comment out member declaration](../../images/refactorings/CommentOutMemberDeclaration.png)
 
 #### Comment out statement \(RR0028\)
 
@@ -366,13 +383,7 @@ List<object> items = new List<object>();
 #### Convert "" to string\.Empty \(RR0171\)
 
 * **Syntax**: empty string literal
-![Convert "" to string.Empty](../../images/refactorings/ConvertEmptyStringToStringEmpty.png)
-
-#### Convert '\(yield\) return' to 'if' \(RR0143\)
-
-* **Syntax**: return statement, yield return statement
-* **Span**: selected statement, yield keyword or return keyword
-![Convert '(yield) return' to 'if'](../../images/refactorings/ReplaceReturnStatementWithIfElse.png)
+![Convert "" to string.Empty](../../images/refactorings/UseStringEmptyInsteadOfEmptyStringLiteral.png)
 
 #### Convert ?: to if\-else \(RR0120\)
 
@@ -424,11 +435,21 @@ else
 }
 ```
 
-#### Convert block body to expression\-body \(RR0169\)
+#### Convert auto\-property to full property \(RR0041\)
+
+* **Syntax**: auto\-property
+![Convert auto-property to full property](../../images/refactorings/ConvertAutoPropertyToFullProperty.png)
+
+#### Convert auto\-property to full property \(without backing field\) \(RR0040\)
+
+* **Syntax**: auto\-property
+![Convert auto-property to full property (without backing field)](../../images/refactorings/ConvertAutoPropertyToFullPropertyWithoutBackingField.png)
+
+#### Convert block body to expression body \(RR0169\)
 
 * **Syntax**: method, property, indexer, operator
 * **Span**: body or accessor list
-![Convert block body to expression-body](../../images/refactorings/ConvertBlockBodyToExpressionBody.png)
+![Convert block body to expression body](../../images/refactorings/ConvertBlockBodyToExpressionBody.png)
 
 #### Convert comment to documentation comment \(RR0192\)
 
@@ -475,10 +496,10 @@ while (condition)
 }
 ```
 
-#### Convert expression\-body to block body \(RR0037\)
+#### Convert expression body to block body \(RR0037\)
 
 * **Syntax**: expression body
-![Convert expression-body to block body](../../images/refactorings/ConvertExpressionBodyToBlockBody.png)
+![Convert expression body to block body](../../images/refactorings/ConvertExpressionBodyToBlockBody.png)
 
 #### Convert 'for' to 'foreach' \(RR0130\)
 
@@ -532,7 +553,7 @@ for (int i = items.Count - 1; i >= 0; i--)
 
 * **Syntax**: if statement
 * **Span**: top if keyword or selected if statement
-![Convert 'if' to ?:](../../images/refactorings/ConvertIfToConditionalOperator.png)
+![Convert 'if' to ?:](../../images/refactorings/ConvertIfToConditionalExpression.png)
 
 #### Convert 'if' to 'switch' \(RR0133\)
 
@@ -612,17 +633,17 @@ $"name: {name,0:f}, value: {value}"
 string.Format("name: {0,0:f} value: {1}", name, value)
 ```
 
+#### Convert lambda block body to expression body \(RR0154\)
+
+* **Syntax**: lambda expression with block body with single single\-line statement
+* **Span**: body
+![Convert lambda block body to expression body](../../images/refactorings/ConvertLambdaBlockBodyToExpressionBody.png)
+
 #### Convert lambda expression body to block body \(RR0039\)
 
 * **Syntax**: lambda expression's expression body
 * **Span**: body
 ![Convert lambda expression body to block body](../../images/refactorings/ConvertLambdaExpressionBodyToBlockBody.png)
-
-#### Convert lambda expression body to expression\-body \(RR0154\)
-
-* **Syntax**: lambda expression with block body with single single\-line statement
-* **Span**: body
-![Convert lambda expression body to expression-body](../../images/refactorings/ConvertLambdaExpressionBodyToExpressionBody.png)
 
 #### Convert method group to lambda \(RR0137\)
 
@@ -640,15 +661,16 @@ Func<object, object, object> func = Foo;
 Func<object, object, object> func = (f, g) => Foo(f, g)
 ```
 
-#### Convert null literal to default expression \(RR0139\)
-
-* **Syntax**: argument
-![Convert null literal to default expression](../../images/refactorings/ConvertNullLiteralToDefaultExpression.png)
-
 #### Convert regular string literal to verbatim string literal \(RR0142\)
 
 * **Syntax**: regular string literal
 ![Convert regular string literal to verbatim string literal](../../images/refactorings/ConvertRegularStringLiteralToVerbatimStringLiteral.png)
+
+#### Convert 'return' statement to 'if' \(RR0143\)
+
+* **Syntax**: return statement, yield return statement
+* **Span**: selected statement, yield keyword or return keyword
+![Convert 'return' statement to 'if'](../../images/refactorings/ReplaceReturnStatementWithIfElse.png)
 
 #### Convert statements to if\-else \(RR0211\)
 
@@ -783,6 +805,11 @@ if (condition)
 * **Span**: while keyword or selected statement\(s\)
 ![Convert 'while' statement to 'for' statement](../../images/refactorings/ConvertWhileToFor.png)
 
+#### Copy argument \(RR0030\)
+
+* **Syntax**: missing argument
+![Copy argument](../../images/refactorings/CopyArgument.png)
+
 #### Copy documentation comment from base member \(RR0029\)
 
 * **Syntax**: constructor, method, property, indexer, event
@@ -790,29 +817,24 @@ if (condition)
 
 ![Copy documentation comment from base member](../../images/refactorings/CopyDocumentationCommentFromImplementedMember.png)
 
-#### Duplicate argument \(RR0030\)
-
-* **Syntax**: missing argument
-![Duplicate argument](../../images/refactorings/DuplicateArgument.png)
-
-#### Duplicate member \(RR0031\)
+#### Copy member declaration \(RR0031\)
 
 * **Syntax**: method, constructor, property, indexer, operator, event, namespace, class, struct, interface
 * **Span**: opening or closing brace
-![Duplicate member](../../images/refactorings/DuplicateMember.png)
+![Copy member declaration](../../images/refactorings/CopyMemberDeclaration.png)
 
-#### Duplicate parameter \(RR0032\)
+#### Copy parameter \(RR0032\)
 
 * **Syntax**: missing parameter
-![Duplicate parameter](../../images/refactorings/DuplicateParameter.png)
+![Copy parameter](../../images/refactorings/CopyParameter.png)
 
-#### Duplicate statement \(RR0033\)
+#### Copy statement \(RR0033\)
 
 * **Syntax**: do statement, fixed statement, for statement, foreach statement, checked statement, if statement, lock statement, switch statement, try statement, unchecked statement, unsafe statement, using statement, while statement
 * **Span**: opening or closing brace
-![Duplicate statement](../../images/refactorings/DuplicateStatement.png)
+![Copy statement](../../images/refactorings/CopyStatement.png)
 
-#### Duplicate switch section \(RR0212\)
+#### Copy switch section \(RR0212\)
 
 * **Syntax**: switch section
 * **Span**: close brace or empty line after switch section
@@ -865,31 +887,49 @@ switch (s)
 * **Span**: ?? operator
 ![Expand coalesce expression](../../images/refactorings/ExpandCoalesceExpression.png)
 
-#### Expand compound assignment operator \(RR0034\)
+#### Expand compound assignment \(RR0034\)
 
 * **Syntax**: compound assignment expression
 * **Span**: operator
-![Expand compound assignment operator](../../images/refactorings/ExpandCompoundAssignmentOperator.png)
+![Expand compound assignment](../../images/refactorings/ExpandCompoundAssignment.png)
 
-#### Expand event \(RR0036\)
+#### Expand event declaration \(RR0036\)
 
 * **Syntax**: event field declaration
-![Expand event](../../images/refactorings/ExpandEvent.png)
+![Expand event declaration](../../images/refactorings/ExpandEventDeclaration.png)
 
 #### Expand initializer \(RR0038\)
 
 * **Syntax**: initializer
 ![Expand initializer](../../images/refactorings/ExpandInitializer.png)
 
-#### Expand property \(RR0040\)
+#### Expand positional constructor \(RR0215\)
 
-* **Syntax**: auto\-property
-![Expand property](../../images/refactorings/ExpandProperty.png)
+* **Syntax**: positional record
+* **Span**: parameter list
 
-#### Expand property and add backing field \(RR0041\)
+#### Before
 
-* **Syntax**: auto\-property
-![Expand property and add backing field](../../images/refactorings/ExpandPropertyAndAddBackingField.png)
+```csharp
+public record Foo([property: Obsolete] string Value1, string Value2);
+```
+
+#### After
+
+```csharp
+public record Foo
+{
+    public Foo(string value1, string value2)
+    {
+        Value1 = value1;
+        Value2 = value2;
+    }
+
+    [Obsolete]
+    public string Value1 { get; init; }
+    public string Value2 { get; init; }
+}
+```
 
 #### Extract event handler method \(RR0203\)
 
@@ -969,11 +1009,6 @@ if (y)
 * **Syntax**: generic name with single type argument
 * **Span**: type argument
 ![Extract generic type](../../images/refactorings/ExtractGenericType.png)
-
-#### Extract statement\(s\) \(RR0045\)
-
-* **Syntax**: else clause, fixed statement, for statement, foreach statement, checked statement, if statement, lock statement, try statement, unsafe statement, using statement, while statement
-![Extract statement(s)](../../images/refactorings/ExtractStatement.png)
 
 #### Extract type declaration to a new file \(RR0046\)
 
@@ -1240,11 +1275,11 @@ public class Foo
 }
 ```
 
-#### Initialize local with default value \(RR0060\)
+#### Initialize local variable with default value \(RR0060\)
 
 * **Syntax**: local declaration without initializer
 * **Span**: identifier
-![Initialize local with default value](../../images/refactorings/InitializeLocalWithDefaultValue.png)
+![Initialize local variable with default value](../../images/refactorings/InitializeLocalVariableWithDefaultValue.png)
 
 #### Inline alias expression \(RR0061\)
 
@@ -1252,10 +1287,10 @@ public class Foo
 * **Span**: identifier
 ![Inline alias expression](../../images/refactorings/InlineAliasExpression.png)
 
-#### Inline constant \(RR0181\)
+#### Inline constant declaration \(RR0181\)
 
 * **Syntax**: constant declaration
-![Inline constant](../../images/refactorings/InlineConstant.png)
+![Inline constant declaration](../../images/refactorings/InlineConstantDeclaration.png)
 
 #### Inline constant value \(RR0127\)
 
@@ -1293,10 +1328,10 @@ void Foo()
 * **Syntax**: property access
 ![Inline property](../../images/refactorings/InlineProperty.png)
 
-#### Inline using static \(RR0180\)
+#### Inline using static directive \(RR0180\)
 
 * **Syntax**: using static directive
-![Inline using static](../../images/refactorings/InlineUsingStatic.png)
+![Inline using static directive](../../images/refactorings/InlineUsingStaticDirective.png)
 
 #### Insert string interpolation \(RR0063\)
 
@@ -1525,11 +1560,6 @@ int i = 0;
 * **Syntax**: method declaration, indexer declaration
 ![Make member virtual](../../images/refactorings/MakeMemberVirtual.png)
 
-#### Merge assignment expression with return statement \(RR0073\)
-
-* **Syntax**: assignment expression followed with return statement
-![Merge assignment expression with return statement](../../images/refactorings/MergeAssignmentExpressionWithReturnStatement.png)
-
 #### Merge attributes \(RR0074\)
 
 * **Syntax**: selected attribute lists
@@ -1606,6 +1636,11 @@ else
 * **Syntax**: local declarations with same type
 ![Merge local declarations](../../images/refactorings/MergeLocalDeclarations.png)
 
+#### Merge switch sections \(RR0110\)
+
+* **Syntax**: selected switch sections
+![Merge switch sections](../../images/refactorings/MergeSwitchSections.png)
+
 #### Move unsafe context to containing declaration \(RR0202\)
 
 * **Syntax**: unsafe declaration
@@ -1633,21 +1668,21 @@ public unsafe class Foo
 }
 ```
 
-#### Notify when property change \(RR0083\)
+#### Notify when property changes \(RR0083\)
 
 * **Syntax**: property in class/struct that implements System\.ComponentModel\.INotifyPropertyChanged
 * **Span**: setter
-![Notify when property change](../../images/refactorings/NotifyWhenPropertyChange.png)
+![Notify when property changes](../../images/refactorings/NotifyWhenPropertyChanges.png)
 
 #### Parenthesize expression \(RR0084\)
 
 * **Syntax**: selected expression
 ![Parenthesize expression](../../images/refactorings/ParenthesizeExpression.png)
 
-#### Promote local to parameter \(RR0085\)
+#### Promote local variable to parameter \(RR0085\)
 
 * **Syntax**: local declaration in method
-![Promote local to parameter](../../images/refactorings/PromoteLocalToParameter.png)
+![Promote local variable to parameter](../../images/refactorings/PromoteLocalVariableToParameter.png)
 
 #### Remove all comments \(RR0086\)
 
@@ -1691,6 +1726,11 @@ public unsafe class Foo
 * **Syntax**: switch statement
 * **Span**: opening or closing brace
 ![Remove all switch sections](../../images/refactorings/RemoveAllSwitchSections.png)
+
+#### Remove argument name \(RR0105\)
+
+* **Syntax**: selected argument\(s\)
+![Remove argument name](../../images/refactorings/RemoveArgumentName.png)
 
 #### Remove async/await \(RR0209\)
 
@@ -1756,10 +1796,10 @@ class C
 * **Span**: else keyword
 ![Remove condition from last else clause](../../images/refactorings/RemoveConditionFromLastElse.png)
 
-#### Remove directive and related directives \(RR0100\)
+#### Remove containing statement \(RR0045\)
 
-* **Syntax**: preprocessor directive, region directive
-![Remove directive and related directives](../../images/refactorings/RemoveDirectiveAndRelatedDirectives.png)
+* **Syntax**: else clause, fixed statement, for statement, foreach statement, checked statement, if statement, lock statement, try statement, unsafe statement, using statement, while statement
+![Remove containing statement](../../images/refactorings/RemoveContainingStatement.png)
 
 #### Remove empty lines \(RR0101\)
 
@@ -1792,138 +1832,9 @@ public enum Foo
 }
 ```
 
-#### Remove interpolation \(RR0102\)
+#### Remove instantiation of a local variable \(RR0185\)
 
-* **Syntax**: string interpolation
-* **Span**: opening or closing brace
-![Remove interpolation](../../images/refactorings/RemoveInterpolation.png)
-
-#### Remove member \(RR0103\)
-
-* **Syntax**: method, constructor, property, indexer, operator, event, namespace, class, struct, interface
-* **Span**: opening or closing brace
-![Remove member](../../images/refactorings/RemoveMember.png)
-
-#### Remove member declarations above/below \(RR0104\)
-
-* **Syntax**: empty line between member declarations
-![Remove member declarations above/below](../../images/refactorings/RemoveMemberDeclarations.png)
-
-#### Remove parameter name from argument \(RR0105\)
-
-* **Syntax**: selected argument\(s\)
-![Remove parameter name from argument](../../images/refactorings/RemoveParameterNameFromArgument.png)
-
-#### Remove parentheses \(RR0106\)
-
-* **Syntax**: parenthesized expression
-* **Span**: opening or closing parenthesis
-![Remove parentheses](../../images/refactorings/RemoveParentheses.png)
-
-#### Remove property initializer \(RR0107\)
-
-* **Syntax**: property initializer
-![Remove property initializer](../../images/refactorings/RemovePropertyInitializer.png)
-
-#### Remove region \(RR0108\)
-
-* **Syntax**: region directive
-![Remove region](../../images/refactorings/RemoveRegion.png)
-
-#### Remove statement \(RR0109\)
-
-* **Syntax**: do statement, fixed statement, for statement, foreach statement, checked statement, if statement, lock statement, switch statement, try statement, unchecked statement, unsafe statement, using statement, while statement
-* **Span**: open/close brace
-![Remove statement](../../images/refactorings/RemoveStatement.png)
-
-#### Remove statements from switch sections \(RR0110\)
-
-* **Syntax**: selected switch sections
-![Remove statements from switch sections](../../images/refactorings/RemoveStatementsFromSwitchSections.png)
-
-#### Rename backing field according to property name \(RR0111\)
-
-* **Syntax**: field identifier inside property declaration
-![Rename backing field according to property name](../../images/refactorings/RenameBackingFieldAccordingToPropertyName.png)
-
-#### Rename identifier according to type name \(RR0112\)
-
-* **Syntax**: foreach statement, local/field/constant declaration
-* **Span**: identifier
-![Rename identifier according to type name](../../images/refactorings/RenameForEachIdentifierAccordingToTypeName.png)
-
-![Rename identifier according to type name](../../images/refactorings/RenameFieldIdentifierAccordingToTypeName.png)
-
-#### Rename method according to type name \(RR0113\)
-
-* **Syntax**: method
-![Rename method according to type name](../../images/refactorings/RenameMethodAccordingToTypeName.png)
-
-#### Rename parameter according to its type name \(RR0114\)
-
-* **Syntax**: parameter
-* **Span**: parameter identifier
-![Rename parameter according to its type name](../../images/refactorings/RenameParameterAccordingToTypeName.png)
-
-#### Rename property according to type name \(RR0115\)
-
-* **Syntax**: property identifier
-![Rename property according to type name](../../images/refactorings/RenamePropertyAccordingToTypeName.png)
-
-#### Replace as expression with cast expression \(RR0117\)
-
-* **Syntax**: as expression
-![Replace as expression with cast expression](../../images/refactorings/ReplaceAsWithCast.png)
-
-#### Replace cast expression with as expression \(RR0118\)
-
-* **Syntax**: cast expression
-![Replace cast expression with as expression](../../images/refactorings/ReplaceCastWithAs.png)
-
-#### Replace conditional expression with expression \(RR0119\)
-
-* **Syntax**: conditional expression
-* **Span**: selected true/false expression
-![Replace conditional expression with expression](../../images/refactorings/ReplaceConditionalExpressionWithExpression.png)
-
-#### Replace constant with field \(RR0121\)
-
-* **Syntax**: constant declaration
-![Replace constant with field](../../images/refactorings/ReplaceConstantWithField.png)
-
-#### Replace equals expression with string\.Equals \(RR0124\)
-
-* **Syntax**: equals expression, not equals expression
-* **Span**: operator
-![Replace equals expression with string.Equals](../../images/refactorings/ReplaceEqualsExpressionWithStringEquals.png)
-
-#### Replace equals expression with string\.IsNullOrEmpty \(RR0125\)
-
-* **Syntax**: equals expression, not equals expression
-* **Span**: operator
-![Replace equals expression with string.IsNullOrEmpty](../../images/refactorings/ReplaceEqualsExpressionWithStringIsNullOrEmpty.png)
-
-#### Replace equals expression with string\.IsNullOrWhiteSpace \(RR0126\)
-
-* **Syntax**: equals expression, not equals expression
-* **Span**: operator
-![Replace equals expression with string.IsNullOrWhiteSpace](../../images/refactorings/ReplaceEqualsExpressionWithStringIsNullOrWhiteSpace.png)
-
-#### Replace interpolated string with interpolation expression \(RR0135\)
-
-* **Syntax**: interpolated string with single interpolation and no text
-* **Span**: interpolation
-![Replace interpolated string with interpolation expression](../../images/refactorings/ReplaceInterpolatedStringWithInterpolationExpression.png)
-
-#### Replace method with property \(RR0138\)
-
-* **Syntax**: method
-* **Span**: method header
-![Replace method with property](../../images/refactorings/ReplaceMethodWithProperty.png)
-
-#### Replace object creation with default value \(RR0185\)
-
-* **Syntax**: object creation expression
+* **Syntax**: local variable with a new object creation
 
 #### Before
 
@@ -1950,6 +1861,130 @@ var arr = new object[0];
 ```csharp
 object[] arr = null;
 ```
+
+#### Remove interpolation \(RR0102\)
+
+* **Syntax**: string interpolation
+* **Span**: opening or closing brace
+![Remove interpolation](../../images/refactorings/RemoveInterpolation.png)
+
+#### Remove member declaration \(RR0103\)
+
+* **Syntax**: method, constructor, property, indexer, operator, event, namespace, class, struct, interface
+* **Span**: opening or closing brace
+![Remove member declaration](../../images/refactorings/RemoveMemberDeclaration.png)
+
+#### Remove member declarations above/below \(RR0104\)
+
+* **Syntax**: empty line between member declarations
+![Remove member declarations above/below](../../images/refactorings/RemoveMemberDeclarations.png)
+
+#### Remove parentheses \(RR0106\)
+
+* **Syntax**: parenthesized expression
+* **Span**: opening or closing parenthesis
+![Remove parentheses](../../images/refactorings/RemoveParentheses.png)
+
+#### Remove preprocessor directive \(RR0100\)
+
+* **Syntax**: \#if directive, \#region directive
+![Remove preprocessor directive](../../images/refactorings/RemovePreprocessorDirective.png)
+
+#### Remove property initializer \(RR0107\)
+
+* **Syntax**: property initializer
+![Remove property initializer](../../images/refactorings/RemovePropertyInitializer.png)
+
+#### Remove region \(RR0108\)
+
+* **Syntax**: region directive
+![Remove region](../../images/refactorings/RemoveRegion.png)
+
+#### Remove statement \(RR0109\)
+
+* **Syntax**: do statement, fixed statement, for statement, foreach statement, checked statement, if statement, lock statement, switch statement, try statement, unchecked statement, unsafe statement, using statement, while statement
+* **Span**: open/close brace
+![Remove statement](../../images/refactorings/RemoveStatement.png)
+
+#### Remove unnecessary assignment \(RR0073\)
+
+* **Syntax**: assignment expression followed with return statement
+![Remove unnecessary assignment](../../images/refactorings/RemoveUnnecessaryAssignment.png)
+
+#### Rename identifier according to type name \(RR0112\)
+
+* **Syntax**: foreach statement, local/field/constant declaration
+* **Span**: identifier
+![Rename identifier according to type name](../../images/refactorings/RenameForEachIdentifierAccordingToTypeName.png)
+
+![Rename identifier according to type name](../../images/refactorings/RenameFieldIdentifierAccordingToTypeName.png)
+
+#### Rename method according to type name \(RR0113\)
+
+* **Syntax**: method
+![Rename method according to type name](../../images/refactorings/RenameMethodAccordingToTypeName.png)
+
+#### Rename parameter according to its type name \(RR0114\)
+
+* **Syntax**: parameter
+* **Span**: parameter identifier
+![Rename parameter according to its type name](../../images/refactorings/RenameParameterAccordingToTypeName.png)
+
+#### Rename property according to type name \(RR0115\)
+
+* **Syntax**: property identifier
+![Rename property according to type name](../../images/refactorings/RenamePropertyAccordingToTypeName.png)
+
+#### Replace 'as' expression with explicit cast \(RR0117\)
+
+* **Syntax**: as expression
+![Replace 'as' expression with explicit cast](../../images/refactorings/ReplaceAsExpressionWithExplicitCast.png)
+
+#### Replace conditional expression with true/false branch \(RR0119\)
+
+* **Syntax**: conditional expression
+* **Span**: selected true/false expression
+![Replace conditional expression with true/false branch](../../images/refactorings/ReplaceConditionalExpressionWithTrueOrFalseBranch.png)
+
+#### Replace equality operator with string\.Equals \(RR0124\)
+
+* **Syntax**: equals expression, not equals expression
+* **Span**: operator
+![Replace equality operator with string.Equals](../../images/refactorings/ReplaceEqualityOperatorWithStringEquals.png)
+
+#### Replace equality operator with string\.IsNullOrEmpty \(RR0125\)
+
+* **Syntax**: equals expression, not equals expression
+* **Span**: operator
+![Replace equality operator with string.IsNullOrEmpty](../../images/refactorings/ReplaceEqualityOperatorWithStringIsNullOrEmpty.png)
+
+#### Replace equality operator with string\.IsNullOrWhiteSpace \(RR0126\)
+
+* **Syntax**: equals expression, not equals expression
+* **Span**: operator
+![Replace equality operator with string.IsNullOrWhiteSpace](../../images/refactorings/ReplaceEqualityOperatorWithStringIsNullOrWhiteSpace.png)
+
+#### Replace explicit cast expression 'as' expression \(RR0118\)
+
+* **Syntax**: cast expression
+![Replace explicit cast expression 'as' expression](../../images/refactorings/ReplaceExplicitCastWithAsExpression.png)
+
+#### Replace interpolated string with interpolation expression \(RR0135\)
+
+* **Syntax**: interpolated string with single interpolation and no text
+* **Span**: interpolation
+![Replace interpolated string with interpolation expression](../../images/refactorings/ReplaceInterpolatedStringWithInterpolationExpression.png)
+
+#### Replace method with property \(RR0138\)
+
+* **Syntax**: method
+* **Span**: method header
+![Replace method with property](../../images/refactorings/ReplaceMethodWithProperty.png)
+
+#### Replace 'null' with 'default\(\.\.\.\)' \(RR0139\)
+
+* **Syntax**: argument
+![Replace 'null' with 'default(...)'](../../images/refactorings/ReplaceNullLiteralWithDefaultExpression.png)
 
 #### Replace prefix operator to postfix operator \(RR0140\)
 
@@ -2048,11 +2083,11 @@ string s;
 s = GetValue();
 ```
 
-#### Split if statement \(RR0184\)
+#### Split if \(RR0184\)
 
-* **Syntax**: if statement that has logical or expression as a condition
+* **Syntax**: if statement that has 'logical or' expression as a condition
 * **Span**: top if keyword or selected if statement
-![Split if statement](../../images/refactorings/SplitIfStatement.png)
+![Split if](../../images/refactorings/SplitIf.png)
 
 #### Split if\-else \(RR0190\)
 
@@ -2128,6 +2163,11 @@ if (y && x)
 * **Syntax**: empty line between member declarations
 ![Swap member declarations](../../images/refactorings/SwapMemberDeclarations.png)
 
+#### Synchronize property name and backing field name \(RR0111\)
+
+* **Syntax**: field identifier inside property declaration
+![Synchronize property name and backing field name](../../images/refactorings/SyncPropertyNameAndBackingFieldName.png)
+
 #### Uncomment multi\-line comment \(RR0200\)
 
 * **Syntax**: multi\-line comment
@@ -2154,38 +2194,22 @@ string s = null;
 * **Syntax**: string\.Empty field
 ![Use "" instead of string.Empty](../../images/refactorings/UseEmptyStringLiteralInsteadOfStringEmpty.png)
 
-#### Use C\# 6\.0 dictionary initializer \(RR0191\)
-
-* **Syntax**: collection initializer
-
-#### Before
-
-```csharp
-var dic = new Dictionary<int, string>() { { 0, "0" } };
-```
-
-#### After
-
-```csharp
-var dic = new Dictionary<int, string>() { [0] = "0" };
-```
-
 #### Use coalesce expression instead of if \(RR0165\)
 
 * **Syntax**: if statement
 * **Span**: top if keyword or selected if statement
 ![Use coalesce expression instead of if](../../images/refactorings/UseCoalesceExpressionInsteadOfIf.png)
 
-#### Use constant instead of field \(RR0128\)
+#### Use constant instead of read\-only field \(RR0128\)
 
 * **Syntax**: read\-only field
-![Use constant instead of field](../../images/refactorings/UseConstantInsteadOfField.png)
+![Use constant instead of read-only field](../../images/refactorings/UseConstantInsteadOfReadOnlyField.png)
 
-#### Use element access instead of 'First/Last'ElementAt' method \(RR0167\)
+#### Use element access instead of LINQ method \(RR0167\)
 
 * **Syntax**: First/Last/ElementAt method invocation
 * **Span**: method name
-![Use element access instead of 'First/Last'ElementAt' method](../../images/refactorings/UseElementAccessInsteadOfEnumerableMethod.png)
+![Use element access instead of LINQ method](../../images/refactorings/UseElementAccessInsteadOfLinqMethod.png)
 
 #### Use enumerator explicitly \(RR0206\)
 
@@ -2213,16 +2237,54 @@ using (var en = items.GetEnumerator())
 }
 ```
 
-#### Use lambda expression instead of anonymous method \(RR0170\)
+#### Use explicit type \(RR0023\)
+
+* **Syntax**: variable declaration, foreach statement
+* **Span**: type
+![Use explicit type](../../images/refactorings/UseExplicitType.png)
+
+#### Use implicit type \(RR0018\)
+
+* **Syntax**: variable declaration, foreach statement
+* **Span**: type
+![Use implicit type](../../images/refactorings/UseImplicitType.png)
+
+#### Use index initializer \(RR0191\)
+
+* **Syntax**: collection initializer
+
+#### Before
+
+```csharp
+var dic = new Dictionary<int, string>() { { 0, "0" } };
+```
+
+#### After
+
+```csharp
+var dic = new Dictionary<int, string>() { [0] = "0" };
+```
+
+#### Use lambda instead of anonymous method \(RR0170\)
 
 * **Syntax**: anonymous method
 * **Span**: delegate keyword
-![Use lambda expression instead of anonymous method](../../images/refactorings/UseLambdaExpressionInsteadOfAnonymousMethod.png)
+![Use lambda instead of anonymous method](../../images/refactorings/UseLambdaInsteadOfAnonymousMethod.png)
 
 #### Use List\<T> instead of yield \(RR0183\)
 
 * **Syntax**: yield return, yield break
 ![Use List\<T> instead of yield](../../images/refactorings/UseListInsteadOfYield.png)
+
+#### Use object initializer \(RR0026\)
+
+* **Syntax**: selected statements \(object creation followed with assignment\(s\)\)
+![Use object initializer](../../images/refactorings/UseObjectInitializer.png)
+
+#### Use read\-only field instead of constant \(RR0121\)
+
+* **Syntax**: constant declaration
+![Use read-only field instead of constant](../../images/refactorings/UseReadOnlyFieldInsteadOfConstant.png)
 
 #### Use StringBuilder instead of concatenation \(RR0182\)
 
@@ -2384,35 +2446,10 @@ private void Foo<T1, T2, T3>()
 }
 ```
 
-#### Wrap in \#if directive \(RR0174\)
-
-* **Syntax**: selected lines
-![Wrap in #if directive](../../images/refactorings/WrapInIfDirective.png)
-
-#### Wrap in condition \(RR0172\)
-
-* **Syntax**: selected statements
-![Wrap in condition](../../images/refactorings/WrapInCondition.png)
-
 #### Wrap in else clause \(RR0173\)
 
 * **Syntax**: statement
 ![Wrap in else clause](../../images/refactorings/WrapInElseClause.png)
-
-#### Wrap in region \(RR0175\)
-
-* **Syntax**: selected lines
-![Wrap in region](../../images/refactorings/WrapInRegion.png)
-
-#### Wrap in try\-catch \(RR0176\)
-
-* **Syntax**: selected statements
-![Wrap in try-catch](../../images/refactorings/WrapInTryCatch.png)
-
-#### Wrap in using statement \(RR0177\)
-
-* **Syntax**: local declaration of type that implements IDisposable
-![Wrap in using statement](../../images/refactorings/WrapInUsingStatement.png)
 
 #### Wrap initializer expressions \(RR0052\)
 
@@ -2453,6 +2490,21 @@ var x = new string[]
 ```csharp
 var x = new string[] { "a", "b", "c" }
 ```
+
+#### Wrap lines in \#region directive \(RR0175\)
+
+* **Syntax**: selected lines
+![Wrap lines in #region directive](../../images/refactorings/WrapLinesInRegion.png)
+
+#### Wrap lines in preprocessor directive \(RR0174\)
+
+* **Syntax**: selected lines
+![Wrap lines in preprocessor directive](../../images/refactorings/WrapLinesInPreprocessorDirective.png)
+
+#### Wrap lines in try\-catch \(RR0176\)
+
+* **Syntax**: selected statements
+![Wrap lines in try-catch](../../images/refactorings/WrapLinesInTryCatch.png)
 
 #### Wrap parameters \(RR0053\)
 
@@ -2497,6 +2549,16 @@ void M(object x, object y, object z)
 {
 }
 ```
+
+#### Wrap statements in condition \(RR0172\)
+
+* **Syntax**: selected statements
+![Wrap statements in condition](../../images/refactorings/WrapStatementsInCondition.png)
+
+#### Wrap statements in 'using' statement \(RR0177\)
+
+* **Syntax**: selected statements where first is local declaration of type that implements IDisposable
+![Wrap statements in 'using' statement](../../images/refactorings/WrapStatementsInUsingStatement.png)
 
 
 *\(Generated with [DotMarkdown](http://github.com/JosefPihrt/DotMarkdown)\)*
