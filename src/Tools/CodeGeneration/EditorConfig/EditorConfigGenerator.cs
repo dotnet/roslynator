@@ -12,7 +12,7 @@ namespace Roslynator.CodeGeneration.EditorConfig
 {
     public static class EditorConfigGenerator
     {
-        public static string GenerateEditorConfig(RoslynatorMetadata metadata)
+        public static string GenerateEditorConfig(RoslynatorMetadata metadata, bool commentOut)
         {
             var optionMap = new Dictionary<string, HashSet<AnalyzerMetadata>>();
 
@@ -44,7 +44,8 @@ namespace Roslynator.CodeGeneration.EditorConfig
                         w.WriteLine();
                     }
 
-                    w.WriteEntry($"#{option.Key}", option.DefaultValuePlaceholder);
+                    w.WriteCommentCharIf(commentOut);
+                    w.WriteEntry($"{option.Key}", option.DefaultValuePlaceholder);
 
                     string defaultValue = option.DefaultValue;
 
@@ -72,16 +73,21 @@ namespace Roslynator.CodeGeneration.EditorConfig
                     .OrderBy(f => f.Id))
                 {
                     w.WriteLine($"# {analyzer.Title.TrimEnd('.')}");
+                    w.WriteCommentCharIf(commentOut);
                     w.WriteAnalyzer(
                         analyzer.Id,
                         (analyzer.IsEnabledByDefault)
                             ? ((DiagnosticSeverity)Enum.Parse(typeof(DiagnosticSeverity), analyzer.DefaultSeverity)).ToReportDiagnostic()
                             : ReportDiagnostic.Suppress);
 
-                    foreach (ConfigOptionKeyMetadata optionKey in analyzer.ConfigOptions.OrderBy(f => f.Key))
+                    if (analyzer.ConfigOptions.Count > 0)
                     {
-                        ConfigOptionMetadata option = metadata.ConfigOptions.First(f => f.Key == optionKey.Key);
-                        w.WriteEntry($"#{option.Key}", option.DefaultValuePlaceholder);
+                        w.WriteLine("# Options: "
+                            + string.Join(
+                                ", ",
+                                analyzer.ConfigOptions
+                                    .OrderBy(f => f.Key)
+                                    .Select(f2 => metadata.ConfigOptions.First(f => f.Key == f2.Key).Key)));
                     }
 
                     w.WriteLine();
@@ -95,6 +101,7 @@ namespace Roslynator.CodeGeneration.EditorConfig
                     .Where(f => !f.IsObsolete)
                     .OrderBy(f => f.OptionKey))
                 {
+                    w.WriteCommentCharIf(commentOut);
                     w.WriteRefactoring(refactoring.OptionKey, refactoring.IsEnabledByDefault);
                 }
 
@@ -105,43 +112,11 @@ namespace Roslynator.CodeGeneration.EditorConfig
                 foreach (CompilerDiagnosticMetadata compilerDiagnostic in metadata.CompilerDiagnostics
                     .OrderBy(f => f.Id))
                 {
+                    w.WriteCommentCharIf(commentOut);
                     w.WriteCompilerDiagnosticFix(compilerDiagnostic.Id, true);
                 }
 
-                const string content = @"# Roslynator Config File
-
-is_global = true
-
-# Options in this file can be used
-#  1) In a standard.editorconfig file
-#  2) In a Roslynator default configuration file
-#     Location of the file depends on the operation system:
-#       Windows: C:/Users/<USERNAME>/AppData/Local/.roslynatorconfig
-#       Linux: /home/<<USERNAME>>/.local/share/.roslynatorconfig
-#       OSX: /Users/<<USERNAME>>/.local/share/.roslynatorconfig
-#     The file must contain ""is_global = true"" directive
-#     Default configuration is loaded once when IDE starts. Therefore, it may be necessary to restart IDE for changes to take effect.
-
-## Set severity for all analyzers
-#dotnet_analyzer_diagnostic.category-roslynator.severity = default|none|silent|suggestion|warning|error
-
-## Set severity for a specific analyzer
-#dotnet_diagnostic.<ANALYZER_ID>.severity = default|none|silent|suggestion|warning|error
-
-## Enable/disable all refactorings
-#roslynator.refactorings.enabled = true|false
-
-## Enable/disable specific refactoring
-#roslynator.refactoring.<REFACTORING_NAME>.enabled = true|false
-
-## Enable/disable all fixes for compiler diagnostics
-#roslynator.compiler_diagnostic_fixes.enabled = true|false
-
-## Enable/disable fix for a specific compiler diagnostic
-#roslynator.compiler_diagnostic_fix.<COMPILER_DIAGNOSTIC_ID>.enabled = true|false
-";
-
-                return content + w.ToString();
+                return w.ToString();
             }
         }
     }

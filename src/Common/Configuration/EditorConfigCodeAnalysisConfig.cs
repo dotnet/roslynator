@@ -15,13 +15,13 @@ namespace Roslynator.Configuration
     {
         public const string FileName = ".roslynatorconfig";
 
-        private const string _fileDefaultContent = @"# Roslynator Config File
+        internal const string FileDefaultContent = @"# Roslynator Config File
 
 is_global = true
 
-# Options in this file can be used to change DEFAULT configuration of analyzers, refactorings and compiler diagnostic fixes.
+# Options in this file can be used to change default configuration of analyzers, refactorings and compiler diagnostic fixes.
 # Default configuration is loaded once when IDE starts. Therefore, it may be necessary to restart IDE for changes to take effect.
-# Full list of available options: https://github.com/josefpihrt/roslynator/docs/options.editorconfig
+# Full list of available options: https://github.com/josefpihrt/roslynator/docs/configuration.md
 
 ## Set severity for all analyzers
 #dotnet_analyzer_diagnostic.category-roslynator.severity = default|none|silent|suggestion|warning|error
@@ -35,10 +35,10 @@ is_global = true
 ## Enable/disable specific refactoring
 #roslynator_refactoring.<REFACTORING_NAME>.enabled = true|false
 
-## Enable/disable all fixes for compiler diagnostics
+## Enable/disable all compiler diagnostic fixes
 #roslynator_compiler_diagnostic_fixes.enabled = true|false
 
-## Enable/disable fix for a specific compiler diagnostic
+## Enable/disable specific compiler diagnostic fix
 #roslynator_compiler_diagnostic_fix.<COMPILER_DIAGNOSTIC_ID>.enabled = true|false
 ";
 
@@ -187,7 +187,7 @@ is_global = true
                 {
                     Directory.CreateDirectory(Path.GetDirectoryName(path));
 
-                    File.WriteAllText(path, _fileDefaultContent, Encoding.UTF8);
+                    File.WriteAllText(path, FileDefaultContent, Encoding.UTF8);
                 }
                 catch (Exception ex) when (ex is IOException
                     || ex is UnauthorizedAccessException)
