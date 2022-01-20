@@ -2,6 +2,7 @@
 
 using System.Collections.Immutable;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 namespace Roslynator.CommandLine
 {
@@ -34,9 +35,9 @@ namespace Roslynator.CommandLine
                 {
                     string moniker = name.Substring(openParenToken + 1, name.Length - 2 - openParenToken);
 
-                    Debug.Assert(TargetFrameworkMonikers.Contains(moniker), moniker);
+                    Debug.Assert(IsTargetFrameworkMoniker(moniker), moniker);
 
-                    if (TargetFrameworkMonikers.Contains(moniker))
+                    if (IsTargetFrameworkMoniker(moniker))
                     {
                         string nameWithoutMoniker = name.Remove(name.Length - 2 - moniker.Length);
 
@@ -48,7 +49,15 @@ namespace Roslynator.CommandLine
             return new ProjectName(name);
         }
 
-        public static readonly ImmutableHashSet<string> TargetFrameworkMonikers = ImmutableHashSet.CreateRange(new[] {
+        private static bool IsTargetFrameworkMoniker(string value)
+        {
+            return WellKnownTargetFrameworkMonikers.Contains(value)
+                || _targetFrameworkMonikerRegex.IsMatch(value);
+        }
+
+        private static readonly Regex _targetFrameworkMonikerRegex = new(@"\Anet[0-9]+\.[0-9](-[a-zA-Z0-9.]+)?\z");
+
+        private static readonly ImmutableHashSet<string> WellKnownTargetFrameworkMonikers = ImmutableHashSet.CreateRange(new[] {
             "aspnet50",
             "aspnetcore50",
             "dnx",
@@ -81,34 +90,8 @@ namespace Roslynator.CommandLine
             "net48",
             "net50",
             "net5.0",
-            "net5.0-windows",
             "net6.0",
-            "net6.0-android",
-            "net6.0-ios",
-            "net6.0-maccatalyst",
-            "net6.0-macos",
-            "net6.0-tvos",
-            "net6.0-windows",
-#if DEBUG
-            "net6.0-Browser",
-            "net6.0-FreeBSD",
-            "net6.0-Linux",
-            "net6.0-OSX",
-            "net6.0-Unix",
             "net7.0",
-            "net7.0-Android",
-            "net7.0-Browser",
-            "net7.0-FreeBSD",
-            "net7.0-illumos",
-            "net7.0-iOS",
-            "net7.0-Linux",
-            "net7.0-MacCatalyst",
-            "net7.0-OSX",
-            "net7.0-Solaris",
-            "net7.0-tvOS",
-            "net7.0-Unix",
-            "net7.0-windows",
-#endif
             "netcore",
             "netcore45",
             "netcore451",
