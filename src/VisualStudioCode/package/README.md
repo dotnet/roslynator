@@ -9,8 +9,12 @@ For further information please with Roslynator [repo](https://github.com/JosefPi
 Use EditorConfig file to configure analyzers, refactoring and compiler diagnostic fixes.
 
 ```editorconfig
-# Set severity for all analyzers
+# Set severity for all analyzers that are enabled by default (https://docs.microsoft.com/en-us/visualstudio/code-quality/use-roslyn-analyzers?view=vs-2022#set-rule-severity-of-multiple-analyzer-rules-at-once-in-an-editorconfig-file)
 dotnet_analyzer_diagnostic.category-roslynator.severity = default|none|silent|suggestion|warning|error
+
+# Enable/disable all analyzers by default.
+# NOTE: This option can be used only in .roslynatorconfig file
+roslynator_analyzers.enabled_by_default = true|false
 
 # Set severity for a specific analyzer
 dotnet_diagnostic.<ANALYZER_ID>.severity = default|none|silent|suggestion|warning|error

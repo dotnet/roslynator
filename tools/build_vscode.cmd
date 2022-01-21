@@ -4,7 +4,7 @@ set _programFiles=%ProgramFiles%
 
 set _msbuildPath="%_programFiles%\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\MSBuild"
 set _properties=Configuration=Release,Deterministic=true,TreatWarningsAsErrors=true,WarningsNotAsErrors=1591,DefineConstants=VSCODE
-set _version=4.0.0
+set _version=4.0.1
 
 orang replace "..\src\VisualStudioCode\package\package.json" ^
  -c "patterns\vscode_version.txt" from-file -t m r ^

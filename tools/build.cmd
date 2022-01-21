@@ -5,8 +5,8 @@ set _programFiles=%ProgramFiles%
 set _msbuildPath="%_programFiles%\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\MSBuild"
 set _properties=Configuration=Release,Deterministic=true,TreatWarningsAsErrors=true,WarningsNotAsErrors=1591
 set _outDir=..\out\Release
-set _version=4.0.0
-set _version4=4.0.0.0
+set _version=4.0.1
+set _version4=4.0.0.1
 
 orang replace "..\src\VisualStudio\source.extension.vsixmanifest" ^
  -c "patterns\vsix_manifest_version.txt" from-file -t m r ^
@@ -27,7 +27,7 @@ dotnet restore "..\src\VisualStudio.sln"
 dotnet restore "..\src\Tools\Tools.sln"
 
 %_msbuildPath% "..\src\Tools\Tools.sln" ^
- /t:Clean,Build ^
+ /t:Build ^
  /p:%_properties% ^
  /v:normal ^
  /m
@@ -41,13 +41,7 @@ if errorlevel 1 (
 dotnet "..\src\Tools\CodeGenerator\bin\Release\netcoreapp3.1\Roslynator.CodeGenerator.dll" "..\src"
 
 %_msbuildPath% "..\src\Roslynator.sln" ^
- /t:Clean ^
- /p:Configuration=Debug ^
- /v:minimal ^
- /m
-
-%_msbuildPath% "..\src\Roslynator.sln" ^
- /t:Clean,Build ^
+ /t:Build ^
  /p:%_properties% ^
  /v:normal ^
  /m
