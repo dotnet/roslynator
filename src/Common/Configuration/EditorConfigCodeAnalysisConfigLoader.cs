@@ -40,6 +40,7 @@ namespace Roslynator.Configuration
             Dictionary<string, bool> codeFixes = null;
             Dictionary<string, ReportDiagnostic> categories = null;
             Dictionary<string, string> options = null;
+            bool? analyzersEnabledByDefault = null;
 
             ImmutableDictionary<string, string> allOptions = ImmutableDictionary<string, string>.Empty;
             ImmutableDictionary<string, ReportDiagnostic> analyzerOptions = ImmutableDictionary<string, ReportDiagnostic>.Empty;
@@ -93,6 +94,13 @@ namespace Roslynator.Configuration
                                 (categories ??= new Dictionary<string, ReportDiagnostic>()).Add(category, reportDiagnostic.Value);
                             }
                         }
+                        else if (option.Key == ConfigOptionKeys.AnalyzersEnabledByDefault)
+                        {
+                            if (bool.TryParse(option.Value, out bool enabled))
+                            {
+                                analyzersEnabledByDefault = enabled;
+                            }
+                        }
                         else
                         {
                             (options ??= new Dictionary<string, string>()).Add(option.Key, option.Value);
@@ -106,7 +114,8 @@ namespace Roslynator.Configuration
                 analyzerOptions,
                 categories,
                 refactorings,
-                codeFixes);
+                codeFixes,
+                analyzersEnabledByDefault: analyzersEnabledByDefault);
 
             static ReportDiagnostic? ParseReportDiagnostic(string value)
             {

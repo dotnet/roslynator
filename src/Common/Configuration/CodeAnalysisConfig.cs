@@ -149,16 +149,17 @@ namespace Roslynator.Configuration
             return (!Refactorings.TryGetValue(id, out bool enabled)) || enabled;
         }
 
-        public DiagnosticSeverity? GetDiagnosticSeverity(string id, string category)
+        public DiagnosticSeverity? GetDiagnosticSeverity(string id, string category, bool isEnabledByDefault)
         {
-            return EditorConfig.GetDiagnosticSeverity(id, category)
+            return EditorConfig.GetDiagnosticSeverity(id, category, isEnabledByDefault)
                 ?? XmlConfig.GetDiagnosticSeverity(id);
         }
 
-        public bool? IsDiagnosticEnabled(string id, string category)
+        public bool IsDiagnosticEnabledByDefault(string id, string category, bool defaultValue)
         {
-            return EditorConfig.IsDiagnosticEnabled(id, category)
-                ?? XmlConfig.IsDiagnosticEnabled(id);
+            return EditorConfig.IsDiagnosticEnabledByDefault(id, category, defaultValue)
+                ?? XmlConfig.IsDiagnosticEnabledByDefault(id)
+                ?? defaultValue;
         }
     }
 }

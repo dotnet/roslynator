@@ -18,13 +18,15 @@ namespace Roslynator
             string helpLinkUri = null,
             params string[] customTags)
         {
+            isEnabledByDefault = CodeAnalysisConfig.Instance.IsDiagnosticEnabledByDefault(id, category, isEnabledByDefault);
+
             return new DiagnosticDescriptor(
                 id: id,
                 title: title,
                 messageFormat: messageFormat,
                 category: category,
-                defaultSeverity: CodeAnalysisConfig.Instance.GetDiagnosticSeverity(id, category) ?? defaultSeverity,
-                isEnabledByDefault: CodeAnalysisConfig.Instance.IsDiagnosticEnabled(id, category) ?? isEnabledByDefault,
+                defaultSeverity: CodeAnalysisConfig.Instance.GetDiagnosticSeverity(id, category, isEnabledByDefault) ?? defaultSeverity,
+                isEnabledByDefault: isEnabledByDefault,
                 description: description,
                 helpLinkUri: DiagnosticDescriptorUtility.GetHelpLinkUri(helpLinkUri),
                 customTags: customTags);

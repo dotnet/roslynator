@@ -11,18 +11,18 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <RoslynatorVersion>4.0.0.0</RoslynatorVersion>
-    <RoslynatorAnalyzersPackageVersion>4.0.0-rc</RoslynatorAnalyzersPackageVersion>
-    <RoslynatorCoreVersion>4.0.0.0</RoslynatorCoreVersion>
-    <RoslynatorCorePackageVersion>4.0.0-rc</RoslynatorCorePackageVersion>
+    <RoslynatorVersion>4.0.0.1</RoslynatorVersion>
+    <RoslynatorAnalyzersPackageVersion>4.0.0</RoslynatorAnalyzersPackageVersion>
+    <RoslynatorCoreVersion>4.0.0.1</RoslynatorCoreVersion>
+    <RoslynatorCorePackageVersion>4.0.0</RoslynatorCorePackageVersion>
     <RoslynatorCliVersion>0.3.1.0</RoslynatorCliVersion>
     <RoslynatorCliPackageVersion>0.3.1</RoslynatorCliPackageVersion>
-    <RoslynatorFormattingAnalyzersVersion>4.0.0.0</RoslynatorFormattingAnalyzersVersion>
-    <RoslynatorFormattingAnalyzersPackageVersion>4.0.0-rc</RoslynatorFormattingAnalyzersPackageVersion>
-    <RoslynatorCodeAnalysisAnalyzersVersion>4.0.0.0</RoslynatorCodeAnalysisAnalyzersVersion>
-    <RoslynatorCodeAnalysisAnalyzersPackageVersion>4.0.0-rc</RoslynatorCodeAnalysisAnalyzersPackageVersion>
-    <RoslynatorTestingVersion>4.0.0.0</RoslynatorTestingVersion>
-    <RoslynatorTestingPackageVersion>4.0.0-rc</RoslynatorTestingPackageVersion>
+    <RoslynatorFormattingAnalyzersVersion>4.0.0.1</RoslynatorFormattingAnalyzersVersion>
+    <RoslynatorFormattingAnalyzersPackageVersion>4.0.0</RoslynatorFormattingAnalyzersPackageVersion>
+    <RoslynatorCodeAnalysisAnalyzersVersion>4.0.0.1</RoslynatorCodeAnalysisAnalyzersVersion>
+    <RoslynatorCodeAnalysisAnalyzersPackageVersion>4.0.0</RoslynatorCodeAnalysisAnalyzersPackageVersion>
+    <RoslynatorTestingVersion>4.0.0.1</RoslynatorTestingVersion>
+    <RoslynatorTestingPackageVersion>4.0.0</RoslynatorTestingPackageVersion>
     <RoslynatorCodeFixesPackageVersion>2.0.0</RoslynatorCodeFixesPackageVersion>
     <RoslynatorDocumentationPackageVersion>1.0.0</RoslynatorDocumentationPackageVersion>
   </PropertyGroup>

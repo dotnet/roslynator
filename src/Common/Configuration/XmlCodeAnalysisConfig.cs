@@ -91,7 +91,7 @@ namespace Roslynator.Configuration
             return null;
         }
 
-        public bool? IsDiagnosticEnabled(string id)
+        public bool? IsDiagnosticEnabledByDefault(string id)
         {
             if (SpecificDiagnosticOptions.TryGetValue(id, out ReportDiagnostic reportDiagnostic))
             {
