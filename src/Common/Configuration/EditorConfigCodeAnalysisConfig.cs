@@ -23,8 +23,12 @@ is_global = true
 # Default configuration is loaded once when IDE starts. Therefore, it may be necessary to restart IDE for changes to take effect.
 # Full list of available options: https://github.com/josefpihrt/roslynator/docs/configuration.md
 
-## Set severity for all analyzers
-#dotnet_analyzer_diagnostic.category-roslynator.severity = default|none|silent|suggestion|warning|error
+# Set severity for all analyzers that are enabled by default (https://docs.microsoft.com/en-us/visualstudio/code-quality/use-roslyn-analyzers?view=vs-2022#set-rule-severity-of-multiple-analyzer-rules-at-once-in-an-editorconfig-file)
+dotnet_analyzer_diagnostic.category-roslynator.severity = default|none|silent|suggestion|warning|error
+
+# Enable/disable all analyzers by default.
+# NOTE: This option can be used only in .roslynatorconfig file
+roslynator_analyzers.enabled_by_default = true|false
 
 ## Set severity for a specific analyzer
 #dotnet_diagnostic.<ANALYZER_ID>.severity = default|none|silent|suggestion|warning|error
@@ -49,13 +53,14 @@ is_global = true
             IEnumerable<KeyValuePair<string, ReportDiagnostic>> analyzers = null,
             IEnumerable<KeyValuePair<string, ReportDiagnostic>> analyzerCategories = null,
             IEnumerable<KeyValuePair<string, bool>> refactorings = null,
-            IEnumerable<KeyValuePair<string, bool>> codeFixes = null)
+            IEnumerable<KeyValuePair<string, bool>> codeFixes = null,
+            bool? analyzersEnabledByDefault = null)
         {
             Options = options?.ToImmutableDictionary() ?? ImmutableDictionary<string, string>.Empty;
-            Analyzers = analyzers?.ToImmutableDictionary() ?? ImmutableDictionary<string, ReportDiagnostic>.Empty;
-            AnalyzerCategories = analyzerCategories?.ToImmutableDictionary() ?? ImmutableDictionary<string, ReportDiagnostic>.Empty;
-            Refactorings = refactorings?.ToImmutableDictionary() ?? ImmutableDictionary<string, bool>.Empty;
-            CodeFixes = codeFixes?.ToImmutableDictionary() ?? ImmutableDictionary<string, bool>.Empty;
+            Analyzers = analyzers?.ToImmutableDictionary(StringComparer.InvariantCultureIgnoreCase) ?? ImmutableDictionary<string, ReportDiagnostic>.Empty;
+            AnalyzerCategories = analyzerCategories?.ToImmutableDictionary(StringComparer.InvariantCultureIgnoreCase) ?? ImmutableDictionary<string, ReportDiagnostic>.Empty;
+            Refactorings = refactorings?.ToImmutableDictionary(StringComparer.InvariantCultureIgnoreCase) ?? ImmutableDictionary<string, bool>.Empty;
+            CodeFixes = codeFixes?.ToImmutableDictionary(StringComparer.InvariantCultureIgnoreCase) ?? ImmutableDictionary<string, bool>.Empty;
 
             if (Options.TryGetValue(ConfigOptionKeys.MaxLineLength, out string maxLineLengthRaw)
                 && int.TryParse(maxLineLengthRaw, out int maxLineLength))
@@ -68,6 +73,8 @@ is_global = true
             {
                 PrefixFieldIdentifierWithUnderscore = prefixFieldIdentifierWithUnderscore;
             }
+
+            AnalyzersEnabledByDefault = analyzersEnabledByDefault;
         }
 
         public int? MaxLineLength { get; }
@@ -83,6 +90,8 @@ is_global = true
         public ImmutableDictionary<string, bool> Refactorings { get; }
 
         public ImmutableDictionary<string, bool> CodeFixes { get; }
+
+        public bool? AnalyzersEnabledByDefault { get; }
 
         internal IReadOnlyDictionary<string, bool> GetRefactorings()
         {
@@ -109,9 +118,9 @@ is_global = true
             return null;
         }
 
-        public DiagnosticSeverity? GetDiagnosticSeverity(string id, string category)
+        public DiagnosticSeverity? GetDiagnosticSeverity(string id, string category, bool isEnabledByDefault)
         {
-            ReportDiagnostic? reportDiagnostic = GetReportDiagnostic(id, category);
+            ReportDiagnostic? reportDiagnostic = GetReportDiagnostic(id, category, isEnabledByDefault);
 
             switch (reportDiagnostic)
             {
@@ -125,9 +134,9 @@ is_global = true
             return null;
         }
 
-        public bool? IsDiagnosticEnabled(string id, string category)
+        public bool? IsDiagnosticEnabledByDefault(string id, string category, bool defaultValue)
         {
-            switch (GetReportDiagnostic(id, category))
+            switch (GetReportDiagnostic(id, category, defaultValue))
             {
                 case ReportDiagnostic.Error:
                 case ReportDiagnostic.Warn:
@@ -138,18 +147,21 @@ is_global = true
                     return false;
             }
 
-            return null;
+            return AnalyzersEnabledByDefault ?? defaultValue;
         }
 
-        private ReportDiagnostic? GetReportDiagnostic(string id, string category)
+        private ReportDiagnostic? GetReportDiagnostic(string id, string category, bool isEnabledByDefault)
         {
             ReportDiagnostic? reportDiagnostic = null;
 
-            if (AnalyzerCategories.TryGetValue(category, out ReportDiagnostic reportDiagnostic2))
-                reportDiagnostic = reportDiagnostic2;
+            if (isEnabledByDefault
+                && AnalyzerCategories.TryGetValue(category, out ReportDiagnostic categoryReportDiagnostic))
+            {
+                reportDiagnostic = categoryReportDiagnostic;
+            }
 
-            if (Analyzers.TryGetValue(id, out ReportDiagnostic reportDiagnostic3))
-                reportDiagnostic = reportDiagnostic3;
+            if (Analyzers.TryGetValue(id, out ReportDiagnostic analyzerReportDiagnostic))
+                reportDiagnostic = analyzerReportDiagnostic;
 
             return reportDiagnostic;
         }

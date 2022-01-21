@@ -54,7 +54,7 @@ namespace Roslynator.CodeGeneration.EditorConfig
 
                     if (analyzers?.Count > 0)
                     {
-                        w.WriteLine("# Applicable to: " + string.Join(", ", analyzers.OrderBy(f => f.Id).Select(f => f.Id)));
+                        w.WriteLine("# Applicable to: " + string.Join(", ", analyzers.OrderBy(f => f.Id).Select(f => f.Id.ToLowerInvariant())));
                         w.WriteLine();
                         isSeparatedWithNewLine = true;
                     }
@@ -75,7 +75,7 @@ namespace Roslynator.CodeGeneration.EditorConfig
                     w.WriteLine($"# {analyzer.Title.TrimEnd('.')}");
                     w.WriteCommentCharIf(commentOut);
                     w.WriteAnalyzer(
-                        analyzer.Id,
+                        analyzer.Id.ToLowerInvariant(),
                         (analyzer.IsEnabledByDefault)
                             ? ((DiagnosticSeverity)Enum.Parse(typeof(DiagnosticSeverity), analyzer.DefaultSeverity)).ToReportDiagnostic()
                             : ReportDiagnostic.Suppress);
@@ -113,7 +113,7 @@ namespace Roslynator.CodeGeneration.EditorConfig
                     .OrderBy(f => f.Id))
                 {
                     w.WriteCommentCharIf(commentOut);
-                    w.WriteCompilerDiagnosticFix(compilerDiagnostic.Id, true);
+                    w.WriteCompilerDiagnosticFix(compilerDiagnostic.Id.ToLowerInvariant(), true);
                 }
 
                 return w.ToString();
