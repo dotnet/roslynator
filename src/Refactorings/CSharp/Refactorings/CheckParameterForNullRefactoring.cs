@@ -265,6 +265,7 @@ namespace Roslynator.CSharp.Refactorings
                 case SyntaxKind.OperatorDeclaration:
                 case SyntaxKind.ConversionOperatorDeclaration:
                 case SyntaxKind.RecordDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     {
                         break;
                     }
