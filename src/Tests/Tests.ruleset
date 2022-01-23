@@ -1,8 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<RuleSet Name="Analyzers.Tests Ruleset" ToolsVersion="15.0">
-  <Include Path="..\global.ruleset" Action="Default" />
-  <Rules AnalyzerId="Roslynator.Formatting.Analyzers" RuleNamespace="Roslynator.Formatting.Analyzers">
-    <Rule Id="RCS0047" Action="None" />
-    <Rule Id="RCS0053" Action="None" />
-  </Rules>
-</RuleSet>

@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <LangVersion>9.0</LangVersion>
-    <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)global.ruleset</CodeAnalysisRuleSet>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)Roslynator.snk</AssemblyOriginatorKeyFile>
     <Authors>Josef Pihrt</Authors>
