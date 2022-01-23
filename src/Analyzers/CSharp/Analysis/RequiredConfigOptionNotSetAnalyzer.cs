@@ -13,6 +13,13 @@ namespace Roslynator.CSharp.Analysis
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 
+        private static readonly ConfigOptionDescriptor[] _useBlockBodyOrExpressionBodyOptions = new ConfigOptionDescriptor[]
+        {
+            ConfigOptions.BodyStyle,
+            ConfigOptions.UseBlockBodyWhenDeclarationSpansOverMultipleLines,
+            ConfigOptions.UseBlockBodyWhenExpressionSpansOverMultipleLines
+        };
+
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
             get
@@ -66,7 +73,7 @@ namespace Roslynator.CSharp.Analysis
                     Validate(ref context, compilationOptions, options, Flags.IncludeParenthesesWhenCreatingNewObject, ref flags, DiagnosticRules.IncludeParenthesesWhenCreatingNewObject, ConfigOptions.ObjectCreationParenthesesStyle);
                     Validate(ref context, compilationOptions, options, Flags.NormalizeNullCheck, ref flags, DiagnosticRules.NormalizeNullCheck, ConfigOptions.NullCheckStyle);
                     Validate(ref context, compilationOptions, options, Flags.UseAnonymousFunctionOrMethodGroup, ref flags, DiagnosticRules.UseAnonymousFunctionOrMethodGroup, ConfigOptions.UseAnonymousFunctionOrMethodGroup);
-                    Validate(ref context, compilationOptions, options, Flags.UseBlockBodyOrExpressionBody, ref flags, DiagnosticRules.UseBlockBodyOrExpressionBody, ConfigOptions.BodyStyle);
+                    Validate(ref context, compilationOptions, options, Flags.UseBlockBodyOrExpressionBody, ref flags, DiagnosticRules.UseBlockBodyOrExpressionBody, _useBlockBodyOrExpressionBodyOptions);
                     Validate(ref context, compilationOptions, options, Flags.UseEmptyStringLiteralOrStringEmpty, ref flags, DiagnosticRules.UseEmptyStringLiteralOrStringEmpty, ConfigOptions.EmptyStringStyle);
                     Validate(ref context, compilationOptions, options, Flags.UseExplicitlyOrImplicitlyTypedArray, ref flags, DiagnosticRules.UseExplicitlyOrImplicitlyTypedArray, ConfigOptions.ArrayCreationTypeStyle);
                     Validate(ref context, compilationOptions, options, Flags.UseHasFlagMethodOrBitwiseOperator, ref flags, DiagnosticRules.UseHasFlagMethodOrBitwiseOperator, ConfigOptions.EnumHasFlagStyle);
@@ -87,6 +94,23 @@ namespace Roslynator.CSharp.Analysis
             if (!flags.HasFlag(flag)
                 && analyzer.IsEffective(context.Tree, compilationOptions, context.CancellationToken)
                 && TryReportRequiredOptionNotSet(context, configOptions, analyzer, option))
+            {
+                flags |= flag;
+            }
+        }
+
+        private static void Validate(
+            ref SyntaxTreeAnalysisContext context,
+            CompilationOptions compilationOptions,
+            AnalyzerConfigOptions configOptions,
+            Flags flag,
+            ref Flags flags,
+            DiagnosticDescriptor analyzer,
+            params ConfigOptionDescriptor[] options)
+        {
+            if (!flags.HasFlag(flag)
+                && analyzer.IsEffective(context.Tree, compilationOptions, context.CancellationToken)
+                && TryReportRequiredOptionNotSet(context, configOptions, analyzer, options))
             {
                 flags |= flag;
             }
