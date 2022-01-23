@@ -76,7 +76,7 @@ namespace Roslynator.CSharp.Analysis
                 if (!analysis.Success)
                     return;
 
-                if (style.UseBlock)
+                if (!style.UseExpression)
                     return;
 
                 if (style.UseBlockWhenDeclarationIsMultiLine == true
@@ -208,7 +208,7 @@ namespace Roslynator.CSharp.Analysis
                 if (!analysis.Success)
                     return;
 
-                if (style.UseBlock)
+                if (!style.UseExpression)
                     return;
 
                 if (style.UseBlockWhenDeclarationIsMultiLine == true
@@ -272,7 +272,7 @@ namespace Roslynator.CSharp.Analysis
                 if (!analysis.Success)
                     return;
 
-                if (style.UseBlock)
+                if (!style.UseExpression)
                     return;
 
                 if (style.UseBlockWhenDeclarationIsMultiLine == true
@@ -336,7 +336,7 @@ namespace Roslynator.CSharp.Analysis
                 if (!analysis.Success)
                     return;
 
-                if (style.UseBlock)
+                if (!style.UseExpression)
                     return;
 
                 if (style.UseBlockWhenDeclarationIsMultiLine == true
@@ -400,7 +400,7 @@ namespace Roslynator.CSharp.Analysis
                 if (!analysis.Success)
                     return;
 
-                if (style.UseBlock)
+                if (!style.UseExpression)
                     return;
 
                 if (style.UseBlockWhenDeclarationIsMultiLine == true
@@ -464,7 +464,7 @@ namespace Roslynator.CSharp.Analysis
                 if (!analysis.Success)
                     return;
 
-                if (style.UseBlock)
+                if (!style.UseExpression)
                     return;
 
                 if (style.UseBlockWhenDeclarationIsMultiLine == true
@@ -569,7 +569,7 @@ namespace Roslynator.CSharp.Analysis
             if (expression == null)
                 return;
 
-            if (style.UseBlock)
+            if (!style.UseExpression)
                 return;
 
             if (style.UseBlockWhenExpressionIsMultiLine == true

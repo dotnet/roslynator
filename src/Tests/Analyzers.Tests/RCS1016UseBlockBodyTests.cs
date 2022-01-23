@@ -833,5 +833,20 @@ class C
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BodyStyle, ConfigOptionValues.BodyStyle_Block));
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+        public async Task TestNoDiagnostic_AccessorWithSingleLineBlock()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    public string P
+    {
+        get { throw new System.Exception(); }
+        set { throw new System.Exception(); }
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.UseBlockBodyWhenDeclarationSpansOverMultipleLines, true));
+        }
     }
 }
