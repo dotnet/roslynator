@@ -29,6 +29,7 @@ roslynator_compiler_diagnostic_fix.<COMPILER_DIAGNOSTIC_ID>.enabled = true|false
 ## Default Configuration
 
 If you want to configure Roslynator on a user-wide basis you have to use Roslynator config file.
+Default configuration file can be used with extension for Visual Studio or VS code.
 
 ### Format of Default Configuration File
 
