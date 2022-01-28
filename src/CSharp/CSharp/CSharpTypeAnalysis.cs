@@ -251,14 +251,20 @@ namespace Roslynator.CSharp
                 case SyntaxKind.CharacterLiteralExpression:
                 case SyntaxKind.TrueLiteralExpression:
                 case SyntaxKind.FalseLiteralExpression:
+                case SyntaxKind.ThisExpression:
+                    {
+                        return true;
+                    }
                 case SyntaxKind.ObjectCreationExpression:
                 case SyntaxKind.ArrayCreationExpression:
                 case SyntaxKind.CastExpression:
                 case SyntaxKind.AsExpression:
-                case SyntaxKind.ThisExpression:
                 case SyntaxKind.DefaultExpression:
                     {
-                        return true;
+                        return typeSymbol == null
+                            || SymbolEqualityComparer.IncludeNullability.Equals(
+                                typeSymbol,
+                                semanticModel.GetTypeSymbol(expression, cancellationToken));
                     }
                 case SyntaxKind.ImplicitArrayCreationExpression:
                     {
