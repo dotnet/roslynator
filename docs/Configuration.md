@@ -360,7 +360,7 @@ dotnet_diagnostic.rcs1016.severity = none
 # Options: roslynator_body_style, roslynator_use_block_body_when_declaration_spans_over_multiple_lines, roslynator_use_block_body_when_expression_spans_over_multiple_lines
 
 # Add/remove accessibility modifiers
-dotnet_diagnostic.rcs1018.severity = suggestion
+dotnet_diagnostic.rcs1018.severity = none
 # Options: roslynator_accessibility_modifiers
 
 # Order modifiers
@@ -531,7 +531,7 @@ dotnet_diagnostic.rcs1093.severity = suggestion
 dotnet_diagnostic.rcs1094.severity = none
 
 # Use 'HasFlag' method or bitwise operator
-dotnet_diagnostic.rcs1096.severity = suggestion
+dotnet_diagnostic.rcs1096.severity = none
 # Options: roslynator_enum_has_flag_style
 
 # Remove redundant 'ToString' call
@@ -919,7 +919,7 @@ dotnet_diagnostic.rcs1248.severity = none
 dotnet_diagnostic.rcs1249.severity = suggestion
 
 # Use implicit/explicit object creation
-dotnet_diagnostic.rcs1250.severity = suggestion
+dotnet_diagnostic.rcs1250.severity = none
 # Options: roslynator_object_creation_type_style, roslynator_use_var_instead_of_implicit_object_creation
 
 # Use pattern matching

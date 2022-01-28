@@ -443,7 +443,7 @@ foreach (var item in items) // [|Id|]
     <MessageFormat>{0} accessibility modifiers.</MessageFormat>
     <Category>Readability</Category>
     <DefaultSeverity>Info</DefaultSeverity>
-    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
       <Sample>
         <Before><![CDATA[class Foo // [|Id|]
@@ -2192,7 +2192,7 @@ namespace Foo
     <MessageFormat>Use {0}.</MessageFormat>
     <Category>Performance</Category>
     <DefaultSeverity>Info</DefaultSeverity>
-    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
       <Sample>
         <Before><![CDATA[options.HasFlag(RegexOptions.IgnoreCase)]]></Before>
@@ -5665,7 +5665,7 @@ void M()
     <MessageFormat>Use {0} object creation.</MessageFormat>
     <Category>Roslynator</Category>
     <DefaultSeverity>Info</DefaultSeverity>
-    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
     <MinLanguageVersion>9.0</MinLanguageVersion>
     <Samples>
       <Sample>

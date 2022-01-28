@@ -206,7 +206,7 @@ namespace Roslynator.CSharp
             messageFormat:      "{0} accessibility modifiers.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: true, 
+            isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers, 
             customTags:         Array.Empty<string>());
@@ -892,7 +892,7 @@ namespace Roslynator.CSharp
             messageFormat:      "Use {0}.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: true, 
+            isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.UseHasFlagMethodOrBitwiseOperator, 
             customTags:         Array.Empty<string>());
@@ -2444,7 +2444,7 @@ namespace Roslynator.CSharp
             messageFormat:      "Use {0} object creation.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: true, 
+            isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation, 
             customTags:         Array.Empty<string>());
