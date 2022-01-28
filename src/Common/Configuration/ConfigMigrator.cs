@@ -163,7 +163,7 @@ namespace Roslynator.Configuration
                 }
 
                 if (!File.Exists(newPath))
-                   File.Move(path, newPath);
+                    File.Move(path, newPath);
             }
 
             static (string, string) MapRuleSetOptionToEditorConfigOption(KeyValuePair<string, ReportDiagnostic> kvp)

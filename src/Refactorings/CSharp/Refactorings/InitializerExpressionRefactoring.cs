@@ -64,7 +64,7 @@ namespace Roslynator.CSharp.Refactorings
                     AddAllPropertiesToInitializerRefactoring.ComputeRefactorings(context, initializer, semanticModdel);
                 }
 
-                    await ExpandInitializerRefactoring.ComputeRefactoringsAsync(context, initializer).ConfigureAwait(false);
+                await ExpandInitializerRefactoring.ComputeRefactoringsAsync(context, initializer).ConfigureAwait(false);
 
                 if (context.IsRefactoringEnabled(RefactoringDescriptors.UseIndexInitializer)
                     && context.SupportsCSharp6)
