@@ -370,65 +370,45 @@ namespace Roslynator.CSharp
             SyntaxNode containingDeclaration,
             int increaseCount = 0) where TNode : SyntaxNode
         {
-            ImmutableDictionary<SyntaxToken, IndentationInfo> indentations = null;
-            int length;
-
-            using (IEnumerator<IndentationInfo> en = FindIndentations(expression, expression.Span).GetEnumerator())
-            {
-                if (!en.MoveNext())
-                    return expression;
-
-                ImmutableDictionary<SyntaxToken, IndentationInfo>.Builder builder = ImmutableDictionary.CreateBuilder<SyntaxToken, IndentationInfo>();
-                length = en.Current.Span.Length;
-
-                do
-                {
-                    builder.Add(en.Current.Token, en.Current);
-
-                } while (en.MoveNext());
-
-                indentations = builder.ToImmutableDictionary();
-            }
-
             IndentationAnalysis analysis = AnalyzeIndentation(containingDeclaration);
-
-            string increasedIndentation = analysis.GetIncreasedIndentation();
 
             string replacement = (increaseCount > 0)
                 ? string.Concat(Enumerable.Repeat(analysis.GetSingleIndentation(), increaseCount))
                 : "";
 
-            replacement = increasedIndentation + replacement;
+            replacement = analysis.GetIncreasedIndentation() + replacement;
 
-            SyntaxTrivia replacementTrivia = Whitespace(replacement);
+            var builder = new SyntaxNodeTextBuilder(expression);
+            int length = -1;
+            int pos = expression.FullSpan.Start;
 
-            return expression.ReplaceTokens(
-                indentations.Select(f => f.Key),
-                (token, _) =>
+            foreach (IndentationInfo indentation in FindIndentations(expression, expression.Span)
+                .OrderBy(f => f.Span.Start))
+            {
+                if (length == -1)
+                    length = indentation.Span.Length;
+
+                builder.Append(TextSpan.FromBounds(pos, indentation.Span.Start));
+
+                if (indentation.Span.Length == 0)
                 {
-                    IndentationInfo indentationInfo = indentations[token];
+                    builder.Append(replacement);
+                }
+                else
+                {
+                    string newIndentation = (indentation.Span.Length > length)
+                        ? replacement + indentation.ToString().Substring(length)
+                        : replacement;
 
-                    SyntaxTrivia newIndentation = (indentationInfo.Span.Length > length)
-                        ? Whitespace(replacement + indentationInfo.ToString().Substring(length))
-                        : replacementTrivia;
+                    builder.Append(newIndentation);
+                }
 
-                    if (indentationInfo.Span.Length == 0)
-                        return token.AppendToLeadingTrivia(newIndentation);
+                pos = indentation.Span.End;
+            }
 
-                    SyntaxTriviaList leading = token.LeadingTrivia;
+            builder.Append(TextSpan.FromBounds(pos, expression.FullSpan.End));
 
-                    for (int i = leading.Count - 1; i >= 0; i--)
-                    {
-                        if (leading[i].Span == indentationInfo.Span)
-                        {
-                            SyntaxTriviaList newLeading = leading.ReplaceAt(i, newIndentation);
-                            return token.WithLeadingTrivia(newLeading);
-                        }
-                    }
-
-                    SyntaxDebug.Fail(token);
-                    return token;
-                });
+            return (TNode)(SyntaxNode)ParseExpression(builder.ToString());
         }
     }
 }

@@ -315,6 +315,30 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+        public async Task Test_Method_Multiline_WithComment()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    object M(string p)
+        [|=> M(
+            // x
+            p)|];
+}
+", @"
+class C
+{
+    object M(string p)
+    {
+        return M(
+            // x
+            p);
+    }
+}
+", options: Options_ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine);
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
         public async Task TestNoDiagnostic_PreprocessorDirective()
         {
             await VerifyNoDiagnosticAsync(@"
