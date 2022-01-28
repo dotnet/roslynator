@@ -501,6 +501,7 @@ namespace Roslynator.CSharp
                 case SyntaxKind.SwitchExpressionArm:
                 case SyntaxKind.YieldReturnStatement:
                 case SyntaxKind.ConditionalExpression:
+                case SyntaxKind.ComplexElementInitializerExpression:
                     {
                         SyntaxDebug.Assert(tupleExpression.ContainsDiagnostics || !tupleExpression.Arguments.Any(f => f.Expression.IsKind(SyntaxKind.DeclarationExpression)), tupleExpression);
                         return false;

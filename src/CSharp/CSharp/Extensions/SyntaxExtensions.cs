@@ -3222,6 +3222,7 @@ namespace Roslynator.CSharp
                     case SyntaxKind.YieldReturnStatement:
                     case SyntaxKind.IfDirectiveTrivia:
                     case SyntaxKind.ElifDirectiveTrivia:
+                    case SyntaxKind.WhenClause:
                         {
                             return false;
                         }
