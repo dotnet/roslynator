@@ -1,3 +1,7 @@
+## 4.0.3 (2022-01-29)
+
+* Fixed release for VS Code
+
 ## 4.0.2 (2022-01-29)
 
 * Disable analyzer ROS003 by default ([commit](https://github.com/JosefPihrt/Roslynator/commit/9c562921b6ae4eb46e1cfe252282e6b2ad520ca6))
