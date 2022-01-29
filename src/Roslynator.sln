@@ -11,6 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		..\ChangeLog.md = ..\ChangeLog.md
 		CodeFixes\CodeFixes.xml = CodeFixes\CodeFixes.xml
 		CodeFixes\Diagnostics.xml = CodeFixes\Diagnostics.xml
+		Directory.Build.props = Directory.Build.props
 		global.ruleset = global.ruleset
 		..\LICENSE.txt = ..\LICENSE.txt
 		..\README.md = ..\README.md

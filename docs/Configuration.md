@@ -26,6 +26,11 @@ roslynator_compiler_diagnostic_fixes.enabled = true|false
 roslynator_compiler_diagnostic_fix.<COMPILER_DIAGNOSTIC_ID>.enabled = true|false
 ```
 
+## Required Options
+
+Some analyzers require option to be set. For this purpose there is special analyzer ROS0003 that reports a diagnostic
+if an analyzer is enabled but required option is not set. ROS0003 is disabled by default.
+
 ## Default Configuration
 
 If you want to configure Roslynator on a user-wide basis you have to use Roslynator config file.

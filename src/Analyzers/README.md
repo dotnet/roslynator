@@ -19,7 +19,7 @@
 | RCS1014 | [Use explicitly/implicitly typed array](../../docs/analyzers/RCS1014.md) | None |
 | RCS1015 | [Use nameof operator](../../docs/analyzers/RCS1015.md) | Info |
 | RCS1016 | [Use block body or expression body](../../docs/analyzers/RCS1016.md) | None |
-| RCS1018 | [Add/remove accessibility modifiers](../../docs/analyzers/RCS1018.md) | Info |
+| RCS1018 | [Add/remove accessibility modifiers](../../docs/analyzers/RCS1018.md) | None |
 | RCS1019 | [Order modifiers](../../docs/analyzers/RCS1019.md) | None |
 | RCS1020 | [Simplify Nullable\<T> to T?](../../docs/analyzers/RCS1020.md) | Info |
 | RCS1021 | [Convert lambda expression body to expression body](../../docs/analyzers/RCS1021.md) | Info |
@@ -74,7 +74,7 @@
 | RCS1091 | [Remove empty region](../../docs/analyzers/RCS1091.md) | Hidden |
 | RCS1093 | [Remove file with no code](../../docs/analyzers/RCS1093.md) | Info |
 | RCS1094 | [Declare using directive on top level](../../docs/analyzers/RCS1094.md) | None |
-| RCS1096 | [Use 'HasFlag' method or bitwise operator](../../docs/analyzers/RCS1096.md) | Info |
+| RCS1096 | [Use 'HasFlag' method or bitwise operator](../../docs/analyzers/RCS1096.md) | None |
 | RCS1097 | [Remove redundant 'ToString' call](../../docs/analyzers/RCS1097.md) | Info |
 | RCS1098 | [Constant values should be placed on right side of comparisons](../../docs/analyzers/RCS1098.md) | Info |
 | RCS1099 | [Default label should be the last label in a switch section](../../docs/analyzers/RCS1099.md) | Info |
@@ -202,7 +202,7 @@
 | RCS1247 | [Fix documentation comment tag](../../docs/analyzers/RCS1247.md) | Info |
 | RCS1248 | [Normalize null check](../../docs/analyzers/RCS1248.md) | None |
 | RCS1249 | [Unnecessary null-forgiving operator](../../docs/analyzers/RCS1249.md) | Info |
-| RCS1250 | [Use implicit/explicit object creation](../../docs/analyzers/RCS1250.md) | Info |
+| RCS1250 | [Use implicit/explicit object creation](../../docs/analyzers/RCS1250.md) | None |
 
 
 *\(Generated with [DotMarkdown](http://github.com/JosefPihrt/DotMarkdown)\)*
