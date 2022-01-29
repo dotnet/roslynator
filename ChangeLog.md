@@ -1,3 +1,7 @@
+### Unreleased
+
+* Fix code fix for CS0225
+
 ### 4.0.3 (2022-01-29)
 
 * Fixed release for VS Code

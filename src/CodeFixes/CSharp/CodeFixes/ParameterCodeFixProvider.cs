@@ -52,7 +52,8 @@ namespace Roslynator.CSharp.CodeFixes
 
                                 ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, context.CancellationToken);
 
-                                if (typeSymbol?.Kind == SymbolKind.NamedType)
+                                if (typeSymbol?.Kind == SymbolKind.NamedType
+                                    && typeSymbol.SupportsExplicitDeclaration())
                                 {
                                     ArrayTypeSyntax newType = ArrayType(
                                         typeSymbol.ToMinimalTypeSyntax(semanticModel, parameter.SpanStart),
