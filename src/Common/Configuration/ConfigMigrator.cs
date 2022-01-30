@@ -263,8 +263,8 @@ namespace Roslynator.Configuration
                     case "RCS1051a":
                         {
                             return (kvp.Value == ReportDiagnostic.Suppress)
-                                ? (ConfigOptionKeys.ConditionalOperatorConditionParenthesesStyle, ConfigOptionValues.ConditionInConditionalExpressionParenthesesStyle_Include)
-                                : (ConfigOptionKeys.ConditionalOperatorConditionParenthesesStyle, ConfigOptionValues.ConditionInConditionalExpressionParenthesesStyle_OmitWhenConditionIsSingleToken);
+                                ? (ConfigOptionKeys.ConditionalOperatorConditionParenthesesStyle, ConfigOptionValues.ConditionalOperatorConditionParenthesesStyle_Include)
+                                : (ConfigOptionKeys.ConditionalOperatorConditionParenthesesStyle, ConfigOptionValues.ConditionalOperatorConditionParenthesesStyle_OmitWhenConditionIsSingleToken);
                         }
                     case "RCS1078i":
                         {
@@ -287,8 +287,8 @@ namespace Roslynator.Configuration
                     case "RCS1207i":
                         {
                             return (kvp.Value == ReportDiagnostic.Suppress)
-                                ? (ConfigOptionKeys.UseAnonymousFunctionOrMethodGroup, ConfigOptionValues.AnonymousFunctionOrMethodGroup_MethodGroup)
-                                : (ConfigOptionKeys.UseAnonymousFunctionOrMethodGroup, ConfigOptionValues.AnonymousFunctionOrMethodGroup_AnonymousFunction);
+                                ? (ConfigOptionKeys.UseAnonymousFunctionOrMethodGroup, ConfigOptionValues.UseAnonymousFunctionOrMethodGroup_MethodGroup)
+                                : (ConfigOptionKeys.UseAnonymousFunctionOrMethodGroup, ConfigOptionValues.UseAnonymousFunctionOrMethodGroup_AnonymousFunction);
                         }
                     case "RCS1248i":
                         {

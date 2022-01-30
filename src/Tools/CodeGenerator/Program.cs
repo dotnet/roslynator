@@ -100,6 +100,11 @@ namespace Roslynator.CodeGeneration
                 normalizeWhitespace: false);
 
             WriteCompilationUnit(
+                @"Common\ConfigOptionValues.Generated.cs",
+                CodeGenerator.GenerateConfigOptionValues(options),
+                normalizeWhitespace: false);
+
+            WriteCompilationUnit(
                 @"Tools\CodeGeneration\CSharp\Symbols.Generated.cs",
                 SymbolsGetKindsGenerator.Generate());
 

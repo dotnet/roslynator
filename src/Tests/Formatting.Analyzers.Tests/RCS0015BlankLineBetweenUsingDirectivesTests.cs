@@ -33,7 +33,7 @@ using System.Threading;
 class C
 {
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenUsingDirectives, ConfigOptionValues.BlankLineBetweenUsingDirectiveGroups_SeparateGroups));
+", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenUsingDirectives, ConfigOptionValues.BlankLineBetweenUsingDirectives_SeparateGroups));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.BlankLineBetweenUsingDirectives)]
@@ -57,7 +57,7 @@ using System.Threading;
 class C
 {
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenUsingDirectives, ConfigOptionValues.BlankLineBetweenUsingDirectiveGroups_Never));
+", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenUsingDirectives, ConfigOptionValues.BlankLineBetweenUsingDirectives_Never));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.BlankLineBetweenUsingDirectives)]
@@ -79,7 +79,7 @@ using Microsoft.CodeAnalysis;
 class C
 {
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenUsingDirectives, ConfigOptionValues.BlankLineBetweenUsingDirectiveGroups_Never));
+", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenUsingDirectives, ConfigOptionValues.BlankLineBetweenUsingDirectives_Never));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.BlankLineBetweenUsingDirectives)]
@@ -100,7 +100,7 @@ using System.Text;
 class C
 {
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenUsingDirectives, ConfigOptionValues.BlankLineBetweenUsingDirectiveGroups_Never));
+", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenUsingDirectives, ConfigOptionValues.BlankLineBetweenUsingDirectives_Never));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.BlankLineBetweenUsingDirectives)]
@@ -170,7 +170,7 @@ using Microsoft.CodeAnalysis;
 class C
 {
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenUsingDirectives, ConfigOptionValues.BlankLineBetweenUsingDirectiveGroups_SeparateGroups));
+", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenUsingDirectives, ConfigOptionValues.BlankLineBetweenUsingDirectives_SeparateGroups));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.BlankLineBetweenUsingDirectives)]
@@ -184,7 +184,7 @@ using Microsoft.CodeAnalysis;
 class C
 {
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenUsingDirectives, ConfigOptionValues.BlankLineBetweenUsingDirectiveGroups_Never));
+", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenUsingDirectives, ConfigOptionValues.BlankLineBetweenUsingDirectives_Never));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.BlankLineBetweenUsingDirectives)]

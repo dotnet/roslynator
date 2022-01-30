@@ -128,11 +128,11 @@ namespace Roslynator.CSharp
 
             if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.BlankLineBetweenUsingDirectives, out string rawValue))
             {
-                if (string.Equals(rawValue, ConfigOptionValues.BlankLineBetweenUsingDirectiveGroups_Never, StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(rawValue, ConfigOptionValues.BlankLineBetweenUsingDirectives_Never, StringComparison.OrdinalIgnoreCase))
                 {
                     return UsingDirectiveBlankLineStyle.Never;
                 }
-                else if (string.Equals(rawValue, ConfigOptionValues.BlankLineBetweenUsingDirectiveGroups_SeparateGroups, StringComparison.OrdinalIgnoreCase))
+                else if (string.Equals(rawValue, ConfigOptionValues.BlankLineBetweenUsingDirectives_SeparateGroups, StringComparison.OrdinalIgnoreCase))
                 {
                     return UsingDirectiveBlankLineStyle.SeparateGroups;
                 }
@@ -201,11 +201,11 @@ namespace Roslynator.CSharp
 
             if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.UseAnonymousFunctionOrMethodGroup, out string rawValue))
             {
-                if (string.Equals(rawValue, ConfigOptionValues.AnonymousFunctionOrMethodGroup_AnonymousFunction, StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(rawValue, ConfigOptionValues.UseAnonymousFunctionOrMethodGroup_AnonymousFunction, StringComparison.OrdinalIgnoreCase))
                 {
                     return true;
                 }
-                else if (string.Equals(rawValue, ConfigOptionValues.AnonymousFunctionOrMethodGroup_MethodGroup, StringComparison.OrdinalIgnoreCase))
+                else if (string.Equals(rawValue, ConfigOptionValues.UseAnonymousFunctionOrMethodGroup_MethodGroup, StringComparison.OrdinalIgnoreCase))
                 {
                     return false;
                 }
@@ -298,15 +298,15 @@ namespace Roslynator.CSharp
 
             if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.ConditionalOperatorConditionParenthesesStyle, out string rawValue))
             {
-                if (string.Equals(rawValue, ConfigOptionValues.ConditionInConditionalExpressionParenthesesStyle_Include, StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(rawValue, ConfigOptionValues.ConditionalOperatorConditionParenthesesStyle_Include, StringComparison.OrdinalIgnoreCase))
                 {
                     return ConditionalExpressionParenthesesStyle.Include;
                 }
-                else if (string.Equals(rawValue, ConfigOptionValues.ConditionInConditionalExpressionParenthesesStyle_Omit, StringComparison.OrdinalIgnoreCase))
+                else if (string.Equals(rawValue, ConfigOptionValues.ConditionalOperatorConditionParenthesesStyle_Omit, StringComparison.OrdinalIgnoreCase))
                 {
                     return ConditionalExpressionParenthesesStyle.Omit;
                 }
-                else if (string.Equals(rawValue, ConfigOptionValues.ConditionInConditionalExpressionParenthesesStyle_OmitWhenConditionIsSingleToken, StringComparison.OrdinalIgnoreCase))
+                else if (string.Equals(rawValue, ConfigOptionValues.ConditionalOperatorConditionParenthesesStyle_OmitWhenConditionIsSingleToken, StringComparison.OrdinalIgnoreCase))
                 {
                     return ConditionalExpressionParenthesesStyle.OmitWhenConditionIsSingleToken;
                 }
