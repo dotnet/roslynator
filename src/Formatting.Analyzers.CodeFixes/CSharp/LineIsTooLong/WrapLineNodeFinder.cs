@@ -367,7 +367,7 @@ namespace Roslynator.Formatting.CodeFixes.LineIsTooLong
                         while (true)
                         {
                             BinaryExpressionSyntax parentBinaryExpression = null;
-                            if (binaryExpression.Parent.IsKind(binaryExpression.Kind()))
+                            if (binaryExpression.IsParentKind(binaryExpression.Kind()))
                             {
                                 parentBinaryExpression = (BinaryExpressionSyntax)binaryExpression.Parent;
                             }
@@ -662,7 +662,7 @@ namespace Roslynator.Formatting.CodeFixes.LineIsTooLong
 
                     if (token.IsKind(SyntaxKind.QuestionToken)
                         && token.FullSpan.End == memberBinding.OperatorToken.SpanStart
-                        && token.Parent.IsKind(SyntaxKind.ConditionalAccessExpression))
+                        && token.IsParentKind(SyntaxKind.ConditionalAccessExpression))
                     {
                         expression = (ExpressionSyntax)token.Parent;
                     }

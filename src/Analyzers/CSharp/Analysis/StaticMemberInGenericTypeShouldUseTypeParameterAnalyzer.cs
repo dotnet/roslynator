@@ -208,7 +208,7 @@ namespace Roslynator.CSharp.Analysis
 
             SyntaxDebug.Assert(!identifier.IsKind(SyntaxKind.None), node);
 
-            if (identifier.Kind() == SyntaxKind.None)
+            if (identifier.IsKind(SyntaxKind.None))
                 return;
 
             DiagnosticHelpers.ReportDiagnostic(

@@ -68,7 +68,7 @@ namespace Roslynator.CSharp.Refactorings
                 if (i < separators.Length)
                     separator = separators[i];
 
-                if (separator.Kind() == SyntaxKind.None
+                if (separator.IsKind(SyntaxKind.None)
                     || separator.IsMissing)
                 {
                     semicolon = semicolon.WithTrailingTrivia(arm.GetTrailingTrivia());

@@ -31,7 +31,7 @@ namespace Roslynator.CSharp.Refactorings
 
             SyntaxNode parent = initializer.Parent;
 
-            if (parent?.Kind() != SyntaxKind.ObjectCreationExpression)
+            if (!parent.IsKind(SyntaxKind.ObjectCreationExpression))
                 return;
 
             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);

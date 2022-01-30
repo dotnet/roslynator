@@ -149,7 +149,7 @@ namespace Roslynator.CSharp.Refactorings
                     return ((AccessorDeclarationSyntax)node).AttributeLists;
                 default:
                     {
-                        SyntaxDebug.Assert(node.Kind() == SyntaxKind.GlobalStatement, node);
+                        SyntaxDebug.Assert(node.IsKind(SyntaxKind.GlobalStatement), node);
                         return default;
                     }
             }

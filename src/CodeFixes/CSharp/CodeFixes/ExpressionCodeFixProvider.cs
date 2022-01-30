@@ -252,7 +252,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                            if (expression.Parent.IsKind(SyntaxKind.ArrowExpressionClause))
+                            if (expression.IsParentKind(SyntaxKind.ArrowExpressionClause))
                             {
                                 if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.ChangeMemberTypeAccordingToReturnExpression, context.Document, root.SyntaxTree))
                                     break;

@@ -33,7 +33,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static void ComputeRefactoring(RefactoringContext context, SyntaxNode node, SyntaxToken unsafeModifier)
         {
-            if (unsafeModifier.Kind() != SyntaxKind.UnsafeKeyword)
+            if (!unsafeModifier.IsKind(SyntaxKind.UnsafeKeyword))
                 return;
 
             if (!context.Span.IsEmptyAndContainedInSpan(unsafeModifier))

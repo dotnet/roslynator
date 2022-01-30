@@ -32,7 +32,7 @@ namespace Roslynator.CSharp
         /// <param name="accessorDeclaration"></param>
         public static bool IsAutoImplemented(this AccessorDeclarationSyntax accessorDeclaration)
         {
-            return accessorDeclaration?.SemicolonToken.Kind() == SyntaxKind.SemicolonToken
+            return accessorDeclaration?.SemicolonToken.IsKind(SyntaxKind.SemicolonToken) == true
                 && accessorDeclaration.BodyOrExpressionBody() == null;
         }
 
@@ -755,7 +755,7 @@ namespace Roslynator.CSharp
         /// <param name="endRegionDirective"></param>
         internal static bool HasPreprocessingMessageTrivia(this EndRegionDirectiveTriviaSyntax endRegionDirective)
         {
-            return GetPreprocessingMessageTrivia(endRegionDirective).Kind() == SyntaxKind.PreprocessingMessageTrivia;
+            return GetPreprocessingMessageTrivia(endRegionDirective).IsKind(SyntaxKind.PreprocessingMessageTrivia);
         }
         #endregion EndRegionDirectiveTriviaSyntax
 
@@ -794,7 +794,7 @@ namespace Roslynator.CSharp
         /// <param name="expression"></param>
         public static ExpressionSyntax WalkUpParentheses(this ExpressionSyntax expression)
         {
-            while (expression.Parent?.Kind() == SyntaxKind.ParenthesizedExpression)
+            while (expression.IsParentKind(SyntaxKind.ParenthesizedExpression))
                 expression = (ExpressionSyntax)expression.Parent;
 
             return expression;
@@ -923,11 +923,11 @@ namespace Roslynator.CSharp
         {
             SyntaxNode parent = ifStatement.Parent;
 
-            if (parent?.Kind() == SyntaxKind.ElseClause)
+            if (parent.IsKind(SyntaxKind.ElseClause))
             {
                 parent = parent.Parent;
 
-                if (parent?.Kind() == SyntaxKind.IfStatement)
+                if (parent.IsKind(SyntaxKind.IfStatement))
                     return (IfStatementSyntax)parent;
             }
 
@@ -1285,7 +1285,7 @@ namespace Roslynator.CSharp
 
             SyntaxNode structure = member.GetSingleLineDocumentationCommentTrivia().GetStructure();
 
-            if (structure?.Kind() == SyntaxKind.SingleLineDocumentationCommentTrivia)
+            if (structure.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia))
                 return (DocumentationCommentTriviaSyntax)structure;
 
             return null;
@@ -1708,7 +1708,7 @@ namespace Roslynator.CSharp
         /// <param name="regionDirective"></param>
         internal static bool HasPreprocessingMessageTrivia(this RegionDirectiveTriviaSyntax regionDirective)
         {
-            return GetPreprocessingMessageTrivia(regionDirective).Kind() == SyntaxKind.PreprocessingMessageTrivia;
+            return GetPreprocessingMessageTrivia(regionDirective).IsKind(SyntaxKind.PreprocessingMessageTrivia);
         }
         #endregion RegionDirectiveTriviaSyntax
 
@@ -3762,7 +3762,7 @@ namespace Roslynator.CSharp
             int i = 0;
             foreach (SyntaxToken token in tokens)
             {
-                if (token.Kind() == kind)
+                if (token.IsKind(kind))
                     return tokens.ReplaceAt(i, Token(newKind).WithTriviaFrom(token));
 
                 i++;

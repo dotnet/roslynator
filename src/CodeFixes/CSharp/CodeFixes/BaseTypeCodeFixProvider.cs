@@ -36,7 +36,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             SyntaxNode parent = baseType.Parent;
 
-            if (parent.Kind() != SyntaxKind.BaseList)
+            if (!parent.IsKind(SyntaxKind.BaseList))
                 return;
 
             parent = parent.Parent;

@@ -450,7 +450,7 @@ namespace Roslynator.CSharp.CodeFixes
                     case CompilerDiagnosticIdentifiers.CS0501_MemberMustDeclareBodyBecauseItIsNotMarkedAbstractExternOrPartial:
                         {
                             if (IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddModifierAbstract, context.Document, root.SyntaxTree)
-                                && node.Kind() == SyntaxKind.MethodDeclaration
+                                && node.IsKind(SyntaxKind.MethodDeclaration)
                                 && (node.Parent as ClassDeclarationSyntax)?.Modifiers.Contains(SyntaxKind.AbstractKeyword) == true)
                             {
                                 ModifiersCodeFixRegistrator.AddModifier(context, diagnostic, node, SyntaxKind.AbstractKeyword);

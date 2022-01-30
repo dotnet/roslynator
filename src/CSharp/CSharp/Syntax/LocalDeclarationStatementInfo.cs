@@ -104,12 +104,12 @@ namespace Roslynator.CSharp.Syntax
         {
             SyntaxNode node = value?.WalkUpParentheses().Parent;
 
-            if (node?.Kind() != SyntaxKind.EqualsValueClause)
+            if (!node.IsKind(SyntaxKind.EqualsValueClause))
                 return default;
 
             node = node.Parent;
 
-            if (node?.Kind() != SyntaxKind.VariableDeclarator)
+            if (!node.IsKind(SyntaxKind.VariableDeclarator))
                 return default;
 
             if (node?.Parent is not VariableDeclarationSyntax declaration)

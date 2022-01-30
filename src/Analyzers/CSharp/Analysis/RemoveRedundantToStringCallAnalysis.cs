@@ -63,7 +63,7 @@ namespace Roslynator.CSharp.Analysis
                     if (containingType.SpecialType == SpecialType.System_String)
                         return true;
 
-                    if (invocationExpression.WalkUpParentheses().Parent.IsKind(SyntaxKind.Interpolation)
+                    if (invocationExpression.WalkUpParentheses().IsParentKind(SyntaxKind.Interpolation)
                         && IsNotHidden(methodSymbol, containingType))
                     {
                         return true;

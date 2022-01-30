@@ -52,7 +52,7 @@ namespace Roslynator.CSharp.CodeFixes
                 $"Change accessibility to '{SyntaxFacts.GetText(newAccessibility)}'",
                 ct =>
                 {
-                    if (node.Kind() == SyntaxKind.VariableDeclarator)
+                    if (node.IsKind(SyntaxKind.VariableDeclarator))
                     {
                         node = node.Parent.Parent;
                     }

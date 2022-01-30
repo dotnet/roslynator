@@ -110,7 +110,7 @@ namespace Roslynator.CSharp
 
             SyntaxToken token = node.GetFirstToken();
 
-            if (token.Kind() == SyntaxKind.None)
+            if (token.IsKind(SyntaxKind.None))
                 return node;
 
             return node.ReplaceToken(token, token.WithNavigationAnnotation());

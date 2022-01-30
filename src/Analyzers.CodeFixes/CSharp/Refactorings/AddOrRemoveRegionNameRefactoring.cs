@@ -20,7 +20,7 @@ namespace Roslynator.CSharp.Refactorings
 
             EndRegionDirectiveTriviaSyntax newNode = endRegionDirective;
 
-            if (trivia.Kind() == SyntaxKind.PreprocessingMessageTrivia)
+            if (trivia.IsKind(SyntaxKind.PreprocessingMessageTrivia))
             {
                 SyntaxTriviaList trailingTrivia = endRegionKeyword.TrailingTrivia;
 

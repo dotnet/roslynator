@@ -238,7 +238,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             SyntaxNode parent = parameter.Parent;
 
-            if (parent?.Kind() != SyntaxKind.ParameterList)
+            if (!parent.IsKind(SyntaxKind.ParameterList))
                 return null;
 
             parent = parent.Parent;

@@ -28,7 +28,7 @@ namespace Roslynator.CSharp.Refactorings
                         RefactoringDescriptors.SplitIf);
                 }
             }
-            else if (ifStatement.Parent.IsKind(SyntaxKind.ElseClause)
+            else if (ifStatement.IsParentKind(SyntaxKind.ElseClause)
                 && ifStatement.Else == null
                 && ifStatement.Condition.IsKind(SyntaxKind.LogicalOrExpression))
             {
