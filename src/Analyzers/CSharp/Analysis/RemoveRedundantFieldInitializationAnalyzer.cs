@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Immutable;
 using System.Threading;
 using Microsoft.CodeAnalysis;
@@ -42,6 +41,14 @@ namespace Roslynator.CSharp.Analysis
 
             if (fieldDeclaration.Modifiers.Contains(SyntaxKind.ConstKeyword))
                 return;
+
+            if (fieldDeclaration.IsParentKind(SyntaxKind.StructDeclaration, SyntaxKind.RecordStructDeclaration))
+            {
+                var structSymbol = context.SemanticModel.GetDeclaredSymbol(fieldDeclaration.Parent, context.CancellationToken) as INamedTypeSymbol;
+
+                if (structSymbol?.InstanceConstructors.Length > 1)
+                    return;
+            }
 
             VariableDeclarationSyntax declaration = fieldDeclaration.Declaration;
 
