@@ -35,7 +35,25 @@
     "ms-dotnettools.csharp"
   ],
   "activationEvents": [
-    "*"
+    "onDebugInitialConfigurations",
+    "onDebugResolve:blazorwasm",
+    "onDebugResolve:coreclr",
+    "onDebugResolve:clr",
+    "onLanguage:csharp",
+    "onLanguage:aspnetcorerazor",
+    "onCommand:o.restart",
+    "onCommand:o.pickProjectAndStart",
+    "onCommand:o.showOutput",
+    "onCommand:dotnet.restore.project",
+    "onCommand:dotnet.restore.all",
+    "onCommand:dotnet.generateAssets",
+    "onCommand:csharp.downloadDebugger",
+    "onCommand:csharp.listProcess",
+    "onCommand:csharp.listRemoteProcess",
+    "onCommand:csharp.listRemoteDockerProcess",
+    "onCommand:omnisharp.registerLanguageMiddleware",
+    "workspaceContains:project.json",
+    "workspaceContains:**/*.{csproj,sln,slnf,csx,cake}"
   ],
   "contributes": {
     "commands": [
