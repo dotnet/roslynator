@@ -2036,6 +2036,30 @@ namespace Roslynator.CSharp
             helpLinkUri:        "https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs8403", 
             customTags:         WellKnownDiagnosticTags.Compiler);
 
+        /// <summary>CS8602</summary>
+        public static readonly DiagnosticDescriptor DereferenceOfPossiblyNullReference = new DiagnosticDescriptor(
+            id:                 CompilerDiagnosticIdentifiers.CS8602_DereferenceOfPossiblyNullReference, 
+            title:              "Dereference of a possibly null reference.", 
+            messageFormat:      "Dereference of a possibly null reference", 
+            category:           "Compiler", 
+            defaultSeverity:    DiagnosticSeverity.Warning, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        "", 
+            customTags:         WellKnownDiagnosticTags.Compiler);
+
+        /// <summary>CS8604</summary>
+        public static readonly DiagnosticDescriptor PossibleNullReferenceArgumentForParameter = new DiagnosticDescriptor(
+            id:                 CompilerDiagnosticIdentifiers.CS8604_PossibleNullReferenceArgumentForParameter, 
+            title:              "Possible null reference argument for parameter.", 
+            messageFormat:      "Possible null reference argument for parameter '{0}' in '{1}'", 
+            category:           "Compiler", 
+            defaultSeverity:    DiagnosticSeverity.Warning, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        "", 
+            customTags:         WellKnownDiagnosticTags.Compiler);
+
         /// <summary>CS8618</summary>
         public static readonly DiagnosticDescriptor NonNullableMemberIsUninitialized = new DiagnosticDescriptor(
             id:                 CompilerDiagnosticIdentifiers.CS8618_NonNullableMemberIsUninitialized, 

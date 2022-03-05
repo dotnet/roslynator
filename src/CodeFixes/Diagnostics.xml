@@ -1184,6 +1184,20 @@
     Message="Method '{0}' with an iterator block must be 'async' to return '{1}'"
     HelpUrl="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs8403" />
   <Diagnostic
+	Id="CS8602"
+    Identifier="DereferenceOfPossiblyNullReference"
+	Severity="Warning"
+    Title="Dereference of a possibly null reference."
+	Message="Dereference of a possibly null reference"
+	HelpUrl="" />
+  <Diagnostic
+	Id="CS8604"
+    Identifier="PossibleNullReferenceArgumentForParameter"
+	Severity="Warning"
+    Title="Possible null reference argument for parameter."
+	Message="Possible null reference argument for parameter '{0}' in '{1}'"
+	HelpUrl="" />
+  <Diagnostic
 	Id="CS8618"
     Identifier="NonNullableMemberIsUninitialized"
 	Severity="Warning"
