@@ -104,6 +104,12 @@ namespace Roslynator
             defaultValuePlaceholder: "after|before", 
             description:             "Place new line after/before equals sign");
 
+        public static readonly ConfigOptionDescriptor InfiniteLoopStyle = new(
+            key:                     ConfigOptionKeys.InfiniteLoopStyle, 
+            defaultValue:            null, 
+            defaultValuePlaceholder: "for|while", 
+            description:             "Use 'for'/'while' statement as an infinite loop");
+
         public static readonly ConfigOptionDescriptor MaxLineLength = new(
             key:                     ConfigOptionKeys.MaxLineLength, 
             defaultValue:            "140", 
@@ -204,6 +210,7 @@ namespace Roslynator
             yield return new KeyValuePair<string, string>("RCS1207", JoinOptionKeys(ConfigOptionKeys.UseAnonymousFunctionOrMethodGroup));
             yield return new KeyValuePair<string, string>("RCS1248", JoinOptionKeys(ConfigOptionKeys.NullCheckStyle));
             yield return new KeyValuePair<string, string>("RCS1250", JoinOptionKeys(ConfigOptionKeys.ObjectCreationTypeStyle));
+            yield return new KeyValuePair<string, string>("RCS1252", JoinOptionKeys(ConfigOptionKeys.InfiniteLoopStyle));
         }
     }
 }

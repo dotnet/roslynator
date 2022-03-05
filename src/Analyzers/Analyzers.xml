@@ -1488,11 +1488,12 @@ public class Bar
   </Analyzer>
   <Analyzer Identifier="AvoidUsageOfDoStatementToCreateInfiniteLoop">
     <Id>RCS1063</Id>
-    <Title>Avoid usage of do statement to create an infinite loop.</Title>
-    <MessageFormat>Use while statement to create an infinite loop.</MessageFormat>
+    <Title>([deprecated] use RCS1252 instead) Avoid usage of do statement to create an infinite loop.</Title>
+    <MessageFormat>([deprecated] use RCS1252 instead) Use while statement to create an infinite loop.</MessageFormat>
     <Category>Style</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
+    <Tags>HideFromConfiguration</Tags>
     <Samples>
       <Sample>
         <Before><![CDATA[do // [|Id|]
@@ -1509,11 +1510,12 @@ while (true);]]></Before>
   </Analyzer>
   <Analyzer Identifier="AvoidUsageOfForStatementToCreateInfiniteLoop">
     <Id>RCS1064</Id>
-    <Title>Avoid usage of for statement to create an infinite loop.</Title>
-    <MessageFormat>Use while statement to create an infinite loop.</MessageFormat>
+    <Title>([deprecated] use RCS1252 instead) Avoid usage of for statement to create an infinite loop.</Title>
+    <MessageFormat>([deprecated] use RCS1252 instead) Use while statement to create an infinite loop.</MessageFormat>
     <Category>Style</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
+    <Tags>HideFromConfiguration</Tags>
     <Samples>
       <Sample>
         <Before><![CDATA[for (;;) // [|Id|]
@@ -1527,11 +1529,12 @@ while (true);]]></Before>
   </Analyzer>
   <Analyzer Identifier="AvoidUsageOfWhileStatementToCreateInfiniteLoop">
     <Id>RCS1065</Id>
-    <Title>Avoid usage of while statement to create an infinite loop.</Title>
-    <MessageFormat>Use for statement to create an infinite loop.</MessageFormat>
+    <Title>([deprecated] use RCS1252 instead) Avoid usage of while statement to create an infinite loop.</Title>
+    <MessageFormat>([deprecated] use RCS1252 instead) Use for statement to create an infinite loop.</MessageFormat>
     <Category>Style</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
+    <Tags>HideFromConfiguration</Tags>
     <Samples>
       <Sample>
         <Before><![CDATA[while (true) // [|Id|]
@@ -5701,5 +5704,16 @@ void M()
         <After><![CDATA[public record Foo(string Value1, string Value2);]]></After>
       </Sample>
     </Samples>
+  </Analyzer>
+  <Analyzer Identifier="NormalizeUsageOfInfiniteLoop">
+    <Id>RCS1252</Id>
+    <Title>Normalize usage of infinite loop.</Title>
+    <MessageFormat>Use '{0}' statement as an infinite loop.</MessageFormat>
+    <Category>Roslynator</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <ConfigOptions>
+      <Option Key="infinite_loop_style" IsRequired="true" />
+    </ConfigOptions>
   </Analyzer>
 </Analyzers>

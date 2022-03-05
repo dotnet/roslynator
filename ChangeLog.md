@@ -1,5 +1,6 @@
 ### Unreleased
 
+* Add analyzer NormalizeUsageOfInfiniteLoop (RCS1252)
 * Add analyzer RemoveUnnecessaryBraces (RCS1251)
 * Call AddRange instead of Add (RCS1235)
 * Add code fix for CS8602, CS8604

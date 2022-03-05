@@ -32,6 +32,7 @@ roslynator_use_anonymous_function_or_method_group = anonymous_function
 roslynator_use_block_body_when_declaration_spans_over_multiple_lines = true
 roslynator_use_block_body_when_expression_spans_over_multiple_lines = true
 roslynator_use_var_instead_of_implicit_object_creation = true
+roslynator_infinite_loop_style = while
 
 dotnet_diagnostic.RCS0001.severity = suggestion
 dotnet_diagnostic.RCS0003.severity = suggestion
@@ -129,6 +130,7 @@ dotnet_diagnostic.RCS1189.severity = suggestion
 dotnet_diagnostic.RCS1207.severity = suggestion
 dotnet_diagnostic.RCS1244.severity = suggestion
 dotnet_diagnostic.RCS1250.severity = suggestion
+dotnet_diagnostic.RCS1252.severity = suggestion
 
 dotnet_diagnostic.IDE0007.severity = none
 dotnet_diagnostic.IDE0007WithoutSuggestion.severity = none

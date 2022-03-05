@@ -60,6 +60,7 @@ namespace Roslynator.CSharp.Analysis
                     Validate(ref context, compilationOptions, options, Flags.UseExplicitlyOrImplicitlyTypedArray, ref flags, DiagnosticRules.UseExplicitlyOrImplicitlyTypedArray, ConfigOptions.ArrayCreationTypeStyle);
                     Validate(ref context, compilationOptions, options, Flags.UseHasFlagMethodOrBitwiseOperator, ref flags, DiagnosticRules.UseHasFlagMethodOrBitwiseOperator, ConfigOptions.EnumHasFlagStyle);
                     Validate(ref context, compilationOptions, options, Flags.UseImplicitOrExplicitObjectCreation, ref flags, DiagnosticRules.UseImplicitOrExplicitObjectCreation, ConfigOptions.ObjectCreationTypeStyle);
+                    Validate(ref context, compilationOptions, options, Flags.NormalizeUsageOfInfiniteLoop, ref flags, DiagnosticRules.NormalizeUsageOfInfiniteLoop, ConfigOptions.InfiniteLoopStyle);
                 });
             });
         }
@@ -107,6 +108,7 @@ namespace Roslynator.CSharp.Analysis
             ConfigureAwait,
             IncludeParenthesesWhenCreatingNewObject,
             NormalizeNullCheck,
+            NormalizeUsageOfInfiniteLoop,
             UseAnonymousFunctionOrMethodGroup,
             UseBlockBodyOrExpressionBody,
             UseEmptyStringLiteralOrStringEmpty,

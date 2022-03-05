@@ -22,6 +22,7 @@ namespace Roslynator
         public const string EmptyStringStyle                                  = "roslynator_empty_string_style";
         public const string EnumHasFlagStyle                                  = "roslynator_enum_has_flag_style";
         public const string EqualsTokenNewLine                                = "roslynator_equals_token_new_line";
+        public const string InfiniteLoopStyle                                 = "roslynator_infinite_loop_style";
         public const string MaxLineLength                                     = "roslynator_max_line_length";
         public const string NewLineAtEndOfFile                                = "roslynator_new_line_at_end_of_file";
         public const string NewLineBeforeWhileInDoStatement                   = "roslynator_new_line_before_while_in_do_statement";

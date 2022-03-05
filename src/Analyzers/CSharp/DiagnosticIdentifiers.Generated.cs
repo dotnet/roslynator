@@ -208,5 +208,6 @@ namespace Roslynator.CSharp
         public const string UnnecessaryNullForgivingOperator = "RCS1249";
         public const string UseImplicitOrExplicitObjectCreation = "RCS1250";
         public const string RemoveUnnecessaryBraces = "RCS1251";
+        public const string NormalizeUsageOfInfiniteLoop = "RCS1252";
     }
 }

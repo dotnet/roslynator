@@ -590,8 +590,8 @@ namespace Roslynator.CSharp
         /// <summary>RCS1063</summary>
         public static readonly DiagnosticDescriptor AvoidUsageOfDoStatementToCreateInfiniteLoop = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.AvoidUsageOfDoStatementToCreateInfiniteLoop, 
-            title:              "Avoid usage of do statement to create an infinite loop.", 
-            messageFormat:      "Use while statement to create an infinite loop.", 
+            title:              "([deprecated] use RCS1252 instead) Avoid usage of do statement to create an infinite loop.", 
+            messageFormat:      "([deprecated] use RCS1252 instead) Use while statement to create an infinite loop.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
@@ -602,8 +602,8 @@ namespace Roslynator.CSharp
         /// <summary>RCS1064</summary>
         public static readonly DiagnosticDescriptor AvoidUsageOfForStatementToCreateInfiniteLoop = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.AvoidUsageOfForStatementToCreateInfiniteLoop, 
-            title:              "Avoid usage of for statement to create an infinite loop.", 
-            messageFormat:      "Use while statement to create an infinite loop.", 
+            title:              "([deprecated] use RCS1252 instead) Avoid usage of for statement to create an infinite loop.", 
+            messageFormat:      "([deprecated] use RCS1252 instead) Use while statement to create an infinite loop.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
@@ -614,8 +614,8 @@ namespace Roslynator.CSharp
         /// <summary>RCS1065</summary>
         public static readonly DiagnosticDescriptor AvoidUsageOfWhileStatementToCreateInfiniteLoop = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.AvoidUsageOfWhileStatementToCreateInfiniteLoop, 
-            title:              "Avoid usage of while statement to create an infinite loop.", 
-            messageFormat:      "Use for statement to create an infinite loop.", 
+            title:              "([deprecated] use RCS1252 instead) Avoid usage of while statement to create an infinite loop.", 
+            messageFormat:      "([deprecated] use RCS1252 instead) Use for statement to create an infinite loop.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
@@ -2460,6 +2460,18 @@ namespace Roslynator.CSharp
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.RemoveUnnecessaryBraces, 
             customTags:         WellKnownDiagnosticTags.Unnecessary);
+
+        /// <summary>RCS1252</summary>
+        public static readonly DiagnosticDescriptor NormalizeUsageOfInfiniteLoop = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.NormalizeUsageOfInfiniteLoop, 
+            title:              "Normalize usage of infinite loop.", 
+            messageFormat:      "Use '{0}' statement as an infinite loop.", 
+            category:           DiagnosticCategories.Roslynator, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: false, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.NormalizeUsageOfInfiniteLoop, 
+            customTags:         Array.Empty<string>());
 
     }
 }

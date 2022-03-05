@@ -34,6 +34,8 @@ namespace Roslynator
         public const string EnumHasFlagStyle_Operator                                                   = "operator";
         public const string EqualsTokenNewLine_After                                                    = "after";
         public const string EqualsTokenNewLine_Before                                                   = "before";
+        public const string InfiniteLoopStyle_For                                                       = "for";
+        public const string InfiniteLoopStyle_While                                                     = "while";
         public const string NullConditionalOperatorNewLine_After                                        = "after";
         public const string NullConditionalOperatorNewLine_Before                                       = "before";
         public const string NullCheckStyle_EqualityOperator                                             = "equality_operator";

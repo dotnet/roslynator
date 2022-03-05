@@ -69,7 +69,7 @@ namespace Roslynator.CodeGeneration.EditorConfig
                 w.WriteLine();
 
                 foreach (AnalyzerMetadata analyzer in metadata.GetAllAnalyzers()
-                    .Where(f => !f.IsObsolete)
+                    .Where(f => !f.IsObsolete && !f.Tags.Contains("HideFromConfiguration"))
                     .OrderBy(f => f.Id))
                 {
                     w.WriteLine($"# {analyzer.Title.TrimEnd('.')}");

@@ -109,6 +109,9 @@ roslynator_enum_has_flag_style = method|operator
 roslynator_equals_token_new_line = after|before
 # Applicable to: rcs0052
 
+roslynator_infinite_loop_style = for|while
+# Applicable to: rcs1252
+
 roslynator_max_line_length = <NUM>
 # Default: 140
 # Applicable to: rcs0056
@@ -460,15 +463,6 @@ dotnet_diagnostic.rcs1060.severity = none
 
 # Merge 'if' with nested 'if'
 dotnet_diagnostic.rcs1061.severity = silent
-
-# Avoid usage of do statement to create an infinite loop
-dotnet_diagnostic.rcs1063.severity = suggestion
-
-# Avoid usage of for statement to create an infinite loop
-dotnet_diagnostic.rcs1064.severity = none
-
-# Avoid usage of while statement to create an infinite loop
-dotnet_diagnostic.rcs1065.severity = none
 
 # Remove empty 'finally' clause
 dotnet_diagnostic.rcs1066.severity = silent
@@ -930,6 +924,10 @@ dotnet_diagnostic.rcs1250.severity = none
 # Remove unnecessary braces from record declaration
 dotnet_diagnostic.rcs1251.severity = suggestion
 
+# Normalize usage of infinite loop
+dotnet_diagnostic.rcs1252.severity = none
+# Options: roslynator_infinite_loop_style
+
 # Use pattern matching
 dotnet_diagnostic.rcs9001.severity = silent
 
@@ -1334,6 +1332,8 @@ roslynator_compiler_diagnostic_fix.cs8112.enabled = true
 roslynator_compiler_diagnostic_fix.cs8139.enabled = true
 roslynator_compiler_diagnostic_fix.cs8340.enabled = true
 roslynator_compiler_diagnostic_fix.cs8403.enabled = true
+roslynator_compiler_diagnostic_fix.cs8602.enabled = true
+roslynator_compiler_diagnostic_fix.cs8604.enabled = true
 roslynator_compiler_diagnostic_fix.cs8618.enabled = true
 roslynator_compiler_diagnostic_fix.cs8625.enabled = true
 roslynator_compiler_diagnostic_fix.cs8632.enabled = true
