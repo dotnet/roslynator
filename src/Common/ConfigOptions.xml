@@ -84,6 +84,13 @@
 	<ValuePlaceholder>true|false</ValuePlaceholder>
 	<Description>Add/remove 'ConfigureAwait(false)' call</Description>
   </Option>
+  <Option Id="DocCommentSummaryStyle">
+	<Description>Format documentation comment summary on single line or multiple lines</Description>
+	<Values>
+	  <Value>multi_line</Value>
+	  <Value>single_line</Value>
+	</Values>
+  </Option>
   <Option Id="EmptyStringStyle">
 	<Description>Prefer 'string.Empty' or empty string literal</Description>
 	<Values>

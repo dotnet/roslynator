@@ -51,6 +51,7 @@ namespace Roslynator.CSharp.CodeFixes
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.FormatDocumentationSummaryOnSingleLine,
                     DiagnosticIdentifiers.FormatDocumentationSummaryOnMultipleLines,
+                    DiagnosticIdentifiers.FormatDocumentationCommentSummary,
                     DiagnosticIdentifiers.AddParamElementToDocumentationComment,
                     DiagnosticIdentifiers.AddTypeParamElementToDocumentationComment);
             }
@@ -67,6 +68,33 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 switch (diagnostic.Id)
                 {
+                    case DiagnosticIdentifiers.FormatDocumentationCommentSummary:
+                        {
+                            XmlElementSyntax summaryElement = documentationComment.SummaryElement();
+
+                            if (summaryElement?.StartTag?.IsMissing == false
+                                && summaryElement.EndTag?.IsMissing == false
+                                && summaryElement.IsSingleLine(includeExteriorTrivia: false, trim: false))
+                            {
+                                CodeAction codeAction = CodeAction.Create(
+                                    "Format summary on multiple lines",
+                                    ct => FormatSummaryOnMultipleLinesAsync(context.Document, documentationComment, ct),
+                                    GetEquivalenceKey(diagnostic));
+
+                                context.RegisterCodeFix(codeAction, diagnostic);
+                            }
+                            else
+                            {
+                                CodeAction codeAction = CodeAction.Create(
+                                    "Format summary on a single line",
+                                    ct => FormatSummaryOnSingleLineAsync(context.Document, documentationComment, ct),
+                                    GetEquivalenceKey(diagnostic));
+
+                                context.RegisterCodeFix(codeAction, diagnostic);
+                            }
+
+                            break;
+                        }
                     case DiagnosticIdentifiers.FormatDocumentationSummaryOnSingleLine:
                         {
                             CodeAction codeAction = CodeAction.Create(

@@ -28,6 +28,8 @@ namespace Roslynator
         public const string ConditionalOperatorConditionParenthesesStyle_OmitWhenConditionIsSingleToken = "omit_when_condition_is_single_token";
         public const string ConditionalOperatorNewLine_After                                            = "after";
         public const string ConditionalOperatorNewLine_Before                                           = "before";
+        public const string DocCommentSummaryStyle_MultiLine                                            = "multi_line";
+        public const string DocCommentSummaryStyle_SingleLine                                           = "single_line";
         public const string EmptyStringStyle_Field                                                      = "field";
         public const string EmptyStringStyle_Literal                                                    = "literal";
         public const string EnumHasFlagStyle_Method                                                     = "method";

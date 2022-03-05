@@ -936,8 +936,8 @@ namespace Roslynator.CSharp
         /// <summary>RCS1100</summary>
         public static readonly DiagnosticDescriptor FormatDocumentationSummaryOnSingleLine = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.FormatDocumentationSummaryOnSingleLine, 
-            title:              "Format documentation summary on a single line.", 
-            messageFormat:      "Format documentation summary on a single line.", 
+            title:              "([deprecated] use RCS1253 instead) Format documentation summary on a single line.", 
+            messageFormat:      "([deprecated] use RCS1253 instead) Format documentation summary on a single line.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
@@ -948,8 +948,8 @@ namespace Roslynator.CSharp
         /// <summary>RCS1101</summary>
         public static readonly DiagnosticDescriptor FormatDocumentationSummaryOnMultipleLines = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.FormatDocumentationSummaryOnMultipleLines, 
-            title:              "Format documentation summary on multiple lines.", 
-            messageFormat:      "Format documentation summary on multiple lines.", 
+            title:              "([deprecated] use RCS1253 instead) Format documentation summary on multiple lines.", 
+            messageFormat:      "([deprecated] use RCS1253 instead) Format documentation summary on multiple lines.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
@@ -2471,6 +2471,18 @@ namespace Roslynator.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.NormalizeUsageOfInfiniteLoop, 
+            customTags:         Array.Empty<string>());
+
+        /// <summary>RCS1253</summary>
+        public static readonly DiagnosticDescriptor FormatDocumentationCommentSummary = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.FormatDocumentationCommentSummary, 
+            title:              "Format documentation comment summary.", 
+            messageFormat:      "Format documentation comment summary.", 
+            category:           DiagnosticCategories.Roslynator, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: false, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.FormatDocumentationCommentSummary, 
             customTags:         Array.Empty<string>());
 
     }

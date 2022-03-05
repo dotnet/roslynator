@@ -61,6 +61,7 @@ namespace Roslynator.CSharp.Analysis
                     Validate(ref context, compilationOptions, options, Flags.UseHasFlagMethodOrBitwiseOperator, ref flags, DiagnosticRules.UseHasFlagMethodOrBitwiseOperator, ConfigOptions.EnumHasFlagStyle);
                     Validate(ref context, compilationOptions, options, Flags.UseImplicitOrExplicitObjectCreation, ref flags, DiagnosticRules.UseImplicitOrExplicitObjectCreation, ConfigOptions.ObjectCreationTypeStyle);
                     Validate(ref context, compilationOptions, options, Flags.NormalizeUsageOfInfiniteLoop, ref flags, DiagnosticRules.NormalizeUsageOfInfiniteLoop, ConfigOptions.InfiniteLoopStyle);
+                    Validate(ref context, compilationOptions, options, Flags.DocCommentSummaryStyle, ref flags, DiagnosticRules.FormatDocumentationCommentSummary, ConfigOptions.DocCommentSummaryStyle);
                 });
             });
         }
@@ -106,6 +107,7 @@ namespace Roslynator.CSharp.Analysis
             AddOrRemoveAccessibilityModifiers,
             AddOrRemoveParenthesesFromConditionInConditionalOperator,
             ConfigureAwait,
+            DocCommentSummaryStyle,
             IncludeParenthesesWhenCreatingNewObject,
             NormalizeNullCheck,
             NormalizeUsageOfInfiniteLoop,

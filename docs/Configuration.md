@@ -100,6 +100,9 @@ roslynator_conditional_operator_new_line = after|before
 roslynator_configure_await = true|false
 # Applicable to: rcs1090
 
+roslynator_doc_comment_summary_style = multi_line|single_line
+# Applicable to: rcs1253
+
 roslynator_empty_string_style = field|literal
 # Applicable to: rcs1078
 
@@ -542,12 +545,6 @@ dotnet_diagnostic.rcs1098.severity = suggestion
 # Default label should be the last label in a switch section
 dotnet_diagnostic.rcs1099.severity = suggestion
 
-# Format documentation summary on a single line
-dotnet_diagnostic.rcs1100.severity = none
-
-# Format documentation summary on multiple lines
-dotnet_diagnostic.rcs1101.severity = none
-
 # Make class static
 dotnet_diagnostic.rcs1102.severity = warning
 
@@ -927,6 +924,10 @@ dotnet_diagnostic.rcs1251.severity = suggestion
 # Normalize usage of infinite loop
 dotnet_diagnostic.rcs1252.severity = none
 # Options: roslynator_infinite_loop_style
+
+# Format documentation comment summary
+dotnet_diagnostic.rcs1253.severity = none
+# Options: roslynator_doc_comment_summary_style
 
 # Use pattern matching
 dotnet_diagnostic.rcs9001.severity = silent

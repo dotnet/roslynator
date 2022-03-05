@@ -2291,10 +2291,11 @@ namespace Foo
   </Analyzer>
   <Analyzer Identifier="FormatDocumentationSummaryOnSingleLine">
     <Id>RCS1100</Id>
-    <Title>Format documentation summary on a single line.</Title>
+    <Title>([deprecated] use RCS1253 instead) Format documentation summary on a single line.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
+    <Tags>HideFromConfiguration</Tags>
     <Samples>
       <Sample>
         <Before><![CDATA[/// <summary> // [|Id|]
@@ -2312,10 +2313,11 @@ public void Foo()
   </Analyzer>
   <Analyzer Identifier="FormatDocumentationSummaryOnMultipleLines">
     <Id>RCS1101</Id>
-    <Title>Format documentation summary on multiple lines.</Title>
+    <Title>([deprecated] use RCS1253 instead) Format documentation summary on multiple lines.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
+    <Tags>HideFromConfiguration</Tags>
     <Samples>
       <Sample>
         <Before><![CDATA[/// <summary>...</summary> // [|Id|]
@@ -5714,6 +5716,17 @@ void M()
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <ConfigOptions>
       <Option Key="infinite_loop_style" IsRequired="true" />
+    </ConfigOptions>
+  </Analyzer>
+  <Analyzer Identifier="FormatDocumentationCommentSummary">
+    <Id>RCS1253</Id>
+    <Title>Format documentation comment summary.</Title>
+    <Category>Roslynator</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <Summary>This analyzer replaces RCS1100 and RCS1101.</Summary>
+    <ConfigOptions>
+      <Option Key="doc_comment_summary_style" IsRequired="true" />
     </ConfigOptions>
   </Analyzer>
 </Analyzers>

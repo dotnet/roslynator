@@ -436,6 +436,25 @@ namespace Roslynator.CSharp
             return InfiniteLoopStyle.None;
         }
 
+        public static DocCommentSummaryStyle GetDocCommentSummaryStyle(this SyntaxNodeAnalysisContext context)
+        {
+            AnalyzerConfigOptions configOptions = context.GetConfigOptions();
+
+            if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.DocCommentSummaryStyle, out string rawValue))
+            {
+                if (string.Equals(rawValue, ConfigOptionValues.DocCommentSummaryStyle_MultiLine, StringComparison.OrdinalIgnoreCase))
+                {
+                    return DocCommentSummaryStyle.MultiLine;
+                }
+                else if (string.Equals(rawValue, ConfigOptionValues.DocCommentSummaryStyle_SingleLine, StringComparison.OrdinalIgnoreCase))
+                {
+                    return DocCommentSummaryStyle.SingleLine;
+                }
+            }
+
+            return DocCommentSummaryStyle.None;
+        }
+
         public static BodyStyle GetBodyStyle(this SyntaxNodeAnalysisContext context)
         {
             return BodyStyle.Create(context);

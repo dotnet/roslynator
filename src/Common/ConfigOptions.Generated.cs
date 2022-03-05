@@ -86,6 +86,12 @@ namespace Roslynator
             defaultValuePlaceholder: "true|false", 
             description:             "Add/remove 'ConfigureAwait(false)' call");
 
+        public static readonly ConfigOptionDescriptor DocCommentSummaryStyle = new(
+            key:                     ConfigOptionKeys.DocCommentSummaryStyle, 
+            defaultValue:            null, 
+            defaultValuePlaceholder: "multi_line|single_line", 
+            description:             "Format documentation comment summary on single line or multiple lines");
+
         public static readonly ConfigOptionDescriptor EmptyStringStyle = new(
             key:                     ConfigOptionKeys.EmptyStringStyle, 
             defaultValue:            null, 
@@ -211,6 +217,7 @@ namespace Roslynator
             yield return new KeyValuePair<string, string>("RCS1248", JoinOptionKeys(ConfigOptionKeys.NullCheckStyle));
             yield return new KeyValuePair<string, string>("RCS1250", JoinOptionKeys(ConfigOptionKeys.ObjectCreationTypeStyle));
             yield return new KeyValuePair<string, string>("RCS1252", JoinOptionKeys(ConfigOptionKeys.InfiniteLoopStyle));
+            yield return new KeyValuePair<string, string>("RCS1253", JoinOptionKeys(ConfigOptionKeys.DocCommentSummaryStyle));
         }
     }
 }
