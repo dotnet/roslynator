@@ -694,9 +694,10 @@ Bar();]]></After>
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="RemoveUnnecessaryBraces">
+  <Analyzer Identifier="RemoveUnnecessaryBracesInSwitchSection">
     <Id>RCS1031</Id>
-    <Title>Remove unnecessary braces.</Title>
+    <Title>Remove unnecessary braces in switch section.</Title>
+    <MessageFormat>Remove unnecessary braces.</MessageFormat>
     <Category>Redundancy</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -5683,5 +5684,22 @@ void M()
         <Text>Target-typed new expressions</Text>
       </Link>
     </Links>
+  </Analyzer>
+  <Analyzer Identifier="RemoveUnnecessaryBraces">
+    <Id>RCS1251</Id>
+    <Title>Remove unnecessary braces from record declaration.</Title>
+    <MessageFormat>Remove unnecessary braces.</MessageFormat>
+    <Category>Roslynator</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>true</SupportsFadeOut>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[public record Foo(string Value1, string Value2)
+{
+}]]></Before>
+        <After><![CDATA[public record Foo(string Value1, string Value2);]]></After>
+      </Sample>
+    </Samples>
   </Analyzer>
 </Analyzers>

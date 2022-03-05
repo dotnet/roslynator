@@ -377,7 +377,7 @@ dotnet_diagnostic.rcs1020.severity = suggestion
 # Convert lambda expression body to expression body
 dotnet_diagnostic.rcs1021.severity = suggestion
 
-# Remove unnecessary braces
+# Remove unnecessary braces in switch section
 dotnet_diagnostic.rcs1031.severity = silent
 
 # Remove redundant parentheses
@@ -926,6 +926,9 @@ dotnet_diagnostic.rcs1249.severity = suggestion
 # Use implicit/explicit object creation
 dotnet_diagnostic.rcs1250.severity = none
 # Options: roslynator_object_creation_type_style, roslynator_use_var_instead_of_implicit_object_creation
+
+# Remove unnecessary braces from record declaration
+dotnet_diagnostic.rcs1251.severity = suggestion
 
 # Use pattern matching
 dotnet_diagnostic.rcs9001.severity = silent

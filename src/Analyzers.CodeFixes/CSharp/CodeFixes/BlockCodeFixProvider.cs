@@ -25,7 +25,7 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.SimplifyLazyInitialization,
-                    DiagnosticIdentifiers.RemoveUnnecessaryBraces);
+                    DiagnosticIdentifiers.RemoveUnnecessaryBracesInSwitchSection);
             }
         }
 
@@ -52,7 +52,7 @@ namespace Roslynator.CSharp.CodeFixes
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
-                    case DiagnosticIdentifiers.RemoveUnnecessaryBraces:
+                    case DiagnosticIdentifiers.RemoveUnnecessaryBracesInSwitchSection:
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Remove braces",

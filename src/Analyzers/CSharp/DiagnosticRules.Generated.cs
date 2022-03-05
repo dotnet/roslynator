@@ -250,18 +250,18 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor ConvertLambdaExpressionBodyToExpressionBodyFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(ConvertLambdaExpressionBodyToExpressionBody);
 
         /// <summary>RCS1031</summary>
-        public static readonly DiagnosticDescriptor RemoveUnnecessaryBraces = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.RemoveUnnecessaryBraces, 
-            title:              "Remove unnecessary braces.", 
+        public static readonly DiagnosticDescriptor RemoveUnnecessaryBracesInSwitchSection = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.RemoveUnnecessaryBracesInSwitchSection, 
+            title:              "Remove unnecessary braces in switch section.", 
             messageFormat:      "Remove unnecessary braces.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.RemoveUnnecessaryBraces, 
+            helpLinkUri:        DiagnosticIdentifiers.RemoveUnnecessaryBracesInSwitchSection, 
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
-        public static readonly DiagnosticDescriptor RemoveUnnecessaryBracesFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(RemoveUnnecessaryBraces);
+        public static readonly DiagnosticDescriptor RemoveUnnecessaryBracesInSwitchSectionFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(RemoveUnnecessaryBracesInSwitchSection);
 
         /// <summary>RCS1032</summary>
         public static readonly DiagnosticDescriptor RemoveRedundantParentheses = DiagnosticDescriptorFactory.Create(
@@ -2448,6 +2448,18 @@ namespace Roslynator.CSharp
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation, 
             customTags:         Array.Empty<string>());
+
+        /// <summary>RCS1251</summary>
+        public static readonly DiagnosticDescriptor RemoveUnnecessaryBraces = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.RemoveUnnecessaryBraces, 
+            title:              "Remove unnecessary braces from record declaration.", 
+            messageFormat:      "Remove unnecessary braces.", 
+            category:           DiagnosticCategories.Roslynator, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.RemoveUnnecessaryBraces, 
+            customTags:         WellKnownDiagnosticTags.Unnecessary);
 
     }
 }
