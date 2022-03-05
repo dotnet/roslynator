@@ -9,6 +9,6 @@ namespace Roslynator.CSharp
     {
         None = 0,
         AddBraces = 1,
-        RemoveBraces = 2,
+        RemoveBraces = 1 << 1,
     }
 }

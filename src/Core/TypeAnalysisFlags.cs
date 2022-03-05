@@ -9,10 +9,10 @@ namespace Roslynator
     {
         None = 0,
         Implicit = 1,
-        Explicit = 2,
-        Dynamic = 4,
-        SupportsImplicit = 8,
-        SupportsExplicit = 16,
-        TypeObvious = 32,
+        Explicit = 1 << 1,
+        Dynamic = 1 << 2,
+        SupportsImplicit = 1 << 3,
+        SupportsExplicit = 1 << 4,
+        TypeObvious = 1 << 5,
     }
 }

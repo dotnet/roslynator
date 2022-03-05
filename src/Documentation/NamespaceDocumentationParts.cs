@@ -9,16 +9,16 @@ namespace Roslynator.Documentation
     {
         None = 0,
         Content = 1,
-        ContainingNamespace = 2,
-        Summary = 4,
-        Examples = 8,
-        Remarks = 16,
-        Classes = 32,
-        Structs = 64,
-        Interfaces = 128,
-        Enums = 256,
-        Delegates = 512,
-        SeeAlso = 1024,
+        ContainingNamespace = 1 << 1,
+        Summary = 1 << 2,
+        Examples = 1 << 3,
+        Remarks = 1 << 4,
+        Classes = 1 << 5,
+        Structs = 1 << 6,
+        Interfaces = 1 << 7,
+        Enums = 1 << 8,
+        Delegates = 1 << 9,
+        SeeAlso = 1 << 10,
         All = int.MaxValue
     }
 }

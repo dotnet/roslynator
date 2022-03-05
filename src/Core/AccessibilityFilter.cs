@@ -9,10 +9,10 @@ namespace Roslynator
     {
         None = 0,
         Private = 1,
-        ProtectedAndInternal = 2,
-        Protected = 4,
-        Internal = 8,
-        ProtectedOrInternal = 16,
-        Public = 32,
+        ProtectedAndInternal = 1 << 1,
+        Protected = 1 << 2,
+        Internal = 1 << 3,
+        ProtectedOrInternal = 1 << 4,
+        Public = 1 << 5,
     }
 }

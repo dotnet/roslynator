@@ -9,16 +9,16 @@ namespace Roslynator.Documentation
     {
         None = 0,
         ClassHierarchy = 1,
-        ContainingType = 2,
-        Parameter = 4,
-        ReturnType = 8,
-        BaseType = 16,
-        Attribute = 32,
-        DerivedType = 64,
-        ImplementedInterface = 128,
-        ImplementedMember = 256,
-        Exception = 512,
-        SeeAlso = 1024,
+        ContainingType = 1 << 1,
+        Parameter = 1 << 2,
+        ReturnType = 1 << 3,
+        BaseType = 1 << 4,
+        Attribute = 1 << 5,
+        DerivedType = 1 << 6,
+        ImplementedInterface = 1 << 7,
+        ImplementedMember = 1 << 8,
+        Exception = 1 << 9,
+        SeeAlso = 1 << 10,
         All = int.MaxValue
     }
 }
