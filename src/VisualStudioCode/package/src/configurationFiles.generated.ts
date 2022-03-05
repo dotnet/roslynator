@@ -78,6 +78,9 @@ roslynator_analyzers.enabled_by_default = true|false
 #roslynator_empty_string_style = field|literal
 # Applicable to: rcs1078
 
+#roslynator_enum_flag_value_style = decimal_number|shift_operator
+# Applicable to: rcs1254
+
 #roslynator_enum_has_flag_style = method|operator
 # Applicable to: rcs1096
 
@@ -849,9 +852,6 @@ roslynator_analyzers.enabled_by_default = true|false
 # Use exception filter
 #dotnet_diagnostic.rcs1236.severity = suggestion
 
-# Use bit shift operator
-#dotnet_diagnostic.rcs1237.severity = silent
-
 # Avoid nested ?: operators
 #dotnet_diagnostic.rcs1238.severity = silent
 
@@ -900,6 +900,10 @@ roslynator_analyzers.enabled_by_default = true|false
 # Format documentation comment summary
 #dotnet_diagnostic.rcs1253.severity = none
 # Options: roslynator_doc_comment_summary_style
+
+# Normalize format of enum flag value
+#dotnet_diagnostic.rcs1254.severity = suggestion
+# Options: roslynator_enum_flag_value_style
 
 # Use pattern matching
 #dotnet_diagnostic.rcs9001.severity = silent

@@ -32,6 +32,8 @@ namespace Roslynator
         public const string DocCommentSummaryStyle_SingleLine                                           = "single_line";
         public const string EmptyStringStyle_Field                                                      = "field";
         public const string EmptyStringStyle_Literal                                                    = "literal";
+        public const string EnumFlagValueStyle_DecimalNumber                                            = "decimal_number";
+        public const string EnumFlagValueStyle_ShiftOperator                                            = "shift_operator";
         public const string EnumHasFlagStyle_Method                                                     = "method";
         public const string EnumHasFlagStyle_Operator                                                   = "operator";
         public const string EqualsTokenNewLine_After                                                    = "after";

@@ -2296,8 +2296,8 @@ namespace Roslynator.CSharp
         /// <summary>RCS1237</summary>
         public static readonly DiagnosticDescriptor UseBitShiftOperator = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.UseBitShiftOperator, 
-            title:              "Use bit shift operator.", 
-            messageFormat:      "Use bit shift operator.", 
+            title:              "([deprecated] use RCS1254 instead) Use bit shift operator.", 
+            messageFormat:      "([deprecated] use RCS1254 instead) Use bit shift operator.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
             isEnabledByDefault: true, 
@@ -2483,6 +2483,18 @@ namespace Roslynator.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.FormatDocumentationCommentSummary, 
+            customTags:         Array.Empty<string>());
+
+        /// <summary>RCS1254</summary>
+        public static readonly DiagnosticDescriptor NormalizeFormatOfEnumFlagValue = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.NormalizeFormatOfEnumFlagValue, 
+            title:              "Normalize format of enum flag value.", 
+            messageFormat:      "{0}", 
+            category:           DiagnosticCategories.Roslynator, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.NormalizeFormatOfEnumFlagValue, 
             customTags:         Array.Empty<string>());
 
     }

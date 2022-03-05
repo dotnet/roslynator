@@ -455,6 +455,29 @@ namespace Roslynator.CSharp
             return DocCommentSummaryStyle.None;
         }
 
+        public static EnumFlagValueStyle GetEnumFlagValueStyle(this SyntaxNodeAnalysisContext context)
+        {
+
+            return GetEnumFlagValueStyle(context.GetConfigOptions());
+        }
+
+        public static EnumFlagValueStyle GetEnumFlagValueStyle(this AnalyzerConfigOptions configOptions)
+        {
+            if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.EnumFlagValueStyle, out string rawValue))
+            {
+                if (string.Equals(rawValue, ConfigOptionValues.EnumFlagValueStyle_DecimalNumber, StringComparison.OrdinalIgnoreCase))
+                {
+                    return EnumFlagValueStyle.DecimalNumber;
+                }
+                else if (string.Equals(rawValue, ConfigOptionValues.EnumFlagValueStyle_ShiftOperator, StringComparison.OrdinalIgnoreCase))
+                {
+                    return EnumFlagValueStyle.ShiftOperator;
+                }
+            }
+
+            return EnumFlagValueStyle.None;
+        }
+
         public static BodyStyle GetBodyStyle(this SyntaxNodeAnalysisContext context)
         {
             return BodyStyle.Create(context);

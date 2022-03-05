@@ -210,5 +210,6 @@ namespace Roslynator.CSharp
         public const string RemoveUnnecessaryBraces = "RCS1251";
         public const string NormalizeUsageOfInfiniteLoop = "RCS1252";
         public const string FormatDocumentationCommentSummary = "RCS1253";
+        public const string NormalizeFormatOfEnumFlagValue = "RCS1254";
     }
 }

@@ -5185,10 +5185,11 @@ So the expression is considered as the one that can throw an exception if it con
   </Analyzer>
   <Analyzer Identifier="UseBitShiftOperator">
     <Id>RCS1237</Id>
-    <Title>Use bit shift operator.</Title>
+    <Title>([deprecated] use RCS1254 instead) Use bit shift operator.</Title>
     <Category>Usage</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
+    <Tags>HideFromConfiguration</Tags>
     <Samples>
       <Sample>
         <Before><![CDATA[[Flags]
@@ -5727,6 +5728,17 @@ void M()
     <Summary>This analyzer replaces RCS1100 and RCS1101.</Summary>
     <ConfigOptions>
       <Option Key="doc_comment_summary_style" IsRequired="true" />
+    </ConfigOptions>
+  </Analyzer>
+  <Analyzer Identifier="NormalizeFormatOfEnumFlagValue">
+    <Id>RCS1254</Id>
+    <Title>Normalize format of enum flag value.</Title>
+    <MessageFormat>{0}</MessageFormat>
+    <Category>Roslynator</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <ConfigOptions>
+      <Option Key="enum_flag_value_style" IsRequired="true" />
     </ConfigOptions>
   </Analyzer>
 </Analyzers>

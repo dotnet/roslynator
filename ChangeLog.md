@@ -1,5 +1,6 @@
 ### Unreleased
 
+* Add analyzer NormalizeFormatOfEnumFlagValue (RCS1254)
 * Add analyzer FormatDocumentationCommentSummary (RCS1253)
 * Add analyzer NormalizeUsageOfInfiniteLoop (RCS1252)
 * Add analyzer RemoveUnnecessaryBraces (RCS1251)

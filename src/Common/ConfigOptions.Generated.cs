@@ -98,6 +98,12 @@ namespace Roslynator
             defaultValuePlaceholder: "field|literal", 
             description:             "Prefer 'string.Empty' or empty string literal");
 
+        public static readonly ConfigOptionDescriptor EnumFlagValueStyle = new(
+            key:                     ConfigOptionKeys.EnumFlagValueStyle, 
+            defaultValue:            null, 
+            defaultValuePlaceholder: "decimal_number|shift_operator", 
+            description:             "Format enum flag value as decimal number or as a shift operator");
+
         public static readonly ConfigOptionDescriptor EnumHasFlagStyle = new(
             key:                     ConfigOptionKeys.EnumHasFlagStyle, 
             defaultValue:            null, 
@@ -218,6 +224,7 @@ namespace Roslynator
             yield return new KeyValuePair<string, string>("RCS1250", JoinOptionKeys(ConfigOptionKeys.ObjectCreationTypeStyle));
             yield return new KeyValuePair<string, string>("RCS1252", JoinOptionKeys(ConfigOptionKeys.InfiniteLoopStyle));
             yield return new KeyValuePair<string, string>("RCS1253", JoinOptionKeys(ConfigOptionKeys.DocCommentSummaryStyle));
+            yield return new KeyValuePair<string, string>("RCS1254", JoinOptionKeys(ConfigOptionKeys.EnumFlagValueStyle));
         }
     }
 }

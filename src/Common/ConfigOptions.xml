@@ -98,6 +98,13 @@
 	  <Value>literal</Value>
 	</Values>
   </Option>
+  <Option Id="EnumFlagValueStyle">
+	<Description>Format enum flag value as decimal number or as a shift operator</Description>
+	<Values>
+	  <Value>decimal_number</Value>
+	  <Value>shift_operator</Value>
+	</Values>
+  </Option>
   <Option Id="EnumHasFlagStyle">
 	<Description>Use 'HasFlag' method or bitwise operator</Description>
 	<Values>
