@@ -42,7 +42,7 @@ namespace Roslynator
         public static string GetValue(AnalyzerConfigOptions configOptions, ConfigOptionDescriptor option, string defaultValue = null)
         {
             if (configOptions.TryGetValue(option.Key, out string value))
-                    return value;
+                return value;
 
             return defaultValue
                 ?? CodeAnalysisConfig.Instance.EditorConfig.Options.GetValueOrDefault(option.Key)

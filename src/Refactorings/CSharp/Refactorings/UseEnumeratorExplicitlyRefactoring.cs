@@ -51,7 +51,7 @@ namespace Roslynator.CSharp.Refactorings
             StatementSyntax newStatement = statement.ReplaceNodes(
                 statement
                     .DescendantNodes()
-                    .Where(node => node.Kind() == SyntaxKind.IdentifierName && SymbolEqualityComparer.Default.Equals(localSymbol, semanticModel.GetSymbol(node, cancellationToken))),
+                    .Where(node => node.IsKind(SyntaxKind.IdentifierName) && SymbolEqualityComparer.Default.Equals(localSymbol, semanticModel.GetSymbol(node, cancellationToken))),
                 (node, _) => currentExpression.WithTriviaFrom(node));
 
             WhileStatementSyntax whileStatement = WhileStatement(

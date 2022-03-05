@@ -82,7 +82,7 @@ namespace Roslynator.VisualStudio
 
         internal void UpdateConfig()
         {
-            CodeAnalysisConfig.UpdateVisualStudioConfig(f =>  f.WithCodeFixes(GetItems()));
+            CodeAnalysisConfig.UpdateVisualStudioConfig(f => f.WithCodeFixes(GetItems()));
         }
 
         protected override void Fill(ICollection<BaseModel> items)

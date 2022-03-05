@@ -72,7 +72,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                         SyntaxToken semicolonToken = methodDeclaration.SemicolonToken;
 
-                        if (semicolonToken.Kind() == SyntaxKind.None)
+                        if (semicolonToken.IsKind(SyntaxKind.None))
                             break;
 
                         ParameterListSyntax parameterList = methodDeclaration.ParameterList;
@@ -97,7 +97,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                         SyntaxToken semicolonToken = constructorDeclaration.SemicolonToken;
 
-                        if (semicolonToken.Kind() == SyntaxKind.None)
+                        if (semicolonToken.IsKind(SyntaxKind.None))
                             break;
 
                         ParameterListSyntax parameterList = constructorDeclaration.ParameterList;
@@ -122,7 +122,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                         SyntaxToken semicolonToken = destructorDeclaration.SemicolonToken;
 
-                        if (semicolonToken.Kind() == SyntaxKind.None)
+                        if (semicolonToken.IsKind(SyntaxKind.None))
                             break;
 
                         ParameterListSyntax parameterList = destructorDeclaration.ParameterList;
@@ -147,7 +147,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                         SyntaxToken semicolonToken = operatorDeclaration.SemicolonToken;
 
-                        if (semicolonToken.Kind() == SyntaxKind.None)
+                        if (semicolonToken.IsKind(SyntaxKind.None))
                             break;
 
                         ParameterListSyntax parameterList = operatorDeclaration.ParameterList;
@@ -172,7 +172,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                         SyntaxToken semicolonToken = conversionOperatorDeclaration.SemicolonToken;
 
-                        if (semicolonToken.Kind() == SyntaxKind.None)
+                        if (semicolonToken.IsKind(SyntaxKind.None))
                             break;
 
                         ParameterListSyntax parameterList = conversionOperatorDeclaration.ParameterList;
@@ -198,7 +198,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                         SyntaxToken semicolonToken = accessorDeclaration.SemicolonToken;
 
-                        if (semicolonToken.Kind() == SyntaxKind.None)
+                        if (semicolonToken.IsKind(SyntaxKind.None))
                             break;
 
                         return ct =>
@@ -224,7 +224,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                         SyntaxToken semicolonToken = localFunction.SemicolonToken;
 
-                        if (semicolonToken.Kind() == SyntaxKind.None)
+                        if (semicolonToken.IsKind(SyntaxKind.None))
                             break;
 
                         ParameterListSyntax parameterList = localFunction.ParameterList;

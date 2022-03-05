@@ -120,6 +120,11 @@ namespace Roslynator.CSharp.Analysis
                             AnalyzeSimpleName(memberBindingExpression.Name);
                             break;
                         }
+                    case MemberAccessExpressionSyntax memberAccessExpression:
+                        {
+                            AnalyzeSimpleName(memberAccessExpression.Name);
+                            break;
+                        }
                     default:
                         {
                             SyntaxDebug.Fail(node);

@@ -29,8 +29,8 @@ namespace Roslynator.CSharp
                     }
                 case SyntaxKind.VariableDeclarator:
                     {
-                        return node.Parent?.Kind() == SyntaxKind.VariableDeclaration
-                            && node.Parent.Parent?.Kind() == SyntaxKind.EventFieldDeclaration;
+                        return node.IsParentKind(SyntaxKind.VariableDeclaration)
+                            && node.Parent.IsParentKind(SyntaxKind.EventFieldDeclaration);
                     }
             }
 
@@ -126,10 +126,10 @@ namespace Roslynator.CSharp
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            if (variableDeclarator.Parent?.Kind() != SyntaxKind.VariableDeclaration)
+            if (!variableDeclarator.IsParentKind(SyntaxKind.VariableDeclaration))
                 return Default;
 
-            if (variableDeclarator.Parent.Parent?.Kind() != SyntaxKind.EventFieldDeclaration)
+            if (!variableDeclarator.Parent.IsParentKind(SyntaxKind.EventFieldDeclaration))
                 return Default;
 
             if (semanticModel.GetDeclaredSymbol(variableDeclarator, cancellationToken) is not IEventSymbol eventSymbol)

@@ -92,7 +92,7 @@ namespace Roslynator.CSharp.CodeFixes
             if (syntax == null)
                 return;
 
-            if (syntax.Kind() == SyntaxKind.VariableDeclarator)
+            if (syntax.IsKind(SyntaxKind.VariableDeclarator))
                 syntax = syntax.Parent?.Parent;
 
             SyntaxDebug.Assert(syntax.IsKind(SyntaxKind.EventDeclaration, SyntaxKind.EventFieldDeclaration, SyntaxKind.FieldDeclaration, SyntaxKind.MethodDeclaration, SyntaxKind.PropertyDeclaration), syntax);

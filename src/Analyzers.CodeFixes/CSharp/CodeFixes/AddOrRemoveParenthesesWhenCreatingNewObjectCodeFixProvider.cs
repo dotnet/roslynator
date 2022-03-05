@@ -35,7 +35,7 @@ namespace Roslynator.CSharp.CodeFixes
             if (objectCreationExpression.ArgumentList != null)
             {
                 CodeAction codeAction = CodeAction.Create(
-                    "Add parentheses",
+                    "Remove parentheses",
                     ct => RemoveParenthesesAsync(document, objectCreationExpression.ArgumentList, ct),
                     GetEquivalenceKey(diagnostic));
 
@@ -44,7 +44,7 @@ namespace Roslynator.CSharp.CodeFixes
             else
             {
                 CodeAction codeAction = CodeAction.Create(
-                    "Remove parentheses",
+                    "Add parentheses",
                     ct => AddParenthesesAsync(document, objectCreationExpression, ct),
                     GetEquivalenceKey(diagnostic));
 

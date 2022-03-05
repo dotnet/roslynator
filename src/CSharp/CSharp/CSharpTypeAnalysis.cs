@@ -251,14 +251,20 @@ namespace Roslynator.CSharp
                 case SyntaxKind.CharacterLiteralExpression:
                 case SyntaxKind.TrueLiteralExpression:
                 case SyntaxKind.FalseLiteralExpression:
+                case SyntaxKind.ThisExpression:
+                    {
+                        return true;
+                    }
                 case SyntaxKind.ObjectCreationExpression:
                 case SyntaxKind.ArrayCreationExpression:
                 case SyntaxKind.CastExpression:
                 case SyntaxKind.AsExpression:
-                case SyntaxKind.ThisExpression:
                 case SyntaxKind.DefaultExpression:
                     {
-                        return true;
+                        return typeSymbol == null
+                            || SymbolEqualityComparer.IncludeNullability.Equals(
+                                typeSymbol,
+                                semanticModel.GetTypeSymbol(expression, cancellationToken));
                     }
                 case SyntaxKind.ImplicitArrayCreationExpression:
                     {
@@ -501,6 +507,7 @@ namespace Roslynator.CSharp
                 case SyntaxKind.SwitchExpressionArm:
                 case SyntaxKind.YieldReturnStatement:
                 case SyntaxKind.ConditionalExpression:
+                case SyntaxKind.ComplexElementInitializerExpression:
                     {
                         SyntaxDebug.Assert(tupleExpression.ContainsDiagnostics || !tupleExpression.Arguments.Any(f => f.Expression.IsKind(SyntaxKind.DeclarationExpression)), tupleExpression);
                         return false;

@@ -1,4 +1,4 @@
-﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -359,6 +359,72 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
+        public async Task Test_PreferImplicit_CollectionInitializer_Field()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System.Collections.Generic;
+
+class C
+{
+    private List<string> _items = new()
+    {
+        new [|string|](' ', 1)
+    };
+
+    void M()
+    {
+    }
+}
+", @"
+using System.Collections.Generic;
+
+class C
+{
+    private List<string> _items = new()
+    {
+        new(' ', 1)
+    };
+
+    void M()
+    {
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Implicit));
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
+        public async Task Test_PreferImplicit_CollectionInitializer_Local()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System.Collections.Generic;
+
+class C
+{
+    void M()
+    {
+        var items = new List<string>()
+        {
+            new [|string|](' ', 1)
+        };
+    }
+}
+", @"
+using System.Collections.Generic;
+
+class C
+{
+    void M()
+    {
+        var items = new List<string>()
+        {
+            new(' ', 1)
+        };
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Implicit));
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
         public async Task Test_PreferImplicitWhenTypeIsObvious_ThrowStatement()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -662,6 +728,72 @@ class C
         string s = null;
         string s2 = null;
         s = s2 ?? new string(' ', 1);
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_ImplicitWhenTypeIsObvious));
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
+        public async Task Test_PreferImplicitWhenTypeIsObvious_CollectionInitializer_Field()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System.Collections.Generic;
+
+class C
+{
+    private List<string> _items = new()
+    {
+        new [|string|](' ', 1)
+    };
+
+    void M()
+    {
+    }
+}
+", @"
+using System.Collections.Generic;
+
+class C
+{
+    private List<string> _items = new()
+    {
+        new(' ', 1)
+    };
+
+    void M()
+    {
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_ImplicitWhenTypeIsObvious));
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
+        public async Task Test_PreferImplicitWhenTypeIsObvious_CollectionInitializer_Local()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System.Collections.Generic;
+
+class C
+{
+    void M()
+    {
+        var items = new List<string>()
+        {
+            new [|string|](' ', 1)
+        };
+    }
+}
+", @"
+using System.Collections.Generic;
+
+class C
+{
+    void M()
+    {
+        var items = new List<string>()
+        {
+            new(' ', 1)
+        };
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_ImplicitWhenTypeIsObvious));
@@ -1204,6 +1336,72 @@ class C
         string s = null;
         string s2 = null;
         s = s2 ?? new string(' ', 1);
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Explicit));
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
+        public async Task Test_PreferExplicit_CollectionInitializer_Field()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System.Collections.Generic;
+
+class C
+{
+    private List<string> _items = new List<string>()
+    {
+        [|new(' ', 1)|]
+    };
+
+    void M()
+    {
+    }
+}
+", @"
+using System.Collections.Generic;
+
+class C
+{
+    private List<string> _items = new List<string>()
+    {
+        new string(' ', 1)
+    };
+
+    void M()
+    {
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Explicit));
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
+        public async Task Test_PreferExplicit_CollectionInitializer_Local()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System.Collections.Generic;
+
+class C
+{
+    void M()
+    {
+        var items = new List<string>()
+        {
+            [|new(' ', 1)|]
+        };
+    }
+}
+", @"
+using System.Collections.Generic;
+
+class C
+{
+    void M()
+    {
+        var items = new List<string>()
+        {
+            new string(' ', 1)
+        };
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_Explicit));

@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Immutable;
 using System.Composition;
 using System.Threading;
@@ -47,6 +46,16 @@ namespace Roslynator.CSharp.CodeFixes
 
                         switch (invocationInfo.NameText)
                         {
+                            case "Add":
+                                {
+                                    CodeAction codeAction = CodeAction.Create(
+                                        "Call 'AddRange' instead of 'Add'",
+                                        ct => CallAddRangeInsteadOfAddAsync(document, invocationExpression, ct),
+                                        GetEquivalenceKey(diagnostic, "CallAddRangeInsteadOfAdd"));
+
+                                    context.RegisterCodeFix(codeAction, diagnostic);
+                                    break;
+                                }
                             case "Compare":
                                 {
                                     CodeAction codeAction = CodeAction.Create(
@@ -209,6 +218,37 @@ namespace Roslynator.CSharp.CodeFixes
                 .WithTriviaFrom(ifStatement);
 
             return document.ReplaceNodeAsync(ifStatement, statement, cancellationToken);
+        }
+
+        private static Task<Document> CallAddRangeInsteadOfAddAsync(
+            Document document,
+            InvocationExpressionSyntax invocation,
+            CancellationToken cancellationToken)
+        {
+            ForEachStatementSyntax forEachStatement = null;
+            BlockSyntax block = null;
+
+            if (invocation.Parent.IsParentKind(SyntaxKind.ForEachStatement))
+                forEachStatement = (ForEachStatementSyntax)invocation.Parent.Parent;
+
+            if (invocation.Parent.IsParentKind(SyntaxKind.Block)
+                && invocation.Parent.Parent.IsParentKind(SyntaxKind.ForEachStatement))
+            {
+                forEachStatement = (ForEachStatementSyntax)invocation.Parent.Parent.Parent;
+                block = (BlockSyntax)invocation.Parent.Parent;
+            }
+
+            InvocationExpressionSyntax newInvocation = SyntaxRefactorings.ChangeInvokedMethodName(invocation, "AddRange");
+
+            newInvocation = newInvocation.ReplaceNode(
+                newInvocation.ArgumentList.Arguments.First().Expression,
+                forEachStatement.Expression);
+
+            SyntaxNode newExpressionStatement = invocation.Parent.ReplaceNode(invocation, newInvocation)
+                .WithLeadingTrivia(forEachStatement.GetLeadingTrivia())
+                .WithTrailingTrivia(block?.GetTrailingTrivia() ?? invocation.Parent.GetTrailingTrivia());
+
+            return document.ReplaceNodeAsync(forEachStatement, newExpressionStatement, cancellationToken);
         }
     }
 }

@@ -285,7 +285,7 @@ namespace Roslynator.CSharp.Analysis
         {
             SyntaxNode parent = ifStatement.Parent;
 
-            if (parent.Kind() != SyntaxKind.Block)
+            if (!parent.IsKind(SyntaxKind.Block))
                 return false;
 
             if (ifStatement.SingleNonBlockStatementOrDefault()?.Kind() != SyntaxKind.BreakStatement)

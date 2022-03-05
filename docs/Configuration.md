@@ -26,9 +26,15 @@ roslynator_compiler_diagnostic_fixes.enabled = true|false
 roslynator_compiler_diagnostic_fix.<COMPILER_DIAGNOSTIC_ID>.enabled = true|false
 ```
 
+## Required Options
+
+Some analyzers require option to be set. For this purpose there is special analyzer ROS0003 that reports a diagnostic
+if an analyzer is enabled but required option is not set. ROS0003 is disabled by default.
+
 ## Default Configuration
 
 If you want to configure Roslynator on a user-wide basis you have to use Roslynator config file.
+Default configuration file can be used with extension for Visual Studio or VS code.
 
 ### Format of Default Configuration File
 
@@ -94,14 +100,23 @@ roslynator_conditional_operator_new_line = after|before
 roslynator_configure_await = true|false
 # Applicable to: rcs1090
 
+roslynator_doc_comment_summary_style = multi_line|single_line
+# Applicable to: rcs1253
+
 roslynator_empty_string_style = field|literal
 # Applicable to: rcs1078
+
+roslynator_enum_flag_value_style = decimal_number|shift_operator
+# Applicable to: rcs1254
 
 roslynator_enum_has_flag_style = method|operator
 # Applicable to: rcs1096
 
 roslynator_equals_token_new_line = after|before
 # Applicable to: rcs0052
+
+roslynator_infinite_loop_style = for|while
+# Applicable to: rcs1252
 
 roslynator_max_line_length = <NUM>
 # Default: 140
@@ -359,7 +374,7 @@ dotnet_diagnostic.rcs1016.severity = none
 # Options: roslynator_body_style, roslynator_use_block_body_when_declaration_spans_over_multiple_lines, roslynator_use_block_body_when_expression_spans_over_multiple_lines
 
 # Add/remove accessibility modifiers
-dotnet_diagnostic.rcs1018.severity = suggestion
+dotnet_diagnostic.rcs1018.severity = none
 # Options: roslynator_accessibility_modifiers
 
 # Order modifiers
@@ -371,7 +386,7 @@ dotnet_diagnostic.rcs1020.severity = suggestion
 # Convert lambda expression body to expression body
 dotnet_diagnostic.rcs1021.severity = suggestion
 
-# Remove unnecessary braces
+# Remove unnecessary braces in switch section
 dotnet_diagnostic.rcs1031.severity = silent
 
 # Remove redundant parentheses
@@ -455,15 +470,6 @@ dotnet_diagnostic.rcs1060.severity = none
 # Merge 'if' with nested 'if'
 dotnet_diagnostic.rcs1061.severity = silent
 
-# Avoid usage of do statement to create an infinite loop
-dotnet_diagnostic.rcs1063.severity = suggestion
-
-# Avoid usage of for statement to create an infinite loop
-dotnet_diagnostic.rcs1064.severity = none
-
-# Avoid usage of while statement to create an infinite loop
-dotnet_diagnostic.rcs1065.severity = none
-
 # Remove empty 'finally' clause
 dotnet_diagnostic.rcs1066.severity = silent
 
@@ -530,7 +536,7 @@ dotnet_diagnostic.rcs1093.severity = suggestion
 dotnet_diagnostic.rcs1094.severity = none
 
 # Use 'HasFlag' method or bitwise operator
-dotnet_diagnostic.rcs1096.severity = suggestion
+dotnet_diagnostic.rcs1096.severity = none
 # Options: roslynator_enum_has_flag_style
 
 # Remove redundant 'ToString' call
@@ -541,12 +547,6 @@ dotnet_diagnostic.rcs1098.severity = suggestion
 
 # Default label should be the last label in a switch section
 dotnet_diagnostic.rcs1099.severity = suggestion
-
-# Format documentation summary on a single line
-dotnet_diagnostic.rcs1100.severity = none
-
-# Format documentation summary on multiple lines
-dotnet_diagnostic.rcs1101.severity = none
 
 # Make class static
 dotnet_diagnostic.rcs1102.severity = warning
@@ -880,9 +880,6 @@ dotnet_diagnostic.rcs1235.severity = suggestion
 # Use exception filter
 dotnet_diagnostic.rcs1236.severity = suggestion
 
-# Use bit shift operator
-dotnet_diagnostic.rcs1237.severity = silent
-
 # Avoid nested ?: operators
 dotnet_diagnostic.rcs1238.severity = silent
 
@@ -918,8 +915,26 @@ dotnet_diagnostic.rcs1248.severity = none
 dotnet_diagnostic.rcs1249.severity = suggestion
 
 # Use implicit/explicit object creation
-dotnet_diagnostic.rcs1250.severity = suggestion
+dotnet_diagnostic.rcs1250.severity = none
 # Options: roslynator_object_creation_type_style, roslynator_use_var_instead_of_implicit_object_creation
+
+# Invalid null check
+dotnet_diagnostic.rcs1251.severity = suggestion
+
+# Remove unnecessary braces from record declaration
+dotnet_diagnostic.rcs1251.severity = suggestion
+
+# Normalize usage of infinite loop
+dotnet_diagnostic.rcs1252.severity = none
+# Options: roslynator_infinite_loop_style
+
+# Format documentation comment summary
+dotnet_diagnostic.rcs1253.severity = none
+# Options: roslynator_doc_comment_summary_style
+
+# Normalize format of enum flag value
+dotnet_diagnostic.rcs1254.severity = suggestion
+# Options: roslynator_enum_flag_value_style
 
 # Use pattern matching
 dotnet_diagnostic.rcs9001.severity = silent
@@ -1325,6 +1340,8 @@ roslynator_compiler_diagnostic_fix.cs8112.enabled = true
 roslynator_compiler_diagnostic_fix.cs8139.enabled = true
 roslynator_compiler_diagnostic_fix.cs8340.enabled = true
 roslynator_compiler_diagnostic_fix.cs8403.enabled = true
+roslynator_compiler_diagnostic_fix.cs8602.enabled = true
+roslynator_compiler_diagnostic_fix.cs8604.enabled = true
 roslynator_compiler_diagnostic_fix.cs8618.enabled = true
 roslynator_compiler_diagnostic_fix.cs8625.enabled = true
 roslynator_compiler_diagnostic_fix.cs8632.enabled = true

@@ -54,7 +54,7 @@ namespace Roslynator.Formatting.CSharp
 
             SyntaxKind binaryKind = topBinaryExpression.Kind();
 
-            if (topBinaryExpression.Parent.IsKind(binaryKind))
+            if (topBinaryExpression.IsParentKind(binaryKind))
                 return;
 
             if (topBinaryExpression.IsSingleLine(includeExteriorTrivia: false))

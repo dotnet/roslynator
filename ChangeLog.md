@@ -1,3 +1,31 @@
+### Unreleased
+
+* Add analyzer NormalizeFormatOfEnumFlagValue (RCS1254)
+* Add analyzer FormatDocumentationCommentSummary (RCS1253)
+* Add analyzer NormalizeUsageOfInfiniteLoop (RCS1252)
+* Add analyzer RemoveUnnecessaryBraces (RCS1251)
+* Call AddRange instead of Add (RCS1235)
+* Add code fix for CS8602, CS8604
+* Fix code fix for CS0225
+
+### 4.0.3 (2022-01-29)
+
+* Fixed release for VS Code
+
+### 4.0.2 (2022-01-29)
+
+* Disable analyzer ROS003 by default ([commit](https://github.com/JosefPihrt/Roslynator/commit/9c562921b6ae4eb46e1cfe252282e6b2ad520ca6))
+* Analyzers that require option to be set should disabled by default (RCS1018, RCS1096, RCS1250) ([commit](https://github.com/JosefPihrt/Roslynator/commit/de374858f9d8120a6f6d705ad685101ed1bab699))
+
+#### Bug fixes
+
+* Fix analyzer [RCS1014](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1014.md) (Use explicitly/implicitly typed array) ([commit](https://github.com/JosefPihrt/Roslynator/commit/004a83756b9fbcf117710d7afb6bab964a59f1be))
+* Fix analyzer [RCS1016](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1016.md) (Use block body or expression body) ([commit](https://github.com/JosefPihrt/Roslynator/commit/8c633e966f2706d3888fd942dd186d066d440ac0))
+* Fix refactoring AddUsingDirective (RR0013) ([commit](https://github.com/JosefPihrt/Roslynator/commit/199787bdf921aeeecd69d9a118bbb86419bce81a))
+* Propagate some options from .roslynatorconfig ([commit](https://github.com/JosefPihrt/Roslynator/commit/a619ebf285d1de77941a9c4a5fce46bb19485d3a))
+* Enable ROS analyzers to be set from .roslynatorconfig ([commit](https://github.com/JosefPihrt/Roslynator/commit/a4c0ad8fb60d694cc7d2546016d742547f1d585b))
+* Files generated with source generators have relative paths ([commit](https://github.com/JosefPihrt/Roslynator/commit/cec55ab23404a11f4fe332a3568ab87a4016e55b))
+
 ### 4.0.1 (2022-01-21)
 
 * Bug fixes

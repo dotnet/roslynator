@@ -85,35 +85,15 @@ class C
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
         public async Task Test_TypesAreNotEqual()
         {
-            await VerifyDiagnosticAndFixAsync(@"
+            await VerifyNoDiagnosticAsync(@"
 class C : A
 {
     void M()
     {
-        var x = new [|A|][]
+        var x = new A[]
         {
             default(B),
             default(C)
-        };
-    }
-}
-
-class A
-{
-}
-
-class B : A
-{
-}
-", @"
-class C : A
-{
-    void M()
-    {
-        var x = new[]
-        {
-            default(B),
-            (A)default(C)
         };
     }
 }
@@ -182,6 +162,24 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_Implicit));
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitlyOrImplicitlyTypedArray)]
+        public async Task TestNoDiagnostic_ArrayInitializer_DerivedType()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M()
+    {
+        var items = new object[]
+        {
+            new double[] { 1d },
+            new double[] { 1d }
+        };
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.ArrayCreationTypeStyle, ConfigOptionValues.ArrayCreationTypeStyle_ImplicitWhenTypeIsObvious));
         }
     }
 }

@@ -83,12 +83,12 @@ namespace Roslynator.CSharp
 
             if (refKind == RefKind.Out)
             {
-                if (argument.RefOrOutKeyword.Kind() != SyntaxKind.OutKeyword)
+                if (!argument.RefOrOutKeyword.IsKind(SyntaxKind.OutKeyword))
                     return null;
             }
             else if (refKind == RefKind.Ref)
             {
-                if (argument.RefOrOutKeyword.Kind() != SyntaxKind.RefKeyword)
+                if (!argument.RefOrOutKeyword.IsKind(SyntaxKind.RefKeyword))
                     return null;
             }
 

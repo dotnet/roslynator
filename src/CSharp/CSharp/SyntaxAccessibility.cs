@@ -287,7 +287,7 @@ namespace Roslynator.CSharp
                         {
                             for (int j = i + 1; j < count; j++)
                             {
-                                if (modifiers[j].Kind() == SyntaxKind.ProtectedKeyword)
+                                if (modifiers[j].IsKind(SyntaxKind.ProtectedKeyword))
                                     return Accessibility.ProtectedAndInternal;
                             }
 
@@ -297,7 +297,7 @@ namespace Roslynator.CSharp
                         {
                             for (int j = i + 1; j < count; j++)
                             {
-                                if (modifiers[j].Kind() == SyntaxKind.ProtectedKeyword)
+                                if (modifiers[j].IsKind(SyntaxKind.ProtectedKeyword))
                                     return Accessibility.ProtectedOrInternal;
                             }
 

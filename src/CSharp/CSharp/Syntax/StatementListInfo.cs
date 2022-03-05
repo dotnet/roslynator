@@ -48,7 +48,7 @@ namespace Roslynator.CSharp.Syntax
         /// </summary>
         public bool IsParentBlock
         {
-            get { return Parent?.Kind() == SyntaxKind.Block; }
+            get { return Parent.IsKind(SyntaxKind.Block); }
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace Roslynator.CSharp.Syntax
         /// </summary>
         public bool IsParentSwitchSection
         {
-            get { return Parent?.Kind() == SyntaxKind.SwitchSection; }
+            get { return Parent.IsKind(SyntaxKind.SwitchSection); }
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace Roslynator.CSharp.Syntax
             get
             {
                 SyntaxNode parent = Parent;
-                return (parent?.Kind() == SyntaxKind.Block) ? (BlockSyntax)parent : null;
+                return (parent.IsKind(SyntaxKind.Block)) ? (BlockSyntax)parent : null;
             }
         }
 
@@ -79,7 +79,7 @@ namespace Roslynator.CSharp.Syntax
             get
             {
                 SyntaxNode parent = Parent;
-                return (parent?.Kind() == SyntaxKind.SwitchSection) ? (SwitchSectionSyntax)parent : null;
+                return (parent.IsKind(SyntaxKind.SwitchSection)) ? (SwitchSectionSyntax)parent : null;
             }
         }
 
@@ -175,7 +175,7 @@ namespace Roslynator.CSharp.Syntax
 
             SyntaxNode parent = Parent;
 
-            if (parent.Kind() == SyntaxKind.Block)
+            if (parent.IsKind(SyntaxKind.Block))
                 return new StatementListInfo(((BlockSyntax)parent).WithStatements(statements));
 
             return new StatementListInfo(((SwitchSectionSyntax)parent).WithStatements(statements));
@@ -192,7 +192,7 @@ namespace Roslynator.CSharp.Syntax
 
             SyntaxNode parent = Parent;
 
-            if (parent.Kind() == SyntaxKind.Block)
+            if (parent.IsKind(SyntaxKind.Block))
                 return new StatementListInfo(((BlockSyntax)parent).RemoveNode(node, options));
 
             return new StatementListInfo(((SwitchSectionSyntax)parent).RemoveNode(node, options));
@@ -209,7 +209,7 @@ namespace Roslynator.CSharp.Syntax
 
             SyntaxNode parent = Parent;
 
-            if (parent.Kind() == SyntaxKind.Block)
+            if (parent.IsKind(SyntaxKind.Block))
                 return new StatementListInfo(((BlockSyntax)parent).ReplaceNode(oldNode, newNode));
 
             return new StatementListInfo(((SwitchSectionSyntax)parent).ReplaceNode(oldNode, newNode));

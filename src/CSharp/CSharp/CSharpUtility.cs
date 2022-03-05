@@ -701,7 +701,7 @@ namespace Roslynator.CSharp
             foreach (SyntaxNode node in expression.DescendantNodes())
             {
                 if (node is ArgumentSyntax argument
-                    && argument.RefOrOutKeyword.Kind() == SyntaxKind.OutKeyword)
+                    && argument.RefOrOutKeyword.IsKind(SyntaxKind.OutKeyword))
                 {
                     ExpressionSyntax argumentExpression = argument.Expression;
 

@@ -33,7 +33,7 @@ class C
         s = (s != null) ? ""true"" : ""false"";
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.ConditionalOperatorConditionParenthesesStyle, ConfigOptionValues.ConditionInConditionalExpressionParenthesesStyle_Include));
+", options: Options.AddConfigOption(ConfigOptionKeys.ConditionalOperatorConditionParenthesesStyle, ConfigOptionValues.ConditionalOperatorConditionParenthesesStyle_Include));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveParenthesesFromConditionInConditionalOperator)]
@@ -57,7 +57,7 @@ class C
         string s = (b) ? ""true"" : ""false"";
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.ConditionalOperatorConditionParenthesesStyle, ConfigOptionValues.ConditionInConditionalExpressionParenthesesStyle_Include));
+", options: Options.AddConfigOption(ConfigOptionKeys.ConditionalOperatorConditionParenthesesStyle, ConfigOptionValues.ConditionalOperatorConditionParenthesesStyle_Include));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveParenthesesFromConditionInConditionalOperator)]
@@ -81,7 +81,7 @@ class C
         s = s != null ? ""true"" : ""false"";
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.ConditionalOperatorConditionParenthesesStyle, ConfigOptionValues.ConditionInConditionalExpressionParenthesesStyle_Omit));
+", options: Options.AddConfigOption(ConfigOptionKeys.ConditionalOperatorConditionParenthesesStyle, ConfigOptionValues.ConditionalOperatorConditionParenthesesStyle_Omit));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveParenthesesFromConditionInConditionalOperator)]
@@ -105,7 +105,7 @@ class C
         string s = b ? ""true"" : ""false"";
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.ConditionalOperatorConditionParenthesesStyle, ConfigOptionValues.ConditionInConditionalExpressionParenthesesStyle_Omit));
+", options: Options.AddConfigOption(ConfigOptionKeys.ConditionalOperatorConditionParenthesesStyle, ConfigOptionValues.ConditionalOperatorConditionParenthesesStyle_Omit));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveParenthesesFromConditionInConditionalOperator)]
@@ -129,7 +129,7 @@ class C
         string s = b ? ""true"" : ""false"";
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.ConditionalOperatorConditionParenthesesStyle, ConfigOptionValues.ConditionInConditionalExpressionParenthesesStyle_OmitWhenConditionIsSingleToken));
+", options: Options.AddConfigOption(ConfigOptionKeys.ConditionalOperatorConditionParenthesesStyle, ConfigOptionValues.ConditionalOperatorConditionParenthesesStyle_OmitWhenConditionIsSingleToken));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveParenthesesFromConditionInConditionalOperator)]
@@ -144,7 +144,7 @@ class C
         string s = b ? ""true"" : ""false"";
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.ConditionalOperatorConditionParenthesesStyle, ConfigOptionValues.ConditionInConditionalExpressionParenthesesStyle_OmitWhenConditionIsSingleToken));
+", options: Options.AddConfigOption(ConfigOptionKeys.ConditionalOperatorConditionParenthesesStyle, ConfigOptionValues.ConditionalOperatorConditionParenthesesStyle_OmitWhenConditionIsSingleToken));
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveParenthesesFromConditionInConditionalOperator)]
@@ -159,7 +159,7 @@ public class C
         string s = (b) ? ""true"" : ""false"";
     }
 }
-", options: Options.AddConfigOption(ConfigOptionKeys.ConditionalOperatorConditionParenthesesStyle, ConfigOptionValues.ConditionInConditionalExpressionParenthesesStyle_Include));
+", options: Options.AddConfigOption(ConfigOptionKeys.ConditionalOperatorConditionParenthesesStyle, ConfigOptionValues.ConditionalOperatorConditionParenthesesStyle_Include));
         }
     }
 }

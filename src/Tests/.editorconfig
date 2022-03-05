@@ -2,4 +2,6 @@
 
 # Code files
 [*.{cs,csx}]
-roslynator.RCS1090.invert = true
+roslynator_configure_await = false
+dotnet_diagnostic.RCS0047.severity = none
+dotnet_diagnostic.RCS0053.severity = none

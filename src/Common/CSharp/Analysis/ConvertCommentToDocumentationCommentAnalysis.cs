@@ -12,7 +12,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public static TextSpan GetFixableSpan(SyntaxTrivia trivia)
         {
-            if (trivia.Kind() != SyntaxKind.SingleLineCommentTrivia)
+            if (!trivia.IsKind(SyntaxKind.SingleLineCommentTrivia))
                 return default;
 
             if (trivia.Token.Parent is not MemberDeclarationSyntax memberDeclaration)
@@ -44,18 +44,18 @@ namespace Roslynator.CSharp.Analysis
 
             while (en.MoveNext())
             {
-                if (en.Current.Kind() == SyntaxKind.WhitespaceTrivia
+                if (en.Current.IsKind(SyntaxKind.WhitespaceTrivia)
                     && !en.MoveNext())
                 {
                     break;
                 }
 
-                if (en.Current.Kind() == SyntaxKind.EndOfLineTrivia)
+                if (en.Current.IsKind(SyntaxKind.EndOfLineTrivia))
                 {
                     if (!en.MoveNext())
                         break;
 
-                    if (en.Current.Kind() == SyntaxKind.SingleLineCommentTrivia)
+                    if (en.Current.IsKind(SyntaxKind.SingleLineCommentTrivia))
                     {
                         if (span == default)
                         {
@@ -114,7 +114,7 @@ namespace Roslynator.CSharp.Analysis
                 {
                     if (en.MoveNext())
                     {
-                        if (en.Current.Kind() == SyntaxKind.SingleLineCommentTrivia)
+                        if (en.Current.IsKind(SyntaxKind.SingleLineCommentTrivia))
                         {
                             return (IsTaskListItem(en.Current))
                                 ? new TrailingAnalysis(default, false)

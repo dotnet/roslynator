@@ -45,7 +45,7 @@ namespace Roslynator.CSharp.Refactorings
 
             SyntaxNode node = symbol.GetSyntax(context.CancellationToken);
 
-            if (node.Kind() == SyntaxKind.VariableDeclarator)
+            if (node.IsKind(SyntaxKind.VariableDeclarator))
                 node = node.Parent.Parent;
 
             TypeSyntax type = CSharpUtility.GetTypeOrReturnType(node);

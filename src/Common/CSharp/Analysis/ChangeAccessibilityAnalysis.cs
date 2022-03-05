@@ -163,7 +163,7 @@ namespace Roslynator.CSharp.Analysis
                     if (syntax != null)
                     {
                         if (syntax is MemberDeclarationSyntax
-                            || syntax.Kind() == SyntaxKind.VariableDeclarator)
+                            || syntax.IsKind(SyntaxKind.VariableDeclarator))
                         {
                             return symbol;
                         }

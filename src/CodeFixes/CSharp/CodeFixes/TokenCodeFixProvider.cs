@@ -36,7 +36,10 @@ namespace Roslynator.CSharp.CodeFixes
                     CompilerDiagnosticIdentifiers.CS1737_OptionalParametersMustAppearAfterAllRequiredParameters,
                     CompilerDiagnosticIdentifiers.CS8632_AnnotationForNullableReferenceTypesShouldOnlyBeUsedWithinNullableAnnotationsContext,
                     CompilerDiagnosticIdentifiers.CS8618_NonNullableMemberIsUninitialized,
-                    CompilerDiagnosticIdentifiers.CS8403_MethodWithIteratorBlockMustBeAsyncToReturnIAsyncEnumerableOfT);
+                    CompilerDiagnosticIdentifiers.CS8403_MethodWithIteratorBlockMustBeAsyncToReturnIAsyncEnumerableOfT,
+                    CompilerDiagnosticIdentifiers.CS8602_DereferenceOfPossiblyNullReference,
+                    CompilerDiagnosticIdentifiers.CS8604_PossibleNullReferenceArgumentForParameter
+                    );
             }
         }
 
@@ -457,6 +460,70 @@ namespace Roslynator.CSharp.CodeFixes
 
                         context.RegisterCodeFix(codeAction, diagnostic);
                         break;
+                    }
+                case CompilerDiagnosticIdentifiers.CS8602_DereferenceOfPossiblyNullReference:
+                    {
+                        if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.UseNullForgivingOperator, document, root.SyntaxTree))
+                            break;
+
+                        Debug.Assert(token.IsKind(SyntaxKind.IdentifierToken), token.Kind().ToString());
+
+                        if (!token.IsKind(SyntaxKind.IdentifierToken))
+                            return;
+
+                        if (!token.IsParentKind(SyntaxKind.IdentifierName))
+                            return;
+
+                        SyntaxNode node = token.Parent
+                            .WalkUp(f => f.IsKind(SyntaxKind.SimpleMemberAccessExpression, SyntaxKind.InvocationExpression, SyntaxKind.ElementAccessExpression))
+                            .Parent;
+
+                        if (node.IsKind(SyntaxKind.ExpressionStatement)
+                            && token.SpanStart == node.SpanStart)
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Use null propagation operator",
+                                ct =>
+                                {
+                                    var textChange = new TextChange(new TextSpan(token.Span.End, 0), "?");
+
+                                    return document.WithTextChangeAsync(textChange, ct);
+                                },
+                                GetEquivalenceKey(diagnostic));
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                        }
+
+                        return;
+                    }
+                case CompilerDiagnosticIdentifiers.CS8604_PossibleNullReferenceArgumentForParameter:
+                    {
+                        if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.UseNullForgivingOperator, document, root.SyntaxTree))
+                            break;
+
+                        Debug.Assert(token.IsKind(SyntaxKind.IdentifierToken), token.Kind().ToString());
+
+                        if (!token.IsKind(SyntaxKind.IdentifierToken))
+                            return;
+
+                        if (!token.IsParentKind(SyntaxKind.IdentifierName))
+                            return;
+
+                        CodeAction codeAction = CodeAction.Create(
+                            "Use null-forgiving operator",
+                            ct =>
+                            {
+                                var identifierName = (IdentifierNameSyntax)token.Parent;
+
+                                PostfixUnaryExpressionSyntax newExpression = SuppressNullableWarningExpression(identifierName.WithoutTrivia())
+                                    .WithTriviaFrom(identifierName);
+
+                                return document.ReplaceNodeAsync(identifierName, newExpression, ct);
+                            },
+                            GetEquivalenceKey(diagnostic));
+
+                        context.RegisterCodeFix(codeAction, diagnostic);
+                        return;
                     }
                 case CompilerDiagnosticIdentifiers.CS8618_NonNullableMemberIsUninitialized:
                     {

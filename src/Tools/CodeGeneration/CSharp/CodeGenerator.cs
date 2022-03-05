@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp;
@@ -122,6 +123,40 @@ namespace Roslynator.CodeGeneration.CSharp
                                     PredefinedStringType(),
                                     f.Id,
                                     StringLiteralExpression(f.Key));
+                            })
+                            .ToSyntaxList<MemberDeclarationSyntax>())));
+
+            compilationUnit = compilationUnit.NormalizeWhitespace();
+
+            var rewriter = new WrapRewriter(WrapRewriterOptions.IndentFieldInitializer);
+
+            return (CompilationUnitSyntax)rewriter.Visit(compilationUnit);
+        }
+
+        public static CompilationUnitSyntax GenerateConfigOptionValues(IEnumerable<ConfigOptionMetadata> options)
+        {
+            CompilationUnitSyntax compilationUnit = CompilationUnit(
+                UsingDirectives(),
+                NamespaceDeclaration(
+                    "Roslynator",
+                    ClassDeclaration(
+                        Modifiers.Internal_Static_Partial(),
+                        "ConfigOptionValues",
+                        options
+                            .OrderBy(option => option.Id)
+                            .SelectMany(option =>
+                            {
+                                return option.Values.Select(v =>
+                                {
+                                    string value = StringUtility.FirstCharToUpper(v.Value);
+                                    value = Regex.Replace(value, @"_\w", f => f.Value.Substring(1).ToUpperInvariant());
+
+                                    return FieldDeclaration(
+                                        Modifiers.Public_Const(),
+                                        PredefinedStringType(),
+                                        $"{option.Id}_{value}",
+                                        StringLiteralExpression(v.Value));
+                                });
                             })
                             .ToSyntaxList<MemberDeclarationSyntax>())));
 

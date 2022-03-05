@@ -198,6 +198,22 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantFieldInitialization)]
+        public async Task Test_StructWithoutConstructor()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+struct C
+{
+    private int _f [|= 0|];
+}
+", @"
+struct C
+{
+    private int _f;
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantFieldInitialization)]
         public async Task TestNoDiagnostic()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -209,6 +225,21 @@ const bool K = false;
 
     bool _k = K;
     RegexOptions _r = RegexOptions.None;
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantFieldInitialization)]
+        public async Task TestNoDiagnostic_StructWithConstructor()
+        {
+            await VerifyNoDiagnosticAsync(@"
+struct C
+{
+    private int _f = 0;
+
+    public C(object p)
+    {
+    }
 }
 ");
         }

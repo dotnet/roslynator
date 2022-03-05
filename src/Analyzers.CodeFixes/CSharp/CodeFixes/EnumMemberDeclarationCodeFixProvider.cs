@@ -12,6 +12,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
+using Roslynator.CSharp.CodeStyle;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -27,7 +28,8 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.DeclareEnumValueAsCombinationOfNames,
-                    DiagnosticIdentifiers.DuplicateEnumValue);
+                    DiagnosticIdentifiers.DuplicateEnumValue,
+                    DiagnosticIdentifiers.NormalizeFormatOfEnumFlagValue);
             }
         }
 
@@ -39,42 +41,69 @@ namespace Roslynator.CSharp.CodeFixes
                 return;
 
             Document document = context.Document;
+            Diagnostic diagnostic = context.Diagnostics[0];
 
-            foreach (Diagnostic diagnostic in context.Diagnostics)
+            switch (diagnostic.Id)
             {
-                switch (diagnostic.Id)
-                {
-                    case DiagnosticIdentifiers.DeclareEnumValueAsCombinationOfNames:
+                case DiagnosticIdentifiers.DeclareEnumValueAsCombinationOfNames:
+                    {
+                        CodeAction codeAction = CodeAction.Create(
+                            "Declare value as combination of names",
+                            ct => DeclareEnumValueAsCombinationOfNamesAsync(document, enumMemberDeclaration, ct),
+                            GetEquivalenceKey(diagnostic));
+
+                        context.RegisterCodeFix(codeAction, diagnostic);
+                        break;
+                    }
+                case DiagnosticIdentifiers.DuplicateEnumValue:
+                    {
+                        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                        var enumDeclaration = (EnumDeclarationSyntax)enumMemberDeclaration.Parent;
+
+                        IFieldSymbol fieldSymbol = semanticModel.GetDeclaredSymbol(enumMemberDeclaration, context.CancellationToken);
+
+                        EnumFieldSymbolInfo enumFieldSymbolInfo = EnumFieldSymbolInfo.Create(fieldSymbol);
+
+                        string valueText = FindMemberByValue(enumDeclaration, enumFieldSymbolInfo, semanticModel, context.CancellationToken).Identifier.ValueText;
+
+                        CodeAction codeAction = CodeAction.Create(
+                            $"Change enum value to '{valueText}'",
+                            ct => ChangeEnumValueAsync(document, enumMemberDeclaration, valueText, ct),
+                            GetEquivalenceKey(diagnostic));
+
+                        context.RegisterCodeFix(codeAction, diagnostic);
+                        break;
+                    }
+                case DiagnosticIdentifiers.NormalizeFormatOfEnumFlagValue:
+                    {
+                        EnumFlagValueStyle style = document.GetConfigOptions(enumMemberDeclaration.SyntaxTree).GetEnumFlagValueStyle();
+
+                        if (style == EnumFlagValueStyle.ShiftOperator)
                         {
                             CodeAction codeAction = CodeAction.Create(
-                                "Declare value as combination of names",
-                                ct => DeclareEnumValueAsCombinationOfNamesAsync(document, enumMemberDeclaration, ct),
+                                "Use '<<' operator",
+                                ct => UseBitShiftOperatorAsync(document, enumMemberDeclaration, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
                         }
-                    case DiagnosticIdentifiers.DuplicateEnumValue:
+                        else if (style == EnumFlagValueStyle.DecimalNumber)
                         {
-                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                            var enumDeclaration = (EnumDeclarationSyntax)enumMemberDeclaration.Parent;
-
-                            IFieldSymbol fieldSymbol = semanticModel.GetDeclaredSymbol(enumMemberDeclaration, context.CancellationToken);
-
-                            EnumFieldSymbolInfo enumFieldSymbolInfo = EnumFieldSymbolInfo.Create(fieldSymbol);
-
-                            string valueText = FindMemberByValue(enumDeclaration, enumFieldSymbolInfo, semanticModel, context.CancellationToken).Identifier.ValueText;
-
                             CodeAction codeAction = CodeAction.Create(
-                                $"Change enum value to '{valueText}'",
-                                ct => ChangeEnumValueAsync(document, enumMemberDeclaration, valueText, ct),
+                                "Convert to decimal",
+                                ct => ConvertToDecimalNumberAsync(document, enumMemberDeclaration, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
                         }
-                }
+                        else
+                        {
+                            throw new InvalidOperationException();
+                        }
+
+                        break;
+                    }
             }
         }
 
@@ -178,6 +207,44 @@ namespace Roslynator.CSharp.CodeFixes
             }
 
             throw new InvalidOperationException();
+        }
+
+        private static async Task<Document> UseBitShiftOperatorAsync(
+            Document document,
+            EnumMemberDeclarationSyntax enumMemberDeclaration,
+            CancellationToken cancellationToken)
+        {
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
+            ExpressionSyntax expression = enumMemberDeclaration.EqualsValue?.Value.WalkDownParentheses();
+
+            Optional<object> constantValue = semanticModel.GetConstantValue(expression, cancellationToken);
+
+            var power = (int)Math.Log(Convert.ToDouble(constantValue.Value), 2);
+
+            BinaryExpressionSyntax leftShift = LeftShiftExpression(NumericLiteralExpression(1), NumericLiteralExpression(power));
+
+            BinaryExpressionSyntax newExpression = leftShift.WithTriviaFrom(expression);
+
+            return await document.ReplaceNodeAsync(expression, newExpression, cancellationToken).ConfigureAwait(false);
+        }
+
+        private static async Task<Document> ConvertToDecimalNumberAsync(
+            Document document,
+            EnumMemberDeclarationSyntax enumMemberDeclaration,
+            CancellationToken cancellationToken)
+        {
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
+            IFieldSymbol fieldSymbol = semanticModel.GetDeclaredSymbol(enumMemberDeclaration, cancellationToken);
+
+            ExpressionSyntax expression = enumMemberDeclaration.EqualsValue?.Value.WalkDownParentheses();
+
+            string text = EnumFieldSymbolInfo.Create(fieldSymbol).Value.ToString("d");
+
+            ExpressionSyntax newExpression = ParseExpression(text).WithTriviaFrom(expression);
+
+            return await document.ReplaceNodeAsync(expression, newExpression, cancellationToken).ConfigureAwait(false);
         }
     }
 }

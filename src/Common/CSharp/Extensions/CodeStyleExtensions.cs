@@ -128,11 +128,11 @@ namespace Roslynator.CSharp
 
             if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.BlankLineBetweenUsingDirectives, out string rawValue))
             {
-                if (string.Equals(rawValue, ConfigOptionValues.BlankLineBetweenUsingDirectiveGroups_Never, StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(rawValue, ConfigOptionValues.BlankLineBetweenUsingDirectives_Never, StringComparison.OrdinalIgnoreCase))
                 {
                     return UsingDirectiveBlankLineStyle.Never;
                 }
-                else if (string.Equals(rawValue, ConfigOptionValues.BlankLineBetweenUsingDirectiveGroups_SeparateGroups, StringComparison.OrdinalIgnoreCase))
+                else if (string.Equals(rawValue, ConfigOptionValues.BlankLineBetweenUsingDirectives_SeparateGroups, StringComparison.OrdinalIgnoreCase))
                 {
                     return UsingDirectiveBlankLineStyle.SeparateGroups;
                 }
@@ -201,11 +201,11 @@ namespace Roslynator.CSharp
 
             if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.UseAnonymousFunctionOrMethodGroup, out string rawValue))
             {
-                if (string.Equals(rawValue, ConfigOptionValues.AnonymousFunctionOrMethodGroup_AnonymousFunction, StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(rawValue, ConfigOptionValues.UseAnonymousFunctionOrMethodGroup_AnonymousFunction, StringComparison.OrdinalIgnoreCase))
                 {
                     return true;
                 }
-                else if (string.Equals(rawValue, ConfigOptionValues.AnonymousFunctionOrMethodGroup_MethodGroup, StringComparison.OrdinalIgnoreCase))
+                else if (string.Equals(rawValue, ConfigOptionValues.UseAnonymousFunctionOrMethodGroup_MethodGroup, StringComparison.OrdinalIgnoreCase))
                 {
                     return false;
                 }
@@ -298,15 +298,15 @@ namespace Roslynator.CSharp
 
             if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.ConditionalOperatorConditionParenthesesStyle, out string rawValue))
             {
-                if (string.Equals(rawValue, ConfigOptionValues.ConditionInConditionalExpressionParenthesesStyle_Include, StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(rawValue, ConfigOptionValues.ConditionalOperatorConditionParenthesesStyle_Include, StringComparison.OrdinalIgnoreCase))
                 {
                     return ConditionalExpressionParenthesesStyle.Include;
                 }
-                else if (string.Equals(rawValue, ConfigOptionValues.ConditionInConditionalExpressionParenthesesStyle_Omit, StringComparison.OrdinalIgnoreCase))
+                else if (string.Equals(rawValue, ConfigOptionValues.ConditionalOperatorConditionParenthesesStyle_Omit, StringComparison.OrdinalIgnoreCase))
                 {
                     return ConditionalExpressionParenthesesStyle.Omit;
                 }
-                else if (string.Equals(rawValue, ConfigOptionValues.ConditionInConditionalExpressionParenthesesStyle_OmitWhenConditionIsSingleToken, StringComparison.OrdinalIgnoreCase))
+                else if (string.Equals(rawValue, ConfigOptionValues.ConditionalOperatorConditionParenthesesStyle_OmitWhenConditionIsSingleToken, StringComparison.OrdinalIgnoreCase))
                 {
                     return ConditionalExpressionParenthesesStyle.OmitWhenConditionIsSingleToken;
                 }
@@ -412,6 +412,70 @@ namespace Roslynator.CSharp
                 return ArrayCreationTypeStyle.Implicit;
 
             return ArrayCreationTypeStyle.None;
+        }
+
+        public static InfiniteLoopStyle GetInfiniteLoopStyle(this SyntaxNodeAnalysisContext context)
+        {
+            return GetInfiniteLoopStyle(context.GetConfigOptions());
+        }
+
+        public static InfiniteLoopStyle GetInfiniteLoopStyle(this AnalyzerConfigOptions configOptions)
+        {
+            if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.InfiniteLoopStyle, out string rawValue))
+            {
+                if (string.Equals(rawValue, ConfigOptionValues.InfiniteLoopStyle_For, StringComparison.OrdinalIgnoreCase))
+                {
+                    return InfiniteLoopStyle.ForStatement;
+                }
+                else if (string.Equals(rawValue, ConfigOptionValues.InfiniteLoopStyle_While, StringComparison.OrdinalIgnoreCase))
+                {
+                    return InfiniteLoopStyle.WhileStatement;
+                }
+            }
+
+            return InfiniteLoopStyle.None;
+        }
+
+        public static DocCommentSummaryStyle GetDocCommentSummaryStyle(this SyntaxNodeAnalysisContext context)
+        {
+            AnalyzerConfigOptions configOptions = context.GetConfigOptions();
+
+            if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.DocCommentSummaryStyle, out string rawValue))
+            {
+                if (string.Equals(rawValue, ConfigOptionValues.DocCommentSummaryStyle_MultiLine, StringComparison.OrdinalIgnoreCase))
+                {
+                    return DocCommentSummaryStyle.MultiLine;
+                }
+                else if (string.Equals(rawValue, ConfigOptionValues.DocCommentSummaryStyle_SingleLine, StringComparison.OrdinalIgnoreCase))
+                {
+                    return DocCommentSummaryStyle.SingleLine;
+                }
+            }
+
+            return DocCommentSummaryStyle.None;
+        }
+
+        public static EnumFlagValueStyle GetEnumFlagValueStyle(this SyntaxNodeAnalysisContext context)
+        {
+
+            return GetEnumFlagValueStyle(context.GetConfigOptions());
+        }
+
+        public static EnumFlagValueStyle GetEnumFlagValueStyle(this AnalyzerConfigOptions configOptions)
+        {
+            if (ConfigOptions.TryGetValue(configOptions, ConfigOptions.EnumFlagValueStyle, out string rawValue))
+            {
+                if (string.Equals(rawValue, ConfigOptionValues.EnumFlagValueStyle_DecimalNumber, StringComparison.OrdinalIgnoreCase))
+                {
+                    return EnumFlagValueStyle.DecimalNumber;
+                }
+                else if (string.Equals(rawValue, ConfigOptionValues.EnumFlagValueStyle_ShiftOperator, StringComparison.OrdinalIgnoreCase))
+                {
+                    return EnumFlagValueStyle.ShiftOperator;
+                }
+            }
+
+            return EnumFlagValueStyle.None;
         }
 
         public static BodyStyle GetBodyStyle(this SyntaxNodeAnalysisContext context)

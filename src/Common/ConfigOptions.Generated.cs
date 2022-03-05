@@ -86,11 +86,23 @@ namespace Roslynator
             defaultValuePlaceholder: "true|false", 
             description:             "Add/remove 'ConfigureAwait(false)' call");
 
+        public static readonly ConfigOptionDescriptor DocCommentSummaryStyle = new(
+            key:                     ConfigOptionKeys.DocCommentSummaryStyle, 
+            defaultValue:            null, 
+            defaultValuePlaceholder: "multi_line|single_line", 
+            description:             "Format documentation comment summary on single line or multiple lines");
+
         public static readonly ConfigOptionDescriptor EmptyStringStyle = new(
             key:                     ConfigOptionKeys.EmptyStringStyle, 
             defaultValue:            null, 
             defaultValuePlaceholder: "field|literal", 
             description:             "Prefer 'string.Empty' or empty string literal");
+
+        public static readonly ConfigOptionDescriptor EnumFlagValueStyle = new(
+            key:                     ConfigOptionKeys.EnumFlagValueStyle, 
+            defaultValue:            null, 
+            defaultValuePlaceholder: "decimal_number|shift_operator", 
+            description:             "Format enum flag value as decimal number or as a shift operator");
 
         public static readonly ConfigOptionDescriptor EnumHasFlagStyle = new(
             key:                     ConfigOptionKeys.EnumHasFlagStyle, 
@@ -103,6 +115,12 @@ namespace Roslynator
             defaultValue:            null, 
             defaultValuePlaceholder: "after|before", 
             description:             "Place new line after/before equals sign");
+
+        public static readonly ConfigOptionDescriptor InfiniteLoopStyle = new(
+            key:                     ConfigOptionKeys.InfiniteLoopStyle, 
+            defaultValue:            null, 
+            defaultValuePlaceholder: "for|while", 
+            description:             "Use 'for'/'while' statement as an infinite loop");
 
         public static readonly ConfigOptionDescriptor MaxLineLength = new(
             key:                     ConfigOptionKeys.MaxLineLength, 
@@ -204,6 +222,9 @@ namespace Roslynator
             yield return new KeyValuePair<string, string>("RCS1207", JoinOptionKeys(ConfigOptionKeys.UseAnonymousFunctionOrMethodGroup));
             yield return new KeyValuePair<string, string>("RCS1248", JoinOptionKeys(ConfigOptionKeys.NullCheckStyle));
             yield return new KeyValuePair<string, string>("RCS1250", JoinOptionKeys(ConfigOptionKeys.ObjectCreationTypeStyle));
+            yield return new KeyValuePair<string, string>("RCS1252", JoinOptionKeys(ConfigOptionKeys.InfiniteLoopStyle));
+            yield return new KeyValuePair<string, string>("RCS1253", JoinOptionKeys(ConfigOptionKeys.DocCommentSummaryStyle));
+            yield return new KeyValuePair<string, string>("RCS1254", JoinOptionKeys(ConfigOptionKeys.EnumFlagValueStyle));
         }
     }
 }

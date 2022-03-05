@@ -76,18 +76,18 @@ namespace Roslynator.Formatting.CSharp
                 {
                     var memberBinding = (MemberBindingExpressionSyntax)en.Current;
 
-                        if (!memberBinding.HasLeadingTrivia)
-                        {
-                            SyntaxToken prevToken = memberBinding.GetFirstToken().GetPreviousToken();
+                    if (!memberBinding.HasLeadingTrivia)
+                    {
+                        SyntaxToken prevToken = memberBinding.GetFirstToken().GetPreviousToken();
 
-                            if (prevToken.IsKind(SyntaxKind.QuestionToken)
-                                && prevToken.IsParentKind(SyntaxKind.ConditionalAccessExpression)
-                                && prevToken.HasLeadingTrivia
-                                && prevToken.TrailingTrivia.IsEmptyOrSingleWhitespaceTrivia())
-                            {
-                                continue;
-                            }
+                        if (prevToken.IsKind(SyntaxKind.QuestionToken)
+                            && prevToken.IsParentKind(SyntaxKind.ConditionalAccessExpression)
+                            && prevToken.HasLeadingTrivia
+                            && prevToken.TrailingTrivia.IsEmptyOrSingleWhitespaceTrivia())
+                        {
+                            continue;
                         }
+                    }
 
                     if (AnalyzeToken(memberBinding.OperatorToken))
                         return;

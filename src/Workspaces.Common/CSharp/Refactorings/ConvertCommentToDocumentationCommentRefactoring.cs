@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.Refactorings
             if (leadingTrivia.Span.Contains(span))
             {
                 comments = leadingTrivia
-                    .Where(f => span.Contains(f.Span) && f.Kind() == SyntaxKind.SingleLineCommentTrivia)
+                    .Where(f => span.Contains(f.Span) && f.IsKind(SyntaxKind.SingleLineCommentTrivia))
                     .Select(f => _leadingSlashesRegex.Replace(f.ToString(), ""))
                     .ToImmutableArray();
 

@@ -35,7 +35,7 @@ namespace Roslynator.CSharp.CodeFixes
                     case CompilerDiagnosticIdentifiers.CS0029_CannotImplicitlyConvertType:
                         {
                             if (IsEnabled(diagnostic.Id, CodeFixIdentifiers.ReplaceStringLiteralWithCharacterLiteral, context.Document, root.SyntaxTree)
-                                && node?.Kind() == SyntaxKind.StringLiteralExpression)
+                                && node.IsKind(SyntaxKind.StringLiteralExpression))
                             {
                                 var literalExpression = (LiteralExpressionSyntax)node;
 

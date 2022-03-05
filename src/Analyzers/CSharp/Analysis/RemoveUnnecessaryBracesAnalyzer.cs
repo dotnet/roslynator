@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -19,12 +18,7 @@ namespace Roslynator.CSharp.Analysis
             get
             {
                 if (_supportedDiagnostics.IsDefault)
-                {
-                    Immutable.InterlockedInitialize(
-                        ref _supportedDiagnostics,
-                        DiagnosticRules.RemoveUnnecessaryBraces,
-                        DiagnosticRules.RemoveUnnecessaryBracesFadeOut);
-                }
+                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.RemoveUnnecessaryBraces);
 
                 return _supportedDiagnostics;
             }
@@ -34,69 +28,30 @@ namespace Roslynator.CSharp.Analysis
         {
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(
-                c =>
-                {
-                    if (DiagnosticRules.RemoveUnnecessaryBraces.IsEffective(c))
-                        AnalyzerSwitchSection(c);
-                },
-                SyntaxKind.SwitchSection);
+            context.RegisterSyntaxNodeAction(f => AnalyzeRecordDeclaration(f), SyntaxKind.RecordDeclaration, SyntaxKind.RecordStructDeclaration);
         }
 
-        public static void AnalyzerSwitchSection(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeRecordDeclaration(SyntaxNodeAnalysisContext context)
         {
-            var switchSection = (SwitchSectionSyntax)context.Node;
+            var recordDeclaration = (RecordDeclarationSyntax)context.Node;
 
-            if (switchSection.Statements.SingleOrDefault(shouldThrow: false) is not BlockSyntax block)
-                return;
+            SyntaxToken openBrace = recordDeclaration.OpenBraceToken;
 
-            SyntaxList<StatementSyntax> statements = block.Statements;
-
-            SyntaxList<StatementSyntax>.Enumerator en = statements.GetEnumerator();
-
-            if (!en.MoveNext())
-                return;
-
-            do
+            if (!openBrace.IsKind(SyntaxKind.None))
             {
-                if (en.Current.IsKind(SyntaxKind.LocalDeclarationStatement))
+                SyntaxToken closeBrace = recordDeclaration.CloseBraceToken;
+
+                if (!closeBrace.IsKind(SyntaxKind.None)
+                    && openBrace.TrailingTrivia.IsEmptyOrWhitespace()
+                    && closeBrace.LeadingTrivia.IsEmptyOrWhitespace()
+                    && recordDeclaration.ParameterList?.CloseParenToken.TrailingTrivia.IsEmptyOrWhitespace() != false)
                 {
-                    var localDeclaration = (LocalDeclarationStatementSyntax)en.Current;
-
-                    if (localDeclaration.UsingKeyword.IsKind(SyntaxKind.UsingKeyword))
-                        return;
+                    DiagnosticHelpers.ReportDiagnostic(
+                        context,
+                        DiagnosticRules.RemoveUnnecessaryBraces,
+                        openBrace.GetLocation(),
+                        additionalLocations: new Location[] { closeBrace.GetLocation() });
                 }
-
-            } while (en.MoveNext());
-
-            SyntaxToken openBrace = block.OpenBraceToken;
-
-            if (!AnalyzeTrivia(openBrace.LeadingTrivia))
-                return;
-
-            if (!AnalyzeTrivia(openBrace.TrailingTrivia))
-                return;
-
-            if (!AnalyzeTrivia(statements[0].GetLeadingTrivia()))
-                return;
-
-            if (!AnalyzeTrivia(statements.Last().GetTrailingTrivia()))
-                return;
-
-            SyntaxToken closeBrace = block.CloseBraceToken;
-
-            if (!AnalyzeTrivia(closeBrace.LeadingTrivia))
-                return;
-
-            if (!AnalyzeTrivia(closeBrace.TrailingTrivia))
-                return;
-
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveUnnecessaryBraces, openBrace);
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveUnnecessaryBracesFadeOut, closeBrace);
-
-            static bool AnalyzeTrivia(SyntaxTriviaList trivia)
-            {
-                return trivia.All(f => f.IsKind(SyntaxKind.WhitespaceTrivia, SyntaxKind.EndOfLineTrivia, SyntaxKind.SingleLineCommentTrivia));
             }
         }
     }

@@ -175,6 +175,8 @@ namespace Roslynator.CSharp
         public const string CS8139_CannotChangeTupleElementNameWhenOverridingInheritedMember = "CS8139";
         public const string CS8340_InstanceFieldsOfReadOnlyStructsMustBeReadOnly = "CS8340";
         public const string CS8403_MethodWithIteratorBlockMustBeAsyncToReturnIAsyncEnumerableOfT = "CS8403";
+        public const string CS8602_DereferenceOfPossiblyNullReference = "CS8602";
+        public const string CS8604_PossibleNullReferenceArgumentForParameter = "CS8604";
         public const string CS8618_NonNullableMemberIsUninitialized = "CS8618";
         public const string CS8625_CannotConvertNullLiteralToNonNullableReferenceType = "CS8625";
         public const string CS8632_AnnotationForNullableReferenceTypesShouldOnlyBeUsedWithinNullableAnnotationsContext = "CS8632";

@@ -49,7 +49,7 @@ namespace Roslynator.CSharp.CodeFixes
             if (node is MemberDeclarationSyntax memberDeclaration)
                 return document.RemoveMemberAsync(memberDeclaration, cancellationToken);
 
-            if (node.Kind() == SyntaxKind.VariableDeclarator
+            if (node.IsKind(SyntaxKind.VariableDeclarator)
                 && node.Parent is VariableDeclarationSyntax variableDeclaration
                 && variableDeclaration.Variables.Count == 1)
             {

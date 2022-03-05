@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis;
@@ -304,178 +303,6 @@ namespace Roslynator.CSharp
             }
         }
 
-        public static int DetermineIndentationSize(SyntaxNode node, CancellationToken cancellationToken = default)
-        {
-            do
-            {
-                switch (node)
-                {
-                    case MemberDeclarationSyntax member:
-                        {
-                            switch (node.Parent)
-                            {
-                                case NamespaceDeclarationSyntax @namespace:
-                                    {
-                                        int size = GetIndentationSize(member, @namespace.CloseBraceToken);
-
-                                        if (size > 0)
-                                            return size;
-
-                                        break;
-                                    }
-                                case BaseTypeDeclarationSyntax baseType:
-                                    {
-                                        int size = GetIndentationSize(member, baseType.CloseBraceToken);
-
-                                        if (size > 0)
-                                            return size;
-
-                                        break;
-                                    }
-                                case CompilationUnitSyntax compilationUnit:
-                                    {
-                                        return DetermineIndentationSize(compilationUnit);
-                                    }
-                                default:
-                                    {
-                                        return 0;
-                                    }
-                            }
-
-                            break;
-                        }
-                    case AccessorDeclarationSyntax accessor:
-                        {
-                            switch (node.Parent)
-                            {
-                                case AccessorListSyntax accessorList:
-                                    {
-                                        int size = GetIndentationSize(accessor, accessorList.CloseBraceToken);
-
-                                        if (size > 0)
-                                            return size;
-
-                                        break;
-                                    }
-                                default:
-                                    {
-                                        return 0;
-                                    }
-                            }
-
-                            break;
-                        }
-                    case BlockSyntax _:
-                        {
-                            break;
-                        }
-                    case StatementSyntax statement:
-                        {
-                            switch (node.Parent)
-                            {
-                                case SwitchSectionSyntax switchSection:
-                                    {
-                                        int size = GetIndentationSize(statement, switchSection);
-
-                                        if (size > 0)
-                                            return size;
-
-                                        break;
-                                    }
-                                case BlockSyntax block:
-                                    {
-                                        int size = GetIndentationSize(statement, block.CloseBraceToken);
-
-                                        if (size > 0)
-                                            return size;
-
-                                        break;
-                                    }
-                                case StatementSyntax statement2:
-                                    {
-                                        int size = GetIndentationSize(statement, statement2);
-
-                                        if (size > 0)
-                                            return size;
-
-                                        break;
-                                    }
-                                case ElseClauseSyntax elseClause:
-                                    {
-                                        int size = GetIndentationSize(statement, elseClause);
-
-                                        if (size > 0)
-                                            return size;
-
-                                        break;
-                                    }
-                                case GlobalStatementSyntax:
-                                    {
-                                        break;
-                                    }
-                                default:
-                                    {
-                                        return 0;
-                                    }
-                            }
-
-                            break;
-                        }
-                    case CompilationUnitSyntax compilationUnit:
-                        {
-                            return DetermineIndentationSize(compilationUnit);
-                        }
-                }
-
-                node = node.Parent;
-
-            } while (node != null);
-
-            return 0;
-
-            int DetermineIndentationSize(CompilationUnitSyntax compilationUnit)
-            {
-                foreach (MemberDeclarationSyntax member in compilationUnit.Members)
-                {
-                    if (member is NamespaceDeclarationSyntax namespaceDeclaration)
-                    {
-                        MemberDeclarationSyntax member2 = namespaceDeclaration.Members.FirstOrDefault();
-
-                        if (member2 != null)
-                            return GetIndentationSize(member2, namespaceDeclaration.CloseBraceToken);
-                    }
-                    else if (member is TypeDeclarationSyntax typeDeclaration)
-                    {
-                        MemberDeclarationSyntax member2 = typeDeclaration.Members.FirstOrDefault();
-
-                        if (member2 != null)
-                            return GetIndentationSize(member2, typeDeclaration.CloseBraceToken);
-                    }
-                }
-
-                return 0;
-            }
-
-            int GetIndentationSize(SyntaxNodeOrToken nodeOrToken1, SyntaxNodeOrToken nodeOrToken2)
-            {
-                SyntaxTrivia indentation1 = DetermineIndentation(nodeOrToken1, cancellationToken);
-
-                int length1 = indentation1.Span.Length;
-
-                if (length1 > 0)
-                {
-                    SyntaxTrivia indentation2 = DetermineIndentation(nodeOrToken2, cancellationToken);
-
-                    int length2 = indentation2.Span.Length;
-
-                    if (length1 > length2)
-                        return length1 - length2;
-                }
-
-                return 0;
-            }
-        }
-
         public static string GetIncreasedIndentation(SyntaxNode node, CancellationToken cancellationToken = default)
         {
             return AnalyzeIndentation(node, cancellationToken).GetIncreasedIndentation();
@@ -543,65 +370,45 @@ namespace Roslynator.CSharp
             SyntaxNode containingDeclaration,
             int increaseCount = 0) where TNode : SyntaxNode
         {
-            ImmutableDictionary<SyntaxToken, IndentationInfo> indentations = null;
-            int length;
-
-            using (IEnumerator<IndentationInfo> en = FindIndentations(expression, expression.Span).GetEnumerator())
-            {
-                if (!en.MoveNext())
-                    return expression;
-
-                ImmutableDictionary<SyntaxToken, IndentationInfo>.Builder builder = ImmutableDictionary.CreateBuilder<SyntaxToken, IndentationInfo>();
-                length = en.Current.Span.Length;
-
-                do
-                {
-                    builder.Add(en.Current.Token, en.Current);
-
-                } while (en.MoveNext());
-
-                indentations = builder.ToImmutableDictionary();
-            }
-
             IndentationAnalysis analysis = AnalyzeIndentation(containingDeclaration);
-
-            string increasedIndentation = analysis.GetIncreasedIndentation();
 
             string replacement = (increaseCount > 0)
                 ? string.Concat(Enumerable.Repeat(analysis.GetSingleIndentation(), increaseCount))
                 : "";
 
-            replacement = increasedIndentation + replacement;
+            replacement = analysis.GetIncreasedIndentation() + replacement;
 
-            SyntaxTrivia replacementTrivia = Whitespace(replacement);
+            var builder = new SyntaxNodeTextBuilder(expression);
+            int length = -1;
+            int pos = expression.FullSpan.Start;
 
-            return expression.ReplaceTokens(
-                indentations.Select(f => f.Key),
-                (token, _) =>
+            foreach (IndentationInfo indentation in FindIndentations(expression, expression.Span)
+                .OrderBy(f => f.Span.Start))
+            {
+                if (length == -1)
+                    length = indentation.Span.Length;
+
+                builder.Append(TextSpan.FromBounds(pos, indentation.Span.Start));
+
+                if (indentation.Span.Length == 0)
                 {
-                    IndentationInfo indentationInfo = indentations[token];
+                    builder.Append(replacement);
+                }
+                else
+                {
+                    string newIndentation = (indentation.Span.Length > length)
+                        ? replacement + indentation.ToString().Substring(length)
+                        : replacement;
 
-                    SyntaxTrivia newIndentation = (indentationInfo.Span.Length > length)
-                        ? Whitespace(replacement + indentationInfo.ToString().Substring(length))
-                        : replacementTrivia;
+                    builder.Append(newIndentation);
+                }
 
-                    if (indentationInfo.Span.Length == 0)
-                        return token.AppendToLeadingTrivia(newIndentation);
+                pos = indentation.Span.End;
+            }
 
-                    SyntaxTriviaList leading = token.LeadingTrivia;
+            builder.Append(TextSpan.FromBounds(pos, expression.FullSpan.End));
 
-                    for (int i = leading.Count - 1; i >= 0; i--)
-                    {
-                        if (leading[i].Span == indentationInfo.Span)
-                        {
-                            SyntaxTriviaList newLeading = leading.ReplaceAt(i, newIndentation);
-                            return token.WithLeadingTrivia(newLeading);
-                        }
-                    }
-
-                    SyntaxDebug.Fail(token);
-                    return token;
-                });
+            return (TNode)(SyntaxNode)ParseExpression(builder.ToString());
         }
     }
 }

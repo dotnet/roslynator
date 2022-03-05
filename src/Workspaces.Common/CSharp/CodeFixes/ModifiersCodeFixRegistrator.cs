@@ -82,7 +82,7 @@ namespace Roslynator.CSharp.CodeFixes
                     }
                 case SyntaxKind.StaticKeyword:
                     {
-                        if (node.Kind() == SyntaxKind.ConstructorDeclaration)
+                        if (node.IsKind(SyntaxKind.ConstructorDeclaration))
                             node = SyntaxAccessibility.WithoutExplicitAccessibility(node);
 
                         node = node.RemoveModifier(SyntaxKind.SealedKeyword);

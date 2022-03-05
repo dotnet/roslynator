@@ -240,7 +240,7 @@ namespace Roslynator.CSharp.Analysis
 
                 SyntaxDebug.Assert(node.IsKind(SyntaxKind.Block), node);
 
-                if (node.Kind() != SyntaxKind.Block)
+                if (!node.IsKind(SyntaxKind.Block))
                     break;
 
                 node = node.Parent;

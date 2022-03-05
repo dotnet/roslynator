@@ -128,11 +128,21 @@ namespace Roslynator.CSharp.Analysis
             if (!expressions.Any())
                 return;
 
+            ITypeSymbol typeSymbol = null;
+
             if (kind == ArrayCreationTypeStyle.ImplicitWhenTypeIsObvious)
             {
                 foreach (ExpressionSyntax expression in expressions)
                 {
-                    if (!CSharpTypeAnalysis.IsTypeObvious(expression, null, context.SemanticModel, context.CancellationToken))
+                    if (typeSymbol == null)
+                    {
+                        typeSymbol = context.SemanticModel.GetTypeSymbol(arrayCreation.Type.ElementType, context.CancellationToken);
+
+                        if (typeSymbol?.IsErrorType() != false)
+                            return;
+                    }
+
+                    if (!CSharpTypeAnalysis.IsTypeObvious(expression, typeSymbol, context.SemanticModel, context.CancellationToken))
                         return;
                 }
             }

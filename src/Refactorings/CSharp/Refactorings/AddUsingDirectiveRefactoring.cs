@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -43,7 +44,7 @@ namespace Roslynator.CSharp.Refactorings
             node = prevNode;
 
             if (node.IsParentKind(SyntaxKind.QualifiedName, SyntaxKind.AliasQualifiedName, SyntaxKind.SimpleMemberAccessExpression)
-                && !node.IsDescendantOf(SyntaxKind.UsingDirective)
+                && !node.Ancestors(ascendOutOfTrivia: true).Any(f => f.IsKind(SyntaxKind.UsingDirective, SyntaxKind.FileScopedNamespaceDeclaration))
                 && !CSharpUtility.IsNamespaceInScope(node, namespaceSymbol, semanticModel, context.CancellationToken))
             {
                 context.RegisterRefactoring(

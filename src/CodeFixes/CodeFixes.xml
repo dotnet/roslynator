@@ -675,13 +675,19 @@
   </CodeFix>
   <CodeFix Id="RCF0119" Identifier="UseNullForgivingOperator" Title="Use null-forgiving operator">
     <FixableDiagnosticIds>
-      <Id>CS8618</Id>
+	  <Id>CS8604</Id>
+	  <Id>CS8618</Id>
 	  <Id>CS8625</Id>
 	</FixableDiagnosticIds>
   </CodeFix>
-	  <CodeFix Id="RCF0120" Identifier="AddAsyncModifier" Title="Add 'async' modifier">
+  <CodeFix Id="RCF0120" Identifier="AddAsyncModifier" Title="Add 'async' modifier">
     <FixableDiagnosticIds>
       <Id>CS8403</Id>
     </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0121" Identifier="UseNullPropagationOperator" Title="Use null propagation operator">
+	<FixableDiagnosticIds>
+	  <Id>CS8602</Id>
+	</FixableDiagnosticIds>
   </CodeFix>
 </CodeFixes>

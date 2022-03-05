@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.Analysis.AddExceptionToDocumentationComment
         {
             SyntaxNode parent = Node.Parent;
 
-            if (parent?.Kind() != SyntaxKind.CoalesceExpression)
+            if (!parent.IsKind(SyntaxKind.CoalesceExpression))
                 return null;
 
             SimpleAssignmentExpressionInfo simpleAssignment = SyntaxInfo.SimpleAssignmentExpressionInfo(parent.Parent);

@@ -17,8 +17,9 @@ namespace Roslynator.CSharp.Refactorings
         {
             SyntaxTriviaList trailingTrivia = doStatement.Statement
                 .GetTrailingTrivia()
-                .AddRange(doStatement.CloseParenToken.TrailingTrivia)
-                .AddRange(doStatement.SemicolonToken.LeadingTrivia)
+                .EmptyIfWhitespace()
+                .AddRange(doStatement.CloseParenToken.TrailingTrivia.EmptyIfWhitespace())
+                .AddRange(doStatement.SemicolonToken.LeadingTrivia.EmptyIfWhitespace())
                 .AddRange(doStatement.SemicolonToken.TrailingTrivia);
 
             WhileStatementSyntax newNode = WhileStatement(

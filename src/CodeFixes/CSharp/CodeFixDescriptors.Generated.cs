@@ -889,11 +889,12 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true, 
             "CS8632");
 
-        /// <summary>RCF0119 (fixes CS8618, CS8625)</summary>
+        /// <summary>RCF0119 (fixes CS8604, CS8618, CS8625)</summary>
         public static readonly CodeFixDescriptor UseNullForgivingOperator = new CodeFixDescriptor(
             id:                 CodeFixIdentifiers.UseNullForgivingOperator, 
             title:              "Use null-forgiving operator", 
             isEnabledByDefault: true, 
+            "CS8604", 
             "CS8618", 
             "CS8625");
 
@@ -903,6 +904,13 @@ namespace Roslynator.CSharp
             title:              "Add 'async' modifier", 
             isEnabledByDefault: true, 
             "CS8403");
+
+        /// <summary>RCF0121 (fixes CS8602)</summary>
+        public static readonly CodeFixDescriptor UseNullPropagationOperator = new CodeFixDescriptor(
+            id:                 CodeFixIdentifiers.UseNullPropagationOperator, 
+            title:              "Use null propagation operator", 
+            isEnabledByDefault: true, 
+            "CS8602");
 
     }
 }

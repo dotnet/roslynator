@@ -41,9 +41,9 @@ namespace Roslynator.CSharp.CodeFixes
             if (!TryFindToken(root, context.Span.Start, out SyntaxToken token))
                 return;
 
-            SyntaxDebug.Assert(token.Kind() == SyntaxKind.IdentifierToken, token);
+            SyntaxDebug.Assert(token.IsKind(SyntaxKind.IdentifierToken), token);
 
-            if (token.Kind() != SyntaxKind.IdentifierToken)
+            if (!token.IsKind(SyntaxKind.IdentifierToken))
                 return;
 
             switch (token.Parent)

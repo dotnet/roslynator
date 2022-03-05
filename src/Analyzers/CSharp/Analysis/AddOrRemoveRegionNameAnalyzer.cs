@@ -45,15 +45,15 @@ namespace Roslynator.CSharp.Analysis
 
             SyntaxTrivia endTrivia = endRegionDirective.GetPreprocessingMessageTrivia();
 
-            if (trivia.Kind() == SyntaxKind.PreprocessingMessageTrivia)
+            if (trivia.IsKind(SyntaxKind.PreprocessingMessageTrivia))
             {
-                if (endTrivia.Kind() != SyntaxKind.PreprocessingMessageTrivia
+                if (!endTrivia.IsKind(SyntaxKind.PreprocessingMessageTrivia)
                     || !string.Equals(trivia.ToString(), endTrivia.ToString(), StringComparison.Ordinal))
                 {
                     DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AddOrRemoveRegionName, endRegionDirective, "Add", "to");
                 }
             }
-            else if (endTrivia.Kind() == SyntaxKind.PreprocessingMessageTrivia)
+            else if (endTrivia.IsKind(SyntaxKind.PreprocessingMessageTrivia))
             {
                 DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AddOrRemoveRegionName, endRegionDirective, "Remove", "from");
             }

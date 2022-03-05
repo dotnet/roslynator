@@ -206,7 +206,7 @@ namespace Roslynator.CSharp
             messageFormat:      "{0} accessibility modifiers.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: true, 
+            isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers, 
             customTags:         Array.Empty<string>());
@@ -250,18 +250,18 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor ConvertLambdaExpressionBodyToExpressionBodyFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(ConvertLambdaExpressionBodyToExpressionBody);
 
         /// <summary>RCS1031</summary>
-        public static readonly DiagnosticDescriptor RemoveUnnecessaryBraces = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.RemoveUnnecessaryBraces, 
-            title:              "Remove unnecessary braces.", 
+        public static readonly DiagnosticDescriptor RemoveUnnecessaryBracesInSwitchSection = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.RemoveUnnecessaryBracesInSwitchSection, 
+            title:              "Remove unnecessary braces in switch section.", 
             messageFormat:      "Remove unnecessary braces.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.RemoveUnnecessaryBraces, 
+            helpLinkUri:        DiagnosticIdentifiers.RemoveUnnecessaryBracesInSwitchSection, 
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
-        public static readonly DiagnosticDescriptor RemoveUnnecessaryBracesFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(RemoveUnnecessaryBraces);
+        public static readonly DiagnosticDescriptor RemoveUnnecessaryBracesInSwitchSectionFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(RemoveUnnecessaryBracesInSwitchSection);
 
         /// <summary>RCS1032</summary>
         public static readonly DiagnosticDescriptor RemoveRedundantParentheses = DiagnosticDescriptorFactory.Create(
@@ -590,8 +590,8 @@ namespace Roslynator.CSharp
         /// <summary>RCS1063</summary>
         public static readonly DiagnosticDescriptor AvoidUsageOfDoStatementToCreateInfiniteLoop = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.AvoidUsageOfDoStatementToCreateInfiniteLoop, 
-            title:              "Avoid usage of do statement to create an infinite loop.", 
-            messageFormat:      "Use while statement to create an infinite loop.", 
+            title:              "([deprecated] use RCS1252 instead) Avoid usage of do statement to create an infinite loop.", 
+            messageFormat:      "([deprecated] use RCS1252 instead) Use while statement to create an infinite loop.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
@@ -602,8 +602,8 @@ namespace Roslynator.CSharp
         /// <summary>RCS1064</summary>
         public static readonly DiagnosticDescriptor AvoidUsageOfForStatementToCreateInfiniteLoop = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.AvoidUsageOfForStatementToCreateInfiniteLoop, 
-            title:              "Avoid usage of for statement to create an infinite loop.", 
-            messageFormat:      "Use while statement to create an infinite loop.", 
+            title:              "([deprecated] use RCS1252 instead) Avoid usage of for statement to create an infinite loop.", 
+            messageFormat:      "([deprecated] use RCS1252 instead) Use while statement to create an infinite loop.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
@@ -614,8 +614,8 @@ namespace Roslynator.CSharp
         /// <summary>RCS1065</summary>
         public static readonly DiagnosticDescriptor AvoidUsageOfWhileStatementToCreateInfiniteLoop = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.AvoidUsageOfWhileStatementToCreateInfiniteLoop, 
-            title:              "Avoid usage of while statement to create an infinite loop.", 
-            messageFormat:      "Use for statement to create an infinite loop.", 
+            title:              "([deprecated] use RCS1252 instead) Avoid usage of while statement to create an infinite loop.", 
+            messageFormat:      "([deprecated] use RCS1252 instead) Use for statement to create an infinite loop.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
@@ -892,7 +892,7 @@ namespace Roslynator.CSharp
             messageFormat:      "Use {0}.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: true, 
+            isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.UseHasFlagMethodOrBitwiseOperator, 
             customTags:         Array.Empty<string>());
@@ -936,8 +936,8 @@ namespace Roslynator.CSharp
         /// <summary>RCS1100</summary>
         public static readonly DiagnosticDescriptor FormatDocumentationSummaryOnSingleLine = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.FormatDocumentationSummaryOnSingleLine, 
-            title:              "Format documentation summary on a single line.", 
-            messageFormat:      "Format documentation summary on a single line.", 
+            title:              "([deprecated] use RCS1253 instead) Format documentation summary on a single line.", 
+            messageFormat:      "([deprecated] use RCS1253 instead) Format documentation summary on a single line.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
@@ -948,8 +948,8 @@ namespace Roslynator.CSharp
         /// <summary>RCS1101</summary>
         public static readonly DiagnosticDescriptor FormatDocumentationSummaryOnMultipleLines = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.FormatDocumentationSummaryOnMultipleLines, 
-            title:              "Format documentation summary on multiple lines.", 
-            messageFormat:      "Format documentation summary on multiple lines.", 
+            title:              "([deprecated] use RCS1253 instead) Format documentation summary on multiple lines.", 
+            messageFormat:      "([deprecated] use RCS1253 instead) Format documentation summary on multiple lines.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
@@ -2296,8 +2296,8 @@ namespace Roslynator.CSharp
         /// <summary>RCS1237</summary>
         public static readonly DiagnosticDescriptor UseBitShiftOperator = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.UseBitShiftOperator, 
-            title:              "Use bit shift operator.", 
-            messageFormat:      "Use bit shift operator.", 
+            title:              "([deprecated] use RCS1254 instead) Use bit shift operator.", 
+            messageFormat:      "([deprecated] use RCS1254 instead) Use bit shift operator.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
             isEnabledByDefault: true, 
@@ -2444,7 +2444,7 @@ namespace Roslynator.CSharp
             messageFormat:      "Use {0} object creation.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: true, 
+            isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation, 
             customTags:         Array.Empty<string>());
@@ -2459,6 +2459,54 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true, 
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.InvalidNullCheck, 
+            customTags:         Array.Empty<string>());
+
+        /// <summary>RCS1251</summary>
+        public static readonly DiagnosticDescriptor RemoveUnnecessaryBraces = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.RemoveUnnecessaryBraces, 
+            title:              "Remove unnecessary braces from record declaration.", 
+            messageFormat:      "Remove unnecessary braces.", 
+            category:           DiagnosticCategories.Roslynator, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.RemoveUnnecessaryBraces, 
+            customTags:         WellKnownDiagnosticTags.Unnecessary);
+
+        /// <summary>RCS1252</summary>
+        public static readonly DiagnosticDescriptor NormalizeUsageOfInfiniteLoop = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.NormalizeUsageOfInfiniteLoop, 
+            title:              "Normalize usage of infinite loop.", 
+            messageFormat:      "Use '{0}' statement as an infinite loop.", 
+            category:           DiagnosticCategories.Roslynator, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: false, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.NormalizeUsageOfInfiniteLoop, 
+            customTags:         Array.Empty<string>());
+
+        /// <summary>RCS1253</summary>
+        public static readonly DiagnosticDescriptor FormatDocumentationCommentSummary = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.FormatDocumentationCommentSummary, 
+            title:              "Format documentation comment summary.", 
+            messageFormat:      "Format documentation comment summary.", 
+            category:           DiagnosticCategories.Roslynator, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: false, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.FormatDocumentationCommentSummary, 
+            customTags:         Array.Empty<string>());
+
+        /// <summary>RCS1254</summary>
+        public static readonly DiagnosticDescriptor NormalizeFormatOfEnumFlagValue = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.NormalizeFormatOfEnumFlagValue, 
+            title:              "Normalize format of enum flag value.", 
+            messageFormat:      "{0}", 
+            category:           DiagnosticCategories.Roslynator, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.NormalizeFormatOfEnumFlagValue, 
             customTags:         Array.Empty<string>());
 
     }

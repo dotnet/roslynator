@@ -25,7 +25,7 @@ namespace Roslynator.CSharp.Refactorings
 
             SyntaxNode parent = statement.Parent;
 
-            if (parent?.Kind() == SyntaxKind.Block)
+            if (parent.IsKind(SyntaxKind.Block))
             {
                 statement = (BlockSyntax)parent;
                 parent = statement.Parent;
@@ -37,11 +37,11 @@ namespace Roslynator.CSharp.Refactorings
             if (!CheckContainingNode(parent))
                 return;
 
-            if (GetContainingBlock(parent)?.Kind() != SyntaxKind.Block)
+            if (!GetContainingBlock(parent).IsKind(SyntaxKind.Block))
                 return;
 
             context.RegisterRefactoring(
-                (parent.Kind() == SyntaxKind.ElseClause)
+                (parent.IsKind(SyntaxKind.ElseClause))
                     ? "Remove containing else clause"
                     : "Remove containing statement",
                 ct => RefactorAsync(context.Document, statement, ct),

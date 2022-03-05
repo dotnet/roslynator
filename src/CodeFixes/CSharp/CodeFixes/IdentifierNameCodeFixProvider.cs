@@ -102,7 +102,7 @@ namespace Roslynator.CSharp.CodeFixes
                             if (identifierName.Parent is not ArgumentSyntax argument)
                                 break;
 
-                            if (argument.RefOrOutKeyword.Kind() != SyntaxKind.OutKeyword)
+                            if (!argument.RefOrOutKeyword.IsKind(SyntaxKind.OutKeyword))
                                 break;
 
                             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);

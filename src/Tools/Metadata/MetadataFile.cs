@@ -228,12 +228,21 @@ namespace Roslynator.Metadata
                 string key = (element.Element("Key")?.Value)
                     ?? string.Join("_", Regex.Split(id, @"(?<=\p{Ll})(?=\p{Lu})").Select(f => f.ToLowerInvariant()));
 
+                IEnumerable<ConfigOptionValueMetadata> values = element.Element("Values")?
+                    .Elements("Value")
+                    .Select(e =>
+                    {
+                        bool.TryParse(e.Attribute("IsDefault")?.Value, out bool isDefault);
+                        return new ConfigOptionValueMetadata(e.Value, isDefault);
+                    });
+
                 yield return new ConfigOptionMetadata(
                     id,
                     "roslynator_" + key,
                     element.Element("DefaultValue")?.Value,
-                    element.Element("ValuePlaceholder").Value,
-                    element.Element("Description").Value);
+                    element.Element("ValuePlaceholder")?.Value,
+                    element.Element("Description").Value,
+                    values);
             }
         }
 

@@ -29,9 +29,9 @@ namespace Roslynator.CSharp.CodeFixes
             if (!TryFindToken(root, context.Span.Start, out SyntaxToken token))
                 return;
 
-            Debug.Assert(token.Kind() == SyntaxKind.UnsafeKeyword, token.Kind().ToString());
+            Debug.Assert(token.IsKind(SyntaxKind.UnsafeKeyword), token.Kind().ToString());
 
-            if (token.Kind() != SyntaxKind.UnsafeKeyword)
+            if (!token.IsKind(SyntaxKind.UnsafeKeyword))
                 return;
 
             Diagnostic diagnostic = context.Diagnostics[0];
