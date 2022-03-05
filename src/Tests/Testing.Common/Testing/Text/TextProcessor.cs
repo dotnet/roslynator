@@ -64,8 +64,8 @@ namespace Roslynator.Testing.Text
                 offset += match.Length - content.Length;
 
                 match = match.NextMatch();
-
-            } while (match.Success);
+            }
+            while (match.Success);
 
             sb.Append(text, lastPos, text.Length - lastPos);
 

@@ -71,8 +71,8 @@ namespace Roslynator.Configuration
                     }
 
                     loadedIncludes.Add(include);
-
-                } while (queue.Count > 0);
+                }
+                while (queue.Count > 0);
             }
 
             if (builder == null)

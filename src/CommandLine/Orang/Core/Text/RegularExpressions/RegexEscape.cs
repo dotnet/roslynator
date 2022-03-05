@@ -92,8 +92,8 @@ namespace Roslynator.Text.RegularExpressions
                         }
 
                         sb.Append(input, lastPos, i - lastPos);
-
-                    } while (i < input.Length);
+                    }
+                    while (i < input.Length);
 
                     return sb.ToString();
                 }
@@ -159,8 +159,8 @@ namespace Roslynator.Text.RegularExpressions
                         }
 
                         sb.Append(input, lastPos, i - lastPos);
-
-                    } while (i < input.Length);
+                    }
+                    while (i < input.Length);
 
                     return sb.ToString();
                 }
@@ -197,8 +197,8 @@ namespace Roslynator.Text.RegularExpressions
                         }
 
                         sb.Append(replacement, lastPos, i - lastPos);
-
-                    } while (i < replacement.Length);
+                    }
+                    while (i < replacement.Length);
 
                     return sb.ToString();
                 }

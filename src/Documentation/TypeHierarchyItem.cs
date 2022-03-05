@@ -60,8 +60,8 @@ namespace Roslynator.Documentation
                 {
                     e = e.next;
                     yield return e;
-
-                } while (e.Parent == this && e != content);
+                }
+                while (e.Parent == this && e != content);
             }
         }
 

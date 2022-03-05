@@ -401,8 +401,8 @@ namespace Roslynator
                     return true;
 
                 t = t.BaseType;
-
-            } while (t != null
+            }
+            while (t != null
                 && t.SpecialType != SpecialType.System_Object);
 
             return false;
@@ -437,8 +437,8 @@ namespace Roslynator
                     return true;
 
                 t = t.BaseType;
-
-            } while (t != null
+            }
+            while (t != null
                 && t.SpecialType != SpecialType.System_Object);
 
             return false;
@@ -528,8 +528,8 @@ namespace Roslynator
                 }
 
                 symbol = symbol.ContainingType;
-
-            } while (symbol != null);
+            }
+            while (symbol != null);
 
             return true;
         }
@@ -546,8 +546,8 @@ namespace Roslynator
                 }
 
                 symbol = symbol.ContainingType;
-
-            } while (symbol != null);
+            }
+            while (symbol != null);
 
             return true;
         }
@@ -616,8 +616,8 @@ namespace Roslynator
                             throw new InvalidOperationException($"Unknown accessibility '{symbol.DeclaredAccessibility}'.");
                         }
                 }
-
-            } while (symbol != null);
+            }
+            while (symbol != null);
 
             return visibility;
         }
@@ -1321,8 +1321,8 @@ namespace Roslynator
                     break;
 
                 typeSymbol = typeSymbol.BaseType;
-
-            } while (typeSymbol != null);
+            }
+            while (typeSymbol != null);
 
             return default;
         }
@@ -1429,8 +1429,8 @@ namespace Roslynator
                     break;
 
                 typeSymbol = typeSymbol.BaseType;
-
-            } while (typeSymbol != null);
+            }
+            while (typeSymbol != null);
 
             return null;
         }

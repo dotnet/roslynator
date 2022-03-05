@@ -273,8 +273,8 @@ namespace Roslynator.Diagnostics
                         do
                         {
                             WriteLine($"{en.Current.Value.ExecutionTime:mm\\:ss\\.fff} '{en.Current.Key.GetType().FullName}'", Verbosity.Minimal);
-
-                        } while (en.MoveNext());
+                        }
+                        while (en.MoveNext());
                     }
                 }
             }

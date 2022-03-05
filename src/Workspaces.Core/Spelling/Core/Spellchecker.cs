@@ -198,8 +198,8 @@ namespace Roslynator.Spelling
                     prevIndex = match.Index + match.Length;
 
                     match = match.NextMatch();
-
-                } while (match.Success);
+                }
+                while (match.Success);
 
                 AnalyzeValue(input.Substring(prevIndex), prevIndex + offset, input, offset, ref builder);
             }

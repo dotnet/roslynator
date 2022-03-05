@@ -212,8 +212,8 @@ namespace Roslynator.CSharp
                 }
 
                 node = node.Parent;
-
-            } while (node != null);
+            }
+            while (node != null);
 
             return default;
 

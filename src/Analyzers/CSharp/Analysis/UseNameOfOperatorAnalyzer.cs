@@ -147,8 +147,8 @@ namespace Roslynator.CSharp.Analysis
                 }
 
                 parameterInfo = GetNextParametersInScope(parameterInfo.Node);
-
-            } while (parameterInfo.Success);
+            }
+            while (parameterInfo.Success);
 
             return null;
         }

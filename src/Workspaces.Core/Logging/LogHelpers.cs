@@ -512,8 +512,8 @@ namespace Roslynator
                         {
                             break;
                         }
-
-                    } while (en.MoveNext());
+                    }
+                    while (en.MoveNext());
 
                     count = 0;
 

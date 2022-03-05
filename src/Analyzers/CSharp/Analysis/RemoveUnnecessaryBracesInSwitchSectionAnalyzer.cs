@@ -65,8 +65,8 @@ namespace Roslynator.CSharp.Analysis
                     if (localDeclaration.UsingKeyword.IsKind(SyntaxKind.UsingKeyword))
                         return;
                 }
-
-            } while (en.MoveNext());
+            }
+            while (en.MoveNext());
 
             SyntaxToken openBrace = block.OpenBraceToken;
 

@@ -92,8 +92,8 @@ namespace Roslynator.CSharp.Analysis
                     {
                         if (SyntaxFacts.IsDocumentationCommentTrivia(en.Current.Kind()))
                             return new LeadingAnalysis(default, true, containsTaskListItem, containsNonTaskListItem);
-
-                    } while (en.MoveNext());
+                    }
+                    while (en.MoveNext());
 
                     break;
                 }

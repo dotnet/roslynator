@@ -77,8 +77,8 @@ namespace Roslynator.Formatting.CSharp
                         do
                         {
                             i++;
-
-                        } while (i < text.Length && text[i] == '\t');
+                        }
+                        while (i < text.Length && text[i] == '\t');
 
                         AnalysisContext.ReportDiagnostic(
                             DiagnosticRules.UseSpacesInsteadOfTab,

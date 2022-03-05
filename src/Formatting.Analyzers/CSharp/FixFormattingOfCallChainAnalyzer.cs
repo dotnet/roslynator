@@ -105,8 +105,8 @@ namespace Roslynator.Formatting.CSharp
                     if (AnalyzeToken(conditionalAccess.OperatorToken))
                         return;
                 }
-
-            } while (en.MoveNext());
+            }
+            while (en.MoveNext());
 
             bool AnalyzeToken(SyntaxToken token)
             {

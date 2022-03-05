@@ -562,8 +562,8 @@ namespace Roslynator.CSharp.Analysis
                             {
                                 break;
                             }
-
-                        } while (en.MoveNext());
+                        }
+                        while (en.MoveNext());
                     }
                 }
 

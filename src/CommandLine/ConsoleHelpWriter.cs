@@ -131,8 +131,8 @@ namespace Roslynator.CommandLine
                         prevIndex = match.Index + match.Length;
 
                         match = match.NextMatch();
-
-                    } while (match.Success);
+                    }
+                    while (match.Success);
 
                     ConsoleOut.Write(value.Substring(prevIndex));
                     ConsoleOut.WriteLine();
