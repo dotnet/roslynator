@@ -224,6 +224,13 @@ namespace Roslynator.CSharp.Analysis
                     {
                         switch (methodName)
                         {
+                            case "Add":
+                                {
+                                    if (DiagnosticRules.OptimizeMethodCall.IsEffective(context))
+                                        OptimizeMethodCallAnalysis.OptimizeAdd(context, invocationInfo);
+
+                                    break;
+                                }
                             case "All":
                             case "Any":
                                 {

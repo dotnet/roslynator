@@ -315,5 +315,60 @@ namespace Roslynator.CSharp.Analysis
                     && symbol.ContainingType.OriginalDefinition.HasMetadataName(MetadataNames.System_Collections_Generic_Dictionary_T2);
             }
         }
+
+        public static void OptimizeAdd(SyntaxNodeAnalysisContext context, in SimpleMemberInvocationExpressionInfo invocationInfo)
+        {
+            InvocationExpressionSyntax invocation = invocationInfo.InvocationExpression;
+            ForEachStatementSyntax forEachStatement = null;
+            BlockSyntax block = null;
+
+            if (invocation.IsParentKind(SyntaxKind.ExpressionStatement))
+            {
+                if (invocation.Parent.IsParentKind(SyntaxKind.ForEachStatement))
+                {
+                    forEachStatement = (ForEachStatementSyntax)invocation.Parent.Parent;
+
+                    if (forEachStatement.AwaitKeyword.IsKind(SyntaxKind.AwaitKeyword))
+                        return;
+                }
+
+                if (invocation.Parent.IsParentKind(SyntaxKind.Block)
+                    && invocation.Parent.Parent.IsParentKind(SyntaxKind.ForEachStatement))
+                {
+                    forEachStatement = (ForEachStatementSyntax)invocation.Parent.Parent.Parent;
+                    block = (BlockSyntax)invocation.Parent.Parent;
+                }
+            }
+
+            if (forEachStatement != null
+                && invocation.ArgumentList.Arguments.First().Expression is IdentifierNameSyntax identifierName
+                && identifierName.Identifier.ValueText == forEachStatement.Identifier.ValueText)
+            {
+                ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(invocationInfo.Expression, context.CancellationToken);
+
+                if (typeSymbol?.IsKind(SymbolKind.ErrorType) == false)
+                {
+                    foreach (ISymbol member in typeSymbol.GetMembers("AddRange"))
+                    {
+                        if (member is IMethodSymbol methodSymbol
+                            && methodSymbol.Parameters.Length == 1
+                            && context.SemanticModel.IsAccessible(invocation.SpanStart, methodSymbol)
+                            && forEachStatement.CloseParenToken.TrailingTrivia.IsEmptyOrWhitespace()
+                            && invocation.GetLeadingTrivia().IsEmptyOrWhitespace()
+                            && (block == null
+                                || SyntaxTriviaAnalysis.IsExteriorTriviaEmptyOrWhitespace(block.OpenBraceToken)))
+                        {
+                            DiagnosticHelpers.ReportDiagnostic(
+                                context,
+                                DiagnosticRules.OptimizeMethodCall,
+                                invocationInfo.Name,
+                                "Add");
+
+                            break;
+                        }
+                    }
+                }
+            }
+        }
     }
 }

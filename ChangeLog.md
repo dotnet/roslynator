@@ -1,5 +1,6 @@
 ### Unreleased
 
+* Call AddRange instead of Add (RCS1235)
 * Add code fix for CS8602, CS8604
 * Fix code fix for CS0225
 
