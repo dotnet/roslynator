@@ -470,6 +470,28 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeMethodCall)]
+        public async Task Test_NoDiagnostic_OptimizeAdd()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System.Collections.Generic;
+
+class C
+{
+    void M()
+    {
+        var items = new List<string>();
+
+        foreach (var item in items)
+        {
+            M();
+            items.Add(item);
+        }
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeMethodCall)]
         public async Task TestNoDiagnostic_OptimizeAdd_Await()
         {
             await VerifyNoDiagnosticAsync(@"
