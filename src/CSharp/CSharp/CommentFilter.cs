@@ -10,7 +10,6 @@ namespace Roslynator.CSharp
     [Flags]
     public enum CommentFilter
     {
-
         /// <summary>
         /// None comment specified.
         /// </summary>

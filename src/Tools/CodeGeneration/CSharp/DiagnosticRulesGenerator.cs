@@ -169,7 +169,5 @@ namespace Roslynator.CodeGeneration.CSharp
         {
             return expression;
         }
-
-
     }
 }

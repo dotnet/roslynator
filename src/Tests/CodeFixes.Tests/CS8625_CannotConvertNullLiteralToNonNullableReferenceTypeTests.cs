@@ -90,7 +90,6 @@ class C
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
         }
 
-
         [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS8625_CannotConvertNullLiteralToNonNullableReferenceType)]
         public async Task Test_Field_DefaultLiteral()
         {
