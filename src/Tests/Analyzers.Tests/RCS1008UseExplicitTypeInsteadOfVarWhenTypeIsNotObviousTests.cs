@@ -273,6 +273,22 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarWhenTypeIsNotObvious)]
+        public async Task TestNoDiagnostic_ObjectCreation()
+        {
+            await VerifyNoDiagnosticAsync(@"
+#nullable enable
+
+class C
+{
+    void M()
+    {
+        var s = new string(' ', 1);
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarWhenTypeIsNotObvious)]
         public async Task TestNoDiagnostic_ForEach()
         {
             await VerifyNoDiagnosticAsync(@"

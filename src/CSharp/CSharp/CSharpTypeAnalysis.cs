@@ -154,9 +154,9 @@ namespace Roslynator.CSharp
             switch (typeAppearance)
             {
                 case TypeAppearance.Obvious:
-                    return IsTypeObvious(expression, typeSymbol, semanticModel, cancellationToken);
+                    return IsTypeObvious(expression, typeSymbol, includeNullability: false, semanticModel, cancellationToken);
                 case TypeAppearance.NotObvious:
-                    return !IsTypeObvious(expression, typeSymbol, semanticModel, cancellationToken);
+                    return !IsTypeObvious(expression, typeSymbol, includeNullability: false, semanticModel, cancellationToken);
             }
 
             Debug.Assert(typeAppearance == TypeAppearance.None, typeAppearance.ToString());
@@ -233,9 +233,9 @@ namespace Roslynator.CSharp
             switch (typeAppearance)
             {
                 case TypeAppearance.Obvious:
-                    return IsTypeObvious(expression, typeSymbol, semanticModel, cancellationToken);
+                    return IsTypeObvious(expression, typeSymbol, includeNullability: true, semanticModel, cancellationToken);
                 case TypeAppearance.NotObvious:
-                    return !IsTypeObvious(expression, typeSymbol, semanticModel, cancellationToken);
+                    return !IsTypeObvious(expression, typeSymbol, includeNullability: true, semanticModel, cancellationToken);
             }
 
             Debug.Assert(typeAppearance == TypeAppearance.None, typeAppearance.ToString());
@@ -243,7 +243,12 @@ namespace Roslynator.CSharp
             return true;
         }
 
-        public static bool IsTypeObvious(ExpressionSyntax expression, ITypeSymbol typeSymbol, SemanticModel semanticModel, CancellationToken cancellationToken)
+        public static bool IsTypeObvious(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            return IsTypeObvious(expression, typeSymbol: null, includeNullability: false, semanticModel, cancellationToken);
+        }
+
+        public static bool IsTypeObvious(ExpressionSyntax expression, ITypeSymbol typeSymbol, bool includeNullability, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
             switch (expression.Kind())
             {
@@ -262,7 +267,7 @@ namespace Roslynator.CSharp
                 case SyntaxKind.DefaultExpression:
                     {
                         return typeSymbol == null
-                            || SymbolEqualityComparer.IncludeNullability.Equals(
+                            || GetEqualityComparer(includeNullability).Equals(
                                 typeSymbol,
                                 semanticModel.GetTypeSymbol(expression, cancellationToken));
                     }
@@ -277,7 +282,7 @@ namespace Roslynator.CSharp
 
                         foreach (ExpressionSyntax expression2 in expressions)
                         {
-                            if (!IsTypeObvious(expression2, typeSymbol, semanticModel, cancellationToken))
+                            if (!IsTypeObvious(expression2, typeSymbol, includeNullability, semanticModel, cancellationToken))
                                 return false;
                         }
 
@@ -301,7 +306,7 @@ namespace Roslynator.CSharp
 
                                 if (symbol?.IsStatic == true
                                     && string.Equals(symbol.Name, "Parse", StringComparison.Ordinal)
-                                    && SymbolEqualityComparer.IncludeNullability.Equals(
+                                    && GetEqualityComparer(includeNullability).Equals(
                                         ((IMethodSymbol)symbol).ReturnType,
                                         typeSymbol))
                                 {
@@ -323,6 +328,11 @@ namespace Roslynator.CSharp
             }
 
             return false;
+        }
+
+        private static SymbolEqualityComparer GetEqualityComparer(bool includeNullability)
+        {
+            return (includeNullability) ? SymbolEqualityComparer.IncludeNullability : SymbolEqualityComparer.Default;
         }
 
         public static TypeAnalysis AnalyzeType(
@@ -591,9 +601,9 @@ namespace Roslynator.CSharp
             switch (typeAppearance)
             {
                 case TypeAppearance.Obvious:
-                    return IsTypeObvious(expression, null, semanticModel, cancellationToken);
+                    return IsTypeObvious(expression, semanticModel, cancellationToken);
                 case TypeAppearance.NotObvious:
-                    return !IsTypeObvious(expression, null, semanticModel, cancellationToken);
+                    return !IsTypeObvious(expression, semanticModel, cancellationToken);
             }
 
             Debug.Assert(typeAppearance == TypeAppearance.None, typeAppearance.ToString());
