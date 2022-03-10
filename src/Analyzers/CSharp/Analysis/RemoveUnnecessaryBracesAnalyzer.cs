@@ -35,22 +35,26 @@ namespace Roslynator.CSharp.Analysis
         {
             var recordDeclaration = (RecordDeclarationSyntax)context.Node;
 
-            SyntaxToken openBrace = recordDeclaration.OpenBraceToken;
-
-            if (!openBrace.IsKind(SyntaxKind.None))
+            if (!recordDeclaration.Members.Any()
+                && recordDeclaration.ParameterList != null)
             {
-                SyntaxToken closeBrace = recordDeclaration.CloseBraceToken;
+                SyntaxToken openBrace = recordDeclaration.OpenBraceToken;
 
-                if (!closeBrace.IsKind(SyntaxKind.None)
-                    && openBrace.TrailingTrivia.IsEmptyOrWhitespace()
-                    && closeBrace.LeadingTrivia.IsEmptyOrWhitespace()
-                    && recordDeclaration.ParameterList?.CloseParenToken.TrailingTrivia.IsEmptyOrWhitespace() != false)
+                if (!openBrace.IsKind(SyntaxKind.None))
                 {
-                    DiagnosticHelpers.ReportDiagnostic(
-                        context,
-                        DiagnosticRules.RemoveUnnecessaryBraces,
-                        openBrace.GetLocation(),
-                        additionalLocations: new Location[] { closeBrace.GetLocation() });
+                    SyntaxToken closeBrace = recordDeclaration.CloseBraceToken;
+
+                    if (!closeBrace.IsKind(SyntaxKind.None)
+                        && openBrace.TrailingTrivia.IsEmptyOrWhitespace()
+                        && closeBrace.LeadingTrivia.IsEmptyOrWhitespace()
+                        && recordDeclaration.ParameterList?.CloseParenToken.TrailingTrivia.IsEmptyOrWhitespace() != false)
+                    {
+                        DiagnosticHelpers.ReportDiagnostic(
+                            context,
+                            DiagnosticRules.RemoveUnnecessaryBraces,
+                            openBrace.GetLocation(),
+                            additionalLocations: new Location[] { closeBrace.GetLocation() });
+                    }
                 }
             }
         }
