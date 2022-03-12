@@ -110,14 +110,10 @@ namespace Roslynator.CSharp.Analysis
             {
                 ISymbol equalsOperatorSymbol = semanticModel.GetSymbol(nullCheck.NullCheckExpression, cancellationToken);
 
-                if (!equalsOperatorSymbol.IsErrorType()
-                    && equalsOperatorSymbol.ContainingType.SpecialType != SpecialType.System_Object
-                    && equalsOperatorSymbol is IMethodSymbol methodSymbol)
+                if (equalsOperatorSymbol?.Name == WellKnownMemberNames.EqualityOperatorName
+                    && equalsOperatorSymbol.ContainingType.SpecialType != SpecialType.System_Object)
                 {
-                    ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
-
-                    if (!SymbolEqualityComparer.IncludeNullability.Equals(parameters[0].Type, parameters[1].Type))
-                        return;
+                    return;
                 }
             }
 

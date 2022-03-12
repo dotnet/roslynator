@@ -698,53 +698,6 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyLazyInitialization)]
-        public async Task Test_OverrideEqualsOperator()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
-class C
-{
-    C _m;
-
-    C M()
-    {
-        [|if (_m == null)
-            _m = I();
-
-        return _m;|]
-    }
-
-    C I() => new C();
-
-    public static bool operator ==(C x, C y)
-    {
-        return true;
-    }
-
-    public static bool operator !=(C x, C y) => !(x == y);
-}
-", @"
-class C
-{
-    C _m;
-
-    C M()
-    {
-        return _m ??= I();
-    }
-
-    C I() => new C();
-
-    public static bool operator ==(C x, C y)
-    {
-        return true;
-    }
-
-    public static bool operator !=(C x, C y) => !(x == y);
-}
-");
-        }
-
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyLazyInitialization)]
         public async Task TestNoDiagnostic_OverrideEqualsOperator()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -762,12 +715,40 @@ class C
 
     C I() => new C();
 
-    public static bool operator ==(C x, string y)
+    public static bool operator ==(C x, C y)
     {
         return true;
     }
 
-    public static bool operator !=(C x, string y) => !(x == y);
+    public static bool operator !=(C x, C y) => !(x == y);
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyLazyInitialization)]
+        public async Task TestNoDiagnostic_OverrideBaseEqualsOperator()
+        {
+            await VerifyNoDiagnosticAsync(@"
+public class B
+{
+    public static bool operator ==(B left, B right) => true;
+
+    public static bool operator !=(B left, B right) => !(left == right);
+}
+
+class C : B
+{
+    C _c = null;
+
+    C M()
+    {
+        if (_c == null)
+        {
+            _c = new C();
+        }
+
+        return _c;
+    }
 }
 ");
         }
