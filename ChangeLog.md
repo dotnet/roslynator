@@ -7,6 +7,7 @@
 * Call AddRange instead of Add (RCS1235)
 * Add code fix for CS8602, CS8604
 * Fix code fix for CS0225
+* Put back refactoring SplitLocalDeclarationAndAssignment (RR0194) ([issue](https://github.com/JosefPihrt/Roslynator/issues/881))
 
 ### 4.0.3 (2022-01-29)
 

@@ -170,6 +170,7 @@ namespace Roslynator.CSharp.Refactorings
         public static RefactoringDescriptor SplitAttributes = new RefactoringDescriptor("RR0156", "roslynator_refactoring.split_attributes.enabled", isEnabledByDefault: true);
         public static RefactoringDescriptor SplitIf = new RefactoringDescriptor("RR0184", "roslynator_refactoring.split_if.enabled", isEnabledByDefault: true);
         public static RefactoringDescriptor SplitIfElse = new RefactoringDescriptor("RR0190", "roslynator_refactoring.split_if_else.enabled", isEnabledByDefault: true);
+        public static RefactoringDescriptor SplitLocalDeclarationAndAssignment = new RefactoringDescriptor("RR0194", "roslynator_refactoring.split_local_declaration_and_assignment.enabled", isEnabledByDefault: true);
         public static RefactoringDescriptor SplitSwitchLabels = new RefactoringDescriptor("RR0157", "roslynator_refactoring.split_switch_labels.enabled", isEnabledByDefault: true);
         public static RefactoringDescriptor SplitVariableDeclaration = new RefactoringDescriptor("RR0158", "roslynator_refactoring.split_variable_declaration.enabled", isEnabledByDefault: true);
         public static RefactoringDescriptor SwapBinaryOperands = new RefactoringDescriptor("RR0159", "roslynator_refactoring.swap_binary_operands.enabled", isEnabledByDefault: true);

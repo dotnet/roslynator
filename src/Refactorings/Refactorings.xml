@@ -1892,8 +1892,9 @@ public class Foo
       </Sample>
     </Samples>
   </Refactoring>
-  <Refactoring Id="RR0194" Identifier="SplitDeclarationAndInitialization" Title="Split declaration and initialization" IsObsolete="true">
-    <Syntaxes>
+  <Refactoring Id="RR0194" Identifier="SplitLocalDeclarationAndAssignment" Title="Split local declaration and assignment">
+	<OptionKey>split_local_declaration_and_assignment</OptionKey>
+	<Syntaxes>
       <Syntax>local variable declaration</Syntax>
     </Syntaxes>
     <Span>equals token</Span>
