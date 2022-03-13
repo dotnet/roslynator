@@ -2450,18 +2450,6 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1251</summary>
-        public static readonly DiagnosticDescriptor InvalidNullCheck = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.InvalidNullCheck, 
-            title:              "Invalid null check.", 
-            messageFormat:      "Invalid null check.", 
-            category:           DiagnosticCategories.Roslynator, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: true, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.InvalidNullCheck, 
-            customTags:         Array.Empty<string>());
-
-        /// <summary>RCS1251</summary>
         public static readonly DiagnosticDescriptor RemoveUnnecessaryBraces = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.RemoveUnnecessaryBraces, 
             title:              "Remove unnecessary braces from record declaration.", 
@@ -2507,6 +2495,18 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true, 
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.NormalizeFormatOfEnumFlagValue, 
+            customTags:         Array.Empty<string>());
+
+        /// <summary>RCS1256</summary>
+        public static readonly DiagnosticDescriptor InvalidNullCheck = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.InvalidNullCheck, 
+            title:              "Invalid null check.", 
+            messageFormat:      "Invalid null check.", 
+            category:           DiagnosticCategories.Roslynator, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.InvalidNullCheck, 
             customTags:         Array.Empty<string>());
 
     }

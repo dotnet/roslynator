@@ -918,9 +918,6 @@ dotnet_diagnostic.rcs1249.severity = suggestion
 dotnet_diagnostic.rcs1250.severity = none
 # Options: roslynator_object_creation_type_style, roslynator_use_var_instead_of_implicit_object_creation
 
-# Invalid null check
-dotnet_diagnostic.rcs1251.severity = suggestion
-
 # Remove unnecessary braces from record declaration
 dotnet_diagnostic.rcs1251.severity = suggestion
 
@@ -935,6 +932,9 @@ dotnet_diagnostic.rcs1253.severity = none
 # Normalize format of enum flag value
 dotnet_diagnostic.rcs1254.severity = suggestion
 # Options: roslynator_enum_flag_value_style
+
+# Invalid null check
+dotnet_diagnostic.rcs1256.severity = suggestion
 
 # Use pattern matching
 dotnet_diagnostic.rcs9001.severity = silent

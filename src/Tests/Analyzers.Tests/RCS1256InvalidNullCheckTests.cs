@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1251InvalidNullCheckTests : AbstractCSharpDiagnosticVerifier<InvalidNullCheckAnalyzer, IfStatementCodeFixProvider>
+    public class RCS1256InvalidNullCheckTests : AbstractCSharpDiagnosticVerifier<InvalidNullCheckAnalyzer, IfStatementCodeFixProvider>
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.InvalidNullCheck;
 
