@@ -39,6 +39,13 @@ namespace Roslynator.CSharp.CodeFixes
             if (!expression.IsKind(SyntaxKind.NullLiteralExpression, SyntaxKind.DefaultLiteralExpression, SyntaxKind.DefaultExpression))
                 return;
 
+            if (expression.IsKind(SyntaxKind.NullLiteralExpression)
+                && expression.IsParentKind(SyntaxKind.EqualsValueClause)
+                && expression.Parent.IsParentKind(SyntaxKind.Parameter))
+            {
+                return;
+            }
+
             Diagnostic diagnostic = context.Diagnostics[0];
             Document document = context.Document;
 

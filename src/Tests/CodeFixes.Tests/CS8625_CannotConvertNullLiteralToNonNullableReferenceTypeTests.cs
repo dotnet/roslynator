@@ -129,5 +129,20 @@ class C
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
         }
+
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS8625_CannotConvertNullLiteralToNonNullableReferenceType)]
+        public async Task TestNoDiagnostic_Parameter()
+        {
+            await VerifyNoFixAsync(@"
+#nullable enable
+
+class C
+{
+    void M(string = null)
+    {
+    }
+}
+", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
+        }
     }
 }
