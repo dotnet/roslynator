@@ -95,8 +95,9 @@ namespace Roslynator.CSharp
                         return document.ReplaceNodeAsync(compilationUnit, SyntaxRefactorings.RemoveMember(compilationUnit, member), cancellationToken);
                     }
                 case SyntaxKind.NamespaceDeclaration:
+                case SyntaxKind.FileScopedNamespaceDeclaration:
                     {
-                        var namespaceDeclaration = (NamespaceDeclarationSyntax)parent;
+                        var namespaceDeclaration = (BaseNamespaceDeclarationSyntax)parent;
 
                         return document.ReplaceNodeAsync(namespaceDeclaration, SyntaxRefactorings.RemoveMember(namespaceDeclaration, member), cancellationToken);
                     }

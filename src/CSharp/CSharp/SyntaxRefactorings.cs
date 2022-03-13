@@ -380,7 +380,7 @@ namespace Roslynator.CSharp
 
             classDeclaration = classDeclaration.WithMembers(classDeclaration.Members.ReplaceAt(index, newMember));
 
-            return classDeclaration.RemoveNode(classDeclaration.Members[index], GetRemoveOptions(newMember));
+            return RemoveNode(classDeclaration, f => f.Members, index, GetRemoveOptions(newMember));
         }
 
         public static CompilationUnitSyntax RemoveMember(CompilationUnitSyntax compilationUnit, MemberDeclarationSyntax member)
@@ -414,10 +414,10 @@ namespace Roslynator.CSharp
 
             interfaceDeclaration = interfaceDeclaration.WithMembers(interfaceDeclaration.Members.ReplaceAt(index, newMember));
 
-            return interfaceDeclaration.RemoveNode(interfaceDeclaration.Members[index], GetRemoveOptions(newMember));
+            return RemoveNode(interfaceDeclaration, f => f.Members, index, GetRemoveOptions(newMember));
         }
 
-        public static NamespaceDeclarationSyntax RemoveMember(NamespaceDeclarationSyntax namespaceDeclaration, MemberDeclarationSyntax member)
+        public static BaseNamespaceDeclarationSyntax RemoveMember(BaseNamespaceDeclarationSyntax namespaceDeclaration, MemberDeclarationSyntax member)
         {
             if (namespaceDeclaration == null)
                 throw new ArgumentNullException(nameof(namespaceDeclaration));
@@ -431,7 +431,14 @@ namespace Roslynator.CSharp
 
             namespaceDeclaration = namespaceDeclaration.WithMembers(namespaceDeclaration.Members.ReplaceAt(index, newMember));
 
-            return namespaceDeclaration.RemoveNode(namespaceDeclaration.Members[index], GetRemoveOptions(newMember));
+            if (namespaceDeclaration.IsKind(SyntaxKind.FileScopedNamespaceDeclaration))
+            {
+                return namespaceDeclaration.RemoveNode(namespaceDeclaration.Members[index], GetRemoveOptions(newMember));
+            }
+            else
+            {
+                return RemoveNode(namespaceDeclaration, f => f.Members, index, GetRemoveOptions(newMember));
+            }
         }
 
         public static StructDeclarationSyntax RemoveMember(StructDeclarationSyntax structDeclaration, MemberDeclarationSyntax member)
@@ -448,7 +455,7 @@ namespace Roslynator.CSharp
 
             structDeclaration = structDeclaration.WithMembers(structDeclaration.Members.ReplaceAt(index, newMember));
 
-            return structDeclaration.RemoveNode(structDeclaration.Members[index], GetRemoveOptions(newMember));
+            return RemoveNode(structDeclaration, f => f.Members, index, GetRemoveOptions(newMember));
         }
 
         public static RecordDeclarationSyntax RemoveMember(RecordDeclarationSyntax recordDeclaration, MemberDeclarationSyntax member)
@@ -465,7 +472,7 @@ namespace Roslynator.CSharp
 
             recordDeclaration = recordDeclaration.WithMembers(recordDeclaration.Members.ReplaceAt(index, newMember));
 
-            return recordDeclaration.RemoveNode(recordDeclaration.Members[index], GetRemoveOptions(newMember));
+            return RemoveNode(recordDeclaration, f => f.Members, index, GetRemoveOptions(newMember));
         }
 
         public static TypeDeclarationSyntax RemoveMember(TypeDeclarationSyntax typeDeclaration, MemberDeclarationSyntax member)
@@ -482,7 +489,39 @@ namespace Roslynator.CSharp
 
             typeDeclaration = typeDeclaration.WithMembers(typeDeclaration.Members.ReplaceAt(index, newMember));
 
-            return typeDeclaration.RemoveNode(typeDeclaration.Members[index], GetRemoveOptions(newMember));
+            return RemoveNode(typeDeclaration, f => f.Members, index, GetRemoveOptions(newMember));
+        }
+
+        private static T RemoveNode<T>(
+            T declaration,
+            Func<T, SyntaxList<MemberDeclarationSyntax>> getMembers,
+            int index,
+            SyntaxRemoveOptions removeOptions) where T : SyntaxNode
+        {
+            SyntaxList<MemberDeclarationSyntax> members = getMembers(declaration);
+
+            T newDeclaration = declaration.RemoveNode(members[index], removeOptions);
+
+            if (index == 0
+                && index < members.Count - 1)
+            {
+                members = getMembers(newDeclaration);
+
+                MemberDeclarationSyntax nextMember = members[index];
+
+                SyntaxTriviaList leadingTrivia = nextMember.GetLeadingTrivia();
+
+                SyntaxTrivia trivia = leadingTrivia.FirstOrDefault();
+
+                if (trivia.IsEndOfLineTrivia())
+                {
+                    MemberDeclarationSyntax newNextMember = nextMember.WithLeadingTrivia(leadingTrivia.RemoveAt(0));
+
+                    newDeclaration = newDeclaration.ReplaceNode(nextMember, newNextMember);
+                }
+            }
+
+            return newDeclaration;
         }
 
         public static BlockSyntax RemoveUnsafeContext(UnsafeStatementSyntax unsafeStatement)
