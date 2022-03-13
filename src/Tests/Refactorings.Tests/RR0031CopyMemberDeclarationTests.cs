@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public class RR0103CopyMemberDeclarationTests : AbstractCSharpRefactoringVerifier
+    public class RR0031CopyMemberDeclarationTests : AbstractCSharpRefactoringVerifier
     {
         public override string RefactoringId { get; } = RefactoringIdentifiers.CopyMemberDeclaration;
 
@@ -344,6 +344,32 @@ class C
         get { return null; }
         set { }
     }
+}
+", equivalenceKey: EquivalenceKey.Create(RefactoringId), options: Options.AddAllowedCompilerDiagnosticId("CS0111"));
+        }
+
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CopyMemberDeclaration)]
+        public async Task Test_FileScopedNamespace()
+        {
+            await VerifyRefactoringAsync(@"
+namespace N;
+
+class C
+[||]{
+}
+
+class C2
+{
+}
+", @"
+namespace N;
+
+class C
+[||]{
+}
+
+class C2
+{
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId), options: Options.AddAllowedCompilerDiagnosticId("CS0111"));
         }
