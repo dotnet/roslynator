@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -22,7 +23,7 @@ namespace Roslynator.CSharp.Refactorings
 
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            SyntaxNode newRoot = root.RemoveNode(memberDeclaration, SyntaxRemoveOptions.KeepUnbalancedDirectives);
+            SyntaxNode newRoot = root.ReplaceNode(memberDeclaration.Parent, RemoveNode(memberDeclaration));
 
             newRoot = RemoveEmptyNamespaces(newRoot, SyntaxRemoveOptions.KeepUnbalancedDirectives);
 
@@ -42,6 +43,32 @@ namespace Roslynator.CSharp.Refactorings
                 ImmutableArray.CreateRange(folders));
 
             return document.Solution();
+        }
+
+        private static SyntaxNode RemoveNode(MemberDeclarationSyntax member)
+        {
+            MemberDeclarationListInfo memberList = SyntaxInfo.MemberDeclarationListInfo(member.Parent);
+            SyntaxList<MemberDeclarationSyntax> members = memberList.Members;
+
+            MemberDeclarationListInfo newMemberList = memberList.RemoveNode(member, SyntaxRemoveOptions.KeepUnbalancedDirectives);
+
+            int index = members.IndexOf(member);
+
+            if (index == 0
+                && index < members.Count - 1)
+            {
+                MemberDeclarationSyntax nextMember = newMemberList[index];
+                SyntaxTriviaList leadingTrivia = nextMember.GetLeadingTrivia();
+
+                if (leadingTrivia.FirstOrDefault().IsEndOfLineTrivia())
+                {
+                    MemberDeclarationSyntax newNextMember = nextMember.WithLeadingTrivia(leadingTrivia.RemoveAt(0));
+
+                    newMemberList = newMemberList.ReplaceNode(nextMember, newNextMember);
+                }
+            }
+
+            return newMemberList.Parent;
         }
 
         private static SyntaxNode RemoveAllButMember(CompilationUnitSyntax compilationUnit, MemberDeclarationSyntax memberDeclaration)
