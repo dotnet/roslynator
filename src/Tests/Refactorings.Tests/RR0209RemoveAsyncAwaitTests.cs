@@ -37,7 +37,7 @@ class C
         object LF() => null;
     }
 }
-");
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAsyncAwait)]
@@ -63,7 +63,7 @@ class C
         return GetAsync();
     }
 }
-");
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAsyncAwait)]
@@ -83,7 +83,7 @@ class C
 {
     Task<object> GetAsync() => GetAsync();
 }
-");
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAsyncAwait)]
@@ -115,7 +115,7 @@ class C
         }
     }
 }
-");
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAsyncAwait)]
@@ -141,7 +141,7 @@ class C
         Task<object> GetAsync() => GetAsync();
     }
 }
-");
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAsyncAwait)]
@@ -211,7 +211,7 @@ class C
         return GetAsync();
     }
 }
-", options: Options.AddAllowedCompilerDiagnosticId("CS1998"));
+", options: Options.AddAllowedCompilerDiagnosticId("CS1998"), equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAsyncAwait)]
@@ -281,7 +281,7 @@ class C
         return GetAsync();
     }
 }
-", options: Options.AddAllowedCompilerDiagnosticId("CS1998"));
+", options: Options.AddAllowedCompilerDiagnosticId("CS1998"), equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAsyncAwait)]
@@ -367,7 +367,7 @@ class C
         return GetAsync();
     }
 }
-");
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAsyncAwait)]
@@ -411,7 +411,7 @@ class C
         }
     }
 }
-");
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAsyncAwait)]
@@ -465,7 +465,7 @@ class C
         return GetAsync();
     }
 }
-");
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAsyncAwait)]
@@ -523,7 +523,7 @@ class C
         }
     }
 }
-");
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
     }
 }
