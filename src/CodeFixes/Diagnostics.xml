@@ -1184,32 +1184,32 @@
     Message="Method '{0}' with an iterator block must be 'async' to return '{1}'"
     HelpUrl="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs8403" />
   <Diagnostic
-	Id="CS8602"
+    Id="CS8602"
     Identifier="DereferenceOfPossiblyNullReference"
-	Severity="Warning"
+    Severity="Warning"
     Title="Dereference of a possibly null reference."
-	Message="Dereference of a possibly null reference"
-	HelpUrl="" />
+    Message="Dereference of a possibly null reference"
+    HelpUrl="" />
   <Diagnostic
-	Id="CS8604"
+    Id="CS8604"
     Identifier="PossibleNullReferenceArgumentForParameter"
-	Severity="Warning"
+    Severity="Warning"
     Title="Possible null reference argument for parameter."
-	Message="Possible null reference argument for parameter '{0}' in '{1}'"
-	HelpUrl="" />
+    Message="Possible null reference argument for parameter '{0}' in '{1}'"
+    HelpUrl="" />
   <Diagnostic
-	Id="CS8618"
+    Id="CS8618"
     Identifier="NonNullableMemberIsUninitialized"
-	Severity="Warning"
+    Severity="Warning"
     Title="Non-nullable member is uninitialized. Consider declaring the member as nullable." 
-	Message="Non-nullable {0} '{1}' is uninitialized. Consider declaring the {0} as nullable"
-	HelpUrl="" />
+    Message="Non-nullable {0} '{1}' is uninitialized. Consider declaring the {0} as nullable"
+    HelpUrl="" />
   <Diagnostic
-	Id="CS8625"
+    Id="CS8625"
     Identifier="CannotConvertNullLiteralToNonNullableReferenceType"
-	Severity="Warning"
-	Title="Cannot convert null literal to non-nullable reference type."
-	Message="Cannot convert null literal to non-nullable reference type"
+    Severity="Warning"
+    Title="Cannot convert null literal to non-nullable reference type."
+    Message="Cannot convert null literal to non-nullable reference type"
     HelpUrl="" />
   <Diagnostic 
     Id="CS8632"
