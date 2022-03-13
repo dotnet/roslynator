@@ -56,5 +56,18 @@ namespace N
 namespace System.Runtime.CompilerServices { internal static class IsExternalInit {} }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBraces)]
+        public async Task Test_NoDiagnostic()
+        {
+            await VerifyNoDiagnosticAsync(@"
+namespace N
+{
+    record struct R
+    {
+    }
+}
+");
+        }
     }
 }

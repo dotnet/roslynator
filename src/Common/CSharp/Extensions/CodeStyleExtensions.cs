@@ -457,7 +457,6 @@ namespace Roslynator.CSharp
 
         public static EnumFlagValueStyle GetEnumFlagValueStyle(this SyntaxNodeAnalysisContext context)
         {
-
             return GetEnumFlagValueStyle(context.GetConfigOptions());
         }
 

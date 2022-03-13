@@ -9,8 +9,8 @@ namespace Roslynator.Documentation
     {
         None = 0,
         Attributes = 1,
-        Parameters = 2,
-        BaseTypes = 4,
-        Constraints = 8,
+        Parameters = 1 << 1,
+        BaseTypes = 1 << 2,
+        Constraints = 1 << 3,
     }
 }

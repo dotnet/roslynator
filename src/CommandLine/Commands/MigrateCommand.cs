@@ -471,8 +471,8 @@ namespace Roslynator.CommandLine
                             message = new LogMessage($"Update rule '{id}' to '{en.Current}' ({severity})", Colors.Message_OK, Verbosity.Normal);
 
                             messages.Add(message);
-
-                        } while (en.MoveNext());
+                        }
+                        while (en.MoveNext());
                     }
 
                     return newValue;

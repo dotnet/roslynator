@@ -8,15 +8,15 @@ namespace Roslynator.FindSymbols
     internal enum SymbolFlags
     {
         None = 0,
-        Const = 32,
-        Static = 64,
-        Virtual = 128,
-        Sealed = 256,
-        Override = 512,
-        Abstract = 1024,
-        ReadOnly = 2048,
-        Extern = 4096,
-        Async = 16384,
-        Extension = 65536
+        Const = 1 << 5,
+        Static = 1 << 6,
+        Virtual = 1 << 7,
+        Sealed = 1 << 8,
+        Override = 1 << 9,
+        Abstract = 1 << 10,
+        ReadOnly = 1 << 11,
+        Extern = 1 << 12,
+        Async = 1 << 14,
+        Extension = 1 << 16
     }
 }

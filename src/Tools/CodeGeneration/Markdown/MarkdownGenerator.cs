@@ -410,8 +410,8 @@ namespace Roslynator.CodeGeneration.Markdown
                         yield return FencedCodeBlock(
                             helpValue,
                             "editorconfig");
-
-                    } while (en.MoveNext());
+                    }
+                    while (en.MoveNext());
                 }
             }
         }

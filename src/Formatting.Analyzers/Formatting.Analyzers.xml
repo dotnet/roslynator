@@ -1467,14 +1467,14 @@ Default maximal length is 140.</Summary>
       <Sample>
         <Before><![CDATA[items
     .Select(selector)
-	.FirstOrDefault()
-	?.ToString()
-	]]></Before>
+    .FirstOrDefault()
+    ?.ToString()
+    ]]></Before>
         <After><![CDATA[items
     .Select(selector)
-	.FirstOrDefault()?
-	.ToString()
-	]]></After>
+    .FirstOrDefault()?
+    .ToString()
+    ]]></After>
       </Sample>
     </Samples>
     <ConfigOptions>

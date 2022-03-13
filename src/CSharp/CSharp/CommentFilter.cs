@@ -10,7 +10,6 @@ namespace Roslynator.CSharp
     [Flags]
     public enum CommentFilter
     {
-
         /// <summary>
         /// None comment specified.
         /// </summary>
@@ -24,7 +23,7 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Multi-line comment.
         /// </summary>
-        MultiLine = 2,
+        MultiLine = 1 << 1,
 
         /// <summary>
         /// Non-documentation comment (single-line or multi-line).
@@ -34,12 +33,12 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Single-line documentation comment.
         /// </summary>
-        SingleLineDocumentation = 4,
+        SingleLineDocumentation = 1 << 2,
 
         /// <summary>
         /// Multi-line documentation comment.
         /// </summary>
-        MultiLineDocumentation = 8,
+        MultiLineDocumentation = 1 << 3,
 
         /// <summary>
         /// Documentation comment (single-line or multi-line).

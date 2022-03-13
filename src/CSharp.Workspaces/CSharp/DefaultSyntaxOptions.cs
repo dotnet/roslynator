@@ -24,6 +24,6 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Allow <see cref="SyntaxKind.DefaultLiteralExpression"/> instead of <see cref="SyntaxKind.DefaultExpression"/>.
         /// </summary>
-        AllowDefaultLiteral = 2,
+        AllowDefaultLiteral = 1 << 1,
     }
 }

@@ -286,8 +286,8 @@ namespace Roslynator.CSharp.Analysis
                                 break;
 
                             n2 = n2.Parent;
-
-                        } while (n2 != null);
+                        }
+                        while (n2 != null);
 
                         return true;
                     }
@@ -297,8 +297,8 @@ namespace Roslynator.CSharp.Analysis
                     }
 
                     n = n.Parent;
-
-                } while (n != null);
+                }
+                while (n != null);
 
                 return false;
             }

@@ -9,8 +9,8 @@ namespace Roslynator.CommandLine
     {
         None = 0,
         ConstantValue = 1,
-        Implements = 2,
-        InheritedFrom = 4,
-        Overrides = 8
+        Implements = 1 << 1,
+        InheritedFrom = 1 << 2,
+        Overrides = 1 << 3
     }
 }

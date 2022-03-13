@@ -31,8 +31,6 @@ namespace Roslynator.CSharp.Refactorings
         [Obsolete("", error: false)]
         public const string MergeInterpolationIntoInterpolatedString = Prefix + "0076";
         [Obsolete("", error: false)]
-        public const string SplitDeclarationAndInitialization = Prefix + "0194";
-        [Obsolete("", error: false)]
         public const string UseEmptyStringLiteralInsteadOfStringEmpty = Prefix + "0168";
         [Obsolete("", error: false)]
         public const string WrapInElseClause = Prefix + "0173";

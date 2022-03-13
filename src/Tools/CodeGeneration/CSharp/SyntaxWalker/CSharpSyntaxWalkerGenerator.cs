@@ -470,8 +470,8 @@ namespace Roslynator.CodeGeneration.CSharp
                 }
 
                 typeSymbol = typeSymbol.BaseType;
-
-            } while (typeSymbol != null);
+            }
+            while (typeSymbol != null);
 
             throw new ArgumentException("", nameof(typeSymbol));
         }

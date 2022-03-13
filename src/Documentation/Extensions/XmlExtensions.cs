@@ -183,8 +183,8 @@ namespace Roslynator.Documentation
                         }
 
                         isFirst = false;
-
-                    } while (!isLast);
+                    }
+                    while (!isLast);
                 }
             }
         }
@@ -211,8 +211,8 @@ namespace Roslynator.Documentation
                         WriteStartItem();
                         WriteContentTo(en.Current, writer, inlineOnly: true);
                         WriteEndItem();
-
-                    } while (en.MoveNext());
+                    }
+                    while (en.MoveNext());
 
                     if (isOrdered)
                     {
@@ -330,8 +330,8 @@ namespace Roslynator.Documentation
                             }
 
                             writer.WriteEndTableRow();
-
-                        } while (en.MoveNext());
+                        }
+                        while (en.MoveNext());
 
                         writer.WriteEndTable();
                     }

@@ -9,8 +9,8 @@ namespace Roslynator
     {
         None = 0,
         Public = 1,
-        Internal = 2,
-        Private = 4,
+        Internal = 1 << 1,
+        Private = 1 << 2,
         All = Public | Internal | Private
     }
 }

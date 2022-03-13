@@ -335,8 +335,10 @@ namespace Roslynator.CSharp.Analysis
                 if (invocation.Parent.IsParentKind(SyntaxKind.Block)
                     && invocation.Parent.Parent.IsParentKind(SyntaxKind.ForEachStatement))
                 {
-                    forEachStatement = (ForEachStatementSyntax)invocation.Parent.Parent.Parent;
                     block = (BlockSyntax)invocation.Parent.Parent;
+
+                    if (block.Statements.Count == 1)
+                        forEachStatement = (ForEachStatementSyntax)invocation.Parent.Parent.Parent;
                 }
             }
 

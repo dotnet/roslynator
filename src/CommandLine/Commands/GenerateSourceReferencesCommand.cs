@@ -127,8 +127,8 @@ namespace Roslynator.CommandLine
                     writer.WriteAttributeString("line", line.ToString(CultureInfo.InvariantCulture));
 
                     writer.WriteEndElement();
-
-                } while (en.MoveNext());
+                }
+                while (en.MoveNext());
 
                 writer.WriteEndElement();
             }

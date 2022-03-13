@@ -1,123 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Options>
   <Option Id="AccessibilityModifiers">
-	<Description>Prefer explicit/implicit accessibility modifiers</Description>
-	<Values>
-	  <Value>explicit</Value>
-	  <Value>implicit</Value>
-	</Values>
+    <Description>Prefer explicit/implicit accessibility modifiers</Description>
+    <Values>
+      <Value>explicit</Value>
+      <Value>implicit</Value>
+    </Values>
   </Option>
   <Option Id="AccessorBracesStyle">
-	<Description>Format accessor's braces on single line or multiple lines</Description>
-	<Values>
-	  <Value IsDefault="true">multi_line</Value>
-	  <Value>single_line_when_expression_is_on_single_line</Value>
-	</Values>
+    <Description>Format accessor's braces on single line or multiple lines</Description>
+    <Values>
+      <Value IsDefault="true">multi_line</Value>
+      <Value>single_line_when_expression_is_on_single_line</Value>
+    </Values>
   </Option>
   <Option Id="ArrayCreationTypeStyle">
-	<Description>Prefer explicitly/implicitly typed array</Description>
-	<Values>
-	  <Value>explicit</Value>
-	  <Value>implicit</Value>
-	  <Value>implicit_when_type_is_obvious</Value>
-	</Values>
+    <Description>Prefer explicitly/implicitly typed array</Description>
+    <Values>
+      <Value>explicit</Value>
+      <Value>implicit</Value>
+      <Value>implicit_when_type_is_obvious</Value>
+    </Values>
   </Option>
   <Option Id="ArrowTokenNewLine">
-	<Description>Place new line after/before arrow token</Description>
-	<Values>
-	  <Value>after</Value>
-	  <Value>before</Value>
-	</Values>
+    <Description>Place new line after/before arrow token</Description>
+    <Values>
+      <Value>after</Value>
+      <Value>before</Value>
+    </Values>
   </Option>
   <Option Id="BinaryOperatorNewLine">
-	<Description>Place new line after/before binary operator</Description>
-	<Values>
-	  <Value>after</Value>
-	  <Value>before</Value>
-	</Values>
+    <Description>Place new line after/before binary operator</Description>
+    <Values>
+      <Value>after</Value>
+      <Value>before</Value>
+    </Values>
   </Option>
   <Option Id="BlankLineBetweenClosingBraceAndSwitchSection">
-	<ValuePlaceholder>true|false</ValuePlaceholder>
-	<Description>Add/remove blank line between closing brace and switch section</Description>
+    <ValuePlaceholder>true|false</ValuePlaceholder>
+    <Description>Add/remove blank line between closing brace and switch section</Description>
   </Option>
   <Option Id="BlankLineBetweenSingleLineAccessors">
-	<ValuePlaceholder>true|false</ValuePlaceholder>
-	<Description>Add/remove blank line between single-line accessors</Description>
+    <ValuePlaceholder>true|false</ValuePlaceholder>
+    <Description>Add/remove blank line between single-line accessors</Description>
   </Option>
   <Option Id="BlankLineBetweenUsingDirectives">
-	<Description>Add/remove blank line between using directives</Description>
-	<Values>
-	  <Value>never</Value>
-	  <Value>separate_groups</Value>
-	</Values>
+    <Description>Add/remove blank line between using directives</Description>
+    <Values>
+      <Value>never</Value>
+      <Value>separate_groups</Value>
+    </Values>
   </Option>
   <Option Id="BlockBracesStyle">
-	<Description>Format block's braces on single line or multiple lines</Description>
-	<Values>
-	  <Value IsDefault="true">multi_line</Value>
-	  <Value>single_line_when_empty</Value>
-	</Values>
+    <Description>Format block's braces on single line or multiple lines</Description>
+    <Values>
+      <Value IsDefault="true">multi_line</Value>
+      <Value>single_line_when_empty</Value>
+    </Values>
   </Option>
   <Option Id="BodyStyle">
-	<Description>Prefer block body or expression body</Description>
-	<Values>
-	  <Value>block</Value>
-	  <Value>expression</Value>
-	</Values>
+    <Description>Prefer block body or expression body</Description>
+    <Values>
+      <Value>block</Value>
+      <Value>expression</Value>
+    </Values>
   </Option>
   <Option Id="ConditionalOperatorConditionParenthesesStyle">
-	<Description>Add/remove parentheses to/from condition in conditional operator</Description>
-	<Values>
-	  <Value>include</Value>
-	  <Value>omit</Value>
-	  <Value>omit_when_condition_is_single_token</Value>
-	</Values>
+    <Description>Add/remove parentheses to/from condition in conditional operator</Description>
+    <Values>
+      <Value>include</Value>
+      <Value>omit</Value>
+      <Value>omit_when_condition_is_single_token</Value>
+    </Values>
   </Option>
   <Option Id="ConditionalOperatorNewLine">
-	<Description>Place new line after/before '?:' operator</Description>
-	<Values>
-	  <Value>after</Value>
-	  <Value>before</Value>
-	</Values>
+    <Description>Place new line after/before '?:' operator</Description>
+    <Values>
+      <Value>after</Value>
+      <Value>before</Value>
+    </Values>
   </Option>
   <Option Id="ConfigureAwait">
-	<ValuePlaceholder>true|false</ValuePlaceholder>
-	<Description>Add/remove 'ConfigureAwait(false)' call</Description>
+    <ValuePlaceholder>true|false</ValuePlaceholder>
+    <Description>Add/remove 'ConfigureAwait(false)' call</Description>
   </Option>
   <Option Id="DocCommentSummaryStyle">
-	<Description>Format documentation comment summary on single line or multiple lines</Description>
-	<Values>
-	  <Value>multi_line</Value>
-	  <Value>single_line</Value>
-	</Values>
+    <Description>Format documentation comment summary on single line or multiple lines</Description>
+    <Values>
+      <Value>multi_line</Value>
+      <Value>single_line</Value>
+    </Values>
   </Option>
   <Option Id="EmptyStringStyle">
-	<Description>Prefer 'string.Empty' or empty string literal</Description>
-	<Values>
-	  <Value>field</Value>
-	  <Value>literal</Value>
-	</Values>
+    <Description>Prefer 'string.Empty' or empty string literal</Description>
+    <Values>
+      <Value>field</Value>
+      <Value>literal</Value>
+    </Values>
   </Option>
   <Option Id="EnumFlagValueStyle">
-	<Description>Format enum flag value as decimal number or as a shift operator</Description>
-	<Values>
-	  <Value>decimal_number</Value>
-	  <Value>shift_operator</Value>
-	</Values>
+    <Description>Format enum flag value as decimal number or as a shift operator</Description>
+    <Values>
+      <Value>decimal_number</Value>
+      <Value>shift_operator</Value>
+    </Values>
   </Option>
   <Option Id="EnumHasFlagStyle">
-	<Description>Use 'HasFlag' method or bitwise operator</Description>
-	<Values>
-	  <Value>method</Value>
-	  <Value>operator</Value>
-	</Values>
+    <Description>Use 'HasFlag' method or bitwise operator</Description>
+    <Values>
+      <Value>method</Value>
+      <Value>operator</Value>
+    </Values>
   </Option>
   <Option Id="EqualsTokenNewLine">
-	<Description>Place new line after/before equals sign</Description>
-	<Values>
-	  <Value>after</Value>
-	  <Value>before</Value>
-	</Values>
+    <Description>Place new line after/before equals sign</Description>
+    <Values>
+      <Value>after</Value>
+      <Value>before</Value>
+    </Values>
   </Option>
   <Option Id="MaxLineLength">
     <DefaultValue>140</DefaultValue>
@@ -129,71 +129,71 @@
     <Description>Include/omit new line at the end of a file</Description>
   </Option>
   <Option Id="NewLineBeforeWhileInDoStatement">
-	<ValuePlaceholder>true|false</ValuePlaceholder>
-	<Description>Include/omit new line before 'while' in 'do' statement</Description>
+    <ValuePlaceholder>true|false</ValuePlaceholder>
+    <Description>Include/omit new line before 'while' in 'do' statement</Description>
   </Option>
   <Option Id="NullCheckStyle">
-	<Description>Use equality operator or pattern matchding as a null check</Description>
-	<Values>
-	  <Value>equality_operator</Value>
-	  <Value>pattern_matching</Value>
-	</Values>
+    <Description>Use equality operator or pattern matchding as a null check</Description>
+    <Values>
+      <Value>equality_operator</Value>
+      <Value>pattern_matching</Value>
+    </Values>
   </Option>
   <Option Id="NullConditionalOperatorNewLine">
-	<Description>Place new line after/before null-conditional operator</Description>
-	<Values>
-	  <Value>after</Value>
-	  <Value>before</Value>
-	</Values>
+    <Description>Place new line after/before null-conditional operator</Description>
+    <Values>
+      <Value>after</Value>
+      <Value>before</Value>
+    </Values>
   </Option>
   <Option Id="ObjectCreationParenthesesStyle">
-	<Description>Include/omit parentheses when creating new object</Description>
-	<Values>
-	  <Value>include</Value>
-	  <Value>omit</Value>
-	</Values>
+    <Description>Include/omit parentheses when creating new object</Description>
+    <Values>
+      <Value>include</Value>
+      <Value>omit</Value>
+    </Values>
   </Option>
   <Option Id="ObjectCreationTypeStyle">
-	<Description>Prefer explicit/implicit object creation</Description>
-	<Values>
-	  <Value>explicit</Value>
-	  <Value>implicit</Value>
-	  <Value>implicit_when_type_is_obvious</Value>
-	</Values>
+    <Description>Prefer explicit/implicit object creation</Description>
+    <Values>
+      <Value>explicit</Value>
+      <Value>implicit</Value>
+      <Value>implicit_when_type_is_obvious</Value>
+    </Values>
   </Option>
   <Option Id="PrefixFieldIdentifierWithUnderscore">
     <ValuePlaceholder>true|false</ValuePlaceholder>
     <Description>Prefix field identifier with underscore</Description>
   </Option>
   <Option Id="SuppressUnityScriptMethods">
-	<ValuePlaceholder>true|false</ValuePlaceholder>
-	<Description>Suppress Unity script methods</Description>
+    <ValuePlaceholder>true|false</ValuePlaceholder>
+    <Description>Suppress Unity script methods</Description>
   </Option>
   <Option Id="UseAnonymousFunctionOrMethodGroup">
-	<Description>Use anonymous function or method group</Description>
-	<Values>
-	  <Value>anonymous_function</Value>
-	  <Value>method_group</Value>
-	</Values>
+    <Description>Use anonymous function or method group</Description>
+    <Values>
+      <Value>anonymous_function</Value>
+      <Value>method_group</Value>
+    </Values>
   </Option>
   <Option Id="UseBlockBodyWhenDeclarationSpansOverMultipleLines">
-	<ValuePlaceholder>true|false</ValuePlaceholder>
-	<Description>Use block body when declaration spans over multiple lines</Description>
+    <ValuePlaceholder>true|false</ValuePlaceholder>
+    <Description>Use block body when declaration spans over multiple lines</Description>
   </Option>
   <Option Id="UseBlockBodyWhenExpressionSpansOverMultipleLines">
-	<ValuePlaceholder>true|false</ValuePlaceholder>
-	<Description>Use block body when expression spans over multiple lines</Description>
+    <ValuePlaceholder>true|false</ValuePlaceholder>
+    <Description>Use block body when expression spans over multiple lines</Description>
   </Option>
   <Option Id="UseVarInsteadOfImplicitObjectCreation">
-	<ValuePlaceholder>true|false</ValuePlaceholder>
-	<Description>Use 'var' instead of implicit object creation</Description>
+    <ValuePlaceholder>true|false</ValuePlaceholder>
+    <Description>Use 'var' instead of implicit object creation</Description>
   </Option>
   <Option Id="InfiniteLoopStyle">
-	<Values>
-	  <Value>for</Value>
-	  <Value>while</Value>
-	</Values>
-	<Description>Use 'for'/'while' statement as an infinite loop</Description>
+    <Values>
+      <Value>for</Value>
+      <Value>while</Value>
+    </Values>
+    <Description>Use 'for'/'while' statement as an infinite loop</Description>
   </Option>
   <!--
   <Option Id="">
@@ -201,10 +201,10 @@
     <DefaultValue></DefaultValue>
     <ValuePlaceholder></ValuePlaceholder>
     <Description></Description>
-	<Values>
-	  <Value IsDefault="true"></Value>
-	  <Value></Value>
-	</Values>
+    <Values>
+      <Value IsDefault="true"></Value>
+      <Value></Value>
+    </Values>
   </Option>
   -->
 </Options>

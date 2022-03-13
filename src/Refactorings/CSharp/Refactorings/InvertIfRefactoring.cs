@@ -142,8 +142,8 @@ namespace Roslynator.CSharp.Refactorings
                     lastIfStatement = a.IfStatement;
 
                     a = a.AnalyzeNextStatement();
-
-                } while (a.Success);
+                }
+                while (a.Success);
 
                 int firstLastStatementIndex = lastStatementIndex;
 

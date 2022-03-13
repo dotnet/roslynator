@@ -9,10 +9,10 @@ namespace Roslynator.Documentation
     {
         None = 0,
         Content = 1,
-        Namespaces = 2,
-        ClassHierarchy = 4,
-        Types = 8,
-        Other = 16,
+        Namespaces = 1 << 1,
+        ClassHierarchy = 1 << 2,
+        Types = 1 << 3,
+        Other = 1 << 4,
         All = int.MaxValue
     }
 }

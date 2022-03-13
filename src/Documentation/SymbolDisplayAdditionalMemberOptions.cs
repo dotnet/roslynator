@@ -9,6 +9,6 @@ namespace Roslynator.Documentation
     {
         None = 0,
         UseItemPropertyName = 1,
-        UseOperatorName = 2,
+        UseOperatorName = 1 << 1,
     }
 }

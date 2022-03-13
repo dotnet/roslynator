@@ -803,8 +803,8 @@ namespace Roslynator.Documentation.Html
                                 Write(TextUtility.RemovePrefixFromDocumentationCommentId(commentId));
                             }
                         }
-
-                    } while (en.MoveNext());
+                    }
+                    while (en.MoveNext());
                 }
             }
 
@@ -903,8 +903,8 @@ namespace Roslynator.Documentation.Html
                         }
 
                         isFirst = false;
-
-                    } while (!isLast);
+                    }
+                    while (!isLast);
                 }
             }
         }

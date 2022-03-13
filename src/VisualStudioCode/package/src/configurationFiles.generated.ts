@@ -1108,6 +1108,7 @@ roslynator_analyzers.enabled_by_default = true|false
 #roslynator_refactoring.split_attributes.enabled = true
 #roslynator_refactoring.split_if.enabled = true
 #roslynator_refactoring.split_if_else.enabled = true
+#roslynator_refactoring.split_local_declaration_and_assignment.enabled = true
 #roslynator_refactoring.split_switch_labels.enabled = true
 #roslynator_refactoring.split_variable_declaration.enabled = true
 #roslynator_refactoring.swap_binary_operands.enabled = true

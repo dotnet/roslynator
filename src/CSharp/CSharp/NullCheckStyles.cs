@@ -23,7 +23,7 @@ namespace Roslynator.CSharp
         /// <summary>
         /// <c>x != null</c>
         /// </summary>
-        NotEqualsToNull = 2,
+        NotEqualsToNull = 1 << 1,
 
         /// <summary>
         /// Expression that uses equality/inequality operator.
@@ -33,17 +33,17 @@ namespace Roslynator.CSharp
         /// <summary>
         /// <c>x is null</c>
         /// </summary>
-        IsNull = 4,
+        IsNull = 1 << 2,
 
         /// <summary>
         /// <c>!(x is null)</c>
         /// </summary>
-        NotIsNull = 8,
+        NotIsNull = 1 << 3,
 
         /// <summary>
         /// <c>!x.HasValue</c>
         /// </summary>
-        NotHasValue = 16,
+        NotHasValue = 1 << 4,
 
         /// <summary>
         /// Expression that checks whether an expression is null.
@@ -53,7 +53,7 @@ namespace Roslynator.CSharp
         /// <summary>
         /// <c>x.HasValue</c>
         /// </summary>
-        HasValue = 32,
+        HasValue = 1 << 5,
 
         /// <summary>
         /// Expression that uses <see cref="Nullable{T}.HasValue"/> property.
@@ -63,7 +63,7 @@ namespace Roslynator.CSharp
         /// <summary>
         /// <c>x is not null</c>
         /// </summary>
-        IsNotNull = 64,
+        IsNotNull = 1 << 6,
 
         /// <summary>
         /// Expression that uses pattern syntax.

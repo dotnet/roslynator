@@ -9,8 +9,8 @@ namespace Roslynator.Rename
     {
         None = 0,
         Type = 1,
-        Member = 2,
-        Local = 4,
+        Member = 1 << 1,
+        Local = 1 << 2,
         All = Type | Member | Local,
     }
 }

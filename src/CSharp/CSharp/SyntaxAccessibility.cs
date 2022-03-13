@@ -357,8 +357,8 @@ namespace Roslynator.CSharp
                 SyntaxDebug.Assert(parent is MemberDeclarationSyntax, parent);
 
                 declaration = parent as MemberDeclarationSyntax;
-
-            } while (declaration != null);
+            }
+            while (declaration != null);
 
             return false;
         }

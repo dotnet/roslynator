@@ -21,6 +21,9 @@ namespace Roslynator.CSharp.Refactorings
 
             if (context.IsRefactoringEnabled(RefactoringDescriptors.RemoveInstantiationOfLocalVariable))
                 await RemoveInstantiationOfLocalVariableRefactoring.ComputeRefactoringAsync(context, localDeclaration).ConfigureAwait(false);
+
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.SplitLocalDeclarationAndAssignment))
+                await SplitLocalDeclarationAndAssignmentRefactoring.ComputeRefactoringAsync(context, localDeclaration).ConfigureAwait(false);
         }
     }
 }

@@ -86,8 +86,8 @@ namespace Roslynator.CSharp
                 }
 
                 t = t.GetNextToken();
-
-            } while (!t.IsKind(SyntaxKind.None));
+            }
+            while (!t.IsKind(SyntaxKind.None));
 
             t = token;
 

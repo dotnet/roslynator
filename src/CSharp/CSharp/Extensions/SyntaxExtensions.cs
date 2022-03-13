@@ -109,8 +109,8 @@ namespace Roslynator.CSharp
                     statement = body.Statements.SingleOrDefault(shouldThrow: false);
 
                     body = statement as BlockSyntax;
-
-                } while (body != null);
+                }
+                while (body != null);
 
                 return statement;
             }
@@ -569,8 +569,8 @@ namespace Roslynator.CSharp
                                 do
                                 {
                                     d = d.GetNextRelatedDirective();
-
-                                } while (d != null && d.Kind() != SyntaxKind.EndIfDirectiveTrivia);
+                                }
+                                while (d != null && d.Kind() != SyntaxKind.EndIfDirectiveTrivia);
 
                                 continue;
                             }
@@ -579,8 +579,8 @@ namespace Roslynator.CSharp
                                 do
                                 {
                                     d = d.GetNextRelatedDirective();
-
-                                } while (d != null && d.Kind() != SyntaxKind.EndRegionDirectiveTrivia);
+                                }
+                                while (d != null && d.Kind() != SyntaxKind.EndRegionDirectiveTrivia);
 
                                 continue;
                             }
@@ -3327,8 +3327,8 @@ namespace Roslynator.CSharp
 
                         if (!d.FullSpan.OverlapsWith(span))
                             return true;
-
-                    } while (d != last);
+                    }
+                    while (d != last);
                 }
             }
 
@@ -4223,8 +4223,8 @@ namespace Roslynator.CSharp
                         return identifierName2;
 
                     qualifiedName = left as QualifiedNameSyntax;
-
-                } while (qualifiedName != null);
+                }
+                while (qualifiedName != null);
 
                 SyntaxDebug.Fail(left);
             }

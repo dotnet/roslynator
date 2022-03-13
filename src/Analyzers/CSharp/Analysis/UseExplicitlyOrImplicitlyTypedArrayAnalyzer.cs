@@ -85,7 +85,7 @@ namespace Roslynator.CSharp.Analysis
 
                     foreach (ExpressionSyntax expression2 in initializer.Expressions)
                     {
-                        isObvious = CSharpTypeAnalysis.IsTypeObvious(expression2, null, context.SemanticModel, context.CancellationToken);
+                        isObvious = CSharpTypeAnalysis.IsTypeObvious(expression2, context.SemanticModel, context.CancellationToken);
 
                         if (!isObvious)
                             break;
@@ -142,7 +142,7 @@ namespace Roslynator.CSharp.Analysis
                             return;
                     }
 
-                    if (!CSharpTypeAnalysis.IsTypeObvious(expression, typeSymbol, context.SemanticModel, context.CancellationToken))
+                    if (!CSharpTypeAnalysis.IsTypeObvious(expression, typeSymbol, includeNullability: true, context.SemanticModel, context.CancellationToken))
                         return;
                 }
             }

@@ -23,22 +23,22 @@ namespace Roslynator.CSharp
         /// <summary>
         /// A "public" modifier.
         /// </summary>
-        Public = 2,
+        Public = 1 << 1,
 
         /// <summary>
         /// A "private" modifier.
         /// </summary>
-        Private = 4,
+        Private = 1 << 2,
 
         /// <summary>
         /// A "protected" modifier.
         /// </summary>
-        Protected = 8,
+        Protected = 1 << 3,
 
         /// <summary>
         /// An "internal" modifier.
         /// </summary>
-        Internal = 16,
+        Internal = 1 << 4,
 
         /// <summary>
         /// An accessibility modifier.
@@ -48,32 +48,32 @@ namespace Roslynator.CSharp
         /// <summary>
         /// A "const" modifier.
         /// </summary>
-        Const = 32,
+        Const = 1 << 5,
 
         /// <summary>
         /// A "static" modifier.
         /// </summary>
-        Static = 64,
+        Static = 1 << 6,
 
         /// <summary>
         /// A "virtual" modifier.
         /// </summary>
-        Virtual = 128,
+        Virtual = 1 << 7,
 
         /// <summary>
         /// A "sealed" modifier.
         /// </summary>
-        Sealed = 256,
+        Sealed = 1 << 8,
 
         /// <summary>
         /// An "override" modifier.
         /// </summary>
-        Override = 512,
+        Override = 1 << 9,
 
         /// <summary>
         /// An "abstract" modifier.
         /// </summary>
-        Abstract = 1024,
+        Abstract = 1 << 10,
 
         /// <summary>
         /// "abstract", "virtual" or "override" modifier.
@@ -83,56 +83,56 @@ namespace Roslynator.CSharp
         /// <summary>
         /// A "readonly" modifier.
         /// </summary>
-        ReadOnly = 2048,
+        ReadOnly = 1 << 11,
 
         /// <summary>
         /// An "extern" modifier.
         /// </summary>
-        Extern = 4096,
+        Extern = 1 << 12,
 
         /// <summary>
         /// A "unsafe" modifier.
         /// </summary>
-        Unsafe = 8192,
+        Unsafe = 1 << 13,
 
         /// <summary>
         /// A "volatile" modifier.
         /// </summary>
-        Volatile = 16384,
+        Volatile = 1 << 14,
 
         /// <summary>
         /// An "async" modifier.
         /// </summary>
-        Async = 32768,
+        Async = 1 << 15,
 
         /// <summary>
         /// A "partial" modifier.
         /// </summary>
-        Partial = 65536,
+        Partial = 1 << 16,
 
         /// <summary>
         /// A "ref" modifier.
         /// </summary>
-        Ref = 131072,
+        Ref = 1 << 17,
 
         /// <summary>
         /// An "out" modifier.
         /// </summary>
-        Out = 262144,
+        Out = 1 << 18,
 
         /// <summary>
         /// An "in" modifier.
         /// </summary>
-        In = 524288,
+        In = 1 << 19,
 
         /// <summary>
         /// A "params" modifier.
         /// </summary>
-        Params = 1048576,
+        Params = 1 << 20,
 
         /// <summary>
         /// A "this" modifier.
         /// </summary>
-        This = 2097152,
+        This = 1 << 21,
     }
 }

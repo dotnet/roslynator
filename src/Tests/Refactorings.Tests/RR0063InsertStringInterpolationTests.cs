@@ -33,7 +33,6 @@ class C
 equivalenceKey: EquivalenceKey.Create(RefactoringId), options: Options.AddAllowedCompilerDiagnosticId("CS1733"));
         }
 
-
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InsertStringInterpolation)]
         public async Task Test_EmptyInterpolatedString()
         {

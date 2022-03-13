@@ -9,8 +9,8 @@ namespace Roslynator.CSharp.Analysis.ReduceIfNesting
     {
         None = 0,
         AllowNestedFix = 1,
-        AllowIfInsideIfElse = 2,
-        AllowLoop = 4,
-        AllowSwitchSection = 8,
+        AllowIfInsideIfElse = 1 << 1,
+        AllowLoop = 1 << 2,
+        AllowSwitchSection = 1 << 3,
     }
 }

@@ -46,9 +46,9 @@ namespace Roslynator.Rename
                 IMethodSymbol delegateMethodSymbol = baseType.DelegateInvokeMethod;
 
                 if (delegateMethodSymbol != null)
-                    AddParameters(delegateMethodSymbol.Parameters, ref results);
+                    results.AddRange(delegateMethodSymbol.Parameters);
 
-                AddTypeParameters(baseType.TypeParameters, ref results);
+                results.AddRange(baseType.TypeParameters);
 
                 foreach (INamedTypeSymbol containedType in typeSymbols
                     .Where(f => SymbolEqualityComparer.Default.Equals(f.ContainingType, baseType))
@@ -86,15 +86,15 @@ namespace Roslynator.Rename
                     if (!propertySymbol.IsIndexer)
                         results.Add(symbol);
 
-                    AddParameters(propertySymbol.Parameters, ref results);
+                    results.AddRange(propertySymbol.Parameters);
                 }
                 else if (symbol is IMethodSymbol methodSymbol)
                 {
                     if (!methodSymbol.MethodKind.Is(MethodKind.Constructor, MethodKind.UserDefinedOperator, MethodKind.Conversion))
                         results.Add(symbol);
 
-                    AddTypeParameters(methodSymbol.TypeParameters, ref results);
-                    AddParameters(methodSymbol.Parameters, ref results);
+                    results.AddRange(methodSymbol.TypeParameters);
+                    results.AddRange(methodSymbol.Parameters);
                 }
                 else
                 {
@@ -103,18 +103,6 @@ namespace Roslynator.Rename
             }
 
             return results;
-        }
-
-        private static void AddParameters(ImmutableArray<IParameterSymbol> parameters, ref List<ISymbol> symbols)
-        {
-            foreach (IParameterSymbol parameterSymbol in parameters)
-                symbols.Add(parameterSymbol);
-        }
-
-        private static void AddTypeParameters(ImmutableArray<ITypeParameterSymbol> typeParameters, ref List<ISymbol> symbols)
-        {
-            foreach (ITypeParameterSymbol typeParameterSymbol in typeParameters)
-                symbols.Add(typeParameterSymbol);
         }
     }
 }

@@ -9,7 +9,7 @@ namespace Roslynator
     {
         None = 0,
         SystemFirst = 1,
-        OmitContainingNamespace = 2,
-        OmitContainingType = 4,
+        OmitContainingNamespace = 1 << 1,
+        OmitContainingType = 1 << 2,
     }
 }

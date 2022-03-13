@@ -433,8 +433,8 @@ namespace Roslynator.Testing
 
                         ReportMismatch(actualDiagnostics, actualCount, expectedCount);
                     }
-
-                } while (expectedEnumerator.MoveNext());
+                }
+                while (expectedEnumerator.MoveNext());
 
                 if (actualEnumerator.MoveNext())
                 {
