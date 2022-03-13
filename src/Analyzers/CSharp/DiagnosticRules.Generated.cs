@@ -2497,5 +2497,17 @@ namespace Roslynator.CSharp
             helpLinkUri:        DiagnosticIdentifiers.NormalizeFormatOfEnumFlagValue, 
             customTags:         Array.Empty<string>());
 
+        /// <summary>RCS1255</summary>
+        public static readonly DiagnosticDescriptor UseEnumFieldExplicitly = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.UseEnumFieldExplicitly, 
+            title:              "Use enum field explicitly", 
+            messageFormat:      "Use enum field explicitly", 
+            category:           DiagnosticCategories.Roslynator, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.UseEnumFieldExplicitly, 
+            customTags:         Array.Empty<string>());
+
     }
 }

@@ -12,6 +12,7 @@ using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.CodeFixes
 {
+
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(CaseSwitchLabelCodeFixProvider))]
     [Shared]
     public sealed class CaseSwitchLabelCodeFixProvider : BaseCodeFixProvider
