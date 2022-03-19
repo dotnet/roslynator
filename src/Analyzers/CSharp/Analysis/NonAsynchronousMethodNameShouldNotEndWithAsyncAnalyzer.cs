@@ -74,8 +74,11 @@ namespace Roslynator.CSharp.Analysis
                 if (!methodSymbol.Name.EndsWith("Async", StringComparison.Ordinal))
                     return;
 
-                if (SymbolUtility.IsAwaitable(methodSymbol.ReturnType, shouldCheckWindowsRuntimeTypes))
+                if (SymbolUtility.IsAwaitable(methodSymbol.ReturnType, shouldCheckWindowsRuntimeTypes)
+                    || methodSymbol.ReturnType.OriginalDefinition.HasMetadataName(MetadataNames.System_Collections_Generic_IAsyncEnumerable_T))
+                {
                     return;
+                }
 
                 SyntaxToken identifier = methodDeclaration.Identifier;
 
@@ -99,8 +102,11 @@ namespace Roslynator.CSharp.Analysis
                 if (SymbolUtility.CanBeEntryPoint(methodSymbol))
                     return;
 
-                if (!SymbolUtility.IsAwaitable(methodSymbol.ReturnType, shouldCheckWindowsRuntimeTypes))
+                if (!SymbolUtility.IsAwaitable(methodSymbol.ReturnType, shouldCheckWindowsRuntimeTypes)
+                    && !methodSymbol.ReturnType.OriginalDefinition.HasMetadataName(MetadataNames.System_Collections_Generic_IAsyncEnumerable_T))
+                {
                     return;
+                }
 
                 DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AsynchronousMethodNameShouldEndWithAsync, methodDeclaration.Identifier);
             }

@@ -55,13 +55,10 @@ namespace Roslynator.CSharp.Analysis
             if (!body.Statements.Any())
                 return;
 
-            if (!methodDeclaration.Identifier.ValueText.EndsWith("Async", StringComparison.Ordinal))
-            {
-                IMethodSymbol methodSymbol = context.SemanticModel.GetDeclaredSymbol(methodDeclaration, context.CancellationToken);
+            IMethodSymbol methodSymbol = context.SemanticModel.GetDeclaredSymbol(methodDeclaration, context.CancellationToken);
 
-                if (!IsTaskLike(methodSymbol.ReturnType))
-                    return;
-            }
+            if (!SymbolUtility.IsAwaitable(methodSymbol.ReturnType))
+                return;
 
             if (IsFixable(body, context))
                 DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseAsyncAwait, methodDeclaration.Identifier);
@@ -82,13 +79,10 @@ namespace Roslynator.CSharp.Analysis
             if (!body.Statements.Any())
                 return;
 
-            if (!localFunction.Identifier.ValueText.EndsWith("Async", StringComparison.Ordinal))
-            {
-                IMethodSymbol methodSymbol = context.SemanticModel.GetDeclaredSymbol(localFunction, context.CancellationToken);
+            IMethodSymbol methodSymbol = context.SemanticModel.GetDeclaredSymbol(localFunction, context.CancellationToken);
 
-                if (!IsTaskLike(methodSymbol.ReturnType))
-                    return;
-            }
+            if (!SymbolUtility.IsAwaitable(methodSymbol.ReturnType))
+                return;
 
             if (IsFixable(body, context))
                 DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseAsyncAwait, localFunction.Identifier);
@@ -107,7 +101,7 @@ namespace Roslynator.CSharp.Analysis
             if (context.SemanticModel.GetSymbol(simpleLambda, context.CancellationToken) is not IMethodSymbol methodSymbol)
                 return;
 
-            if (!IsTaskLike(methodSymbol.ReturnType))
+            if (!SymbolUtility.IsAwaitable(methodSymbol.ReturnType))
                 return;
 
             if (IsFixable(body, context))
@@ -127,7 +121,7 @@ namespace Roslynator.CSharp.Analysis
             if (context.SemanticModel.GetSymbol(parenthesizedLambda, context.CancellationToken) is not IMethodSymbol methodSymbol)
                 return;
 
-            if (!IsTaskLike(methodSymbol.ReturnType))
+            if (!SymbolUtility.IsAwaitable(methodSymbol.ReturnType))
                 return;
 
             if (IsFixable(body, context))
@@ -149,7 +143,7 @@ namespace Roslynator.CSharp.Analysis
             if (context.SemanticModel.GetSymbol(anonymousMethod, context.CancellationToken) is not IMethodSymbol methodSymbol)
                 return;
 
-            if (!IsTaskLike(methodSymbol.ReturnType))
+            if (!SymbolUtility.IsAwaitable(methodSymbol.ReturnType))
                 return;
 
             if (IsFixable(body, context))

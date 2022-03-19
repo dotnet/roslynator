@@ -591,5 +591,32 @@ class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
+        public async Task TestNoDiagnostic_IAsyncEnumerable()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System;
+using System.Collections.Generic;
+
+class C
+{
+    public IAsyncEnumerable<string> GetAsync()
+    {
+        using var disposable = new System.IO.StringWriter();
+
+        IAsyncEnumerable<string> enumerable = GetAsync2(disposable);
+
+        return enumerable;
+    }
+
+    async IAsyncEnumerable<string> GetAsync2(IDisposable disposable)
+    {
+        await System.Threading.Tasks.Task.CompletedTask;
+        yield break;
+    }
+}
+");
+        }
     }
 }

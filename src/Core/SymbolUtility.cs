@@ -622,12 +622,6 @@ namespace Roslynator
                 }
             }
 
-            if (typeKind == TypeKind.Interface
-                && originalDefinition.HasMetadataName(MetadataNames.System_Collections_Generic_IAsyncEnumerable_T))
-            {
-                return true;
-            }
-
             if (typeKind == TypeKind.Class
                 && namedTypeSymbol.EqualsOrInheritsFrom(MetadataNames.System_Threading_Tasks_Task))
             {
