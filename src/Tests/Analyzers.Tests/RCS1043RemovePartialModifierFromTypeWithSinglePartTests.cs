@@ -71,7 +71,6 @@ public [|partial|] class C
 ", @"
 public class C
 {
-
     void M()
     {
     }
@@ -98,7 +97,6 @@ public [|partial|] struct C
 ", @"
 public struct C
 {
-
     void M()
     {
     }
