@@ -740,6 +740,7 @@ namespace Roslynator.CSharp
                 case SyntaxKind.LocalFunctionStatement:
                     return ((LocalFunctionStatementSyntax)declaration).ParameterList;
                 case SyntaxKind.RecordDeclaration:
+                case SyntaxKind.RecordStructDeclaration:
                     return ((RecordDeclarationSyntax)declaration).ParameterList;
                 default:
                     return null;
