@@ -169,35 +169,6 @@ namespace Roslynator.CSharp.Analysis
             }
         }
 
-        private static bool IsTaskLike(ITypeSymbol typeSymbol)
-        {
-            if (typeSymbol?.IsErrorType() == false
-                && typeSymbol.SpecialType == SpecialType.None)
-            {
-                ITypeSymbol t = typeSymbol.OriginalDefinition;
-
-                if (t.Name == "ValueTask`1"
-                    && t.ContainingNamespace.HasMetadataName(MetadataNames.System_Threading_Tasks))
-                {
-                    return true;
-                }
-
-                do
-                {
-                    if ((t.Name == "Task" || t.Name == "Task`1")
-                        && t.ContainingNamespace.HasMetadataName(MetadataNames.System_Threading_Tasks))
-                    {
-                        return true;
-                    }
-
-                    t = t.BaseType;
-                }
-                while (t?.SpecialType == SpecialType.None);
-            }
-
-            return false;
-        }
-
         private class UseAsyncAwaitWalker : StatementWalker
         {
             [ThreadStatic]
