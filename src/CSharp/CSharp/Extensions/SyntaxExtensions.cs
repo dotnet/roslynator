@@ -4040,7 +4040,7 @@ namespace Roslynator.CSharp
 
         internal static bool IsEmptyOrSingleWhitespaceTrivia(this SyntaxTriviaList triviaList)
         {
-            return triviaList.Count == 0
+            return !triviaList.Any()
                 || (triviaList.Count == 1 && triviaList[0].IsWhitespaceTrivia());
         }
 

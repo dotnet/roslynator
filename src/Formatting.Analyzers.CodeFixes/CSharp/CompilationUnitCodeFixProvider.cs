@@ -44,7 +44,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
                         SyntaxTriviaList leading = token.LeadingTrivia;
 
                         string title;
-                        if (leading.First().IsWhitespaceTrivia()
+                        if (leading[0].IsWhitespaceTrivia()
                             && (leading.Count == 1
                                 || leading[1].IsEndOfLineTrivia()))
                         {
