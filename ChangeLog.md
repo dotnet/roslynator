@@ -9,6 +9,7 @@
 * Fix code fix for CS0225
 * Put back refactoring SplitLocalDeclarationAndAssignment (RR0194) ([issue](https://github.com/JosefPihrt/Roslynator/issues/881))
 * Fix: Get config value from global AnalyzerConfig if available ([issue](https://github.com/JosefPihrt/Roslynator/issues/884))
+* Add refactoring [Deconstruct foreach variable (RR0217)](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactoring/RR0217.md)
 
 ### 4.0.3 (2022-01-29)
 
