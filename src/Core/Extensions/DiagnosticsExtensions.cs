@@ -553,17 +553,13 @@ namespace Roslynator
         {
             var reportDiagnostic = Microsoft.CodeAnalysis.ReportDiagnostic.Default;
 
-            if (compilationOptions
-                .SyntaxTreeOptionsProvider?
-                .TryGetDiagnosticValue(
-                    syntaxTree,
-                    descriptor.Id,
-                    cancellationToken,
-                    out reportDiagnostic) != true)
+            SyntaxTreeOptionsProvider provider = compilationOptions.SyntaxTreeOptionsProvider;
+
+            if (provider is not null
+                && !provider.TryGetGlobalDiagnosticValue(descriptor.Id, cancellationToken, out reportDiagnostic)
+                && !provider.TryGetDiagnosticValue(syntaxTree, descriptor.Id, cancellationToken, out reportDiagnostic))
             {
-                reportDiagnostic = compilationOptions
-                    .SpecificDiagnosticOptions
-                    .GetValueOrDefault(descriptor.Id);
+                reportDiagnostic = compilationOptions.SpecificDiagnosticOptions.GetValueOrDefault(descriptor.Id);
             }
 
             return reportDiagnostic switch
@@ -580,16 +576,15 @@ namespace Roslynator
             CompilationOptions compilationOptions,
             CancellationToken cancellationToken = default)
         {
-            SyntaxTreeOptionsProvider syntaxTreeOptionsProvider = compilationOptions.SyntaxTreeOptionsProvider;
+            SyntaxTreeOptionsProvider provider = compilationOptions.SyntaxTreeOptionsProvider;
 
-            if (syntaxTreeOptionsProvider != null
-                && syntaxTreeOptionsProvider.TryGetDiagnosticValue(
-                    syntaxTree,
-                    descriptor.Id,
-                    cancellationToken,
-                    out ReportDiagnostic syntaxTreeReportDiagnostic))
+            if (provider is not null)
             {
-                return syntaxTreeReportDiagnostic;
+                if (provider.TryGetGlobalDiagnosticValue(descriptor.Id, cancellationToken, out ReportDiagnostic globalReportDiagnostic))
+                    return globalReportDiagnostic;
+
+                if (provider.TryGetDiagnosticValue(syntaxTree, descriptor.Id, cancellationToken, out ReportDiagnostic treeReportDiagnostic))
+                    return treeReportDiagnostic;
             }
 
             if (compilationOptions.SpecificDiagnosticOptions.TryGetValue(descriptor.Id, out ReportDiagnostic reportDiagnostic))

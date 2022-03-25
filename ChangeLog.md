@@ -8,6 +8,7 @@
 * Add code fix for CS8602, CS8604
 * Fix code fix for CS0225
 * Put back refactoring SplitLocalDeclarationAndAssignment (RR0194) ([issue](https://github.com/JosefPihrt/Roslynator/issues/881))
+* Fix: Get config value from global AnalyzerConfig if available ([issue](https://github.com/JosefPihrt/Roslynator/issues/884))
 
 ### 4.0.3 (2022-01-29)
 
