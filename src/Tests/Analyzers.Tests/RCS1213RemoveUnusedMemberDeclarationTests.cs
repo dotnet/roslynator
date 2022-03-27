@@ -97,7 +97,6 @@ class C
 ", @"
 class C
 {
-
 #pragma warning disable IDE0001
         }
 ");

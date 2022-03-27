@@ -343,7 +343,7 @@ namespace Roslynator.CSharp.Analysis
             }
 
             if (forEachStatement != null
-                && invocation.ArgumentList.Arguments.First().Expression is IdentifierNameSyntax identifierName
+                && invocation.ArgumentList.Arguments[0].Expression is IdentifierNameSyntax identifierName
                 && identifierName.Identifier.ValueText == forEachStatement.Identifier.ValueText)
             {
                 ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(invocationInfo.Expression, context.CancellationToken);

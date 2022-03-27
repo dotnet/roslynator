@@ -195,7 +195,6 @@ namespace Roslynator.CSharp.Analysis
 
                         break;
                     }
-#if DEBUG
                 case SyntaxKind.CollectionInitializerExpression:
                     {
                         SyntaxDebug.Assert(parent.IsParentKind(SyntaxKind.ObjectCreationExpression, SyntaxKind.ImplicitObjectCreationExpression, SyntaxKind.SimpleAssignmentExpression), parent.Parent);
@@ -241,7 +240,6 @@ namespace Roslynator.CSharp.Analysis
                     {
                         break;
                     }
-#endif
             }
         }
 
@@ -323,8 +321,6 @@ namespace Roslynator.CSharp.Analysis
                         if (UseExplicitObjectCreation(context)
                             && parent.IsParentKind(SyntaxKind.ArrayCreationExpression))
                         {
-                            var arrayCreationExpression = (ArrayCreationExpressionSyntax)parent.Parent;
-
                             ReportDiagnostic(context, implicitObjectCreation);
                         }
 
@@ -351,10 +347,6 @@ namespace Roslynator.CSharp.Analysis
 
                                     if (typeSymbol?.OriginalDefinition.SpecialType == SpecialType.System_Collections_Generic_IEnumerable_T)
                                     {
-                                        var ienumerableOfT = (INamedTypeSymbol)typeSymbol;
-
-                                        ITypeSymbol typeSymbol2 = ienumerableOfT.TypeArguments.Single();
-
                                         ReportDiagnostic(context, implicitObjectCreation);
                                     }
                                 }
@@ -378,7 +370,6 @@ namespace Roslynator.CSharp.Analysis
 
                         break;
                     }
-#if DEBUG
                 case SyntaxKind.CollectionInitializerExpression:
                     {
                         SyntaxDebug.Assert(parent.IsParentKind(SyntaxKind.ObjectCreationExpression, SyntaxKind.ImplicitObjectCreationExpression, SyntaxKind.SimpleAssignmentExpression), parent.Parent);
@@ -396,7 +387,7 @@ namespace Roslynator.CSharp.Analysis
                                 if (parent.IsKind(SyntaxKind.VariableDeclarator))
                                 {
                                     parent = parent.Parent;
-                                    if (parent is VariableDeclarationSyntax variableDeclaration)
+                                    if (parent is VariableDeclarationSyntax)
                                     {
                                         SyntaxDebug.Assert(parent.IsParentKind(SyntaxKind.FieldDeclaration, SyntaxKind.LocalDeclarationStatement, SyntaxKind.UsingStatement), parent.Parent);
 
@@ -418,7 +409,6 @@ namespace Roslynator.CSharp.Analysis
                     {
                         break;
                     }
-#endif
             }
         }
 

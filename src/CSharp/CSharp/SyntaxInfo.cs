@@ -356,6 +356,15 @@ namespace Roslynator.CSharp
         /// Creates a new <see cref="Syntax.MemberDeclarationListInfo"/> from the specified declaration.
         /// </summary>
         /// <param name="declaration"></param>
+        public static MemberDeclarationListInfo MemberDeclarationListInfo(BaseNamespaceDeclarationSyntax declaration)
+        {
+            return Syntax.MemberDeclarationListInfo.Create(declaration);
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="Syntax.MemberDeclarationListInfo"/> from the specified declaration.
+        /// </summary>
+        /// <param name="declaration"></param>
         public static MemberDeclarationListInfo MemberDeclarationListInfo(TypeDeclarationSyntax declaration)
         {
             return Syntax.MemberDeclarationListInfo.Create(declaration);

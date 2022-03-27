@@ -20,7 +20,7 @@ namespace Roslynator.CSharp.Refactorings
             int i = 0;
             SyntaxList<InterpolatedStringContentSyntax> contents = interpolatedString.Contents;
 
-            if (contents.Count == 0)
+            if (!contents.Any())
             {
                 return span.Start == interpolatedString.StringStartToken.Span.End
                     && span.End == interpolatedString.StringEndToken.SpanStart;

@@ -131,6 +131,14 @@ namespace Roslynator.CSharp.Syntax
             return new MemberDeclarationListInfo(namespaceDeclaration, namespaceDeclaration.Members);
         }
 
+        internal static MemberDeclarationListInfo Create(BaseNamespaceDeclarationSyntax namespaceDeclaration)
+        {
+            if (namespaceDeclaration == null)
+                return default;
+
+            return new MemberDeclarationListInfo(namespaceDeclaration, namespaceDeclaration.Members);
+        }
+
         internal static MemberDeclarationListInfo Create(TypeDeclarationSyntax typeDeclaration)
         {
             if (typeDeclaration == null)

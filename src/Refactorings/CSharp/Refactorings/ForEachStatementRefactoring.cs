@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Options;
 using Microsoft.CodeAnalysis.Rename;
+using Microsoft.CodeAnalysis.Text;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -24,10 +25,12 @@ namespace Roslynator.CSharp.Refactorings
             if (context.IsRefactoringEnabled(RefactoringDescriptors.RenameIdentifierAccordingToTypeName))
                 await RenameIdentifierAccordingToTypeNameAsync(context, forEachStatement).ConfigureAwait(false);
 
+            SemanticModel semanticModel = null;
+
             if (context.IsAnyRefactoringEnabled(RefactoringDescriptors.ConvertForEachToFor, RefactoringDescriptors.ConvertForEachToForAndReverseLoop)
                 && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(forEachStatement))
             {
-                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                 ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(forEachStatement.Expression, context.CancellationToken);
 
@@ -49,6 +52,14 @@ namespace Roslynator.CSharp.Refactorings
                             RefactoringDescriptors.ConvertForEachToForAndReverseLoop);
                     }
                 }
+            }
+
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.DeconstructForeachVariable)
+                && TextSpan.FromBounds(forEachStatement.Type.SpanStart, forEachStatement.Identifier.Span.End).Contains(context.Span))
+            {
+                semanticModel ??= await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                DeconstructForeachVariableRefactoring.ComputeRefactoring(context, forEachStatement, semanticModel);
             }
 
             if (context.IsRefactoringEnabled(RefactoringDescriptors.UseEnumeratorExplicitly)

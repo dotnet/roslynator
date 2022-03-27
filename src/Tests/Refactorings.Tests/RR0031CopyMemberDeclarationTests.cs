@@ -364,8 +364,12 @@ class C2
 ", @"
 namespace N;
 
+class C3
+{
+}
+
 class C
-[||]{
+{
 }
 
 class C2

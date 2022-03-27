@@ -99,7 +99,7 @@ namespace Roslynator.CSharp.Refactorings
                 newParameterList.Parameters.Select(parameter => parameter.Identifier),
                 (identifier, _) => identifiersMap[identifier.ValueText]);
 
-            ParameterSyntax firstParameter = parameterList.Parameters.First();
+            ParameterSyntax firstParameter = parameterList.Parameters[0];
             if (firstParameter.GetLeadingTrivia().SingleOrDefault(shouldThrow: false).IsKind(SyntaxKind.WhitespaceTrivia))
             {
                 SyntaxTriviaList newIndentation = SyntaxTriviaAnalysis.GetIncreasedIndentationTriviaList(firstParameter, cancellationToken);

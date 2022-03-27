@@ -115,7 +115,7 @@ namespace Roslynator.CSharp.CodeFixes
                 expression = expression.Parenthesize();
 
                 ExpressionSyntax typeExpression = (variableDeclaration.Type.IsVar)
-                    ? variableDeclaration.Variables.First().Initializer.Value
+                    ? variableDeclaration.Variables[0].Initializer.Value
                     : variableDeclaration.Type;
 
                 ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(typeExpression, cancellationToken);
