@@ -123,7 +123,13 @@ namespace Roslynator.Formatting.CSharp
                     int endLine = lines.IndexOf(token.SpanStart);
 
                     if (startLine != endLine)
-                        ReportDiagnostic();
+                    {
+                        if (!indentationAnalysis.IsDefault
+                            || !AnalyzeIndentation(expression).IsDefault)
+                        {
+                            ReportDiagnostic();
+                        }
+                    }
 
                     return true;
                 }
@@ -133,7 +139,12 @@ namespace Roslynator.Formatting.CSharp
                     case SyntaxKind.WhitespaceTrivia:
                         {
                             if (indentationAnalysis.IsDefault)
+                            {
                                 indentationAnalysis = AnalyzeIndentation(expression);
+
+                                if (indentationAnalysis.IsDefault)
+                                    return true;
+                            }
 
                             if (en.Current.Span.Length != indentationAnalysis.IncreasedIndentationLength)
                             {
@@ -156,7 +167,12 @@ namespace Roslynator.Formatting.CSharp
                         {
                             if (expression.FindTrivia(token.FullSpan.Start - 1).IsEndOfLineTrivia())
                             {
-                                ReportDiagnostic();
+                                if (!indentationAnalysis.IsDefault
+                                    || !AnalyzeIndentation(expression).IsDefault)
+                                {
+                                    ReportDiagnostic();
+                                }
+
                                 return true;
                             }
 

@@ -37,7 +37,7 @@ namespace Roslynator.CSharp.Analysis
         {
             var enumDeclaration = (EnumDeclarationSyntax)context.Node;
 
-            if (enumDeclaration.AttributeLists.Count == 0)
+            if (!enumDeclaration.AttributeLists.Any())
                 return;
 
             EnumFlagValueStyle style = context.GetEnumFlagValueStyle();

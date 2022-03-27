@@ -315,6 +315,60 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfCallChain)]
+        public async Task Test_TopLevelStatement_SwitchStatement()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+var s = """";
+
+s = [|s.ToString().ToString()
+.ToString()|];
+
+switch (s)
+{
+    default:
+        break;
+}
+", @"
+var s = """";
+
+s = s.ToString().ToString()
+    .ToString();
+
+switch (s)
+{
+    default:
+        break;
+}
+", options: Options.WithCompilationOptions(Options.CompilationOptions.WithOutputKind(OutputKind.ConsoleApplication)));
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfCallChain)]
+        public async Task Test_TopLevelStatement_ForEachStatement()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+var s = """";
+
+s = [|s.ToString().ToString()
+.ToString()|];
+
+foreach (char ch in s)
+{
+    var x = ch;
+}
+", @"
+var s = """";
+
+s = s.ToString().ToString()
+    .ToString();
+
+foreach (char ch in s)
+{
+    var x = ch;
+}
+", options: Options.WithCompilationOptions(Options.CompilationOptions.WithOutputKind(OutputKind.ConsoleApplication)));
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfCallChain)]
         public async Task Test_TopLevelStatement()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -329,6 +383,29 @@ partial class Program
     {
     }
 }
+", options: Options.WithCompilationOptions(Options.CompilationOptions.WithOutputKind(OutputKind.ConsoleApplication)));
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfCallChain)]
+        public async Task Test_TopLevelStatement2()
+        {
+            await VerifyNoDiagnosticAsync(@"
+var s = """";
+
+s = s.ToString().ToString()
+.ToString();
+", options: Options.WithCompilationOptions(Options.CompilationOptions.WithOutputKind(OutputKind.ConsoleApplication)));
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfCallChain)]
+        public async Task Test_TopLevelStatement3()
+        {
+            await VerifyNoDiagnosticAsync(@"
+var s = """";
+
+s = s.ToString().ToString()
+
+.ToString();
 ", options: Options.WithCompilationOptions(Options.CompilationOptions.WithOutputKind(OutputKind.ConsoleApplication)));
         }
 

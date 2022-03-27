@@ -241,7 +241,7 @@ namespace Roslynator.CSharp.CodeFixes
             InvocationExpressionSyntax newInvocation = SyntaxRefactorings.ChangeInvokedMethodName(invocation, "AddRange");
 
             newInvocation = newInvocation.ReplaceNode(
-                newInvocation.ArgumentList.Arguments.First().Expression,
+                newInvocation.ArgumentList.Arguments[0].Expression,
                 forEachStatement.Expression);
 
             SyntaxNode newExpressionStatement = invocation.Parent.ReplaceNode(invocation, newInvocation)

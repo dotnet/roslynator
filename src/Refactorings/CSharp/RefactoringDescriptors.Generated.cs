@@ -68,6 +68,7 @@ namespace Roslynator.CSharp.Refactorings
         public static RefactoringDescriptor CopyParameter = new RefactoringDescriptor("RR0032", "roslynator_refactoring.copy_parameter.enabled", isEnabledByDefault: true);
         public static RefactoringDescriptor CopyStatement = new RefactoringDescriptor("RR0033", "roslynator_refactoring.copy_statement.enabled", isEnabledByDefault: true);
         public static RefactoringDescriptor CopySwitchSection = new RefactoringDescriptor("RR0212", "roslynator_refactoring.copy_switch_section.enabled", isEnabledByDefault: true);
+        public static RefactoringDescriptor DeconstructForeachVariable = new RefactoringDescriptor("RR0217", "roslynator_refactoring.deconstruct_foreach_variable.enabled", isEnabledByDefault: true);
         public static RefactoringDescriptor ExpandCoalesceExpression = new RefactoringDescriptor("RR0035", "roslynator_refactoring.expand_coalesce_expression.enabled", isEnabledByDefault: true);
         public static RefactoringDescriptor ExpandCompoundAssignment = new RefactoringDescriptor("RR0034", "roslynator_refactoring.expand_compound_assignment.enabled", isEnabledByDefault: true);
         public static RefactoringDescriptor ExpandEventDeclaration = new RefactoringDescriptor("RR0036", "roslynator_refactoring.expand_event_declaration.enabled", isEnabledByDefault: true);

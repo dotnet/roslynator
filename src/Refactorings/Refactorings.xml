@@ -2627,4 +2627,32 @@ class Foo : IFoo
       </Sample>
     </Samples>
   </Refactoring>
+  <Refactoring Id="RR0217" Identifier="DeconstructForeachVariable" Title="Deconstruct foreach variable">
+    <OptionKey>deconstruct_foreach_variable</OptionKey>
+    <Syntaxes>
+      <Syntax>foreach statement</Syntax>
+    </Syntaxes>
+    <Span></Span>
+    <Summary>type or identifier</Summary>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[var dic = new Dictionary<string, object>();
+
+foreach (var kvp in dic)
+{
+    var k = kvp.Key;
+    var v = kvp.Value.ToString();
+}
+]]></Before>
+        <After><![CDATA[var dic = new Dictionary<string, object>();
+
+foreach (var (key, value) in dic)
+{
+    var k = key;
+    var v = value.ToString();
+}
+]]></After>
+      </Sample>
+    </Samples>
+  </Refactoring>
 </Refactorings>

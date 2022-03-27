@@ -1001,6 +1001,7 @@ roslynator_analyzers.enabled_by_default = true|false
 #roslynator_refactoring.copy_parameter.enabled = true
 #roslynator_refactoring.copy_statement.enabled = true
 #roslynator_refactoring.copy_switch_section.enabled = true
+#roslynator_refactoring.deconstruct_foreach_variable.enabled = true
 #roslynator_refactoring.expand_coalesce_expression.enabled = true
 #roslynator_refactoring.expand_compound_assignment.enabled = true
 #roslynator_refactoring.expand_event_declaration.enabled = true

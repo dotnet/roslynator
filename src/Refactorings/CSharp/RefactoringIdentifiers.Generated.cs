@@ -70,6 +70,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string CopyParameter = Prefix + "0032";
         public const string CopyStatement = Prefix + "0033";
         public const string CopySwitchSection = Prefix + "0212";
+        public const string DeconstructForeachVariable = Prefix + "0217";
         public const string ExpandCoalesceExpression = Prefix + "0035";
         public const string ExpandCompoundAssignment = Prefix + "0034";
         public const string ExpandEventDeclaration = Prefix + "0036";

@@ -321,5 +321,17 @@ class C
 public record Foo(string Bar);
 ", options: Options.AddAllowedCompilerDiagnosticId("CS0518"));
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
+        public async Task TestNoDiagnostic_RecordStruct()
+        {
+            await VerifyNoDiagnosticAsync(@"
+/// <summary>
+/// x
+/// </summary>
+/// <param name=""Bar"">bar</param>
+public record struct Foo(string Bar);
+", options: Options.AddAllowedCompilerDiagnosticId("CS0518"));
+        }
     }
 }

@@ -32,7 +32,7 @@ namespace Roslynator.CodeGeneration.CSharp
             {
                 _maxFieldDeclarationLength = fields
                     .Cast<FieldDeclarationSyntax>()
-                    .Max(f => f.Declaration.Variables.First().Initializer.EqualsToken.SpanStart - f.SpanStart);
+                    .Max(f => f.Declaration.Variables[0].Initializer.EqualsToken.SpanStart - f.SpanStart);
             }
 
             _classDeclarationDepth++;
@@ -49,7 +49,7 @@ namespace Roslynator.CodeGeneration.CSharp
 
             if ((Options & WrapRewriterOptions.IndentFieldInitializer) != 0)
             {
-                SyntaxToken equalsToken = node.Declaration.Variables.First().Initializer.EqualsToken;
+                SyntaxToken equalsToken = node.Declaration.Variables[0].Initializer.EqualsToken;
 
                 int count = _maxFieldDeclarationLength - (equalsToken.SpanStart - node.SpanStart);
 

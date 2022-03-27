@@ -235,6 +235,33 @@ namespace Roslynator.CSharp
                         if (member2 != null)
                             return SyntaxTriviaAnalysis.DetermineIndentation(member2, cancellationToken);
                     }
+                    else if (member is GlobalStatementSyntax globalStatement)
+                    {
+                        StatementSyntax statement2 = globalStatement.Statement;
+
+                        if (statement2 is SwitchStatementSyntax switchStatement)
+                        {
+                            SwitchSectionSyntax switchSection = switchStatement.Sections.FirstOrDefault();
+
+                            if (switchSection is not null)
+                                return SyntaxTriviaAnalysis.DetermineIndentation(switchSection, cancellationToken);
+
+                            break;
+                        }
+                        else
+                        {
+                            StatementSyntax statement3 = GetContainedStatement(statement2);
+
+                            if (statement3 is not null)
+                            {
+                                if (statement3 is BlockSyntax block)
+                                    statement3 = block.Statements.FirstOrDefault();
+
+                                if (statement3 is not null)
+                                    return SyntaxTriviaAnalysis.DetermineIndentation(statement3, cancellationToken);
+                            }
+                        }
+                    }
                 }
 
                 return default;
@@ -259,6 +286,50 @@ namespace Roslynator.CSharp
                 }
 
                 return default;
+            }
+
+            StatementSyntax GetContainedStatement(StatementSyntax statement)
+            {
+                switch (statement.Kind())
+                {
+                    case SyntaxKind.WhileStatement:
+                        return ((WhileStatementSyntax)statement).Statement;
+
+                    case SyntaxKind.DoStatement:
+                        return ((DoStatementSyntax)statement).Statement;
+
+                    case SyntaxKind.ForStatement:
+                        return ((ForStatementSyntax)statement).Statement;
+
+                    case SyntaxKind.ForEachStatement:
+                    case SyntaxKind.ForEachVariableStatement:
+                        return ((CommonForEachStatementSyntax)statement).Statement;
+
+                    case SyntaxKind.UsingStatement:
+                        return ((UsingStatementSyntax)statement).Statement;
+
+                    case SyntaxKind.FixedStatement:
+                        return ((FixedStatementSyntax)statement).Statement;
+
+                    case SyntaxKind.CheckedStatement:
+                    case SyntaxKind.UncheckedStatement:
+                        return ((CheckedStatementSyntax)statement).Block;
+
+                    case SyntaxKind.UnsafeStatement:
+                        return ((UnsafeStatementSyntax)statement).Block;
+
+                    case SyntaxKind.LockStatement:
+                        return ((LockStatementSyntax)statement).Statement;
+
+                    case SyntaxKind.IfStatement:
+                        return ((IfStatementSyntax)statement).Statement;
+
+                    case SyntaxKind.TryStatement:
+                        return ((TryStatementSyntax)statement).Block;
+
+                    default:
+                        return null;
+                }
             }
         }
     }

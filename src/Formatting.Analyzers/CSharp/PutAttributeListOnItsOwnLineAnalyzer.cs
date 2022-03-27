@@ -56,7 +56,7 @@ namespace Roslynator.Formatting.CSharp
             SyntaxTokenList modifiers = classDeclaration.Modifiers;
 
             SyntaxToken token = (modifiers.Any())
-                ? modifiers.First()
+                ? modifiers[0]
                 : classDeclaration.Keyword;
 
             Analyze(context, classDeclaration.AttributeLists, token);
@@ -69,7 +69,7 @@ namespace Roslynator.Formatting.CSharp
             SyntaxTokenList modifiers = enumDeclaration.Modifiers;
 
             SyntaxToken token = (modifiers.Any())
-                ? modifiers.First()
+                ? modifiers[0]
                 : enumDeclaration.EnumKeyword;
 
             Analyze(context, enumDeclaration.AttributeLists, token);
@@ -90,7 +90,7 @@ namespace Roslynator.Formatting.CSharp
             SyntaxTokenList modifiers = interfaceDeclaration.Modifiers;
 
             SyntaxToken token = (modifiers.Any())
-                ? modifiers.First()
+                ? modifiers[0]
                 : interfaceDeclaration.Keyword;
 
             Analyze(context, interfaceDeclaration.AttributeLists, token);
@@ -103,7 +103,7 @@ namespace Roslynator.Formatting.CSharp
             SyntaxTokenList modifiers = structDeclaration.Modifiers;
 
             SyntaxToken token = (modifiers.Any())
-                ? modifiers.First()
+                ? modifiers[0]
                 : structDeclaration.Keyword;
 
             Analyze(context, structDeclaration.AttributeLists, token);
@@ -116,7 +116,7 @@ namespace Roslynator.Formatting.CSharp
             SyntaxTokenList modifiers = recordDeclaration.Modifiers;
 
             SyntaxToken token = (modifiers.Any())
-                ? modifiers.First()
+                ? modifiers[0]
                 : recordDeclaration.Keyword;
 
             Analyze(context, recordDeclaration.AttributeLists, token);
@@ -155,7 +155,7 @@ namespace Roslynator.Formatting.CSharp
             SyntaxTokenList modifiers = fieldDeclaration.Modifiers;
 
             SyntaxNodeOrToken nodeOrToken = (modifiers.Any())
-                ? modifiers.First()
+                ? modifiers[0]
                 : fieldDeclaration.Declaration.Type;
 
             Analyze(context, fieldDeclaration.AttributeLists, nodeOrToken);
@@ -168,7 +168,7 @@ namespace Roslynator.Formatting.CSharp
             SyntaxTokenList modifiers = methodDeclaration.Modifiers;
 
             SyntaxNodeOrToken nodeOrToken = (modifiers.Any())
-                ? modifiers.First()
+                ? modifiers[0]
                 : methodDeclaration.ReturnType;
 
             Analyze(context, methodDeclaration.AttributeLists, nodeOrToken);
@@ -181,7 +181,7 @@ namespace Roslynator.Formatting.CSharp
             SyntaxTokenList modifiers = constructorDeclaration.Modifiers;
 
             SyntaxToken token = (modifiers.Any())
-                ? modifiers.First()
+                ? modifiers[0]
                 : constructorDeclaration.Identifier;
 
             Analyze(context, constructorDeclaration.AttributeLists, token);
@@ -194,7 +194,7 @@ namespace Roslynator.Formatting.CSharp
             SyntaxTokenList modifiers = conversionOperatorDeclaration.Modifiers;
 
             SyntaxToken token = (modifiers.Any())
-                ? modifiers.First()
+                ? modifiers[0]
                 : conversionOperatorDeclaration.ImplicitOrExplicitKeyword;
 
             Analyze(context, conversionOperatorDeclaration.AttributeLists, token);
@@ -207,7 +207,7 @@ namespace Roslynator.Formatting.CSharp
             SyntaxTokenList modifiers = destructorDeclaration.Modifiers;
 
             SyntaxToken token = (modifiers.Any())
-                ? modifiers.First()
+                ? modifiers[0]
                 : destructorDeclaration.TildeToken;
 
             Analyze(context, destructorDeclaration.AttributeLists, token);
@@ -220,7 +220,7 @@ namespace Roslynator.Formatting.CSharp
             SyntaxTokenList modifiers = eventDeclaration.Modifiers;
 
             SyntaxToken token = (modifiers.Any())
-                ? modifiers.First()
+                ? modifiers[0]
                 : eventDeclaration.EventKeyword;
 
             Analyze(context, eventDeclaration.AttributeLists, token);
@@ -236,7 +236,7 @@ namespace Roslynator.Formatting.CSharp
             SyntaxTokenList modifiers = operatorDeclaration.Modifiers;
 
             SyntaxNodeOrToken token = (modifiers.Any())
-                ? modifiers.First()
+                ? modifiers[0]
                 : operatorDeclaration.ReturnType;
 
             Analyze(context, operatorDeclaration.AttributeLists, token);
@@ -249,7 +249,7 @@ namespace Roslynator.Formatting.CSharp
             SyntaxTokenList modifiers = propertyDeclaration.Modifiers;
 
             SyntaxNodeOrToken token = (modifiers.Any())
-                ? modifiers.First()
+                ? modifiers[0]
                 : propertyDeclaration.Type;
 
             Analyze(context, propertyDeclaration.AttributeLists, token);
@@ -265,7 +265,7 @@ namespace Roslynator.Formatting.CSharp
             SyntaxTokenList modifiers = indexerDeclaration.Modifiers;
 
             SyntaxNodeOrToken nodeOrToken = (modifiers.Any())
-                ? modifiers.First()
+                ? modifiers[0]
                 : indexerDeclaration.Type;
 
             Analyze(context, indexerDeclaration.AttributeLists, nodeOrToken);

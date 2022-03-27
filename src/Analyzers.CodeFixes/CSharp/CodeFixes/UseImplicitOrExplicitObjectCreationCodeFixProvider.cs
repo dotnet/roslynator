@@ -84,7 +84,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                         SyntaxToken newKeyword = implicitObjectCreation.NewKeyword;
 
-                        if (newKeyword.TrailingTrivia.Count == 0)
+                        if (!newKeyword.TrailingTrivia.Any())
                             newKeyword = newKeyword.WithTrailingTrivia(ElasticSpace);
 
                         ObjectCreationExpressionSyntax objectCreation = ObjectCreationExpression(
@@ -111,7 +111,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                         SyntaxToken newKeyword = implicitObjectCreation.NewKeyword;
 
-                        if (newKeyword.TrailingTrivia.Count == 0)
+                        if (!newKeyword.TrailingTrivia.Any())
                             newKeyword = newKeyword.WithTrailingTrivia(ElasticSpace);
 
                         ObjectCreationExpressionSyntax objectCreation = ObjectCreationExpression(
