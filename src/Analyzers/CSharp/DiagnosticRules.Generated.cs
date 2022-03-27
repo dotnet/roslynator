@@ -2497,5 +2497,17 @@ namespace Roslynator.CSharp
             helpLinkUri:        DiagnosticIdentifiers.NormalizeFormatOfEnumFlagValue, 
             customTags:         Array.Empty<string>());
 
+        /// <summary>RCS1255</summary>
+        public static readonly DiagnosticDescriptor UnnecessaryEnumFlag = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.UnnecessaryEnumFlag, 
+            title:              "Unnecessary enum flag.", 
+            messageFormat:      "Enum flag '{0}' is already contained in flag '{1}'.", 
+            category:           DiagnosticCategories.Roslynator, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.UnnecessaryEnumFlag, 
+            customTags:         WellKnownDiagnosticTags.Unnecessary);
+
     }
 }

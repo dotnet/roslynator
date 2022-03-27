@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Analyzers>
+  <Analyzer Identifier="UnnecessaryEnumFlag" IsDevelopment="true">
+    <Id>RCS1255</Id>
+    <Title>Unnecessary enum flag.</Title>
+    <MessageFormat>Enum flag '{0}' is already contained in flag '{1}'.</MessageFormat>
+    <Category>General</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>true</SupportsFadeOut>
+  </Analyzer>
+</Analyzers>
