@@ -10,6 +10,9 @@
 
 SyntaxInverter is obsolete, use SyntaxLogicalInverter instead\.
 
+\
+Provides static methods for syntax inversion\.
+
 ```csharp
 [Obsolete("SyntaxInverter is obsolete, use SyntaxLogicalInverter instead.")]
 public static class SyntaxInverter

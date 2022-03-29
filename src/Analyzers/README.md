@@ -23,7 +23,7 @@
 | RCS1019 | [Order modifiers](../../docs/analyzers/RCS1019.md) | None |
 | RCS1020 | [Simplify Nullable\<T> to T?](../../docs/analyzers/RCS1020.md) | Info |
 | RCS1021 | [Convert lambda expression body to expression body](../../docs/analyzers/RCS1021.md) | Info |
-| RCS1031 | [Remove unnecessary braces](../../docs/analyzers/RCS1031.md) | Hidden |
+| RCS1031 | [Remove unnecessary braces in switch section](../../docs/analyzers/RCS1031.md) | Hidden |
 | RCS1032 | [Remove redundant parentheses](../../docs/analyzers/RCS1032.md) | Info |
 | RCS1033 | [Remove redundant boolean literal](../../docs/analyzers/RCS1033.md) | Info |
 | RCS1034 | [Remove redundant 'sealed' modifier](../../docs/analyzers/RCS1034.md) | Hidden |
@@ -50,9 +50,9 @@
 | RCS1059 | [Avoid locking on publicly accessible instance](../../docs/analyzers/RCS1059.md) | Warning |
 | RCS1060 | [Declare each type in separate file](../../docs/analyzers/RCS1060.md) | None |
 | RCS1061 | [Merge 'if' with nested 'if'](../../docs/analyzers/RCS1061.md) | Hidden |
-| RCS1063 | [Avoid usage of do statement to create an infinite loop](../../docs/analyzers/RCS1063.md) | Info |
-| RCS1064 | [Avoid usage of for statement to create an infinite loop](../../docs/analyzers/RCS1064.md) | None |
-| RCS1065 | [Avoid usage of while statement to create an infinite loop](../../docs/analyzers/RCS1065.md) | None |
+| RCS1063 | [(\[deprecated\] use RCS1252 instead) Avoid usage of do statement to create an infinite loop](../../docs/analyzers/RCS1063.md) | Info |
+| RCS1064 | [(\[deprecated\] use RCS1252 instead) Avoid usage of for statement to create an infinite loop](../../docs/analyzers/RCS1064.md) | None |
+| RCS1065 | [(\[deprecated\] use RCS1252 instead) Avoid usage of while statement to create an infinite loop](../../docs/analyzers/RCS1065.md) | None |
 | RCS1066 | [Remove empty 'finally' clause](../../docs/analyzers/RCS1066.md) | Hidden |
 | RCS1068 | [Simplify logical negation](../../docs/analyzers/RCS1068.md) | Info |
 | RCS1069 | [Remove unnecessary case label](../../docs/analyzers/RCS1069.md) | Hidden |
@@ -78,8 +78,8 @@
 | RCS1097 | [Remove redundant 'ToString' call](../../docs/analyzers/RCS1097.md) | Info |
 | RCS1098 | [Constant values should be placed on right side of comparisons](../../docs/analyzers/RCS1098.md) | Info |
 | RCS1099 | [Default label should be the last label in a switch section](../../docs/analyzers/RCS1099.md) | Info |
-| RCS1100 | [Format documentation summary on a single line](../../docs/analyzers/RCS1100.md) | None |
-| RCS1101 | [Format documentation summary on multiple lines](../../docs/analyzers/RCS1101.md) | None |
+| RCS1100 | [(\[deprecated\] use RCS1253 instead) Format documentation summary on a single line](../../docs/analyzers/RCS1100.md) | None |
+| RCS1101 | [(\[deprecated\] use RCS1253 instead) Format documentation summary on multiple lines](../../docs/analyzers/RCS1101.md) | None |
 | RCS1102 | [Make class static](../../docs/analyzers/RCS1102.md) | Warning |
 | RCS1103 | [Convert 'if' to assignment](../../docs/analyzers/RCS1103.md) | Info |
 | RCS1104 | [Simplify conditional expression](../../docs/analyzers/RCS1104.md) | Info |
@@ -190,7 +190,7 @@
 | RCS1234 | [Duplicate enum value](../../docs/analyzers/RCS1234.md) | Info |
 | RCS1235 | [Optimize method call](../../docs/analyzers/RCS1235.md) | Info |
 | RCS1236 | [Use exception filter](../../docs/analyzers/RCS1236.md) | Info |
-| RCS1237 | [Use bit shift operator](../../docs/analyzers/RCS1237.md) | Hidden |
+| RCS1237 | [(\[deprecated\] use RCS1254 instead) Use bit shift operator](../../docs/analyzers/RCS1237.md) | Hidden |
 | RCS1238 | [Avoid nested ?: operators](../../docs/analyzers/RCS1238.md) | Hidden |
 | RCS1239 | [Use 'for' statement instead of 'while' statement](../../docs/analyzers/RCS1239.md) | Info |
 | RCS1240 | [Operator is unnecessary](../../docs/analyzers/RCS1240.md) | Info |
@@ -203,6 +203,10 @@
 | RCS1248 | [Normalize null check](../../docs/analyzers/RCS1248.md) | None |
 | RCS1249 | [Unnecessary null-forgiving operator](../../docs/analyzers/RCS1249.md) | Info |
 | RCS1250 | [Use implicit/explicit object creation](../../docs/analyzers/RCS1250.md) | None |
+| RCS1251 | [Remove unnecessary braces from record declaration](../../docs/analyzers/RCS1251.md) | Info |
+| RCS1252 | [Normalize usage of infinite loop](../../docs/analyzers/RCS1252.md) | None |
+| RCS1253 | [Format documentation comment summary](../../docs/analyzers/RCS1253.md) | None |
+| RCS1254 | [Normalize format of enum flag value](../../docs/analyzers/RCS1254.md) | Info |
 
 
 *\(Generated with [DotMarkdown](http://github.com/JosefPihrt/DotMarkdown)\)*
