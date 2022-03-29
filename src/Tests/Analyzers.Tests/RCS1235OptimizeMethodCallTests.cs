@@ -513,6 +513,30 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeMethodCall)]
+        public async Task TestNoDiagnostic_OptimizeAdd_Await2()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System.Threading.Tasks;
+using System.Collections.Generic;
+
+class C
+{
+    async Task M()
+    {
+        var items = new List<string>();
+        IAsyncEnumerable<string> items2 = null;
+
+        await foreach (var item in items2)
+        {
+            items.Add(item);
+        }
+
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeMethodCall)]
         public async Task TestNoDiagnostic_CallCompareOrdinalInsteadOfCompare_NotStringComparisonOrdinal()
         {
             await VerifyNoDiagnosticAsync(@"

@@ -327,12 +327,8 @@ namespace Roslynator.CSharp.Analysis
                 if (invocation.Parent.IsParentKind(SyntaxKind.ForEachStatement))
                 {
                     forEachStatement = (ForEachStatementSyntax)invocation.Parent.Parent;
-
-                    if (forEachStatement.AwaitKeyword.IsKind(SyntaxKind.AwaitKeyword))
-                        return;
                 }
-
-                if (invocation.Parent.IsParentKind(SyntaxKind.Block)
+                else if (invocation.Parent.IsParentKind(SyntaxKind.Block)
                     && invocation.Parent.Parent.IsParentKind(SyntaxKind.ForEachStatement))
                 {
                     block = (BlockSyntax)invocation.Parent.Parent;
@@ -342,7 +338,7 @@ namespace Roslynator.CSharp.Analysis
                 }
             }
 
-            if (forEachStatement != null
+            if (forEachStatement?.AwaitKeyword.IsKind(SyntaxKind.AwaitKeyword) == false
                 && invocation.ArgumentList.Arguments[0].Expression is IdentifierNameSyntax identifierName
                 && identifierName.Identifier.ValueText == forEachStatement.Identifier.ValueText)
             {
