@@ -83,6 +83,7 @@ namespace Roslynator.Formatting.CSharp
             CancellationToken cancellationToken = context.CancellationToken;
             MemberDeclarationSyntax member;
             MemberDeclarationSyntax previousMember = members[0];
+            bool isPreviousGlobalStatement = previousMember.IsKind(SyntaxKind.GlobalStatement);
             bool? isSingleLine;
             bool? isPreviousSingleLine = null;
 
@@ -90,6 +91,14 @@ namespace Roslynator.Formatting.CSharp
             {
                 member = members[i];
                 isSingleLine = null;
+
+                bool isGlobalStatement = member.IsKind(SyntaxKind.GlobalStatement);
+                bool areGlobalStatements = isPreviousGlobalStatement && isGlobalStatement;
+                isPreviousGlobalStatement = isGlobalStatement;
+
+                if (areGlobalStatements)
+                    continue;
+
                 SyntaxTriviaList trailingTrivia = previousMember.GetTrailingTrivia();
 
                 if (!SyntaxTriviaAnalysis.IsOptionalWhitespaceThenOptionalSingleLineCommentThenEndOfLineTrivia(trailingTrivia))
