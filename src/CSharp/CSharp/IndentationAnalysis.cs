@@ -43,6 +43,12 @@ namespace Roslynator.CSharp
             {
                 return new IndentationAnalysis(indentation, trivia1.Span.Length - trivia2.Span.Length);
             }
+            else if (indentation.Span.Length > 0)
+            {
+                return (trivia1.Span.Length > 0)
+                    ? new IndentationAnalysis(indentation, trivia1.Span.Length)
+                    : new IndentationAnalysis(indentation, indentation.Span.Length);
+            }
             else if (trivia1.Span.Length > 0)
             {
                 return new IndentationAnalysis(trivia1, -1);
