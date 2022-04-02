@@ -867,10 +867,17 @@ namespace Roslynator.Documentation
                         }
                     case TypedConstantKind.Type:
                         {
-                            Write("typeof");
-                            Write("(");
-                            WriteSymbol((ISymbol)typedConstant.Value);
-                            Write(")");
+                            if (typedConstant.Value == null)
+                            {
+                                Write("null");
+                            }
+                            else
+                            {
+                                Write("typeof");
+                                Write("(");
+                                WriteSymbol((ISymbol)typedConstant.Value);
+                                Write(")");
+                            }
 
                             break;
                         }
