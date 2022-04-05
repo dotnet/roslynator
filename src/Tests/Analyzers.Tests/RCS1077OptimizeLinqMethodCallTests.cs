@@ -305,11 +305,8 @@ class C
 
         [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
         [InlineData("items.FirstOrDefault(_ => true) != null", "items.Any(_ => true)")]
-        [InlineData("items.FirstOrDefault(_ => true) == null", "!items.Any(_ => true)")]
-        [InlineData("items.FirstOrDefault(_ => true) is null", "!items.Any(_ => true)")]
         [InlineData("items.FirstOrDefault() != null", "items.Any()")]
-        [InlineData("items.FirstOrDefault() == null", "!items.Any()")]
-        [InlineData("items.FirstOrDefault() is null", "!items.Any()")]
+        [InlineData("items.FirstOrDefault() is not null", "items.Any()")]
         public async Task Test_FirstOrDefault_IEnumerableOfReferenceType(string source, string expected)
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -329,11 +326,8 @@ class C
 
         [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
         [InlineData("items.FirstOrDefault(_ => true) != null", "items.Any(_ => true)")]
-        [InlineData("items.FirstOrDefault(_ => true) == null", "!items.Any(_ => true)")]
-        [InlineData("items.FirstOrDefault(_ => true) is null", "!items.Any(_ => true)")]
         [InlineData("items.FirstOrDefault() != null", "items.Any()")]
-        [InlineData("items.FirstOrDefault() == null", "!items.Any()")]
-        [InlineData("items.FirstOrDefault() is null", "!items.Any()")]
+        [InlineData("items.FirstOrDefault() is not null", "items.Any()")]
         public async Task Test_FirstOrDefault_IEnumerableOfNullableType(string source, string expected)
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -353,11 +347,8 @@ class C
 
         [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
         [InlineData("items.FirstOrDefault(_ => true) != null", "items.Any(_ => true)")]
-        [InlineData("items.FirstOrDefault(_ => true) == null", "!items.Any(_ => true)")]
-        [InlineData("items.FirstOrDefault(_ => true) is null", "!items.Any(_ => true)")]
         [InlineData("items.FirstOrDefault() != null", "items.Any()")]
-        [InlineData("items.FirstOrDefault() == null", "!items.Any()")]
-        [InlineData("items.FirstOrDefault() is null", "!items.Any()")]
+        [InlineData("items.FirstOrDefault() is not null", "items.Any()")]
         public async Task Test_FirstOrDefault_ImmutableArrayOfReferenceType(string source, string expected)
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -378,11 +369,8 @@ class C
 
         [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
         [InlineData("items.FirstOrDefault(_ => true) != null", "items.Any(_ => true)")]
-        [InlineData("items.FirstOrDefault(_ => true) == null", "!items.Any(_ => true)")]
-        [InlineData("items.FirstOrDefault(_ => true) is null", "!items.Any(_ => true)")]
         [InlineData("items.FirstOrDefault() != null", "items.Any()")]
-        [InlineData("items.FirstOrDefault() == null", "!items.Any()")]
-        [InlineData("items.FirstOrDefault() is null", "!items.Any()")]
+        [InlineData("items.FirstOrDefault() is not null", "items.Any()")]
         public async Task Test_FirstOrDefault_ImmutableArrayOfNullableType(string source, string expected)
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -1123,6 +1111,98 @@ class C
 }
 ");
         }
+
+        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+        [InlineData("items.FirstOrDefault(_ => true) == null")]
+        [InlineData("items.FirstOrDefault(_ => true) is null")]
+        [InlineData("items.FirstOrDefault() == null")]
+        [InlineData("items.FirstOrDefault() is null")]
+        public async Task TestNoDiagnostic_FirstOrDefault_IEnumerableOfReferenceType(string source)
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System.Linq;
+
+class C
+{
+    void M()
+    {
+        var items = Enumerable.Empty<string>();
+
+        if ([||]) { }
+    }
+}
+", source);
+        }
+
+        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+        [InlineData("items.FirstOrDefault(_ => true) == null")]
+        [InlineData("items.FirstOrDefault(_ => true) is null")]
+        [InlineData("items.FirstOrDefault() == null")]
+        [InlineData("items.FirstOrDefault() is null")]
+        public async Task TestNoDiagnostc_FirstOrDefault_IEnumerableOfNullableType(string source)
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System.Linq;
+
+class C
+{
+    void M()
+    {
+        var items = Enumerable.Empty<int?>();
+
+        if ([||]) { }
+    }
+}
+", source);
+        }
+
+        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+        [InlineData("items.FirstOrDefault(_ => true) == null")]
+        [InlineData("items.FirstOrDefault(_ => true) is null")]
+        [InlineData("items.FirstOrDefault() == null")]
+        [InlineData("items.FirstOrDefault() is null")]
+        public async Task TestNoDiagnostic_FirstOrDefault_ImmutableArrayOfReferenceType(string source)
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System.Collections.Immutable;
+using System.Linq;
+
+class C
+{
+    void M()
+    {
+        ImmutableArray<string> items = ImmutableArray<string>.Empty;
+
+        if ([||]) { }
+    }
+}
+", source);
+        }
+
+
+        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+        [InlineData("items.FirstOrDefault(_ => true) == null")]
+        [InlineData("items.FirstOrDefault(_ => true) is null")]
+        [InlineData("items.FirstOrDefault() == null")]
+        [InlineData("items.FirstOrDefault() is null")]
+        public async Task TestNoDiagnostic_FirstOrDefault_ImmutableArrayOfNullableType(string source)
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System.Collections.Immutable;
+using System.Linq;
+
+class C
+{
+    void M()
+    {
+        ImmutableArray<int?> items = ImmutableArray<int?>.Empty;
+
+        if ([||]) { }
+    }
+}
+", source);
+        }
+
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
         public async Task TestNoDiagnostic_CallOfTypeInsteadOfWhereAndCast()

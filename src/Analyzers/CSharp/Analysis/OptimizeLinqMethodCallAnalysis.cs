@@ -285,7 +285,7 @@ namespace Roslynator.CSharp.Analysis
 
             SyntaxNode parent = invocation.WalkUpParentheses().Parent;
 
-            NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(parent, NullCheckStyles.ComparisonToNull | NullCheckStyles.IsNull);
+            NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(parent, NullCheckStyles.NotEqualsToNull | NullCheckStyles.IsNotNull);
 
             if (!nullCheck.Success)
                 return;
