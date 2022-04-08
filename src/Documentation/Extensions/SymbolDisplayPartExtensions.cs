@@ -55,6 +55,8 @@ namespace Roslynator
                 case SymbolDisplayPartKind.EnumName:
                 case SymbolDisplayPartKind.InterfaceName:
                 case SymbolDisplayPartKind.StructName:
+                case SymbolDisplayPartKind.RecordClassName:
+                case SymbolDisplayPartKind.RecordStructName:
                     return true;
                 default:
                     return false;
@@ -109,6 +111,8 @@ namespace Roslynator
                 case SymbolDisplayPartKind.ExtensionMethodName:
                 case SymbolDisplayPartKind.EnumMemberName:
                 case SymbolDisplayPartKind.ConstantName:
+                case SymbolDisplayPartKind.RecordClassName:
+                case SymbolDisplayPartKind.RecordStructName:
                     return true;
                 default:
                     return false;
