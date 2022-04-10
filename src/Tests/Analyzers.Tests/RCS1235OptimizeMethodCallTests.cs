@@ -537,6 +537,36 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeMethodCall)]
+        public async Task TestNoDiagnostic_OptimizeAdd_DifferentType()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+
+class C
+{
+    public void M()
+    {
+        var collection = new ObjectCollection();
+        var dictionary = new Dictionary<string, object>();
+
+        foreach (object item in dictionary.Values)
+        {
+            collection.Add(item);
+        }
+    }
+
+    class ObjectCollection : Collection<object>
+    {
+        public void AddRange(ObjectCollection other)
+        {
+        }
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeMethodCall)]
         public async Task TestNoDiagnostic_CallCompareOrdinalInsteadOfCompare_NotStringComparisonOrdinal()
         {
             await VerifyNoDiagnosticAsync(@"

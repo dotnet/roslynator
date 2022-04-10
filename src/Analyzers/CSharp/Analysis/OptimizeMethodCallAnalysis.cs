@@ -351,6 +351,7 @@ namespace Roslynator.CSharp.Analysis
                         if (member is IMethodSymbol methodSymbol
                             && methodSymbol.Parameters.Length == 1
                             && context.SemanticModel.IsAccessible(invocation.SpanStart, methodSymbol)
+                            && context.SemanticModel.IsImplicitConversion(forEachStatement.Expression, methodSymbol.Parameters[0].Type)
                             && forEachStatement.CloseParenToken.TrailingTrivia.IsEmptyOrWhitespace()
                             && invocation.GetLeadingTrivia().IsEmptyOrWhitespace()
                             && (block == null
