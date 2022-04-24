@@ -129,7 +129,8 @@ namespace Roslynator
                     {
                         var namedTypeSymbol = (INamedTypeSymbol)typeSymbol;
 
-                        if (namedTypeSymbol.TypeArguments.Length <= 1)
+                        if (namedTypeSymbol.TypeArguments.Length <= 1
+                            && !namedTypeSymbol.HasMetadataName(MetadataNames.System_Dynamic_ExpandoObject))
                         {
                             ImmutableArray<INamedTypeSymbol> allInterfaces = typeSymbol.AllInterfaces;
 
