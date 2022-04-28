@@ -1604,8 +1604,8 @@ namespace Roslynator.CSharp
         /// <summary>RCS1175</summary>
         public static readonly DiagnosticDescriptor UnusedThisParameter = DiagnosticDescriptorFactory.Create(
             id:                 DiagnosticIdentifiers.UnusedThisParameter, 
-            title:              "Unused this parameter.", 
-            messageFormat:      "Unused this parameter '{0}'.", 
+            title:              "Unused 'this' parameter.", 
+            messageFormat:      "Unused 'this' parameter '{0}'.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 

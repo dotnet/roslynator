@@ -3684,8 +3684,8 @@ else
   </Analyzer>
   <Analyzer Identifier="UnusedThisParameter">
     <Id>RCS1175</Id>
-    <Title>Unused this parameter.</Title>
-    <MessageFormat>Unused this parameter '{0}'.</MessageFormat>
+    <Title>Unused 'this' parameter.</Title>
+    <MessageFormat>Unused 'this' parameter '{0}'.</MessageFormat>
     <Category>Redundancy</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>

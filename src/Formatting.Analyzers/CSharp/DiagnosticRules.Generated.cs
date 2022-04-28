@@ -310,15 +310,15 @@ namespace Roslynator.Formatting.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0031</summary>
-        public static readonly DiagnosticDescriptor AddNewLineBeforeEnumMember = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.AddNewLineBeforeEnumMember, 
-            title:              "Add new line before enum member.", 
-            messageFormat:      "Add new line before enum member.", 
+        public static readonly DiagnosticDescriptor PutEnumMemberOnItsOwnLine = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.PutEnumMemberOnItsOwnLine, 
+            title:              "Put enum member on its own line.", 
+            messageFormat:      "Put enum member on its own line.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddNewLineBeforeEnumMember, 
+            helpLinkUri:        DiagnosticIdentifiers.PutEnumMemberOnItsOwnLine, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0032</summary>
@@ -346,15 +346,15 @@ namespace Roslynator.Formatting.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0034</summary>
-        public static readonly DiagnosticDescriptor AddNewLineBeforeTypeParameterConstraint = DiagnosticDescriptorFactory.Create(
-            id:                 DiagnosticIdentifiers.AddNewLineBeforeTypeParameterConstraint, 
-            title:              "Add new line before type parameter constraint.", 
-            messageFormat:      "Add new line before type parameter constraint.", 
+        public static readonly DiagnosticDescriptor PutTypeParameterConstraintOnItsOwnLine = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.PutTypeParameterConstraintOnItsOwnLine, 
+            title:              "Put type parameter constraint on its own line.", 
+            messageFormat:      "Put type parameter constraint on its own line.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddNewLineBeforeTypeParameterConstraint, 
+            helpLinkUri:        DiagnosticIdentifiers.PutTypeParameterConstraintOnItsOwnLine, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS0036</summary>
