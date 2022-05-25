@@ -70,14 +70,13 @@ namespace Roslynator.CSharp.Analysis
 
             NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(binaryExpression, allowedStyles: NullCheckStyles.EqualsToNull, walkDownParentheses: false);
 
-            if (nullCheck.Success)
-            {
-                DiagnosticHelpers.ReportDiagnostic(
-                    context,
-                    DiagnosticRules.NormalizeNullCheck,
-                    binaryExpression,
-                    "pattern matching");
-            }
+            if (!nullCheck.Success)
+                return;
+
+            if (binaryExpression.IsInExpressionTree(context.SemanticModel, context.CancellationToken))
+                return;
+
+            ReportDiagnostic(context, binaryExpression, "pattern matching");
         }
 
         private static void AnalyzeNotEqualsExpression(SyntaxNodeAnalysisContext context)
@@ -89,14 +88,13 @@ namespace Roslynator.CSharp.Analysis
 
             NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(binaryExpression, allowedStyles: NullCheckStyles.NotEqualsToNull);
 
-            if (nullCheck.Success)
-            {
-                DiagnosticHelpers.ReportDiagnostic(
-                    context,
-                    DiagnosticRules.NormalizeNullCheck,
-                    binaryExpression,
-                    "pattern matching");
-            }
+            if (!nullCheck.Success)
+                return;
+
+            if (binaryExpression.IsInExpressionTree(context.SemanticModel, context.CancellationToken))
+                return;
+
+            ReportDiagnostic(context, binaryExpression, "pattern matching");
         }
 
         private static void AnalyzeIsPatternExpression(SyntaxNodeAnalysisContext context)
@@ -109,12 +107,17 @@ namespace Roslynator.CSharp.Analysis
             if (isPatternExpression.Pattern is ConstantPatternSyntax constantPattern
                 && constantPattern.Expression.IsKind(SyntaxKind.NullLiteralExpression))
             {
-                DiagnosticHelpers.ReportDiagnostic(
-                    context,
-                    DiagnosticRules.NormalizeNullCheck,
-                    isPatternExpression,
-                    "equality operator");
+                ReportDiagnostic(context, isPatternExpression, "equality operator");
             }
+        }
+
+        private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, ExpressionSyntax expression, string messageArg)
+        {
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
+                DiagnosticRules.NormalizeNullCheck,
+                expression,
+                messageArg);
         }
     }
 }
