@@ -272,7 +272,8 @@ namespace Roslynator.CSharp.Analysis
                     && SymbolEqualityComparer.Default.Equals(parameterSymbol, SemanticModel.GetSymbol(node, CancellationToken)))
                 {
                     if (_localFunctionDepth > 0
-                        || _anonymousFunctionDepth > 0)
+                        || _anonymousFunctionDepth > 0
+                        || node.IsInExpressionTree(SemanticModel, CancellationToken))
                     {
                         Parameters.Remove(name);
                     }
