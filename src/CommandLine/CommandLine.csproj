@@ -27,12 +27,12 @@
     <PackageVersion>$(RoslynatorCliPackageVersion)</PackageVersion>
     <Authors>Josef Pihrt</Authors>
     <Description>Roslynator command line tool for .NET Core</Description>
-    <PackageProjectUrl>https://github.com/JosefPihrt/Roslynator</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/josefpihrt/roslynator</PackageProjectUrl>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageIcon>icon.png</PackageIcon>
     <PackageTags>CLI;Roslyn;C#;CSharp</PackageTags>
     <PackageReadmeFile>docs/README.md</PackageReadmeFile>
-    <RepositoryUrl>https://github.com/JosefPihrt/Roslynator.git</RepositoryUrl>
+    <RepositoryUrl>https://github.com/josefpihrt/roslynator.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
   </PropertyGroup>
