@@ -4,7 +4,7 @@
 
 ## Feedback
 
-* File an issue on [GitHub](https://github.com/JosefPihrt/Roslynator/issues/new)
+* File an issue on [GitHub](https://github.com/josefpihrt/roslynator/issues/new)
 * Follow on [Twitter](https://twitter.com/roslynator)
 
 ## Donation

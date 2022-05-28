@@ -2,7 +2,7 @@
 
 .NET Framework stand-alone application that allows to run [Roslyn](https://github.com/dotnet/roslyn) code analysis from command line.
 
-* [Documentation](https://github.com/JosefPihrt/Roslynator/blob/master/docs/cli/README.md)
+* [Documentation](https://github.com/josefpihrt/roslynator/blob/master/docs/cli/README.md)
 * [Release notes](https://github.com/josefpihrt/roslynator/blob/master/CommandLine/ChangeLog.md)
 
 ## Requirements
@@ -15,7 +15,7 @@ No installation required, just run Roslynator.exe
 
 ## Feedback
 
-* File an issue on [GitHub](https://github.com/JosefPihrt/Roslynator/issues/new)
+* File an issue on [GitHub](https://github.com/josefpihrt/roslynator/issues/new)
 * Follow on [Twitter](https://twitter.com/roslynator)
 
 ## Donation
