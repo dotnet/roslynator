@@ -52,6 +52,7 @@
     "onCommand:csharp.listRemoteProcess",
     "onCommand:csharp.listRemoteDockerProcess",
     "onCommand:omnisharp.registerLanguageMiddleware",
+    "onCommand:roslynator.openDefaultConfigurationFile",
     "workspaceContains:project.json",
     "workspaceContains:**/*.{csproj,sln,slnf,csx,cake}"
   ],
