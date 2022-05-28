@@ -4531,8 +4531,8 @@ x = "";]]></Before>
         <After><![CDATA[string s = "abc";]]></After>
       </Sample>
       <Sample>
-        <Before><![CDATA[$"{x}"]]></Before>
-        <After><![CDATA[x]]></After>
+        <Before><![CDATA[$"{NonNullStringConstant}"]]></Before>
+        <After><![CDATA[NonNullStringConstant]]></After>
       </Sample>
     </Samples>
   </Analyzer>
