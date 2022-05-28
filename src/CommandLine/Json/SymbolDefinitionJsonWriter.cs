@@ -408,6 +408,7 @@ namespace Roslynator.Documentation.Json
 
                 if (item.HasChildren)
                 {
+                    SymbolHierarchy.Add(item.Symbol);
                     WriteStartHierarchyTypes();
 
                     foreach (TypeHierarchyItem child in item.Children())
@@ -417,6 +418,7 @@ namespace Roslynator.Documentation.Json
                     }
 
                     WriteEndHierarchyTypes();
+                    SymbolHierarchy.RemoveAt(SymbolHierarchy.Count - 1);
                 }
 
                 WriteEndObject();

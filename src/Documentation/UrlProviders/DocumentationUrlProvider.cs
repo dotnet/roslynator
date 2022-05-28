@@ -46,6 +46,19 @@ namespace Roslynator.Documentation
             return default;
         }
 
+        public DocumentationUrlInfo GetExternalUrl(ISymbol symbol)
+        {
+            foreach (ExternalUrlProvider provider in ExternalProviders)
+            {
+                DocumentationUrlInfo urlInfo = provider.CreateUrl(symbol);
+
+                if (urlInfo.Url != null)
+                    return urlInfo;
+            }
+
+            return default;
+        }
+
         public bool HasExternalUrl(ISymbol symbol)
         {
             return MicrosoftDocsUrlProvider.Instance.CanCreateUrl(symbol);

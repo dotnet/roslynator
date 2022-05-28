@@ -1,3 +1,19 @@
+## 4.1.0 (2022-03-29)
+
+* Add analyzer [RCS1254](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1254.md) (Normalize format of enum flag value)
+* Add analyzer [RCS1253](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1253.md) (Format documentation comment summary)
+* Add analyzer [RCS1252](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1252.md) (Normalize usage of infinite loop)
+* Add analyzer [RCS1251](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1251.md) (Remove unnecessary braces from record declaration)
+* Add refactoring [Deconstruct foreach variable (RR0217)](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactoring/RR0217.md)
+* Add code fix for CS8602, CS8604
+* Add suggestion to call AddRange instead of Add (RCS1235)
+* Put back refactoring "Split local declaration and assignment" (RR0194) ([issue](https://github.com/JosefPihrt/Roslynator/issues/881))
+* Adopt activation events in VS Code extension ([issue](https://github.com/JosefPihrt/Roslynator/issues/883)) (thanks to [ProphetLamb](https://github.com/ProphetLamb))
+* Fix: Get config value from global AnalyzerConfig if available ([issue](https://github.com/JosefPihrt/Roslynator/issues/884))
+* Fix: Do not suggest using null-forgiving operator for parameter default value (CS8625)
+* Fix: Check if equality operator is overloaded (RCS1171)
+* Fix: Do not remove field initialization in struct with constructor(s) (RCS1129)
+
 ## 4.0.3 (2022-01-29)
 
 * Fixed release for VS Code

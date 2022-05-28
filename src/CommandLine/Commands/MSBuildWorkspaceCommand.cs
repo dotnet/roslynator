@@ -93,8 +93,7 @@ namespace Roslynator.CommandLine
                         workspace.CloseSolution();
                     }
 
-                    if (results.Count > 1)
-                        ProcessResults(results);
+                    ProcessResults(results);
 
                     return status;
                 }
@@ -188,7 +187,7 @@ namespace Roslynator.CommandLine
             return true;
         }
 
-        protected virtual void ProcessResults(IEnumerable<TCommandResult> results)
+        protected virtual void ProcessResults(IList<TCommandResult> results)
         {
         }
 

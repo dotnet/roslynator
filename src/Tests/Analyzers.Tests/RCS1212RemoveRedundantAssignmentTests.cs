@@ -338,5 +338,72 @@ class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
+        public async Task TestNoDiagnostic_FinallyClause()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System.Diagnostics;
+using System.Linq;
+
+class C
+{
+    Process M()
+    {
+        using var current = Process.GetCurrentProcess();
+        var processes = Process.GetProcesses();
+        Process first = null;
+        try
+        {
+            first = processes.First(p => p.Id != current.Id);
+            return first;
+        }
+        finally
+        {
+            foreach (var process in processes.Where(p => p.Id != first?.Id))
+            {
+                process.Dispose();
+            }
+        }
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
+        public async Task TestNoDiagnostic_CatchClause()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System.Diagnostics;
+using System.Linq;
+
+class C
+{
+    Process M()
+    {
+        using var current = Process.GetCurrentProcess();
+        var processes = Process.GetProcesses();
+        Process first = null;
+        try
+        {
+        }
+        catch
+        {
+            first = processes.First(p => p.Id != current.Id);
+            return first;
+        }
+        finally
+        {
+            foreach (var process in processes.Where(p => p.Id != first?.Id))
+            {
+                process.Dispose();
+            }
+        }
+
+        return null;
+    }
+}
+");
+        }
     }
 }

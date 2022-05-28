@@ -531,10 +531,17 @@ namespace Roslynator.Documentation
                         }
                     case TypedConstantKind.Type:
                         {
-                            parts.AddKeyword("typeof");
-                            parts.AddPunctuation("(");
-                            AddDisplayParts(parts, (ISymbol)typedConstant.Value, format, additionalOptions);
-                            parts.AddPunctuation(")");
+                            if (typedConstant.Value == null)
+                            {
+                                parts.AddKeyword("null");
+                            }
+                            else
+                            {
+                                parts.AddKeyword("typeof");
+                                parts.AddPunctuation("(");
+                                AddDisplayParts(parts, (ISymbol)typedConstant.Value, format, additionalOptions);
+                                parts.AddPunctuation(")");
+                            }
 
                             break;
                         }
@@ -587,6 +594,7 @@ namespace Roslynator.Documentation
                     switch (specialType)
                     {
                         case SpecialType.System_Boolean:
+                        case SpecialType.System_Object:
                             return SymbolDisplayPartKind.Keyword;
                         case SpecialType.System_SByte:
                         case SpecialType.System_Byte:
@@ -1085,13 +1093,14 @@ namespace Roslynator.Documentation
 
                 while (true)
                 {
-                    if (en.Current.Kind == SymbolKind.NamedType)
+                    if (en.Current.Kind == SymbolKind.NamedType
+                        || en.Current.Kind == SymbolKind.ArrayType)
                     {
-                        parts.AddDisplayParts((INamedTypeSymbol)en.Current, format, additionalOptions);
+                        parts.AddDisplayParts(en.Current, format, additionalOptions);
                     }
                     else
                     {
-                        Debug.Assert(en.Current.Kind == SymbolKind.TypeParameter, en.Current.Kind.ToString());
+                        Debug.Assert(en.Current.Kind == SymbolKind.TypeParameter, $"{symbol.ToDisplayString(SymbolDisplayFormats.Test)}\n\n{en.Current.Kind} {en.Current.ToDisplayString(SymbolDisplayFormats.Test)}");
 
                         parts.Add(new SymbolDisplayPart(SymbolDisplayPartKind.TypeParameterName, en.Current, en.Current.Name));
                     }

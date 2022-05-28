@@ -869,5 +869,22 @@ class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+        public async Task TestNoDiagnostic_ConstantInterpolatedString()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System.Text;
+
+class C
+{
+    void M()
+    {
+        const string Foo = ""Foo"";
+        var sb = new StringBuilder().Append($""{Foo}Bar"");
+    }
+}
+");
+        }
     }
 }

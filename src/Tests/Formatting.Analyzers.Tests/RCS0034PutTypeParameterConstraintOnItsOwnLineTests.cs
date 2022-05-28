@@ -8,11 +8,11 @@ using Xunit;
 
 namespace Roslynator.Formatting.CSharp.Tests
 {
-    public class RCS0034AddNewLineBeforeTypeParameterConstraintTests : AbstractCSharpDiagnosticVerifier<AddNewLineBeforeTypeParameterConstraintAnalyzer, TypeParameterConstraintClauseSyntaxCodeFixProvider>
+    public class RCS0034PutTypeParameterConstraintOnItsOwnLineTests : AbstractCSharpDiagnosticVerifier<PutTypeParameterConstraintOnItsOwnLineAnalyzer, TypeParameterConstraintClauseSyntaxCodeFixProvider>
     {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddNewLineBeforeTypeParameterConstraint;
+        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.PutTypeParameterConstraintOnItsOwnLine;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeTypeParameterConstraint)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutTypeParameterConstraintOnItsOwnLine)]
         public async Task Test_Class()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -34,7 +34,7 @@ namespace N
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeTypeParameterConstraint)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutTypeParameterConstraintOnItsOwnLine)]
         public async Task Test_Struct()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -56,7 +56,7 @@ namespace N
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeTypeParameterConstraint)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutTypeParameterConstraintOnItsOwnLine)]
         public async Task Test_Interface()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -78,7 +78,7 @@ namespace N
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeTypeParameterConstraint)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutTypeParameterConstraintOnItsOwnLine)]
         public async Task Test_Delegate()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -96,7 +96,7 @@ namespace N
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeTypeParameterConstraint)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutTypeParameterConstraintOnItsOwnLine)]
         public async Task Test_Method()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -124,7 +124,7 @@ namespace N
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeTypeParameterConstraint)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutTypeParameterConstraintOnItsOwnLine)]
         public async Task Test_LocalFunction()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -158,7 +158,7 @@ namespace N
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeTypeParameterConstraint)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutTypeParameterConstraintOnItsOwnLine)]
         public async Task TestNoDiagnostic_SingleConstraint()
         {
             await VerifyNoDiagnosticAsync(@"

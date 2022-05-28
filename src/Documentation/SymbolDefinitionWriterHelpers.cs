@@ -233,8 +233,7 @@ namespace Roslynator.Documentation
 
                         s = parts[j].Symbol;
 
-                        if (ReadTypeParameterList())
-                            return (i, j, s);
+                        return (i, j, s);
                     }
                     else if (Peek(j).Kind == SymbolDisplayPartKind.Keyword)
                     {
@@ -327,6 +326,12 @@ namespace Roslynator.Documentation
                 j++;
 
                 s = parts[j].Symbol;
+
+                if (symbol.IsKind(SymbolKind.NamedType)
+                    && SymbolEqualityComparer.Default.Equals(symbol, s))
+                {
+                    return true;
+                }
 
                 if (!ReadTypeParameterList())
                     return false;

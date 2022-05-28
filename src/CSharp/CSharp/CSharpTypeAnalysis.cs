@@ -280,6 +280,16 @@ namespace Roslynator.CSharp
                         if (!expressions.Any())
                             return false;
 
+                        if (typeSymbol != null)
+                        {
+                            var arrayTypeSymbol = semanticModel.GetTypeSymbol(implicitArrayCreation, cancellationToken) as IArrayTypeSymbol;
+
+                            if (!GetEqualityComparer(includeNullability).Equals(typeSymbol, arrayTypeSymbol))
+                                return false;
+
+                            typeSymbol = arrayTypeSymbol.ElementType;
+                        }
+
                         foreach (ExpressionSyntax expression2 in expressions)
                         {
                             if (!IsTypeObvious(expression2, typeSymbol, includeNullability, semanticModel, cancellationToken))

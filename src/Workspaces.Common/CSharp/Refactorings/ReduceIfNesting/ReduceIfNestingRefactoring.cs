@@ -31,7 +31,7 @@ namespace Roslynator.CSharp.Refactorings.ReduceIfNesting
                 semanticModel,
                 cancellationToken);
 
-            SyntaxNode newNode = rewriter.Visit(node);
+            SyntaxNode newNode = rewriter.Visit(node).WithFormatterAnnotation();
 
             return await document.ReplaceNodeAsync(node, newNode, cancellationToken).ConfigureAwait(false);
         }

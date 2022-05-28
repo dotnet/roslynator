@@ -312,12 +312,15 @@ namespace Roslynator.Documentation
                 {
                     xml = XmlDocumentation.Unindent(xml);
 
-                    var element = XElement.Parse(xml, LoadOptions.PreserveWhitespace);
+                    if (!string.IsNullOrEmpty(xml))
+                    {
+                        var element = XElement.Parse(xml, LoadOptions.PreserveWhitespace);
 
-                    xmlDocumentation = new SymbolXmlDocumentation(symbol, element);
+                        xmlDocumentation = new SymbolXmlDocumentation(symbol, element);
 
-                    _symbolData[symbol] = data.WithXmlDocumentation(xmlDocumentation);
-                    return xmlDocumentation;
+                        _symbolData[symbol] = data.WithXmlDocumentation(xmlDocumentation);
+                        return xmlDocumentation;
+                    }
                 }
             }
 

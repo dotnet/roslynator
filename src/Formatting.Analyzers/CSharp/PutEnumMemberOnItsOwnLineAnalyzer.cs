@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace Roslynator.Formatting.CSharp
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class AddNewLineBeforeEnumMemberAnalyzer : BaseDiagnosticAnalyzer
+    public sealed class PutEnumMemberOnItsOwnLineAnalyzer : BaseDiagnosticAnalyzer
     {
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 
@@ -18,7 +18,7 @@ namespace Roslynator.Formatting.CSharp
             get
             {
                 if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddNewLineBeforeEnumMember);
+                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.PutEnumMemberOnItsOwnLine);
 
                 return _supportedDiagnostics;
             }
@@ -48,7 +48,7 @@ namespace Roslynator.Formatting.CSharp
                 {
                     DiagnosticHelpers.ReportDiagnostic(
                         context,
-                        DiagnosticRules.AddNewLineBeforeEnumMember,
+                        DiagnosticRules.PutEnumMemberOnItsOwnLine,
                         Location.Create(enumDeclaration.SyntaxTree, members[i].Span.WithLength(0)));
 
                     return;

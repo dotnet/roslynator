@@ -147,8 +147,11 @@ namespace Roslynator.CommandLine
             }
         }
 
-        protected override void ProcessResults(IEnumerable<FixCommandResult> results)
+        protected override void ProcessResults(IList<FixCommandResult> results)
         {
+            if (results.Count <= 1)
+                return;
+
             WriteFixResults(results.SelectMany(f => f.FixResults));
         }
 

@@ -37,6 +37,8 @@ namespace Roslynator
                 case SymbolDisplayPartKind.EnumName:
                 case SymbolDisplayPartKind.InterfaceName:
                 case SymbolDisplayPartKind.StructName:
+                case SymbolDisplayPartKind.RecordClassName:
+                case SymbolDisplayPartKind.RecordStructName:
                     return true;
                 default:
                     return false;
@@ -53,6 +55,8 @@ namespace Roslynator
                 case SymbolDisplayPartKind.EnumName:
                 case SymbolDisplayPartKind.InterfaceName:
                 case SymbolDisplayPartKind.StructName:
+                case SymbolDisplayPartKind.RecordClassName:
+                case SymbolDisplayPartKind.RecordStructName:
                     return true;
                 default:
                     return false;
@@ -73,6 +77,8 @@ namespace Roslynator
                     return true;
                 case SymbolDisplayPartKind.ClassName:
                 case SymbolDisplayPartKind.StructName:
+                case SymbolDisplayPartKind.RecordClassName:
+                case SymbolDisplayPartKind.RecordStructName:
                     return part.Symbol is IMethodSymbol methodSymbol && methodSymbol.MethodKind.Is(MethodKind.Constructor, MethodKind.Destructor);
                 default:
                     return false;
@@ -105,6 +111,8 @@ namespace Roslynator
                 case SymbolDisplayPartKind.ExtensionMethodName:
                 case SymbolDisplayPartKind.EnumMemberName:
                 case SymbolDisplayPartKind.ConstantName:
+                case SymbolDisplayPartKind.RecordClassName:
+                case SymbolDisplayPartKind.RecordStructName:
                     return true;
                 default:
                     return false;
