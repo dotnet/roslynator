@@ -6,9 +6,9 @@ Roslynator Testing Framework can be used for unit testing of [Roslyn](https://gi
 
 Learn how to use the framework from actual usages in Roslynator repo:
 
-* Tests of analyzers are [here](https://github.com/josefpihrt/roslynator/tree/master/src/Tests/Analyzers.Tests), [here](https://github.com/josefpihrt/roslynator/tree/master/src/Tests/CodeAnalysis.Analyzers.Tests) and [here](https://github.com/josefpihrt/roslynator/tree/master/src/Tests/Formatting.Analyzers.Tests)
-* Tests of refactorings are [here](https://github.com/josefpihrt/roslynator/tree/master/src/Tests/Refactorings.Tests)
-* Tests of fixes of compiler diagnostics are [here](https://github.com/josefpihrt/roslynator/tree/master/src/Tests/CodeFixes.Tests)
+* Tests of analyzers are [here](https://github.com/josefpihrt/roslynator/tree/master/src/Tests/Analyzers.Tests), [here](https://github.com/josefpihrt/roslynator/tree/master/src/Tests/CodeAnalysis.Analyzers.Tests) and [here](https://github.com/josefpihrt/roslynator/tree/master/src/Tests/Formatting.Analyzers.Tests).
+* Tests of refactorings are [here](https://github.com/josefpihrt/roslynator/tree/master/src/Tests/Refactorings.Tests).
+* Tests of fixes of compiler diagnostics are [here](https://github.com/josefpihrt/roslynator/tree/master/src/Tests/CodeFixes.Tests).
 
 ## Feedback
 

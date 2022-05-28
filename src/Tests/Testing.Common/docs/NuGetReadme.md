@@ -1,6 +1,6 @@
 # Roslynator.Testing.Common
 
-* A shared package used by the [Roslynator](https://github.com/josefpihrt/roslynator) Testing Framework.
+* A shared package used by the Roslynator Testing Framework.
 * Do not install this package manually, it will be added as a prerequisite by other packages that require it.
 
 ## Feedback
