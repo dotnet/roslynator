@@ -3684,8 +3684,8 @@ else
   </Analyzer>
   <Analyzer Identifier="UnusedThisParameter">
     <Id>RCS1175</Id>
-    <Title>Unused this parameter.</Title>
-    <MessageFormat>Unused this parameter '{0}'.</MessageFormat>
+    <Title>Unused 'this' parameter.</Title>
+    <MessageFormat>Unused 'this' parameter '{0}'.</MessageFormat>
     <Category>Redundancy</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -4531,8 +4531,8 @@ x = "";]]></Before>
         <After><![CDATA[string s = "abc";]]></After>
       </Sample>
       <Sample>
-        <Before><![CDATA[$"{x}"]]></Before>
-        <After><![CDATA[x]]></After>
+        <Before><![CDATA[$"{NonNullStringConstant}"]]></Before>
+        <After><![CDATA[NonNullStringConstant]]></After>
       </Sample>
     </Samples>
   </Analyzer>

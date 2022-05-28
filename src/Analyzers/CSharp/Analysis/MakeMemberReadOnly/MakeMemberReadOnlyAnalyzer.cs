@@ -16,6 +16,7 @@ namespace Roslynator.CSharp.Analysis.MakeMemberReadOnly
     {
         private static readonly MetadataName Microsoft_AspNetCore_Components_ParameterAttribute = MetadataName.Parse("Microsoft.AspNetCore.Components.ParameterAttribute");
         private static readonly MetadataName Microsoft_AspNetCore_Components_CascadingParameterAttribute = MetadataName.Parse("Microsoft.AspNetCore.Components.CascadingParameterAttribute");
+        private static readonly MetadataName Newtonsoft_Json_JsonPropertyAttribute = MetadataName.Parse("Newtonsoft.Json.JsonPropertyAttribute");
 
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 
@@ -199,6 +200,9 @@ namespace Roslynator.CSharp.Analysis.MakeMemberReadOnly
                     return false;
 
                 if (attributeClass.HasMetadataName(Microsoft_AspNetCore_Components_CascadingParameterAttribute))
+                    return false;
+
+                if (attributeClass.HasMetadataName(Newtonsoft_Json_JsonPropertyAttribute))
                     return false;
             }
 

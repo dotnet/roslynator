@@ -21,7 +21,7 @@ namespace Roslynator.Formatting.CodeFixes.CSharp
     {
         public override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.AddNewLineBeforeEnumMember); }
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.PutEnumMemberOnItsOwnLine); }
         }
 
         public override async Task RegisterCodeFixesAsync(CodeFixContext context)

@@ -140,8 +140,11 @@ namespace Roslynator.CommandLine
             WriteLine($"{totalLines.PadLeft(maxDigits)} {totalLineCount / (double)totalLineCount,5:P0} total lines", Verbosity.Minimal);
         }
 
-        protected override void ProcessResults(IEnumerable<LinesOfCodeCommandResult> results)
+        protected override void ProcessResults(IList<LinesOfCodeCommandResult> results)
         {
+            if (results.Count <= 1)
+                return;
+
             WriteMetrics(
                 totalCodeLineCount: results.Sum(f => f.Metrics.CodeLineCount),
                 totalWhitespaceLineCount: results.Sum(f => f.Metrics.WhitespaceLineCount),

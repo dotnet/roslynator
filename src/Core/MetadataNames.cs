@@ -27,6 +27,7 @@ namespace Roslynator
         public static readonly MetadataName System_Diagnostics_CodeAnalysis = MetadataName.Parse("System.Diagnostics.CodeAnalysis");
         public static readonly MetadataName System_Diagnostics_Debug = MetadataName.Parse("System.Diagnostics.Debug");
         public static readonly MetadataName System_Diagnostics_DebuggerDisplayAttribute = MetadataName.Parse("System.Diagnostics.DebuggerDisplayAttribute");
+        public static readonly MetadataName System_Dynamic_ExpandoObject = MetadataName.Parse("System.Dynamic.ExpandoObject");
         public static readonly MetadataName System_Enum = MetadataName.Parse("System.Enum");
         public static readonly MetadataName System_EventArgs = MetadataName.Parse("System.EventArgs");
         public static readonly MetadataName System_EventHandler = MetadataName.Parse("System.EventHandler");

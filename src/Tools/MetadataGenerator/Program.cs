@@ -55,7 +55,7 @@ namespace Roslynator.CodeGeneration
 
             WriteAnalyzersReadMe(@"Formatting.Analyzers\README.md", formattingAnalyzers, "Roslynator.Formatting.Analyzers");
 #if !DEBUG
-            VisualStudioInstance instance = MSBuildLocator.QueryVisualStudioInstances().First(f => f.Version.Major == 16);
+            VisualStudioInstance instance = MSBuildLocator.QueryVisualStudioInstances().First(f => f.Version.Major == 17);
 
             MSBuildLocator.RegisterInstance(instance);
 

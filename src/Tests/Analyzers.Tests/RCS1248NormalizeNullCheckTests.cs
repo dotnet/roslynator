@@ -184,5 +184,32 @@ class C
 ", options: WellKnownCSharpTestOptions.Default_CSharp8
                 .AddConfigOption(ConfigOptionKeys.NullCheckStyle, ConfigOptionValues.NullCheckStyle_PatternMatching));
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.NormalizeNullCheck)]
+        public async Task TestNoDiagnostic_ExpressionTree()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System.Collections.Generic;
+using System.Linq;
+
+class C
+{
+    void M()
+    {
+        var items = default(IQueryable<C>);
+
+        var items2 = items
+            .Where(f => f.P == null)
+            .ToList();
+
+        var items3 = items
+            .Where(f => f.P != null)
+            .ToList();
+    }
+
+    public object P { get; }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.NullCheckStyle, ConfigOptionValues.NullCheckStyle_PatternMatching));
+        }
     }
 }

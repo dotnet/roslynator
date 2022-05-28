@@ -1,3 +1,7 @@
+### 0.3.2 (2022-03-29)
+
+* Bump Roslyn version to 4.1.0
+
 ### 0.3.1 (2022-01-16)
 
 * Add support for .NET 6

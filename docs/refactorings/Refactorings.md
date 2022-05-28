@@ -881,6 +881,34 @@ switch (s)
 }
 ```
 
+#### Deconstruct foreach variable \(RR0217\)
+
+* **Syntax**: foreach statement
+
+#### Before
+
+```csharp
+var dic = new Dictionary<string, object>();
+
+foreach (var kvp in dic)
+{
+    var k = kvp.Key;
+    var v = kvp.Value.ToString();
+}
+```
+
+#### After
+
+```csharp
+var dic = new Dictionary<string, object>();
+
+foreach (var (key, value) in dic)
+{
+    var k = key;
+    var v = value.ToString();
+}
+```
+
 #### Expand coalesce expression \(RR0035\)
 
 * **Syntax**: coalesce expression
@@ -2065,24 +2093,6 @@ bool Foo(string s)
 * **Syntax**: selected attribute list
 ![Split attributes](../../images/refactorings/SplitAttributes.png)
 
-#### Split declaration and initialization \(RR0194\)
-
-* **Syntax**: local variable declaration
-* **Span**: equals token
-
-#### Before
-
-```csharp
-var s = GetValue();
-```
-
-#### After
-
-```csharp
-string s;
-s = GetValue();
-```
-
 #### Split if \(RR0184\)
 
 * **Syntax**: if statement that has 'logical or' expression as a condition
@@ -2125,6 +2135,24 @@ if (condition2)
 }
 
 return false;
+```
+
+#### Split local declaration and assignment \(RR0194\)
+
+* **Syntax**: local variable declaration
+* **Span**: equals token
+
+#### Before
+
+```csharp
+var s = GetValue();
+```
+
+#### After
+
+```csharp
+string s;
+s = GetValue();
 ```
 
 #### Split switch labels \(RR0157\)

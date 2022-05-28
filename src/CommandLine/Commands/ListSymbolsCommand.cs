@@ -165,7 +165,7 @@ namespace Roslynator.CommandLine
                     using (var fileStream = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.Read))
                     using (var streamWriter = new StreamWriter(fileStream, Encodings.UTF8NoBom))
                     using (MarkdownWriter markdownWriter = MarkdownWriter.Create(streamWriter, markdownWriterSettings))
-                    using (SymbolDefinitionWriter writer = new SymbolDefinitionMarkdownWriter(markdownWriter, SymbolFilterOptions, format, hierarchyRoot: hierarchyRoot))
+                    using (SymbolDefinitionWriter writer = new SymbolDefinitionMarkdownWriter(markdownWriter, SymbolFilterOptions, format, hierarchyRoot: hierarchyRoot, urlProvider: WellKnownUrlProviders.GitHub))
                     {
                         writer.WriteDocument(assemblies, cancellationToken);
                     }
@@ -351,7 +351,7 @@ namespace Roslynator.CommandLine
             WriteLine();
 
             using (MarkdownWriter markdownWriter = MarkdownWriter.Create(ConsoleOut))
-            using (SymbolDefinitionWriter writer = new SymbolDefinitionMarkdownWriter(markdownWriter, SymbolFilterOptions, format, default(SymbolDocumentationProvider), hierarchyRoot))
+            using (SymbolDefinitionWriter writer = new SymbolDefinitionMarkdownWriter(markdownWriter, SymbolFilterOptions, format, default(SymbolDocumentationProvider), hierarchyRoot, WellKnownUrlProviders.GitHub))
             {
                 writer.WriteDocument(assemblies, cancellationToken);
             }

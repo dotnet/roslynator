@@ -146,8 +146,11 @@ namespace Roslynator.CommandLine
             return formattedDocuments;
         }
 
-        protected override void ProcessResults(IEnumerable<FormatCommandResult> results)
+        protected override void ProcessResults(IList<FormatCommandResult> results)
         {
+            if (results.Count <= 1)
+                return;
+
             WriteSummary(results.Sum(f => f.Count));
         }
 

@@ -172,6 +172,40 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
+        public async Task Test_IfStatement2()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System.Dynamic;
+using System.Collections.Generic;
+
+class C
+{
+    bool M(dynamic @object, string name)
+    {
+        if ([|@object is ExpandoObject|])
+            return ((IDictionary<string, object>)@object).ContainsKey(name);
+
+        return false;
+    }
+}
+", @"
+using System.Dynamic;
+using System.Collections.Generic;
+
+class C
+{
+    bool M(dynamic @object, string name)
+    {
+        if (@object is ExpandoObject expandoObject)
+            return ((IDictionary<string, object>)expandoObject).ContainsKey(name);
+
+        return false;
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
         public async Task TestNoDiagnostic_LogicalAndExpression()
         {
             await VerifyNoDiagnosticAsync(@"

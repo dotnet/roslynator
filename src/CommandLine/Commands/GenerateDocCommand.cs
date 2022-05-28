@@ -124,9 +124,9 @@ namespace Roslynator.CommandLine
             {
                 string path = Path.Combine(directoryPath, documentationFile.FilePath);
 
-                Directory.CreateDirectory(Path.GetDirectoryName(path));
-
                 WriteLine($"  Save '{path}'", ConsoleColors.DarkGray, Verbosity.Detailed);
+
+                Directory.CreateDirectory(Path.GetDirectoryName(path));
 
                 File.WriteAllText(path, documentationFile.Content, _defaultEncoding);
             }

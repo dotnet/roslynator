@@ -1252,5 +1252,25 @@ class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfList)]
+        public async Task TestNoDiagnostic_LambdaBlockBodyInGlobalStatement()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System.Linq;
+
+foreach (var item in Enumerable.Range(0, 10))
+{
+    var s = """";
+}
+
+var items = Enumerable.Range(0, 10)
+    .Select(f =>
+    {
+        return f;
+    })
+    .Select(f => f);
+", options: Options.WithCompilationOptions(Options.CompilationOptions.WithOutputKind(OutputKind.ConsoleApplication)));
+        }
     }
 }

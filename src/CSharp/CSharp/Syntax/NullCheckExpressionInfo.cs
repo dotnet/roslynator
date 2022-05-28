@@ -162,6 +162,9 @@ namespace Roslynator.CSharp.Syntax
                     }
                 case SyntaxKind.IsPatternExpression:
                     {
+                        if ((allowedStyles & (NullCheckStyles.IsNull | NullCheckStyles.IsNotNull)) == 0)
+                            break;
+
                         var isPatternExpression = (IsPatternExpressionSyntax)expression;
 
                         PatternSyntax pattern = isPatternExpression.Pattern;
@@ -169,7 +172,16 @@ namespace Roslynator.CSharp.Syntax
                         bool isNotPattern = pattern.IsKind(SyntaxKind.NotPattern);
 
                         if (isNotPattern)
+                        {
+                            if ((allowedStyles & NullCheckStyles.IsNotNull) == 0)
+                                break;
+
                             pattern = ((UnaryPatternSyntax)pattern).Pattern;
+                        }
+                        else if ((allowedStyles & NullCheckStyles.IsNull) == 0)
+                        {
+                            break;
+                        }
 
                         if (pattern is not ConstantPatternSyntax constantPattern)
                             break;

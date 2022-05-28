@@ -112,12 +112,10 @@ namespace Roslynator.Testing.CSharp
         {
             var code = TestCode.Parse(source, sourceData);
 
-            Debug.Assert(code.Spans.Length == 0);
-
             var data = new DiagnosticTestData(
                 Descriptor,
                 code.Value,
-                code.Spans,
+                spans: null,
                 code.AdditionalSpans,
                 AdditionalFile.CreateRange(additionalFiles));
 

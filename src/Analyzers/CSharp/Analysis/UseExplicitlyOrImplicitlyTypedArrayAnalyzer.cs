@@ -75,6 +75,8 @@ namespace Roslynator.CSharp.Analysis
             if (expression.CloseBracketToken.ContainsDirectives)
                 return;
 
+            IArrayTypeSymbol arrayTypeSymbol = null;
+
             if (kind == ArrayCreationTypeStyle.ImplicitWhenTypeIsObvious)
             {
                 InitializerExpressionSyntax initializer = expression.Initializer;
@@ -85,7 +87,15 @@ namespace Roslynator.CSharp.Analysis
 
                     foreach (ExpressionSyntax expression2 in initializer.Expressions)
                     {
-                        isObvious = CSharpTypeAnalysis.IsTypeObvious(expression2, context.SemanticModel, context.CancellationToken);
+                        if (arrayTypeSymbol == null)
+                        {
+                            arrayTypeSymbol = context.SemanticModel.GetTypeSymbol(expression, context.CancellationToken) as IArrayTypeSymbol;
+
+                            if (arrayTypeSymbol?.ElementType.SupportsExplicitDeclaration() != true)
+                                return;
+                        }
+
+                        isObvious = CSharpTypeAnalysis.IsTypeObvious(expression2, arrayTypeSymbol.ElementType, includeNullability: true, context.SemanticModel, context.CancellationToken);
 
                         if (!isObvious)
                             break;
@@ -96,11 +106,13 @@ namespace Roslynator.CSharp.Analysis
                 }
             }
 
-            if (context.SemanticModel.GetTypeSymbol(expression, context.CancellationToken) is not IArrayTypeSymbol arrayTypeSymbol)
-                return;
+            if (arrayTypeSymbol == null)
+            {
+                arrayTypeSymbol = context.SemanticModel.GetTypeSymbol(expression, context.CancellationToken) as IArrayTypeSymbol;
 
-            if (!arrayTypeSymbol.ElementType.SupportsExplicitDeclaration())
-                return;
+                if (arrayTypeSymbol?.ElementType.SupportsExplicitDeclaration() != true)
+                    return;
+            }
 
             Location location = Location.Create(expression.SyntaxTree, TextSpan.FromBounds(expression.NewKeyword.SpanStart, expression.CloseBracketToken.Span.End));
 

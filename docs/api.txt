@@ -1,10 +1,10 @@
-﻿assembly Roslynator.Core, Version=2.2.0.1, Culture=neutral, PublicKeyToken=926ea54d246a765e
-assembly Roslynator.CSharp, Version=2.2.0.1, Culture=neutral, PublicKeyToken=926ea54d246a765e
-assembly Roslynator.CSharp.Workspaces, Version=2.2.0.1, Culture=neutral, PublicKeyToken=926ea54d246a765e
-assembly Roslynator.Testing.Common, Version=1.0.0.1, Culture=neutral, PublicKeyToken=926ea54d246a765e
-assembly Roslynator.Testing.CSharp, Version=1.0.0.1, Culture=neutral, PublicKeyToken=926ea54d246a765e
-assembly Roslynator.Testing.CSharp.Xunit, Version=1.0.0.1, Culture=neutral, PublicKeyToken=926ea54d246a765e
-assembly Roslynator.Workspaces.Core, Version=2.2.0.1, Culture=neutral, PublicKeyToken=926ea54d246a765e
+﻿assembly Roslynator.Core, Version=4.1.0.0, Culture=neutral, PublicKeyToken=926ea54d246a765e
+assembly Roslynator.CSharp, Version=4.1.0.0, Culture=neutral, PublicKeyToken=926ea54d246a765e
+assembly Roslynator.CSharp.Workspaces, Version=4.1.0.0, Culture=neutral, PublicKeyToken=926ea54d246a765e
+assembly Roslynator.Testing.Common, Version=4.1.0.0, Culture=neutral, PublicKeyToken=926ea54d246a765e
+assembly Roslynator.Testing.CSharp, Version=4.1.0.0, Culture=neutral, PublicKeyToken=926ea54d246a765e
+assembly Roslynator.Testing.CSharp.Xunit, Version=4.1.0.0, Culture=neutral, PublicKeyToken=926ea54d246a765e
+assembly Roslynator.Workspaces.Core, Version=4.1.0.0, Culture=neutral, PublicKeyToken=926ea54d246a765e
 
 namespace Roslynator
 
@@ -971,6 +971,7 @@ namespace Roslynator.CSharp
     public static LocalDeclarationStatementInfo LocalDeclarationStatementInfo(ExpressionSyntax value, bool allowMissing = false);
     public static MemberDeclarationListInfo MemberDeclarationListInfo(CompilationUnitSyntax compilationUnit);
     public static MemberDeclarationListInfo MemberDeclarationListInfo(NamespaceDeclarationSyntax declaration);
+    public static MemberDeclarationListInfo MemberDeclarationListInfo(BaseNamespaceDeclarationSyntax declaration);
     public static MemberDeclarationListInfo MemberDeclarationListInfo(TypeDeclarationSyntax declaration);
     public static MemberDeclarationListInfo MemberDeclarationListInfo(ClassDeclarationSyntax declaration);
     public static MemberDeclarationListInfo MemberDeclarationListInfo(StructDeclarationSyntax declaration);

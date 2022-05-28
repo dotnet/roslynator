@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
@@ -21,23 +22,35 @@ namespace Roslynator.CSharp.Refactorings
         {
             ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(forEachStatement.Type);
 
-            IMethodSymbol deconstructSymbol = typeSymbol.FindMember<IMethodSymbol>(
-                "Deconstruct",
-                symbol =>
-                {
-                    if (symbol.DeclaredAccessibility == Accessibility.Public)
+            IEnumerable<ISymbol> parameters = null;
+
+            if (typeSymbol.IsTupleType)
+            {
+                var tupleType = (INamedTypeSymbol)typeSymbol;
+                parameters = tupleType.TupleElements;
+            }
+            else
+            {
+                IMethodSymbol deconstructSymbol = typeSymbol.FindMember<IMethodSymbol>(
+                    "Deconstruct",
+                    symbol =>
                     {
-                        ImmutableArray<IParameterSymbol> parameters = symbol.Parameters;
+                        if (symbol.DeclaredAccessibility == Accessibility.Public)
+                        {
+                            ImmutableArray<IParameterSymbol> parameters = symbol.Parameters;
 
-                        return parameters.Any()
-                            && parameters.All(f => f.RefKind == RefKind.Out);
-                    }
+                            return parameters.Any()
+                                && parameters.All(f => f.RefKind == RefKind.Out);
+                        }
 
-                    return false;
-                });
+                        return false;
+                    });
 
-            if (deconstructSymbol is null)
-                return;
+                if (deconstructSymbol is null)
+                    return;
+
+                parameters = deconstructSymbol.Parameters;
+            }
 
             ISymbol foreachSymbol = semanticModel.GetDeclaredSymbol(forEachStatement, context.CancellationToken);
 
@@ -45,7 +58,7 @@ namespace Roslynator.CSharp.Refactorings
                 return;
 
             var walker = new DeconstructForeachVariableWalker(
-                deconstructSymbol,
+                parameters,
                 foreachSymbol,
                 forEachStatement.Identifier.ValueText,
                 semanticModel,
@@ -53,73 +66,92 @@ namespace Roslynator.CSharp.Refactorings
 
             walker.Visit(forEachStatement.Statement);
 
-            if (!walker.Success)
-                return;
-
-            context.RegisterRefactoring(
-                "Deconstruct foreach variable",
-                ct => RefactorAsync(context.Document, forEachStatement, deconstructSymbol, foreachSymbol, semanticModel, ct),
-                RefactoringDescriptors.DeconstructForeachVariable);
+            if (walker.Success)
+            {
+                context.RegisterRefactoring(
+                    "Deconstruct foreach variable",
+                    ct => RefactorAsync(context.Document, forEachStatement, parameters, foreachSymbol, semanticModel, ct),
+                    RefactoringDescriptors.DeconstructForeachVariable);
+            }
         }
 
         private static async Task<Document> RefactorAsync(
             Document document,
             ForEachStatementSyntax forEachStatement,
-            IMethodSymbol deconstructSymbol,
+            IEnumerable<ISymbol> deconstructSymbols,
             ISymbol identifierSymbol,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            DeclarationExpressionSyntax variableExpression = DeclarationExpression(
-                CSharpFactory.VarType().WithTriviaFrom(forEachStatement.Type),
-                ParenthesizedVariableDesignation(
-                    deconstructSymbol.Parameters.Select(parameter =>
-                    {
-                        return (VariableDesignationSyntax)SingleVariableDesignation(
-                            Identifier(
-                                SyntaxTriviaList.Empty,
-                                parameter.Name,
-                                SyntaxTriviaList.Empty));
-                    })
-                        .ToSeparatedSyntaxList())
-                    .WithTriviaFrom(forEachStatement.Identifier))
-                .WithFormatterAnnotation();
+            int position = forEachStatement.SpanStart;
+            ITypeSymbol elementType = semanticModel.GetForEachStatementInfo(forEachStatement).ElementType;
+            SyntaxNode enclosingSymbolSyntax = semanticModel.GetEnclosingSymbolSyntax(position, cancellationToken);
 
-            var rewriter = new DeconstructForeachVariableRewriter(identifierSymbol, semanticModel, cancellationToken);
+            ImmutableArray<ISymbol> declaredSymbols = semanticModel.GetDeclaredSymbols(enclosingSymbolSyntax, excludeAnonymousTypeProperty: true, cancellationToken);
+
+            ImmutableArray<ISymbol> symbols = declaredSymbols
+                .Concat(semanticModel.LookupSymbols(position))
+                .Distinct()
+                .Except(deconstructSymbols)
+                .ToImmutableArray();
+
+            Dictionary<string, string> newNames = deconstructSymbols
+                .Select(parameter =>
+                {
+                    string name = StringUtility.FirstCharToLower(parameter.Name);
+                    string newName = NameGenerator.Default.EnsureUniqueName(name, symbols);
+
+                    return (name: parameter.Name, newName);
+                })
+                .ToDictionary(f => f.name, f => f.newName);
+
+            var rewriter = new DeconstructForeachVariableRewriter(identifierSymbol, newNames, semanticModel, cancellationToken);
 
             var newStatement = (StatementSyntax)rewriter.Visit(forEachStatement.Statement);
 
-            ForEachVariableStatementSyntax newForEachStatement = ForEachVariableStatement(
+            DeclarationExpressionSyntax variableExpression = DeclarationExpression(
+                CSharpFactory.VarType().WithTriviaFrom(forEachStatement.Type),
+                ParenthesizedVariableDesignation(
+                    deconstructSymbols.Select(parameter =>
+                    {
+                        return SingleVariableDesignation(
+                            Identifier(SyntaxTriviaList.Empty, newNames[parameter.Name], SyntaxTriviaList.Empty));
+                    })
+                        .ToSeparatedSyntaxList<VariableDesignationSyntax>())
+                    .WithTriviaFrom(forEachStatement.Identifier))
+                .WithFormatterAnnotation();
+
+            ForEachVariableStatementSyntax forEachVariableStatement = ForEachVariableStatement(
                 forEachStatement.AttributeLists,
                 forEachStatement.AwaitKeyword,
                 forEachStatement.ForEachKeyword,
                 forEachStatement.OpenParenToken,
-                variableExpression.WithFormatterAnnotation(),
+                variableExpression,
                 forEachStatement.InKeyword,
                 forEachStatement.Expression,
                 forEachStatement.CloseParenToken,
                 newStatement);
 
-            return await document.ReplaceNodeAsync(forEachStatement, newForEachStatement, cancellationToken).ConfigureAwait(false);
+            return await document.ReplaceNodeAsync(forEachStatement, forEachVariableStatement, cancellationToken).ConfigureAwait(false);
         }
 
         private class DeconstructForeachVariableWalker : CSharpSyntaxWalker
         {
             public DeconstructForeachVariableWalker(
-                IMethodSymbol deconstructMethod,
+                IEnumerable<ISymbol> parameters,
                 ISymbol identifierSymbol,
                 string identifier,
                 SemanticModel semanticModel,
                 CancellationToken cancellationToken)
             {
-                DeconstructMethod = deconstructMethod;
+                Parameters = parameters;
                 IdentifierSymbol = identifierSymbol;
                 Identifier = identifier;
                 SemanticModel = semanticModel;
                 CancellationToken = cancellationToken;
             }
 
-            public IMethodSymbol DeconstructMethod { get; }
+            public IEnumerable<ISymbol> Parameters { get; }
 
             public ISymbol IdentifierSymbol { get; }
 
@@ -155,7 +187,7 @@ namespace Roslynator.CSharp.Refactorings
                         var memberAccess = (MemberAccessExpressionSyntax)node.Parent;
                         if (object.ReferenceEquals(memberAccess.Expression, node))
                         {
-                            foreach (IParameterSymbol parameter in DeconstructMethod.Parameters)
+                            foreach (ISymbol parameter in Parameters)
                             {
                                 if (string.Equals(parameter.Name, memberAccess.Name.Identifier.ValueText, StringComparison.OrdinalIgnoreCase))
                                     return true;
@@ -172,15 +204,19 @@ namespace Roslynator.CSharp.Refactorings
         {
             public DeconstructForeachVariableRewriter(
                 ISymbol identifierSymbol,
+                Dictionary<string, string> names,
                 SemanticModel semanticModel,
                 CancellationToken cancellationToken)
             {
                 IdentifierSymbol = identifierSymbol;
+                Names = names;
                 SemanticModel = semanticModel;
                 CancellationToken = cancellationToken;
             }
 
             public ISymbol IdentifierSymbol { get; }
+
+            public Dictionary<string, string> Names { get; }
 
             public SemanticModel SemanticModel { get; }
 
@@ -193,8 +229,12 @@ namespace Roslynator.CSharp.Refactorings
                     && identifierName.Identifier.ValueText == IdentifierSymbol.Name
                     && SymbolEqualityComparer.Default.Equals(SemanticModel.GetSymbol(identifierName, CancellationToken), IdentifierSymbol))
                 {
-                    return IdentifierName(StringUtility.FirstCharToLower(node.Name.Identifier.ValueText))
-                        .WithTriviaFrom(identifierName);
+                    string name = node.Name.Identifier.ValueText;
+
+                    if (!Names.TryGetValue(name, out string newName))
+                        newName = StringUtility.FirstCharToLower(name);
+
+                    return IdentifierName(newName).WithTriviaFrom(identifierName);
                 }
 
                 return base.VisitMemberAccessExpression(node);

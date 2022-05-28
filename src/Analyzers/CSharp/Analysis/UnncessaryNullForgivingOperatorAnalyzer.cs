@@ -86,11 +86,11 @@ namespace Roslynator.CSharp.Analysis
                     {
                         SyntaxDebug.Assert(
                             parent.IsParentKind(SyntaxKind.VariableDeclaration)
-                                && parent.Parent.IsParentKind(SyntaxKind.FieldDeclaration, SyntaxKind.LocalDeclarationStatement),
+                                && parent.Parent.IsParentKind(SyntaxKind.FieldDeclaration, SyntaxKind.EventFieldDeclaration, SyntaxKind.LocalDeclarationStatement),
                             parent);
 
                         if (parent.IsParentKind(SyntaxKind.VariableDeclaration)
-                            && parent.Parent.IsParentKind(SyntaxKind.FieldDeclaration, SyntaxKind.LocalDeclarationStatement))
+                            && parent.Parent.IsParentKind(SyntaxKind.FieldDeclaration, SyntaxKind.EventFieldDeclaration, SyntaxKind.LocalDeclarationStatement))
                         {
                             var variableDeclaration = (VariableDeclarationSyntax)parent.Parent;
 
