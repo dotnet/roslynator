@@ -1,15 +1,11 @@
 # Roslynator.CSharp
 
-* This package extends functionality of package [Microsoft.CodeAnalysis.CSharp](https://www.nuget.org/packages/Microsoft.CodeAnalysis.CSharp)
+* This package extends functionality of package [Microsoft.CodeAnalysis.CSharp](https://www.nuget.org/packages/Microsoft.CodeAnalysis.CSharp).
 
 ## Feedback
 
 * File an issue on [GitHub](https://github.com/josefpihrt/roslynator/issues/new)
 * Follow on [Twitter](https://twitter.com/roslynator)
-
-## Donation
-
-* Although Roslynator products are free of charge, any [donation](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=BX85UA346VTN6) is welcome and supports further development.
 
 ## Related Products
 
