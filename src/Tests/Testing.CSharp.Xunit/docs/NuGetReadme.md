@@ -23,4 +23,4 @@ Learn how to use the framework from actual usages in Roslynator repo:
 
 * [Roslynator for Visual Studio 2022](https://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2022)
 * [Roslynator for VS Code](https://marketplace.visualstudio.com/items?itemName=josefpihrt-vscode.roslynator)
-* [Roslynator Command-line Tool](https://www.nuget.org/packages/Roslynator.DotNet.Cli)
+* [Roslynator Command Line Tool](https://www.nuget.org/packages/Roslynator.DotNet.Cli)
