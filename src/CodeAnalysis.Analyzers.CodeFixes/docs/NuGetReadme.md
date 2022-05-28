@@ -1,0 +1,41 @@
+# Roslynator.CodeAnalysis.Analyzers
+
+* A collection of analyzers for Roslyn API, powered by [Roslyn](https://github.com/dotnet/roslyn).
+* This package is applicable for projects that reference Roslyn API (Microsoft.CodeAnalysis* packages).
+* [Configuration](https://github.com/JosefPihrt/Roslynator/blob/master/docs/Configuration.md)
+* [Release notes](https://github.com/josefpihrt/roslynator/blob/master/ChangeLog.md)
+
+## Requirements
+
+* Visual Studio 2022
+* VS Code with [C# for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp) 1.21.13 or higher.
+* Roslyn 4.0.1 (when used directly, not as a part of IDE)
+
+## Usage
+
+Just reference the package in your project:
+
+```xml
+<ItemGroup>
+  <PackageReference Include="Roslynator.CodeAnalysis.Analyzers" Version="$(PackageVersion)">
+    <PrivateAssets>all</PrivateAssets>
+    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+  </PackageReference>
+</ItemGroup>
+```
+
+## Feedback
+
+* File an issue on [GitHub](https://github.com/JosefPihrt/Roslynator/issues/new)
+* Follow on [Twitter](https://twitter.com/roslynator)
+
+## Donation
+
+* Although Roslynator products are free of charge, any [donation](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=BX85UA346VTN6) is welcome and supports further development.
+
+## Related Products
+
+* [Roslynator for Visual Studio 2022](https://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2022)
+* [Roslynator for VS Code](https://marketplace.visualstudio.com/items?itemName=josefpihrt-vscode.roslynator)
+* [Roslynator Command-line Tool](https://www.nuget.org/packages/Roslynator.DotNet.Cli)
+* [Roslynator Testing Framework](https://www.nuget.org/packages/Roslynator.Testing.CSharp.Xunit)

@@ -31,6 +31,7 @@
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageIcon>icon.png</PackageIcon>
     <PackageTags>CLI;Roslyn;C#;CSharp</PackageTags>
+    <PackageReadmeFile>docs/README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/JosefPihrt/Roslynator.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
@@ -63,6 +64,7 @@
 
   <ItemGroup>
     <None Include="..\..\images\icon.png" Pack="true" PackagePath="\" Visible="false" />
+    <None Include="docs\NetCore\NuGetReadme.md" Pack="true" PackagePath="docs\README.md" />
     <None Remove="_._" />
   </ItemGroup>
 

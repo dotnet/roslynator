@@ -17,10 +17,12 @@
     <tags>Roslyn Analyzer Refactoring Productivity CodeAnalysis C# CSharp</tags>
     <developmentDependency>true</developmentDependency>
     <repository type="git" url="https://github.com/JosefPihrt/Roslynator.git" />
+    <readme>docs\README.md</readme>
   </metadata>
   <files>
     <file src="bin\$Configuration$\netstandard2.0\Roslynator*.dll" target="analyzers\dotnet\cs" />
     <file src="tools\*.ps1" target="tools\" />
     <file src="..\..\images\icon.png" target="" />
+    <file src="docs\NuGetReadme.md" target="docs\README.md" />
   </files>
 </package>

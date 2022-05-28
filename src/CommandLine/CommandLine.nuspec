@@ -15,6 +15,7 @@
     <tags>CLI Roslyn C# CSharp VB VisualBasic</tags>
     <developmentDependency>true</developmentDependency>
     <repository type="git" url="https://github.com/JosefPihrt/Roslynator.git" />
+    <readme>docs\README.md</readme>
   </metadata>
   <files>
     <file src="_._" target="lib/net45/" />
@@ -24,5 +25,6 @@
     <file src="Roslynator.targets" target="tools/" />
     <file src="$publishDir$net48\**\*" target="tools/net48/" exclude="**\*.pdb;**\*.xml" />
     <file src="..\..\images\icon.png" target="" />
+    <file src="docs\NetFramework\NuGetReadme.md" target="docs\README.md" />
   </files>
 </package>

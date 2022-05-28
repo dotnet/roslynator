@@ -32,6 +32,7 @@ Roslynator.NameGenerator</Description>
     <PackageIcon>icon.png</PackageIcon>
     <PackageReleaseNotes></PackageReleaseNotes>
     <PackageTags>Roslyn;Analyzer;Refactoring;Productivity;CodeAnalysis;C#;CSharp</PackageTags>
+    <PackageReadmeFile>docs/README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/JosefPihrt/Roslynator.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
@@ -48,6 +49,7 @@ Roslynator.NameGenerator</Description>
 
   <ItemGroup>
     <None Include="..\..\images\icon.png" Pack="true" PackagePath="\" Visible="false" />
+    <None Include="docs\NuGetReadme.md" Pack="true" PackagePath="docs\README.md" />
   </ItemGroup>
 
 </Project>
