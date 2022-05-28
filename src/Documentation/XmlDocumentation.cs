@@ -30,25 +30,37 @@ namespace Roslynator.Documentation
 
             rawXml = Unindent(rawXml);
 
-            var document = XDocument.Parse(rawXml, LoadOptions.PreserveWhitespace);
+            if (!string.IsNullOrEmpty(rawXml))
+            {
+                var document = XDocument.Parse(rawXml, LoadOptions.PreserveWhitespace);
 
-            return new XmlDocumentation(document);
+                return new XmlDocumentation(document);
+            }
+
+            return null;
         }
 
         public static string Unindent(string rawXml)
         {
             var s = "";
 
-            using (var sr = new StringReader(rawXml))
-            using (XmlReader xr = XmlReader.Create(sr))
+            try
             {
-                if (xr.ReadToDescendant("member"))
+                using (var sr = new StringReader(rawXml))
+                using (XmlReader xr = XmlReader.Create(sr))
                 {
-                    xr.ReadStartElement();
+                    if (xr.ReadToDescendant("member"))
+                    {
+                        xr.ReadStartElement();
 
-                    if (xr.NodeType == XmlNodeType.Whitespace)
-                        s = xr.Value;
+                        if (xr.NodeType == XmlNodeType.Whitespace)
+                            s = xr.Value;
+                    }
                 }
+            }
+            catch (XmlException)
+            {
+                return null;
             }
 
             int index = s.Length;

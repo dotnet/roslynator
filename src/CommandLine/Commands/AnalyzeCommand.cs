@@ -88,11 +88,12 @@ namespace Roslynator.CommandLine
                 results);
         }
 
-        protected override void ProcessResults(IEnumerable<AnalyzeCommandResult> results)
+        protected override void ProcessResults(IList<AnalyzeCommandResult> results)
         {
             IEnumerable<ProjectAnalysisResult> analysisResults = results.SelectMany(f => f.AnalysisResults);
 
-            WriteAnalysisResults(analysisResults);
+            if (results.Count > 1)
+                WriteAnalysisResults(analysisResults);
 
             if (Options.Output != null
                 && analysisResults.Any(f => f.Diagnostics.Any()))

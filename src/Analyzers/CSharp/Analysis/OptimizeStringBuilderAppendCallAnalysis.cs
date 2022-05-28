@@ -70,7 +70,12 @@ namespace Roslynator.CSharp.Analysis
                 {
                     case SyntaxKind.InterpolatedStringExpression:
                         {
-                            ReportDiagnostic(argument);
+                            if (((CSharpCompilation)context.Compilation).LanguageVersion < LanguageVersion.CSharp10
+                                || !context.SemanticModel.HasConstantValue(expression, context.CancellationToken))
+                            {
+                                ReportDiagnostic(argument);
+                            }
+
                             return;
                         }
                     case SyntaxKind.AddExpression:

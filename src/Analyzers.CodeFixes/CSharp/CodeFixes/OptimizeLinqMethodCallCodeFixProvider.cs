@@ -354,14 +354,17 @@ namespace Roslynator.CSharp.CodeFixes
             SyntaxNode node,
             CancellationToken cancellationToken)
         {
-            NullCheckExpressionInfo nullCheck = NullCheckExpressionInfo(node, NullCheckStyles.ComparisonToNull | NullCheckStyles.IsNull);
+            NullCheckExpressionInfo nullCheck = NullCheckExpressionInfo(node, NullCheckStyles.NotEqualsToNull | NullCheckStyles.IsNotNull);
 
             var invocation = (InvocationExpressionSyntax)nullCheck.Expression;
 
             ExpressionSyntax newNode = ChangeInvokedMethodName(invocation, "Any");
 
-            if (node.IsKind(SyntaxKind.EqualsExpression, SyntaxKind.IsPatternExpression))
+            if (node.IsKind(SyntaxKind.EqualsExpression)
+                || (node as IsPatternExpressionSyntax)?.Pattern.IsKind(SyntaxKind.NotPattern) == false)
+            {
                 newNode = LogicalNotExpression(newNode.TrimTrivia().Parenthesize());
+            }
 
             newNode = newNode.WithTriviaFrom(node);
 

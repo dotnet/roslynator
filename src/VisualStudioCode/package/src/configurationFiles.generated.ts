@@ -214,7 +214,7 @@ roslynator_analyzers.enabled_by_default = true|false
 # Add new line before embedded statement
 #dotnet_diagnostic.rcs0030.severity = none
 
-# Add new line before enum member
+# Put enum member on its own line
 #dotnet_diagnostic.rcs0031.severity = none
 
 # Place new line after/before arrow token
@@ -224,7 +224,7 @@ roslynator_analyzers.enabled_by_default = true|false
 # Add new line before statement
 #dotnet_diagnostic.rcs0033.severity = none
 
-# Add new line before type parameter constraint
+# Put type parameter constraint on its own line
 #dotnet_diagnostic.rcs0034.severity = none
 
 # Remove blank line between single-line declarations of same kind
@@ -679,7 +679,7 @@ roslynator_analyzers.enabled_by_default = true|false
 # Remove redundant async/await
 #dotnet_diagnostic.rcs1174.severity = none
 
-# Unused this parameter
+# Unused 'this' parameter
 #dotnet_diagnostic.rcs1175.severity = suggestion
 
 # Use 'var' instead of explicit type (when the type is not obvious)

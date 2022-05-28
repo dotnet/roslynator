@@ -300,8 +300,11 @@ namespace Roslynator.CommandLine
             }
         }
 
-        protected override void ProcessResults(IEnumerable<SpellcheckCommandResult> results)
+        protected override void ProcessResults(IList<SpellcheckCommandResult> results)
         {
+            if (results.Count <= 1)
+                return;
+
             WriteSummary(results.SelectMany(f => f.SpellingResults).ToImmutableArray());
         }
 

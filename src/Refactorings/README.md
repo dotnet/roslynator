@@ -67,6 +67,7 @@
 | RR0032 | [Copy parameter](../../docs/refactorings/RR0032.md) | &#x2713; |
 | RR0033 | [Copy statement](../../docs/refactorings/RR0033.md) | &#x2713; |
 | RR0212 | [Copy switch section](../../docs/refactorings/RR0212.md) | &#x2713; |
+| RR0217 | [Deconstruct foreach variable](../../docs/refactorings/RR0217.md) | &#x2713; |
 | RR0035 | [Expand coalesce expression](../../docs/refactorings/RR0035.md) | &#x2713; |
 | RR0034 | [Expand compound assignment](../../docs/refactorings/RR0034.md) | &#x2713; |
 | RR0036 | [Expand event declaration](../../docs/refactorings/RR0036.md) | &#x2713; |
@@ -169,6 +170,7 @@
 | RR0156 | [Split attributes](../../docs/refactorings/RR0156.md) | &#x2713; |
 | RR0184 | [Split if](../../docs/refactorings/RR0184.md) | &#x2713; |
 | RR0190 | [Split if-else](../../docs/refactorings/RR0190.md) | &#x2713; |
+| RR0194 | [Split local declaration and assignment](../../docs/refactorings/RR0194.md) | &#x2713; |
 | RR0157 | [Split switch labels](../../docs/refactorings/RR0157.md) | &#x2713; |
 | RR0158 | [Split variable declaration](../../docs/refactorings/RR0158.md) | &#x2713; |
 | RR0159 | [Swap binary operands](../../docs/refactorings/RR0159.md) | &#x2713; |

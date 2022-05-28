@@ -179,5 +179,28 @@ class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeParameterRefReadOnly)]
+        public async Task TestNoDiagnostic_ExpressionTree()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System;
+using System.Linq;
+
+class C
+{
+    public void M(DateTime dt)
+    {
+        var items = default(IQueryable<C>);
+
+        var x = from item in items
+            where item.P <= dt
+            select item;
+    }
+
+    public DateTime P { get; set; }
+}
+");
+        }
     }
 }

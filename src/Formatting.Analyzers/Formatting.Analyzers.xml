@@ -555,7 +555,7 @@ namespace N
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <ConfigOptions>
-      <Option Key="accessor_braces_style" />
+      <Option Key="accessor_braces_style" IsRequired="true" />
     </ConfigOptions>
     <Samples>
       <Sample>
@@ -581,7 +581,7 @@ namespace N
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <ConfigOptions>
-      <Option Key="block_braces_style" />
+      <Option Key="block_braces_style" IsRequired="true" />
     </ConfigOptions>
     <Samples>
       <Sample>
@@ -788,9 +788,9 @@ namespace N
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AddNewLineBeforeEnumMember">
+  <Analyzer Identifier="PutEnumMemberOnItsOwnLine">
     <Id>RCS0031</Id>
-    <Title>Add new line before enum member.</Title>
+    <Title>Put enum member on its own line.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -856,9 +856,9 @@ Bar();]]></After>
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AddNewLineBeforeTypeParameterConstraint">
+  <Analyzer Identifier="PutTypeParameterConstraintOnItsOwnLine">
     <Id>RCS0034</Id>
-    <Title>Add new line before type parameter constraint.</Title>
+    <Title>Put type parameter constraint on its own line.</Title>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
