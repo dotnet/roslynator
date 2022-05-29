@@ -1,4 +1,4 @@
-# Roslynator Command Line Tool
+# Roslynator Command-line Tool
 
 .NET Framework stand-alone application that allows to run [Roslyn](https://github.com/dotnet/roslyn) code analysis from command line.
 

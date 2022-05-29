@@ -1,6 +1,7 @@
 # Roslynator.CodeAnalysis.Analyzers
 
-* A collection of analyzers for Roslyn API, powered by [Roslyn](https://github.com/dotnet/roslyn).
+A collection of analyzers for Roslyn API, powered by [Roslyn](https://github.com/dotnet/roslyn).
+
 * The package is applicable for projects that reference Roslyn packages (Microsoft.CodeAnalysis*), otherwise it has no effect.
 * [Release notes](https://github.com/josefpihrt/roslynator/blob/master/ChangeLog.md)
 
@@ -12,12 +13,12 @@
 
 ## Usage
 
-1) Add package to your project:
+* Add package to your project:
    ```shell
    dotnet add package roslynator.formatting.analyzers
    ```
 
-2) Use EditorConfig to [configure](https://github.com/josefpihrt/roslynator/blob/master/docs/Configuration.md) analyzers.
+* Use EditorConfig to [configure](https://github.com/josefpihrt/roslynator/blob/master/docs/Configuration.md) analyzers.
 
 ## Feedback
 
@@ -28,5 +29,5 @@
 
 * [Roslynator for Visual Studio 2022](https://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2022)
 * [Roslynator for VS Code](https://marketplace.visualstudio.com/items?itemName=josefpihrt-vscode.roslynator)
-* [Roslynator Command Line Tool](https://www.nuget.org/packages/Roslynator.DotNet.Cli)
+* [Roslynator Command-line Tool](https://www.nuget.org/packages/Roslynator.DotNet.Cli)
 * [Roslynator Testing Framework](https://www.nuget.org/packages/Roslynator.Testing.CSharp.Xunit)

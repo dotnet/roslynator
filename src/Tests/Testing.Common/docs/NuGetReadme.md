@@ -1,7 +1,7 @@
 # Roslynator.Testing.Common
 
-* A shared package used by the Roslynator Testing Framework.
-* Do not install this package manually, it will be added as a prerequisite by other packages that require it.
+A shared package used by the Roslynator Testing Framework.
+Do not install this package manually, it will be added as a prerequisite by other packages that require it.
 
 ## Feedback
 
@@ -12,4 +12,4 @@
 
 * [Roslynator for Visual Studio 2022](https://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2022)
 * [Roslynator for VS Code](https://marketplace.visualstudio.com/items?itemName=josefpihrt-vscode.roslynator)
-* [Roslynator Command Line Tool](https://www.nuget.org/packages/Roslynator.DotNet.Cli)
+* [Roslynator Command-line Tool](https://www.nuget.org/packages/Roslynator.DotNet.Cli)
