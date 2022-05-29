@@ -2,8 +2,7 @@
 
 A collection of analyzers for Roslyn API, powered by [Roslyn](https://github.com/dotnet/roslyn).
 
-* The package is applicable for projects that reference Roslyn packages (Microsoft.CodeAnalysis*), otherwise it has no effect.
-* [Release notes](https://github.com/josefpihrt/roslynator/blob/master/ChangeLog.md)
+The package is applicable for projects that reference Roslyn packages (Microsoft.CodeAnalysis*), otherwise it has no effect.
 
 ## Requirements
 

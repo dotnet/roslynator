@@ -2,8 +2,6 @@
 
 A collection of formatting analyzers for C#, powered by [Roslyn](https://github.com/dotnet/roslyn).
 
-* [Release notes](https://github.com/josefpihrt/roslynator/blob/master/ChangeLog.md)
-
 ## Requirements
 
 * Visual Studio 2022
