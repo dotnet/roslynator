@@ -29,10 +29,10 @@
 | RCS0028 | [Place new line after/before '?:' operator](../../docs/analyzers/RCS0028.md) | None |
 | RCS0029 | [Put constructor initializer on its own line](../../docs/analyzers/RCS0029.md) | None |
 | RCS0030 | [Add new line before embedded statement](../../docs/analyzers/RCS0030.md) | None |
-| RCS0031 | [Add new line before enum member](../../docs/analyzers/RCS0031.md) | None |
+| RCS0031 | [Put enum member on its own line](../../docs/analyzers/RCS0031.md) | None |
 | RCS0032 | [Place new line after/before arrow token](../../docs/analyzers/RCS0032.md) | None |
 | RCS0033 | [Add new line before statement](../../docs/analyzers/RCS0033.md) | None |
-| RCS0034 | [Add new line before type parameter constraint](../../docs/analyzers/RCS0034.md) | None |
+| RCS0034 | [Put type parameter constraint on its own line](../../docs/analyzers/RCS0034.md) | None |
 | RCS0036 | [Remove blank line between single-line declarations of same kind](../../docs/analyzers/RCS0036.md) | None |
 | RCS0038 | [Remove blank line between using directives with same root namespace](../../docs/analyzers/RCS0038.md) | None |
 | RCS0039 | [Remove new line before base list](../../docs/analyzers/RCS0039.md) | None |

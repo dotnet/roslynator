@@ -1,5 +1,9 @@
 ### Unreleased
 
+### 4.1.1 (2022-05-29)
+
+* Bug fixes
+
 ### 4.1.0 (2022-03-29)
 
 * Add analyzer [RCS1254](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1254.md) (Normalize format of enum flag value)

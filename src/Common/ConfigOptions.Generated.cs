@@ -204,6 +204,8 @@ namespace Roslynator
         {
             yield return new KeyValuePair<string, string>("RCS0011", JoinOptionKeys(ConfigOptionKeys.BlankLineBetweenSingleLineAccessors));
             yield return new KeyValuePair<string, string>("RCS0015", JoinOptionKeys(ConfigOptionKeys.BlankLineBetweenUsingDirectives));
+            yield return new KeyValuePair<string, string>("RCS0020", JoinOptionKeys(ConfigOptionKeys.AccessorBracesStyle));
+            yield return new KeyValuePair<string, string>("RCS0021", JoinOptionKeys(ConfigOptionKeys.BlockBracesStyle));
             yield return new KeyValuePair<string, string>("RCS0027", JoinOptionKeys(ConfigOptionKeys.BinaryOperatorNewLine));
             yield return new KeyValuePair<string, string>("RCS0028", JoinOptionKeys(ConfigOptionKeys.ConditionalOperatorNewLine));
             yield return new KeyValuePair<string, string>("RCS0032", JoinOptionKeys(ConfigOptionKeys.ArrowTokenNewLine));

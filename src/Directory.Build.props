@@ -10,18 +10,18 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <RoslynatorVersion>4.1.0.0</RoslynatorVersion>
-    <RoslynatorAnalyzersPackageVersion>4.1.0</RoslynatorAnalyzersPackageVersion>
-    <RoslynatorCoreVersion>4.1.0.0</RoslynatorCoreVersion>
-    <RoslynatorCorePackageVersion>4.1.0</RoslynatorCorePackageVersion>
-    <RoslynatorCliVersion>0.3.2.0</RoslynatorCliVersion>
-    <RoslynatorCliPackageVersion>0.3.2</RoslynatorCliPackageVersion>
-    <RoslynatorFormattingAnalyzersVersion>4.1.0.0</RoslynatorFormattingAnalyzersVersion>
-    <RoslynatorFormattingAnalyzersPackageVersion>4.1.0</RoslynatorFormattingAnalyzersPackageVersion>
-    <RoslynatorCodeAnalysisAnalyzersVersion>4.1.0.0</RoslynatorCodeAnalysisAnalyzersVersion>
-    <RoslynatorCodeAnalysisAnalyzersPackageVersion>4.1.0</RoslynatorCodeAnalysisAnalyzersPackageVersion>
-    <RoslynatorTestingVersion>4.1.0.0</RoslynatorTestingVersion>
-    <RoslynatorTestingPackageVersion>4.1.0</RoslynatorTestingPackageVersion>
+    <RoslynatorVersion>4.1.1.0</RoslynatorVersion>
+    <RoslynatorAnalyzersPackageVersion>4.1.1</RoslynatorAnalyzersPackageVersion>
+    <RoslynatorCoreVersion>4.1.1.0</RoslynatorCoreVersion>
+    <RoslynatorCorePackageVersion>4.1.1</RoslynatorCorePackageVersion>
+    <RoslynatorCliVersion>0.3.3.0</RoslynatorCliVersion>
+    <RoslynatorCliPackageVersion>0.3.3</RoslynatorCliPackageVersion>
+    <RoslynatorFormattingAnalyzersVersion>4.1.1.0</RoslynatorFormattingAnalyzersVersion>
+    <RoslynatorFormattingAnalyzersPackageVersion>4.1.1</RoslynatorFormattingAnalyzersPackageVersion>
+    <RoslynatorCodeAnalysisAnalyzersVersion>4.1.1.0</RoslynatorCodeAnalysisAnalyzersVersion>
+    <RoslynatorCodeAnalysisAnalyzersPackageVersion>4.1.1</RoslynatorCodeAnalysisAnalyzersPackageVersion>
+    <RoslynatorTestingVersion>4.1.1.0</RoslynatorTestingVersion>
+    <RoslynatorTestingPackageVersion>4.1.1</RoslynatorTestingPackageVersion>
     <RoslynatorCodeFixesPackageVersion>2.0.0</RoslynatorCodeFixesPackageVersion>
     <RoslynatorDocumentationPackageVersion>1.0.0</RoslynatorDocumentationPackageVersion>
   </PropertyGroup>
