@@ -12,15 +12,10 @@
 
 ## Usage
 
-Just reference the package in your project:
+Add package to your project:
 
-```xml
-<ItemGroup>
-  <PackageReference Include="Roslynator.Analyzers" Version="$(PackageVersion)">
-    <PrivateAssets>all</PrivateAssets>
-    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-  </PackageReference>
-</ItemGroup>
+```shell
+dotnet add package roslynator.analyzers
 ```
 
 ## Feedback

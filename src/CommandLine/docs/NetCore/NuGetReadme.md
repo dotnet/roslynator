@@ -12,7 +12,7 @@
 ## Installation
 
 Run following command to install Roslynator command line tool:
-```
+```shell
 dotnet tool install -g roslynator.dotnet.cli
 ```
 
