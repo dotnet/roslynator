@@ -1,7 +1,6 @@
 # Roslynator.Analyzers
 
 * A collection of 200+ analyzers for C#, powered by [Roslyn](https://github.com/dotnet/roslyn).
-* [Configuration](https://github.com/josefpihrt/roslynator/blob/master/docs/Configuration.md)
 * [Release notes](https://github.com/josefpihrt/roslynator/blob/master/ChangeLog.md)
 
 ## Requirements
@@ -12,11 +11,12 @@
 
 ## Usage
 
-Add package to your project:
+1) Add package to your project:
+   ```shell
+   dotnet add package roslynator.formatting.analyzers
+   ```
 
-```shell
-dotnet add package roslynator.analyzers
-```
+2) Use EditorConfig to [configure](https://github.com/josefpihrt/roslynator/blob/master/docs/Configuration.md) analyzers.
 
 ## Feedback
 

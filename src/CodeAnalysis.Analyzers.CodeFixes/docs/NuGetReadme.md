@@ -1,8 +1,7 @@
 # Roslynator.CodeAnalysis.Analyzers
 
 * A collection of analyzers for Roslyn API, powered by [Roslyn](https://github.com/dotnet/roslyn).
-* This package is applicable for projects that reference Roslyn API (Microsoft.CodeAnalysis* packages).
-* [Configuration](https://github.com/josefpihrt/roslynator/blob/master/docs/Configuration.md)
+* The package is applicable for projects that reference Roslyn packages (Microsoft.CodeAnalysis*), otherwise it has no effect.
 * [Release notes](https://github.com/josefpihrt/roslynator/blob/master/ChangeLog.md)
 
 ## Requirements
@@ -13,11 +12,12 @@
 
 ## Usage
 
-Add package to your project:
+1) Add package to your project:
+   ```shell
+   dotnet add package roslynator.formatting.analyzers
+   ```
 
-```shell
-dotnet add package roslynator.codeanalysis.analyzers
-```
+2) Use EditorConfig to [configure](https://github.com/josefpihrt/roslynator/blob/master/docs/Configuration.md) analyzers.
 
 ## Feedback
 
