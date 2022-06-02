@@ -1,5 +1,7 @@
 ### Unreleased
 
+* Convert more syntax to implicit object creation (RCS1250) ([PR](https://github.com/JosefPihrt/Roslynator/pull/910))
+
 ### 4.1.1 (2022-05-29)
 
 * Bug fixes
