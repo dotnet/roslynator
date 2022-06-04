@@ -933,6 +933,9 @@ dotnet_diagnostic.rcs1253.severity = none
 dotnet_diagnostic.rcs1254.severity = suggestion
 # Options: roslynator_enum_flag_value_style
 
+# Remove empty syntax
+dotnet_diagnostic.rcs1260.severity = suggestion
+
 # Use pattern matching
 dotnet_diagnostic.rcs9001.severity = silent
 

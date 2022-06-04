@@ -62,7 +62,7 @@ namespace Roslynator.CSharp.CodeFixes
             }
         }
 
-        private static async Task<Document> RemoveEmptyElseClauseAsync(
+        internal static async Task<Document> RemoveEmptyElseClauseAsync(
             Document document,
             ElseClauseSyntax elseClause,
             CancellationToken cancellationToken)

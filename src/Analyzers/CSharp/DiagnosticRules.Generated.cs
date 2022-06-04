@@ -2497,5 +2497,17 @@ namespace Roslynator.CSharp
             helpLinkUri:        DiagnosticIdentifiers.NormalizeFormatOfEnumFlagValue, 
             customTags:         Array.Empty<string>());
 
+        /// <summary>RCS1260</summary>
+        public static readonly DiagnosticDescriptor RemoveEmptySyntax = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.RemoveEmptySyntax, 
+            title:              "Remove empty syntax.", 
+            messageFormat:      "Remove empty {0}.", 
+            category:           DiagnosticCategories.Roslynator, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.RemoveEmptySyntax, 
+            customTags:         WellKnownDiagnosticTags.Unnecessary);
+
     }
 }

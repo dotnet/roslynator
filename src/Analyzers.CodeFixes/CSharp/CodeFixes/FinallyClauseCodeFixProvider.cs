@@ -38,7 +38,7 @@ namespace Roslynator.CSharp.CodeFixes
             context.RegisterCodeFix(codeAction, context.Diagnostics[0]);
         }
 
-        private static async Task<Document> RemoveEmptyFinallyClauseAsync(
+        internal static async Task<Document> RemoveEmptyFinallyClauseAsync(
             Document document,
             FinallyClauseSyntax finallyClause,
             CancellationToken cancellationToken)

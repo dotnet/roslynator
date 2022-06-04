@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Analyzers>
+  <Analyzer Identifier="RemoveEmptySyntax" IsDevelopment="true">
+    <Id>RCS1260</Id>
+    <Title>Remove empty syntax.</Title>
+    <MessageFormat>Remove empty {0}.</MessageFormat>
+    <Category>General</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>true</SupportsFadeOut>
+    <Summary>This analyzer reports empty syntax that can be safely removed such as:
+* empty destructor
+* empty 'else' clause
+* empty 'finally' clause
+* empty object initializer
+* empty namespace declaration
+* empty region directive
+* empty empty statement</Summary>
+    <Links />
+  </Analyzer>
+</Analyzers>
