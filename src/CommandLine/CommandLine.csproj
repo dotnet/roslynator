@@ -26,12 +26,13 @@
     <PackageId>Roslynator.DotNet.Cli</PackageId>
     <PackageVersion>$(RoslynatorCliPackageVersion)</PackageVersion>
     <Authors>Josef Pihrt</Authors>
-    <Description>Roslynator command line tool for .NET Core</Description>
-    <PackageProjectUrl>https://github.com/JosefPihrt/Roslynator</PackageProjectUrl>
+    <Description>Roslynator command-line tool for .NET Core</Description>
+    <PackageProjectUrl>https://github.com/josefpihrt/roslynator</PackageProjectUrl>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageIcon>icon.png</PackageIcon>
     <PackageTags>CLI;Roslyn;C#;CSharp</PackageTags>
-    <RepositoryUrl>https://github.com/JosefPihrt/Roslynator.git</RepositoryUrl>
+    <PackageReadmeFile>docs/README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/josefpihrt/roslynator.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
   </PropertyGroup>
@@ -63,6 +64,7 @@
 
   <ItemGroup>
     <None Include="..\..\images\icon.png" Pack="true" PackagePath="\" Visible="false" />
+    <None Include="docs\NetCore\NuGetReadme.md" Pack="true" PackagePath="docs\README.md" />
     <None Remove="_._" />
   </ItemGroup>
 

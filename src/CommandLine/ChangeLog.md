@@ -1,3 +1,8 @@
+### 0.3.3 (2022-05-29)
+
+* Fix bug when saving code analysis results to a file (`--output` parameter) ([issue](https://github.com/JosefPihrt/Roslynator/issues/897))
+* Bump Roslyn version to 4.2.0
+
 ### 0.3.2 (2022-03-29)
 
 * Bump Roslyn version to 4.1.0
