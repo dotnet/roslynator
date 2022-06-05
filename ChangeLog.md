@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Format changelog according to 'Keep a Changelog' ([#915](https://github.com/josefpihrt/roslynator/pull/915)).
 
 -----
+<!-- Content below does not adhere to 'Keep a Changelog' format -->
 
 ### 4.1.1 (2022-05-29)
 
