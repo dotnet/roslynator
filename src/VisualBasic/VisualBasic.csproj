@@ -25,4 +25,10 @@
     <ProjectReference Include="..\Core\Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+      <_Parameter1>$(RoslynatorDllPrefix)Roslynator.VisualBasic.Workspaces, PublicKey=$(RoslynatorPublicKey)</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+
 </Project>
