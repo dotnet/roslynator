@@ -1,6 +1,21 @@
-### Unreleased
+# Changelog
 
-* Convert more syntax to implicit object creation (RCS1250) ([PR](https://github.com/JosefPihrt/Roslynator/pull/910))
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+### Added
+
+- Convert more syntax to implicit object creation (RCS1250) ([#910](https://github.com/JosefPihrt/Roslynator/pull/910))
+
+### Changed
+
+- Format changelog according to 'Keep a Changelog'.
+
+-----
 
 ### 4.1.1 (2022-05-29)
 
