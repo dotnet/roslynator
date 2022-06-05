@@ -9,11 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Convert more syntax to implicit object creation (RCS1250) ([#910](https://github.com/JosefPihrt/Roslynator/pull/910))
+- Convert more syntax to implicit object creation (RCS1250) ([#910](https://github.com/josefpihrt/roslynator/pull/910)).
 
 ### Changed
 
-- Format changelog according to 'Keep a Changelog'.
+- Format changelog according to 'Keep a Changelog' ([#915](https://github.com/josefpihrt/roslynator/pull/915)).
 
 -----
 
