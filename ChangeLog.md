@@ -18,7 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- [CLI] Fix filtering of projects (relates to `--projects` or `--ignored-projects` parameter) ([#912](https://github.com/josefpihrt/roslynator/pull/912)).
+- [CLI] Fix filtering of projects (relates to `--projects` or `--ignored-projects` parameter) ([#914](https://github.com/josefpihrt/roslynator/pull/914)).
 
 -----
 <!-- Content below does not adhere to 'Keep a Changelog' format -->
