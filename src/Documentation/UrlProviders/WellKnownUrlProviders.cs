@@ -5,5 +5,7 @@ namespace Roslynator.Documentation
     public static class WellKnownUrlProviders
     {
         public static DocumentationUrlProvider GitHub { get; } = GitHubDocumentationUrlProvider.Instance;
+
+        public static DocumentationUrlProvider Docusaurus { get; } = DocusaurusDocumentationUrlProvider.Instance;
     }
 }

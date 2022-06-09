@@ -765,6 +765,9 @@ namespace Roslynator.CommandLine
             if (!TryParseOptionValueAsEnum(options.Visibility, OptionNames.Visibility, out Visibility visibility))
                 return ExitCodes.Error;
 
+            if (!TryParseOptionValueAsEnum(options.Host, OptionNames.Host, out DocumentationHost documentationHost))
+                return ExitCodes.Error;
+
             if (!options.TryGetProjectFilter(out ProjectFilter projectFilter))
                 return ExitCodes.Error;
 
@@ -781,6 +784,7 @@ namespace Roslynator.CommandLine
                 omitMemberParts,
                 includeContainingNamespaceFilter,
                 visibility,
+                documentationHost,
                 projectFilter);
 
             CommandStatus status = await command.ExecuteAsync(paths, options.MSBuildPath, options.Properties);
@@ -802,6 +806,9 @@ namespace Roslynator.CommandLine
             if (!TryParseOptionValueAsEnumFlags(options.IgnoredParts, OptionNames.IgnoredRootParts, out RootDocumentationParts ignoredParts, DocumentationOptions.Default.IgnoredRootParts))
                 return ExitCodes.Error;
 
+            if (!TryParseOptionValueAsEnum(options.Host, OptionNames.Host, out DocumentationHost documentationHost))
+                return ExitCodes.Error;
+
             if (!options.TryGetProjectFilter(out ProjectFilter projectFilter))
                 return ExitCodes.Error;
 
@@ -814,6 +821,7 @@ namespace Roslynator.CommandLine
                 ignoredParts,
                 includeContainingNamespaceFilter: includeContainingNamespaceFilter,
                 visibility,
+                documentationHost,
                 projectFilter);
 
             CommandStatus status = await command.ExecuteAsync(paths, options.MSBuildPath, options.Properties);

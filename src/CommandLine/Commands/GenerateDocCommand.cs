@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
@@ -29,6 +28,7 @@ namespace Roslynator.CommandLine
             OmitMemberParts omitMemberParts,
             IncludeContainingNamespaceFilter includeContainingNamespaceFilter,
             Visibility visibility,
+            DocumentationHost documentationHost,
             in ProjectFilter projectFilter) : base(projectFilter)
         {
             Options = options;
@@ -40,6 +40,7 @@ namespace Roslynator.CommandLine
             OmitMemberParts = omitMemberParts;
             IncludeContainingNamespaceFilter = includeContainingNamespaceFilter;
             Visibility = visibility;
+            DocumentationHost = documentationHost;
         }
 
         public GenerateDocCommandLineOptions Options { get; }
@@ -59,6 +60,8 @@ namespace Roslynator.CommandLine
         public IncludeContainingNamespaceFilter IncludeContainingNamespaceFilter { get; }
 
         public Visibility Visibility { get; }
+
+        public DocumentationHost DocumentationHost { get; }
 
         public override async Task<CommandResult> ExecuteAsync(ProjectOrSolution projectOrSolution, CancellationToken cancellationToken = default)
         {
@@ -93,14 +96,27 @@ namespace Roslynator.CommandLine
             ImmutableArray<Compilation> compilations = await GetCompilationsAsync(projectOrSolution, cancellationToken);
 
             var documentationModel = new DocumentationModel(compilations, DocumentationFilterOptions.Instance, Options.AdditionalXmlDocumentation);
+
+            DocumentationUrlProvider GetUrlProvider()
+            {
+                switch (DocumentationHost)
+                {
+                    case DocumentationHost.GitHub:
+                        return WellKnownUrlProviders.GitHub;
+                    case DocumentationHost.Docusaurus:
+                        return WellKnownUrlProviders.Docusaurus;
+                    default:
+                        throw new InvalidOperationException($"Unknown value '{DocumentationHost}'.");
+                }
+            }
 #if DEBUG
             SourceReferenceProvider sourceReferenceProvider = (Options.SourceReferences.Any())
                 ? SourceReferenceProvider.Load(Options.SourceReferences)
                 : null;
 
-            var generator = new MarkdownDocumentationGenerator(documentationModel, WellKnownUrlProviders.GitHub, documentationOptions, sourceReferenceProvider);
+            var generator = new MarkdownDocumentationGenerator(documentationModel, GetUrlProvider(), documentationOptions, sourceReferenceProvider);
 #else
-            var generator = new MarkdownDocumentationGenerator(documentationModel, WellKnownUrlProviders.GitHub, documentationOptions);
+            var generator = new MarkdownDocumentationGenerator(documentationModel, GetUrlProvider(), documentationOptions);
 #endif
             string directoryPath = Options.Output;
 

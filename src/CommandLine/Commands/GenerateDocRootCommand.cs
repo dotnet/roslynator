@@ -24,6 +24,7 @@ namespace Roslynator.CommandLine
             RootDocumentationParts ignoredParts,
             IncludeContainingNamespaceFilter includeContainingNamespaceFilter,
             Visibility visibility,
+            DocumentationHost documentationHost,
             in ProjectFilter projectFilter) : base(projectFilter)
         {
             Options = options;
@@ -31,6 +32,7 @@ namespace Roslynator.CommandLine
             IgnoredParts = ignoredParts;
             IncludeContainingNamespaceFilter = includeContainingNamespaceFilter;
             Visibility = visibility;
+            DocumentationHost = documentationHost;
         }
 
         public GenerateDocRootCommandLineOptions Options { get; }
@@ -42,6 +44,8 @@ namespace Roslynator.CommandLine
         public IncludeContainingNamespaceFilter IncludeContainingNamespaceFilter { get; }
 
         public Visibility Visibility { get; }
+
+        public DocumentationHost DocumentationHost { get; }
 
         public override async Task<CommandResult> ExecuteAsync(ProjectOrSolution projectOrSolution, CancellationToken cancellationToken = default)
         {
@@ -62,7 +66,20 @@ namespace Roslynator.CommandLine
 
             var documentationModel = new DocumentationModel(compilations, DocumentationFilterOptions.Instance);
 
-            var generator = new MarkdownDocumentationGenerator(documentationModel, WellKnownUrlProviders.GitHub, documentationOptions);
+            DocumentationUrlProvider GetUrlProvider()
+            {
+                switch (DocumentationHost)
+                {
+                    case DocumentationHost.GitHub:
+                        return WellKnownUrlProviders.GitHub;
+                    case DocumentationHost.Docusaurus:
+                        return WellKnownUrlProviders.Docusaurus;
+                    default:
+                        throw new InvalidOperationException($"Unknown value '{DocumentationHost}'.");
+                }
+            }
+
+            var generator = new MarkdownDocumentationGenerator(documentationModel, GetUrlProvider(), documentationOptions);
 
             string path = Options.Output;
 

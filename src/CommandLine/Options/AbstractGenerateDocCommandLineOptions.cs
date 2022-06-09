@@ -35,6 +35,14 @@ namespace Roslynator.CommandLine
         public string Depth { get; set; }
 
         [Option(
+            longName: OptionNames.Host,
+            Required = true,
+            Default = "github",
+            HelpText = "Defines an environment where the content will be hosted. Allowed values are github (default) or docusaurus.",
+            MetaValue = "<HOST>")]
+        public string Host { get; set; }
+
+        [Option(
             longName: "ignored-names",
             HelpText = "Defines a list of metadata names that should be excluded from a documentation. Namespace of type names can be specified.",
             MetaValue = "<FULLY_QUALIFIED_METADATA_NAME>")]
