@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using DotMarkdown;
 using Microsoft.CodeAnalysis;
 using Roslynator.Documentation;
 using Roslynator.Documentation.Markdown;
@@ -109,14 +110,29 @@ namespace Roslynator.CommandLine
                         throw new InvalidOperationException($"Unknown value '{DocumentationHost}'.");
                 }
             }
+
+            MarkdownWriterSettings GetMarkdownWriterSettings()
+            {
+                switch (DocumentationHost)
+                {
+                    case DocumentationHost.GitHub:
+                        return MarkdownWriterSettings.Default;
+                    case DocumentationHost.Docusaurus:
+                        return new MarkdownWriterSettings(new MarkdownFormat(escapeOptions: new EscapeOptions(escapeCloseAngleBracket: true)));
+                    default:
+                        throw new InvalidOperationException($"Unknown value '{DocumentationHost}'.");
+                }
+            }
 #if DEBUG
             SourceReferenceProvider sourceReferenceProvider = (Options.SourceReferences.Any())
                 ? SourceReferenceProvider.Load(Options.SourceReferences)
                 : null;
 
-            var generator = new MarkdownDocumentationGenerator(documentationModel, GetUrlProvider(), documentationOptions, sourceReferenceProvider);
+            MarkdownWriter markdownWriter = MarkdownWriter.Create(new StringBuilder(), GetMarkdownWriterSettings());
+
+            var generator = new MarkdownDocumentationGenerator(documentationModel, GetUrlProvider(), markdownWriter, documentationOptions, sourceReferenceProvider);
 #else
-            var generator = new MarkdownDocumentationGenerator(documentationModel, GetUrlProvider(), documentationOptions);
+            var generator = new MarkdownDocumentationGenerator(documentationModel, GetUrlProvider(), markdownWriter, documentationOptions);
 #endif
             string directoryPath = Options.Output;
 

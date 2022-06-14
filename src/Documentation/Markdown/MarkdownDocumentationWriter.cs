@@ -1,6 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Text;
+using System;
 using DotMarkdown;
 using Microsoft.CodeAnalysis;
 
@@ -13,10 +13,11 @@ namespace Roslynator.Documentation.Markdown
         public MarkdownDocumentationWriter(
             DocumentationModel documentationModel,
             DocumentationUrlProvider urlProvider,
+            MarkdownWriter writer,
             DocumentationOptions options = null,
             DocumentationResources resources = null) : base(documentationModel, urlProvider, options, resources)
         {
-            _writer = MarkdownWriter.Create(new StringBuilder());
+            _writer = writer ?? throw new ArgumentNullException(nameof(writer));
         }
 
         public override void WriteStartDocument()
