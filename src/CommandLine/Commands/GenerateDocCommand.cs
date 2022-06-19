@@ -128,11 +128,9 @@ namespace Roslynator.CommandLine
                 ? SourceReferenceProvider.Load(Options.SourceReferences)
                 : null;
 
-            MarkdownWriter markdownWriter = MarkdownWriter.Create(new StringBuilder(), GetMarkdownWriterSettings());
-
-            var generator = new MarkdownDocumentationGenerator(documentationModel, GetUrlProvider(), markdownWriter, documentationOptions, sourceReferenceProvider);
+            var generator = new MarkdownDocumentationGenerator(documentationModel, GetUrlProvider(), GetMarkdownWriterSettings(), documentationOptions, sourceReferenceProvider);
 #else
-            var generator = new MarkdownDocumentationGenerator(documentationModel, GetUrlProvider(), markdownWriter, documentationOptions);
+            var generator = new MarkdownDocumentationGenerator(documentationModel, GetUrlProvider(), GetMarkdownWriterSettings(), documentationOptions);
 #endif
             string directoryPath = Options.Output;
 

@@ -7,6 +7,7 @@ using System.IO;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using DotMarkdown;
 using Microsoft.CodeAnalysis;
 using Roslynator.Documentation;
 using Roslynator.Documentation.Markdown;
@@ -79,7 +80,20 @@ namespace Roslynator.CommandLine
                 }
             }
 
-            var generator = new MarkdownDocumentationGenerator(documentationModel, GetUrlProvider(), documentationOptions);
+            MarkdownWriterSettings GetMarkdownWriterSettings()
+            {
+                switch (DocumentationHost)
+                {
+                    case DocumentationHost.GitHub:
+                        return MarkdownWriterSettings.Default;
+                    case DocumentationHost.Docusaurus:
+                        return new MarkdownWriterSettings(new MarkdownFormat(escapeOptions: new EscapeOptions(escapeCloseAngleBracket: true)));
+                    default:
+                        throw new InvalidOperationException($"Unknown value '{DocumentationHost}'.");
+                }
+            }
+
+            var generator = new MarkdownDocumentationGenerator(documentationModel, GetUrlProvider(), GetMarkdownWriterSettings(), documentationOptions);
 
             string path = Options.Output;
 

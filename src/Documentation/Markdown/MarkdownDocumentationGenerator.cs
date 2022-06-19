@@ -6,17 +6,17 @@ namespace Roslynator.Documentation.Markdown
 {
     public class MarkdownDocumentationGenerator : DocumentationGenerator
     {
-        private readonly MarkdownWriter _writer;
+        private readonly MarkdownWriterSettings _writerSettings;
 
         public MarkdownDocumentationGenerator(
             DocumentationModel documentationModel,
             DocumentationUrlProvider urlProvider,
-            MarkdownWriter writer,
+            MarkdownWriterSettings writerSettings,
             DocumentationOptions options = null,
             SourceReferenceProvider sourceReferenceProvider = null,
             DocumentationResources resources = null) : base(documentationModel, urlProvider: urlProvider, options: options, sourceReferenceProvider: sourceReferenceProvider, resources: resources)
         {
-            _writer = writer;
+            _writerSettings = writerSettings;
         }
 
         protected override DocumentationWriter CreateWriterCore()
@@ -24,7 +24,7 @@ namespace Roslynator.Documentation.Markdown
             return new MarkdownDocumentationWriter(
                 DocumentationModel,
                 urlProvider: UrlProvider,
-                writer: _writer,
+                writerSettings: _writerSettings,
                 options: Options,
                 resources: Resources);
         }

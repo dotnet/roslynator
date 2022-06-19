@@ -13,11 +13,13 @@ namespace Roslynator.Documentation.Markdown
         public MarkdownDocumentationWriter(
             DocumentationModel documentationModel,
             DocumentationUrlProvider urlProvider,
-            MarkdownWriter writer,
+            MarkdownWriterSettings writerSettings,
             DocumentationOptions options = null,
             DocumentationResources resources = null) : base(documentationModel, urlProvider, options, resources)
         {
-            _writer = writer ?? throw new ArgumentNullException(nameof(writer));
+            writerSettings = writerSettings ?? throw new ArgumentNullException(nameof(writerSettings));
+
+            _writer = MarkdownWriter.Create(new System.Text.StringBuilder(), writerSettings);
         }
 
         public override void WriteStartDocument()
