@@ -289,8 +289,11 @@ namespace Roslynator.Documentation
             }
         }
 
-        public virtual void WriteContent(IEnumerable<string> names, bool addLinkToRoot = false, bool beginWithSeparator = false)
+        public virtual void WritePageContent(IEnumerable<string> names, bool addLinkToRoot = false, bool beginWithSeparator = false)
         {
+            if (!Options.IncludePageContent)
+                return;
+
             IEnumerator<string> en = names.GetEnumerator();
 
             if (addLinkToRoot)
@@ -1675,11 +1678,16 @@ namespace Roslynator.Documentation
         }
 
         internal void WriteNamespaceList(
-            IEnumerable<INamespaceSymbol> symbols,
+            IEnumerable<INamedTypeSymbol> typeSymbols,
             string heading,
-            int headingLevel)
+            int headingLevel,
+            bool includeTypes = false,
+            bool addLinkForTypeParameters = false,
+            bool canCreateExternalUrl = true)
         {
-            using (IEnumerator<INamespaceSymbol> en = symbols
+            using (IEnumerator<INamespaceSymbol> en = typeSymbols
+                .Select(f => f.ContainingNamespace)
+                .Distinct(MetadataNameEqualityComparer<INamespaceSymbol>.Instance)
                 .OrderBy(f => f, (Options.PlaceSystemNamespaceFirst) ? SymbolDefinitionComparer.SystemFirst : SymbolDefinitionComparer.Default)
                 .GetEnumerator())
             {
@@ -1688,17 +1696,36 @@ namespace Roslynator.Documentation
                     if (heading != null)
                         WriteHeading(headingLevel, heading);
 
-                    WriteStartBulletList();
-
                     do
                     {
                         WriteStartBulletItem();
                         WriteLink(en.Current, TypeSymbolDisplayFormats.Name_ContainingTypes_Namespaces);
+
+                        if (includeTypes)
+                        {
+                            foreach (IGrouping<TypeKind, INamedTypeSymbol> typesByKind in typeSymbols
+                                .Where(f => MetadataNameEqualityComparer<INamespaceSymbol>.Instance.Equals(en.Current, f.ContainingNamespace))
+                                .GroupBy(f => f.TypeKind)
+                                .OrderBy(f => f.Key, TypeKindComparer.Instance))
+                            {
+                                WriteStartBulletItem();
+                                WriteString(Resources.GetPluralName(typesByKind.Key));
+
+                                foreach (INamedTypeSymbol symbol in typesByKind
+                                    .OrderBy(f => f, SymbolDefinitionComparer.SystemFirstOmitContainingNamespace))
+                                {
+                                    WriteStartBulletItem();
+                                    WriteTypeListItem(symbol, ImmutableHashSet<INamedTypeSymbol>.Empty, addLinkForTypeParameters: addLinkForTypeParameters, canCreateExternalUrl: canCreateExternalUrl);
+                                    WriteEndBulletItem();
+                                }
+
+                                WriteEndBulletItem();
+                            }
+                        }
+
                         WriteEndBulletItem();
                     }
                     while (en.MoveNext());
-
-                    WriteEndBulletList();
                 }
             }
         }
@@ -1896,7 +1923,7 @@ namespace Roslynator.Documentation
                 }
 
                 if (canCreateExternalUrl)
-                    return UrlProvider.GetExternalUrl(folders).Url;
+                    return UrlProvider.GetExternalUrl(symbol).Url;
             }
 
             ImmutableArray<string> containingFolders = (CurrentSymbol != null)

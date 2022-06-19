@@ -28,23 +28,7 @@ namespace Roslynator.Documentation
 
         public abstract string GetFragment(string value);
 
-        public virtual ImmutableArray<string> GetFolders(ISymbol symbol)
-        {
-            return MicrosoftDocsUrlProvider.GetFolders(symbol);
-        }
-
-        public DocumentationUrlInfo GetExternalUrl(ImmutableArray<string> folders)
-        {
-            foreach (ExternalUrlProvider provider in ExternalProviders)
-            {
-                DocumentationUrlInfo urlInfo = provider.CreateUrl(folders);
-
-                if (urlInfo.Url != null)
-                    return urlInfo;
-            }
-
-            return default;
-        }
+        public abstract ImmutableArray<string> GetFolders(ISymbol symbol);
 
         public DocumentationUrlInfo GetExternalUrl(ISymbol symbol)
         {

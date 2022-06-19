@@ -19,7 +19,7 @@ namespace Roslynator.Documentation
 
         public override string Name => "Microsoft Docs";
 
-        internal static ImmutableArray<string> GetFolders(ISymbol symbol)
+        internal static ImmutableArray<string> GetSegments(ISymbol symbol)
         {
             ImmutableArray<string>.Builder builder = ImmutableArray.CreateBuilder<string>();
 
@@ -109,15 +109,10 @@ namespace Roslynator.Documentation
 
         public override DocumentationUrlInfo CreateUrl(ISymbol symbol)
         {
-            ImmutableArray<string> parts = GetFolders(symbol);
-
-            return CreateUrl(parts);
-        }
-
-        public override DocumentationUrlInfo CreateUrl(ImmutableArray<string> folders)
-        {
-            if (!CanCreateUrl(folders))
+            if (!CanCreateUrl(symbol))
                 return default;
+
+            ImmutableArray<string> folders = GetSegments(symbol);
 
             const string baseUrl = "https://docs.microsoft.com/en-us/dotnet/api/";
 
@@ -146,11 +141,6 @@ namespace Roslynator.Documentation
         public override bool CanCreateUrl(ISymbol symbol)
         {
             return IsWellKnownRootNamespace(symbol.GetRootNamespace()?.Name);
-        }
-
-        public override bool CanCreateUrl(ImmutableArray<string> folders)
-        {
-            return IsWellKnownRootNamespace(folders.FirstOrDefault());
         }
 
         private static bool IsWellKnownRootNamespace(string name)

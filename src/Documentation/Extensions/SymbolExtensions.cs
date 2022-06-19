@@ -12,6 +12,18 @@ namespace Roslynator.Documentation
 {
     internal static class SymbolExtensions
     {
+        internal static IEnumerable<INamespaceSymbol> GetContainingNamespaces(this ISymbol symbol)
+        {
+            INamespaceSymbol n = symbol.ContainingNamespace;
+
+            while (n?.IsGlobalNamespace == false)
+            {
+                yield return n;
+
+                n = n.ContainingNamespace;
+            }
+        }
+
         public static ImmutableArray<ISymbol> GetMembers(this INamedTypeSymbol typeSymbol, Func<ISymbol, bool> predicate, bool includeInherited = false)
         {
             if (includeInherited)

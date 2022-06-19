@@ -61,7 +61,8 @@ namespace Roslynator.CommandLine
                 ignoredRootParts: IgnoredParts,
                 includeContainingNamespaceFilter: IncludeContainingNamespaceFilter,
                 includeSystemNamespace: Options.IncludeSystemNamespace,
-                scrollToContent: Options.ScrollToContent);
+                scrollToContent: Options.ScrollToContent,
+                includePageContent: DocumentationHost != DocumentationHost.Docusaurus);
 
             ImmutableArray<Compilation> compilations = await GetCompilationsAsync(projectOrSolution, cancellationToken);
 

@@ -5,18 +5,17 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Text;
 using System.Text.RegularExpressions;
-using Microsoft.CodeAnalysis;
 using Roslynator.Text;
 
 namespace Roslynator.Documentation
 {
-    internal abstract class HierarchicalFilesUrlProvider : DocumentationUrlProvider
+    internal abstract class CommonDocumentationUrlProvider : DocumentationUrlProvider
     {
-        private HierarchicalFilesUrlProvider()
+        private CommonDocumentationUrlProvider()
         {
         }
 
-        protected HierarchicalFilesUrlProvider(IEnumerable<ExternalUrlProvider> externalProviders = null)
+        protected CommonDocumentationUrlProvider(IEnumerable<ExternalUrlProvider> externalProviders = null)
             : base(externalProviders)
         {
         }
@@ -38,23 +37,7 @@ namespace Roslynator.Documentation
 
         private static readonly Regex _notWordCharOrHyphenOrSpaceRegex = new(@"[^\w- ]");
 
-        private Dictionary<ISymbol, ImmutableArray<string>> _symbolToFoldersMap;
         private string _linkToSelf;
-
-        public override ImmutableArray<string> GetFolders(ISymbol symbol)
-        {
-            if (_symbolToFoldersMap == null)
-                _symbolToFoldersMap = new Dictionary<ISymbol, ImmutableArray<string>>();
-
-            if (_symbolToFoldersMap.TryGetValue(symbol, out ImmutableArray<string> folders))
-                return folders;
-
-            folders = base.GetFolders(symbol);
-
-            _symbolToFoldersMap[symbol] = folders;
-
-            return folders;
-        }
 
         public override string GetFileName(DocumentationFileKind kind)
         {
