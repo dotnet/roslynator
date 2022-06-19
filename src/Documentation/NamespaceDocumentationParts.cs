@@ -18,7 +18,8 @@ namespace Roslynator.Documentation
         Interfaces = 1 << 7,
         Enums = 1 << 8,
         Delegates = 1 << 9,
-        SeeAlso = 1 << 10,
+        Namespaces = 1 << 10,
+        SeeAlso = 1 << 11,
         All = int.MaxValue
     }
 }

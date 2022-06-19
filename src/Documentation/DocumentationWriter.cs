@@ -1314,10 +1314,13 @@ namespace Roslynator.Documentation
                     if (heading != null)
                         WriteHeading(headingLevel, heading);
 
-                    WriteStartTable(2);
+                    WriteStartTable((header2 != null) ? 2 : 1);
                     WriteStartTableRow();
                     WriteTableCell(header1);
-                    WriteTableCell(header2);
+
+                    if (header2 != null)
+                        WriteTableCell(header2);
+
                     WriteEndTableRow();
                     WriteTableHeaderSeparator();
 
@@ -1344,55 +1347,59 @@ namespace Roslynator.Documentation
                         }
 
                         WriteEndTableCell();
-                        WriteStartTableCell();
 
-                        WriteObsolete(symbol);
-
-                        bool isInherited = containingType != null
-                            && !SymbolEqualityComparer.Default.Equals(symbol.ContainingType, containingType);
-
-                        if (symbol.Kind == SymbolKind.Parameter)
+                        if (header2 != null)
                         {
-                            GetXmlDocumentation(symbol.ContainingSymbol)?.Element(WellKnownXmlTags.Param, "name", symbol.Name)?.WriteContentTo(this);
-                        }
-                        else if (symbol.Kind == SymbolKind.TypeParameter)
-                        {
-                            GetXmlDocumentation(symbol.ContainingSymbol)?.Element(WellKnownXmlTags.TypeParam, "name", symbol.Name)?.WriteContentTo(this);
-                        }
-                        else
-                        {
-                            ISymbol symbol2 = (isInherited) ? symbol.OriginalDefinition : symbol;
+                            WriteStartTableCell();
 
-                            GetXmlDocumentation(symbol2)?.Element(WellKnownXmlTags.Summary)?.WriteContentTo(this, inlineOnly: true);
-                        }
+                            WriteObsolete(symbol);
 
-                        if (isInherited)
-                        {
-                            if (Options.IncludeMemberInheritedFrom)
-                                WriteInheritedFrom(symbol.ContainingType.OriginalDefinition, TypeSymbolDisplayFormats.Name_ContainingTypes_TypeParameters, additionalOptions);
-                        }
-                        else
-                        {
-                            if (Options.IncludeMemberOverrides)
-                                WriteOverrides(symbol);
+                            bool isInherited = containingType != null
+                                && !SymbolEqualityComparer.Default.Equals(symbol.ContainingType, containingType);
 
-                            if (canIncludeInterfaceImplementation
-                                && Options.IncludeMemberImplements)
+                            if (symbol.Kind == SymbolKind.Parameter)
                             {
-                                WriteImplements(symbol);
+                                GetXmlDocumentation(symbol.ContainingSymbol)?.Element(WellKnownXmlTags.Param, "name", symbol.Name)?.WriteContentTo(this);
+                            }
+                            else if (symbol.Kind == SymbolKind.TypeParameter)
+                            {
+                                GetXmlDocumentation(symbol.ContainingSymbol)?.Element(WellKnownXmlTags.TypeParam, "name", symbol.Name)?.WriteContentTo(this);
+                            }
+                            else
+                            {
+                                ISymbol symbol2 = (isInherited) ? symbol.OriginalDefinition : symbol;
+
+                                GetXmlDocumentation(symbol2)?.Element(WellKnownXmlTags.Summary)?.WriteContentTo(this, inlineOnly: true);
                             }
 
-                            if (Options.IncludeMemberConstantValue
-                                && symbol.Kind == SymbolKind.Field)
+                            if (isInherited)
                             {
-                                var fieldSymbol = (IFieldSymbol)symbol;
-
-                                if (fieldSymbol.HasConstantValue)
-                                    WriteConstantValue(fieldSymbol);
+                                if (Options.IncludeMemberInheritedFrom)
+                                    WriteInheritedFrom(symbol.ContainingType.OriginalDefinition, TypeSymbolDisplayFormats.Name_ContainingTypes_TypeParameters, additionalOptions);
                             }
-                        }
+                            else
+                            {
+                                if (Options.IncludeMemberOverrides)
+                                    WriteOverrides(symbol);
 
-                        WriteEndTableCell();
+                                if (canIncludeInterfaceImplementation
+                                    && Options.IncludeMemberImplements)
+                                {
+                                    WriteImplements(symbol);
+                                }
+
+                                if (Options.IncludeMemberConstantValue
+                                    && symbol.Kind == SymbolKind.Field)
+                                {
+                                    var fieldSymbol = (IFieldSymbol)symbol;
+
+                                    if (fieldSymbol.HasConstantValue)
+                                        WriteConstantValue(fieldSymbol);
+                                }
+                            }
+
+                            WriteEndTableCell();
+                        }
                         WriteEndTableRow();
                     }
                     while (en.MoveNext());

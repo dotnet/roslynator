@@ -224,6 +224,8 @@ namespace Roslynator.Documentation
                     return EnumsTitle;
                 case NamespaceDocumentationParts.Delegates:
                     return DelegatesTitle;
+                case NamespaceDocumentationParts.Namespaces:
+                    return NamespacesTitle;
                 case NamespaceDocumentationParts.SeeAlso:
                     return SeeAlsoTitle;
                 default:

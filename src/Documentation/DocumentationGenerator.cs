@@ -161,8 +161,11 @@ namespace Roslynator.Documentation
             {
                 IEnumerable<INamedTypeSymbol> typeSymbols = DocumentationModel.Types.Where(f => !Options.ShouldBeIgnored(f));
 
-                foreach (INamespaceSymbol namespaceSymbol in typeSymbols
-                    .Select(f => f.ContainingNamespace)
+                IEnumerable<INamespaceSymbol> namespaceSymbols = (Options.Layout == DocumentationLayout.Hierarchic)
+                    ? typeSymbols.SelectMany(f => f.GetContainingNamespaces())
+                    : typeSymbols.Select(f => f.ContainingNamespace);
+
+                foreach (INamespaceSymbol namespaceSymbol in namespaceSymbols
                     .Distinct(MetadataNameEqualityComparer<INamespaceSymbol>.Instance))
                 {
                     cancellationToken.ThrowIfCancellationRequested();
@@ -409,6 +412,21 @@ namespace Roslynator.Documentation
                                 WriteTypes(typeSymbols, TypeKind.Delegate);
                                 break;
                             }
+                        case NamespaceDocumentationParts.Namespaces:
+                            {
+                                if (!typeSymbols.Any())
+                                {
+                                    IEnumerable<INamespaceSymbol> namespaces = DocumentationModel
+                                        .Types
+                                        .SelectMany(f => f.GetContainingNamespaces())
+                                        .Where(f => MetadataNameEqualityComparer<INamespaceSymbol>.Instance.Equals(f.ContainingNamespace, namespaceSymbol))
+                                        .Distinct(MetadataNameEqualityComparer<INamespaceSymbol>.Instance);
+
+                                    WriteNamespaces(namespaces);
+                                }
+
+                                break;
+                            }
                         case NamespaceDocumentationParts.SeeAlso:
                             {
                                 if (xmlDocumentation != null)
@@ -439,6 +457,19 @@ namespace Roslynator.Documentation
                         Resources.SummaryTitle,
                         TypeSymbolDisplayFormats.Name_ContainingTypes_TypeParameters,
                         addLink: Options.Depth <= DocumentationDepth.Type);
+                }
+
+                void WriteNamespaces(
+                    IEnumerable<INamespaceSymbol> namespaces)
+                {
+                    writer.WriteTable(
+                        namespaces,
+                        Resources.NamespacesTitle,
+                        headingLevel: 2,
+                        Resources.NamespaceTitle,
+                        header2: null,
+                        TypeSymbolDisplayFormats.Name_ContainingTypes_Namespaces,
+                        addLink: Options.Depth <= DocumentationDepth.Namespace);
                 }
 
                 bool HasContent(NamespaceDocumentationParts part)
@@ -478,6 +509,14 @@ namespace Roslynator.Documentation
                         case NamespaceDocumentationParts.Delegates:
                             {
                                 return typeSymbols.Any(f => f.TypeKind == TypeKind.Delegate);
+                            }
+                        case NamespaceDocumentationParts.Namespaces:
+                            {
+                                return !typeSymbols.Any()
+                                    && DocumentationModel
+                                        .Types
+                                        .SelectMany(f => f.GetContainingNamespaces())
+                                        .Any(f => MetadataNameEqualityComparer<INamespaceSymbol>.Instance.Equals(f.ContainingNamespace, namespaceSymbol));
                             }
                         case NamespaceDocumentationParts.SeeAlso:
                             {
