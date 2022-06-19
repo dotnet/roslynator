@@ -13,12 +13,20 @@ namespace Roslynator.Documentation
     {
         private static readonly Regex _notWordCharOrUnderscoreRegex = new(@"[^\w_]");
 
-        protected DocumentationUrlProvider(IEnumerable<ExternalUrlProvider> externalProviders = null)
+        protected DocumentationUrlProvider(UrlSegmentProvider segmentProvider, IEnumerable<ExternalUrlProvider> externalProviders = null)
         {
+            SegmentProvider = segmentProvider;
+
             ExternalProviders = (externalProviders != null)
                 ? ImmutableArray.CreateRange(externalProviders)
                 : ImmutableArray<ExternalUrlProvider>.Empty;
         }
+
+        public abstract string IndexFileName { get; }
+
+        public abstract string ExtensionsFileName { get; }
+
+        public UrlSegmentProvider SegmentProvider { get; }
 
         public ImmutableArray<ExternalUrlProvider> ExternalProviders { get; }
 
@@ -27,8 +35,6 @@ namespace Roslynator.Documentation
         public abstract DocumentationUrlInfo GetLocalUrl(ImmutableArray<string> folders, ImmutableArray<string> containingFolders = default, string fragment = null);
 
         public abstract string GetFragment(string value);
-
-        public abstract ImmutableArray<string> GetFolders(ISymbol symbol);
 
         public DocumentationUrlInfo GetExternalUrl(ISymbol symbol)
         {
@@ -48,23 +54,28 @@ namespace Roslynator.Documentation
             return MicrosoftDocsUrlProvider.Instance.CanCreateUrl(symbol);
         }
 
-        internal static string GetUrl(string fileName, ImmutableArray<string> folders, char separator)
+        internal string GetUrl(ISymbol symbol, string fileName, char separator)
+        {
+            return GetUrl(fileName, SegmentProvider.GetSegments(symbol), separator);
+        }
+
+        internal static string GetUrl(string fileName, ImmutableArray<string> segments, char separator)
         {
             int capacity = fileName.Length + 1;
 
-            foreach (string name in folders)
+            foreach (string name in segments)
                 capacity += name.Length;
 
-            capacity += folders.Length - 1;
+            capacity += segments.Length - 1;
 
             StringBuilder sb = StringBuilderCache.GetInstance(capacity);
 
-            sb.Append(folders[0]);
+            sb.Append(segments[0]);
 
-            for (int i = 1; i < folders.Length; i++)
+            for (int i = 1; i < segments.Length; i++)
             {
                 sb.Append(separator);
-                sb.Append(folders[i]);
+                sb.Append(segments[i]);
             }
 
             sb.Append(separator);

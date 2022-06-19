@@ -25,6 +25,7 @@ namespace Roslynator.Documentation
         Remarks = 1 << 13,
         SeeAlso = 1 << 14,
         AppliesTo = 1 << 15,
+        Content = 1 << 16,
         All = int.MaxValue
     }
 }

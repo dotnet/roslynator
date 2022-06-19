@@ -22,6 +22,8 @@ namespace Roslynator.Documentation
         {
             switch (part)
             {
+                case MemberDocumentationParts.Content:
+                    return 0;
                 case MemberDocumentationParts.Overloads:
                     return 1;
                 case MemberDocumentationParts.ContainingType:

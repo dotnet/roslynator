@@ -68,14 +68,23 @@ namespace Roslynator.CommandLine
 
             var documentationModel = new DocumentationModel(compilations, DocumentationFilterOptions.Instance);
 
+            UrlSegmentProvider GetUrlSegmentProvider()
+            {
+                return new HierarchicUrlSegmentProvider();
+            }
+
+            UrlSegmentProvider urlSegmentProvider = GetUrlSegmentProvider();
+
+            var externalProviders = new MicrosoftDocsUrlProvider[] { MicrosoftDocsUrlProvider.Instance };
+
             DocumentationUrlProvider GetUrlProvider()
             {
                 switch (DocumentationHost)
                 {
                     case DocumentationHost.GitHub:
-                        return WellKnownUrlProviders.GitHub;
+                        return new GitHubDocumentationUrlProvider(urlSegmentProvider, externalProviders);
                     case DocumentationHost.Docusaurus:
-                        return WellKnownUrlProviders.Docusaurus;
+                        return new DocusaurusDocumentationUrlProvider(urlSegmentProvider, externalProviders);
                     default:
                         throw new InvalidOperationException($"Unknown value '{DocumentationHost}'.");
                 }
@@ -94,7 +103,30 @@ namespace Roslynator.CommandLine
                 }
             }
 
-            var generator = new MarkdownDocumentationGenerator(documentationModel, GetUrlProvider(), GetMarkdownWriterSettings(), documentationOptions);
+            MarkdownWriterSettings markdownWriterSettings = GetMarkdownWriterSettings();
+
+            DocumentationWriter CreateDocumentationWriter(DocumentationContext context)
+            {
+                MarkdownWriter writer = MarkdownWriter.Create(new StringBuilder(), markdownWriterSettings);
+
+                switch (DocumentationHost)
+                {
+                    case DocumentationHost.GitHub:
+                        return new MarkdownDocumentationWriter(context, writer);
+                    case DocumentationHost.Docusaurus:
+                        return new DocusaurusDocumentationWriter(context, writer);
+                    default:
+                        throw new InvalidOperationException($"Unknown value '{DocumentationHost}'.");
+                }
+            }
+
+            var context = new DocumentationContext(
+                documentationModel,
+                GetUrlProvider(),
+                c => CreateDocumentationWriter(c),
+                documentationOptions);
+
+            var generator = new DocumentationGenerator(context);
 
             string path = Options.Output;
 

@@ -756,7 +756,13 @@ namespace Roslynator.CommandLine
             if (!TryParseOptionValueAsEnumFlags(options.IgnoredMemberParts, OptionNames.IgnoredMemberParts, out MemberDocumentationParts ignoredMemberParts, DocumentationOptions.Default.IgnoredMemberParts))
                 return ExitCodes.Error;
 
+            if (!TryParseOptionValueAsEnumFlags(options.IgnoredCommonParts, OptionNames.IgnoredCommonParts, out CommonDocumentationParts ignoredCommonParts, DocumentationOptions.Default.IgnoredCommonParts))
+                return ExitCodes.Error;
+
             if (!TryParseOptionValueAsEnumFlags(options.IncludeContainingNamespace, OptionNames.IncludeContainingNamespace, out IncludeContainingNamespaceFilter includeContainingNamespaceFilter, DocumentationOptions.Default.IncludeContainingNamespaceFilter))
+                return ExitCodes.Error;
+
+            if (!TryParseOptionValueAsEnum(options.Layout, OptionNames.Layout, out DocumentationLayout layout, DocumentationLayout.Hierarchic))
                 return ExitCodes.Error;
 
             if (!TryParseOptionValueAsEnumFlags(options.OmitMemberParts, OptionNames.OmitMemberParts, out OmitMemberParts omitMemberParts, OmitMemberParts.None))
@@ -781,10 +787,12 @@ namespace Roslynator.CommandLine
                 ignoredNamespaceParts,
                 ignoredTypeParts,
                 ignoredMemberParts,
+                ignoredCommonParts,
                 omitMemberParts,
                 includeContainingNamespaceFilter,
                 visibility,
                 documentationHost,
+                layout,
                 projectFilter);
 
             CommandStatus status = await command.ExecuteAsync(paths, options.MSBuildPath, options.Properties);

@@ -26,10 +26,12 @@ namespace Roslynator.CommandLine
             NamespaceDocumentationParts ignoredNamespaceParts,
             TypeDocumentationParts ignoredTypeParts,
             MemberDocumentationParts ignoredMemberParts,
+            CommonDocumentationParts ignoredCommonParts,
             OmitMemberParts omitMemberParts,
             IncludeContainingNamespaceFilter includeContainingNamespaceFilter,
             Visibility visibility,
             DocumentationHost documentationHost,
+            DocumentationLayout layout,
             in ProjectFilter projectFilter) : base(projectFilter)
         {
             Options = options;
@@ -38,10 +40,12 @@ namespace Roslynator.CommandLine
             IgnoredNamespaceParts = ignoredNamespaceParts;
             IgnoredTypeParts = ignoredTypeParts;
             IgnoredMemberParts = ignoredMemberParts;
+            IgnoredCommonParts = ignoredCommonParts;
             OmitMemberParts = omitMemberParts;
             IncludeContainingNamespaceFilter = includeContainingNamespaceFilter;
             Visibility = visibility;
             DocumentationHost = documentationHost;
+            Layout = layout;
         }
 
         public GenerateDocCommandLineOptions Options { get; }
@@ -56,6 +60,8 @@ namespace Roslynator.CommandLine
 
         public MemberDocumentationParts IgnoredMemberParts { get; }
 
+        public CommonDocumentationParts IgnoredCommonParts { get; }
+
         public OmitMemberParts OmitMemberParts { get; }
 
         public IncludeContainingNamespaceFilter IncludeContainingNamespaceFilter { get; }
@@ -63,6 +69,8 @@ namespace Roslynator.CommandLine
         public Visibility Visibility { get; }
 
         public DocumentationHost DocumentationHost { get; }
+
+        public DocumentationLayout Layout { get; }
 
         public override async Task<CommandResult> ExecuteAsync(ProjectOrSolution projectOrSolution, CancellationToken cancellationToken = default)
         {
@@ -92,6 +100,7 @@ namespace Roslynator.CommandLine
                 ignoredTypeParts: IgnoredTypeParts,
                 ignoredMemberParts: IgnoredMemberParts,
                 includeContainingNamespaceFilter: IncludeContainingNamespaceFilter,
+                layout: Layout,
                 scrollToContent: Options.ScrollToContent,
                 includePageContent: DocumentationHost != DocumentationHost.Docusaurus);
 
@@ -99,14 +108,31 @@ namespace Roslynator.CommandLine
 
             var documentationModel = new DocumentationModel(compilations, DocumentationFilterOptions.Instance, Options.AdditionalXmlDocumentation);
 
+            UrlSegmentProvider GetUrlSegmentProvider()
+            {
+                switch (Layout)
+                {
+                    case DocumentationLayout.Hierarchic:
+                        return new HierarchicUrlSegmentProvider();
+                    case DocumentationLayout.FlatNamespaces:
+                        return new FlatNamespacesUrlSegmentProvider();
+                    default:
+                        throw new InvalidOperationException($"Unknown value '{Layout}'.");
+                }
+            }
+
+            UrlSegmentProvider urlSegmentProvider = GetUrlSegmentProvider();
+
+            var externalProviders = new MicrosoftDocsUrlProvider[] { MicrosoftDocsUrlProvider.Instance };
+
             DocumentationUrlProvider GetUrlProvider()
             {
                 switch (DocumentationHost)
                 {
                     case DocumentationHost.GitHub:
-                        return WellKnownUrlProviders.GitHub;
+                        return new GitHubDocumentationUrlProvider(urlSegmentProvider, externalProviders);
                     case DocumentationHost.Docusaurus:
-                        return WellKnownUrlProviders.Docusaurus;
+                        return new DocusaurusDocumentationUrlProvider(urlSegmentProvider, externalProviders);
                     default:
                         throw new InvalidOperationException($"Unknown value '{DocumentationHost}'.");
                 }
@@ -124,15 +150,38 @@ namespace Roslynator.CommandLine
                         throw new InvalidOperationException($"Unknown value '{DocumentationHost}'.");
                 }
             }
-#if DEBUG
-            SourceReferenceProvider sourceReferenceProvider = (Options.SourceReferences.Any())
-                ? SourceReferenceProvider.Load(Options.SourceReferences)
-                : null;
 
-            var generator = new MarkdownDocumentationGenerator(documentationModel, GetUrlProvider(), GetMarkdownWriterSettings(), documentationOptions, sourceReferenceProvider);
-#else
-            var generator = new MarkdownDocumentationGenerator(documentationModel, GetUrlProvider(), GetMarkdownWriterSettings(), documentationOptions);
+            MarkdownWriterSettings markdownWriterSettings = GetMarkdownWriterSettings();
+
+            DocumentationWriter CreateDocumentationWriter(DocumentationContext context)
+            {
+                MarkdownWriter writer = MarkdownWriter.Create(new StringBuilder(), markdownWriterSettings);
+
+                switch (DocumentationHost)
+                {
+                    case DocumentationHost.GitHub:
+                        return new MarkdownDocumentationWriter(context, writer);
+                    case DocumentationHost.Docusaurus:
+                        return new DocusaurusDocumentationWriter(context, writer);
+                    default:
+                        throw new InvalidOperationException($"Unknown value '{DocumentationHost}'.");
+                }
+            }
+
+            SourceReferenceProvider sourceReferenceProvider = null;
+#if DEBUG
+            if (Options.SourceReferences.Any())
+                sourceReferenceProvider = SourceReferenceProvider.Load(Options.SourceReferences);
 #endif
+            var context = new DocumentationContext(
+                documentationModel,
+                GetUrlProvider(),
+                c => CreateDocumentationWriter(c),
+                documentationOptions,
+                sourceReferenceProvider: sourceReferenceProvider);
+
+            var generator = new DocumentationGenerator(context);
+
             string directoryPath = Options.Output;
 
             if (!Options.NoDelete

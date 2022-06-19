@@ -11,16 +11,10 @@ namespace Roslynator.Documentation
 {
     internal abstract class CommonDocumentationUrlProvider : DocumentationUrlProvider
     {
-        private CommonDocumentationUrlProvider()
+        protected CommonDocumentationUrlProvider(UrlSegmentProvider segmentProvider, IEnumerable<ExternalUrlProvider> externalProviders = null)
+            : base(segmentProvider, externalProviders)
         {
         }
-
-        protected CommonDocumentationUrlProvider(IEnumerable<ExternalUrlProvider> externalProviders = null)
-            : base(externalProviders)
-        {
-        }
-
-        public abstract string ReadMeFileName { get; }
 
         private string LinkToSelf
         {
@@ -28,7 +22,7 @@ namespace Roslynator.Documentation
             {
                 if (_linkToSelf == null)
                 {
-                    _linkToSelf = "./" + ReadMeFileName;
+                    _linkToSelf = "./" + IndexFileName;
                 }
 
                 return _linkToSelf;
@@ -47,9 +41,9 @@ namespace Roslynator.Documentation
                 case DocumentationFileKind.Namespace:
                 case DocumentationFileKind.Type:
                 case DocumentationFileKind.Member:
-                    return ReadMeFileName;
+                    return IndexFileName;
                 case DocumentationFileKind.Extensions:
-                    return WellKnownNames.Extensions;
+                    return ExtensionsFileName;
                 default:
                     throw new ArgumentException("", nameof(kind));
             }
@@ -64,7 +58,7 @@ namespace Roslynator.Documentation
             string CreateLocalUrl()
             {
                 if (containingFolders.IsDefault)
-                    return GetUrl(ReadMeFileName, folders, '/') + fragment;
+                    return GetUrl(IndexFileName, folders, '/') + fragment;
 
                 if (FoldersEqual(containingFolders, folders))
                     return (string.IsNullOrEmpty(fragment)) ? LinkToSelf : fragment;
@@ -118,7 +112,7 @@ namespace Roslynator.Documentation
                 }
 
                 sb.Append("/");
-                sb.Append(ReadMeFileName);
+                sb.Append(IndexFileName);
 
                 return StringBuilderCache.GetStringAndFree(sb) + fragment;
             }

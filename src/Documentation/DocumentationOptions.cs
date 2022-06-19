@@ -37,7 +37,9 @@ namespace Roslynator.Documentation
             NamespaceDocumentationParts ignoredNamespaceParts = NamespaceDocumentationParts.None,
             TypeDocumentationParts ignoredTypeParts = TypeDocumentationParts.None,
             MemberDocumentationParts ignoredMemberParts = MemberDocumentationParts.None,
+            CommonDocumentationParts ignoredCommonParts = CommonDocumentationParts.None,
             IncludeContainingNamespaceFilter includeContainingNamespaceFilter = IncludeContainingNamespaceFilter.None,
+            DocumentationLayout layout = DocumentationLayout.Hierarchic,
             bool scrollToContent = DefaultValues.ScrollToContent,
             bool includePageContent = true)
         {
@@ -70,9 +72,19 @@ namespace Roslynator.Documentation
             IgnoredNamespaceParts = ignoredNamespaceParts;
             IgnoredTypeParts = ignoredTypeParts;
             IgnoredMemberParts = ignoredMemberParts;
+            IgnoredCommonParts = ignoredCommonParts;
             IncludeContainingNamespaceFilter = includeContainingNamespaceFilter;
+            Layout = layout;
             ScrollToContent = scrollToContent;
             IncludePageContent = includePageContent;
+
+            if ((IgnoredCommonParts & CommonDocumentationParts.Content) != 0)
+            {
+                IgnoredRootParts |= RootDocumentationParts.Content;
+                IgnoredNamespaceParts |= NamespaceDocumentationParts.Content;
+                IgnoredTypeParts |= TypeDocumentationParts.Content;
+                IgnoredMemberParts |= MemberDocumentationParts.Content;
+            }
         }
 
         public static DocumentationOptions Default { get; } = new();
@@ -127,7 +139,11 @@ namespace Roslynator.Documentation
 
         public MemberDocumentationParts IgnoredMemberParts { get; }
 
+        public CommonDocumentationParts IgnoredCommonParts { get; }
+
         public IncludeContainingNamespaceFilter IncludeContainingNamespaceFilter { get; }
+
+        public DocumentationLayout Layout { get; }
 
         public bool ScrollToContent { get; }
 

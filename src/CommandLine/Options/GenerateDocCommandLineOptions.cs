@@ -29,6 +29,12 @@ namespace Roslynator.CommandLine
         public IEnumerable<string> IgnoredNamespaceParts { get; set; }
 
         [Option(
+            longName: OptionNames.IgnoredCommonParts,
+            HelpText = "Defines parts of a documentation that should be excluded. Allowed values content.",
+            MetaValue = "<IGNORED_COMMON_PARTS>")]
+        public IEnumerable<string> IgnoredCommonParts { get; set; }
+
+        [Option(
             longName: OptionNames.IgnoredRootParts,
             HelpText = "Defines parts of a root documentation that should be excluded. Allowed values are content, namespaces, class-hierarchy, types and other.",
             MetaValue = "<IGNORED_ROOT_PARTS>")]
@@ -72,6 +78,13 @@ namespace Roslynator.CommandLine
             HelpText = "Defines a style of a type inheritance. Allowed values are horizontal (default) or vertical.",
             MetaValue = "<INHERITANCE_STYLE>")]
         public InheritanceStyle InheritanceStyle { get; set; }
+
+        [Option(
+            longName: "layout",
+            Default = "hierarchic",
+            HelpText = "Defines layout of documentation files. Allowed values are hierarchic (default) or flat-namespaces.",
+            MetaValue = "<LAYOUT>")]
+        public string Layout { get; set; }
 
         [Option(
             longName: "max-derived-types",

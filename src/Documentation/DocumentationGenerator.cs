@@ -7,40 +7,32 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis;
-using Roslynator.CSharp;
 
 namespace Roslynator.Documentation
 {
-    public abstract class DocumentationGenerator
+    public class DocumentationGenerator
     {
         private ImmutableArray<RootDocumentationParts> _enabledAndSortedRootParts;
         private ImmutableArray<NamespaceDocumentationParts> _enabledAndSortedNamespaceParts;
         private ImmutableArray<TypeDocumentationParts> _enabledAndSortedTypeParts;
         private ImmutableArray<MemberDocumentationParts> _enabledAndSortedMemberParts;
 
-        protected DocumentationGenerator(
-            DocumentationModel documentationModel,
-            DocumentationUrlProvider urlProvider,
-            DocumentationOptions options = null,
-            SourceReferenceProvider sourceReferenceProvider = null,
-            DocumentationResources resources = null)
+        public DocumentationGenerator(DocumentationContext context)
         {
-            DocumentationModel = documentationModel;
-            UrlProvider = urlProvider;
-            Options = options ?? DocumentationOptions.Default;
-            SourceReferenceProvider = sourceReferenceProvider;
-            Resources = resources ?? DocumentationResources.Default;
+            Context = context;
         }
 
-        public DocumentationModel DocumentationModel { get; }
+        public DocumentationContext Context { get; }
 
-        public DocumentationOptions Options { get; }
+        public DocumentationModel DocumentationModel => Context.DocumentationModel;
 
-        public DocumentationResources Resources { get; }
+        public DocumentationOptions Options => Context.Options;
 
-        public DocumentationUrlProvider UrlProvider { get; }
+        public DocumentationResources Resources => Context.Resources;
 
-        public SourceReferenceProvider SourceReferenceProvider { get; }
+        public DocumentationUrlProvider UrlProvider => Context.UrlProvider;
+
+        public SourceReferenceProvider SourceReferenceProvider => Context.SourceReferenceProvider;
 
         public virtual IComparer<RootDocumentationParts> RootPartComparer
         {
@@ -142,7 +134,7 @@ namespace Roslynator.Documentation
 
         private DocumentationWriter CreateWriter(ISymbol currentSymbol = null)
         {
-            DocumentationWriter writer = CreateWriterCore();
+            DocumentationWriter writer = Context.CreateWriter();
 
             writer.CurrentSymbol = currentSymbol;
             writer.CanCreateMemberLocalUrl = Options.Depth == DocumentationDepth.Member;
@@ -150,8 +142,6 @@ namespace Roslynator.Documentation
 
             return writer;
         }
-
-        protected abstract DocumentationWriter CreateWriterCore();
 
         public IEnumerable<DocumentationGeneratorResult> Generate(string heading = null, CancellationToken cancellationToken = default)
         {
@@ -238,7 +228,7 @@ namespace Roslynator.Documentation
             string heading,
             bool addExtensionsLink = false)
         {
-            writer.WriteStartDocument();
+            writer.WriteStartDocument(null);
 
             if (Options.ScrollToContent)
                 writer.WriteLinkDestination(WellKnownNames.TopFragmentName);
@@ -249,7 +239,7 @@ namespace Roslynator.Documentation
 
             GenerateRoot(writer, addExtensionsLink: addExtensionsLink);
 
-            writer.WriteEndDocument();
+            writer.WriteEndDocument(null);
 
             return CreateResult(writer, DocumentationFileKind.Root);
         }
@@ -269,7 +259,7 @@ namespace Roslynator.Documentation
                                 .OrderBy(f => f, RootPartComparer)
                                 .Select(f => Resources.GetHeading(f));
 
-                            writer.WritePageContent(names);
+                            writer.WriteContent(names);
                             break;
                         }
                     case RootDocumentationParts.Namespaces:
@@ -309,7 +299,7 @@ namespace Roslynator.Documentation
                             {
                                 writer.WriteHeading2(Resources.OtherTitle);
                                 writer.WriteStartBulletItem();
-                                writer.WriteLink(Resources.ExtensionsOfExternalTypesTitle, WellKnownNames.Extensions + ((Options.ScrollToContent) ? "#" + WellKnownNames.TopFragmentName : null));
+                                writer.WriteLink(Resources.ExtensionsOfExternalTypesTitle, UrlProvider.ExtensionsFileName + ((Options.ScrollToContent) ? "#" + WellKnownNames.TopFragmentName : null));
                                 writer.WriteEndBulletItem();
                             }
 
@@ -346,9 +336,7 @@ namespace Roslynator.Documentation
 
             using (DocumentationWriter writer = CreateWriter(namespaceSymbol))
             {
-                writer.WriteStartDocument();
-
-                WriteSidebarLabel(writer, namespaceSymbol);
+                writer.WriteStartDocument(namespaceSymbol);
 
                 SymbolXmlDocumentation xmlDocumentation = DocumentationModel.GetXmlDocumentation(namespaceSymbol, Options.PreferredCultureName);
 
@@ -365,7 +353,7 @@ namespace Roslynator.Documentation
                                     .OrderBy(f => f, NamespacePartComparer)
                                     .Select(f => Resources.GetHeading(f));
 
-                                writer.WritePageContent(names, addLinkToRoot: true);
+                                writer.WriteContent(names, addLinkToRoot: true);
                                 break;
                             }
                         case NamespaceDocumentationParts.ContainingNamespace:
@@ -435,7 +423,7 @@ namespace Roslynator.Documentation
                     }
                 }
 
-                writer.WriteEndDocument();
+                writer.WriteEndDocument(namespaceSymbol);
 
                 return CreateResult(writer, DocumentationFileKind.Namespace, namespaceSymbol);
 
@@ -518,7 +506,7 @@ namespace Roslynator.Documentation
 
             using (DocumentationWriter writer = CreateWriter())
             {
-                writer.WriteStartDocument();
+                writer.WriteStartDocument(null);
 
                 if (Options.ScrollToContent)
                 {
@@ -536,7 +524,7 @@ namespace Roslynator.Documentation
 
                 writer.WriteNamespaceList(extendedExternalTypes, Resources.NamespacesTitle, 2, includeTypes: true);
 
-                writer.WriteEndDocument();
+                writer.WriteEndDocument(null);
 
                 return CreateResult(writer, DocumentationFileKind.Extensions);
             }
@@ -546,9 +534,7 @@ namespace Roslynator.Documentation
         {
             using (DocumentationWriter writer = CreateWriter(typeSymbol))
             {
-                writer.WriteStartDocument();
-
-                WriteSidebarLabel(writer, typeSymbol);
+                writer.WriteStartDocument(typeSymbol);
 
                 if (Options.ScrollToContent)
                 {
@@ -563,7 +549,9 @@ namespace Roslynator.Documentation
                 writer.WriteSpace();
                 writer.WriteString(Resources.ExtensionsTitle);
                 writer.WriteEndHeading();
-                writer.WritePageContent(Array.Empty<string>(), addLinkToRoot: true);
+
+                if ((Options.IgnoredCommonParts & CommonDocumentationParts.Content) == 0)
+                    writer.WriteContent(Array.Empty<string>(), addLinkToRoot: true);
 
                 writer.WriteTable(
                     DocumentationModel.GetExtensionMethods(typeSymbol),
@@ -573,7 +561,7 @@ namespace Roslynator.Documentation
                     Resources.SummaryTitle,
                     DocumentationDisplayFormats.SimpleDeclaration);
 
-                writer.WriteEndDocument();
+                writer.WriteEndDocument(typeSymbol);
 
                 return CreateResult(writer, DocumentationFileKind.Type, typeSymbol);
             }
@@ -598,9 +586,7 @@ namespace Roslynator.Documentation
 
             using (DocumentationWriter writer = CreateWriter(typeSymbol))
             {
-                writer.WriteStartDocument();
-
-                WriteSidebarLabel(writer, typeSymbol);
+                writer.WriteStartDocument(typeSymbol);
 
                 writer.WriteHeading(
                     1,
@@ -621,7 +607,7 @@ namespace Roslynator.Documentation
                                     .OrderBy(f => f, TypePartComparer)
                                     .Select(f => Resources.GetHeading(f));
 
-                                writer.WritePageContent(names, addLinkToRoot: true);
+                                writer.WriteContent(names, addLinkToRoot: true);
                                 break;
                             }
                         case TypeDocumentationParts.ContainingNamespace:
@@ -816,7 +802,7 @@ namespace Roslynator.Documentation
                         addSeparatorAtIndex: Options.MaxDerivedTypes);
                 }
 
-                writer.WriteEndDocument();
+                writer.WriteEndDocument(typeSymbol);
 
                 return CreateResult(writer, DocumentationFileKind.Type, typeSymbol);
             }
@@ -939,9 +925,7 @@ namespace Roslynator.Documentation
 
                         using (DocumentationWriter writer = CreateWriter(symbol))
                         {
-                            writer.WriteStartDocument();
-
-                            WriteSidebarLabel(writer, symbol);
+                            writer.WriteStartDocument(symbol);
 
                             bool isOverloaded = en.MoveNext();
 
@@ -953,7 +937,8 @@ namespace Roslynator.Documentation
 
                             writer.WriteMemberTitle(symbol, isOverloaded);
 
-                            writer.WritePageContent(Array.Empty<string>(), addLinkToRoot: true);
+                            if ((Options.IgnoredMemberParts & MemberDocumentationParts.Content) == 0)
+                                writer.WriteContent(Array.Empty<string>(), addLinkToRoot: true);
 
                             if ((Options.IgnoredMemberParts & MemberDocumentationParts.ContainingType) == 0)
                                 writer.WriteContainingType(symbol.ContainingType, Resources.ContainingTypeTitle);
@@ -994,7 +979,7 @@ namespace Roslynator.Documentation
                                 GenerateMemberContent(writer, symbol);
                             }
 
-                            writer.WriteEndDocument();
+                            writer.WriteEndDocument(symbol);
 
                             yield return CreateResult(writer, DocumentationFileKind.Member, symbol);
                         }
@@ -1096,69 +1081,6 @@ namespace Roslynator.Documentation
             }
         }
 
-        private string GetSidebarLabel(ISymbol symbol)
-        {
-            if (symbol.IsKind(SymbolKind.Namespace))
-            {
-                return symbol.ToDisplayString(TypeSymbolDisplayFormats.Name_ContainingTypes_Namespaces_GlobalNamespace_OmittedAsContaining);
-            }
-            else if (symbol.IsKind(SymbolKind.NamedType))
-            {
-                string label = symbol.ToDisplayString(TypeSymbolDisplayFormats.Name_TypeParameters);
-
-                if (symbol.ContainingType != null)
-                {
-                    label = symbol.ContainingType.ToDisplayString(TypeSymbolDisplayFormats.Name_TypeParameters)
-                        + "."
-                        + label;
-                }
-
-                return label;
-            }
-            else
-            {
-                string label = symbol.Name;
-
-                if (symbol is IMethodSymbol methodSymbol)
-                {
-                    if (methodSymbol.MethodKind == MethodKind.Constructor)
-                    {
-                        label = symbol.ContainingType.ToDisplayString(TypeSymbolDisplayFormats.Name_TypeParameters);
-                    }
-                }
-                else if (symbol.Kind == SymbolKind.Property
-                    && ((IPropertySymbol)symbol).IsIndexer)
-                {
-                    label = "Item[]";
-                }
-
-                ISymbol explicitImplementation = symbol.GetFirstExplicitInterfaceImplementation();
-
-                if (explicitImplementation != null)
-                {
-                    label = explicitImplementation.ContainingType.ToDisplayString(TypeSymbolDisplayFormats.Name_TypeParameters)
-                        + "."
-                        + label;
-                }
-
-                return label;
-            }
-        }
-
-        private void WriteSidebarLabel(DocumentationWriter writer, ISymbol symbol)
-        {
-            string label = GetSidebarLabel(symbol);
-
-            writer.WriteRaw("---");
-            writer.WriteLine();
-            writer.WriteRaw("sidebar_label: ");
-            writer.WriteRaw(label);
-            writer.WriteLine();
-            writer.WriteRaw("---");
-            writer.WriteLine();
-            writer.WriteLine();
-        }
-
         private DocumentationGeneratorResult CreateResult(DocumentationWriter writer, DocumentationFileKind kind, ISymbol symbol = null)
         {
             string fileName = UrlProvider.GetFileName(kind);
@@ -1175,7 +1097,7 @@ namespace Roslynator.Documentation
                     case DocumentationFileKind.Namespace:
                     case DocumentationFileKind.Type:
                     case DocumentationFileKind.Member:
-                        return DocumentationUrlProvider.GetUrl(fileName, UrlProvider.GetFolders(symbol), Path.DirectorySeparatorChar);
+                        return UrlProvider.GetUrl(symbol, fileName, Path.DirectorySeparatorChar);
                     default:
                         throw new ArgumentException("", nameof(kind));
                 }

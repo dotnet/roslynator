@@ -10,7 +10,6 @@ using System.Text;
 using System.Xml.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Roslynator.CSharp;
 using Roslynator.Text;
 
 namespace Roslynator.Documentation
@@ -19,19 +18,14 @@ namespace Roslynator.Documentation
     {
         private bool _disposed;
 
-        protected DocumentationWriter(
-            DocumentationModel documentationModel,
-            DocumentationUrlProvider urlProvider,
-            DocumentationOptions options = null,
-            DocumentationResources resources = null)
+        protected DocumentationWriter(DocumentationContext context)
         {
-            DocumentationModel = documentationModel;
-            UrlProvider = urlProvider;
-            Options = options ?? DocumentationOptions.Default;
-            Resources = resources ?? DocumentationResources.Default;
+            Context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public DocumentationModel DocumentationModel { get; }
+        public DocumentationContext Context { get; }
+
+        public DocumentationModel DocumentationModel => Context.DocumentationModel;
 
         internal bool CanCreateTypeLocalUrl { get; set; } = true;
 
@@ -39,20 +33,22 @@ namespace Roslynator.Documentation
 
         internal ISymbol CurrentSymbol { get; set; }
 
-        public DocumentationOptions Options { get; }
+        public DocumentationOptions Options => Context.Options;
 
-        public DocumentationResources Resources { get; }
+        public DocumentationResources Resources => Context.Resources;
 
-        public DocumentationUrlProvider UrlProvider { get; }
+        public DocumentationUrlProvider UrlProvider => Context.UrlProvider;
+
+        private UrlSegmentProvider UrlSegmentProvider => Context.UrlProvider.SegmentProvider;
 
         private SymbolXmlDocumentation GetXmlDocumentation(ISymbol symbol)
         {
             return DocumentationModel.GetXmlDocumentation(symbol, Options.PreferredCultureName);
         }
 
-        public abstract void WriteStartDocument();
+        public abstract void WriteStartDocument(ISymbol symbol);
 
-        public abstract void WriteEndDocument();
+        public abstract void WriteEndDocument(ISymbol symbol);
 
         public abstract void WriteStartBold();
 
@@ -289,7 +285,7 @@ namespace Roslynator.Documentation
             }
         }
 
-        public virtual void WritePageContent(IEnumerable<string> names, bool addLinkToRoot = false, bool beginWithSeparator = false)
+        public virtual void WriteContent(IEnumerable<string> names, bool addLinkToRoot = false, bool beginWithSeparator = false)
         {
             if (!Options.IncludePageContent)
                 return;
@@ -301,7 +297,7 @@ namespace Roslynator.Documentation
                 if (beginWithSeparator)
                     WriteContentSeparator();
 
-                WriteLink(Resources.HomeTitle, UrlProvider.GetUrlToRoot(UrlProvider.GetFolders(CurrentSymbol).Length, '/', scrollToContent: Options.ScrollToContent));
+                WriteLink(Resources.HomeTitle, UrlProvider.GetUrlToRoot(UrlSegmentProvider.GetSegments(CurrentSymbol).Length, '/', scrollToContent: Options.ScrollToContent));
             }
 
             if (en.MoveNext())
@@ -1883,7 +1879,7 @@ namespace Roslynator.Documentation
             ISymbol symbol,
             bool canCreateExternalUrl = true)
         {
-            ImmutableArray<string> folders = UrlProvider.GetFolders(symbol);
+            ImmutableArray<string> folders = UrlSegmentProvider.GetSegments(symbol);
 
             if (folders.IsDefault)
                 return null;
@@ -1927,7 +1923,7 @@ namespace Roslynator.Documentation
             }
 
             ImmutableArray<string> containingFolders = (CurrentSymbol != null)
-                ? UrlProvider.GetFolders(CurrentSymbol)
+                ? UrlSegmentProvider.GetSegments(CurrentSymbol)
                 : default;
 
             string fragment = GetFragment();
