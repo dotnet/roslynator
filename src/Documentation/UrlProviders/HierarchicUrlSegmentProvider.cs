@@ -45,7 +45,7 @@ namespace Roslynator.Documentation
 
                     builder.Add(name);
                 }
-                else
+                else if (symbol.IsKind(SymbolKind.NamedType))
                 {
                     int arity = symbol.GetArity();
 
@@ -57,6 +57,10 @@ namespace Roslynator.Documentation
                     {
                         builder.Add(symbol.Name);
                     }
+                }
+                else
+                {
+                    builder.Add(symbol.Name);
                 }
             }
 

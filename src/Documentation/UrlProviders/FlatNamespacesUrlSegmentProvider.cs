@@ -35,7 +35,7 @@ namespace Roslynator.Documentation
             {
                 builder.Add("Item");
             }
-            else if (symbol.Kind != SymbolKind.Namespace)
+            else if (!symbol.IsKind(SymbolKind.Namespace))
             {
                 ISymbol explicitImplementation = symbol.GetFirstExplicitInterfaceImplementation();
 
@@ -50,7 +50,7 @@ namespace Roslynator.Documentation
 
                     builder.Add(name);
                 }
-                else
+                else if (symbol.IsKind(SymbolKind.NamedType))
                 {
                     int arity = symbol.GetArity();
 
@@ -62,6 +62,10 @@ namespace Roslynator.Documentation
                     {
                         builder.Add(symbol.Name);
                     }
+                }
+                else
+                {
+                    builder.Add(symbol.Name);
                 }
             }
 

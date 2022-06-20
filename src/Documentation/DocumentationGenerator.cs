@@ -161,9 +161,7 @@ namespace Roslynator.Documentation
             {
                 IEnumerable<INamedTypeSymbol> typeSymbols = DocumentationModel.Types.Where(f => !Options.ShouldBeIgnored(f));
 
-                IEnumerable<INamespaceSymbol> namespaceSymbols = (Options.Layout == DocumentationLayout.Hierarchic)
-                    ? typeSymbols.SelectMany(f => f.GetContainingNamespaces())
-                    : typeSymbols.Select(f => f.ContainingNamespace);
+                IEnumerable<INamespaceSymbol> namespaceSymbols = typeSymbols.SelectMany(f => f.GetContainingNamespaces());
 
                 foreach (INamespaceSymbol namespaceSymbol in namespaceSymbols
                     .Distinct(MetadataNameEqualityComparer<INamespaceSymbol>.Instance))

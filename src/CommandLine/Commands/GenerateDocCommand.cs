@@ -145,7 +145,7 @@ namespace Roslynator.CommandLine
                     case DocumentationHost.GitHub:
                         return MarkdownWriterSettings.Default;
                     case DocumentationHost.Docusaurus:
-                        return new MarkdownWriterSettings(new MarkdownFormat(escapeOptions: new EscapeOptions(escapeCloseAngleBracket: true)));
+                        return new MarkdownWriterSettings(new MarkdownFormat(escapeOptions: new EscapeOptions()));
                     default:
                         throw new InvalidOperationException($"Unknown value '{DocumentationHost}'.");
                 }
