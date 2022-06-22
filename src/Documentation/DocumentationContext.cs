@@ -1,6 +1,9 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using Microsoft.CodeAnalysis;
 
 namespace Roslynator.Documentation
 {
@@ -14,13 +17,17 @@ namespace Roslynator.Documentation
             Func<DocumentationContext, DocumentationWriter> createWriter,
             DocumentationOptions options = null,
             DocumentationResources resources = null,
-            SourceReferenceProvider sourceReferenceProvider = null)
+            SourceReferenceProvider sourceReferenceProvider = null,
+            IEnumerable<INamespaceSymbol> commonNamespaces = null)
         {
             DocumentationModel = documentationModel;
             UrlProvider = urlProvider;
             Options = options ?? DocumentationOptions.Default;
             Resources = resources ?? DocumentationResources.Default;
             SourceReferenceProvider = sourceReferenceProvider;
+
+            CommonNamespaces = commonNamespaces?.ToImmutableHashSet(MetadataNameEqualityComparer<INamespaceSymbol>.Instance)
+                ?? ImmutableHashSet<INamespaceSymbol>.Empty;
 
             _createWriter = createWriter;
         }
@@ -34,6 +41,8 @@ namespace Roslynator.Documentation
         public DocumentationResources Resources { get; }
 
         public SourceReferenceProvider SourceReferenceProvider { get; }
+
+        public ImmutableHashSet<INamespaceSymbol> CommonNamespaces { get; }
 
         public DocumentationWriter CreateWriter()
         {

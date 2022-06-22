@@ -12,18 +12,25 @@ namespace Roslynator.Documentation.Markdown
         {
         }
 
-        public override void WriteStartDocument(ISymbol symbol)
+        public override void WriteStartDocument(ISymbol symbol, DocumentationFileKind fileKind)
         {
             if (symbol != null)
-                WriteSidebarLabel(symbol);
+                WriteSidebarLabel(symbol, fileKind);
         }
 
-        private void WriteSidebarLabel(ISymbol symbol)
+        private void WriteSidebarLabel(ISymbol symbol, DocumentationFileKind fileKind)
         {
             string label = GetSidebarLabel(symbol);
 
             WriteRaw("---");
             WriteLine();
+
+            if (fileKind == DocumentationFileKind.Root)
+            {
+                WriteRaw("sidebar_position: 0");
+                WriteLine();
+            }
+
             WriteRaw("sidebar_label: ");
             WriteRaw(label);
             WriteLine();
@@ -39,11 +46,20 @@ namespace Roslynator.Documentation.Markdown
                 switch (Context.Options.Layout)
                 {
                     case DocumentationLayout.FlatNamespaces:
-                        return symbol.ToDisplayString(TypeSymbolDisplayFormats.Name_ContainingTypes_Namespaces_GlobalNamespace_OmittedAsContaining);
+                        {
+                            return symbol.ToDisplayString(TypeSymbolDisplayFormats.Name_ContainingTypes_Namespaces_GlobalNamespace_OmittedAsContaining);
+                        }
                     case DocumentationLayout.Hierarchic:
-                        return symbol.Name;
+                        {
+                            if (Context.CommonNamespaces.Contains((INamespaceSymbol)symbol))
+                                return symbol.ToDisplayString(TypeSymbolDisplayFormats.Name_ContainingTypes_Namespaces_GlobalNamespace_OmittedAsContaining);
+
+                            return symbol.Name;
+                        }
                     default:
-                        throw new InvalidOperationException($"Unknown value '{Context.Options.Layout}'.");
+                        {
+                            throw new InvalidOperationException($"Unknown value '{Context.Options.Layout}'.");
+                        }
                 }
             }
             else if (symbol.IsKind(SymbolKind.NamedType))

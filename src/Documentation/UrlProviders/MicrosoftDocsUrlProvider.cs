@@ -22,7 +22,7 @@ namespace Roslynator.Documentation
             if (!CanCreateUrl(symbol))
                 return default;
 
-            ImmutableArray<string> folders = HierarchicUrlSegmentProvider.Instance.GetSegments(symbol);
+            ImmutableArray<string> folders = DefaultUrlSegmentProvider.Hierarchic.GetSegments(symbol);
 
             const string baseUrl = "https://docs.microsoft.com/en-us/dotnet/api/";
 

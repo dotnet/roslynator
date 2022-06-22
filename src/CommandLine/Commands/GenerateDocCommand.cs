@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
@@ -32,6 +33,7 @@ namespace Roslynator.CommandLine
             Visibility visibility,
             DocumentationHost documentationHost,
             DocumentationLayout layout,
+            bool groupByCommonNamespace,
             in ProjectFilter projectFilter) : base(projectFilter)
         {
             Options = options;
@@ -46,6 +48,7 @@ namespace Roslynator.CommandLine
             Visibility = visibility;
             DocumentationHost = documentationHost;
             Layout = layout;
+            GroupByCommonNamespace = groupByCommonNamespace;
         }
 
         public GenerateDocCommandLineOptions Options { get; }
@@ -71,6 +74,8 @@ namespace Roslynator.CommandLine
         public DocumentationHost DocumentationHost { get; }
 
         public DocumentationLayout Layout { get; }
+
+        public bool GroupByCommonNamespace { get; }
 
         public override async Task<CommandResult> ExecuteAsync(ProjectOrSolution projectOrSolution, CancellationToken cancellationToken = default)
         {
@@ -108,20 +113,15 @@ namespace Roslynator.CommandLine
 
             var documentationModel = new DocumentationModel(compilations, DocumentationFilterOptions.Instance, Options.AdditionalXmlDocumentation);
 
-            UrlSegmentProvider GetUrlSegmentProvider()
+            List<INamespaceSymbol> commonNamespaces = null;
+
+            if (GroupByCommonNamespace)
             {
-                switch (Layout)
-                {
-                    case DocumentationLayout.Hierarchic:
-                        return new HierarchicUrlSegmentProvider();
-                    case DocumentationLayout.FlatNamespaces:
-                        return new FlatNamespacesUrlSegmentProvider();
-                    default:
-                        throw new InvalidOperationException($"Unknown value '{Layout}'.");
-                }
+                commonNamespaces = DocumentationUtility.GetCommonNamespaces(
+                    documentationModel.Types.Concat(documentationModel.GetExtendedExternalTypes()));
             }
 
-            UrlSegmentProvider urlSegmentProvider = GetUrlSegmentProvider();
+            UrlSegmentProvider urlSegmentProvider = new DefaultUrlSegmentProvider(Layout, commonNamespaces);
 
             var externalProviders = new MicrosoftDocsUrlProvider[] { MicrosoftDocsUrlProvider.Instance };
 
@@ -145,7 +145,7 @@ namespace Roslynator.CommandLine
                     case DocumentationHost.GitHub:
                         return MarkdownWriterSettings.Default;
                     case DocumentationHost.Docusaurus:
-                        return new MarkdownWriterSettings(new MarkdownFormat(escapeOptions: new EscapeOptions()));
+                        return new MarkdownWriterSettings(new MarkdownFormat(angleBracketEscapeStyle: AngleBracketEscapeStyle.EntityRef));
                     default:
                         throw new InvalidOperationException($"Unknown value '{DocumentationHost}'.");
                 }
@@ -178,7 +178,8 @@ namespace Roslynator.CommandLine
                 GetUrlProvider(),
                 c => CreateDocumentationWriter(c),
                 documentationOptions,
-                sourceReferenceProvider: sourceReferenceProvider);
+                sourceReferenceProvider: sourceReferenceProvider,
+                commonNamespaces: commonNamespaces);
 
             var generator = new DocumentationGenerator(context);
 

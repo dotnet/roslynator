@@ -51,7 +51,7 @@
     <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.Workspaces" Version="4.2.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="4.2.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="DotMarkdown" Version="0.1.1-abc" />
+    <PackageReference Include="DotMarkdown" Version="0.1.1" />
   </ItemGroup>
 
   <ItemGroup>

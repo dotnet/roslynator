@@ -14,11 +14,11 @@ namespace Roslynator.Documentation.Markdown
             _writer = writer;
         }
 
-        public override void WriteStartDocument(ISymbol symbol)
+        public override void WriteStartDocument(ISymbol symbol, DocumentationFileKind fileKind)
         {
         }
 
-        public override void WriteEndDocument(ISymbol symbol)
+        public override void WriteEndDocument(ISymbol symbol, DocumentationFileKind fileKind)
         {
         }
 

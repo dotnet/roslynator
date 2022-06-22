@@ -17,6 +17,11 @@ namespace Roslynator.CommandLine
         public IEnumerable<string> AdditionalXmlDocumentation { get; set; }
 
         [Option(
+            longName: "group-by-common-namespace",
+            HelpText = "Indicates whether to group namespaces by greatest common namespace.")]
+        public bool GroupByCommonNamespace { get; set; }
+
+        [Option(
             longName: OptionNames.IgnoredMemberParts,
             HelpText = "Defines parts of a member documentation that should be excluded. Allowed values are overloads, containing-type, containing-assembly, obsolete-message, summary, declaration, type-parameters, parameters, return-value, implements, attributes, exceptions, examples, remarks and see-also.",
             MetaValue = "<IGNORED_MEMBER_PARTS>")]

@@ -46,9 +46,9 @@ namespace Roslynator.Documentation
             return DocumentationModel.GetXmlDocumentation(symbol, Options.PreferredCultureName);
         }
 
-        public abstract void WriteStartDocument(ISymbol symbol);
+        public abstract void WriteStartDocument(ISymbol symbol, DocumentationFileKind fileKind);
 
-        public abstract void WriteEndDocument(ISymbol symbol);
+        public abstract void WriteEndDocument(ISymbol symbol, DocumentationFileKind fileKind);
 
         public abstract void WriteStartBold();
 
@@ -1680,7 +1680,7 @@ namespace Roslynator.Documentation
             }
         }
 
-        internal void WriteNamespaceList(
+        internal void WriteTypesByNamespace(
             IEnumerable<INamedTypeSymbol> typeSymbols,
             string heading,
             int headingLevel,
@@ -1711,9 +1711,6 @@ namespace Roslynator.Documentation
                                 .GroupBy(f => f.TypeKind)
                                 .OrderBy(f => f.Key, TypeKindComparer.Instance))
                             {
-                                WriteStartBulletItem();
-                                WriteString(Resources.GetPluralName(typesByKind.Key));
-
                                 foreach (INamedTypeSymbol symbol in typesByKind
                                     .OrderBy(f => f, SymbolDefinitionComparer.SystemFirstOmitContainingNamespace))
                                 {
@@ -1721,8 +1718,6 @@ namespace Roslynator.Documentation
                                     WriteTypeListItem(symbol, ImmutableHashSet<INamedTypeSymbol>.Empty, addLinkForTypeParameters: addLinkForTypeParameters, canCreateExternalUrl: canCreateExternalUrl);
                                     WriteEndBulletItem();
                                 }
-
-                                WriteEndBulletItem();
                             }
                         }
 
@@ -1888,7 +1883,7 @@ namespace Roslynator.Documentation
         {
             ImmutableArray<string> folders = UrlSegmentProvider.GetSegments(symbol);
 
-            if (folders.IsDefault)
+            if (folders.IsEmpty)
                 return null;
 
             switch (symbol.Kind)

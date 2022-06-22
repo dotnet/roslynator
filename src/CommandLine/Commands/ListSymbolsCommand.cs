@@ -170,7 +170,7 @@ namespace Roslynator.CommandLine
                         SymbolFilterOptions,
                         format,
                         hierarchyRoot: hierarchyRoot,
-                        urlProvider: new GitHubDocumentationUrlProvider(HierarchicUrlSegmentProvider.Instance, new MicrosoftDocsUrlProvider[] { MicrosoftDocsUrlProvider.Instance })))
+                        urlProvider: new GitHubDocumentationUrlProvider(DefaultUrlSegmentProvider.Hierarchic, new MicrosoftDocsUrlProvider[] { MicrosoftDocsUrlProvider.Instance })))
                     {
                         writer.WriteDocument(assemblies, cancellationToken);
                     }
@@ -362,7 +362,7 @@ namespace Roslynator.CommandLine
                 format,
                 default(SymbolDocumentationProvider),
                 hierarchyRoot,
-                new GitHubDocumentationUrlProvider(HierarchicUrlSegmentProvider.Instance, new[] { MicrosoftDocsUrlProvider.Instance })))
+                new GitHubDocumentationUrlProvider(DefaultUrlSegmentProvider.Hierarchic, new MicrosoftDocsUrlProvider[] { MicrosoftDocsUrlProvider.Instance })))
             {
                 writer.WriteDocument(assemblies, cancellationToken);
             }

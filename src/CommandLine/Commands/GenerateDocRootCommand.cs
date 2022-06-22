@@ -68,12 +68,7 @@ namespace Roslynator.CommandLine
 
             var documentationModel = new DocumentationModel(compilations, DocumentationFilterOptions.Instance);
 
-            UrlSegmentProvider GetUrlSegmentProvider()
-            {
-                return new HierarchicUrlSegmentProvider();
-            }
-
-            UrlSegmentProvider urlSegmentProvider = GetUrlSegmentProvider();
+            UrlSegmentProvider urlSegmentProvider = DefaultUrlSegmentProvider.Hierarchic;
 
             var externalProviders = new MicrosoftDocsUrlProvider[] { MicrosoftDocsUrlProvider.Instance };
 
@@ -97,7 +92,7 @@ namespace Roslynator.CommandLine
                     case DocumentationHost.GitHub:
                         return MarkdownWriterSettings.Default;
                     case DocumentationHost.Docusaurus:
-                        return new MarkdownWriterSettings(new MarkdownFormat(escapeOptions: new EscapeOptions()));
+                        return new MarkdownWriterSettings(new MarkdownFormat(angleBracketEscapeStyle: AngleBracketEscapeStyle.EntityRef));
                     default:
                         throw new InvalidOperationException($"Unknown value '{DocumentationHost}'.");
                 }

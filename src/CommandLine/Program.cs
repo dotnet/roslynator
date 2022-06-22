@@ -793,6 +793,7 @@ namespace Roslynator.CommandLine
                 visibility,
                 documentationHost,
                 layout,
+                groupByCommonNamespace: options.GroupByCommonNamespace,
                 projectFilter);
 
             CommandStatus status = await command.ExecuteAsync(paths, options.MSBuildPath, options.Properties);
