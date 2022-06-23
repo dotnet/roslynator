@@ -39,9 +39,8 @@ namespace Roslynator.Documentation
             MemberDocumentationParts ignoredMemberParts = MemberDocumentationParts.None,
             CommonDocumentationParts ignoredCommonParts = CommonDocumentationParts.None,
             IncludeContainingNamespaceFilter includeContainingNamespaceFilter = IncludeContainingNamespaceFilter.None,
-            DocumentationLayout layout = DocumentationLayout.Hierarchic,
-            bool scrollToContent = DefaultValues.ScrollToContent,
-            bool includePageContent = true)
+            FileLayout fileLayout = FileLayout.Hierarchic,
+            bool scrollToContent = DefaultValues.ScrollToContent)
         {
             if (maxDerivedTypes < 0)
                 throw new ArgumentOutOfRangeException(nameof(maxDerivedTypes), maxDerivedTypes, "Maximum number of derived items must be greater than or equal to 0.");
@@ -74,9 +73,8 @@ namespace Roslynator.Documentation
             IgnoredMemberParts = ignoredMemberParts;
             IgnoredCommonParts = ignoredCommonParts;
             IncludeContainingNamespaceFilter = includeContainingNamespaceFilter;
-            Layout = layout;
+            FileLayout = fileLayout;
             ScrollToContent = scrollToContent;
-            IncludePageContent = includePageContent;
 
             if ((IgnoredCommonParts & CommonDocumentationParts.Content) != 0)
             {
@@ -143,11 +141,9 @@ namespace Roslynator.Documentation
 
         public IncludeContainingNamespaceFilter IncludeContainingNamespaceFilter { get; }
 
-        public DocumentationLayout Layout { get; }
+        public FileLayout FileLayout { get; }
 
         public bool ScrollToContent { get; }
-
-        public bool IncludePageContent { get; }
 
         internal bool IncludeContainingNamespace(IncludeContainingNamespaceFilter filter)
         {

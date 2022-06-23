@@ -287,9 +287,6 @@ namespace Roslynator.Documentation
 
         public virtual void WriteContent(IEnumerable<string> names, bool addLinkToRoot = false, bool beginWithSeparator = false)
         {
-            if (!Options.IncludePageContent)
-                return;
-
             IEnumerator<string> en = names.GetEnumerator();
 
             if (addLinkToRoot)
@@ -1881,9 +1878,9 @@ namespace Roslynator.Documentation
             ISymbol symbol,
             bool canCreateExternalUrl = true)
         {
-            ImmutableArray<string> folders = UrlSegmentProvider.GetSegments(symbol);
+            ImmutableArray<string> segments = UrlSegmentProvider.GetSegments(symbol);
 
-            if (folders.IsEmpty)
+            if (segments.IsEmpty)
                 return null;
 
             switch (symbol.Kind)
@@ -1936,7 +1933,7 @@ namespace Roslynator.Documentation
                 fragment = "#" + WellKnownNames.TopFragmentName;
             }
 
-            string url = UrlProvider.GetLocalUrl(folders, containingFolders, fragment).Url;
+            string url = UrlProvider.GetLocalUrl(segments, containingFolders, fragment).Url;
 
             return Options.RootDirectoryUrl + url;
 

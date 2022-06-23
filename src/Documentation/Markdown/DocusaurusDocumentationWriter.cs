@@ -43,13 +43,13 @@ namespace Roslynator.Documentation.Markdown
         {
             if (symbol.IsKind(SymbolKind.Namespace))
             {
-                switch (Context.Options.Layout)
+                switch (Context.Options.FileLayout)
                 {
-                    case DocumentationLayout.FlatNamespaces:
+                    case FileLayout.FlatNamespaces:
                         {
                             return symbol.ToDisplayString(TypeSymbolDisplayFormats.Name_ContainingTypes_Namespaces_GlobalNamespace_OmittedAsContaining);
                         }
-                    case DocumentationLayout.Hierarchic:
+                    case FileLayout.Hierarchic:
                         {
                             if (Context.CommonNamespaces.Contains((INamespaceSymbol)symbol))
                                 return symbol.ToDisplayString(TypeSymbolDisplayFormats.Name_ContainingTypes_Namespaces_GlobalNamespace_OmittedAsContaining);
@@ -58,7 +58,7 @@ namespace Roslynator.Documentation.Markdown
                         }
                     default:
                         {
-                            throw new InvalidOperationException($"Unknown value '{Context.Options.Layout}'.");
+                            throw new InvalidOperationException($"Unknown value '{Context.Options.FileLayout}'.");
                         }
                 }
             }

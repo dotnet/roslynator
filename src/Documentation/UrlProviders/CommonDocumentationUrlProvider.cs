@@ -21,9 +21,7 @@ namespace Roslynator.Documentation
             get
             {
                 if (_linkToSelf == null)
-                {
                     _linkToSelf = "./" + IndexFileName;
-                }
 
                 return _linkToSelf;
             }

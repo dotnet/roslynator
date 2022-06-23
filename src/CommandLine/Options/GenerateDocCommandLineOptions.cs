@@ -35,7 +35,7 @@ namespace Roslynator.CommandLine
 
         [Option(
             longName: OptionNames.IgnoredCommonParts,
-            HelpText = "Defines parts of a documentation that should be excluded. Allowed values content.",
+            HelpText = "Defines common parts of a documentation that should be excluded. Allowed value is content.",
             MetaValue = "<IGNORED_COMMON_PARTS>")]
         public IEnumerable<string> IgnoredCommonParts { get; set; }
 
@@ -84,6 +84,7 @@ namespace Roslynator.CommandLine
             MetaValue = "<INHERITANCE_STYLE>")]
         public InheritanceStyle InheritanceStyle { get; set; }
 
+        //TODO: JP rename layout, rename hierarchic to tree
         [Option(
             longName: "layout",
             Default = "hierarchic",

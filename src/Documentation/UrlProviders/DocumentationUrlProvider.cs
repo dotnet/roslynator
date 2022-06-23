@@ -24,7 +24,7 @@ namespace Roslynator.Documentation
 
         public abstract string IndexFileName { get; }
 
-        public abstract string ExtensionsFileName { get; }
+        public string ExtensionsFileName => "Extensions.md";
 
         public UrlSegmentProvider SegmentProvider { get; }
 

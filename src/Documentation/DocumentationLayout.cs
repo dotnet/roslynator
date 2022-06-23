@@ -2,7 +2,7 @@
 
 namespace Roslynator.Documentation
 {
-    public enum DocumentationLayout
+    public enum FileLayout
     {
         Hierarchic = 0,
         FlatNamespaces = 1,

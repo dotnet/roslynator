@@ -9,6 +9,5 @@ namespace Roslynator.Documentation
     {
         None = 0,
         Content = 1,
-        All = int.MaxValue,
     }
 }

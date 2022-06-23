@@ -34,6 +34,7 @@ namespace Roslynator.CommandLine
             MetaValue = "<DEPTH>")]
         public string Depth { get; set; }
 
+        //TODO: JP rename Host, remove default
         [Option(
             longName: OptionNames.Host,
             Required = true,

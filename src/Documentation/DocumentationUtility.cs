@@ -24,7 +24,7 @@ namespace Roslynator.Documentation
             return true;
         }
 
-        public static List<INamespaceSymbol> GetCommonNamespaces(IEnumerable<ITypeSymbol> symbols)
+        public static List<INamespaceSymbol> FindCommonNamespaces(IEnumerable<ITypeSymbol> symbols)
         {
             var commonNamespaces = new List<INamespaceSymbol>();
 

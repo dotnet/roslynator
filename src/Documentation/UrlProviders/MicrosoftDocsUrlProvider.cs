@@ -22,27 +22,27 @@ namespace Roslynator.Documentation
             if (!CanCreateUrl(symbol))
                 return default;
 
-            ImmutableArray<string> folders = DefaultUrlSegmentProvider.Hierarchic.GetSegments(symbol);
+            ImmutableArray<string> segments = DefaultUrlSegmentProvider.Hierarchic.GetSegments(symbol);
 
             const string baseUrl = "https://docs.microsoft.com/en-us/dotnet/api/";
 
             int capacity = baseUrl.Length;
 
-            foreach (string name in folders)
+            foreach (string name in segments)
                 capacity += name.Length;
 
-            capacity += folders.Length - 1;
+            capacity += segments.Length - 1;
 
             StringBuilder sb = StringBuilderCache.GetInstance(capacity);
 
             sb.Append(baseUrl);
 
-            sb.Append(folders[0].ToLowerInvariant());
+            sb.Append(segments[0].ToLowerInvariant());
 
-            for (int i = 1; i < folders.Length; i++)
+            for (int i = 1; i < segments.Length; i++)
             {
                 sb.Append(".");
-                sb.Append(folders[i].ToLowerInvariant());
+                sb.Append(segments[i].ToLowerInvariant());
             }
 
             return new DocumentationUrlInfo(StringBuilderCache.GetStringAndFree(sb), DocumentationUrlKind.External);

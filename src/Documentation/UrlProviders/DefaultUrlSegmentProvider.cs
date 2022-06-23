@@ -14,10 +14,10 @@ namespace Roslynator.Documentation
 {
     internal class DefaultUrlSegmentProvider : UrlSegmentProvider
     {
-        internal static DefaultUrlSegmentProvider Hierarchic { get; } = new(DocumentationLayout.Hierarchic);
+        internal static DefaultUrlSegmentProvider Hierarchic { get; } = new(FileLayout.Hierarchic);
 
         public DefaultUrlSegmentProvider(
-            DocumentationLayout layout,
+            FileLayout layout,
             IEnumerable<INamespaceSymbol> commonNamespaces = null)
         {
             Layout = layout;
@@ -25,7 +25,7 @@ namespace Roslynator.Documentation
                 ?? ImmutableHashSet<INamespaceSymbol>.Empty;
         }
 
-        public DocumentationLayout Layout { get; }
+        public FileLayout Layout { get; }
 
         public ImmutableHashSet<INamespaceSymbol> CommonNamespaces { get; }
 
@@ -40,7 +40,7 @@ namespace Roslynator.Documentation
                     return ImmutableArray.Create(WellKnownNames.GlobalNamespaceName);
             }
 
-            if (Layout == DocumentationLayout.FlatNamespaces
+            if (Layout == FileLayout.FlatNamespaces
                 && CommonNamespaces.Count == 0)
             {
                 return ImmutableArray.Create(symbol.ToDisplayString(TypeSymbolDisplayFormats.Name_ContainingTypes_Namespaces));
@@ -114,7 +114,7 @@ namespace Roslynator.Documentation
                     if (symbol.Kind != SymbolKind.Namespace)
                         builder.Add(WellKnownNames.GlobalNamespaceName);
                 }
-                else if (Layout == DocumentationLayout.Hierarchic)
+                else if (Layout == FileLayout.Hierarchic)
                 {
                     do
                     {
@@ -132,7 +132,7 @@ namespace Roslynator.Documentation
                     }
                     while (namespaceSymbol?.IsGlobalNamespace == false);
                 }
-                else if (Layout == DocumentationLayout.FlatNamespaces)
+                else if (Layout == FileLayout.FlatNamespaces)
                 {
                     var sb = new StringBuilder();
 

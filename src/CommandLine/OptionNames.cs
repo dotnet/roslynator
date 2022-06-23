@@ -11,7 +11,6 @@ namespace Roslynator.CommandLine
         public const string EndOfLine = "end-of-line";
         public const string FixScope = "fix-scope";
         public const string Help = "help";
-        //TODO: docusaurus: rename host to target
         public const string Host = "host";
         public const string IgnoredCompilerDiagnostics = "ignored-compiler-diagnostics";
         public const string IgnoredMemberParts = "ignored-member-parts";

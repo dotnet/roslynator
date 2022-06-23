@@ -762,7 +762,7 @@ namespace Roslynator.CommandLine
             if (!TryParseOptionValueAsEnumFlags(options.IncludeContainingNamespace, OptionNames.IncludeContainingNamespace, out IncludeContainingNamespaceFilter includeContainingNamespaceFilter, DocumentationOptions.Default.IncludeContainingNamespaceFilter))
                 return ExitCodes.Error;
 
-            if (!TryParseOptionValueAsEnum(options.Layout, OptionNames.Layout, out DocumentationLayout layout, DocumentationLayout.Hierarchic))
+            if (!TryParseOptionValueAsEnum(options.Layout, OptionNames.Layout, out FileLayout fileLayout, FileLayout.Hierarchic))
                 return ExitCodes.Error;
 
             if (!TryParseOptionValueAsEnumFlags(options.OmitMemberParts, OptionNames.OmitMemberParts, out OmitMemberParts omitMemberParts, OmitMemberParts.None))
@@ -792,7 +792,7 @@ namespace Roslynator.CommandLine
                 includeContainingNamespaceFilter,
                 visibility,
                 documentationHost,
-                layout,
+                fileLayout,
                 groupByCommonNamespace: options.GroupByCommonNamespace,
                 projectFilter);
 

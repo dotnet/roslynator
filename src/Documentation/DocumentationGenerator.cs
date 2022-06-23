@@ -161,9 +161,8 @@ namespace Roslynator.Documentation
             {
                 IEnumerable<INamedTypeSymbol> typeSymbols = DocumentationModel.Types.Where(f => !Options.ShouldBeIgnored(f));
 
-                IEnumerable<INamespaceSymbol> namespaceSymbols = typeSymbols.SelectMany(f => f.GetContainingNamespaces());
-
-                foreach (INamespaceSymbol namespaceSymbol in namespaceSymbols
+                foreach (INamespaceSymbol namespaceSymbol in typeSymbols
+                    .SelectMany(f => f.GetContainingNamespaces())
                     .Distinct(MetadataNameEqualityComparer<INamespaceSymbol>.Instance))
                 {
                     cancellationToken.ThrowIfCancellationRequested();
@@ -261,7 +260,9 @@ namespace Roslynator.Documentation
                                 .OrderBy(f => f, RootPartComparer)
                                 .Select(f => Resources.GetHeading(f));
 
-                            writer.WriteContent(names);
+                            if ((Options.IgnoredRootParts & RootDocumentationParts.Content) == 0)
+                                writer.WriteContent(names);
+
                             break;
                         }
                     case RootDocumentationParts.Namespaces:
@@ -355,7 +356,9 @@ namespace Roslynator.Documentation
                                     .OrderBy(f => f, NamespacePartComparer)
                                     .Select(f => Resources.GetHeading(f));
 
-                                writer.WriteContent(names, addLinkToRoot: true);
+                                if ((Options.IgnoredNamespaceParts & NamespaceDocumentationParts.Content) == 0)
+                                    writer.WriteContent(names, addLinkToRoot: true);
+
                                 break;
                             }
                         case NamespaceDocumentationParts.ContainingNamespace:
@@ -461,6 +464,7 @@ namespace Roslynator.Documentation
                 void WriteNamespaces(
                     IEnumerable<INamespaceSymbol> namespaces)
                 {
+                    //TODO: JP replace table with list
                     writer.WriteTable(
                         namespaces,
                         Resources.NamespacesTitle,
@@ -588,7 +592,7 @@ namespace Roslynator.Documentation
                 writer.WriteString(Resources.ExtensionsTitle);
                 writer.WriteEndHeading();
 
-                if ((Options.IgnoredCommonParts & CommonDocumentationParts.Content) == 0)
+                if ((Options.IgnoredRootParts & RootDocumentationParts.Content) == 0)
                     writer.WriteContent(Array.Empty<string>(), addLinkToRoot: true);
 
                 writer.WriteTable(
@@ -645,7 +649,9 @@ namespace Roslynator.Documentation
                                     .OrderBy(f => f, TypePartComparer)
                                     .Select(f => Resources.GetHeading(f));
 
-                                writer.WriteContent(names, addLinkToRoot: true);
+                                if ((Options.IgnoredTypeParts & TypeDocumentationParts.Content) == 0)
+                                    writer.WriteContent(names, addLinkToRoot: true);
+
                                 break;
                             }
                         case TypeDocumentationParts.ContainingNamespace:

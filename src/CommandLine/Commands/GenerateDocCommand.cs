@@ -32,7 +32,7 @@ namespace Roslynator.CommandLine
             IncludeContainingNamespaceFilter includeContainingNamespaceFilter,
             Visibility visibility,
             DocumentationHost documentationHost,
-            DocumentationLayout layout,
+            FileLayout fileLayout,
             bool groupByCommonNamespace,
             in ProjectFilter projectFilter) : base(projectFilter)
         {
@@ -47,7 +47,7 @@ namespace Roslynator.CommandLine
             IncludeContainingNamespaceFilter = includeContainingNamespaceFilter;
             Visibility = visibility;
             DocumentationHost = documentationHost;
-            Layout = layout;
+            FileLayout = fileLayout;
             GroupByCommonNamespace = groupByCommonNamespace;
         }
 
@@ -73,7 +73,7 @@ namespace Roslynator.CommandLine
 
         public DocumentationHost DocumentationHost { get; }
 
-        public DocumentationLayout Layout { get; }
+        public FileLayout FileLayout { get; }
 
         public bool GroupByCommonNamespace { get; }
 
@@ -105,9 +105,8 @@ namespace Roslynator.CommandLine
                 ignoredTypeParts: IgnoredTypeParts,
                 ignoredMemberParts: IgnoredMemberParts,
                 includeContainingNamespaceFilter: IncludeContainingNamespaceFilter,
-                layout: Layout,
-                scrollToContent: Options.ScrollToContent,
-                includePageContent: DocumentationHost != DocumentationHost.Docusaurus);
+                fileLayout: FileLayout,
+                scrollToContent: Options.ScrollToContent);
 
             ImmutableArray<Compilation> compilations = await GetCompilationsAsync(projectOrSolution, cancellationToken);
 
@@ -117,11 +116,11 @@ namespace Roslynator.CommandLine
 
             if (GroupByCommonNamespace)
             {
-                commonNamespaces = DocumentationUtility.GetCommonNamespaces(
+                commonNamespaces = DocumentationUtility.FindCommonNamespaces(
                     documentationModel.Types.Concat(documentationModel.GetExtendedExternalTypes()));
             }
 
-            UrlSegmentProvider urlSegmentProvider = new DefaultUrlSegmentProvider(Layout, commonNamespaces);
+            UrlSegmentProvider urlSegmentProvider = new DefaultUrlSegmentProvider(FileLayout, commonNamespaces);
 
             var externalProviders = new MicrosoftDocsUrlProvider[] { MicrosoftDocsUrlProvider.Instance };
 

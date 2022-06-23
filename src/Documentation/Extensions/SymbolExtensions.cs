@@ -24,15 +24,15 @@ namespace Roslynator.Documentation
             }
         }
 
-        internal static IEnumerable<INamespaceSymbol> GetContainingNamespacesAndSelf(this INamespaceSymbol n)
+        internal static IEnumerable<INamespaceSymbol> GetContainingNamespacesAndSelf(this INamespaceSymbol namespaceSymbol)
         {
             do
             {
-                yield return n;
+                yield return namespaceSymbol;
 
-                n = n.ContainingNamespace;
+                namespaceSymbol = namespaceSymbol.ContainingNamespace;
             }
-            while (n?.IsGlobalNamespace == false);
+            while (namespaceSymbol?.IsGlobalNamespace == false);
         }
 
         public static ImmutableArray<ISymbol> GetMembers(this INamedTypeSymbol typeSymbol, Func<ISymbol, bool> predicate, bool includeInherited = false)

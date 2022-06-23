@@ -12,7 +12,5 @@ namespace Roslynator.Documentation
         }
 
         public override string IndexFileName => "index.md";
-
-        public override string ExtensionsFileName => "Extensions.md";
     }
 }
