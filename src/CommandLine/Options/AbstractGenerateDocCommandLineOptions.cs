@@ -34,14 +34,13 @@ namespace Roslynator.CommandLine
             MetaValue = "<DEPTH>")]
         public string Depth { get; set; }
 
-        //TODO: JP rename Host, remove default
+        //TODO: JP
         [Option(
-            longName: OptionNames.Host,
+            longName: OptionNames.Target,
             Required = true,
-            Default = "github",
-            HelpText = "Defines an environment where the content will be hosted. Allowed values are github (default) or docusaurus.",
-            MetaValue = "<HOST>")]
-        public string Host { get; set; }
+            HelpText = "Defines a target where the content will be hosted. Allowed values are github or docusaurus.",
+            MetaValue = "<TARGET>")]
+        public string Target { get; set; }
 
         [Option(
             longName: "ignored-names",

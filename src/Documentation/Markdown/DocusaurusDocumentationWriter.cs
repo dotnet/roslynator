@@ -49,7 +49,7 @@ namespace Roslynator.Documentation.Markdown
                         {
                             return symbol.ToDisplayString(TypeSymbolDisplayFormats.Name_ContainingTypes_Namespaces_GlobalNamespace_OmittedAsContaining);
                         }
-                    case FileLayout.Hierarchic:
+                    case FileLayout.Hierarchical:
                         {
                             if (Context.CommonNamespaces.Contains((INamespaceSymbol)symbol))
                                 return symbol.ToDisplayString(TypeSymbolDisplayFormats.Name_ContainingTypes_Namespaces_GlobalNamespace_OmittedAsContaining);

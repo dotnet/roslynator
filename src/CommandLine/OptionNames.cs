@@ -11,7 +11,6 @@ namespace Roslynator.CommandLine
         public const string EndOfLine = "end-of-line";
         public const string FixScope = "fix-scope";
         public const string Help = "help";
-        public const string Host = "host";
         public const string IgnoredCompilerDiagnostics = "ignored-compiler-diagnostics";
         public const string IgnoredMemberParts = "ignored-member-parts";
         public const string IgnoredNamespaceParts = "ignored-namespace-parts";
@@ -38,6 +37,7 @@ namespace Roslynator.CommandLine
         public const string Scope = "scope";
         public const string SeverityLevel = "severity-level";
         public const string SymbolGroups = "symbol-groups";
+        public const string Target = "target";
         public const string TargetVersion = "target-version";
         public const string Type = "type";
         public const string Visibility = "visibility";

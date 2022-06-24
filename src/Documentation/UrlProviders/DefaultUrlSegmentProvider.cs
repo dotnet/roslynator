@@ -14,7 +14,7 @@ namespace Roslynator.Documentation
 {
     internal class DefaultUrlSegmentProvider : UrlSegmentProvider
     {
-        internal static DefaultUrlSegmentProvider Hierarchic { get; } = new(FileLayout.Hierarchic);
+        internal static DefaultUrlSegmentProvider Hierarchical { get; } = new(FileLayout.Hierarchical);
 
         public DefaultUrlSegmentProvider(
             FileLayout layout,
@@ -114,7 +114,7 @@ namespace Roslynator.Documentation
                     if (symbol.Kind != SymbolKind.Namespace)
                         builder.Add(WellKnownNames.GlobalNamespaceName);
                 }
-                else if (Layout == FileLayout.Hierarchic)
+                else if (Layout == FileLayout.Hierarchical)
                 {
                     do
                     {

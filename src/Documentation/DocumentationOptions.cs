@@ -39,7 +39,7 @@ namespace Roslynator.Documentation
             MemberDocumentationParts ignoredMemberParts = MemberDocumentationParts.None,
             CommonDocumentationParts ignoredCommonParts = CommonDocumentationParts.None,
             IncludeContainingNamespaceFilter includeContainingNamespaceFilter = IncludeContainingNamespaceFilter.None,
-            FileLayout fileLayout = FileLayout.Hierarchic,
+            FileLayout fileLayout = FileLayout.Hierarchical,
             bool scrollToContent = DefaultValues.ScrollToContent)
         {
             if (maxDerivedTypes < 0)

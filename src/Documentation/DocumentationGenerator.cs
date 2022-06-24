@@ -464,15 +464,14 @@ namespace Roslynator.Documentation
                 void WriteNamespaces(
                     IEnumerable<INamespaceSymbol> namespaces)
                 {
-                    //TODO: JP replace table with list
-                    writer.WriteTable(
-                        namespaces,
-                        Resources.NamespacesTitle,
-                        headingLevel: 2,
-                        Resources.NamespaceTitle,
-                        header2: null,
-                        TypeSymbolDisplayFormats.Name_ContainingTypes_Namespaces,
-                        addLink: Options.Depth <= DocumentationDepth.Namespace);
+                    writer.WriteHeading(2, Resources.NamespacesTitle);
+
+                    foreach (INamespaceSymbol namespaceSymbol in namespaces)
+                    {
+                        writer.WriteStartBulletItem();
+                        writer.WriteLink(namespaceSymbol, TypeSymbolDisplayFormats.Name_ContainingTypes_Namespaces);
+                        writer.WriteEndBulletItem();
+                    }
                 }
 
                 bool HasContent(NamespaceDocumentationParts part)

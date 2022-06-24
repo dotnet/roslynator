@@ -84,13 +84,13 @@ namespace Roslynator.CommandLine
             MetaValue = "<INHERITANCE_STYLE>")]
         public InheritanceStyle InheritanceStyle { get; set; }
 
-        //TODO: JP rename layout, rename hierarchic to tree
+        //TODO: JP
         [Option(
-            longName: "layout",
-            Default = "hierarchic",
-            HelpText = "Defines layout of documentation files. Allowed values are hierarchic (default) or flat-namespaces.",
+            longName: "file-layout",
+            Default = "hierarchical",
+            HelpText = "Defines layout of documentation files. Allowed values are hierarchical (default) or flat-namespaces.",
             MetaValue = "<LAYOUT>")]
-        public string Layout { get; set; }
+        public string FileLayout { get; set; }
 
         [Option(
             longName: "max-derived-types",

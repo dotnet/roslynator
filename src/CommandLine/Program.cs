@@ -762,7 +762,7 @@ namespace Roslynator.CommandLine
             if (!TryParseOptionValueAsEnumFlags(options.IncludeContainingNamespace, OptionNames.IncludeContainingNamespace, out IncludeContainingNamespaceFilter includeContainingNamespaceFilter, DocumentationOptions.Default.IncludeContainingNamespaceFilter))
                 return ExitCodes.Error;
 
-            if (!TryParseOptionValueAsEnum(options.Layout, OptionNames.Layout, out FileLayout fileLayout, FileLayout.Hierarchic))
+            if (!TryParseOptionValueAsEnum(options.FileLayout, OptionNames.Layout, out FileLayout fileLayout, FileLayout.Hierarchical))
                 return ExitCodes.Error;
 
             if (!TryParseOptionValueAsEnumFlags(options.OmitMemberParts, OptionNames.OmitMemberParts, out OmitMemberParts omitMemberParts, OmitMemberParts.None))
@@ -771,7 +771,7 @@ namespace Roslynator.CommandLine
             if (!TryParseOptionValueAsEnum(options.Visibility, OptionNames.Visibility, out Visibility visibility))
                 return ExitCodes.Error;
 
-            if (!TryParseOptionValueAsEnum(options.Host, OptionNames.Host, out DocumentationHost documentationHost))
+            if (!TryParseOptionValueAsEnum(options.Target, OptionNames.Target, out DocumentationTarget documentationTarget))
                 return ExitCodes.Error;
 
             if (!options.TryGetProjectFilter(out ProjectFilter projectFilter))
@@ -791,7 +791,7 @@ namespace Roslynator.CommandLine
                 omitMemberParts,
                 includeContainingNamespaceFilter,
                 visibility,
-                documentationHost,
+                documentationTarget,
                 fileLayout,
                 groupByCommonNamespace: options.GroupByCommonNamespace,
                 projectFilter);
@@ -815,7 +815,7 @@ namespace Roslynator.CommandLine
             if (!TryParseOptionValueAsEnumFlags(options.IgnoredParts, OptionNames.IgnoredRootParts, out RootDocumentationParts ignoredParts, DocumentationOptions.Default.IgnoredRootParts))
                 return ExitCodes.Error;
 
-            if (!TryParseOptionValueAsEnum(options.Host, OptionNames.Host, out DocumentationHost documentationHost))
+            if (!TryParseOptionValueAsEnum(options.Target, OptionNames.Target, out DocumentationTarget documentationTarget))
                 return ExitCodes.Error;
 
             if (!options.TryGetProjectFilter(out ProjectFilter projectFilter))
@@ -830,7 +830,7 @@ namespace Roslynator.CommandLine
                 ignoredParts,
                 includeContainingNamespaceFilter: includeContainingNamespaceFilter,
                 visibility,
-                documentationHost,
+                documentationTarget,
                 projectFilter);
 
             CommandStatus status = await command.ExecuteAsync(paths, options.MSBuildPath, options.Properties);

@@ -2,7 +2,7 @@
 
 namespace Roslynator.CommandLine
 {
-    internal enum DocumentationHost
+    internal enum DocumentationTarget
     {
         GitHub,
         Docusaurus,

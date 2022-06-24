@@ -25,7 +25,7 @@ namespace Roslynator.CommandLine
             RootDocumentationParts ignoredParts,
             IncludeContainingNamespaceFilter includeContainingNamespaceFilter,
             Visibility visibility,
-            DocumentationHost documentationHost,
+            DocumentationTarget documentationTarget,
             in ProjectFilter projectFilter) : base(projectFilter)
         {
             Options = options;
@@ -33,7 +33,7 @@ namespace Roslynator.CommandLine
             IgnoredParts = ignoredParts;
             IncludeContainingNamespaceFilter = includeContainingNamespaceFilter;
             Visibility = visibility;
-            DocumentationHost = documentationHost;
+            DocumentationTarget = documentationTarget;
         }
 
         public GenerateDocRootCommandLineOptions Options { get; }
@@ -46,7 +46,7 @@ namespace Roslynator.CommandLine
 
         public Visibility Visibility { get; }
 
-        public DocumentationHost DocumentationHost { get; }
+        public DocumentationTarget DocumentationTarget { get; }
 
         public override async Task<CommandResult> ExecuteAsync(ProjectOrSolution projectOrSolution, CancellationToken cancellationToken = default)
         {
@@ -67,33 +67,33 @@ namespace Roslynator.CommandLine
 
             var documentationModel = new DocumentationModel(compilations, DocumentationFilterOptions.Instance);
 
-            UrlSegmentProvider urlSegmentProvider = DefaultUrlSegmentProvider.Hierarchic;
+            UrlSegmentProvider urlSegmentProvider = DefaultUrlSegmentProvider.Hierarchical;
 
             var externalProviders = new MicrosoftDocsUrlProvider[] { MicrosoftDocsUrlProvider.Instance };
 
             DocumentationUrlProvider GetUrlProvider()
             {
-                switch (DocumentationHost)
+                switch (DocumentationTarget)
                 {
-                    case DocumentationHost.GitHub:
+                    case DocumentationTarget.GitHub:
                         return new GitHubDocumentationUrlProvider(urlSegmentProvider, externalProviders);
-                    case DocumentationHost.Docusaurus:
+                    case DocumentationTarget.Docusaurus:
                         return new DocusaurusDocumentationUrlProvider(urlSegmentProvider, externalProviders);
                     default:
-                        throw new InvalidOperationException($"Unknown value '{DocumentationHost}'.");
+                        throw new InvalidOperationException($"Unknown value '{DocumentationTarget}'.");
                 }
             }
 
             MarkdownWriterSettings GetMarkdownWriterSettings()
             {
-                switch (DocumentationHost)
+                switch (DocumentationTarget)
                 {
-                    case DocumentationHost.GitHub:
+                    case DocumentationTarget.GitHub:
                         return MarkdownWriterSettings.Default;
-                    case DocumentationHost.Docusaurus:
+                    case DocumentationTarget.Docusaurus:
                         return new MarkdownWriterSettings(new MarkdownFormat(angleBracketEscapeStyle: AngleBracketEscapeStyle.EntityRef));
                     default:
-                        throw new InvalidOperationException($"Unknown value '{DocumentationHost}'.");
+                        throw new InvalidOperationException($"Unknown value '{DocumentationTarget}'.");
                 }
             }
 
@@ -103,14 +103,14 @@ namespace Roslynator.CommandLine
             {
                 MarkdownWriter writer = MarkdownWriter.Create(new StringBuilder(), markdownWriterSettings);
 
-                switch (DocumentationHost)
+                switch (DocumentationTarget)
                 {
-                    case DocumentationHost.GitHub:
+                    case DocumentationTarget.GitHub:
                         return new MarkdownDocumentationWriter(context, writer);
-                    case DocumentationHost.Docusaurus:
+                    case DocumentationTarget.Docusaurus:
                         return new DocusaurusDocumentationWriter(context, writer);
                     default:
-                        throw new InvalidOperationException($"Unknown value '{DocumentationHost}'.");
+                        throw new InvalidOperationException($"Unknown value '{DocumentationTarget}'.");
                 }
             }
 
