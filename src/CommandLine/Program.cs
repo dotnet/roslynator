@@ -741,25 +741,25 @@ namespace Roslynator.CommandLine
                 return ExitCodes.Error;
             }
 
-            if (!TryParseOptionValueAsEnum(options.Depth, OptionNames.Depth, out DocumentationDepth depth, DocumentationOptions.Default.Depth))
+            if (!TryParseOptionValueAsEnum(options.Depth, OptionNames.Depth, out DocumentationDepth depth, DocumentationOptions.DefaultValues.Depth))
                 return ExitCodes.Error;
 
-            if (!TryParseOptionValueAsEnumFlags(options.IgnoredRootParts, OptionNames.IgnoredRootParts, out RootDocumentationParts ignoredRootParts, DocumentationOptions.Default.IgnoredRootParts))
+            if (!TryParseOptionValueAsEnumFlags(options.IgnoredRootParts, OptionNames.IgnoredRootParts, out RootDocumentationParts ignoredRootParts, DocumentationOptions.DefaultValues.IgnoredRootParts))
                 return ExitCodes.Error;
 
-            if (!TryParseOptionValueAsEnumFlags(options.IgnoredNamespaceParts, OptionNames.IgnoredNamespaceParts, out NamespaceDocumentationParts ignoredNamespaceParts, DocumentationOptions.Default.IgnoredNamespaceParts))
+            if (!TryParseOptionValueAsEnumFlags(options.IgnoredNamespaceParts, OptionNames.IgnoredNamespaceParts, out NamespaceDocumentationParts ignoredNamespaceParts, DocumentationOptions.DefaultValues.IgnoredNamespaceParts))
                 return ExitCodes.Error;
 
-            if (!TryParseOptionValueAsEnumFlags(options.IgnoredTypeParts, OptionNames.IgnoredTypeParts, out TypeDocumentationParts ignoredTypeParts, DocumentationOptions.Default.IgnoredTypeParts))
+            if (!TryParseOptionValueAsEnumFlags(options.IgnoredTypeParts, OptionNames.IgnoredTypeParts, out TypeDocumentationParts ignoredTypeParts, DocumentationOptions.DefaultValues.IgnoredTypeParts))
                 return ExitCodes.Error;
 
-            if (!TryParseOptionValueAsEnumFlags(options.IgnoredMemberParts, OptionNames.IgnoredMemberParts, out MemberDocumentationParts ignoredMemberParts, DocumentationOptions.Default.IgnoredMemberParts))
+            if (!TryParseOptionValueAsEnumFlags(options.IgnoredMemberParts, OptionNames.IgnoredMemberParts, out MemberDocumentationParts ignoredMemberParts, DocumentationOptions.DefaultValues.IgnoredMemberParts))
                 return ExitCodes.Error;
 
-            if (!TryParseOptionValueAsEnumFlags(options.IgnoredCommonParts, OptionNames.IgnoredCommonParts, out CommonDocumentationParts ignoredCommonParts, DocumentationOptions.Default.IgnoredCommonParts))
+            if (!TryParseOptionValueAsEnumFlags(options.IgnoredCommonParts, OptionNames.IgnoredCommonParts, out CommonDocumentationParts ignoredCommonParts, DocumentationOptions.DefaultValues.IgnoredCommonParts))
                 return ExitCodes.Error;
 
-            if (!TryParseOptionValueAsEnumFlags(options.IncludeContainingNamespace, OptionNames.IncludeContainingNamespace, out IncludeContainingNamespaceFilter includeContainingNamespaceFilter, DocumentationOptions.Default.IncludeContainingNamespaceFilter))
+            if (!TryParseOptionValueAsEnumFlags(options.IncludeContainingNamespace, OptionNames.IncludeContainingNamespace, out IncludeContainingNamespaceFilter includeContainingNamespaceFilter, DocumentationOptions.DefaultValues.IncludeContainingNamespaceFilter))
                 return ExitCodes.Error;
 
             if (!TryParseOptionValueAsEnum(options.FileLayout, OptionNames.Layout, out FileLayout fileLayout, FileLayout.Hierarchical))
@@ -803,16 +803,16 @@ namespace Roslynator.CommandLine
 
         private static async Task<int> GenerateDocRootAsync(GenerateDocRootCommandLineOptions options)
         {
-            if (!TryParseOptionValueAsEnumFlags(options.IncludeContainingNamespace, OptionNames.IncludeContainingNamespace, out IncludeContainingNamespaceFilter includeContainingNamespaceFilter, DocumentationOptions.Default.IncludeContainingNamespaceFilter))
+            if (!TryParseOptionValueAsEnumFlags(options.IncludeContainingNamespace, OptionNames.IncludeContainingNamespace, out IncludeContainingNamespaceFilter includeContainingNamespaceFilter, DocumentationOptions.DefaultValues.IncludeContainingNamespaceFilter))
                 return ExitCodes.Error;
 
             if (!TryParseOptionValueAsEnum(options.Visibility, OptionNames.Visibility, out Visibility visibility))
                 return ExitCodes.Error;
 
-            if (!TryParseOptionValueAsEnum(options.Depth, OptionNames.Depth, out DocumentationDepth depth, DocumentationOptions.Default.Depth))
+            if (!TryParseOptionValueAsEnum(options.Depth, OptionNames.Depth, out DocumentationDepth depth, DocumentationOptions.DefaultValues.Depth))
                 return ExitCodes.Error;
 
-            if (!TryParseOptionValueAsEnumFlags(options.IgnoredParts, OptionNames.IgnoredRootParts, out RootDocumentationParts ignoredParts, DocumentationOptions.Default.IgnoredRootParts))
+            if (!TryParseOptionValueAsEnumFlags(options.IgnoredParts, OptionNames.IgnoredRootParts, out RootDocumentationParts ignoredParts, DocumentationOptions.DefaultValues.IgnoredRootParts))
                 return ExitCodes.Error;
 
             if (!TryParseOptionValueAsEnum(options.Target, OptionNames.Target, out DocumentationTarget documentationTarget))
@@ -840,7 +840,7 @@ namespace Roslynator.CommandLine
 
         private static async Task<int> GenerateSourceReferencesAsync(GenerateSourceReferencesCommandLineOptions options)
         {
-            if (!TryParseOptionValueAsEnum(options.Depth, OptionNames.Depth, out DocumentationDepth depth, DocumentationOptions.Default.Depth))
+            if (!TryParseOptionValueAsEnum(options.Depth, OptionNames.Depth, out DocumentationDepth depth, DocumentationOptions.DefaultValues.Depth))
                 return ExitCodes.Error;
 
             if (!TryParseOptionValueAsEnum(options.Visibility, OptionNames.Visibility, out Visibility visibility))

@@ -14,13 +14,13 @@ namespace Roslynator.Documentation.Markdown
 
         public override void WriteStartDocument(ISymbol symbol, DocumentationFileKind fileKind)
         {
-            if (symbol != null)
-                WriteSidebarLabel(symbol, fileKind);
-        }
+            string label = null;
 
-        private void WriteSidebarLabel(ISymbol symbol, DocumentationFileKind fileKind)
-        {
-            string label = GetSidebarLabel(symbol);
+            if (symbol != null)
+                label = GetSidebarLabel(symbol);
+
+            if (fileKind == DocumentationFileKind.Root)
+                label = Context.Options.RootFileHeading;
 
             WriteRaw("---");
             WriteLine();
@@ -31,9 +31,13 @@ namespace Roslynator.Documentation.Markdown
                 WriteLine();
             }
 
-            WriteRaw("sidebar_label: ");
-            WriteRaw(label);
-            WriteLine();
+            if (label != null)
+            {
+                WriteRaw("sidebar_label: ");
+                WriteRaw(label);
+                WriteLine();
+            }
+
             WriteRaw("---");
             WriteLine();
             WriteLine();

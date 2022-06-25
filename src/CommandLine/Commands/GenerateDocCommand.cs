@@ -82,6 +82,7 @@ namespace Roslynator.CommandLine
             AssemblyResolver.Register();
 
             var documentationOptions = new DocumentationOptions(
+                rootFileHeading: Options.Heading,
                 ignoredNames: Options.IgnoredNames,
                 preferredCultureName: Options.PreferredCulture,
                 maxDerivedTypes: Options.MaxDerivedTypes,
@@ -176,8 +177,8 @@ namespace Roslynator.CommandLine
             var context = new DocumentationContext(
                 documentationModel,
                 GetUrlProvider(),
-                c => CreateDocumentationWriter(c),
                 documentationOptions,
+                c => CreateDocumentationWriter(c),
                 sourceReferenceProvider: sourceReferenceProvider,
                 commonNamespaces: commonNamespaces);
 

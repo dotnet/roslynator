@@ -14,15 +14,15 @@ namespace Roslynator.Documentation
         public DocumentationContext(
             DocumentationModel documentationModel,
             DocumentationUrlProvider urlProvider,
+            DocumentationOptions options,
             Func<DocumentationContext, DocumentationWriter> createWriter,
-            DocumentationOptions options = null,
             DocumentationResources resources = null,
             SourceReferenceProvider sourceReferenceProvider = null,
             IEnumerable<INamespaceSymbol> commonNamespaces = null)
         {
             DocumentationModel = documentationModel;
             UrlProvider = urlProvider;
-            Options = options ?? DocumentationOptions.Default;
+            Options = options;
             Resources = resources ?? DocumentationResources.Default;
             SourceReferenceProvider = sourceReferenceProvider;
 
