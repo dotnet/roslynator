@@ -22,6 +22,7 @@ namespace Roslynator.CommandLine
         public const string IgnoredTypeParts = "ignored-type-parts";
         public const string IncludeContainingNamespace = "include-containing-namespace";
         public const string IncludeSystemNamespace = "include-system-namespace";
+        public const string InheritanceStyle = "inheritance-style";
         public const string Interactive = "interactive";
         public const string Layout = "layout";
         public const string Match = "match";

@@ -34,6 +34,7 @@ namespace Roslynator.CommandLine
             DocumentationTarget documentationTarget,
             FileLayout fileLayout,
             bool groupByCommonNamespace,
+            InheritanceStyle inheritanceStyle,
             in ProjectFilter projectFilter) : base(projectFilter)
         {
             Options = options;
@@ -49,6 +50,7 @@ namespace Roslynator.CommandLine
             DocumentationTarget = documentationTarget;
             FileLayout = fileLayout;
             GroupByCommonNamespace = groupByCommonNamespace;
+            InheritanceStyle = inheritanceStyle;
         }
 
         public GenerateDocCommandLineOptions Options { get; }
@@ -77,6 +79,8 @@ namespace Roslynator.CommandLine
 
         public bool GroupByCommonNamespace { get; }
 
+        public InheritanceStyle InheritanceStyle { get; }
+
         public override async Task<CommandResult> ExecuteAsync(ProjectOrSolution projectOrSolution, CancellationToken cancellationToken = default)
         {
             AssemblyResolver.Register();
@@ -100,7 +104,7 @@ namespace Roslynator.CommandLine
                 includeInheritedAttributes: !Options.OmitInheritedAttributes,
                 omitIEnumerable: !Options.IncludeIEnumerable,
                 depth: Depth,
-                inheritanceStyle: Options.InheritanceStyle,
+                inheritanceStyle: InheritanceStyle,
                 ignoredRootParts: IgnoredRootParts,
                 ignoredNamespaceParts: IgnoredNamespaceParts,
                 ignoredTypeParts: IgnoredTypeParts,

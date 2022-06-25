@@ -741,6 +741,9 @@ namespace Roslynator.CommandLine
                 return ExitCodes.Error;
             }
 
+            if (!TryParseOptionValueAsEnum(options.InheritanceStyle, OptionNames.InheritanceStyle, out InheritanceStyle inheritanceStyle, DocumentationOptions.DefaultValues.InheritanceStyle))
+                return ExitCodes.Error;
+
             if (!TryParseOptionValueAsEnum(options.Depth, OptionNames.Depth, out DocumentationDepth depth, DocumentationOptions.DefaultValues.Depth))
                 return ExitCodes.Error;
 
@@ -794,6 +797,7 @@ namespace Roslynator.CommandLine
                 documentationTarget,
                 fileLayout,
                 groupByCommonNamespace: options.GroupByCommonNamespace,
+                inheritanceStyle: inheritanceStyle,
                 projectFilter);
 
             CommandStatus status = await command.ExecuteAsync(paths, options.MSBuildPath, options.Properties);

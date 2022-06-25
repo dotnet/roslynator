@@ -53,6 +53,10 @@ namespace Roslynator.Documentation
             {
                 builder.Add(WellKnownNames.ConstructorName);
             }
+            else if (symbol.Kind == SymbolKind.Field)
+            {
+                builder.Add(symbol.Name);
+            }
             else if (symbol.IsKind(SymbolKind.Method, SymbolKind.Property, SymbolKind.Event))
             {
                 ISymbol explicitImplementation = symbol.GetFirstExplicitInterfaceImplementation();
@@ -68,8 +72,7 @@ namespace Roslynator.Documentation
 
                     builder.Add(name);
                 }
-
-                if ((symbol as IPropertySymbol)?.IsIndexer == true)
+                else if ((symbol as IPropertySymbol)?.IsIndexer == true)
                 {
                     builder.Add("Item");
                 }
