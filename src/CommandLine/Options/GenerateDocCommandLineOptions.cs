@@ -78,11 +78,11 @@ namespace Roslynator.CommandLine
         public bool IncludeSystemNamespace { get; set; }
 
         [Option(
-            longName: "inheritance-style",
-            Default = DefaultValues.InheritanceStyle,
+            longName: OptionNames.InheritanceStyle,
+            Default = nameof(Documentation.InheritanceStyle.Horizontal),
             HelpText = "Defines a style of a type inheritance. Allowed values are horizontal (default) or vertical.",
             MetaValue = "<INHERITANCE_STYLE>")]
-        public InheritanceStyle InheritanceStyle { get; set; }
+        public string InheritanceStyle { get; set; }
 
         //TODO: JP
         [Option(

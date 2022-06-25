@@ -6,7 +6,7 @@ set _msbuildPath="%_programFiles%\Microsoft Visual Studio\2022\Enterprise\MSBuil
 set _properties=Configuration=Release,Deterministic=true,TreatWarningsAsErrors=true,WarningsNotAsErrors=1591
 
 %_msbuildPath% "..\src\CommandLine.DocumentationGenerator\CommandLine.DocumentationGenerator.csproj" ^
- /t:Build ^
+ /t:Clean,Build ^
  /p:%_properties% ^
  /v:minimal ^
  /m
@@ -16,7 +16,7 @@ if errorlevel 1 (
  exit
 )
 
-"..\src\CommandLine.DocumentationGenerator\bin\Release\net48\Roslynator.CommandLine.DocumentationGenerator.exe" "..\docs\cli"
+"..\src\CommandLine.DocumentationGenerator\bin\Release\net5.0\Roslynator.CommandLine.DocumentationGenerator.exe" "..\docs\cli"
 
 if errorlevel 1 (
  pause

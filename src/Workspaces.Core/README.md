@@ -1,13 +1,13 @@
+---
+sidebar_position: 0
+sidebar_label: Roslynator.CSharp.Workspaces
+---
+
 # Roslynator\.CSharp\.Workspaces
 
 [Namespaces](#namespaces)
 
-## Namespaces
+## Types
 
-* [Roslynator](../../docs/api/Roslynator/README.md)
-
-## [Roslynator](../../docs/api/Roslynator/README.md) Namespace
-
-### Classes
-
-* [WorkspaceExtensions](../../docs/api/Roslynator/WorkspaceExtensions/README.md)
+* [Roslynator](../../docs/api/Roslynator/index.md)
+  * [WorkspaceExtensions](../../docs/api/Roslynator/WorkspaceExtensions/index.md)

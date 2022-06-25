@@ -40,39 +40,30 @@ namespace Roslynator.CommandLine.Documentation
 
             foreach (Command command in application.Commands)
             {
-                string commandFilePath = Path.GetFullPath(Path.Combine(destinationDirectoryPath, $"{command.Name}-command.md"));
+                string commandFilePath = Path.GetFullPath(Path.Combine(destinationDirectoryPath, "Commands", $"{command.Name}.md"));
 
                 using (var sw = new StreamWriter(commandFilePath, append: false, Encoding.UTF8))
                 using (MarkdownWriter mw = MarkdownWriter.Create(sw))
                 {
                     var writer = new DocumentationWriter(mw);
 
+                    mw.WriteRaw("---");
+                    mw.WriteLine();
+                    mw.WriteRaw("sidebar_label: ");
+                    mw.WriteRaw(command.Name);
+                    mw.WriteLine();
+                    mw.WriteRaw("---");
+                    mw.WriteLine();
+
                     mw.WriteLine();
                     writer.WriteCommandHeading(command, application);
                     writer.WriteCommandDescription(command);
-
-                    mw.WriteLink("Home", "README.md");
 
                     string additionalContentFilePath = Path.Combine(dataDirectoryPath, command.Name + "_bottom.md");
 
                     string additionalContent = (File.Exists(additionalContentFilePath))
                         ? File.ReadAllText(additionalContentFilePath)
                         : "";
-
-                    var sections = new List<string>() { "Synopsis", "Arguments", "Options" };
-
-                    if (Regex.IsMatch(additionalContent, @"^\#+ Examples", RegexOptions.Multiline))
-                        sections.Add("Examples");
-
-                    foreach (string section in sections)
-                    {
-                        mw.WriteString(" ");
-                        mw.WriteCharEntity((char)0x2022);
-                        mw.WriteString(" ");
-                        mw.WriteLink(section, "#" + section);
-                    }
-
-                    mw.WriteLine();
 
                     writer.WriteCommandSynopsis(command, application);
                     writer.WriteArguments(command.Arguments);

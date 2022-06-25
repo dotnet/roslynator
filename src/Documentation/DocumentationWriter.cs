@@ -728,16 +728,18 @@ namespace Roslynator.Documentation
 
                 foreach (INamedTypeSymbol baseType in typeSymbol.BaseTypes().Reverse())
                 {
+                    WriteStartBulletItem();
                     WriteIndentation(depth);
                     WriteTypeLink(baseType.OriginalDefinition, includeContainingNamespace: Options.IncludeContainingNamespace(IncludeContainingNamespaceFilter.BaseType));
-                    WriteLineBreak();
+                    WriteEndBulletItem();
 
                     depth++;
                 }
 
+                WriteStartBulletItem();
                 WriteIndentation(depth);
                 WriteSymbol(typeSymbol, TypeSymbolDisplayFormats.Name_ContainingTypes_TypeParameters);
-                WriteLine();
+                WriteEndBulletItem();
             }
             else
             {

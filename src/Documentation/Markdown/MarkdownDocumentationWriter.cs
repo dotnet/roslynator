@@ -130,7 +130,7 @@ namespace Roslynator.Documentation.Markdown
 
         public override void WriteLineBreak()
         {
-            WriteRaw(@"\");
+            WriteRaw("  ");
             WriteLine();
         }
 
