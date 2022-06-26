@@ -5,7 +5,7 @@ sidebar_label: Roslynator.CSharp.Workspaces
 
 # Roslynator\.CSharp\.Workspaces
 
-[Namespaces](#namespaces) &#x2022; [Class Hierarchy](#class-hierarchy)
+[Namespaces](#namespaces) &#x2022; [Class Hierarchy](#class-hierarchy) &#x2022; [Other](#other)
 
 ## Types
 
@@ -24,3 +24,12 @@ sidebar_label: Roslynator.CSharp.Workspaces
 * &ensp; [&bull;](#class-hierarchy-System_Object "Object") &ensp; [SyntaxLogicalInverter](../../docs/api/Roslynator/CSharp/SyntaxLogicalInverter/index.md)<a id="class-hierarchy-Roslynator_CSharp_SyntaxLogicalInverter"></a>
 * &ensp; [&bull;](#class-hierarchy-System_Object "Object") &ensp; [SyntaxLogicalInverterOptions](../../docs/api/Roslynator/CSharp/SyntaxLogicalInverterOptions/index.md)<a id="class-hierarchy-Roslynator_CSharp_SyntaxLogicalInverterOptions"></a>
 
+## Extensions of External Types
+
+* [Microsoft.CodeAnalysis](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis)
+  * [Document](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.document)
+  * [SyntaxNode](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxnode)
+  * [SyntaxToken](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxtoken)
+  * [ITypeSymbol](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.itypesymbol)
+* [Microsoft.CodeAnalysis.CSharp.Syntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax)
+  * [ExpressionSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.expressionsyntax)
