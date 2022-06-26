@@ -5,7 +5,7 @@ using CommandLine;
 
 namespace Roslynator.CommandLine
 {
-    [Verb("generate-doc-root", HelpText = "Generates root documentation file from specified assemblies.")]
+    [Verb("generate-doc-root", HelpText = "Generates root documentation file from specified project/solution.")]
     public class GenerateDocRootCommandLineOptions : AbstractGenerateDocCommandLineOptions
     {
         [Option(
