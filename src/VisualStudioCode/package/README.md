@@ -32,7 +32,7 @@ roslynator_compiler_diagnostic_fixes.enabled = true|false
 roslynator_compiler_diagnostic_fix.<COMPILER_DIAGNOSTIC_ID>.enabled = true|false
 ```
 
-Full list of available options is [here](https://github.com/josefpihrt/roslynator/docs/configuration.md)
+Full list of available options is [here](https://github.com/josefpihrt/roslynator/blob/main/docs/configuration.md)
 
 ## Default Configuration
 
