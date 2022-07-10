@@ -261,7 +261,7 @@ namespace Roslynator.CSharp.CodeFixes
                                     ExpressionSyntax argumentExpression = arguments[0].Expression;
                                     if (argumentExpression is not LiteralExpressionSyntax)
                                     {
-                                        argumentExpression = ParenthesizedExpression(arguments[0].Expression);
+                                        argumentExpression = ParenthesizedExpression(argumentExpression);
                                     }
 
                                     ArgumentListSyntax argumentList = ArgumentList(
