@@ -258,13 +258,19 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             case 1:
                                 {
+                                    ExpressionSyntax argumentExpression = arguments[0].Expression;
+                                    if (argumentExpression is not LiteralExpressionSyntax)
+                                    {
+                                        argumentExpression = ParenthesizedExpression(arguments[0].Expression);
+                                    }
+
                                     ArgumentListSyntax argumentList = ArgumentList(
                                         Argument(invocationInfo.Expression),
                                         arguments[0],
                                         Argument(
                                             SubtractExpression(
                                                 SimpleMemberAccessExpression(invocationInfo.Expression, IdentifierName("Length")),
-                                                arguments[0].Expression)));
+                                                argumentExpression)));
 
                                     return CreateNewInvocationExpression(outerInvocationExpression, "Append", argumentList);
                                 }
