@@ -2497,5 +2497,17 @@ namespace Roslynator.CSharp
             helpLinkUri:        DiagnosticIdentifiers.NormalizeFormatOfEnumFlagValue, 
             customTags:         Array.Empty<string>());
 
+        /// <summary>RCS1260</summary>
+        public static readonly DiagnosticDescriptor AddOrRemoveTrailingComma = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.AddOrRemoveTrailingComma, 
+            title:              "Add/remove trailing comma.", 
+            messageFormat:      "{0} trailing comma.", 
+            category:           DiagnosticCategories.Roslynator, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.AddOrRemoveTrailingComma, 
+            customTags:         Array.Empty<string>());
+
     }
 }

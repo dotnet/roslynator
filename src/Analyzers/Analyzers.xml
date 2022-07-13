@@ -801,7 +801,7 @@ if (f)
   </Analyzer>
   <Analyzer Identifier="RemoveRedundantCommaInInitializer">
     <Id>RCS1035</Id>
-    <Title>Remove redundant comma in initializer.</Title>
+    <Title>([deprecated] use RCS1260 instead) Remove redundant comma in initializer.</Title>
     <Category>Redundancy</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
