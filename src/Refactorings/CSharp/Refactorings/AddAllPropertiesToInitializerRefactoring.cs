@@ -175,7 +175,6 @@ namespace Roslynator.CSharp.Refactorings
                 : IdentifierName(MissingToken(TriviaList(), SyntaxKind.IdentifierToken, TriviaList(Space)));
 
             IEnumerable<AssignmentExpressionSyntax> newExpressions = propertySymbols
-                .OrderBy(f => f.Name)
                 .Select(propertySymbol =>
                 {
                     return SimpleAssignmentExpression(
