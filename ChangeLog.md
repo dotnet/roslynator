@@ -10,11 +10,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Convert more syntax to implicit object creation (RCS1250) ([#910](https://github.com/josefpihrt/roslynator/pull/910)).
+- Add code fix for CS0037 ([#929](https://github.com/josefpihrt/roslynator/pull/929)).
 
 ### Changed
 
+- Rename default branch to `main`.
 - Format changelog according to 'Keep a Changelog' ([#915](https://github.com/josefpihrt/roslynator/pull/915)).
 - [CLI] Improve release build of command-line tool ([#912](https://github.com/josefpihrt/roslynator/pull/912)).
+- Do not sort properties in an initializer ([RR0216](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0216.md)).
 
 ### Fixed
 
