@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings
@@ -12,10 +11,13 @@ namespace Roslynator.CSharp.Refactorings
         {
             if (context.IsRefactoringEnabled(RefactoringDescriptors.AddUsingDirective)
                 && context.Span.IsEmpty
-                && qualifiedName.DotToken.SpanStart == context.Span.Start
-                && qualifiedName.Left?.Kind() == SyntaxKind.IdentifierName)
+                && qualifiedName.DotToken.SpanStart == context.Span.Start)
             {
-                await AddUsingDirectiveRefactoring.ComputeRefactoringsAsync(context, (IdentifierNameSyntax)qualifiedName.Left).ConfigureAwait(false);
+                IdentifierNameSyntax identifierName = qualifiedName.Left as IdentifierNameSyntax
+                    ?? qualifiedName.Right as IdentifierNameSyntax;
+
+                if (identifierName != null)
+                    await AddUsingDirectiveRefactoring.ComputeRefactoringsAsync(context, identifierName).ConfigureAwait(false);
             }
         }
     }
