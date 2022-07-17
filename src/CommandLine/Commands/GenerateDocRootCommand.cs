@@ -25,7 +25,7 @@ namespace Roslynator.CommandLine
             RootDocumentationParts ignoredParts,
             IncludeContainingNamespaceFilter includeContainingNamespaceFilter,
             Visibility visibility,
-            DocumentationTarget documentationTarget,
+            DocumentationHost documentationHost,
             in ProjectFilter projectFilter) : base(projectFilter)
         {
             Options = options;
@@ -33,7 +33,7 @@ namespace Roslynator.CommandLine
             IgnoredParts = ignoredParts;
             IncludeContainingNamespaceFilter = includeContainingNamespaceFilter;
             Visibility = visibility;
-            DocumentationTarget = documentationTarget;
+            DocumentationHost = documentationHost;
         }
 
         public GenerateDocRootCommandLineOptions Options { get; }
@@ -46,7 +46,7 @@ namespace Roslynator.CommandLine
 
         public Visibility Visibility { get; }
 
-        public DocumentationTarget DocumentationTarget { get; }
+        public DocumentationHost DocumentationHost { get; }
 
         public override async Task<CommandResult> ExecuteAsync(ProjectOrSolution projectOrSolution, CancellationToken cancellationToken = default)
         {
@@ -74,27 +74,27 @@ namespace Roslynator.CommandLine
 
             DocumentationUrlProvider GetUrlProvider()
             {
-                switch (DocumentationTarget)
+                switch (DocumentationHost)
                 {
-                    case DocumentationTarget.GitHub:
+                    case DocumentationHost.GitHub:
                         return new GitHubDocumentationUrlProvider(urlSegmentProvider, externalProviders);
-                    case DocumentationTarget.Docusaurus:
+                    case DocumentationHost.Docusaurus:
                         return new DocusaurusDocumentationUrlProvider(urlSegmentProvider, externalProviders);
                     default:
-                        throw new InvalidOperationException($"Unknown value '{DocumentationTarget}'.");
+                        throw new InvalidOperationException($"Unknown value '{DocumentationHost}'.");
                 }
             }
 
             MarkdownWriterSettings GetMarkdownWriterSettings()
             {
-                switch (DocumentationTarget)
+                switch (DocumentationHost)
                 {
-                    case DocumentationTarget.GitHub:
+                    case DocumentationHost.GitHub:
                         return MarkdownWriterSettings.Default;
-                    case DocumentationTarget.Docusaurus:
+                    case DocumentationHost.Docusaurus:
                         return new MarkdownWriterSettings(new MarkdownFormat(angleBracketEscapeStyle: AngleBracketEscapeStyle.EntityRef));
                     default:
-                        throw new InvalidOperationException($"Unknown value '{DocumentationTarget}'.");
+                        throw new InvalidOperationException($"Unknown value '{DocumentationHost}'.");
                 }
             }
 
@@ -104,14 +104,14 @@ namespace Roslynator.CommandLine
             {
                 MarkdownWriter writer = MarkdownWriter.Create(new StringBuilder(), markdownWriterSettings);
 
-                switch (DocumentationTarget)
+                switch (DocumentationHost)
                 {
-                    case DocumentationTarget.GitHub:
+                    case DocumentationHost.GitHub:
                         return new MarkdownDocumentationWriter(context, writer);
-                    case DocumentationTarget.Docusaurus:
+                    case DocumentationHost.Docusaurus:
                         return new DocusaurusDocumentationWriter(context, writer);
                     default:
-                        throw new InvalidOperationException($"Unknown value '{DocumentationTarget}'.");
+                        throw new InvalidOperationException($"Unknown value '{DocumentationHost}'.");
                 }
             }
 
