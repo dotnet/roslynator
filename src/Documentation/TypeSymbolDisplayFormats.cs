@@ -47,6 +47,12 @@ namespace Roslynator
             genericsOptions: SymbolDisplayGenericsOptions.None,
             memberOptions: SymbolDisplayMemberOptions.IncludeContainingType);
 
+        public static SymbolDisplayFormat Name_ContainingTypes_Namespaces_GlobalNamespace_OmittedAsContaining { get; } = new(
+            globalNamespaceStyle: SymbolDisplayGlobalNamespaceStyle.OmittedAsContaining,
+            typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces,
+            genericsOptions: SymbolDisplayGenericsOptions.None,
+            memberOptions: SymbolDisplayMemberOptions.IncludeContainingType);
+
         public static SymbolDisplayFormat Name_ContainingTypes_Namespaces_GlobalNamespace_TypeParameters { get; } = new(
             globalNamespaceStyle: SymbolDisplayGlobalNamespaceStyle.Included,
             typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces,

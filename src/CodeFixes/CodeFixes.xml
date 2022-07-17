@@ -120,6 +120,7 @@
   </CodeFix>
   <CodeFix Id="RCF0024" Identifier="RemovePropertyOrFieldInitializer" Title="Remove property or field initializer">
     <FixableDiagnosticIds>
+      <Id>CS0037</Id>
       <Id>CS0573</Id>
       <Id>CS8050</Id>
     </FixableDiagnosticIds>

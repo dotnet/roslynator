@@ -10,7 +10,6 @@ using System.Text;
 using System.Xml.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Roslynator.CSharp;
 using Roslynator.Text;
 
 namespace Roslynator.Documentation
@@ -19,19 +18,14 @@ namespace Roslynator.Documentation
     {
         private bool _disposed;
 
-        protected DocumentationWriter(
-            DocumentationModel documentationModel,
-            DocumentationUrlProvider urlProvider,
-            DocumentationOptions options = null,
-            DocumentationResources resources = null)
+        protected DocumentationWriter(DocumentationContext context)
         {
-            DocumentationModel = documentationModel;
-            UrlProvider = urlProvider;
-            Options = options ?? DocumentationOptions.Default;
-            Resources = resources ?? DocumentationResources.Default;
+            Context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public DocumentationModel DocumentationModel { get; }
+        public DocumentationContext Context { get; }
+
+        public DocumentationModel DocumentationModel => Context.DocumentationModel;
 
         internal bool CanCreateTypeLocalUrl { get; set; } = true;
 
@@ -39,20 +33,22 @@ namespace Roslynator.Documentation
 
         internal ISymbol CurrentSymbol { get; set; }
 
-        public DocumentationOptions Options { get; }
+        public DocumentationOptions Options => Context.Options;
 
-        public DocumentationResources Resources { get; }
+        public DocumentationResources Resources => Context.Resources;
 
-        public DocumentationUrlProvider UrlProvider { get; }
+        public DocumentationUrlProvider UrlProvider => Context.UrlProvider;
+
+        private UrlSegmentProvider UrlSegmentProvider => Context.UrlProvider.SegmentProvider;
 
         private SymbolXmlDocumentation GetXmlDocumentation(ISymbol symbol)
         {
             return DocumentationModel.GetXmlDocumentation(symbol, Options.PreferredCultureName);
         }
 
-        public abstract void WriteStartDocument();
+        public abstract void WriteStartDocument(ISymbol symbol, DocumentationFileKind fileKind);
 
-        public abstract void WriteEndDocument();
+        public abstract void WriteEndDocument(ISymbol symbol, DocumentationFileKind fileKind);
 
         public abstract void WriteStartBold();
 
@@ -298,7 +294,7 @@ namespace Roslynator.Documentation
                 if (beginWithSeparator)
                     WriteContentSeparator();
 
-                WriteLink(Resources.HomeTitle, UrlProvider.GetUrlToRoot(UrlProvider.GetFolders(CurrentSymbol).Length, '/', scrollToContent: Options.ScrollToContent));
+                WriteLink(Resources.HomeTitle, UrlProvider.GetUrlToRoot(UrlSegmentProvider.GetSegments(CurrentSymbol).Length, '/', scrollToContent: Options.ScrollToContent));
             }
 
             if (en.MoveNext())
@@ -732,16 +728,18 @@ namespace Roslynator.Documentation
 
                 foreach (INamedTypeSymbol baseType in typeSymbol.BaseTypes().Reverse())
                 {
+                    WriteStartBulletItem();
                     WriteIndentation(depth);
                     WriteTypeLink(baseType.OriginalDefinition, includeContainingNamespace: Options.IncludeContainingNamespace(IncludeContainingNamespaceFilter.BaseType));
-                    WriteLineBreak();
+                    WriteEndBulletItem();
 
                     depth++;
                 }
 
+                WriteStartBulletItem();
                 WriteIndentation(depth);
                 WriteSymbol(typeSymbol, TypeSymbolDisplayFormats.Name_ContainingTypes_TypeParameters);
-                WriteLine();
+                WriteEndBulletItem();
             }
             else
             {
@@ -1345,6 +1343,7 @@ namespace Roslynator.Documentation
                         }
 
                         WriteEndTableCell();
+
                         WriteStartTableCell();
 
                         WriteObsolete(symbol);
@@ -1674,12 +1673,17 @@ namespace Roslynator.Documentation
             }
         }
 
-        internal void WriteNamespaceList(
-            IEnumerable<INamespaceSymbol> symbols,
+        internal void WriteTypesByNamespace(
+            IEnumerable<INamedTypeSymbol> typeSymbols,
             string heading,
-            int headingLevel)
+            int headingLevel,
+            bool includeTypes = false,
+            bool addLinkForTypeParameters = false,
+            bool canCreateExternalUrl = true)
         {
-            using (IEnumerator<INamespaceSymbol> en = symbols
+            using (IEnumerator<INamespaceSymbol> en = typeSymbols
+                .Select(f => f.ContainingNamespace)
+                .Distinct(MetadataNameEqualityComparer<INamespaceSymbol>.Instance)
                 .OrderBy(f => f, (Options.PlaceSystemNamespaceFirst) ? SymbolDefinitionComparer.SystemFirst : SymbolDefinitionComparer.Default)
                 .GetEnumerator())
             {
@@ -1688,17 +1692,31 @@ namespace Roslynator.Documentation
                     if (heading != null)
                         WriteHeading(headingLevel, heading);
 
-                    WriteStartBulletList();
-
                     do
                     {
                         WriteStartBulletItem();
                         WriteLink(en.Current, TypeSymbolDisplayFormats.Name_ContainingTypes_Namespaces);
+
+                        if (includeTypes)
+                        {
+                            foreach (IGrouping<TypeKind, INamedTypeSymbol> typesByKind in typeSymbols
+                                .Where(f => MetadataNameEqualityComparer<INamespaceSymbol>.Instance.Equals(en.Current, f.ContainingNamespace))
+                                .GroupBy(f => f.TypeKind)
+                                .OrderBy(f => f.Key, TypeKindComparer.Instance))
+                            {
+                                foreach (INamedTypeSymbol symbol in typesByKind
+                                    .OrderBy(f => f, SymbolDefinitionComparer.SystemFirstOmitContainingNamespace))
+                                {
+                                    WriteStartBulletItem();
+                                    WriteTypeListItem(symbol, ImmutableHashSet<INamedTypeSymbol>.Empty, addLinkForTypeParameters: addLinkForTypeParameters, canCreateExternalUrl: canCreateExternalUrl);
+                                    WriteEndBulletItem();
+                                }
+                            }
+                        }
+
                         WriteEndBulletItem();
                     }
                     while (en.MoveNext());
-
-                    WriteEndBulletList();
                 }
             }
         }
@@ -1856,9 +1874,9 @@ namespace Roslynator.Documentation
             ISymbol symbol,
             bool canCreateExternalUrl = true)
         {
-            ImmutableArray<string> folders = UrlProvider.GetFolders(symbol);
+            ImmutableArray<string> segments = UrlSegmentProvider.GetSegments(symbol);
 
-            if (folders.IsDefault)
+            if (segments.IsEmpty)
                 return null;
 
             switch (symbol.Kind)
@@ -1896,11 +1914,11 @@ namespace Roslynator.Documentation
                 }
 
                 if (canCreateExternalUrl)
-                    return UrlProvider.GetExternalUrl(folders).Url;
+                    return UrlProvider.GetExternalUrl(symbol).Url;
             }
 
             ImmutableArray<string> containingFolders = (CurrentSymbol != null)
-                ? UrlProvider.GetFolders(CurrentSymbol)
+                ? UrlSegmentProvider.GetSegments(CurrentSymbol)
                 : default;
 
             string fragment = GetFragment();
@@ -1911,7 +1929,7 @@ namespace Roslynator.Documentation
                 fragment = "#" + WellKnownNames.TopFragmentName;
             }
 
-            string url = UrlProvider.GetLocalUrl(folders, containingFolders, fragment).Url;
+            string url = UrlProvider.GetLocalUrl(segments, containingFolders, fragment).Url;
 
             return Options.RootDirectoryUrl + url;
 

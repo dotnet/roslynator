@@ -2,10 +2,9 @@
 
 namespace Roslynator.Documentation
 {
-    internal static class WellKnownNames
+    public enum FilesLayout
     {
-        public const string GlobalNamespaceName = "Global";
-        public const string ConstructorName = "-ctor";
-        public const string TopFragmentName = "_top";
+        Hierarchical = 0,
+        FlatNamespaces = 1,
     }
 }
