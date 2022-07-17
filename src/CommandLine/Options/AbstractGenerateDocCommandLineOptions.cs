@@ -34,7 +34,6 @@ namespace Roslynator.CommandLine
             MetaValue = "<DEPTH>")]
         public string Depth { get; set; }
 
-        //TODO: JP environment, target-environment, host, host-environment
         [Option(
             longName: OptionNames.Host,
             Required = true,
