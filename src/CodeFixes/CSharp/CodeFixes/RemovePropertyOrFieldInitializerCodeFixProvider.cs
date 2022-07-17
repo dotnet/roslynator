@@ -2,7 +2,6 @@
 
 using System.Collections.Immutable;
 using System.Composition;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
@@ -24,6 +23,7 @@ namespace Roslynator.CSharp.CodeFixes
             get
             {
                 return ImmutableArray.Create(
+                    CompilerDiagnosticIdentifiers.CS0037_CannotConvertNullToTypeBecauseItIsNonNullableValueType,
                     CompilerDiagnosticIdentifiers.CS0573_CannotHaveInstancePropertyOrFieldInitializersInStruct,
                     CompilerDiagnosticIdentifiers.CS8050_OnlyAutoImplementedPropertiesCanHaveInitializers);
             }
@@ -41,12 +41,9 @@ namespace Roslynator.CSharp.CodeFixes
             if (!TryFindToken(root, context.Span.Start, out SyntaxToken token))
                 return;
 
-            SyntaxDebug.Assert(token.IsKind(SyntaxKind.IdentifierToken), token);
+            SyntaxDebug.Assert(token.IsKind(SyntaxKind.IdentifierToken, SyntaxKind.NullKeyword), token);
 
-            if (!token.IsKind(SyntaxKind.IdentifierToken))
-                return;
-
-            switch (token.Parent)
+            switch (GetNode(token))
             {
                 case PropertyDeclarationSyntax propertyDeclaration:
                     {
@@ -83,11 +80,35 @@ namespace Roslynator.CSharp.CodeFixes
 
                                 return context.Document.ReplaceNodeAsync(variableDeclarator, newNode, ct);
                             },
-                            GetEquivalenceKey(CompilerDiagnosticIdentifiers.CS0573_CannotHaveInstancePropertyOrFieldInitializersInStruct, CodeFixIdentifiers.RemovePropertyOrFieldInitializer));
+                            GetEquivalenceKey(diagnostic, CodeFixIdentifiers.RemovePropertyOrFieldInitializer));
 
                         context.RegisterCodeFix(codeAction, diagnostic);
                         break;
                     }
+            }
+
+            static SyntaxNode GetNode(SyntaxToken token)
+            {
+                if (token.IsKind(SyntaxKind.IdentifierToken))
+                    return token.Parent;
+
+                if (token.IsKind(SyntaxKind.NullKeyword))
+                {
+                    SyntaxNode node = token.Parent;
+
+                    if (node.IsKind(SyntaxKind.NullLiteralExpression))
+                    {
+                        node = node.Parent;
+
+                        if (node.IsKind(SyntaxKind.SuppressNullableWarningExpression))
+                            node = node.Parent;
+
+                        if (node.IsKind(SyntaxKind.EqualsValueClause))
+                            return node.Parent;
+                    }
+                }
+
+                return null;
             }
         }
     }

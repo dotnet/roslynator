@@ -14,18 +14,18 @@ namespace Roslynator.Documentation
 {
     internal class DefaultUrlSegmentProvider : UrlSegmentProvider
     {
-        internal static DefaultUrlSegmentProvider Hierarchical { get; } = new(FileLayout.Hierarchical);
+        internal static DefaultUrlSegmentProvider Hierarchical { get; } = new(FilesLayout.Hierarchical);
 
         public DefaultUrlSegmentProvider(
-            FileLayout layout,
+            FilesLayout filesLayout,
             IEnumerable<INamespaceSymbol> commonNamespaces = null)
         {
-            Layout = layout;
+            FilesLayout = filesLayout;
             CommonNamespaces = commonNamespaces?.ToImmutableHashSet(MetadataNameEqualityComparer<INamespaceSymbol>.Instance)
                 ?? ImmutableHashSet<INamespaceSymbol>.Empty;
         }
 
-        public FileLayout Layout { get; }
+        public FilesLayout FilesLayout { get; }
 
         public ImmutableHashSet<INamespaceSymbol> CommonNamespaces { get; }
 
@@ -40,7 +40,7 @@ namespace Roslynator.Documentation
                     return ImmutableArray.Create(WellKnownNames.GlobalNamespaceName);
             }
 
-            if (Layout == FileLayout.FlatNamespaces
+            if (FilesLayout == FilesLayout.FlatNamespaces
                 && CommonNamespaces.Count == 0)
             {
                 return ImmutableArray.Create(symbol.ToDisplayString(TypeSymbolDisplayFormats.Name_ContainingTypes_Namespaces));
@@ -117,7 +117,7 @@ namespace Roslynator.Documentation
                     if (symbol.Kind != SymbolKind.Namespace)
                         builder.Add(WellKnownNames.GlobalNamespaceName);
                 }
-                else if (Layout == FileLayout.Hierarchical)
+                else if (FilesLayout == FilesLayout.Hierarchical)
                 {
                     do
                     {
@@ -135,7 +135,7 @@ namespace Roslynator.Documentation
                     }
                     while (namespaceSymbol?.IsGlobalNamespace == false);
                 }
-                else if (Layout == FileLayout.FlatNamespaces)
+                else if (FilesLayout == FilesLayout.FlatNamespaces)
                 {
                     var sb = new StringBuilder();
 
@@ -163,7 +163,7 @@ namespace Roslynator.Documentation
                 }
                 else
                 {
-                    throw new InvalidOperationException($"Unknown enum value '{Layout}'.");
+                    throw new InvalidOperationException($"Unknown enum value '{FilesLayout}'.");
                 }
             }
 
