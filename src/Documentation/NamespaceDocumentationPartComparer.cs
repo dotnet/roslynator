@@ -42,8 +42,10 @@ namespace Roslynator.Documentation
                     return 9;
                 case NamespaceDocumentationParts.Delegates:
                     return 10;
-                case NamespaceDocumentationParts.SeeAlso:
+                case NamespaceDocumentationParts.Namespaces:
                     return 11;
+                case NamespaceDocumentationParts.SeeAlso:
+                    return 12;
             }
 
             Debug.Fail(part.ToString());

@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Convert more syntax to implicit object creation (RCS1250) ([#910](https://github.com/josefpihrt/roslynator/pull/910)).
 - Add code fix for CS0037 ([#929](https://github.com/josefpihrt/roslynator/pull/929)).
+- [CLI] Generate reference documentation that can be published with Docusaurus ([#918](https://github.com/josefpihrt/roslynator/pull/918)).
+  - `roslynator generate-doc --host docusaurus`
 
 ### Changed
 
