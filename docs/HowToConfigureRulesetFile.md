@@ -75,6 +75,6 @@ This file is typically located in a root folder of a solution.
 * [How to: Create a Custom Rule Set](https://msdn.microsoft.com/en-us/library/dd264974.aspx)
 * [Working in the Code Analysis Rule Set Editor](https://msdn.microsoft.com/en-us/library/dd380626.aspx)
 * [How to: Specify Managed Code Rule Sets for Multiple Projects in a Solution](https://msdn.microsoft.com/en-us/library/dd465181.aspx)
-* [Rule Set XML Schema](https://github.com/dotnet/roslyn/blob/master/src/Compilers/Core/Portable/RuleSet/RuleSetSchema.xsd)
+* [Rule Set XML Schema](https://github.com/dotnet/roslyn/blob/main/src/Compilers/Core/Portable/RuleSet/RuleSetSchema.xsd)
 * [Customize your build](https://docs.microsoft.com/en-us/visualstudio/msbuild/customize-your-build)
 * [Common MSBuild properties and items with Directory.Build.props](https://thomaslevesque.com/2017/09/18/common-msbuild-properties-and-items-with-directory-build-props/)

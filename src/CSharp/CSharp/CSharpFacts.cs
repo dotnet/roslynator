@@ -939,7 +939,7 @@ namespace Roslynator.CSharp
             return SyntaxFacts.IsAssignmentExpression(kind);
         }
 
-        // http://github.com/dotnet/docs/blob/master/docs/csharp/language-reference/operators/index.md
+        // http://github.com/dotnet/docs/blob/main/docs/csharp/language-reference/operators/index.md
         internal static int GetOperatorPrecedence(SyntaxKind kind)
         {
             switch (kind)
