@@ -19,7 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Rename default branch to `main`.
 - Format changelog according to 'Keep a Changelog' ([#915](https://github.com/josefpihrt/roslynator/pull/915)).
 - [CLI] Improve release build of command-line tool ([#912](https://github.com/josefpihrt/roslynator/pull/912)).
-- Do not sort properties in an initializer ([RR0216](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0216.md)).
+- Do not sort properties in an initializer ([RR0216](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0216.md)).
 
 ### Fixed
 
@@ -38,11 +38,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### 4.1.0 (2022-03-29)
 
-* Add analyzer [RCS1254](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1254.md) (Normalize format of enum flag value)
-* Add analyzer [RCS1253](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1253.md) (Format documentation comment summary)
-* Add analyzer [RCS1252](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1252.md) (Normalize usage of infinite loop)
-* Add analyzer [RCS1251](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1251.md) (Remove unnecessary braces from record declaration)
-* Add refactoring [Deconstruct foreach variable (RR0217)](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactoring/RR0217.md)
+* Add analyzer [RCS1254](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1254.md) (Normalize format of enum flag value)
+* Add analyzer [RCS1253](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1253.md) (Format documentation comment summary)
+* Add analyzer [RCS1252](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1252.md) (Normalize usage of infinite loop)
+* Add analyzer [RCS1251](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1251.md) (Remove unnecessary braces from record declaration)
+* Add refactoring [Deconstruct foreach variable (RR0217)](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactoring/RR0217.md)
 * Add code fix for CS8602, CS8604
 * Add suggestion to call AddRange instead of Add (RCS1235)
 * Put back refactoring "Split local declaration and assignment" (RR0194) ([issue](https://github.com/JosefPihrt/Roslynator/issues/881))
@@ -63,8 +63,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 #### Bug fixes
 
-* Fix analyzer [RCS1014](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1014.md) (Use explicitly/implicitly typed array) ([commit](https://github.com/JosefPihrt/Roslynator/commit/004a83756b9fbcf117710d7afb6bab964a59f1be))
-* Fix analyzer [RCS1016](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1016.md) (Use block body or expression body) ([commit](https://github.com/JosefPihrt/Roslynator/commit/8c633e966f2706d3888fd942dd186d066d440ac0))
+* Fix analyzer [RCS1014](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1014.md) (Use explicitly/implicitly typed array) ([commit](https://github.com/JosefPihrt/Roslynator/commit/004a83756b9fbcf117710d7afb6bab964a59f1be))
+* Fix analyzer [RCS1016](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1016.md) (Use block body or expression body) ([commit](https://github.com/JosefPihrt/Roslynator/commit/8c633e966f2706d3888fd942dd186d066d440ac0))
 * Fix refactoring AddUsingDirective (RR0013) ([commit](https://github.com/JosefPihrt/Roslynator/commit/199787bdf921aeeecd69d9a118bbb86419bce81a))
 * Propagate some options from .roslynatorconfig ([commit](https://github.com/JosefPihrt/Roslynator/commit/a619ebf285d1de77941a9c4a5fce46bb19485d3a))
 * Enable ROS analyzers to be set from .roslynatorconfig ([commit](https://github.com/JosefPihrt/Roslynator/commit/a4c0ad8fb60d694cc7d2546016d742547f1d585b))
@@ -85,11 +85,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   * Enable/disable all compiler diagnostics fixes
   * Enable/disable specific compiler diagnostic fix
 
-* Add analyzer [RCS0057](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS0057.md) (Normalize whitespace at the beginning of a file)
-* Add analyzer [RCS0058](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS0058.md) (Normalize whitespace at the end of a file)
-* Add analyzer [RCS0059](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS0059.md) (Place new line after/before null-conditional operator)
-* Add analyzer [RCS1249](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1249.md) (Unnecessary null-forgiving operator)
-* Add analyzer [RCS1250](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1250.md) (Use implicit/explicit object creation)
+* Add analyzer [RCS0057](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS0057.md) (Normalize whitespace at the beginning of a file)
+* Add analyzer [RCS0058](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS0058.md) (Normalize whitespace at the end of a file)
+* Add analyzer [RCS0059](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS0059.md) (Place new line after/before null-conditional operator)
+* Add analyzer [RCS1249](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1249.md) (Unnecessary null-forgiving operator)
+* Add analyzer [RCS1250](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1250.md) (Use implicit/explicit object creation)
 * Add refactoring ExpandPositionalRecord (RR0215)
 * Add refactoring AddAllPropertiesToInitializer (RR0216)
 * Add code fix for CS8403, CS8618 and CS8625
@@ -117,9 +117,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 #### Analyzers
 
-* Add option to invert analyzer [RCS1016](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1016.md) ([commit](https://github.com/JosefPihrt/Roslynator/commit/67a0fc5cfe9dd793cc6e504513ed6805678c1739))
-* Add more cases to analyzer [RCS1218](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1218.md) ([commit](https://github.com/JosefPihrt/Roslynator/commit/37e8edb7a2eefdd4a7749dd6a3f5b473ebbdcc0a))
-* Convert `!= null` to `is not null` ([RCS1248](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1248.md)) ([commit](https://github.com/JosefPihrt/Roslynator/commit/432a8fea3147447536dbb8fac47598ad1db68158))
+* Add option to invert analyzer [RCS1016](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1016.md) ([commit](https://github.com/JosefPihrt/Roslynator/commit/67a0fc5cfe9dd793cc6e504513ed6805678c1739))
+* Add more cases to analyzer [RCS1218](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1218.md) ([commit](https://github.com/JosefPihrt/Roslynator/commit/37e8edb7a2eefdd4a7749dd6a3f5b473ebbdcc0a))
+* Convert `!= null` to `is not null` ([RCS1248](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1248.md)) ([commit](https://github.com/JosefPihrt/Roslynator/commit/432a8fea3147447536dbb8fac47598ad1db68158))
 
 #### Code Fixes
 
@@ -130,31 +130,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### 3.1.0 (2021-01-04)
 
-* Add analyzer [RCS0056](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS0056.md) (Line is too long)
+* Add analyzer [RCS0056](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS0056.md) (Line is too long)
 * Add option to suppress diagnostic from Unity script methods (RCS1213)
 * Consider syntax `var foo = Foo.Parse(value)` as having obvious type `Foo`
 * Update references to Roslyn API to 3.7.0
 
 ### 3.0.1 (2020-10-19)
 
-* Add analyzer [RCS0055](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS0055.md) (Fix formatting of a binary expression chain)
-* Add analyzer [RCS0054](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS0054.md) (Fix formatting of a call chain)
-* Add analyzer [RCS0053](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS0053.md) (Fix formatting of a list)
-* Add analyzer [RCS0052](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS0052.md) (Add newline before equals sign instead of after it (or vice versa))
-* Add analyzer [RCS1248](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1248.md) (Use 'is null' pattern instead of comparison (or vice versa)) ([issue](https://github.com/JosefPihrt/Roslynator/issues/458))
-* Add analyzer [RCS1247](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1247.md) (Fix documentation comment tag)
-* Add analyzer option [RCS1207i](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1207i.md) (Convert method group to anonymous function)
-* Add analyzer option [RCS1090i](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1090i.md) (Remove call to 'ConfigureAwait')
-* Add analyzer option [RCS1018i](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1018i.md) (Remove accessibility modifiers) ([issue](https://github.com/JosefPihrt/Roslynator/issues/260))
-* Add analyzer option [RCS1014i](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1014i.md) (Use implicitly typed array)
-* Add analyzer option [RCS1014a](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1014a.md) (Use implicitly typed array (when type is obvious))
-* Add analyzer option [RCS1078i](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1078i.md) (Use string.Empty instead of "")
-* Add analyzer option [RCS1016a](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1016a.md) (Convert expression-body to block body when expression is multi-line)
-* Add analyzer option [RCS1016b](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1016b.md) (Convert expression-body to block body when declaration is multi-line)
-* Disable by default analyzer [RCS1207i](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1207i.md) (Convert method group to anonymous function)
-* Remove analyzer [RCS1219](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1219.md) (Call 'Enumerable.Skip' and 'Enumerable.Any' instead of 'Enumerable.Count')
-* Rename analyzer "Avoid 'null' on left side of binary expression" to "Constant values should be placed on right side of comparisons" [RCS1098](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1098.md)
-* Rename analyzer "Simplify boolean expression" to "Unnecessary null check" [RCS1199](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1199.md) ([issue](https://github.com/JosefPihrt/Roslynator/issues/373))
+* Add analyzer [RCS0055](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS0055.md) (Fix formatting of a binary expression chain)
+* Add analyzer [RCS0054](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS0054.md) (Fix formatting of a call chain)
+* Add analyzer [RCS0053](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS0053.md) (Fix formatting of a list)
+* Add analyzer [RCS0052](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS0052.md) (Add newline before equals sign instead of after it (or vice versa))
+* Add analyzer [RCS1248](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1248.md) (Use 'is null' pattern instead of comparison (or vice versa)) ([issue](https://github.com/JosefPihrt/Roslynator/issues/458))
+* Add analyzer [RCS1247](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1247.md) (Fix documentation comment tag)
+* Add analyzer option [RCS1207i](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1207i.md) (Convert method group to anonymous function)
+* Add analyzer option [RCS1090i](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1090i.md) (Remove call to 'ConfigureAwait')
+* Add analyzer option [RCS1018i](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1018i.md) (Remove accessibility modifiers) ([issue](https://github.com/JosefPihrt/Roslynator/issues/260))
+* Add analyzer option [RCS1014i](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1014i.md) (Use implicitly typed array)
+* Add analyzer option [RCS1014a](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1014a.md) (Use implicitly typed array (when type is obvious))
+* Add analyzer option [RCS1078i](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1078i.md) (Use string.Empty instead of "")
+* Add analyzer option [RCS1016a](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1016a.md) (Convert expression-body to block body when expression is multi-line)
+* Add analyzer option [RCS1016b](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1016b.md) (Convert expression-body to block body when declaration is multi-line)
+* Disable by default analyzer [RCS1207i](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1207i.md) (Convert method group to anonymous function)
+* Remove analyzer [RCS1219](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1219.md) (Call 'Enumerable.Skip' and 'Enumerable.Any' instead of 'Enumerable.Count')
+* Rename analyzer "Avoid 'null' on left side of binary expression" to "Constant values should be placed on right side of comparisons" [RCS1098](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1098.md)
+* Rename analyzer "Simplify boolean expression" to "Unnecessary null check" [RCS1199](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1199.md) ([issue](https://github.com/JosefPihrt/Roslynator/issues/373))
 
 * More syntax is considered as having obvious type:
   * string literal
@@ -166,22 +166,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Update references to Roslyn API to 3.5.0
 * Release .NET Core Global Tool [Roslynator.DotNet.Cli](https://www.nuget.org/packages/roslynator.dotnet.cli) 
-* Introduce concept of "[Analyzer Options](https://github.com/JosefPihrt/Roslynator/blob/master/docs/AnalyzerOptions.md)"
+* Introduce concept of "[Analyzer Options](https://github.com/JosefPihrt/Roslynator/blob/main/docs/AnalyzerOptions.md)"
 * Reassign ID for some analyzers.
-  * See "[How to: Migrate Analyzers to Version 3.0](https://github.com/JosefPihrt/Roslynator/blob/master/docs/HowToMigrateAnalyzersToVersion3.md)"
+  * See "[How to: Migrate Analyzers to Version 3.0](https://github.com/JosefPihrt/Roslynator/blob/main/docs/HowToMigrateAnalyzersToVersion3.md)"
 * Remove references to Roslynator assemblies from omnisharp.json on uninstall (VS Code)
 
 #### New Analyzers
 
-* [RCS0048](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS0048.md) (Remove newlines from initializer with single\-line expression).
-* [RCS0049](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS0049.md) (Add empty line after top comment).
-* [RCS0050](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS0050.md) (Add empty line before top declaration).
-* [RCS0051](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS0051.md) (Add newline between closing brace and 'while' keyword \(or vice versa\)).
-* [RCS1246](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1246.md) (Use element access).
+* [RCS0048](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS0048.md) (Remove newlines from initializer with single\-line expression).
+* [RCS0049](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS0049.md) (Add empty line after top comment).
+* [RCS0050](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS0050.md) (Add empty line before top declaration).
+* [RCS0051](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS0051.md) (Add newline between closing brace and 'while' keyword \(or vice versa\)).
+* [RCS1246](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1246.md) (Use element access).
 
 #### New Refactorings
 
-* [RR0214](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0214.md) (Convert 'switch' expression to 'switch' statement).
+* [RR0214](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0214.md) (Convert 'switch' expression to 'switch' statement).
 
 ### 2.9.0 (2020-03-13)
 
@@ -192,34 +192,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Bug Fixes
 
 * Fix key duplication/handle camel case names in `omnisharp.json` ([PR](https://github.com/JosefPihrt/Roslynator/pull/645))
-* Use prefix unary operator instead of postfix unary operator ([RCS1089](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1089.md)) ([issue](https://github.com/JosefPihrt/Roslynator/issues/639))
-* Cast of `this` to its interface cannot be null ([RCS1202](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1202.md)) ([issue](https://github.com/JosefPihrt/Roslynator/issues/640))
-* Do not remove braces in switch section if it contains 'using variable' ([RCS1031](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1031.md)) ([issue](https://github.com/JosefPihrt/Roslynator/issues/632))
+* Use prefix unary operator instead of postfix unary operator ([RCS1089](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1089.md)) ([issue](https://github.com/JosefPihrt/Roslynator/issues/639))
+* Cast of `this` to its interface cannot be null ([RCS1202](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1202.md)) ([issue](https://github.com/JosefPihrt/Roslynator/issues/640))
+* Do not remove braces in switch section if it contains 'using variable' ([RCS1031](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1031.md)) ([issue](https://github.com/JosefPihrt/Roslynator/issues/632))
 
 #### New Analyzers
 
-* [RCS1242](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1242.md) (DoNotPassNonReadOnlyStructByReadOnlyReference).
-* [RCS1243](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1243.md) (DuplicateWordInComment).
-* [RCS1244](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1244.md) (SimplifyDefaultExpression).
-* [RCS1245](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1245.md) (SimplifyConditionalExpression2) ([issue](https://github.com/JosefPihrt/Roslynator/issues/612)).
+* [RCS1242](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1242.md) (DoNotPassNonReadOnlyStructByReadOnlyReference).
+* [RCS1243](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1243.md) (DuplicateWordInComment).
+* [RCS1244](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1244.md) (SimplifyDefaultExpression).
+* [RCS1245](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1245.md) (SimplifyConditionalExpression2) ([issue](https://github.com/JosefPihrt/Roslynator/issues/612)).
 
 #### Analyzers
 
-* Disable analyzer [RCS1057](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1057.md) by default ([issue](https://github.com/JosefPihrt/Roslynator/issues/590)).
-* Merge analyzer [RCS1156](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1156.md) with [RCS1113](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1113.md) ([issue](https://github.com/JosefPihrt/Roslynator/issues/650)).
+* Disable analyzer [RCS1057](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1057.md) by default ([issue](https://github.com/JosefPihrt/Roslynator/issues/590)).
+* Merge analyzer [RCS1156](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1156.md) with [RCS1113](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1113.md) ([issue](https://github.com/JosefPihrt/Roslynator/issues/650)).
   * `x == ""` should be replaced with `string.IsNullOrEmpty(x)`
-* Improve analyzer [RCS1215](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1215.md) ([commit](https://github.com/JosefPihrt/Roslynator/commit/0fdd97f9a62463f8b004abeb17a8b8509374c35a)).
+* Improve analyzer [RCS1215](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1215.md) ([commit](https://github.com/JosefPihrt/Roslynator/commit/0fdd97f9a62463f8b004abeb17a8b8509374c35a)).
   * `x == double.NaN` should be replaced with `double.IsNaN(x)`
-* Enable [RCS1169](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1169.md) and [RCS1170](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1170.md) if the type is read-only struct ([commit](https://github.com/JosefPihrt/Roslynator/commit/f34e105433dbc65686369adf712b0b99d93eaef7)).
-* Improve analyzer [RCS1077](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1077.md) ([commit](https://github.com/JosefPihrt/Roslynator/commit/3ee275442cb16f6a9104b42d582ba7d76d6df88c)).
+* Enable [RCS1169](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1169.md) and [RCS1170](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1170.md) if the type is read-only struct ([commit](https://github.com/JosefPihrt/Roslynator/commit/f34e105433dbc65686369adf712b0b99d93eaef7)).
+* Improve analyzer [RCS1077](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1077.md) ([commit](https://github.com/JosefPihrt/Roslynator/commit/3ee275442cb16f6a9104b42d582ba7d76d6df88c)).
   * `x.OrderBy(y => y).Reverse()` can be simplified to `x.OrderByDescending(y => y)`
   * `x.SelectMany(y => y).Count()` can be simplified to `x.Sum(y => y.Count)` if `x` has `Count` or `Length` property
-* Improve analyzer [RCS1161](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1161.md) - Declare explicit enum value using `<<` operator ([commit](https://github.com/JosefPihrt/Roslynator/commit/6b78496efe1a2f2678f2ef2a71986e2bee006863)).
-* Improve analyzer [RCS1036](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1036.md) - remove empty line between documentation comment and declaration ([commit](https://github.com/JosefPihrt/Roslynator/commit/de0f1205671281679866e92edd9337a7416409e6)).
-* Improve analyzer [RCS1037](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1037.md) - remove trailing white-space from documentation comment ([commit](https://github.com/JosefPihrt/Roslynator/commit/c3f7d193ee37d04de7e2c698aab7f3e1e6350e80)).
-* Improve analyzer [RCS1143](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1143.md) ([commit](https://github.com/JosefPihrt/Roslynator/commit/4c4281ebdf8eb0aa1a77d5e5bfda71bc66cce1df))
+* Improve analyzer [RCS1161](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1161.md) - Declare explicit enum value using `<<` operator ([commit](https://github.com/JosefPihrt/Roslynator/commit/6b78496efe1a2f2678f2ef2a71986e2bee006863)).
+* Improve analyzer [RCS1036](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1036.md) - remove empty line between documentation comment and declaration ([commit](https://github.com/JosefPihrt/Roslynator/commit/de0f1205671281679866e92edd9337a7416409e6)).
+* Improve analyzer [RCS1037](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1037.md) - remove trailing white-space from documentation comment ([commit](https://github.com/JosefPihrt/Roslynator/commit/c3f7d193ee37d04de7e2c698aab7f3e1e6350e80)).
+* Improve analyzer [RCS1143](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1143.md) ([commit](https://github.com/JosefPihrt/Roslynator/commit/4c4281ebdf8eb0aa1a77d5e5bfda71bc66cce1df))
   * `x?.M() ?? default(int?)` can be simplified to `x?.M()` if `x` is a nullable struct.
-* Improve analyzer [RCS1206](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1206.md) ([commit](https://github.com/JosefPihrt/Roslynator/commit/88dd4cea4df07f036a8296511410ccff70f8fefe))
+* Improve analyzer [RCS1206](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1206.md) ([commit](https://github.com/JosefPihrt/Roslynator/commit/88dd4cea4df07f036a8296511410ccff70f8fefe))
   * `(x != null) ? x.M() : default(int?)` can be simplified to `x?.M()` if `x` is a nullable struct.
 
 ### 2.3.1 (2020-01-20)
@@ -241,7 +241,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 #### Analyzers
 
-* Disable analyzer [RCS1029](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1029.md) (FormatBinaryOperatorOnNextLine) by default.
+* Disable analyzer [RCS1029](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1029.md) (FormatBinaryOperatorOnNextLine) by default.
 
 ## 2.1.4 (2019-08-13)
 
@@ -252,29 +252,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 #### Analyzers
 
 * Publish package [Roslynator.CodeAnalysis.Analyzers 1.0.0-beta](https://www.nuget.org/packages/Roslynator.CodeAnalysis.Analyzers/1.0.0-beta)
-* Add analyzer [RCS1236](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1236.md) (UseExceptionFilter).
-* Add analyzer [RCS1237](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1237.md) (UseBitShiftOperator).
-* Add analyzer [RCS1238](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1238.md) (AvoidNestedConditionalOperators).
-* Add analyzer [RCS1239](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1239.md) (UseForStatementInsteadOfWhileStatement).
-* Add analyzer [RCS1240](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1240.md) (UnnecessaryOperator).
-* Add analyzer [RCS1241](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1241.md) (ImplementNonGenericCounterpart).
+* Add analyzer [RCS1236](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1236.md) (UseExceptionFilter).
+* Add analyzer [RCS1237](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1237.md) (UseBitShiftOperator).
+* Add analyzer [RCS1238](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1238.md) (AvoidNestedConditionalOperators).
+* Add analyzer [RCS1239](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1239.md) (UseForStatementInsteadOfWhileStatement).
+* Add analyzer [RCS1240](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1240.md) (UnnecessaryOperator).
+* Add analyzer [RCS1241](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1241.md) (ImplementNonGenericCounterpart).
 
 #### Refactorings
 
-* Add refactoring [RR0213](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0213.md) (AddParameterToInterfaceMember)
+* Add refactoring [RR0213](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0213.md) (AddParameterToInterfaceMember)
 
 ### 2.1.1 (2019-05-13)
 
 #### Analyzers
 
-* Add analyzer [RCS1235](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1235.md) (OptimizeMethodCall).
-  * Incorporate [RCS1150](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1150.md) and [RCS1178](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1178.md) into [RCS1235](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1235.md).
-* Enable by default analyzer [RCS1023](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1023.md) (FormatEmptyBlock) and change default severity to 'Hidden'.
-* Change default severity of analyzer [RCS1168](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1168.md) (ParameterNameDiffersFromBaseName) to 'Hidden'.
+* Add analyzer [RCS1235](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1235.md) (OptimizeMethodCall).
+  * Incorporate [RCS1150](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1150.md) and [RCS1178](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1178.md) into [RCS1235](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1235.md).
+* Enable by default analyzer [RCS1023](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1023.md) (FormatEmptyBlock) and change default severity to 'Hidden'.
+* Change default severity of analyzer [RCS1168](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1168.md) (ParameterNameDiffersFromBaseName) to 'Hidden'.
 
 #### Refactorings
 
-* Add refactoring [RR0212](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0212.md) (DuplicateSwitchSection)
+* Add refactoring [RR0212](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0212.md) (DuplicateSwitchSection)
 
 ### 2.1.0 (2019-03-25)
 
@@ -282,7 +282,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 #### Analyzers
 
-* Disable analyzer [RCS1231](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1231.md) (MakeParameterRefReadOnly) by default.
+* Disable analyzer [RCS1231](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1231.md) (MakeParameterRefReadOnly) by default.
 
 #### Code Fixes
 
@@ -299,16 +299,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 #### Analyzers
 
-* Add analyzer [RCS1232](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1232.md) (OrderElementsInDocumentationComment)
-* Add analyzer [RCS1233](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1233.md) (UseShortCircuitingOperator)
-* Add analyzer [RCS1234](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1234.md) (DuplicateEnumValue)
+* Add analyzer [RCS1232](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1232.md) (OrderElementsInDocumentationComment)
+* Add analyzer [RCS1233](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1233.md) (UseShortCircuitingOperator)
+* Add analyzer [RCS1234](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1234.md) (DuplicateEnumValue)
 
 #### Refactorings
 
-* Refactoring [RR0120](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0120.md) (ReplaceConditionalExpressionWithIfElse) can be applied recursively.
-* Add refactoring [RR0022](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0022.md) (ChangeTypeAccordingToExpression)
-* Add refactoring [RR0210](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0210.md) (ImplementCustomEnumerator)
-* Add refactoring [RR0211](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0211.md) (ConvertStatementsToIfElse)
+* Refactoring [RR0120](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0120.md) (ReplaceConditionalExpressionWithIfElse) can be applied recursively.
+* Add refactoring [RR0022](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0022.md) (ChangeTypeAccordingToExpression)
+* Add refactoring [RR0210](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0210.md) (ImplementCustomEnumerator)
+* Add refactoring [RR0211](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0211.md) (ConvertStatementsToIfElse)
 
 #### Code Fixes
 
@@ -318,27 +318,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 #### Analyzers
 
-* Add analyzer [RCS1230](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1230.md) (UnnecessaryUsageOfEnumerator)
-* Add analyzer [RCS1231](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1231.md) (MakeParameterRefReadOnly)
+* Add analyzer [RCS1230](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1230.md) (UnnecessaryUsageOfEnumerator)
+* Add analyzer [RCS1231](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1231.md) (MakeParameterRefReadOnly)
 
 ### 2.0.0 (2018-10-14)
 
 #### New Features
 
 * Add nuget package [Roslynator.CommandLine](https://nuget.org/packages/Roslynator.CommandLine)
-  * [Fix all diagnostics in a solution](https://github.com/JosefPihrt/Roslynator/blob/master/docs/HowToFixAllDiagnostics.md)
-  * [Generate API documentation](https://github.com/JosefPihrt/Roslynator/blob/master/docs/HowToGenerateDocumentation.md)
+  * [Fix all diagnostics in a solution](https://github.com/JosefPihrt/Roslynator/blob/main/docs/HowToFixAllDiagnostics.md)
+  * [Generate API documentation](https://github.com/JosefPihrt/Roslynator/blob/main/docs/HowToGenerateDocumentation.md)
 
 #### Analyzers
 
-* Change default severity of [RCS1141](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1141.md), [RCS1142](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1142.md) and [RCS1165](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1165.md) to 'Hidden'
-* Disable [RCS1174](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1174.md) by default
-* Improve analyzer [RCS1128](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1128.md) - `x.GetValueOrDefault(y)` can be replaced with `x ?? y`
-* Change code fix for [RCS1194](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1194.md) - do not generate "serialization" constructor
+* Change default severity of [RCS1141](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1141.md), [RCS1142](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1142.md) and [RCS1165](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1165.md) to 'Hidden'
+* Disable [RCS1174](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1174.md) by default
+* Improve analyzer [RCS1128](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1128.md) - `x.GetValueOrDefault(y)` can be replaced with `x ?? y`
+* Change code fix for [RCS1194](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1194.md) - do not generate "serialization" constructor
 
 #### Refactorings
 
-* Add refactoring [RR0209](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0209.md) (RemoveAsyncAwait)
+* Add refactoring [RR0209](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0209.md) (RemoveAsyncAwait)
 
 #### Code Fixes
 
@@ -348,13 +348,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 #### Analyzers
 
-* Add analyzer [RCS1228](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1228.md) (UnusedElementInDocumentationComment)
-* Add analyzer [RCS1229](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1229.md) (UseAsyncAwait)
-* Add code fix for analyzer [RCS1163](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1163.md) (UnusedParameter)
+* Add analyzer [RCS1228](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1228.md) (UnusedElementInDocumentationComment)
+* Add analyzer [RCS1229](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1229.md) (UseAsyncAwait)
+* Add code fix for analyzer [RCS1163](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1163.md) (UnusedParameter)
 
 #### Refactorings
 
-* Add refactoring [RR0208](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0208.md) (AddTagToDocumentationComment)
+* Add refactoring [RR0208](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0208.md) (AddTagToDocumentationComment)
 
 #### Code Fixes
 
@@ -364,49 +364,49 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 #### Analyzers
 
-* Add analyzer [RCS1227](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1227.md) (ValidateArgumentsCorrectly)
+* Add analyzer [RCS1227](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1227.md) (ValidateArgumentsCorrectly)
 
 #### Refactorings
 
-* Add refactoring [RR0206](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0206.md) (ReplaceForEachWithEnumerator)
-* Add refactoring [RR0207](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0207.md) (SortCaseLabels)
-* Enable refactorings [RR0037](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0037.md) (ExpandExpressionBody) and [RR0169](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0169.md) (UseExpressionBodiedMember) for multiple members.
-* Extend refactoring [RR0189](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0189.md) (ReduceIfNesting) and rename it to InvertIf.
+* Add refactoring [RR0206](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0206.md) (ReplaceForEachWithEnumerator)
+* Add refactoring [RR0207](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0207.md) (SortCaseLabels)
+* Enable refactorings [RR0037](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0037.md) (ExpandExpressionBody) and [RR0169](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0169.md) (UseExpressionBodiedMember) for multiple members.
+* Extend refactoring [RR0189](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0189.md) (ReduceIfNesting) and rename it to InvertIf.
 
 ### 1.9.0 (2018-06-13)
 
 #### Analyzers
 
-* Incorporate [RCS1082](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1082.md), [RCS1083](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1083.md), [RCS1109](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1109.md), [RCS1119](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1119.md), [RCS1120](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1120.md) and [RCS1121](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1121.md) into [RCS1077](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1077.md)
+* Incorporate [RCS1082](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1082.md), [RCS1083](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1083.md), [RCS1109](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1109.md), [RCS1119](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1119.md), [RCS1120](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1120.md) and [RCS1121](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1121.md) into [RCS1077](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1077.md)
 
 #### Refactorings
 
-* Disable [RR0010](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0010.md) and [RR0012](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0012.md) by default
+* Disable [RR0010](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0010.md) and [RR0012](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0012.md) by default
 
 ### 1.8.3 (2018-05-17)
 
 #### Analyzers
 
-* Add analyzer [RCS1223](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1223.md) (MarkTypeWithDebuggerDisplayAttribute)
-* Add analyzer [RCS1224](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1224.md) (MakeMethodExtensionMethod)
-* Add analyzer [RCS1225](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1225.md) (MakeSealedClass)
-* Add analyzer [RCS1226](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1226.md) (AddParagraphToDocumentationComment)
-* Improve analyzer [RCS1146](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1146.md) (UseConditionalAccess)
+* Add analyzer [RCS1223](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1223.md) (MarkTypeWithDebuggerDisplayAttribute)
+* Add analyzer [RCS1224](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1224.md) (MakeMethodExtensionMethod)
+* Add analyzer [RCS1225](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1225.md) (MakeSealedClass)
+* Add analyzer [RCS1226](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1226.md) (AddParagraphToDocumentationComment)
+* Improve analyzer [RCS1146](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1146.md) (UseConditionalAccess)
   * `x == null || x.y` can be simplified to `x?.y != false`
   * `x == null || !x.y` can be simplified to `x?.y != true`
 
 #### Refactorings
 
-* Improve refactoring [RR0051](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0051.md) (FormatExpressionChain)
+* Improve refactoring [RR0051](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0051.md) (FormatExpressionChain)
   * A chain that contains conditional access (`x?.y`) will be properly formatted.
 
 ### 1.8.2 (2018-05-02)
 
 #### Analyzers
 
-* Add analyzer [RCS1220](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1220.md) (UsePatternMatchingInsteadOfIsAndCast)
-* Add analyzer [RCS1221](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1221.md) (UsePatternMatchingInsteadOfAsAndNullCheck)
-* Add analyzer [RCS1222](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1222.md) (MergePreprocessorDirectives)
+* Add analyzer [RCS1220](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1220.md) (UsePatternMatchingInsteadOfIsAndCast)
+* Add analyzer [RCS1221](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1221.md) (UsePatternMatchingInsteadOfAsAndNullCheck)
+* Add analyzer [RCS1222](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1222.md) (MergePreprocessorDirectives)
 
 #### Code Fixes
 
@@ -416,15 +416,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 #### Analyzers
 
-* Add analyzer [RCS1218](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1218.md) (SimplifyCodeBranching)
-* Add analyzer [RCS1219](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1219.md) (CallSkipAndAnyInsteadOfCount) (split from [RCS1083](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1083.md))
+* Add analyzer [RCS1218](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1218.md) (SimplifyCodeBranching)
+* Add analyzer [RCS1219](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1219.md) (CallSkipAndAnyInsteadOfCount) (split from [RCS1083](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1083.md))
 
 #### Refactorings
 
-* Add refactoring [RR0202](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0202.md) (MoveUnsafeContextToContainingDeclaration)
-* Add refactoring [RR0203](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0203.md) (ExtractEventHandlerMethod)
-* Add refactoring [RR0204](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0204.md) (GeneratePropertyForDebuggerDisplayAttribute)
-* Add refactoring [RR0205](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0205.md) (AddEmptyLineBetweenDeclarations)
+* Add refactoring [RR0202](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0202.md) (MoveUnsafeContextToContainingDeclaration)
+* Add refactoring [RR0203](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0203.md) (ExtractEventHandlerMethod)
+* Add refactoring [RR0204](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0204.md) (GeneratePropertyForDebuggerDisplayAttribute)
+* Add refactoring [RR0205](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0205.md) (AddEmptyLineBetweenDeclarations)
 
 #### Code Fixes
 
@@ -436,63 +436,63 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ##### Changes of "IsEnabledByDefault"
 
-* [RCS1008](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1008.md): disabled by default
-* [RCS1009](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1009.md): disabled by default
-* [RCS1010](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1010.md): disabled by default
-* [RCS1035](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1035.md): disabled by default
-* [RCS1040](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1040.md): enabled by default
-* [RCS1073](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1073.md): enabled by default
+* [RCS1008](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1008.md): disabled by default
+* [RCS1009](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1009.md): disabled by default
+* [RCS1010](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1010.md): disabled by default
+* [RCS1035](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1035.md): disabled by default
+* [RCS1040](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1040.md): enabled by default
+* [RCS1073](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1073.md): enabled by default
 
 ##### Changes of "DefaultSeverity"
 
-* [RCS1017](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1017.md): from Warning to Info
-* [RCS1026](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1026.md): from Warning to Info
-* [RCS1027](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1027.md): from Warning to Info
-* [RCS1028](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1028.md): from Warning to Info
-* [RCS1030](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1030.md): from Warning to Info
-* [RCS1044](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1044.md): from Info to Warning
-* [RCS1045](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1045.md): from Warning to Info
-* [RCS1055](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1055.md): from Info to Hidden
-* [RCS1056](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1056.md): from Warning to Info
-* [RCS1073](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1073.md): from Hidden to Info
-* [RCS1076](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1076.md): from Info to Hidden
-* [RCS1081](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1081.md): from Warning to Info
-* [RCS1086](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1086.md): from Warning to Info
-* [RCS1087](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1087.md): from Warning to Info
-* [RCS1088](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1088.md): from Warning to Info
-* [RCS1094](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1094.md): from Warning to Info
-* [RCS1110](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1110.md): from Warning to Info
-* [RCS1182](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1182.md): from Info to Hidden
+* [RCS1017](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1017.md): from Warning to Info
+* [RCS1026](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1026.md): from Warning to Info
+* [RCS1027](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1027.md): from Warning to Info
+* [RCS1028](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1028.md): from Warning to Info
+* [RCS1030](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1030.md): from Warning to Info
+* [RCS1044](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1044.md): from Info to Warning
+* [RCS1045](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1045.md): from Warning to Info
+* [RCS1055](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1055.md): from Info to Hidden
+* [RCS1056](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1056.md): from Warning to Info
+* [RCS1073](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1073.md): from Hidden to Info
+* [RCS1076](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1076.md): from Info to Hidden
+* [RCS1081](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1081.md): from Warning to Info
+* [RCS1086](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1086.md): from Warning to Info
+* [RCS1087](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1087.md): from Warning to Info
+* [RCS1088](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1088.md): from Warning to Info
+* [RCS1094](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1094.md): from Warning to Info
+* [RCS1110](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1110.md): from Warning to Info
+* [RCS1182](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1182.md): from Info to Hidden
 
 ### 1.7.2 (2018-03-06)
 
 #### Analyzers
 
-* Add analyzer [RCS1217](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1217.md) (ReplaceInterpolatedStringWithStringConcatenation).
+* Add analyzer [RCS1217](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1217.md) (ReplaceInterpolatedStringWithStringConcatenation).
 
 #### Refactorings
 
-* Add refactoring [RR0201](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0201.md) (ReplaceInterpolatedStringWithStringFormat).
+* Add refactoring [RR0201](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0201.md) (ReplaceInterpolatedStringWithStringFormat).
 
 ### 1.7.1 (2018-02-14)
 
 #### Analyzers
 
-* Add analyzer [RCS1216](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1216.md) (UnnecessaryUnsafeContext).
-* Improve analyzer [RCS1181](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1181.md) (ReplaceCommentWithDocumentationComment) - support trailing comment.
+* Add analyzer [RCS1216](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1216.md) (UnnecessaryUnsafeContext).
+* Improve analyzer [RCS1181](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1181.md) (ReplaceCommentWithDocumentationComment) - support trailing comment.
 
 ### 1.7.0 (2018-02-02)
 
 #### Analyzers
 
-* Rename analyzer AddBraces to AddBracesWhenExpressionSpansOverMultipleLines ([RCS1001](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1001.md)).
-* Rename analyzer AddBracesToIfElse to AddBracesToIfElseWhenExpressionSpansOverMultipleLines ([RCS1003](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1003.md)).
-* Rename analyzer AvoidEmbeddedStatement to AddBraces ([RCS1007](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1007.md)).
-* Rename analyzer AvoidEmbeddedStatementInIfElse to AddBracesToIfElse ([RCS1126](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1126.md)).
+* Rename analyzer AddBraces to AddBracesWhenExpressionSpansOverMultipleLines ([RCS1001](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1001.md)).
+* Rename analyzer AddBracesToIfElse to AddBracesToIfElseWhenExpressionSpansOverMultipleLines ([RCS1003](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1003.md)).
+* Rename analyzer AvoidEmbeddedStatement to AddBraces ([RCS1007](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1007.md)).
+* Rename analyzer AvoidEmbeddedStatementInIfElse to AddBracesToIfElse ([RCS1126](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1126.md)).
 
 #### Refactorings
 
-* Add refactoring [RR0200](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0200.md) (UncommentMultilineComment).
+* Add refactoring [RR0200](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0200.md) (UncommentMultilineComment).
 
 ### 1.6.30 (2018-01-19)
 
@@ -500,12 +500,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 #### Analyzers
 
-* Do not report unused parameter ([RCS1163](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1163.md)) when parameter name consists of underscore(s).
+* Do not report unused parameter ([RCS1163](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1163.md)) when parameter name consists of underscore(s).
 
 #### Refactorings
 
-* Add refactoring [RR0198](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0198.md) (InlineProperty).
-* Add refactoring [RR0199](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0199.md) (RemoveEnumMemberValue).
+* Add refactoring [RR0198](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0198.md) (InlineProperty).
+* Add refactoring [RR0199](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0199.md) (RemoveEnumMemberValue).
 * Remove, duplicate or comment out local function.
 * Change accessibility for selected members.
 
@@ -517,12 +517,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 #### Analyzers
 
-* Add analyzer [RCS1214](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1214.md) (AvoidInterpolatedStringWithNoInterpolatedText).
-* Add analyzer [RCS1215](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1215.md) (ExpressionIsAlwaysEqualToTrueOrFalse).
+* Add analyzer [RCS1214](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1214.md) (AvoidInterpolatedStringWithNoInterpolatedText).
+* Add analyzer [RCS1215](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1215.md) (ExpressionIsAlwaysEqualToTrueOrFalse).
 
 #### Refactorings
 
-* Add refactoring [RR0197](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0197.md) (InitializeFieldFromConstructor).
+* Add refactoring [RR0197](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0197.md) (InitializeFieldFromConstructor).
 
 #### Code Fixes
 
@@ -532,8 +532,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 #### Analyzers
 
-* Add analyzer [RCS1213](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1213.md) (UnusedMemberDeclaration).
-* Improve analyzer [RCS1163](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1163.md) (UnusedParameter)
+* Add analyzer [RCS1213](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1213.md) (UnusedMemberDeclaration).
+* Improve analyzer [RCS1163](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1163.md) (UnusedParameter)
   * Report unused parameters of lambda expressions and anonymous methods.
 
 #### Code Fixes
@@ -544,8 +544,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 #### Refactorings
 
-* Add refactoring [RR0195](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0195.md) (AddMemberToInterface).
-* Add refactoring [RR0196](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0196.md) (MergeIfWithParentIf).
+* Add refactoring [RR0195](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0195.md) (AddMemberToInterface).
+* Add refactoring [RR0196](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0196.md) (MergeIfWithParentIf).
 
 #### Code Fixes
 
@@ -555,8 +555,8 @@ Add code fix for CS1031 and CS8112.
 
 #### Refactorings
 
-* Add refactoring [RR0193](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0193.md) (ReplaceInterpolatedStringWithConcatenation).
-* Add refactoring [RR0194](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0194.md) (SplitDeclarationAndInitialization).
+* Add refactoring [RR0193](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0193.md) (ReplaceInterpolatedStringWithConcatenation).
+* Add refactoring [RR0194](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0194.md) (SplitDeclarationAndInitialization).
 
 #### Code Fixes
 
@@ -566,11 +566,11 @@ Add code fix for CS1031 and CS8112.
 
 #### Analyzers
 
-* Add analyzer [RCS1212](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1212.md) (RemoveRedundantAssignment).
+* Add analyzer [RCS1212](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1212.md) (RemoveRedundantAssignment).
 
 #### Refactorings
 
-* Add refactoring [RR0192](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0192.md) (ReplaceCommentWithDocumentationComment).
+* Add refactoring [RR0192](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0192.md) (ReplaceCommentWithDocumentationComment).
 
 #### Code Fixes
 
@@ -580,15 +580,15 @@ Add code fix for CS1031 and CS8112.
 
 #### Analyzers
 
-* Add analyzer [RCS1210](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1210.md) (ReturnTaskInsteadOfNull).
-* Add analyzer [RCS1211](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1211.md) (RemoveUnnecessaryElseClause).
-* Remove analyzer [RCS1022](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1022.md) (SimplifyLambdaExpressionParameterList).
+* Add analyzer [RCS1210](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1210.md) (ReturnTaskInsteadOfNull).
+* Add analyzer [RCS1211](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1211.md) (RemoveUnnecessaryElseClause).
+* Remove analyzer [RCS1022](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1022.md) (SimplifyLambdaExpressionParameterList).
 
 #### Refactorings
 
-* Replace refactoring [RR0019](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0019.md) (ChangeMemberTypeAccordingToReturnExpression) with code fix.
-* Replace refactoring [RR0020](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0020.md) (ChangeMemberTypeAccordingToYieldReturnExpression) with code fix.
-* Replace refactoring [RR0008](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0008.md) (AddDefaultValueToReturnStatement) with code fix.
+* Replace refactoring [RR0019](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0019.md) (ChangeMemberTypeAccordingToReturnExpression) with code fix.
+* Replace refactoring [RR0020](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0020.md) (ChangeMemberTypeAccordingToYieldReturnExpression) with code fix.
+* Replace refactoring [RR0008](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0008.md) (AddDefaultValueToReturnStatement) with code fix.
 
 #### Code Fixes
 
@@ -608,13 +608,13 @@ Add code fix for CS1031 and CS8112.
 
 #### Analyzers
 
-  * Remove analyzer [RCS1095](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1095.md) (UseCSharp6DictionaryInitializer)
+  * Remove analyzer [RCS1095](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1095.md) (UseCSharp6DictionaryInitializer)
 
 #### Refactorings
 
 ##### New Refactorings
 
-  * [RR0191](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0191.md) (UseCSharp6DictionaryInitializer)
+  * [RR0191](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0191.md) (UseCSharp6DictionaryInitializer)
 
 ### 1.4.57 (2017-09-06)
 
@@ -622,7 +622,7 @@ Add code fix for CS1031 and CS8112.
 
 ##### New Refactorings
 
-  * [RR0190](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0190.md) (ReplaceIfElseWithIfReturn)
+  * [RR0190](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0190.md) (ReplaceIfElseWithIfReturn)
 
 #### Code Fixes
 
@@ -634,7 +634,7 @@ Add code fix for CS1031 and CS8112.
 
 ##### New Analyzers
 
-  * [RCS1209](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1209.md) (ReorderTypeParameterConstraints)
+  * [RCS1209](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1209.md) (ReorderTypeParameterConstraints)
 
 ### 1.4.55 (2017-08-16)
 
@@ -646,13 +646,13 @@ Add code fix for CS1031 and CS8112.
 
 ##### New Analyzers
 
-  * [RCS1208](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1208.md) (ReduceIfNesting)
+  * [RCS1208](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1208.md) (ReduceIfNesting)
 
 #### Refactorings
 
 ##### New Refactorings
 
-  * [RR0189](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0189.md) (ReduceIfNesting)
+  * [RR0189](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0189.md) (ReduceIfNesting)
 
 ### 1.4.54 (2017-08-08)
 
@@ -662,15 +662,15 @@ Add code fix for CS1031 and CS8112.
 
 #### Analyzers
 
-* Add code fix for analyzer [RCS1168](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1168.md) (ParameterNameDiffersFromBase)
+* Add code fix for analyzer [RCS1168](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1168.md) (ParameterNameDiffersFromBase)
 
 ##### New Analyzers
 
-* [RCS1203](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1203.md) (UseAttributeUsageAttribute)
-* [RCS1204](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1204.md) (UseEventArgsEmpty)
-* [RCS1205](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1205.md) (ReorderNamedArguments)
-* [RCS1206](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1206.md) (UseConditionalAccessInsteadOfConditionalExpression)
-* [RCS1207](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1207.md) (UseMethodGroupInsteadOfAnonymousFunction)
+* [RCS1203](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1203.md) (UseAttributeUsageAttribute)
+* [RCS1204](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1204.md) (UseEventArgsEmpty)
+* [RCS1205](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1205.md) (ReorderNamedArguments)
+* [RCS1206](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1206.md) (UseConditionalAccessInsteadOfConditionalExpression)
+* [RCS1207](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1207.md) (UseMethodGroupInsteadOfAnonymousFunction)
 
 ### 1.4.53 (2017-08-02)
 
@@ -682,10 +682,10 @@ Add code fix for CS1031 and CS8112.
 
 ##### New Analyzers
 
-* [RCS1199](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1199.md) (SimplifyBooleanExpression)
-* [RCS1200](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1200.md) (CallThenByInsteadOfOrderBy)
-* [RCS1201](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1201.md) (UseMethodChaining)
-* [RCS1202](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1202.md) (UseConditionalAccessToAvoidNullReferenceException)
+* [RCS1199](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1199.md) (SimplifyBooleanExpression)
+* [RCS1200](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1200.md) (CallThenByInsteadOfOrderBy)
+* [RCS1201](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1201.md) (UseMethodChaining)
+* [RCS1202](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1202.md) (UseConditionalAccessToAvoidNullReferenceException)
 
 ### 1.4.52 (2017-07-24)
 
@@ -697,12 +697,12 @@ Add code fix for CS1031 and CS8112.
 
 #### Refactorings
 
-  * [RR0073](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0073.md) (MarkContainingClassAsAbstract) has been replaced with code fix.
+  * [RR0073](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0073.md) (MarkContainingClassAsAbstract) has been replaced with code fix.
 
 ##### New Refactorings
 
-  * [RR0187](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0187.md) (FormatWhereConstraint)
-  * [RR0188](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0188.md) (ReplaceForEachWithForAndReverseLoop)
+  * [RR0187](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0187.md) (FormatWhereConstraint)
+  * [RR0188](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0188.md) (ReplaceForEachWithForAndReverseLoop)
 
 #### Code Fixes
 
@@ -738,33 +738,33 @@ Code fixes has been added for the following compiler diagnostics:
 
 * Following analyzers have been replaced with code fixes:
 
-  * [RCS1115](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1115.md) (ReplaceReturnStatementWithExpressionStatement)
-  * [RCS1116](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1116.md) (AddBreakStatementToSwitchSection)
-  * [RCS1117](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1117.md) (AddReturnStatementThatReturnsDefaultValue)
-  * [RCS1122](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1122.md) (AddMissingSemicolon)
-  * [RCS1125](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1125.md) (MarkMemberAsStatic)
-  * [RCS1131](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1131.md) (ReplaceReturnWithYieldReturn)
-  * [RCS1137](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1137.md) (AddDocumentationComment)
-  * [RCS1144](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1144.md) (MarkContainingClassAsAbstract)
-  * [RCS1147](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1147.md) (RemoveInapplicableModifier)
-  * [RCS1148](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1148.md) (RemoveUnreachableCode)
-  * [RCS1149](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1149.md) (RemoveImplementationFromAbstractMember)
-  * [RCS1152](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1152.md) (MemberTypeMustMatchOverriddenMemberType)
-  * [RCS1176](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1176.md) (OverridingMemberCannotChangeAccessModifiers)
+  * [RCS1115](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1115.md) (ReplaceReturnStatementWithExpressionStatement)
+  * [RCS1116](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1116.md) (AddBreakStatementToSwitchSection)
+  * [RCS1117](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1117.md) (AddReturnStatementThatReturnsDefaultValue)
+  * [RCS1122](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1122.md) (AddMissingSemicolon)
+  * [RCS1125](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1125.md) (MarkMemberAsStatic)
+  * [RCS1131](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1131.md) (ReplaceReturnWithYieldReturn)
+  * [RCS1137](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1137.md) (AddDocumentationComment)
+  * [RCS1144](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1144.md) (MarkContainingClassAsAbstract)
+  * [RCS1147](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1147.md) (RemoveInapplicableModifier)
+  * [RCS1148](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1148.md) (RemoveUnreachableCode)
+  * [RCS1149](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1149.md) (RemoveImplementationFromAbstractMember)
+  * [RCS1152](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1152.md) (MemberTypeMustMatchOverriddenMemberType)
+  * [RCS1176](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1176.md) (OverridingMemberCannotChangeAccessModifiers)
 
 #### Refactorings
 
 * Following refactorings have been replaced with code fixes:
 
-  * [RR0001](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0001.md) (AddBooleanComparison)
-  * [RR0042](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0042.md) (ExtractDeclarationFromUsingStatement)
-  * [RR0072](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0072.md) (MarkMemberAsStatic)
-  * [RR0122](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0122.md) (ReplaceCountWithLengthOrLengthWitCount)
-  * [RR0146](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0146.md) (ReplaceStringLiteralWithCharacterLiteral)
+  * [RR0001](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0001.md) (AddBooleanComparison)
+  * [RR0042](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0042.md) (ExtractDeclarationFromUsingStatement)
+  * [RR0072](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0072.md) (MarkMemberAsStatic)
+  * [RR0122](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0122.md) (ReplaceCountWithLengthOrLengthWitCount)
+  * [RR0146](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0146.md) (ReplaceStringLiteralWithCharacterLiteral)
 
 ##### New Refactorings
 
-  * [RR0186](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0186.md) (ChangeAccessibility)
+  * [RR0186](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0186.md) (ChangeAccessibility)
 
 ### 1.4.13 (2017-06-21)
 
@@ -772,8 +772,8 @@ Code fixes has been added for the following compiler diagnostics:
 
 ##### New Analyzers
 
-* [RCS1197](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1197.md) (OptimizeStringBuilderAppendCall)
-* [RCS1198](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1198.md) (AvoidBoxingOfValueType)
+* [RCS1197](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1197.md) (OptimizeStringBuilderAppendCall)
+* [RCS1198](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1198.md) (AvoidBoxingOfValueType)
 
 ### 1.4.12 (2017-06-11)
 
@@ -781,19 +781,19 @@ Code fixes has been added for the following compiler diagnostics:
 
 ##### New Analyzers
 
-* [RCS1192](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1192.md) (UseRegularStringLiteralInsteadOfVerbatimStringLiteral)
-* [RCS1193](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1193.md) (OverridingMemberCannotChangeParamsModifier)
-* [RCS1194](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1194.md) (ImplementExceptionConstructors)
-* [RCS1195](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1195.md) (UseExclusiveOrOperator)
-* [RCS1196](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1196.md) (CallExtensionMethodAsInstanceMethod)
+* [RCS1192](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1192.md) (UseRegularStringLiteralInsteadOfVerbatimStringLiteral)
+* [RCS1193](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1193.md) (OverridingMemberCannotChangeParamsModifier)
+* [RCS1194](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1194.md) (ImplementExceptionConstructors)
+* [RCS1195](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1195.md) (UseExclusiveOrOperator)
+* [RCS1196](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1196.md) (CallExtensionMethodAsInstanceMethod)
 
 #### Refactorings
 
 ##### New Refactorings
 
-* [RR0183](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0183.md) (UseListInsteadOfYield)
-* [RR0184](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0184.md) (SplitIfStatement)
-* [RR0185](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0185.md) (ReplaceObjectCreationWithDefaultValue)
+* [RR0183](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0183.md) (UseListInsteadOfYield)
+* [RR0184](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0184.md) (SplitIfStatement)
+* [RR0185](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0185.md) (ReplaceObjectCreationWithDefaultValue)
 
 ### 1.4.1 (2017-06-05)
 
@@ -801,37 +801,37 @@ Code fixes has been added for the following compiler diagnostics:
 
 ##### New Analyzers
 
-* [RCS1191](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1191.md) (DeclareEnumValueAsCombinationOfNames)
-* [RCS1190](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1190.md) (MergeStringExpressions)
-* [RCS1189](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1189.md) (AddOrRemoveRegionName)
-* [RCS1188](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1188.md) (RemoveRedundantAutoPropertyInitialization)
-* [RCS1187](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1187.md) (MarkFieldAsConst)
-* [RCS1186](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1186.md) (UseRegexInstanceInsteadOfStaticMethod)
+* [RCS1191](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1191.md) (DeclareEnumValueAsCombinationOfNames)
+* [RCS1190](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1190.md) (MergeStringExpressions)
+* [RCS1189](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1189.md) (AddOrRemoveRegionName)
+* [RCS1188](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1188.md) (RemoveRedundantAutoPropertyInitialization)
+* [RCS1187](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1187.md) (MarkFieldAsConst)
+* [RCS1186](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1186.md) (UseRegexInstanceInsteadOfStaticMethod)
 
 #### Refactorings
 
 ##### New Refactorings
 
-* [RR0182](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0182.md) (UseStringBuilderInsteadOfConcatenation)
-* [RR0181](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0181.md) (InlineConstant)
+* [RR0182](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0182.md) (UseStringBuilderInsteadOfConcatenation)
+* [RR0181](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0181.md) (InlineConstant)
 
 ### 1.4.0 (2017-05-29)
 
 #### Analyzers
 
-* Delete analyzer [RCS1054](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1054.md) (MergeLocalDeclarationWithReturnStatement) - Its functionality is incorporated into analyzer [RCS1124](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1124.md) (InlineLocalVariable).
-* Disable analyzer [RCS1024](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1024.md) (FormatAccessorList) by default.
-* Disable analyzer [RCS1023](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1023.md) (FormatEmptyBlock) by default.
-* Modify analyzer [RCS1091](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1091.md) (RemoveEmptyRegion) - Change default severity from Info to Hidden.
-* Modify analyzer [RCS1157](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1157.md) (CompositeEnumValueContainsUndefinedFlag) - Change default severity from Warning to Info.
-* Modify analyzer [RCS1032](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1032.md) (RemoveRedundantParentheses) - Exclude following syntaxes from analyzer:
+* Delete analyzer [RCS1054](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1054.md) (MergeLocalDeclarationWithReturnStatement) - Its functionality is incorporated into analyzer [RCS1124](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1124.md) (InlineLocalVariable).
+* Disable analyzer [RCS1024](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1024.md) (FormatAccessorList) by default.
+* Disable analyzer [RCS1023](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1023.md) (FormatEmptyBlock) by default.
+* Modify analyzer [RCS1091](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1091.md) (RemoveEmptyRegion) - Change default severity from Info to Hidden.
+* Modify analyzer [RCS1157](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1157.md) (CompositeEnumValueContainsUndefinedFlag) - Change default severity from Warning to Info.
+* Modify analyzer [RCS1032](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1032.md) (RemoveRedundantParentheses) - Exclude following syntaxes from analyzer:
   * AssignmentExpression.Right
   * ForEachExpression.Expression
   * EqualsValueClause.Value
 
 #### Refactorings
 
-* Modify refactoring [RR0024](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0024.md) (CheckExpressionForNull) - Do not add empty line.
+* Modify refactoring [RR0024](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0024.md) (CheckExpressionForNull) - Do not add empty line.
 
 ### 1.3.11 (2017-05-18)
 
@@ -841,20 +841,20 @@ Code fixes has been added for the following compiler diagnostics:
 
 #### Analyzers
 
-* Improve analyzer [RCS1147](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1147.md) (RemoveInapplicableModifier) - Analyze local function.
-* Improve analyzer [RCS1077](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1077.md) (SimplifyMethodChain) - Merge combination of Where and Any.
-* Improve analyzer [RCS1158](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1158.md) (StaticMemberInGenericTypeShouldUseTypeParameter) - Member must be public, internal or protected internal.
+* Improve analyzer [RCS1147](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1147.md) (RemoveInapplicableModifier) - Analyze local function.
+* Improve analyzer [RCS1077](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1077.md) (SimplifyMethodChain) - Merge combination of Where and Any.
+* Improve analyzer [RCS1158](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1158.md) (StaticMemberInGenericTypeShouldUseTypeParameter) - Member must be public, internal or protected internal.
 
 ##### New Analyzers
 
-* [RCS1178](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1178.md) (CallDebugFailInsteadOfDebugAssert)
-* [RCS1179](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1179.md) (UseReturnInsteadOfAssignment)
-* [RCS1180](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1180.md) (InlineLazyInitialization)
-* [RCS1181](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1181.md) (ReplaceCommentWithDocumentationComment)
-* [RCS1182](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1182.md) (RemoveRedundantBaseInterface)
-* [RCS1183](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1183.md) (FormatInitializerWithSingleExpressionOnSingleLine)
-* [RCS1184](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1184.md) (FormatConditionalExpression)
-* [RCS1185](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1185.md) (AvoidSingleLineBlock)
+* [RCS1178](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1178.md) (CallDebugFailInsteadOfDebugAssert)
+* [RCS1179](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1179.md) (UseReturnInsteadOfAssignment)
+* [RCS1180](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1180.md) (InlineLazyInitialization)
+* [RCS1181](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1181.md) (ReplaceCommentWithDocumentationComment)
+* [RCS1182](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1182.md) (RemoveRedundantBaseInterface)
+* [RCS1183](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1183.md) (FormatInitializerWithSingleExpressionOnSingleLine)
+* [RCS1184](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1184.md) (FormatConditionalExpression)
+* [RCS1185](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1185.md) (AvoidSingleLineBlock)
 
 ### 1.3.0 (2017-04-02)
 
@@ -862,8 +862,8 @@ Code fixes has been added for the following compiler diagnostics:
 
 #### Analyzers
 
-* Disable [RCS1176](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1176.md) (UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious) by default.
-* Disable [RCS1177](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1177.md) (UseVarInsteadOfExplicitTypeInForEach) by default.
+* Disable [RCS1176](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1176.md) (UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious) by default.
+* Disable [RCS1177](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1177.md) (UseVarInsteadOfExplicitTypeInForEach) by default.
 
 ### 1.2.53 (2017-03-27)
 
@@ -872,8 +872,8 @@ Code fixes has been added for the following compiler diagnostics:
 
 #### Analyzers
 
-* Change default severity of [RCS1140](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1140.md) (AddExceptionToDocumentationComment) from Warning to Hidden.
-* Change default severity of [RCS1161](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1161.md) (EnumMemberShouldDeclareExplicitValue) from Warning to Hidden.
+* Change default severity of [RCS1140](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1140.md) (AddExceptionToDocumentationComment) from Warning to Hidden.
+* Change default severity of [RCS1161](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1161.md) (EnumMemberShouldDeclareExplicitValue) from Warning to Hidden.
 
 ### 1.2.52 (2017-03-22)
 
@@ -881,14 +881,14 @@ Code fixes has been added for the following compiler diagnostics:
 
 ##### New Analyzers
 
-* [RCS1176](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1176.md) (UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious)
-* [RCS1177](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1177.md) (UseVarInsteadOfExplicitTypeInForEach)
+* [RCS1176](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1176.md) (UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious)
+* [RCS1177](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1177.md) (UseVarInsteadOfExplicitTypeInForEach)
 
 #### Refactorings
 
 ##### New Refactorings
 
-* [RR0180](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0180.md) (InlineUsingStatic)
+* [RR0180](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0180.md) (InlineUsingStatic)
 
 ### 1.2.51 (2017-03-14)
 
