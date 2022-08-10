@@ -39,7 +39,7 @@ namespace Roslynator.CommandLine
 
         [Option(
             longName: "branch",
-            Default = "master")]
+            Default = "main")]
         public string Branch { get; set; }
 
         [Option(longName: "commit")]

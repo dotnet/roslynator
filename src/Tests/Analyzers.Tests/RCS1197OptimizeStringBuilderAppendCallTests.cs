@@ -45,6 +45,42 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+        public async Task Test_Substring_Int32_Int32_Calculation()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System.Text;
+
+class C
+{
+    void M()
+    {
+        string s = null;
+        var start = 2;
+        var len = 5;
+        var sb = new StringBuilder();
+
+        sb.Append([|s.Substring(start + len)|]);
+    }
+}
+", @"
+using System.Text;
+
+class C
+{
+    void M()
+    {
+        string s = null;
+        var start = 2;
+        var len = 5;
+        var sb = new StringBuilder();
+
+        sb.Append(s, start + len, s.Length - (start + len));
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
         public async Task Test_Substring_Int32()
         {
             await VerifyDiagnosticAndFixAsync(@"

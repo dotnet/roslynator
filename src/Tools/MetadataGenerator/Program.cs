@@ -250,7 +250,7 @@ namespace Roslynator.CodeGeneration
 
                         AnalyzerMetadata analyzer = dic[id];
 
-                        return $"[{id}](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/{id}.md) ({analyzer.Title.TrimEnd('.')})";
+                        return $"[{id}](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/{id}.md) ({analyzer.Title.TrimEnd('.')})";
                     });
 
                 File.WriteAllText(path, s, _utf8NoBom);
