@@ -26,6 +26,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [CLI] Fix filtering of projects (relates to `--projects` or `--ignored-projects` parameter) ([#914](https://github.com/josefpihrt/roslynator/pull/914)).
 - Refactoring "Add using directive" (RR0014) now works when file-scoped namespace is used ([#932](https://github.com/josefpihrt/roslynator/pull/932)).
 - Add parentheses if necessary in a code fix for [RCS1197](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1197.md) ([#928](https://github.com/josefpihrt/roslynator/pull/928) by @karl-sjogren).
+- Do not simplify default expression if it would change semantics ([RCS1244](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1244.md)) ([#939](https://github.com/josefpihrt/roslynator/pull/939).
+- Fix NullReferenceException in [RCS1198](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1198.md) ([#940](https://github.com/josefpihrt/roslynator/pull/940).
 
 -----
 <!-- Content below does not adhere to 'Keep a Changelog' format -->
