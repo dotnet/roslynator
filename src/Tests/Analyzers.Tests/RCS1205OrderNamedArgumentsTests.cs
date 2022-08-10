@@ -13,6 +13,28 @@ namespace Roslynator.CSharp.Analysis.Tests
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.OrderNamedArguments;
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderNamedArguments)]
+        public async Task Test()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M(string a, string b, string c)
+    {
+        M([|c: ""c"", a: ""a"", b: ""b""|]);
+    }
+}
+", @"
+class C
+{
+    void M(string a, string b, string c)
+    {
+        M(a: ""a"", b: ""b"", c: ""c"");
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderNamedArguments)]
         public async Task Test_OptionalArguments()
         {
             await VerifyDiagnosticAndFixAsync(@"
