@@ -8,6 +8,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using System.Threading;
 
 namespace Roslynator.CSharp.Analysis
 {
@@ -123,9 +124,24 @@ namespace Roslynator.CSharp.Analysis
                 case SyntaxKind.EqualsExpression:
                 case SyntaxKind.NotEqualsExpression:
                     {
-                        TypeInfo typeInfo = context.SemanticModel.GetTypeInfo(expression, context.CancellationToken);
+                        SemanticModel semanticModel = context.SemanticModel;
+                        CancellationToken cancellationToken = context.CancellationToken;
+
+                        TypeInfo typeInfo = semanticModel.GetTypeInfo(expression, cancellationToken);
 
                         if (!SymbolEqualityComparer.Default.Equals(typeInfo.Type, typeInfo.ConvertedType))
+                            return;
+
+                        IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol((ExpressionSyntax)parent, cancellationToken);
+
+                        if (methodSymbol is null)
+                            return;
+
+                        SyntaxNode newNode = parent.ReplaceNode(defaultExpression, CSharpFactory.DefaultLiteralExpression());
+
+                        IMethodSymbol newMethodSymbol = semanticModel.GetSpeculativeMethodSymbol(parent.SpanStart, newNode);
+
+                        if (!SymbolEqualityComparer.Default.Equals(methodSymbol, newMethodSymbol))
                             return;
 
                         ReportDiagnostic();
