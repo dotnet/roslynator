@@ -6,7 +6,7 @@
     <Description xml:space="preserve">A collection of 300+ refactorings and fixes for C#, powered by Roslyn.</Description>
     <MoreInfo>http://github.com/JosefPihrt/Roslynator</MoreInfo>
     <License>LICENSE.txt</License>
-    <ReleaseNotes>http://github.com/JosefPihrt/Roslynator/blob/master/ChangeLog.md</ReleaseNotes>
+    <ReleaseNotes>http://github.com/JosefPihrt/Roslynator/blob/main/ChangeLog.md</ReleaseNotes>
     <Icon>Roslynator.ico</Icon>
     <PreviewImage>RoslynatorPreview.png</PreviewImage>
     <Tags>Roslyn;Refactoring;C#;CSharp;Productivity</Tags>

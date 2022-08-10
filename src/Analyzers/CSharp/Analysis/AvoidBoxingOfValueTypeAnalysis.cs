@@ -40,7 +40,7 @@ namespace Roslynator.CSharp.Analysis
 
                                 if (!expression.IsKind(SyntaxKind.InterpolatedStringExpression, SyntaxKind.AddExpression)
                                     && parameters[0].Type.IsObject()
-                                    && context.SemanticModel.GetTypeSymbol(expression, context.CancellationToken).IsValueType)
+                                    && context.SemanticModel.GetTypeSymbol(expression, context.CancellationToken)?.IsValueType == true)
                                 {
                                     DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AvoidBoxingOfValueType, argument);
                                     return;

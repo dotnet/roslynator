@@ -7,7 +7,7 @@ using static Roslynator.Documentation.DocumentationOptions;
 
 namespace Roslynator.CommandLine
 {
-    [Verb("generate-doc", HelpText = "Generates documentation files from specified assemblies.")]
+    [Verb("generate-doc", HelpText = "Generates reference documentation from specified project/solution.")]
     public class GenerateDocCommandLineOptions : AbstractGenerateDocCommandLineOptions
     {
         [Option(
@@ -15,6 +15,11 @@ namespace Roslynator.CommandLine
             HelpText = "Defines one or more xml documentation files that should be included. These files can contain a documentation for namespaces, for instance.",
             MetaValue = "<FILE_PATH>")]
         public IEnumerable<string> AdditionalXmlDocumentation { get; set; }
+
+        [Option(
+            longName: "group-by-common-namespace",
+            HelpText = "Indicates whether to group namespaces by greatest common namespace.")]
+        public bool GroupByCommonNamespace { get; set; }
 
         [Option(
             longName: OptionNames.IgnoredMemberParts,
@@ -27,6 +32,12 @@ namespace Roslynator.CommandLine
             HelpText = "Defines parts of a namespace documentation that should be excluded. Allowed values are content, containing-namespace, summary, examples, remarks, classes, structs, interfaces, enums, delegates and see-also.",
             MetaValue = "<IGNORED_NAMESPACE_PARTS>")]
         public IEnumerable<string> IgnoredNamespaceParts { get; set; }
+
+        [Option(
+            longName: OptionNames.IgnoredCommonParts,
+            HelpText = "Defines common parts of a documentation that should be excluded. Allowed value is content.",
+            MetaValue = "<IGNORED_COMMON_PARTS>")]
+        public IEnumerable<string> IgnoredCommonParts { get; set; }
 
         [Option(
             longName: OptionNames.IgnoredRootParts,
@@ -67,11 +78,18 @@ namespace Roslynator.CommandLine
         public bool IncludeSystemNamespace { get; set; }
 
         [Option(
-            longName: "inheritance-style",
-            Default = DefaultValues.InheritanceStyle,
+            longName: OptionNames.InheritanceStyle,
+            Default = nameof(Documentation.InheritanceStyle.Horizontal),
             HelpText = "Defines a style of a type inheritance. Allowed values are horizontal (default) or vertical.",
             MetaValue = "<INHERITANCE_STYLE>")]
-        public InheritanceStyle InheritanceStyle { get; set; }
+        public string InheritanceStyle { get; set; }
+
+        [Option(
+            longName: "files-layout",
+            Default = "hierarchical",
+            HelpText = "Defines layout of documentation files. Allowed values are hierarchical (default) or flat-namespaces.",
+            MetaValue = "<LAYOUT>")]
+        public string FilesLayout { get; set; }
 
         [Option(
             longName: "max-derived-types",

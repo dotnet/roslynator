@@ -89,6 +89,7 @@ namespace Roslynator.Documentation
         public abstract string StructTitle { get; }
         public abstract string SummaryTitle { get; }
         public abstract string TypeParametersTitle { get; }
+        public abstract string TypesTitle { get; }
         public abstract string ValuesTitle { get; }
         public abstract string ValueTitle { get; }
 
@@ -224,6 +225,8 @@ namespace Roslynator.Documentation
                     return EnumsTitle;
                 case NamespaceDocumentationParts.Delegates:
                     return DelegatesTitle;
+                case NamespaceDocumentationParts.Namespaces:
+                    return NamespacesTitle;
                 case NamespaceDocumentationParts.SeeAlso:
                     return SeeAlsoTitle;
                 default:
@@ -359,6 +362,7 @@ namespace Roslynator.Documentation
             public override string StructTitle { get; } = "Struct";
             public override string SummaryTitle { get; } = "Summary";
             public override string TypeParametersTitle { get; } = "Type Parameters";
+            public override string TypesTitle { get; } = "Types";
             public override string ValuesTitle { get; } = "Values";
             public override string ValueTitle { get; } = "Value";
         }

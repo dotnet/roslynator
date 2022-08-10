@@ -1,11 +1,12 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Collections.Immutable;
+using Microsoft.CodeAnalysis;
+
 namespace Roslynator.Documentation
 {
-    internal static class WellKnownNames
+    public abstract class UrlSegmentProvider
     {
-        public const string GlobalNamespaceName = "Global";
-        public const string ConstructorName = "-ctor";
-        public const string TopFragmentName = "_top";
+        public abstract ImmutableArray<string> GetSegments(ISymbol symbol);
     }
 }
