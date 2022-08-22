@@ -17,7 +17,7 @@ The package is applicable for projects that reference Roslyn packages (Microsoft
    dotnet add package roslynator.formatting.analyzers
    ```
 
-* Use EditorConfig to [configure](https://github.com/josefpihrt/roslynator/blob/master/docs/Configuration.md) analyzers.
+* Use EditorConfig to [configure](https://github.com/josefpihrt/roslynator/blob/main/docs/Configuration.md) analyzers.
 
 ## Feedback
 

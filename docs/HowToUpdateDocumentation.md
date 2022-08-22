@@ -27,7 +27,7 @@ To update documentation it is necessary to edit [Analyzers.xml](../src/Analyzers
     <Id>RCSXXXX</Id>
     <Title>Title</Title>
     <MessageFormat>MessageFormat</MessageFormat> <!-- Message if often same as title. -->
-    <Category>General</Category> <!-- See https://github.com/JosefPihrt/Roslynator/blob/master/src/Analyzers/DiagnosticCategories.cs -->
+    <Category>General</Category> <!-- See https://github.com/JosefPihrt/Roslynator/blob/main/src/Analyzers/DiagnosticCategories.cs -->
     <DefaultSeverity>Info</DefaultSeverity> <!-- Hidden, Info, Warning or Error -->
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut> <!-- true if analyzer will fade some tokens -->

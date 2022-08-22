@@ -102,5 +102,25 @@ class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidBoxingOfValueType)]
+        public async Task TestNoDiagnostic_NoTypeSymbol()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System.Text;
+
+class C
+{
+    void M()
+    {
+        var f = false;
+
+        var sb = new StringBuilder();
+
+        sb.Append(f ? ""ab"" : 'c');
+    }
+}
+");
+        }
     }
 }

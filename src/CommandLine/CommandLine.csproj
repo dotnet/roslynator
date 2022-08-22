@@ -4,7 +4,7 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(RoslynatorDotNetCli)' == true AND '$(Configuration)' == 'Release'">
+  <PropertyGroup Condition="'$(RoslynatorDotNetCli)' == true">
     <TargetFrameworks>net5.0;net6.0</TargetFrameworks>
   </PropertyGroup>
 
@@ -51,6 +51,7 @@
     <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.Workspaces" Version="4.2.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="4.2.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="DotMarkdown" Version="0.2.0" />
   </ItemGroup>
 
   <ItemGroup>

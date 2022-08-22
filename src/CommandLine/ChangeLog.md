@@ -21,7 +21,7 @@
 
 ### 0.2.0 (2021-09-05)
 
-* Add command [`rename-symbol`](https://github.com/JosefPihrt/Roslynator/blob/master/docs/cli/rename-symbol-command.md)
+* Add command [`rename-symbol`](https://github.com/JosefPihrt/Roslynator/blob/main/docs/cli/rename-symbol-command.md)
   * This command enables to rename multiple symbols in one batch.
 * It is no longer required to specify path to MSBuild directory using `--msbuild-path` option.
   * Latest version will be selected by default.

@@ -13,6 +13,7 @@ namespace Roslynator.Documentation
         private readonly ImmutableArray<MetadataName> _ignoredMetadataNames;
 
         public DocumentationOptions(
+            string rootFileHeading,
             IEnumerable<string> ignoredNames = null,
             string preferredCultureName = null,
             string rootDirectoryUrl = null,
@@ -37,7 +38,9 @@ namespace Roslynator.Documentation
             NamespaceDocumentationParts ignoredNamespaceParts = NamespaceDocumentationParts.None,
             TypeDocumentationParts ignoredTypeParts = TypeDocumentationParts.None,
             MemberDocumentationParts ignoredMemberParts = MemberDocumentationParts.None,
+            CommonDocumentationParts ignoredCommonParts = CommonDocumentationParts.None,
             IncludeContainingNamespaceFilter includeContainingNamespaceFilter = IncludeContainingNamespaceFilter.None,
+            FilesLayout filesLayout = FilesLayout.Hierarchical,
             bool scrollToContent = DefaultValues.ScrollToContent)
         {
             if (maxDerivedTypes < 0)
@@ -46,6 +49,7 @@ namespace Roslynator.Documentation
             _ignoredMetadataNames = ignoredNames?.Select(name => MetadataName.Parse(name)).ToImmutableArray() ?? default;
 
             IgnoredNames = ignoredNames?.ToImmutableArray() ?? ImmutableArray<string>.Empty;
+            RootFileHeading = rootFileHeading;
             PreferredCultureName = preferredCultureName;
             RootDirectoryUrl = rootDirectoryUrl;
             MaxDerivedTypes = maxDerivedTypes;
@@ -69,13 +73,23 @@ namespace Roslynator.Documentation
             IgnoredNamespaceParts = ignoredNamespaceParts;
             IgnoredTypeParts = ignoredTypeParts;
             IgnoredMemberParts = ignoredMemberParts;
+            IgnoredCommonParts = ignoredCommonParts;
             IncludeContainingNamespaceFilter = includeContainingNamespaceFilter;
+            FilesLayout = filesLayout;
             ScrollToContent = scrollToContent;
+
+            if ((IgnoredCommonParts & CommonDocumentationParts.Content) != 0)
+            {
+                IgnoredRootParts |= RootDocumentationParts.Content;
+                IgnoredNamespaceParts |= NamespaceDocumentationParts.Content;
+                IgnoredTypeParts |= TypeDocumentationParts.Content;
+                IgnoredMemberParts |= MemberDocumentationParts.Content;
+            }
         }
 
-        public static DocumentationOptions Default { get; } = new();
-
         public ImmutableArray<string> IgnoredNames { get; }
+
+        public string RootFileHeading { get; }
 
         public string PreferredCultureName { get; }
 
@@ -125,7 +139,11 @@ namespace Roslynator.Documentation
 
         public MemberDocumentationParts IgnoredMemberParts { get; }
 
+        public CommonDocumentationParts IgnoredCommonParts { get; }
+
         public IncludeContainingNamespaceFilter IncludeContainingNamespaceFilter { get; }
+
+        public FilesLayout FilesLayout { get; }
 
         public bool ScrollToContent { get; }
 
@@ -178,6 +196,13 @@ namespace Roslynator.Documentation
             public const bool PlaceSystemNamespaceFirst = true;
             public const bool IncludeSystemNamespace = false;
             public const bool ScrollToContent = false;
+
+            public const RootDocumentationParts IgnoredRootParts = RootDocumentationParts.None;
+            public const NamespaceDocumentationParts IgnoredNamespaceParts = NamespaceDocumentationParts.None;
+            public const TypeDocumentationParts IgnoredTypeParts = TypeDocumentationParts.None;
+            public const MemberDocumentationParts IgnoredMemberParts = MemberDocumentationParts.None;
+            public const CommonDocumentationParts IgnoredCommonParts = CommonDocumentationParts.None;
+            public const IncludeContainingNamespaceFilter IncludeContainingNamespaceFilter = Roslynator.Documentation.IncludeContainingNamespaceFilter.None;
         }
     }
 }
