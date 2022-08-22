@@ -90,7 +90,7 @@ namespace Roslynator.CSharp.Analysis
                     Debug.Assert(!parameters.IsDefault, symbol.Kind.ToString());
 
                     if (!parameters.IsDefault
-                        && parameters.Length == arguments.Count)
+                        && parameters.Length >= arguments.Count)
                     {
                         for (int i = firstIndex; i < arguments.Count; i++)
                         {
