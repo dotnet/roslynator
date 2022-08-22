@@ -29,6 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Do not simplify default expression if it would change semantics ([RCS1244](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1244.md)) ([#939](https://github.com/josefpihrt/roslynator/pull/939).
 - Fix NullReferenceException in [RCS1198](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1198.md) ([#940](https://github.com/josefpihrt/roslynator/pull/940).
 - Order named arguments even if optional arguments are not specified [RCS1205](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1205.md) ([#941](https://github.com/josefpihrt/roslynator/pull/941).
+- Prefix identifier with `@` if necessary ([RCS1220](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1220.md)) ([#943](https://github.com/josefpihrt/roslynator/pull/943).
 
 -----
 <!-- Content below does not adhere to 'Keep a Changelog' format -->
