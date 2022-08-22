@@ -111,10 +111,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             string name = NameGenerator.CreateName(typeSymbol, firstCharToLower: true) ?? DefaultNames.Variable;
 
-            name = NameGenerator.Default.EnsureUniqueLocalName(name, semanticModel, node.SpanStart, cancellationToken: cancellationToken) ?? DefaultNames.Variable;
-
-            if (SyntaxFacts.GetKeywordKind(name) != SyntaxKind.None)
-                name = "@" + name;
+            name = CSharpNameGenerator.Default.EnsureUniqueLocalName(name, semanticModel, node.SpanStart, cancellationToken: cancellationToken) ?? DefaultNames.Variable;
 
             IsPatternExpressionSyntax isPatternExpression = IsPatternExpression(
                 isInfo.Expression,
