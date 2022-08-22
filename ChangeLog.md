@@ -13,6 +13,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add code fix for CS0037 ([#929](https://github.com/josefpihrt/roslynator/pull/929)).
 - [CLI] Generate reference documentation that can be published with Docusaurus ([#918](https://github.com/josefpihrt/roslynator/pull/918)).
   - `roslynator generate-doc --host docusaurus`
+- Analyzer 'Remove empty syntax' ([RCS1255](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1255.md)) ([#913](https://github.com/josefpihrt/roslynator/pull/913)).
+  - This analyzer consolidates following existing analyzers:
+    - Remove empty empty statement ([RCS1038](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1038.md))
+    - Remove empty 'else' clause ([RCS1040](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1040.md))
+    - Remove empty object initializer ([RCS1041](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1041.md))
+    - Remove empty 'finally' clause ([RCS1066](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1066.md))
+    - Remove empty namespace declaration ([RCS1072](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1072.md))
+    - Remove empty region directive ([RCS1091](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1091.md))
+    - Remove empty destructor ([RCS1106](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1106.md))
 
 ### Changed
 

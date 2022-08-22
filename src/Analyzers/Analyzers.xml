@@ -901,7 +901,7 @@ if (f)
   </Analyzer>
   <Analyzer Identifier="RemoveEmptyStatement">
     <Id>RCS1038</Id>
-    <Title>([deprecated] use RCS1260 instead) Remove empty statement.</Title>
+    <Title>([deprecated] use RCS1255 instead) Remove empty statement.</Title>
     <Category>Redundancy</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -941,7 +941,7 @@ public void Foo()
   </Analyzer>
   <Analyzer Identifier="RemoveEmptyElseClause">
     <Id>RCS1040</Id>
-    <Title>([deprecated] use RCS1260 instead) Remove empty 'else' clause.</Title>
+    <Title>([deprecated] use RCS1255 instead) Remove empty 'else' clause.</Title>
     <Category>Redundancy</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -965,7 +965,7 @@ else // [|Id|]
   </Analyzer>
   <Analyzer Identifier="RemoveEmptyInitializer">
     <Id>RCS1041</Id>
-    <Title>([deprecated] use RCS1260 instead) Remove empty initializer.</Title>
+    <Title>([deprecated] use RCS1255 instead) Remove empty initializer.</Title>
     <Category>Redundancy</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -1551,7 +1551,7 @@ while (true);]]></Before>
   </Analyzer>
   <Analyzer Identifier="RemoveEmptyFinallyClause">
     <Id>RCS1066</Id>
-    <Title>([deprecated] use RCS1260 instead) Remove empty 'finally' clause.</Title>
+    <Title>([deprecated] use RCS1255 instead) Remove empty 'finally' clause.</Title>
     <Category>Redundancy</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -1706,7 +1706,7 @@ catch (Exception ex)
   </Analyzer>
   <Analyzer Identifier="RemoveEmptyNamespaceDeclaration">
     <Id>RCS1072</Id>
-    <Title>([deprecated] use RCS1260 instead) Remove empty namespace declaration.</Title>
+    <Title>([deprecated] use RCS1255 instead) Remove empty namespace declaration.</Title>
     <Category>Redundancy</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -2128,7 +2128,7 @@ public string Foo // [|Id|]
   </Analyzer>
   <Analyzer Identifier="RemoveEmptyRegion">
     <Id>RCS1091</Id>
-    <Title>([deprecated] use RCS1260 instead) Remove empty region.</Title>
+    <Title>([deprecated] use RCS1255 instead) Remove empty region.</Title>
     <Category>Redundancy</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -2453,7 +2453,7 @@ else
   </Analyzer>
   <Analyzer Identifier="RemoveEmptyDestructor">
     <Id>RCS1106</Id>
-    <Title>([deprecated] use RCS1260 instead) Remove empty destructor.</Title>
+    <Title>([deprecated] use RCS1255 instead) Remove empty destructor.</Title>
     <Category>Redundancy</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
