@@ -22,11 +22,11 @@ namespace Roslynator.CSharp
 
         public SyntaxTrivia Indentation => (_indentSize == -1) ? default : _indentation;
 
-        public int IndentSize => (_indentSize == -1) ? _indentation.Span.Length : _indentSize;
+        public int IndentSize => (_indentSize == -1) ? 0 : _indentSize;
 
         public int IndentationLength => (_indentSize == -1) ? 0 : Indentation.Span.Length;
 
-        public int IncreasedIndentationLength => (_indentSize == -1) ? _indentation.Span.Length : (Indentation.Span.Length + _indentSize);
+        public int IncreasedIndentationLength => (_indentSize == -1) ? 0 : (Indentation.Span.Length + _indentSize);
 
         public bool IsDefault => _indentation == default && _indentSize == 0;
 
@@ -47,7 +47,7 @@ namespace Roslynator.CSharp
             {
                 return (trivia1.Span.Length > 0)
                     ? new IndentationAnalysis(indentation, trivia1.Span.Length)
-                    : new IndentationAnalysis(indentation, indentation.Span.Length);
+                    : new IndentationAnalysis(indentation, -1);
             }
             else if (trivia1.Span.Length > 0)
             {
