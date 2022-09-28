@@ -33,6 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Do not suggest to make local variable a const when it is used in ref extension method ([RCS1118](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1118.md)) ([#948](https://github.com/josefpihrt/roslynator/pull/948).
 - Fix formatting of argument list ([#952](https://github.com/josefpihrt/roslynator/pull/952).
 - Do not remove async/await when 'using declaration' is used ([#953](https://github.com/josefpihrt/roslynator/pull/953).
+- Convert if-else to return statement when pattern matching is used ([RCS1073](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1073.md)) ([#956](https://github.com/josefpihrt/roslynator/pull/956).
 
 -----
 <!-- Content below does not adhere to 'Keep a Changelog' format -->

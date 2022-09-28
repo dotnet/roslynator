@@ -77,6 +77,72 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertIfToReturnStatement)]
+        public async Task Test_IfReturn_EqualsToNull()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    string M()
+    {
+        string x = null;
+
+        [|if (x == null)
+        {
+            return null;
+        }
+        else
+        {
+            return x;
+        }|]
+    }
+}
+", @"
+class C
+{
+    string M()
+    {
+        string x = null;
+
+        return x;
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertIfToReturnStatement)]
+        public async Task Test_IfReturn_IsNull()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    string M()
+    {
+        string x = null;
+
+        [|if (x is null)
+        {
+            return null;
+        }
+        else
+        {
+            return x;
+        }|]
+    }
+}
+", @"
+class C
+{
+    string M()
+    {
+        string x = null;
+
+        return x;
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertIfToReturnStatement)]
         public async Task TestNoDiagnostic_IfElseContainsComment()
         {
             await VerifyNoDiagnosticAsync(@"
