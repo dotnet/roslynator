@@ -972,5 +972,29 @@ class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
+        public async Task TestNoDiagnostic_UsingDeclaration()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System;
+using System.IO;
+using System.Threading.Tasks;
+
+class C
+{
+    private async Task<string> M()
+    {
+        using var stream = File.OpenRead("""");
+        return await this.M2(stream);
+    }
+
+    private Task<string> M2(FileStream stream)
+    {
+        throw new NotImplementedException();
+    }
+}
+");
+        }
     }
 }
