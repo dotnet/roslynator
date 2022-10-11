@@ -6,5 +6,6 @@ namespace Roslynator.CommandLine
     {
         GitHub,
         Docusaurus,
+        Sphinx,
     }
 }

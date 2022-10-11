@@ -226,7 +226,7 @@ namespace Roslynator.Documentation
 
         public abstract void WriteLineBreak();
 
-        public abstract void WriteLinkDestination(string name);
+        public abstract void WriteLinkTarget(string name);
 
         public virtual void WriteValue(bool value)
         {
@@ -306,6 +306,7 @@ namespace Roslynator.Documentation
 
                 while (true)
                 {
+                    //TODO: link to a section in Sphinx
                     WriteLink(en.Current, UrlProvider.GetFragment(en.Current));
 
                     if (en.MoveNext())
@@ -1224,7 +1225,8 @@ namespace Roslynator.Documentation
                 if (isExternal)
                     WriteString(")");
 
-                WriteLinkDestination(CreateLocalLink(baseType));
+                //TODO: link to other items in class hierarchy
+                //WriteLinkTarget(CreateLocalLink(baseType));
 
                 WriteEndBulletItem();
 
@@ -1731,7 +1733,7 @@ namespace Roslynator.Documentation
         {
             if (!string.IsNullOrEmpty(linkDestination))
             {
-                WriteLinkDestination(linkDestination);
+                WriteLinkTarget(linkDestination);
                 WriteLine();
             }
 
@@ -1921,19 +1923,19 @@ namespace Roslynator.Documentation
                 ? UrlSegmentProvider.GetSegments(CurrentSymbol)
                 : default;
 
-            string fragment = GetFragment();
+            string target = GetLocalLinkTarget();
 
-            if (fragment == null
+            if (target == null
                 && Options.ScrollToContent)
             {
-                fragment = "#" + WellKnownNames.TopFragmentName;
+                target = WellKnownNames.TopFragmentName;
             }
 
-            string url = UrlProvider.GetLocalUrl(segments, containingFolders, fragment).Url;
+            string url = UrlProvider.GetLocalUrl(segments, containingFolders, target).Url;
 
             return Options.RootDirectoryUrl + url;
 
-            string GetFragment()
+            string GetLocalLinkTarget()
             {
                 if (symbol.Kind == SymbolKind.Method
                     || (symbol.Kind == SymbolKind.Property && ((IPropertySymbol)symbol).IsIndexer))
@@ -1949,7 +1951,7 @@ namespace Roslynator.Documentation
                             if (en.MoveNext()
                                 && en.MoveNext())
                             {
-                                return "#" + DocumentationUrlProvider.GetFragment(symbol);
+                                return DocumentationUrlProvider.GetFragment(symbol);
                             }
                         }
                     }

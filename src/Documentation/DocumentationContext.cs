@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 
 namespace Roslynator.Documentation
@@ -10,6 +11,7 @@ namespace Roslynator.Documentation
     public class DocumentationContext
     {
         private readonly Func<DocumentationContext, DocumentationWriter> _createWriter;
+        private ImmutableHashSet<(INamespaceSymbol, string)> _commonNamespacesAsText;
 
         public DocumentationContext(
             DocumentationModel documentationModel,
@@ -43,6 +45,21 @@ namespace Roslynator.Documentation
         public SourceReferenceProvider SourceReferenceProvider { get; }
 
         public ImmutableHashSet<INamespaceSymbol> CommonNamespaces { get; }
+
+        internal ImmutableHashSet<(INamespaceSymbol symbol, string displayString)> CommonNamespacesAsText
+        {
+            get
+            {
+                if (_commonNamespacesAsText is null)
+                {
+                    _commonNamespacesAsText = CommonNamespaces
+                        .Select(f => (f, f.ToDisplayString(TypeSymbolDisplayFormats.Name_ContainingTypes_Namespaces_GlobalNamespace_OmittedAsContaining)))
+                        .ToImmutableHashSet();
+                }
+
+                return _commonNamespacesAsText;
+            }
+        }
 
         public DocumentationWriter CreateWriter()
         {
