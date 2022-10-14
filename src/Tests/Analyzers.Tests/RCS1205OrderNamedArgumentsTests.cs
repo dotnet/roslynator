@@ -55,5 +55,61 @@ class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderNamedArguments)]
+        public async Task Test_OptionalArguments2()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M(string a, string b = """", string c = """", string d = """", string e = """")
+    {
+        M(
+            """",
+            b: """",
+            """",
+            [|e: """",
+            d: """"|]);
+    }
+}
+", @"
+class C
+{
+    void M(string a, string b = """", string c = """", string d = """", string e = """")
+    {
+        M(
+            """",
+            b: """",
+            """",
+            d: """",
+            e: """");
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderNamedArguments)]
+        public async Task TestNoDiagnostic_OptionalArguments()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M(string a, string b = """", string c = """", string d = """")
+    {
+        M(
+            """",
+            b: """",
+            d: """");
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderNamedArguments)]
+        public async Task TestNoDiagnostic_OptionalArguments2()
+        {
+            await VerifyNoDiagnosticAsync(@"
+");
+        }
     }
 }

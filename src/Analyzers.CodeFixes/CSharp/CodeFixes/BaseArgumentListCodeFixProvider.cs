@@ -61,11 +61,11 @@ namespace Roslynator.CSharp.CodeFixes
 
             SeparatedSyntaxList<ArgumentSyntax> arguments = argumentList.Arguments;
 
-            int firstIndex = OrderNamedArgumentsAnalyzer.IndexOfFirstFixableParameter(argumentList, arguments, semanticModel, cancellationToken);
+            (int first, int last) = OrderNamedArgumentsAnalyzer.FindFixableSpan(argumentList, arguments, semanticModel, cancellationToken).Value;
 
             SeparatedSyntaxList<ArgumentSyntax> newArguments = arguments;
 
-            for (int i = firstIndex; i < arguments.Count; i++)
+            for (int i = first; i <= last; i++)
             {
                 IParameterSymbol parameter = parameters[i];
 
