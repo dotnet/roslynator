@@ -30,21 +30,24 @@ namespace Roslynator.CSharp.CodeFixes
             if (!TryFindFirstAncestorOrSelf(root, context.Span, out BaseArgumentListSyntax baseArgumentList))
                 return;
 
-            foreach (Diagnostic diagnostic in context.Diagnostics)
-            {
-                switch (diagnostic.Id)
-                {
-                    case DiagnosticIdentifiers.OrderNamedArguments:
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Order arguments",
-                                ct => OrderNamedArgumentsAsync(context.Document, baseArgumentList, ct),
-                                GetEquivalenceKey(diagnostic));
+            if (baseArgumentList.ContainsDirectives(context.Span))
+                return;
 
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
-                }
+            Document document = context.Document;
+            Diagnostic diagnostic = context.Diagnostics[0];
+
+            switch (diagnostic.Id)
+            {
+                case DiagnosticIdentifiers.OrderNamedArguments:
+                    {
+                        CodeAction codeAction = CodeAction.Create(
+                            "Order arguments",
+                            ct => OrderNamedArgumentsAsync(document, baseArgumentList, ct),
+                            GetEquivalenceKey(diagnostic));
+
+                        context.RegisterCodeFix(codeAction, diagnostic);
+                        break;
+                    }
             }
         }
 
@@ -61,7 +64,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             SeparatedSyntaxList<ArgumentSyntax> arguments = argumentList.Arguments;
 
-            (int first, int last) = OrderNamedArgumentsAnalyzer.FindFixableSpan(argumentList, arguments, semanticModel, cancellationToken).Value;
+            (int first, int last) = OrderNamedArgumentsAnalyzer.FindFixableSpan(arguments, semanticModel, cancellationToken);
 
             SeparatedSyntaxList<ArgumentSyntax> newArguments = arguments;
 

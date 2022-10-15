@@ -43,28 +43,26 @@ namespace Roslynator.CSharp.Analysis
             if (context.Node.ContainsDiagnostics)
                 return;
 
-            var argumentList = (BaseArgumentListSyntax)context.Node;
+            SeparatedSyntaxList<ArgumentSyntax> arguments = ((BaseArgumentListSyntax)context.Node).Arguments;
 
-            SeparatedSyntaxList<ArgumentSyntax> arguments = argumentList.Arguments;
+            if (arguments.Count >= 2)
+            {
+                (int first, int last) = FindFixableSpan(arguments, context.SemanticModel, context.CancellationToken);
 
-            (int first, int last)? range = FindFixableSpan(argumentList, arguments, context.SemanticModel, context.CancellationToken);
-
-            if (range is null)
-                return;
-
-            TextSpan span = TextSpan.FromBounds(arguments[range.Value.first].SpanStart, arguments[range.Value.last].Span.End);
-
-            if (argumentList.ContainsDirectives(span))
-                return;
-
-            DiagnosticHelpers.ReportDiagnostic(
-                context,
-                DiagnosticRules.OrderNamedArguments,
-                Location.Create(context.Node.SyntaxTree, span));
+                if (first >= 0
+                    && last > 0)
+                {
+                    DiagnosticHelpers.ReportDiagnostic(
+                        context,
+                        DiagnosticRules.OrderNamedArguments,
+                        Location.Create(
+                            context.Node.SyntaxTree,
+                            TextSpan.FromBounds(arguments[first].SpanStart, arguments[last].Span.End)));
+                }
+            }
         }
 
-        internal static (int first, int last)? FindFixableSpan(
-            BaseArgumentListSyntax argumentList,
+        internal static (int first, int last) FindFixableSpan(
             SeparatedSyntaxList<ArgumentSyntax> arguments,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
@@ -83,52 +81,99 @@ namespace Roslynator.CSharp.Analysis
                 }
             }
 
-            if (firstIndex < 0)
-                return null;
+            if (firstIndex >= 0
+                && firstIndex < arguments.Count - 1)
+            {
+                ISymbol symbol = semanticModel.GetSymbol(arguments.First().Parent.Parent, cancellationToken);
 
-            if (firstIndex >= arguments.Count - 1)
-                return null;
+                if (symbol is not null)
+                {
+                    ImmutableArray<IParameterSymbol> parameters = symbol.ParametersOrDefault();
 
-            ISymbol symbol = semanticModel.GetSymbol(argumentList.Parent, cancellationToken);
+                    Debug.Assert(!parameters.IsDefault, symbol.Kind.ToString());
 
-            if (symbol is null)
-                return null;
+                    if (!parameters.IsDefault
+                        && parameters.Length >= arguments.Count
+                        && IsFixable(firstIndex, arguments, parameters))
+                    {
+                        return GetFixableSpan(firstIndex, arguments, parameters);
+                    }
+                }
+            }
 
-            ImmutableArray<IParameterSymbol> parameters = symbol.ParametersOrDefault();
+            return default;
+        }
 
-            Debug.Assert(!parameters.IsDefault, symbol.Kind.ToString());
+        private static bool IsFixable(
+            int firstIndex,
+            SeparatedSyntaxList<ArgumentSyntax> arguments,
+            ImmutableArray<IParameterSymbol> parameters)
+        {
+            int j = -1;
+            string firstName = arguments[firstIndex].NameColon.Name.Identifier.ValueText;
 
-            if (parameters.IsDefault)
-                return null;
+            for (int i = 0; i < parameters.Length; i++)
+            {
+                if (parameters[i].Name == firstName)
+                {
+                    j = i;
+                    break;
+                }
+            }
 
-            if (parameters.Length < arguments.Count)
-                return null;
+            if (j >= 0)
+            {
+                for (int i = firstIndex + 1; i < arguments.Count; i++)
+                {
+                    string name = arguments[i].NameColon.Name.Identifier.ValueText;
 
-            if (!IsFixable(firstIndex, arguments, parameters))
-                return null;
+                    while (!string.Equals(
+                        name,
+                        parameters[j].Name,
+                        StringComparison.Ordinal))
+                    {
+                        j++;
 
-            var items = new List<(ArgumentSyntax, int)>();
+                        if (j == parameters.Length)
+                        {
+                            foreach (IParameterSymbol parameter in parameters)
+                            {
+                                if (parameter.Name == name)
+                                    return true;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private static (int first, int last) GetFixableSpan(
+            int firstIndex,
+            SeparatedSyntaxList<ArgumentSyntax> arguments,
+            ImmutableArray<IParameterSymbol> parameters)
+        {
+            var items = new List<(ArgumentSyntax argument, int ordinal)>();
 
             for (int i = firstIndex; i < arguments.Count; i++)
             {
                 IParameterSymbol parameter = parameters.FirstOrDefault(g => g.Name == arguments[i].NameColon.Name.Identifier.ValueText);
 
                 if (parameter is null)
-                {
-                    return null;
-                }
+                    return default;
 
                 items.Add((arguments[i], parameters.IndexOf(parameter)));
             }
 
-            items.Sort((x, y) => x.Item2.CompareTo(y.Item2));
+            items.Sort((x, y) => x.ordinal.CompareTo(y.ordinal));
 
             int first = firstIndex;
             int last = arguments.Count - 1;
 
             while (first < arguments.Count)
             {
-                if (items[first - firstIndex].Item1 == arguments[first])
+                if (items[first - firstIndex].argument == arguments[first])
                 {
                     first++;
                 }
@@ -136,7 +181,7 @@ namespace Roslynator.CSharp.Analysis
                 {
                     while (last > first)
                     {
-                        if (items[last - firstIndex].Item1 == arguments[last])
+                        if (items[last - firstIndex].argument == arguments[last])
                         {
                             last--;
                         }
@@ -148,49 +193,7 @@ namespace Roslynator.CSharp.Analysis
                 }
             }
 
-            return null;
-        }
-
-        private static bool IsFixable(int firstIndex, SeparatedSyntaxList<ArgumentSyntax> arguments, ImmutableArray<IParameterSymbol> parameters)
-        {
-            int j = -1;
-            string name = arguments[firstIndex].NameColon.Name.Identifier.ValueText;
-
-            for (int i = 0; i < parameters.Length; i++)
-            {
-                if (parameters[i].Name == name)
-                {
-                    j = i;
-                    break;
-                }
-            }
-
-            if (j == -1)
-                return false;
-
-            for (int i = firstIndex + 1; i < arguments.Count; i++)
-            {
-                name = arguments[i].NameColon.Name.Identifier.ValueText;
-
-                while (!string.Equals(
-                    name,
-                    parameters[j].Name,
-                    StringComparison.Ordinal))
-                {
-                    j++;
-
-                    if (j == parameters.Length)
-                    {
-                        foreach (IParameterSymbol parameter in parameters)
-                        {
-                            if (parameter.Name == name)
-                                return true;
-                        }
-                    }
-                }
-            }
-
-            return false;
+            return default;
         }
     }
 }
