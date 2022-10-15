@@ -89,6 +89,34 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderNamedArguments)]
+        public async Task Test_OptionalArguments3()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M(string a = """", string b = """", string c = """", string d = """")
+    {
+        M(
+            [|c: """",
+            b: """"|],
+            d: """");
+    }
+}
+", @"
+class C
+{
+    void M(string a = """", string b = """", string c = """", string d = """")
+    {
+        M(
+            b: """",
+            c: """",
+            d: """");
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderNamedArguments)]
         public async Task TestNoDiagnostic_OptionalArguments()
         {
             await VerifyNoDiagnosticAsync(@"

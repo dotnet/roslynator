@@ -1,8 +1,9 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Composition;
-using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -66,21 +67,23 @@ namespace Roslynator.CSharp.CodeFixes
 
             (int first, int last) = OrderNamedArgumentsAnalyzer.FindFixableSpan(arguments, semanticModel, cancellationToken);
 
+            List<(ArgumentSyntax argument, int ordinal)> sortedArguments = arguments
+                .Skip(first)
+                .Take(last - first + 1)
+                .Select(argument =>
+                {
+                    IParameterSymbol parameter = parameters.FirstOrDefault(g => g.Name == argument.NameColon.Name.Identifier.ValueText);
+
+                    return (argument, ordinal: parameters.IndexOf(parameter));
+                })
+                .OrderBy(f => f.ordinal)
+                .ToList();
+
             SeparatedSyntaxList<ArgumentSyntax> newArguments = arguments;
 
             for (int i = first; i <= last; i++)
             {
-                IParameterSymbol parameter = parameters[i];
-
-                int index = arguments.IndexOf(f => f.NameColon?.Name.Identifier.ValueText == parameter.Name);
-
-                Debug.Assert(index != -1, parameter.Name);
-
-                if (index != -1
-                    && index != i)
-                {
-                    newArguments = newArguments.ReplaceAt(i, arguments[index]);
-                }
+                newArguments = newArguments.ReplaceAt(i, sortedArguments[i - first].argument);
             }
 
             BaseArgumentListSyntax newNode = argumentList
