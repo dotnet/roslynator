@@ -3237,6 +3237,7 @@ namespace Roslynator.CSharp
                     case SyntaxKind.VariableDeclaration:
                     case SyntaxKind.VariableDeclarator:
                     case SyntaxKind.QueryBody:
+                    case SyntaxKind.AnonymousObjectMemberDeclarator:
                         {
                             break;
                         }
