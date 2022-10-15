@@ -2,6 +2,7 @@
 
 using System.Collections.Immutable;
 using System.Composition;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
@@ -34,23 +35,44 @@ namespace Roslynator.CSharp.CodeFixes
             if (!TryFindFirstAncestorOrSelf(root, context.Span, out SyntaxNode node, predicate: f => f.IsKind(SyntaxKind.VariableDeclaration, SyntaxKind.DeclarationExpression)))
                 return;
 
+            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
             if (node is VariableDeclarationSyntax variableDeclaration)
             {
-                TypeSyntax type = variableDeclaration.Type;
+                ExpressionSyntax value = variableDeclaration.Variables[0].Initializer.Value;
+                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(value, context.CancellationToken);
 
-                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                if (typeSymbol is null)
+                {
+                    var localSymbol = semanticModel.GetDeclaredSymbol(variableDeclaration.Variables[0], context.CancellationToken) as ILocalSymbol;
 
-                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(variableDeclaration.Variables[0].Initializer.Value, context.CancellationToken);
+                    if (localSymbol is not null)
+                    {
+                        typeSymbol = localSymbol.Type;
 
-                RegisterCodeFix(context, type, typeSymbol, semanticModel);
+                        value = value.WalkDownParentheses();
+
+                        Debug.Assert(
+                            value.IsKind(SyntaxKind.SimpleLambdaExpression, SyntaxKind.ParenthesizedLambdaExpression),
+                            value.Kind().ToString());
+
+                        if (value.IsKind(SyntaxKind.SimpleLambdaExpression, SyntaxKind.ParenthesizedLambdaExpression))
+                            typeSymbol = typeSymbol.WithNullableAnnotation(NullableAnnotation.NotAnnotated);
+                    }
+                    else
+                    {
+                        SyntaxDebug.Fail(variableDeclaration.Variables[0]);
+                        return;
+                    }
+                }
+
+                RegisterCodeFix(context, variableDeclaration.Type, typeSymbol, semanticModel);
             }
             else
             {
                 var declarationExpression = (DeclarationExpressionSyntax)node;
 
                 TypeSyntax type = declarationExpression.Type;
-
-                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                 var localSymbol = semanticModel.GetDeclaredSymbol(declarationExpression.Designation, context.CancellationToken) as ILocalSymbol;
 
