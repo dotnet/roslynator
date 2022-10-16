@@ -28,7 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add parentheses if necessary in a code fix for [RCS1197](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1197.md) ([#928](https://github.com/josefpihrt/roslynator/pull/928) by @karl-sjogren).
 - Do not simplify default expression if it would change semantics ([RCS1244](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1244.md)) ([#939](https://github.com/josefpihrt/roslynator/pull/939).
 - Fix NullReferenceException in [RCS1198](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1198.md) ([#940](https://github.com/josefpihrt/roslynator/pull/940).
-- Order named arguments even if optional arguments are not specified [RCS1205](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1205.md) ([#941](https://github.com/josefpihrt/roslynator/pull/941).
+- Order named arguments even if optional arguments are not specified [RCS1205](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1205.md) ([#941](https://github.com/josefpihrt/roslynator/pull/941), ([#965](https://github.com/josefpihrt/roslynator/pull/965).
 - Prefix identifier with `@` if necessary ([RCS1220](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1220.md)) ([#943](https://github.com/josefpihrt/roslynator/pull/943).
 - Do not suggest to make local variable a const when it is used in ref extension method ([RCS1118](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1118.md)) ([#948](https://github.com/josefpihrt/roslynator/pull/948).
 - Fix formatting of argument list ([#952](https://github.com/josefpihrt/roslynator/pull/952).
