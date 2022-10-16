@@ -67,23 +67,24 @@ namespace Roslynator.CSharp.CodeFixes
 
             (int first, int last) = OrderNamedArgumentsAnalyzer.FindFixableSpan(arguments, semanticModel, cancellationToken);
 
-            List<(ArgumentSyntax argument, int ordinal)> sortedArguments = arguments
+            List<ArgumentSyntax> sortedArguments = arguments
                 .Skip(first)
                 .Take(last - first + 1)
-                .Select(argument =>
+                .Select(a =>
                 {
-                    IParameterSymbol parameter = parameters.FirstOrDefault(g => g.Name == argument.NameColon.Name.Identifier.ValueText);
+                    IParameterSymbol parameter = parameters.First(p => p.Name == a.NameColon.Name.Identifier.ValueText);
 
-                    return (argument, ordinal: parameters.IndexOf(parameter));
+                    return (argument: a, ordinal: parameters.IndexOf(parameter));
                 })
-                .OrderBy(f => f.ordinal)
+                .OrderBy(a => a.ordinal)
+                .Select(a => a.argument)
                 .ToList();
 
             SeparatedSyntaxList<ArgumentSyntax> newArguments = arguments;
 
             for (int i = first; i <= last; i++)
             {
-                newArguments = newArguments.ReplaceAt(i, sortedArguments[i - first].argument);
+                newArguments = newArguments.ReplaceAt(i, sortedArguments[i - first]);
             }
 
             BaseArgumentListSyntax newNode = argumentList

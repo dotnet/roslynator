@@ -50,7 +50,7 @@ namespace Roslynator.CSharp.Analysis
                 (int first, int last) = FindFixableSpan(arguments, context.SemanticModel, context.CancellationToken);
 
                 if (first >= 0
-                    && last > 0)
+                    && last > first)
                 {
                     DiagnosticHelpers.ReportDiagnostic(
                         context,
@@ -154,26 +154,26 @@ namespace Roslynator.CSharp.Analysis
             SeparatedSyntaxList<ArgumentSyntax> arguments,
             ImmutableArray<IParameterSymbol> parameters)
         {
-            var items = new List<(ArgumentSyntax argument, int ordinal)>();
+            var sortedArgs = new List<(ArgumentSyntax argument, int ordinal)>();
 
             for (int i = firstIndex; i < arguments.Count; i++)
             {
-                IParameterSymbol parameter = parameters.FirstOrDefault(g => g.Name == arguments[i].NameColon.Name.Identifier.ValueText);
+                IParameterSymbol parameter = parameters.FirstOrDefault(p => p.Name == arguments[i].NameColon.Name.Identifier.ValueText);
 
                 if (parameter is null)
                     return default;
 
-                items.Add((arguments[i], parameters.IndexOf(parameter)));
+                sortedArgs.Add((arguments[i], parameters.IndexOf(parameter)));
             }
 
-            items.Sort((x, y) => x.ordinal.CompareTo(y.ordinal));
+            sortedArgs.Sort((x, y) => x.ordinal.CompareTo(y.ordinal));
 
             int first = firstIndex;
             int last = arguments.Count - 1;
 
             while (first < arguments.Count)
             {
-                if (items[first - firstIndex].argument == arguments[first])
+                if (sortedArgs[first - firstIndex].argument == arguments[first])
                 {
                     first++;
                 }
@@ -181,7 +181,7 @@ namespace Roslynator.CSharp.Analysis
                 {
                     while (last > first)
                     {
-                        if (items[last - firstIndex].argument == arguments[last])
+                        if (sortedArgs[last - firstIndex].argument == arguments[last])
                         {
                             last--;
                         }
