@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add code fix for CS0037 ([#929](https://github.com/josefpihrt/roslynator/pull/929)).
 - [CLI] Generate reference documentation that can be published with Docusaurus ([#918](https://github.com/josefpihrt/roslynator/pull/918)).
   - `roslynator generate-doc --host docusaurus`
+- [CLI] Generate reference documentation that can be published with Sphinx ([#961](https://github.com/josefpihrt/roslynator/pull/961)).
+  - `roslynator generate-doc --host sphinx`
 
 ### Changed
 
