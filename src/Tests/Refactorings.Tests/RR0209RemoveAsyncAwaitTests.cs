@@ -179,7 +179,7 @@ class C
         return GetAsync();
     }
 }
-", options: Options.AddAllowedCompilerDiagnosticId("CS1998"), equivalenceKey: EquivalenceKey.Create(RefactoringId));
+", equivalenceKey: EquivalenceKey.Create(RefactoringId), options: Options.AddAllowedCompilerDiagnosticId("CS1998"));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAsyncAwait)]
@@ -211,7 +211,7 @@ class C
         return GetAsync();
     }
 }
-", options: Options.AddAllowedCompilerDiagnosticId("CS1998"), equivalenceKey: EquivalenceKey.Create(RefactoringId));
+", equivalenceKey: EquivalenceKey.Create(RefactoringId), options: Options.AddAllowedCompilerDiagnosticId("CS1998"));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAsyncAwait)]
@@ -249,7 +249,7 @@ class C
         return GetAsync();
     }
 }
-", options: Options.AddAllowedCompilerDiagnosticId("CS1998"), equivalenceKey: EquivalenceKey.Create(RefactoringId));
+", equivalenceKey: EquivalenceKey.Create(RefactoringId), options: Options.AddAllowedCompilerDiagnosticId("CS1998"));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAsyncAwait)]
@@ -281,7 +281,7 @@ class C
         return GetAsync();
     }
 }
-", options: Options.AddAllowedCompilerDiagnosticId("CS1998"), equivalenceKey: EquivalenceKey.Create(RefactoringId));
+", equivalenceKey: EquivalenceKey.Create(RefactoringId), options: Options.AddAllowedCompilerDiagnosticId("CS1998"));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAsyncAwait)]
@@ -319,7 +319,7 @@ class C
         return GetAsync();
     }
 }
-", options: Options.AddAllowedCompilerDiagnosticId("CS1998"), equivalenceKey: EquivalenceKey.Create(RefactoringId));
+", equivalenceKey: EquivalenceKey.Create(RefactoringId), options: Options.AddAllowedCompilerDiagnosticId("CS1998"));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAsyncAwait)]

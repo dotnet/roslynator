@@ -56,12 +56,12 @@ namespace Roslynator.CommandLine
                 rootFileHeading: Options.Heading,
                 ignoredNames: Options.IgnoredNames,
                 rootDirectoryUrl: Options.RootDirectoryUrl,
+                includeSystemNamespace: Options.IncludeSystemNamespace,
                 placeSystemNamespaceFirst: !Options.NoPrecedenceForSystem,
                 markObsolete: !Options.NoMarkObsolete,
                 depth: Depth,
                 ignoredRootParts: IgnoredParts,
                 includeContainingNamespaceFilter: IncludeContainingNamespaceFilter,
-                includeSystemNamespace: Options.IncludeSystemNamespace,
                 scrollToContent: Options.ScrollToContent);
 
             ImmutableArray<Compilation> compilations = await GetCompilationsAsync(projectOrSolution, cancellationToken);

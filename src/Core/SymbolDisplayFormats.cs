@@ -8,8 +8,8 @@ namespace Roslynator
     {
         public static SymbolDisplayFormat FullName { get; } = new(
             globalNamespaceStyle: SymbolDisplayGlobalNamespaceStyle.Included,
-            genericsOptions: SymbolDisplayGenericsOptions.IncludeTypeParameters,
             typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces,
+            genericsOptions: SymbolDisplayGenericsOptions.IncludeTypeParameters,
             miscellaneousOptions: SymbolDisplayMiscellaneousOptions.UseSpecialTypes
                 | SymbolDisplayMiscellaneousOptions.EscapeKeywordIdentifiers
                 | SymbolDisplayMiscellaneousOptions.IncludeNullableReferenceTypeModifier);
@@ -19,8 +19,8 @@ namespace Roslynator
                 | SymbolDisplayMiscellaneousOptions.EscapeKeywordIdentifiers);
 
         public static SymbolDisplayFormat DisplayName { get; } = new(
-            genericsOptions: SymbolDisplayGenericsOptions.IncludeTypeParameters,
             typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypes,
+            genericsOptions: SymbolDisplayGenericsOptions.IncludeTypeParameters,
             miscellaneousOptions: SymbolDisplayMiscellaneousOptions.UseSpecialTypes
                 | SymbolDisplayMiscellaneousOptions.EscapeKeywordIdentifiers
                 | SymbolDisplayMiscellaneousOptions.RemoveAttributeSuffix
@@ -34,8 +34,6 @@ namespace Roslynator
         public static SymbolDisplayFormat Test { get; } = new(
             globalNamespaceStyle: SymbolDisplayGlobalNamespaceStyle.OmittedAsContaining,
             typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces,
-            propertyStyle: SymbolDisplayPropertyStyle.ShowReadWriteDescriptor,
-            localOptions: SymbolDisplayLocalOptions.IncludeType,
             genericsOptions: SymbolDisplayGenericsOptions.IncludeTypeParameters
                 | SymbolDisplayGenericsOptions.IncludeVariance,
             memberOptions: SymbolDisplayMemberOptions.IncludeParameters
@@ -43,13 +41,15 @@ namespace Roslynator
                 | SymbolDisplayMemberOptions.IncludeType
                 | SymbolDisplayMemberOptions.IncludeRef
                 | SymbolDisplayMemberOptions.IncludeExplicitInterface,
-            kindOptions: SymbolDisplayKindOptions.IncludeMemberKeyword,
             parameterOptions: SymbolDisplayParameterOptions.IncludeOptionalBrackets
                 | SymbolDisplayParameterOptions.IncludeDefaultValue
                 | SymbolDisplayParameterOptions.IncludeParamsRefOut
                 | SymbolDisplayParameterOptions.IncludeExtensionThis
                 | SymbolDisplayParameterOptions.IncludeType
                 | SymbolDisplayParameterOptions.IncludeName,
+            propertyStyle: SymbolDisplayPropertyStyle.ShowReadWriteDescriptor,
+            localOptions: SymbolDisplayLocalOptions.IncludeType,
+            kindOptions: SymbolDisplayKindOptions.IncludeMemberKeyword,
             miscellaneousOptions: SymbolDisplayMiscellaneousOptions.EscapeKeywordIdentifiers
                 | SymbolDisplayMiscellaneousOptions.UseErrorTypeSymbolName
                 | SymbolDisplayMiscellaneousOptions.IncludeNullableReferenceTypeModifier);

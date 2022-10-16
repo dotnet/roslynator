@@ -8,8 +8,6 @@ using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
 using Roslynator.Configuration;
 
-#pragma warning disable RCS1090
-
 namespace Roslynator.VisualStudio
 {
     /// <summary>

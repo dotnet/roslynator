@@ -672,8 +672,8 @@ namespace Roslynator.Rename
                     compilerErrorCount = LogHelpers.WriteCompilerErrors(
                         diagnostics,
                         Path.GetDirectoryName(newProject.FilePath),
-                        indentation: "    ",
-                        ignoredCompilerDiagnosticIds: Options.IgnoredCompilerDiagnosticIds);
+                        ignoredCompilerDiagnosticIds: Options.IgnoredCompilerDiagnosticIds,
+                        indentation: "    ");
                 }
 
                 if (compilerErrorCount > 0
