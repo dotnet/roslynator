@@ -87,14 +87,12 @@ namespace Roslynator.CSharp.CodeFixes
                                 }
 
                                 if (!fStatement
-                                    && ancestor is StatementSyntax)
+                                    && ancestor is StatementSyntax statement)
                                 {
                                     fStatement = true;
 
                                     if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.WrapInUnsafeStatement, document, root.SyntaxTree))
                                         continue;
-
-                                    var statement = (StatementSyntax)ancestor;
 
                                     if (statement.IsKind(SyntaxKind.Block)
                                         && statement.Parent is StatementSyntax statement2)
