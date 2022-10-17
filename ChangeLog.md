@@ -37,7 +37,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [CLI] Include compiler diagnostics in the xml output file of the `roslynator analyze` command ([#964](https://github.com/JosefPihrt/Roslynator/pull/964) by @PeterKaszab).
 - Do not simplify 'default' expression if the type is inferred ([RCS1244](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1244.md)) ([#966](https://github.com/josefpihrt/roslynator/pull/966).
 - Use explicit type from lambda expression ([RCS1008](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1008.md)) ([#967](https://github.com/josefpihrt/roslynator/pull/967).
-- Check 'UsedImplicitlyAttribute' ([RCS1074](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1074.md)) ([#968](https://github.com/josefpihrt/roslynator/pull/968).
+- Do not remove constructor if it is decorated with 'UsedImplicitlyAttribute' ([RCS1074](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1074.md)) ([#968](https://github.com/josefpihrt/roslynator/pull/968).
 
 -----
 <!-- Content below does not adhere to 'Keep a Changelog' format -->
