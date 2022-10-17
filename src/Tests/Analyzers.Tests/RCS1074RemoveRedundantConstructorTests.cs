@@ -12,7 +12,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveRedundantConstructor;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertIfToReturnStatement)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantConstructor)]
         public async Task Test_SingleInstanceConstructor()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -29,7 +29,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertIfToReturnStatement)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantConstructor)]
         public async Task TestNoDiagnostic_UsedImplicitlyAttribute()
         {
             await VerifyNoDiagnosticAsync(@"
