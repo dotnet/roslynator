@@ -22,6 +22,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Format changelog according to 'Keep a Changelog' ([#915](https://github.com/josefpihrt/roslynator/pull/915)).
 - [CLI] Improve release build of command-line tool ([#912](https://github.com/josefpihrt/roslynator/pull/912)).
 - Do not sort properties in an initializer ([RR0216](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0216.md)).
+- [CLI] Bump Roslyn to 4.3.1 ([#969](https://github.com/josefpihrt/roslynator/pull/969)).
+- [CLI] Bump Microsoft.Build.Locator to 1.5.5 ([#969](https://github.com/josefpihrt/roslynator/pull/969)).
 
 ### Fixed
 
