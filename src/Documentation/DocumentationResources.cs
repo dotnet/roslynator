@@ -287,10 +287,12 @@ namespace Roslynator.Documentation
                     return NamespacesTitle;
                 case RootDocumentationParts.ClassHierarchy:
                     return ClassHierarchyTitle;
+                case RootDocumentationParts.Types:
+                    return TypesTitle;
                 case RootDocumentationParts.Other:
                     return OtherTitle;
                 default:
-                    throw new ArgumentException("", nameof(part));
+                    throw new ArgumentException($"Unknown enum value '{part}'.", nameof(part));
             }
         }
 
