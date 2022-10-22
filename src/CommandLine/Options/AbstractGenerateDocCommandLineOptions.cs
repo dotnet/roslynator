@@ -37,7 +37,7 @@ namespace Roslynator.CommandLine
         [Option(
             longName: OptionNames.Host,
             Required = true,
-            HelpText = "Defines a host where the content will be published. Allowed values are github or docusaurus.",
+            HelpText = "Defines a host where the content will be published. Allowed values are docusaurus, github or sphinx.",
             MetaValue = "<HOST>")]
         public string Host { get; set; }
 
@@ -59,7 +59,7 @@ namespace Roslynator.CommandLine
 
         [Option(
             longName: "scroll-to-content",
-            HelpText = "Indicates whether a link should lead to the top of the documentation content.")]
+            HelpText = "Indicates whether a link should lead to the top of the documentation content. This option is applicable when host is set to 'github'.")]
         public bool ScrollToContent { get; set; }
 
         [Option(

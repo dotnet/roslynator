@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -112,7 +113,7 @@ namespace Roslynator.CommandLine
                 ignoredCommonParts: IgnoredCommonParts,
                 includeContainingNamespaceFilter: IncludeContainingNamespaceFilter,
                 filesLayout: FilesLayout,
-                scrollToContent: Options.ScrollToContent);
+                scrollToContent: (DocumentationHost == DocumentationHost.GitHub) && Options.ScrollToContent);
 
             ImmutableArray<Compilation> compilations = await GetCompilationsAsync(projectOrSolution, cancellationToken);
 
@@ -123,7 +124,9 @@ namespace Roslynator.CommandLine
             if (GroupByCommonNamespace)
             {
                 commonNamespaces = DocumentationUtility.FindCommonNamespaces(
-                    documentationModel.Types.Concat(documentationModel.GetExtendedExternalTypes()));
+                    documentationModel.Types
+                        .Concat(documentationModel.GetExtendedExternalTypes())
+                        .Where(f => !documentationOptions.ShouldBeIgnored(f)));
             }
 
             UrlSegmentProvider urlSegmentProvider = new DefaultUrlSegmentProvider(FilesLayout, commonNamespaces);
@@ -138,6 +141,8 @@ namespace Roslynator.CommandLine
                         return new GitHubDocumentationUrlProvider(urlSegmentProvider, externalProviders);
                     case DocumentationHost.Docusaurus:
                         return new DocusaurusDocumentationUrlProvider(urlSegmentProvider, externalProviders);
+                    case DocumentationHost.Sphinx:
+                        return new SphinxDocumentationUrlProvider(urlSegmentProvider, externalProviders);
                     default:
                         throw new InvalidOperationException($"Unknown value '{DocumentationHost}'.");
                 }
@@ -148,6 +153,7 @@ namespace Roslynator.CommandLine
                 switch (DocumentationHost)
                 {
                     case DocumentationHost.GitHub:
+                    case DocumentationHost.Sphinx:
                         return MarkdownWriterSettings.Default;
                     case DocumentationHost.Docusaurus:
                         return new MarkdownWriterSettings(new MarkdownFormat(angleBracketEscapeStyle: AngleBracketEscapeStyle.EntityRef));
@@ -165,9 +171,11 @@ namespace Roslynator.CommandLine
                 switch (DocumentationHost)
                 {
                     case DocumentationHost.GitHub:
-                        return new MarkdownDocumentationWriter(context, writer);
+                        return new GitHubDocumentationWriter(context, writer);
                     case DocumentationHost.Docusaurus:
                         return new DocusaurusDocumentationWriter(context, writer);
+                    case DocumentationHost.Sphinx:
+                        return new SphinxDocumentationWriter(context, writer);
                     default:
                         throw new InvalidOperationException($"Unknown value '{DocumentationHost}'.");
                 }
@@ -206,7 +214,16 @@ namespace Roslynator.CommandLine
 
             WriteLine($"Generate documentation to '{Options.Output}'", Verbosity.Minimal);
 
-            foreach (DocumentationGeneratorResult documentationFile in generator.Generate(heading: Options.Heading, cancellationToken))
+            IEnumerable<DocumentationGeneratorResult> results = generator.Generate(heading: Options.Heading, cancellationToken);
+
+            if (DocumentationHost == DocumentationHost.Sphinx)
+            {
+                List<DocumentationGeneratorResult> resultList = results.ToList();
+                AddTableOfContents(resultList);
+                results = resultList;
+            }
+
+            foreach (DocumentationGeneratorResult documentationFile in results)
             {
                 string path = Path.Combine(directoryPath, documentationFile.FilePath);
 
@@ -220,6 +237,67 @@ namespace Roslynator.CommandLine
             WriteLine($"Documentation successfully generated to '{Options.Output}'.", Verbosity.Minimal);
 
             return CommandResults.Success;
+        }
+
+        private void AddTableOfContents(IEnumerable<DocumentationGeneratorResult> results)
+        {
+            foreach (DocumentationGeneratorResult result in results)
+            {
+                string content = result.Content;
+                string filePath = result.FilePath;
+                string directoryPath = Path.GetDirectoryName(filePath);
+
+                IEnumerable<DocumentationGeneratorResult> children = results.Where(r =>
+                {
+                    if (r != result)
+                    {
+                        string path = r.FilePath;
+
+                        if (path.StartsWith(directoryPath))
+                        {
+                            string relativePath = path.Substring(directoryPath.Length).TrimStart(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+
+                            if (relativePath.Count(f => f == Path.DirectorySeparatorChar || f == Path.AltDirectorySeparatorChar) == 1)
+                            {
+                                return true;
+                            }
+                        }
+                    }
+
+                    return false;
+                });
+
+                if (children.Any())
+                {
+                    var sb = new StringBuilder();
+
+                    sb.AppendLine();
+                    sb.AppendLine("```{toctree}");
+                    sb.AppendLine(":hidden:");
+                    sb.AppendLine(":maxdepth: 1");
+                    sb.AppendLine();
+
+                    foreach (DocumentationGeneratorResult child in children
+                        .OrderBy(child => child.Label))
+                    {
+                        Debug.Assert(child.Label is not null);
+
+                        sb.Append(child.Label);
+                        sb.Append(" <");
+
+                        sb.Append(child.FilePath
+                            .Substring(directoryPath.Length)
+                            .TrimStart(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)
+                            .Replace('\\', '/'));
+
+                        sb.AppendLine(">");
+                    }
+
+                    sb.AppendLine("```");
+
+                    result.Content += sb.ToString();
+                }
+            }
         }
     }
 }

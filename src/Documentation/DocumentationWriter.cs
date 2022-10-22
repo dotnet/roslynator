@@ -41,6 +41,10 @@ namespace Roslynator.Documentation
 
         private UrlSegmentProvider UrlSegmentProvider => Context.UrlProvider.SegmentProvider;
 
+        internal abstract bool IncludeLinkInClassHierarchy { get; }
+
+        internal abstract bool IncludeLinkToRoot { get; }
+
         private SymbolXmlDocumentation GetXmlDocumentation(ISymbol symbol)
         {
             return DocumentationModel.GetXmlDocumentation(symbol, Options.PreferredCultureName);
@@ -226,7 +230,7 @@ namespace Roslynator.Documentation
 
         public abstract void WriteLineBreak();
 
-        public abstract void WriteLinkDestination(string name);
+        public abstract void WriteLinkTarget(string name);
 
         public virtual void WriteValue(bool value)
         {
@@ -285,21 +289,28 @@ namespace Roslynator.Documentation
             }
         }
 
-        public virtual void WriteContent(IEnumerable<string> names, bool addLinkToRoot = false, bool beginWithSeparator = false)
+        public virtual void WriteContent(IEnumerable<string> names, bool includeLinkToRoot = false, bool beginWithSeparator = false)
         {
+            if (!IncludeLinkToRoot)
+                includeLinkToRoot = false;
+
             IEnumerator<string> en = names.GetEnumerator();
 
-            if (addLinkToRoot)
+            if (includeLinkToRoot)
             {
                 if (beginWithSeparator)
                     WriteContentSeparator();
 
                 WriteLink(Resources.HomeTitle, UrlProvider.GetUrlToRoot(UrlSegmentProvider.GetSegments(CurrentSymbol).Length, '/', scrollToContent: Options.ScrollToContent));
             }
+            else if (names.Count() == 1)
+            {
+                return;
+            }
 
             if (en.MoveNext())
             {
-                if (addLinkToRoot || beginWithSeparator)
+                if (includeLinkToRoot || beginWithSeparator)
                 {
                     WriteContentSeparator();
                 }
@@ -321,7 +332,7 @@ namespace Roslynator.Documentation
                 WriteLine();
                 WriteLine();
             }
-            else if (addLinkToRoot)
+            else if (includeLinkToRoot)
             {
                 WriteLine();
                 WriteLine();
@@ -1224,7 +1235,8 @@ namespace Roslynator.Documentation
                 if (isExternal)
                     WriteString(")");
 
-                WriteLinkDestination(CreateLocalLink(baseType));
+                if (IncludeLinkInClassHierarchy)
+                    WriteLinkTarget(CreateLocalLink(baseType));
 
                 WriteEndBulletItem();
 
@@ -1731,7 +1743,7 @@ namespace Roslynator.Documentation
         {
             if (!string.IsNullOrEmpty(linkDestination))
             {
-                WriteLinkDestination(linkDestination);
+                WriteLinkTarget(linkDestination);
                 WriteLine();
             }
 
@@ -1921,19 +1933,19 @@ namespace Roslynator.Documentation
                 ? UrlSegmentProvider.GetSegments(CurrentSymbol)
                 : default;
 
-            string fragment = GetFragment();
+            string target = GetLocalLinkTarget();
 
-            if (fragment == null
+            if (target == null
                 && Options.ScrollToContent)
             {
-                fragment = "#" + WellKnownNames.TopFragmentName;
+                target = WellKnownNames.TopFragmentName;
             }
 
-            string url = UrlProvider.GetLocalUrl(segments, containingFolders, fragment).Url;
+            string url = UrlProvider.GetLocalUrl(segments, containingFolders, target).Url;
 
             return Options.RootDirectoryUrl + url;
 
-            string GetFragment()
+            string GetLocalLinkTarget()
             {
                 if (symbol.Kind == SymbolKind.Method
                     || (symbol.Kind == SymbolKind.Property && ((IPropertySymbol)symbol).IsIndexer))
@@ -1949,7 +1961,7 @@ namespace Roslynator.Documentation
                             if (en.MoveNext()
                                 && en.MoveNext())
                             {
-                                return "#" + DocumentationUrlProvider.GetFragment(symbol);
+                                return DocumentationUrlProvider.GetFragment(symbol);
                             }
                         }
                     }

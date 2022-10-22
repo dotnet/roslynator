@@ -1,6 +1,6 @@
 @echo off
 
-rd /S /Q "..\src\CommandLine\bin\Debug\netcoreapp3.1"
+rd /S /Q "..\src\CommandLine\bin\Debug\net6.0"
 
 del /Q "..\src\CommandLine\bin\Debug\Roslynator.DotNet.Cli.*.nupkg"
 

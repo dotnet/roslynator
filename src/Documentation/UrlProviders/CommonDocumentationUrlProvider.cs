@@ -49,6 +49,9 @@ namespace Roslynator.Documentation
 
         public override DocumentationUrlInfo GetLocalUrl(ImmutableArray<string> folders, ImmutableArray<string> containingFolders = default, string fragment = null)
         {
+            if (!string.IsNullOrEmpty(fragment))
+                fragment = "#" + fragment;
+
             string url = CreateLocalUrl();
 
             return new DocumentationUrlInfo(url, DocumentationUrlKind.Local);

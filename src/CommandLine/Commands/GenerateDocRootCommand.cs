@@ -62,7 +62,7 @@ namespace Roslynator.CommandLine
                 depth: Depth,
                 ignoredRootParts: IgnoredParts,
                 includeContainingNamespaceFilter: IncludeContainingNamespaceFilter,
-                scrollToContent: Options.ScrollToContent);
+                scrollToContent: (DocumentationHost == DocumentationHost.GitHub) && Options.ScrollToContent);
 
             ImmutableArray<Compilation> compilations = await GetCompilationsAsync(projectOrSolution, cancellationToken);
 
@@ -80,6 +80,8 @@ namespace Roslynator.CommandLine
                         return new GitHubDocumentationUrlProvider(urlSegmentProvider, externalProviders);
                     case DocumentationHost.Docusaurus:
                         return new DocusaurusDocumentationUrlProvider(urlSegmentProvider, externalProviders);
+                    case DocumentationHost.Sphinx:
+                        return new SphinxDocumentationUrlProvider(urlSegmentProvider, externalProviders);
                     default:
                         throw new InvalidOperationException($"Unknown value '{DocumentationHost}'.");
                 }
@@ -90,6 +92,7 @@ namespace Roslynator.CommandLine
                 switch (DocumentationHost)
                 {
                     case DocumentationHost.GitHub:
+                    case DocumentationHost.Sphinx:
                         return MarkdownWriterSettings.Default;
                     case DocumentationHost.Docusaurus:
                         return new MarkdownWriterSettings(new MarkdownFormat(angleBracketEscapeStyle: AngleBracketEscapeStyle.EntityRef));
@@ -107,9 +110,11 @@ namespace Roslynator.CommandLine
                 switch (DocumentationHost)
                 {
                     case DocumentationHost.GitHub:
-                        return new MarkdownDocumentationWriter(context, writer);
+                        return new GitHubDocumentationWriter(context, writer);
                     case DocumentationHost.Docusaurus:
                         return new DocusaurusDocumentationWriter(context, writer);
+                    case DocumentationHost.Sphinx:
+                        return new SphinxDocumentationWriter(context, writer);
                     default:
                         throw new InvalidOperationException($"Unknown value '{DocumentationHost}'.");
                 }
