@@ -11,6 +11,10 @@ namespace Roslynator.Documentation.Markdown
         {
         }
 
+        internal override bool IncludeLinkInClassHierarchy => true;
+
+        internal override bool IncludeLinkToRoot => false;
+
         public override void WriteStartDocument(ISymbol symbol, DocumentationFileKind fileKind)
         {
             string label = null;

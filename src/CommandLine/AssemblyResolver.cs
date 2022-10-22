@@ -56,7 +56,8 @@ namespace Roslynator.CommandLine
             Debug.Assert(
                 (!assemblyName.Name.StartsWith("Microsoft.")
                     || assemblyName.Name.StartsWith("Microsoft.VisualStudio.")
-                    || string.Equals(assemblyName.Name, "Microsoft.DiaSymReader", StringComparison.Ordinal))
+                    || string.Equals(assemblyName.Name, "Microsoft.DiaSymReader", StringComparison.Ordinal)
+                    || assemblyName.Name.EndsWith(".Analyzers"))
                     && !assemblyName.Name.StartsWith("System."),
                 assemblyName.ToString());
 

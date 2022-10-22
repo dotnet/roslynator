@@ -10,6 +10,10 @@ namespace Roslynator.Documentation.Markdown
         {
         }
 
+        internal override bool IncludeLinkInClassHierarchy => false;
+
+        internal override bool IncludeLinkToRoot => false;
+
         public override void WriteLinkTarget(string name)
         {
             WriteRaw($"({name})=");

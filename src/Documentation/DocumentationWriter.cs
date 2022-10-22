@@ -41,6 +41,10 @@ namespace Roslynator.Documentation
 
         private UrlSegmentProvider UrlSegmentProvider => Context.UrlProvider.SegmentProvider;
 
+        internal abstract bool IncludeLinkInClassHierarchy { get; }
+
+        internal abstract bool IncludeLinkToRoot { get; }
+
         private SymbolXmlDocumentation GetXmlDocumentation(ISymbol symbol)
         {
             return DocumentationModel.GetXmlDocumentation(symbol, Options.PreferredCultureName);
@@ -285,28 +289,34 @@ namespace Roslynator.Documentation
             }
         }
 
-        public virtual void WriteContent(IEnumerable<string> names, bool addLinkToRoot = false, bool beginWithSeparator = false)
+        public virtual void WriteContent(IEnumerable<string> names, bool includeLinkToRoot = false, bool beginWithSeparator = false)
         {
+            if (!IncludeLinkToRoot)
+                includeLinkToRoot = false;
+
             IEnumerator<string> en = names.GetEnumerator();
 
-            if (addLinkToRoot)
+            if (includeLinkToRoot)
             {
                 if (beginWithSeparator)
                     WriteContentSeparator();
 
                 WriteLink(Resources.HomeTitle, UrlProvider.GetUrlToRoot(UrlSegmentProvider.GetSegments(CurrentSymbol).Length, '/', scrollToContent: Options.ScrollToContent));
             }
+            else if (names.Count() == 1)
+            {
+                return;
+            }
 
             if (en.MoveNext())
             {
-                if (addLinkToRoot || beginWithSeparator)
+                if (includeLinkToRoot || beginWithSeparator)
                 {
                     WriteContentSeparator();
                 }
 
                 while (true)
                 {
-                    //TODO: link to a section in Sphinx
                     WriteLink(en.Current, UrlProvider.GetFragment(en.Current));
 
                     if (en.MoveNext())
@@ -322,7 +332,7 @@ namespace Roslynator.Documentation
                 WriteLine();
                 WriteLine();
             }
-            else if (addLinkToRoot)
+            else if (includeLinkToRoot)
             {
                 WriteLine();
                 WriteLine();
@@ -1225,8 +1235,8 @@ namespace Roslynator.Documentation
                 if (isExternal)
                     WriteString(")");
 
-                //TODO: link to other items in class hierarchy
-                //WriteLinkTarget(CreateLocalLink(baseType));
+                if (IncludeLinkInClassHierarchy)
+                    WriteLinkTarget(CreateLocalLink(baseType));
 
                 WriteEndBulletItem();
 
