@@ -468,7 +468,11 @@ namespace Roslynator.Documentation
         {
             if (symbol.IsKind(SymbolKind.Method, SymbolKind.Property, SymbolKind.Event))
             {
-                //TODO: inherit comment from base constructor
+                if (symbol is IMethodSymbol methodSymbol
+                    && methodSymbol.MethodKind == MethodKind.Constructor)
+                {
+                    return FindInheritedDocumentationCommentFromBaseConstructor(methodSymbol, preferredCultureName);
+                }
 
                 return FindInheritedDocumentationFromBaseMember(symbol, preferredCultureName)
                     ?? FindInheritedDocumentationFromImplementedInterfaceMember(symbol, preferredCultureName);
@@ -482,16 +486,52 @@ namespace Roslynator.Documentation
             return null;
         }
 
+        private XElement FindInheritedDocumentationCommentFromBaseConstructor(IMethodSymbol symbol, string preferredCultureName)
+        {
+            foreach (INamedTypeSymbol baseType in symbol.ContainingType.BaseTypes())
+            {
+                foreach (IMethodSymbol baseSymbol in baseType.Constructors)
+                {
+                    if (ParametersEqual(symbol, baseSymbol))
+                    {
+                        XElement element = GetXmlDocumentation(baseType, preferredCultureName)?.Element;
+
+                        if (!ContainsInheritDoc(element))
+                            return element;
+                    }
+                }
+            }
+
+            return null;
+
+            static bool ParametersEqual(IMethodSymbol x, IMethodSymbol y)
+            {
+                ImmutableArray<IParameterSymbol> parameters1 = x.Parameters;
+                ImmutableArray<IParameterSymbol> parameters2 = y.Parameters;
+
+                if (parameters1.Length != parameters2.Length)
+                    return false;
+
+                for (int i = 0; i < parameters1.Length; i++)
+                {
+                    if (!SymbolEqualityComparer.Default.Equals(parameters1[i].Type, parameters2[i].Type))
+                        return false;
+                }
+
+                return true;
+            }
+        }
+
         private XElement FindInheritedDocumentationFromBaseMember(ISymbol symbol, string preferredCultureName)
         {
             ISymbol s = symbol;
 
             while ((s = s.OverriddenSymbol()) is not null)
             {
-                XElement e = GetXmlDocumentation(s, preferredCultureName)?.Element;
+                XElement element = GetXmlDocumentation(s, preferredCultureName)?.Element;
 
-                if (!ContainsInheritDoc(e))
-                    return e;
+                if (!ContainsInheritDoc(element))
+                    return element;
             }
 
             return null;
@@ -526,10 +566,10 @@ namespace Roslynator.Documentation
         {
             foreach (INamedTypeSymbol baseType in namedTypeSymbol.BaseTypes())
             {
-                XElement e = GetXmlDocumentation(baseType, preferredCultureName)?.Element;
+                XElement element = GetXmlDocumentation(baseType, preferredCultureName)?.Element;
 
-                if (!ContainsInheritDoc(e))
-                    return e;
+                if (!ContainsInheritDoc(element))
+                    return element;
             }
 
             return null;
