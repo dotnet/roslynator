@@ -50,14 +50,9 @@ namespace Roslynator.Documentation
         {
             get
             {
-                if (_commonNamespacesAsText is null)
-                {
-                    _commonNamespacesAsText = CommonNamespaces
-                        .Select(f => (f, f.ToDisplayString(TypeSymbolDisplayFormats.Name_ContainingTypes_Namespaces_GlobalNamespace_OmittedAsContaining)))
-                        .ToImmutableHashSet();
-                }
-
-                return _commonNamespacesAsText;
+                return _commonNamespacesAsText ??= CommonNamespaces
+                    .Select(f => (f, f.ToDisplayString(TypeSymbolDisplayFormats.Name_ContainingTypes_Namespaces_GlobalNamespace_OmittedAsContaining)))
+                    .ToImmutableHashSet();
             }
         }
 

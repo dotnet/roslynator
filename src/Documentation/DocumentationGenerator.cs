@@ -73,7 +73,8 @@ namespace Roslynator.Documentation
                         parts = parts.Where(f => f != RootDocumentationParts.Namespaces);
                     }
 
-                    _enabledAndSortedRootParts = parts.OrderBy(f => f, RootPartComparer)
+                    _enabledAndSortedRootParts = parts
+                        .OrderBy(f => f, RootPartComparer)
                         .ToImmutableArray();
                 }
 

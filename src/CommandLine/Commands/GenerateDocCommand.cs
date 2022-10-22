@@ -219,9 +219,7 @@ namespace Roslynator.CommandLine
             if (DocumentationHost == DocumentationHost.Sphinx)
             {
                 List<DocumentationGeneratorResult> resultList = results.ToList();
-
                 AddTableOfContents(resultList);
-
                 results = resultList;
             }
 

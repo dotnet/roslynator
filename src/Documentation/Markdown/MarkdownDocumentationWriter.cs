@@ -9,7 +9,7 @@ namespace Roslynator.Documentation.Markdown
     {
         private readonly MarkdownWriter _writer;
 
-        public MarkdownDocumentationWriter(DocumentationContext context, MarkdownWriter writer) : base(context)
+        protected MarkdownDocumentationWriter(DocumentationContext context, MarkdownWriter writer) : base(context)
         {
             _writer = writer;
         }
