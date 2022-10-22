@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Globalization;
@@ -316,6 +317,17 @@ namespace Roslynator.Documentation
                     {
                         var element = XElement.Parse(xml, LoadOptions.PreserveWhitespace);
 
+                        if (ContainsInheritDoc(element))
+                        {
+                            XElement inheritedElement = FindInheritedDocumentation(symbol, preferredCultureName);
+
+                            if (inheritedElement is not null)
+                            {
+                                element.RemoveNodes();
+                                element.Add(inheritedElement.Elements());
+                            }
+                        }
+
                         xmlDocumentation = new SymbolXmlDocumentation(symbol, element);
 
                         _symbolData[symbol] = data.WithXmlDocumentation(xmlDocumentation);
@@ -450,6 +462,98 @@ namespace Roslynator.Documentation
             {
                 return new SymbolDocumentationData(Model, xmlDocumentation);
             }
+        }
+
+        private XElement FindInheritedDocumentation(ISymbol symbol, string preferredCultureName)
+        {
+            if (symbol.IsKind(SymbolKind.Method, SymbolKind.Property, SymbolKind.Event))
+            {
+                //TODO: inherit comment from base constructor
+
+                return FindInheritedDocumentationFromBaseMember(symbol, preferredCultureName)
+                    ?? FindInheritedDocumentationFromImplementedInterfaceMember(symbol, preferredCultureName);
+            }
+            else if (symbol is INamedTypeSymbol namedTypeSymbol)
+            {
+                return FindInheritedDocumentationFromBaseType(namedTypeSymbol, preferredCultureName)
+                    ?? FindInheritedDocumentationFromImplementedInterface(namedTypeSymbol, preferredCultureName);
+            }
+
+            return null;
+        }
+
+        private XElement FindInheritedDocumentationFromBaseMember(ISymbol symbol, string preferredCultureName)
+        {
+            ISymbol s = symbol;
+
+            while ((s = s.OverriddenSymbol()) is not null)
+            {
+                XElement e = GetXmlDocumentation(s, preferredCultureName)?.Element;
+
+                if (!ContainsInheritDoc(e))
+                    return e;
+            }
+
+            return null;
+        }
+
+        private XElement FindInheritedDocumentationFromImplementedInterfaceMember(ISymbol symbol, string preferredCultureName)
+        {
+            INamedTypeSymbol containingType = symbol.ContainingType;
+
+            if (containingType != null)
+            {
+                foreach (INamedTypeSymbol interfaceSymbol in containingType.Interfaces)
+                {
+                    foreach (ISymbol memberSymbol in interfaceSymbol.GetMembers(symbol.Name))
+                    {
+                        if (SymbolEqualityComparer.Default.Equals(symbol, containingType.FindImplementationForInterfaceMember(memberSymbol)))
+                        {
+                            XElement element = GetXmlDocumentation(memberSymbol, preferredCultureName)?.Element;
+
+                            return (ContainsInheritDoc(element))
+                                ? FindInheritedDocumentationFromImplementedInterfaceMember(memberSymbol, preferredCultureName)
+                                : element;
+                        }
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        private XElement FindInheritedDocumentationFromBaseType(INamedTypeSymbol namedTypeSymbol, string preferredCultureName)
+        {
+            foreach (INamedTypeSymbol baseType in namedTypeSymbol.BaseTypes())
+            {
+                XElement e = GetXmlDocumentation(baseType, preferredCultureName)?.Element;
+
+                if (!ContainsInheritDoc(e))
+                    return e;
+            }
+
+            return null;
+        }
+
+        private XElement FindInheritedDocumentationFromImplementedInterface(INamedTypeSymbol namedTypeSymbol, string preferredCultureName)
+        {
+            foreach (INamedTypeSymbol interfaceSymbol in namedTypeSymbol.Interfaces)
+            {
+                XElement element = GetXmlDocumentation(interfaceSymbol, preferredCultureName)?.Element;
+
+                return (ContainsInheritDoc(element))
+                    ? FindInheritedDocumentationFromImplementedInterface(interfaceSymbol, preferredCultureName)
+                    : element;
+            }
+
+            return null;
+        }
+
+        private static bool ContainsInheritDoc(XElement element)
+        {
+            return element is not null
+                && element.Elements().Count() == 1
+                && string.Equals(element.Elements().First().Name.LocalName, "inheritdoc", StringComparison.OrdinalIgnoreCase);
         }
     }
 }
