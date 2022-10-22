@@ -306,7 +306,7 @@ namespace Roslynator.Documentation
 
                 while (true)
                 {
-                    //TODO: link to a section in Sphinx
+                    //TODO: Sphinx: link to a section
                     WriteLink(en.Current, UrlProvider.GetFragment(en.Current));
 
                     if (en.MoveNext())
@@ -1225,7 +1225,7 @@ namespace Roslynator.Documentation
                 if (isExternal)
                     WriteString(")");
 
-                //TODO: link to other items in class hierarchy
+                //TODO: Sphinx: link to other items in class hierarchy
                 //WriteLinkTarget(CreateLocalLink(baseType));
 
                 WriteEndBulletItem();
