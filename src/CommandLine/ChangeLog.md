@@ -1,3 +1,9 @@
+**NOTE: All changes are now tracked in main [changelog](../../ChangeLog.md).**
+
+## [0.4.0] - 2022-10-22
+
+-----
+
 ### 0.3.3 (2022-05-29)
 
 * Fix bug when saving code analysis results to a file (`--output` parameter) ([issue](https://github.com/JosefPihrt/Roslynator/issues/897))

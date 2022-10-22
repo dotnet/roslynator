@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [4.1.2] - 2022-10-22
+
 ### Added
 
 - Convert more syntax to implicit object creation (RCS1250) ([#910](https://github.com/josefpihrt/roslynator/pull/910)).
