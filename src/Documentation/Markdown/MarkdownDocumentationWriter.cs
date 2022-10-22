@@ -5,7 +5,7 @@ using Microsoft.CodeAnalysis;
 
 namespace Roslynator.Documentation.Markdown
 {
-    public class MarkdownDocumentationWriter : DocumentationWriter
+    public abstract class MarkdownDocumentationWriter : DocumentationWriter
     {
         private readonly MarkdownWriter _writer;
 

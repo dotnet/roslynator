@@ -171,7 +171,7 @@ namespace Roslynator.CommandLine
                 switch (DocumentationHost)
                 {
                     case DocumentationHost.GitHub:
-                        return new MarkdownDocumentationWriter(context, writer);
+                        return new GitHubDocumentationWriter(context, writer);
                     case DocumentationHost.Docusaurus:
                         return new DocusaurusDocumentationWriter(context, writer);
                     case DocumentationHost.Sphinx:

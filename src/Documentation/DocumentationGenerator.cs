@@ -345,7 +345,7 @@ namespace Roslynator.Documentation
                                     .Select(f => Resources.GetHeading(f));
 
                                 if ((Options.IgnoredNamespaceParts & NamespaceDocumentationParts.Content) == 0)
-                                    writer.WriteContent(names, addLinkToRoot: true);
+                                    writer.WriteContent(names, includeLinkToRoot: true);
 
                                 break;
                             }
@@ -550,7 +550,7 @@ namespace Roslynator.Documentation
                 writer.WriteEndHeading();
 
                 if ((Options.IgnoredRootParts & RootDocumentationParts.Content) == 0)
-                    writer.WriteContent(Array.Empty<string>(), addLinkToRoot: true);
+                    writer.WriteContent(Array.Empty<string>(), includeLinkToRoot: true);
 
                 writer.WriteTable(
                     DocumentationModel.GetExtensionMethods(typeSymbol),
@@ -607,7 +607,7 @@ namespace Roslynator.Documentation
                                     .Select(f => Resources.GetHeading(f));
 
                                 if ((Options.IgnoredTypeParts & TypeDocumentationParts.Content) == 0)
-                                    writer.WriteContent(names, addLinkToRoot: true);
+                                    writer.WriteContent(names, includeLinkToRoot: true);
 
                                 break;
                             }
@@ -939,7 +939,7 @@ namespace Roslynator.Documentation
                             writer.WriteMemberTitle(symbol, isOverloaded);
 
                             if ((Options.IgnoredMemberParts & MemberDocumentationParts.Content) == 0)
-                                writer.WriteContent(Array.Empty<string>(), addLinkToRoot: true);
+                                writer.WriteContent(Array.Empty<string>(), includeLinkToRoot: true);
 
                             if ((Options.IgnoredMemberParts & MemberDocumentationParts.ContainingType) == 0)
                                 writer.WriteContainingType(symbol.ContainingType, Resources.ContainingTypeTitle);

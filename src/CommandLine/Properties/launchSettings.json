@@ -2,7 +2,7 @@
   "profiles": {
     "CommandLine": {
       "commandName": "Project",
-      "commandLineArgs": "generate-doc \"C:\\code\\datamole\\ddp-kernel-dg-device-sdk\\src\\Core\\Core.csproj\" --properties Configuration=Release --output \"C:\\d\\docs\\source\\kernel\\services\\data-gateway-agent\\device-sdk\" --visibility public --heading \"Datamole Data Gateway SDK\" --host sphinx --ignored-root-parts class-hierarchy --ignored-common-parts content --ignored-names \"System.Runtime.CompilerServices.IsExternalInit\" --files-layout flat-namespaces --group-by-common-namespace"
+      "commandLineArgs": "migrate \"E:\\Projects\\Roslynator\\src\\Migration.Test\" --target-version 3.0 --identifier roslynator.analyzers -d"
     }
   }
 }
