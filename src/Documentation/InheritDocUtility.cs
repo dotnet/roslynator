@@ -17,7 +17,7 @@ namespace Roslynator.Documentation
                 if (symbol is IMethodSymbol methodSymbol
                     && methodSymbol.MethodKind == MethodKind.Constructor)
                 {
-                    return FindInheritedDocumentationCommentFromBaseConstructor(methodSymbol, getDocumentation);
+                    return FindInheritedDocumentationFromBaseConstructor(methodSymbol, getDocumentation);
                 }
 
                 return FindInheritedDocumentationFromBaseMember(symbol, getDocumentation)
@@ -32,7 +32,7 @@ namespace Roslynator.Documentation
             return null;
         }
 
-        public static XElement FindInheritedDocumentationCommentFromBaseConstructor(IMethodSymbol symbol, Func<ISymbol, XElement> getDocumentation)
+        private static XElement FindInheritedDocumentationFromBaseConstructor(IMethodSymbol symbol, Func<ISymbol, XElement> getDocumentation)
         {
             foreach (INamedTypeSymbol baseType in symbol.ContainingType.BaseTypes())
             {
@@ -42,8 +42,9 @@ namespace Roslynator.Documentation
                     {
                         XElement element = getDocumentation(baseConstructor);
 
-                        if (!ContainsInheritDoc(element))
-                            return element;
+                        return (ContainsInheritDoc(element))
+                            ? FindInheritedDocumentationFromBaseConstructor(baseConstructor, getDocumentation)
+                            : element;
                     }
                 }
             }
@@ -68,7 +69,7 @@ namespace Roslynator.Documentation
             }
         }
 
-        public static XElement FindInheritedDocumentationFromBaseMember(ISymbol symbol, Func<ISymbol, XElement> getDocumentation)
+        private static XElement FindInheritedDocumentationFromBaseMember(ISymbol symbol, Func<ISymbol, XElement> getDocumentation)
         {
             ISymbol s = symbol;
 
@@ -83,7 +84,7 @@ namespace Roslynator.Documentation
             return null;
         }
 
-        public static XElement FindInheritedDocumentationFromImplementedInterfaceMember(ISymbol symbol, Func<ISymbol, XElement> getDocumentation)
+        private static XElement FindInheritedDocumentationFromImplementedInterfaceMember(ISymbol symbol, Func<ISymbol, XElement> getDocumentation)
         {
             INamedTypeSymbol containingType = symbol.ContainingType;
 
@@ -108,7 +109,7 @@ namespace Roslynator.Documentation
             return null;
         }
 
-        public static XElement FindInheritedDocumentationFromBaseType(INamedTypeSymbol namedTypeSymbol, Func<ISymbol, XElement> getDocumentation)
+        private static XElement FindInheritedDocumentationFromBaseType(INamedTypeSymbol namedTypeSymbol, Func<ISymbol, XElement> getDocumentation)
         {
             foreach (INamedTypeSymbol baseType in namedTypeSymbol.BaseTypes())
             {
@@ -121,7 +122,7 @@ namespace Roslynator.Documentation
             return null;
         }
 
-        public static XElement FindInheritedDocumentationFromImplementedInterface(INamedTypeSymbol namedTypeSymbol, Func<ISymbol, XElement> getDocumentation)
+        private static XElement FindInheritedDocumentationFromImplementedInterface(INamedTypeSymbol namedTypeSymbol, Func<ISymbol, XElement> getDocumentation)
         {
             foreach (INamedTypeSymbol interfaceSymbol in namedTypeSymbol.Interfaces)
             {
