@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
 using System.Xml.Linq;
 using Microsoft.CodeAnalysis;
 
@@ -137,9 +137,24 @@ namespace Roslynator.Documentation
 
         public static bool ContainsInheritDoc(XElement element)
         {
-            return element is not null
-                && element.Elements().Count() == 1
-                && string.Equals(element.Elements().First().Name.LocalName, "inheritdoc", StringComparison.OrdinalIgnoreCase);
+            if (element is not null)
+            {
+                using (IEnumerator<XElement> en = element.Elements().GetEnumerator())
+                {
+                    if (en.MoveNext())
+                    {
+                        XElement e = en.Current;
+
+                        if (!en.MoveNext()
+                            && string.Equals(e.Name.LocalName, "inheritdoc", StringComparison.OrdinalIgnoreCase))
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
         }
     }
 }
