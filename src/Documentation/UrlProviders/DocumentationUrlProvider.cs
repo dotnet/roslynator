@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
+using System.Globalization;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Roslynator.Text;
@@ -122,22 +122,57 @@ namespace Roslynator.Documentation
 
             if (!_symbolToLinkMap.TryGetValue(id, out string link))
             {
-                do
-                {
-                    char[] chars = Guid.NewGuid()
-                        .ToString("N")
-                        .Where((_, i) => i % 2 == 0)
-                        .Take(8)
-                        .ToArray();
+                int hashCode = getHashCode(id);
 
-                    link = new string(chars);
+                long linkCode;
+                if (hashCode >= 0)
+                {
+                    linkCode = (uint)hashCode;
                 }
-                while (_symbolToLinkMap.ContainsKey(link));
+                else
+                {
+                    linkCode = int.MaxValue + (uint)Math.Abs(hashCode);
+                }
+
+                link = linkCode.ToString(CultureInfo.InvariantCulture);
+
+                if (_symbolToLinkMap.ContainsValue(link))
+                {
+                    linkCode += uint.MaxValue;
+                    link = linkCode.ToString(CultureInfo.InvariantCulture);
+
+                    while (_symbolToLinkMap.ContainsValue(link))
+                    {
+                        linkCode++;
+                        link = linkCode.ToString(CultureInfo.InvariantCulture);
+                    }
+                }
 
                 _symbolToLinkMap.Add(id, link);
             }
 
             return link;
+
+            // https://andrewlock.net/why-is-string-gethashcode-different-each-time-i-run-my-program-in-net-core/#a-deterministic-gethashcode-implementation
+            static int getHashCode(string s
+                )
+            {
+                unchecked
+                {
+                    int hash1 = (5381 << 16) + 5381;
+                    int hash2 = hash1;
+
+                    for (int i = 0; i < s.Length; i += 2)
+                    {
+                        hash1 = ((hash1 << 5) + hash1) ^ s[i];
+                        if (i == s.Length - 1)
+                            break;
+                        hash2 = ((hash2 << 5) + hash2) ^ s[i + 1];
+                    }
+
+                    return hash1 + (hash2 * 1566083941);
+                }
+            }
         }
     }
 }
