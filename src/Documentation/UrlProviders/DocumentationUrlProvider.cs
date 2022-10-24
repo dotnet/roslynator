@@ -1,9 +1,10 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using Microsoft.CodeAnalysis;
 using Roslynator.Text;
 
@@ -11,7 +12,7 @@ namespace Roslynator.Documentation
 {
     public abstract class DocumentationUrlProvider
     {
-        private static readonly Regex _notWordCharOrUnderscoreRegex = new(@"[^\w_]");
+        private readonly Dictionary<string, string> _symbolToLinkMap = new();
 
         protected DocumentationUrlProvider(UrlSegmentProvider segmentProvider, IEnumerable<ExternalUrlProvider> externalProviders = null)
         {
@@ -115,13 +116,28 @@ namespace Roslynator.Documentation
             return StringBuilderCache.GetStringAndFree(sb);
         }
 
-        internal static string GetFragment(ISymbol symbol)
+        internal string GetFragment(ISymbol symbol)
         {
             string id = symbol.GetDocumentationCommentId();
 
-            id = TextUtility.RemovePrefixFromDocumentationCommentId(id);
+            if (!_symbolToLinkMap.TryGetValue(id, out string link))
+            {
+                do
+                {
+                    char[] chars = Guid.NewGuid()
+                        .ToString("N")
+                        .Where((_, i) => i % 2 == 0)
+                        .Take(8)
+                        .ToArray();
 
-            return _notWordCharOrUnderscoreRegex.Replace(id, "_");
+                    link = new string(chars);
+                }
+                while (_symbolToLinkMap.ContainsKey(link));
+
+                _symbolToLinkMap.Add(id, link);
+            }
+
+            return link;
         }
     }
 }

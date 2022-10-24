@@ -965,7 +965,7 @@ namespace Roslynator.Documentation
 
                                 foreach (ISymbol overloadSymbol in grouping.OrderBy(f => f.ToDisplayString(format, additionalOptions)))
                                 {
-                                    string id = DocumentationUrlProvider.GetFragment(overloadSymbol);
+                                    string id = UrlProvider.GetFragment(overloadSymbol);
 
                                     writer.WriteLinkTarget(id);
                                     writer.WriteStartHeading(2);
