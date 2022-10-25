@@ -154,8 +154,7 @@ namespace Roslynator.Documentation
             return link;
 
             // https://andrewlock.net/why-is-string-gethashcode-different-each-time-i-run-my-program-in-net-core/#a-deterministic-gethashcode-implementation
-            static int getHashCode(string s
-                )
+            static int getHashCode(string s)
             {
                 unchecked
                 {
