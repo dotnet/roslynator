@@ -85,13 +85,14 @@ namespace Roslynator.CSharp
                     && string.Equals(invocationInfo.NameText, "ThrowIfNull", StringComparison.Ordinal)
                     && semanticModel
                         .GetSymbol(invocationInfo.InvocationExpression, cancellationToken)?
+                        .ContainingType?
                         .HasMetadataName(MetadataNames.System_ArgumentNullException) == true)
                 {
                     style = ArgumentNullCheckStyle.ThrowIfNullMethod;
 
-                    if (invocationInfo.Arguments.SingleOrDefault(shouldThrow: false)?.Expression is IdentifierNameSyntax identifiername)
+                    if (invocationInfo.Arguments.SingleOrDefault(shouldThrow: false)?.Expression is IdentifierNameSyntax identifierName)
                     {
-                        identifier = identifiername.Identifier.ValueText;
+                        identifier = identifierName.Identifier.ValueText;
 
                         if (string.Equals(name, identifier, StringComparison.Ordinal))
                             success = true;
