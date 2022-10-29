@@ -105,11 +105,11 @@ namespace Roslynator.CSharp.Refactorings
 
             foreach (StatementSyntax statement in body.Statements)
             {
-                NullCheckExpressionInfo nullCheck = GetNullCheckExpressionInfo(statement, semanticModel, cancellationToken);
+                ArgumentNullCheckAnalysis nullCheck = ArgumentNullCheckAnalysis.Create(statement, semanticModel, parameter.Identifier.ValueText, cancellationToken);
 
-                if (nullCheck.Success)
+                if (nullCheck.Style != ArgumentNullCheckStyle.None)
                 {
-                    if (string.Equals(((IdentifierNameSyntax)nullCheck.Expression).Identifier.ValueText, parameter.Identifier.ValueText, StringComparison.Ordinal))
+                    if (nullCheck.Success)
                         return false;
                 }
                 else
@@ -132,7 +132,7 @@ namespace Roslynator.CSharp.Refactorings
             SyntaxList<StatementSyntax> statements = body.Statements;
 
             int count = statements
-                .TakeWhile(f => GetNullCheckExpressionInfo(f, semanticModel, cancellationToken).Success)
+                .TakeWhile(f => ArgumentNullCheckAnalysis.IsArgumentNullCheck(f, semanticModel, cancellationToken))
                 .Count();
 
             List<IfStatementSyntax> ifStatements = CreateNullChecks(parameters);
@@ -198,40 +198,6 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             return ifStatements;
-        }
-
-        private static NullCheckExpressionInfo GetNullCheckExpressionInfo(
-            StatementSyntax statement,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken = default)
-        {
-            if (statement is not IfStatementSyntax ifStatement)
-                return default;
-
-            NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(ifStatement.Condition, NullCheckStyles.EqualsToNull | NullCheckStyles.IsNull);
-
-            if (!nullCheck.Success)
-                return default;
-
-            if (nullCheck.Expression.Kind() != SyntaxKind.IdentifierName)
-                return default;
-
-            var throwStatement = ifStatement.SingleNonBlockStatementOrDefault() as ThrowStatementSyntax;
-
-            if (throwStatement?.Expression?.Kind() != SyntaxKind.ObjectCreationExpression)
-                return default;
-
-            var objectCreation = (ObjectCreationExpressionSyntax)throwStatement.Expression;
-
-            ISymbol type = semanticModel.GetSymbol(objectCreation.Type, cancellationToken);
-
-            if (!string.Equals(type?.Name, "ArgumentNullException", StringComparison.Ordinal))
-                return default;
-
-            if (!type.HasMetadataName(MetadataNames.System_ArgumentNullException))
-                return default;
-
-            return nullCheck;
         }
 
         private static BlockSyntax GetBody(ParameterSyntax parameter)
