@@ -399,7 +399,7 @@ namespace Roslynator.Documentation
                     _overloadedMemberDisplayFormat ??= DocumentationDisplayFormats.Default.Update(
                         typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypes,
                         genericsOptions: SymbolDisplayGenericsOptions.None,
-                        memberOptions: (((Options.IgnoredTitleParts & SymbolTitleParts.ExplicitImplementation) == SymbolTitleParts.ExplicitImplementation)
+                        memberOptions: (((Options.IgnoredTitleParts & SymbolTitleParts.ExplicitImplementation) != 0)
                                 ? SymbolDisplayMemberOptions.None
                                 : SymbolDisplayMemberOptions.IncludeExplicitInterface)
                             | (((Options.IgnoredTitleParts & SymbolTitleParts.ContainingType) != 0)
@@ -413,7 +413,7 @@ namespace Roslynator.Documentation
                     _nonOverloadedMemberDisplayFormat ??= DocumentationDisplayFormats.Default.Update(
                         typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypes,
                         genericsOptions: SymbolDisplayGenericsOptions.IncludeTypeParameters,
-                        memberOptions: (((Options.IgnoredTitleParts & SymbolTitleParts.ExplicitImplementation) == SymbolTitleParts.ExplicitImplementation)
+                        memberOptions: (((Options.IgnoredTitleParts & SymbolTitleParts.ExplicitImplementation) != 0)
                             ? SymbolDisplayMemberOptions.None
                             : SymbolDisplayMemberOptions.IncludeExplicitInterface)
                             | (((Options.IgnoredTitleParts & SymbolTitleParts.Parameters) != 0)
