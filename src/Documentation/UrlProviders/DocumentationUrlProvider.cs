@@ -122,7 +122,7 @@ namespace Roslynator.Documentation
 
             if (!_symbolToLinkMap.TryGetValue(id, out string link))
             {
-                int hashCode = getHashCode(id);
+                int hashCode = GetDeterministicHashCode(id);
 
                 long linkCode;
                 if (hashCode >= 0)
@@ -152,25 +152,27 @@ namespace Roslynator.Documentation
             }
 
             return link;
+        }
 
-            // https://andrewlock.net/why-is-string-gethashcode-different-each-time-i-run-my-program-in-net-core/#a-deterministic-gethashcode-implementation
-            static int getHashCode(string s)
+        // https://andrewlock.net/why-is-string-gethashcode-different-each-time-i-run-my-program-in-net-core/#a-deterministic-gethashcode-implementation
+        private static int GetDeterministicHashCode(string s)
+        {
+            unchecked
             {
-                unchecked
+                int hash1 = (5381 << 16) + 5381;
+                int hash2 = hash1;
+
+                for (int i = 0; i < s.Length; i += 2)
                 {
-                    int hash1 = (5381 << 16) + 5381;
-                    int hash2 = hash1;
+                    hash1 = ((hash1 << 5) + hash1) ^ s[i];
 
-                    for (int i = 0; i < s.Length; i += 2)
-                    {
-                        hash1 = ((hash1 << 5) + hash1) ^ s[i];
-                        if (i == s.Length - 1)
-                            break;
-                        hash2 = ((hash2 << 5) + hash2) ^ s[i + 1];
-                    }
+                    if (i == s.Length - 1)
+                        break;
 
-                    return hash1 + (hash2 * 1566083941);
+                    hash2 = ((hash2 << 5) + hash2) ^ s[i + 1];
                 }
+
+                return hash1 + (hash2 * 1566083941);
             }
         }
     }
