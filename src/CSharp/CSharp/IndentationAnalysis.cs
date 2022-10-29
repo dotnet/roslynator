@@ -11,24 +11,33 @@ namespace Roslynator.CSharp
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
     internal readonly struct IndentationAnalysis
     {
-        private readonly SyntaxTrivia _indentation;
-        private readonly int _indentSize;
+        private readonly int? _indentSize;
+        private readonly SyntaxTrivia? _singleIndentation;
 
-        private IndentationAnalysis(SyntaxTrivia indentation, int indentSize)
+        private IndentationAnalysis(SyntaxTrivia indentation, int? indentSize, SyntaxTrivia? singleIndentation)
         {
-            _indentation = indentation;
+            Indentation = indentation;
             _indentSize = indentSize;
+            _singleIndentation = singleIndentation;
         }
 
-        public SyntaxTrivia Indentation => (_indentSize == -1) ? default : _indentation;
+        public SyntaxTrivia Indentation { get; }
 
-        public int IndentSize => (_indentSize == -1) ? 0 : _indentSize;
+        public int IndentSize => _indentSize ?? _singleIndentation?.Span.Length ?? 0;
 
-        public int IndentationLength => (_indentSize == -1) ? 0 : Indentation.Span.Length;
+        public int IndentationLength => Indentation.Span.Length;
 
-        public int IncreasedIndentationLength => (_indentSize == -1) ? 0 : (Indentation.Span.Length + _indentSize);
+        public int IncreasedIndentationLength => (IndentSize > 0) ? Indentation.Span.Length + IndentSize : 0;
 
-        public bool IsDefault => _indentation == default && _indentSize == 0;
+        public bool IsDefault
+        {
+            get
+            {
+                return Indentation.IsKind(SyntaxKind.None)
+                    && _indentSize is null
+                    && _singleIndentation is null;
+            }
+        }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string DebuggerDisplay => $"Length = {Indentation.Span.Length} {nameof(IndentSize)} = {IndentSize}";
@@ -41,17 +50,17 @@ namespace Roslynator.CSharp
 
             if (isFromCompilationUnit)
             {
-                return new IndentationAnalysis(indentation, trivia1.Span.Length - trivia2.Span.Length);
+                return new IndentationAnalysis(indentation, trivia1.Span.Length - trivia2.Span.Length, null);
             }
             else if (indentation.Span.Length > 0)
             {
                 return (trivia1.Span.Length > 0)
-                    ? new IndentationAnalysis(indentation, trivia1.Span.Length)
-                    : new IndentationAnalysis(indentation, -1);
+                    ? new IndentationAnalysis(indentation, null, trivia1)
+                    : new IndentationAnalysis(indentation, null, null);
             }
             else if (trivia1.Span.Length > 0)
             {
-                return new IndentationAnalysis(trivia1, -1);
+                return new IndentationAnalysis(indentation, null, trivia1);
             }
             else
             {
@@ -78,13 +87,16 @@ namespace Roslynator.CSharp
 
         public string GetSingleIndentation()
         {
-            if (_indentSize == -1)
-                return _indentation.ToString();
+            if (_singleIndentation is not null)
+                return _singleIndentation.ToString();
 
-            if (_indentation.Span.Length == 0)
+            if (_indentSize == -1)
+                return Indentation.ToString();
+
+            if (Indentation.Span.Length == 0)
                 return "";
 
-            string indentation = _indentation.ToString();
+            string indentation = Indentation.ToString();
 
             if (indentation[indentation.Length - 1] == '\t')
                 return "\t";
