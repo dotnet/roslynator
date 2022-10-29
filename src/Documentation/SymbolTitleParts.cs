@@ -8,8 +8,9 @@ namespace Roslynator.Documentation
     public enum SymbolTitleParts
     {
         None = 0,
-        ContainingType = 1,
-        Parameters = 1 << 1,
-        ExplicitImplementation = 1 << 2,
+        ContainingNamespace = 1,
+        ContainingType = 1 << 1,
+        Parameters = 1 << 2,
+        ExplicitImplementation = 1 << 3,
     }
 }

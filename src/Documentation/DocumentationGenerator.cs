@@ -332,7 +332,14 @@ namespace Roslynator.Documentation
 
                 SymbolXmlDocumentation xmlDocumentation = DocumentationModel.GetXmlDocumentation(namespaceSymbol, Options.PreferredCultureName);
 
-                writer.WriteHeading(1, namespaceSymbol, TypeSymbolDisplayFormats.Name_ContainingTypes_Namespaces, addLink: false, linkDestination: (Options.ScrollToContent) ? WellKnownNames.TopFragmentName : null);
+                writer.WriteHeading(
+                    1,
+                    namespaceSymbol,
+                    ((Options.IgnoredTitleParts & SymbolTitleParts.ContainingNamespace) != 0)
+                        ? TypeSymbolDisplayFormats.Name
+                        : TypeSymbolDisplayFormats.Name_ContainingTypes_Namespaces,
+                    addLink: false,
+                    linkDestination: (Options.ScrollToContent) ? WellKnownNames.TopFragmentName : null);
 
                 foreach (NamespaceDocumentationParts part in EnabledAndSortedNamespaceParts)
                 {

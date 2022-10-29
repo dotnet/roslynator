@@ -46,7 +46,7 @@ namespace Roslynator.CommandLine
 
         [Option(
             longName: OptionNames.IgnoredTitleParts,
-            HelpText = "Defines title parts of a documentation that should be excluded. Allowed value is containing-type, parameters and explicit-implementation.",
+            HelpText = "Defines title parts of a documentation that should be excluded. Allowed value is containing-namespace, containing-type, parameters and explicit-implementation.",
             MetaValue = "<IGNORED_TITLE_PARTS>")]
         public IEnumerable<string> IgnoredTitleParts { get; set; }
 
