@@ -361,7 +361,7 @@ namespace Roslynator.Documentation
                             }
                         case NamespaceDocumentationParts.Summary:
                             {
-                                xmlDocumentation?.Element(WellKnownXmlTags.Summary)?.WriteContentTo(writer);
+                                xmlDocumentation?.GetElement(WellKnownXmlTags.Summary)?.WriteContentTo(writer);
                                 break;
                             }
                         case NamespaceDocumentationParts.Examples:
@@ -511,7 +511,7 @@ namespace Roslynator.Documentation
                             }
                         case NamespaceDocumentationParts.SeeAlso:
                             {
-                                return xmlDocumentation?.Elements(WellKnownXmlTags.SeeAlso).Any() == true;
+                                return xmlDocumentation?.GetElements(WellKnownXmlTags.SeeAlso).Any() == true;
                             }
                         default:
                             {
@@ -903,7 +903,7 @@ namespace Roslynator.Documentation
                         }
                     case TypeDocumentationParts.SeeAlso:
                         {
-                            return xmlDocumentation?.Elements(WellKnownXmlTags.SeeAlso).Any() == true;
+                            return xmlDocumentation?.GetElements(WellKnownXmlTags.SeeAlso).Any() == true;
                         }
                     default:
                         {
@@ -965,7 +965,7 @@ namespace Roslynator.Documentation
 
                                 foreach (ISymbol overloadSymbol in grouping.OrderBy(f => f.ToDisplayString(format, additionalOptions)))
                                 {
-                                    string id = DocumentationUrlProvider.GetFragment(overloadSymbol);
+                                    string id = UrlProvider.GetFragment(overloadSymbol);
 
                                     writer.WriteLinkTarget(id);
                                     writer.WriteStartHeading(2);

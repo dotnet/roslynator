@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -58,7 +57,7 @@ namespace Roslynator.CSharp.Analysis
             int index = -1;
             for (int i = 0; i < statementCount; i++)
             {
-                if (IsNullCheck(statements[i]))
+                if (ArgumentNullCheckAnalysis.IsArgumentNullCheck(statements[i], context.SemanticModel, context.CancellationToken))
                 {
                     index++;
                 }
@@ -99,12 +98,6 @@ namespace Roslynator.CSharp.Analysis
                 context,
                 DiagnosticRules.ValidateArgumentsCorrectly,
                 Location.Create(body.SyntaxTree, new TextSpan(statements[index + 1].SpanStart, 0)));
-        }
-
-        private static bool IsNullCheck(StatementSyntax statement)
-        {
-            return statement.IsKind(SyntaxKind.IfStatement)
-                && ((IfStatementSyntax)statement).SingleNonBlockStatementOrDefault().IsKind(SyntaxKind.ThrowStatement);
         }
     }
 }

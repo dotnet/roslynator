@@ -546,7 +546,7 @@ namespace Roslynator.Documentation
                 {
                     WriteBold(en.Current.Name);
 
-                    XElement element = GetXmlDocumentation(en.Current.ContainingSymbol)?.Element(WellKnownXmlTags.TypeParam, "name", en.Current.Name);
+                    XElement element = GetXmlDocumentation(en.Current.ContainingSymbol)?.GetElement(WellKnownXmlTags.TypeParam, "name", en.Current.Name);
 
                     if (element?.Nodes().Any() == true)
                     {
@@ -585,7 +585,7 @@ namespace Roslynator.Documentation
                     WriteSpace();
                     WriteTypeLink(en.Current.Type, includeContainingNamespace: Options.IncludeContainingNamespace(IncludeContainingNamespaceFilter.Parameter));
 
-                    XElement element = GetXmlDocumentation(en.Current.ContainingSymbol)?.Element(WellKnownXmlTags.Param, "name", en.Current.Name);
+                    XElement element = GetXmlDocumentation(en.Current.ContainingSymbol)?.GetElement(WellKnownXmlTags.Param, "name", en.Current.Name);
 
                     if (element?.Nodes().Any() == true)
                     {
@@ -627,7 +627,7 @@ namespace Roslynator.Documentation
 
                             WriteReturnType(returnType, Resources.ReturnValueTitle);
 
-                            xmlDocumentation?.Element(WellKnownXmlTags.Returns)?.WriteContentTo(this);
+                            xmlDocumentation?.GetElement(WellKnownXmlTags.Returns)?.WriteContentTo(this);
                         }
 
                         break;
@@ -650,7 +650,7 @@ namespace Roslynator.Documentation
                                 {
                                     WriteReturnType(methodSymbol.ReturnType, Resources.ReturnsTitle);
 
-                                    xmlDocumentation?.Element(WellKnownXmlTags.Returns)?.WriteContentTo(this);
+                                    xmlDocumentation?.GetElement(WellKnownXmlTags.Returns)?.WriteContentTo(this);
                                     break;
                                 }
                             default:
@@ -662,7 +662,7 @@ namespace Roslynator.Documentation
 
                                     WriteReturnType(returnType, Resources.ReturnsTitle);
 
-                                    xmlDocumentation?.Element(WellKnownXmlTags.Returns)?.WriteContentTo(this);
+                                    xmlDocumentation?.GetElement(WellKnownXmlTags.Returns)?.WriteContentTo(this);
                                     break;
                                 }
                         }
@@ -677,7 +677,7 @@ namespace Roslynator.Documentation
 
                         string elementName = (propertySymbol.IsIndexer) ? WellKnownXmlTags.Returns : WellKnownXmlTags.Value;
 
-                        xmlDocumentation?.Element(elementName)?.WriteContentTo(this);
+                        xmlDocumentation?.GetElement(elementName)?.WriteContentTo(this);
                         break;
                     }
             }
@@ -894,7 +894,7 @@ namespace Roslynator.Documentation
 
             IEnumerable<(XElement element, INamedTypeSymbol exceptionSymbol)> GetExceptions()
             {
-                foreach (XElement element in xmlDocumentation.Elements(WellKnownXmlTags.Exception))
+                foreach (XElement element in xmlDocumentation.GetElements(WellKnownXmlTags.Exception))
                 {
                     string commentId = element.Attribute("cref")?.Value;
 
@@ -988,7 +988,7 @@ namespace Roslynator.Documentation
                         if (xmlDocumentation != null)
                         {
                             WriteStartTableCell();
-                            xmlDocumentation?.Element(WellKnownXmlTags.Summary)?.WriteContentTo(this, inlineOnly: true);
+                            xmlDocumentation?.GetElement(WellKnownXmlTags.Summary)?.WriteContentTo(this, inlineOnly: true);
                             WriteEndTableCell();
                         }
 
@@ -1098,7 +1098,7 @@ namespace Roslynator.Documentation
 
             IEnumerable<ISymbol> GetSymbols()
             {
-                foreach (XElement element in xmlDocumentation.Elements(WellKnownXmlTags.SeeAlso))
+                foreach (XElement element in xmlDocumentation.GetElements(WellKnownXmlTags.SeeAlso))
                 {
                     string commentId = element.Attribute("cref")?.Value;
 
@@ -1147,7 +1147,7 @@ namespace Roslynator.Documentation
             string elementName,
             int headingLevelBase = 0)
         {
-            XElement element = xmlDocumentation.Element(elementName);
+            XElement element = xmlDocumentation.GetElement(elementName);
 
             if (element == null)
                 return;
@@ -1365,17 +1365,17 @@ namespace Roslynator.Documentation
 
                         if (symbol.Kind == SymbolKind.Parameter)
                         {
-                            GetXmlDocumentation(symbol.ContainingSymbol)?.Element(WellKnownXmlTags.Param, "name", symbol.Name)?.WriteContentTo(this);
+                            GetXmlDocumentation(symbol.ContainingSymbol)?.GetElement(WellKnownXmlTags.Param, "name", symbol.Name)?.WriteContentTo(this);
                         }
                         else if (symbol.Kind == SymbolKind.TypeParameter)
                         {
-                            GetXmlDocumentation(symbol.ContainingSymbol)?.Element(WellKnownXmlTags.TypeParam, "name", symbol.Name)?.WriteContentTo(this);
+                            GetXmlDocumentation(symbol.ContainingSymbol)?.GetElement(WellKnownXmlTags.TypeParam, "name", symbol.Name)?.WriteContentTo(this);
                         }
                         else
                         {
                             ISymbol symbol2 = (isInherited) ? symbol.OriginalDefinition : symbol;
 
-                            GetXmlDocumentation(symbol2)?.Element(WellKnownXmlTags.Summary)?.WriteContentTo(this, inlineOnly: true);
+                            GetXmlDocumentation(symbol2)?.GetElement(WellKnownXmlTags.Summary)?.WriteContentTo(this, inlineOnly: true);
                         }
 
                         if (isInherited)
@@ -1961,7 +1961,7 @@ namespace Roslynator.Documentation
                             if (en.MoveNext()
                                 && en.MoveNext())
                             {
-                                return DocumentationUrlProvider.GetFragment(symbol);
+                                return UrlProvider.GetFragment(symbol);
                             }
                         }
                     }
