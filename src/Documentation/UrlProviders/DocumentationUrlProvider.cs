@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Globalization;
 using System.Text;
 using Microsoft.CodeAnalysis;
@@ -138,6 +139,8 @@ namespace Roslynator.Documentation
 
                 if (_symbolToLinkMap.ContainsValue(link))
                 {
+                    Debug.Fail(id);
+
                     linkCode += uint.MaxValue;
                     link = linkCode.ToString(CultureInfo.InvariantCulture);
 
