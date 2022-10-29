@@ -1961,7 +1961,7 @@ namespace Roslynator.Documentation
                             if (en.MoveNext()
                                 && en.MoveNext())
                             {
-                                return DocumentationUrlProvider.GetFragment(symbol);
+                                return UrlProvider.GetFragment(symbol);
                             }
                         }
                     }
