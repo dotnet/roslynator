@@ -39,6 +39,7 @@ namespace Roslynator.Documentation
             TypeDocumentationParts ignoredTypeParts = TypeDocumentationParts.None,
             MemberDocumentationParts ignoredMemberParts = MemberDocumentationParts.None,
             CommonDocumentationParts ignoredCommonParts = CommonDocumentationParts.None,
+            SymbolTitleParts ignoredTitleParts = SymbolTitleParts.None,
             IncludeContainingNamespaceFilter includeContainingNamespaceFilter = IncludeContainingNamespaceFilter.None,
             FilesLayout filesLayout = FilesLayout.Hierarchical,
             bool scrollToContent = DefaultValues.ScrollToContent)
@@ -74,6 +75,7 @@ namespace Roslynator.Documentation
             IgnoredTypeParts = ignoredTypeParts;
             IgnoredMemberParts = ignoredMemberParts;
             IgnoredCommonParts = ignoredCommonParts;
+            IgnoredTitleParts = ignoredTitleParts;
             IncludeContainingNamespaceFilter = includeContainingNamespaceFilter;
             FilesLayout = filesLayout;
             ScrollToContent = scrollToContent;
@@ -141,6 +143,8 @@ namespace Roslynator.Documentation
 
         public CommonDocumentationParts IgnoredCommonParts { get; }
 
+        public SymbolTitleParts IgnoredTitleParts { get; }
+
         public IncludeContainingNamespaceFilter IncludeContainingNamespaceFilter { get; }
 
         public FilesLayout FilesLayout { get; }
@@ -202,6 +206,7 @@ namespace Roslynator.Documentation
             public const TypeDocumentationParts IgnoredTypeParts = TypeDocumentationParts.None;
             public const MemberDocumentationParts IgnoredMemberParts = MemberDocumentationParts.None;
             public const CommonDocumentationParts IgnoredCommonParts = CommonDocumentationParts.None;
+            public const SymbolTitleParts IgnoredTitleParts = SymbolTitleParts.None;
             public const IncludeContainingNamespaceFilter IncludeContainingNamespaceFilter = Roslynator.Documentation.IncludeContainingNamespaceFilter.None;
         }
     }

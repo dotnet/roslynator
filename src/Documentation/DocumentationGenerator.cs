@@ -591,7 +591,9 @@ namespace Roslynator.Documentation
                 writer.WriteHeading(
                     1,
                     typeSymbol,
-                    TypeSymbolDisplayFormats.Name_ContainingTypes_TypeParameters,
+                    ((Options.IgnoredTitleParts & SymbolTitleParts.ContainingType) != 0)
+                            ? TypeSymbolDisplayFormats.Name_TypeParameters
+                            : TypeSymbolDisplayFormats.Name_ContainingTypes_TypeParameters,
                     SymbolDisplayAdditionalMemberOptions.UseItemPropertyName | SymbolDisplayAdditionalMemberOptions.UseOperatorName,
                     addLink: false,
                     linkDestination: (Options.ScrollToContent) ? WellKnownNames.TopFragmentName : null);
