@@ -22,7 +22,7 @@ namespace Roslynator.Documentation
 
         private readonly Dictionary<IAssemblySymbol, XmlDocumentation> _xmlDocumentations;
 
-        private ImmutableArray<string> _additionalXmlDocumentationPaths;
+        private readonly ImmutableArray<string> _additionalXmlDocumentationPaths;
 
         private ImmutableArray<XmlDocumentation> _additionalXmlDocumentations;
 
@@ -315,6 +315,17 @@ namespace Roslynator.Documentation
                     if (!string.IsNullOrEmpty(xml))
                     {
                         var element = XElement.Parse(xml, LoadOptions.PreserveWhitespace);
+
+                        if (InheritDocUtility.ContainsInheritDoc(element))
+                        {
+                            XElement inheritedElement = InheritDocUtility.FindInheritedDocumentation(symbol, s => GetXmlDocumentation(s, preferredCultureName)?.Element);
+
+                            if (inheritedElement is not null)
+                            {
+                                element.RemoveNodes();
+                                element.Add(inheritedElement.Elements());
+                            }
+                        }
 
                         xmlDocumentation = new SymbolXmlDocumentation(symbol, element);
 
