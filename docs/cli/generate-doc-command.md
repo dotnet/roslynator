@@ -1,7 +1,7 @@
 ﻿
 # `roslynator generate-doc`
 
-Generates documentation files from specified assemblies\.
+Generates reference documentation from specified project/solution\.
 
 [Home](README.md) &#x2022; [Synopsis](#Synopsis) &#x2022; [Arguments](#Arguments) &#x2022; [Options](#Options)
 
@@ -13,8 +13,12 @@ roslynator generate-doc <PROJECT|SOLUTION>
     --depth <DEPTH>
     --file-log <FILE_PATH>
     --file-log-verbosity <LEVEL>
+    --files-layout <LAYOUT>
+    --group-by-common-namespace
     --heading <HEADING>
 -h, --help
+    --host <HOST>
+    --ignored-common-parts <IGNORED_COMMON_PARTS>
     --ignored-member-parts <IGNORED_MEMBER_PARTS>
     --ignored-names <FULLY_QUALIFIED_METADATA_NAME>
     --ignored-namespace-parts <IGNORED_NAMESPACE_PARTS>
@@ -71,6 +75,14 @@ Path to a file that should store output\.
 
 Verbosity of the file log\. Allowed values are q\[uiet\], m\[inimal\], n\[ormal\], d\[etailed\] and diag\[nostic\]\.
 
+##### `--files-layout <LAYOUT>`
+
+Defines layout of documentation files\. Allowed values are hierarchical \(default\) or flat\-namespaces\.
+
+##### `--group-by-common-namespace`
+
+Indicates whether to group namespaces by greatest common namespace\.
+
 ##### `--heading <HEADING>`
 
 Defines a heading of the root documentation file\.
@@ -78,6 +90,14 @@ Defines a heading of the root documentation file\.
 ##### `-h, --help`
 
 Show command line help\.
+
+##### `--host <HOST>`
+
+Defines a host where the content will be published\. Allowed values are docusaurus, github or sphinx\.
+
+##### `--ignored-common-parts <IGNORED_COMMON_PARTS>`
+
+Defines common parts of a documentation that should be excluded\. Allowed value is content\.
 
 ##### `--ignored-member-parts <IGNORED_MEMBER_PARTS>`
 
@@ -113,7 +133,7 @@ Defines parts of a documentation that should include containing namespace\. Allo
 
 ##### `--include-ienumerable`
 
-Indicates whether interface System\.Collections\.IEnumerable should be included in a documentation if a type also implements interface System\.Collections\.Generic\.IEnumerable\<T>\.
+Indicates whether interface System\.Collections\.IEnumerable should be included in a documentation if a type also implements interface System\.Collections\.Generic\.IEnumerable\<T\>\.
 
 ##### `--include-inherited-interface-members`
 
@@ -189,7 +209,7 @@ Defines one or more MSBuild properties\.
 
 ##### `--scroll-to-content`
 
-Indicates whether a link should lead to the top of the documentation content\.
+Indicates whether a link should lead to the top of the documentation content\. This option is applicable when host is set to 'github'\.
 
 ##### `-v, --verbosity <LEVEL>`
 
