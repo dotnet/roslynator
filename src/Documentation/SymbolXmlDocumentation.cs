@@ -21,27 +21,27 @@ namespace Roslynator.Documentation
             (?=\</\k<name>\>)",
             RegexOptions.IgnorePatternWhitespace);
 
-        private readonly XElement _element;
-
         internal static SymbolXmlDocumentation Default { get; } = new(null, null);
 
         public SymbolXmlDocumentation(ISymbol symbol, XElement element)
         {
             Symbol = symbol;
-            _element = element;
+            Element = element;
         }
 
         public ISymbol Symbol { get; }
 
+        public XElement Element { get; }
+
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string DebuggerDisplay
         {
-            get { return $"{_element}"; }
+            get { return $"{Element}"; }
         }
 
-        public XElement Element(string name)
+        public XElement GetElement(string name)
         {
-            foreach (XElement element in _element.Elements())
+            foreach (XElement element in Element.Elements())
             {
                 if (string.Equals(element.Name.LocalName, name, StringComparison.OrdinalIgnoreCase))
                     return element;
@@ -50,9 +50,9 @@ namespace Roslynator.Documentation
             return default;
         }
 
-        internal XElement Element(string name, string attributeName, string attributeValue)
+        internal XElement GetElement(string name, string attributeName, string attributeValue)
         {
-            foreach (XElement element in _element.Elements())
+            foreach (XElement element in Element.Elements())
             {
                 if (string.Equals(element.Name.LocalName, name, StringComparison.OrdinalIgnoreCase)
                     && element.Attribute(attributeName)?.Value == attributeValue)
@@ -64,9 +64,9 @@ namespace Roslynator.Documentation
             return default;
         }
 
-        public IEnumerable<XElement> Elements(string name)
+        public IEnumerable<XElement> GetElements(string name)
         {
-            foreach (XElement element in _element.Elements())
+            foreach (XElement element in Element.Elements())
             {
                 if (string.Equals(element.Name.LocalName, name, StringComparison.OrdinalIgnoreCase))
                     yield return element;
@@ -75,12 +75,12 @@ namespace Roslynator.Documentation
 
         public bool HasElement(string name)
         {
-            return Element(name) != null;
+            return GetElement(name) != null;
         }
 
         public IEnumerable<string> GetElementsAsText(bool skipEmptyElement = false, bool makeSingleLine = false)
         {
-            foreach (XElement element in _element.Elements())
+            foreach (XElement element in Element.Elements())
             {
                 switch (element.Name.LocalName)
                 {
