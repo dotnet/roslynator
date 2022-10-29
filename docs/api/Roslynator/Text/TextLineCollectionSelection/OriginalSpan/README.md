@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Core\.dll
 
-\
+  
 Gets the original span that was used to determine selected lines\.
 
 ```csharp

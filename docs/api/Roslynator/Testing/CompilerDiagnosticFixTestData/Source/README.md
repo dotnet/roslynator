@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Testing\.Common\.dll
 
-\
+  
 Gets a source code that will report specified compiler diagnostic\.
 
 ```csharp

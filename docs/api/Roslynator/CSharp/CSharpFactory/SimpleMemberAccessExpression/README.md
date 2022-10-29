@@ -10,10 +10,12 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [SimpleMemberAccessExpression(ExpressionSyntax, SimpleNameSyntax)](#Roslynator_CSharp_CSharpFactory_SimpleMemberAccessExpression_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_Microsoft_CodeAnalysis_CSharp_Syntax_SimpleNameSyntax_) | |
-| [SimpleMemberAccessExpression(ExpressionSyntax, SyntaxToken, SimpleNameSyntax)](#Roslynator_CSharp_CSharpFactory_SimpleMemberAccessExpression_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_Microsoft_CodeAnalysis_SyntaxToken_Microsoft_CodeAnalysis_CSharp_Syntax_SimpleNameSyntax_) | |
+| [SimpleMemberAccessExpression(ExpressionSyntax, SimpleNameSyntax)](#3926974401) | |
+| [SimpleMemberAccessExpression(ExpressionSyntax, SyntaxToken, SimpleNameSyntax)](#1126784979) | |
 
-## SimpleMemberAccessExpression\(ExpressionSyntax, SimpleNameSyntax\) <a id="Roslynator_CSharp_CSharpFactory_SimpleMemberAccessExpression_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_Microsoft_CodeAnalysis_CSharp_Syntax_SimpleNameSyntax_"></a>
+<a id="3926974401"></a>
+
+## SimpleMemberAccessExpression\(ExpressionSyntax, SimpleNameSyntax\) 
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.MemberAccessExpressionSyntax SimpleMemberAccessExpression(Microsoft.CodeAnalysis.CSharp.Syntax.ExpressionSyntax expression, Microsoft.CodeAnalysis.CSharp.Syntax.SimpleNameSyntax name)
@@ -29,7 +31,9 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.MemberAccessExpressionSyntax 
 
 [MemberAccessExpressionSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.memberaccessexpressionsyntax)
 
-## SimpleMemberAccessExpression\(ExpressionSyntax, SyntaxToken, SimpleNameSyntax\) <a id="Roslynator_CSharp_CSharpFactory_SimpleMemberAccessExpression_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_Microsoft_CodeAnalysis_SyntaxToken_Microsoft_CodeAnalysis_CSharp_Syntax_SimpleNameSyntax_"></a>
+<a id="1126784979"></a>
+
+## SimpleMemberAccessExpression\(ExpressionSyntax, SyntaxToken, SimpleNameSyntax\) 
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.MemberAccessExpressionSyntax SimpleMemberAccessExpression(Microsoft.CodeAnalysis.CSharp.Syntax.ExpressionSyntax expression, Microsoft.CodeAnalysis.SyntaxToken operatorToken, Microsoft.CodeAnalysis.CSharp.Syntax.SimpleNameSyntax name)

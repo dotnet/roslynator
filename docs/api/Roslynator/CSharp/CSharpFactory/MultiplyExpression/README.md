@@ -10,10 +10,12 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [MultiplyExpression(ExpressionSyntax, ExpressionSyntax)](#Roslynator_CSharp_CSharpFactory_MultiplyExpression_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_) | |
-| [MultiplyExpression(ExpressionSyntax, SyntaxToken, ExpressionSyntax)](#Roslynator_CSharp_CSharpFactory_MultiplyExpression_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_Microsoft_CodeAnalysis_SyntaxToken_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_) | |
+| [MultiplyExpression(ExpressionSyntax, ExpressionSyntax)](#2264152204) | |
+| [MultiplyExpression(ExpressionSyntax, SyntaxToken, ExpressionSyntax)](#211798540) | |
 
-## MultiplyExpression\(ExpressionSyntax, ExpressionSyntax\) <a id="Roslynator_CSharp_CSharpFactory_MultiplyExpression_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_"></a>
+<a id="2264152204"></a>
+
+## MultiplyExpression\(ExpressionSyntax, ExpressionSyntax\) 
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.BinaryExpressionSyntax MultiplyExpression(Microsoft.CodeAnalysis.CSharp.Syntax.ExpressionSyntax left, Microsoft.CodeAnalysis.CSharp.Syntax.ExpressionSyntax right)
@@ -29,7 +31,9 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.BinaryExpressionSyntax Multip
 
 [BinaryExpressionSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.binaryexpressionsyntax)
 
-## MultiplyExpression\(ExpressionSyntax, SyntaxToken, ExpressionSyntax\) <a id="Roslynator_CSharp_CSharpFactory_MultiplyExpression_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_Microsoft_CodeAnalysis_SyntaxToken_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_"></a>
+<a id="211798540"></a>
+
+## MultiplyExpression\(ExpressionSyntax, SyntaxToken, ExpressionSyntax\) 
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.BinaryExpressionSyntax MultiplyExpression(Microsoft.CodeAnalysis.CSharp.Syntax.ExpressionSyntax left, Microsoft.CodeAnalysis.SyntaxToken operatorToken, Microsoft.CodeAnalysis.CSharp.Syntax.ExpressionSyntax right)

@@ -1,4 +1,4 @@
-# WorkspaceExtensions\.RemoveNodesAsync\(Document, IEnumerable\<SyntaxNode>, SyntaxRemoveOptions, CancellationToken\) Method
+# WorkspaceExtensions\.RemoveNodesAsync\(Document, IEnumerable\<SyntaxNode\>, SyntaxRemoveOptions, CancellationToken\) Method
 
 [Home](../../../README.md)
 
@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Workspaces\.Core\.dll
 
-\
+  
 Creates a new document with the specified nodes removed\.
 
 ```csharp
@@ -17,7 +17,7 @@ public static System.Threading.Tasks.Task<Microsoft.CodeAnalysis.Document> Remov
 
 **document** &ensp; [Document](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.document)
 
-**nodes** &ensp; [IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)\<[SyntaxNode](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxnode)>
+**nodes** &ensp; [IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)\<[SyntaxNode](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxnode)\>
 
 **options** &ensp; [SyntaxRemoveOptions](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxremoveoptions)
 
@@ -25,5 +25,5 @@ public static System.Threading.Tasks.Task<Microsoft.CodeAnalysis.Document> Remov
 
 ### Returns
 
-[Task](https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1)\<[Document](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.document)>
+[Task](https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1)\<[Document](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.document)\>
 

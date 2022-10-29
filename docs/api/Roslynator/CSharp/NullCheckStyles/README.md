@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-\
+  
 Specifies a null check\.
 
 ```csharp
@@ -35,7 +35,7 @@ public enum NullCheckStyles
 | NotHasValue | 16 | | `!x.HasValue` |
 | CheckingNull | 21 | EqualsToNull \| IsNull \| NotHasValue | Expression that checks whether an expression is null\. |
 | HasValue | 32 | | `x.HasValue` |
-| HasValueProperty | 48 | NotHasValue \| HasValue | Expression that uses [Nullable\<T>.HasValue](https://docs.microsoft.com/en-us/dotnet/api/system.nullable-1.hasvalue) property\. |
+| HasValueProperty | 48 | NotHasValue \| HasValue | Expression that uses [Nullable\<T\>.HasValue](https://docs.microsoft.com/en-us/dotnet/api/system.nullable-1.hasvalue) property\. |
 | IsNotNull | 64 | | `x is not null` |
 | IsPattern | 76 | IsNull \| NotIsNull \| IsNotNull | Expression that uses pattern syntax\. |
 | CheckingNotNull | 106 | NotEqualsToNull \| NotIsNull \| HasValue \| IsNotNull | Expression that checks whether an expression is not null\. |

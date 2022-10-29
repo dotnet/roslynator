@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-\
+  
 Returns true if the specified if statement is not a child of an else clause\.
 
 ```csharp

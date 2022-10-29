@@ -4,5 +4,5 @@
 
 | Extension Method | Summary |
 | ---------------- | ------- |
-| [ParenthesesSpan(ForStatementSyntax)](../../../../../Roslynator/CSharp/SyntaxExtensions/ParenthesesSpan/README.md#Roslynator_CSharp_SyntaxExtensions_ParenthesesSpan_Microsoft_CodeAnalysis_CSharp_Syntax_ForStatementSyntax_) | Absolute span of the parentheses, not including the leading and trailing trivia\. |
+| [ParenthesesSpan(ForStatementSyntax)](../../../../../Roslynator/CSharp/SyntaxExtensions/ParenthesesSpan/README.md#3518600528) | Absolute span of the parentheses, not including the leading and trailing trivia\. |
 

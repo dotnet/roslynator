@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Testing\.Common\.dll
 
-\
+  
 Gets diagnostic's message
 
 ```csharp

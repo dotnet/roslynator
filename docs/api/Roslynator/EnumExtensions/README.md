@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Core\.dll
 
-\
+  
 A set of extension methods for enumerations\.
 
 ```csharp

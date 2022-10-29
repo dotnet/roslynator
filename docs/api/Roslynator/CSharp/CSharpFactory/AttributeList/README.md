@@ -10,10 +10,12 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [AttributeList(AttributeSyntax)](#Roslynator_CSharp_CSharpFactory_AttributeList_Microsoft_CodeAnalysis_CSharp_Syntax_AttributeSyntax_) | |
-| [AttributeList(AttributeSyntax\[\])](#Roslynator_CSharp_CSharpFactory_AttributeList_Microsoft_CodeAnalysis_CSharp_Syntax_AttributeSyntax___) | |
+| [AttributeList(AttributeSyntax)](#1472087019) | |
+| [AttributeList(AttributeSyntax\[\])](#2997688182) | |
 
-## AttributeList\(AttributeSyntax\) <a id="Roslynator_CSharp_CSharpFactory_AttributeList_Microsoft_CodeAnalysis_CSharp_Syntax_AttributeSyntax_"></a>
+<a id="1472087019"></a>
+
+## AttributeList\(AttributeSyntax\) 
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.AttributeListSyntax AttributeList(Microsoft.CodeAnalysis.CSharp.Syntax.AttributeSyntax attribute)
@@ -27,7 +29,9 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.AttributeListSyntax Attribute
 
 [AttributeListSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.attributelistsyntax)
 
-## AttributeList\(AttributeSyntax\[\]\) <a id="Roslynator_CSharp_CSharpFactory_AttributeList_Microsoft_CodeAnalysis_CSharp_Syntax_AttributeSyntax___"></a>
+<a id="2997688182"></a>
+
+## AttributeList\(AttributeSyntax\[\]\) 
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.AttributeListSyntax AttributeList(params Microsoft.CodeAnalysis.CSharp.Syntax.AttributeSyntax[] attributes)
