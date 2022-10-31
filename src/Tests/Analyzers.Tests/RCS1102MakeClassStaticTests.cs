@@ -163,5 +163,18 @@ class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassStatic)]
+        public async Task TestNoDiagnostic_NestedClass()
+        {
+            await VerifyNoDiagnosticAsync(@"
+public class Class1<T>
+{
+    public sealed class Class2 : Class1<T>
+    {
+    }
+}
+");
+        }
     }
 }

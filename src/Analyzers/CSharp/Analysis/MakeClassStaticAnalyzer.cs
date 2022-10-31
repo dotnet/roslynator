@@ -190,7 +190,8 @@ namespace Roslynator.CSharp.Analysis
             {
                 if (node is IdentifierNameSyntax identifierName)
                 {
-                    if (string.Equals(Symbol.Name, identifierName.Identifier.ValueText, StringComparison.Ordinal)
+                    if (!identifierName.IsVar
+                        && string.Equals(Symbol.Name, identifierName.Identifier.ValueText, StringComparison.Ordinal)
                         && SymbolEqualityComparer.Default.Equals(
                             SemanticModel.GetSymbol(identifierName, CancellationToken)?.OriginalDefinition,
                             Symbol))
@@ -198,10 +199,18 @@ namespace Roslynator.CSharp.Analysis
                         CanBeMadeStatic = false;
                     }
                 }
-                else
+                else if (node is GenericNameSyntax genericName)
                 {
-                    base.VisitType(node);
+                    if (string.Equals(Symbol.Name, genericName.Identifier.ValueText, StringComparison.Ordinal)
+                        && SymbolEqualityComparer.Default.Equals(
+                            SemanticModel.GetSymbol(genericName, CancellationToken)?.OriginalDefinition,
+                            Symbol))
+                    {
+                        CanBeMadeStatic = false;
+                    }
                 }
+
+                base.VisitType(node);
             }
 
             public static MakeClassStaticWalker GetInstance()
