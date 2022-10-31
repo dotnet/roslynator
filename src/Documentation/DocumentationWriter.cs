@@ -18,6 +18,10 @@ namespace Roslynator.Documentation
     {
         private bool _disposed;
 
+        private SymbolDisplayFormat _nonOverloadedConstructorDisplayFormat;
+        private SymbolDisplayFormat _nonOverloadedMemberDisplayFormat;
+        private SymbolDisplayFormat _overloadedMemberDisplayFormat;
+
         protected DocumentationWriter(DocumentationContext context)
         {
             Context = context ?? throw new ArgumentNullException(nameof(context));
@@ -40,6 +44,10 @@ namespace Roslynator.Documentation
         public DocumentationUrlProvider UrlProvider => Context.UrlProvider;
 
         private UrlSegmentProvider UrlSegmentProvider => Context.UrlProvider.SegmentProvider;
+
+        internal abstract bool IncludeLinkInClassHierarchy { get; }
+
+        internal abstract bool IncludeLinkToRoot { get; }
 
         private SymbolXmlDocumentation GetXmlDocumentation(ISymbol symbol)
         {
@@ -226,7 +234,7 @@ namespace Roslynator.Documentation
 
         public abstract void WriteLineBreak();
 
-        public abstract void WriteLinkDestination(string name);
+        public abstract void WriteLinkTarget(string name);
 
         public virtual void WriteValue(bool value)
         {
@@ -285,21 +293,28 @@ namespace Roslynator.Documentation
             }
         }
 
-        public virtual void WriteContent(IEnumerable<string> names, bool addLinkToRoot = false, bool beginWithSeparator = false)
+        public virtual void WriteContent(IEnumerable<string> names, bool includeLinkToRoot = false, bool beginWithSeparator = false)
         {
+            if (!IncludeLinkToRoot)
+                includeLinkToRoot = false;
+
             IEnumerator<string> en = names.GetEnumerator();
 
-            if (addLinkToRoot)
+            if (includeLinkToRoot)
             {
                 if (beginWithSeparator)
                     WriteContentSeparator();
 
                 WriteLink(Resources.HomeTitle, UrlProvider.GetUrlToRoot(UrlSegmentProvider.GetSegments(CurrentSymbol).Length, '/', scrollToContent: Options.ScrollToContent));
             }
+            else if (names.Count() == 1)
+            {
+                return;
+            }
 
             if (en.MoveNext())
             {
-                if (addLinkToRoot || beginWithSeparator)
+                if (includeLinkToRoot || beginWithSeparator)
                 {
                     WriteContentSeparator();
                 }
@@ -321,7 +336,7 @@ namespace Roslynator.Documentation
                 WriteLine();
                 WriteLine();
             }
-            else if (addLinkToRoot)
+            else if (includeLinkToRoot)
             {
                 WriteLine();
                 WriteLine();
@@ -339,27 +354,81 @@ namespace Roslynator.Documentation
         {
             WriteStartHeading(1);
 
-            if (symbol.Kind == SymbolKind.Method
-                && ((IMethodSymbol)symbol).MethodKind == MethodKind.Constructor)
+            if ((symbol as IMethodSymbol)?.MethodKind == MethodKind.Constructor)
             {
                 if (isOverloaded)
                 {
-                    WriteString(symbol.ContainingType.ToDisplayString(TypeSymbolDisplayFormats.Name_ContainingTypes_TypeParameters));
+                    SymbolDisplayFormat format = ((Options.IgnoredTitleParts & SymbolTitleParts.ContainingType) != 0)
+                        ? TypeSymbolDisplayFormats.Name_TypeParameters
+                        : TypeSymbolDisplayFormats.Name_ContainingTypes_TypeParameters;
+
+                    WriteString(symbol.ContainingType.ToDisplayString(format));
                     WriteSpace();
                     WriteString(Resources.ConstructorsTitle);
                 }
                 else
                 {
-                    WriteString(symbol.ToDisplayString(DocumentationDisplayFormats.SimpleDeclaration));
+                    _nonOverloadedConstructorDisplayFormat ??= DocumentationDisplayFormats.Default.Update(
+                        genericsOptions: SymbolDisplayGenericsOptions.IncludeTypeParameters,
+                        memberOptions: ((Options.IgnoredTitleParts & SymbolTitleParts.Parameters) != 0)
+                            ? SymbolDisplayMemberOptions.None
+                            : SymbolDisplayMemberOptions.IncludeParameters,
+                        parameterOptions: SymbolDisplayParameterOptions.IncludeType);
+
+                    if ((Options.IgnoredTitleParts & SymbolTitleParts.ContainingType) == 0)
+                    {
+                        INamedTypeSymbol containingType = symbol.ContainingType.ContainingType;
+
+                        if (containingType is not null)
+                        {
+                            WriteString(containingType.ToDisplayString(TypeSymbolDisplayFormats.Name_ContainingTypes_TypeParameters));
+                            WriteString(".");
+                        }
+                    }
+
+                    WriteString(symbol.ToDisplayString(_nonOverloadedConstructorDisplayFormat));
                     WriteSpace();
                     WriteString(Resources.ConstructorTitle);
                 }
             }
             else
             {
-                SymbolDisplayFormat format = (isOverloaded)
-                    ? DocumentationDisplayFormats.OverloadedMemberTitle
-                    : DocumentationDisplayFormats.MemberTitle;
+                SymbolDisplayFormat format;
+                if (isOverloaded)
+                {
+                    _overloadedMemberDisplayFormat ??= DocumentationDisplayFormats.Default.Update(
+                        typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypes,
+                        genericsOptions: SymbolDisplayGenericsOptions.None,
+                        memberOptions: (((Options.IgnoredTitleParts & SymbolTitleParts.ExplicitImplementation) != 0)
+                                ? SymbolDisplayMemberOptions.None
+                                : SymbolDisplayMemberOptions.IncludeExplicitInterface)
+                            | (((Options.IgnoredTitleParts & SymbolTitleParts.ContainingType) != 0)
+                                ? SymbolDisplayMemberOptions.None
+                                : SymbolDisplayMemberOptions.IncludeContainingType));
+
+                    format = _overloadedMemberDisplayFormat;
+                }
+                else
+                {
+                    _nonOverloadedMemberDisplayFormat ??= DocumentationDisplayFormats.Default.Update(
+                        typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypes,
+                        genericsOptions: SymbolDisplayGenericsOptions.IncludeTypeParameters,
+                        memberOptions: (((Options.IgnoredTitleParts & SymbolTitleParts.ExplicitImplementation) != 0)
+                            ? SymbolDisplayMemberOptions.None
+                            : SymbolDisplayMemberOptions.IncludeExplicitInterface)
+                            | (((Options.IgnoredTitleParts & SymbolTitleParts.Parameters) != 0)
+                                ? SymbolDisplayMemberOptions.None
+                                : SymbolDisplayMemberOptions.IncludeParameters)
+                            | (((Options.IgnoredTitleParts & SymbolTitleParts.ContainingType) != 0)
+                                ? SymbolDisplayMemberOptions.None
+                                : SymbolDisplayMemberOptions.IncludeContainingType),
+                        delegateStyle: ((Options.IgnoredTitleParts & SymbolTitleParts.Parameters) != 0)
+                            ? SymbolDisplayDelegateStyle.NameOnly
+                            : SymbolDisplayDelegateStyle.NameAndParameters,
+                        parameterOptions: SymbolDisplayParameterOptions.IncludeType);
+
+                    format = _nonOverloadedMemberDisplayFormat;
+                }
 
                 WriteString(symbol.ToDisplayString(format, SymbolDisplayAdditionalMemberOptions.UseItemPropertyName | SymbolDisplayAdditionalMemberOptions.UseOperatorName));
                 WriteSpace();
@@ -535,7 +604,7 @@ namespace Roslynator.Documentation
                 {
                     WriteBold(en.Current.Name);
 
-                    XElement element = GetXmlDocumentation(en.Current.ContainingSymbol)?.Element(WellKnownXmlTags.TypeParam, "name", en.Current.Name);
+                    XElement element = GetXmlDocumentation(en.Current.ContainingSymbol)?.GetElement(WellKnownXmlTags.TypeParam, "name", en.Current.Name);
 
                     if (element?.Nodes().Any() == true)
                     {
@@ -574,7 +643,7 @@ namespace Roslynator.Documentation
                     WriteSpace();
                     WriteTypeLink(en.Current.Type, includeContainingNamespace: Options.IncludeContainingNamespace(IncludeContainingNamespaceFilter.Parameter));
 
-                    XElement element = GetXmlDocumentation(en.Current.ContainingSymbol)?.Element(WellKnownXmlTags.Param, "name", en.Current.Name);
+                    XElement element = GetXmlDocumentation(en.Current.ContainingSymbol)?.GetElement(WellKnownXmlTags.Param, "name", en.Current.Name);
 
                     if (element?.Nodes().Any() == true)
                     {
@@ -616,7 +685,7 @@ namespace Roslynator.Documentation
 
                             WriteReturnType(returnType, Resources.ReturnValueTitle);
 
-                            xmlDocumentation?.Element(WellKnownXmlTags.Returns)?.WriteContentTo(this);
+                            xmlDocumentation?.GetElement(WellKnownXmlTags.Returns)?.WriteContentTo(this);
                         }
 
                         break;
@@ -639,7 +708,7 @@ namespace Roslynator.Documentation
                                 {
                                     WriteReturnType(methodSymbol.ReturnType, Resources.ReturnsTitle);
 
-                                    xmlDocumentation?.Element(WellKnownXmlTags.Returns)?.WriteContentTo(this);
+                                    xmlDocumentation?.GetElement(WellKnownXmlTags.Returns)?.WriteContentTo(this);
                                     break;
                                 }
                             default:
@@ -651,7 +720,7 @@ namespace Roslynator.Documentation
 
                                     WriteReturnType(returnType, Resources.ReturnsTitle);
 
-                                    xmlDocumentation?.Element(WellKnownXmlTags.Returns)?.WriteContentTo(this);
+                                    xmlDocumentation?.GetElement(WellKnownXmlTags.Returns)?.WriteContentTo(this);
                                     break;
                                 }
                         }
@@ -666,7 +735,7 @@ namespace Roslynator.Documentation
 
                         string elementName = (propertySymbol.IsIndexer) ? WellKnownXmlTags.Returns : WellKnownXmlTags.Value;
 
-                        xmlDocumentation?.Element(elementName)?.WriteContentTo(this);
+                        xmlDocumentation?.GetElement(elementName)?.WriteContentTo(this);
                         break;
                     }
             }
@@ -883,7 +952,7 @@ namespace Roslynator.Documentation
 
             IEnumerable<(XElement element, INamedTypeSymbol exceptionSymbol)> GetExceptions()
             {
-                foreach (XElement element in xmlDocumentation.Elements(WellKnownXmlTags.Exception))
+                foreach (XElement element in xmlDocumentation.GetElements(WellKnownXmlTags.Exception))
                 {
                     string commentId = element.Attribute("cref")?.Value;
 
@@ -977,7 +1046,7 @@ namespace Roslynator.Documentation
                         if (xmlDocumentation != null)
                         {
                             WriteStartTableCell();
-                            xmlDocumentation?.Element(WellKnownXmlTags.Summary)?.WriteContentTo(this, inlineOnly: true);
+                            xmlDocumentation?.GetElement(WellKnownXmlTags.Summary)?.WriteContentTo(this, inlineOnly: true);
                             WriteEndTableCell();
                         }
 
@@ -1087,7 +1156,7 @@ namespace Roslynator.Documentation
 
             IEnumerable<ISymbol> GetSymbols()
             {
-                foreach (XElement element in xmlDocumentation.Elements(WellKnownXmlTags.SeeAlso))
+                foreach (XElement element in xmlDocumentation.GetElements(WellKnownXmlTags.SeeAlso))
                 {
                     string commentId = element.Attribute("cref")?.Value;
 
@@ -1136,7 +1205,7 @@ namespace Roslynator.Documentation
             string elementName,
             int headingLevelBase = 0)
         {
-            XElement element = xmlDocumentation.Element(elementName);
+            XElement element = xmlDocumentation.GetElement(elementName);
 
             if (element == null)
                 return;
@@ -1224,7 +1293,8 @@ namespace Roslynator.Documentation
                 if (isExternal)
                     WriteString(")");
 
-                WriteLinkDestination(CreateLocalLink(baseType));
+                if (IncludeLinkInClassHierarchy)
+                    WriteLinkTarget(CreateLocalLink(baseType));
 
                 WriteEndBulletItem();
 
@@ -1353,17 +1423,17 @@ namespace Roslynator.Documentation
 
                         if (symbol.Kind == SymbolKind.Parameter)
                         {
-                            GetXmlDocumentation(symbol.ContainingSymbol)?.Element(WellKnownXmlTags.Param, "name", symbol.Name)?.WriteContentTo(this);
+                            GetXmlDocumentation(symbol.ContainingSymbol)?.GetElement(WellKnownXmlTags.Param, "name", symbol.Name)?.WriteContentTo(this);
                         }
                         else if (symbol.Kind == SymbolKind.TypeParameter)
                         {
-                            GetXmlDocumentation(symbol.ContainingSymbol)?.Element(WellKnownXmlTags.TypeParam, "name", symbol.Name)?.WriteContentTo(this);
+                            GetXmlDocumentation(symbol.ContainingSymbol)?.GetElement(WellKnownXmlTags.TypeParam, "name", symbol.Name)?.WriteContentTo(this);
                         }
                         else
                         {
                             ISymbol symbol2 = (isInherited) ? symbol.OriginalDefinition : symbol;
 
-                            GetXmlDocumentation(symbol2)?.Element(WellKnownXmlTags.Summary)?.WriteContentTo(this, inlineOnly: true);
+                            GetXmlDocumentation(symbol2)?.GetElement(WellKnownXmlTags.Summary)?.WriteContentTo(this, inlineOnly: true);
                         }
 
                         if (isInherited)
@@ -1731,7 +1801,7 @@ namespace Roslynator.Documentation
         {
             if (!string.IsNullOrEmpty(linkDestination))
             {
-                WriteLinkDestination(linkDestination);
+                WriteLinkTarget(linkDestination);
                 WriteLine();
             }
 
@@ -1921,19 +1991,19 @@ namespace Roslynator.Documentation
                 ? UrlSegmentProvider.GetSegments(CurrentSymbol)
                 : default;
 
-            string fragment = GetFragment();
+            string target = GetLocalLinkTarget();
 
-            if (fragment == null
+            if (target == null
                 && Options.ScrollToContent)
             {
-                fragment = "#" + WellKnownNames.TopFragmentName;
+                target = WellKnownNames.TopFragmentName;
             }
 
-            string url = UrlProvider.GetLocalUrl(segments, containingFolders, fragment).Url;
+            string url = UrlProvider.GetLocalUrl(segments, containingFolders, target).Url;
 
             return Options.RootDirectoryUrl + url;
 
-            string GetFragment()
+            string GetLocalLinkTarget()
             {
                 if (symbol.Kind == SymbolKind.Method
                     || (symbol.Kind == SymbolKind.Property && ((IPropertySymbol)symbol).IsIndexer))
@@ -1949,7 +2019,7 @@ namespace Roslynator.Documentation
                             if (en.MoveNext()
                                 && en.MoveNext())
                             {
-                                return "#" + DocumentationUrlProvider.GetFragment(symbol);
+                                return UrlProvider.GetFragment(symbol);
                             }
                         }
                     }

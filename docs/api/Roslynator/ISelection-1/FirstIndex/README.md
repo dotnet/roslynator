@@ -1,12 +1,12 @@
-# ISelection\<T>\.FirstIndex Property
+# ISelection\<T\>\.FirstIndex Property
 
 [Home](../../../README.md)
 
-**Containing Type**: [ISelection\<T>](../README.md)
+**Containing Type**: [ISelection\<T\>](../README.md)
 
 **Assembly**: Roslynator\.Core\.dll
 
-\
+  
 Gets an index of the first selected item\.
 
 ```csharp

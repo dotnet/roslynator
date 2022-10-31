@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-\
+  
 Returns true if the specified interpolated string is a verbatim\.
 
 ```csharp

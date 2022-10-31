@@ -1,4 +1,4 @@
-# TestOptions\.CommonWithAllowedCompilerDiagnosticIds\(IEnumerable\<String>\) Method
+# TestOptions\.CommonWithAllowedCompilerDiagnosticIds\(IEnumerable\<String\>\) Method
 
 [Home](../../../../README.md)
 
@@ -12,7 +12,7 @@ protected abstract Roslynator.Testing.TestOptions CommonWithAllowedCompilerDiagn
 
 ### Parameters
 
-**values** &ensp; [IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)\<[String](https://docs.microsoft.com/en-us/dotnet/api/system.string)>
+**values** &ensp; [IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)\<[String](https://docs.microsoft.com/en-us/dotnet/api/system.string)\>
 
 ### Returns
 

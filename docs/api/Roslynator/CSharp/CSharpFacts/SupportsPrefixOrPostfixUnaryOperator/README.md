@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-\
+  
 Returns true if an expression of the specified type can be used in a prefix or postfix unary operator\.
 
 ```csharp

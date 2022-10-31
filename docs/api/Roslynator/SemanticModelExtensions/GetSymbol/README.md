@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Core\.dll
 
-\
+  
 Returns what symbol, if any, the specified node bound to\.
 
 ```csharp

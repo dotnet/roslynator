@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-\
+  
 The expression to be executed when the expression is false\.
 
 ```csharp

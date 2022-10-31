@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-\
+  
 Creates a new [MemberDeclarationListInfo](../README.md) with the specified member removed\.
 
 ```csharp

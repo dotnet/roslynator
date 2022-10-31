@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Testing\.Common\.dll
 
-\
+  
 Gets additional source files\.
 
 ```csharp
@@ -15,5 +15,5 @@ public System.Collections.Immutable.ImmutableArray<Roslynator.Testing.Additional
 
 ### Property Value
 
-[ImmutableArray](https://docs.microsoft.com/en-us/dotnet/api/system.collections.immutable.immutablearray-1)\<[AdditionalFile](../../AdditionalFile/README.md)>
+[ImmutableArray](https://docs.microsoft.com/en-us/dotnet/api/system.collections.immutable.immutablearray-1)\<[AdditionalFile](../../AdditionalFile/README.md)\>
 

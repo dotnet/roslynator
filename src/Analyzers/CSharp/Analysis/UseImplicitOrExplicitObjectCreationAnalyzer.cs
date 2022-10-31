@@ -295,7 +295,7 @@ namespace Roslynator.CSharp.Analysis
                     {
                         parent = parent.Parent;
 
-                        SyntaxDebug.Assert(parent.IsKind(SyntaxKind.VariableDeclarator, SyntaxKind.PropertyDeclaration), parent);
+                        SyntaxDebug.Assert(parent.IsKind(SyntaxKind.VariableDeclarator, SyntaxKind.PropertyDeclaration, SyntaxKind.Parameter), parent);
 
                         if (parent.IsKind(SyntaxKind.VariableDeclarator))
                         {

@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Core\.dll
 
-\
+  
 Returns unique enum member name for a specified enum type\.
 
 ```csharp

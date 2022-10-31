@@ -475,5 +475,22 @@ internal readonly struct C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
+        public async Task TestNoDiagnostic_LambdaExpression()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M()
+    {
+        var x = () =>
+        {
+            return default(object);
+        };
+    }
+}
+");
+        }
     }
 }

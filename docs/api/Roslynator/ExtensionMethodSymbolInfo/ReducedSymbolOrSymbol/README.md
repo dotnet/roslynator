@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Core\.dll
 
-\
+  
 The reduced symbol or the symbol if the reduced symbol is null\.
 
 ```csharp

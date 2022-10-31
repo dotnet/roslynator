@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Testing\.Common\.dll
 
-\
+  
 Gets a maximal allowed compiler diagnostic severity\.
 
 ```csharp

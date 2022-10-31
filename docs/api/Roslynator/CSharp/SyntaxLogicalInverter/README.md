@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.Workspaces\.dll
 
-\
+  
 Provides static methods for syntax inversion\.
 
 ```csharp
@@ -37,8 +37,8 @@ public class SyntaxLogicalInverter
 | [Equals(Object)](https://docs.microsoft.com/en-us/dotnet/api/system.object.equals) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
 | [GetHashCode()](https://docs.microsoft.com/en-us/dotnet/api/system.object.gethashcode) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
 | [GetType()](https://docs.microsoft.com/en-us/dotnet/api/system.object.gettype) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
-| [LogicallyInvert(ExpressionSyntax, CancellationToken)](LogicallyInvert/README.md#Roslynator_CSharp_SyntaxLogicalInverter_LogicallyInvert_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_System_Threading_CancellationToken_) | Returns new expression that represents logical inversion of the specified expression\. |
-| [LogicallyInvert(ExpressionSyntax, SemanticModel, CancellationToken)](LogicallyInvert/README.md#Roslynator_CSharp_SyntaxLogicalInverter_LogicallyInvert_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_Microsoft_CodeAnalysis_SemanticModel_System_Threading_CancellationToken_) | Returns new expression that represents logical inversion of the specified expression\. |
+| [LogicallyInvert(ExpressionSyntax, CancellationToken)](LogicallyInvert/README.md#3557862531) | Returns new expression that represents logical inversion of the specified expression\. |
+| [LogicallyInvert(ExpressionSyntax, SemanticModel, CancellationToken)](LogicallyInvert/README.md#1171822982) | Returns new expression that represents logical inversion of the specified expression\. |
 | [MemberwiseClone()](https://docs.microsoft.com/en-us/dotnet/api/system.object.memberwiseclone) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
 | [ToString()](https://docs.microsoft.com/en-us/dotnet/api/system.object.tostring) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
 

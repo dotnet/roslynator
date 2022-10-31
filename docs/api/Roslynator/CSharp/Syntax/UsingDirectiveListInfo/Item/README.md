@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-\
+  
 Gets the using directive at the specified index in the list\.
 
 ```csharp
@@ -27,4 +27,4 @@ The using directive at the specified index in the list\.
 
 ### Implements
 
-* [IReadOnlyList\<UsingDirectiveSyntax>.Item](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ireadonlylist-1.item)
+* [IReadOnlyList\<UsingDirectiveSyntax\>.Item](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ireadonlylist-1.item)

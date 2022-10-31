@@ -9,7 +9,7 @@ del /Q "%_outDir%\Roslynator.DotNet.Cli.*.nupkg"
 
 orang delete "../src" -a d -n "bin,obj" l li e -i "packages,node_modules" l li e ne -t n --content-only -y su s
 
-dotnet restore --force "..\src\CommandLine.sln"
+dotnet restore --force "..\src\CommandLine.sln" /p:RoslynatorCommandLine=true
 
 rd /S /Q "..\src\CommandLine\bin\Release"
 

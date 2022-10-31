@@ -10,10 +10,12 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [ImplicitConversionOperatorDeclaration(SyntaxTokenList, TypeSyntax, ParameterListSyntax, ArrowExpressionClauseSyntax)](#Roslynator_CSharp_CSharpFactory_ImplicitConversionOperatorDeclaration_Microsoft_CodeAnalysis_SyntaxTokenList_Microsoft_CodeAnalysis_CSharp_Syntax_TypeSyntax_Microsoft_CodeAnalysis_CSharp_Syntax_ParameterListSyntax_Microsoft_CodeAnalysis_CSharp_Syntax_ArrowExpressionClauseSyntax_) | |
-| [ImplicitConversionOperatorDeclaration(SyntaxTokenList, TypeSyntax, ParameterListSyntax, BlockSyntax)](#Roslynator_CSharp_CSharpFactory_ImplicitConversionOperatorDeclaration_Microsoft_CodeAnalysis_SyntaxTokenList_Microsoft_CodeAnalysis_CSharp_Syntax_TypeSyntax_Microsoft_CodeAnalysis_CSharp_Syntax_ParameterListSyntax_Microsoft_CodeAnalysis_CSharp_Syntax_BlockSyntax_) | |
+| [ImplicitConversionOperatorDeclaration(SyntaxTokenList, TypeSyntax, ParameterListSyntax, ArrowExpressionClauseSyntax)](#1213915690) | |
+| [ImplicitConversionOperatorDeclaration(SyntaxTokenList, TypeSyntax, ParameterListSyntax, BlockSyntax)](#372543999) | |
 
-## ImplicitConversionOperatorDeclaration\(SyntaxTokenList, TypeSyntax, ParameterListSyntax, ArrowExpressionClauseSyntax\) <a id="Roslynator_CSharp_CSharpFactory_ImplicitConversionOperatorDeclaration_Microsoft_CodeAnalysis_SyntaxTokenList_Microsoft_CodeAnalysis_CSharp_Syntax_TypeSyntax_Microsoft_CodeAnalysis_CSharp_Syntax_ParameterListSyntax_Microsoft_CodeAnalysis_CSharp_Syntax_ArrowExpressionClauseSyntax_"></a>
+<a id="1213915690"></a>
+
+## ImplicitConversionOperatorDeclaration\(SyntaxTokenList, TypeSyntax, ParameterListSyntax, ArrowExpressionClauseSyntax\) 
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.ConversionOperatorDeclarationSyntax ImplicitConversionOperatorDeclaration(Microsoft.CodeAnalysis.SyntaxTokenList modifiers, Microsoft.CodeAnalysis.CSharp.Syntax.TypeSyntax type, Microsoft.CodeAnalysis.CSharp.Syntax.ParameterListSyntax parameterList, Microsoft.CodeAnalysis.CSharp.Syntax.ArrowExpressionClauseSyntax expressionBody)
@@ -33,7 +35,9 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.ConversionOperatorDeclaration
 
 [ConversionOperatorDeclarationSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.conversionoperatordeclarationsyntax)
 
-## ImplicitConversionOperatorDeclaration\(SyntaxTokenList, TypeSyntax, ParameterListSyntax, BlockSyntax\) <a id="Roslynator_CSharp_CSharpFactory_ImplicitConversionOperatorDeclaration_Microsoft_CodeAnalysis_SyntaxTokenList_Microsoft_CodeAnalysis_CSharp_Syntax_TypeSyntax_Microsoft_CodeAnalysis_CSharp_Syntax_ParameterListSyntax_Microsoft_CodeAnalysis_CSharp_Syntax_BlockSyntax_"></a>
+<a id="372543999"></a>
+
+## ImplicitConversionOperatorDeclaration\(SyntaxTokenList, TypeSyntax, ParameterListSyntax, BlockSyntax\) 
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.ConversionOperatorDeclarationSyntax ImplicitConversionOperatorDeclaration(Microsoft.CodeAnalysis.SyntaxTokenList modifiers, Microsoft.CodeAnalysis.CSharp.Syntax.TypeSyntax type, Microsoft.CodeAnalysis.CSharp.Syntax.ParameterListSyntax parameterList, Microsoft.CodeAnalysis.CSharp.Syntax.BlockSyntax body)

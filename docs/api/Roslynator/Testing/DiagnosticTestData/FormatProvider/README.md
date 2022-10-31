@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Testing\.Common\.dll
 
-\
+  
 Gets format provider to be used to format diagnostic's message\.
 
 ```csharp
