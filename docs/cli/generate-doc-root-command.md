@@ -1,7 +1,7 @@
 ﻿
 # `roslynator generate-doc-root`
 
-Generates root documentation file from specified assemblies\.
+Generates root documentation file from specified project/solution\.
 
 [Home](README.md) &#x2022; [Synopsis](#Synopsis) &#x2022; [Arguments](#Arguments) &#x2022; [Options](#Options)
 
@@ -14,6 +14,7 @@ roslynator generate-doc-root <PROJECT|SOLUTION>
     --file-log-verbosity <LEVEL>
     --heading <HEADING>
 -h, --help
+    --host <HOST>
     --ignored-names <FULLY_QUALIFIED_METADATA_NAME>
     --ignored-parts <IGNORED_PARTS>
     --ignored-projects <PROJECT_NAME>
@@ -59,6 +60,10 @@ Defines a heading of the root documentation file\.
 ##### `-h, --help`
 
 Show command line help\.
+
+##### `--host <HOST>`
+
+Defines a host where the content will be published\. Allowed values are docusaurus, github or sphinx\.
 
 ##### `--ignored-names <FULLY_QUALIFIED_METADATA_NAME>`
 
@@ -114,7 +119,7 @@ Defines a relative url to the documentation root directory\.
 
 ##### `--scroll-to-content`
 
-Indicates whether a link should lead to the top of the documentation content\.
+Indicates whether a link should lead to the top of the documentation content\. This option is applicable when host is set to 'github'\.
 
 ##### `-v, --verbosity <LEVEL>`
 
