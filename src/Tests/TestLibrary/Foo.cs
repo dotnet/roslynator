@@ -19,9 +19,9 @@ using Roslynator;
 
 namespace Roslynator
 {
-    class C
+    public class Class1<T> // RCS1102 is reported on Class1
     {
-        void M()
+        public sealed class Class2 : Class1<string>
         {
         }
     }
