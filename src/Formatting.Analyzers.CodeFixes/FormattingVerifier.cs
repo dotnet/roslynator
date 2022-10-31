@@ -12,7 +12,7 @@ namespace Roslynator.CSharp
         [Conditional("DEBUG")]
         public static void VerifyChangedSpansAreWhitespace(SyntaxNode node, IList<TextChange> textChanges)
         {
-            //Debug.Assert(textChanges.Count > 0, $"'{nameof(textChanges)}' is empty\r\n\r\n{node}");
+            Debug.Assert(textChanges.Count > 0, $"'{nameof(textChanges)}' is empty\r\n\r\n{node}");
 
             foreach (TextChange textChange in textChanges)
             {
