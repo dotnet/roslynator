@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Core\.dll
 
-\
+  
 Represents fully qualified metadata name of a symbol\.
 
 ```csharp
@@ -19,16 +19,16 @@ public readonly struct MetadataName : IEquatable<Roslynator.MetadataName>
 
 ### Implements
 
-* [IEquatable](https://docs.microsoft.com/en-us/dotnet/api/system.iequatable-1)\<[MetadataName](./README.md)>
+* [IEquatable](https://docs.microsoft.com/en-us/dotnet/api/system.iequatable-1)\<[MetadataName](./README.md)\>
 
 ## Constructors
 
 | Constructor | Summary |
 | ----------- | ------- |
-| [MetadataName(IEnumerable\<String>, IEnumerable\<String>, String)](-ctor/README.md#Roslynator_MetadataName__ctor_System_Collections_Generic_IEnumerable_System_String__System_Collections_Generic_IEnumerable_System_String__System_String_) | Initializes a new instance of [MetadataName](./README.md)\. |
-| [MetadataName(IEnumerable\<String>, String)](-ctor/README.md#Roslynator_MetadataName__ctor_System_Collections_Generic_IEnumerable_System_String__System_String_) | Initializes a new instance of [MetadataName](./README.md)\. |
-| [MetadataName(ImmutableArray\<String>, ImmutableArray\<String>, String)](-ctor/README.md#Roslynator_MetadataName__ctor_System_Collections_Immutable_ImmutableArray_System_String__System_Collections_Immutable_ImmutableArray_System_String__System_String_) | Initializes a new instance of [MetadataName](./README.md)\. |
-| [MetadataName(ImmutableArray\<String>, String)](-ctor/README.md#Roslynator_MetadataName__ctor_System_Collections_Immutable_ImmutableArray_System_String__System_String_) | Initializes a new instance of [MetadataName](./README.md)\. |
+| [MetadataName(IEnumerable\<String\>, IEnumerable\<String\>, String)](-ctor/README.md#2683869985) | Initializes a new instance of [MetadataName](./README.md)\. |
+| [MetadataName(IEnumerable\<String\>, String)](-ctor/README.md#2380643901) | Initializes a new instance of [MetadataName](./README.md)\. |
+| [MetadataName(ImmutableArray\<String\>, ImmutableArray\<String\>, String)](-ctor/README.md#1108504764) | Initializes a new instance of [MetadataName](./README.md)\. |
+| [MetadataName(ImmutableArray\<String\>, String)](-ctor/README.md#3069058406) | Initializes a new instance of [MetadataName](./README.md)\. |
 
 ## Properties
 
@@ -43,8 +43,8 @@ public readonly struct MetadataName : IEquatable<Roslynator.MetadataName>
 
 | Method | Summary |
 | ------ | ------- |
-| [Equals(MetadataName)](Equals/README.md#Roslynator_MetadataName_Equals_Roslynator_MetadataName_) | Indicates whether this instance and a specified [MetadataName](./README.md) are equal\. \(Implements [IEquatable\<MetadataName>.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.iequatable-1.equals)\) |
-| [Equals(Object)](Equals/README.md#Roslynator_MetadataName_Equals_System_Object_) | Indicates whether this instance and a specified object are equal\. \(Overrides [ValueType.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.valuetype.equals)\) |
+| [Equals(MetadataName)](Equals/README.md#3467406204) | Indicates whether this instance and a specified [MetadataName](./README.md) are equal\. \(Implements [IEquatable\<MetadataName\>.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.iequatable-1.equals)\) |
+| [Equals(Object)](Equals/README.md#185373986) | Indicates whether this instance and a specified object are equal\. \(Overrides [ValueType.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.valuetype.equals)\) |
 | [GetHashCode()](GetHashCode/README.md) | Returns the hash code for this instance\. \(Overrides [ValueType.GetHashCode](https://docs.microsoft.com/en-us/dotnet/api/system.valuetype.gethashcode)\) |
 | [GetType()](https://docs.microsoft.com/en-us/dotnet/api/system.object.gettype) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
 | [MemberwiseClone()](https://docs.microsoft.com/en-us/dotnet/api/system.object.memberwiseclone) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |

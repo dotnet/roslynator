@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-\
+  
 Provides information about modifier list\.
 
 ```csharp
@@ -53,7 +53,7 @@ public readonly struct ModifierListInfo
 | [GetType()](https://docs.microsoft.com/en-us/dotnet/api/system.object.gettype) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
 | [MemberwiseClone()](https://docs.microsoft.com/en-us/dotnet/api/system.object.memberwiseclone) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
 | [ToString()](https://docs.microsoft.com/en-us/dotnet/api/system.valuetype.tostring) |  \(Inherited from [ValueType](https://docs.microsoft.com/en-us/dotnet/api/system.valuetype)\) |
-| [WithExplicitAccessibility(Accessibility, IComparer\<SyntaxKind>)](WithExplicitAccessibility/README.md) | Creates a new [ModifierListInfo](./README.md) with accessibility modifiers updated\. |
+| [WithExplicitAccessibility(Accessibility, IComparer\<SyntaxKind\>)](WithExplicitAccessibility/README.md) | Creates a new [ModifierListInfo](./README.md) with accessibility modifiers updated\. |
 | [WithModifiers(SyntaxTokenList)](WithModifiers/README.md) | Creates a new [ModifierListInfo](./README.md) with the specified modifiers updated\. |
 | [WithoutExplicitAccessibility()](WithoutExplicitAccessibility/README.md) | Creates a new [ModifierListInfo](./README.md) with accessibility modifiers removed\. |
 

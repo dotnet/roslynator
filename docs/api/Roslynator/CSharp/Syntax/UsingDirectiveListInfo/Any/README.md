@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-\
+  
 True if the list has at least one using directive\.
 
 ```csharp

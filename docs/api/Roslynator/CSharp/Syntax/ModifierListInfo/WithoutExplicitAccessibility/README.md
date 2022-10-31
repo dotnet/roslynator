@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-\
+  
 Creates a new [ModifierListInfo](../README.md) with accessibility modifiers removed\.
 
 ```csharp

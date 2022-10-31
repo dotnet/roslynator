@@ -1,12 +1,12 @@
-# SeparatedSyntaxListSelection\<TNode>\.OriginalSpan Property
+# SeparatedSyntaxListSelection\<TNode\>\.OriginalSpan Property
 
 [Home](../../../README.md)
 
-**Containing Type**: [SeparatedSyntaxListSelection\<TNode>](../README.md)
+**Containing Type**: [SeparatedSyntaxListSelection\<TNode\>](../README.md)
 
 **Assembly**: Roslynator\.Core\.dll
 
-\
+  
 Gets the original span that was used to determine selected nodes\.
 
 ```csharp

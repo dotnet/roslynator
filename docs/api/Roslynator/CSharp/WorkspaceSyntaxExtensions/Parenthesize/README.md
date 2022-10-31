@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.Workspaces\.dll
 
-\
+  
 Creates parenthesized expression that is parenthesizing the specified expression\.
 
 ```csharp

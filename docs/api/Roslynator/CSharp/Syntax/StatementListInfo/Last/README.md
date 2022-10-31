@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-\
+  
 The last statement in the list\.
 
 ```csharp

@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-\
+  
 A wrapper for either an [IfStatementSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.ifstatementsyntax) or an [ElseClauseSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.elseclausesyntax)\.
 
 ```csharp
@@ -19,14 +19,14 @@ public readonly struct IfStatementOrElseClause : IEquatable<Roslynator.CSharp.If
 
 ### Implements
 
-* [IEquatable](https://docs.microsoft.com/en-us/dotnet/api/system.iequatable-1)\<[IfStatementOrElseClause](./README.md)>
+* [IEquatable](https://docs.microsoft.com/en-us/dotnet/api/system.iequatable-1)\<[IfStatementOrElseClause](./README.md)\>
 
 ## Constructors
 
 | Constructor | Summary |
 | ----------- | ------- |
-| [IfStatementOrElseClause(ElseClauseSyntax)](-ctor/README.md#Roslynator_CSharp_IfStatementOrElseClause__ctor_Microsoft_CodeAnalysis_CSharp_Syntax_ElseClauseSyntax_) | |
-| [IfStatementOrElseClause(IfStatementSyntax)](-ctor/README.md#Roslynator_CSharp_IfStatementOrElseClause__ctor_Microsoft_CodeAnalysis_CSharp_Syntax_IfStatementSyntax_) | |
+| [IfStatementOrElseClause(ElseClauseSyntax)](-ctor/README.md#3645664103) | |
+| [IfStatementOrElseClause(IfStatementSyntax)](-ctor/README.md#100512352) | |
 
 ## Properties
 
@@ -46,8 +46,8 @@ public readonly struct IfStatementOrElseClause : IEquatable<Roslynator.CSharp.If
 | ------ | ------- |
 | [AsElse()](AsElse/README.md) | Returns the underlying else clause if this [ElseClauseSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.elseclausesyntax) is wrapping else clause\. |
 | [AsIf()](AsIf/README.md) | Returns the underlying if statement if this [IfStatementOrElseClause](./README.md) is wrapping if statement\. |
-| [Equals(IfStatementOrElseClause)](Equals/README.md#Roslynator_CSharp_IfStatementOrElseClause_Equals_Roslynator_CSharp_IfStatementOrElseClause_) | Determines whether this instance is equal to another object of the same type\. \(Implements [IEquatable\<IfStatementOrElseClause>.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.iequatable-1.equals)\) |
-| [Equals(Object)](Equals/README.md#Roslynator_CSharp_IfStatementOrElseClause_Equals_System_Object_) | Determines whether this instance and a specified object are equal\. \(Overrides [ValueType.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.valuetype.equals)\) |
+| [Equals(IfStatementOrElseClause)](Equals/README.md#4208149588) | Determines whether this instance is equal to another object of the same type\. \(Implements [IEquatable\<IfStatementOrElseClause\>.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.iequatable-1.equals)\) |
+| [Equals(Object)](Equals/README.md#3273483447) | Determines whether this instance and a specified object are equal\. \(Overrides [ValueType.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.valuetype.equals)\) |
 | [GetHashCode()](GetHashCode/README.md) | Returns the hash code for this instance\. \(Overrides [ValueType.GetHashCode](https://docs.microsoft.com/en-us/dotnet/api/system.valuetype.gethashcode)\) |
 | [GetType()](https://docs.microsoft.com/en-us/dotnet/api/system.object.gettype) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
 | [MemberwiseClone()](https://docs.microsoft.com/en-us/dotnet/api/system.object.memberwiseclone) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
@@ -58,9 +58,9 @@ public readonly struct IfStatementOrElseClause : IEquatable<Roslynator.CSharp.If
 | Operator | Summary |
 | -------- | ------- |
 | [Equality(IfStatementOrElseClause, IfStatementOrElseClause)](op_Equality/README.md) | |
-| [Implicit(ElseClauseSyntax to IfStatementOrElseClause)](op_Implicit/README.md#Roslynator_CSharp_IfStatementOrElseClause_op_Implicit_Microsoft_CodeAnalysis_CSharp_Syntax_ElseClauseSyntax__Roslynator_CSharp_IfStatementOrElseClause) | |
-| [Implicit(IfStatementOrElseClause to ElseClauseSyntax)](op_Implicit/README.md#Roslynator_CSharp_IfStatementOrElseClause_op_Implicit_Roslynator_CSharp_IfStatementOrElseClause___Microsoft_CodeAnalysis_CSharp_Syntax_ElseClauseSyntax) | |
-| [Implicit(IfStatementOrElseClause to IfStatementSyntax)](op_Implicit/README.md#Roslynator_CSharp_IfStatementOrElseClause_op_Implicit_Roslynator_CSharp_IfStatementOrElseClause___Microsoft_CodeAnalysis_CSharp_Syntax_IfStatementSyntax) | |
-| [Implicit(IfStatementSyntax to IfStatementOrElseClause)](op_Implicit/README.md#Roslynator_CSharp_IfStatementOrElseClause_op_Implicit_Microsoft_CodeAnalysis_CSharp_Syntax_IfStatementSyntax__Roslynator_CSharp_IfStatementOrElseClause) | |
+| [Implicit(ElseClauseSyntax to IfStatementOrElseClause)](op_Implicit/README.md#2383111912) | |
+| [Implicit(IfStatementOrElseClause to ElseClauseSyntax)](op_Implicit/README.md#832248303) | |
+| [Implicit(IfStatementOrElseClause to IfStatementSyntax)](op_Implicit/README.md#1165473507) | |
+| [Implicit(IfStatementSyntax to IfStatementOrElseClause)](op_Implicit/README.md#3428183196) | |
 | [Inequality(IfStatementOrElseClause, IfStatementOrElseClause)](op_Inequality/README.md) | |
 

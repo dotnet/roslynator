@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.Workspaces\.dll
 
-\
+  
 Adds "rename" annotation to the specified token, creating a new token of the same type with the "rename" annotation on it\.
 "Rename" annotation is specified by [RenameAnnotation.Kind](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.codeactions.renameannotation.kind)\.
 

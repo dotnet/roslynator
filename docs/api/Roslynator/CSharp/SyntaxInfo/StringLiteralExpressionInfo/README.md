@@ -10,12 +10,14 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [StringLiteralExpressionInfo(LiteralExpressionSyntax)](#Roslynator_CSharp_SyntaxInfo_StringLiteralExpressionInfo_Microsoft_CodeAnalysis_CSharp_Syntax_LiteralExpressionSyntax_) | Creates a new [StringLiteralExpressionInfo](../../Syntax/StringLiteralExpressionInfo/README.md) from the specified literal expression\. |
-| [StringLiteralExpressionInfo(SyntaxNode, Boolean)](#Roslynator_CSharp_SyntaxInfo_StringLiteralExpressionInfo_Microsoft_CodeAnalysis_SyntaxNode_System_Boolean_) | Creates a new [StringLiteralExpressionInfo](../../Syntax/StringLiteralExpressionInfo/README.md) from the specified node\. |
+| [StringLiteralExpressionInfo(LiteralExpressionSyntax)](#2861805613) | Creates a new [StringLiteralExpressionInfo](../../Syntax/StringLiteralExpressionInfo/README.md) from the specified literal expression\. |
+| [StringLiteralExpressionInfo(SyntaxNode, Boolean)](#3487857671) | Creates a new [StringLiteralExpressionInfo](../../Syntax/StringLiteralExpressionInfo/README.md) from the specified node\. |
 
-## StringLiteralExpressionInfo\(LiteralExpressionSyntax\) <a id="Roslynator_CSharp_SyntaxInfo_StringLiteralExpressionInfo_Microsoft_CodeAnalysis_CSharp_Syntax_LiteralExpressionSyntax_"></a>
+<a id="2861805613"></a>
 
-\
+## StringLiteralExpressionInfo\(LiteralExpressionSyntax\) 
+
+  
 Creates a new [StringLiteralExpressionInfo](../../Syntax/StringLiteralExpressionInfo/README.md) from the specified literal expression\.
 
 ```csharp
@@ -30,9 +32,11 @@ public static Roslynator.CSharp.Syntax.StringLiteralExpressionInfo StringLiteral
 
 [StringLiteralExpressionInfo](../../Syntax/StringLiteralExpressionInfo/README.md)
 
-## StringLiteralExpressionInfo\(SyntaxNode, Boolean\) <a id="Roslynator_CSharp_SyntaxInfo_StringLiteralExpressionInfo_Microsoft_CodeAnalysis_SyntaxNode_System_Boolean_"></a>
+<a id="3487857671"></a>
 
-\
+## StringLiteralExpressionInfo\(SyntaxNode, Boolean\) 
+
+  
 Creates a new [StringLiteralExpressionInfo](../../Syntax/StringLiteralExpressionInfo/README.md) from the specified node\.
 
 ```csharp

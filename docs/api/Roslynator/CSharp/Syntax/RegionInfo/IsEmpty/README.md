@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-\
+  
 Determines whether this region is empty, i\.e\. contains only white\-space\.
 
 ```csharp

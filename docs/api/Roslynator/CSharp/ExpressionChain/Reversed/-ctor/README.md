@@ -1,4 +1,4 @@
-# Reversed\(ExpressionChain\) Constructor
+# ExpressionChain\.Reversed\(ExpressionChain\) Constructor
 
 [Home](../../../../../README.md)
 

@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-\
+  
 Enables to enumerate expressions of [ExpressionChain](../README.md) in a reversed order\.
 
 ```csharp
@@ -20,8 +20,8 @@ public readonly struct ExpressionChain.Reversed : IEquatable<Roslynator.CSharp.E
 
 ### Implements
 
-* [IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)\<[ExpressionSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.expressionsyntax)>
-* [IEquatable](https://docs.microsoft.com/en-us/dotnet/api/system.iequatable-1)\<[ExpressionChain.Reversed](./README.md)>
+* [IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)\<[ExpressionSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.expressionsyntax)\>
+* [IEquatable](https://docs.microsoft.com/en-us/dotnet/api/system.iequatable-1)\<[ExpressionChain.Reversed](./README.md)\>
 
 ## Constructors
 
@@ -33,8 +33,8 @@ public readonly struct ExpressionChain.Reversed : IEquatable<Roslynator.CSharp.E
 
 | Method | Summary |
 | ------ | ------- |
-| [Equals(Object)](Equals/README.md#Roslynator_CSharp_ExpressionChain_Reversed_Equals_System_Object_) |  \(Overrides [ValueType.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.valuetype.equals)\) |
-| [Equals(Reversed)](Equals/README.md#Roslynator_CSharp_ExpressionChain_Reversed_Equals_Roslynator_CSharp_ExpressionChain_Reversed_) |  \(Implements [IEquatable\<Reversed>.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.iequatable-1.equals)\) |
+| [Equals(Object)](Equals/README.md#4203233237) |  \(Overrides [ValueType.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.valuetype.equals)\) |
+| [Equals(Reversed)](Equals/README.md#2039282915) |  \(Implements [IEquatable\<Reversed\>.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.iequatable-1.equals)\) |
 | [GetEnumerator()](GetEnumerator/README.md) | |
 | [GetHashCode()](GetHashCode/README.md) |  \(Overrides [ValueType.GetHashCode](https://docs.microsoft.com/en-us/dotnet/api/system.valuetype.gethashcode)\) |
 | [GetType()](https://docs.microsoft.com/en-us/dotnet/api/system.object.gettype) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
@@ -53,7 +53,7 @@ public readonly struct ExpressionChain.Reversed : IEquatable<Roslynator.CSharp.E
 | Member | Summary |
 | ------ | ------- |
 | [IEnumerable.GetEnumerator()](System-Collections-IEnumerable-GetEnumerator/README.md) | |
-| [IEnumerable\<ExpressionSyntax>.GetEnumerator()](System-Collections-Generic-IEnumerable-Microsoft-CodeAnalysis-CSharp-Syntax-ExpressionSyntax--GetEnumerator/README.md) | |
+| [IEnumerable\<ExpressionSyntax\>.GetEnumerator()](System-Collections-Generic-IEnumerable-Microsoft-CodeAnalysis-CSharp-Syntax-ExpressionSyntax--GetEnumerator/README.md) | |
 
 ## Structs
 

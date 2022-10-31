@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Testing\.Common\.dll
 
-\
+  
 Gets compiler diagnostic ID to be fixed\.
 
 ```csharp

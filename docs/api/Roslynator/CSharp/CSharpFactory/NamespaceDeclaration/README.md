@@ -10,10 +10,12 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [NamespaceDeclaration(NameSyntax, MemberDeclarationSyntax)](#Roslynator_CSharp_CSharpFactory_NamespaceDeclaration_Microsoft_CodeAnalysis_CSharp_Syntax_NameSyntax_Microsoft_CodeAnalysis_CSharp_Syntax_MemberDeclarationSyntax_) | |
-| [NamespaceDeclaration(NameSyntax, SyntaxList\<MemberDeclarationSyntax>)](#Roslynator_CSharp_CSharpFactory_NamespaceDeclaration_Microsoft_CodeAnalysis_CSharp_Syntax_NameSyntax_Microsoft_CodeAnalysis_SyntaxList_Microsoft_CodeAnalysis_CSharp_Syntax_MemberDeclarationSyntax__) | |
+| [NamespaceDeclaration(NameSyntax, MemberDeclarationSyntax)](#2287595890) | |
+| [NamespaceDeclaration(NameSyntax, SyntaxList\<MemberDeclarationSyntax\>)](#1819207987) | |
 
-## NamespaceDeclaration\(NameSyntax, MemberDeclarationSyntax\) <a id="Roslynator_CSharp_CSharpFactory_NamespaceDeclaration_Microsoft_CodeAnalysis_CSharp_Syntax_NameSyntax_Microsoft_CodeAnalysis_CSharp_Syntax_MemberDeclarationSyntax_"></a>
+<a id="2287595890"></a>
+
+## NamespaceDeclaration\(NameSyntax, MemberDeclarationSyntax\) 
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.NamespaceDeclarationSyntax NamespaceDeclaration(Microsoft.CodeAnalysis.CSharp.Syntax.NameSyntax name, Microsoft.CodeAnalysis.CSharp.Syntax.MemberDeclarationSyntax member)
@@ -29,7 +31,9 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.NamespaceDeclarationSyntax Na
 
 [NamespaceDeclarationSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.namespacedeclarationsyntax)
 
-## NamespaceDeclaration\(NameSyntax, SyntaxList\<MemberDeclarationSyntax>\) <a id="Roslynator_CSharp_CSharpFactory_NamespaceDeclaration_Microsoft_CodeAnalysis_CSharp_Syntax_NameSyntax_Microsoft_CodeAnalysis_SyntaxList_Microsoft_CodeAnalysis_CSharp_Syntax_MemberDeclarationSyntax__"></a>
+<a id="1819207987"></a>
+
+## NamespaceDeclaration\(NameSyntax, SyntaxList\<MemberDeclarationSyntax\>\) 
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.NamespaceDeclarationSyntax NamespaceDeclaration(Microsoft.CodeAnalysis.CSharp.Syntax.NameSyntax name, Microsoft.CodeAnalysis.SyntaxList<Microsoft.CodeAnalysis.CSharp.Syntax.MemberDeclarationSyntax> members)
@@ -39,7 +43,7 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.NamespaceDeclarationSyntax Na
 
 **name** &ensp; [NameSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.namesyntax)
 
-**members** &ensp; [SyntaxList](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxlist-1)\<[MemberDeclarationSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.memberdeclarationsyntax)>
+**members** &ensp; [SyntaxList](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxlist-1)\<[MemberDeclarationSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.memberdeclarationsyntax)\>
 
 ### Returns
 

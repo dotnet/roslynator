@@ -1,13 +1,14 @@
 # Roslynator\.CSharp\.Workspaces
 
-[Namespaces](#namespaces)
+[Types](#types) &#x2022; [Other](#other)
 
-## Namespaces
+## Types
 
 * [Roslynator](../../docs/api/Roslynator/README.md)
+  * [WorkspaceExtensions](../../docs/api/Roslynator/WorkspaceExtensions/README.md)
 
-## [Roslynator](../../docs/api/Roslynator/README.md) Namespace
+## Extensions of External Types
 
-### Classes
-
-* [WorkspaceExtensions](../../docs/api/Roslynator/WorkspaceExtensions/README.md)
+* [Microsoft.CodeAnalysis](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis)
+  * [Document](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.document)
+  * [Solution](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.solution)
