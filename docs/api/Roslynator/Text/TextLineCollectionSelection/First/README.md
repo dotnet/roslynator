@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Core\.dll
 
-\
+  
 Gets the first selected line\.
 
 ```csharp
@@ -19,4 +19,4 @@ public Microsoft.CodeAnalysis.Text.TextLine First()
 
 ### Implements
 
-* [ISelection\<TextLine>.First](../../../ISelection-1/First/README.md)
+* [ISelection\<TextLine\>.First](../../../ISelection-1/First/README.md)

@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Core\.dll
 
-\
+  
 The definition of extension method from which this symbol was reduced, or null, if the symbol was not reduced\.
 
 ```csharp

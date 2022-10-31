@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-\
+  
 The null check expression, e\.g\. "x == null"\.
 
 ```csharp

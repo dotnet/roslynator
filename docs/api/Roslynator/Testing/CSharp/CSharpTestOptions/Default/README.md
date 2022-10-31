@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Testing\.CSharp\.dll
 
-\
+  
 Gets a default code verification options\.
 
 ```csharp

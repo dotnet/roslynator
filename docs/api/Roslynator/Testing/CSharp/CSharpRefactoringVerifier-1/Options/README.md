@@ -1,12 +1,12 @@
-# CSharpRefactoringVerifier\<TRefactoringProvider>\.Options Property
+# CSharpRefactoringVerifier\<TRefactoringProvider\>\.Options Property
 
 [Home](../../../../../README.md)
 
-**Containing Type**: [CSharpRefactoringVerifier\<TRefactoringProvider>](../README.md)
+**Containing Type**: [CSharpRefactoringVerifier\<TRefactoringProvider\>](../README.md)
 
 **Assembly**: Roslynator\.Testing\.CSharp\.dll
 
-\
+  
 Gets a test options\.
 
 ```csharp

@@ -10,14 +10,16 @@
 
 | Constructor | Summary |
 | ----------- | ------- |
-| [MetadataName(IEnumerable\<String>, IEnumerable\<String>, String)](#Roslynator_MetadataName__ctor_System_Collections_Generic_IEnumerable_System_String__System_Collections_Generic_IEnumerable_System_String__System_String_) | Initializes a new instance of [MetadataName](../README.md)\. |
-| [MetadataName(IEnumerable\<String>, String)](#Roslynator_MetadataName__ctor_System_Collections_Generic_IEnumerable_System_String__System_String_) | Initializes a new instance of [MetadataName](../README.md)\. |
-| [MetadataName(ImmutableArray\<String>, ImmutableArray\<String>, String)](#Roslynator_MetadataName__ctor_System_Collections_Immutable_ImmutableArray_System_String__System_Collections_Immutable_ImmutableArray_System_String__System_String_) | Initializes a new instance of [MetadataName](../README.md)\. |
-| [MetadataName(ImmutableArray\<String>, String)](#Roslynator_MetadataName__ctor_System_Collections_Immutable_ImmutableArray_System_String__System_String_) | Initializes a new instance of [MetadataName](../README.md)\. |
+| [MetadataName(IEnumerable\<String\>, IEnumerable\<String\>, String)](#2683869985) | Initializes a new instance of [MetadataName](../README.md)\. |
+| [MetadataName(IEnumerable\<String\>, String)](#2380643901) | Initializes a new instance of [MetadataName](../README.md)\. |
+| [MetadataName(ImmutableArray\<String\>, ImmutableArray\<String\>, String)](#1108504764) | Initializes a new instance of [MetadataName](../README.md)\. |
+| [MetadataName(ImmutableArray\<String\>, String)](#3069058406) | Initializes a new instance of [MetadataName](../README.md)\. |
 
-## MetadataName\(IEnumerable\<String>, IEnumerable\<String>, String\) <a id="Roslynator_MetadataName__ctor_System_Collections_Generic_IEnumerable_System_String__System_Collections_Generic_IEnumerable_System_String__System_String_"></a>
+<a id="2683869985"></a>
 
-\
+## MetadataName\(IEnumerable\<String\>, IEnumerable\<String\>, String\) 
+
+  
 Initializes a new instance of [MetadataName](../README.md)\.
 
 ```csharp
@@ -26,15 +28,15 @@ public MetadataName(System.Collections.Generic.IEnumerable<string> containingNam
 
 ### Parameters
 
-**containingNamespaces** &ensp; [IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)\<[String](https://docs.microsoft.com/en-us/dotnet/api/system.string)>
+**containingNamespaces** &ensp; [IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)\<[String](https://docs.microsoft.com/en-us/dotnet/api/system.string)\>
 
-**containingTypes** &ensp; [IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)\<[String](https://docs.microsoft.com/en-us/dotnet/api/system.string)>
+**containingTypes** &ensp; [IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)\<[String](https://docs.microsoft.com/en-us/dotnet/api/system.string)\>
 
-**name** &ensp; [String](https://docs.microsoft.com/en-us/dotnet/api/system.string)
+**name** &ensp; [String](https://docs.microsoft.com/en-us/dotnet/api/system.string)<a id="2380643901"></a>
 
-## MetadataName\(IEnumerable\<String>, String\) <a id="Roslynator_MetadataName__ctor_System_Collections_Generic_IEnumerable_System_String__System_String_"></a>
+## MetadataName\(IEnumerable\<String\>, String\) 
 
-\
+  
 Initializes a new instance of [MetadataName](../README.md)\.
 
 ```csharp
@@ -43,13 +45,13 @@ public MetadataName(System.Collections.Generic.IEnumerable<string> containingNam
 
 ### Parameters
 
-**containingNamespaces** &ensp; [IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)\<[String](https://docs.microsoft.com/en-us/dotnet/api/system.string)>
+**containingNamespaces** &ensp; [IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)\<[String](https://docs.microsoft.com/en-us/dotnet/api/system.string)\>
 
-**name** &ensp; [String](https://docs.microsoft.com/en-us/dotnet/api/system.string)
+**name** &ensp; [String](https://docs.microsoft.com/en-us/dotnet/api/system.string)<a id="1108504764"></a>
 
-## MetadataName\(ImmutableArray\<String>, ImmutableArray\<String>, String\) <a id="Roslynator_MetadataName__ctor_System_Collections_Immutable_ImmutableArray_System_String__System_Collections_Immutable_ImmutableArray_System_String__System_String_"></a>
+## MetadataName\(ImmutableArray\<String\>, ImmutableArray\<String\>, String\) 
 
-\
+  
 Initializes a new instance of [MetadataName](../README.md)\.
 
 ```csharp
@@ -58,15 +60,15 @@ public MetadataName(System.Collections.Immutable.ImmutableArray<string> containi
 
 ### Parameters
 
-**containingNamespaces** &ensp; [ImmutableArray](https://docs.microsoft.com/en-us/dotnet/api/system.collections.immutable.immutablearray-1)\<[String](https://docs.microsoft.com/en-us/dotnet/api/system.string)>
+**containingNamespaces** &ensp; [ImmutableArray](https://docs.microsoft.com/en-us/dotnet/api/system.collections.immutable.immutablearray-1)\<[String](https://docs.microsoft.com/en-us/dotnet/api/system.string)\>
 
-**containingTypes** &ensp; [ImmutableArray](https://docs.microsoft.com/en-us/dotnet/api/system.collections.immutable.immutablearray-1)\<[String](https://docs.microsoft.com/en-us/dotnet/api/system.string)>
+**containingTypes** &ensp; [ImmutableArray](https://docs.microsoft.com/en-us/dotnet/api/system.collections.immutable.immutablearray-1)\<[String](https://docs.microsoft.com/en-us/dotnet/api/system.string)\>
 
-**name** &ensp; [String](https://docs.microsoft.com/en-us/dotnet/api/system.string)
+**name** &ensp; [String](https://docs.microsoft.com/en-us/dotnet/api/system.string)<a id="3069058406"></a>
 
-## MetadataName\(ImmutableArray\<String>, String\) <a id="Roslynator_MetadataName__ctor_System_Collections_Immutable_ImmutableArray_System_String__System_String_"></a>
+## MetadataName\(ImmutableArray\<String\>, String\) 
 
-\
+  
 Initializes a new instance of [MetadataName](../README.md)\.
 
 ```csharp
@@ -75,6 +77,6 @@ public MetadataName(System.Collections.Immutable.ImmutableArray<string> containi
 
 ### Parameters
 
-**containingNamespaces** &ensp; [ImmutableArray](https://docs.microsoft.com/en-us/dotnet/api/system.collections.immutable.immutablearray-1)\<[String](https://docs.microsoft.com/en-us/dotnet/api/system.string)>
+**containingNamespaces** &ensp; [ImmutableArray](https://docs.microsoft.com/en-us/dotnet/api/system.collections.immutable.immutablearray-1)\<[String](https://docs.microsoft.com/en-us/dotnet/api/system.string)\>
 
 **name** &ensp; [String](https://docs.microsoft.com/en-us/dotnet/api/system.string)

@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Core\.dll
 
-\
+  
 Gets the last selected line\.
 
 ```csharp
@@ -19,4 +19,4 @@ public Microsoft.CodeAnalysis.Text.TextLine Last()
 
 ### Implements
 
-* [ISelection\<TextLine>.Last](../../../ISelection-1/Last/README.md)
+* [ISelection\<TextLine\>.Last](../../../ISelection-1/Last/README.md)

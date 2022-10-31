@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Testing\.Common\.dll
 
-\
+  
 Gets test data for a code refactoring\.
 
 ```csharp
@@ -21,7 +21,7 @@ public sealed class RefactoringTestData
 
 | Constructor | Summary |
 | ----------- | ------- |
-| [RefactoringTestData(String, IEnumerable\<TextSpan>, IEnumerable\<AdditionalFile>, String)](-ctor/README.md) | Initializes a new instance of [RefactoringTestData](./README.md)\. |
+| [RefactoringTestData(String, IEnumerable\<TextSpan\>, IEnumerable\<AdditionalFile\>, String)](-ctor/README.md) | Initializes a new instance of [RefactoringTestData](./README.md)\. |
 
 ## Properties
 
@@ -41,5 +41,5 @@ public sealed class RefactoringTestData
 | [GetType()](https://docs.microsoft.com/en-us/dotnet/api/system.object.gettype) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
 | [MemberwiseClone()](https://docs.microsoft.com/en-us/dotnet/api/system.object.memberwiseclone) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
 | [ToString()](https://docs.microsoft.com/en-us/dotnet/api/system.object.tostring) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
-| [Update(String, IEnumerable\<TextSpan>, IEnumerable\<AdditionalFile>, String)](Update/README.md) | Creates and return new instance of [RefactoringTestData](./README.md) updated with specified values\. |
+| [Update(String, IEnumerable\<TextSpan\>, IEnumerable\<AdditionalFile\>, String)](Update/README.md) | Creates and return new instance of [RefactoringTestData](./README.md) updated with specified values\. |
 

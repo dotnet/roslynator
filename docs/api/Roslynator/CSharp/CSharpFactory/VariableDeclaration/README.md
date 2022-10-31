@@ -10,12 +10,14 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [VariableDeclaration(TypeSyntax, String, ExpressionSyntax)](#Roslynator_CSharp_CSharpFactory_VariableDeclaration_Microsoft_CodeAnalysis_CSharp_Syntax_TypeSyntax_System_String_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_) | |
-| [VariableDeclaration(TypeSyntax, SyntaxToken, EqualsValueClauseSyntax)](#Roslynator_CSharp_CSharpFactory_VariableDeclaration_Microsoft_CodeAnalysis_CSharp_Syntax_TypeSyntax_Microsoft_CodeAnalysis_SyntaxToken_Microsoft_CodeAnalysis_CSharp_Syntax_EqualsValueClauseSyntax_) | |
-| [VariableDeclaration(TypeSyntax, SyntaxToken, ExpressionSyntax)](#Roslynator_CSharp_CSharpFactory_VariableDeclaration_Microsoft_CodeAnalysis_CSharp_Syntax_TypeSyntax_Microsoft_CodeAnalysis_SyntaxToken_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_) | |
-| [VariableDeclaration(TypeSyntax, VariableDeclaratorSyntax)](#Roslynator_CSharp_CSharpFactory_VariableDeclaration_Microsoft_CodeAnalysis_CSharp_Syntax_TypeSyntax_Microsoft_CodeAnalysis_CSharp_Syntax_VariableDeclaratorSyntax_) | |
+| [VariableDeclaration(TypeSyntax, String, ExpressionSyntax)](#506445895) | |
+| [VariableDeclaration(TypeSyntax, SyntaxToken, EqualsValueClauseSyntax)](#2135840671) | |
+| [VariableDeclaration(TypeSyntax, SyntaxToken, ExpressionSyntax)](#2343218715) | |
+| [VariableDeclaration(TypeSyntax, VariableDeclaratorSyntax)](#2881605525) | |
 
-## VariableDeclaration\(TypeSyntax, String, ExpressionSyntax\) <a id="Roslynator_CSharp_CSharpFactory_VariableDeclaration_Microsoft_CodeAnalysis_CSharp_Syntax_TypeSyntax_System_String_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_"></a>
+<a id="506445895"></a>
+
+## VariableDeclaration\(TypeSyntax, String, ExpressionSyntax\) 
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.VariableDeclarationSyntax VariableDeclaration(Microsoft.CodeAnalysis.CSharp.Syntax.TypeSyntax type, string identifier, Microsoft.CodeAnalysis.CSharp.Syntax.ExpressionSyntax value = null)
@@ -33,7 +35,9 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.VariableDeclarationSyntax Var
 
 [VariableDeclarationSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.variabledeclarationsyntax)
 
-## VariableDeclaration\(TypeSyntax, SyntaxToken, EqualsValueClauseSyntax\) <a id="Roslynator_CSharp_CSharpFactory_VariableDeclaration_Microsoft_CodeAnalysis_CSharp_Syntax_TypeSyntax_Microsoft_CodeAnalysis_SyntaxToken_Microsoft_CodeAnalysis_CSharp_Syntax_EqualsValueClauseSyntax_"></a>
+<a id="2135840671"></a>
+
+## VariableDeclaration\(TypeSyntax, SyntaxToken, EqualsValueClauseSyntax\) 
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.VariableDeclarationSyntax VariableDeclaration(Microsoft.CodeAnalysis.CSharp.Syntax.TypeSyntax type, Microsoft.CodeAnalysis.SyntaxToken identifier, Microsoft.CodeAnalysis.CSharp.Syntax.EqualsValueClauseSyntax initializer)
@@ -51,7 +55,9 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.VariableDeclarationSyntax Var
 
 [VariableDeclarationSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.variabledeclarationsyntax)
 
-## VariableDeclaration\(TypeSyntax, SyntaxToken, ExpressionSyntax\) <a id="Roslynator_CSharp_CSharpFactory_VariableDeclaration_Microsoft_CodeAnalysis_CSharp_Syntax_TypeSyntax_Microsoft_CodeAnalysis_SyntaxToken_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_"></a>
+<a id="2343218715"></a>
+
+## VariableDeclaration\(TypeSyntax, SyntaxToken, ExpressionSyntax\) 
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.VariableDeclarationSyntax VariableDeclaration(Microsoft.CodeAnalysis.CSharp.Syntax.TypeSyntax type, Microsoft.CodeAnalysis.SyntaxToken identifier, Microsoft.CodeAnalysis.CSharp.Syntax.ExpressionSyntax value = null)
@@ -69,7 +75,9 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.VariableDeclarationSyntax Var
 
 [VariableDeclarationSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.variabledeclarationsyntax)
 
-## VariableDeclaration\(TypeSyntax, VariableDeclaratorSyntax\) <a id="Roslynator_CSharp_CSharpFactory_VariableDeclaration_Microsoft_CodeAnalysis_CSharp_Syntax_TypeSyntax_Microsoft_CodeAnalysis_CSharp_Syntax_VariableDeclaratorSyntax_"></a>
+<a id="2881605525"></a>
+
+## VariableDeclaration\(TypeSyntax, VariableDeclaratorSyntax\) 
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.VariableDeclarationSyntax VariableDeclaration(Microsoft.CodeAnalysis.CSharp.Syntax.TypeSyntax type, Microsoft.CodeAnalysis.CSharp.Syntax.VariableDeclaratorSyntax variable)

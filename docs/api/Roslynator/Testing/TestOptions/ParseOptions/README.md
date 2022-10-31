@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Testing\.Common\.dll
 
-\
+  
 Gets a parse options that should be used to parse tested source code\.
 
 ```csharp

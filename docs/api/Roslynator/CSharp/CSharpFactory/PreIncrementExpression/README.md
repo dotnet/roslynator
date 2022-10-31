@@ -10,24 +10,12 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [PreIncrementExpression(ExpressionSyntax)](#Roslynator_CSharp_CSharpFactory_PreIncrementExpression_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_) | |
-| [PreIncrementExpression(ExpressionSyntax, SyntaxToken)](#Roslynator_CSharp_CSharpFactory_PreIncrementExpression_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_Microsoft_CodeAnalysis_SyntaxToken_) | |
+| [PreIncrementExpression(ExpressionSyntax, SyntaxToken)](#1147215000) | |
+| [PreIncrementExpression(ExpressionSyntax)](#4239483536) | |
 
-## PreIncrementExpression\(ExpressionSyntax\) <a id="Roslynator_CSharp_CSharpFactory_PreIncrementExpression_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_"></a>
+<a id="1147215000"></a>
 
-```csharp
-public static Microsoft.CodeAnalysis.CSharp.Syntax.PrefixUnaryExpressionSyntax PreIncrementExpression(Microsoft.CodeAnalysis.CSharp.Syntax.ExpressionSyntax operand)
-```
-
-### Parameters
-
-**operand** &ensp; [ExpressionSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.expressionsyntax)
-
-### Returns
-
-[PrefixUnaryExpressionSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.prefixunaryexpressionsyntax)
-
-## PreIncrementExpression\(ExpressionSyntax, SyntaxToken\) <a id="Roslynator_CSharp_CSharpFactory_PreIncrementExpression_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_Microsoft_CodeAnalysis_SyntaxToken_"></a>
+## PreIncrementExpression\(ExpressionSyntax, SyntaxToken\) 
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.PrefixUnaryExpressionSyntax PreIncrementExpression(Microsoft.CodeAnalysis.CSharp.Syntax.ExpressionSyntax operand, Microsoft.CodeAnalysis.SyntaxToken operatorToken)
@@ -38,6 +26,22 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.PrefixUnaryExpressionSyntax P
 **operand** &ensp; [ExpressionSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.expressionsyntax)
 
 **operatorToken** &ensp; [SyntaxToken](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxtoken)
+
+### Returns
+
+[PrefixUnaryExpressionSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.prefixunaryexpressionsyntax)
+
+<a id="4239483536"></a>
+
+## PreIncrementExpression\(ExpressionSyntax\) 
+
+```csharp
+public static Microsoft.CodeAnalysis.CSharp.Syntax.PrefixUnaryExpressionSyntax PreIncrementExpression(Microsoft.CodeAnalysis.CSharp.Syntax.ExpressionSyntax operand)
+```
+
+### Parameters
+
+**operand** &ensp; [ExpressionSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.expressionsyntax)
 
 ### Returns
 

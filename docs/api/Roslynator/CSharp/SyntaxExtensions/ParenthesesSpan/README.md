@@ -10,13 +10,15 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [ParenthesesSpan(CastExpressionSyntax)](#Roslynator_CSharp_SyntaxExtensions_ParenthesesSpan_Microsoft_CodeAnalysis_CSharp_Syntax_CastExpressionSyntax_) | The absolute span of the parentheses, not including its leading and trailing trivia\. |
-| [ParenthesesSpan(CommonForEachStatementSyntax)](#Roslynator_CSharp_SyntaxExtensions_ParenthesesSpan_Microsoft_CodeAnalysis_CSharp_Syntax_CommonForEachStatementSyntax_) | The absolute span of the parentheses, not including its leading and trailing trivia\. |
-| [ParenthesesSpan(ForStatementSyntax)](#Roslynator_CSharp_SyntaxExtensions_ParenthesesSpan_Microsoft_CodeAnalysis_CSharp_Syntax_ForStatementSyntax_) | Absolute span of the parentheses, not including the leading and trailing trivia\. |
+| [ParenthesesSpan(CastExpressionSyntax)](#1201715952) | The absolute span of the parentheses, not including its leading and trailing trivia\. |
+| [ParenthesesSpan(CommonForEachStatementSyntax)](#1008516473) | The absolute span of the parentheses, not including its leading and trailing trivia\. |
+| [ParenthesesSpan(ForStatementSyntax)](#3518600528) | Absolute span of the parentheses, not including the leading and trailing trivia\. |
 
-## ParenthesesSpan\(CastExpressionSyntax\) <a id="Roslynator_CSharp_SyntaxExtensions_ParenthesesSpan_Microsoft_CodeAnalysis_CSharp_Syntax_CastExpressionSyntax_"></a>
+<a id="1201715952"></a>
 
-\
+## ParenthesesSpan\(CastExpressionSyntax\) 
+
+  
 The absolute span of the parentheses, not including its leading and trailing trivia\.
 
 ```csharp
@@ -31,9 +33,11 @@ public static Microsoft.CodeAnalysis.Text.TextSpan ParenthesesSpan(this Microsof
 
 [TextSpan](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.text.textspan)
 
-## ParenthesesSpan\(CommonForEachStatementSyntax\) <a id="Roslynator_CSharp_SyntaxExtensions_ParenthesesSpan_Microsoft_CodeAnalysis_CSharp_Syntax_CommonForEachStatementSyntax_"></a>
+<a id="1008516473"></a>
 
-\
+## ParenthesesSpan\(CommonForEachStatementSyntax\) 
+
+  
 The absolute span of the parentheses, not including its leading and trailing trivia\.
 
 ```csharp
@@ -48,9 +52,11 @@ public static Microsoft.CodeAnalysis.Text.TextSpan ParenthesesSpan(this Microsof
 
 [TextSpan](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.text.textspan)
 
-## ParenthesesSpan\(ForStatementSyntax\) <a id="Roslynator_CSharp_SyntaxExtensions_ParenthesesSpan_Microsoft_CodeAnalysis_CSharp_Syntax_ForStatementSyntax_"></a>
+<a id="3518600528"></a>
 
-\
+## ParenthesesSpan\(ForStatementSyntax\) 
+
+  
 Absolute span of the parentheses, not including the leading and trailing trivia\.
 
 ```csharp

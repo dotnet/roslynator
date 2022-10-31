@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Core\.dll
 
-\
+  
 Creates a syntax identifier from the specified type symbol\.
 
 ```csharp

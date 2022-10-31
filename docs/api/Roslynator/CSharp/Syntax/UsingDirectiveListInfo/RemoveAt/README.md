@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-\
+  
 Creates a new [UsingDirectiveListInfo](../README.md) with the using directive at the specified index removed\.
 
 ```csharp

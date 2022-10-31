@@ -10,11 +10,13 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [CompilationUnit(MemberDeclarationSyntax)](#Roslynator_CSharp_CSharpFactory_CompilationUnit_Microsoft_CodeAnalysis_CSharp_Syntax_MemberDeclarationSyntax_) | |
-| [CompilationUnit(SyntaxList\<UsingDirectiveSyntax>, MemberDeclarationSyntax)](#Roslynator_CSharp_CSharpFactory_CompilationUnit_Microsoft_CodeAnalysis_SyntaxList_Microsoft_CodeAnalysis_CSharp_Syntax_UsingDirectiveSyntax__Microsoft_CodeAnalysis_CSharp_Syntax_MemberDeclarationSyntax_) | |
-| [CompilationUnit(SyntaxList\<UsingDirectiveSyntax>, SyntaxList\<MemberDeclarationSyntax>)](#Roslynator_CSharp_CSharpFactory_CompilationUnit_Microsoft_CodeAnalysis_SyntaxList_Microsoft_CodeAnalysis_CSharp_Syntax_UsingDirectiveSyntax__Microsoft_CodeAnalysis_SyntaxList_Microsoft_CodeAnalysis_CSharp_Syntax_MemberDeclarationSyntax__) | |
+| [CompilationUnit(MemberDeclarationSyntax)](#3275445737) | |
+| [CompilationUnit(SyntaxList\<UsingDirectiveSyntax\>, MemberDeclarationSyntax)](#813881929) | |
+| [CompilationUnit(SyntaxList\<UsingDirectiveSyntax\>, SyntaxList\<MemberDeclarationSyntax\>)](#2664110828) | |
 
-## CompilationUnit\(MemberDeclarationSyntax\) <a id="Roslynator_CSharp_CSharpFactory_CompilationUnit_Microsoft_CodeAnalysis_CSharp_Syntax_MemberDeclarationSyntax_"></a>
+<a id="3275445737"></a>
+
+## CompilationUnit\(MemberDeclarationSyntax\) 
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.CompilationUnitSyntax CompilationUnit(Microsoft.CodeAnalysis.CSharp.Syntax.MemberDeclarationSyntax member)
@@ -28,7 +30,9 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.CompilationUnitSyntax Compila
 
 [CompilationUnitSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.compilationunitsyntax)
 
-## CompilationUnit\(SyntaxList\<UsingDirectiveSyntax>, MemberDeclarationSyntax\) <a id="Roslynator_CSharp_CSharpFactory_CompilationUnit_Microsoft_CodeAnalysis_SyntaxList_Microsoft_CodeAnalysis_CSharp_Syntax_UsingDirectiveSyntax__Microsoft_CodeAnalysis_CSharp_Syntax_MemberDeclarationSyntax_"></a>
+<a id="813881929"></a>
+
+## CompilationUnit\(SyntaxList\<UsingDirectiveSyntax\>, MemberDeclarationSyntax\) 
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.CompilationUnitSyntax CompilationUnit(Microsoft.CodeAnalysis.SyntaxList<Microsoft.CodeAnalysis.CSharp.Syntax.UsingDirectiveSyntax> usings, Microsoft.CodeAnalysis.CSharp.Syntax.MemberDeclarationSyntax member)
@@ -36,7 +40,7 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.CompilationUnitSyntax Compila
 
 ### Parameters
 
-**usings** &ensp; [SyntaxList](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxlist-1)\<[UsingDirectiveSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.usingdirectivesyntax)>
+**usings** &ensp; [SyntaxList](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxlist-1)\<[UsingDirectiveSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.usingdirectivesyntax)\>
 
 **member** &ensp; [MemberDeclarationSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.memberdeclarationsyntax)
 
@@ -44,7 +48,9 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.CompilationUnitSyntax Compila
 
 [CompilationUnitSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.compilationunitsyntax)
 
-## CompilationUnit\(SyntaxList\<UsingDirectiveSyntax>, SyntaxList\<MemberDeclarationSyntax>\) <a id="Roslynator_CSharp_CSharpFactory_CompilationUnit_Microsoft_CodeAnalysis_SyntaxList_Microsoft_CodeAnalysis_CSharp_Syntax_UsingDirectiveSyntax__Microsoft_CodeAnalysis_SyntaxList_Microsoft_CodeAnalysis_CSharp_Syntax_MemberDeclarationSyntax__"></a>
+<a id="2664110828"></a>
+
+## CompilationUnit\(SyntaxList\<UsingDirectiveSyntax\>, SyntaxList\<MemberDeclarationSyntax\>\) 
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.CompilationUnitSyntax CompilationUnit(Microsoft.CodeAnalysis.SyntaxList<Microsoft.CodeAnalysis.CSharp.Syntax.UsingDirectiveSyntax> usings, Microsoft.CodeAnalysis.SyntaxList<Microsoft.CodeAnalysis.CSharp.Syntax.MemberDeclarationSyntax> members)
@@ -52,9 +58,9 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.CompilationUnitSyntax Compila
 
 ### Parameters
 
-**usings** &ensp; [SyntaxList](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxlist-1)\<[UsingDirectiveSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.usingdirectivesyntax)>
+**usings** &ensp; [SyntaxList](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxlist-1)\<[UsingDirectiveSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.usingdirectivesyntax)\>
 
-**members** &ensp; [SyntaxList](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxlist-1)\<[MemberDeclarationSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.memberdeclarationsyntax)>
+**members** &ensp; [SyntaxList](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxlist-1)\<[MemberDeclarationSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.memberdeclarationsyntax)\>
 
 ### Returns
 

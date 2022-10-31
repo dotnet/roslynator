@@ -1,12 +1,12 @@
-# CompilerDiagnosticFixVerifier\<TFixProvider>\.VerifyFixAsync\(CompilerDiagnosticFixTestData, ExpectedTestState, TestOptions, CancellationToken\) Method
+# CompilerDiagnosticFixVerifier\<TFixProvider\>\.VerifyFixAsync\(CompilerDiagnosticFixTestData, ExpectedTestState, TestOptions, CancellationToken\) Method
 
 [Home](../../../../README.md)
 
-**Containing Type**: [CompilerDiagnosticFixVerifier\<TFixProvider>](../README.md)
+**Containing Type**: [CompilerDiagnosticFixVerifier\<TFixProvider\>](../README.md)
 
 **Assembly**: Roslynator\.Testing\.Common\.dll
 
-\
+  
 Verifies that specified source will produce compiler diagnostic\.
 
 ```csharp
