@@ -12,8 +12,8 @@ roslynator fix <PROJECT|SOLUTION>
 -a, --analyzer-assemblies <PATH>
     --batch-size <BATCH_SIZE>
     --culture <CULTURE_ID>
-    --diagnostic-fix-map <DIAGNOSTIC_ID=EQUIVALENCE_KEY>
     --diagnostic-fixer-map <DIAGNOSTIC_ID=FIXER_FULL_NAME>
+    --diagnostic-fix-map <DIAGNOSTIC_ID=EQUIVALENCE_KEY>
     --diagnostics-fixable-one-by-one <DIAGNOSTIC_ID>
     --file-banner <FILE_BANNER>
     --file-log <FILE_PATH>
@@ -56,13 +56,13 @@ Defines maximum number of diagnostics that can be fixed in one batch\.
 
 Defines culture that should be used to display diagnostic message\.
 
-##### `--diagnostic-fix-map <DIAGNOSTIC_ID=EQUIVALENCE_KEY>`
-
-Defines mapping between diagnostic and its fix \(CodeAction\)\.
-
 ##### `--diagnostic-fixer-map <DIAGNOSTIC_ID=FIXER_FULL_NAME>`
 
 Defines mapping between diagnostic and its fixer \(CodeFixProvider\)\. If there are two \(or more\) fixers for a diagnostic and both provide a fix it is necessary to determine which one should be used to fix the diagnostic\. Set verbosity to 'diagnostic' to see which diagnostics cannot be fixed due to multiple fixers\.
+
+##### `--diagnostic-fix-map <DIAGNOSTIC_ID=EQUIVALENCE_KEY>`
+
+Defines mapping between diagnostic and its fix \(CodeAction\)\.
 
 ##### `--diagnostics-fixable-one-by-one <DIAGNOSTIC_ID>`
 

@@ -76,7 +76,7 @@ Defines project language\. Allowed values are cs\[harp\] or v\[isual\-\]b\[asic\
 
 ##### `--match <EXPRESSION>`
 
-C\# expression that can be used as a expression body of a method 'bool M\(ISymbol symbol\)'\.
+C\# expression that can be used as a expression\-body of a method 'bool M\(ISymbol symbol\)'\.
 
 ##### `--match-from <FILE_PATH>`
 
@@ -88,7 +88,7 @@ Defines a path to MSBuild directory\.
 
 ##### `--new-name <EXPRESSION>`
 
-C\# expression that can be used as a expression body of a method 'string M\(ISymbol symbol\)'
+C\# expression that can be used as a expression\-body of a method 'string M\(ISymbol symbol\)'
 
 ##### `--new-name-from <FILE_PATH>`
 
@@ -129,7 +129,7 @@ This is a very simple example that will rename all symbols to random name.
 ```shell
 roslynator rename-symbol my.sln
   --match "true"
-  --new-name "obfuscate.cs"
+  --new-name-from "obfuscate.cs"
 ```
 #### Notes
 
@@ -211,7 +211,7 @@ namespace Roslynator.CSharp
 
 ```shell
 roslynator rename-symbol my.sln
-  --match "rename-constants.cs"
+  --match-from "rename-constants.cs"
   --include-generated-code
   --scope member
 ```
