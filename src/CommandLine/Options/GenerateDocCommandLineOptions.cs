@@ -2,7 +2,6 @@
 
 using System.Collections.Generic;
 using CommandLine;
-using Roslynator.Documentation;
 using static Roslynator.Documentation.DocumentationOptions;
 
 namespace Roslynator.CommandLine
@@ -44,6 +43,12 @@ namespace Roslynator.CommandLine
             HelpText = "Defines parts of a root documentation that should be excluded. Allowed values are content, namespaces, class-hierarchy, types and other.",
             MetaValue = "<IGNORED_ROOT_PARTS>")]
         public IEnumerable<string> IgnoredRootParts { get; set; }
+
+        [Option(
+            longName: OptionNames.IgnoredTitleParts,
+            HelpText = "Defines title parts of a documentation that should be excluded. Allowed value is containing-namespace, containing-type, parameters and explicit-implementation.",
+            MetaValue = "<IGNORED_TITLE_PARTS>")]
+        public IEnumerable<string> IgnoredTitleParts { get; set; }
 
         [Option(
             longName: OptionNames.IgnoredTypeParts,

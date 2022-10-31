@@ -135,14 +135,16 @@ namespace Roslynator.CSharp.CodeFixes
 
             IdentifierNameSyntax newIdentifierName = IdentifierName(name);
 
-            TNode newRight = nodeToRewrite.ReplaceNodes(nodes, (n, _) =>
-            {
-                IdentifierNameSyntax newNode = newIdentifierName.WithTriviaFrom(n);
+            TNode newRight = nodeToRewrite.ReplaceNodes(
+                nodes,
+                (n, _) =>
+                {
+                    IdentifierNameSyntax newNode = newIdentifierName.WithTriviaFrom(n);
 
-                return (n is CastExpressionSyntax castExpression)
-                    ? castExpression.WithExpression(newNode).WithSimplifierAnnotation()
-                    : newNode;
-            });
+                    return (n is CastExpressionSyntax castExpression)
+                        ? castExpression.WithExpression(newNode).WithSimplifierAnnotation()
+                        : newNode;
+                });
 
             return (isPatternExpression, newRight);
         }

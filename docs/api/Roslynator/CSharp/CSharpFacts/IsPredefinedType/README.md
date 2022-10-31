@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-\
+  
 Returns true if a syntax of the specified kind is a predefined type\.
 
 ```csharp

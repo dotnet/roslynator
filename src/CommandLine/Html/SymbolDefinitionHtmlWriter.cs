@@ -502,7 +502,7 @@ namespace Roslynator.Documentation.Html
             {
                 XElement element = DocumentationProvider?
                     .GetXmlDocumentation(symbol)?
-                    .Element(WellKnownXmlTags.Param, "name", part.ToString());
+                    .GetElement(WellKnownXmlTags.Param, "name", part.ToString());
 
                 if (element != null)
                 {
@@ -757,7 +757,7 @@ namespace Roslynator.Documentation.Html
             if (xmlDocumentation == null)
                 return;
 
-            XElement summaryElement = xmlDocumentation.Element(WellKnownXmlTags.Summary);
+            XElement summaryElement = xmlDocumentation.GetElement(WellKnownXmlTags.Summary);
 
             if (summaryElement != null)
             {
@@ -767,7 +767,7 @@ namespace Roslynator.Documentation.Html
 
             var hasExceptions = false;
 
-            using (IEnumerator<XElement> en = xmlDocumentation.Elements(WellKnownXmlTags.Exception).GetEnumerator())
+            using (IEnumerator<XElement> en = xmlDocumentation.GetElements(WellKnownXmlTags.Exception).GetEnumerator())
             {
                 if (en.MoveNext())
                 {

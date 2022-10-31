@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Core\.dll
 
-\
+  
 Gets an index of the last selected line\.
 
 ```csharp
@@ -19,4 +19,4 @@ public int LastIndex { get; }
 
 ### Implements
 
-* [ISelection\<TextLine>.LastIndex](../../../ISelection-1/LastIndex/README.md)
+* [ISelection\<TextLine\>.LastIndex](../../../ISelection-1/LastIndex/README.md)

@@ -1,4 +1,4 @@
-# MemberDeclarationListInfo\.IEnumerable\<MemberDeclarationSyntax>\.GetEnumerator\(\) Method
+# MemberDeclarationListInfo\.IEnumerable\<MemberDeclarationSyntax\>\.GetEnumerator\(\) Method
 
 [Home](../../../../../README.md)
 
@@ -12,5 +12,5 @@ System.Collections.Generic.IEnumerator<Microsoft.CodeAnalysis.CSharp.Syntax.Memb
 
 ### Returns
 
-[IEnumerator](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerator-1)\<[MemberDeclarationSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.memberdeclarationsyntax)>
+[IEnumerator](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerator-1)\<[MemberDeclarationSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.memberdeclarationsyntax)\>
 

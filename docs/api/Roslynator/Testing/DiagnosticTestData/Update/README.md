@@ -1,4 +1,4 @@
-# DiagnosticTestData\.Update\(DiagnosticDescriptor, String, IEnumerable\<TextSpan>, IEnumerable\<TextSpan>, IEnumerable\<AdditionalFile>, String, IFormatProvider, String, Boolean\) Method
+# DiagnosticTestData\.Update\(DiagnosticDescriptor, String, IEnumerable\<TextSpan\>, IEnumerable\<TextSpan\>, IEnumerable\<AdditionalFile\>, String, IFormatProvider, String, Boolean\) Method
 
 [Home](../../../../README.md)
 
@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Testing\.Common\.dll
 
-\
+  
 Creates and return new instance of [DiagnosticTestData](../README.md) updated with specified values\.
 
 ```csharp
@@ -19,11 +19,11 @@ public Roslynator.Testing.DiagnosticTestData Update(Microsoft.CodeAnalysis.Diagn
 
 **source** &ensp; [String](https://docs.microsoft.com/en-us/dotnet/api/system.string)
 
-**spans** &ensp; [IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)\<[TextSpan](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.text.textspan)>
+**spans** &ensp; [IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)\<[TextSpan](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.text.textspan)\>
 
-**additionalSpans** &ensp; [IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)\<[TextSpan](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.text.textspan)>
+**additionalSpans** &ensp; [IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)\<[TextSpan](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.text.textspan)\>
 
-**additionalFiles** &ensp; [IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)\<[AdditionalFile](../../AdditionalFile/README.md)>
+**additionalFiles** &ensp; [IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)\<[AdditionalFile](../../AdditionalFile/README.md)\>
 
 **diagnosticMessage** &ensp; [String](https://docs.microsoft.com/en-us/dotnet/api/system.string)
 

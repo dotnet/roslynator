@@ -10,12 +10,14 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [DetermineParameter(SemanticModel, ArgumentSyntax, Boolean, Boolean, CancellationToken)](#Roslynator_CSharp_CSharpExtensions_DetermineParameter_Microsoft_CodeAnalysis_SemanticModel_Microsoft_CodeAnalysis_CSharp_Syntax_ArgumentSyntax_System_Boolean_System_Boolean_System_Threading_CancellationToken_) | Determines a parameter symbol that matches to the specified argument\. Returns null if no matching parameter is found\. |
-| [DetermineParameter(SemanticModel, AttributeArgumentSyntax, Boolean, Boolean, CancellationToken)](#Roslynator_CSharp_CSharpExtensions_DetermineParameter_Microsoft_CodeAnalysis_SemanticModel_Microsoft_CodeAnalysis_CSharp_Syntax_AttributeArgumentSyntax_System_Boolean_System_Boolean_System_Threading_CancellationToken_) | Determines a parameter symbol that matches to the specified attribute argument\. Returns null if not matching parameter is found\. |
+| [DetermineParameter(SemanticModel, ArgumentSyntax, Boolean, Boolean, CancellationToken)](#547493537) | Determines a parameter symbol that matches to the specified argument\. Returns null if no matching parameter is found\. |
+| [DetermineParameter(SemanticModel, AttributeArgumentSyntax, Boolean, Boolean, CancellationToken)](#3103958802) | Determines a parameter symbol that matches to the specified attribute argument\. Returns null if not matching parameter is found\. |
 
-## DetermineParameter\(SemanticModel, ArgumentSyntax, Boolean, Boolean, CancellationToken\) <a id="Roslynator_CSharp_CSharpExtensions_DetermineParameter_Microsoft_CodeAnalysis_SemanticModel_Microsoft_CodeAnalysis_CSharp_Syntax_ArgumentSyntax_System_Boolean_System_Boolean_System_Threading_CancellationToken_"></a>
+<a id="547493537"></a>
 
-\
+## DetermineParameter\(SemanticModel, ArgumentSyntax, Boolean, Boolean, CancellationToken\) 
+
+  
 Determines a parameter symbol that matches to the specified argument\.
 Returns null if no matching parameter is found\.
 
@@ -39,9 +41,11 @@ public static Microsoft.CodeAnalysis.IParameterSymbol DetermineParameter(this Mi
 
 [IParameterSymbol](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.iparametersymbol)
 
-## DetermineParameter\(SemanticModel, AttributeArgumentSyntax, Boolean, Boolean, CancellationToken\) <a id="Roslynator_CSharp_CSharpExtensions_DetermineParameter_Microsoft_CodeAnalysis_SemanticModel_Microsoft_CodeAnalysis_CSharp_Syntax_AttributeArgumentSyntax_System_Boolean_System_Boolean_System_Threading_CancellationToken_"></a>
+<a id="3103958802"></a>
 
-\
+## DetermineParameter\(SemanticModel, AttributeArgumentSyntax, Boolean, Boolean, CancellationToken\) 
+
+  
 Determines a parameter symbol that matches to the specified attribute argument\.
 Returns null if not matching parameter is found\.
 

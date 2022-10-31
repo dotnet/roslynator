@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-\
+  
 Creates a list of modifiers that contains "protected static readonly" modifiers\.
 
 ```csharp

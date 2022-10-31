@@ -1,19 +1,19 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public sealed class RemoveRedundantConstructorAnalyzer : BaseDiagnosticAnalyzer
     {
+        private static readonly MetadataName _usedImplicitlyAttribute = MetadataName.Parse("JetBrains.Annotations.UsedImplicitlyAttribute");
+
         private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
@@ -63,27 +63,24 @@ namespace Roslynator.CSharp.Analysis
                 return;
             }
 
-            if (!IsSingleInstanceConstructor(constructor))
+            if (constructor.HasDocumentationComment())
                 return;
 
-            if (constructor.HasDocumentationComment())
+            IMethodSymbol symbol = context.SemanticModel.GetDeclaredSymbol(constructor, context.CancellationToken);
+
+            if (symbol?.Kind != SymbolKind.Method)
+                return;
+
+            if (symbol.ContainingType.InstanceConstructors.SingleOrDefault(shouldThrow: false) != symbol)
+                return;
+
+            if (symbol.HasAttribute(_usedImplicitlyAttribute))
                 return;
 
             if (!constructor.DescendantTrivia(constructor.Span).All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                 return;
 
             DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveRedundantConstructor, constructor);
-        }
-
-        private static bool IsSingleInstanceConstructor(ConstructorDeclarationSyntax constructor)
-        {
-            MemberDeclarationListInfo info = SyntaxInfo.MemberDeclarationListInfo(constructor.Parent);
-
-            return info.Success
-                && info
-                    .Members
-                    .OfType<ConstructorDeclarationSyntax>()
-                    .All(f => f.Equals(constructor) || f.Modifiers.Contains(SyntaxKind.StaticKeyword));
         }
     }
 }

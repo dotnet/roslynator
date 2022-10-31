@@ -22,13 +22,13 @@ namespace Roslynator
     {
         private static readonly SymbolDisplayFormat _symbolDefinitionFormat = SymbolDisplayFormat.CSharpErrorMessageFormat.Update(
             typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces,
-            miscellaneousOptions: SymbolDisplayMiscellaneousOptions.EscapeKeywordIdentifiers
-                | SymbolDisplayMiscellaneousOptions.UseSpecialTypes
-                | SymbolDisplayMiscellaneousOptions.UseErrorTypeSymbolName,
             parameterOptions: SymbolDisplayParameterOptions.IncludeParamsRefOut
                 | SymbolDisplayParameterOptions.IncludeType
                 | SymbolDisplayParameterOptions.IncludeName
-                | SymbolDisplayParameterOptions.IncludeDefaultValue);
+                | SymbolDisplayParameterOptions.IncludeDefaultValue,
+            miscellaneousOptions: SymbolDisplayMiscellaneousOptions.EscapeKeywordIdentifiers
+                | SymbolDisplayMiscellaneousOptions.UseSpecialTypes
+                | SymbolDisplayMiscellaneousOptions.UseErrorTypeSymbolName);
 
         public static void WriteDiagnostic(
             Diagnostic diagnostic,

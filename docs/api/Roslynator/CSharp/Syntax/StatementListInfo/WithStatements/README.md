@@ -10,12 +10,14 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [WithStatements(IEnumerable\<StatementSyntax>)](#Roslynator_CSharp_Syntax_StatementListInfo_WithStatements_System_Collections_Generic_IEnumerable_Microsoft_CodeAnalysis_CSharp_Syntax_StatementSyntax__) | Creates a new [StatementListInfo](../README.md) with the statements updated\. |
-| [WithStatements(SyntaxList\<StatementSyntax>)](#Roslynator_CSharp_Syntax_StatementListInfo_WithStatements_Microsoft_CodeAnalysis_SyntaxList_Microsoft_CodeAnalysis_CSharp_Syntax_StatementSyntax__) | Creates a new [StatementListInfo](../README.md) with the statements updated\. |
+| [WithStatements(IEnumerable\<StatementSyntax\>)](#3677217916) | Creates a new [StatementListInfo](../README.md) with the statements updated\. |
+| [WithStatements(SyntaxList\<StatementSyntax\>)](#1765041563) | Creates a new [StatementListInfo](../README.md) with the statements updated\. |
 
-## WithStatements\(IEnumerable\<StatementSyntax>\) <a id="Roslynator_CSharp_Syntax_StatementListInfo_WithStatements_System_Collections_Generic_IEnumerable_Microsoft_CodeAnalysis_CSharp_Syntax_StatementSyntax__"></a>
+<a id="3677217916"></a>
 
-\
+## WithStatements\(IEnumerable\<StatementSyntax\>\) 
+
+  
 Creates a new [StatementListInfo](../README.md) with the statements updated\.
 
 ```csharp
@@ -24,15 +26,17 @@ public Roslynator.CSharp.Syntax.StatementListInfo WithStatements(System.Collecti
 
 ### Parameters
 
-**statements** &ensp; [IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)\<[StatementSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.statementsyntax)>
+**statements** &ensp; [IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)\<[StatementSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.statementsyntax)\>
 
 ### Returns
 
 [StatementListInfo](../README.md)
 
-## WithStatements\(SyntaxList\<StatementSyntax>\) <a id="Roslynator_CSharp_Syntax_StatementListInfo_WithStatements_Microsoft_CodeAnalysis_SyntaxList_Microsoft_CodeAnalysis_CSharp_Syntax_StatementSyntax__"></a>
+<a id="1765041563"></a>
 
-\
+## WithStatements\(SyntaxList\<StatementSyntax\>\) 
+
+  
 Creates a new [StatementListInfo](../README.md) with the statements updated\.
 
 ```csharp
@@ -41,7 +45,7 @@ public Roslynator.CSharp.Syntax.StatementListInfo WithStatements(Microsoft.CodeA
 
 ### Parameters
 
-**statements** &ensp; [SyntaxList](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxlist-1)\<[StatementSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.statementsyntax)>
+**statements** &ensp; [SyntaxList](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxlist-1)\<[StatementSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.statementsyntax)\>
 
 ### Returns
 

@@ -10,13 +10,15 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [FindTypeMember(INamedTypeSymbol, Func\<INamedTypeSymbol, Boolean>, Boolean)](#Roslynator_SymbolExtensions_FindTypeMember_Microsoft_CodeAnalysis_INamedTypeSymbol_System_Func_Microsoft_CodeAnalysis_INamedTypeSymbol_System_Boolean__System_Boolean_) | Searches for a type member that matches the conditions defined by the specified predicate and returns the first occurrence within the type's members\. |
-| [FindTypeMember(INamedTypeSymbol, String, Func\<INamedTypeSymbol, Boolean>, Boolean)](#Roslynator_SymbolExtensions_FindTypeMember_Microsoft_CodeAnalysis_INamedTypeSymbol_System_String_System_Func_Microsoft_CodeAnalysis_INamedTypeSymbol_System_Boolean__System_Boolean_) | Searches for a type member that has the specified name and matches the conditions defined by the specified predicate, if any, and returns the first occurrence within the type's members\. |
-| [FindTypeMember(INamedTypeSymbol, String, Int32, Func\<INamedTypeSymbol, Boolean>, Boolean)](#Roslynator_SymbolExtensions_FindTypeMember_Microsoft_CodeAnalysis_INamedTypeSymbol_System_String_System_Int32_System_Func_Microsoft_CodeAnalysis_INamedTypeSymbol_System_Boolean__System_Boolean_) | Searches for a type member that has the specified name, arity and matches the conditions defined by the specified predicate, if any, and returns the first occurrence within the type's members\. |
+| [FindTypeMember(INamedTypeSymbol, Func\<INamedTypeSymbol, Boolean\>, Boolean)](#931525377) | Searches for a type member that matches the conditions defined by the specified predicate and returns the first occurrence within the type's members\. |
+| [FindTypeMember(INamedTypeSymbol, String, Func\<INamedTypeSymbol, Boolean\>, Boolean)](#4255324844) | Searches for a type member that has the specified name and matches the conditions defined by the specified predicate, if any, and returns the first occurrence within the type's members\. |
+| [FindTypeMember(INamedTypeSymbol, String, Int32, Func\<INamedTypeSymbol, Boolean\>, Boolean)](#3885424205) | Searches for a type member that has the specified name, arity and matches the conditions defined by the specified predicate, if any, and returns the first occurrence within the type's members\. |
 
-## FindTypeMember\(INamedTypeSymbol, Func\<INamedTypeSymbol, Boolean>, Boolean\) <a id="Roslynator_SymbolExtensions_FindTypeMember_Microsoft_CodeAnalysis_INamedTypeSymbol_System_Func_Microsoft_CodeAnalysis_INamedTypeSymbol_System_Boolean__System_Boolean_"></a>
+<a id="931525377"></a>
 
-\
+## FindTypeMember\(INamedTypeSymbol, Func\<INamedTypeSymbol, Boolean\>, Boolean\) 
+
+  
 Searches for a type member that matches the conditions defined by the specified predicate and returns the first occurrence within the type's members\.
 
 ```csharp
@@ -27,7 +29,7 @@ public static Microsoft.CodeAnalysis.INamedTypeSymbol FindTypeMember(this Micros
 
 **typeSymbol** &ensp; [INamedTypeSymbol](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.inamedtypesymbol)
 
-**predicate** &ensp; [Func](https://docs.microsoft.com/en-us/dotnet/api/system.func-2)\<[INamedTypeSymbol](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.inamedtypesymbol), [Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)>
+**predicate** &ensp; [Func](https://docs.microsoft.com/en-us/dotnet/api/system.func-2)\<[INamedTypeSymbol](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.inamedtypesymbol), [Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)\>
 
 **includeBaseTypes** &ensp; [Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)
 
@@ -35,9 +37,11 @@ public static Microsoft.CodeAnalysis.INamedTypeSymbol FindTypeMember(this Micros
 
 [INamedTypeSymbol](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.inamedtypesymbol)
 
-## FindTypeMember\(INamedTypeSymbol, String, Func\<INamedTypeSymbol, Boolean>, Boolean\) <a id="Roslynator_SymbolExtensions_FindTypeMember_Microsoft_CodeAnalysis_INamedTypeSymbol_System_String_System_Func_Microsoft_CodeAnalysis_INamedTypeSymbol_System_Boolean__System_Boolean_"></a>
+<a id="4255324844"></a>
 
-\
+## FindTypeMember\(INamedTypeSymbol, String, Func\<INamedTypeSymbol, Boolean\>, Boolean\) 
+
+  
 Searches for a type member that has the specified name and matches the conditions defined by the specified predicate, if any, and returns the first occurrence within the type's members\.
 
 ```csharp
@@ -50,7 +54,7 @@ public static Microsoft.CodeAnalysis.INamedTypeSymbol FindTypeMember(this Micros
 
 **name** &ensp; [String](https://docs.microsoft.com/en-us/dotnet/api/system.string)
 
-**predicate** &ensp; [Func](https://docs.microsoft.com/en-us/dotnet/api/system.func-2)\<[INamedTypeSymbol](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.inamedtypesymbol), [Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)>
+**predicate** &ensp; [Func](https://docs.microsoft.com/en-us/dotnet/api/system.func-2)\<[INamedTypeSymbol](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.inamedtypesymbol), [Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)\>
 
 **includeBaseTypes** &ensp; [Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)
 
@@ -58,9 +62,11 @@ public static Microsoft.CodeAnalysis.INamedTypeSymbol FindTypeMember(this Micros
 
 [INamedTypeSymbol](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.inamedtypesymbol)
 
-## FindTypeMember\(INamedTypeSymbol, String, Int32, Func\<INamedTypeSymbol, Boolean>, Boolean\) <a id="Roslynator_SymbolExtensions_FindTypeMember_Microsoft_CodeAnalysis_INamedTypeSymbol_System_String_System_Int32_System_Func_Microsoft_CodeAnalysis_INamedTypeSymbol_System_Boolean__System_Boolean_"></a>
+<a id="3885424205"></a>
 
-\
+## FindTypeMember\(INamedTypeSymbol, String, Int32, Func\<INamedTypeSymbol, Boolean\>, Boolean\) 
+
+  
 Searches for a type member that has the specified name, arity and matches the conditions defined by the specified predicate, if any, and returns the first occurrence within the type's members\.
 
 ```csharp
@@ -75,7 +81,7 @@ public static Microsoft.CodeAnalysis.INamedTypeSymbol FindTypeMember(this Micros
 
 **arity** &ensp; [Int32](https://docs.microsoft.com/en-us/dotnet/api/system.int32)
 
-**predicate** &ensp; [Func](https://docs.microsoft.com/en-us/dotnet/api/system.func-2)\<[INamedTypeSymbol](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.inamedtypesymbol), [Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)>
+**predicate** &ensp; [Func](https://docs.microsoft.com/en-us/dotnet/api/system.func-2)\<[INamedTypeSymbol](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.inamedtypesymbol), [Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)\>
 
 **includeBaseTypes** &ensp; [Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)
 

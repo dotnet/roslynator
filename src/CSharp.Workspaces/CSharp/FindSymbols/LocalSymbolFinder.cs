@@ -96,6 +96,11 @@ namespace Roslynator.CSharp.FindSymbols
                         walker.Visit(declaration.BodyOrExpressionBody());
                         break;
                     }
+                case SyntaxKind.Parameter:
+                case SyntaxKind.RecordDeclaration:
+                    {
+                        break;
+                    }
                 default:
                     {
                         SyntaxDebug.Fail(node);

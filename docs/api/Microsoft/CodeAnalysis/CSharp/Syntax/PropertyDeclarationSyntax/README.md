@@ -4,6 +4,6 @@
 
 | Extension Method | Summary |
 | ---------------- | ------- |
-| [Getter(PropertyDeclarationSyntax)](../../../../../Roslynator/CSharp/SyntaxExtensions/Getter/README.md#Roslynator_CSharp_SyntaxExtensions_Getter_Microsoft_CodeAnalysis_CSharp_Syntax_PropertyDeclarationSyntax_) | Returns property get accessor, if any\. |
-| [Setter(PropertyDeclarationSyntax)](../../../../../Roslynator/CSharp/SyntaxExtensions/Setter/README.md#Roslynator_CSharp_SyntaxExtensions_Setter_Microsoft_CodeAnalysis_CSharp_Syntax_PropertyDeclarationSyntax_) | Returns property set accessor, if any\. |
+| [Getter(PropertyDeclarationSyntax)](../../../../../Roslynator/CSharp/SyntaxExtensions/Getter/README.md#2677777844) | Returns property get accessor, if any\. |
+| [Setter(PropertyDeclarationSyntax)](../../../../../Roslynator/CSharp/SyntaxExtensions/Setter/README.md#2111161647) | Returns property set accessor, if any\. |
 

@@ -10,12 +10,14 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [IndexOf(Func\<StatementSyntax, Boolean>)](#Roslynator_CSharp_Syntax_StatementListInfo_IndexOf_System_Func_Microsoft_CodeAnalysis_CSharp_Syntax_StatementSyntax_System_Boolean__) | Searches for a statement that matches the predicate and returns zero\-based index of the first occurrence in the list\. |
-| [IndexOf(StatementSyntax)](#Roslynator_CSharp_Syntax_StatementListInfo_IndexOf_Microsoft_CodeAnalysis_CSharp_Syntax_StatementSyntax_) | The index of the statement in the list\. |
+| [IndexOf(Func\<StatementSyntax, Boolean\>)](#2005140688) | Searches for a statement that matches the predicate and returns zero\-based index of the first occurrence in the list\. |
+| [IndexOf(StatementSyntax)](#2921438069) | The index of the statement in the list\. |
 
-## IndexOf\(Func\<StatementSyntax, Boolean>\) <a id="Roslynator_CSharp_Syntax_StatementListInfo_IndexOf_System_Func_Microsoft_CodeAnalysis_CSharp_Syntax_StatementSyntax_System_Boolean__"></a>
+<a id="2005140688"></a>
 
-\
+## IndexOf\(Func\<StatementSyntax, Boolean\>\) 
+
+  
 Searches for a statement that matches the predicate and returns zero\-based index of the first occurrence in the list\.
 
 ```csharp
@@ -24,15 +26,17 @@ public int IndexOf(Func<Microsoft.CodeAnalysis.CSharp.Syntax.StatementSyntax, bo
 
 ### Parameters
 
-**predicate** &ensp; [Func](https://docs.microsoft.com/en-us/dotnet/api/system.func-2)\<[StatementSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.statementsyntax), [Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)>
+**predicate** &ensp; [Func](https://docs.microsoft.com/en-us/dotnet/api/system.func-2)\<[StatementSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.statementsyntax), [Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)\>
 
 ### Returns
 
 [Int32](https://docs.microsoft.com/en-us/dotnet/api/system.int32)
 
-## IndexOf\(StatementSyntax\) <a id="Roslynator_CSharp_Syntax_StatementListInfo_IndexOf_Microsoft_CodeAnalysis_CSharp_Syntax_StatementSyntax_"></a>
+<a id="2921438069"></a>
 
-\
+## IndexOf\(StatementSyntax\) 
+
+  
 The index of the statement in the list\.
 
 ```csharp

@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-\
+  
 The token text, not including leading ampersand, if any, and enclosing quotation marks\.
 
 ```csharp

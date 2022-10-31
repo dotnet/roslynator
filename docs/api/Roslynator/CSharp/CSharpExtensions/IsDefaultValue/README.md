@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-\
+  
 Returns true if the specified expression represents default value of the specified type\.
 
 ```csharp

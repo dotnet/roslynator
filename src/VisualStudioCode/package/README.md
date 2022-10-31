@@ -51,9 +51,9 @@ Location of `%LOCALAPPDATA%` depends on the operating system:
 
 | OS | Path |
 | -------- | ------- |
-| Windows | `C:/Users/<USERNAME>/AppData/Local/.roslynatorconfig` |
-| Linux | `/home/<USERNAME>/.local/share/.roslynatorconfig` |
-| OSX | `/Users/<USERNAME>/.local/share/.roslynatorconfig` |
+| Windows | `C:/Users/<USERNAME>/AppData/Local/JosefPihrt/Roslynator/.roslynatorconfig` |
+| Linux | `/home/<USERNAME>/.local/share/JosefPihrt/Roslynator/.roslynatorconfig` |
+| OSX | `/Users/<USERNAME>/.local/share/JosefPihrt/Roslynator/.roslynatorconfig` |
 
 Default configuration is loaded once when IDE starts. Therefore, it may be necessary to restart IDE for changes to take effect.
 

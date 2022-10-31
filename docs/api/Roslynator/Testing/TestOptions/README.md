@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Testing\.Common\.dll
 
-\
+  
 Represents options for a code verifier\.
 
 ```csharp
@@ -39,17 +39,17 @@ public abstract class TestOptions
 
 | Method | Summary |
 | ------ | ------- |
-| [CommonWithAllowedCompilerDiagnosticIds(IEnumerable\<String>)](CommonWithAllowedCompilerDiagnosticIds/README.md) | |
+| [CommonWithAllowedCompilerDiagnosticIds(IEnumerable\<String\>)](CommonWithAllowedCompilerDiagnosticIds/README.md) | |
 | [CommonWithAllowedCompilerDiagnosticSeverity(DiagnosticSeverity)](CommonWithAllowedCompilerDiagnosticSeverity/README.md) | |
-| [CommonWithConfigOptions(IEnumerable\<KeyValuePair\<String, String>>)](CommonWithConfigOptions/README.md) | |
-| [CommonWithMetadataReferences(IEnumerable\<MetadataReference>)](CommonWithMetadataReferences/README.md) | |
+| [CommonWithConfigOptions(IEnumerable\<KeyValuePair\<String, String\>\>)](CommonWithConfigOptions/README.md) | |
+| [CommonWithMetadataReferences(IEnumerable\<MetadataReference\>)](CommonWithMetadataReferences/README.md) | |
 | [Equals(Object)](https://docs.microsoft.com/en-us/dotnet/api/system.object.equals) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
 | [GetHashCode()](https://docs.microsoft.com/en-us/dotnet/api/system.object.gethashcode) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
 | [GetType()](https://docs.microsoft.com/en-us/dotnet/api/system.object.gettype) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
 | [MemberwiseClone()](https://docs.microsoft.com/en-us/dotnet/api/system.object.memberwiseclone) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
 | [ToString()](https://docs.microsoft.com/en-us/dotnet/api/system.object.tostring) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
-| [WithAllowedCompilerDiagnosticIds(IEnumerable\<String>)](WithAllowedCompilerDiagnosticIds/README.md) | |
+| [WithAllowedCompilerDiagnosticIds(IEnumerable\<String\>)](WithAllowedCompilerDiagnosticIds/README.md) | |
 | [WithAllowedCompilerDiagnosticSeverity(DiagnosticSeverity)](WithAllowedCompilerDiagnosticSeverity/README.md) | |
-| [WithConfigOptions(IEnumerable\<KeyValuePair\<String, String>>)](WithConfigOptions/README.md) | |
-| [WithMetadataReferences(IEnumerable\<MetadataReference>)](WithMetadataReferences/README.md) | |
+| [WithConfigOptions(IEnumerable\<KeyValuePair\<String, String\>\>)](WithConfigOptions/README.md) | |
+| [WithMetadataReferences(IEnumerable\<MetadataReference\>)](WithMetadataReferences/README.md) | |
 

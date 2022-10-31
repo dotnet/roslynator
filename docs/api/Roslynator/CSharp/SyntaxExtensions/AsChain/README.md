@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-\
+  
 Returns [ExpressionChain](../../ExpressionChain/README.md) that enables to enumerate expressions of a binary expression\.
 
 ```csharp

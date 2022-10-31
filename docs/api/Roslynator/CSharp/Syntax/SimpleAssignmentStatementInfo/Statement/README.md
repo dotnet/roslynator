@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-\
+  
 The expression statement the simple assignment expression is contained in\.
 
 ```csharp
