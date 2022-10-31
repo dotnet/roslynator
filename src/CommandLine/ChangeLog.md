@@ -1,6 +1,6 @@
 **NOTE: All changes are now tracked in main [changelog](../../ChangeLog.md).**
 
-## [0.4.0] - 2022-10-22
+## [0.4.0] - 2022-10-31
 
 -----
 
