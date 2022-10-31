@@ -3229,12 +3229,15 @@ namespace Roslynator.CSharp
 #if DEBUG
                     case SyntaxKind.Argument:
                     case SyntaxKind.ArgumentList:
+                    case SyntaxKind.BracketedArgumentList:
+                    case SyntaxKind.ArrayRankSpecifier:
                     case SyntaxKind.EqualsValueClause:
                     case SyntaxKind.Interpolation:
                     case SyntaxKind.SwitchExpressionArm:
                     case SyntaxKind.VariableDeclaration:
                     case SyntaxKind.VariableDeclarator:
                     case SyntaxKind.QueryBody:
+                    case SyntaxKind.AnonymousObjectMemberDeclarator:
                         {
                             break;
                         }

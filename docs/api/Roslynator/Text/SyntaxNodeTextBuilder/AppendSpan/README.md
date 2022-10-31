@@ -10,18 +10,22 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [AppendSpan()](#Roslynator_Text_SyntaxNodeTextBuilder_AppendSpan) | |
-| [AppendSpan(SyntaxNode)](#Roslynator_Text_SyntaxNodeTextBuilder_AppendSpan_Microsoft_CodeAnalysis_SyntaxNode_) | |
-| [AppendSpan(SyntaxToken)](#Roslynator_Text_SyntaxNodeTextBuilder_AppendSpan_Microsoft_CodeAnalysis_SyntaxToken_) | |
-| [AppendSpan(SyntaxTrivia)](#Roslynator_Text_SyntaxNodeTextBuilder_AppendSpan_Microsoft_CodeAnalysis_SyntaxTrivia_) | |
+| [AppendSpan()](#286369732) | |
+| [AppendSpan(SyntaxNode)](#2719838062) | |
+| [AppendSpan(SyntaxToken)](#3348585577) | |
+| [AppendSpan(SyntaxTrivia)](#3538978791) | |
 
-## AppendSpan\(\) <a id="Roslynator_Text_SyntaxNodeTextBuilder_AppendSpan"></a>
+<a id="286369732"></a>
+
+## AppendSpan\(\) 
 
 ```csharp
 public void AppendSpan()
 ```
 
-## AppendSpan\(SyntaxNode\) <a id="Roslynator_Text_SyntaxNodeTextBuilder_AppendSpan_Microsoft_CodeAnalysis_SyntaxNode_"></a>
+<a id="2719838062"></a>
+
+## AppendSpan\(SyntaxNode\) 
 
 ```csharp
 public void AppendSpan(Microsoft.CodeAnalysis.SyntaxNode node)
@@ -29,9 +33,9 @@ public void AppendSpan(Microsoft.CodeAnalysis.SyntaxNode node)
 
 ### Parameters
 
-**node** &ensp; [SyntaxNode](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxnode)
+**node** &ensp; [SyntaxNode](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxnode)<a id="3348585577"></a>
 
-## AppendSpan\(SyntaxToken\) <a id="Roslynator_Text_SyntaxNodeTextBuilder_AppendSpan_Microsoft_CodeAnalysis_SyntaxToken_"></a>
+## AppendSpan\(SyntaxToken\) 
 
 ```csharp
 public void AppendSpan(Microsoft.CodeAnalysis.SyntaxToken token)
@@ -39,9 +43,9 @@ public void AppendSpan(Microsoft.CodeAnalysis.SyntaxToken token)
 
 ### Parameters
 
-**token** &ensp; [SyntaxToken](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxtoken)
+**token** &ensp; [SyntaxToken](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxtoken)<a id="3538978791"></a>
 
-## AppendSpan\(SyntaxTrivia\) <a id="Roslynator_Text_SyntaxNodeTextBuilder_AppendSpan_Microsoft_CodeAnalysis_SyntaxTrivia_"></a>
+## AppendSpan\(SyntaxTrivia\) 
 
 ```csharp
 public void AppendSpan(Microsoft.CodeAnalysis.SyntaxTrivia trivia)

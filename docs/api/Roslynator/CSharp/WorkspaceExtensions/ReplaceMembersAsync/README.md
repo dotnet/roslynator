@@ -10,12 +10,14 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [ReplaceMembersAsync(Document, MemberDeclarationListInfo, IEnumerable\<MemberDeclarationSyntax>, CancellationToken)](#Roslynator_CSharp_WorkspaceExtensions_ReplaceMembersAsync_Microsoft_CodeAnalysis_Document_Roslynator_CSharp_Syntax_MemberDeclarationListInfo_System_Collections_Generic_IEnumerable_Microsoft_CodeAnalysis_CSharp_Syntax_MemberDeclarationSyntax__System_Threading_CancellationToken_) | Creates a new document with the specified members replaced with new members\. |
-| [ReplaceMembersAsync(Document, MemberDeclarationListInfo, SyntaxList\<MemberDeclarationSyntax>, CancellationToken)](#Roslynator_CSharp_WorkspaceExtensions_ReplaceMembersAsync_Microsoft_CodeAnalysis_Document_Roslynator_CSharp_Syntax_MemberDeclarationListInfo_Microsoft_CodeAnalysis_SyntaxList_Microsoft_CodeAnalysis_CSharp_Syntax_MemberDeclarationSyntax__System_Threading_CancellationToken_) | Creates a new document with the specified members replaced with new members\. |
+| [ReplaceMembersAsync(Document, MemberDeclarationListInfo, IEnumerable\<MemberDeclarationSyntax\>, CancellationToken)](#3720048427) | Creates a new document with the specified members replaced with new members\. |
+| [ReplaceMembersAsync(Document, MemberDeclarationListInfo, SyntaxList\<MemberDeclarationSyntax\>, CancellationToken)](#2694444151) | Creates a new document with the specified members replaced with new members\. |
 
-## ReplaceMembersAsync\(Document, MemberDeclarationListInfo, IEnumerable\<MemberDeclarationSyntax>, CancellationToken\) <a id="Roslynator_CSharp_WorkspaceExtensions_ReplaceMembersAsync_Microsoft_CodeAnalysis_Document_Roslynator_CSharp_Syntax_MemberDeclarationListInfo_System_Collections_Generic_IEnumerable_Microsoft_CodeAnalysis_CSharp_Syntax_MemberDeclarationSyntax__System_Threading_CancellationToken_"></a>
+<a id="3720048427"></a>
 
-\
+## ReplaceMembersAsync\(Document, MemberDeclarationListInfo, IEnumerable\<MemberDeclarationSyntax\>, CancellationToken\) 
+
+  
 Creates a new document with the specified members replaced with new members\.
 
 ```csharp
@@ -28,17 +30,19 @@ public static System.Threading.Tasks.Task<Microsoft.CodeAnalysis.Document> Repla
 
 **info** &ensp; [MemberDeclarationListInfo](../../Syntax/MemberDeclarationListInfo/README.md)
 
-**newMembers** &ensp; [IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)\<[MemberDeclarationSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.memberdeclarationsyntax)>
+**newMembers** &ensp; [IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)\<[MemberDeclarationSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.memberdeclarationsyntax)\>
 
 **cancellationToken** &ensp; [CancellationToken](https://docs.microsoft.com/en-us/dotnet/api/system.threading.cancellationtoken)
 
 ### Returns
 
-[Task](https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1)\<[Document](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.document)>
+[Task](https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1)\<[Document](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.document)\>
 
-## ReplaceMembersAsync\(Document, MemberDeclarationListInfo, SyntaxList\<MemberDeclarationSyntax>, CancellationToken\) <a id="Roslynator_CSharp_WorkspaceExtensions_ReplaceMembersAsync_Microsoft_CodeAnalysis_Document_Roslynator_CSharp_Syntax_MemberDeclarationListInfo_Microsoft_CodeAnalysis_SyntaxList_Microsoft_CodeAnalysis_CSharp_Syntax_MemberDeclarationSyntax__System_Threading_CancellationToken_"></a>
+<a id="2694444151"></a>
 
-\
+## ReplaceMembersAsync\(Document, MemberDeclarationListInfo, SyntaxList\<MemberDeclarationSyntax\>, CancellationToken\) 
+
+  
 Creates a new document with the specified members replaced with new members\.
 
 ```csharp
@@ -51,11 +55,11 @@ public static System.Threading.Tasks.Task<Microsoft.CodeAnalysis.Document> Repla
 
 **info** &ensp; [MemberDeclarationListInfo](../../Syntax/MemberDeclarationListInfo/README.md)
 
-**newMembers** &ensp; [SyntaxList](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxlist-1)\<[MemberDeclarationSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.memberdeclarationsyntax)>
+**newMembers** &ensp; [SyntaxList](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxlist-1)\<[MemberDeclarationSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.memberdeclarationsyntax)\>
 
 **cancellationToken** &ensp; [CancellationToken](https://docs.microsoft.com/en-us/dotnet/api/system.threading.cancellationtoken)
 
 ### Returns
 
-[Task](https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1)\<[Document](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.document)>
+[Task](https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1)\<[Document](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.document)\>
 

@@ -1,12 +1,12 @@
-# CSharpRefactoringVerifier\<TRefactoringProvider>\.CommonOptions Property
+# CSharpRefactoringVerifier\<TRefactoringProvider\>\.CommonOptions Property
 
 [Home](../../../../../README.md)
 
-**Containing Type**: [CSharpRefactoringVerifier\<TRefactoringProvider>](../README.md)
+**Containing Type**: [CSharpRefactoringVerifier\<TRefactoringProvider\>](../README.md)
 
 **Assembly**: Roslynator\.Testing\.CSharp\.dll
 
-\
+  
 Gets common test options\.
 
 ```csharp

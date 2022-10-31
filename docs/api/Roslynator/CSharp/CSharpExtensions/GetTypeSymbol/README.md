@@ -10,14 +10,16 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [GetTypeSymbol(SemanticModel, AttributeSyntax, CancellationToken)](#Roslynator_CSharp_CSharpExtensions_GetTypeSymbol_Microsoft_CodeAnalysis_SemanticModel_Microsoft_CodeAnalysis_CSharp_Syntax_AttributeSyntax_System_Threading_CancellationToken_) | Returns type information about an attribute syntax\. |
-| [GetTypeSymbol(SemanticModel, ConstructorInitializerSyntax, CancellationToken)](#Roslynator_CSharp_CSharpExtensions_GetTypeSymbol_Microsoft_CodeAnalysis_SemanticModel_Microsoft_CodeAnalysis_CSharp_Syntax_ConstructorInitializerSyntax_System_Threading_CancellationToken_) | Returns type information about a constructor initializer syntax\. |
-| [GetTypeSymbol(SemanticModel, ExpressionSyntax, CancellationToken)](#Roslynator_CSharp_CSharpExtensions_GetTypeSymbol_Microsoft_CodeAnalysis_SemanticModel_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_System_Threading_CancellationToken_) | Returns type information about an expression syntax\. |
-| [GetTypeSymbol(SemanticModel, SelectOrGroupClauseSyntax, CancellationToken)](#Roslynator_CSharp_CSharpExtensions_GetTypeSymbol_Microsoft_CodeAnalysis_SemanticModel_Microsoft_CodeAnalysis_CSharp_Syntax_SelectOrGroupClauseSyntax_System_Threading_CancellationToken_) | Returns type information about a select or group clause\. |
+| [GetTypeSymbol(SemanticModel, AttributeSyntax, CancellationToken)](#4220455895) | Returns type information about an attribute syntax\. |
+| [GetTypeSymbol(SemanticModel, ConstructorInitializerSyntax, CancellationToken)](#2306729789) | Returns type information about a constructor initializer syntax\. |
+| [GetTypeSymbol(SemanticModel, ExpressionSyntax, CancellationToken)](#1357550300) | Returns type information about an expression syntax\. |
+| [GetTypeSymbol(SemanticModel, SelectOrGroupClauseSyntax, CancellationToken)](#1028976081) | Returns type information about a select or group clause\. |
 
-## GetTypeSymbol\(SemanticModel, AttributeSyntax, CancellationToken\) <a id="Roslynator_CSharp_CSharpExtensions_GetTypeSymbol_Microsoft_CodeAnalysis_SemanticModel_Microsoft_CodeAnalysis_CSharp_Syntax_AttributeSyntax_System_Threading_CancellationToken_"></a>
+<a id="4220455895"></a>
 
-\
+## GetTypeSymbol\(SemanticModel, AttributeSyntax, CancellationToken\) 
+
+  
 Returns type information about an attribute syntax\.
 
 ```csharp
@@ -36,9 +38,11 @@ public static Microsoft.CodeAnalysis.ITypeSymbol GetTypeSymbol(this Microsoft.Co
 
 [ITypeSymbol](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.itypesymbol)
 
-## GetTypeSymbol\(SemanticModel, ConstructorInitializerSyntax, CancellationToken\) <a id="Roslynator_CSharp_CSharpExtensions_GetTypeSymbol_Microsoft_CodeAnalysis_SemanticModel_Microsoft_CodeAnalysis_CSharp_Syntax_ConstructorInitializerSyntax_System_Threading_CancellationToken_"></a>
+<a id="2306729789"></a>
 
-\
+## GetTypeSymbol\(SemanticModel, ConstructorInitializerSyntax, CancellationToken\) 
+
+  
 Returns type information about a constructor initializer syntax\.
 
 ```csharp
@@ -57,9 +61,11 @@ public static Microsoft.CodeAnalysis.ITypeSymbol GetTypeSymbol(this Microsoft.Co
 
 [ITypeSymbol](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.itypesymbol)
 
-## GetTypeSymbol\(SemanticModel, ExpressionSyntax, CancellationToken\) <a id="Roslynator_CSharp_CSharpExtensions_GetTypeSymbol_Microsoft_CodeAnalysis_SemanticModel_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_System_Threading_CancellationToken_"></a>
+<a id="1357550300"></a>
 
-\
+## GetTypeSymbol\(SemanticModel, ExpressionSyntax, CancellationToken\) 
+
+  
 Returns type information about an expression syntax\.
 
 ```csharp
@@ -78,9 +84,11 @@ public static Microsoft.CodeAnalysis.ITypeSymbol GetTypeSymbol(this Microsoft.Co
 
 [ITypeSymbol](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.itypesymbol)
 
-## GetTypeSymbol\(SemanticModel, SelectOrGroupClauseSyntax, CancellationToken\) <a id="Roslynator_CSharp_CSharpExtensions_GetTypeSymbol_Microsoft_CodeAnalysis_SemanticModel_Microsoft_CodeAnalysis_CSharp_Syntax_SelectOrGroupClauseSyntax_System_Threading_CancellationToken_"></a>
+<a id="1028976081"></a>
 
-\
+## GetTypeSymbol\(SemanticModel, SelectOrGroupClauseSyntax, CancellationToken\) 
+
+  
 Returns type information about a select or group clause\.
 
 ```csharp

@@ -1179,7 +1179,6 @@ class C
 ", source);
         }
 
-
         [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
         [InlineData("items.FirstOrDefault(_ => true) == null")]
         [InlineData("items.FirstOrDefault(_ => true) is null")]
@@ -1202,7 +1201,6 @@ class C
 }
 ", source);
         }
-
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
         public async Task TestNoDiagnostic_CallOfTypeInsteadOfWhereAndCast()

@@ -264,7 +264,7 @@ namespace Roslynator.CSharp.CodeFixes
                                         Argument(
                                             SubtractExpression(
                                                 SimpleMemberAccessExpression(invocationInfo.Expression, IdentifierName("Length")),
-                                                arguments[0].Expression)));
+                                                arguments[0].Expression.Parenthesize())));
 
                                     return CreateNewInvocationExpression(outerInvocationExpression, "Append", argumentList);
                                 }

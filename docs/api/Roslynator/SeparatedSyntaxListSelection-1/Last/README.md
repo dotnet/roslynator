@@ -1,12 +1,12 @@
-# SeparatedSyntaxListSelection\<TNode>\.Last\(\) Method
+# SeparatedSyntaxListSelection\<TNode\>\.Last\(\) Method
 
 [Home](../../../README.md)
 
-**Containing Type**: [SeparatedSyntaxListSelection\<TNode>](../README.md)
+**Containing Type**: [SeparatedSyntaxListSelection\<TNode\>](../README.md)
 
 **Assembly**: Roslynator\.Core\.dll
 
-\
+  
 Gets the last selected node\.
 
 ```csharp
@@ -19,4 +19,4 @@ TNode
 
 ### Implements
 
-* [ISelection\<TNode>.Last](../../ISelection-1/Last/README.md)
+* [ISelection\<TNode\>.Last](../../ISelection-1/Last/README.md)

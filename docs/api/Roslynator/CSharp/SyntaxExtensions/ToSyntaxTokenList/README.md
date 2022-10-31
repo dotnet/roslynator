@@ -1,4 +1,4 @@
-# SyntaxExtensions\.ToSyntaxTokenList\(IEnumerable\<SyntaxToken>\) Method
+# SyntaxExtensions\.ToSyntaxTokenList\(IEnumerable\<SyntaxToken\>\) Method
 
 [Home](../../../../README.md)
 
@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-\
+  
 Creates a list of syntax tokens from a sequence of tokens\.
 
 ```csharp
@@ -15,7 +15,7 @@ public static Microsoft.CodeAnalysis.SyntaxTokenList ToSyntaxTokenList(this Syst
 
 ### Parameters
 
-**tokens** &ensp; [IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)\<[SyntaxToken](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxtoken)>
+**tokens** &ensp; [IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)\<[SyntaxToken](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxtoken)\>
 
 ### Returns
 

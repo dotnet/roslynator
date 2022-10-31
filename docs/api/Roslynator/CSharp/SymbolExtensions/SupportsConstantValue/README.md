@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-\
+  
 Returns true if the specified type can be used to declare constant value\.
 
 ```csharp

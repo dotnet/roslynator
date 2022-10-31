@@ -40,7 +40,7 @@ class C
 
     void M()
     {
-        var x = new C() { P1 = , P2 = , P3 = , P4 = };
+        var x = new C() { P1 = , P3 = , P2 = , P4 = };
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
@@ -78,7 +78,7 @@ record C
 
     void M()
     {
-        var x = this with { P1 = , P2 = , P3 = , P4 = };
+        var x = this with { P1 = , P3 = , P2 = , P4 = };
     }
 }
 

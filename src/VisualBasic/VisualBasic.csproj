@@ -18,11 +18,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic" Version="4.2.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic" Version="4.3.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+      <_Parameter1>$(RoslynatorDllPrefix)Roslynator.VisualBasic.Workspaces, PublicKey=$(RoslynatorPublicKey)</_Parameter1>
+    </AssemblyAttribute>
   </ItemGroup>
 
 </Project>

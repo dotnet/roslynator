@@ -111,7 +111,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             string name = NameGenerator.CreateName(typeSymbol, firstCharToLower: true) ?? DefaultNames.Variable;
 
-            name = NameGenerator.Default.EnsureUniqueLocalName(name, semanticModel, node.SpanStart, cancellationToken: cancellationToken) ?? DefaultNames.Variable;
+            name = CSharpNameGenerator.Default.EnsureUniqueLocalName(name, semanticModel, node.SpanStart, cancellationToken: cancellationToken) ?? DefaultNames.Variable;
 
             IsPatternExpressionSyntax isPatternExpression = IsPatternExpression(
                 isInfo.Expression,
@@ -135,14 +135,16 @@ namespace Roslynator.CSharp.CodeFixes
 
             IdentifierNameSyntax newIdentifierName = IdentifierName(name);
 
-            TNode newRight = nodeToRewrite.ReplaceNodes(nodes, (n, _) =>
-            {
-                IdentifierNameSyntax newNode = newIdentifierName.WithTriviaFrom(n);
+            TNode newRight = nodeToRewrite.ReplaceNodes(
+                nodes,
+                (n, _) =>
+                {
+                    IdentifierNameSyntax newNode = newIdentifierName.WithTriviaFrom(n);
 
-                return (n is CastExpressionSyntax castExpression)
-                    ? castExpression.WithExpression(newNode).WithSimplifierAnnotation()
-                    : newNode;
-            });
+                    return (n is CastExpressionSyntax castExpression)
+                        ? castExpression.WithExpression(newNode).WithSimplifierAnnotation()
+                        : newNode;
+                });
 
             return (isPatternExpression, newRight);
         }

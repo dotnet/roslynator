@@ -26,9 +26,9 @@ namespace Roslynator.Documentation
                     return 1;
                 case RootDocumentationParts.Namespaces:
                     return 2;
-                case RootDocumentationParts.ClassHierarchy:
-                    return 3;
                 case RootDocumentationParts.Types:
+                    return 3;
+                case RootDocumentationParts.ClassHierarchy:
                     return 4;
                 case RootDocumentationParts.Other:
                     return 5;

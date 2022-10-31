@@ -219,7 +219,7 @@ namespace Roslynator.CSharp.Analysis.If
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            if ((nullCheck.Style & NullCheckStyles.ComparisonToNull) != 0
+            if ((nullCheck.Style & (NullCheckStyles.ComparisonToNull | NullCheckStyles.IsPattern)) != 0
                 && AreEquivalent(nullCheck.Expression, expression1))
             {
                 return CreateIfToReturnStatement(isNullable: false);

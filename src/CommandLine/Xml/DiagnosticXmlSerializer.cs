@@ -23,7 +23,7 @@ namespace Roslynator.CommandLine.Xml
             XElement summary = CreateSummary(results.SelectMany(f => f.CompilerDiagnostics.Concat(f.Diagnostics)), formatProvider);
 
             IEnumerable<XElement> projectElements = results
-                .Where(f => f.Diagnostics.Any())
+                .Where(f => f.Diagnostics.Any() || f.CompilerDiagnostics.Any())
                 .OrderBy(f => f.Project.FilePath, FileSystemHelpers.Comparer)
                 .Select(result => SerializeProjectAnalysisResult(result, formatProvider));
 
@@ -41,6 +41,7 @@ namespace Roslynator.CommandLine.Xml
                 new XElement(
                     "Diagnostics",
                     result.Diagnostics
+                        .Concat(result.CompilerDiagnostics)
                         .OrderBy(f => f.LineSpan.Path)
                         .ThenBy(f => f.Descriptor.Id)
                         .ThenBy(f => f.LineSpan.StartLinePosition.Line)

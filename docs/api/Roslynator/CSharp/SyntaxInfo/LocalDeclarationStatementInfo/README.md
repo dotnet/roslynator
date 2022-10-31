@@ -10,12 +10,14 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [LocalDeclarationStatementInfo(ExpressionSyntax, Boolean)](#Roslynator_CSharp_SyntaxInfo_LocalDeclarationStatementInfo_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_System_Boolean_) | Creates a new [LocalDeclarationStatementInfo](../../Syntax/LocalDeclarationStatementInfo/README.md) from the specified expression\. |
-| [LocalDeclarationStatementInfo(LocalDeclarationStatementSyntax, Boolean)](#Roslynator_CSharp_SyntaxInfo_LocalDeclarationStatementInfo_Microsoft_CodeAnalysis_CSharp_Syntax_LocalDeclarationStatementSyntax_System_Boolean_) | Creates a new [LocalDeclarationStatementInfo](../../Syntax/LocalDeclarationStatementInfo/README.md) from the specified local declaration statement\. |
+| [LocalDeclarationStatementInfo(ExpressionSyntax, Boolean)](#1217906988) | Creates a new [LocalDeclarationStatementInfo](../../Syntax/LocalDeclarationStatementInfo/README.md) from the specified expression\. |
+| [LocalDeclarationStatementInfo(LocalDeclarationStatementSyntax, Boolean)](#168424774) | Creates a new [LocalDeclarationStatementInfo](../../Syntax/LocalDeclarationStatementInfo/README.md) from the specified local declaration statement\. |
 
-## LocalDeclarationStatementInfo\(ExpressionSyntax, Boolean\) <a id="Roslynator_CSharp_SyntaxInfo_LocalDeclarationStatementInfo_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_System_Boolean_"></a>
+<a id="1217906988"></a>
 
-\
+## LocalDeclarationStatementInfo\(ExpressionSyntax, Boolean\) 
+
+  
 Creates a new [LocalDeclarationStatementInfo](../../Syntax/LocalDeclarationStatementInfo/README.md) from the specified expression\.
 
 ```csharp
@@ -32,9 +34,11 @@ public static Roslynator.CSharp.Syntax.LocalDeclarationStatementInfo LocalDeclar
 
 [LocalDeclarationStatementInfo](../../Syntax/LocalDeclarationStatementInfo/README.md)
 
-## LocalDeclarationStatementInfo\(LocalDeclarationStatementSyntax, Boolean\) <a id="Roslynator_CSharp_SyntaxInfo_LocalDeclarationStatementInfo_Microsoft_CodeAnalysis_CSharp_Syntax_LocalDeclarationStatementSyntax_System_Boolean_"></a>
+<a id="168424774"></a>
 
-\
+## LocalDeclarationStatementInfo\(LocalDeclarationStatementSyntax, Boolean\) 
+
+  
 Creates a new [LocalDeclarationStatementInfo](../../Syntax/LocalDeclarationStatementInfo/README.md) from the specified local declaration statement\.
 
 ```csharp

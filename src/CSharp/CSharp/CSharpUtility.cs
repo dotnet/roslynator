@@ -436,6 +436,7 @@ namespace Roslynator.CSharp
                     case SyntaxKind.ThisConstructorInitializer:
                     case SyntaxKind.BaseConstructorInitializer:
                     case SyntaxKind.SwitchExpressionArm:
+                    case SyntaxKind.AnonymousObjectMemberDeclarator:
                         return false;
 #if DEBUG
                     default:

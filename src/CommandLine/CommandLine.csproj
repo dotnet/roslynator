@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup Condition="'$(RoslynatorDotNetCli)' != true AND '$(RoslynatorCommandLine)' != true">
-    <TargetFramework>net48</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(RoslynatorDotNetCli)' == true OR '$(RoslynatorCoreCli)' == true ">
-    <TargetFramework>net5.0</TargetFramework>
+  <PropertyGroup Condition="'$(RoslynatorDotNetCli)' == true">
+    <TargetFrameworks>net5.0;net6.0</TargetFrameworks>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(RoslynatorCommandLine)' == true">
@@ -26,12 +26,13 @@
     <PackageId>Roslynator.DotNet.Cli</PackageId>
     <PackageVersion>$(RoslynatorCliPackageVersion)</PackageVersion>
     <Authors>Josef Pihrt</Authors>
-    <Description>Roslynator command line tool for .NET Core</Description>
-    <PackageProjectUrl>https://github.com/JosefPihrt/Roslynator</PackageProjectUrl>
+    <Description>Roslynator command-line tool for .NET Core</Description>
+    <PackageProjectUrl>https://github.com/josefpihrt/roslynator</PackageProjectUrl>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageIcon>icon.png</PackageIcon>
     <PackageTags>CLI;Roslyn;C#;CSharp</PackageTags>
-    <RepositoryUrl>https://github.com/JosefPihrt/Roslynator.git</RepositoryUrl>
+    <PackageReadmeFile>docs/README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/josefpihrt/roslynator.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
   </PropertyGroup>
@@ -45,11 +46,12 @@
 
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.8.0" />
-    <PackageReference Include="Microsoft.Build.Locator" Version="1.4.1" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.2.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.Workspaces" Version="4.2.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="4.2.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Microsoft.Build.Locator" Version="1.5.5" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.3.1" />
+    <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.Workspaces" Version="4.3.1" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="4.3.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="DotMarkdown" Version="0.2.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -63,6 +65,7 @@
 
   <ItemGroup>
     <None Include="..\..\images\icon.png" Pack="true" PackagePath="\" Visible="false" />
+    <None Include="docs\NetCore\NuGetReadme.md" Pack="true" PackagePath="docs\README.md" />
     <None Remove="_._" />
   </ItemGroup>
 

@@ -10,12 +10,14 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [RemovePreprocessorDirectivesAsync(Document, PreprocessorDirectiveFilter, CancellationToken)](#Roslynator_CSharp_WorkspaceExtensions_RemovePreprocessorDirectivesAsync_Microsoft_CodeAnalysis_Document_Roslynator_CSharp_PreprocessorDirectiveFilter_System_Threading_CancellationToken_) | Creates a new document with preprocessor directives of the specified kind removed\. |
-| [RemovePreprocessorDirectivesAsync(Document, TextSpan, PreprocessorDirectiveFilter, CancellationToken)](#Roslynator_CSharp_WorkspaceExtensions_RemovePreprocessorDirectivesAsync_Microsoft_CodeAnalysis_Document_Microsoft_CodeAnalysis_Text_TextSpan_Roslynator_CSharp_PreprocessorDirectiveFilter_System_Threading_CancellationToken_) | Creates a new document with preprocessor directives of the specified kind removed\. |
+| [RemovePreprocessorDirectivesAsync(Document, PreprocessorDirectiveFilter, CancellationToken)](#4209258380) | Creates a new document with preprocessor directives of the specified kind removed\. |
+| [RemovePreprocessorDirectivesAsync(Document, TextSpan, PreprocessorDirectiveFilter, CancellationToken)](#1657920506) | Creates a new document with preprocessor directives of the specified kind removed\. |
 
-## RemovePreprocessorDirectivesAsync\(Document, PreprocessorDirectiveFilter, CancellationToken\) <a id="Roslynator_CSharp_WorkspaceExtensions_RemovePreprocessorDirectivesAsync_Microsoft_CodeAnalysis_Document_Roslynator_CSharp_PreprocessorDirectiveFilter_System_Threading_CancellationToken_"></a>
+<a id="4209258380"></a>
 
-\
+## RemovePreprocessorDirectivesAsync\(Document, PreprocessorDirectiveFilter, CancellationToken\) 
+
+  
 Creates a new document with preprocessor directives of the specified kind removed\.
 
 ```csharp
@@ -32,11 +34,13 @@ public static System.Threading.Tasks.Task<Microsoft.CodeAnalysis.Document> Remov
 
 ### Returns
 
-[Task](https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1)\<[Document](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.document)>
+[Task](https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1)\<[Document](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.document)\>
 
-## RemovePreprocessorDirectivesAsync\(Document, TextSpan, PreprocessorDirectiveFilter, CancellationToken\) <a id="Roslynator_CSharp_WorkspaceExtensions_RemovePreprocessorDirectivesAsync_Microsoft_CodeAnalysis_Document_Microsoft_CodeAnalysis_Text_TextSpan_Roslynator_CSharp_PreprocessorDirectiveFilter_System_Threading_CancellationToken_"></a>
+<a id="1657920506"></a>
 
-\
+## RemovePreprocessorDirectivesAsync\(Document, TextSpan, PreprocessorDirectiveFilter, CancellationToken\) 
+
+  
 Creates a new document with preprocessor directives of the specified kind removed\.
 
 ```csharp
@@ -55,5 +59,5 @@ public static System.Threading.Tasks.Task<Microsoft.CodeAnalysis.Document> Remov
 
 ### Returns
 
-[Task](https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1)\<[Document](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.document)>
+[Task](https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1)\<[Document](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.document)\>
 
