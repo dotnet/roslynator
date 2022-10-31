@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-  
+\
 Determines if the specified node is contained in an expression tree\.
 
 ```csharp

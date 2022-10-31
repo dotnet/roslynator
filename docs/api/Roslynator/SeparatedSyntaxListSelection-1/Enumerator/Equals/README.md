@@ -1,8 +1,8 @@
-# SeparatedSyntaxListSelection\<TNode\>\.Enumerator\.Equals\(Object\) Method
+# SeparatedSyntaxListSelection\<TNode>\.Enumerator\.Equals\(Object\) Method
 
 [Home](../../../../README.md)
 
-**Containing Type**: [SeparatedSyntaxListSelection\<TNode\>.Enumerator](../README.md)
+**Containing Type**: [SeparatedSyntaxListSelection\<TNode>.Enumerator](../README.md)
 
 **Assembly**: Roslynator\.Core\.dll
 

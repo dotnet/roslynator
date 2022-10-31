@@ -1,8 +1,8 @@
-# SyntaxListSelection\<TNode\>\.Enumerator\.Equals\(Object\) Method
+# SyntaxListSelection\<TNode>\.Enumerator\.Equals\(Object\) Method
 
 [Home](../../../../README.md)
 
-**Containing Type**: [SyntaxListSelection\<TNode\>.Enumerator](../README.md)
+**Containing Type**: [SyntaxListSelection\<TNode>.Enumerator](../README.md)
 
 **Assembly**: Roslynator\.Core\.dll
 

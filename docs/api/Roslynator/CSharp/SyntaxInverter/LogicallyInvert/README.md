@@ -10,14 +10,12 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [LogicallyInvert(ExpressionSyntax, CancellationToken)](#281813151) | Returns new expression that represents logical inversion of the specified expression\. |
-| [LogicallyInvert(ExpressionSyntax, SemanticModel, CancellationToken)](#3337402370) | Returns new expression that represents logical inversion of the specified expression\. |
+| [LogicallyInvert(ExpressionSyntax, CancellationToken)](#Roslynator_CSharp_SyntaxInverter_LogicallyInvert_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_System_Threading_CancellationToken_) | Returns new expression that represents logical inversion of the specified expression\. |
+| [LogicallyInvert(ExpressionSyntax, SemanticModel, CancellationToken)](#Roslynator_CSharp_SyntaxInverter_LogicallyInvert_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_Microsoft_CodeAnalysis_SemanticModel_System_Threading_CancellationToken_) | Returns new expression that represents logical inversion of the specified expression\. |
 
-<a id="281813151"></a>
+## LogicallyInvert\(ExpressionSyntax, CancellationToken\) <a id="Roslynator_CSharp_SyntaxInverter_LogicallyInvert_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_System_Threading_CancellationToken_"></a>
 
-## LogicallyInvert\(ExpressionSyntax, CancellationToken\) 
-
-  
+\
 Returns new expression that represents logical inversion of the specified expression\.
 
 ```csharp
@@ -34,11 +32,9 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.ExpressionSyntax LogicallyInv
 
 [ExpressionSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.expressionsyntax)
 
-<a id="3337402370"></a>
+## LogicallyInvert\(ExpressionSyntax, SemanticModel, CancellationToken\) <a id="Roslynator_CSharp_SyntaxInverter_LogicallyInvert_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_Microsoft_CodeAnalysis_SemanticModel_System_Threading_CancellationToken_"></a>
 
-## LogicallyInvert\(ExpressionSyntax, SemanticModel, CancellationToken\) 
-
-  
+\
 Returns new expression that represents logical inversion of the specified expression\.
 
 ```csharp

@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-  
+\
 The operator of the simple assignment expression\.
 
 ```csharp

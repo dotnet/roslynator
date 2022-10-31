@@ -1,4 +1,4 @@
-# CSharpTestOptions\.AddAllowedCompilerDiagnosticIds\(IEnumerable\<String\>\) Method
+# CSharpTestOptions\.AddAllowedCompilerDiagnosticIds\(IEnumerable\<String>\) Method
 
 [Home](../../../../../README.md)
 
@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Testing\.CSharp\.dll
 
-  
+\
 Adds a list of specified compiler diagnostic IDs to the list of allowed compiler diagnostic IDs\.
 
 ```csharp
@@ -15,7 +15,7 @@ public Roslynator.Testing.CSharp.CSharpTestOptions AddAllowedCompilerDiagnosticI
 
 ### Parameters
 
-**diagnosticIds** &ensp; [IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)\<[String](https://docs.microsoft.com/en-us/dotnet/api/system.string)\>
+**diagnosticIds** &ensp; [IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)\<[String](https://docs.microsoft.com/en-us/dotnet/api/system.string)>
 
 ### Returns
 

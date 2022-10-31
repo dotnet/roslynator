@@ -10,22 +10,18 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [AppendLeadingTriviaAndSpan()](#841599402) | |
-| [AppendLeadingTriviaAndSpan(SyntaxNode)](#4278220032) | |
-| [AppendLeadingTriviaAndSpan(SyntaxToken)](#410783828) | |
-| [AppendLeadingTriviaAndSpan(SyntaxTrivia)](#3341322037) | |
+| [AppendLeadingTriviaAndSpan()](#Roslynator_Text_SyntaxNodeTextBuilder_AppendLeadingTriviaAndSpan) | |
+| [AppendLeadingTriviaAndSpan(SyntaxNode)](#Roslynator_Text_SyntaxNodeTextBuilder_AppendLeadingTriviaAndSpan_Microsoft_CodeAnalysis_SyntaxNode_) | |
+| [AppendLeadingTriviaAndSpan(SyntaxToken)](#Roslynator_Text_SyntaxNodeTextBuilder_AppendLeadingTriviaAndSpan_Microsoft_CodeAnalysis_SyntaxToken_) | |
+| [AppendLeadingTriviaAndSpan(SyntaxTrivia)](#Roslynator_Text_SyntaxNodeTextBuilder_AppendLeadingTriviaAndSpan_Microsoft_CodeAnalysis_SyntaxTrivia_) | |
 
-<a id="841599402"></a>
-
-## AppendLeadingTriviaAndSpan\(\) 
+## AppendLeadingTriviaAndSpan\(\) <a id="Roslynator_Text_SyntaxNodeTextBuilder_AppendLeadingTriviaAndSpan"></a>
 
 ```csharp
 public void AppendLeadingTriviaAndSpan()
 ```
 
-<a id="4278220032"></a>
-
-## AppendLeadingTriviaAndSpan\(SyntaxNode\) 
+## AppendLeadingTriviaAndSpan\(SyntaxNode\) <a id="Roslynator_Text_SyntaxNodeTextBuilder_AppendLeadingTriviaAndSpan_Microsoft_CodeAnalysis_SyntaxNode_"></a>
 
 ```csharp
 public void AppendLeadingTriviaAndSpan(Microsoft.CodeAnalysis.SyntaxNode node)
@@ -33,9 +29,9 @@ public void AppendLeadingTriviaAndSpan(Microsoft.CodeAnalysis.SyntaxNode node)
 
 ### Parameters
 
-**node** &ensp; [SyntaxNode](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxnode)<a id="410783828"></a>
+**node** &ensp; [SyntaxNode](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxnode)
 
-## AppendLeadingTriviaAndSpan\(SyntaxToken\) 
+## AppendLeadingTriviaAndSpan\(SyntaxToken\) <a id="Roslynator_Text_SyntaxNodeTextBuilder_AppendLeadingTriviaAndSpan_Microsoft_CodeAnalysis_SyntaxToken_"></a>
 
 ```csharp
 public void AppendLeadingTriviaAndSpan(Microsoft.CodeAnalysis.SyntaxToken token)
@@ -43,9 +39,9 @@ public void AppendLeadingTriviaAndSpan(Microsoft.CodeAnalysis.SyntaxToken token)
 
 ### Parameters
 
-**token** &ensp; [SyntaxToken](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxtoken)<a id="3341322037"></a>
+**token** &ensp; [SyntaxToken](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxtoken)
 
-## AppendLeadingTriviaAndSpan\(SyntaxTrivia\) 
+## AppendLeadingTriviaAndSpan\(SyntaxTrivia\) <a id="Roslynator_Text_SyntaxNodeTextBuilder_AppendLeadingTriviaAndSpan_Microsoft_CodeAnalysis_SyntaxTrivia_"></a>
 
 ```csharp
 public void AppendLeadingTriviaAndSpan(Microsoft.CodeAnalysis.SyntaxTrivia trivia)

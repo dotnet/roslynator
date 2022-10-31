@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-  
+\
 Returns lowest expression in parentheses or self if the expression is not parenthesized\.
 
 ```csharp

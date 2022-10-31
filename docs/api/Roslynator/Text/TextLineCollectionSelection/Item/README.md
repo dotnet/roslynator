@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Core\.dll
 
-  
+\
 Gets the selected line at the specified index\.
 
 ```csharp

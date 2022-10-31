@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-  
+\
 The expression that contains the member being invoked\.
 
 ```csharp

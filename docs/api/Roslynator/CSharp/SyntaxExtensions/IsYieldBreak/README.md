@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-  
+\
 Returns true if the specified statement is a yield break statement\.
 
 ```csharp

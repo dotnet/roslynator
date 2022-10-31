@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Testing\.Common\.dll
 
-  
+\
 Initializes a new instance of [AdditionalFile](../README.md)
 
 ```csharp

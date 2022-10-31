@@ -10,12 +10,10 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [IndexerDeclaration(SyntaxTokenList, TypeSyntax, BracketedParameterListSyntax, AccessorListSyntax)](#2315453969) | |
-| [IndexerDeclaration(SyntaxTokenList, TypeSyntax, BracketedParameterListSyntax, ArrowExpressionClauseSyntax)](#4280653808) | |
+| [IndexerDeclaration(SyntaxTokenList, TypeSyntax, BracketedParameterListSyntax, AccessorListSyntax)](#Roslynator_CSharp_CSharpFactory_IndexerDeclaration_Microsoft_CodeAnalysis_SyntaxTokenList_Microsoft_CodeAnalysis_CSharp_Syntax_TypeSyntax_Microsoft_CodeAnalysis_CSharp_Syntax_BracketedParameterListSyntax_Microsoft_CodeAnalysis_CSharp_Syntax_AccessorListSyntax_) | |
+| [IndexerDeclaration(SyntaxTokenList, TypeSyntax, BracketedParameterListSyntax, ArrowExpressionClauseSyntax)](#Roslynator_CSharp_CSharpFactory_IndexerDeclaration_Microsoft_CodeAnalysis_SyntaxTokenList_Microsoft_CodeAnalysis_CSharp_Syntax_TypeSyntax_Microsoft_CodeAnalysis_CSharp_Syntax_BracketedParameterListSyntax_Microsoft_CodeAnalysis_CSharp_Syntax_ArrowExpressionClauseSyntax_) | |
 
-<a id="2315453969"></a>
-
-## IndexerDeclaration\(SyntaxTokenList, TypeSyntax, BracketedParameterListSyntax, AccessorListSyntax\) 
+## IndexerDeclaration\(SyntaxTokenList, TypeSyntax, BracketedParameterListSyntax, AccessorListSyntax\) <a id="Roslynator_CSharp_CSharpFactory_IndexerDeclaration_Microsoft_CodeAnalysis_SyntaxTokenList_Microsoft_CodeAnalysis_CSharp_Syntax_TypeSyntax_Microsoft_CodeAnalysis_CSharp_Syntax_BracketedParameterListSyntax_Microsoft_CodeAnalysis_CSharp_Syntax_AccessorListSyntax_"></a>
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.IndexerDeclarationSyntax IndexerDeclaration(Microsoft.CodeAnalysis.SyntaxTokenList modifiers, Microsoft.CodeAnalysis.CSharp.Syntax.TypeSyntax type, Microsoft.CodeAnalysis.CSharp.Syntax.BracketedParameterListSyntax parameterList, Microsoft.CodeAnalysis.CSharp.Syntax.AccessorListSyntax accessorList)
@@ -35,9 +33,7 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.IndexerDeclarationSyntax Inde
 
 [IndexerDeclarationSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.indexerdeclarationsyntax)
 
-<a id="4280653808"></a>
-
-## IndexerDeclaration\(SyntaxTokenList, TypeSyntax, BracketedParameterListSyntax, ArrowExpressionClauseSyntax\) 
+## IndexerDeclaration\(SyntaxTokenList, TypeSyntax, BracketedParameterListSyntax, ArrowExpressionClauseSyntax\) <a id="Roslynator_CSharp_CSharpFactory_IndexerDeclaration_Microsoft_CodeAnalysis_SyntaxTokenList_Microsoft_CodeAnalysis_CSharp_Syntax_TypeSyntax_Microsoft_CodeAnalysis_CSharp_Syntax_BracketedParameterListSyntax_Microsoft_CodeAnalysis_CSharp_Syntax_ArrowExpressionClauseSyntax_"></a>
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.IndexerDeclarationSyntax IndexerDeclaration(Microsoft.CodeAnalysis.SyntaxTokenList modifiers, Microsoft.CodeAnalysis.CSharp.Syntax.TypeSyntax type, Microsoft.CodeAnalysis.CSharp.Syntax.BracketedParameterListSyntax parameterList, Microsoft.CodeAnalysis.CSharp.Syntax.ArrowExpressionClauseSyntax expressionBody)

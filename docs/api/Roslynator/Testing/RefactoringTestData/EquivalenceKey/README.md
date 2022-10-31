@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Testing\.Common\.dll
 
-  
+\
 Gets code action's equivalence key\.
 
 ```csharp

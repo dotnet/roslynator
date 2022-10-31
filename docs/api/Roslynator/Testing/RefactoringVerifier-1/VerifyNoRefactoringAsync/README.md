@@ -1,12 +1,12 @@
-# RefactoringVerifier\<TRefactoringProvider\>\.VerifyNoRefactoringAsync\(RefactoringTestData, TestOptions, CancellationToken\) Method
+# RefactoringVerifier\<TRefactoringProvider>\.VerifyNoRefactoringAsync\(RefactoringTestData, TestOptions, CancellationToken\) Method
 
 [Home](../../../../README.md)
 
-**Containing Type**: [RefactoringVerifier\<TRefactoringProvider\>](../README.md)
+**Containing Type**: [RefactoringVerifier\<TRefactoringProvider>](../README.md)
 
 **Assembly**: Roslynator\.Testing\.Common\.dll
 
-  
+\
 Verifies that refactoring will not be applied using specified **TRefactoringProvider**\.
 
 ```csharp

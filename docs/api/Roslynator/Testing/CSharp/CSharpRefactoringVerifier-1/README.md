@@ -1,4 +1,4 @@
-# CSharpRefactoringVerifier\<TRefactoringProvider\> Class
+# CSharpRefactoringVerifier\<TRefactoringProvider> Class
 
 [Home](../../../../README.md) &#x2022; [Properties](#properties) &#x2022; [Methods](#methods)
 
@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Testing\.CSharp\.dll
 
-  
+\
 Represents verifier for a C\# code refactoring\.
 
 ```csharp
@@ -19,11 +19,11 @@ public abstract class CSharpRefactoringVerifier<TRefactoringProvider> : Roslynat
 
 ### Inheritance
 
-[Object](https://docs.microsoft.com/en-us/dotnet/api/system.object) &#x2192; [CodeVerifier](../../CodeVerifier/README.md) &#x2192; [RefactoringVerifier\<TRefactoringProvider\>](../../RefactoringVerifier-1/README.md) &#x2192; CSharpRefactoringVerifier\<TRefactoringProvider\>
+[Object](https://docs.microsoft.com/en-us/dotnet/api/system.object) &#x2192; [CodeVerifier](../../CodeVerifier/README.md) &#x2192; [RefactoringVerifier\<TRefactoringProvider>](../../RefactoringVerifier-1/README.md) &#x2192; CSharpRefactoringVerifier\<TRefactoringProvider>
 
 ### Derived
 
-* [XunitRefactoringVerifier\<TRefactoringProvider\>](../Xunit/XunitRefactoringVerifier-1/README.md)
+* [XunitRefactoringVerifier\<TRefactoringProvider>](../Xunit/XunitRefactoringVerifier-1/README.md)
 
 ## Properties
 
@@ -41,6 +41,6 @@ public abstract class CSharpRefactoringVerifier<TRefactoringProvider> : Roslynat
 | [GetType()](https://docs.microsoft.com/en-us/dotnet/api/system.object.gettype) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
 | [MemberwiseClone()](https://docs.microsoft.com/en-us/dotnet/api/system.object.memberwiseclone) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
 | [ToString()](https://docs.microsoft.com/en-us/dotnet/api/system.object.tostring) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
-| [VerifyNoRefactoringAsync(RefactoringTestData, TestOptions, CancellationToken)](../../RefactoringVerifier-1/VerifyNoRefactoringAsync/README.md) | Verifies that refactoring will not be applied using specified **TRefactoringProvider**\. \(Inherited from [RefactoringVerifier\<TRefactoringProvider\>](../../RefactoringVerifier-1/README.md)\) |
-| [VerifyRefactoringAsync(RefactoringTestData, ExpectedTestState, TestOptions, CancellationToken)](../../RefactoringVerifier-1/VerifyRefactoringAsync/README.md) | Verifies that refactoring will be applied correctly using specified **TRefactoringProvider**\. \(Inherited from [RefactoringVerifier\<TRefactoringProvider\>](../../RefactoringVerifier-1/README.md)\) |
+| [VerifyNoRefactoringAsync(RefactoringTestData, TestOptions, CancellationToken)](../../RefactoringVerifier-1/VerifyNoRefactoringAsync/README.md) | Verifies that refactoring will not be applied using specified **TRefactoringProvider**\. \(Inherited from [RefactoringVerifier\<TRefactoringProvider>](../../RefactoringVerifier-1/README.md)\) |
+| [VerifyRefactoringAsync(RefactoringTestData, ExpectedTestState, TestOptions, CancellationToken)](../../RefactoringVerifier-1/VerifyRefactoringAsync/README.md) | Verifies that refactoring will be applied correctly using specified **TRefactoringProvider**\. \(Inherited from [RefactoringVerifier\<TRefactoringProvider>](../../RefactoringVerifier-1/README.md)\) |
 

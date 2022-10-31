@@ -10,14 +10,12 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [ImplementsAny(ITypeSymbol, SpecialType, SpecialType, Boolean)](#1018184594) | Returns true if the type implements any of specified interfaces\. |
-| [ImplementsAny(ITypeSymbol, SpecialType, SpecialType, SpecialType, Boolean)](#196953422) | Returns true if the type implements any of specified interfaces\. |
+| [ImplementsAny(ITypeSymbol, SpecialType, SpecialType, Boolean)](#Roslynator_SymbolExtensions_ImplementsAny_Microsoft_CodeAnalysis_ITypeSymbol_Microsoft_CodeAnalysis_SpecialType_Microsoft_CodeAnalysis_SpecialType_System_Boolean_) | Returns true if the type implements any of specified interfaces\. |
+| [ImplementsAny(ITypeSymbol, SpecialType, SpecialType, SpecialType, Boolean)](#Roslynator_SymbolExtensions_ImplementsAny_Microsoft_CodeAnalysis_ITypeSymbol_Microsoft_CodeAnalysis_SpecialType_Microsoft_CodeAnalysis_SpecialType_Microsoft_CodeAnalysis_SpecialType_System_Boolean_) | Returns true if the type implements any of specified interfaces\. |
 
-<a id="1018184594"></a>
+## ImplementsAny\(ITypeSymbol, SpecialType, SpecialType, Boolean\) <a id="Roslynator_SymbolExtensions_ImplementsAny_Microsoft_CodeAnalysis_ITypeSymbol_Microsoft_CodeAnalysis_SpecialType_Microsoft_CodeAnalysis_SpecialType_System_Boolean_"></a>
 
-## ImplementsAny\(ITypeSymbol, SpecialType, SpecialType, Boolean\) 
-
-  
+\
 Returns true if the type implements any of specified interfaces\.
 
 ```csharp
@@ -40,11 +38,9 @@ If true, use [ITypeSymbol.AllInterfaces](https://docs.microsoft.com/en-us/dotnet
 
 [Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)
 
-<a id="196953422"></a>
+## ImplementsAny\(ITypeSymbol, SpecialType, SpecialType, SpecialType, Boolean\) <a id="Roslynator_SymbolExtensions_ImplementsAny_Microsoft_CodeAnalysis_ITypeSymbol_Microsoft_CodeAnalysis_SpecialType_Microsoft_CodeAnalysis_SpecialType_Microsoft_CodeAnalysis_SpecialType_System_Boolean_"></a>
 
-## ImplementsAny\(ITypeSymbol, SpecialType, SpecialType, SpecialType, Boolean\) 
-
-  
+\
 Returns true if the type implements any of specified interfaces\.
 
 ```csharp

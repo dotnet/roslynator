@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-  
+\
 Determines whether this [IfStatementOrElseClause](../README.md) is wrapping an else clause\.
 
 ```csharp

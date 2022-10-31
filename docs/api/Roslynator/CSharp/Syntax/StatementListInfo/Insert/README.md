@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-  
+\
 Creates a new [StatementListInfo](../README.md) with the specified statement inserted at the index\.
 
 ```csharp

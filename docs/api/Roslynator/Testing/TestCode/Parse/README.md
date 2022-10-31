@@ -10,14 +10,29 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [Parse(String, String, String)](#3209459912) | Finds and replace span that is marked with `[\|\|]` token\. |
-| [Parse(String)](#2022869111) | Finds and removes spans that are marked with `[\|` and `\|]` tokens\. |
+| [Parse(String)](#Roslynator_Testing_TestCode_Parse_System_String_) | Finds and removes spans that are marked with `[|` and `|]` tokens\. |
+| [Parse(String, String, String)](#Roslynator_Testing_TestCode_Parse_System_String_System_String_System_String_) | Finds and replace span that is marked with `[||]` token\. |
 
-<a id="3209459912"></a>
+## Parse\(String\) <a id="Roslynator_Testing_TestCode_Parse_System_String_"></a>
 
-## Parse\(String, String, String\) 
+\
+Finds and removes spans that are marked with `[|` and `|]` tokens\.
 
-  
+```csharp
+public static Roslynator.Testing.TestCode Parse(string value)
+```
+
+### Parameters
+
+**value** &ensp; [String](https://docs.microsoft.com/en-us/dotnet/api/system.string)
+
+### Returns
+
+[TestCode](../README.md)
+
+## Parse\(String, String, String\) <a id="Roslynator_Testing_TestCode_Parse_System_String_System_String_System_String_"></a>
+
+\
 Finds and replace span that is marked with `[||]` token\.
 
 ```csharp
@@ -31,25 +46,6 @@ public static Roslynator.Testing.TestCode Parse(string value, string replacement
 **replacement1** &ensp; [String](https://docs.microsoft.com/en-us/dotnet/api/system.string)
 
 **replacement2** &ensp; [String](https://docs.microsoft.com/en-us/dotnet/api/system.string)
-
-### Returns
-
-[TestCode](../README.md)
-
-<a id="2022869111"></a>
-
-## Parse\(String\) 
-
-  
-Finds and removes spans that are marked with `[|` and `|]` tokens\.
-
-```csharp
-public static Roslynator.Testing.TestCode Parse(string value)
-```
-
-### Parameters
-
-**value** &ensp; [String](https://docs.microsoft.com/en-us/dotnet/api/system.string)
 
 ### Returns
 

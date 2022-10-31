@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-  
+\
 The type to which the expression is being cast\.
 
 ```csharp

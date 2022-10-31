@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Core\.dll
 
-  
+\
 Gets a number of selected lines\.
 
 ```csharp

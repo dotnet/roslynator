@@ -1,4 +1,4 @@
-# RefactoringVerifier\<TRefactoringProvider\> Class
+# RefactoringVerifier\<TRefactoringProvider> Class
 
 [Home](../../../README.md) &#x2022; [Properties](#properties) &#x2022; [Methods](#methods)
 
@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Testing\.Common\.dll
 
-  
+\
 Represents verifier for a code refactoring\.
 
 ```csharp
@@ -19,11 +19,11 @@ public abstract class RefactoringVerifier<TRefactoringProvider> : Roslynator.Tes
 
 ### Inheritance
 
-[Object](https://docs.microsoft.com/en-us/dotnet/api/system.object) &#x2192; [CodeVerifier](../CodeVerifier/README.md) &#x2192; RefactoringVerifier\<TRefactoringProvider\>
+[Object](https://docs.microsoft.com/en-us/dotnet/api/system.object) &#x2192; [CodeVerifier](../CodeVerifier/README.md) &#x2192; RefactoringVerifier\<TRefactoringProvider>
 
 ### Derived
 
-* [CSharpRefactoringVerifier\<TRefactoringProvider\>](../CSharp/CSharpRefactoringVerifier-1/README.md)
+* [CSharpRefactoringVerifier\<TRefactoringProvider>](../CSharp/CSharpRefactoringVerifier-1/README.md)
 
 ## Properties
 

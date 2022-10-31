@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.Workspaces\.dll
 
-  
+\
 Defines how a syntax representing a default value of a type should look like\.
 
 ```csharp

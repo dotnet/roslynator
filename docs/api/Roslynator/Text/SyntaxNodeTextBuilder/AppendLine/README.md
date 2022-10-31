@@ -10,20 +10,16 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [AppendLine()](#3675764689) | |
-| [AppendLine(String)](#4020333036) | |
+| [AppendLine()](#Roslynator_Text_SyntaxNodeTextBuilder_AppendLine) | |
+| [AppendLine(String)](#Roslynator_Text_SyntaxNodeTextBuilder_AppendLine_System_String_) | |
 
-<a id="3675764689"></a>
-
-## AppendLine\(\) 
+## AppendLine\(\) <a id="Roslynator_Text_SyntaxNodeTextBuilder_AppendLine"></a>
 
 ```csharp
 public void AppendLine()
 ```
 
-<a id="4020333036"></a>
-
-## AppendLine\(String\) 
+## AppendLine\(String\) <a id="Roslynator_Text_SyntaxNodeTextBuilder_AppendLine_System_String_"></a>
 
 ```csharp
 public void AppendLine(string value)

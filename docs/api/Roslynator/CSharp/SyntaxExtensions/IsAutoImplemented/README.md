@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-  
+\
 Returns true is the specified accessor is auto\-implemented accessor\.
 
 ```csharp

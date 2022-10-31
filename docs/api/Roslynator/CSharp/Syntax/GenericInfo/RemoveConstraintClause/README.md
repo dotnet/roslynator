@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-  
+\
 Creates a new [GenericInfo](../README.md) with the specified constraint clause removed\.
 
 ```csharp

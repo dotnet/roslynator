@@ -1,8 +1,8 @@
-# SeparatedSyntaxListSelection\<TNode\>\.Enumerator\.MoveNext\(\) Method
+# SeparatedSyntaxListSelection\<TNode>\.Enumerator\.MoveNext\(\) Method
 
 [Home](../../../../README.md)
 
-**Containing Type**: [SeparatedSyntaxListSelection\<TNode\>.Enumerator](../README.md)
+**Containing Type**: [SeparatedSyntaxListSelection\<TNode>.Enumerator](../README.md)
 
 **Assembly**: Roslynator\.Core\.dll
 

@@ -10,12 +10,10 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [EqualsExpression(ExpressionSyntax, ExpressionSyntax)](#3410153841) | |
-| [EqualsExpression(ExpressionSyntax, SyntaxToken, ExpressionSyntax)](#3401982190) | |
+| [EqualsExpression(ExpressionSyntax, ExpressionSyntax)](#Roslynator_CSharp_CSharpFactory_EqualsExpression_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_) | |
+| [EqualsExpression(ExpressionSyntax, SyntaxToken, ExpressionSyntax)](#Roslynator_CSharp_CSharpFactory_EqualsExpression_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_Microsoft_CodeAnalysis_SyntaxToken_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_) | |
 
-<a id="3410153841"></a>
-
-## EqualsExpression\(ExpressionSyntax, ExpressionSyntax\) 
+## EqualsExpression\(ExpressionSyntax, ExpressionSyntax\) <a id="Roslynator_CSharp_CSharpFactory_EqualsExpression_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_"></a>
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.BinaryExpressionSyntax EqualsExpression(Microsoft.CodeAnalysis.CSharp.Syntax.ExpressionSyntax left, Microsoft.CodeAnalysis.CSharp.Syntax.ExpressionSyntax right)
@@ -31,9 +29,7 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.BinaryExpressionSyntax Equals
 
 [BinaryExpressionSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.binaryexpressionsyntax)
 
-<a id="3401982190"></a>
-
-## EqualsExpression\(ExpressionSyntax, SyntaxToken, ExpressionSyntax\) 
+## EqualsExpression\(ExpressionSyntax, SyntaxToken, ExpressionSyntax\) <a id="Roslynator_CSharp_CSharpFactory_EqualsExpression_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_Microsoft_CodeAnalysis_SyntaxToken_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_"></a>
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.BinaryExpressionSyntax EqualsExpression(Microsoft.CodeAnalysis.CSharp.Syntax.ExpressionSyntax left, Microsoft.CodeAnalysis.SyntaxToken operatorToken, Microsoft.CodeAnalysis.CSharp.Syntax.ExpressionSyntax right)

@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-  
+\
 Enables to enumerate expressions of a binary expression and expressions of nested binary expressions of the same kind as parent binary expression\.
 
 ```csharp
@@ -20,8 +20,8 @@ public readonly struct ExpressionChain : IEquatable<Roslynator.CSharp.Expression
 
 ### Implements
 
-* [IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)\<[ExpressionSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.expressionsyntax)\>
-* [IEquatable](https://docs.microsoft.com/en-us/dotnet/api/system.iequatable-1)\<[ExpressionChain](./README.md)\>
+* [IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)\<[ExpressionSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.expressionsyntax)>
+* [IEquatable](https://docs.microsoft.com/en-us/dotnet/api/system.iequatable-1)\<[ExpressionChain](./README.md)>
 
 ## Properties
 
@@ -34,8 +34,8 @@ public readonly struct ExpressionChain : IEquatable<Roslynator.CSharp.Expression
 
 | Method | Summary |
 | ------ | ------- |
-| [Equals(ExpressionChain)](Equals/README.md#3497933564) | Determines whether this instance is equal to another object of the same type\. \(Implements [IEquatable\<ExpressionChain\>.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.iequatable-1.equals)\) |
-| [Equals(Object)](Equals/README.md#3026618345) | Determines whether this instance and a specified object are equal\. \(Overrides [ValueType.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.valuetype.equals)\) |
+| [Equals(ExpressionChain)](Equals/README.md#Roslynator_CSharp_ExpressionChain_Equals_Roslynator_CSharp_ExpressionChain_) | Determines whether this instance is equal to another object of the same type\. \(Implements [IEquatable\<ExpressionChain>.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.iequatable-1.equals)\) |
+| [Equals(Object)](Equals/README.md#Roslynator_CSharp_ExpressionChain_Equals_System_Object_) | Determines whether this instance and a specified object are equal\. \(Overrides [ValueType.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.valuetype.equals)\) |
 | [GetEnumerator()](GetEnumerator/README.md) | Gets the enumerator for the expressions\. |
 | [GetHashCode()](GetHashCode/README.md) | Returns the hash code for this instance\. \(Overrides [ValueType.GetHashCode](https://docs.microsoft.com/en-us/dotnet/api/system.valuetype.gethashcode)\) |
 | [GetType()](https://docs.microsoft.com/en-us/dotnet/api/system.object.gettype) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
@@ -55,7 +55,7 @@ public readonly struct ExpressionChain : IEquatable<Roslynator.CSharp.Expression
 | Member | Summary |
 | ------ | ------- |
 | [IEnumerable.GetEnumerator()](System-Collections-IEnumerable-GetEnumerator/README.md) | |
-| [IEnumerable\<ExpressionSyntax\>.GetEnumerator()](System-Collections-Generic-IEnumerable-Microsoft-CodeAnalysis-CSharp-Syntax-ExpressionSyntax--GetEnumerator/README.md) | |
+| [IEnumerable\<ExpressionSyntax>.GetEnumerator()](System-Collections-Generic-IEnumerable-Microsoft-CodeAnalysis-CSharp-Syntax-ExpressionSyntax--GetEnumerator/README.md) | |
 
 ## Structs
 

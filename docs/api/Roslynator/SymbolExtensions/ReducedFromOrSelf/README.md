@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Core\.dll
 
-  
+\
 If this method is a reduced extension method, returns the definition of extension method from which this was reduced\. Otherwise, returns this symbol\.
 
 ```csharp

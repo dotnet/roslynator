@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-  
+\
 Provides information about invocation expression in an expression statement\.
 
 ```csharp

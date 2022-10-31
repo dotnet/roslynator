@@ -1,4 +1,4 @@
-# ExpressionChain\.IEnumerable\<ExpressionSyntax\>\.GetEnumerator\(\) Method
+# ExpressionChain\.IEnumerable\<ExpressionSyntax>\.GetEnumerator\(\) Method
 
 [Home](../../../../README.md)
 
@@ -12,8 +12,8 @@ System.Collections.Generic.IEnumerator<Microsoft.CodeAnalysis.CSharp.Syntax.Expr
 
 ### Returns
 
-[IEnumerator](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerator-1)\<[ExpressionSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.expressionsyntax)\>
+[IEnumerator](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerator-1)\<[ExpressionSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.expressionsyntax)>
 
 ### Implements
 
-* [IEnumerable\<ExpressionSyntax\>.GetEnumerator](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1.getenumerator)
+* [IEnumerable\<ExpressionSyntax>.GetEnumerator](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1.getenumerator)

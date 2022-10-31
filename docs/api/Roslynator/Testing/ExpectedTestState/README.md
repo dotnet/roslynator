@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Testing\.Common\.dll
 
-  
+\
 Represents expected test data\.
 
 ```csharp
@@ -21,7 +21,7 @@ public sealed class ExpectedTestState
 
 | Constructor | Summary |
 | ----------- | ------- |
-| [ExpectedTestState(String, String, IEnumerable\<(String, TextSpan)\>, IEnumerable\<String\>)](-ctor/README.md) | Initializes a new instance of [ExpectedTestState](./README.md)\. |
+| [ExpectedTestState(String, String, IEnumerable\<(String, TextSpan)>, IEnumerable\<String>)](-ctor/README.md) | Initializes a new instance of [ExpectedTestState](./README.md)\. |
 
 ## Properties
 

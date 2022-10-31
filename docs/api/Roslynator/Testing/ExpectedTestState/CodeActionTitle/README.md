@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Testing\.Common\.dll
 
-  
+\
 Gets expected code action's title\.
 
 ```csharp

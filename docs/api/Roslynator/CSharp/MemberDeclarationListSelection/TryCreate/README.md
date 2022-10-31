@@ -10,14 +10,12 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [TryCreate(NamespaceDeclarationSyntax, TextSpan, MemberDeclarationListSelection)](#2633164334) | Creates a new [MemberDeclarationListSelection](../README.md) based on the specified namespace declaration and span\. |
-| [TryCreate(TypeDeclarationSyntax, TextSpan, MemberDeclarationListSelection)](#3632170245) | Creates a new [MemberDeclarationListSelection](../README.md) based on the specified type declaration and span\. |
+| [TryCreate(NamespaceDeclarationSyntax, TextSpan, MemberDeclarationListSelection)](#Roslynator_CSharp_MemberDeclarationListSelection_TryCreate_Microsoft_CodeAnalysis_CSharp_Syntax_NamespaceDeclarationSyntax_Microsoft_CodeAnalysis_Text_TextSpan_Roslynator_CSharp_MemberDeclarationListSelection__) | Creates a new [MemberDeclarationListSelection](../README.md) based on the specified namespace declaration and span\. |
+| [TryCreate(TypeDeclarationSyntax, TextSpan, MemberDeclarationListSelection)](#Roslynator_CSharp_MemberDeclarationListSelection_TryCreate_Microsoft_CodeAnalysis_CSharp_Syntax_TypeDeclarationSyntax_Microsoft_CodeAnalysis_Text_TextSpan_Roslynator_CSharp_MemberDeclarationListSelection__) | Creates a new [MemberDeclarationListSelection](../README.md) based on the specified type declaration and span\. |
 
-<a id="2633164334"></a>
+## TryCreate\(NamespaceDeclarationSyntax, TextSpan, MemberDeclarationListSelection\) <a id="Roslynator_CSharp_MemberDeclarationListSelection_TryCreate_Microsoft_CodeAnalysis_CSharp_Syntax_NamespaceDeclarationSyntax_Microsoft_CodeAnalysis_Text_TextSpan_Roslynator_CSharp_MemberDeclarationListSelection__"></a>
 
-## TryCreate\(NamespaceDeclarationSyntax, TextSpan, MemberDeclarationListSelection\) 
-
-  
+\
 Creates a new [MemberDeclarationListSelection](../README.md) based on the specified namespace declaration and span\.
 
 ```csharp
@@ -36,11 +34,11 @@ public static bool TryCreate(Microsoft.CodeAnalysis.CSharp.Syntax.NamespaceDecla
 
 [Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)
 
-True if the specified span contains at least one member; otherwise, false\.<a id="3632170245"></a>
+True if the specified span contains at least one member; otherwise, false\.
 
-## TryCreate\(TypeDeclarationSyntax, TextSpan, MemberDeclarationListSelection\) 
+## TryCreate\(TypeDeclarationSyntax, TextSpan, MemberDeclarationListSelection\) <a id="Roslynator_CSharp_MemberDeclarationListSelection_TryCreate_Microsoft_CodeAnalysis_CSharp_Syntax_TypeDeclarationSyntax_Microsoft_CodeAnalysis_Text_TextSpan_Roslynator_CSharp_MemberDeclarationListSelection__"></a>
 
-  
+\
 Creates a new [MemberDeclarationListSelection](../README.md) based on the specified type declaration and span\.
 
 ```csharp

@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-  
+\
 Searches for a type parameter with the specified name and returns the first occurrence within the type parameters\.
 
 ```csharp

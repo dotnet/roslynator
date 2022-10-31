@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Core\.dll
 
-  
+\
 Returns true if the node's span contains any preprocessor directives\.
 
 ```csharp

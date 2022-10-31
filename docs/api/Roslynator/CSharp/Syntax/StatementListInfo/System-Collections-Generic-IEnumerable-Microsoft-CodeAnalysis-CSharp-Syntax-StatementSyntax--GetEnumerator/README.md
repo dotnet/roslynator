@@ -1,4 +1,4 @@
-# StatementListInfo\.IEnumerable\<StatementSyntax\>\.GetEnumerator\(\) Method
+# StatementListInfo\.IEnumerable\<StatementSyntax>\.GetEnumerator\(\) Method
 
 [Home](../../../../../README.md)
 
@@ -12,5 +12,5 @@ System.Collections.Generic.IEnumerator<Microsoft.CodeAnalysis.CSharp.Syntax.Stat
 
 ### Returns
 
-[IEnumerator](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerator-1)\<[StatementSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.statementsyntax)\>
+[IEnumerator](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerator-1)\<[StatementSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.statementsyntax)>
 

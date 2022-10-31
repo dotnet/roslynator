@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Core\.dll
 
-  
+\
 Returns true if the specified [TextSpan](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.text.textspan) spans over multiple lines\.
 
 ```csharp

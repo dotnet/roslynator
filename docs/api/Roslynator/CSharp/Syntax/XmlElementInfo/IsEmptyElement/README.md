@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-  
+\
 Determines whether the element is [SyntaxKind.XmlEmptyElement](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntaxkind.xmlemptyelement)\.
 
 ```csharp

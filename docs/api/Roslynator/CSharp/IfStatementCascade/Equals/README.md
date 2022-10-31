@@ -10,14 +10,12 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [Equals(IfStatementCascade)](#3739133020) | Determines whether this instance is equal to another object of the same type\. \(Implements [IEquatable\<IfStatementCascade\>.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.iequatable-1.equals)\) |
-| [Equals(Object)](#3247102308) | Determines whether this instance and a specified object are equal\. \(Overrides [ValueType.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.valuetype.equals)\) |
+| [Equals(IfStatementCascade)](#Roslynator_CSharp_IfStatementCascade_Equals_Roslynator_CSharp_IfStatementCascade_) | Determines whether this instance is equal to another object of the same type\. \(Implements [IEquatable\<IfStatementCascade>.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.iequatable-1.equals)\) |
+| [Equals(Object)](#Roslynator_CSharp_IfStatementCascade_Equals_System_Object_) | Determines whether this instance and a specified object are equal\. \(Overrides [ValueType.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.valuetype.equals)\) |
 
-<a id="3739133020"></a>
+## Equals\(IfStatementCascade\) <a id="Roslynator_CSharp_IfStatementCascade_Equals_Roslynator_CSharp_IfStatementCascade_"></a>
 
-## Equals\(IfStatementCascade\) 
-
-  
+\
 Determines whether this instance is equal to another object of the same type\.
 
 ```csharp
@@ -38,12 +36,11 @@ true if the current object is equal to the **other** parameter; otherwise, false
 
 ### Implements
 
-* [IEquatable\<IfStatementCascade\>.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.iequatable-1.equals)
-<a id="3247102308"></a>
+* [IEquatable\<IfStatementCascade>.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.iequatable-1.equals)
 
-## Equals\(Object\) 
+## Equals\(Object\) <a id="Roslynator_CSharp_IfStatementCascade_Equals_System_Object_"></a>
 
-  
+\
 Determines whether this instance and a specified object are equal\.
 
 ```csharp

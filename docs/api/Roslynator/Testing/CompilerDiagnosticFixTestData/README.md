@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Testing\.Common\.dll
 
-  
+\
 Represents test data for a compiler diagnostic fix\.
 
 ```csharp
@@ -21,7 +21,7 @@ public sealed class CompilerDiagnosticFixTestData
 
 | Constructor | Summary |
 | ----------- | ------- |
-| [CompilerDiagnosticFixTestData(String, String, IEnumerable\<AdditionalFile\>, String)](-ctor/README.md) | Initializes a new instance of [CompilerDiagnosticFixTestData](./README.md) |
+| [CompilerDiagnosticFixTestData(String, String, IEnumerable\<AdditionalFile>, String)](-ctor/README.md) | Initializes a new instance of [CompilerDiagnosticFixTestData](./README.md) |
 
 ## Properties
 
@@ -41,5 +41,5 @@ public sealed class CompilerDiagnosticFixTestData
 | [GetType()](https://docs.microsoft.com/en-us/dotnet/api/system.object.gettype) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
 | [MemberwiseClone()](https://docs.microsoft.com/en-us/dotnet/api/system.object.memberwiseclone) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
 | [ToString()](https://docs.microsoft.com/en-us/dotnet/api/system.object.tostring) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
-| [Update(String, String, IEnumerable\<AdditionalFile\>, String)](Update/README.md) | Creates and return new instance of [CompilerDiagnosticFixTestData](./README.md) updated with specified values\. |
+| [Update(String, String, IEnumerable\<AdditionalFile>, String)](Update/README.md) | Creates and return new instance of [CompilerDiagnosticFixTestData](./README.md) updated with specified values\. |
 

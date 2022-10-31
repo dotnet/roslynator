@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-  
+\
 Returns a section that contains default label, or null if the specified switch statement does not contains section with default label\.
 
 ```csharp

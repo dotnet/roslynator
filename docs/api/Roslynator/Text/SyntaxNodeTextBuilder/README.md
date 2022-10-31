@@ -18,8 +18,8 @@ public class SyntaxNodeTextBuilder
 
 | Constructor | Summary |
 | ----------- | ------- |
-| [SyntaxNodeTextBuilder(SyntaxNode, StringBuilder)](-ctor/README.md#3805750387) | |
-| [SyntaxNodeTextBuilder(SyntaxNode)](-ctor/README.md#665445404) | |
+| [SyntaxNodeTextBuilder(SyntaxNode)](-ctor/README.md#Roslynator_Text_SyntaxNodeTextBuilder__ctor_Microsoft_CodeAnalysis_SyntaxNode_) | |
+| [SyntaxNodeTextBuilder(SyntaxNode, StringBuilder)](-ctor/README.md#Roslynator_Text_SyntaxNodeTextBuilder__ctor_Microsoft_CodeAnalysis_SyntaxNode_System_Text_StringBuilder_) | |
 
 ## Properties
 
@@ -34,35 +34,35 @@ public class SyntaxNodeTextBuilder
 
 | Method | Summary |
 | ------ | ------- |
-| [Append(Char, Int32)](Append/README.md#2211060326) | |
-| [Append(String)](Append/README.md#1169683241) | |
-| [Append(TextSpan)](Append/README.md#3725216373) | |
-| [AppendFullSpan()](AppendFullSpan/README.md#2622965618) | |
-| [AppendFullSpan(SyntaxNode)](AppendFullSpan/README.md#686986334) | |
-| [AppendFullSpan(SyntaxToken)](AppendFullSpan/README.md#1511645977) | |
-| [AppendFullSpan(SyntaxTrivia)](AppendFullSpan/README.md#2757889332) | |
-| [AppendLeadingTrivia()](AppendLeadingTrivia/README.md#1931238751) | |
-| [AppendLeadingTrivia(SyntaxNode)](AppendLeadingTrivia/README.md#2041490014) | |
-| [AppendLeadingTrivia(SyntaxToken)](AppendLeadingTrivia/README.md#3849741396) | |
-| [AppendLeadingTrivia(SyntaxTrivia)](AppendLeadingTrivia/README.md#3361500366) | |
-| [AppendLeadingTriviaAndSpan()](AppendLeadingTriviaAndSpan/README.md#841599402) | |
-| [AppendLeadingTriviaAndSpan(SyntaxNode)](AppendLeadingTriviaAndSpan/README.md#4278220032) | |
-| [AppendLeadingTriviaAndSpan(SyntaxToken)](AppendLeadingTriviaAndSpan/README.md#410783828) | |
-| [AppendLeadingTriviaAndSpan(SyntaxTrivia)](AppendLeadingTriviaAndSpan/README.md#3341322037) | |
-| [AppendLine()](AppendLine/README.md#3675764689) | |
-| [AppendLine(String)](AppendLine/README.md#4020333036) | |
-| [AppendSpan()](AppendSpan/README.md#286369732) | |
-| [AppendSpan(SyntaxNode)](AppendSpan/README.md#2719838062) | |
-| [AppendSpan(SyntaxToken)](AppendSpan/README.md#3348585577) | |
-| [AppendSpan(SyntaxTrivia)](AppendSpan/README.md#3538978791) | |
-| [AppendSpanAndTrailingTrivia()](AppendSpanAndTrailingTrivia/README.md#4161470169) | |
-| [AppendSpanAndTrailingTrivia(SyntaxNode)](AppendSpanAndTrailingTrivia/README.md#3817704394) | |
-| [AppendSpanAndTrailingTrivia(SyntaxToken)](AppendSpanAndTrailingTrivia/README.md#172220900) | |
-| [AppendSpanAndTrailingTrivia(SyntaxTrivia)](AppendSpanAndTrailingTrivia/README.md#4285036613) | |
-| [AppendTrailingTrivia()](AppendTrailingTrivia/README.md#3135568974) | |
-| [AppendTrailingTrivia(SyntaxNode)](AppendTrailingTrivia/README.md#3371970503) | |
-| [AppendTrailingTrivia(SyntaxToken)](AppendTrailingTrivia/README.md#2929282898) | |
-| [AppendTrailingTrivia(SyntaxTrivia)](AppendTrailingTrivia/README.md#1945253139) | |
+| [Append(Char, Int32)](Append/README.md#Roslynator_Text_SyntaxNodeTextBuilder_Append_System_Char_System_Int32_) | |
+| [Append(String)](Append/README.md#Roslynator_Text_SyntaxNodeTextBuilder_Append_System_String_) | |
+| [Append(TextSpan)](Append/README.md#Roslynator_Text_SyntaxNodeTextBuilder_Append_Microsoft_CodeAnalysis_Text_TextSpan_) | |
+| [AppendFullSpan()](AppendFullSpan/README.md#Roslynator_Text_SyntaxNodeTextBuilder_AppendFullSpan) | |
+| [AppendFullSpan(SyntaxNode)](AppendFullSpan/README.md#Roslynator_Text_SyntaxNodeTextBuilder_AppendFullSpan_Microsoft_CodeAnalysis_SyntaxNode_) | |
+| [AppendFullSpan(SyntaxToken)](AppendFullSpan/README.md#Roslynator_Text_SyntaxNodeTextBuilder_AppendFullSpan_Microsoft_CodeAnalysis_SyntaxToken_) | |
+| [AppendFullSpan(SyntaxTrivia)](AppendFullSpan/README.md#Roslynator_Text_SyntaxNodeTextBuilder_AppendFullSpan_Microsoft_CodeAnalysis_SyntaxTrivia_) | |
+| [AppendLeadingTrivia()](AppendLeadingTrivia/README.md#Roslynator_Text_SyntaxNodeTextBuilder_AppendLeadingTrivia) | |
+| [AppendLeadingTrivia(SyntaxNode)](AppendLeadingTrivia/README.md#Roslynator_Text_SyntaxNodeTextBuilder_AppendLeadingTrivia_Microsoft_CodeAnalysis_SyntaxNode_) | |
+| [AppendLeadingTrivia(SyntaxToken)](AppendLeadingTrivia/README.md#Roslynator_Text_SyntaxNodeTextBuilder_AppendLeadingTrivia_Microsoft_CodeAnalysis_SyntaxToken_) | |
+| [AppendLeadingTrivia(SyntaxTrivia)](AppendLeadingTrivia/README.md#Roslynator_Text_SyntaxNodeTextBuilder_AppendLeadingTrivia_Microsoft_CodeAnalysis_SyntaxTrivia_) | |
+| [AppendLeadingTriviaAndSpan()](AppendLeadingTriviaAndSpan/README.md#Roslynator_Text_SyntaxNodeTextBuilder_AppendLeadingTriviaAndSpan) | |
+| [AppendLeadingTriviaAndSpan(SyntaxNode)](AppendLeadingTriviaAndSpan/README.md#Roslynator_Text_SyntaxNodeTextBuilder_AppendLeadingTriviaAndSpan_Microsoft_CodeAnalysis_SyntaxNode_) | |
+| [AppendLeadingTriviaAndSpan(SyntaxToken)](AppendLeadingTriviaAndSpan/README.md#Roslynator_Text_SyntaxNodeTextBuilder_AppendLeadingTriviaAndSpan_Microsoft_CodeAnalysis_SyntaxToken_) | |
+| [AppendLeadingTriviaAndSpan(SyntaxTrivia)](AppendLeadingTriviaAndSpan/README.md#Roslynator_Text_SyntaxNodeTextBuilder_AppendLeadingTriviaAndSpan_Microsoft_CodeAnalysis_SyntaxTrivia_) | |
+| [AppendLine()](AppendLine/README.md#Roslynator_Text_SyntaxNodeTextBuilder_AppendLine) | |
+| [AppendLine(String)](AppendLine/README.md#Roslynator_Text_SyntaxNodeTextBuilder_AppendLine_System_String_) | |
+| [AppendSpan()](AppendSpan/README.md#Roslynator_Text_SyntaxNodeTextBuilder_AppendSpan) | |
+| [AppendSpan(SyntaxNode)](AppendSpan/README.md#Roslynator_Text_SyntaxNodeTextBuilder_AppendSpan_Microsoft_CodeAnalysis_SyntaxNode_) | |
+| [AppendSpan(SyntaxToken)](AppendSpan/README.md#Roslynator_Text_SyntaxNodeTextBuilder_AppendSpan_Microsoft_CodeAnalysis_SyntaxToken_) | |
+| [AppendSpan(SyntaxTrivia)](AppendSpan/README.md#Roslynator_Text_SyntaxNodeTextBuilder_AppendSpan_Microsoft_CodeAnalysis_SyntaxTrivia_) | |
+| [AppendSpanAndTrailingTrivia()](AppendSpanAndTrailingTrivia/README.md#Roslynator_Text_SyntaxNodeTextBuilder_AppendSpanAndTrailingTrivia) | |
+| [AppendSpanAndTrailingTrivia(SyntaxNode)](AppendSpanAndTrailingTrivia/README.md#Roslynator_Text_SyntaxNodeTextBuilder_AppendSpanAndTrailingTrivia_Microsoft_CodeAnalysis_SyntaxNode_) | |
+| [AppendSpanAndTrailingTrivia(SyntaxToken)](AppendSpanAndTrailingTrivia/README.md#Roslynator_Text_SyntaxNodeTextBuilder_AppendSpanAndTrailingTrivia_Microsoft_CodeAnalysis_SyntaxToken_) | |
+| [AppendSpanAndTrailingTrivia(SyntaxTrivia)](AppendSpanAndTrailingTrivia/README.md#Roslynator_Text_SyntaxNodeTextBuilder_AppendSpanAndTrailingTrivia_Microsoft_CodeAnalysis_SyntaxTrivia_) | |
+| [AppendTrailingTrivia()](AppendTrailingTrivia/README.md#Roslynator_Text_SyntaxNodeTextBuilder_AppendTrailingTrivia) | |
+| [AppendTrailingTrivia(SyntaxNode)](AppendTrailingTrivia/README.md#Roslynator_Text_SyntaxNodeTextBuilder_AppendTrailingTrivia_Microsoft_CodeAnalysis_SyntaxNode_) | |
+| [AppendTrailingTrivia(SyntaxToken)](AppendTrailingTrivia/README.md#Roslynator_Text_SyntaxNodeTextBuilder_AppendTrailingTrivia_Microsoft_CodeAnalysis_SyntaxToken_) | |
+| [AppendTrailingTrivia(SyntaxTrivia)](AppendTrailingTrivia/README.md#Roslynator_Text_SyntaxNodeTextBuilder_AppendTrailingTrivia_Microsoft_CodeAnalysis_SyntaxTrivia_) | |
 | [Equals(Object)](https://docs.microsoft.com/en-us/dotnet/api/system.object.equals) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
 | [GetHashCode()](https://docs.microsoft.com/en-us/dotnet/api/system.object.gethashcode) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
 | [GetType()](https://docs.microsoft.com/en-us/dotnet/api/system.object.gettype) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |

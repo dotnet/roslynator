@@ -10,16 +10,14 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [TokenList(Accessibility)](#3748838306) | Creates a list of modifiers from the specified accessibility\. |
-| [TokenList(SyntaxKind, SyntaxKind, SyntaxKind)](#1229634363) | |
-| [TokenList(SyntaxKind, SyntaxKind)](#2344561993) | |
-| [TokenList(SyntaxKind)](#4143969600) | |
+| [TokenList(Accessibility)](#Roslynator_CSharp_CSharpFactory_TokenList_Microsoft_CodeAnalysis_Accessibility_) | Creates a list of modifiers from the specified accessibility\. |
+| [TokenList(SyntaxKind)](#Roslynator_CSharp_CSharpFactory_TokenList_Microsoft_CodeAnalysis_CSharp_SyntaxKind_) | |
+| [TokenList(SyntaxKind, SyntaxKind)](#Roslynator_CSharp_CSharpFactory_TokenList_Microsoft_CodeAnalysis_CSharp_SyntaxKind_Microsoft_CodeAnalysis_CSharp_SyntaxKind_) | |
+| [TokenList(SyntaxKind, SyntaxKind, SyntaxKind)](#Roslynator_CSharp_CSharpFactory_TokenList_Microsoft_CodeAnalysis_CSharp_SyntaxKind_Microsoft_CodeAnalysis_CSharp_SyntaxKind_Microsoft_CodeAnalysis_CSharp_SyntaxKind_) | |
 
-<a id="3748838306"></a>
+## TokenList\(Accessibility\) <a id="Roslynator_CSharp_CSharpFactory_TokenList_Microsoft_CodeAnalysis_Accessibility_"></a>
 
-## TokenList\(Accessibility\) 
-
-  
+\
 Creates a list of modifiers from the specified accessibility\.
 
 ```csharp
@@ -34,29 +32,21 @@ public static Microsoft.CodeAnalysis.SyntaxTokenList TokenList(Microsoft.CodeAna
 
 [SyntaxTokenList](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxtokenlist)
 
-<a id="1229634363"></a>
-
-## TokenList\(SyntaxKind, SyntaxKind, SyntaxKind\) 
+## TokenList\(SyntaxKind\) <a id="Roslynator_CSharp_CSharpFactory_TokenList_Microsoft_CodeAnalysis_CSharp_SyntaxKind_"></a>
 
 ```csharp
-public static Microsoft.CodeAnalysis.SyntaxTokenList TokenList(Microsoft.CodeAnalysis.CSharp.SyntaxKind kind1, Microsoft.CodeAnalysis.CSharp.SyntaxKind kind2, Microsoft.CodeAnalysis.CSharp.SyntaxKind kind3)
+public static Microsoft.CodeAnalysis.SyntaxTokenList TokenList(Microsoft.CodeAnalysis.CSharp.SyntaxKind kind)
 ```
 
 ### Parameters
 
-**kind1** &ensp; [SyntaxKind](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntaxkind)
-
-**kind2** &ensp; [SyntaxKind](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntaxkind)
-
-**kind3** &ensp; [SyntaxKind](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntaxkind)
+**kind** &ensp; [SyntaxKind](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntaxkind)
 
 ### Returns
 
 [SyntaxTokenList](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxtokenlist)
 
-<a id="2344561993"></a>
-
-## TokenList\(SyntaxKind, SyntaxKind\) 
+## TokenList\(SyntaxKind, SyntaxKind\) <a id="Roslynator_CSharp_CSharpFactory_TokenList_Microsoft_CodeAnalysis_CSharp_SyntaxKind_Microsoft_CodeAnalysis_CSharp_SyntaxKind_"></a>
 
 ```csharp
 public static Microsoft.CodeAnalysis.SyntaxTokenList TokenList(Microsoft.CodeAnalysis.CSharp.SyntaxKind kind1, Microsoft.CodeAnalysis.CSharp.SyntaxKind kind2)
@@ -72,17 +62,19 @@ public static Microsoft.CodeAnalysis.SyntaxTokenList TokenList(Microsoft.CodeAna
 
 [SyntaxTokenList](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxtokenlist)
 
-<a id="4143969600"></a>
-
-## TokenList\(SyntaxKind\) 
+## TokenList\(SyntaxKind, SyntaxKind, SyntaxKind\) <a id="Roslynator_CSharp_CSharpFactory_TokenList_Microsoft_CodeAnalysis_CSharp_SyntaxKind_Microsoft_CodeAnalysis_CSharp_SyntaxKind_Microsoft_CodeAnalysis_CSharp_SyntaxKind_"></a>
 
 ```csharp
-public static Microsoft.CodeAnalysis.SyntaxTokenList TokenList(Microsoft.CodeAnalysis.CSharp.SyntaxKind kind)
+public static Microsoft.CodeAnalysis.SyntaxTokenList TokenList(Microsoft.CodeAnalysis.CSharp.SyntaxKind kind1, Microsoft.CodeAnalysis.CSharp.SyntaxKind kind2, Microsoft.CodeAnalysis.CSharp.SyntaxKind kind3)
 ```
 
 ### Parameters
 
-**kind** &ensp; [SyntaxKind](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntaxkind)
+**kind1** &ensp; [SyntaxKind](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntaxkind)
+
+**kind2** &ensp; [SyntaxKind](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntaxkind)
+
+**kind3** &ensp; [SyntaxKind](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntaxkind)
 
 ### Returns
 

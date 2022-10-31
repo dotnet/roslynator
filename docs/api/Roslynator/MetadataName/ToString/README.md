@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Core\.dll
 
-  
+\
 Returns the fully qualified metadata name\.
 
 ```csharp

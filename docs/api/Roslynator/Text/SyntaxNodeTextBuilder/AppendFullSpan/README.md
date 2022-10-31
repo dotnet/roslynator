@@ -10,22 +10,18 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [AppendFullSpan()](#2622965618) | |
-| [AppendFullSpan(SyntaxNode)](#686986334) | |
-| [AppendFullSpan(SyntaxToken)](#1511645977) | |
-| [AppendFullSpan(SyntaxTrivia)](#2757889332) | |
+| [AppendFullSpan()](#Roslynator_Text_SyntaxNodeTextBuilder_AppendFullSpan) | |
+| [AppendFullSpan(SyntaxNode)](#Roslynator_Text_SyntaxNodeTextBuilder_AppendFullSpan_Microsoft_CodeAnalysis_SyntaxNode_) | |
+| [AppendFullSpan(SyntaxToken)](#Roslynator_Text_SyntaxNodeTextBuilder_AppendFullSpan_Microsoft_CodeAnalysis_SyntaxToken_) | |
+| [AppendFullSpan(SyntaxTrivia)](#Roslynator_Text_SyntaxNodeTextBuilder_AppendFullSpan_Microsoft_CodeAnalysis_SyntaxTrivia_) | |
 
-<a id="2622965618"></a>
-
-## AppendFullSpan\(\) 
+## AppendFullSpan\(\) <a id="Roslynator_Text_SyntaxNodeTextBuilder_AppendFullSpan"></a>
 
 ```csharp
 public void AppendFullSpan()
 ```
 
-<a id="686986334"></a>
-
-## AppendFullSpan\(SyntaxNode\) 
+## AppendFullSpan\(SyntaxNode\) <a id="Roslynator_Text_SyntaxNodeTextBuilder_AppendFullSpan_Microsoft_CodeAnalysis_SyntaxNode_"></a>
 
 ```csharp
 public void AppendFullSpan(Microsoft.CodeAnalysis.SyntaxNode node)
@@ -33,9 +29,9 @@ public void AppendFullSpan(Microsoft.CodeAnalysis.SyntaxNode node)
 
 ### Parameters
 
-**node** &ensp; [SyntaxNode](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxnode)<a id="1511645977"></a>
+**node** &ensp; [SyntaxNode](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxnode)
 
-## AppendFullSpan\(SyntaxToken\) 
+## AppendFullSpan\(SyntaxToken\) <a id="Roslynator_Text_SyntaxNodeTextBuilder_AppendFullSpan_Microsoft_CodeAnalysis_SyntaxToken_"></a>
 
 ```csharp
 public void AppendFullSpan(Microsoft.CodeAnalysis.SyntaxToken token)
@@ -43,9 +39,9 @@ public void AppendFullSpan(Microsoft.CodeAnalysis.SyntaxToken token)
 
 ### Parameters
 
-**token** &ensp; [SyntaxToken](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxtoken)<a id="2757889332"></a>
+**token** &ensp; [SyntaxToken](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxtoken)
 
-## AppendFullSpan\(SyntaxTrivia\) 
+## AppendFullSpan\(SyntaxTrivia\) <a id="Roslynator_Text_SyntaxNodeTextBuilder_AppendFullSpan_Microsoft_CodeAnalysis_SyntaxTrivia_"></a>
 
 ```csharp
 public void AppendFullSpan(Microsoft.CodeAnalysis.SyntaxTrivia trivia)

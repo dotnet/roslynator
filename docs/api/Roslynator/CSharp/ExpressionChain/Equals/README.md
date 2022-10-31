@@ -10,14 +10,12 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [Equals(ExpressionChain)](#3497933564) | Determines whether this instance is equal to another object of the same type\. \(Implements [IEquatable\<ExpressionChain\>.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.iequatable-1.equals)\) |
-| [Equals(Object)](#3026618345) | Determines whether this instance and a specified object are equal\. \(Overrides [ValueType.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.valuetype.equals)\) |
+| [Equals(ExpressionChain)](#Roslynator_CSharp_ExpressionChain_Equals_Roslynator_CSharp_ExpressionChain_) | Determines whether this instance is equal to another object of the same type\. \(Implements [IEquatable\<ExpressionChain>.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.iequatable-1.equals)\) |
+| [Equals(Object)](#Roslynator_CSharp_ExpressionChain_Equals_System_Object_) | Determines whether this instance and a specified object are equal\. \(Overrides [ValueType.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.valuetype.equals)\) |
 
-<a id="3497933564"></a>
+## Equals\(ExpressionChain\) <a id="Roslynator_CSharp_ExpressionChain_Equals_Roslynator_CSharp_ExpressionChain_"></a>
 
-## Equals\(ExpressionChain\) 
-
-  
+\
 Determines whether this instance is equal to another object of the same type\.
 
 ```csharp
@@ -38,12 +36,11 @@ true if the current object is equal to the **other** parameter; otherwise, false
 
 ### Implements
 
-* [IEquatable\<ExpressionChain\>.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.iequatable-1.equals)
-<a id="3026618345"></a>
+* [IEquatable\<ExpressionChain>.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.iequatable-1.equals)
 
-## Equals\(Object\) 
+## Equals\(Object\) <a id="Roslynator_CSharp_ExpressionChain_Equals_System_Object_"></a>
 
-  
+\
 Determines whether this instance and a specified object are equal\.
 
 ```csharp

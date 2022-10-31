@@ -10,12 +10,10 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [Equals(ExtensionMethodSymbolInfo)](#2771632092) |  \(Implements [IEquatable\<ExtensionMethodSymbolInfo\>.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.iequatable-1.equals)\) |
-| [Equals(Object)](#3073297291) |  \(Overrides [ValueType.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.valuetype.equals)\) |
+| [Equals(ExtensionMethodSymbolInfo)](#Roslynator_ExtensionMethodSymbolInfo_Equals_Roslynator_ExtensionMethodSymbolInfo_) |  \(Implements [IEquatable\<ExtensionMethodSymbolInfo>.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.iequatable-1.equals)\) |
+| [Equals(Object)](#Roslynator_ExtensionMethodSymbolInfo_Equals_System_Object_) |  \(Overrides [ValueType.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.valuetype.equals)\) |
 
-<a id="2771632092"></a>
-
-## Equals\(ExtensionMethodSymbolInfo\) 
+## Equals\(ExtensionMethodSymbolInfo\) <a id="Roslynator_ExtensionMethodSymbolInfo_Equals_Roslynator_ExtensionMethodSymbolInfo_"></a>
 
 ```csharp
 public bool Equals(Roslynator.ExtensionMethodSymbolInfo other)
@@ -31,10 +29,9 @@ public bool Equals(Roslynator.ExtensionMethodSymbolInfo other)
 
 ### Implements
 
-* [IEquatable\<ExtensionMethodSymbolInfo\>.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.iequatable-1.equals)
-<a id="3073297291"></a>
+* [IEquatable\<ExtensionMethodSymbolInfo>.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.iequatable-1.equals)
 
-## Equals\(Object\) 
+## Equals\(Object\) <a id="Roslynator_ExtensionMethodSymbolInfo_Equals_System_Object_"></a>
 
 ```csharp
 public override bool Equals(object obj)

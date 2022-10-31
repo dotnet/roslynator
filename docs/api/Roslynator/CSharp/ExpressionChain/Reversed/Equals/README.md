@@ -10,12 +10,10 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [Equals(Object)](#4203233237) |  \(Overrides [ValueType.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.valuetype.equals)\) |
-| [Equals(Reversed)](#2039282915) |  \(Implements [IEquatable\<Reversed\>.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.iequatable-1.equals)\) |
+| [Equals(Object)](#Roslynator_CSharp_ExpressionChain_Reversed_Equals_System_Object_) |  \(Overrides [ValueType.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.valuetype.equals)\) |
+| [Equals(Reversed)](#Roslynator_CSharp_ExpressionChain_Reversed_Equals_Roslynator_CSharp_ExpressionChain_Reversed_) |  \(Implements [IEquatable\<Reversed>.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.iequatable-1.equals)\) |
 
-<a id="4203233237"></a>
-
-## Equals\(Object\) 
+## Equals\(Object\) <a id="Roslynator_CSharp_ExpressionChain_Reversed_Equals_System_Object_"></a>
 
 ```csharp
 public override bool Equals(object obj)
@@ -29,9 +27,7 @@ public override bool Equals(object obj)
 
 [Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)
 
-<a id="2039282915"></a>
-
-## Equals\(Reversed\) 
+## Equals\(Reversed\) <a id="Roslynator_CSharp_ExpressionChain_Reversed_Equals_Roslynator_CSharp_ExpressionChain_Reversed_"></a>
 
 ```csharp
 public bool Equals(Roslynator.CSharp.ExpressionChain.Reversed other)
@@ -47,4 +43,4 @@ public bool Equals(Roslynator.CSharp.ExpressionChain.Reversed other)
 
 ### Implements
 
-* [IEquatable\<ExpressionChain.Reversed\>.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.iequatable-1.equals)
+* [IEquatable\<ExpressionChain.Reversed>.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.iequatable-1.equals)

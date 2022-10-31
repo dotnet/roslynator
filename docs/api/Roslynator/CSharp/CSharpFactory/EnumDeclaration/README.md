@@ -1,4 +1,4 @@
-# CSharpFactory\.EnumDeclaration\(SyntaxTokenList, SyntaxToken, SeparatedSyntaxList\<EnumMemberDeclarationSyntax\>\) Method
+# CSharpFactory\.EnumDeclaration\(SyntaxTokenList, SyntaxToken, SeparatedSyntaxList\<EnumMemberDeclarationSyntax>\) Method
 
 [Home](../../../../README.md)
 
@@ -16,7 +16,7 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.EnumDeclarationSyntax EnumDec
 
 **identifier** &ensp; [SyntaxToken](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxtoken)
 
-**members** &ensp; [SeparatedSyntaxList](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.separatedsyntaxlist-1)\<[EnumMemberDeclarationSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.enummemberdeclarationsyntax)\>
+**members** &ensp; [SeparatedSyntaxList](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.separatedsyntaxlist-1)\<[EnumMemberDeclarationSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.enummemberdeclarationsyntax)>
 
 ### Returns
 

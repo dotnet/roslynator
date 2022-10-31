@@ -10,14 +10,12 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [EnumMemberDeclaration(String, EqualsValueClauseSyntax)](#689133893) | |
-| [EnumMemberDeclaration(String, ExpressionSyntax)](#1069228930) | |
-| [EnumMemberDeclaration(SyntaxToken, EqualsValueClauseSyntax)](#1129590012) | |
-| [EnumMemberDeclaration(SyntaxToken, ExpressionSyntax)](#4109945594) | |
+| [EnumMemberDeclaration(String, EqualsValueClauseSyntax)](#Roslynator_CSharp_CSharpFactory_EnumMemberDeclaration_System_String_Microsoft_CodeAnalysis_CSharp_Syntax_EqualsValueClauseSyntax_) | |
+| [EnumMemberDeclaration(String, ExpressionSyntax)](#Roslynator_CSharp_CSharpFactory_EnumMemberDeclaration_System_String_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_) | |
+| [EnumMemberDeclaration(SyntaxToken, EqualsValueClauseSyntax)](#Roslynator_CSharp_CSharpFactory_EnumMemberDeclaration_Microsoft_CodeAnalysis_SyntaxToken_Microsoft_CodeAnalysis_CSharp_Syntax_EqualsValueClauseSyntax_) | |
+| [EnumMemberDeclaration(SyntaxToken, ExpressionSyntax)](#Roslynator_CSharp_CSharpFactory_EnumMemberDeclaration_Microsoft_CodeAnalysis_SyntaxToken_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_) | |
 
-<a id="689133893"></a>
-
-## EnumMemberDeclaration\(String, EqualsValueClauseSyntax\) 
+## EnumMemberDeclaration\(String, EqualsValueClauseSyntax\) <a id="Roslynator_CSharp_CSharpFactory_EnumMemberDeclaration_System_String_Microsoft_CodeAnalysis_CSharp_Syntax_EqualsValueClauseSyntax_"></a>
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.EnumMemberDeclarationSyntax EnumMemberDeclaration(string name, Microsoft.CodeAnalysis.CSharp.Syntax.EqualsValueClauseSyntax value)
@@ -33,9 +31,7 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.EnumMemberDeclarationSyntax E
 
 [EnumMemberDeclarationSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.enummemberdeclarationsyntax)
 
-<a id="1069228930"></a>
-
-## EnumMemberDeclaration\(String, ExpressionSyntax\) 
+## EnumMemberDeclaration\(String, ExpressionSyntax\) <a id="Roslynator_CSharp_CSharpFactory_EnumMemberDeclaration_System_String_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_"></a>
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.EnumMemberDeclarationSyntax EnumMemberDeclaration(string name, Microsoft.CodeAnalysis.CSharp.Syntax.ExpressionSyntax value)
@@ -51,9 +47,7 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.EnumMemberDeclarationSyntax E
 
 [EnumMemberDeclarationSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.enummemberdeclarationsyntax)
 
-<a id="1129590012"></a>
-
-## EnumMemberDeclaration\(SyntaxToken, EqualsValueClauseSyntax\) 
+## EnumMemberDeclaration\(SyntaxToken, EqualsValueClauseSyntax\) <a id="Roslynator_CSharp_CSharpFactory_EnumMemberDeclaration_Microsoft_CodeAnalysis_SyntaxToken_Microsoft_CodeAnalysis_CSharp_Syntax_EqualsValueClauseSyntax_"></a>
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.EnumMemberDeclarationSyntax EnumMemberDeclaration(Microsoft.CodeAnalysis.SyntaxToken identifier, Microsoft.CodeAnalysis.CSharp.Syntax.EqualsValueClauseSyntax value)
@@ -69,9 +63,7 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.EnumMemberDeclarationSyntax E
 
 [EnumMemberDeclarationSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.enummemberdeclarationsyntax)
 
-<a id="4109945594"></a>
-
-## EnumMemberDeclaration\(SyntaxToken, ExpressionSyntax\) 
+## EnumMemberDeclaration\(SyntaxToken, ExpressionSyntax\) <a id="Roslynator_CSharp_CSharpFactory_EnumMemberDeclaration_Microsoft_CodeAnalysis_SyntaxToken_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_"></a>
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.EnumMemberDeclarationSyntax EnumMemberDeclaration(Microsoft.CodeAnalysis.SyntaxToken identifier, Microsoft.CodeAnalysis.CSharp.Syntax.ExpressionSyntax value)

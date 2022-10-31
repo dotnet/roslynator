@@ -10,14 +10,12 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [ConditionalExpressionInfo(ConditionalExpressionSyntax, Boolean, Boolean)](#4291540972) | Creates a new [ConditionalExpressionInfo](../../Syntax/ConditionalExpressionInfo/README.md) from the specified conditional expression\. |
-| [ConditionalExpressionInfo(SyntaxNode, Boolean, Boolean)](#2909060166) | Creates a new [ConditionalExpressionInfo](../../Syntax/ConditionalExpressionInfo/README.md) from the specified node\. |
+| [ConditionalExpressionInfo(ConditionalExpressionSyntax, Boolean, Boolean)](#Roslynator_CSharp_SyntaxInfo_ConditionalExpressionInfo_Microsoft_CodeAnalysis_CSharp_Syntax_ConditionalExpressionSyntax_System_Boolean_System_Boolean_) | Creates a new [ConditionalExpressionInfo](../../Syntax/ConditionalExpressionInfo/README.md) from the specified conditional expression\. |
+| [ConditionalExpressionInfo(SyntaxNode, Boolean, Boolean)](#Roslynator_CSharp_SyntaxInfo_ConditionalExpressionInfo_Microsoft_CodeAnalysis_SyntaxNode_System_Boolean_System_Boolean_) | Creates a new [ConditionalExpressionInfo](../../Syntax/ConditionalExpressionInfo/README.md) from the specified node\. |
 
-<a id="4291540972"></a>
+## ConditionalExpressionInfo\(ConditionalExpressionSyntax, Boolean, Boolean\) <a id="Roslynator_CSharp_SyntaxInfo_ConditionalExpressionInfo_Microsoft_CodeAnalysis_CSharp_Syntax_ConditionalExpressionSyntax_System_Boolean_System_Boolean_"></a>
 
-## ConditionalExpressionInfo\(ConditionalExpressionSyntax, Boolean, Boolean\) 
-
-  
+\
 Creates a new [ConditionalExpressionInfo](../../Syntax/ConditionalExpressionInfo/README.md) from the specified conditional expression\.
 
 ```csharp
@@ -36,11 +34,9 @@ public static Roslynator.CSharp.Syntax.ConditionalExpressionInfo ConditionalExpr
 
 [ConditionalExpressionInfo](../../Syntax/ConditionalExpressionInfo/README.md)
 
-<a id="2909060166"></a>
+## ConditionalExpressionInfo\(SyntaxNode, Boolean, Boolean\) <a id="Roslynator_CSharp_SyntaxInfo_ConditionalExpressionInfo_Microsoft_CodeAnalysis_SyntaxNode_System_Boolean_System_Boolean_"></a>
 
-## ConditionalExpressionInfo\(SyntaxNode, Boolean, Boolean\) 
-
-  
+\
 Creates a new [ConditionalExpressionInfo](../../Syntax/ConditionalExpressionInfo/README.md) from the specified node\.
 
 ```csharp

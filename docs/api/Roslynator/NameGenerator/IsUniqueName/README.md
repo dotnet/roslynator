@@ -10,14 +10,12 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [IsUniqueName(String, IEnumerable\<String\>, Boolean)](#2992007639) | Returns true if the name is not contained in the specified list\. |
-| [IsUniqueName(String, ImmutableArray\<ISymbol\>, Boolean)](#2911018138) | Returns true if the name is not contained in the specified list\. [ISymbol.Name](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.isymbol.name) is used to compare names\. |
+| [IsUniqueName(String, IEnumerable\<String>, Boolean)](#Roslynator_NameGenerator_IsUniqueName_System_String_System_Collections_Generic_IEnumerable_System_String__System_Boolean_) | Returns true if the name is not contained in the specified list\. |
+| [IsUniqueName(String, ImmutableArray\<ISymbol>, Boolean)](#Roslynator_NameGenerator_IsUniqueName_System_String_System_Collections_Immutable_ImmutableArray_Microsoft_CodeAnalysis_ISymbol__System_Boolean_) | Returns true if the name is not contained in the specified list\. [ISymbol.Name](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.isymbol.name) is used to compare names\. |
 
-<a id="2992007639"></a>
+## IsUniqueName\(String, IEnumerable\<String>, Boolean\) <a id="Roslynator_NameGenerator_IsUniqueName_System_String_System_Collections_Generic_IEnumerable_System_String__System_Boolean_"></a>
 
-## IsUniqueName\(String, IEnumerable\<String\>, Boolean\) 
-
-  
+\
 Returns true if the name is not contained in the specified list\.
 
 ```csharp
@@ -28,7 +26,7 @@ public static bool IsUniqueName(string name, System.Collections.Generic.IEnumera
 
 **name** &ensp; [String](https://docs.microsoft.com/en-us/dotnet/api/system.string)
 
-**reservedNames** &ensp; [IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)\<[String](https://docs.microsoft.com/en-us/dotnet/api/system.string)\>
+**reservedNames** &ensp; [IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)\<[String](https://docs.microsoft.com/en-us/dotnet/api/system.string)>
 
 **isCaseSensitive** &ensp; [Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)
 
@@ -36,11 +34,9 @@ public static bool IsUniqueName(string name, System.Collections.Generic.IEnumera
 
 [Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)
 
-<a id="2911018138"></a>
+## IsUniqueName\(String, ImmutableArray\<ISymbol>, Boolean\) <a id="Roslynator_NameGenerator_IsUniqueName_System_String_System_Collections_Immutable_ImmutableArray_Microsoft_CodeAnalysis_ISymbol__System_Boolean_"></a>
 
-## IsUniqueName\(String, ImmutableArray\<ISymbol\>, Boolean\) 
-
-  
+\
 Returns true if the name is not contained in the specified list\. [ISymbol.Name](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.isymbol.name) is used to compare names\.
 
 ```csharp
@@ -51,7 +47,7 @@ public static bool IsUniqueName(string name, System.Collections.Immutable.Immuta
 
 **name** &ensp; [String](https://docs.microsoft.com/en-us/dotnet/api/system.string)
 
-**symbols** &ensp; [ImmutableArray](https://docs.microsoft.com/en-us/dotnet/api/system.collections.immutable.immutablearray-1)\<[ISymbol](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.isymbol)\>
+**symbols** &ensp; [ImmutableArray](https://docs.microsoft.com/en-us/dotnet/api/system.collections.immutable.immutablearray-1)\<[ISymbol](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.isymbol)>
 
 **isCaseSensitive** &ensp; [Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)
 

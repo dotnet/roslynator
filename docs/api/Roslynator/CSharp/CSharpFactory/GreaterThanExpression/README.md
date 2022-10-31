@@ -10,12 +10,10 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [GreaterThanExpression(ExpressionSyntax, ExpressionSyntax)](#3935829033) | |
-| [GreaterThanExpression(ExpressionSyntax, SyntaxToken, ExpressionSyntax)](#3360555596) | |
+| [GreaterThanExpression(ExpressionSyntax, ExpressionSyntax)](#Roslynator_CSharp_CSharpFactory_GreaterThanExpression_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_) | |
+| [GreaterThanExpression(ExpressionSyntax, SyntaxToken, ExpressionSyntax)](#Roslynator_CSharp_CSharpFactory_GreaterThanExpression_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_Microsoft_CodeAnalysis_SyntaxToken_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_) | |
 
-<a id="3935829033"></a>
-
-## GreaterThanExpression\(ExpressionSyntax, ExpressionSyntax\) 
+## GreaterThanExpression\(ExpressionSyntax, ExpressionSyntax\) <a id="Roslynator_CSharp_CSharpFactory_GreaterThanExpression_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_"></a>
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.BinaryExpressionSyntax GreaterThanExpression(Microsoft.CodeAnalysis.CSharp.Syntax.ExpressionSyntax left, Microsoft.CodeAnalysis.CSharp.Syntax.ExpressionSyntax right)
@@ -31,9 +29,7 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.BinaryExpressionSyntax Greate
 
 [BinaryExpressionSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.binaryexpressionsyntax)
 
-<a id="3360555596"></a>
-
-## GreaterThanExpression\(ExpressionSyntax, SyntaxToken, ExpressionSyntax\) 
+## GreaterThanExpression\(ExpressionSyntax, SyntaxToken, ExpressionSyntax\) <a id="Roslynator_CSharp_CSharpFactory_GreaterThanExpression_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_Microsoft_CodeAnalysis_SyntaxToken_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_"></a>
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.BinaryExpressionSyntax GreaterThanExpression(Microsoft.CodeAnalysis.CSharp.Syntax.ExpressionSyntax left, Microsoft.CodeAnalysis.SyntaxToken operatorToken, Microsoft.CodeAnalysis.CSharp.Syntax.ExpressionSyntax right)

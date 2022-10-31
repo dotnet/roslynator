@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Testing\.Common\.dll
 
-  
+\
 Gets metadata references of a test project\.
 
 ```csharp
@@ -15,5 +15,5 @@ public System.Collections.Immutable.ImmutableArray<Microsoft.CodeAnalysis.Metada
 
 ### Property Value
 
-[ImmutableArray](https://docs.microsoft.com/en-us/dotnet/api/system.collections.immutable.immutablearray-1)\<[MetadataReference](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.metadatareference)\>
+[ImmutableArray](https://docs.microsoft.com/en-us/dotnet/api/system.collections.immutable.immutablearray-1)\<[MetadataReference](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.metadatareference)>
 

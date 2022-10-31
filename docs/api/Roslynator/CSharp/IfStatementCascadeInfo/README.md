@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-  
+\
 Summarizes information about [IfStatementCascade](../IfStatementCascade/README.md)\.
 
 ```csharp
@@ -19,7 +19,7 @@ public readonly struct IfStatementCascadeInfo : IEquatable<Roslynator.CSharp.IfS
 
 ### Implements
 
-* [IEquatable](https://docs.microsoft.com/en-us/dotnet/api/system.iequatable-1)\<[IfStatementCascadeInfo](./README.md)\>
+* [IEquatable](https://docs.microsoft.com/en-us/dotnet/api/system.iequatable-1)\<[IfStatementCascadeInfo](./README.md)>
 
 ## Constructors
 
@@ -43,8 +43,8 @@ public readonly struct IfStatementCascadeInfo : IEquatable<Roslynator.CSharp.IfS
 
 | Method | Summary |
 | ------ | ------- |
-| [Equals(IfStatementCascadeInfo)](Equals/README.md#1103005347) | Determines whether this instance is equal to another object of the same type\. \(Implements [IEquatable\<IfStatementCascadeInfo\>.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.iequatable-1.equals)\) |
-| [Equals(Object)](Equals/README.md#454128297) | Determines whether this instance and a specified object are equal\. \(Overrides [ValueType.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.valuetype.equals)\) |
+| [Equals(IfStatementCascadeInfo)](Equals/README.md#Roslynator_CSharp_IfStatementCascadeInfo_Equals_Roslynator_CSharp_IfStatementCascadeInfo_) | Determines whether this instance is equal to another object of the same type\. \(Implements [IEquatable\<IfStatementCascadeInfo>.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.iequatable-1.equals)\) |
+| [Equals(Object)](Equals/README.md#Roslynator_CSharp_IfStatementCascadeInfo_Equals_System_Object_) | Determines whether this instance and a specified object are equal\. \(Overrides [ValueType.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.valuetype.equals)\) |
 | [GetHashCode()](GetHashCode/README.md) | Returns the hash code for this instance\. \(Overrides [ValueType.GetHashCode](https://docs.microsoft.com/en-us/dotnet/api/system.valuetype.gethashcode)\) |
 | [GetType()](https://docs.microsoft.com/en-us/dotnet/api/system.object.gettype) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
 | [MemberwiseClone()](https://docs.microsoft.com/en-us/dotnet/api/system.object.memberwiseclone) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |

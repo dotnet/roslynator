@@ -1,12 +1,12 @@
-# MetadataNameEqualityComparer\<TSymbol\>\.GetHashCode\(TSymbol\) Method
+# MetadataNameEqualityComparer\<TSymbol>\.GetHashCode\(TSymbol\) Method
 
 [Home](../../../README.md)
 
-**Containing Type**: [MetadataNameEqualityComparer\<TSymbol\>](../README.md)
+**Containing Type**: [MetadataNameEqualityComparer\<TSymbol>](../README.md)
 
 **Assembly**: Roslynator\.Core\.dll
 
-  
+\
 Serves as a hash function for the specified symbol\.
 
 ```csharp

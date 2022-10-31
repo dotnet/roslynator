@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Testing\.Common\.dll
 
-  
+\
 Represents base type for verifying a diagnostic, a code fix and a refactoring\.
 
 ```csharp
@@ -19,9 +19,9 @@ public abstract class CodeVerifier
 
 ### Derived
 
-* [CompilerDiagnosticFixVerifier\<TFixProvider\>](../CompilerDiagnosticFixVerifier-1/README.md)
-* [DiagnosticVerifier\<TAnalyzer, TFixProvider\>](../DiagnosticVerifier-2/README.md)
-* [RefactoringVerifier\<TRefactoringProvider\>](../RefactoringVerifier-1/README.md)
+* [CompilerDiagnosticFixVerifier\<TFixProvider>](../CompilerDiagnosticFixVerifier-1/README.md)
+* [DiagnosticVerifier\<TAnalyzer, TFixProvider>](../DiagnosticVerifier-2/README.md)
+* [RefactoringVerifier\<TRefactoringProvider>](../RefactoringVerifier-1/README.md)
 
 ## Properties
 

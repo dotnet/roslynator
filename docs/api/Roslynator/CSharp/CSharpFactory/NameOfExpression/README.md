@@ -10,12 +10,10 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [NameOfExpression(ExpressionSyntax)](#3310629376) | |
-| [NameOfExpression(String)](#3748210960) | |
+| [NameOfExpression(ExpressionSyntax)](#Roslynator_CSharp_CSharpFactory_NameOfExpression_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_) | |
+| [NameOfExpression(String)](#Roslynator_CSharp_CSharpFactory_NameOfExpression_System_String_) | |
 
-<a id="3310629376"></a>
-
-## NameOfExpression\(ExpressionSyntax\) 
+## NameOfExpression\(ExpressionSyntax\) <a id="Roslynator_CSharp_CSharpFactory_NameOfExpression_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_"></a>
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.InvocationExpressionSyntax NameOfExpression(Microsoft.CodeAnalysis.CSharp.Syntax.ExpressionSyntax expression)
@@ -29,9 +27,7 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.InvocationExpressionSyntax Na
 
 [InvocationExpressionSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.invocationexpressionsyntax)
 
-<a id="3748210960"></a>
-
-## NameOfExpression\(String\) 
+## NameOfExpression\(String\) <a id="Roslynator_CSharp_CSharpFactory_NameOfExpression_System_String_"></a>
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.InvocationExpressionSyntax NameOfExpression(string identifier)

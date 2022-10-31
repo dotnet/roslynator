@@ -10,14 +10,12 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [GetAccessorDeclaration(ArrowExpressionClauseSyntax)](#3387818681) | |
-| [GetAccessorDeclaration(BlockSyntax)](#731617823) | |
-| [GetAccessorDeclaration(SyntaxTokenList, ArrowExpressionClauseSyntax)](#949388947) | |
-| [GetAccessorDeclaration(SyntaxTokenList, BlockSyntax)](#3920816721) | |
+| [GetAccessorDeclaration(ArrowExpressionClauseSyntax)](#Roslynator_CSharp_CSharpFactory_GetAccessorDeclaration_Microsoft_CodeAnalysis_CSharp_Syntax_ArrowExpressionClauseSyntax_) | |
+| [GetAccessorDeclaration(BlockSyntax)](#Roslynator_CSharp_CSharpFactory_GetAccessorDeclaration_Microsoft_CodeAnalysis_CSharp_Syntax_BlockSyntax_) | |
+| [GetAccessorDeclaration(SyntaxTokenList, ArrowExpressionClauseSyntax)](#Roslynator_CSharp_CSharpFactory_GetAccessorDeclaration_Microsoft_CodeAnalysis_SyntaxTokenList_Microsoft_CodeAnalysis_CSharp_Syntax_ArrowExpressionClauseSyntax_) | |
+| [GetAccessorDeclaration(SyntaxTokenList, BlockSyntax)](#Roslynator_CSharp_CSharpFactory_GetAccessorDeclaration_Microsoft_CodeAnalysis_SyntaxTokenList_Microsoft_CodeAnalysis_CSharp_Syntax_BlockSyntax_) | |
 
-<a id="3387818681"></a>
-
-## GetAccessorDeclaration\(ArrowExpressionClauseSyntax\) 
+## GetAccessorDeclaration\(ArrowExpressionClauseSyntax\) <a id="Roslynator_CSharp_CSharpFactory_GetAccessorDeclaration_Microsoft_CodeAnalysis_CSharp_Syntax_ArrowExpressionClauseSyntax_"></a>
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.AccessorDeclarationSyntax GetAccessorDeclaration(Microsoft.CodeAnalysis.CSharp.Syntax.ArrowExpressionClauseSyntax expressionBody)
@@ -31,9 +29,7 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.AccessorDeclarationSyntax Get
 
 [AccessorDeclarationSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.accessordeclarationsyntax)
 
-<a id="731617823"></a>
-
-## GetAccessorDeclaration\(BlockSyntax\) 
+## GetAccessorDeclaration\(BlockSyntax\) <a id="Roslynator_CSharp_CSharpFactory_GetAccessorDeclaration_Microsoft_CodeAnalysis_CSharp_Syntax_BlockSyntax_"></a>
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.AccessorDeclarationSyntax GetAccessorDeclaration(Microsoft.CodeAnalysis.CSharp.Syntax.BlockSyntax body)
@@ -47,9 +43,7 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.AccessorDeclarationSyntax Get
 
 [AccessorDeclarationSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.accessordeclarationsyntax)
 
-<a id="949388947"></a>
-
-## GetAccessorDeclaration\(SyntaxTokenList, ArrowExpressionClauseSyntax\) 
+## GetAccessorDeclaration\(SyntaxTokenList, ArrowExpressionClauseSyntax\) <a id="Roslynator_CSharp_CSharpFactory_GetAccessorDeclaration_Microsoft_CodeAnalysis_SyntaxTokenList_Microsoft_CodeAnalysis_CSharp_Syntax_ArrowExpressionClauseSyntax_"></a>
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.AccessorDeclarationSyntax GetAccessorDeclaration(Microsoft.CodeAnalysis.SyntaxTokenList modifiers, Microsoft.CodeAnalysis.CSharp.Syntax.ArrowExpressionClauseSyntax expressionBody)
@@ -65,9 +59,7 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.AccessorDeclarationSyntax Get
 
 [AccessorDeclarationSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.accessordeclarationsyntax)
 
-<a id="3920816721"></a>
-
-## GetAccessorDeclaration\(SyntaxTokenList, BlockSyntax\) 
+## GetAccessorDeclaration\(SyntaxTokenList, BlockSyntax\) <a id="Roslynator_CSharp_CSharpFactory_GetAccessorDeclaration_Microsoft_CodeAnalysis_SyntaxTokenList_Microsoft_CodeAnalysis_CSharp_Syntax_BlockSyntax_"></a>
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.AccessorDeclarationSyntax GetAccessorDeclaration(Microsoft.CodeAnalysis.SyntaxTokenList modifiers, Microsoft.CodeAnalysis.CSharp.Syntax.BlockSyntax body)

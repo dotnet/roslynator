@@ -1,12 +1,12 @@
-# ISelection\<T\>\.Last\(\) Method
+# ISelection\<T>\.Last\(\) Method
 
 [Home](../../../README.md)
 
-**Containing Type**: [ISelection\<T\>](../README.md)
+**Containing Type**: [ISelection\<T>](../README.md)
 
 **Assembly**: Roslynator\.Core\.dll
 
-  
+\
 Gets the last selected item\.
 
 ```csharp

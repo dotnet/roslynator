@@ -10,14 +10,12 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [InheritsFrom(ITypeSymbol, ITypeSymbol, Boolean)](#2746876473) | Returns true if the type inherits from a specified base type\. |
-| [InheritsFrom(ITypeSymbol, MetadataName, Boolean)](#3951984790) | Returns true if the type inherits from a type with the specified name\. |
+| [InheritsFrom(ITypeSymbol, ITypeSymbol, Boolean)](#Roslynator_SymbolExtensions_InheritsFrom_Microsoft_CodeAnalysis_ITypeSymbol_Microsoft_CodeAnalysis_ITypeSymbol_System_Boolean_) | Returns true if the type inherits from a specified base type\. |
+| [InheritsFrom(ITypeSymbol, MetadataName, Boolean)](#Roslynator_SymbolExtensions_InheritsFrom_Microsoft_CodeAnalysis_ITypeSymbol_Roslynator_MetadataName__System_Boolean_) | Returns true if the type inherits from a type with the specified name\. |
 
-<a id="2746876473"></a>
+## InheritsFrom\(ITypeSymbol, ITypeSymbol, Boolean\) <a id="Roslynator_SymbolExtensions_InheritsFrom_Microsoft_CodeAnalysis_ITypeSymbol_Microsoft_CodeAnalysis_ITypeSymbol_System_Boolean_"></a>
 
-## InheritsFrom\(ITypeSymbol, ITypeSymbol, Boolean\) 
-
-  
+\
 Returns true if the type inherits from a specified base type\.
 
 ```csharp
@@ -36,11 +34,9 @@ public static bool InheritsFrom(this Microsoft.CodeAnalysis.ITypeSymbol type, Mi
 
 [Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)
 
-<a id="3951984790"></a>
+## InheritsFrom\(ITypeSymbol, MetadataName, Boolean\) <a id="Roslynator_SymbolExtensions_InheritsFrom_Microsoft_CodeAnalysis_ITypeSymbol_Roslynator_MetadataName__System_Boolean_"></a>
 
-## InheritsFrom\(ITypeSymbol, MetadataName, Boolean\) 
-
-  
+\
 Returns true if the type inherits from a type with the specified name\.
 
 ```csharp

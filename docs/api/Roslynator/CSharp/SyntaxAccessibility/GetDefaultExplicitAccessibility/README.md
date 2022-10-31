@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-  
+\
 Returns a default explicit accessibility of the specified declaration\.
 
 ```csharp

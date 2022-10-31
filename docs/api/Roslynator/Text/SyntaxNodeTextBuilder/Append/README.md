@@ -10,13 +10,11 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [Append(Char, Int32)](#2211060326) | |
-| [Append(String)](#1169683241) | |
-| [Append(TextSpan)](#3725216373) | |
+| [Append(Char, Int32)](#Roslynator_Text_SyntaxNodeTextBuilder_Append_System_Char_System_Int32_) | |
+| [Append(String)](#Roslynator_Text_SyntaxNodeTextBuilder_Append_System_String_) | |
+| [Append(TextSpan)](#Roslynator_Text_SyntaxNodeTextBuilder_Append_Microsoft_CodeAnalysis_Text_TextSpan_) | |
 
-<a id="2211060326"></a>
-
-## Append\(Char, Int32\) 
+## Append\(Char, Int32\) <a id="Roslynator_Text_SyntaxNodeTextBuilder_Append_System_Char_System_Int32_"></a>
 
 ```csharp
 public void Append(char value, int repeatCount)
@@ -26,9 +24,9 @@ public void Append(char value, int repeatCount)
 
 **value** &ensp; [Char](https://docs.microsoft.com/en-us/dotnet/api/system.char)
 
-**repeatCount** &ensp; [Int32](https://docs.microsoft.com/en-us/dotnet/api/system.int32)<a id="1169683241"></a>
+**repeatCount** &ensp; [Int32](https://docs.microsoft.com/en-us/dotnet/api/system.int32)
 
-## Append\(String\) 
+## Append\(String\) <a id="Roslynator_Text_SyntaxNodeTextBuilder_Append_System_String_"></a>
 
 ```csharp
 public void Append(string value)
@@ -36,9 +34,9 @@ public void Append(string value)
 
 ### Parameters
 
-**value** &ensp; [String](https://docs.microsoft.com/en-us/dotnet/api/system.string)<a id="3725216373"></a>
+**value** &ensp; [String](https://docs.microsoft.com/en-us/dotnet/api/system.string)
 
-## Append\(TextSpan\) 
+## Append\(TextSpan\) <a id="Roslynator_Text_SyntaxNodeTextBuilder_Append_Microsoft_CodeAnalysis_Text_TextSpan_"></a>
 
 ```csharp
 public void Append(Microsoft.CodeAnalysis.Text.TextSpan span)

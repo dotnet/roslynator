@@ -1,4 +1,4 @@
-# TestOptions\.CommonWithConfigOptions\(IEnumerable\<KeyValuePair\<String, String\>\>\) Method
+# TestOptions\.CommonWithConfigOptions\(IEnumerable\<KeyValuePair\<String, String>>\) Method
 
 [Home](../../../../README.md)
 
@@ -12,7 +12,7 @@ protected abstract Roslynator.Testing.TestOptions CommonWithConfigOptions(System
 
 ### Parameters
 
-**values** &ensp; [IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)\<[KeyValuePair](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.keyvaluepair-2)\<[String](https://docs.microsoft.com/en-us/dotnet/api/system.string), [String](https://docs.microsoft.com/en-us/dotnet/api/system.string)\>\>
+**values** &ensp; [IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)\<[KeyValuePair](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.keyvaluepair-2)\<[String](https://docs.microsoft.com/en-us/dotnet/api/system.string), [String](https://docs.microsoft.com/en-us/dotnet/api/system.string)>>
 
 ### Returns
 

@@ -10,12 +10,10 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [DefaultSwitchSection(StatementSyntax)](#1141874678) | |
-| [DefaultSwitchSection(SyntaxList\<StatementSyntax\>)](#3972211189) | |
+| [DefaultSwitchSection(StatementSyntax)](#Roslynator_CSharp_CSharpFactory_DefaultSwitchSection_Microsoft_CodeAnalysis_CSharp_Syntax_StatementSyntax_) | |
+| [DefaultSwitchSection(SyntaxList\<StatementSyntax>)](#Roslynator_CSharp_CSharpFactory_DefaultSwitchSection_Microsoft_CodeAnalysis_SyntaxList_Microsoft_CodeAnalysis_CSharp_Syntax_StatementSyntax__) | |
 
-<a id="1141874678"></a>
-
-## DefaultSwitchSection\(StatementSyntax\) 
+## DefaultSwitchSection\(StatementSyntax\) <a id="Roslynator_CSharp_CSharpFactory_DefaultSwitchSection_Microsoft_CodeAnalysis_CSharp_Syntax_StatementSyntax_"></a>
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.SwitchSectionSyntax DefaultSwitchSection(Microsoft.CodeAnalysis.CSharp.Syntax.StatementSyntax statement)
@@ -29,9 +27,7 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.SwitchSectionSyntax DefaultSw
 
 [SwitchSectionSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.switchsectionsyntax)
 
-<a id="3972211189"></a>
-
-## DefaultSwitchSection\(SyntaxList\<StatementSyntax\>\) 
+## DefaultSwitchSection\(SyntaxList\<StatementSyntax>\) <a id="Roslynator_CSharp_CSharpFactory_DefaultSwitchSection_Microsoft_CodeAnalysis_SyntaxList_Microsoft_CodeAnalysis_CSharp_Syntax_StatementSyntax__"></a>
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.SwitchSectionSyntax DefaultSwitchSection(Microsoft.CodeAnalysis.SyntaxList<Microsoft.CodeAnalysis.CSharp.Syntax.StatementSyntax> statements)
@@ -39,7 +35,7 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.SwitchSectionSyntax DefaultSw
 
 ### Parameters
 
-**statements** &ensp; [SyntaxList](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxlist-1)\<[StatementSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.statementsyntax)\>
+**statements** &ensp; [SyntaxList](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxlist-1)\<[StatementSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.statementsyntax)>
 
 ### Returns
 

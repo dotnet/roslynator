@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Testing\.CSharp\.dll
 
-  
+\
 Gets a compilation options that should be used to compile test project\.
 
 ```csharp

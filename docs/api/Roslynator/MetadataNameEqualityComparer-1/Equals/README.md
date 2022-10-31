@@ -1,12 +1,12 @@
-# MetadataNameEqualityComparer\<TSymbol\>\.Equals\(TSymbol, TSymbol\) Method
+# MetadataNameEqualityComparer\<TSymbol>\.Equals\(TSymbol, TSymbol\) Method
 
 [Home](../../../README.md)
 
-**Containing Type**: [MetadataNameEqualityComparer\<TSymbol\>](../README.md)
+**Containing Type**: [MetadataNameEqualityComparer\<TSymbol>](../README.md)
 
 **Assembly**: Roslynator\.Core\.dll
 
-  
+\
 When overridden in a derived class, determines whether two objects of type **TSymbol** are equal\.
 
 ```csharp

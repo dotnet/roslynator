@@ -10,14 +10,12 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [SimpleAssignmentExpressionInfo(AssignmentExpressionSyntax, Boolean, Boolean)](#3198633426) | Creates a new [SimpleAssignmentExpressionInfo](../../Syntax/SimpleAssignmentExpressionInfo/README.md) from the specified assignment expression\. |
-| [SimpleAssignmentExpressionInfo(SyntaxNode, Boolean, Boolean)](#991779826) | Creates a new [SimpleAssignmentExpressionInfo](../../Syntax/SimpleAssignmentExpressionInfo/README.md) from the specified node\. |
+| [SimpleAssignmentExpressionInfo(AssignmentExpressionSyntax, Boolean, Boolean)](#Roslynator_CSharp_SyntaxInfo_SimpleAssignmentExpressionInfo_Microsoft_CodeAnalysis_CSharp_Syntax_AssignmentExpressionSyntax_System_Boolean_System_Boolean_) | Creates a new [SimpleAssignmentExpressionInfo](../../Syntax/SimpleAssignmentExpressionInfo/README.md) from the specified assignment expression\. |
+| [SimpleAssignmentExpressionInfo(SyntaxNode, Boolean, Boolean)](#Roslynator_CSharp_SyntaxInfo_SimpleAssignmentExpressionInfo_Microsoft_CodeAnalysis_SyntaxNode_System_Boolean_System_Boolean_) | Creates a new [SimpleAssignmentExpressionInfo](../../Syntax/SimpleAssignmentExpressionInfo/README.md) from the specified node\. |
 
-<a id="3198633426"></a>
+## SimpleAssignmentExpressionInfo\(AssignmentExpressionSyntax, Boolean, Boolean\) <a id="Roslynator_CSharp_SyntaxInfo_SimpleAssignmentExpressionInfo_Microsoft_CodeAnalysis_CSharp_Syntax_AssignmentExpressionSyntax_System_Boolean_System_Boolean_"></a>
 
-## SimpleAssignmentExpressionInfo\(AssignmentExpressionSyntax, Boolean, Boolean\) 
-
-  
+\
 Creates a new [SimpleAssignmentExpressionInfo](../../Syntax/SimpleAssignmentExpressionInfo/README.md) from the specified assignment expression\.
 
 ```csharp
@@ -36,11 +34,9 @@ public static Roslynator.CSharp.Syntax.SimpleAssignmentExpressionInfo SimpleAssi
 
 [SimpleAssignmentExpressionInfo](../../Syntax/SimpleAssignmentExpressionInfo/README.md)
 
-<a id="991779826"></a>
+## SimpleAssignmentExpressionInfo\(SyntaxNode, Boolean, Boolean\) <a id="Roslynator_CSharp_SyntaxInfo_SimpleAssignmentExpressionInfo_Microsoft_CodeAnalysis_SyntaxNode_System_Boolean_System_Boolean_"></a>
 
-## SimpleAssignmentExpressionInfo\(SyntaxNode, Boolean, Boolean\) 
-
-  
+\
 Creates a new [SimpleAssignmentExpressionInfo](../../Syntax/SimpleAssignmentExpressionInfo/README.md) from the specified node\.
 
 ```csharp

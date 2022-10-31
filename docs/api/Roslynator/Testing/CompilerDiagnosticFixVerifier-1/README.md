@@ -1,4 +1,4 @@
-# CompilerDiagnosticFixVerifier\<TFixProvider\> Class
+# CompilerDiagnosticFixVerifier\<TFixProvider> Class
 
 [Home](../../../README.md) &#x2022; [Properties](#properties) &#x2022; [Methods](#methods)
 
@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Testing\.Common\.dll
 
-  
+\
 Represents a verifier for compiler diagnostic\.
 
 ```csharp
@@ -19,11 +19,11 @@ public abstract class CompilerDiagnosticFixVerifier<TFixProvider> : Roslynator.T
 
 ### Inheritance
 
-[Object](https://docs.microsoft.com/en-us/dotnet/api/system.object) &#x2192; [CodeVerifier](../CodeVerifier/README.md) &#x2192; CompilerDiagnosticFixVerifier\<TFixProvider\>
+[Object](https://docs.microsoft.com/en-us/dotnet/api/system.object) &#x2192; [CodeVerifier](../CodeVerifier/README.md) &#x2192; CompilerDiagnosticFixVerifier\<TFixProvider>
 
 ### Derived
 
-* [CSharpCompilerDiagnosticFixVerifier\<TFixProvider\>](../CSharp/CSharpCompilerDiagnosticFixVerifier-1/README.md)
+* [CSharpCompilerDiagnosticFixVerifier\<TFixProvider>](../CSharp/CSharpCompilerDiagnosticFixVerifier-1/README.md)
 
 ## Properties
 

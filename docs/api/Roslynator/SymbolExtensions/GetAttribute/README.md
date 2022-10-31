@@ -10,14 +10,12 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [GetAttribute(ISymbol, INamedTypeSymbol)](#1998351864) | Returns the attribute for the symbol that matches the specified attribute class, or null if the symbol does not have the specified attribute\. |
-| [GetAttribute(ISymbol, MetadataName)](#596707890) | Returns the attribute for the symbol that matches the specified name, or null if the symbol does not have the specified attribute\. |
+| [GetAttribute(ISymbol, INamedTypeSymbol)](#Roslynator_SymbolExtensions_GetAttribute_Microsoft_CodeAnalysis_ISymbol_Microsoft_CodeAnalysis_INamedTypeSymbol_) | Returns the attribute for the symbol that matches the specified attribute class, or null if the symbol does not have the specified attribute\. |
+| [GetAttribute(ISymbol, MetadataName)](#Roslynator_SymbolExtensions_GetAttribute_Microsoft_CodeAnalysis_ISymbol_Roslynator_MetadataName__) | Returns the attribute for the symbol that matches the specified name, or null if the symbol does not have the specified attribute\. |
 
-<a id="1998351864"></a>
+## GetAttribute\(ISymbol, INamedTypeSymbol\) <a id="Roslynator_SymbolExtensions_GetAttribute_Microsoft_CodeAnalysis_ISymbol_Microsoft_CodeAnalysis_INamedTypeSymbol_"></a>
 
-## GetAttribute\(ISymbol, INamedTypeSymbol\) 
-
-  
+\
 Returns the attribute for the symbol that matches the specified attribute class, or null if the symbol does not have the specified attribute\.
 
 ```csharp
@@ -34,11 +32,9 @@ public static Microsoft.CodeAnalysis.AttributeData GetAttribute(this Microsoft.C
 
 [AttributeData](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.attributedata)
 
-<a id="596707890"></a>
+## GetAttribute\(ISymbol, MetadataName\) <a id="Roslynator_SymbolExtensions_GetAttribute_Microsoft_CodeAnalysis_ISymbol_Roslynator_MetadataName__"></a>
 
-## GetAttribute\(ISymbol, MetadataName\) 
-
-  
+\
 Returns the attribute for the symbol that matches the specified name, or null if the symbol does not have the specified attribute\.
 
 ```csharp

@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-  
+\
 Returns true if the specified parameter has "params" modifier\.
 
 ```csharp

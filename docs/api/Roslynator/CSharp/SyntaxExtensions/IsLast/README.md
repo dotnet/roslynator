@@ -1,4 +1,4 @@
-# SyntaxExtensions\.IsLast\(SyntaxList\<StatementSyntax\>, StatementSyntax, Boolean\) Method
+# SyntaxExtensions\.IsLast\(SyntaxList\<StatementSyntax>, StatementSyntax, Boolean\) Method
 
 [Home](../../../../README.md)
 
@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-  
+\
 Returns true if the specified statement is a last statement in the list\.
 
 ```csharp
@@ -15,7 +15,7 @@ public static bool IsLast(this Microsoft.CodeAnalysis.SyntaxList<Microsoft.CodeA
 
 ### Parameters
 
-**statements** &ensp; [SyntaxList](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxlist-1)\<[StatementSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.statementsyntax)\>
+**statements** &ensp; [SyntaxList](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxlist-1)\<[StatementSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.statementsyntax)>
 
 **statement** &ensp; [StatementSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.statementsyntax)
 

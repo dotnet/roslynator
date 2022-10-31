@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-  
+\
 Returns method symbol, if any, the specified expression syntax bound to\.
 
 ```csharp

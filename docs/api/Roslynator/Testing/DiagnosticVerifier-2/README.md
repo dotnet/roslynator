@@ -1,4 +1,4 @@
-# DiagnosticVerifier\<TAnalyzer, TFixProvider\> Class
+# DiagnosticVerifier\<TAnalyzer, TFixProvider> Class
 
 [Home](../../../README.md) &#x2022; [Properties](#properties) &#x2022; [Methods](#methods)
 
@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Testing\.Common\.dll
 
-  
+\
 Represents verifier for a diagnostic that is produced by [DiagnosticAnalyzer](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.diagnostics.diagnosticanalyzer)\.
 
 ```csharp
@@ -23,11 +23,11 @@ public abstract class DiagnosticVerifier<TAnalyzer, TFixProvider> : Roslynator.T
 
 ### Inheritance
 
-[Object](https://docs.microsoft.com/en-us/dotnet/api/system.object) &#x2192; [CodeVerifier](../CodeVerifier/README.md) &#x2192; DiagnosticVerifier\<TAnalyzer, TFixProvider\>
+[Object](https://docs.microsoft.com/en-us/dotnet/api/system.object) &#x2192; [CodeVerifier](../CodeVerifier/README.md) &#x2192; DiagnosticVerifier\<TAnalyzer, TFixProvider>
 
 ### Derived
 
-* [CSharpDiagnosticVerifier\<TAnalyzer, TFixProvider\>](../CSharp/CSharpDiagnosticVerifier-2/README.md)
+* [CSharpDiagnosticVerifier\<TAnalyzer, TFixProvider>](../CSharp/CSharpDiagnosticVerifier-2/README.md)
 
 ## Properties
 

@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Core\.dll
 
-  
+\
 Specifies visibility of a symbol\.
 
 ```csharp

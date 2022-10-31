@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Testing\.CSharp\.dll
 
-  
+\
 Adds specified compiler diagnostic ID to the list of allowed compiler diagnostic IDs\.
 
 ```csharp

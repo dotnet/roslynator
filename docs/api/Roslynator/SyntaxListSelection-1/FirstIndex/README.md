@@ -1,12 +1,12 @@
-# SyntaxListSelection\<TNode\>\.FirstIndex Property
+# SyntaxListSelection\<TNode>\.FirstIndex Property
 
 [Home](../../../README.md)
 
-**Containing Type**: [SyntaxListSelection\<TNode\>](../README.md)
+**Containing Type**: [SyntaxListSelection\<TNode>](../README.md)
 
 **Assembly**: Roslynator\.Core\.dll
 
-  
+\
 Gets an index of the first selected node\.
 
 ```csharp
@@ -19,4 +19,4 @@ public int FirstIndex { get; }
 
 ### Implements
 
-* [ISelection\<TNode\>.FirstIndex](../../ISelection-1/FirstIndex/README.md)
+* [ISelection\<TNode>.FirstIndex](../../ISelection-1/FirstIndex/README.md)

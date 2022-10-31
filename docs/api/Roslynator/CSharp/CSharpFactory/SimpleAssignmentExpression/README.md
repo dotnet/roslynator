@@ -10,12 +10,10 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [SimpleAssignmentExpression(ExpressionSyntax, ExpressionSyntax)](#3358121271) | |
-| [SimpleAssignmentExpression(ExpressionSyntax, SyntaxToken, ExpressionSyntax)](#455189239) | |
+| [SimpleAssignmentExpression(ExpressionSyntax, ExpressionSyntax)](#Roslynator_CSharp_CSharpFactory_SimpleAssignmentExpression_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_) | |
+| [SimpleAssignmentExpression(ExpressionSyntax, SyntaxToken, ExpressionSyntax)](#Roslynator_CSharp_CSharpFactory_SimpleAssignmentExpression_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_Microsoft_CodeAnalysis_SyntaxToken_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_) | |
 
-<a id="3358121271"></a>
-
-## SimpleAssignmentExpression\(ExpressionSyntax, ExpressionSyntax\) 
+## SimpleAssignmentExpression\(ExpressionSyntax, ExpressionSyntax\) <a id="Roslynator_CSharp_CSharpFactory_SimpleAssignmentExpression_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_"></a>
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.AssignmentExpressionSyntax SimpleAssignmentExpression(Microsoft.CodeAnalysis.CSharp.Syntax.ExpressionSyntax left, Microsoft.CodeAnalysis.CSharp.Syntax.ExpressionSyntax right)
@@ -31,9 +29,7 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.AssignmentExpressionSyntax Si
 
 [AssignmentExpressionSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.assignmentexpressionsyntax)
 
-<a id="455189239"></a>
-
-## SimpleAssignmentExpression\(ExpressionSyntax, SyntaxToken, ExpressionSyntax\) 
+## SimpleAssignmentExpression\(ExpressionSyntax, SyntaxToken, ExpressionSyntax\) <a id="Roslynator_CSharp_CSharpFactory_SimpleAssignmentExpression_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_Microsoft_CodeAnalysis_SyntaxToken_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_"></a>
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.AssignmentExpressionSyntax SimpleAssignmentExpression(Microsoft.CodeAnalysis.CSharp.Syntax.ExpressionSyntax left, Microsoft.CodeAnalysis.SyntaxToken operatorToken, Microsoft.CodeAnalysis.CSharp.Syntax.ExpressionSyntax right)

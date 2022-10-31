@@ -1,12 +1,12 @@
-# ISelection\<T\>\.LastIndex Property
+# ISelection\<T>\.LastIndex Property
 
 [Home](../../../README.md)
 
-**Containing Type**: [ISelection\<T\>](../README.md)
+**Containing Type**: [ISelection\<T>](../README.md)
 
 **Assembly**: Roslynator\.Core\.dll
 
-  
+\
 Gets an index of the last selected item\.
 
 ```csharp

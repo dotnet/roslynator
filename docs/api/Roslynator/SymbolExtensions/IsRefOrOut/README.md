@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Core\.dll
 
-  
+\
 Returns true if the parameter was declared as "ref" or "out" parameter\.
 
 ```csharp

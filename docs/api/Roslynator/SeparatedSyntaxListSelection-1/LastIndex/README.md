@@ -1,12 +1,12 @@
-# SeparatedSyntaxListSelection\<TNode\>\.LastIndex Property
+# SeparatedSyntaxListSelection\<TNode>\.LastIndex Property
 
 [Home](../../../README.md)
 
-**Containing Type**: [SeparatedSyntaxListSelection\<TNode\>](../README.md)
+**Containing Type**: [SeparatedSyntaxListSelection\<TNode>](../README.md)
 
 **Assembly**: Roslynator\.Core\.dll
 
-  
+\
 Gets an index of the last selected node\.
 
 ```csharp
@@ -19,4 +19,4 @@ public int LastIndex { get; }
 
 ### Implements
 
-* [ISelection\<TNode\>.LastIndex](../../ISelection-1/LastIndex/README.md)
+* [ISelection\<TNode>.LastIndex](../../ISelection-1/LastIndex/README.md)

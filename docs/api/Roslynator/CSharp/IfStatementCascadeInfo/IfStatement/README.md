@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-  
+\
 Gets the topmost 'if' statement\.
 
 ```csharp

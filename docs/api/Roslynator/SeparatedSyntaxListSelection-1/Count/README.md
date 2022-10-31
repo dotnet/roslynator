@@ -1,12 +1,12 @@
-# SeparatedSyntaxListSelection\<TNode\>\.Count Property
+# SeparatedSyntaxListSelection\<TNode>\.Count Property
 
 [Home](../../../README.md)
 
-**Containing Type**: [SeparatedSyntaxListSelection\<TNode\>](../README.md)
+**Containing Type**: [SeparatedSyntaxListSelection\<TNode>](../README.md)
 
 **Assembly**: Roslynator\.Core\.dll
 
-  
+\
 Gets a number of selected nodes\.
 
 ```csharp

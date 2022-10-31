@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-  
+\
 Returns single\-line documentation comment that is part of the specified declaration\.
 
 ```csharp

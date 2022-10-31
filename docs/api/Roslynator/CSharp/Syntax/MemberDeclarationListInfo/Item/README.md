@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-  
+\
 Gets the member at the specified index in the list\.
 
 ```csharp
@@ -27,4 +27,4 @@ The member at the specified index in the list\.
 
 ### Implements
 
-* [IReadOnlyList\<MemberDeclarationSyntax\>.Item](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ireadonlylist-1.item)
+* [IReadOnlyList\<MemberDeclarationSyntax>.Item](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ireadonlylist-1.item)

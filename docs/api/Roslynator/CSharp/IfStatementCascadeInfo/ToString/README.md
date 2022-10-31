@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-  
+\
 Returns the string representation of the underlying syntax, not including its leading and trailing trivia\.
 
 ```csharp

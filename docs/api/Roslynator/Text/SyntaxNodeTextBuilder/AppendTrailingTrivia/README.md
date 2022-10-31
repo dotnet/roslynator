@@ -10,22 +10,18 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [AppendTrailingTrivia()](#3135568974) | |
-| [AppendTrailingTrivia(SyntaxNode)](#3371970503) | |
-| [AppendTrailingTrivia(SyntaxToken)](#2929282898) | |
-| [AppendTrailingTrivia(SyntaxTrivia)](#1945253139) | |
+| [AppendTrailingTrivia()](#Roslynator_Text_SyntaxNodeTextBuilder_AppendTrailingTrivia) | |
+| [AppendTrailingTrivia(SyntaxNode)](#Roslynator_Text_SyntaxNodeTextBuilder_AppendTrailingTrivia_Microsoft_CodeAnalysis_SyntaxNode_) | |
+| [AppendTrailingTrivia(SyntaxToken)](#Roslynator_Text_SyntaxNodeTextBuilder_AppendTrailingTrivia_Microsoft_CodeAnalysis_SyntaxToken_) | |
+| [AppendTrailingTrivia(SyntaxTrivia)](#Roslynator_Text_SyntaxNodeTextBuilder_AppendTrailingTrivia_Microsoft_CodeAnalysis_SyntaxTrivia_) | |
 
-<a id="3135568974"></a>
-
-## AppendTrailingTrivia\(\) 
+## AppendTrailingTrivia\(\) <a id="Roslynator_Text_SyntaxNodeTextBuilder_AppendTrailingTrivia"></a>
 
 ```csharp
 public void AppendTrailingTrivia()
 ```
 
-<a id="3371970503"></a>
-
-## AppendTrailingTrivia\(SyntaxNode\) 
+## AppendTrailingTrivia\(SyntaxNode\) <a id="Roslynator_Text_SyntaxNodeTextBuilder_AppendTrailingTrivia_Microsoft_CodeAnalysis_SyntaxNode_"></a>
 
 ```csharp
 public void AppendTrailingTrivia(Microsoft.CodeAnalysis.SyntaxNode node)
@@ -33,9 +29,9 @@ public void AppendTrailingTrivia(Microsoft.CodeAnalysis.SyntaxNode node)
 
 ### Parameters
 
-**node** &ensp; [SyntaxNode](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxnode)<a id="2929282898"></a>
+**node** &ensp; [SyntaxNode](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxnode)
 
-## AppendTrailingTrivia\(SyntaxToken\) 
+## AppendTrailingTrivia\(SyntaxToken\) <a id="Roslynator_Text_SyntaxNodeTextBuilder_AppendTrailingTrivia_Microsoft_CodeAnalysis_SyntaxToken_"></a>
 
 ```csharp
 public void AppendTrailingTrivia(Microsoft.CodeAnalysis.SyntaxToken token)
@@ -43,9 +39,9 @@ public void AppendTrailingTrivia(Microsoft.CodeAnalysis.SyntaxToken token)
 
 ### Parameters
 
-**token** &ensp; [SyntaxToken](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxtoken)<a id="1945253139"></a>
+**token** &ensp; [SyntaxToken](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxtoken)
 
-## AppendTrailingTrivia\(SyntaxTrivia\) 
+## AppendTrailingTrivia\(SyntaxTrivia\) <a id="Roslynator_Text_SyntaxNodeTextBuilder_AppendTrailingTrivia_Microsoft_CodeAnalysis_SyntaxTrivia_"></a>
 
 ```csharp
 public void AppendTrailingTrivia(Microsoft.CodeAnalysis.SyntaxTrivia trivia)

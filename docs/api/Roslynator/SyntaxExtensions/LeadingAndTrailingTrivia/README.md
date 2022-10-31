@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Core\.dll
 
-  
+\
 Returns leading and trailing trivia of the specified node in a single list\.
 
 ```csharp

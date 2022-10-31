@@ -10,15 +10,13 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [Create(BlockSyntax, TextSpan)](#933669229) | Creates a new [StatementListSelection](../README.md) based on the specified block and span\. |
-| [Create(StatementListInfo, TextSpan)](#4239290103) | Creates a new [StatementListSelection](../README.md) based on the specified [StatementListInfo](../../Syntax/StatementListInfo/README.md) and span\. |
-| [Create(SwitchSectionSyntax, TextSpan)](#1797202091) | Creates a new [StatementListSelection](../README.md) based on the specified switch section and span\. |
+| [Create(BlockSyntax, TextSpan)](#Roslynator_CSharp_StatementListSelection_Create_Microsoft_CodeAnalysis_CSharp_Syntax_BlockSyntax_Microsoft_CodeAnalysis_Text_TextSpan_) | Creates a new [StatementListSelection](../README.md) based on the specified block and span\. |
+| [Create(StatementListInfo, TextSpan)](#Roslynator_CSharp_StatementListSelection_Create_Roslynator_CSharp_Syntax_StatementListInfo__Microsoft_CodeAnalysis_Text_TextSpan_) | Creates a new [StatementListSelection](../README.md) based on the specified [StatementListInfo](../../Syntax/StatementListInfo/README.md) and span\. |
+| [Create(SwitchSectionSyntax, TextSpan)](#Roslynator_CSharp_StatementListSelection_Create_Microsoft_CodeAnalysis_CSharp_Syntax_SwitchSectionSyntax_Microsoft_CodeAnalysis_Text_TextSpan_) | Creates a new [StatementListSelection](../README.md) based on the specified switch section and span\. |
 
-<a id="933669229"></a>
+## Create\(BlockSyntax, TextSpan\) <a id="Roslynator_CSharp_StatementListSelection_Create_Microsoft_CodeAnalysis_CSharp_Syntax_BlockSyntax_Microsoft_CodeAnalysis_Text_TextSpan_"></a>
 
-## Create\(BlockSyntax, TextSpan\) 
-
-  
+\
 Creates a new [StatementListSelection](../README.md) based on the specified block and span\.
 
 ```csharp
@@ -35,11 +33,9 @@ public static Roslynator.CSharp.StatementListSelection Create(Microsoft.CodeAnal
 
 [StatementListSelection](../README.md)
 
-<a id="4239290103"></a>
+## Create\(StatementListInfo, TextSpan\) <a id="Roslynator_CSharp_StatementListSelection_Create_Roslynator_CSharp_Syntax_StatementListInfo__Microsoft_CodeAnalysis_Text_TextSpan_"></a>
 
-## Create\(StatementListInfo, TextSpan\) 
-
-  
+\
 Creates a new [StatementListSelection](../README.md) based on the specified [StatementListInfo](../../Syntax/StatementListInfo/README.md) and span\.
 
 ```csharp
@@ -56,11 +52,9 @@ public static Roslynator.CSharp.StatementListSelection Create(in Roslynator.CSha
 
 [StatementListSelection](../README.md)
 
-<a id="1797202091"></a>
+## Create\(SwitchSectionSyntax, TextSpan\) <a id="Roslynator_CSharp_StatementListSelection_Create_Microsoft_CodeAnalysis_CSharp_Syntax_SwitchSectionSyntax_Microsoft_CodeAnalysis_Text_TextSpan_"></a>
 
-## Create\(SwitchSectionSyntax, TextSpan\) 
-
-  
+\
 Creates a new [StatementListSelection](../README.md) based on the specified switch section and span\.
 
 ```csharp

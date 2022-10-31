@@ -10,14 +10,12 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [WithoutLeadingTrivia(SyntaxNodeOrToken)](#3431085438) | Creates a new [SyntaxNodeOrToken](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxnodeortoken) with the leading trivia removed\. |
-| [WithoutLeadingTrivia(SyntaxToken)](#43937718) | Creates a new token from this token with the leading trivia removed\. |
+| [WithoutLeadingTrivia(SyntaxNodeOrToken)](#Roslynator_SyntaxExtensions_WithoutLeadingTrivia_Microsoft_CodeAnalysis_SyntaxNodeOrToken_) | Creates a new [SyntaxNodeOrToken](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxnodeortoken) with the leading trivia removed\. |
+| [WithoutLeadingTrivia(SyntaxToken)](#Roslynator_SyntaxExtensions_WithoutLeadingTrivia_Microsoft_CodeAnalysis_SyntaxToken_) | Creates a new token from this token with the leading trivia removed\. |
 
-<a id="3431085438"></a>
+## WithoutLeadingTrivia\(SyntaxNodeOrToken\) <a id="Roslynator_SyntaxExtensions_WithoutLeadingTrivia_Microsoft_CodeAnalysis_SyntaxNodeOrToken_"></a>
 
-## WithoutLeadingTrivia\(SyntaxNodeOrToken\) 
-
-  
+\
 Creates a new [SyntaxNodeOrToken](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxnodeortoken) with the leading trivia removed\.
 
 ```csharp
@@ -32,11 +30,9 @@ public static Microsoft.CodeAnalysis.SyntaxNodeOrToken WithoutLeadingTrivia(this
 
 [SyntaxNodeOrToken](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxnodeortoken)
 
-<a id="43937718"></a>
+## WithoutLeadingTrivia\(SyntaxToken\) <a id="Roslynator_SyntaxExtensions_WithoutLeadingTrivia_Microsoft_CodeAnalysis_SyntaxToken_"></a>
 
-## WithoutLeadingTrivia\(SyntaxToken\) 
-
-  
+\
 Creates a new token from this token with the leading trivia removed\.
 
 ```csharp

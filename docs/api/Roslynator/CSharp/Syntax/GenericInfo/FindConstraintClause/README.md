@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-  
+\
 Searches for a constraint clause with the specified type parameter name and returns the first occurrence within the constraint clauses\.
 
 ```csharp

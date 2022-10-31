@@ -1,8 +1,8 @@
-# SeparatedSyntaxListSelection\<TNode\>\.Enumerator\.GetHashCode\(\) Method
+# SeparatedSyntaxListSelection\<TNode>\.Enumerator\.GetHashCode\(\) Method
 
 [Home](../../../../README.md)
 
-**Containing Type**: [SeparatedSyntaxListSelection\<TNode\>.Enumerator](../README.md)
+**Containing Type**: [SeparatedSyntaxListSelection\<TNode>.Enumerator](../README.md)
 
 **Assembly**: Roslynator\.Core\.dll
 

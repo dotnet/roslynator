@@ -10,18 +10,16 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [GetSymbol(SemanticModel, AttributeSyntax, CancellationToken)](#3570389687) | Returns what symbol, if any, the specified attribute syntax bound to\. |
-| [GetSymbol(SemanticModel, ConstructorInitializerSyntax, CancellationToken)](#3142024581) | Returns what symbol, if any, the specified constructor initializer syntax bound to\. |
-| [GetSymbol(SemanticModel, CrefSyntax, CancellationToken)](#423864560) | Returns what symbol, if any, the specified cref syntax bound to\. |
-| [GetSymbol(SemanticModel, ExpressionSyntax, CancellationToken)](#2073342452) | Returns what symbol, if any, the specified expression syntax bound to\. |
-| [GetSymbol(SemanticModel, OrderingSyntax, CancellationToken)](#1387654106) | Returns what symbol, if any, the specified ordering syntax bound to\. |
-| [GetSymbol(SemanticModel, SelectOrGroupClauseSyntax, CancellationToken)](#2866826046) | Returns what symbol, if any, the specified select or group clause bound to\. |
+| [GetSymbol(SemanticModel, AttributeSyntax, CancellationToken)](#Roslynator_CSharp_CSharpExtensions_GetSymbol_Microsoft_CodeAnalysis_SemanticModel_Microsoft_CodeAnalysis_CSharp_Syntax_AttributeSyntax_System_Threading_CancellationToken_) | Returns what symbol, if any, the specified attribute syntax bound to\. |
+| [GetSymbol(SemanticModel, ConstructorInitializerSyntax, CancellationToken)](#Roslynator_CSharp_CSharpExtensions_GetSymbol_Microsoft_CodeAnalysis_SemanticModel_Microsoft_CodeAnalysis_CSharp_Syntax_ConstructorInitializerSyntax_System_Threading_CancellationToken_) | Returns what symbol, if any, the specified constructor initializer syntax bound to\. |
+| [GetSymbol(SemanticModel, CrefSyntax, CancellationToken)](#Roslynator_CSharp_CSharpExtensions_GetSymbol_Microsoft_CodeAnalysis_SemanticModel_Microsoft_CodeAnalysis_CSharp_Syntax_CrefSyntax_System_Threading_CancellationToken_) | Returns what symbol, if any, the specified cref syntax bound to\. |
+| [GetSymbol(SemanticModel, ExpressionSyntax, CancellationToken)](#Roslynator_CSharp_CSharpExtensions_GetSymbol_Microsoft_CodeAnalysis_SemanticModel_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_System_Threading_CancellationToken_) | Returns what symbol, if any, the specified expression syntax bound to\. |
+| [GetSymbol(SemanticModel, OrderingSyntax, CancellationToken)](#Roslynator_CSharp_CSharpExtensions_GetSymbol_Microsoft_CodeAnalysis_SemanticModel_Microsoft_CodeAnalysis_CSharp_Syntax_OrderingSyntax_System_Threading_CancellationToken_) | Returns what symbol, if any, the specified ordering syntax bound to\. |
+| [GetSymbol(SemanticModel, SelectOrGroupClauseSyntax, CancellationToken)](#Roslynator_CSharp_CSharpExtensions_GetSymbol_Microsoft_CodeAnalysis_SemanticModel_Microsoft_CodeAnalysis_CSharp_Syntax_SelectOrGroupClauseSyntax_System_Threading_CancellationToken_) | Returns what symbol, if any, the specified select or group clause bound to\. |
 
-<a id="3570389687"></a>
+## GetSymbol\(SemanticModel, AttributeSyntax, CancellationToken\) <a id="Roslynator_CSharp_CSharpExtensions_GetSymbol_Microsoft_CodeAnalysis_SemanticModel_Microsoft_CodeAnalysis_CSharp_Syntax_AttributeSyntax_System_Threading_CancellationToken_"></a>
 
-## GetSymbol\(SemanticModel, AttributeSyntax, CancellationToken\) 
-
-  
+\
 Returns what symbol, if any, the specified attribute syntax bound to\.
 
 ```csharp
@@ -40,11 +38,9 @@ public static Microsoft.CodeAnalysis.ISymbol GetSymbol(this Microsoft.CodeAnalys
 
 [ISymbol](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.isymbol)
 
-<a id="3142024581"></a>
+## GetSymbol\(SemanticModel, ConstructorInitializerSyntax, CancellationToken\) <a id="Roslynator_CSharp_CSharpExtensions_GetSymbol_Microsoft_CodeAnalysis_SemanticModel_Microsoft_CodeAnalysis_CSharp_Syntax_ConstructorInitializerSyntax_System_Threading_CancellationToken_"></a>
 
-## GetSymbol\(SemanticModel, ConstructorInitializerSyntax, CancellationToken\) 
-
-  
+\
 Returns what symbol, if any, the specified constructor initializer syntax bound to\.
 
 ```csharp
@@ -63,11 +59,9 @@ public static Microsoft.CodeAnalysis.ISymbol GetSymbol(this Microsoft.CodeAnalys
 
 [ISymbol](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.isymbol)
 
-<a id="423864560"></a>
+## GetSymbol\(SemanticModel, CrefSyntax, CancellationToken\) <a id="Roslynator_CSharp_CSharpExtensions_GetSymbol_Microsoft_CodeAnalysis_SemanticModel_Microsoft_CodeAnalysis_CSharp_Syntax_CrefSyntax_System_Threading_CancellationToken_"></a>
 
-## GetSymbol\(SemanticModel, CrefSyntax, CancellationToken\) 
-
-  
+\
 Returns what symbol, if any, the specified cref syntax bound to\.
 
 ```csharp
@@ -86,11 +80,9 @@ public static Microsoft.CodeAnalysis.ISymbol GetSymbol(this Microsoft.CodeAnalys
 
 [ISymbol](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.isymbol)
 
-<a id="2073342452"></a>
+## GetSymbol\(SemanticModel, ExpressionSyntax, CancellationToken\) <a id="Roslynator_CSharp_CSharpExtensions_GetSymbol_Microsoft_CodeAnalysis_SemanticModel_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_System_Threading_CancellationToken_"></a>
 
-## GetSymbol\(SemanticModel, ExpressionSyntax, CancellationToken\) 
-
-  
+\
 Returns what symbol, if any, the specified expression syntax bound to\.
 
 ```csharp
@@ -109,11 +101,9 @@ public static Microsoft.CodeAnalysis.ISymbol GetSymbol(this Microsoft.CodeAnalys
 
 [ISymbol](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.isymbol)
 
-<a id="1387654106"></a>
+## GetSymbol\(SemanticModel, OrderingSyntax, CancellationToken\) <a id="Roslynator_CSharp_CSharpExtensions_GetSymbol_Microsoft_CodeAnalysis_SemanticModel_Microsoft_CodeAnalysis_CSharp_Syntax_OrderingSyntax_System_Threading_CancellationToken_"></a>
 
-## GetSymbol\(SemanticModel, OrderingSyntax, CancellationToken\) 
-
-  
+\
 Returns what symbol, if any, the specified ordering syntax bound to\.
 
 ```csharp
@@ -132,11 +122,9 @@ public static Microsoft.CodeAnalysis.ISymbol GetSymbol(this Microsoft.CodeAnalys
 
 [ISymbol](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.isymbol)
 
-<a id="2866826046"></a>
+## GetSymbol\(SemanticModel, SelectOrGroupClauseSyntax, CancellationToken\) <a id="Roslynator_CSharp_CSharpExtensions_GetSymbol_Microsoft_CodeAnalysis_SemanticModel_Microsoft_CodeAnalysis_CSharp_Syntax_SelectOrGroupClauseSyntax_System_Threading_CancellationToken_"></a>
 
-## GetSymbol\(SemanticModel, SelectOrGroupClauseSyntax, CancellationToken\) 
-
-  
+\
 Returns what symbol, if any, the specified select or group clause bound to\.
 
 ```csharp

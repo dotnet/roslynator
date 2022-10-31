@@ -1,12 +1,12 @@
-# CSharpDiagnosticVerifier\<TAnalyzer, TFixProvider\>\.Options Property
+# CSharpDiagnosticVerifier\<TAnalyzer, TFixProvider>\.Options Property
 
 [Home](../../../../../README.md)
 
-**Containing Type**: [CSharpDiagnosticVerifier\<TAnalyzer, TFixProvider\>](../README.md)
+**Containing Type**: [CSharpDiagnosticVerifier\<TAnalyzer, TFixProvider>](../README.md)
 
 **Assembly**: Roslynator\.Testing\.CSharp\.dll
 
-  
+\
 Gets a test options\.
 
 ```csharp

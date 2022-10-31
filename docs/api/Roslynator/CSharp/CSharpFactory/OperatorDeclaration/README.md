@@ -10,12 +10,10 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [OperatorDeclaration(SyntaxTokenList, TypeSyntax, SyntaxToken, ParameterListSyntax, ArrowExpressionClauseSyntax)](#2138558804) | |
-| [OperatorDeclaration(SyntaxTokenList, TypeSyntax, SyntaxToken, ParameterListSyntax, BlockSyntax)](#3606235150) | |
+| [OperatorDeclaration(SyntaxTokenList, TypeSyntax, SyntaxToken, ParameterListSyntax, ArrowExpressionClauseSyntax)](#Roslynator_CSharp_CSharpFactory_OperatorDeclaration_Microsoft_CodeAnalysis_SyntaxTokenList_Microsoft_CodeAnalysis_CSharp_Syntax_TypeSyntax_Microsoft_CodeAnalysis_SyntaxToken_Microsoft_CodeAnalysis_CSharp_Syntax_ParameterListSyntax_Microsoft_CodeAnalysis_CSharp_Syntax_ArrowExpressionClauseSyntax_) | |
+| [OperatorDeclaration(SyntaxTokenList, TypeSyntax, SyntaxToken, ParameterListSyntax, BlockSyntax)](#Roslynator_CSharp_CSharpFactory_OperatorDeclaration_Microsoft_CodeAnalysis_SyntaxTokenList_Microsoft_CodeAnalysis_CSharp_Syntax_TypeSyntax_Microsoft_CodeAnalysis_SyntaxToken_Microsoft_CodeAnalysis_CSharp_Syntax_ParameterListSyntax_Microsoft_CodeAnalysis_CSharp_Syntax_BlockSyntax_) | |
 
-<a id="2138558804"></a>
-
-## OperatorDeclaration\(SyntaxTokenList, TypeSyntax, SyntaxToken, ParameterListSyntax, ArrowExpressionClauseSyntax\) 
+## OperatorDeclaration\(SyntaxTokenList, TypeSyntax, SyntaxToken, ParameterListSyntax, ArrowExpressionClauseSyntax\) <a id="Roslynator_CSharp_CSharpFactory_OperatorDeclaration_Microsoft_CodeAnalysis_SyntaxTokenList_Microsoft_CodeAnalysis_CSharp_Syntax_TypeSyntax_Microsoft_CodeAnalysis_SyntaxToken_Microsoft_CodeAnalysis_CSharp_Syntax_ParameterListSyntax_Microsoft_CodeAnalysis_CSharp_Syntax_ArrowExpressionClauseSyntax_"></a>
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.OperatorDeclarationSyntax OperatorDeclaration(Microsoft.CodeAnalysis.SyntaxTokenList modifiers, Microsoft.CodeAnalysis.CSharp.Syntax.TypeSyntax returnType, Microsoft.CodeAnalysis.SyntaxToken operatorToken, Microsoft.CodeAnalysis.CSharp.Syntax.ParameterListSyntax parameterList, Microsoft.CodeAnalysis.CSharp.Syntax.ArrowExpressionClauseSyntax expressionBody)
@@ -37,9 +35,7 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.OperatorDeclarationSyntax Ope
 
 [OperatorDeclarationSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.operatordeclarationsyntax)
 
-<a id="3606235150"></a>
-
-## OperatorDeclaration\(SyntaxTokenList, TypeSyntax, SyntaxToken, ParameterListSyntax, BlockSyntax\) 
+## OperatorDeclaration\(SyntaxTokenList, TypeSyntax, SyntaxToken, ParameterListSyntax, BlockSyntax\) <a id="Roslynator_CSharp_CSharpFactory_OperatorDeclaration_Microsoft_CodeAnalysis_SyntaxTokenList_Microsoft_CodeAnalysis_CSharp_Syntax_TypeSyntax_Microsoft_CodeAnalysis_SyntaxToken_Microsoft_CodeAnalysis_CSharp_Syntax_ParameterListSyntax_Microsoft_CodeAnalysis_CSharp_Syntax_BlockSyntax_"></a>
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.OperatorDeclarationSyntax OperatorDeclaration(Microsoft.CodeAnalysis.SyntaxTokenList modifiers, Microsoft.CodeAnalysis.CSharp.Syntax.TypeSyntax returnType, Microsoft.CodeAnalysis.SyntaxToken operatorToken, Microsoft.CodeAnalysis.CSharp.Syntax.ParameterListSyntax parameterList, Microsoft.CodeAnalysis.CSharp.Syntax.BlockSyntax body)

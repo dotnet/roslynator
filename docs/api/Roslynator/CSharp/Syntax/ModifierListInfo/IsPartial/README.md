@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-  
+\
 True if the modifier list contains "partial" modifier\.
 
 ```csharp

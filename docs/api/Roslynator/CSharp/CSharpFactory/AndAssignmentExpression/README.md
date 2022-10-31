@@ -10,12 +10,10 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [AndAssignmentExpression(ExpressionSyntax, ExpressionSyntax)](#3726163172) | |
-| [AndAssignmentExpression(ExpressionSyntax, SyntaxToken, ExpressionSyntax)](#1360296056) | |
+| [AndAssignmentExpression(ExpressionSyntax, ExpressionSyntax)](#Roslynator_CSharp_CSharpFactory_AndAssignmentExpression_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_) | |
+| [AndAssignmentExpression(ExpressionSyntax, SyntaxToken, ExpressionSyntax)](#Roslynator_CSharp_CSharpFactory_AndAssignmentExpression_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_Microsoft_CodeAnalysis_SyntaxToken_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_) | |
 
-<a id="3726163172"></a>
-
-## AndAssignmentExpression\(ExpressionSyntax, ExpressionSyntax\) 
+## AndAssignmentExpression\(ExpressionSyntax, ExpressionSyntax\) <a id="Roslynator_CSharp_CSharpFactory_AndAssignmentExpression_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_"></a>
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.AssignmentExpressionSyntax AndAssignmentExpression(Microsoft.CodeAnalysis.CSharp.Syntax.ExpressionSyntax left, Microsoft.CodeAnalysis.CSharp.Syntax.ExpressionSyntax right)
@@ -31,9 +29,7 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.AssignmentExpressionSyntax An
 
 [AssignmentExpressionSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.assignmentexpressionsyntax)
 
-<a id="1360296056"></a>
-
-## AndAssignmentExpression\(ExpressionSyntax, SyntaxToken, ExpressionSyntax\) 
+## AndAssignmentExpression\(ExpressionSyntax, SyntaxToken, ExpressionSyntax\) <a id="Roslynator_CSharp_CSharpFactory_AndAssignmentExpression_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_Microsoft_CodeAnalysis_SyntaxToken_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_"></a>
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.AssignmentExpressionSyntax AndAssignmentExpression(Microsoft.CodeAnalysis.CSharp.Syntax.ExpressionSyntax left, Microsoft.CodeAnalysis.SyntaxToken operatorToken, Microsoft.CodeAnalysis.CSharp.Syntax.ExpressionSyntax right)

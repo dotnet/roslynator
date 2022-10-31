@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-  
+\
 The parameter list that contains the parameter\.
 
 ```csharp

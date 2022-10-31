@@ -1,4 +1,4 @@
-# SyntaxListSelection\<TNode\>\.Enumerator Struct
+# SyntaxListSelection\<TNode>\.Enumerator Struct
 
 [Home](../../../README.md) &#x2022; [Properties](#properties) &#x2022; [Methods](#methods)
 
@@ -12,7 +12,7 @@ public struct SyntaxListSelection<TNode>.Enumerator
 
 ### Inheritance
 
-[Object](https://docs.microsoft.com/en-us/dotnet/api/system.object) &#x2192; [ValueType](https://docs.microsoft.com/en-us/dotnet/api/system.valuetype) &#x2192; SyntaxListSelection\<TNode\>\.Enumerator
+[Object](https://docs.microsoft.com/en-us/dotnet/api/system.object) &#x2192; [ValueType](https://docs.microsoft.com/en-us/dotnet/api/system.valuetype) &#x2192; SyntaxListSelection\<TNode>\.Enumerator
 
 ## Properties
 

@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-  
+\
 The expression that is evaluated whether is \(not\) null\. for example "x" in "x == null"\.
 
 ```csharp

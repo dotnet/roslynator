@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Core\.dll
 
-  
+\
 Creates a new [TextLineCollectionSelection](../README.md) based on the specified list and span\.
 
 ```csharp

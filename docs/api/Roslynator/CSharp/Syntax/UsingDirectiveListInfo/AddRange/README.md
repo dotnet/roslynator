@@ -1,4 +1,4 @@
-# UsingDirectiveListInfo\.AddRange\(IEnumerable\<UsingDirectiveSyntax\>\) Method
+# UsingDirectiveListInfo\.AddRange\(IEnumerable\<UsingDirectiveSyntax>\) Method
 
 [Home](../../../../../README.md)
 
@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-  
+\
 Creates a new [UsingDirectiveListInfo](../README.md) with the specified usings added at the end\.
 
 ```csharp
@@ -15,7 +15,7 @@ public Roslynator.CSharp.Syntax.UsingDirectiveListInfo AddRange(System.Collectio
 
 ### Parameters
 
-**usings** &ensp; [IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)\<[UsingDirectiveSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.usingdirectivesyntax)\>
+**usings** &ensp; [IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)\<[UsingDirectiveSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.usingdirectivesyntax)>
 
 ### Returns
 

@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Core\.dll
 
-  
+\
 Gets an underlying collection that contains selected lines\.
 
 ```csharp

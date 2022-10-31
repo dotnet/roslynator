@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-  
+\
 Provides information about generic syntax \(class, struct, interface, delegate, method or local function\)\.
 
 ```csharp
@@ -42,6 +42,6 @@ public readonly struct GenericInfo
 | [RemoveConstraintClause(TypeParameterConstraintClauseSyntax)](RemoveConstraintClause/README.md) | Creates a new [GenericInfo](./README.md) with the specified constraint clause removed\. |
 | [RemoveTypeParameter(TypeParameterSyntax)](RemoveTypeParameter/README.md) | Creates a new [GenericInfo](./README.md) with the specified type parameter removed\. |
 | [ToString()](https://docs.microsoft.com/en-us/dotnet/api/system.valuetype.tostring) |  \(Inherited from [ValueType](https://docs.microsoft.com/en-us/dotnet/api/system.valuetype)\) |
-| [WithConstraintClauses(SyntaxList\<TypeParameterConstraintClauseSyntax\>)](WithConstraintClauses/README.md) | Creates a new [GenericInfo](./README.md) with the constraint clauses updated\. |
+| [WithConstraintClauses(SyntaxList\<TypeParameterConstraintClauseSyntax>)](WithConstraintClauses/README.md) | Creates a new [GenericInfo](./README.md) with the constraint clauses updated\. |
 | [WithTypeParameterList(TypeParameterListSyntax)](WithTypeParameterList/README.md) | Creates a new [GenericInfo](./README.md) with the type parameter list updated\. |
 

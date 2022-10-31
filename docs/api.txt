@@ -1,10 +1,10 @@
-﻿assembly Roslynator.Core, Version=4.1.2.0, Culture=neutral, PublicKeyToken=926ea54d246a765e
-assembly Roslynator.CSharp, Version=4.1.2.0, Culture=neutral, PublicKeyToken=926ea54d246a765e
-assembly Roslynator.CSharp.Workspaces, Version=4.1.2.0, Culture=neutral, PublicKeyToken=926ea54d246a765e
-assembly Roslynator.Testing.Common, Version=4.1.2.0, Culture=neutral, PublicKeyToken=926ea54d246a765e
-assembly Roslynator.Testing.CSharp, Version=4.1.2.0, Culture=neutral, PublicKeyToken=926ea54d246a765e
-assembly Roslynator.Testing.CSharp.Xunit, Version=4.1.2.0, Culture=neutral, PublicKeyToken=926ea54d246a765e
-assembly Roslynator.Workspaces.Core, Version=4.1.2.0, Culture=neutral, PublicKeyToken=926ea54d246a765e
+﻿assembly Roslynator.Core, Version=4.1.0.0, Culture=neutral, PublicKeyToken=926ea54d246a765e
+assembly Roslynator.CSharp, Version=4.1.0.0, Culture=neutral, PublicKeyToken=926ea54d246a765e
+assembly Roslynator.CSharp.Workspaces, Version=4.1.0.0, Culture=neutral, PublicKeyToken=926ea54d246a765e
+assembly Roslynator.Testing.Common, Version=4.1.0.0, Culture=neutral, PublicKeyToken=926ea54d246a765e
+assembly Roslynator.Testing.CSharp, Version=4.1.0.0, Culture=neutral, PublicKeyToken=926ea54d246a765e
+assembly Roslynator.Testing.CSharp.Xunit, Version=4.1.0.0, Culture=neutral, PublicKeyToken=926ea54d246a765e
+assembly Roslynator.Workspaces.Core, Version=4.1.0.0, Culture=neutral, PublicKeyToken=926ea54d246a765e
 
 namespace Roslynator
 

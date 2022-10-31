@@ -10,14 +10,12 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [LastIndexOf(Func\<StatementSyntax, Boolean\>)](#3886378507) | Searches for a statement that matches the predicate and returns zero\-based index of the last occurrence in the list\. |
-| [LastIndexOf(StatementSyntax)](#1794847222) | Searches for a statement and returns zero\-based index of the last occurrence in the list\. |
+| [LastIndexOf(Func\<StatementSyntax, Boolean>)](#Roslynator_CSharp_Syntax_StatementListInfo_LastIndexOf_System_Func_Microsoft_CodeAnalysis_CSharp_Syntax_StatementSyntax_System_Boolean__) | Searches for a statement that matches the predicate and returns zero\-based index of the last occurrence in the list\. |
+| [LastIndexOf(StatementSyntax)](#Roslynator_CSharp_Syntax_StatementListInfo_LastIndexOf_Microsoft_CodeAnalysis_CSharp_Syntax_StatementSyntax_) | Searches for a statement and returns zero\-based index of the last occurrence in the list\. |
 
-<a id="3886378507"></a>
+## LastIndexOf\(Func\<StatementSyntax, Boolean>\) <a id="Roslynator_CSharp_Syntax_StatementListInfo_LastIndexOf_System_Func_Microsoft_CodeAnalysis_CSharp_Syntax_StatementSyntax_System_Boolean__"></a>
 
-## LastIndexOf\(Func\<StatementSyntax, Boolean\>\) 
-
-  
+\
 Searches for a statement that matches the predicate and returns zero\-based index of the last occurrence in the list\.
 
 ```csharp
@@ -26,17 +24,15 @@ public int LastIndexOf(Func<Microsoft.CodeAnalysis.CSharp.Syntax.StatementSyntax
 
 ### Parameters
 
-**predicate** &ensp; [Func](https://docs.microsoft.com/en-us/dotnet/api/system.func-2)\<[StatementSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.statementsyntax), [Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)\>
+**predicate** &ensp; [Func](https://docs.microsoft.com/en-us/dotnet/api/system.func-2)\<[StatementSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.statementsyntax), [Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)>
 
 ### Returns
 
 [Int32](https://docs.microsoft.com/en-us/dotnet/api/system.int32)
 
-<a id="1794847222"></a>
+## LastIndexOf\(StatementSyntax\) <a id="Roslynator_CSharp_Syntax_StatementListInfo_LastIndexOf_Microsoft_CodeAnalysis_CSharp_Syntax_StatementSyntax_"></a>
 
-## LastIndexOf\(StatementSyntax\) 
-
-  
+\
 Searches for a statement and returns zero\-based index of the last occurrence in the list\.
 
 ```csharp

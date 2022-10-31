@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Testing\.Common\.dll
 
-  
+\
 Gets a source code after a code fix or a refactoring was applied\.
 
 ```csharp

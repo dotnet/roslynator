@@ -10,15 +10,13 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [Getter(AccessorListSyntax)](#3749591364) | Returns a get accessor contained in the specified list\. |
-| [Getter(IndexerDeclarationSyntax)](#2491107778) | Returns a get accessor that is contained in the specified indexer declaration\. |
-| [Getter(PropertyDeclarationSyntax)](#2677777844) | Returns property get accessor, if any\. |
+| [Getter(AccessorListSyntax)](#Roslynator_CSharp_SyntaxExtensions_Getter_Microsoft_CodeAnalysis_CSharp_Syntax_AccessorListSyntax_) | Returns a get accessor contained in the specified list\. |
+| [Getter(IndexerDeclarationSyntax)](#Roslynator_CSharp_SyntaxExtensions_Getter_Microsoft_CodeAnalysis_CSharp_Syntax_IndexerDeclarationSyntax_) | Returns a get accessor that is contained in the specified indexer declaration\. |
+| [Getter(PropertyDeclarationSyntax)](#Roslynator_CSharp_SyntaxExtensions_Getter_Microsoft_CodeAnalysis_CSharp_Syntax_PropertyDeclarationSyntax_) | Returns property get accessor, if any\. |
 
-<a id="3749591364"></a>
+## Getter\(AccessorListSyntax\) <a id="Roslynator_CSharp_SyntaxExtensions_Getter_Microsoft_CodeAnalysis_CSharp_Syntax_AccessorListSyntax_"></a>
 
-## Getter\(AccessorListSyntax\) 
-
-  
+\
 Returns a get accessor contained in the specified list\.
 
 ```csharp
@@ -33,11 +31,9 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.AccessorDeclarationSyntax Get
 
 [AccessorDeclarationSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.accessordeclarationsyntax)
 
-<a id="2491107778"></a>
+## Getter\(IndexerDeclarationSyntax\) <a id="Roslynator_CSharp_SyntaxExtensions_Getter_Microsoft_CodeAnalysis_CSharp_Syntax_IndexerDeclarationSyntax_"></a>
 
-## Getter\(IndexerDeclarationSyntax\) 
-
-  
+\
 Returns a get accessor that is contained in the specified indexer declaration\.
 
 ```csharp
@@ -52,11 +48,9 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.AccessorDeclarationSyntax Get
 
 [AccessorDeclarationSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.accessordeclarationsyntax)
 
-<a id="2677777844"></a>
+## Getter\(PropertyDeclarationSyntax\) <a id="Roslynator_CSharp_SyntaxExtensions_Getter_Microsoft_CodeAnalysis_CSharp_Syntax_PropertyDeclarationSyntax_"></a>
 
-## Getter\(PropertyDeclarationSyntax\) 
-
-  
+\
 Returns property get accessor, if any\.
 
 ```csharp

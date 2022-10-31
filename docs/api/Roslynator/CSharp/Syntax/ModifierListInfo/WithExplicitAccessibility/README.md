@@ -1,4 +1,4 @@
-# ModifierListInfo\.WithExplicitAccessibility\(Accessibility, IComparer\<SyntaxKind\>\) Method
+# ModifierListInfo\.WithExplicitAccessibility\(Accessibility, IComparer\<SyntaxKind>\) Method
 
 [Home](../../../../../README.md)
 
@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-  
+\
 Creates a new [ModifierListInfo](../README.md) with accessibility modifiers updated\.
 
 ```csharp
@@ -17,7 +17,7 @@ public Roslynator.CSharp.Syntax.ModifierListInfo WithExplicitAccessibility(Micro
 
 **newAccessibility** &ensp; [Accessibility](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.accessibility)
 
-**comparer** &ensp; [IComparer](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.icomparer-1)\<[SyntaxKind](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntaxkind)\>
+**comparer** &ensp; [IComparer](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.icomparer-1)\<[SyntaxKind](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntaxkind)>
 
 ### Returns
 

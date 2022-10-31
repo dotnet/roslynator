@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-  
+\
 Gets the previous statement of the specified statement\.
 If the specified statement is not contained in the list, or if there is no previous statement, then this method returns null\.
 

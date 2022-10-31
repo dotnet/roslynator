@@ -1,4 +1,4 @@
-# CSharpCompilerDiagnosticFixVerifier\<TFixProvider\> Class
+# CSharpCompilerDiagnosticFixVerifier\<TFixProvider> Class
 
 [Home](../../../../README.md) &#x2022; [Properties](#properties) &#x2022; [Methods](#methods)
 
@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Testing\.CSharp\.dll
 
-  
+\
 Represents a verifier for C\# compiler diagnostics\.
 
 ```csharp
@@ -19,11 +19,11 @@ public abstract class CSharpCompilerDiagnosticFixVerifier<TFixProvider> : Roslyn
 
 ### Inheritance
 
-[Object](https://docs.microsoft.com/en-us/dotnet/api/system.object) &#x2192; [CodeVerifier](../../CodeVerifier/README.md) &#x2192; [CompilerDiagnosticFixVerifier\<TFixProvider\>](../../CompilerDiagnosticFixVerifier-1/README.md) &#x2192; CSharpCompilerDiagnosticFixVerifier\<TFixProvider\>
+[Object](https://docs.microsoft.com/en-us/dotnet/api/system.object) &#x2192; [CodeVerifier](../../CodeVerifier/README.md) &#x2192; [CompilerDiagnosticFixVerifier\<TFixProvider>](../../CompilerDiagnosticFixVerifier-1/README.md) &#x2192; CSharpCompilerDiagnosticFixVerifier\<TFixProvider>
 
 ### Derived
 
-* [XunitCompilerDiagnosticFixVerifier\<TFixProvider\>](../Xunit/XunitCompilerDiagnosticFixVerifier-1/README.md)
+* [XunitCompilerDiagnosticFixVerifier\<TFixProvider>](../Xunit/XunitCompilerDiagnosticFixVerifier-1/README.md)
 
 ## Properties
 
@@ -41,6 +41,6 @@ public abstract class CSharpCompilerDiagnosticFixVerifier<TFixProvider> : Roslyn
 | [GetType()](https://docs.microsoft.com/en-us/dotnet/api/system.object.gettype) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
 | [MemberwiseClone()](https://docs.microsoft.com/en-us/dotnet/api/system.object.memberwiseclone) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
 | [ToString()](https://docs.microsoft.com/en-us/dotnet/api/system.object.tostring) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
-| [VerifyFixAsync(CompilerDiagnosticFixTestData, ExpectedTestState, TestOptions, CancellationToken)](../../CompilerDiagnosticFixVerifier-1/VerifyFixAsync/README.md) | Verifies that specified source will produce compiler diagnostic\. \(Inherited from [CompilerDiagnosticFixVerifier\<TFixProvider\>](../../CompilerDiagnosticFixVerifier-1/README.md)\) |
-| [VerifyNoFixAsync(CompilerDiagnosticFixTestData, TestOptions, CancellationToken)](../../CompilerDiagnosticFixVerifier-1/VerifyNoFixAsync/README.md) | Verifies that specified source will not produce compiler diagnostic\. \(Inherited from [CompilerDiagnosticFixVerifier\<TFixProvider\>](../../CompilerDiagnosticFixVerifier-1/README.md)\) |
+| [VerifyFixAsync(CompilerDiagnosticFixTestData, ExpectedTestState, TestOptions, CancellationToken)](../../CompilerDiagnosticFixVerifier-1/VerifyFixAsync/README.md) | Verifies that specified source will produce compiler diagnostic\. \(Inherited from [CompilerDiagnosticFixVerifier\<TFixProvider>](../../CompilerDiagnosticFixVerifier-1/README.md)\) |
+| [VerifyNoFixAsync(CompilerDiagnosticFixTestData, TestOptions, CancellationToken)](../../CompilerDiagnosticFixVerifier-1/VerifyNoFixAsync/README.md) | Verifies that specified source will not produce compiler diagnostic\. \(Inherited from [CompilerDiagnosticFixVerifier\<TFixProvider>](../../CompilerDiagnosticFixVerifier-1/README.md)\) |
 

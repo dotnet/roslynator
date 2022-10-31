@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-  
+\
 Return true if the specified declaration is publicly visible\.
 
 ```csharp

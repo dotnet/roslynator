@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Testing\.Common\.dll
 
-  
+\
 Represents test data for a diagnostic and its fix\.
 
 ```csharp
@@ -21,7 +21,7 @@ public sealed class DiagnosticTestData
 
 | Constructor | Summary |
 | ----------- | ------- |
-| [DiagnosticTestData(DiagnosticDescriptor, String, IEnumerable\<TextSpan\>, IEnumerable\<TextSpan\>, IEnumerable\<AdditionalFile\>, String, IFormatProvider, String, Boolean)](-ctor/README.md) | Initializes a new instance of [DiagnosticTestData](./README.md)\. |
+| [DiagnosticTestData(DiagnosticDescriptor, String, IEnumerable\<TextSpan>, IEnumerable\<TextSpan>, IEnumerable\<AdditionalFile>, String, IFormatProvider, String, Boolean)](-ctor/README.md) | Initializes a new instance of [DiagnosticTestData](./README.md)\. |
 
 ## Properties
 
@@ -46,5 +46,5 @@ public sealed class DiagnosticTestData
 | [GetType()](https://docs.microsoft.com/en-us/dotnet/api/system.object.gettype) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
 | [MemberwiseClone()](https://docs.microsoft.com/en-us/dotnet/api/system.object.memberwiseclone) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
 | [ToString()](https://docs.microsoft.com/en-us/dotnet/api/system.object.tostring) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
-| [Update(DiagnosticDescriptor, String, IEnumerable\<TextSpan\>, IEnumerable\<TextSpan\>, IEnumerable\<AdditionalFile\>, String, IFormatProvider, String, Boolean)](Update/README.md) | Creates and return new instance of [DiagnosticTestData](./README.md) updated with specified values\. |
+| [Update(DiagnosticDescriptor, String, IEnumerable\<TextSpan>, IEnumerable\<TextSpan>, IEnumerable\<AdditionalFile>, String, IFormatProvider, String, Boolean)](Update/README.md) | Creates and return new instance of [DiagnosticTestData](./README.md) updated with specified values\. |
 

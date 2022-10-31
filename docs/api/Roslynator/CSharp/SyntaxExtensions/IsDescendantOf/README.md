@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-  
+\
 Returns true if a node is a descendant of a node with the specified kind\.
 
 ```csharp

@@ -1,4 +1,4 @@
-# MemberDeclarationListInfo\.ReplaceRange\(MemberDeclarationSyntax, IEnumerable\<MemberDeclarationSyntax\>\) Method
+# MemberDeclarationListInfo\.ReplaceRange\(MemberDeclarationSyntax, IEnumerable\<MemberDeclarationSyntax>\) Method
 
 [Home](../../../../../README.md)
 
@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-  
+\
 Creates a new [MemberDeclarationListInfo](../README.md) with the specified member replaced with new members\.
 
 ```csharp
@@ -17,7 +17,7 @@ public Roslynator.CSharp.Syntax.MemberDeclarationListInfo ReplaceRange(Microsoft
 
 **memberInList** &ensp; [MemberDeclarationSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.memberdeclarationsyntax)
 
-**newMembers** &ensp; [IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)\<[MemberDeclarationSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.memberdeclarationsyntax)\>
+**newMembers** &ensp; [IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)\<[MemberDeclarationSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.memberdeclarationsyntax)>
 
 ### Returns
 

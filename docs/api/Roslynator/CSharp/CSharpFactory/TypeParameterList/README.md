@@ -10,12 +10,10 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [TypeParameterList(TypeParameterSyntax)](#3386919544) | |
-| [TypeParameterList(TypeParameterSyntax\[\])](#1362679333) | |
+| [TypeParameterList(TypeParameterSyntax)](#Roslynator_CSharp_CSharpFactory_TypeParameterList_Microsoft_CodeAnalysis_CSharp_Syntax_TypeParameterSyntax_) | |
+| [TypeParameterList(TypeParameterSyntax\[\])](#Roslynator_CSharp_CSharpFactory_TypeParameterList_Microsoft_CodeAnalysis_CSharp_Syntax_TypeParameterSyntax___) | |
 
-<a id="3386919544"></a>
-
-## TypeParameterList\(TypeParameterSyntax\) 
+## TypeParameterList\(TypeParameterSyntax\) <a id="Roslynator_CSharp_CSharpFactory_TypeParameterList_Microsoft_CodeAnalysis_CSharp_Syntax_TypeParameterSyntax_"></a>
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.TypeParameterListSyntax TypeParameterList(Microsoft.CodeAnalysis.CSharp.Syntax.TypeParameterSyntax parameter)
@@ -29,9 +27,7 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.TypeParameterListSyntax TypeP
 
 [TypeParameterListSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.typeparameterlistsyntax)
 
-<a id="1362679333"></a>
-
-## TypeParameterList\(TypeParameterSyntax\[\]\) 
+## TypeParameterList\(TypeParameterSyntax\[\]\) <a id="Roslynator_CSharp_CSharpFactory_TypeParameterList_Microsoft_CodeAnalysis_CSharp_Syntax_TypeParameterSyntax___"></a>
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.TypeParameterListSyntax TypeParameterList(params Microsoft.CodeAnalysis.CSharp.Syntax.TypeParameterSyntax[] parameters)

@@ -10,14 +10,12 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [GetDefaultValueSyntax(ITypeSymbol, DefaultSyntaxOptions, SymbolDisplayFormat)](#3187258133) | Creates a new [ExpressionSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.expressionsyntax) that represents default value of the specified type symbol\. |
-| [GetDefaultValueSyntax(ITypeSymbol, TypeSyntax, DefaultSyntaxOptions)](#2331338541) | Creates a new [ExpressionSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.expressionsyntax) that represents default value of the specified type symbol\. |
+| [GetDefaultValueSyntax(ITypeSymbol, DefaultSyntaxOptions, SymbolDisplayFormat)](#Roslynator_CSharp_WorkspaceSymbolExtensions_GetDefaultValueSyntax_Microsoft_CodeAnalysis_ITypeSymbol_Roslynator_CSharp_DefaultSyntaxOptions_Microsoft_CodeAnalysis_SymbolDisplayFormat_) | Creates a new [ExpressionSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.expressionsyntax) that represents default value of the specified type symbol\. |
+| [GetDefaultValueSyntax(ITypeSymbol, TypeSyntax, DefaultSyntaxOptions)](#Roslynator_CSharp_WorkspaceSymbolExtensions_GetDefaultValueSyntax_Microsoft_CodeAnalysis_ITypeSymbol_Microsoft_CodeAnalysis_CSharp_Syntax_TypeSyntax_Roslynator_CSharp_DefaultSyntaxOptions_) | Creates a new [ExpressionSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.expressionsyntax) that represents default value of the specified type symbol\. |
 
-<a id="3187258133"></a>
+## GetDefaultValueSyntax\(ITypeSymbol, DefaultSyntaxOptions, SymbolDisplayFormat\) <a id="Roslynator_CSharp_WorkspaceSymbolExtensions_GetDefaultValueSyntax_Microsoft_CodeAnalysis_ITypeSymbol_Roslynator_CSharp_DefaultSyntaxOptions_Microsoft_CodeAnalysis_SymbolDisplayFormat_"></a>
 
-## GetDefaultValueSyntax\(ITypeSymbol, DefaultSyntaxOptions, SymbolDisplayFormat\) 
-
-  
+\
 Creates a new [ExpressionSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.expressionsyntax) that represents default value of the specified type symbol\.
 
 ```csharp
@@ -36,11 +34,9 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.ExpressionSyntax GetDefaultVa
 
 [ExpressionSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.expressionsyntax)
 
-<a id="2331338541"></a>
+## GetDefaultValueSyntax\(ITypeSymbol, TypeSyntax, DefaultSyntaxOptions\) <a id="Roslynator_CSharp_WorkspaceSymbolExtensions_GetDefaultValueSyntax_Microsoft_CodeAnalysis_ITypeSymbol_Microsoft_CodeAnalysis_CSharp_Syntax_TypeSyntax_Roslynator_CSharp_DefaultSyntaxOptions_"></a>
 
-## GetDefaultValueSyntax\(ITypeSymbol, TypeSyntax, DefaultSyntaxOptions\) 
-
-  
+\
 Creates a new [ExpressionSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.expressionsyntax) that represents default value of the specified type symbol\.
 
 ```csharp

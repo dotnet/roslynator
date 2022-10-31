@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-  
+\
 Returns region directive that is related to the specified endregion directive\. Returns null if no matching region directive is found\.
 
 ```csharp

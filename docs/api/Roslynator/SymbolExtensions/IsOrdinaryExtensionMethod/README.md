@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Core\.dll
 
-  
+\
 Returns true if this method is an ordinary extension method \(i\.e\. "this" parameter has not been removed\)\.
 
 ```csharp

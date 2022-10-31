@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-  
+\
 True if this instance is verbatim string literal expression\.
 
 ```csharp

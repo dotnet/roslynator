@@ -1,4 +1,4 @@
-# IfStatementCascade\.IEnumerable\<IfStatementOrElseClause\>\.GetEnumerator\(\) Method
+# IfStatementCascade\.IEnumerable\<IfStatementOrElseClause>\.GetEnumerator\(\) Method
 
 [Home](../../../../README.md)
 
@@ -12,8 +12,8 @@ System.Collections.Generic.IEnumerator<Roslynator.CSharp.IfStatementOrElseClause
 
 ### Returns
 
-[IEnumerator](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerator-1)\<[IfStatementOrElseClause](../../IfStatementOrElseClause/README.md)\>
+[IEnumerator](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerator-1)\<[IfStatementOrElseClause](../../IfStatementOrElseClause/README.md)>
 
 ### Implements
 
-* [IEnumerable\<IfStatementOrElseClause\>.GetEnumerator](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1.getenumerator)
+* [IEnumerable\<IfStatementOrElseClause>.GetEnumerator](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1.getenumerator)

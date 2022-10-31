@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Workspaces\.Core\.dll
 
-  
+\
 Creates a new document updated with the specified text change\.
 
 ```csharp
@@ -23,5 +23,5 @@ public static System.Threading.Tasks.Task<Microsoft.CodeAnalysis.Document> WithT
 
 ### Returns
 
-[Task](https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1)\<[Document](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.document)\>
+[Task](https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1)\<[Document](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.document)>
 

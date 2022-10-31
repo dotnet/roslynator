@@ -10,13 +10,11 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [Parameter(TypeSyntax, String, ExpressionSyntax)](#2103208392) | |
-| [Parameter(TypeSyntax, SyntaxToken, EqualsValueClauseSyntax)](#3876330429) | |
-| [Parameter(TypeSyntax, SyntaxToken, ExpressionSyntax)](#676376439) | |
+| [Parameter(TypeSyntax, String, ExpressionSyntax)](#Roslynator_CSharp_CSharpFactory_Parameter_Microsoft_CodeAnalysis_CSharp_Syntax_TypeSyntax_System_String_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_) | |
+| [Parameter(TypeSyntax, SyntaxToken, EqualsValueClauseSyntax)](#Roslynator_CSharp_CSharpFactory_Parameter_Microsoft_CodeAnalysis_CSharp_Syntax_TypeSyntax_Microsoft_CodeAnalysis_SyntaxToken_Microsoft_CodeAnalysis_CSharp_Syntax_EqualsValueClauseSyntax_) | |
+| [Parameter(TypeSyntax, SyntaxToken, ExpressionSyntax)](#Roslynator_CSharp_CSharpFactory_Parameter_Microsoft_CodeAnalysis_CSharp_Syntax_TypeSyntax_Microsoft_CodeAnalysis_SyntaxToken_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_) | |
 
-<a id="2103208392"></a>
-
-## Parameter\(TypeSyntax, String, ExpressionSyntax\) 
+## Parameter\(TypeSyntax, String, ExpressionSyntax\) <a id="Roslynator_CSharp_CSharpFactory_Parameter_Microsoft_CodeAnalysis_CSharp_Syntax_TypeSyntax_System_String_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_"></a>
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.ParameterSyntax Parameter(Microsoft.CodeAnalysis.CSharp.Syntax.TypeSyntax type, string identifier, Microsoft.CodeAnalysis.CSharp.Syntax.ExpressionSyntax @default = null)
@@ -34,9 +32,7 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.ParameterSyntax Parameter(Mic
 
 [ParameterSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.parametersyntax)
 
-<a id="3876330429"></a>
-
-## Parameter\(TypeSyntax, SyntaxToken, EqualsValueClauseSyntax\) 
+## Parameter\(TypeSyntax, SyntaxToken, EqualsValueClauseSyntax\) <a id="Roslynator_CSharp_CSharpFactory_Parameter_Microsoft_CodeAnalysis_CSharp_Syntax_TypeSyntax_Microsoft_CodeAnalysis_SyntaxToken_Microsoft_CodeAnalysis_CSharp_Syntax_EqualsValueClauseSyntax_"></a>
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.ParameterSyntax Parameter(Microsoft.CodeAnalysis.CSharp.Syntax.TypeSyntax type, Microsoft.CodeAnalysis.SyntaxToken identifier, Microsoft.CodeAnalysis.CSharp.Syntax.EqualsValueClauseSyntax @default)
@@ -54,9 +50,7 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.ParameterSyntax Parameter(Mic
 
 [ParameterSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.parametersyntax)
 
-<a id="676376439"></a>
-
-## Parameter\(TypeSyntax, SyntaxToken, ExpressionSyntax\) 
+## Parameter\(TypeSyntax, SyntaxToken, ExpressionSyntax\) <a id="Roslynator_CSharp_CSharpFactory_Parameter_Microsoft_CodeAnalysis_CSharp_Syntax_TypeSyntax_Microsoft_CodeAnalysis_SyntaxToken_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_"></a>
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.ParameterSyntax Parameter(Microsoft.CodeAnalysis.CSharp.Syntax.TypeSyntax type, Microsoft.CodeAnalysis.SyntaxToken identifier, Microsoft.CodeAnalysis.CSharp.Syntax.ExpressionSyntax @default = null)

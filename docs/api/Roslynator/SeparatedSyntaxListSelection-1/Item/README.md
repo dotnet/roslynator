@@ -1,12 +1,12 @@
-# SeparatedSyntaxListSelection\<TNode\>\.Item\[Int32\] Indexer
+# SeparatedSyntaxListSelection\<TNode>\.Item\[Int32\] Indexer
 
 [Home](../../../README.md)
 
-**Containing Type**: [SeparatedSyntaxListSelection\<TNode\>](../README.md)
+**Containing Type**: [SeparatedSyntaxListSelection\<TNode>](../README.md)
 
 **Assembly**: Roslynator\.Core\.dll
 
-  
+\
 Gets the selected node at the specified index\.
 
 ```csharp

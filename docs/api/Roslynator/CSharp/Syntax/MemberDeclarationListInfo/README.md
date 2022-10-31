@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-  
+\
 Provides information about a list of member declaration list\.
 
 ```csharp
@@ -19,15 +19,15 @@ public readonly struct MemberDeclarationListInfo : System.Collections.Generic.IR
 
 ### Implements
 
-* [IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)\<[MemberDeclarationSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.memberdeclarationsyntax)\>
-* [IReadOnlyCollection](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ireadonlycollection-1)\<[MemberDeclarationSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.memberdeclarationsyntax)\>
-* [IReadOnlyList](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ireadonlylist-1)\<[MemberDeclarationSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.memberdeclarationsyntax)\>
+* [IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)\<[MemberDeclarationSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.memberdeclarationsyntax)>
+* [IReadOnlyCollection](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ireadonlycollection-1)\<[MemberDeclarationSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.memberdeclarationsyntax)>
+* [IReadOnlyList](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ireadonlylist-1)\<[MemberDeclarationSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.memberdeclarationsyntax)>
 
 ## Indexers
 
 | Indexer | Summary |
 | ------- | ------- |
-| [Item\[Int32\]](Item/README.md) | Gets the member at the specified index in the list\. \(Implements [IReadOnlyList\<MemberDeclarationSyntax\>.Item](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ireadonlylist-1.item)\) |
+| [Item\[Int32\]](Item/README.md) | Gets the member at the specified index in the list\. \(Implements [IReadOnlyList\<MemberDeclarationSyntax>.Item](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ireadonlylist-1.item)\) |
 
 ## Properties
 
@@ -45,7 +45,7 @@ public readonly struct MemberDeclarationListInfo : System.Collections.Generic.IR
 | Method | Summary |
 | ------ | ------- |
 | [Add(MemberDeclarationSyntax)](Add/README.md) | Creates a new [MemberDeclarationListInfo](./README.md) with the specified member added at the end\. |
-| [AddRange(IEnumerable\<MemberDeclarationSyntax\>)](AddRange/README.md) | Creates a new [MemberDeclarationListInfo](./README.md) with the specified members added at the end\. |
+| [AddRange(IEnumerable\<MemberDeclarationSyntax>)](AddRange/README.md) | Creates a new [MemberDeclarationListInfo](./README.md) with the specified members added at the end\. |
 | [Any()](Any/README.md) | True if the list has at least one member\. |
 | [Equals(Object)](https://docs.microsoft.com/en-us/dotnet/api/system.valuetype.equals) |  \(Inherited from [ValueType](https://docs.microsoft.com/en-us/dotnet/api/system.valuetype)\) |
 | [First()](First/README.md) | The first member in the list\. |
@@ -53,13 +53,13 @@ public readonly struct MemberDeclarationListInfo : System.Collections.Generic.IR
 | [GetEnumerator()](GetEnumerator/README.md) | Gets the enumerator for the list of members\. |
 | [GetHashCode()](https://docs.microsoft.com/en-us/dotnet/api/system.valuetype.gethashcode) |  \(Inherited from [ValueType](https://docs.microsoft.com/en-us/dotnet/api/system.valuetype)\) |
 | [GetType()](https://docs.microsoft.com/en-us/dotnet/api/system.object.gettype) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
-| [IndexOf(Func\<MemberDeclarationSyntax, Boolean\>)](IndexOf/README.md#442472242) | Searches for a member that matches the predicate and returns zero\-based index of the first occurrence in the list\. |
-| [IndexOf(MemberDeclarationSyntax)](IndexOf/README.md#3381813943) | The index of the member in the list\. |
+| [IndexOf(Func\<MemberDeclarationSyntax, Boolean>)](IndexOf/README.md#Roslynator_CSharp_Syntax_MemberDeclarationListInfo_IndexOf_System_Func_Microsoft_CodeAnalysis_CSharp_Syntax_MemberDeclarationSyntax_System_Boolean__) | Searches for a member that matches the predicate and returns zero\-based index of the first occurrence in the list\. |
+| [IndexOf(MemberDeclarationSyntax)](IndexOf/README.md#Roslynator_CSharp_Syntax_MemberDeclarationListInfo_IndexOf_Microsoft_CodeAnalysis_CSharp_Syntax_MemberDeclarationSyntax_) | The index of the member in the list\. |
 | [Insert(Int32, MemberDeclarationSyntax)](Insert/README.md) | Creates a new [MemberDeclarationListInfo](./README.md) with the specified member inserted at the index\. |
-| [InsertRange(Int32, IEnumerable\<MemberDeclarationSyntax\>)](InsertRange/README.md) | Creates a new [MemberDeclarationListInfo](./README.md) with the specified members inserted at the index\. |
+| [InsertRange(Int32, IEnumerable\<MemberDeclarationSyntax>)](InsertRange/README.md) | Creates a new [MemberDeclarationListInfo](./README.md) with the specified members inserted at the index\. |
 | [Last()](Last/README.md) | The last member in the list\. |
-| [LastIndexOf(Func\<MemberDeclarationSyntax, Boolean\>)](LastIndexOf/README.md#2832811949) | Searches for a member that matches the predicate and returns zero\-based index of the last occurrence in the list\. |
-| [LastIndexOf(MemberDeclarationSyntax)](LastIndexOf/README.md#3105192583) | Searches for a member and returns zero\-based index of the last occurrence in the list\. |
+| [LastIndexOf(Func\<MemberDeclarationSyntax, Boolean>)](LastIndexOf/README.md#Roslynator_CSharp_Syntax_MemberDeclarationListInfo_LastIndexOf_System_Func_Microsoft_CodeAnalysis_CSharp_Syntax_MemberDeclarationSyntax_System_Boolean__) | Searches for a member that matches the predicate and returns zero\-based index of the last occurrence in the list\. |
+| [LastIndexOf(MemberDeclarationSyntax)](LastIndexOf/README.md#Roslynator_CSharp_Syntax_MemberDeclarationListInfo_LastIndexOf_Microsoft_CodeAnalysis_CSharp_Syntax_MemberDeclarationSyntax_) | Searches for a member and returns zero\-based index of the last occurrence in the list\. |
 | [LastOrDefault()](LastOrDefault/README.md) | The last member in the list or null if the list is empty\. |
 | [MemberwiseClone()](https://docs.microsoft.com/en-us/dotnet/api/system.object.memberwiseclone) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
 | [Remove(MemberDeclarationSyntax)](Remove/README.md) | Creates a new [MemberDeclarationListInfo](./README.md) with the specified member removed\. |
@@ -68,15 +68,15 @@ public readonly struct MemberDeclarationListInfo : System.Collections.Generic.IR
 | [Replace(MemberDeclarationSyntax, MemberDeclarationSyntax)](Replace/README.md) | Creates a new [MemberDeclarationListInfo](./README.md) with the specified member replaced with the new member\. |
 | [ReplaceAt(Int32, MemberDeclarationSyntax)](ReplaceAt/README.md) | Creates a new [MemberDeclarationListInfo](./README.md) with the member at the specified index replaced with a new member\. |
 | [ReplaceNode(SyntaxNode, SyntaxNode)](ReplaceNode/README.md) | Creates a new [MemberDeclarationListInfo](./README.md) with the specified old node replaced with a new node\. |
-| [ReplaceRange(MemberDeclarationSyntax, IEnumerable\<MemberDeclarationSyntax\>)](ReplaceRange/README.md) | Creates a new [MemberDeclarationListInfo](./README.md) with the specified member replaced with new members\. |
+| [ReplaceRange(MemberDeclarationSyntax, IEnumerable\<MemberDeclarationSyntax>)](ReplaceRange/README.md) | Creates a new [MemberDeclarationListInfo](./README.md) with the specified member replaced with new members\. |
 | [ToString()](https://docs.microsoft.com/en-us/dotnet/api/system.valuetype.tostring) |  \(Inherited from [ValueType](https://docs.microsoft.com/en-us/dotnet/api/system.valuetype)\) |
-| [WithMembers(IEnumerable\<MemberDeclarationSyntax\>)](WithMembers/README.md#1171711008) | Creates a new [MemberDeclarationListInfo](./README.md) with the members updated\. |
-| [WithMembers(SyntaxList\<MemberDeclarationSyntax\>)](WithMembers/README.md#30413986) | Creates a new [MemberDeclarationListInfo](./README.md) with the members updated\. |
+| [WithMembers(IEnumerable\<MemberDeclarationSyntax>)](WithMembers/README.md#Roslynator_CSharp_Syntax_MemberDeclarationListInfo_WithMembers_System_Collections_Generic_IEnumerable_Microsoft_CodeAnalysis_CSharp_Syntax_MemberDeclarationSyntax__) | Creates a new [MemberDeclarationListInfo](./README.md) with the members updated\. |
+| [WithMembers(SyntaxList\<MemberDeclarationSyntax>)](WithMembers/README.md#Roslynator_CSharp_Syntax_MemberDeclarationListInfo_WithMembers_Microsoft_CodeAnalysis_SyntaxList_Microsoft_CodeAnalysis_CSharp_Syntax_MemberDeclarationSyntax__) | Creates a new [MemberDeclarationListInfo](./README.md) with the members updated\. |
 
 ## Explicit Interface Implementations
 
 | Member | Summary |
 | ------ | ------- |
 | [IEnumerable.GetEnumerator()](System-Collections-IEnumerable-GetEnumerator/README.md) | |
-| [IEnumerable\<MemberDeclarationSyntax\>.GetEnumerator()](System-Collections-Generic-IEnumerable-Microsoft-CodeAnalysis-CSharp-Syntax-MemberDeclarationSyntax--GetEnumerator/README.md) | |
+| [IEnumerable\<MemberDeclarationSyntax>.GetEnumerator()](System-Collections-Generic-IEnumerable-Microsoft-CodeAnalysis-CSharp-Syntax-MemberDeclarationSyntax--GetEnumerator/README.md) | |
 

@@ -10,16 +10,14 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [ImplementsInterfaceMember(ISymbol, Boolean)](#1947636977) | Returns true if the symbol implements any interface member\. |
-| [ImplementsInterfaceMember(ISymbol, INamedTypeSymbol, Boolean)](#1539225690) | Returns true if the symbol implements any member of the specified interface\. |
-| [ImplementsInterfaceMember\<TSymbol\>(ISymbol, Boolean)](#270427832) | Returns true if the symbol implements any interface member\. |
-| [ImplementsInterfaceMember\<TSymbol\>(ISymbol, INamedTypeSymbol, Boolean)](#2598799324) | Returns true if the symbol implements any member of the specified interface\. |
+| [ImplementsInterfaceMember(ISymbol, Boolean)](#Roslynator_SymbolExtensions_ImplementsInterfaceMember_Microsoft_CodeAnalysis_ISymbol_System_Boolean_) | Returns true if the symbol implements any interface member\. |
+| [ImplementsInterfaceMember(ISymbol, INamedTypeSymbol, Boolean)](#Roslynator_SymbolExtensions_ImplementsInterfaceMember_Microsoft_CodeAnalysis_ISymbol_Microsoft_CodeAnalysis_INamedTypeSymbol_System_Boolean_) | Returns true if the symbol implements any member of the specified interface\. |
+| [ImplementsInterfaceMember\<TSymbol>(ISymbol, Boolean)](../ImplementsInterfaceMember-1/README.md#Roslynator_SymbolExtensions_ImplementsInterfaceMember__1_Microsoft_CodeAnalysis_ISymbol_System_Boolean_) | Returns true if the symbol implements any interface member\. |
+| [ImplementsInterfaceMember\<TSymbol>(ISymbol, INamedTypeSymbol, Boolean)](../ImplementsInterfaceMember-1/README.md#Roslynator_SymbolExtensions_ImplementsInterfaceMember__1_Microsoft_CodeAnalysis_ISymbol_Microsoft_CodeAnalysis_INamedTypeSymbol_System_Boolean_) | Returns true if the symbol implements any member of the specified interface\. |
 
-<a id="1947636977"></a>
+## ImplementsInterfaceMember\(ISymbol, Boolean\) <a id="Roslynator_SymbolExtensions_ImplementsInterfaceMember_Microsoft_CodeAnalysis_ISymbol_System_Boolean_"></a>
 
-## ImplementsInterfaceMember\(ISymbol, Boolean\) 
-
-  
+\
 Returns true if the symbol implements any interface member\.
 
 ```csharp
@@ -38,11 +36,9 @@ If true, use [ITypeSymbol.AllInterfaces](https://docs.microsoft.com/en-us/dotnet
 
 [Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)
 
-<a id="1539225690"></a>
+## ImplementsInterfaceMember\(ISymbol, INamedTypeSymbol, Boolean\) <a id="Roslynator_SymbolExtensions_ImplementsInterfaceMember_Microsoft_CodeAnalysis_ISymbol_Microsoft_CodeAnalysis_INamedTypeSymbol_System_Boolean_"></a>
 
-## ImplementsInterfaceMember\(ISymbol, INamedTypeSymbol, Boolean\) 
-
-  
+\
 Returns true if the symbol implements any member of the specified interface\.
 
 ```csharp
@@ -63,11 +59,9 @@ If true, use [ITypeSymbol.AllInterfaces](https://docs.microsoft.com/en-us/dotnet
 
 [Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)
 
-<a id="270427832"></a>
+## ImplementsInterfaceMember\<TSymbol>\(ISymbol, Boolean\) <a id="Roslynator_SymbolExtensions_ImplementsInterfaceMember__1_Microsoft_CodeAnalysis_ISymbol_System_Boolean_"></a>
 
-## ImplementsInterfaceMember\<TSymbol\>\(ISymbol, Boolean\) 
-
-  
+\
 Returns true if the symbol implements any interface member\.
 
 ```csharp
@@ -90,11 +84,9 @@ If true, use [ITypeSymbol.AllInterfaces](https://docs.microsoft.com/en-us/dotnet
 
 [Boolean](https://docs.microsoft.com/en-us/dotnet/api/system.boolean)
 
-<a id="2598799324"></a>
+## ImplementsInterfaceMember\<TSymbol>\(ISymbol, INamedTypeSymbol, Boolean\) <a id="Roslynator_SymbolExtensions_ImplementsInterfaceMember__1_Microsoft_CodeAnalysis_ISymbol_Microsoft_CodeAnalysis_INamedTypeSymbol_System_Boolean_"></a>
 
-## ImplementsInterfaceMember\<TSymbol\>\(ISymbol, INamedTypeSymbol, Boolean\) 
-
-  
+\
 Returns true if the symbol implements any member of the specified interface\.
 
 ```csharp

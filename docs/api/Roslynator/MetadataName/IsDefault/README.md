@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Core\.dll
 
-  
+\
 Determines whether this struct was initialized with an actual names\.
 
 ```csharp

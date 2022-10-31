@@ -10,14 +10,12 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [ReplaceModifiersAsync(Document, ModifierListInfo, IEnumerable\<SyntaxToken\>, CancellationToken)](#2100445257) | Creates a new document with the specified modifiers replaced with new modifiers\. |
-| [ReplaceModifiersAsync(Document, ModifierListInfo, SyntaxTokenList, CancellationToken)](#624135533) | Creates a new document with the specified modifiers replaced with new modifiers\. |
+| [ReplaceModifiersAsync(Document, ModifierListInfo, IEnumerable\<SyntaxToken>, CancellationToken)](#Roslynator_CSharp_WorkspaceExtensions_ReplaceModifiersAsync_Microsoft_CodeAnalysis_Document_Roslynator_CSharp_Syntax_ModifierListInfo_System_Collections_Generic_IEnumerable_Microsoft_CodeAnalysis_SyntaxToken__System_Threading_CancellationToken_) | Creates a new document with the specified modifiers replaced with new modifiers\. |
+| [ReplaceModifiersAsync(Document, ModifierListInfo, SyntaxTokenList, CancellationToken)](#Roslynator_CSharp_WorkspaceExtensions_ReplaceModifiersAsync_Microsoft_CodeAnalysis_Document_Roslynator_CSharp_Syntax_ModifierListInfo_Microsoft_CodeAnalysis_SyntaxTokenList_System_Threading_CancellationToken_) | Creates a new document with the specified modifiers replaced with new modifiers\. |
 
-<a id="2100445257"></a>
+## ReplaceModifiersAsync\(Document, ModifierListInfo, IEnumerable\<SyntaxToken>, CancellationToken\) <a id="Roslynator_CSharp_WorkspaceExtensions_ReplaceModifiersAsync_Microsoft_CodeAnalysis_Document_Roslynator_CSharp_Syntax_ModifierListInfo_System_Collections_Generic_IEnumerable_Microsoft_CodeAnalysis_SyntaxToken__System_Threading_CancellationToken_"></a>
 
-## ReplaceModifiersAsync\(Document, ModifierListInfo, IEnumerable\<SyntaxToken\>, CancellationToken\) 
-
-  
+\
 Creates a new document with the specified modifiers replaced with new modifiers\.
 
 ```csharp
@@ -30,19 +28,17 @@ public static System.Threading.Tasks.Task<Microsoft.CodeAnalysis.Document> Repla
 
 **modifiersInfo** &ensp; [ModifierListInfo](../../Syntax/ModifierListInfo/README.md)
 
-**newModifiers** &ensp; [IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)\<[SyntaxToken](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxtoken)\>
+**newModifiers** &ensp; [IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)\<[SyntaxToken](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxtoken)>
 
 **cancellationToken** &ensp; [CancellationToken](https://docs.microsoft.com/en-us/dotnet/api/system.threading.cancellationtoken)
 
 ### Returns
 
-[Task](https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1)\<[Document](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.document)\>
+[Task](https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1)\<[Document](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.document)>
 
-<a id="624135533"></a>
+## ReplaceModifiersAsync\(Document, ModifierListInfo, SyntaxTokenList, CancellationToken\) <a id="Roslynator_CSharp_WorkspaceExtensions_ReplaceModifiersAsync_Microsoft_CodeAnalysis_Document_Roslynator_CSharp_Syntax_ModifierListInfo_Microsoft_CodeAnalysis_SyntaxTokenList_System_Threading_CancellationToken_"></a>
 
-## ReplaceModifiersAsync\(Document, ModifierListInfo, SyntaxTokenList, CancellationToken\) 
-
-  
+\
 Creates a new document with the specified modifiers replaced with new modifiers\.
 
 ```csharp
@@ -61,5 +57,5 @@ public static System.Threading.Tasks.Task<Microsoft.CodeAnalysis.Document> Repla
 
 ### Returns
 
-[Task](https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1)\<[Document](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.document)\>
+[Task](https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1)\<[Document](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.document)>
 

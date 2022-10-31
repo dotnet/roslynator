@@ -1,8 +1,8 @@
-# SyntaxListSelection\<TNode\>\.IEnumerable\<TNode\>\.GetEnumerator\(\) Method
+# SyntaxListSelection\<TNode>\.IEnumerable\<TNode>\.GetEnumerator\(\) Method
 
 [Home](../../../README.md)
 
-**Containing Type**: [SyntaxListSelection\<TNode\>](../README.md)
+**Containing Type**: [SyntaxListSelection\<TNode>](../README.md)
 
 **Assembly**: Roslynator\.Core\.dll
 
@@ -12,5 +12,5 @@ System.Collections.Generic.IEnumerator<TNode> System.Collections.Generic.IEnumer
 
 ### Returns
 
-[IEnumerator](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerator-1)\<TNode\>
+[IEnumerator](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerator-1)\<TNode>
 

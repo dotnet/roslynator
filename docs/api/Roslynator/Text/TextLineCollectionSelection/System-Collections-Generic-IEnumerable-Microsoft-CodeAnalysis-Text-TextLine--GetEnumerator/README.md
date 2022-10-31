@@ -1,4 +1,4 @@
-# TextLineCollectionSelection\.IEnumerable\<TextLine\>\.GetEnumerator\(\) Method
+# TextLineCollectionSelection\.IEnumerable\<TextLine>\.GetEnumerator\(\) Method
 
 [Home](../../../../README.md)
 
@@ -12,5 +12,5 @@ System.Collections.Generic.IEnumerator<Microsoft.CodeAnalysis.Text.TextLine> Sys
 
 ### Returns
 
-[IEnumerator](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerator-1)\<[TextLine](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.text.textline)\>
+[IEnumerator](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerator-1)\<[TextLine](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.text.textline)>
 

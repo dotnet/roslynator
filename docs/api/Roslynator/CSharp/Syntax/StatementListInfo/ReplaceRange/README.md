@@ -1,4 +1,4 @@
-# StatementListInfo\.ReplaceRange\(StatementSyntax, IEnumerable\<StatementSyntax\>\) Method
+# StatementListInfo\.ReplaceRange\(StatementSyntax, IEnumerable\<StatementSyntax>\) Method
 
 [Home](../../../../../README.md)
 
@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-  
+\
 Creates a new [StatementListInfo](../README.md) with the specified statement replaced with new statements\.
 
 ```csharp
@@ -17,7 +17,7 @@ public Roslynator.CSharp.Syntax.StatementListInfo ReplaceRange(Microsoft.CodeAna
 
 **statementInList** &ensp; [StatementSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.statementsyntax)
 
-**newStatements** &ensp; [IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)\<[StatementSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.statementsyntax)\>
+**newStatements** &ensp; [IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)\<[StatementSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.statementsyntax)>
 
 ### Returns
 

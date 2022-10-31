@@ -10,12 +10,10 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [CheckedExpression(ExpressionSyntax)](#2444239571) | |
-| [CheckedExpression(SyntaxToken, ExpressionSyntax, SyntaxToken)](#3821766561) | |
+| [CheckedExpression(ExpressionSyntax)](#Roslynator_CSharp_CSharpFactory_CheckedExpression_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_) | |
+| [CheckedExpression(SyntaxToken, ExpressionSyntax, SyntaxToken)](#Roslynator_CSharp_CSharpFactory_CheckedExpression_Microsoft_CodeAnalysis_SyntaxToken_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_Microsoft_CodeAnalysis_SyntaxToken_) | |
 
-<a id="2444239571"></a>
-
-## CheckedExpression\(ExpressionSyntax\) 
+## CheckedExpression\(ExpressionSyntax\) <a id="Roslynator_CSharp_CSharpFactory_CheckedExpression_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_"></a>
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.CheckedExpressionSyntax CheckedExpression(Microsoft.CodeAnalysis.CSharp.Syntax.ExpressionSyntax expression)
@@ -29,9 +27,7 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.CheckedExpressionSyntax Check
 
 [CheckedExpressionSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.checkedexpressionsyntax)
 
-<a id="3821766561"></a>
-
-## CheckedExpression\(SyntaxToken, ExpressionSyntax, SyntaxToken\) 
+## CheckedExpression\(SyntaxToken, ExpressionSyntax, SyntaxToken\) <a id="Roslynator_CSharp_CSharpFactory_CheckedExpression_Microsoft_CodeAnalysis_SyntaxToken_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_Microsoft_CodeAnalysis_SyntaxToken_"></a>
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.CheckedExpressionSyntax CheckedExpression(Microsoft.CodeAnalysis.SyntaxToken openParenToken, Microsoft.CodeAnalysis.CSharp.Syntax.ExpressionSyntax expression, Microsoft.CodeAnalysis.SyntaxToken closeParenToken)

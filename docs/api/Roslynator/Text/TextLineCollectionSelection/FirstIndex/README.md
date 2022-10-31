@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Core\.dll
 
-  
+\
 Gets an index of the first selected line\.
 
 ```csharp
@@ -19,4 +19,4 @@ public int FirstIndex { get; }
 
 ### Implements
 
-* [ISelection\<TextLine\>.FirstIndex](../../../ISelection-1/FirstIndex/README.md)
+* [ISelection\<TextLine>.FirstIndex](../../../ISelection-1/FirstIndex/README.md)

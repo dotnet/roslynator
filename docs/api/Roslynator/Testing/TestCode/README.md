@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Testing\.Common\.dll
 
-  
+\
 Represents a source code to be tested\.
 
 ```csharp
@@ -34,7 +34,7 @@ public readonly struct TestCode
 | [GetHashCode()](https://docs.microsoft.com/en-us/dotnet/api/system.valuetype.gethashcode) |  \(Inherited from [ValueType](https://docs.microsoft.com/en-us/dotnet/api/system.valuetype)\) |
 | [GetType()](https://docs.microsoft.com/en-us/dotnet/api/system.object.gettype) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
 | [MemberwiseClone()](https://docs.microsoft.com/en-us/dotnet/api/system.object.memberwiseclone) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
-| [Parse(String, String, String)](Parse/README.md#3209459912) | Finds and replace span that is marked with `[\|\|]` token\. |
-| [Parse(String)](Parse/README.md#2022869111) | Finds and removes spans that are marked with `[\|` and `\|]` tokens\. |
+| [Parse(String)](Parse/README.md#Roslynator_Testing_TestCode_Parse_System_String_) | Finds and removes spans that are marked with `[|` and `|]` tokens\. |
+| [Parse(String, String, String)](Parse/README.md#Roslynator_Testing_TestCode_Parse_System_String_System_String_System_String_) | Finds and replace span that is marked with `[||]` token\. |
 | [ToString()](https://docs.microsoft.com/en-us/dotnet/api/system.valuetype.tostring) |  \(Inherited from [ValueType](https://docs.microsoft.com/en-us/dotnet/api/system.valuetype)\) |
 

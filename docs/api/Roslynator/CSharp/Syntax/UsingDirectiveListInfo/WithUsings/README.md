@@ -10,14 +10,12 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [WithUsings(IEnumerable\<UsingDirectiveSyntax\>)](#2973635367) | Creates a new [UsingDirectiveListInfo](../README.md) with the usings updated\. |
-| [WithUsings(SyntaxList\<UsingDirectiveSyntax\>)](#3245135487) | Creates a new [UsingDirectiveListInfo](../README.md) with the usings updated\. |
+| [WithUsings(IEnumerable\<UsingDirectiveSyntax>)](#Roslynator_CSharp_Syntax_UsingDirectiveListInfo_WithUsings_System_Collections_Generic_IEnumerable_Microsoft_CodeAnalysis_CSharp_Syntax_UsingDirectiveSyntax__) | Creates a new [UsingDirectiveListInfo](../README.md) with the usings updated\. |
+| [WithUsings(SyntaxList\<UsingDirectiveSyntax>)](#Roslynator_CSharp_Syntax_UsingDirectiveListInfo_WithUsings_Microsoft_CodeAnalysis_SyntaxList_Microsoft_CodeAnalysis_CSharp_Syntax_UsingDirectiveSyntax__) | Creates a new [UsingDirectiveListInfo](../README.md) with the usings updated\. |
 
-<a id="2973635367"></a>
+## WithUsings\(IEnumerable\<UsingDirectiveSyntax>\) <a id="Roslynator_CSharp_Syntax_UsingDirectiveListInfo_WithUsings_System_Collections_Generic_IEnumerable_Microsoft_CodeAnalysis_CSharp_Syntax_UsingDirectiveSyntax__"></a>
 
-## WithUsings\(IEnumerable\<UsingDirectiveSyntax\>\) 
-
-  
+\
 Creates a new [UsingDirectiveListInfo](../README.md) with the usings updated\.
 
 ```csharp
@@ -26,17 +24,15 @@ public Roslynator.CSharp.Syntax.UsingDirectiveListInfo WithUsings(System.Collect
 
 ### Parameters
 
-**usings** &ensp; [IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)\<[UsingDirectiveSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.usingdirectivesyntax)\>
+**usings** &ensp; [IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)\<[UsingDirectiveSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.usingdirectivesyntax)>
 
 ### Returns
 
 [UsingDirectiveListInfo](../README.md)
 
-<a id="3245135487"></a>
+## WithUsings\(SyntaxList\<UsingDirectiveSyntax>\) <a id="Roslynator_CSharp_Syntax_UsingDirectiveListInfo_WithUsings_Microsoft_CodeAnalysis_SyntaxList_Microsoft_CodeAnalysis_CSharp_Syntax_UsingDirectiveSyntax__"></a>
 
-## WithUsings\(SyntaxList\<UsingDirectiveSyntax\>\) 
-
-  
+\
 Creates a new [UsingDirectiveListInfo](../README.md) with the usings updated\.
 
 ```csharp
@@ -45,7 +41,7 @@ public Roslynator.CSharp.Syntax.UsingDirectiveListInfo WithUsings(Microsoft.Code
 
 ### Parameters
 
-**usings** &ensp; [SyntaxList](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxlist-1)\<[UsingDirectiveSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.usingdirectivesyntax)\>
+**usings** &ensp; [SyntaxList](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxlist-1)\<[UsingDirectiveSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.usingdirectivesyntax)>
 
 ### Returns
 
