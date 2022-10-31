@@ -17,6 +17,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `roslynator generate-doc --host docusaurus`
 - [CLI] Generate reference documentation that can be published with Sphinx ([#961](https://github.com/josefpihrt/roslynator/pull/961)).
   - `roslynator generate-doc --host sphinx`
+- [CLI] Basic support for `<inheritdoc />` when generating documentation (`generate-doc` command) ([#972](https://github.com/josefpihrt/roslynator/pull/972)).
+- [CLI] Add option `ignored-title-parts` (`generate-doc` command) ([#975](https://github.com/josefpihrt/roslynator/pull/975)).
 
 ### Changed
 
@@ -44,6 +46,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Do not simplify 'default' expression if the type is inferred ([RCS1244](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1244.md)) ([#966](https://github.com/josefpihrt/roslynator/pull/966).
 - Use explicit type from lambda expression ([RCS1008](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1008.md)) ([#967](https://github.com/josefpihrt/roslynator/pull/967).
 - Do not remove constructor if it is decorated with 'UsedImplicitlyAttribute' ([RCS1074](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1074.md)) ([#968](https://github.com/josefpihrt/roslynator/pull/968).
+- Detect argument null check in the form of `ArgumentNullException.ThrowIfNull` ([RR0025](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0025.md), [RCS1227](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1227.md)) ([#974](https://github.com/josefpihrt/roslynator/pull/974).
 
 -----
 <!-- Content below does not adhere to 'Keep a Changelog' format -->
