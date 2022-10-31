@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Testing\.CSharp\.dll
 
-\
+  
 Represents options for a C\# code verifier\.
 
 ```csharp
@@ -21,7 +21,7 @@ public sealed class CSharpTestOptions : Roslynator.Testing.TestOptions
 
 | Constructor | Summary |
 | ----------- | ------- |
-| [CSharpTestOptions(CSharpCompilationOptions, CSharpParseOptions, IEnumerable\<MetadataReference>, IEnumerable\<String>, DiagnosticSeverity, IEnumerable\<KeyValuePair\<String, String>>)](-ctor/README.md) | Initializes a new instance of [CSharpTestOptions](./README.md)\. |
+| [CSharpTestOptions(CSharpCompilationOptions, CSharpParseOptions, IEnumerable\<MetadataReference\>, IEnumerable\<String\>, DiagnosticSeverity, IEnumerable\<KeyValuePair\<String, String\>\>)](-ctor/README.md) | Initializes a new instance of [CSharpTestOptions](./README.md)\. |
 
 ## Properties
 
@@ -43,20 +43,20 @@ public sealed class CSharpTestOptions : Roslynator.Testing.TestOptions
 | Method | Summary |
 | ------ | ------- |
 | [AddAllowedCompilerDiagnosticId(String)](AddAllowedCompilerDiagnosticId/README.md) | Adds specified compiler diagnostic ID to the list of allowed compiler diagnostic IDs\. |
-| [AddAllowedCompilerDiagnosticIds(IEnumerable\<String>)](AddAllowedCompilerDiagnosticIds/README.md) | Adds a list of specified compiler diagnostic IDs to the list of allowed compiler diagnostic IDs\. |
-| [CommonWithAllowedCompilerDiagnosticIds(IEnumerable\<String>)](CommonWithAllowedCompilerDiagnosticIds/README.md) |  \(Overrides [TestOptions.CommonWithAllowedCompilerDiagnosticIds](../../TestOptions/CommonWithAllowedCompilerDiagnosticIds/README.md)\) |
+| [AddAllowedCompilerDiagnosticIds(IEnumerable\<String\>)](AddAllowedCompilerDiagnosticIds/README.md) | Adds a list of specified compiler diagnostic IDs to the list of allowed compiler diagnostic IDs\. |
+| [CommonWithAllowedCompilerDiagnosticIds(IEnumerable\<String\>)](CommonWithAllowedCompilerDiagnosticIds/README.md) |  \(Overrides [TestOptions.CommonWithAllowedCompilerDiagnosticIds](../../TestOptions/CommonWithAllowedCompilerDiagnosticIds/README.md)\) |
 | [CommonWithAllowedCompilerDiagnosticSeverity(DiagnosticSeverity)](CommonWithAllowedCompilerDiagnosticSeverity/README.md) |  \(Overrides [TestOptions.CommonWithAllowedCompilerDiagnosticSeverity](../../TestOptions/CommonWithAllowedCompilerDiagnosticSeverity/README.md)\) |
-| [CommonWithConfigOptions(IEnumerable\<KeyValuePair\<String, String>>)](CommonWithConfigOptions/README.md) |  \(Overrides [TestOptions.CommonWithConfigOptions](../../TestOptions/CommonWithConfigOptions/README.md)\) |
-| [CommonWithMetadataReferences(IEnumerable\<MetadataReference>)](CommonWithMetadataReferences/README.md) |  \(Overrides [TestOptions.CommonWithMetadataReferences](../../TestOptions/CommonWithMetadataReferences/README.md)\) |
+| [CommonWithConfigOptions(IEnumerable\<KeyValuePair\<String, String\>\>)](CommonWithConfigOptions/README.md) |  \(Overrides [TestOptions.CommonWithConfigOptions](../../TestOptions/CommonWithConfigOptions/README.md)\) |
+| [CommonWithMetadataReferences(IEnumerable\<MetadataReference\>)](CommonWithMetadataReferences/README.md) |  \(Overrides [TestOptions.CommonWithMetadataReferences](../../TestOptions/CommonWithMetadataReferences/README.md)\) |
 | [Equals(Object)](https://docs.microsoft.com/en-us/dotnet/api/system.object.equals) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
 | [GetHashCode()](https://docs.microsoft.com/en-us/dotnet/api/system.object.gethashcode) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
 | [GetType()](https://docs.microsoft.com/en-us/dotnet/api/system.object.gettype) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
 | [MemberwiseClone()](https://docs.microsoft.com/en-us/dotnet/api/system.object.memberwiseclone) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
 | [ToString()](https://docs.microsoft.com/en-us/dotnet/api/system.object.tostring) |  \(Inherited from [Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\) |
-| [WithAllowedCompilerDiagnosticIds(IEnumerable\<String>)](WithAllowedCompilerDiagnosticIds/README.md) | |
+| [WithAllowedCompilerDiagnosticIds(IEnumerable\<String\>)](WithAllowedCompilerDiagnosticIds/README.md) | |
 | [WithAllowedCompilerDiagnosticSeverity(DiagnosticSeverity)](WithAllowedCompilerDiagnosticSeverity/README.md) | |
 | [WithCompilationOptions(CSharpCompilationOptions)](WithCompilationOptions/README.md) | |
-| [WithConfigOptions(IEnumerable\<KeyValuePair\<String, String>>)](WithConfigOptions/README.md) | |
-| [WithMetadataReferences(IEnumerable\<MetadataReference>)](WithMetadataReferences/README.md) | |
+| [WithConfigOptions(IEnumerable\<KeyValuePair\<String, String\>\>)](WithConfigOptions/README.md) | |
+| [WithMetadataReferences(IEnumerable\<MetadataReference\>)](WithMetadataReferences/README.md) | |
 | [WithParseOptions(CSharpParseOptions)](WithParseOptions/README.md) | |
 

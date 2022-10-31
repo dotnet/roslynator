@@ -10,10 +10,12 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [EventFieldDeclaration(SyntaxTokenList, TypeSyntax, String)](#Roslynator_CSharp_CSharpFactory_EventFieldDeclaration_Microsoft_CodeAnalysis_SyntaxTokenList_Microsoft_CodeAnalysis_CSharp_Syntax_TypeSyntax_System_String_) | |
-| [EventFieldDeclaration(SyntaxTokenList, TypeSyntax, SyntaxToken)](#Roslynator_CSharp_CSharpFactory_EventFieldDeclaration_Microsoft_CodeAnalysis_SyntaxTokenList_Microsoft_CodeAnalysis_CSharp_Syntax_TypeSyntax_Microsoft_CodeAnalysis_SyntaxToken_) | |
+| [EventFieldDeclaration(SyntaxTokenList, TypeSyntax, String)](#3974214725) | |
+| [EventFieldDeclaration(SyntaxTokenList, TypeSyntax, SyntaxToken)](#877505285) | |
 
-## EventFieldDeclaration\(SyntaxTokenList, TypeSyntax, String\) <a id="Roslynator_CSharp_CSharpFactory_EventFieldDeclaration_Microsoft_CodeAnalysis_SyntaxTokenList_Microsoft_CodeAnalysis_CSharp_Syntax_TypeSyntax_System_String_"></a>
+<a id="3974214725"></a>
+
+## EventFieldDeclaration\(SyntaxTokenList, TypeSyntax, String\) 
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.EventFieldDeclarationSyntax EventFieldDeclaration(Microsoft.CodeAnalysis.SyntaxTokenList modifiers, Microsoft.CodeAnalysis.CSharp.Syntax.TypeSyntax type, string identifier)
@@ -31,7 +33,9 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.EventFieldDeclarationSyntax E
 
 [EventFieldDeclarationSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.eventfielddeclarationsyntax)
 
-## EventFieldDeclaration\(SyntaxTokenList, TypeSyntax, SyntaxToken\) <a id="Roslynator_CSharp_CSharpFactory_EventFieldDeclaration_Microsoft_CodeAnalysis_SyntaxTokenList_Microsoft_CodeAnalysis_CSharp_Syntax_TypeSyntax_Microsoft_CodeAnalysis_SyntaxToken_"></a>
+<a id="877505285"></a>
+
+## EventFieldDeclaration\(SyntaxTokenList, TypeSyntax, SyntaxToken\) 
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.EventFieldDeclarationSyntax EventFieldDeclaration(Microsoft.CodeAnalysis.SyntaxTokenList modifiers, Microsoft.CodeAnalysis.CSharp.Syntax.TypeSyntax type, Microsoft.CodeAnalysis.SyntaxToken identifier)

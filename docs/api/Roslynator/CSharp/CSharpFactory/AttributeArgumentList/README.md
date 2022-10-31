@@ -10,10 +10,12 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [AttributeArgumentList(AttributeArgumentSyntax)](#Roslynator_CSharp_CSharpFactory_AttributeArgumentList_Microsoft_CodeAnalysis_CSharp_Syntax_AttributeArgumentSyntax_) | |
-| [AttributeArgumentList(AttributeArgumentSyntax\[\])](#Roslynator_CSharp_CSharpFactory_AttributeArgumentList_Microsoft_CodeAnalysis_CSharp_Syntax_AttributeArgumentSyntax___) | |
+| [AttributeArgumentList(AttributeArgumentSyntax)](#2798859368) | |
+| [AttributeArgumentList(AttributeArgumentSyntax\[\])](#3209884174) | |
 
-## AttributeArgumentList\(AttributeArgumentSyntax\) <a id="Roslynator_CSharp_CSharpFactory_AttributeArgumentList_Microsoft_CodeAnalysis_CSharp_Syntax_AttributeArgumentSyntax_"></a>
+<a id="2798859368"></a>
+
+## AttributeArgumentList\(AttributeArgumentSyntax\) 
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.AttributeArgumentListSyntax AttributeArgumentList(Microsoft.CodeAnalysis.CSharp.Syntax.AttributeArgumentSyntax attributeArgument)
@@ -27,7 +29,9 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.AttributeArgumentListSyntax A
 
 [AttributeArgumentListSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.attributeargumentlistsyntax)
 
-## AttributeArgumentList\(AttributeArgumentSyntax\[\]\) <a id="Roslynator_CSharp_CSharpFactory_AttributeArgumentList_Microsoft_CodeAnalysis_CSharp_Syntax_AttributeArgumentSyntax___"></a>
+<a id="3209884174"></a>
+
+## AttributeArgumentList\(AttributeArgumentSyntax\[\]\) 
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.AttributeArgumentListSyntax AttributeArgumentList(params Microsoft.CodeAnalysis.CSharp.Syntax.AttributeArgumentSyntax[] attributeArguments)

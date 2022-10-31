@@ -83,7 +83,7 @@ namespace Roslynator.CSharp.Analysis.MarkLocalVariableAsConst
                     return;
             }
 
-            if (!CanBeMarkedAsConst(localInfo.Variables, statements, index + 1))
+            if (!CanBeMarkedAsConst(context, localInfo.Variables, statements, index + 1))
                 return;
 
             if (((CSharpParseOptions)context.Node.SyntaxTree.Options).LanguageVersion <= LanguageVersion.CSharp9
@@ -96,31 +96,43 @@ namespace Roslynator.CSharp.Analysis.MarkLocalVariableAsConst
         }
 
         private static bool CanBeMarkedAsConst(
+            SyntaxNodeAnalysisContext context,
             SeparatedSyntaxList<VariableDeclaratorSyntax> variables,
             SyntaxList<StatementSyntax> statements,
             int startIndex)
         {
-            MarkLocalVariableAsConstWalker walker = MarkLocalVariableAsConstWalker.GetInstance();
+            MarkLocalVariableAsConstWalker walker = null;
 
-            foreach (VariableDeclaratorSyntax variable in variables)
-                walker.Identifiers.Add(variable.Identifier.ValueText);
-
-            var result = true;
-
-            for (int i = startIndex; i < statements.Count; i++)
+            try
             {
-                walker.Visit(statements[i]);
+                walker = MarkLocalVariableAsConstWalker.GetInstance();
 
-                if (walker.Result)
+                walker.SemanticModel = context.SemanticModel;
+                walker.CancellationToken = context.CancellationToken;
+
+                foreach (VariableDeclaratorSyntax variable in variables)
                 {
-                    result = false;
-                    break;
+                    var symbol = context.SemanticModel.GetDeclaredSymbol(variable, context.CancellationToken) as ILocalSymbol;
+
+                    if (symbol is not null)
+                        walker.Identifiers[variable.Identifier.ValueText] = symbol;
+                }
+
+                for (int i = startIndex; i < statements.Count; i++)
+                {
+                    walker.Visit(statements[i]);
+
+                    if (walker.Result)
+                        return false;
                 }
             }
+            finally
+            {
+                if (walker != null)
+                    MarkLocalVariableAsConstWalker.Free(walker);
+            }
 
-            MarkLocalVariableAsConstWalker.Free(walker);
-
-            return result;
+            return true;
         }
 
         private static bool HasConstantValue(

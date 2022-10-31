@@ -1,4 +1,4 @@
-# StatementListInfo\.InsertRange\(Int32, IEnumerable\<StatementSyntax>\) Method
+# StatementListInfo\.InsertRange\(Int32, IEnumerable\<StatementSyntax\>\) Method
 
 [Home](../../../../../README.md)
 
@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-\
+  
 Creates a new [StatementListInfo](../README.md) with the specified statements inserted at the index\.
 
 ```csharp
@@ -17,7 +17,7 @@ public Roslynator.CSharp.Syntax.StatementListInfo InsertRange(int index, System.
 
 **index** &ensp; [Int32](https://docs.microsoft.com/en-us/dotnet/api/system.int32)
 
-**statements** &ensp; [IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)\<[StatementSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.statementsyntax)>
+**statements** &ensp; [IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)\<[StatementSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.statementsyntax)\>
 
 ### Returns
 

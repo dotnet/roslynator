@@ -10,10 +10,12 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [InterfaceDeclaration(SyntaxTokenList, String, SyntaxList\<MemberDeclarationSyntax>)](#Roslynator_CSharp_CSharpFactory_InterfaceDeclaration_Microsoft_CodeAnalysis_SyntaxTokenList_System_String_Microsoft_CodeAnalysis_SyntaxList_Microsoft_CodeAnalysis_CSharp_Syntax_MemberDeclarationSyntax__) | |
-| [InterfaceDeclaration(SyntaxTokenList, SyntaxToken, SyntaxList\<MemberDeclarationSyntax>)](#Roslynator_CSharp_CSharpFactory_InterfaceDeclaration_Microsoft_CodeAnalysis_SyntaxTokenList_Microsoft_CodeAnalysis_SyntaxToken_Microsoft_CodeAnalysis_SyntaxList_Microsoft_CodeAnalysis_CSharp_Syntax_MemberDeclarationSyntax__) | |
+| [InterfaceDeclaration(SyntaxTokenList, String, SyntaxList\<MemberDeclarationSyntax\>)](#3607676404) | |
+| [InterfaceDeclaration(SyntaxTokenList, SyntaxToken, SyntaxList\<MemberDeclarationSyntax\>)](#1215247760) | |
 
-## InterfaceDeclaration\(SyntaxTokenList, String, SyntaxList\<MemberDeclarationSyntax>\) <a id="Roslynator_CSharp_CSharpFactory_InterfaceDeclaration_Microsoft_CodeAnalysis_SyntaxTokenList_System_String_Microsoft_CodeAnalysis_SyntaxList_Microsoft_CodeAnalysis_CSharp_Syntax_MemberDeclarationSyntax__"></a>
+<a id="3607676404"></a>
+
+## InterfaceDeclaration\(SyntaxTokenList, String, SyntaxList\<MemberDeclarationSyntax\>\) 
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.InterfaceDeclarationSyntax InterfaceDeclaration(Microsoft.CodeAnalysis.SyntaxTokenList modifiers, string identifier, Microsoft.CodeAnalysis.SyntaxList<Microsoft.CodeAnalysis.CSharp.Syntax.MemberDeclarationSyntax> members = default)
@@ -25,13 +27,15 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.InterfaceDeclarationSyntax In
 
 **identifier** &ensp; [String](https://docs.microsoft.com/en-us/dotnet/api/system.string)
 
-**members** &ensp; [SyntaxList](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxlist-1)\<[MemberDeclarationSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.memberdeclarationsyntax)>
+**members** &ensp; [SyntaxList](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxlist-1)\<[MemberDeclarationSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.memberdeclarationsyntax)\>
 
 ### Returns
 
 [InterfaceDeclarationSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.interfacedeclarationsyntax)
 
-## InterfaceDeclaration\(SyntaxTokenList, SyntaxToken, SyntaxList\<MemberDeclarationSyntax>\) <a id="Roslynator_CSharp_CSharpFactory_InterfaceDeclaration_Microsoft_CodeAnalysis_SyntaxTokenList_Microsoft_CodeAnalysis_SyntaxToken_Microsoft_CodeAnalysis_SyntaxList_Microsoft_CodeAnalysis_CSharp_Syntax_MemberDeclarationSyntax__"></a>
+<a id="1215247760"></a>
+
+## InterfaceDeclaration\(SyntaxTokenList, SyntaxToken, SyntaxList\<MemberDeclarationSyntax\>\) 
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.InterfaceDeclarationSyntax InterfaceDeclaration(Microsoft.CodeAnalysis.SyntaxTokenList modifiers, Microsoft.CodeAnalysis.SyntaxToken identifier, Microsoft.CodeAnalysis.SyntaxList<Microsoft.CodeAnalysis.CSharp.Syntax.MemberDeclarationSyntax> members = default)
@@ -43,7 +47,7 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.InterfaceDeclarationSyntax In
 
 **identifier** &ensp; [SyntaxToken](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxtoken)
 
-**members** &ensp; [SyntaxList](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxlist-1)\<[MemberDeclarationSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.memberdeclarationsyntax)>
+**members** &ensp; [SyntaxList](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxlist-1)\<[MemberDeclarationSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.memberdeclarationsyntax)\>
 
 ### Returns
 

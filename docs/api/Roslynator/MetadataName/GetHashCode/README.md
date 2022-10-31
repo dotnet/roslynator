@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Core\.dll
 
-\
+  
 Returns the hash code for this instance\.
 
 ```csharp

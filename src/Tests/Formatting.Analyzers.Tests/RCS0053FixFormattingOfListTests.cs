@@ -1272,5 +1272,29 @@ var items = Enumerable.Range(0, 10)
     .Select(f => f);
 ", options: Options.WithCompilationOptions(Options.CompilationOptions.WithOutputKind(OutputKind.ConsoleApplication)));
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfList)]
+        public async Task TestNoDiagnostic_ArrayInitializerInGlobalStatement()
+        {
+            await VerifyNoDiagnosticAsync(@"
+Foo.Method(
+    foo: new Foo[]
+    {
+        new Foo(
+            """")
+    });
+", additionalFiles: new[] { @"
+public class Foo
+{
+    public Foo(string v1)
+    {
+    }
+
+    internal static void Method(Foo[] foo)
+    {
+    }
+}
+" }, options: Options.WithCompilationOptions(Options.CompilationOptions.WithOutputKind(OutputKind.ConsoleApplication)));
+        }
     }
 }

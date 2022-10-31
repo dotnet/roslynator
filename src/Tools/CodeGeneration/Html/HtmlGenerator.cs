@@ -66,7 +66,7 @@ namespace Roslynator.CodeGeneration.Html
 
         private static void WriteRefactoring(XmlWriter writer, RefactoringMetadata refactoring)
         {
-            string href = $"http://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/{refactoring.Id}.md";
+            string href = $"http://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/{refactoring.Id}.md";
             writer.WriteStartElement("li");
             writer.WriteStartElement("a");
             writer.WriteAttributeString("href", href);

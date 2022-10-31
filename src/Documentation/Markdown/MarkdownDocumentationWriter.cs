@@ -1,29 +1,24 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Text;
 using DotMarkdown;
 using Microsoft.CodeAnalysis;
 
 namespace Roslynator.Documentation.Markdown
 {
-    public class MarkdownDocumentationWriter : DocumentationWriter
+    public abstract class MarkdownDocumentationWriter : DocumentationWriter
     {
         private readonly MarkdownWriter _writer;
 
-        public MarkdownDocumentationWriter(
-            DocumentationModel documentationModel,
-            DocumentationUrlProvider urlProvider,
-            DocumentationOptions options = null,
-            DocumentationResources resources = null) : base(documentationModel, urlProvider, options, resources)
+        protected MarkdownDocumentationWriter(DocumentationContext context, MarkdownWriter writer) : base(context)
         {
-            _writer = MarkdownWriter.Create(new StringBuilder());
+            _writer = writer;
         }
 
-        public override void WriteStartDocument()
+        public override void WriteStartDocument(ISymbol symbol, DocumentationFileKind fileKind)
         {
         }
 
-        public override void WriteEndDocument()
+        public override void WriteEndDocument(ISymbol symbol, DocumentationFileKind fileKind)
         {
         }
 
@@ -135,11 +130,11 @@ namespace Roslynator.Documentation.Markdown
 
         public override void WriteLineBreak()
         {
-            WriteRaw(@"\");
+            WriteRaw("  ");
             WriteLine();
         }
 
-        public override void WriteLinkDestination(string name)
+        public override void WriteLinkTarget(string name)
         {
             WriteRaw($"<a id=\"{name}\"></a>");
         }

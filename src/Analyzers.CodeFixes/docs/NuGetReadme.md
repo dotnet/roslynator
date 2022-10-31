@@ -15,7 +15,7 @@ A collection of 200+ analyzers for C#, powered by [Roslyn](https://github.com/do
    dotnet add package roslynator.formatting.analyzers
    ```
 
-* Use EditorConfig to [configure](https://github.com/josefpihrt/roslynator/blob/master/docs/Configuration.md) analyzers.
+* Use EditorConfig to [configure](https://github.com/josefpihrt/roslynator/blob/main/docs/Configuration.md) analyzers.
 
 ## Feedback
 

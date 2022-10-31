@@ -10,12 +10,14 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [ReplaceStatementsAsync(Document, StatementListInfo, IEnumerable\<StatementSyntax>, CancellationToken)](#Roslynator_CSharp_WorkspaceExtensions_ReplaceStatementsAsync_Microsoft_CodeAnalysis_Document_Roslynator_CSharp_Syntax_StatementListInfo_System_Collections_Generic_IEnumerable_Microsoft_CodeAnalysis_CSharp_Syntax_StatementSyntax__System_Threading_CancellationToken_) | Creates a new document with the specified statements replaced with new statements\. |
-| [ReplaceStatementsAsync(Document, StatementListInfo, SyntaxList\<StatementSyntax>, CancellationToken)](#Roslynator_CSharp_WorkspaceExtensions_ReplaceStatementsAsync_Microsoft_CodeAnalysis_Document_Roslynator_CSharp_Syntax_StatementListInfo_Microsoft_CodeAnalysis_SyntaxList_Microsoft_CodeAnalysis_CSharp_Syntax_StatementSyntax__System_Threading_CancellationToken_) | Creates a new document with the specified statements replaced with new statements\. |
+| [ReplaceStatementsAsync(Document, StatementListInfo, IEnumerable\<StatementSyntax\>, CancellationToken)](#1112725449) | Creates a new document with the specified statements replaced with new statements\. |
+| [ReplaceStatementsAsync(Document, StatementListInfo, SyntaxList\<StatementSyntax\>, CancellationToken)](#1837521881) | Creates a new document with the specified statements replaced with new statements\. |
 
-## ReplaceStatementsAsync\(Document, StatementListInfo, IEnumerable\<StatementSyntax>, CancellationToken\) <a id="Roslynator_CSharp_WorkspaceExtensions_ReplaceStatementsAsync_Microsoft_CodeAnalysis_Document_Roslynator_CSharp_Syntax_StatementListInfo_System_Collections_Generic_IEnumerable_Microsoft_CodeAnalysis_CSharp_Syntax_StatementSyntax__System_Threading_CancellationToken_"></a>
+<a id="1112725449"></a>
 
-\
+## ReplaceStatementsAsync\(Document, StatementListInfo, IEnumerable\<StatementSyntax\>, CancellationToken\) 
+
+  
 Creates a new document with the specified statements replaced with new statements\.
 
 ```csharp
@@ -28,17 +30,19 @@ public static System.Threading.Tasks.Task<Microsoft.CodeAnalysis.Document> Repla
 
 **statementsInfo** &ensp; [StatementListInfo](../../Syntax/StatementListInfo/README.md)
 
-**newStatements** &ensp; [IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)\<[StatementSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.statementsyntax)>
+**newStatements** &ensp; [IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)\<[StatementSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.statementsyntax)\>
 
 **cancellationToken** &ensp; [CancellationToken](https://docs.microsoft.com/en-us/dotnet/api/system.threading.cancellationtoken)
 
 ### Returns
 
-[Task](https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1)\<[Document](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.document)>
+[Task](https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1)\<[Document](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.document)\>
 
-## ReplaceStatementsAsync\(Document, StatementListInfo, SyntaxList\<StatementSyntax>, CancellationToken\) <a id="Roslynator_CSharp_WorkspaceExtensions_ReplaceStatementsAsync_Microsoft_CodeAnalysis_Document_Roslynator_CSharp_Syntax_StatementListInfo_Microsoft_CodeAnalysis_SyntaxList_Microsoft_CodeAnalysis_CSharp_Syntax_StatementSyntax__System_Threading_CancellationToken_"></a>
+<a id="1837521881"></a>
 
-\
+## ReplaceStatementsAsync\(Document, StatementListInfo, SyntaxList\<StatementSyntax\>, CancellationToken\) 
+
+  
 Creates a new document with the specified statements replaced with new statements\.
 
 ```csharp
@@ -51,11 +55,11 @@ public static System.Threading.Tasks.Task<Microsoft.CodeAnalysis.Document> Repla
 
 **statementsInfo** &ensp; [StatementListInfo](../../Syntax/StatementListInfo/README.md)
 
-**newStatements** &ensp; [SyntaxList](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxlist-1)\<[StatementSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.statementsyntax)>
+**newStatements** &ensp; [SyntaxList](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxlist-1)\<[StatementSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.statementsyntax)\>
 
 **cancellationToken** &ensp; [CancellationToken](https://docs.microsoft.com/en-us/dotnet/api/system.threading.cancellationtoken)
 
 ### Returns
 
-[Task](https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1)\<[Document](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.document)>
+[Task](https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.task-1)\<[Document](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.document)\>
 

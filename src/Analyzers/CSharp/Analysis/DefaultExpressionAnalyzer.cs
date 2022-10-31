@@ -8,6 +8,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using System.Threading;
 
 namespace Roslynator.CSharp.Analysis
 {
@@ -123,9 +124,24 @@ namespace Roslynator.CSharp.Analysis
                 case SyntaxKind.EqualsExpression:
                 case SyntaxKind.NotEqualsExpression:
                     {
-                        TypeInfo typeInfo = context.SemanticModel.GetTypeInfo(expression, context.CancellationToken);
+                        SemanticModel semanticModel = context.SemanticModel;
+                        CancellationToken cancellationToken = context.CancellationToken;
+
+                        TypeInfo typeInfo = semanticModel.GetTypeInfo(expression, cancellationToken);
 
                         if (!SymbolEqualityComparer.Default.Equals(typeInfo.Type, typeInfo.ConvertedType))
+                            return;
+
+                        IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol((ExpressionSyntax)parent, cancellationToken);
+
+                        if (methodSymbol is null)
+                            return;
+
+                        SyntaxNode newNode = parent.ReplaceNode(defaultExpression, CSharpFactory.DefaultLiteralExpression());
+
+                        IMethodSymbol newMethodSymbol = semanticModel.GetSpeculativeMethodSymbol(parent.SpanStart, newNode);
+
+                        if (!SymbolEqualityComparer.Default.Equals(methodSymbol, newMethodSymbol))
                             return;
 
                         ReportDiagnostic();
@@ -193,26 +209,36 @@ namespace Roslynator.CSharp.Analysis
             {
                 SyntaxNode node = ((ExpressionSyntax)anonymousFunction).WalkUpParentheses().Parent;
 
-                if (node is ArgumentSyntax argument
-                    && node.IsParentKind(SyntaxKind.ArgumentList)
-                    && node.Parent.IsParentKind(SyntaxKind.InvocationExpression)
-                    && !IsGenericInvocation((InvocationExpressionSyntax)node.Parent.Parent))
+                if (node is ArgumentSyntax argument)
                 {
-                    IParameterSymbol parameterSymbol = context.SemanticModel.DetermineParameter(argument);
-
-                    if (parameterSymbol?.OriginalDefinition.Type is INamedTypeSymbol namedTypeSymbol)
+                    if (node.IsParentKind(SyntaxKind.ArgumentList)
+                        && node.Parent.IsParentKind(SyntaxKind.InvocationExpression)
+                        && !IsGenericInvocation((InvocationExpressionSyntax)node.Parent.Parent))
                     {
-                        ITypeParameterSymbol typeParameterSymbol = namedTypeSymbol.TypeParameters.LastOrDefault();
+                        IParameterSymbol parameterSymbol = context.SemanticModel.DetermineParameter(argument);
 
-                        if (typeParameterSymbol != null
-                            && parameterSymbol.ContainingSymbol.OriginalDefinition is IMethodSymbol methodSymbol2)
+                        if (parameterSymbol?.OriginalDefinition.Type is INamedTypeSymbol namedTypeSymbol)
                         {
-                            foreach (ITypeParameterSymbol typeParameterSymbol2 in methodSymbol2.TypeParameters)
+                            ITypeParameterSymbol typeParameterSymbol = namedTypeSymbol.TypeParameters.LastOrDefault();
+
+                            if (typeParameterSymbol != null
+                                && parameterSymbol.ContainingSymbol.OriginalDefinition is IMethodSymbol methodSymbol2)
                             {
-                                if (string.Equals(typeParameterSymbol.Name, typeParameterSymbol2.Name, StringComparison.Ordinal))
-                                    return true;
+                                foreach (ITypeParameterSymbol typeParameterSymbol2 in methodSymbol2.TypeParameters)
+                                {
+                                    if (string.Equals(typeParameterSymbol.Name, typeParameterSymbol2.Name, StringComparison.Ordinal))
+                                        return true;
+                                }
                             }
                         }
+                    }
+                }
+                else if (node is EqualsValueClauseSyntax)
+                {
+                    if (node.IsParentKind(SyntaxKind.VariableDeclarator)
+                        && node.Parent.Parent is VariableDeclarationSyntax variableDeclaration)
+                    {
+                        return variableDeclaration.Type.IsVar;
                     }
                 }
             }

@@ -10,10 +10,12 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [GenericName(String, TypeSyntax)](#Roslynator_CSharp_CSharpFactory_GenericName_System_String_Microsoft_CodeAnalysis_CSharp_Syntax_TypeSyntax_) | |
-| [GenericName(SyntaxToken, TypeSyntax)](#Roslynator_CSharp_CSharpFactory_GenericName_Microsoft_CodeAnalysis_SyntaxToken_Microsoft_CodeAnalysis_CSharp_Syntax_TypeSyntax_) | |
+| [GenericName(String, TypeSyntax)](#3965910358) | |
+| [GenericName(SyntaxToken, TypeSyntax)](#1025023640) | |
 
-## GenericName\(String, TypeSyntax\) <a id="Roslynator_CSharp_CSharpFactory_GenericName_System_String_Microsoft_CodeAnalysis_CSharp_Syntax_TypeSyntax_"></a>
+<a id="3965910358"></a>
+
+## GenericName\(String, TypeSyntax\) 
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.GenericNameSyntax GenericName(string identifier, Microsoft.CodeAnalysis.CSharp.Syntax.TypeSyntax typeArgument)
@@ -29,7 +31,9 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.GenericNameSyntax GenericName
 
 [GenericNameSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.genericnamesyntax)
 
-## GenericName\(SyntaxToken, TypeSyntax\) <a id="Roslynator_CSharp_CSharpFactory_GenericName_Microsoft_CodeAnalysis_SyntaxToken_Microsoft_CodeAnalysis_CSharp_Syntax_TypeSyntax_"></a>
+<a id="1025023640"></a>
+
+## GenericName\(SyntaxToken, TypeSyntax\) 
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.GenericNameSyntax GenericName(Microsoft.CodeAnalysis.SyntaxToken identifier, Microsoft.CodeAnalysis.CSharp.Syntax.TypeSyntax typeArgument)

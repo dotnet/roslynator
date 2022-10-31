@@ -7,6 +7,7 @@ using System.IO;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using DotMarkdown;
 using Microsoft.CodeAnalysis;
 using Roslynator.Documentation;
 using Roslynator.Documentation.Markdown;
@@ -24,6 +25,7 @@ namespace Roslynator.CommandLine
             RootDocumentationParts ignoredParts,
             IncludeContainingNamespaceFilter includeContainingNamespaceFilter,
             Visibility visibility,
+            DocumentationHost documentationHost,
             in ProjectFilter projectFilter) : base(projectFilter)
         {
             Options = options;
@@ -31,6 +33,7 @@ namespace Roslynator.CommandLine
             IgnoredParts = ignoredParts;
             IncludeContainingNamespaceFilter = includeContainingNamespaceFilter;
             Visibility = visibility;
+            DocumentationHost = documentationHost;
         }
 
         public GenerateDocRootCommandLineOptions Options { get; }
@@ -43,26 +46,87 @@ namespace Roslynator.CommandLine
 
         public Visibility Visibility { get; }
 
+        public DocumentationHost DocumentationHost { get; }
+
         public override async Task<CommandResult> ExecuteAsync(ProjectOrSolution projectOrSolution, CancellationToken cancellationToken = default)
         {
             AssemblyResolver.Register();
 
             var documentationOptions = new DocumentationOptions(
+                rootFileHeading: Options.Heading,
                 ignoredNames: Options.IgnoredNames,
                 rootDirectoryUrl: Options.RootDirectoryUrl,
+                includeSystemNamespace: Options.IncludeSystemNamespace,
                 placeSystemNamespaceFirst: !Options.NoPrecedenceForSystem,
                 markObsolete: !Options.NoMarkObsolete,
                 depth: Depth,
                 ignoredRootParts: IgnoredParts,
                 includeContainingNamespaceFilter: IncludeContainingNamespaceFilter,
-                includeSystemNamespace: Options.IncludeSystemNamespace,
-                scrollToContent: Options.ScrollToContent);
+                scrollToContent: (DocumentationHost == DocumentationHost.GitHub) && Options.ScrollToContent);
 
             ImmutableArray<Compilation> compilations = await GetCompilationsAsync(projectOrSolution, cancellationToken);
 
             var documentationModel = new DocumentationModel(compilations, DocumentationFilterOptions.Instance);
 
-            var generator = new MarkdownDocumentationGenerator(documentationModel, WellKnownUrlProviders.GitHub, documentationOptions);
+            UrlSegmentProvider urlSegmentProvider = DefaultUrlSegmentProvider.Hierarchical;
+
+            var externalProviders = new MicrosoftDocsUrlProvider[] { MicrosoftDocsUrlProvider.Instance };
+
+            DocumentationUrlProvider GetUrlProvider()
+            {
+                switch (DocumentationHost)
+                {
+                    case DocumentationHost.GitHub:
+                        return new GitHubDocumentationUrlProvider(urlSegmentProvider, externalProviders);
+                    case DocumentationHost.Docusaurus:
+                        return new DocusaurusDocumentationUrlProvider(urlSegmentProvider, externalProviders);
+                    case DocumentationHost.Sphinx:
+                        return new SphinxDocumentationUrlProvider(urlSegmentProvider, externalProviders);
+                    default:
+                        throw new InvalidOperationException($"Unknown value '{DocumentationHost}'.");
+                }
+            }
+
+            MarkdownWriterSettings GetMarkdownWriterSettings()
+            {
+                switch (DocumentationHost)
+                {
+                    case DocumentationHost.GitHub:
+                    case DocumentationHost.Sphinx:
+                        return MarkdownWriterSettings.Default;
+                    case DocumentationHost.Docusaurus:
+                        return new MarkdownWriterSettings(new MarkdownFormat(angleBracketEscapeStyle: AngleBracketEscapeStyle.EntityRef));
+                    default:
+                        throw new InvalidOperationException($"Unknown value '{DocumentationHost}'.");
+                }
+            }
+
+            MarkdownWriterSettings markdownWriterSettings = GetMarkdownWriterSettings();
+
+            DocumentationWriter CreateDocumentationWriter(DocumentationContext context)
+            {
+                MarkdownWriter writer = MarkdownWriter.Create(new StringBuilder(), markdownWriterSettings);
+
+                switch (DocumentationHost)
+                {
+                    case DocumentationHost.GitHub:
+                        return new GitHubDocumentationWriter(context, writer);
+                    case DocumentationHost.Docusaurus:
+                        return new DocusaurusDocumentationWriter(context, writer);
+                    case DocumentationHost.Sphinx:
+                        return new SphinxDocumentationWriter(context, writer);
+                    default:
+                        throw new InvalidOperationException($"Unknown value '{DocumentationHost}'.");
+                }
+            }
+
+            var context = new DocumentationContext(
+                documentationModel,
+                GetUrlProvider(),
+                documentationOptions,
+                c => CreateDocumentationWriter(c));
+
+            var generator = new DocumentationGenerator(context);
 
             string path = Options.Output;
 

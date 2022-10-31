@@ -5,8 +5,8 @@ set _programFiles=%ProgramFiles%
 set _msbuildPath="%_programFiles%\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\MSBuild"
 set _properties=Configuration=Release,Deterministic=true,TreatWarningsAsErrors=true,WarningsNotAsErrors=1591
 set _outDir=..\out\Release
-set _version=4.1.1
-set _version4=4.1.1.0
+set _version=4.1.2
+set _version4=4.1.2.0
 
 orang replace "..\src\VisualStudio\source.extension.vsixmanifest" ^
  -c "patterns\vsix_manifest_version.txt" from-file -t m r ^

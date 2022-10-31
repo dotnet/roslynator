@@ -7,6 +7,7 @@ Guidelines for contributing to the Roslynator repo.
 * **DO** submit issues for bug fixes or features.
 * **DO** add unit tests for bug fixes or features.
 * **DO** ensure submissions pass build and are merge conflict free.
+* **DO** update changelog.
 * **DO NOT** submit new analyzer/refactoring/fix without discussing it first.
 * **DO NOT** submit large formatting/documentation changes without discussing it first.
 
@@ -23,5 +24,5 @@ Guidelines for contributing to the Roslynator repo.
 
 ## Coding Style
 
-* **DO** follow [CoreFX Coding Style](https://github.com/dotnet/corefx/blob/master/Documentation/coding-guidelines/coding-style.md) (except using `s_` and `t_` prefix for field names).
+* **DO** follow [.NET Runtime Coding Style](https://github.com/dotnet/runtime/blob/main/docs/coding-guidelines/coding-style.md) (except using `s_` and `t_` prefix for field names).
 * **DO** install [Roslynator for Visual Studio](https://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2019) and follow suggestions.

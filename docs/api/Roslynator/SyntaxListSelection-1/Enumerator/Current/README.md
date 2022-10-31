@@ -1,8 +1,8 @@
-# SyntaxListSelection\<TNode>\.Enumerator\.Current Property
+# SyntaxListSelection\<TNode\>\.Enumerator\.Current Property
 
 [Home](../../../../README.md)
 
-**Containing Type**: [SyntaxListSelection\<TNode>.Enumerator](../README.md)
+**Containing Type**: [SyntaxListSelection\<TNode\>.Enumerator](../README.md)
 
 **Assembly**: Roslynator\.Core\.dll
 

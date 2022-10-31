@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Testing\.CSharp\.dll
 
-\
+  
 Gets C\# programming language identifier\.
 
 ```csharp

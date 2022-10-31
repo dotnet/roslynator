@@ -1,12 +1,12 @@
-# ModifierList\<TNode>\.RemoveAt\(TNode, Int32\) Method
+# ModifierList\<TNode\>\.RemoveAt\(TNode, Int32\) Method
 
 [Home](../../../../README.md)
 
-**Containing Type**: [ModifierList\<TNode>](../README.md)
+**Containing Type**: [ModifierList\<TNode\>](../README.md)
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-\
+  
 Creates a new node with a modifier at the specified index removed\.
 
 ```csharp

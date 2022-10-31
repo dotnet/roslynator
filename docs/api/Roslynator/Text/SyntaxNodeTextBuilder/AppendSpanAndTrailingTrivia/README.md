@@ -10,18 +10,22 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [AppendSpanAndTrailingTrivia()](#Roslynator_Text_SyntaxNodeTextBuilder_AppendSpanAndTrailingTrivia) | |
-| [AppendSpanAndTrailingTrivia(SyntaxNode)](#Roslynator_Text_SyntaxNodeTextBuilder_AppendSpanAndTrailingTrivia_Microsoft_CodeAnalysis_SyntaxNode_) | |
-| [AppendSpanAndTrailingTrivia(SyntaxToken)](#Roslynator_Text_SyntaxNodeTextBuilder_AppendSpanAndTrailingTrivia_Microsoft_CodeAnalysis_SyntaxToken_) | |
-| [AppendSpanAndTrailingTrivia(SyntaxTrivia)](#Roslynator_Text_SyntaxNodeTextBuilder_AppendSpanAndTrailingTrivia_Microsoft_CodeAnalysis_SyntaxTrivia_) | |
+| [AppendSpanAndTrailingTrivia()](#4161470169) | |
+| [AppendSpanAndTrailingTrivia(SyntaxNode)](#3817704394) | |
+| [AppendSpanAndTrailingTrivia(SyntaxToken)](#172220900) | |
+| [AppendSpanAndTrailingTrivia(SyntaxTrivia)](#4285036613) | |
 
-## AppendSpanAndTrailingTrivia\(\) <a id="Roslynator_Text_SyntaxNodeTextBuilder_AppendSpanAndTrailingTrivia"></a>
+<a id="4161470169"></a>
+
+## AppendSpanAndTrailingTrivia\(\) 
 
 ```csharp
 public void AppendSpanAndTrailingTrivia()
 ```
 
-## AppendSpanAndTrailingTrivia\(SyntaxNode\) <a id="Roslynator_Text_SyntaxNodeTextBuilder_AppendSpanAndTrailingTrivia_Microsoft_CodeAnalysis_SyntaxNode_"></a>
+<a id="3817704394"></a>
+
+## AppendSpanAndTrailingTrivia\(SyntaxNode\) 
 
 ```csharp
 public void AppendSpanAndTrailingTrivia(Microsoft.CodeAnalysis.SyntaxNode node)
@@ -29,9 +33,9 @@ public void AppendSpanAndTrailingTrivia(Microsoft.CodeAnalysis.SyntaxNode node)
 
 ### Parameters
 
-**node** &ensp; [SyntaxNode](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxnode)
+**node** &ensp; [SyntaxNode](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxnode)<a id="172220900"></a>
 
-## AppendSpanAndTrailingTrivia\(SyntaxToken\) <a id="Roslynator_Text_SyntaxNodeTextBuilder_AppendSpanAndTrailingTrivia_Microsoft_CodeAnalysis_SyntaxToken_"></a>
+## AppendSpanAndTrailingTrivia\(SyntaxToken\) 
 
 ```csharp
 public void AppendSpanAndTrailingTrivia(Microsoft.CodeAnalysis.SyntaxToken token)
@@ -39,9 +43,9 @@ public void AppendSpanAndTrailingTrivia(Microsoft.CodeAnalysis.SyntaxToken token
 
 ### Parameters
 
-**token** &ensp; [SyntaxToken](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxtoken)
+**token** &ensp; [SyntaxToken](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxtoken)<a id="4285036613"></a>
 
-## AppendSpanAndTrailingTrivia\(SyntaxTrivia\) <a id="Roslynator_Text_SyntaxNodeTextBuilder_AppendSpanAndTrailingTrivia_Microsoft_CodeAnalysis_SyntaxTrivia_"></a>
+## AppendSpanAndTrailingTrivia\(SyntaxTrivia\) 
 
 ```csharp
 public void AppendSpanAndTrailingTrivia(Microsoft.CodeAnalysis.SyntaxTrivia trivia)

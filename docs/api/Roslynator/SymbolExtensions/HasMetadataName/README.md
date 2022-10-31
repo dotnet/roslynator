@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Core\.dll
 
-\
+  
 Returns true if a symbol has the specified [MetadataName](../../MetadataName/README.md)\.
 
 ```csharp

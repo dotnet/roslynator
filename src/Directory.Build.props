@@ -7,21 +7,22 @@
     <Authors>Josef Pihrt</Authors>
     <Copyright>Copyright (c) 2016-2022 Josef Pihrt</Copyright>
     <EnableNETAnalyzers>false</EnableNETAnalyzers>
+    <RoslynatorPublicKey>0024000004800000940000000602000000240000525341310004000001000100d348e1a51bc190259aed17cfe132736241fef462de45a5de6c881c7f9d705073c7a2a08ba5ae493c7e878fe5f3cf7909e89045cca696422f03b284b147daf6b93c47bc53dd61ceeae60f73149d183032f029761d0d59aab49a26be4f6af71cd8194ace937642bdcb515f07530096122e97cfe6c8549a843530f71c24c7e3dab8</RoslynatorPublicKey>
   </PropertyGroup>
 
   <PropertyGroup>
-    <RoslynatorVersion>4.1.1.0</RoslynatorVersion>
-    <RoslynatorAnalyzersPackageVersion>4.1.1</RoslynatorAnalyzersPackageVersion>
-    <RoslynatorCoreVersion>4.1.1.0</RoslynatorCoreVersion>
-    <RoslynatorCorePackageVersion>4.1.1</RoslynatorCorePackageVersion>
-    <RoslynatorCliVersion>0.3.3.0</RoslynatorCliVersion>
-    <RoslynatorCliPackageVersion>0.3.3</RoslynatorCliPackageVersion>
-    <RoslynatorFormattingAnalyzersVersion>4.1.1.0</RoslynatorFormattingAnalyzersVersion>
-    <RoslynatorFormattingAnalyzersPackageVersion>4.1.1</RoslynatorFormattingAnalyzersPackageVersion>
-    <RoslynatorCodeAnalysisAnalyzersVersion>4.1.1.0</RoslynatorCodeAnalysisAnalyzersVersion>
-    <RoslynatorCodeAnalysisAnalyzersPackageVersion>4.1.1</RoslynatorCodeAnalysisAnalyzersPackageVersion>
-    <RoslynatorTestingVersion>4.1.1.0</RoslynatorTestingVersion>
-    <RoslynatorTestingPackageVersion>4.1.1</RoslynatorTestingPackageVersion>
+    <RoslynatorVersion>4.1.2.0</RoslynatorVersion>
+    <RoslynatorAnalyzersPackageVersion>4.1.2</RoslynatorAnalyzersPackageVersion>
+    <RoslynatorCoreVersion>4.1.2.0</RoslynatorCoreVersion>
+    <RoslynatorCorePackageVersion>4.1.2</RoslynatorCorePackageVersion>
+    <RoslynatorCliVersion>0.4.0.0</RoslynatorCliVersion>
+    <RoslynatorCliPackageVersion>0.4.0</RoslynatorCliPackageVersion>
+    <RoslynatorFormattingAnalyzersVersion>4.1.2.0</RoslynatorFormattingAnalyzersVersion>
+    <RoslynatorFormattingAnalyzersPackageVersion>4.1.2</RoslynatorFormattingAnalyzersPackageVersion>
+    <RoslynatorCodeAnalysisAnalyzersVersion>4.1.2.0</RoslynatorCodeAnalysisAnalyzersVersion>
+    <RoslynatorCodeAnalysisAnalyzersPackageVersion>4.1.2</RoslynatorCodeAnalysisAnalyzersPackageVersion>
+    <RoslynatorTestingVersion>4.1.2.0</RoslynatorTestingVersion>
+    <RoslynatorTestingPackageVersion>4.1.2</RoslynatorTestingPackageVersion>
     <RoslynatorCodeFixesPackageVersion>2.0.0</RoslynatorCodeFixesPackageVersion>
     <RoslynatorDocumentationPackageVersion>1.0.0</RoslynatorDocumentationPackageVersion>
   </PropertyGroup>

@@ -250,6 +250,66 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarWhenTypeIsNotObvious)]
+        public async Task Test_Func_Lambda()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+        [|var|] x = () =>
+        {
+            return default(object);
+        };
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+        System.Func<object> x = () =>
+        {
+            return default(object);
+        };
+    }
+}
+", options: Options.AddAllowedCompilerDiagnosticId("CS8603"));
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarWhenTypeIsNotObvious)]
+        public async Task Test_Func_Lambda_Nullable()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+#nullable enable
+
+class C
+{
+    void M()
+    {
+        [|var|] x = () =>
+        {
+            return default(object);
+        };
+    }
+}
+", @"
+#nullable enable
+
+class C
+{
+    void M()
+    {
+        System.Func<object> x = () =>
+        {
+            return default(object);
+        };
+    }
+}
+", options: Options.AddAllowedCompilerDiagnosticId("CS8603"));
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarWhenTypeIsNotObvious)]
         public async Task TestNoDiagnostic()
         {
             await VerifyNoDiagnosticAsync(@"

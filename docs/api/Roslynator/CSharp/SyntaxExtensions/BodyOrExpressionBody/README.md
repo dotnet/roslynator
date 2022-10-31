@@ -10,17 +10,19 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [BodyOrExpressionBody(AccessorDeclarationSyntax)](#Roslynator_CSharp_SyntaxExtensions_BodyOrExpressionBody_Microsoft_CodeAnalysis_CSharp_Syntax_AccessorDeclarationSyntax_) | Returns accessor body or an expression body if the body is null\. |
-| [BodyOrExpressionBody(ConstructorDeclarationSyntax)](#Roslynator_CSharp_SyntaxExtensions_BodyOrExpressionBody_Microsoft_CodeAnalysis_CSharp_Syntax_ConstructorDeclarationSyntax_) | Returns constructor body or an expression body if the body is null\. |
-| [BodyOrExpressionBody(ConversionOperatorDeclarationSyntax)](#Roslynator_CSharp_SyntaxExtensions_BodyOrExpressionBody_Microsoft_CodeAnalysis_CSharp_Syntax_ConversionOperatorDeclarationSyntax_) | Returns conversion operator body or an expression body if the body is null\. |
-| [BodyOrExpressionBody(DestructorDeclarationSyntax)](#Roslynator_CSharp_SyntaxExtensions_BodyOrExpressionBody_Microsoft_CodeAnalysis_CSharp_Syntax_DestructorDeclarationSyntax_) | Returns destructor body or an expression body if the body is null\. |
-| [BodyOrExpressionBody(LocalFunctionStatementSyntax)](#Roslynator_CSharp_SyntaxExtensions_BodyOrExpressionBody_Microsoft_CodeAnalysis_CSharp_Syntax_LocalFunctionStatementSyntax_) | Returns local function body or an expression body if the body is null\. |
-| [BodyOrExpressionBody(MethodDeclarationSyntax)](#Roslynator_CSharp_SyntaxExtensions_BodyOrExpressionBody_Microsoft_CodeAnalysis_CSharp_Syntax_MethodDeclarationSyntax_) | Returns method body or an expression body if the body is null\. |
-| [BodyOrExpressionBody(OperatorDeclarationSyntax)](#Roslynator_CSharp_SyntaxExtensions_BodyOrExpressionBody_Microsoft_CodeAnalysis_CSharp_Syntax_OperatorDeclarationSyntax_) | Returns operator body or an expression body if the body is null\. |
+| [BodyOrExpressionBody(AccessorDeclarationSyntax)](#4213369124) | Returns accessor body or an expression body if the body is null\. |
+| [BodyOrExpressionBody(ConstructorDeclarationSyntax)](#3583146349) | Returns constructor body or an expression body if the body is null\. |
+| [BodyOrExpressionBody(ConversionOperatorDeclarationSyntax)](#2593258085) | Returns conversion operator body or an expression body if the body is null\. |
+| [BodyOrExpressionBody(DestructorDeclarationSyntax)](#1634292077) | Returns destructor body or an expression body if the body is null\. |
+| [BodyOrExpressionBody(LocalFunctionStatementSyntax)](#278134350) | Returns local function body or an expression body if the body is null\. |
+| [BodyOrExpressionBody(MethodDeclarationSyntax)](#3526085830) | Returns method body or an expression body if the body is null\. |
+| [BodyOrExpressionBody(OperatorDeclarationSyntax)](#390059482) | Returns operator body or an expression body if the body is null\. |
 
-## BodyOrExpressionBody\(AccessorDeclarationSyntax\) <a id="Roslynator_CSharp_SyntaxExtensions_BodyOrExpressionBody_Microsoft_CodeAnalysis_CSharp_Syntax_AccessorDeclarationSyntax_"></a>
+<a id="4213369124"></a>
 
-\
+## BodyOrExpressionBody\(AccessorDeclarationSyntax\) 
+
+  
 Returns accessor body or an expression body if the body is null\.
 
 ```csharp
@@ -35,9 +37,11 @@ public static Microsoft.CodeAnalysis.CSharp.CSharpSyntaxNode BodyOrExpressionBod
 
 [CSharpSyntaxNode](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.csharpsyntaxnode)
 
-## BodyOrExpressionBody\(ConstructorDeclarationSyntax\) <a id="Roslynator_CSharp_SyntaxExtensions_BodyOrExpressionBody_Microsoft_CodeAnalysis_CSharp_Syntax_ConstructorDeclarationSyntax_"></a>
+<a id="3583146349"></a>
 
-\
+## BodyOrExpressionBody\(ConstructorDeclarationSyntax\) 
+
+  
 Returns constructor body or an expression body if the body is null\.
 
 ```csharp
@@ -52,9 +56,11 @@ public static Microsoft.CodeAnalysis.CSharp.CSharpSyntaxNode BodyOrExpressionBod
 
 [CSharpSyntaxNode](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.csharpsyntaxnode)
 
-## BodyOrExpressionBody\(ConversionOperatorDeclarationSyntax\) <a id="Roslynator_CSharp_SyntaxExtensions_BodyOrExpressionBody_Microsoft_CodeAnalysis_CSharp_Syntax_ConversionOperatorDeclarationSyntax_"></a>
+<a id="2593258085"></a>
 
-\
+## BodyOrExpressionBody\(ConversionOperatorDeclarationSyntax\) 
+
+  
 Returns conversion operator body or an expression body if the body is null\.
 
 ```csharp
@@ -69,9 +75,11 @@ public static Microsoft.CodeAnalysis.CSharp.CSharpSyntaxNode BodyOrExpressionBod
 
 [CSharpSyntaxNode](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.csharpsyntaxnode)
 
-## BodyOrExpressionBody\(DestructorDeclarationSyntax\) <a id="Roslynator_CSharp_SyntaxExtensions_BodyOrExpressionBody_Microsoft_CodeAnalysis_CSharp_Syntax_DestructorDeclarationSyntax_"></a>
+<a id="1634292077"></a>
 
-\
+## BodyOrExpressionBody\(DestructorDeclarationSyntax\) 
+
+  
 Returns destructor body or an expression body if the body is null\.
 
 ```csharp
@@ -86,9 +94,11 @@ public static Microsoft.CodeAnalysis.CSharp.CSharpSyntaxNode BodyOrExpressionBod
 
 [CSharpSyntaxNode](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.csharpsyntaxnode)
 
-## BodyOrExpressionBody\(LocalFunctionStatementSyntax\) <a id="Roslynator_CSharp_SyntaxExtensions_BodyOrExpressionBody_Microsoft_CodeAnalysis_CSharp_Syntax_LocalFunctionStatementSyntax_"></a>
+<a id="278134350"></a>
 
-\
+## BodyOrExpressionBody\(LocalFunctionStatementSyntax\) 
+
+  
 Returns local function body or an expression body if the body is null\.
 
 ```csharp
@@ -103,9 +113,11 @@ public static Microsoft.CodeAnalysis.CSharp.CSharpSyntaxNode BodyOrExpressionBod
 
 [CSharpSyntaxNode](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.csharpsyntaxnode)
 
-## BodyOrExpressionBody\(MethodDeclarationSyntax\) <a id="Roslynator_CSharp_SyntaxExtensions_BodyOrExpressionBody_Microsoft_CodeAnalysis_CSharp_Syntax_MethodDeclarationSyntax_"></a>
+<a id="3526085830"></a>
 
-\
+## BodyOrExpressionBody\(MethodDeclarationSyntax\) 
+
+  
 Returns method body or an expression body if the body is null\.
 
 ```csharp
@@ -120,9 +132,11 @@ public static Microsoft.CodeAnalysis.CSharp.CSharpSyntaxNode BodyOrExpressionBod
 
 [CSharpSyntaxNode](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.csharpsyntaxnode)
 
-## BodyOrExpressionBody\(OperatorDeclarationSyntax\) <a id="Roslynator_CSharp_SyntaxExtensions_BodyOrExpressionBody_Microsoft_CodeAnalysis_CSharp_Syntax_OperatorDeclarationSyntax_"></a>
+<a id="390059482"></a>
 
-\
+## BodyOrExpressionBody\(OperatorDeclarationSyntax\) 
+
+  
 Returns operator body or an expression body if the body is null\.
 
 ```csharp
