@@ -332,7 +332,14 @@ namespace Roslynator.Documentation
 
                 SymbolXmlDocumentation xmlDocumentation = DocumentationModel.GetXmlDocumentation(namespaceSymbol, Options.PreferredCultureName);
 
-                writer.WriteHeading(1, namespaceSymbol, TypeSymbolDisplayFormats.Name_ContainingTypes_Namespaces, addLink: false, linkDestination: (Options.ScrollToContent) ? WellKnownNames.TopFragmentName : null);
+                writer.WriteHeading(
+                    1,
+                    namespaceSymbol,
+                    ((Options.IgnoredTitleParts & SymbolTitleParts.ContainingNamespace) != 0)
+                        ? TypeSymbolDisplayFormats.Name
+                        : TypeSymbolDisplayFormats.Name_ContainingTypes_Namespaces,
+                    addLink: false,
+                    linkDestination: (Options.ScrollToContent) ? WellKnownNames.TopFragmentName : null);
 
                 foreach (NamespaceDocumentationParts part in EnabledAndSortedNamespaceParts)
                 {
@@ -591,7 +598,9 @@ namespace Roslynator.Documentation
                 writer.WriteHeading(
                     1,
                     typeSymbol,
-                    TypeSymbolDisplayFormats.Name_ContainingTypes_TypeParameters,
+                    ((Options.IgnoredTitleParts & SymbolTitleParts.ContainingType) != 0)
+                            ? TypeSymbolDisplayFormats.Name_TypeParameters
+                            : TypeSymbolDisplayFormats.Name_ContainingTypes_TypeParameters,
                     SymbolDisplayAdditionalMemberOptions.UseItemPropertyName | SymbolDisplayAdditionalMemberOptions.UseOperatorName,
                     addLink: false,
                     linkDestination: (Options.ScrollToContent) ? WellKnownNames.TopFragmentName : null);

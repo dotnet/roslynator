@@ -762,6 +762,9 @@ namespace Roslynator.CommandLine
             if (!TryParseOptionValueAsEnumFlags(options.IgnoredCommonParts, OptionNames.IgnoredCommonParts, out CommonDocumentationParts ignoredCommonParts, DocumentationOptions.DefaultValues.IgnoredCommonParts))
                 return ExitCodes.Error;
 
+            if (!TryParseOptionValueAsEnumFlags(options.IgnoredTitleParts, OptionNames.IgnoredTitleParts, out SymbolTitleParts ignoredTitleParts, DocumentationOptions.DefaultValues.IgnoredTitleParts))
+                return ExitCodes.Error;
+
             if (!TryParseOptionValueAsEnumFlags(options.IncludeContainingNamespace, OptionNames.IncludeContainingNamespace, out IncludeContainingNamespaceFilter includeContainingNamespaceFilter, DocumentationOptions.DefaultValues.IncludeContainingNamespaceFilter))
                 return ExitCodes.Error;
 
@@ -784,21 +787,22 @@ namespace Roslynator.CommandLine
                 return ExitCodes.Error;
 
             var command = new GenerateDocCommand(
-                options,
-                depth,
-                ignoredRootParts,
-                ignoredNamespaceParts,
-                ignoredTypeParts,
-                ignoredMemberParts,
-                ignoredCommonParts,
-                omitMemberParts,
-                includeContainingNamespaceFilter,
-                visibility,
-                documentationHost,
-                filesLayout,
+                options: options,
+                depth: depth,
+                ignoredRootParts: ignoredRootParts,
+                ignoredNamespaceParts: ignoredNamespaceParts,
+                ignoredTypeParts: ignoredTypeParts,
+                ignoredMemberParts: ignoredMemberParts,
+                ignoredCommonParts: ignoredCommonParts,
+                ignoredTitleParts: ignoredTitleParts,
+                omitMemberParts: omitMemberParts,
+                includeContainingNamespaceFilter: includeContainingNamespaceFilter,
+                visibility: visibility,
+                documentationHost: documentationHost,
+                filesLayout: filesLayout,
                 groupByCommonNamespace: options.GroupByCommonNamespace,
                 inheritanceStyle: inheritanceStyle,
-                projectFilter);
+                projectFilter: projectFilter);
 
             CommandStatus status = await command.ExecuteAsync(paths, options.MSBuildPath, options.Properties);
 
