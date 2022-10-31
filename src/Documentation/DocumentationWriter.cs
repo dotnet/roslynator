@@ -18,6 +18,10 @@ namespace Roslynator.Documentation
     {
         private bool _disposed;
 
+        private SymbolDisplayFormat _nonOverloadedConstructorDisplayFormat;
+        private SymbolDisplayFormat _nonOverloadedMemberDisplayFormat;
+        private SymbolDisplayFormat _overloadedMemberDisplayFormat;
+
         protected DocumentationWriter(DocumentationContext context)
         {
             Context = context ?? throw new ArgumentNullException(nameof(context));
@@ -350,27 +354,81 @@ namespace Roslynator.Documentation
         {
             WriteStartHeading(1);
 
-            if (symbol.Kind == SymbolKind.Method
-                && ((IMethodSymbol)symbol).MethodKind == MethodKind.Constructor)
+            if ((symbol as IMethodSymbol)?.MethodKind == MethodKind.Constructor)
             {
                 if (isOverloaded)
                 {
-                    WriteString(symbol.ContainingType.ToDisplayString(TypeSymbolDisplayFormats.Name_ContainingTypes_TypeParameters));
+                    SymbolDisplayFormat format = ((Options.IgnoredTitleParts & SymbolTitleParts.ContainingType) != 0)
+                        ? TypeSymbolDisplayFormats.Name_TypeParameters
+                        : TypeSymbolDisplayFormats.Name_ContainingTypes_TypeParameters;
+
+                    WriteString(symbol.ContainingType.ToDisplayString(format));
                     WriteSpace();
                     WriteString(Resources.ConstructorsTitle);
                 }
                 else
                 {
-                    WriteString(symbol.ToDisplayString(DocumentationDisplayFormats.SimpleDeclaration));
+                    _nonOverloadedConstructorDisplayFormat ??= DocumentationDisplayFormats.Default.Update(
+                        genericsOptions: SymbolDisplayGenericsOptions.IncludeTypeParameters,
+                        memberOptions: ((Options.IgnoredTitleParts & SymbolTitleParts.Parameters) != 0)
+                            ? SymbolDisplayMemberOptions.None
+                            : SymbolDisplayMemberOptions.IncludeParameters,
+                        parameterOptions: SymbolDisplayParameterOptions.IncludeType);
+
+                    if ((Options.IgnoredTitleParts & SymbolTitleParts.ContainingType) == 0)
+                    {
+                        INamedTypeSymbol containingType = symbol.ContainingType.ContainingType;
+
+                        if (containingType is not null)
+                        {
+                            WriteString(containingType.ToDisplayString(TypeSymbolDisplayFormats.Name_ContainingTypes_TypeParameters));
+                            WriteString(".");
+                        }
+                    }
+
+                    WriteString(symbol.ToDisplayString(_nonOverloadedConstructorDisplayFormat));
                     WriteSpace();
                     WriteString(Resources.ConstructorTitle);
                 }
             }
             else
             {
-                SymbolDisplayFormat format = (isOverloaded)
-                    ? DocumentationDisplayFormats.OverloadedMemberTitle
-                    : DocumentationDisplayFormats.MemberTitle;
+                SymbolDisplayFormat format;
+                if (isOverloaded)
+                {
+                    _overloadedMemberDisplayFormat ??= DocumentationDisplayFormats.Default.Update(
+                        typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypes,
+                        genericsOptions: SymbolDisplayGenericsOptions.None,
+                        memberOptions: (((Options.IgnoredTitleParts & SymbolTitleParts.ExplicitImplementation) != 0)
+                                ? SymbolDisplayMemberOptions.None
+                                : SymbolDisplayMemberOptions.IncludeExplicitInterface)
+                            | (((Options.IgnoredTitleParts & SymbolTitleParts.ContainingType) != 0)
+                                ? SymbolDisplayMemberOptions.None
+                                : SymbolDisplayMemberOptions.IncludeContainingType));
+
+                    format = _overloadedMemberDisplayFormat;
+                }
+                else
+                {
+                    _nonOverloadedMemberDisplayFormat ??= DocumentationDisplayFormats.Default.Update(
+                        typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypes,
+                        genericsOptions: SymbolDisplayGenericsOptions.IncludeTypeParameters,
+                        memberOptions: (((Options.IgnoredTitleParts & SymbolTitleParts.ExplicitImplementation) != 0)
+                            ? SymbolDisplayMemberOptions.None
+                            : SymbolDisplayMemberOptions.IncludeExplicitInterface)
+                            | (((Options.IgnoredTitleParts & SymbolTitleParts.Parameters) != 0)
+                                ? SymbolDisplayMemberOptions.None
+                                : SymbolDisplayMemberOptions.IncludeParameters)
+                            | (((Options.IgnoredTitleParts & SymbolTitleParts.ContainingType) != 0)
+                                ? SymbolDisplayMemberOptions.None
+                                : SymbolDisplayMemberOptions.IncludeContainingType),
+                        delegateStyle: ((Options.IgnoredTitleParts & SymbolTitleParts.Parameters) != 0)
+                            ? SymbolDisplayDelegateStyle.NameOnly
+                            : SymbolDisplayDelegateStyle.NameAndParameters,
+                        parameterOptions: SymbolDisplayParameterOptions.IncludeType);
+
+                    format = _nonOverloadedMemberDisplayFormat;
+                }
 
                 WriteString(symbol.ToDisplayString(format, SymbolDisplayAdditionalMemberOptions.UseItemPropertyName | SymbolDisplayAdditionalMemberOptions.UseOperatorName));
                 WriteSpace();

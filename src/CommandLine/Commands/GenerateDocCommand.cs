@@ -29,6 +29,7 @@ namespace Roslynator.CommandLine
             TypeDocumentationParts ignoredTypeParts,
             MemberDocumentationParts ignoredMemberParts,
             CommonDocumentationParts ignoredCommonParts,
+            SymbolTitleParts ignoredTitleParts,
             OmitMemberParts omitMemberParts,
             IncludeContainingNamespaceFilter includeContainingNamespaceFilter,
             Visibility visibility,
@@ -46,6 +47,7 @@ namespace Roslynator.CommandLine
             IgnoredMemberParts = ignoredMemberParts;
             IgnoredCommonParts = ignoredCommonParts;
             OmitMemberParts = omitMemberParts;
+            IgnoredTitleParts = ignoredTitleParts;
             IncludeContainingNamespaceFilter = includeContainingNamespaceFilter;
             Visibility = visibility;
             DocumentationHost = documentationHost;
@@ -69,6 +71,8 @@ namespace Roslynator.CommandLine
         public CommonDocumentationParts IgnoredCommonParts { get; }
 
         public OmitMemberParts OmitMemberParts { get; }
+
+        public SymbolTitleParts IgnoredTitleParts { get; }
 
         public IncludeContainingNamespaceFilter IncludeContainingNamespaceFilter { get; }
 
@@ -111,6 +115,7 @@ namespace Roslynator.CommandLine
                 ignoredTypeParts: IgnoredTypeParts,
                 ignoredMemberParts: IgnoredMemberParts,
                 ignoredCommonParts: IgnoredCommonParts,
+                ignoredTitleParts: IgnoredTitleParts,
                 includeContainingNamespaceFilter: IncludeContainingNamespaceFilter,
                 filesLayout: FilesLayout,
                 scrollToContent: (DocumentationHost == DocumentationHost.GitHub) && Options.ScrollToContent);
