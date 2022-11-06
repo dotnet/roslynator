@@ -344,7 +344,7 @@ namespace Roslynator.CSharp
             messageFormat:      "([deprecated] use RCS1255 instead) Remove empty statement.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: true, 
+            isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.RemoveEmptyStatement, 
             customTags:         WellKnownDiagnosticTags.Unnecessary);
@@ -368,7 +368,7 @@ namespace Roslynator.CSharp
             messageFormat:      "([deprecated] use RCS1255 instead) Remove empty 'else' clause.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
-            isEnabledByDefault: true, 
+            isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.RemoveEmptyElseClause, 
             customTags:         WellKnownDiagnosticTags.Unnecessary);
@@ -380,7 +380,7 @@ namespace Roslynator.CSharp
             messageFormat:      "([deprecated] use RCS1255 instead) Remove empty initializer.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: true, 
+            isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.RemoveEmptyInitializer, 
             customTags:         WellKnownDiagnosticTags.Unnecessary);
@@ -630,7 +630,7 @@ namespace Roslynator.CSharp
             messageFormat:      "([deprecated] use RCS1255 instead) Remove empty 'finally' clause.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
-            isEnabledByDefault: true, 
+            isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.RemoveEmptyFinallyClause, 
             customTags:         WellKnownDiagnosticTags.Unnecessary);
@@ -692,7 +692,7 @@ namespace Roslynator.CSharp
             messageFormat:      "([deprecated] use RCS1255 instead) Remove empty namespace declaration.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: true, 
+            isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.RemoveEmptyNamespaceDeclaration, 
             customTags:         WellKnownDiagnosticTags.Unnecessary);
@@ -854,7 +854,7 @@ namespace Roslynator.CSharp
             messageFormat:      "([deprecated] use RCS1255 instead) Remove empty region.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
-            isEnabledByDefault: true, 
+            isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.RemoveEmptyRegion, 
             customTags:         Array.Empty<string>());
@@ -1012,7 +1012,7 @@ namespace Roslynator.CSharp
             messageFormat:      "([deprecated] use RCS1255 instead) Remove empty destructor.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: true, 
+            isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.RemoveEmptyDestructor, 
             customTags:         WellKnownDiagnosticTags.Unnecessary);

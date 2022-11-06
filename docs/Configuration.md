@@ -408,17 +408,8 @@ dotnet_diagnostic.rcs1036.severity = suggestion
 # Remove trailing white-space
 dotnet_diagnostic.rcs1037.severity = suggestion
 
-# Remove empty statement
-dotnet_diagnostic.rcs1038.severity = suggestion
-
 # Remove argument list from attribute
 dotnet_diagnostic.rcs1039.severity = silent
-
-# Remove empty 'else' clause
-dotnet_diagnostic.rcs1040.severity = silent
-
-# Remove empty initializer
-dotnet_diagnostic.rcs1041.severity = suggestion
 
 # Remove enum default underlying type
 dotnet_diagnostic.rcs1042.severity = silent
@@ -470,9 +461,6 @@ dotnet_diagnostic.rcs1060.severity = none
 # Merge 'if' with nested 'if'
 dotnet_diagnostic.rcs1061.severity = silent
 
-# Remove empty 'finally' clause
-dotnet_diagnostic.rcs1066.severity = silent
-
 # Simplify logical negation
 dotnet_diagnostic.rcs1068.severity = suggestion
 
@@ -484,9 +472,6 @@ dotnet_diagnostic.rcs1070.severity = silent
 
 # Remove redundant base constructor call
 dotnet_diagnostic.rcs1071.severity = silent
-
-# Remove empty namespace declaration
-dotnet_diagnostic.rcs1072.severity = suggestion
 
 # Convert 'if' to 'return' statement
 dotnet_diagnostic.rcs1073.severity = suggestion
@@ -526,9 +511,6 @@ dotnet_diagnostic.rcs1089.severity = suggestion
 dotnet_diagnostic.rcs1090.severity = none
 # Options: roslynator_configure_await
 
-# Remove empty region
-dotnet_diagnostic.rcs1091.severity = silent
-
 # Remove file with no code
 dotnet_diagnostic.rcs1093.severity = suggestion
 
@@ -559,9 +541,6 @@ dotnet_diagnostic.rcs1104.severity = suggestion
 
 # Unnecessary interpolation
 dotnet_diagnostic.rcs1105.severity = suggestion
-
-# Remove empty destructor
-dotnet_diagnostic.rcs1106.severity = suggestion
 
 # Remove redundant 'ToCharArray' call
 dotnet_diagnostic.rcs1107.severity = suggestion
@@ -934,7 +913,7 @@ dotnet_diagnostic.rcs1254.severity = suggestion
 # Options: roslynator_enum_flag_value_style
 
 # Remove empty syntax
-dotnet_diagnostic.rcs1260.severity = suggestion
+dotnet_diagnostic.rcs1255.severity = suggestion
 
 # Use pattern matching
 dotnet_diagnostic.rcs9001.severity = silent
