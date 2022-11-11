@@ -191,30 +191,15 @@ namespace Roslynator
                 if (originalDefinition.TypeKind == TypeKind.Interface)
                     return "Count";
 
-                while (typeSymbol is not null
-                    && typeSymbol.SpecialType != SpecialType.System_Object)
+                foreach (ISymbol symbol in typeSymbol.GetMembers())
                 {
-                    foreach (ISymbol symbol in typeSymbol.GetMembers("Count"))
+                    if (symbol.Kind == SymbolKind.Property
+                        && StringUtility.Equals(symbol.Name, "Count", "Length")
+                        && semanticModel.IsAccessible(position, symbol))
                     {
-                        if (symbol.Kind == SymbolKind.Property
-                            && semanticModel.IsAccessible(position, symbol))
-                        {
-                            return symbol.Name;
-                        }
+                        return symbol.Name;
                     }
-
-                    foreach (ISymbol symbol in typeSymbol.GetMembers("Length"))
-                    {
-                        if (symbol.Kind == SymbolKind.Property
-                            && semanticModel.IsAccessible(position, symbol))
-                        {
-                            return symbol.Name;
-                        }
-                    }
-
-                    typeSymbol = typeSymbol.BaseType;
                 }
-
             }
 
             return null;
