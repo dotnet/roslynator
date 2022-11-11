@@ -549,6 +549,50 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
+        public async Task Test_DerivedFromListOfT()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System.Collections.Generic;
+using System.Linq;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        List2 items = new List2();
+
+        if (items.[|Any()|])
+        {
+        }
+    }
+}
+
+public class List2 : List<string>
+{
+}
+", @"
+using System.Collections.Generic;
+using System.Linq;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        List2 items = new List2();
+
+        if (items.Count > 0)
+        {
+        }
+    }
+}
+
+public class List2 : List<string>
+{
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
         public async Task TestNoDiagnostic_ImmutableArray()
         {
             await VerifyNoDiagnosticAsync(@"
