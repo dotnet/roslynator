@@ -18,19 +18,22 @@ namespace Roslynator.CSharp.Refactorings
             if (memberAccess.Name?.IsMissing != false)
                 return;
 
-            memberAccess = GetTopmostMemberAccessExpression(memberAccess);
+            if (context.Span.IsBetweenSpans(memberAccess))
+            {
+                if (memberAccess.IsParentKind(SyntaxKind.SimpleMemberAccessExpression))
+                    memberAccess = (MemberAccessExpressionSyntax)memberAccess.Parent;
+            }
 
             if (!context.Span.IsBetweenSpans(memberAccess.Expression))
+            {
                 return;
+            }
 
             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
             var typeSymbol = semanticModel.GetSymbol(memberAccess.Expression, context.CancellationToken) as INamedTypeSymbol;
 
             if (typeSymbol?.TypeKind != TypeKind.Class)
-                return;
-
-            if (!typeSymbol.IsStatic)
                 return;
 
             if (!typeSymbol.DeclaredAccessibility.Is(Accessibility.Public, Accessibility.Internal))
