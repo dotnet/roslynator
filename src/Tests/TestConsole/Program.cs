@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -35,7 +36,7 @@ class C
                 IEnumerable<PortableExecutableReference> metadataReferences = AppContext
                     .GetData("TRUSTED_PLATFORM_ASSEMBLIES")
                     .ToString()
-                    .Split(';')
+                    .Split(RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? ';' : ':')
                     .Select(f => MetadataReference.CreateFromFile(f));
 
                 Project project = workspace.CurrentSolution
