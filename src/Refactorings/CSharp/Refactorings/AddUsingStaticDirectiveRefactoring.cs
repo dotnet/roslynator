@@ -31,12 +31,21 @@ namespace Roslynator.CSharp.Refactorings
 
             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-            var typeSymbol = semanticModel.GetSymbol(memberAccess.Expression, context.CancellationToken) as INamedTypeSymbol;
-
-            if (typeSymbol?.TypeKind != TypeKind.Class)
+            if (semanticModel.GetSymbol(memberAccess.Expression, context.CancellationToken) is not INamedTypeSymbol typeSymbol)
+            {
                 return;
+            }
+
+            if (typeSymbol.TypeKind != TypeKind.Class
+                && typeSymbol.TypeKind != TypeKind.Struct)
+            {
+                return;
+            }
 
             if (!typeSymbol.DeclaredAccessibility.Is(Accessibility.Public, Accessibility.Internal))
+                return;
+
+            if (semanticModel.GetSymbol(memberAccess.Name, context.CancellationToken)?.IsStatic != true)
                 return;
 
             if (CSharpUtility.IsStaticClassInScope(memberAccess, typeSymbol, semanticModel, context.CancellationToken))

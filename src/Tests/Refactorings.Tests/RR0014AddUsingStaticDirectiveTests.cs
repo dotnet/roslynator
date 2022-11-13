@@ -132,5 +132,32 @@ class C
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
+
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddUsingStaticDirective)]
+        public async Task Test_Struct()
+        {
+            await VerifyRefactoringAsync(@"
+using System;
+
+class C
+{
+    void M()
+    {
+        var x = [|TimeSpan|].Zero;
+    }
+}
+", @"
+using System;
+using static System.TimeSpan;
+
+class C
+{
+    void M()
+    {
+        var x = Zero;
+    }
+}
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
+        }
     }
 }
