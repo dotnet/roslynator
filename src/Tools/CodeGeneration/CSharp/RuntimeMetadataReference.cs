@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Immutable;
 using System.IO;
+using System.Runtime.InteropServices;
 using Microsoft.CodeAnalysis;
 
 namespace Roslynator.CodeGeneration.CSharp
@@ -18,7 +19,7 @@ namespace Roslynator.CodeGeneration.CSharp
             return AppContext
                 .GetData("TRUSTED_PLATFORM_ASSEMBLIES")
                 .ToString()
-                .Split(';')
+                .Split(RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? ';' : ':')
                 .ToImmutableDictionary(f => Path.GetFileName(f));
         }
 

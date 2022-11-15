@@ -44,5 +44,69 @@ class C
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
         }
+
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InlineUsingStaticDirective)]
+        public async Task Test2()
+        {
+            await VerifyRefactoringAsync(@"
+using System;
+using [||]static System.StringComparer;
+
+class C
+{
+    void M()
+    {
+        var a = CurrentCulture.GetHashCode();
+        var b = CurrentCulture;
+        var c = StringComparer.CurrentCulture;
+        var d = System.StringComparer.CurrentCulture;
+        var e = global::System.StringComparer.CurrentCulture;
+    }
+}
+", @"
+using System;
+
+class C
+{
+    void M()
+    {
+        var a = StringComparer.CurrentCulture.GetHashCode();
+        var b = StringComparer.CurrentCulture;
+        var c = StringComparer.CurrentCulture;
+        var d = System.StringComparer.CurrentCulture;
+        var e = global::System.StringComparer.CurrentCulture;
+    }
+}
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
+        }
+
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InlineUsingStaticDirective)]
+        public async Task Test_Math_Max()
+        {
+            await VerifyRefactoringAsync(@"
+using System;
+using [||]static System.Math;
+
+class C
+{
+    void M()
+    {
+        var max = Max(1, 2);
+        var min = Min(1, 2);
+    }
+}
+", @"
+using System;
+
+class C
+{
+    void M()
+    {
+        var max = Math.Max(1, 2);
+        var min = Math.Min(1, 2);
+    }
+}
+", equivalenceKey: EquivalenceKey.Create(RefactoringId));
+        }
     }
 }

@@ -12,6 +12,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Disable [RCS1080](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1080.md) by default ([#980](https://github.com/josefpihrt/roslynator/pull/980).
 - [CLI] Add support for .NET 7 and remove support for .NET 5 ([#985](https://github.com/josefpihrt/roslynator/pull/985).
 
+### Fixed
+
+- Fix ([RCS1080](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1080.md)) when collection is derived from `List<T>` ([#986](https://github.com/josefpihrt/roslynator/pull/986).
+- Fix retrieving of trusted platform assemblies - separator differs by OS ([#987](https://github.com/josefpihrt/roslynator/pull/987).
+- Fix refactoring ([RR0014](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RR0014.md)) ([#988](https://github.com/josefpihrt/roslynator/pull/988).
+- Fix refactoring ([RR0180](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RR0180.md)) ([#988](https://github.com/josefpihrt/roslynator/pull/988).
+
 ## [4.1.2] - 2022-10-31
 
 ### Added
