@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Core\.dll
 
-\
+  
 Returns an enumerator that iterates through selected lines\.
 
 ```csharp

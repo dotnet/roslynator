@@ -1,10 +1,68 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+## [4.1.2] - 2022-10-31
+
+### Added
+
+- Convert more syntax to implicit object creation (RCS1250) ([#910](https://github.com/josefpihrt/roslynator/pull/910)).
+- Add code fix for CS0037 ([#929](https://github.com/josefpihrt/roslynator/pull/929)).
+- [CLI] Generate reference documentation that can be published with Docusaurus ([#918](https://github.com/josefpihrt/roslynator/pull/918)).
+  - `roslynator generate-doc --host docusaurus`
+- [CLI] Generate reference documentation that can be published with Sphinx ([#961](https://github.com/josefpihrt/roslynator/pull/961)).
+  - `roslynator generate-doc --host sphinx`
+- [CLI] Basic support for `<inheritdoc />` when generating documentation (`generate-doc` command) ([#972](https://github.com/josefpihrt/roslynator/pull/972)).
+- [CLI] Add option `ignored-title-parts` (`generate-doc` command) ([#975](https://github.com/josefpihrt/roslynator/pull/975)).
+
+### Changed
+
+- Rename default branch to `main`.
+- Format changelog according to 'Keep a Changelog' ([#915](https://github.com/josefpihrt/roslynator/pull/915)).
+- [CLI] Improve release build of command-line tool ([#912](https://github.com/josefpihrt/roslynator/pull/912)).
+- Do not sort properties in an initializer ([RR0216](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0216.md)).
+- [CLI] Bump Roslyn to 4.3.1 ([#969](https://github.com/josefpihrt/roslynator/pull/969)).
+- [CLI] Bump Microsoft.Build.Locator to 1.5.5 ([#969](https://github.com/josefpihrt/roslynator/pull/969)).
+
+### Fixed
+
+- [CLI] Fix filtering of projects (relates to `--projects` or `--ignored-projects` parameter) ([#914](https://github.com/josefpihrt/roslynator/pull/914)).
+- Refactoring "Add using directive" (RR0014) now works when file-scoped namespace is used ([#932](https://github.com/josefpihrt/roslynator/pull/932)).
+- Add parentheses if necessary in a code fix for [RCS1197](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1197.md) ([#928](https://github.com/josefpihrt/roslynator/pull/928) by @karl-sjogren).
+- Do not simplify default expression if it would change semantics ([RCS1244](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1244.md)) ([#939](https://github.com/josefpihrt/roslynator/pull/939).
+- Fix NullReferenceException in [RCS1198](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1198.md) ([#940](https://github.com/josefpihrt/roslynator/pull/940).
+- Order named arguments even if optional arguments are not specified [RCS1205](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1205.md) ([#941](https://github.com/josefpihrt/roslynator/pull/941), ([#965](https://github.com/josefpihrt/roslynator/pull/965).
+- Prefix identifier with `@` if necessary ([RCS1220](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1220.md)) ([#943](https://github.com/josefpihrt/roslynator/pull/943).
+- Do not suggest to make local variable a const when it is used in ref extension method ([RCS1118](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1118.md)) ([#948](https://github.com/josefpihrt/roslynator/pull/948).
+- Fix formatting of argument list ([#952](https://github.com/josefpihrt/roslynator/pull/952).
+- Do not remove async/await when 'using declaration' is used ([#953](https://github.com/josefpihrt/roslynator/pull/953).
+- Convert if-else to return statement when pattern matching is used ([RCS1073](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1073.md)) ([#956](https://github.com/josefpihrt/roslynator/pull/956).
+- [CLI] Include compiler diagnostics in the xml output file of the `roslynator analyze` command ([#964](https://github.com/JosefPihrt/Roslynator/pull/964) by @PeterKaszab).
+- Do not simplify 'default' expression if the type is inferred ([RCS1244](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1244.md)) ([#966](https://github.com/josefpihrt/roslynator/pull/966).
+- Use explicit type from lambda expression ([RCS1008](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1008.md)) ([#967](https://github.com/josefpihrt/roslynator/pull/967).
+- Do not remove constructor if it is decorated with 'UsedImplicitlyAttribute' ([RCS1074](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1074.md)) ([#968](https://github.com/josefpihrt/roslynator/pull/968).
+- Detect argument null check in the form of `ArgumentNullException.ThrowIfNull` ([RR0025](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactorings/RR0025.md), [RCS1227](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1227.md)) ([#974](https://github.com/josefpihrt/roslynator/pull/974).
+- Do not make generic class static if it's inherited ([RCS1102](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1102.md)) ([#978](https://github.com/josefpihrt/roslynator/pull/978).
+
+-----
+<!-- Content below does not adhere to 'Keep a Changelog' format -->
+
+## 4.1.1 (2022-05-29)
+
+* Bug fixes
+
 ## 4.1.0 (2022-03-29)
 
-* Add analyzer [RCS1254](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1254.md) (Normalize format of enum flag value)
-* Add analyzer [RCS1253](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1253.md) (Format documentation comment summary)
-* Add analyzer [RCS1252](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1252.md) (Normalize usage of infinite loop)
-* Add analyzer [RCS1251](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1251.md) (Remove unnecessary braces from record declaration)
-* Add refactoring [Deconstruct foreach variable (RR0217)](https://github.com/JosefPihrt/Roslynator/blob/master/docs/refactoring/RR0217.md)
+* Add analyzer [RCS1254](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1254.md) (Normalize format of enum flag value)
+* Add analyzer [RCS1253](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1253.md) (Format documentation comment summary)
+* Add analyzer [RCS1252](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1252.md) (Normalize usage of infinite loop)
+* Add analyzer [RCS1251](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1251.md) (Remove unnecessary braces from record declaration)
+* Add refactoring [Deconstruct foreach variable (RR0217)](https://github.com/JosefPihrt/Roslynator/blob/main/docs/refactoring/RR0217.md)
 * Add code fix for CS8602, CS8604
 * Add suggestion to call AddRange instead of Add (RCS1235)
 * Put back refactoring "Split local declaration and assignment" (RR0194) ([issue](https://github.com/JosefPihrt/Roslynator/issues/881))
@@ -25,8 +83,8 @@
 
 ### Bug fixes
 
-* Fix analyzer [RCS1014](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1014.md) (Use explicitly/implicitly typed array) ([commit](https://github.com/JosefPihrt/Roslynator/commit/004a83756b9fbcf117710d7afb6bab964a59f1be))
-* Fix analyzer [RCS1016](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1016.md) (Use block body or expression body) ([commit](https://github.com/JosefPihrt/Roslynator/commit/8c633e966f2706d3888fd942dd186d066d440ac0))
+* Fix analyzer [RCS1014](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1014.md) (Use explicitly/implicitly typed array) ([commit](https://github.com/JosefPihrt/Roslynator/commit/004a83756b9fbcf117710d7afb6bab964a59f1be))
+* Fix analyzer [RCS1016](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1016.md) (Use block body or expression body) ([commit](https://github.com/JosefPihrt/Roslynator/commit/8c633e966f2706d3888fd942dd186d066d440ac0))
 * Fix refactoring AddUsingDirective (RR0013) ([commit](https://github.com/JosefPihrt/Roslynator/commit/199787bdf921aeeecd69d9a118bbb86419bce81a))
 * Propagate some options from .roslynatorconfig ([commit](https://github.com/JosefPihrt/Roslynator/commit/a619ebf285d1de77941a9c4a5fce46bb19485d3a))
 * Enable ROS analyzers to be set from .roslynatorconfig ([commit](https://github.com/JosefPihrt/Roslynator/commit/a4c0ad8fb60d694cc7d2546016d742547f1d585b))
@@ -79,9 +137,9 @@
 
 ### Analyzers
 
-* Add option to invert analyzer [RCS1016](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1016.md) ([commit](https://github.com/JosefPihrt/Roslynator/commit/67a0fc5cfe9dd793cc6e504513ed6805678c1739))
-* Add more cases to analyzer [RCS1218](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1218.md) ([commit](https://github.com/JosefPihrt/Roslynator/commit/37e8edb7a2eefdd4a7749dd6a3f5b473ebbdcc0a))
-* Convert `!= null` to `is not null` ([RCS1248](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1248.md)) ([commit](https://github.com/JosefPihrt/Roslynator/commit/432a8fea3147447536dbb8fac47598ad1db68158))
+* Add option to invert analyzer [RCS1016](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1016.md) ([commit](https://github.com/JosefPihrt/Roslynator/commit/67a0fc5cfe9dd793cc6e504513ed6805678c1739))
+* Add more cases to analyzer [RCS1218](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1218.md) ([commit](https://github.com/JosefPihrt/Roslynator/commit/37e8edb7a2eefdd4a7749dd6a3f5b473ebbdcc0a))
+* Convert `!= null` to `is not null` ([RCS1248](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1248.md)) ([commit](https://github.com/JosefPihrt/Roslynator/commit/432a8fea3147447536dbb8fac47598ad1db68158))
 
 ### Code Fixes
 
@@ -92,31 +150,31 @@
 
 ## 3.1.0 (2021-01-04)
 
-* Add analyzer [RCS0056](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS0056.md) (Line is too long)
+* Add analyzer [RCS0056](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS0056.md) (Line is too long)
 * Add option to suppress diagnostic from Unity script methods (RCS1213)
 * Consider syntax `var foo = Foo.Parse(value)` as having obvious type `Foo`
 * Update references to Roslyn API to 3.7.0
 
 ## 3.0.1 (2020-10-19)
 
-* Add analyzer [RCS0055](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS0055.md) (Fix formatting of a binary expression chain)
-* Add analyzer [RCS0054](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS0054.md) (Fix formatting of a call chain)
-* Add analyzer [RCS0053](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS0053.md) (Fix formatting of a list)
-* Add analyzer [RCS0052](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS0052.md) (Add newline before equals sign instead of after it (or vice versa))
-* Add analyzer [RCS1248](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1248.md) (Use 'is null' pattern instead of comparison (or vice versa)) ([issue](https://github.com/JosefPihrt/Roslynator/issues/458))
-* Add analyzer [RCS1247](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1247.md) (Fix documentation comment tag)
-* Add analyzer option [RCS1207i](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1207i.md) (Convert method group to anonymous function)
-* Add analyzer option [RCS1090i](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1090i.md) (Remove call to 'ConfigureAwait')
-* Add analyzer option [RCS1018i](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1018i.md) (Remove accessibility modifiers) ([issue](https://github.com/JosefPihrt/Roslynator/issues/260))
-* Add analyzer option [RCS1014i](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1014i.md) (Use implicitly typed array)
-* Add analyzer option [RCS1014a](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1014a.md) (Use implicitly typed array (when type is obvious))
-* Add analyzer option [RCS1078i](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1078i.md) (Use string.Empty instead of "")
-* Add analyzer option [RCS1016a](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1016a.md) (Convert expression-body to block body when expression is multi-line)
-* Add analyzer option [RCS1016b](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1016b.md) (Convert expression-body to block body when declaration is multi-line)
-* Disable by default analyzer [RCS1207i](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1207i.md) (Convert method group to anonymous function)
-* Remove analyzer [RCS1219](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1219.md) (Call 'Enumerable.Skip' and 'Enumerable.Any' instead of 'Enumerable.Count')
-* Rename analyzer "Avoid 'null' on left side of binary expression" to "Constant values should be placed on right side of comparisons" [RCS1098](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1098.md)
-* Rename analyzer "Simplify boolean expression" to "Unnecessary null check" [RCS1199](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1199.md) ([issue](https://github.com/JosefPihrt/Roslynator/issues/373))
+* Add analyzer [RCS0055](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS0055.md) (Fix formatting of a binary expression chain)
+* Add analyzer [RCS0054](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS0054.md) (Fix formatting of a call chain)
+* Add analyzer [RCS0053](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS0053.md) (Fix formatting of a list)
+* Add analyzer [RCS0052](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS0052.md) (Add newline before equals sign instead of after it (or vice versa))
+* Add analyzer [RCS1248](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1248.md) (Use 'is null' pattern instead of comparison (or vice versa)) ([issue](https://github.com/JosefPihrt/Roslynator/issues/458))
+* Add analyzer [RCS1247](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1247.md) (Fix documentation comment tag)
+* Add analyzer option [RCS1207i](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1207i.md) (Convert method group to anonymous function)
+* Add analyzer option [RCS1090i](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1090i.md) (Remove call to 'ConfigureAwait')
+* Add analyzer option [RCS1018i](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1018i.md) (Remove accessibility modifiers) ([issue](https://github.com/JosefPihrt/Roslynator/issues/260))
+* Add analyzer option [RCS1014i](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1014i.md) (Use implicitly typed array)
+* Add analyzer option [RCS1014a](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1014a.md) (Use implicitly typed array (when type is obvious))
+* Add analyzer option [RCS1078i](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1078i.md) (Use string.Empty instead of "")
+* Add analyzer option [RCS1016a](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1016a.md) (Convert expression-body to block body when expression is multi-line)
+* Add analyzer option [RCS1016b](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1016b.md) (Convert expression-body to block body when declaration is multi-line)
+* Disable by default analyzer [RCS1207i](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1207i.md) (Convert method group to anonymous function)
+* Remove analyzer [RCS1219](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1219.md) (Call 'Enumerable.Skip' and 'Enumerable.Any' instead of 'Enumerable.Count')
+* Rename analyzer "Avoid 'null' on left side of binary expression" to "Constant values should be placed on right side of comparisons" [RCS1098](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1098.md)
+* Rename analyzer "Simplify boolean expression" to "Unnecessary null check" [RCS1199](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1199.md) ([issue](https://github.com/JosefPihrt/Roslynator/issues/373))
 
 * More syntax is considered as having obvious type:
   * string literal
@@ -127,9 +185,9 @@
 ## 3.0.0 (2020-06-16)
 
 * Update references to Roslyn API to 3.5.0
-* Introduce concept of "[Analyzer Options](https://github.com/JosefPihrt/Roslynator/blob/master/docs/AnalyzerOptions.md)"
+* Introduce concept of "[Analyzer Options](https://github.com/JosefPihrt/Roslynator/blob/main/docs/AnalyzerOptions.md)"
 * Reassign ID for some analyzers.
-  * See "[How to: Migrate Analyzers to Version 3.0](https://github.com/JosefPihrt/Roslynator/blob/master/docs/HowToMigrateAnalyzersToVersion3.md)"
+  * See "[How to: Migrate Analyzers to Version 3.0](https://github.com/JosefPihrt/Roslynator/blob/main/docs/HowToMigrateAnalyzersToVersion3.md)"
 * Remove references to Roslynator assemblies from omnisharp.json on uninstall
 
 ## 2.9.0 (2020-03-13)
@@ -141,34 +199,34 @@
 ### Bug Fixes
 
 * Fix key duplication/handle camel case names in `omnisharp.json` ([PR](https://github.com/JosefPihrt/Roslynator/pull/645))
-* Use prefix unary operator instead of postfix unary operator ([RCS1089](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1089.md)) ([issue](https://github.com/JosefPihrt/Roslynator/issues/639))
-* Cast of `this` to its interface cannot be null ([RCS1202](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1202.md)) ([issue](https://github.com/JosefPihrt/Roslynator/issues/640))
-* Do not remove braces in switch section if it contains 'using variable' ([RCS1031](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1031.md)) ([issue](https://github.com/JosefPihrt/Roslynator/issues/632))
+* Use prefix unary operator instead of postfix unary operator ([RCS1089](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1089.md)) ([issue](https://github.com/JosefPihrt/Roslynator/issues/639))
+* Cast of `this` to its interface cannot be null ([RCS1202](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1202.md)) ([issue](https://github.com/JosefPihrt/Roslynator/issues/640))
+* Do not remove braces in switch section if it contains 'using variable' ([RCS1031](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1031.md)) ([issue](https://github.com/JosefPihrt/Roslynator/issues/632))
 
 ### New Analyzers
 
-* [RCS1242](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1242.md) (DoNotPassNonReadOnlyStructByReadOnlyReference).
-* [RCS1243](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1243.md) (DuplicateWordInComment).
-* [RCS1244](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1244.md) (SimplifyDefaultExpression).
-* [RCS1245](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1245.md) (SimplifyConditionalExpression2) ([issue](https://github.com/JosefPihrt/Roslynator/issues/612)).
+* [RCS1242](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1242.md) (DoNotPassNonReadOnlyStructByReadOnlyReference).
+* [RCS1243](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1243.md) (DuplicateWordInComment).
+* [RCS1244](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1244.md) (SimplifyDefaultExpression).
+* [RCS1245](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1245.md) (SimplifyConditionalExpression2) ([issue](https://github.com/JosefPihrt/Roslynator/issues/612)).
 
 ### Analyzers
 
-* Disable analyzer [RCS1057](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1057.md) by default ([issue](https://github.com/JosefPihrt/Roslynator/issues/590)).
-* Merge analyzer [RCS1156](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1156.md) with [RCS1113](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1113.md) ([issue](https://github.com/JosefPihrt/Roslynator/issues/650)).
+* Disable analyzer [RCS1057](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1057.md) by default ([issue](https://github.com/JosefPihrt/Roslynator/issues/590)).
+* Merge analyzer [RCS1156](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1156.md) with [RCS1113](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1113.md) ([issue](https://github.com/JosefPihrt/Roslynator/issues/650)).
   * `x == ""` should be replaced with `string.IsNullOrEmpty(x)`
-* Improve analyzer [RCS1215](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1215.md) ([commit](https://github.com/JosefPihrt/Roslynator/commit/0fdd97f9a62463f8b004abeb17a8b8509374c35a)).
+* Improve analyzer [RCS1215](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1215.md) ([commit](https://github.com/JosefPihrt/Roslynator/commit/0fdd97f9a62463f8b004abeb17a8b8509374c35a)).
   * `x == double.NaN` should be replaced with `double.IsNaN(x)`
-* Enable [RCS1169](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1169.md) and [RCS1170](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1170.md) if the type is read-only struct ([commit](https://github.com/JosefPihrt/Roslynator/commit/f34e105433dbc65686369adf712b0b99d93eaef7)).
-* Improve analyzer [RCS1077](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1077.md) ([commit](https://github.com/JosefPihrt/Roslynator/commit/3ee275442cb16f6a9104b42d582ba7d76d6df88c)).
+* Enable [RCS1169](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1169.md) and [RCS1170](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1170.md) if the type is read-only struct ([commit](https://github.com/JosefPihrt/Roslynator/commit/f34e105433dbc65686369adf712b0b99d93eaef7)).
+* Improve analyzer [RCS1077](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1077.md) ([commit](https://github.com/JosefPihrt/Roslynator/commit/3ee275442cb16f6a9104b42d582ba7d76d6df88c)).
   * `x.OrderBy(y => y).Reverse()` can be simplified to `x.OrderByDescending(y => y)`
   * `x.SelectMany(y => y).Count()` can be simplified to `x.Sum(y => y.Count)` if `x` has `Count` or `Length` property
-* Improve analyzer [RCS1161](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1161.md) - Declare explicit enum value using `<<` operator ([commit](https://github.com/JosefPihrt/Roslynator/commit/6b78496efe1a2f2678f2ef2a71986e2bee006863)).
-* Improve analyzer [RCS1036](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1036.md) - remove empty line between documentation comment and declaration ([commit](https://github.com/JosefPihrt/Roslynator/commit/de0f1205671281679866e92edd9337a7416409e6)).
-* Improve analyzer [RCS1037](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1037.md) - remove trailing white-space from documentation comment ([commit](https://github.com/JosefPihrt/Roslynator/commit/c3f7d193ee37d04de7e2c698aab7f3e1e6350e80)).
-* Improve analyzer [RCS1143](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1143.md) ([commit](https://github.com/JosefPihrt/Roslynator/commit/4c4281ebdf8eb0aa1a77d5e5bfda71bc66cce1df))
+* Improve analyzer [RCS1161](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1161.md) - Declare explicit enum value using `<<` operator ([commit](https://github.com/JosefPihrt/Roslynator/commit/6b78496efe1a2f2678f2ef2a71986e2bee006863)).
+* Improve analyzer [RCS1036](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1036.md) - remove empty line between documentation comment and declaration ([commit](https://github.com/JosefPihrt/Roslynator/commit/de0f1205671281679866e92edd9337a7416409e6)).
+* Improve analyzer [RCS1037](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1037.md) - remove trailing white-space from documentation comment ([commit](https://github.com/JosefPihrt/Roslynator/commit/c3f7d193ee37d04de7e2c698aab7f3e1e6350e80)).
+* Improve analyzer [RCS1143](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1143.md) ([commit](https://github.com/JosefPihrt/Roslynator/commit/4c4281ebdf8eb0aa1a77d5e5bfda71bc66cce1df))
   * `x?.M() ?? default(int?)` can be simplified to `x?.M()` if `x` is a nullable struct.
-* Improve analyzer [RCS1206](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1206.md) ([commit](https://github.com/JosefPihrt/Roslynator/commit/88dd4cea4df07f036a8296511410ccff70f8fefe))
+* Improve analyzer [RCS1206](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1206.md) ([commit](https://github.com/JosefPihrt/Roslynator/commit/88dd4cea4df07f036a8296511410ccff70f8fefe))
   * `(x != null) ? x.M() : default(int?)` can be simplified to `x?.M()` if `x` is a nullable struct.
 
 ## 2.3.0 (2019-12-28)
@@ -181,7 +239,7 @@
 
 ### Analyzers
 
-* Disable analyzer [RCS1029](https://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1029.md) (FormatBinaryOperatorOnNextLine) by default.
+* Disable analyzer [RCS1029](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1029.md) (FormatBinaryOperatorOnNextLine) by default.
 
 ## 2.1.4 (2019-08-13)
 

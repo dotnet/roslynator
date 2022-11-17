@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-\
+  
 Determines whether this null check is checking if the expression is null\.
 
 ```csharp

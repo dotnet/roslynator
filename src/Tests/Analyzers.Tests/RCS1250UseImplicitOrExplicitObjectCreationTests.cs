@@ -800,6 +800,60 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
+        public async Task Test_PreferImplicitWhenTypeIsObvious_ArrayInitializerInFieldInitializer()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    public string[] f = { new [|string|](' ', 0) };
+}
+", @"
+class C
+{
+    public string[] f = { new(' ', 0) };
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_ImplicitWhenTypeIsObvious));
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
+        public async Task Test_PreferImplicitWhenTypeIsObvious_ArrayInitializerInPropertyInitializer()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    public string[] P { get; } = { new [|string|](' ', 0) };
+}
+", @"
+class C
+{
+    public string[] P { get; } = { new(' ', 0) };
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_ImplicitWhenTypeIsObvious));
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
+        public async Task Test_PreferImplicitWhenTypeIsObvious_ArrayInitializerInLocalVariableInitializer()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+        string[] x = { new [|string|](' ', 0) };
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+        string[] x = { new(' ', 0) };
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.ObjectCreationTypeStyle, ConfigOptionValues.ObjectCreationTypeStyle_ImplicitWhenTypeIsObvious));
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseImplicitOrExplicitObjectCreation)]
         public async Task Test_ConvertImplicitToExplicit_ThrowStatement()
         {
             await VerifyDiagnosticAndFixAsync(@"

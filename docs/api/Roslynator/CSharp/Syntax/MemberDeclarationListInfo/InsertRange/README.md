@@ -1,4 +1,4 @@
-# MemberDeclarationListInfo\.InsertRange\(Int32, IEnumerable\<MemberDeclarationSyntax>\) Method
+# MemberDeclarationListInfo\.InsertRange\(Int32, IEnumerable\<MemberDeclarationSyntax\>\) Method
 
 [Home](../../../../../README.md)
 
@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.dll
 
-\
+  
 Creates a new [MemberDeclarationListInfo](../README.md) with the specified members inserted at the index\.
 
 ```csharp
@@ -17,7 +17,7 @@ public Roslynator.CSharp.Syntax.MemberDeclarationListInfo InsertRange(int index,
 
 **index** &ensp; [Int32](https://docs.microsoft.com/en-us/dotnet/api/system.int32)
 
-**members** &ensp; [IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)\<[MemberDeclarationSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.memberdeclarationsyntax)>
+**members** &ensp; [IEnumerable](https://docs.microsoft.com/en-us/dotnet/api/system.collections.generic.ienumerable-1)\<[MemberDeclarationSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.memberdeclarationsyntax)\>
 
 ### Returns
 

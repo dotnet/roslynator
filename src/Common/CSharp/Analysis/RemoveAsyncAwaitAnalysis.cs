@@ -154,7 +154,21 @@ namespace Roslynator.CSharp.Analysis
         {
             SyntaxList<StatementSyntax> statements = body.Statements;
 
-            StatementSyntax statement = statements.LastOrDefault(f => !f.IsKind(SyntaxKind.LocalFunctionStatement));
+            StatementSyntax statement = null;
+
+            foreach (StatementSyntax s in statements)
+            {
+                if (s is LocalDeclarationStatementSyntax localDeclarationStatement
+                    && localDeclarationStatement.UsingKeyword.IsKind(SyntaxKind.UsingKeyword))
+                {
+                    return default;
+                }
+
+                if (!s.IsKind(SyntaxKind.LocalFunctionStatement))
+                {
+                    statement = s;
+                }
+            }
 
             if (statement == null)
                 return default;

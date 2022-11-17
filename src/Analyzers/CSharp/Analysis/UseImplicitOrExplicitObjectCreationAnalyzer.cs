@@ -121,14 +121,42 @@ namespace Roslynator.CSharp.Analysis
                     }
                 case SyntaxKind.ArrayInitializerExpression:
                     {
-                        SyntaxDebug.Assert(parent.IsParentKind(SyntaxKind.ArrayCreationExpression, SyntaxKind.ImplicitArrayCreationExpression), parent.Parent);
+                        SyntaxDebug.Assert(parent.IsParentKind(SyntaxKind.ArrayCreationExpression, SyntaxKind.ImplicitArrayCreationExpression, SyntaxKind.EqualsValueClause), parent.Parent);
 
-                        if (UseImplicitObjectCreation(context)
-                            && parent.IsParentKind(SyntaxKind.ArrayCreationExpression))
+                        if (UseImplicitObjectCreation(context))
                         {
-                            var arrayCreationExpression = (ArrayCreationExpressionSyntax)parent.Parent;
+                            if (parent.IsParentKind(SyntaxKind.ArrayCreationExpression))
+                            {
+                                var arrayCreationExpression = (ArrayCreationExpressionSyntax)parent.Parent;
 
-                            AnalyzeType(context, objectCreation, arrayCreationExpression.Type.ElementType);
+                                AnalyzeType(context, objectCreation, arrayCreationExpression.Type.ElementType);
+                            }
+                            else if (parent.IsParentKind(SyntaxKind.EqualsValueClause))
+                            {
+                                parent = parent.Parent.Parent;
+
+                                if (parent.IsKind(SyntaxKind.VariableDeclarator))
+                                {
+                                    parent = parent.Parent;
+
+                                    if (parent is VariableDeclarationSyntax variableDeclaration)
+                                    {
+                                        if (parent.IsParentKind(SyntaxKind.FieldDeclaration))
+                                        {
+                                            AnalyzeArrayType(context, objectCreation, variableDeclaration.Type);
+                                        }
+                                        else if (parent.IsParentKind(SyntaxKind.LocalDeclarationStatement, SyntaxKind.UsingStatement))
+                                        {
+                                            if (!variableDeclaration.Type.IsVar)
+                                                AnalyzeArrayType(context, objectCreation, variableDeclaration.Type);
+                                        }
+                                    }
+                                }
+                                else if (parent.IsKind(SyntaxKind.PropertyDeclaration))
+                                {
+                                    AnalyzeArrayType(context, objectCreation, ((PropertyDeclarationSyntax)parent).Type);
+                                }
+                            }
                         }
 
                         break;
@@ -267,7 +295,7 @@ namespace Roslynator.CSharp.Analysis
                     {
                         parent = parent.Parent;
 
-                        SyntaxDebug.Assert(parent.IsKind(SyntaxKind.VariableDeclarator, SyntaxKind.PropertyDeclaration), parent);
+                        SyntaxDebug.Assert(parent.IsKind(SyntaxKind.VariableDeclarator, SyntaxKind.PropertyDeclaration, SyntaxKind.Parameter), parent);
 
                         if (parent.IsKind(SyntaxKind.VariableDeclarator))
                         {
@@ -316,7 +344,7 @@ namespace Roslynator.CSharp.Analysis
                     }
                 case SyntaxKind.ArrayInitializerExpression:
                     {
-                        SyntaxDebug.Assert(parent.IsParentKind(SyntaxKind.ArrayCreationExpression, SyntaxKind.ImplicitArrayCreationExpression), parent.Parent);
+                        SyntaxDebug.Assert(parent.IsParentKind(SyntaxKind.ArrayCreationExpression, SyntaxKind.ImplicitArrayCreationExpression, SyntaxKind.EqualsValueClause), parent.Parent);
 
                         if (UseExplicitObjectCreation(context)
                             && parent.IsParentKind(SyntaxKind.ArrayCreationExpression))
@@ -447,6 +475,21 @@ namespace Roslynator.CSharp.Analysis
             if (!type.IsVar)
             {
                 AnalyzeExpression(context, objectCreation, type, isGenericType: isGenericType);
+            }
+        }
+
+        private static void AnalyzeArrayType(
+            SyntaxNodeAnalysisContext context,
+            ObjectCreationExpressionSyntax objectCreation,
+            TypeSyntax type,
+            bool isGenericType = false)
+        {
+            if (type is ArrayTypeSyntax arrayType)
+            {
+                type = arrayType.ElementType;
+
+                if (!type.IsVar)
+                    AnalyzeExpression(context, objectCreation, type, isGenericType: isGenericType);
             }
         }
 

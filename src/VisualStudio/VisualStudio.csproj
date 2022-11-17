@@ -28,7 +28,7 @@
   
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Shell.15.0" Version="17.0.32112.339" />
-    <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="17.0.5234" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="17.4.2119" PrivateAssets="all" />
   </ItemGroup>
 
   <PropertyGroup>

@@ -6,8 +6,8 @@ A collection of 500+ [analyzers](src/Analyzers/README.md), [refactorings](src/Re
 
 * [Extensions for Visual Studio](#extensions-for-visual-studio)
 * [NuGet Analyzers](#nuget-analyzers)
-* [Roslynator API](#roslynator-api)
-* [Roslynator Command-Line Interface](#roslynator-command-line-interface)
+* [Roslynator Client Libraries](#roslynator-client-libraries)
+* [Roslynator Command Line Tool](#roslynator-command-line-tool)
 * [Roslynator for VS Code](#extensions-for-visual-studio-code)
 * [Release notes](ChangeLog.md)
 * Follow on [Twitter](https://twitter.com/roslynator)
@@ -21,7 +21,7 @@ A collection of 500+ [analyzers](src/Analyzers/README.md), [refactorings](src/Re
 
 | Extension | Comment |
 | --- | --- |
-| [Roslynator 2022 (Preview)](https://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2022) | contains analyzers, refactorings and fixes for CS diagnostics. |
+| [Roslynator 2022](https://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2022) | contains analyzers, refactorings and fixes for CS diagnostics. |
 | [Roslynator 2019](https://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2019) | contains analyzers, refactorings and fixes for CS diagnostics. |
 
 ## Extensions for Visual Studio Code

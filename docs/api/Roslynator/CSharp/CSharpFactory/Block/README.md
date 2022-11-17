@@ -10,10 +10,12 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [Block(StatementSyntax)](#Roslynator_CSharp_CSharpFactory_Block_Microsoft_CodeAnalysis_CSharp_Syntax_StatementSyntax_) | |
-| [Block(SyntaxToken, StatementSyntax, SyntaxToken)](#Roslynator_CSharp_CSharpFactory_Block_Microsoft_CodeAnalysis_SyntaxToken_Microsoft_CodeAnalysis_CSharp_Syntax_StatementSyntax_Microsoft_CodeAnalysis_SyntaxToken_) | |
+| [Block(StatementSyntax)](#907225641) | |
+| [Block(SyntaxToken, StatementSyntax, SyntaxToken)](#1654242285) | |
 
-## Block\(StatementSyntax\) <a id="Roslynator_CSharp_CSharpFactory_Block_Microsoft_CodeAnalysis_CSharp_Syntax_StatementSyntax_"></a>
+<a id="907225641"></a>
+
+## Block\(StatementSyntax\) 
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.BlockSyntax Block(Microsoft.CodeAnalysis.CSharp.Syntax.StatementSyntax statement)
@@ -27,7 +29,9 @@ public static Microsoft.CodeAnalysis.CSharp.Syntax.BlockSyntax Block(Microsoft.C
 
 [BlockSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.blocksyntax)
 
-## Block\(SyntaxToken, StatementSyntax, SyntaxToken\) <a id="Roslynator_CSharp_CSharpFactory_Block_Microsoft_CodeAnalysis_SyntaxToken_Microsoft_CodeAnalysis_CSharp_Syntax_StatementSyntax_Microsoft_CodeAnalysis_SyntaxToken_"></a>
+<a id="1654242285"></a>
+
+## Block\(SyntaxToken, StatementSyntax, SyntaxToken\) 
 
 ```csharp
 public static Microsoft.CodeAnalysis.CSharp.Syntax.BlockSyntax Block(Microsoft.CodeAnalysis.SyntaxToken openBrace, Microsoft.CodeAnalysis.CSharp.Syntax.StatementSyntax statement, Microsoft.CodeAnalysis.SyntaxToken closeBrace)

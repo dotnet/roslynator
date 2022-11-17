@@ -10,12 +10,14 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [Equals(IfStatementOrElseClause)](#Roslynator_CSharp_IfStatementOrElseClause_Equals_Roslynator_CSharp_IfStatementOrElseClause_) | Determines whether this instance is equal to another object of the same type\. \(Implements [IEquatable\<IfStatementOrElseClause>.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.iequatable-1.equals)\) |
-| [Equals(Object)](#Roslynator_CSharp_IfStatementOrElseClause_Equals_System_Object_) | Determines whether this instance and a specified object are equal\. \(Overrides [ValueType.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.valuetype.equals)\) |
+| [Equals(IfStatementOrElseClause)](#4208149588) | Determines whether this instance is equal to another object of the same type\. \(Implements [IEquatable\<IfStatementOrElseClause\>.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.iequatable-1.equals)\) |
+| [Equals(Object)](#3273483447) | Determines whether this instance and a specified object are equal\. \(Overrides [ValueType.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.valuetype.equals)\) |
 
-## Equals\(IfStatementOrElseClause\) <a id="Roslynator_CSharp_IfStatementOrElseClause_Equals_Roslynator_CSharp_IfStatementOrElseClause_"></a>
+<a id="4208149588"></a>
 
-\
+## Equals\(IfStatementOrElseClause\) 
+
+  
 Determines whether this instance is equal to another object of the same type\.
 
 ```csharp
@@ -36,11 +38,12 @@ true if the current object is equal to the **other** parameter; otherwise, false
 
 ### Implements
 
-* [IEquatable\<IfStatementOrElseClause>.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.iequatable-1.equals)
+* [IEquatable\<IfStatementOrElseClause\>.Equals](https://docs.microsoft.com/en-us/dotnet/api/system.iequatable-1.equals)
+<a id="3273483447"></a>
 
-## Equals\(Object\) <a id="Roslynator_CSharp_IfStatementOrElseClause_Equals_System_Object_"></a>
+## Equals\(Object\) 
 
-\
+  
 Determines whether this instance and a specified object are equal\.
 
 ```csharp

@@ -12,8 +12,8 @@ namespace Roslynator.CSharp.Refactorings
     internal static class DeclareUsingDirectiveOnTopLevelRefactoring
     {
         private static readonly SymbolDisplayFormat _symbolDisplayFormat = new(
-            genericsOptions: SymbolDisplayGenericsOptions.IncludeTypeParameters,
-            typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces);
+            typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces,
+            genericsOptions: SymbolDisplayGenericsOptions.IncludeTypeParameters);
 
         public static async Task<Document> RefactorAsync(
             Document document,

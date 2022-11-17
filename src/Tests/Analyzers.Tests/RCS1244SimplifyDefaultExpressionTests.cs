@@ -455,5 +455,42 @@ class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
+        public async Task TestNoDiagnostic_OverloadedEqualityOperator()
+        {
+            await VerifyNoDiagnosticAsync(@"
+internal readonly struct C
+{
+    public static implicit operator C(int i) => new C();
+    public static bool operator ==(C left, C right) => default;
+    public static bool operator !=(C left, C right) => default;
+    public override bool Equals(object obj) => default;
+    public override int GetHashCode() => default;
+
+    void M()
+    {
+        _ = default(C) == 0;
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyDefaultExpression)]
+        public async Task TestNoDiagnostic_LambdaExpression()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M()
+    {
+        var x = () =>
+        {
+            return default(object);
+        };
+    }
+}
+");
+        }
     }
 }

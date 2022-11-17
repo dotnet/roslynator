@@ -32,7 +32,7 @@ Hotkey `Ctrl` + `.` will display available code fixes. Code fixes have precedenc
 
 ### Configuration
 
-Analyzers can be configured by using **rule set** file (see [How to Configure Analyzers](http://github.com/JosefPihrt/Roslynator/blob/master/docs/HowToConfigureAnalyzers.md)).
+Analyzers can be configured by using **rule set** file (see [How to Configure Analyzers](http://github.com/JosefPihrt/Roslynator/blob/main/docs/HowToConfigureAnalyzers.md)).
 
 ## Refactorings
 

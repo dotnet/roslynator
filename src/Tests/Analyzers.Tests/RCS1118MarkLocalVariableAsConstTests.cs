@@ -80,5 +80,47 @@ class C
 }
 ", options: WellKnownCSharpTestOptions.Default_CSharp9);
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkLocalVariableAsConst)]
+        public async Task TestNoDiagnostic_RefParameter()
+        {
+            await VerifyNoDiagnosticAsync(@"
+public static class C
+{
+    static int Foo(int p)
+    {
+        int x = default;
+        Bar(ref x, p);
+
+        return x;
+    }
+
+    public static int Bar(this ref int p1, int p2)
+    {
+        return p1 + p2;
+    }
+}");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkLocalVariableAsConst)]
+        public async Task TestNoDiagnostic_RefParameter_ExtensionMethod()
+        {
+            await VerifyNoDiagnosticAsync(@"
+public static class C
+{
+    static int Foo(int p)
+    {
+        int x = default;
+        x.Bar(p);
+
+        return x;
+    }
+
+    public static int Bar(this ref int p1, int p2)
+    {
+        return p1 + p2;
+    }
+}");
+        }
     }
 }

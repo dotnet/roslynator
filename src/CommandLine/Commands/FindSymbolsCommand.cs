@@ -17,13 +17,13 @@ namespace Roslynator.CommandLine
     {
         private static readonly SymbolDisplayFormat _nameAndContainingTypesSymbolDisplayFormat = SymbolDisplayFormat.CSharpErrorMessageFormat.Update(
             typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypes,
-            miscellaneousOptions: SymbolDisplayMiscellaneousOptions.EscapeKeywordIdentifiers
-                | SymbolDisplayMiscellaneousOptions.UseSpecialTypes
-                | SymbolDisplayMiscellaneousOptions.UseErrorTypeSymbolName,
             parameterOptions: SymbolDisplayParameterOptions.IncludeParamsRefOut
                 | SymbolDisplayParameterOptions.IncludeType
                 | SymbolDisplayParameterOptions.IncludeName
-                | SymbolDisplayParameterOptions.IncludeDefaultValue);
+                | SymbolDisplayParameterOptions.IncludeDefaultValue,
+            miscellaneousOptions: SymbolDisplayMiscellaneousOptions.EscapeKeywordIdentifiers
+                | SymbolDisplayMiscellaneousOptions.UseSpecialTypes
+                | SymbolDisplayMiscellaneousOptions.UseErrorTypeSymbolName);
 
         public FindSymbolsCommand(
             FindSymbolsCommandLineOptions options,

@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.Core\.dll
 
-\
+  
 Return a local names that will be unique at the specified position\.
 
 ```csharp
@@ -29,5 +29,5 @@ public System.Collections.Immutable.ImmutableArray<string> EnsureUniqueLocalName
 
 ### Returns
 
-[ImmutableArray](https://docs.microsoft.com/en-us/dotnet/api/system.collections.immutable.immutablearray-1)\<[String](https://docs.microsoft.com/en-us/dotnet/api/system.string)>
+[ImmutableArray](https://docs.microsoft.com/en-us/dotnet/api/system.collections.immutable.immutablearray-1)\<[String](https://docs.microsoft.com/en-us/dotnet/api/system.string)\>
 

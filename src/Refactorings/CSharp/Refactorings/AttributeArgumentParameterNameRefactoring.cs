@@ -15,8 +15,8 @@ namespace Roslynator.CSharp.Refactorings
     internal static class AttributeArgumentParameterNameRefactoring
     {
         private static readonly SymbolDisplayFormat _symbolDisplayFormat = new(
-            miscellaneousOptions: SymbolDisplayMiscellaneousOptions.EscapeKeywordIdentifiers,
-            parameterOptions: SymbolDisplayParameterOptions.IncludeName);
+            parameterOptions: SymbolDisplayParameterOptions.IncludeName,
+            miscellaneousOptions: SymbolDisplayMiscellaneousOptions.EscapeKeywordIdentifiers);
 
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, AttributeArgumentListSyntax argumentList)
         {

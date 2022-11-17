@@ -1942,7 +1942,7 @@ object x = queue.Peek();]]></After>
     <MessageFormat>Use '{0}' property instead of 'Any' method.</MessageFormat>
     <Category>Performance</Category>
     <DefaultSeverity>Info</DefaultSeverity>
-    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
     <Samples>
       <Sample>
         <Before><![CDATA[if (list.Any()) // [|Id|]

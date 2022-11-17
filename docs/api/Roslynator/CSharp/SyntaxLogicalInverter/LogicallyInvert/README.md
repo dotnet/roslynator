@@ -10,12 +10,14 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [LogicallyInvert(ExpressionSyntax, CancellationToken)](#Roslynator_CSharp_SyntaxLogicalInverter_LogicallyInvert_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_System_Threading_CancellationToken_) | Returns new expression that represents logical inversion of the specified expression\. |
-| [LogicallyInvert(ExpressionSyntax, SemanticModel, CancellationToken)](#Roslynator_CSharp_SyntaxLogicalInverter_LogicallyInvert_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_Microsoft_CodeAnalysis_SemanticModel_System_Threading_CancellationToken_) | Returns new expression that represents logical inversion of the specified expression\. |
+| [LogicallyInvert(ExpressionSyntax, CancellationToken)](#3557862531) | Returns new expression that represents logical inversion of the specified expression\. |
+| [LogicallyInvert(ExpressionSyntax, SemanticModel, CancellationToken)](#1171822982) | Returns new expression that represents logical inversion of the specified expression\. |
 
-## LogicallyInvert\(ExpressionSyntax, CancellationToken\) <a id="Roslynator_CSharp_SyntaxLogicalInverter_LogicallyInvert_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_System_Threading_CancellationToken_"></a>
+<a id="3557862531"></a>
 
-\
+## LogicallyInvert\(ExpressionSyntax, CancellationToken\) 
+
+  
 Returns new expression that represents logical inversion of the specified expression\.
 
 ```csharp
@@ -32,9 +34,11 @@ public Microsoft.CodeAnalysis.CSharp.Syntax.ExpressionSyntax LogicallyInvert(Mic
 
 [ExpressionSyntax](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.csharp.syntax.expressionsyntax)
 
-## LogicallyInvert\(ExpressionSyntax, SemanticModel, CancellationToken\) <a id="Roslynator_CSharp_SyntaxLogicalInverter_LogicallyInvert_Microsoft_CodeAnalysis_CSharp_Syntax_ExpressionSyntax_Microsoft_CodeAnalysis_SemanticModel_System_Threading_CancellationToken_"></a>
+<a id="1171822982"></a>
 
-\
+## LogicallyInvert\(ExpressionSyntax, SemanticModel, CancellationToken\) 
+
+  
 Returns new expression that represents logical inversion of the specified expression\.
 
 ```csharp

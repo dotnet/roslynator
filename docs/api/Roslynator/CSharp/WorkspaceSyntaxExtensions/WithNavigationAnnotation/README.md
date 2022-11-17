@@ -6,7 +6,7 @@
 
 **Assembly**: Roslynator\.CSharp\.Workspaces\.dll
 
-\
+  
 Adds navigation annotation to the specified token, creating a new token of the same type with the navigation annotation on it\.
 Navigation annotation allows to mark a token that should be selected after the code action is applied\.
 

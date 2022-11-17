@@ -21,11 +21,12 @@
     <Description>Testing framework for Roslyn analyzers, refactorings and code fixes.</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/JosefPihrt/Roslynator</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/josefpihrt/roslynator</PackageProjectUrl>
     <PackageIcon>icon.png</PackageIcon>
     <PackageReleaseNotes></PackageReleaseNotes>
     <PackageTags>Roslyn;CodeAnalysis;Test;UnitTest</PackageTags>
-    <RepositoryUrl>https://github.com/JosefPihrt/Roslynator.git</RepositoryUrl>
+    <PackageReadmeFile>docs/README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/josefpihrt/roslynator.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
@@ -39,6 +40,7 @@
 
   <ItemGroup>
     <None Include="..\..\..\images\icon.png" Pack="true" PackagePath="\" Visible="false" />
+    <None Include="docs\NuGetReadme.md" Pack="true" PackagePath="docs\README.md" />
   </ItemGroup>
 
 </Project>

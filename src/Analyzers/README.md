@@ -133,7 +133,7 @@
 | RCS1172 | [Use 'is' operator instead of 'as' operator](../../docs/analyzers/RCS1172.md) | Warning |
 | RCS1173 | [Use coalesce expression instead of 'if'](../../docs/analyzers/RCS1173.md) | Info |
 | RCS1174 | [Remove redundant async/await](../../docs/analyzers/RCS1174.md) | None |
-| RCS1175 | [Unused this parameter](../../docs/analyzers/RCS1175.md) | Info |
+| RCS1175 | [Unused 'this' parameter](../../docs/analyzers/RCS1175.md) | Info |
 | RCS1176 | [Use 'var' instead of explicit type (when the type is not obvious)](../../docs/analyzers/RCS1176.md) | None |
 | RCS1177 | [Use 'var' instead of explicit type (in foreach)](../../docs/analyzers/RCS1177.md) | None |
 | RCS1179 | [Unnecessary assignment](../../docs/analyzers/RCS1179.md) | Info |

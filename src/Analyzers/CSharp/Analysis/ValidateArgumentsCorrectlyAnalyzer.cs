@@ -72,7 +72,8 @@ namespace Roslynator.CSharp.Analysis
             int index = -1;
             for (int i = 0; i < statementCount; i++)
             {
-                if (IsConditionWithThrow(statements[i]))
+                if (IsConditionWithThrow(statements[i])
+                    || ArgumentNullCheckAnalysis.IsThrowIfNullCheck(statements[i], context.SemanticModel, context.CancellationToken))
                 {
                     index++;
                 }

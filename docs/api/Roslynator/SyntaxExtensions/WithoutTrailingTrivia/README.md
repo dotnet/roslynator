@@ -10,12 +10,14 @@
 
 | Method | Summary |
 | ------ | ------- |
-| [WithoutTrailingTrivia(SyntaxNodeOrToken)](#Roslynator_SyntaxExtensions_WithoutTrailingTrivia_Microsoft_CodeAnalysis_SyntaxNodeOrToken_) | Creates a new [SyntaxNodeOrToken](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxnodeortoken) with the trailing trivia removed\. |
-| [WithoutTrailingTrivia(SyntaxToken)](#Roslynator_SyntaxExtensions_WithoutTrailingTrivia_Microsoft_CodeAnalysis_SyntaxToken_) | Creates a new token from this token with the trailing trivia removed\. |
+| [WithoutTrailingTrivia(SyntaxNodeOrToken)](#3602009992) | Creates a new [SyntaxNodeOrToken](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxnodeortoken) with the trailing trivia removed\. |
+| [WithoutTrailingTrivia(SyntaxToken)](#3451371873) | Creates a new token from this token with the trailing trivia removed\. |
 
-## WithoutTrailingTrivia\(SyntaxNodeOrToken\) <a id="Roslynator_SyntaxExtensions_WithoutTrailingTrivia_Microsoft_CodeAnalysis_SyntaxNodeOrToken_"></a>
+<a id="3602009992"></a>
 
-\
+## WithoutTrailingTrivia\(SyntaxNodeOrToken\) 
+
+  
 Creates a new [SyntaxNodeOrToken](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxnodeortoken) with the trailing trivia removed\.
 
 ```csharp
@@ -30,9 +32,11 @@ public static Microsoft.CodeAnalysis.SyntaxNodeOrToken WithoutTrailingTrivia(thi
 
 [SyntaxNodeOrToken](https://docs.microsoft.com/en-us/dotnet/api/microsoft.codeanalysis.syntaxnodeortoken)
 
-## WithoutTrailingTrivia\(SyntaxToken\) <a id="Roslynator_SyntaxExtensions_WithoutTrailingTrivia_Microsoft_CodeAnalysis_SyntaxToken_"></a>
+<a id="3451371873"></a>
 
-\
+## WithoutTrailingTrivia\(SyntaxToken\) 
+
+  
 Creates a new token from this token with the trailing trivia removed\.
 
 ```csharp

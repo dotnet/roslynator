@@ -4,6 +4,7 @@ using System;
 using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 
@@ -30,7 +31,7 @@ namespace Roslynator
                     return AppContext
                         .GetData("TRUSTED_PLATFORM_ASSEMBLIES")
                         .ToString()
-                        .Split(';')
+                        .Split(RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? ';' : ':')
                         .ToImmutableDictionary(f => Path.GetFileName(f));
                 }
             }

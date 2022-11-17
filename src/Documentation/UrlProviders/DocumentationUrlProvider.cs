@@ -1,9 +1,11 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
+using System.Globalization;
 using System.Text;
-using System.Text.RegularExpressions;
 using Microsoft.CodeAnalysis;
 using Roslynator.Text;
 
@@ -11,14 +13,22 @@ namespace Roslynator.Documentation
 {
     public abstract class DocumentationUrlProvider
     {
-        private static readonly Regex _notWordCharOrUnderscoreRegex = new(@"[^\w_]");
+        private readonly Dictionary<string, string> _symbolToLinkMap = new();
 
-        protected DocumentationUrlProvider(IEnumerable<ExternalUrlProvider> externalProviders = null)
+        protected DocumentationUrlProvider(UrlSegmentProvider segmentProvider, IEnumerable<ExternalUrlProvider> externalProviders = null)
         {
+            SegmentProvider = segmentProvider;
+
             ExternalProviders = (externalProviders != null)
                 ? ImmutableArray.CreateRange(externalProviders)
                 : ImmutableArray<ExternalUrlProvider>.Empty;
         }
+
+        public abstract string IndexFileName { get; }
+
+        public string ExtensionsFileName => "Extensions.md";
+
+        public UrlSegmentProvider SegmentProvider { get; }
 
         public ImmutableArray<ExternalUrlProvider> ExternalProviders { get; }
 
@@ -27,24 +37,6 @@ namespace Roslynator.Documentation
         public abstract DocumentationUrlInfo GetLocalUrl(ImmutableArray<string> folders, ImmutableArray<string> containingFolders = default, string fragment = null);
 
         public abstract string GetFragment(string value);
-
-        public virtual ImmutableArray<string> GetFolders(ISymbol symbol)
-        {
-            return MicrosoftDocsUrlProvider.GetFolders(symbol);
-        }
-
-        public DocumentationUrlInfo GetExternalUrl(ImmutableArray<string> folders)
-        {
-            foreach (ExternalUrlProvider provider in ExternalProviders)
-            {
-                DocumentationUrlInfo urlInfo = provider.CreateUrl(folders);
-
-                if (urlInfo.Url != null)
-                    return urlInfo;
-            }
-
-            return default;
-        }
 
         public DocumentationUrlInfo GetExternalUrl(ISymbol symbol)
         {
@@ -64,23 +56,28 @@ namespace Roslynator.Documentation
             return MicrosoftDocsUrlProvider.Instance.CanCreateUrl(symbol);
         }
 
-        internal static string GetUrl(string fileName, ImmutableArray<string> folders, char separator)
+        internal string GetUrl(ISymbol symbol, string fileName, char separator)
+        {
+            return GetUrl(fileName, SegmentProvider.GetSegments(symbol), separator);
+        }
+
+        internal static string GetUrl(string fileName, ImmutableArray<string> segments, char separator)
         {
             int capacity = fileName.Length + 1;
 
-            foreach (string name in folders)
+            foreach (string name in segments)
                 capacity += name.Length;
 
-            capacity += folders.Length - 1;
+            capacity += segments.Length - 1;
 
             StringBuilder sb = StringBuilderCache.GetInstance(capacity);
 
-            sb.Append(folders[0]);
+            sb.Append(segments[0]);
 
-            for (int i = 1; i < folders.Length; i++)
+            for (int i = 1; i < segments.Length; i++)
             {
                 sb.Append(separator);
-                sb.Append(folders[i]);
+                sb.Append(segments[i]);
             }
 
             sb.Append(separator);
@@ -120,13 +117,66 @@ namespace Roslynator.Documentation
             return StringBuilderCache.GetStringAndFree(sb);
         }
 
-        internal static string GetFragment(ISymbol symbol)
+        internal string GetFragment(ISymbol symbol)
         {
             string id = symbol.GetDocumentationCommentId();
 
-            id = TextUtility.RemovePrefixFromDocumentationCommentId(id);
+            if (!_symbolToLinkMap.TryGetValue(id, out string link))
+            {
+                int hashCode = GetDeterministicHashCode(id);
 
-            return _notWordCharOrUnderscoreRegex.Replace(id, "_");
+                long linkCode;
+                if (hashCode >= 0)
+                {
+                    linkCode = (uint)hashCode;
+                }
+                else
+                {
+                    linkCode = int.MaxValue + (uint)Math.Abs(hashCode);
+                }
+
+                link = linkCode.ToString(CultureInfo.InvariantCulture);
+
+                if (_symbolToLinkMap.ContainsValue(link))
+                {
+                    Debug.Fail(id);
+
+                    linkCode += uint.MaxValue;
+                    link = linkCode.ToString(CultureInfo.InvariantCulture);
+
+                    while (_symbolToLinkMap.ContainsValue(link))
+                    {
+                        linkCode++;
+                        link = linkCode.ToString(CultureInfo.InvariantCulture);
+                    }
+                }
+
+                _symbolToLinkMap.Add(id, link);
+            }
+
+            return link;
+        }
+
+        // https://andrewlock.net/why-is-string-gethashcode-different-each-time-i-run-my-program-in-net-core/#a-deterministic-gethashcode-implementation
+        private static int GetDeterministicHashCode(string s)
+        {
+            unchecked
+            {
+                int hash1 = (5381 << 16) + 5381;
+                int hash2 = hash1;
+
+                for (int i = 0; i < s.Length; i += 2)
+                {
+                    hash1 = ((hash1 << 5) + hash1) ^ s[i];
+
+                    if (i == s.Length - 1)
+                        break;
+
+                    hash2 = ((hash2 << 5) + hash2) ^ s[i + 1];
+                }
+
+                return hash1 + (hash2 * 1566083941);
+            }
         }
     }
 }

@@ -65,11 +65,18 @@ namespace Roslynator.CommandLine
 
             foreach (ProjectName projectName2 in projectNames)
             {
-                if (string.Equals(projectName2.Name, projectName.Name, StringComparison.Ordinal))
+                if (projectName2.Moniker != null)
+                {
+                    if (projectName.Moniker != null
+                        && string.Equals(projectName.Name, projectName2.Name, StringComparison.Ordinal))
+                    {
+                        return true;
+                    }
+                }
+                else if (string.Equals(projectName.NameWithoutMoniker, projectName2.NameWithoutMoniker, StringComparison.Ordinal))
+                {
                     return true;
-
-                if (string.Equals(projectName2.NameWithoutMoniker, projectName.NameWithoutMoniker, StringComparison.Ordinal))
-                    return true;
+                }
             }
 
             return false;

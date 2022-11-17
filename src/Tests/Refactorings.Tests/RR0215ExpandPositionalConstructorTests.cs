@@ -113,7 +113,7 @@ public record R
 public sealed class FooAttribute : Attribute { }
 
 namespace System.Runtime.CompilerServices { internal static class IsExternalInit {} }
-", options: Options.AddAllowedCompilerDiagnosticId("CS0612"), equivalenceKey: EquivalenceKey.Create(RefactoringId));
+", equivalenceKey: EquivalenceKey.Create(RefactoringId), options: Options.AddAllowedCompilerDiagnosticId("CS0612"));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertSwitchExpressionToSwitchStatement)]
@@ -142,7 +142,7 @@ public record R
 }
 
 namespace System.Runtime.CompilerServices { internal static class IsExternalInit {} }
-", options: Options.AddAllowedCompilerDiagnosticId("CS0612"), equivalenceKey: EquivalenceKey.Create(RefactoringId));
+", equivalenceKey: EquivalenceKey.Create(RefactoringId), options: Options.AddAllowedCompilerDiagnosticId("CS0612"));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertSwitchExpressionToSwitchStatement)]
@@ -181,7 +181,7 @@ namespace N
 }
 
 namespace System.Runtime.CompilerServices { internal static class IsExternalInit {} }
-", options: Options.AddAllowedCompilerDiagnosticId("CS0612"), equivalenceKey: EquivalenceKey.Create(RefactoringId));
+", equivalenceKey: EquivalenceKey.Create(RefactoringId), options: Options.AddAllowedCompilerDiagnosticId("CS0612"));
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertSwitchExpressionToSwitchStatement)]

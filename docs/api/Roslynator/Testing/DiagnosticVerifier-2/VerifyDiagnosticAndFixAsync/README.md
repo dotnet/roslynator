@@ -1,12 +1,12 @@
-# DiagnosticVerifier\<TAnalyzer, TFixProvider>\.VerifyDiagnosticAndFixAsync\(DiagnosticTestData, ExpectedTestState, TestOptions, CancellationToken\) Method
+# DiagnosticVerifier\<TAnalyzer, TFixProvider\>\.VerifyDiagnosticAndFixAsync\(DiagnosticTestData, ExpectedTestState, TestOptions, CancellationToken\) Method
 
 [Home](../../../../README.md)
 
-**Containing Type**: [DiagnosticVerifier\<TAnalyzer, TFixProvider>](../README.md)
+**Containing Type**: [DiagnosticVerifier\<TAnalyzer, TFixProvider\>](../README.md)
 
 **Assembly**: Roslynator\.Testing\.Common\.dll
 
-\
+  
 Verifies that specified source will produce specified diagnostic and that the diagnostic will be fixed\.
 
 ```csharp
