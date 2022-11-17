@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public class RR0014AddUsingDirectiveTests : AbstractCSharpRefactoringVerifier
+    public class RR0013AddUsingDirectiveTests : AbstractCSharpRefactoringVerifier
     {
         public override string RefactoringId { get; } = RefactoringIdentifiers.AddUsingDirective;
 
