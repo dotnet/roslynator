@@ -15,11 +15,20 @@
     <InstallationTarget Version="[17.0,18.0)" Id="Microsoft.VisualStudio.Community">
       <ProductArchitecture>amd64</ProductArchitecture>
     </InstallationTarget>
+    <InstallationTarget Version="[17.0,18.0)" Id="Microsoft.VisualStudio.Community">
+        <ProductArchitecture>arm64</ProductArchitecture>
+    </InstallationTarget>
     <InstallationTarget Version="[17.0,18.0)" Id="Microsoft.VisualStudio.Pro">
       <ProductArchitecture>amd64</ProductArchitecture>
     </InstallationTarget>
+    <InstallationTarget Version="[17.0,18.0)" Id="Microsoft.VisualStudio.Pro">
+        <ProductArchitecture>arm64</ProductArchitecture>
+    </InstallationTarget>
     <InstallationTarget Version="[17.0,18.0)" Id="Microsoft.VisualStudio.Enterprise">
       <ProductArchitecture>amd64</ProductArchitecture>
+    </InstallationTarget>
+    <InstallationTarget Version="[17.0,18.0)" Id="Microsoft.VisualStudio.Enterprise">
+        <ProductArchitecture>arm64</ProductArchitecture>
     </InstallationTarget>
   </Installation>
   <Dependencies>
