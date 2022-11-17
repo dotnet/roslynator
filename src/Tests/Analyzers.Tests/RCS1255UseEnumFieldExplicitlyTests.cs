@@ -63,5 +63,45 @@ class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseEnumFieldExplicitly)]
+        public async Task TestNoDiagnostic_UndefinedValue()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System.Text.RegularExpressions;
+
+class C
+{
+    void M()
+    {
+        var x = (Foo)17;
+    }
+}
+
+[System.Flags]
+enum Foo
+{
+    None = 0,
+    A = 1,
+    B = 2,
+    C = 4,
+    D = 8,
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseEnumFieldExplicitly)]
+        public async Task TestNoDiagnostic_FileAttributes()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M()
+    {
+        var x = (System.IO.FileAttributes)0;
+    }
+}
+");
+        }
     }
 }
