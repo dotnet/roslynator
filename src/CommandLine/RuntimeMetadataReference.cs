@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using Microsoft.CodeAnalysis;
 
 namespace Roslynator
@@ -30,7 +31,7 @@ namespace Roslynator
                     // works only for .NET Core, it returns null for .NET Framework
                     return AppContext.GetData("TRUSTED_PLATFORM_ASSEMBLIES")?
                         .ToString()
-                        .Split(';')
+                        .Split(RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? ';' : ':')
                         .ToImmutableArray()
                         ?? ImmutableArray<string>.Empty;
                 }

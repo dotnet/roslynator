@@ -56,7 +56,8 @@ namespace Roslynator.CSharp.Refactorings
 
             foreach (SyntaxNode descendant in node.DescendantNodes())
             {
-                if (!descendant.IsParentKind(SyntaxKind.SimpleMemberAccessExpression)
+                if ((!descendant.IsParentKind(SyntaxKind.SimpleMemberAccessExpression)
+                    || ((MemberAccessExpressionSyntax)descendant.Parent).Name != descendant)
                     && (descendant is SimpleNameSyntax name))
                 {
                     ISymbol symbol = semanticModel.GetSymbol(name, cancellationToken);
