@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Add Arm64 VS 2022 extension support ([#990](https://github.com/JosefPihrt/Roslynator/pull/990) by @snickler).
+
+### Changed
+
+- Disable [RCS1080](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1080.md) by default ([#980](https://github.com/josefpihrt/roslynator/pull/980)).
+
+### Fixed
+
+- Fix ([RCS1080](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1080.md)) when collection is derived from `List<T>` ([#986](https://github.com/josefpihrt/roslynator/pull/986)).
+- Fix retrieving of trusted platform assemblies - separator differs by OS ([#987](https://github.com/josefpihrt/roslynator/pull/987)).
+- Fix refactoring ([RR0014](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RR0014.md)) ([#988](https://github.com/josefpihrt/roslynator/pull/988)).
+- Fix refactoring ([RR0180](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RR0180.md)) ([#988](https://github.com/josefpihrt/roslynator/pull/988)).
+
 ## [4.1.2] - 2022-10-31
 
 ### Added
@@ -19,6 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `roslynator generate-doc --host sphinx`
 - [CLI] Basic support for `<inheritdoc />` when generating documentation (`generate-doc` command) ([#972](https://github.com/josefpihrt/roslynator/pull/972)).
 - [CLI] Add option `ignored-title-parts` (`generate-doc` command) ([#975](https://github.com/josefpihrt/roslynator/pull/975)).
+- Publish Roslynator to [Open VSX Registry](https://open-vsx.org/extension/josefpihrt-vscode/roslynator) ([#820](https://github.com/JosefPihrt/Roslynator/issues/820)).
 
 ### Changed
 
