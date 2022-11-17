@@ -211,5 +211,65 @@ class C
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_Omit));
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
+        public async Task Test_AddComma_AnonymousObjectCreationExpression()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+        var obj = new
+        {
+            A = """",
+            B = """"[||]
+        };
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+        var obj = new
+        {
+            A = """",
+            B = """",
+        };
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_Include));
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveTrailingComma)]
+        public async Task Test_RemoveComma_AnonymousObjectCreationExpression()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+        var obj = new
+        {
+            A = """",
+            B = """"[|,|]
+        };
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+        var obj = new
+        {
+            A = """",
+            B = """"
+        };
+    }
+}
+", options: Options.AddConfigOption(ConfigOptionKeys.TrailingCommaStyle, ConfigOptionValues.TrailingCommaStyle_Omit));
+        }
     }
 }

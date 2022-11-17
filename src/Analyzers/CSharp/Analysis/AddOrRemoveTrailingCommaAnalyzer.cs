@@ -38,9 +38,8 @@ namespace Roslynator.CSharp.Analysis
                 SyntaxKind.ObjectInitializerExpression,
                 SyntaxKind.CollectionInitializerExpression);
 
-            context.RegisterSyntaxNodeAction(
-                f => AnalyzeEnumDeclaration(f),
-                SyntaxKind.EnumDeclaration);
+            context.RegisterSyntaxNodeAction(f => AnalyzeEnumDeclaration(f), SyntaxKind.EnumDeclaration);
+            context.RegisterSyntaxNodeAction(f => AnalyzeAnonymousObjectCreationExpression(f), SyntaxKind.AnonymousObjectCreationExpression);
         }
 
         private static void AnalyzeInitializerExpression(SyntaxNodeAnalysisContext context)
@@ -115,6 +114,47 @@ namespace Roslynator.CSharp.Analysis
                 if (style == TrailingCommaStyle.Include)
                 {
                     EnumMemberDeclarationSyntax lastExpression = members.Last();
+
+                    DiagnosticHelpers.ReportDiagnostic(
+                        context,
+                        DiagnosticRules.AddOrRemoveTrailingComma,
+                        Location.Create(lastExpression.SyntaxTree, new TextSpan(lastExpression.Span.End, 0)),
+                        "Add");
+                }
+            }
+        }
+
+        private void AnalyzeAnonymousObjectCreationExpression(SyntaxNodeAnalysisContext context)
+        {
+            TrailingCommaStyle style = context.GetTrailingCommaStyle();
+
+            if (style == TrailingCommaStyle.None)
+                return;
+
+            var objectCreation = (AnonymousObjectCreationExpressionSyntax)context.Node;
+
+            SeparatedSyntaxList<AnonymousObjectMemberDeclaratorSyntax> initializers = objectCreation.Initializers;
+
+            if (!initializers.Any())
+                return;
+
+            int count = initializers.Count;
+            int separatorCount = initializers.SeparatorCount;
+
+            if (count == separatorCount)
+            {
+                if (style == TrailingCommaStyle.Omit)
+                {
+                    SyntaxToken token = initializers.GetSeparator(count - 1);
+
+                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AddOrRemoveTrailingComma, token, "Remove");
+                }
+            }
+            else if (separatorCount == count - 1)
+            {
+                if (style == TrailingCommaStyle.Include)
+                {
+                    AnonymousObjectMemberDeclaratorSyntax lastExpression = initializers.Last();
 
                     DiagnosticHelpers.ReportDiagnostic(
                         context,

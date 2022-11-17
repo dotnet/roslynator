@@ -35,7 +35,8 @@ namespace Roslynator.CSharp.CodeFixes
                     SyntaxKind.ArrayInitializerExpression,
                     SyntaxKind.ObjectInitializerExpression,
                     SyntaxKind.CollectionInitializerExpression,
-                    SyntaxKind.EnumDeclaration)))
+                    SyntaxKind.EnumDeclaration,
+                    SyntaxKind.AnonymousObjectCreationExpression)))
             {
                 return;
             }
@@ -63,6 +64,31 @@ namespace Roslynator.CSharp.CodeFixes
                     CodeAction codeAction = CodeAction.Create(
                         "Add comma",
                         ct => AddTrailingComma(document, expressions.Last(), ct),
+                        GetEquivalenceKey(diagnostic));
+
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                }
+            }
+            else if (node is AnonymousObjectCreationExpressionSyntax objectCreation)
+            {
+                SeparatedSyntaxList<AnonymousObjectMemberDeclaratorSyntax> initializers = objectCreation.Initializers;
+
+                int count = initializers.Count;
+
+                if (count == initializers.SeparatorCount)
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Remove comma",
+                        ct => RemoveTrailingComma(document, initializers.GetSeparator(count - 1), ct),
+                        GetEquivalenceKey(diagnostic));
+
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                }
+                else
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Add comma",
+                        ct => AddTrailingComma(document, initializers.Last(), ct),
                         GetEquivalenceKey(diagnostic));
 
                     context.RegisterCodeFix(codeAction, diagnostic);
