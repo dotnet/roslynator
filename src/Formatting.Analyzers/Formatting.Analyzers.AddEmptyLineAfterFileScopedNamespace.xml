@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Analyzers>
+  <Analyzer Identifier="AddEmptyLineAfterFileScopedNamespace">
+    <Id>RCS0060</Id>
+    <Title>Add empty line after file scoped namespace.</Title>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <MinLanguageVersion>10.0</MinLanguageVersion>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[namespace A.B // [|Id|]
+public class C
+{
+}]]></Before>
+        <After><![CDATA[namespace A.B
+
+public class C
+{
+}]]></After>
+      </Sample>
+    </Samples>
+    <Links>
+      <Link>
+        <Url>https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csharp-10.0/file-scoped-namespaces</Url>
+        <Text>File Scoped Namespaces</Text>
+      </Link>
+    </Links>
+  </Analyzer>
+</Analyzers>

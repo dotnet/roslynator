@@ -621,5 +621,17 @@ namespace Roslynator.Formatting.CSharp
             helpLinkUri:        DiagnosticIdentifiers.PlaceNewLineAfterOrBeforeNullConditionalOperator, 
             customTags:         Array.Empty<string>());
 
+        /// <summary>RCS0060</summary>
+        public static readonly DiagnosticDescriptor AddEmptyLineAfterFileScopedNamespace = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.AddEmptyLineAfterFileScopedNamespace, 
+            title:              "Add empty line after file scoped namespace.", 
+            messageFormat:      "Add empty line after file scoped namespace.", 
+            category:           DiagnosticCategories.Roslynator, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: false, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.AddEmptyLineAfterFileScopedNamespace, 
+            customTags:         Array.Empty<string>());
+
     }
 }
