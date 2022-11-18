@@ -16,6 +16,9 @@ using Roslynator.CSharp.Analysis;
 using Roslynator.CSharp.Analysis.If;
 using Roslynator.CSharp.Refactorings;
 using Roslynator.CSharp.Refactorings.ReduceIfNesting;
+using Roslynator.CSharp.Syntax;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.CodeFixes
 {
@@ -33,7 +36,8 @@ namespace Roslynator.CSharp.CodeFixes
                     DiagnosticIdentifiers.ConvertIfToReturnStatement,
                     DiagnosticIdentifiers.ConvertIfToAssignment,
                     DiagnosticIdentifiers.ReduceIfNesting,
-                    DiagnosticIdentifiers.UseExceptionFilter);
+                    DiagnosticIdentifiers.UseExceptionFilter,
+                    DiagnosticIdentifiers.SimplifyNullCheck);
             }
         }
 
@@ -104,6 +108,22 @@ namespace Roslynator.CSharp.CodeFixes
                                 ct =>
                                 {
                                     return UseExceptionFilterAsync(
+                                        context.Document,
+                                        ifStatement,
+                                        cancellationToken: ct);
+                                },
+                                GetEquivalenceKey(diagnostic));
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.SimplifyNullCheck:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Use ArgumentNullException.ThrowIfNull",
+                                ct =>
+                                {
+                                    return UseArgumentNullExceptionThrowIfNullAsync(
                                         context.Document,
                                         ifStatement,
                                         cancellationToken: ct);
@@ -215,6 +235,23 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 return ifStatement.ReplaceNode(ifStatement.Statement, ifStatement2.Statement);
             }
+        }
+
+        private Task<Document> UseArgumentNullExceptionThrowIfNullAsync(
+            Document document,
+            IfStatementSyntax ifStatement,
+            CancellationToken cancellationToken)
+        {
+            NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(ifStatement.Condition);
+
+            ExpressionStatementSyntax newStatement = ExpressionStatement(
+                SimpleMemberInvocationExpression(
+                    ParseExpression("global::System.ArgumentNullException").WithSimplifierAnnotation(),
+                    IdentifierName("ThrowIfNull"),
+                    Argument(nullCheck.Expression.WithoutTrivia())))
+                .WithTriviaFrom(ifStatement);
+
+            return document.ReplaceNodeAsync(ifStatement, newStatement, cancellationToken);
         }
     }
 }

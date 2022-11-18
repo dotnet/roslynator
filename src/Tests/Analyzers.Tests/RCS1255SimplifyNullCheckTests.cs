@@ -1,0 +1,100 @@
+﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+
+using System.Threading.Tasks;
+using Microsoft.CodeAnalysis;
+using Roslynator.CSharp.CodeFixes;
+using Roslynator.Testing.CSharp;
+using Xunit;
+
+namespace Roslynator.CSharp.Analysis.Tests
+{
+    public class RCS1255SimplifyNullCheckTests : AbstractCSharpDiagnosticVerifier<SimplifyNullCheckAnalyzer2, IfStatementCodeFixProvider>
+    {
+        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.SimplifyNullCheck;
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyNullCheck)]
+        public async Task Test_IfStatement_Block_Nameof()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System;
+
+class C
+{
+    C(string x)
+    {
+        [|if|] (x is null)
+        {
+            throw new ArgumentNullException(nameof(x));
+        }
+    }
+}
+", @"
+using System;
+
+class C
+{
+    C(string x)
+    {
+        ArgumentNullException.ThrowIfNull(x);
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyNullCheck)]
+        public async Task Test_IfStatement_Block_Literal()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System;
+
+class C
+{
+    C(string x)
+    {
+        [|if|] (x is null)
+        {
+            throw new ArgumentNullException(""x"");
+        }
+    }
+}
+", @"
+using System;
+
+class C
+{
+    C(string x)
+    {
+        ArgumentNullException.ThrowIfNull(x);
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyNullCheck)]
+        public async Task Test_IfStatement_Embedded_Nameof()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System;
+
+class C
+{
+    C(string x)
+    {
+        [|if|] (x is null)
+            throw new ArgumentNullException(nameof(x));
+    }
+}
+", @"
+using System;
+
+class C
+{
+    C(string x)
+    {
+        ArgumentNullException.ThrowIfNull(x);
+    }
+}
+");
+        }
+    }
+}
