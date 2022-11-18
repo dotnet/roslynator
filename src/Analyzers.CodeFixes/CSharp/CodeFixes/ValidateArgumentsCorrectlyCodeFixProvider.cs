@@ -40,16 +40,17 @@ namespace Roslynator.CSharp.CodeFixes
                 return;
 
             Diagnostic diagnostic = context.Diagnostics[0];
+            Document document = context.Document;
 
             CodeAction codeAction = CodeAction.Create(
                 "Validate arguments correctly",
-                ct => RefactorAsync(context.Document, statement, ct),
+                ct => AddLocalFunctionWithIteratorAsync(document, statement, ct),
                 GetEquivalenceKey(diagnostic));
 
             context.RegisterCodeFix(codeAction, diagnostic);
         }
 
-        private static async Task<Document> RefactorAsync(
+        private static async Task<Document> AddLocalFunctionWithIteratorAsync(
             Document document,
             StatementSyntax statement,
             CancellationToken cancellationToken)

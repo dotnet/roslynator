@@ -37,12 +37,12 @@ namespace Roslynator.CSharp
             string name,
             CancellationToken cancellationToken = default)
         {
-            var style = ArgumentNullCheckStyle.None;
-            string identifier = null;
-            var success = false;
-
             if (statement is IfStatementSyntax ifStatement)
             {
+                var style = ArgumentNullCheckStyle.None;
+                string identifier = null;
+                var success = false;
+
                 if (ifStatement.SingleNonBlockStatementOrDefault() is ThrowStatementSyntax throwStatement
                     && throwStatement.Expression is ObjectCreationExpressionSyntax objectCreation)
                 {
@@ -73,11 +73,27 @@ namespace Roslynator.CSharp
                             }
                         }
                     }
-
-                    return new ArgumentNullCheckAnalysis(style, identifier, success);
                 }
+
+                return new ArgumentNullCheckAnalysis(style, identifier, success);
             }
-            else if (statement is ExpressionStatementSyntax expressionStatement)
+            else
+            {
+                return CreateFromArgumentNullExceptionThrowIfNullCheck(statement, semanticModel, name, cancellationToken);
+            }
+        }
+
+        private static ArgumentNullCheckAnalysis CreateFromArgumentNullExceptionThrowIfNullCheck(
+            StatementSyntax statement,
+            SemanticModel semanticModel,
+            string name,
+            CancellationToken cancellationToken)
+        {
+            var style = ArgumentNullCheckStyle.None;
+            string identifier = null;
+            var success = false;
+
+            if (statement is ExpressionStatementSyntax expressionStatement)
             {
                 SimpleMemberInvocationStatementInfo invocationInfo = SyntaxInfo.SimpleMemberInvocationStatementInfo(expressionStatement);
 
@@ -101,6 +117,14 @@ namespace Roslynator.CSharp
             }
 
             return new ArgumentNullCheckAnalysis(style, identifier, success);
+        }
+
+        public static bool IsArgumentNullExceptionThrowIfNullCheck(
+            StatementSyntax statement,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken = default)
+        {
+            return CreateFromArgumentNullExceptionThrowIfNullCheck(statement, semanticModel, null, cancellationToken).Success;
         }
 
         public static bool IsArgumentNullCheck(
