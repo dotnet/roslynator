@@ -8,13 +8,13 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace Roslynator.CSharp.Analysis
+namespace Roslynator.CSharp.Analysis;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class FormatSummaryOnSingleLineAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class FormatSummaryOnSingleLineAnalyzer : BaseDiagnosticAnalyzer
-    {
-        private static readonly Regex _regex = new(
-            @"
+    private static readonly Regex _regex = new(
+        @"
             ^
             (
                 [\s-[\r\n]]*
@@ -33,57 +33,56 @@ namespace Roslynator.CSharp.Analysis
             )?
             $
             ",
-            RegexOptions.IgnorePatternWhitespace | RegexOptions.ExplicitCapture);
+        RegexOptions.IgnorePatternWhitespace | RegexOptions.ExplicitCapture);
 
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
 
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+    {
+        get
         {
-            get
-            {
-                if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.FormatDocumentationSummaryOnSingleLine);
+            if (_supportedDiagnostics.IsDefault)
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.FormatDocumentationSummaryOnSingleLine);
 
-                return _supportedDiagnostics;
-            }
+            return _supportedDiagnostics;
         }
+    }
 
-        public override void Initialize(AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
+
+        context.RegisterSyntaxNodeAction(f => AnalyzeSingleLineDocumentationCommentTrivia(f), SyntaxKind.SingleLineDocumentationCommentTrivia);
+    }
+
+    private static void AnalyzeSingleLineDocumentationCommentTrivia(SyntaxNodeAnalysisContext context)
+    {
+        var documentationComment = (DocumentationCommentTriviaSyntax)context.Node;
+
+        XmlElementSyntax summaryElement = documentationComment.SummaryElement();
+
+        if (summaryElement is not null)
         {
-            base.Initialize(context);
+            XmlElementStartTagSyntax startTag = summaryElement?.StartTag;
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeSingleLineDocumentationCommentTrivia(f), SyntaxKind.SingleLineDocumentationCommentTrivia);
-        }
-
-        private static void AnalyzeSingleLineDocumentationCommentTrivia(SyntaxNodeAnalysisContext context)
-        {
-            var documentationComment = (DocumentationCommentTriviaSyntax)context.Node;
-
-            XmlElementSyntax summaryElement = documentationComment.SummaryElement();
-
-            if (summaryElement != null)
+            if (startTag?.IsMissing == false)
             {
-                XmlElementStartTagSyntax startTag = summaryElement?.StartTag;
+                XmlElementEndTagSyntax endTag = summaryElement.EndTag;
 
-                if (startTag?.IsMissing == false)
+                if (endTag?.IsMissing == false
+                    && startTag.GetSpanEndLine() < endTag.GetSpanStartLine())
                 {
-                    XmlElementEndTagSyntax endTag = summaryElement.EndTag;
+                    Match match = _regex.Match(
+                        summaryElement.ToString(),
+                        startTag.Span.End - summaryElement.SpanStart,
+                        endTag.SpanStart - startTag.Span.End);
 
-                    if (endTag?.IsMissing == false
-                        && startTag.GetSpanEndLine() < endTag.GetSpanStartLine())
+                    if (match.Success)
                     {
-                        Match match = _regex.Match(
-                            summaryElement.ToString(),
-                            startTag.Span.End - summaryElement.SpanStart,
-                            endTag.SpanStart - startTag.Span.End);
-
-                        if (match.Success)
-                        {
-                            DiagnosticHelpers.ReportDiagnostic(
-                                context,
-                                DiagnosticRules.FormatDocumentationSummaryOnSingleLine,
-                                summaryElement);
-                        }
+                        DiagnosticHelpers.ReportDiagnostic(
+                            context,
+                            DiagnosticRules.FormatDocumentationSummaryOnSingleLine,
+                            summaryElement);
                     }
                 }
             }

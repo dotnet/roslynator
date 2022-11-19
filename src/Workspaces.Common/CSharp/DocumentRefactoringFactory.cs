@@ -30,12 +30,12 @@ namespace Roslynator.CSharp
 
             SyntaxNode containingMethod = GetContainingMethod();
 
-            if (containingMethod == null)
+            if (containingMethod is null)
                 return default;
 
             SyntaxNode bodyOrExpressionBody = GetBodyOrExpressionBody();
 
-            if (bodyOrExpressionBody == null)
+            if (bodyOrExpressionBody is null)
                 return default;
 
             foreach (SyntaxNode descendant in bodyOrExpressionBody.DescendantNodes())

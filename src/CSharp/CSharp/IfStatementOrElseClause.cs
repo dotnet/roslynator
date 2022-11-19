@@ -20,7 +20,7 @@ namespace Roslynator.CSharp
 
         internal IfStatementOrElseClause(SyntaxNode node)
         {
-            if (node == null)
+            if (node is null)
                 throw new ArgumentNullException(nameof(node));
 
             SyntaxKind kind = node.Kind();
@@ -65,10 +65,10 @@ namespace Roslynator.CSharp
         {
             get
             {
-                if (_ifStatement != null)
+                if (_ifStatement is not null)
                     return SyntaxKind.IfStatement;
 
-                if (_elseClause != null)
+                if (_elseClause is not null)
                     return SyntaxKind.ElseClause;
 
                 return SyntaxKind.None;
@@ -98,10 +98,10 @@ namespace Roslynator.CSharp
         {
             get
             {
-                if (_ifStatement != null)
+                if (_ifStatement is not null)
                     return _ifStatement.Statement;
 
-                if (_elseClause != null)
+                if (_elseClause is not null)
                     return _elseClause.Statement;
 
                 return null;
@@ -123,10 +123,10 @@ namespace Roslynator.CSharp
         {
             get
             {
-                if (_ifStatement != null)
+                if (_ifStatement is not null)
                     return _ifStatement.Span;
 
-                if (_elseClause != null)
+                if (_elseClause is not null)
                     return _elseClause.Span;
 
                 return default;
@@ -140,10 +140,10 @@ namespace Roslynator.CSharp
         {
             get
             {
-                if (_ifStatement != null)
+                if (_ifStatement is not null)
                     return _ifStatement.FullSpan;
 
-                if (_elseClause != null)
+                if (_elseClause is not null)
                     return _elseClause.FullSpan;
 
                 return default;

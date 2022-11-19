@@ -49,7 +49,7 @@ namespace Roslynator.CSharp.Refactorings
 
                         EqualsValueClauseSyntax initializer = declarator.Initializer;
 
-                        EqualsValueClauseSyntax newInitializer = (initializer != null)
+                        EqualsValueClauseSyntax newInitializer = (initializer is not null)
                             ? initializer.WithValue(conditionalExpression)
                             : EqualsValueClause(conditionalExpression);
 
@@ -252,7 +252,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 IMethodSymbol methodSymbol = analysis.SemanticModel.GetEnclosingSymbol<IMethodSymbol>(position, cancellationToken);
 
-                Debug.Assert(methodSymbol != null, "");
+                Debug.Assert(methodSymbol is not null, "");
 
                 if (methodSymbol?.IsErrorType() == false)
                 {

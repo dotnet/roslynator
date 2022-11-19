@@ -3,25 +3,24 @@
 using System;
 using System.Diagnostics;
 
-namespace Roslynator
+namespace Roslynator;
+
+[DebuggerDisplay("{DebuggerDisplay,nq}")]
+public readonly struct RefactoringDescriptor
 {
-    [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public readonly struct RefactoringDescriptor
+    public RefactoringDescriptor(string id, string optionKey, bool isEnabledByDefault)
     {
-        public RefactoringDescriptor(string id, string optionKey, bool isEnabledByDefault)
-        {
-            Id = id ?? throw new ArgumentNullException(nameof(id));
-            OptionKey = optionKey ?? throw new ArgumentNullException(nameof(optionKey));
-            IsEnabledByDefault = isEnabledByDefault;
-        }
-
-        public string Id { get; }
-
-        public string OptionKey { get; }
-
-        public bool IsEnabledByDefault { get; }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string DebuggerDisplay => $"{Id} {OptionKey}";
+        Id = id ?? throw new ArgumentNullException(nameof(id));
+        OptionKey = optionKey ?? throw new ArgumentNullException(nameof(optionKey));
+        IsEnabledByDefault = isEnabledByDefault;
     }
+
+    public string Id { get; }
+
+    public string OptionKey { get; }
+
+    public bool IsEnabledByDefault { get; }
+
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+    private string DebuggerDisplay => $"{Id} {OptionKey}";
 }

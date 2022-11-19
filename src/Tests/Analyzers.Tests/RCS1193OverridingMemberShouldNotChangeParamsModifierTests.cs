@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1193OverridingMemberShouldNotChangeParamsModifierTests : AbstractCSharpDiagnosticVerifier<OverridingMemberShouldNotChangeParamsModifierAnalyzer, ParameterCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.OverridingMemberShouldNotChangeParamsModifier;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OverridingMemberShouldNotChangeParamsModifier)]
-        public async Task Test_WithoutParams()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1193OverridingMemberShouldNotChangeParamsModifierTests : AbstractCSharpDiagnosticVerifier<OverridingMemberShouldNotChangeParamsModifierAnalyzer, ParameterCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.OverridingMemberShouldNotChangeParamsModifier;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OverridingMemberShouldNotChangeParamsModifier)]
+    public async Task Test_WithoutParams()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C : B
 {
     public override void M([|object[] x|])
@@ -44,12 +44,12 @@ class B
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OverridingMemberShouldNotChangeParamsModifier)]
-        public async Task Test_WithParams()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OverridingMemberShouldNotChangeParamsModifier)]
+    public async Task Test_WithParams()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C : B
 {
     public override void M([|params object[] x|])
@@ -78,12 +78,12 @@ class B
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OverridingMemberShouldNotChangeParamsModifier)]
-        public async Task Test_WithoutParams_Indexer()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OverridingMemberShouldNotChangeParamsModifier)]
+    public async Task Test_WithoutParams_Indexer()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C : B
 {
     public override string this[bool x, [|string[] y|]] => base[x, y];
@@ -104,12 +104,12 @@ class B
     public virtual string this[bool x, params string[] y] => null;
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OverridingMemberShouldNotChangeParamsModifier)]
-        public async Task Test_WithParams_Indexer()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OverridingMemberShouldNotChangeParamsModifier)]
+    public async Task Test_WithParams_Indexer()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C : B
 {
     public override string this[int x, [|params string[] y|]] => base[x, y];
@@ -130,6 +130,5 @@ class B
     public virtual string this[int x, string[] y] => null;
 }
 ");
-        }
     }
 }

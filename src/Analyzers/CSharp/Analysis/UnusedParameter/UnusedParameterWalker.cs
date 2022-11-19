@@ -105,11 +105,11 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
 
             if (Nodes.TryGetValue(name, out NodeSymbolInfo info))
             {
-                if (info.Symbol == null)
+                if (info.Symbol is null)
                 {
                     ISymbol declaredSymbol = SemanticModel.GetDeclaredSymbol(info.Node, CancellationToken);
 
-                    if (declaredSymbol == null)
+                    if (declaredSymbol is null)
                     {
                         RemoveNode(name);
                         return;
@@ -199,10 +199,10 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
         {
             UnusedParameterWalker walker = _cachedInstance;
 
-            if (walker != null)
+            if (walker is not null)
             {
                 Debug.Assert(walker.Nodes.Count == 0);
-                Debug.Assert(walker.SemanticModel == null);
+                Debug.Assert(walker.SemanticModel is null);
                 Debug.Assert(walker.CancellationToken == default);
 
                 _cachedInstance = null;

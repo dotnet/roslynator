@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1197OptimizeStringBuilderAppendCallTests : AbstractCSharpDiagnosticVerifier<InvocationExpressionAnalyzer, OptimizeStringBuilderAppendCallCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.OptimizeStringBuilderAppendCall;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
-        public async Task Test_Substring_Int32_Int32()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1197OptimizeStringBuilderAppendCallTests : AbstractCSharpDiagnosticVerifier<InvocationExpressionAnalyzer, OptimizeStringBuilderAppendCallCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.OptimizeStringBuilderAppendCall;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    public async Task Test_Substring_Int32_Int32()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Text;
 
 class C
@@ -42,12 +42,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
-        public async Task Test_Substring_Int32_Int32_Calculation()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    public async Task Test_Substring_Int32_Int32_Calculation()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Text;
 
 class C
@@ -78,12 +78,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
-        public async Task Test_Substring_Int32()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    public async Task Test_Substring_Int32()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Text;
 
 class C
@@ -110,12 +110,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
-        public async Task Test_Substring_Int32_Int32_AppendLine()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    public async Task Test_Substring_Int32_Int32_AppendLine()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Text;
 
 class C
@@ -142,12 +142,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
-        public async Task Test_Substring_Int32_AppendLine()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    public async Task Test_Substring_Int32_AppendLine()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Text;
 
 class C
@@ -174,12 +174,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
-        public async Task Test_Remove()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    public async Task Test_Remove()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Text;
 
 class C
@@ -206,12 +206,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
-        public async Task Test_Remove_AppendLine()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    public async Task Test_Remove_AppendLine()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Text;
 
 class C
@@ -238,12 +238,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
-        public async Task Test_StringFormat()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    public async Task Test_StringFormat()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Text;
 
 class C
@@ -270,12 +270,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
-        public async Task Test_StringFormat_AppendLine()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    public async Task Test_StringFormat_AppendLine()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Text;
 
 class C
@@ -302,12 +302,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
-        public async Task Test_InterpolatedString()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    public async Task Test_InterpolatedString()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Text;
 
 class C
@@ -334,12 +334,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
-        public async Task Test_InterpolatedString_Braces()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    public async Task Test_InterpolatedString_Braces()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Text;
 
 class C
@@ -368,12 +368,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
-        public async Task Test_InterpolatedString_Char()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    public async Task Test_InterpolatedString_Char()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Text;
 
 class C
@@ -400,12 +400,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
-        public async Task Test_InterpolatedString_AppendLine()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    public async Task Test_InterpolatedString_AppendLine()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Text;
 
 class C
@@ -432,12 +432,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
-        public async Task Test_InterpolatedString_AppendLine2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    public async Task Test_InterpolatedString_AppendLine2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Text;
 
 class C
@@ -462,12 +462,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
-        public async Task Test_InterpolatedString_AppendLine3()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    public async Task Test_InterpolatedString_AppendLine3()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Text;
 
 class C
@@ -492,12 +492,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
-        public async Task Test_InterpolatedString_WithFormat_AppendLine()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    public async Task Test_InterpolatedString_WithFormat_AppendLine()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Text;
 
 class C
@@ -524,12 +524,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
-        public async Task Test_Concatenation()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    public async Task Test_Concatenation()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Text;
 
 class C
@@ -556,12 +556,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
-        public async Task Test_Concatenation_Char()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    public async Task Test_Concatenation_Char()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Text;
 
 class C
@@ -590,12 +590,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
-        public async Task Test_Concatenation_AppendLine()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    public async Task Test_Concatenation_AppendLine()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Text;
 
 class C
@@ -622,12 +622,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
-        public async Task Test_Concatenation_AppendLine2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    public async Task Test_Concatenation_AppendLine2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Text;
 
 class C
@@ -654,12 +654,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
-        public async Task Test_Concatenation_AppendLine3()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    public async Task Test_Concatenation_AppendLine3()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Text;
 
 class C
@@ -686,12 +686,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
-        public async Task Test_Concatenation_AppendLine4()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    public async Task Test_Concatenation_AppendLine4()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Text;
 
 class C
@@ -718,12 +718,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
-        public async Task Test_Concatenation_AppendLine5()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    public async Task Test_Concatenation_AppendLine5()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Text;
 
 class C
@@ -750,12 +750,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
-        public async Task Test_AppendLine()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    public async Task Test_AppendLine()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Text;
 
 class C
@@ -780,12 +780,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
-        public async Task Test_AppendLine2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    public async Task Test_AppendLine2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Text;
 
 class C
@@ -812,12 +812,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
-        public async Task Test_Join()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    public async Task Test_Join()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Text;
 
 class C
@@ -852,12 +852,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
-        public async Task TestNoDiagnostic_Const()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    public async Task TestNoDiagnostic_Const()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Text;
 
 class C
@@ -872,12 +872,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
-        public async Task TestNoDiagnostic()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    public async Task TestNoDiagnostic()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Text;
 
 class C
@@ -904,12 +904,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
-        public async Task TestNoDiagnostic_ConstantInterpolatedString()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+    public async Task TestNoDiagnostic_ConstantInterpolatedString()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Text;
 
 class C
@@ -921,6 +921,5 @@ class C
     }
 }
 ");
-        }
     }
 }

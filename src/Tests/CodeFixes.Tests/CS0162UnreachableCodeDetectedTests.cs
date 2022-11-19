@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.CodeFixes.Tests
-{
-    public class CS0162UnreachableCodeDetectedTests : AbstractCSharpCompilerDiagnosticFixVerifier<UnreachableCodeCodeFixProvider>
-    {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS0162_UnreachableCodeDetected;
+namespace Roslynator.CSharp.CodeFixes.Tests;
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0162_UnreachableCodeDetected)]
-        public async Task Test()
-        {
-            await VerifyFixAsync(@"
+public class CS0162UnreachableCodeDetectedTests : AbstractCSharpCompilerDiagnosticFixVerifier<UnreachableCodeCodeFixProvider>
+{
+    public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS0162_UnreachableCodeDetected;
+
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0162_UnreachableCodeDetected)]
+    public async Task Test()
+    {
+        await VerifyFixAsync(@"
 class C
 {
     int M()
@@ -41,12 +41,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
+    }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0162_UnreachableCodeDetected)]
-        public async Task Test_LocalFunction()
-        {
-            await VerifyFixAsync(@"
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0162_UnreachableCodeDetected)]
+    public async Task Test_LocalFunction()
+    {
+        await VerifyFixAsync(@"
 class C
 {
     void M()
@@ -79,12 +79,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
+    }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0162_UnreachableCodeDetected)]
-        public async Task Test_LocalFunction2()
-        {
-            await VerifyFixAsync(@"
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0162_UnreachableCodeDetected)]
+    public async Task Test_LocalFunction2()
+    {
+        await VerifyFixAsync(@"
 class C
 {
     void M()
@@ -129,6 +129,5 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
     }
 }

@@ -21,13 +21,13 @@ namespace Roslynator
             bool isCaseSensitive = true,
             CancellationToken cancellationToken = default)
         {
-            if (memberSymbol == null)
+            if (memberSymbol is null)
                 throw new ArgumentNullException(nameof(memberSymbol));
 
-            if (solution == null)
+            if (solution is null)
                 throw new ArgumentNullException(nameof(solution));
 
-            if (nameGenerator == null)
+            if (nameGenerator is null)
                 throw new ArgumentNullException(nameof(nameGenerator));
 
             HashSet<string> reservedNames = await GetReservedNamesAsync(memberSymbol, solution, isCaseSensitive, cancellationToken).ConfigureAwait(false);
@@ -42,10 +42,10 @@ namespace Roslynator
             bool isCaseSensitive = true,
             CancellationToken cancellationToken = default)
         {
-            if (memberSymbol == null)
+            if (memberSymbol is null)
                 throw new ArgumentNullException(nameof(memberSymbol));
 
-            if (solution == null)
+            if (solution is null)
                 throw new ArgumentNullException(nameof(solution));
 
             HashSet<string> reservedNames = await GetReservedNamesAsync(memberSymbol, solution, isCaseSensitive, cancellationToken).ConfigureAwait(false);
@@ -86,9 +86,9 @@ namespace Roslynator
         {
             INamedTypeSymbol containingType = memberSymbol.ContainingType;
 
-            Debug.Assert(containingType != null);
+            Debug.Assert(containingType is not null);
 
-            if (containingType != null)
+            if (containingType is not null)
             {
                 IEnumerable<string> memberNames = containingType
                     .GetMembers()

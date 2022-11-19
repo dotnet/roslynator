@@ -3,11 +3,11 @@
 using System;
 using System.Text.RegularExpressions;
 
-namespace Roslynator.Spelling
+namespace Roslynator.Spelling;
+
+internal static class SplitUtility
 {
-    internal static class SplitUtility
-    {
-        private const string _splitCasePattern = @"
+    private const string _splitCasePattern = @"
     (?<=
         \p{Lu}
     )
@@ -23,26 +23,25 @@ namespace Roslynator.Spelling
     )
 ";
 
-        private static readonly Regex _splitCaseRegex = new(
-            _splitCasePattern,
-            RegexOptions.IgnorePatternWhitespace);
+    private static readonly Regex _splitCaseRegex = new(
+        _splitCasePattern,
+        RegexOptions.IgnorePatternWhitespace);
 
-        private static readonly Regex _splitHyphenRegex = new("-");
+    private static readonly Regex _splitHyphenRegex = new("-");
 
-        private static readonly Regex _splitCaseAndHyphenRegex = new(
-            "-|" + _splitCasePattern,
-            RegexOptions.IgnorePatternWhitespace);
+    private static readonly Regex _splitCaseAndHyphenRegex = new(
+        "-|" + _splitCasePattern,
+        RegexOptions.IgnorePatternWhitespace);
 
-        public static Regex GetSplitRegex(SplitMode splitMode)
+    public static Regex GetSplitRegex(SplitMode splitMode)
+    {
+        return splitMode switch
         {
-            return splitMode switch
-            {
-                SplitMode.None => null,
-                SplitMode.Case => _splitCaseRegex,
-                SplitMode.Hyphen => _splitHyphenRegex,
-                SplitMode.CaseAndHyphen => _splitCaseAndHyphenRegex,
-                _ => throw new InvalidOperationException(),
-            };
-        }
+            SplitMode.None => null,
+            SplitMode.Case => _splitCaseRegex,
+            SplitMode.Hyphen => _splitHyphenRegex,
+            SplitMode.CaseAndHyphen => _splitCaseAndHyphenRegex,
+            _ => throw new InvalidOperationException(),
+        };
     }
 }

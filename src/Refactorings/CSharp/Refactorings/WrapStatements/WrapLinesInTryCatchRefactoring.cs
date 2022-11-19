@@ -5,30 +5,29 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CSharp.Refactorings.WrapStatements
+namespace Roslynator.CSharp.Refactorings.WrapStatements;
+
+internal sealed class WrapLinesInTryCatchRefactoring : WrapStatementsRefactoring<TryStatementSyntax>
 {
-    internal sealed class WrapLinesInTryCatchRefactoring : WrapStatementsRefactoring<TryStatementSyntax>
+    public const string Title = "Wrap in try-catch";
+
+    private WrapLinesInTryCatchRefactoring()
     {
-        public const string Title = "Wrap in try-catch";
+    }
 
-        private WrapLinesInTryCatchRefactoring()
-        {
-        }
+    public static WrapLinesInTryCatchRefactoring Instance { get; } = new();
 
-        public static WrapLinesInTryCatchRefactoring Instance { get; } = new();
+    public override TryStatementSyntax CreateStatement(ImmutableArray<StatementSyntax> statements)
+    {
+        statements = statements.Replace(statements[0], statements[0].WithNavigationAnnotation());
 
-        public override TryStatementSyntax CreateStatement(ImmutableArray<StatementSyntax> statements)
-        {
-            statements = statements.Replace(statements[0], statements[0].WithNavigationAnnotation());
-
-            return TryStatement(
-                Block(List(statements)),
-                CatchClause(
-                    CatchDeclaration(
-                        ParseTypeName("System.Exception").WithSimplifierAnnotation(),
-                        Identifier("ex")),
-                    default(CatchFilterClauseSyntax),
-                    Block()));
-        }
+        return TryStatement(
+            Block(List(statements)),
+            CatchClause(
+                CatchDeclaration(
+                    ParseTypeName("System.Exception").WithSimplifierAnnotation(),
+                    Identifier("ex")),
+                default(CatchFilterClauseSyntax),
+                Block()));
     }
 }

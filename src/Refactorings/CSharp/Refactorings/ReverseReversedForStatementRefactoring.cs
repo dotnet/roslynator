@@ -8,65 +8,64 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class ReverseReversedForStatementRefactoring
 {
-    internal static class ReverseReversedForStatementRefactoring
+    public static bool CanRefactor(ForStatementSyntax forStatement)
     {
-        public static bool CanRefactor(ForStatementSyntax forStatement)
-        {
-            ExpressionSyntax value = forStatement
-                .Declaration?
-                .Variables
-                .SingleOrDefault(shouldThrow: false)?
-                .Initializer?
-                .Value;
+        ExpressionSyntax value = forStatement
+            .Declaration?
+            .Variables
+            .SingleOrDefault(shouldThrow: false)?
+            .Initializer?
+            .Value;
 
-            if (value?.Kind() != SyntaxKind.SubtractExpression)
-                return false;
+        if (value?.Kind() != SyntaxKind.SubtractExpression)
+            return false;
 
-            if (((BinaryExpressionSyntax)value).Right?.IsNumericLiteralExpression("1") != true)
-                return false;
+        if (((BinaryExpressionSyntax)value).Right?.IsNumericLiteralExpression("1") != true)
+            return false;
 
-            ExpressionSyntax condition = forStatement.Condition;
+        ExpressionSyntax condition = forStatement.Condition;
 
-            if (condition?.Kind() != SyntaxKind.GreaterThanOrEqualExpression)
-                return false;
+        if (condition?.Kind() != SyntaxKind.GreaterThanOrEqualExpression)
+            return false;
 
-            if (((BinaryExpressionSyntax)condition).Right?.IsNumericLiteralExpression("0") != true)
-                return false;
+        if (((BinaryExpressionSyntax)condition).Right?.IsNumericLiteralExpression("0") != true)
+            return false;
 
-            return forStatement.Incrementors.SingleOrDefault(shouldThrow: false)?.Kind() == SyntaxKind.PostDecrementExpression;
-        }
+        return forStatement.Incrementors.SingleOrDefault(shouldThrow: false)?.Kind() == SyntaxKind.PostDecrementExpression;
+    }
 
-        public static Task<Document> RefactorAsync(
-            Document document,
-            ForStatementSyntax forStatement,
-            CancellationToken cancellationToken = default)
-        {
-            VariableDeclarationSyntax declaration = forStatement.Declaration;
+    public static Task<Document> RefactorAsync(
+        Document document,
+        ForStatementSyntax forStatement,
+        CancellationToken cancellationToken = default)
+    {
+        VariableDeclarationSyntax declaration = forStatement.Declaration;
 
-            var incrementor = (PostfixUnaryExpressionSyntax)forStatement.Incrementors[0];
+        var incrementor = (PostfixUnaryExpressionSyntax)forStatement.Incrementors[0];
 
-            var initializerValue = (BinaryExpressionSyntax)declaration.Variables[0].Initializer.Value;
+        var initializerValue = (BinaryExpressionSyntax)declaration.Variables[0].Initializer.Value;
 
-            VariableDeclarationSyntax newDeclaration = declaration.ReplaceNode(
-                initializerValue,
-                NumericLiteralExpression(0));
+        VariableDeclarationSyntax newDeclaration = declaration.ReplaceNode(
+            initializerValue,
+            NumericLiteralExpression(0));
 
-            BinaryExpressionSyntax newCondition = ((BinaryExpressionSyntax)forStatement.Condition)
-                .WithOperatorToken(Token(SyntaxKind.LessThanToken))
-                .WithRight(initializerValue.Left);
+        BinaryExpressionSyntax newCondition = ((BinaryExpressionSyntax)forStatement.Condition)
+            .WithOperatorToken(Token(SyntaxKind.LessThanToken))
+            .WithRight(initializerValue.Left);
 
-            SeparatedSyntaxList<ExpressionSyntax> newIncrementors = forStatement.Incrementors.Replace(
-                incrementor,
-                incrementor.WithOperatorToken(Token(SyntaxKind.PlusPlusToken)));
+        SeparatedSyntaxList<ExpressionSyntax> newIncrementors = forStatement.Incrementors.Replace(
+            incrementor,
+            incrementor.WithOperatorToken(Token(SyntaxKind.PlusPlusToken)));
 
-            ForStatementSyntax newForStatement = forStatement
-                .WithDeclaration(newDeclaration)
-                .WithCondition(newCondition)
-                .WithIncrementors(newIncrementors);
+        ForStatementSyntax newForStatement = forStatement
+            .WithDeclaration(newDeclaration)
+            .WithCondition(newCondition)
+            .WithIncrementors(newIncrementors);
 
-            return document.ReplaceNodeAsync(forStatement, newForStatement, cancellationToken);
-        }
+        return document.ReplaceNodeAsync(forStatement, newForStatement, cancellationToken);
     }
 }

@@ -7,33 +7,32 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings.ReduceIfNesting
+namespace Roslynator.CSharp.Refactorings.ReduceIfNesting;
+
+internal static partial class ReduceIfNestingRefactoring
 {
-    internal static partial class ReduceIfNestingRefactoring
+    public static async Task<Document> RefactorAsync(
+        Document document,
+        IfStatementSyntax ifStatement,
+        SyntaxKind jumpKind,
+        bool recursive,
+        CancellationToken cancellationToken = default)
     {
-        public static async Task<Document> RefactorAsync(
-            Document document,
-            IfStatementSyntax ifStatement,
-            SyntaxKind jumpKind,
-            bool recursive,
-            CancellationToken cancellationToken = default)
-        {
-            StatementListInfo statementsInfo = SyntaxInfo.StatementListInfo(ifStatement);
+        StatementListInfo statementsInfo = SyntaxInfo.StatementListInfo(ifStatement);
 
-            SyntaxNode node = statementsInfo.Parent;
+        SyntaxNode node = statementsInfo.Parent;
 
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+        SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            var rewriter = new ReduceIfStatementRewriter(
-                jumpKind,
-                recursive,
-                SyntaxLogicalInverter.GetInstance(document),
-                semanticModel,
-                cancellationToken);
+        var rewriter = new ReduceIfStatementRewriter(
+            jumpKind,
+            recursive,
+            SyntaxLogicalInverter.GetInstance(document),
+            semanticModel,
+            cancellationToken);
 
-            SyntaxNode newNode = rewriter.Visit(node).WithFormatterAnnotation();
+        SyntaxNode newNode = rewriter.Visit(node).WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(node, newNode, cancellationToken).ConfigureAwait(false);
-        }
+        return await document.ReplaceNodeAsync(node, newNode, cancellationToken).ConfigureAwait(false);
     }
 }

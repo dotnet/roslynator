@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
         {
             get
             {
-                if (_methodNames == null)
+                if (_methodNames is null)
                     Interlocked.CompareExchange(ref _methodNames, LoadMethodNames(), null);
 
                 return _methodNames;

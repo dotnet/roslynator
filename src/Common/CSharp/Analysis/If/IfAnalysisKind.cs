@@ -1,30 +1,29 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-namespace Roslynator.CSharp.Analysis
+namespace Roslynator.CSharp.Analysis;
+
+internal enum IfAnalysisKind
 {
-    internal enum IfAnalysisKind
-    {
-        IfElseToAssignmentWithCoalesceExpression,
-        IfElseToAssignmentWithConditionalExpression,
-        IfElseToAssignmentWithExpression,
-        IfElseToAssignmentWithCondition,
+    IfElseToAssignmentWithCoalesceExpression,
+    IfElseToAssignmentWithConditionalExpression,
+    IfElseToAssignmentWithExpression,
+    IfElseToAssignmentWithCondition,
 
-        AssignmentAndIfToAssignmentWithConditionalExpression,
-        LocalDeclarationAndIfElseAssignmentWithConditionalExpression,
+    AssignmentAndIfToAssignmentWithConditionalExpression,
+    LocalDeclarationAndIfElseAssignmentWithConditionalExpression,
 
-        IfElseToReturnWithCoalesceExpression,
-        IfElseToReturnWithConditionalExpression,
-        IfElseToReturnWithBooleanExpression,
-        IfElseToReturnWithExpression,
+    IfElseToReturnWithCoalesceExpression,
+    IfElseToReturnWithConditionalExpression,
+    IfElseToReturnWithBooleanExpression,
+    IfElseToReturnWithExpression,
 
-        IfElseToYieldReturnWithCoalesceExpression,
-        IfElseToYieldReturnWithConditionalExpression,
-        IfElseToYieldReturnWithBooleanExpression,
-        IfElseToYieldReturnWithExpression,
+    IfElseToYieldReturnWithCoalesceExpression,
+    IfElseToYieldReturnWithConditionalExpression,
+    IfElseToYieldReturnWithBooleanExpression,
+    IfElseToYieldReturnWithExpression,
 
-        IfReturnToReturnWithCoalesceExpression,
-        IfReturnToReturnWithConditionalExpression,
-        IfReturnToReturnWithBooleanExpression,
-        IfReturnToReturnWithExpression,
-    }
+    IfReturnToReturnWithCoalesceExpression,
+    IfReturnToReturnWithConditionalExpression,
+    IfReturnToReturnWithBooleanExpression,
+    IfReturnToReturnWithExpression,
 }

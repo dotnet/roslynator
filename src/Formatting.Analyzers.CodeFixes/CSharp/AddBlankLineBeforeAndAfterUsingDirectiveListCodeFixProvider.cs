@@ -12,107 +12,106 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp;
 using Roslynator.Formatting.CSharp;
 
-namespace Roslynator.Formatting.CodeFixes.CSharp
+namespace Roslynator.Formatting.CodeFixes.CSharp;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AddBlankLineBeforeAndAfterUsingDirectiveListCodeFixProvider))]
+[Shared]
+public sealed class AddBlankLineBeforeAndAfterUsingDirectiveListCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AddBlankLineBeforeAndAfterUsingDirectiveListCodeFixProvider))]
-    [Shared]
-    public sealed class AddBlankLineBeforeAndAfterUsingDirectiveListCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
+        get
         {
-            get
-            {
-                return ImmutableArray.Create(
-                    DiagnosticIdentifiers.AddBlankLineBeforeUsingDirectiveList,
-                    DiagnosticIdentifiers.AddBlankLineAfterUsingDirectiveList);
-            }
+            return ImmutableArray.Create(
+                DiagnosticIdentifiers.AddBlankLineBeforeUsingDirectiveList,
+                DiagnosticIdentifiers.AddBlankLineAfterUsingDirectiveList);
+        }
+    }
+
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+        if (!TryFindFirstAncestorOrSelf(
+            root,
+            context.Span,
+            out SyntaxNode node,
+            findInsideTrivia: true,
+            predicate: f => f.IsKind(SyntaxKind.UsingDirective, SyntaxKind.RegionDirectiveTrivia, SyntaxKind.EndRegionDirectiveTrivia)))
+        {
+            return;
         }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+        Document document = context.Document;
+        Diagnostic diagnostic = context.Diagnostics[0];
+
+        switch (node)
         {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
-
-            if (!TryFindFirstAncestorOrSelf(
-                root,
-                context.Span,
-                out SyntaxNode node,
-                findInsideTrivia: true,
-                predicate: f => f.IsKind(SyntaxKind.UsingDirective, SyntaxKind.RegionDirectiveTrivia, SyntaxKind.EndRegionDirectiveTrivia)))
-            {
-                return;
-            }
-
-            Document document = context.Document;
-            Diagnostic diagnostic = context.Diagnostics[0];
-
-            switch (node)
-            {
-                case UsingDirectiveSyntax usingDirective:
-                    {
-                        if (context.Span.Start == usingDirective.SpanStart)
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                CodeFixTitles.AddBlankLine,
-                                ct => AddBlankLineBeforeUsingDirectiveAsync(document, usingDirective, ct),
-                                GetEquivalenceKey(diagnostic));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                        }
-                        else
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                CodeFixTitles.AddBlankLine,
-                                ct => CodeFixHelpers.AppendEndOfLineAsync(document, usingDirective, ct),
-                                GetEquivalenceKey(diagnostic));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                        }
-
-                        break;
-                    }
-                case RegionDirectiveTriviaSyntax regionDirective:
+            case UsingDirectiveSyntax usingDirective:
+                {
+                    if (context.Span.Start == usingDirective.SpanStart)
                     {
                         CodeAction codeAction = CodeAction.Create(
                             CodeFixTitles.AddBlankLine,
-                            ct => CodeFixHelpers.AddBlankLineBeforeDirectiveAsync(document, regionDirective, ct),
+                            ct => AddBlankLineBeforeUsingDirectiveAsync(document, usingDirective, ct),
                             GetEquivalenceKey(diagnostic));
 
                         context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
                     }
-                case EndRegionDirectiveTriviaSyntax endRegionDirective:
+                    else
                     {
                         CodeAction codeAction = CodeAction.Create(
                             CodeFixTitles.AddBlankLine,
-                            ct => CodeFixHelpers.AddBlankLineAfterDirectiveAsync(document, endRegionDirective, ct),
+                            ct => CodeFixHelpers.AppendEndOfLineAsync(document, usingDirective, ct),
                             GetEquivalenceKey(diagnostic));
 
                         context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
                     }
-            }
-        }
 
-        private static Task<Document> AddBlankLineBeforeUsingDirectiveAsync(
-            Document document,
-            UsingDirectiveSyntax usingDirective,
-            CancellationToken cancellationToken)
+                    break;
+                }
+            case RegionDirectiveTriviaSyntax regionDirective:
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        CodeFixTitles.AddBlankLine,
+                        ct => CodeFixHelpers.AddBlankLineBeforeDirectiveAsync(document, regionDirective, ct),
+                        GetEquivalenceKey(diagnostic));
+
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
+            case EndRegionDirectiveTriviaSyntax endRegionDirective:
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        CodeFixTitles.AddBlankLine,
+                        ct => CodeFixHelpers.AddBlankLineAfterDirectiveAsync(document, endRegionDirective, ct),
+                        GetEquivalenceKey(diagnostic));
+
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
+        }
+    }
+
+    private static Task<Document> AddBlankLineBeforeUsingDirectiveAsync(
+        Document document,
+        UsingDirectiveSyntax usingDirective,
+        CancellationToken cancellationToken)
+    {
+        SyntaxTriviaList leadingTrivia = usingDirective.GetLeadingTrivia();
+
+        int index = leadingTrivia.Count;
+
+        if (index > 0
+            && leadingTrivia.Last().IsWhitespaceTrivia())
         {
-            SyntaxTriviaList leadingTrivia = usingDirective.GetLeadingTrivia();
-
-            int index = leadingTrivia.Count;
-
-            if (index > 0
-                && leadingTrivia.Last().IsWhitespaceTrivia())
-            {
-                index--;
-            }
-
-            SyntaxTriviaList newLeadingTrivia = leadingTrivia.Insert(index, SyntaxTriviaAnalysis.DetermineEndOfLine(usingDirective));
-
-            UsingDirectiveSyntax newUsingDirective = usingDirective.WithLeadingTrivia(newLeadingTrivia);
-
-            return document.ReplaceNodeAsync(usingDirective, newUsingDirective, cancellationToken);
+            index--;
         }
+
+        SyntaxTriviaList newLeadingTrivia = leadingTrivia.Insert(index, SyntaxTriviaAnalysis.DetermineEndOfLine(usingDirective));
+
+        UsingDirectiveSyntax newUsingDirective = usingDirective.WithLeadingTrivia(newLeadingTrivia);
+
+        return document.ReplaceNodeAsync(usingDirective, newUsingDirective, cancellationToken);
     }
 }

@@ -10,35 +10,34 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(LockStatementCodeFixProvider))]
+[Shared]
+public sealed class LockStatementCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(LockStatementCodeFixProvider))]
-    [Shared]
-    public sealed class LockStatementCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
-        {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.AvoidLockingOnPubliclyAccessibleInstance); }
-        }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.AvoidLockingOnPubliclyAccessibleInstance); }
+    }
 
-        public override FixAllProvider GetFixAllProvider()
-        {
-            return null;
-        }
+    public override FixAllProvider GetFixAllProvider()
+    {
+        return null;
+    }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out LockStatementSyntax lockStatement))
-                return;
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out LockStatementSyntax lockStatement))
+            return;
 
-            CodeAction codeAction = CodeAction.Create(
-                "Introduce field to lock on",
-                ct => AvoidLockingOnPubliclyAccessibleInstanceRefactoring.RefactorAsync(context.Document, lockStatement, ct),
-                GetEquivalenceKey(DiagnosticIdentifiers.AvoidLockingOnPubliclyAccessibleInstance));
+        CodeAction codeAction = CodeAction.Create(
+            "Introduce field to lock on",
+            ct => AvoidLockingOnPubliclyAccessibleInstanceRefactoring.RefactorAsync(context.Document, lockStatement, ct),
+            GetEquivalenceKey(DiagnosticIdentifiers.AvoidLockingOnPubliclyAccessibleInstance));
 
-            context.RegisterCodeFix(codeAction, context.Diagnostics);
-        }
+        context.RegisterCodeFix(codeAction, context.Diagnostics);
     }
 }

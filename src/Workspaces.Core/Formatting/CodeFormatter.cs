@@ -28,7 +28,7 @@ namespace Roslynator.Formatting
             CodeFormatterOptions options,
             CancellationToken cancellationToken = default)
         {
-            if (options == null)
+            if (options is null)
                 options = CodeFormatterOptions.Default;
 
             foreach (DocumentId documentId in project.DocumentIds)

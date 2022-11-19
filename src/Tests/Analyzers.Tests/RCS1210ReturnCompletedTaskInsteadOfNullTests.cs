@@ -7,16 +7,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1210ReturnCompletedTaskInsteadOfNullTests : AbstractCSharpDiagnosticVerifier<ReturnCompletedTaskInsteadOfNullAnalyzer, ReturnCompletedTaskInsteadOfNullCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.ReturnCompletedTaskInsteadOfNull;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReturnCompletedTaskInsteadOfNull)]
-        public async Task Test_TaskOfT_Body()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1210ReturnCompletedTaskInsteadOfNullTests : AbstractCSharpDiagnosticVerifier<ReturnCompletedTaskInsteadOfNullAnalyzer, ReturnCompletedTaskInsteadOfNullCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.ReturnCompletedTaskInsteadOfNull;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReturnCompletedTaskInsteadOfNull)]
+    public async Task Test_TaskOfT_Body()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Threading.Tasks;
 
 class C
@@ -37,12 +37,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReturnCompletedTaskInsteadOfNull)]
-        public async Task Test_Task_Body()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReturnCompletedTaskInsteadOfNull)]
+    public async Task Test_Task_Body()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Threading.Tasks;
 
 class C
@@ -63,12 +63,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReturnCompletedTaskInsteadOfNull)]
-        public async Task Test_TaskOfT_ExpressionBody()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReturnCompletedTaskInsteadOfNull)]
+    public async Task Test_TaskOfT_ExpressionBody()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Threading.Tasks;
 
 class C
@@ -83,6 +83,5 @@ class C
     Task<bool> GetAsync() => Task.FromResult(false);
 }
 ");
-        }
     }
 }

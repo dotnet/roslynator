@@ -5,33 +5,32 @@ using Microsoft.CodeAnalysis;
 using Roslynator.Configuration;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace Roslynator.CodeFixes
+namespace Roslynator.CodeFixes;
+
+public abstract class CompilerDiagnosticCodeFixProvider : AbstractCodeFixProvider
 {
-    public abstract class CompilerDiagnosticCodeFixProvider : AbstractCodeFixProvider
+    private static readonly ConcurrentDictionary<string, string> _optionKeysMap = new();
+
+    protected bool IsEnabled(string compilerDiagnosticId, string codeFixId, Document document, SyntaxTree syntaxTree)
     {
-        private static readonly ConcurrentDictionary<string, string> _optionKeysMap = new();
+        AnalyzerConfigOptions configOptions = document.GetConfigOptions(syntaxTree);
 
-        protected bool IsEnabled(string compilerDiagnosticId, string codeFixId, Document document, SyntaxTree syntaxTree)
-        {
-            AnalyzerConfigOptions configOptions = document.GetConfigOptions(syntaxTree);
+        string optionKey = _optionKeysMap.GetOrAdd(compilerDiagnosticId, id => CreateOptionKey(id));
 
-            string optionKey = _optionKeysMap.GetOrAdd(compilerDiagnosticId, id => CreateOptionKey(id));
+        if (configOptions.TryGetValueAsBool(optionKey, out bool enabled))
+            return enabled;
 
-            if (configOptions.TryGetValueAsBool(optionKey, out bool enabled))
-                return enabled;
+        if (configOptions.TryGetValueAsBool(ConfigOptionKeys.CompilerDiagnosticFixesEnabled, out bool globalEnabled))
+            return globalEnabled;
 
-            if (configOptions.TryGetValueAsBool(ConfigOptionKeys.CompilerDiagnosticFixesEnabled, out bool globalEnabled))
-                return globalEnabled;
+        if (CompilerCodeFixOptions.Current.Disabled.Contains(new CodeFixIdentifier(compilerDiagnosticId, codeFixId)))
+            return false;
 
-            if (CompilerCodeFixOptions.Current.Disabled.Contains(new CodeFixIdentifier(compilerDiagnosticId, codeFixId)))
-                return false;
+        return CodeAnalysisConfig.Instance.CompilerDiagnosticFixesEnabled ?? true;
+    }
 
-            return CodeAnalysisConfig.Instance.CompilerDiagnosticFixesEnabled ?? true;
-        }
-
-        private static string CreateOptionKey(string compilerDiagnosticId)
-        {
-            return ConfigOptionKeys.CompilerDiagnosticFixPrefix + compilerDiagnosticId + ".enabled";
-        }
+    private static string CreateOptionKey(string compilerDiagnosticId)
+    {
+        return ConfigOptionKeys.CompilerDiagnosticFixPrefix + compilerDiagnosticId + ".enabled";
     }
 }

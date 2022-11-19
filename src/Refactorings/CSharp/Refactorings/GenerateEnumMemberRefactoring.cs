@@ -8,100 +8,99 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class GenerateEnumMemberRefactoring
 {
-    internal static class GenerateEnumMemberRefactoring
+    internal static readonly string StartFromHighestExistingValueEquivalenceKey = EquivalenceKey.Create(RefactoringDescriptors.GenerateEnumMember, "StartFromHighestExistingValue");
+
+    public static void ComputeRefactoring(
+        RefactoringContext context,
+        EnumDeclarationSyntax enumDeclaration,
+        SemanticModel semanticModel)
     {
-        internal static readonly string StartFromHighestExistingValueEquivalenceKey = EquivalenceKey.Create(RefactoringDescriptors.GenerateEnumMember, "StartFromHighestExistingValue");
+        Document document = context.Document;
 
-        public static void ComputeRefactoring(
-            RefactoringContext context,
-            EnumDeclarationSyntax enumDeclaration,
-            SemanticModel semanticModel)
+        INamedTypeSymbol enumSymbol = semanticModel.GetDeclaredSymbol(enumDeclaration, context.CancellationToken);
+
+        if (enumSymbol?.HasAttribute(MetadataNames.System_FlagsAttribute) == true)
         {
-            Document document = context.Document;
+            ImmutableArray<ulong> values = GetConstantValues(enumSymbol);
 
-            INamedTypeSymbol enumSymbol = semanticModel.GetDeclaredSymbol(enumDeclaration, context.CancellationToken);
+            Optional<ulong> optional = FlagsUtility<ulong>.Instance.GetUniquePowerOfTwo(values);
 
-            if (enumSymbol?.HasAttribute(MetadataNames.System_FlagsAttribute) == true)
-            {
-                ImmutableArray<ulong> values = GetConstantValues(enumSymbol);
-
-                Optional<ulong> optional = FlagsUtility<ulong>.Instance.GetUniquePowerOfTwo(values);
-
-                if (optional.HasValue
-                    && ConvertHelpers.CanConvertFromUInt64(optional.Value, enumSymbol.EnumUnderlyingType.SpecialType))
-                {
-                    context.RegisterRefactoring(
-                        "Generate enum member",
-                        ct => RefactorAsync(document, enumDeclaration, enumSymbol, optional.Value, ct),
-                        RefactoringDescriptors.GenerateEnumMember);
-
-                    Optional<ulong> optional2 = FlagsUtility<ulong>.Instance.GetUniquePowerOfTwo(values, startFromHighestExistingValue: true);
-
-                    if (optional2.HasValue
-                        && ConvertHelpers.CanConvertFromUInt64(optional2.Value, enumSymbol.EnumUnderlyingType.SpecialType)
-                        && optional.Value != optional2.Value)
-                    {
-                        context.RegisterRefactoring(
-                            $"Generate enum member (with value {optional2.Value})",
-                            ct => RefactorAsync(document, enumDeclaration, enumSymbol, optional2.Value, ct),
-                            RefactoringDescriptors.GenerateEnumMember,
-                            "StartFromHighestExistingValue");
-                    }
-                }
-            }
-            else
+            if (optional.HasValue
+                && ConvertHelpers.CanConvertFromUInt64(optional.Value, enumSymbol.EnumUnderlyingType.SpecialType))
             {
                 context.RegisterRefactoring(
                     "Generate enum member",
-                    ct => RefactorAsync(document, enumDeclaration, enumSymbol, null, ct),
+                    ct => RefactorAsync(document, enumDeclaration, enumSymbol, optional.Value, ct),
                     RefactoringDescriptors.GenerateEnumMember);
-            }
-        }
 
-        private static ImmutableArray<ulong> GetConstantValues(INamedTypeSymbol enumSymbol)
-        {
-            ImmutableArray<ulong>.Builder values = ImmutableArray.CreateBuilder<ulong>();
+                Optional<ulong> optional2 = FlagsUtility<ulong>.Instance.GetUniquePowerOfTwo(values, startFromHighestExistingValue: true);
 
-            foreach (ISymbol member in enumSymbol.GetMembers())
-            {
-                if (member.Kind == SymbolKind.Field)
+                if (optional2.HasValue
+                    && ConvertHelpers.CanConvertFromUInt64(optional2.Value, enumSymbol.EnumUnderlyingType.SpecialType)
+                    && optional.Value != optional2.Value)
                 {
-                    var fieldSymbol = (IFieldSymbol)member;
-
-                    if (fieldSymbol.HasConstantValue)
-                        values.Add(SymbolUtility.GetEnumValueAsUInt64(fieldSymbol.ConstantValue, enumSymbol));
+                    context.RegisterRefactoring(
+                        $"Generate enum member (with value {optional2.Value})",
+                        ct => RefactorAsync(document, enumDeclaration, enumSymbol, optional2.Value, ct),
+                        RefactoringDescriptors.GenerateEnumMember,
+                        "StartFromHighestExistingValue");
                 }
             }
-
-            return values.ToImmutableArray();
         }
-
-        private static Task<Document> RefactorAsync(
-            Document document,
-            EnumDeclarationSyntax enumDeclaration,
-            INamedTypeSymbol enumSymbol,
-            ulong? value,
-            CancellationToken cancellationToken)
+        else
         {
-            EqualsValueClauseSyntax equalsValue = null;
-
-            if (value != null)
-                equalsValue = EqualsValueClause(CSharpFactory.NumericLiteralExpression(value.Value, enumSymbol.EnumUnderlyingType.SpecialType));
-
-            string name = NameGenerator.Default.EnsureUniqueEnumMemberName(DefaultNames.EnumMember, enumSymbol);
-
-            SyntaxToken identifier = Identifier(name).WithRenameAnnotation();
-
-            EnumMemberDeclarationSyntax newEnumMember = EnumMemberDeclaration(
-                default(SyntaxList<AttributeListSyntax>),
-                identifier,
-                equalsValue);
-
-            EnumDeclarationSyntax newNode = enumDeclaration.AddMembers(newEnumMember);
-
-            return document.ReplaceNodeAsync(enumDeclaration, newNode, cancellationToken);
+            context.RegisterRefactoring(
+                "Generate enum member",
+                ct => RefactorAsync(document, enumDeclaration, enumSymbol, null, ct),
+                RefactoringDescriptors.GenerateEnumMember);
         }
+    }
+
+    private static ImmutableArray<ulong> GetConstantValues(INamedTypeSymbol enumSymbol)
+    {
+        ImmutableArray<ulong>.Builder values = ImmutableArray.CreateBuilder<ulong>();
+
+        foreach (ISymbol member in enumSymbol.GetMembers())
+        {
+            if (member.Kind == SymbolKind.Field)
+            {
+                var fieldSymbol = (IFieldSymbol)member;
+
+                if (fieldSymbol.HasConstantValue)
+                    values.Add(SymbolUtility.GetEnumValueAsUInt64(fieldSymbol.ConstantValue, enumSymbol));
+            }
+        }
+
+        return values.ToImmutableArray();
+    }
+
+    private static Task<Document> RefactorAsync(
+        Document document,
+        EnumDeclarationSyntax enumDeclaration,
+        INamedTypeSymbol enumSymbol,
+        ulong? value,
+        CancellationToken cancellationToken)
+    {
+        EqualsValueClauseSyntax equalsValue = null;
+
+        if (value is not null)
+            equalsValue = EqualsValueClause(CSharpFactory.NumericLiteralExpression(value.Value, enumSymbol.EnumUnderlyingType.SpecialType));
+
+        string name = NameGenerator.Default.EnsureUniqueEnumMemberName(DefaultNames.EnumMember, enumSymbol);
+
+        SyntaxToken identifier = Identifier(name).WithRenameAnnotation();
+
+        EnumMemberDeclarationSyntax newEnumMember = EnumMemberDeclaration(
+            default(SyntaxList<AttributeListSyntax>),
+            identifier,
+            equalsValue);
+
+        EnumDeclarationSyntax newNode = enumDeclaration.AddMembers(newEnumMember);
+
+        return document.ReplaceNodeAsync(enumDeclaration, newNode, cancellationToken);
     }
 }

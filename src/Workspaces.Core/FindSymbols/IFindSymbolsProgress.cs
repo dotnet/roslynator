@@ -2,10 +2,9 @@
 
 using Microsoft.CodeAnalysis;
 
-namespace Roslynator.FindSymbols
+namespace Roslynator.FindSymbols;
+
+internal interface IFindSymbolsProgress
 {
-    internal interface IFindSymbolsProgress
-    {
-        void OnSymbolFound(ISymbol symbol);
-    }
+    void OnSymbolFound(ISymbol symbol);
 }

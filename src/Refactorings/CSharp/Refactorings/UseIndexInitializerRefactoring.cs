@@ -11,143 +11,142 @@ using Roslynator.CSharp;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class UseIndexInitializerRefactoring
 {
-    internal static class UseIndexInitializerRefactoring
+    public static async Task ComputeRefactoringAsync(RefactoringContext context, InitializerExpressionSyntax initializer)
     {
-        public static async Task ComputeRefactoringAsync(RefactoringContext context, InitializerExpressionSyntax initializer)
+        SeparatedSyntaxList<ExpressionSyntax> expressions = initializer.Expressions;
+
+        if (!expressions.Any())
+            return;
+
+        if (!expressions.All(f => f.IsKind(SyntaxKind.ComplexElementInitializerExpression)))
+            return;
+
+        if (initializer.Parent is not ObjectCreationExpressionSyntax objectCreationExpression)
+            return;
+
+        var complexElementInitializer = (InitializerExpressionSyntax)expressions[0];
+
+        SeparatedSyntaxList<ExpressionSyntax> expressions2 = complexElementInitializer.Expressions;
+
+        if (expressions2.Count != 2)
+            return;
+
+        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+        IPropertySymbol propertySymbol = FindIndexerSymbol(
+            objectCreationExpression,
+            expressions2,
+            semanticModel,
+            context.CancellationToken);
+
+        if (propertySymbol is null)
+            return;
+
+        ITypeSymbol keyType = propertySymbol.Parameters[0].Type;
+        ITypeSymbol valueType = propertySymbol.Type;
+
+        for (int i = 1; i < expressions.Count; i++)
         {
-            SeparatedSyntaxList<ExpressionSyntax> expressions = initializer.Expressions;
-
-            if (!expressions.Any())
+            if (!CanRefactor(((InitializerExpressionSyntax)expressions[i]).Expressions, keyType, valueType, semanticModel))
                 return;
-
-            if (!expressions.All(f => f.IsKind(SyntaxKind.ComplexElementInitializerExpression)))
-                return;
-
-            if (initializer.Parent is not ObjectCreationExpressionSyntax objectCreationExpression)
-                return;
-
-            var complexElementInitializer = (InitializerExpressionSyntax)expressions[0];
-
-            SeparatedSyntaxList<ExpressionSyntax> expressions2 = complexElementInitializer.Expressions;
-
-            if (expressions2.Count != 2)
-                return;
-
-            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-            IPropertySymbol propertySymbol = FindIndexerSymbol(
-                objectCreationExpression,
-                expressions2,
-                semanticModel,
-                context.CancellationToken);
-
-            if (propertySymbol == null)
-                return;
-
-            ITypeSymbol keyType = propertySymbol.Parameters[0].Type;
-            ITypeSymbol valueType = propertySymbol.Type;
-
-            for (int i = 1; i < expressions.Count; i++)
-            {
-                if (!CanRefactor(((InitializerExpressionSyntax)expressions[i]).Expressions, keyType, valueType, semanticModel))
-                    return;
-            }
-
-            context.RegisterRefactoring(
-                "Use index initializer",
-                ct => RefactorAsync(context.Document, initializer, ct),
-                RefactoringDescriptors.UseIndexInitializer);
         }
 
-        private static bool CanRefactor(
-            SeparatedSyntaxList<ExpressionSyntax> expressions,
-            ITypeSymbol keyType,
-            ITypeSymbol valueType,
-            SemanticModel semanticModel)
-        {
-            return expressions.Count == 2
-                && semanticModel.ClassifyConversion(expressions[0], keyType).IsImplicit
-                && semanticModel.ClassifyConversion(expressions[1], valueType).IsImplicit;
-        }
+        context.RegisterRefactoring(
+            "Use index initializer",
+            ct => RefactorAsync(context.Document, initializer, ct),
+            RefactoringDescriptors.UseIndexInitializer);
+    }
 
-        private static IPropertySymbol FindIndexerSymbol(
-            ObjectCreationExpressionSyntax objectCreationExpression,
-            SeparatedSyntaxList<ExpressionSyntax> expressions,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
-        {
-            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(objectCreationExpression, cancellationToken);
+    private static bool CanRefactor(
+        SeparatedSyntaxList<ExpressionSyntax> expressions,
+        ITypeSymbol keyType,
+        ITypeSymbol valueType,
+        SemanticModel semanticModel)
+    {
+        return expressions.Count == 2
+            && semanticModel.ClassifyConversion(expressions[0], keyType).IsImplicit
+            && semanticModel.ClassifyConversion(expressions[1], valueType).IsImplicit;
+    }
 
-            if (typeSymbol?.IsErrorType() == false)
+    private static IPropertySymbol FindIndexerSymbol(
+        ObjectCreationExpressionSyntax objectCreationExpression,
+        SeparatedSyntaxList<ExpressionSyntax> expressions,
+        SemanticModel semanticModel,
+        CancellationToken cancellationToken)
+    {
+        ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(objectCreationExpression, cancellationToken);
+
+        if (typeSymbol?.IsErrorType() == false)
+        {
+            foreach (ISymbol member in semanticModel.LookupSymbols(objectCreationExpression.SpanStart, typeSymbol, "this[]"))
             {
-                foreach (ISymbol member in semanticModel.LookupSymbols(objectCreationExpression.SpanStart, typeSymbol, "this[]"))
+                var propertySymbol = (IPropertySymbol)member;
+
+                if (!propertySymbol.IsReadOnly
+                    && semanticModel.IsAccessible(objectCreationExpression.SpanStart, propertySymbol.SetMethod))
                 {
-                    var propertySymbol = (IPropertySymbol)member;
+                    ImmutableArray<IParameterSymbol> parameters = propertySymbol.Parameters;
 
-                    if (!propertySymbol.IsReadOnly
-                        && semanticModel.IsAccessible(objectCreationExpression.SpanStart, propertySymbol.SetMethod))
+                    if (parameters.Length == 1
+                        && CanRefactor(expressions, parameters[0].Type, propertySymbol.Type, semanticModel))
                     {
-                        ImmutableArray<IParameterSymbol> parameters = propertySymbol.Parameters;
-
-                        if (parameters.Length == 1
-                            && CanRefactor(expressions, parameters[0].Type, propertySymbol.Type, semanticModel))
-                        {
-                            return propertySymbol;
-                        }
+                        return propertySymbol;
                     }
                 }
             }
-
-            return null;
         }
 
-        public static Task<Document> RefactorAsync(
-            Document document,
-            InitializerExpressionSyntax initializer,
-            CancellationToken cancellationToken)
-        {
-            SeparatedSyntaxList<ExpressionSyntax> expressions = initializer.Expressions;
+        return null;
+    }
 
-            for (int i = 0; i < expressions.Count; i++)
-                expressions = expressions.ReplaceAt(i, CreateNewExpression((InitializerExpressionSyntax)expressions[i]));
+    public static Task<Document> RefactorAsync(
+        Document document,
+        InitializerExpressionSyntax initializer,
+        CancellationToken cancellationToken)
+    {
+        SeparatedSyntaxList<ExpressionSyntax> expressions = initializer.Expressions;
 
-            InitializerExpressionSyntax newInitializer = initializer.WithExpressions(expressions);
+        for (int i = 0; i < expressions.Count; i++)
+            expressions = expressions.ReplaceAt(i, CreateNewExpression((InitializerExpressionSyntax)expressions[i]));
 
-            return document.ReplaceNodeAsync(initializer, newInitializer, cancellationToken);
-        }
+        InitializerExpressionSyntax newInitializer = initializer.WithExpressions(expressions);
 
-        private static AssignmentExpressionSyntax CreateNewExpression(InitializerExpressionSyntax initializer)
-        {
-            SeparatedSyntaxList<ExpressionSyntax> expressions = initializer.Expressions;
+        return document.ReplaceNodeAsync(initializer, newInitializer, cancellationToken);
+    }
 
-            SyntaxToken openBracket = Token(
-                initializer.OpenBraceToken.LeadingTrivia,
-                SyntaxKind.OpenBracketToken,
-                initializer.OpenBraceToken.TrailingTrivia.EmptyIfWhitespace());
+    private static AssignmentExpressionSyntax CreateNewExpression(InitializerExpressionSyntax initializer)
+    {
+        SeparatedSyntaxList<ExpressionSyntax> expressions = initializer.Expressions;
 
-            ImplicitElementAccessSyntax implicitElementAccess = ImplicitElementAccess(
-                BracketedArgumentList(
-                    openBracket,
-                    SingletonSeparatedList(Argument(expressions[0].TrimTrivia())),
-                    CloseBracketToken()));
+        SyntaxToken openBracket = Token(
+            initializer.OpenBraceToken.LeadingTrivia,
+            SyntaxKind.OpenBracketToken,
+            initializer.OpenBraceToken.TrailingTrivia.EmptyIfWhitespace());
 
-            SyntaxToken comma = initializer.ChildTokens().FirstOrDefault(f => f.IsKind(SyntaxKind.CommaToken));
+        ImplicitElementAccessSyntax implicitElementAccess = ImplicitElementAccess(
+            BracketedArgumentList(
+                openBracket,
+                SingletonSeparatedList(Argument(expressions[0].TrimTrivia())),
+                CloseBracketToken()));
 
-            SyntaxTriviaList commaLeading = comma.LeadingTrivia;
+        SyntaxToken comma = initializer.ChildTokens().FirstOrDefault(f => f.IsKind(SyntaxKind.CommaToken));
 
-            SyntaxToken equalsToken = Token(
-                (commaLeading.Any()) ? commaLeading : TriviaList(Space),
-                SyntaxKind.EqualsToken,
-                comma.TrailingTrivia);
+        SyntaxTriviaList commaLeading = comma.LeadingTrivia;
 
-            ExpressionSyntax valueExpression = expressions[1];
+        SyntaxToken equalsToken = Token(
+            (commaLeading.Any()) ? commaLeading : TriviaList(Space),
+            SyntaxKind.EqualsToken,
+            comma.TrailingTrivia);
 
-            valueExpression = valueExpression.AppendToTrailingTrivia(initializer.CloseBraceToken.LeadingTrivia.EmptyIfWhitespace());
+        ExpressionSyntax valueExpression = expressions[1];
 
-            return SimpleAssignmentExpression(implicitElementAccess, equalsToken, valueExpression)
-                .WithTriviaFrom(initializer);
-        }
+        valueExpression = valueExpression.AppendToTrailingTrivia(initializer.CloseBraceToken.LeadingTrivia.EmptyIfWhitespace());
+
+        return SimpleAssignmentExpression(implicitElementAccess, equalsToken, valueExpression)
+            .WithTriviaFrom(initializer);
     }
 }

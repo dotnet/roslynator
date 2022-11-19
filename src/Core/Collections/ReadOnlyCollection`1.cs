@@ -3,48 +3,47 @@
 using System;
 using System.Collections.Generic;
 
-namespace Roslynator.Collections
+namespace Roslynator.Collections;
+
+internal class ReadOnlyCollection<T> : Enumerable<T>, ICollection<T>
 {
-    internal class ReadOnlyCollection<T> : Enumerable<T>, ICollection<T>
+    public static readonly ICollection<T> Instance = new ReadOnlyCollection<T>();
+
+    protected ReadOnlyCollection()
     {
-        public static readonly ICollection<T> Instance = new ReadOnlyCollection<T>();
+    }
 
-        protected ReadOnlyCollection()
-        {
-        }
+    public void Add(T item)
+    {
+        throw new NotSupportedException();
+    }
 
-        public void Add(T item)
-        {
-            throw new NotSupportedException();
-        }
+    public void Clear()
+    {
+        throw new NotSupportedException();
+    }
 
-        public void Clear()
-        {
-            throw new NotSupportedException();
-        }
+    public bool Contains(T item)
+    {
+        return false;
+    }
 
-        public bool Contains(T item)
-        {
-            return false;
-        }
+    public void CopyTo(T[] array, int arrayIndex)
+    {
+    }
 
-        public void CopyTo(T[] array, int arrayIndex)
-        {
-        }
+    public int Count
+    {
+        get { return 0; }
+    }
 
-        public int Count
-        {
-            get { return 0; }
-        }
+    public bool IsReadOnly
+    {
+        get { return true; }
+    }
 
-        public bool IsReadOnly
-        {
-            get { return true; }
-        }
-
-        public bool Remove(T item)
-        {
-            throw new NotSupportedException();
-        }
+    public bool Remove(T item)
+    {
+        throw new NotSupportedException();
     }
 }

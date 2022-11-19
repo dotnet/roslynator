@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1020SimplifyNullableOfTTests : AbstractCSharpDiagnosticVerifier<SimplifyNullableOfTAnalyzer, SimplifyNullableOfTCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.SimplifyNullableOfT;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyNullableOfT)]
-        public async Task Test()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1020SimplifyNullableOfTTests : AbstractCSharpDiagnosticVerifier<SimplifyNullableOfTAnalyzer, SimplifyNullableOfTCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.SimplifyNullableOfT;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyNullableOfT)]
+    public async Task Test()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
@@ -52,12 +52,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyNullableOfT)]
-        public async Task Test_NameOf()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyNullableOfT)]
+    public async Task Test_NameOf()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 using System.Collections.Generic;
 
@@ -80,12 +80,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyNullableOfT)]
-        public async Task TestNoDiagnostic_NameOf()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyNullableOfT)]
+    public async Task TestNoDiagnostic_NameOf()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 class C
@@ -104,12 +104,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyNullableOfT)]
-        public async Task TestNoDiagnostic_TypeOfNullableOfT()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyNullableOfT)]
+    public async Task TestNoDiagnostic_TypeOfNullableOfT()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 class C
@@ -120,12 +120,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyNullableOfT)]
-        public async Task TestNoDiagnostic_Cref()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyNullableOfT)]
+    public async Task TestNoDiagnostic_Cref()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 class C
@@ -143,18 +143,17 @@ class C
         }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyNullableOfT)]
-        public async Task TestNoDiagnostic_UsingDirective()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyNullableOfT)]
+    public async Task TestNoDiagnostic_UsingDirective()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using NullableOfInt = System.Nullable<int>;
 
 class C
 {
 }
 ");
-        }
     }
 }

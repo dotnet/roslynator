@@ -12,51 +12,50 @@ using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp;
 using Roslynator.Formatting.CSharp;
 
-namespace Roslynator.Formatting.CodeFixes.CSharp
+namespace Roslynator.Formatting.CodeFixes.CSharp;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(FixFormattingOfCallChainCodeFixProvider))]
+[Shared]
+public sealed class FixFormattingOfCallChainCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(FixFormattingOfCallChainCodeFixProvider))]
-    [Shared]
-    public sealed class FixFormattingOfCallChainCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.FixFormattingOfCallChain); }
+    }
+
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+        if (!TryFindFirstAncestorOrSelf(
+            root,
+            context.Span,
+            out ExpressionSyntax expression,
+            predicate: f => f.IsKind(
+                SyntaxKind.InvocationExpression,
+                SyntaxKind.ElementAccessExpression,
+                SyntaxKind.ConditionalAccessExpression)))
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.FixFormattingOfCallChain); }
+            return;
         }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+        Document document = context.Document;
+        Diagnostic diagnostic = context.Diagnostics[0];
 
-            if (!TryFindFirstAncestorOrSelf(
-                root,
-                context.Span,
-                out ExpressionSyntax expression,
-                predicate: f => f.IsKind(
-                    SyntaxKind.InvocationExpression,
-                    SyntaxKind.ElementAccessExpression,
-                    SyntaxKind.ConditionalAccessExpression)))
+        CodeAction codeAction = CodeAction.Create(
+            "Fix formatting",
+            ct =>
             {
-                return;
-            }
+                TextLineCollection lines = expression.SyntaxTree.GetText().Lines;
 
-            Document document = context.Document;
-            Diagnostic diagnostic = context.Diagnostics[0];
+                TextLine line = lines.GetLineFromPosition(expression.SpanStart);
 
-            CodeAction codeAction = CodeAction.Create(
-                "Fix formatting",
-                ct =>
-                {
-                    TextLineCollection lines = expression.SyntaxTree.GetText().Lines;
+                TextSpan span = TextSpan.FromBounds(line.EndIncludingLineBreak, expression.Span.End);
 
-                    TextLine line = lines.GetLineFromPosition(expression.SpanStart);
+                return CodeFixHelpers.FixCallChainAsync(document, expression, span, ct);
+            },
+            GetEquivalenceKey(diagnostic));
 
-                    TextSpan span = TextSpan.FromBounds(line.EndIncludingLineBreak, expression.Span.End);
-
-                    return CodeFixHelpers.FixCallChainAsync(document, expression, span, ct);
-                },
-                GetEquivalenceKey(diagnostic));
-
-            context.RegisterCodeFix(codeAction, diagnostic);
-        }
+        context.RegisterCodeFix(codeAction, diagnostic);
     }
 }

@@ -4,59 +4,58 @@ using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace Roslynator.CSharp.Analysis
+namespace Roslynator.CSharp.Analysis;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class DeclareTypeInsideNamespaceAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class DeclareTypeInsideNamespaceAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
-            {
-                if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.DeclareTypeInsideNamespace);
+            if (_supportedDiagnostics.IsDefault)
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.DeclareTypeInsideNamespace);
 
-                return _supportedDiagnostics;
-            }
+            return _supportedDiagnostics;
         }
+    }
 
-        public override void Initialize(AnalysisContext context)
-        {
-            base.Initialize(context);
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
 
-            context.RegisterSymbolAction(f => AnalyzeNamedType(f), SymbolKind.NamedType);
-        }
+        context.RegisterSymbolAction(f => AnalyzeNamedType(f), SymbolKind.NamedType);
+    }
 
-        private static void AnalyzeNamedType(SymbolAnalysisContext context)
-        {
-            ISymbol symbol = context.Symbol;
+    private static void AnalyzeNamedType(SymbolAnalysisContext context)
+    {
+        ISymbol symbol = context.Symbol;
 
-            if (symbol.ContainingNamespace?.IsGlobalNamespace != true)
-                return;
+        if (symbol.ContainingNamespace?.IsGlobalNamespace != true)
+            return;
 
-            if (symbol.ContainingType != null)
-                return;
+        if (symbol.ContainingType is not null)
+            return;
 
-            SyntaxNode node = symbol
-                .DeclaringSyntaxReferences
-                .SingleOrDefault(shouldThrow: false)?
-                .GetSyntax(context.CancellationToken);
+        SyntaxNode node = symbol
+            .DeclaringSyntaxReferences
+            .SingleOrDefault(shouldThrow: false)?
+            .GetSyntax(context.CancellationToken);
 
-            if (node == null)
-                return;
+        if (node is null)
+            return;
 
-            SyntaxToken identifier = CSharpUtility.GetIdentifier(node);
+        SyntaxToken identifier = CSharpUtility.GetIdentifier(node);
 
-            if (identifier == default)
-                return;
+        if (identifier == default)
+            return;
 
-            DiagnosticHelpers.ReportDiagnostic(
-                context,
-                DiagnosticRules.DeclareTypeInsideNamespace,
-                identifier,
-                identifier.ValueText);
-        }
+        DiagnosticHelpers.ReportDiagnostic(
+            context,
+            DiagnosticRules.DeclareTypeInsideNamespace,
+            identifier,
+            identifier.ValueText);
     }
 }

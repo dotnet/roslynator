@@ -2,9 +2,8 @@
 
 using Microsoft.CodeAnalysis;
 
-namespace Roslynator.FindSymbols
+namespace Roslynator.FindSymbols;
+
+internal abstract class AttributeFilterRule : FilterRule<AttributeInfo>
 {
-    internal abstract class AttributeFilterRule : FilterRule<AttributeInfo>
-    {
-    }
 }

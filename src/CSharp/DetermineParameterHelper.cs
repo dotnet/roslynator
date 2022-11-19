@@ -8,171 +8,170 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp
+namespace Roslynator.CSharp;
+
+internal static class DetermineParameterHelper
 {
-    internal static class DetermineParameterHelper
+    public static IParameterSymbol DetermineParameter(
+        ArgumentSyntax argument,
+        SemanticModel semanticModel,
+        bool allowParams = false,
+        bool allowCandidate = false,
+        CancellationToken cancellationToken = default)
     {
-        public static IParameterSymbol DetermineParameter(
-            ArgumentSyntax argument,
-            SemanticModel semanticModel,
-            bool allowParams = false,
-            bool allowCandidate = false,
-            CancellationToken cancellationToken = default)
+        if (argument.Parent is not BaseArgumentListSyntax argumentList)
+            return null;
+
+        if (argumentList.Parent is null)
+            return null;
+
+        ISymbol symbol = GetSymbol(argumentList.Parent, allowCandidate, semanticModel, cancellationToken);
+
+        if (symbol is null)
+            return null;
+
+        ImmutableArray<IParameterSymbol> parameters = symbol.ParametersOrDefault();
+
+        Debug.Assert(!parameters.IsDefault, symbol.Kind.ToString());
+
+        if (parameters.IsDefault)
+            return null;
+
+        return DetermineParameter(argument, argumentList.Arguments, parameters, allowParams);
+    }
+
+    internal static IParameterSymbol DetermineParameter(
+        ArgumentSyntax argument,
+        SeparatedSyntaxList<ArgumentSyntax> arguments,
+        ImmutableArray<IParameterSymbol> parameters,
+        bool allowParams = false)
+    {
+        string name = argument.NameColon?.Name?.Identifier.ValueText;
+
+        if (name is not null)
         {
-            if (argument.Parent is not BaseArgumentListSyntax argumentList)
-                return null;
-
-            if (argumentList.Parent == null)
-                return null;
-
-            ISymbol symbol = GetSymbol(argumentList.Parent, allowCandidate, semanticModel, cancellationToken);
-
-            if (symbol == null)
-                return null;
-
-            ImmutableArray<IParameterSymbol> parameters = symbol.ParametersOrDefault();
-
-            Debug.Assert(!parameters.IsDefault, symbol.Kind.ToString());
-
-            if (parameters.IsDefault)
-                return null;
-
-            return DetermineParameter(argument, argumentList.Arguments, parameters, allowParams);
-        }
-
-        internal static IParameterSymbol DetermineParameter(
-            ArgumentSyntax argument,
-            SeparatedSyntaxList<ArgumentSyntax> arguments,
-            ImmutableArray<IParameterSymbol> parameters,
-            bool allowParams = false)
-        {
-            string name = argument.NameColon?.Name?.Identifier.ValueText;
-
-            if (name != null)
+            foreach (IParameterSymbol parameter in parameters)
             {
-                foreach (IParameterSymbol parameter in parameters)
-                {
-                    if (parameter.Name == name)
-                        return parameter;
-                }
-
-                return null;
-            }
-
-            int index = arguments.IndexOf(argument);
-
-            if (index >= 0)
-            {
-                if (index < parameters.Length)
-                    return parameters[index];
-
-                if (allowParams)
-                {
-                    IParameterSymbol lastParameter = parameters.LastOrDefault();
-
-                    if (lastParameter?.IsParams == true)
-                        return lastParameter;
-                }
+                if (parameter.Name == name)
+                    return parameter;
             }
 
             return null;
         }
 
-        public static IParameterSymbol DetermineParameter(
-            AttributeArgumentSyntax attributeArgument,
-            SemanticModel semanticModel,
-            bool allowParams = false,
-            bool allowCandidate = false,
-            CancellationToken cancellationToken = default)
+        int index = arguments.IndexOf(argument);
+
+        if (index >= 0)
         {
-            if (attributeArgument.NameEquals != null)
-                return null;
+            if (index < parameters.Length)
+                return parameters[index];
 
-            SyntaxNode parent = attributeArgument.Parent;
+            if (allowParams)
+            {
+                IParameterSymbol lastParameter = parameters.LastOrDefault();
 
-            if (parent is not AttributeArgumentListSyntax argumentList)
-                return null;
-
-            if (argumentList.Parent is not AttributeSyntax attribute)
-                return null;
-
-            ISymbol symbol = GetSymbol(attribute, allowCandidate, semanticModel, cancellationToken);
-
-            if (symbol == null)
-                return null;
-
-            ImmutableArray<IParameterSymbol> parameters = symbol.ParametersOrDefault();
-
-            Debug.Assert(!parameters.IsDefault, symbol.Kind.ToString());
-
-            if (parameters.IsDefault)
-                return null;
-
-            return DetermineParameter(attributeArgument, argumentList.Arguments, parameters, allowParams);
+                if (lastParameter?.IsParams == true)
+                    return lastParameter;
+            }
         }
 
-        internal static IParameterSymbol DetermineParameter(
-            AttributeArgumentSyntax attributeArgument,
-            SeparatedSyntaxList<AttributeArgumentSyntax> arguments,
-            ImmutableArray<IParameterSymbol> parameters,
-            bool allowParams = false)
+        return null;
+    }
+
+    public static IParameterSymbol DetermineParameter(
+        AttributeArgumentSyntax attributeArgument,
+        SemanticModel semanticModel,
+        bool allowParams = false,
+        bool allowCandidate = false,
+        CancellationToken cancellationToken = default)
+    {
+        if (attributeArgument.NameEquals is not null)
+            return null;
+
+        SyntaxNode parent = attributeArgument.Parent;
+
+        if (parent is not AttributeArgumentListSyntax argumentList)
+            return null;
+
+        if (argumentList.Parent is not AttributeSyntax attribute)
+            return null;
+
+        ISymbol symbol = GetSymbol(attribute, allowCandidate, semanticModel, cancellationToken);
+
+        if (symbol is null)
+            return null;
+
+        ImmutableArray<IParameterSymbol> parameters = symbol.ParametersOrDefault();
+
+        Debug.Assert(!parameters.IsDefault, symbol.Kind.ToString());
+
+        if (parameters.IsDefault)
+            return null;
+
+        return DetermineParameter(attributeArgument, argumentList.Arguments, parameters, allowParams);
+    }
+
+    internal static IParameterSymbol DetermineParameter(
+        AttributeArgumentSyntax attributeArgument,
+        SeparatedSyntaxList<AttributeArgumentSyntax> arguments,
+        ImmutableArray<IParameterSymbol> parameters,
+        bool allowParams = false)
+    {
+        string name = attributeArgument.NameColon?.Name?.Identifier.ValueText;
+
+        if (name is not null)
         {
-            string name = attributeArgument.NameColon?.Name?.Identifier.ValueText;
-
-            if (name != null)
+            foreach (IParameterSymbol parameter in parameters)
             {
-                foreach (IParameterSymbol parameter in parameters)
-                {
-                    if (parameter.Name == name)
-                        return parameter;
-                }
-
-                return null;
-            }
-
-            int index = arguments.IndexOf(attributeArgument);
-
-            if (index >= 0)
-            {
-                if (index < parameters.Length)
-                    return parameters[index];
-
-                if (allowParams)
-                {
-                    IParameterSymbol lastParameter = parameters.LastOrDefault();
-
-                    if (lastParameter?.IsParams == true)
-                        return lastParameter;
-                }
+                if (parameter.Name == name)
+                    return parameter;
             }
 
             return null;
         }
 
-        private static ISymbol GetSymbol(SyntaxNode node, bool allowCandidate, SemanticModel semanticModel, CancellationToken cancellationToken)
+        int index = arguments.IndexOf(attributeArgument);
+
+        if (index >= 0)
         {
-            SymbolInfo symbolInfo = GetSymbolInfo(node, semanticModel, cancellationToken);
+            if (index < parameters.Length)
+                return parameters[index];
 
-            ISymbol symbol = symbolInfo.Symbol;
-
-            if (symbol == null
-                && allowCandidate)
+            if (allowParams)
             {
-                return symbolInfo.CandidateSymbols.FirstOrDefault();
+                IParameterSymbol lastParameter = parameters.LastOrDefault();
+
+                if (lastParameter?.IsParams == true)
+                    return lastParameter;
             }
-
-            return symbol;
         }
 
-        private static SymbolInfo GetSymbolInfo(SyntaxNode node, SemanticModel semanticModel, CancellationToken cancellationToken)
+        return null;
+    }
+
+    private static ISymbol GetSymbol(SyntaxNode node, bool allowCandidate, SemanticModel semanticModel, CancellationToken cancellationToken)
+    {
+        SymbolInfo symbolInfo = GetSymbolInfo(node, semanticModel, cancellationToken);
+
+        ISymbol symbol = symbolInfo.Symbol;
+
+        if (symbol is null
+            && allowCandidate)
         {
-            if (node is ExpressionSyntax expression)
-                return semanticModel.GetSymbolInfo(expression, cancellationToken);
-
-            if (node is ConstructorInitializerSyntax constructorInitializer)
-                return semanticModel.GetSymbolInfo(constructorInitializer, cancellationToken);
-
-            return default;
+            return symbolInfo.CandidateSymbols.FirstOrDefault();
         }
+
+        return symbol;
+    }
+
+    private static SymbolInfo GetSymbolInfo(SyntaxNode node, SemanticModel semanticModel, CancellationToken cancellationToken)
+    {
+        if (node is ExpressionSyntax expression)
+            return semanticModel.GetSymbolInfo(expression, cancellationToken);
+
+        if (node is ConstructorInitializerSyntax constructorInitializer)
+            return semanticModel.GetSymbolInfo(constructorInitializer, cancellationToken);
+
+        return default;
     }
 }

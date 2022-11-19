@@ -4,28 +4,27 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class EnumMemberDeclarationRefactoring
 {
-    internal static class EnumMemberDeclarationRefactoring
+    public static async Task ComputeRefactoringAsync(RefactoringContext context, EnumMemberDeclarationSyntax enumMemberDeclaration)
     {
-        public static async Task ComputeRefactoringAsync(RefactoringContext context, EnumMemberDeclarationSyntax enumMemberDeclaration)
+        if (context.Span.IsEmpty
+            && enumMemberDeclaration.Parent is EnumDeclarationSyntax enumDeclaration)
         {
-            if (context.Span.IsEmpty
-                && enumMemberDeclaration.Parent is EnumDeclarationSyntax enumDeclaration)
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.GenerateEnumValues))
             {
-                if (context.IsRefactoringEnabled(RefactoringDescriptors.GenerateEnumValues))
-                {
-                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                    GenerateEnumValuesRefactoring.ComputeRefactoring(context, enumDeclaration, semanticModel);
-                }
+                GenerateEnumValuesRefactoring.ComputeRefactoring(context, enumDeclaration, semanticModel);
+            }
 
-                if (context.IsRefactoringEnabled(RefactoringDescriptors.GenerateEnumMember))
-                {
-                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+            if (context.IsRefactoringEnabled(RefactoringDescriptors.GenerateEnumMember))
+            {
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                    GenerateEnumMemberRefactoring.ComputeRefactoring(context, enumDeclaration, semanticModel);
-                }
+                GenerateEnumMemberRefactoring.ComputeRefactoring(context, enumDeclaration, semanticModel);
             }
         }
     }

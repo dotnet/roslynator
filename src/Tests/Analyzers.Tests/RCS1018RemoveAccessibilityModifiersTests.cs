@@ -6,21 +6,21 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
+namespace Roslynator.CSharp.Analysis.Tests;
+
+public class RCS1018RemoveAccessibilityModifiersTests : AbstractCSharpDiagnosticVerifier<AddOrRemoveAccessibilityModifiersAnalyzer, MemberDeclarationCodeFixProvider>
 {
-    public class RCS1018RemoveAccessibilityModifiersTests : AbstractCSharpDiagnosticVerifier<AddOrRemoveAccessibilityModifiersAnalyzer, MemberDeclarationCodeFixProvider>
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddOrRemoveAccessibilityModifiers;
+
+    public override CSharpTestOptions Options
     {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddOrRemoveAccessibilityModifiers;
+        get { return base.Options.AddConfigOption(ConfigOptionKeys.AccessibilityModifiers, ConfigOptionValues.AccessibilityModifiers_Implicit); }
+    }
 
-        public override CSharpTestOptions Options
-        {
-            get { return base.Options.AddConfigOption(ConfigOptionKeys.AccessibilityModifiers, ConfigOptionValues.AccessibilityModifiers_Implicit); }
-        }
-
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
-        public async Task Test_NonNestedType()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
+    public async Task Test_NonNestedType()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 namespace N
 {
     /// <summary>x</summary>
@@ -57,12 +57,12 @@ namespace N
     delegate void D();
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
-        public async Task Test_MemberDeclaration()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
+    public async Task Test_MemberDeclaration()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 using System.Collections.Generic;
 
@@ -145,12 +145,12 @@ namespace N
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
-        public async Task Test_PartialClass()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
+    public async Task Test_PartialClass()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 namespace N
 {
     [|internal|] partial class C
@@ -173,12 +173,12 @@ namespace N
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
-        public async Task Test_PartialClass2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
+    public async Task Test_PartialClass2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 namespace N
 {
     [|internal|] partial class C
@@ -201,12 +201,12 @@ namespace N
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
-        public async Task TestNoDiagnostic_OperatorDeclaration()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
+    public async Task TestNoDiagnostic_OperatorDeclaration()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     public static explicit operator C(string value)
@@ -225,6 +225,5 @@ class C
     }
 }
 ");
-        }
     }
 }

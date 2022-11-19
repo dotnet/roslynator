@@ -50,10 +50,10 @@ namespace Roslynator
             TextChange[] textChanges,
             CancellationToken cancellationToken = default)
         {
-            if (document == null)
+            if (document is null)
                 throw new ArgumentNullException(nameof(document));
 
-            if (textChanges == null)
+            if (textChanges is null)
                 throw new ArgumentNullException(nameof(textChanges));
 
             SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
@@ -74,10 +74,10 @@ namespace Roslynator
             IEnumerable<TextChange> textChanges,
             CancellationToken cancellationToken = default)
         {
-            if (document == null)
+            if (document is null)
                 throw new ArgumentNullException(nameof(document));
 
-            if (textChanges == null)
+            if (textChanges is null)
                 throw new ArgumentNullException(nameof(textChanges));
 
             SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
@@ -100,13 +100,13 @@ namespace Roslynator
             SyntaxNode newNode,
             CancellationToken cancellationToken = default)
         {
-            if (document == null)
+            if (document is null)
                 throw new ArgumentNullException(nameof(document));
 
-            if (oldNode == null)
+            if (oldNode is null)
                 throw new ArgumentNullException(nameof(oldNode));
 
-            if (newNode == null)
+            if (newNode is null)
                 throw new ArgumentNullException(nameof(newNode));
 
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
@@ -129,13 +129,13 @@ namespace Roslynator
             IEnumerable<SyntaxNode> newNodes,
             CancellationToken cancellationToken = default)
         {
-            if (document == null)
+            if (document is null)
                 throw new ArgumentNullException(nameof(document));
 
-            if (oldNode == null)
+            if (oldNode is null)
                 throw new ArgumentNullException(nameof(oldNode));
 
-            if (newNodes == null)
+            if (newNodes is null)
                 throw new ArgumentNullException(nameof(newNodes));
 
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
@@ -159,13 +159,13 @@ namespace Roslynator
             Func<TNode, TNode, SyntaxNode> computeReplacementNode,
             CancellationToken cancellationToken = default) where TNode : SyntaxNode
         {
-            if (document == null)
+            if (document is null)
                 throw new ArgumentNullException(nameof(document));
 
-            if (nodes == null)
+            if (nodes is null)
                 throw new ArgumentNullException(nameof(nodes));
 
-            if (computeReplacementNode == null)
+            if (computeReplacementNode is null)
                 throw new ArgumentNullException(nameof(computeReplacementNode));
 
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
@@ -188,7 +188,7 @@ namespace Roslynator
             SyntaxToken newToken,
             CancellationToken cancellationToken = default)
         {
-            if (document == null)
+            if (document is null)
                 throw new ArgumentNullException(nameof(document));
 
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
@@ -211,10 +211,10 @@ namespace Roslynator
             IEnumerable<SyntaxToken> newTokens,
             CancellationToken cancellationToken = default)
         {
-            if (document == null)
+            if (document is null)
                 throw new ArgumentNullException(nameof(document));
 
-            if (newTokens == null)
+            if (newTokens is null)
                 throw new ArgumentNullException(nameof(newTokens));
 
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
@@ -237,7 +237,7 @@ namespace Roslynator
             SyntaxTrivia newTrivia,
             CancellationToken cancellationToken = default)
         {
-            if (document == null)
+            if (document is null)
                 throw new ArgumentNullException(nameof(document));
 
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
@@ -260,10 +260,10 @@ namespace Roslynator
             IEnumerable<SyntaxTrivia> newTrivia,
             CancellationToken cancellationToken = default)
         {
-            if (document == null)
+            if (document is null)
                 throw new ArgumentNullException(nameof(document));
 
-            if (newTrivia == null)
+            if (newTrivia is null)
                 throw new ArgumentNullException(nameof(newTrivia));
 
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
@@ -286,7 +286,7 @@ namespace Roslynator
             SyntaxNode newNode,
             CancellationToken cancellationToken = default)
         {
-            if (newNode == null)
+            if (newNode is null)
                 throw new ArgumentNullException(nameof(newNode));
 
             return InsertNodesBeforeAsync(document, nodeInList, new SyntaxNode[] { newNode }, cancellationToken);
@@ -305,13 +305,13 @@ namespace Roslynator
             IEnumerable<SyntaxNode> newNodes,
             CancellationToken cancellationToken = default)
         {
-            if (document == null)
+            if (document is null)
                 throw new ArgumentNullException(nameof(document));
 
-            if (nodeInList == null)
+            if (nodeInList is null)
                 throw new ArgumentNullException(nameof(nodeInList));
 
-            if (newNodes == null)
+            if (newNodes is null)
                 throw new ArgumentNullException(nameof(newNodes));
 
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
@@ -334,7 +334,7 @@ namespace Roslynator
             SyntaxNode newNode,
             CancellationToken cancellationToken = default)
         {
-            if (newNode == null)
+            if (newNode is null)
                 throw new ArgumentNullException(nameof(newNode));
 
             return InsertNodesAfterAsync(document, nodeInList, new SyntaxNode[] { newNode }, cancellationToken);
@@ -353,13 +353,13 @@ namespace Roslynator
             IEnumerable<SyntaxNode> newNodes,
             CancellationToken cancellationToken = default)
         {
-            if (document == null)
+            if (document is null)
                 throw new ArgumentNullException(nameof(document));
 
-            if (nodeInList == null)
+            if (nodeInList is null)
                 throw new ArgumentNullException(nameof(nodeInList));
 
-            if (newNodes == null)
+            if (newNodes is null)
                 throw new ArgumentNullException(nameof(newNodes));
 
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
@@ -382,10 +382,10 @@ namespace Roslynator
             SyntaxRemoveOptions options,
             CancellationToken cancellationToken = default)
         {
-            if (document == null)
+            if (document is null)
                 throw new ArgumentNullException(nameof(document));
 
-            if (node == null)
+            if (node is null)
                 throw new ArgumentNullException(nameof(node));
 
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
@@ -408,10 +408,10 @@ namespace Roslynator
             SyntaxRemoveOptions options,
             CancellationToken cancellationToken = default)
         {
-            if (document == null)
+            if (document is null)
                 throw new ArgumentNullException(nameof(document));
 
-            if (nodes == null)
+            if (nodes is null)
                 throw new ArgumentNullException(nameof(nodes));
 
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
@@ -442,13 +442,13 @@ namespace Roslynator
             TNode newNode,
             CancellationToken cancellationToken = default) where TNode : SyntaxNode
         {
-            if (solution == null)
+            if (solution is null)
                 throw new ArgumentNullException(nameof(solution));
 
-            if (oldNode == null)
+            if (oldNode is null)
                 throw new ArgumentNullException(nameof(oldNode));
 
-            if (newNode == null)
+            if (newNode is null)
                 throw new ArgumentNullException(nameof(newNode));
 
             Document document = solution.GetDocument(oldNode.SyntaxTree);
@@ -474,13 +474,13 @@ namespace Roslynator
             Func<TNode, TNode, SyntaxNode> computeReplacementNodes,
             CancellationToken cancellationToken = default) where TNode : SyntaxNode
         {
-            if (solution == null)
+            if (solution is null)
                 throw new ArgumentNullException(nameof(solution));
 
-            if (nodes == null)
+            if (nodes is null)
                 throw new ArgumentNullException(nameof(nodes));
 
-            if (computeReplacementNodes == null)
+            if (computeReplacementNodes is null)
                 throw new ArgumentNullException(nameof(computeReplacementNodes));
 
             Solution newSolution = solution;

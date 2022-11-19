@@ -10,6 +10,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Add Arm64 VS 2022 extension support ([#990](https://github.com/JosefPihrt/Roslynator/pull/990) by @snickler).
+- Add analyzer "Add/remove blank line after file scoped namespace declaration" [RCS0060](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS0060.md) ([#993](https://github.com/josefpihrt/roslynator/pull/993).
+  - Required option: `roslynator_blank_line_after_file_scoped_namespace_declaration = true|false`
+  - Not enabled by default
+- Add analyzer "Simplify argument null check" ([RCS1255](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1255.md)) ([#994](https://github.com/JosefPihrt/Roslynator/pull/994)).
+  - Use `ArgumentNullException.ThrowIfNull` instead of `if` null check.
+  - Not enabled by default
 
 ### Changed
 
@@ -21,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix retrieving of trusted platform assemblies - separator differs by OS ([#987](https://github.com/josefpihrt/roslynator/pull/987)).
 - Fix refactoring ([RR0014](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RR0014.md)) ([#988](https://github.com/josefpihrt/roslynator/pull/988)).
 - Fix refactoring ([RR0180](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RR0180.md)) ([#988](https://github.com/josefpihrt/roslynator/pull/988)).
+- Recognize `ArgumentNullException.ThrowIfNull` [RCS1227](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1227.md) ([#992](https://github.com/josefpihrt/roslynator/pull/992).
 
 ## [4.1.2] - 2022-10-31
 

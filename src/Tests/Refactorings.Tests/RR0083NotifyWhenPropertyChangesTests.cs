@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0083NotifyWhenPropertyChangesTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.NotifyWhenPropertyChanges;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.NotifyWhenPropertyChanges)]
-        public async Task Test_SetterWithBody()
-        {
-            await VerifyRefactoringAsync(@"
+public class RR0083NotifyWhenPropertyChangesTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.NotifyWhenPropertyChanges;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.NotifyWhenPropertyChanges)]
+    public async Task Test_SetterWithBody()
+    {
+        await VerifyRefactoringAsync(@"
 using System.ComponentModel;
 
 class C : INotifyPropertyChanged
@@ -62,12 +62,12 @@ class C : INotifyPropertyChanged
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.NotifyWhenPropertyChanges)]
-        public async Task Test_SetterWithExpressionBody()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.NotifyWhenPropertyChanges)]
+    public async Task Test_SetterWithExpressionBody()
+    {
+        await VerifyRefactoringAsync(@"
 using System.ComponentModel;
 
 class C : INotifyPropertyChanged
@@ -116,12 +116,12 @@ class C : INotifyPropertyChanged
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.NotifyWhenPropertyChanges)]
-        public async Task Test_OnPropertyChanged()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.NotifyWhenPropertyChanges)]
+    public async Task Test_OnPropertyChanged()
+    {
+        await VerifyRefactoringAsync(@"
 using System.ComponentModel;
 
 class C : INotifyPropertyChanged
@@ -170,6 +170,5 @@ class C : INotifyPropertyChanged
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
     }
 }

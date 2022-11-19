@@ -52,7 +52,7 @@ namespace Roslynator.CSharp
             string title = null,
             string equivalenceKey = null)
         {
-            if (title == null)
+            if (title is null)
             {
                 SymbolDisplayFormat format = GetSymbolDisplayFormat(type, newTypeSymbol, semanticModel);
 

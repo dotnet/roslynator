@@ -5,144 +5,143 @@ using System.IO;
 using Microsoft.CodeAnalysis;
 using Roslynator.FindSymbols;
 
-namespace Roslynator.Documentation
+namespace Roslynator.Documentation;
+
+internal class SymbolDefinitionTextWriter : AbstractSymbolDefinitionTextWriter
 {
-    internal class SymbolDefinitionTextWriter : AbstractSymbolDefinitionTextWriter
+    private TextWriter _writer;
+    private bool _pendingIndentation;
+
+    public SymbolDefinitionTextWriter(
+        TextWriter writer,
+        SymbolFilterOptions filter = null,
+        DefinitionListFormat format = null,
+        SymbolDocumentationProvider documentationProvider = null,
+        INamedTypeSymbol hierarchyRoot = null) : base(filter, format, documentationProvider, hierarchyRoot)
     {
-        private TextWriter _writer;
-        private bool _pendingIndentation;
+        _writer = writer;
+    }
 
-        public SymbolDefinitionTextWriter(
-            TextWriter writer,
-            SymbolFilterOptions filter = null,
-            DefinitionListFormat format = null,
-            SymbolDocumentationProvider documentationProvider = null,
-            INamedTypeSymbol hierarchyRoot = null) : base(filter, format, documentationProvider, hierarchyRoot)
-        {
-            _writer = writer;
-        }
+    public override bool SupportsDocumentationComments => true;
 
-        public override bool SupportsDocumentationComments => true;
+    public override bool SupportsMultilineDefinitions => true;
 
-        public override bool SupportsMultilineDefinitions => true;
+    public override void WriteStartNamespaces()
+    {
+        WriteLine();
+    }
 
-        public override void WriteStartNamespaces()
-        {
+    public override void WriteNamespaceSeparator()
+    {
+        WriteLine();
+    }
+
+    public override void WriteStartTypes()
+    {
+        WriteLine();
+    }
+
+    public override void WriteTypeSeparator()
+    {
+        WriteLine();
+    }
+
+    public override void WriteStartMembers()
+    {
+        WriteLine();
+    }
+
+    public override void WriteMemberSeparator()
+    {
+        WriteLine();
+    }
+
+    public override void WriteStartEnumMembers()
+    {
+        WriteLine();
+    }
+
+    public override void WriteEnumMemberSeparator()
+    {
+        if (Format.EmptyLineBetweenMembers)
             WriteLine();
-        }
+    }
 
-        public override void WriteNamespaceSeparator()
-        {
-            WriteLine();
-        }
+    public override void Write(SymbolDisplayPart part)
+    {
+        base.Write(part);
 
-        public override void WriteStartTypes()
-        {
-            WriteLine();
-        }
-
-        public override void WriteTypeSeparator()
-        {
-            WriteLine();
-        }
-
-        public override void WriteStartMembers()
-        {
-            WriteLine();
-        }
-
-        public override void WriteMemberSeparator()
-        {
-            WriteLine();
-        }
-
-        public override void WriteStartEnumMembers()
-        {
-            WriteLine();
-        }
-
-        public override void WriteEnumMemberSeparator()
-        {
-            if (Format.EmptyLineBetweenMembers)
-                WriteLine();
-        }
-
-        public override void Write(SymbolDisplayPart part)
-        {
-            base.Write(part);
-
-            if (part.Kind == SymbolDisplayPartKind.LineBreak)
-                _pendingIndentation = true;
-        }
-
-        public override void Write(string value)
-        {
-            if (_pendingIndentation)
-                WriteIndentation();
-
-            _writer.Write(value);
-        }
-
-        public override void WriteLine()
-        {
-            _writer.WriteLine();
-
+        if (part.Kind == SymbolDisplayPartKind.LineBreak)
             _pendingIndentation = true;
-        }
+    }
 
-        protected override void WriteIndentation()
+    public override void Write(string value)
+    {
+        if (_pendingIndentation)
+            WriteIndentation();
+
+        _writer.Write(value);
+    }
+
+    public override void WriteLine()
+    {
+        _writer.WriteLine();
+
+        _pendingIndentation = true;
+    }
+
+    protected override void WriteIndentation()
+    {
+        _pendingIndentation = false;
+
+        for (int i = 0; i < Depth; i++)
         {
-            _pendingIndentation = false;
-
-            for (int i = 0; i < Depth; i++)
-            {
-                Write(Format.IndentChars);
-            }
+            Write(Format.IndentChars);
         }
+    }
 
-        public override void WriteDocumentationComment(ISymbol symbol)
+    public override void WriteDocumentationComment(ISymbol symbol)
+    {
+        IEnumerable<string> elements = DocumentationProvider?.GetXmlDocumentation(symbol)?.GetElementsAsText(skipEmptyElement: true, makeSingleLine: true);
+
+        if (elements is null)
+            return;
+
+        foreach (string element in elements)
+            WriteDocumentation(element);
+
+        void WriteDocumentation(string element)
         {
-            IEnumerable<string> elements = DocumentationProvider?.GetXmlDocumentation(symbol)?.GetElementsAsText(skipEmptyElement: true, makeSingleLine: true);
-
-            if (elements == null)
-                return;
-
-            foreach (string element in elements)
-                WriteDocumentation(element);
-
-            void WriteDocumentation(string element)
+            using (var sr = new StringReader(element))
             {
-                using (var sr = new StringReader(element))
+                string line = null;
+
+                while ((line = sr.ReadLine()) is not null)
                 {
-                    string line = null;
-
-                    while ((line = sr.ReadLine()) != null)
-                    {
-                        WriteLine(line);
-                        WriteIndentation();
-                    }
+                    WriteLine(line);
+                    WriteIndentation();
                 }
             }
         }
+    }
 
-        public override void Close()
+    public override void Close()
+    {
+        if (_writer is not null)
         {
-            if (_writer != null)
+            try
+            {
+                _writer.Flush();
+            }
+            finally
             {
                 try
                 {
-                    _writer.Flush();
+                    _writer.Dispose();
                 }
                 finally
                 {
-                    try
-                    {
-                        _writer.Dispose();
-                    }
-                    finally
-                    {
-                        _writer = null;
-                    }
+                    _writer = null;
                 }
             }
         }

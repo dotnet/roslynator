@@ -6,16 +6,16 @@ using Roslynator.CodeAnalysis.CSharp;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS9002UsePropertySyntaxNodeSpanStartTests : AbstractCSharpDiagnosticVerifier<SimpleMemberAccessExpressionAnalyzer, SimpleMemberAccessExpressionCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UsePropertySyntaxNodeSpanStart;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePropertySyntaxNodeSpanStart)]
-        public async Task Test()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS9002UsePropertySyntaxNodeSpanStartTests : AbstractCSharpDiagnosticVerifier<SimpleMemberAccessExpressionAnalyzer, SimpleMemberAccessExpressionCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UsePropertySyntaxNodeSpanStart;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePropertySyntaxNodeSpanStart)]
+    public async Task Test()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using Microsoft.CodeAnalysis;
 
 class C
@@ -40,6 +40,5 @@ class C
     }
 }
 ");
-        }
     }
 }

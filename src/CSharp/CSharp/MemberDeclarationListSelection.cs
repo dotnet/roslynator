@@ -35,7 +35,7 @@ namespace Roslynator.CSharp
         /// <param name="span"></param>
         public static MemberDeclarationListSelection Create(CompilationUnitSyntax compilationUnit, TextSpan span)
         {
-            if (compilationUnit == null)
+            if (compilationUnit is null)
                 throw new ArgumentNullException(nameof(compilationUnit));
 
             return Create(compilationUnit, compilationUnit.Members, span);
@@ -48,7 +48,7 @@ namespace Roslynator.CSharp
         /// <param name="span"></param>
         public static MemberDeclarationListSelection Create(NamespaceDeclarationSyntax namespaceDeclaration, TextSpan span)
         {
-            if (namespaceDeclaration == null)
+            if (namespaceDeclaration is null)
                 throw new ArgumentNullException(nameof(namespaceDeclaration));
 
             return Create(namespaceDeclaration, namespaceDeclaration.Members, span);
@@ -61,7 +61,7 @@ namespace Roslynator.CSharp
         /// <param name="span"></param>
         public static MemberDeclarationListSelection Create(TypeDeclarationSyntax typeDeclaration, TextSpan span)
         {
-            if (typeDeclaration == null)
+            if (typeDeclaration is null)
                 throw new ArgumentNullException(nameof(typeDeclaration));
 
             return Create(typeDeclaration, typeDeclaration.Members, span);
@@ -84,19 +84,19 @@ namespace Roslynator.CSharp
         public static bool TryCreate(NamespaceDeclarationSyntax namespaceDeclaration, TextSpan span, out MemberDeclarationListSelection selectedMembers)
         {
             selectedMembers = Create(namespaceDeclaration, span, 1, int.MaxValue);
-            return selectedMembers != null;
+            return selectedMembers is not null;
         }
 
         internal static bool TryCreate(NamespaceDeclarationSyntax namespaceDeclaration, TextSpan span, int minCount, out MemberDeclarationListSelection selectedMembers)
         {
             selectedMembers = Create(namespaceDeclaration, span, minCount, int.MaxValue);
-            return selectedMembers != null;
+            return selectedMembers is not null;
         }
 
         internal static bool TryCreate(NamespaceDeclarationSyntax namespaceDeclaration, TextSpan span, int minCount, int maxCount, out MemberDeclarationListSelection selectedMembers)
         {
             selectedMembers = Create(namespaceDeclaration, span, minCount, maxCount);
-            return selectedMembers != null;
+            return selectedMembers is not null;
         }
 
         /// <summary>
@@ -109,24 +109,24 @@ namespace Roslynator.CSharp
         public static bool TryCreate(TypeDeclarationSyntax typeDeclaration, TextSpan span, out MemberDeclarationListSelection selectedMembers)
         {
             selectedMembers = Create(typeDeclaration, span, 1, int.MaxValue);
-            return selectedMembers != null;
+            return selectedMembers is not null;
         }
 
         internal static bool TryCreate(TypeDeclarationSyntax typeDeclaration, TextSpan span, int minCount, out MemberDeclarationListSelection selectedMembers)
         {
             selectedMembers = Create(typeDeclaration, span, minCount, int.MaxValue);
-            return selectedMembers != null;
+            return selectedMembers is not null;
         }
 
         internal static bool TryCreate(TypeDeclarationSyntax typeDeclaration, TextSpan span, int minCount, int maxCount, out MemberDeclarationListSelection selectedMembers)
         {
             selectedMembers = Create(typeDeclaration, span, minCount, maxCount);
-            return selectedMembers != null;
+            return selectedMembers is not null;
         }
 
         private static MemberDeclarationListSelection Create(NamespaceDeclarationSyntax declaration, TextSpan span, int minCount, int maxCount)
         {
-            if (declaration == null)
+            if (declaration is null)
                 return null;
 
             return Create(declaration, declaration.Members, span, minCount, maxCount);
@@ -134,7 +134,7 @@ namespace Roslynator.CSharp
 
         private static MemberDeclarationListSelection Create(TypeDeclarationSyntax declaration, TextSpan span, int minCount, int maxCount)
         {
-            if (declaration == null)
+            if (declaration is null)
                 return null;
 
             return Create(declaration, declaration.Members, span, minCount, maxCount);

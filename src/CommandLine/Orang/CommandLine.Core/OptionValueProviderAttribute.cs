@@ -2,19 +2,18 @@
 
 using System;
 
-namespace Roslynator
+namespace Roslynator;
+
+[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+internal sealed class OptionValueProviderAttribute : Attribute
 {
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-    internal sealed class OptionValueProviderAttribute : Attribute
+    public OptionValueProviderAttribute(string propertyName, string providerName)
     {
-        public OptionValueProviderAttribute(string propertyName, string providerName)
-        {
-            PropertyName = propertyName;
-            ProviderName = providerName;
-        }
-
-        public string PropertyName { get; }
-
-        public string ProviderName { get; }
+        PropertyName = propertyName;
+        ProviderName = providerName;
     }
+
+    public string PropertyName { get; }
+
+    public string ProviderName { get; }
 }

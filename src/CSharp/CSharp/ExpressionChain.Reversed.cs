@@ -71,7 +71,7 @@ namespace Roslynator.CSharp
 
             IEnumerator<ExpressionSyntax> IEnumerable<ExpressionSyntax>.GetEnumerator()
             {
-                if (_chain.BinaryExpression == null)
+                if (_chain.BinaryExpression is null)
                     return Empty.Enumerator<ExpressionSyntax>();
 
                 return new EnumeratorImpl(_chain);
@@ -79,7 +79,7 @@ namespace Roslynator.CSharp
 
             IEnumerator IEnumerable.GetEnumerator()
             {
-                if (_chain.BinaryExpression == null)
+                if (_chain.BinaryExpression is null)
                     return Empty.Enumerator<ExpressionSyntax>();
 
                 return new EnumeratorImpl(_chain);
@@ -135,10 +135,10 @@ namespace Roslynator.CSharp
                     {
                         case State.Start:
                             {
-                                if (_chain.BinaryExpression == null)
+                                if (_chain.BinaryExpression is null)
                                     return false;
 
-                                if (_chain.Span == null)
+                                if (_chain.Span is null)
                                 {
                                     _current = _chain.BinaryExpression.Right;
                                     _state = State.Right;
@@ -195,7 +195,7 @@ namespace Roslynator.CSharp
 
                                 ExpressionSyntax left = binaryExpression.Left;
 
-                                if (_chain.Span == null)
+                                if (_chain.Span is null)
                                 {
                                     if (left.RawKind == binaryExpression.RawKind)
                                     {

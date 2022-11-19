@@ -27,10 +27,10 @@ namespace Roslynator.CSharp
             if (object.ReferenceEquals(x, y))
                 return 0;
 
-            if (x == null)
+            if (x is null)
                 return -1;
 
-            if (y == null)
+            if (y is null)
                 return 1;
 
             return Compare(
@@ -57,10 +57,10 @@ namespace Roslynator.CSharp
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default)
         {
-            if (enumMembers == null)
+            if (enumMembers is null)
                 throw new ArgumentNullException(nameof(enumMembers));
 
-            if (semanticModel == null)
+            if (semanticModel is null)
                 throw new ArgumentNullException(nameof(semanticModel));
 
             using (IEnumerator<EnumMemberDeclarationSyntax> en = enumMembers.GetEnumerator())

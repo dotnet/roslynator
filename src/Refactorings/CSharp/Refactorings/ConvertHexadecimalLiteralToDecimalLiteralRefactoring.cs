@@ -6,34 +6,33 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class ConvertHexadecimalLiteralToDecimalLiteralRefactoring
 {
-    internal static class ConvertHexadecimalLiteralToDecimalLiteralRefactoring
+    public static void ComputeRefactoring(RefactoringContext context, LiteralExpressionSyntax literalExpression)
     {
-        public static void ComputeRefactoring(RefactoringContext context, LiteralExpressionSyntax literalExpression)
-        {
-            HexNumericLiteralExpressionInfo info = SyntaxInfo.HexNumericLiteralExpressionInfo(literalExpression);
+        HexNumericLiteralExpressionInfo info = SyntaxInfo.HexNumericLiteralExpressionInfo(literalExpression);
 
-            if (!info.Success)
-                return;
+        if (!info.Success)
+            return;
 
-            LiteralExpressionSyntax newLiteralExpression = CSharpFactory.LiteralExpression(info.Value);
+        LiteralExpressionSyntax newLiteralExpression = CSharpFactory.LiteralExpression(info.Value);
 
-            context.RegisterRefactoring(
-                $"Convert to '{newLiteralExpression}'",
-                ct => RefactorAsync(context.Document, literalExpression, newLiteralExpression, ct),
-                RefactoringDescriptors.ConvertHexadecimalLiteralToDecimalLiteral);
-        }
+        context.RegisterRefactoring(
+            $"Convert to '{newLiteralExpression}'",
+            ct => RefactorAsync(context.Document, literalExpression, newLiteralExpression, ct),
+            RefactoringDescriptors.ConvertHexadecimalLiteralToDecimalLiteral);
+    }
 
-        private static Task<Document> RefactorAsync(
-            Document document,
-            LiteralExpressionSyntax literalExpression,
-            LiteralExpressionSyntax newLiteralExpression,
-            CancellationToken cancellationToken)
-        {
-            newLiteralExpression = newLiteralExpression.WithTriviaFrom(literalExpression);
+    private static Task<Document> RefactorAsync(
+        Document document,
+        LiteralExpressionSyntax literalExpression,
+        LiteralExpressionSyntax newLiteralExpression,
+        CancellationToken cancellationToken)
+    {
+        newLiteralExpression = newLiteralExpression.WithTriviaFrom(literalExpression);
 
-            return document.ReplaceNodeAsync(literalExpression, newLiteralExpression, cancellationToken);
-        }
+        return document.ReplaceNodeAsync(literalExpression, newLiteralExpression, cancellationToken);
     }
 }

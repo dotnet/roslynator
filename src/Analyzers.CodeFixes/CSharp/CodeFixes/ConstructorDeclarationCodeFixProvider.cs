@@ -10,66 +10,65 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ConstructorDeclarationCodeFixProvider))]
+[Shared]
+public sealed class ConstructorDeclarationCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ConstructorDeclarationCodeFixProvider))]
-    [Shared]
-    public sealed class ConstructorDeclarationCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
+        get
         {
-            get
-            {
-                return ImmutableArray.Create(
-                    DiagnosticIdentifiers.RemoveRedundantBaseConstructorCall,
-                    DiagnosticIdentifiers.RemoveRedundantConstructor,
-                    DiagnosticIdentifiers.AbstractTypeShouldNotHavePublicConstructors);
-            }
+            return ImmutableArray.Create(
+                DiagnosticIdentifiers.RemoveRedundantBaseConstructorCall,
+                DiagnosticIdentifiers.RemoveRedundantConstructor,
+                DiagnosticIdentifiers.AbstractTypeShouldNotHavePublicConstructors);
         }
+    }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out ConstructorDeclarationSyntax constructor))
+            return;
+
+        foreach (Diagnostic diagnostic in context.Diagnostics)
         {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
-
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out ConstructorDeclarationSyntax constructor))
-                return;
-
-            foreach (Diagnostic diagnostic in context.Diagnostics)
+            switch (diagnostic.Id)
             {
-                switch (diagnostic.Id)
-                {
-                    case DiagnosticIdentifiers.RemoveRedundantBaseConstructorCall:
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Remove redundant base constructor call",
-                                ct => RemoveRedundantBaseConstructorCallRefactoring.RefactorAsync(context.Document, constructor, ct),
-                                GetEquivalenceKey(diagnostic));
+                case DiagnosticIdentifiers.RemoveRedundantBaseConstructorCall:
+                    {
+                        CodeAction codeAction = CodeAction.Create(
+                            "Remove redundant base constructor call",
+                            ct => RemoveRedundantBaseConstructorCallRefactoring.RefactorAsync(context.Document, constructor, ct),
+                            GetEquivalenceKey(diagnostic));
 
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
-                    case DiagnosticIdentifiers.RemoveRedundantConstructor:
-                        {
-                            CodeAction codeAction = CodeActionFactory.RemoveMemberDeclaration(
-                                context.Document,
-                                constructor,
-                                title: "Remove redundant constructor",
-                                equivalenceKey: GetEquivalenceKey(diagnostic));
+                        context.RegisterCodeFix(codeAction, diagnostic);
+                        break;
+                    }
+                case DiagnosticIdentifiers.RemoveRedundantConstructor:
+                    {
+                        CodeAction codeAction = CodeActionFactory.RemoveMemberDeclaration(
+                            context.Document,
+                            constructor,
+                            title: "Remove redundant constructor",
+                            equivalenceKey: GetEquivalenceKey(diagnostic));
 
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
-                    case DiagnosticIdentifiers.AbstractTypeShouldNotHavePublicConstructors:
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Change accessibility to 'protected'",
-                                ct => AbstractTypeShouldNotHavePublicConstructorsRefactoring.RefactorAsync(context.Document, constructor, ct),
-                                GetEquivalenceKey(diagnostic));
+                        context.RegisterCodeFix(codeAction, diagnostic);
+                        break;
+                    }
+                case DiagnosticIdentifiers.AbstractTypeShouldNotHavePublicConstructors:
+                    {
+                        CodeAction codeAction = CodeAction.Create(
+                            "Change accessibility to 'protected'",
+                            ct => AbstractTypeShouldNotHavePublicConstructorsRefactoring.RefactorAsync(context.Document, constructor, ct),
+                            GetEquivalenceKey(diagnostic));
 
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
-                }
+                        context.RegisterCodeFix(codeAction, diagnostic);
+                        break;
+                    }
             }
         }
     }

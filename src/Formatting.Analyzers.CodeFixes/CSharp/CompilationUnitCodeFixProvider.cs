@@ -11,73 +11,72 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp;
 using Roslynator.Formatting.CSharp;
 
-namespace Roslynator.Formatting.CodeFixes.CSharp
+namespace Roslynator.Formatting.CodeFixes.CSharp;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(CompilationUnitCodeFixProvider))]
+[Shared]
+public sealed class CompilationUnitCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(CompilationUnitCodeFixProvider))]
-    [Shared]
-    public sealed class CompilationUnitCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.NormalizeWhitespaceAtBeginningOfFile); }
+    }
+
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out CompilationUnitSyntax compilationUnit))
+            return;
+
+        Document document = context.Document;
+        Diagnostic diagnostic = context.Diagnostics[0];
+
+        switch (diagnostic.Id)
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.NormalizeWhitespaceAtBeginningOfFile); }
-        }
+            case DiagnosticIdentifiers.NormalizeWhitespaceAtBeginningOfFile:
+                {
+                    SyntaxToken token = compilationUnit.EndOfFileToken;
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+                    if (token.FullSpan.Start > 0)
+                        token = compilationUnit.GetFirstToken();
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out CompilationUnitSyntax compilationUnit))
-                return;
+                    SyntaxTriviaList leading = token.LeadingTrivia;
 
-            Document document = context.Document;
-            Diagnostic diagnostic = context.Diagnostics[0];
-
-            switch (diagnostic.Id)
-            {
-                case DiagnosticIdentifiers.NormalizeWhitespaceAtBeginningOfFile:
+                    string title;
+                    if (leading[0].IsWhitespaceTrivia()
+                        && (leading.Count == 1
+                            || leading[1].IsEndOfLineTrivia()))
                     {
-                        SyntaxToken token = compilationUnit.EndOfFileToken;
-
-                        if (token.FullSpan.Start > 0)
-                            token = compilationUnit.GetFirstToken();
-
-                        SyntaxTriviaList leading = token.LeadingTrivia;
-
-                        string title;
-                        if (leading[0].IsWhitespaceTrivia()
-                            && (leading.Count == 1
-                                || leading[1].IsEndOfLineTrivia()))
-                        {
-                            title = "Remove whitespace";
-                        }
-                        else
-                        {
-                            title = CodeFixTitles.RemoveNewLine;
-                        }
-
-                        CodeAction codeAction = CodeAction.Create(
-                            title,
-                            ct =>
-                            {
-                                SyntaxToken token = compilationUnit.EndOfFileToken;
-
-                                if (token.FullSpan.Start > 0)
-                                    token = compilationUnit.GetFirstToken();
-
-                                SyntaxTriviaList leading = token.LeadingTrivia;
-
-                                int count = leading.TakeWhile(f => f.IsWhitespaceOrEndOfLineTrivia()).Count();
-
-                                SyntaxToken newToken = token.WithLeadingTrivia(leading.RemoveRange(0, count));
-
-                                return document.ReplaceTokenAsync(token, newToken, ct);
-                            },
-                            GetEquivalenceKey(diagnostic));
-
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
+                        title = "Remove whitespace";
                     }
-            }
+                    else
+                    {
+                        title = CodeFixTitles.RemoveNewLine;
+                    }
+
+                    CodeAction codeAction = CodeAction.Create(
+                        title,
+                        ct =>
+                        {
+                            SyntaxToken token = compilationUnit.EndOfFileToken;
+
+                            if (token.FullSpan.Start > 0)
+                                token = compilationUnit.GetFirstToken();
+
+                            SyntaxTriviaList leading = token.LeadingTrivia;
+
+                            int count = leading.TakeWhile(f => f.IsWhitespaceOrEndOfLineTrivia()).Count();
+
+                            SyntaxToken newToken = token.WithLeadingTrivia(leading.RemoveRange(0, count));
+
+                            return document.ReplaceTokenAsync(token, newToken, ct);
+                        },
+                        GetEquivalenceKey(diagnostic));
+
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
         }
     }
 }

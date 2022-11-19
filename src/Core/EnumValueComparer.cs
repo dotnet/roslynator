@@ -4,265 +4,264 @@ using System;
 using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
 
-namespace Roslynator
+namespace Roslynator;
+
+internal static class EnumValueComparer
 {
-    internal static class EnumValueComparer
+    public static IComparer<object> GetInstance(SpecialType enumSpecialType)
     {
-        public static IComparer<object> GetInstance(SpecialType enumSpecialType)
+        switch (enumSpecialType)
         {
-            switch (enumSpecialType)
-            {
-                case SpecialType.System_SByte:
-                    return SByteValueComparer.Instance;
-                case SpecialType.System_Byte:
-                    return ByteValueComparer.Instance;
-                case SpecialType.System_Int16:
-                    return ShortValueComparer.Instance;
-                case SpecialType.System_UInt16:
-                    return UShortValueComparer.Instance;
-                case SpecialType.System_Int32:
-                    return IntValueComparer.Instance;
-                case SpecialType.System_UInt32:
-                    return UIntValueComparer.Instance;
-                case SpecialType.System_Int64:
-                    return LongValueComparer.Instance;
-                case SpecialType.System_UInt64:
-                    return ULongValueComparer.Instance;
-                default:
-                    throw new ArgumentException("", nameof(enumSpecialType));
-            }
+            case SpecialType.System_SByte:
+                return SByteValueComparer.Instance;
+            case SpecialType.System_Byte:
+                return ByteValueComparer.Instance;
+            case SpecialType.System_Int16:
+                return ShortValueComparer.Instance;
+            case SpecialType.System_UInt16:
+                return UShortValueComparer.Instance;
+            case SpecialType.System_Int32:
+                return IntValueComparer.Instance;
+            case SpecialType.System_UInt32:
+                return UIntValueComparer.Instance;
+            case SpecialType.System_Int64:
+                return LongValueComparer.Instance;
+            case SpecialType.System_UInt64:
+                return ULongValueComparer.Instance;
+            default:
+                throw new ArgumentException("", nameof(enumSpecialType));
+        }
+    }
+
+    private class SByteValueComparer : IComparer<object>
+    {
+        private SByteValueComparer()
+        {
         }
 
-        private class SByteValueComparer : IComparer<object>
+        public static readonly SByteValueComparer Instance = new();
+
+        public int Compare(object x, object y)
         {
-            private SByteValueComparer()
-            {
-            }
-
-            public static readonly SByteValueComparer Instance = new();
-
-            public int Compare(object x, object y)
-            {
-                if (object.ReferenceEquals(x, y))
-                    return 0;
-
-                if (x == null)
-                    return -1;
-
-                if (y == null)
-                    return 1;
-
-                if (x is sbyte xvalue
-                    && y is sbyte yvalue)
-                {
-                    return xvalue.CompareTo(yvalue);
-                }
-
+            if (object.ReferenceEquals(x, y))
                 return 0;
+
+            if (x is null)
+                return -1;
+
+            if (y is null)
+                return 1;
+
+            if (x is sbyte xvalue
+                && y is sbyte yvalue)
+            {
+                return xvalue.CompareTo(yvalue);
             }
+
+            return 0;
+        }
+    }
+
+    private class ByteValueComparer : IComparer<object>
+    {
+        private ByteValueComparer()
+        {
         }
 
-        private class ByteValueComparer : IComparer<object>
+        public static readonly ByteValueComparer Instance = new();
+
+        public int Compare(object x, object y)
         {
-            private ByteValueComparer()
-            {
-            }
-
-            public static readonly ByteValueComparer Instance = new();
-
-            public int Compare(object x, object y)
-            {
-                if (object.ReferenceEquals(x, y))
-                    return 0;
-
-                if (x == null)
-                    return -1;
-
-                if (y == null)
-                    return 1;
-
-                if (x is byte xvalue
-                    && y is byte yvalue)
-                {
-                    return xvalue.CompareTo(yvalue);
-                }
-
+            if (object.ReferenceEquals(x, y))
                 return 0;
+
+            if (x is null)
+                return -1;
+
+            if (y is null)
+                return 1;
+
+            if (x is byte xvalue
+                && y is byte yvalue)
+            {
+                return xvalue.CompareTo(yvalue);
             }
+
+            return 0;
+        }
+    }
+
+    private class ShortValueComparer : IComparer<object>
+    {
+        private ShortValueComparer()
+        {
         }
 
-        private class ShortValueComparer : IComparer<object>
+        public static readonly ShortValueComparer Instance = new();
+
+        public int Compare(object x, object y)
         {
-            private ShortValueComparer()
-            {
-            }
-
-            public static readonly ShortValueComparer Instance = new();
-
-            public int Compare(object x, object y)
-            {
-                if (object.ReferenceEquals(x, y))
-                    return 0;
-
-                if (x == null)
-                    return -1;
-
-                if (y == null)
-                    return 1;
-
-                if (x is short xvalue
-                    && y is short yvalue)
-                {
-                    return xvalue.CompareTo(yvalue);
-                }
-
+            if (object.ReferenceEquals(x, y))
                 return 0;
+
+            if (x is null)
+                return -1;
+
+            if (y is null)
+                return 1;
+
+            if (x is short xvalue
+                && y is short yvalue)
+            {
+                return xvalue.CompareTo(yvalue);
             }
+
+            return 0;
+        }
+    }
+
+    private class UShortValueComparer : IComparer<object>
+    {
+        private UShortValueComparer()
+        {
         }
 
-        private class UShortValueComparer : IComparer<object>
+        public static readonly UShortValueComparer Instance = new();
+
+        public int Compare(object x, object y)
         {
-            private UShortValueComparer()
-            {
-            }
-
-            public static readonly UShortValueComparer Instance = new();
-
-            public int Compare(object x, object y)
-            {
-                if (object.ReferenceEquals(x, y))
-                    return 0;
-
-                if (x == null)
-                    return -1;
-
-                if (y == null)
-                    return 1;
-
-                if (x is ushort xvalue
-                    && y is ushort yvalue)
-                {
-                    return xvalue.CompareTo(yvalue);
-                }
-
+            if (object.ReferenceEquals(x, y))
                 return 0;
+
+            if (x is null)
+                return -1;
+
+            if (y is null)
+                return 1;
+
+            if (x is ushort xvalue
+                && y is ushort yvalue)
+            {
+                return xvalue.CompareTo(yvalue);
             }
+
+            return 0;
+        }
+    }
+
+    private class IntValueComparer : IComparer<object>
+    {
+        private IntValueComparer()
+        {
         }
 
-        private class IntValueComparer : IComparer<object>
+        public static readonly IntValueComparer Instance = new();
+
+        public int Compare(object x, object y)
         {
-            private IntValueComparer()
-            {
-            }
-
-            public static readonly IntValueComparer Instance = new();
-
-            public int Compare(object x, object y)
-            {
-                if (object.ReferenceEquals(x, y))
-                    return 0;
-
-                if (x == null)
-                    return -1;
-
-                if (y == null)
-                    return 1;
-
-                if (x is int xvalue
-                    && y is int yvalue)
-                {
-                    return xvalue.CompareTo(yvalue);
-                }
-
+            if (object.ReferenceEquals(x, y))
                 return 0;
+
+            if (x is null)
+                return -1;
+
+            if (y is null)
+                return 1;
+
+            if (x is int xvalue
+                && y is int yvalue)
+            {
+                return xvalue.CompareTo(yvalue);
             }
+
+            return 0;
+        }
+    }
+
+    private class UIntValueComparer : IComparer<object>
+    {
+        private UIntValueComparer()
+        {
         }
 
-        private class UIntValueComparer : IComparer<object>
+        public static readonly UIntValueComparer Instance = new();
+
+        public int Compare(object x, object y)
         {
-            private UIntValueComparer()
-            {
-            }
-
-            public static readonly UIntValueComparer Instance = new();
-
-            public int Compare(object x, object y)
-            {
-                if (object.ReferenceEquals(x, y))
-                    return 0;
-
-                if (x == null)
-                    return -1;
-
-                if (y == null)
-                    return 1;
-
-                if (x is uint xvalue
-                    && y is uint yvalue)
-                {
-                    return xvalue.CompareTo(yvalue);
-                }
-
+            if (object.ReferenceEquals(x, y))
                 return 0;
+
+            if (x is null)
+                return -1;
+
+            if (y is null)
+                return 1;
+
+            if (x is uint xvalue
+                && y is uint yvalue)
+            {
+                return xvalue.CompareTo(yvalue);
             }
+
+            return 0;
+        }
+    }
+
+    private class LongValueComparer : IComparer<object>
+    {
+        private LongValueComparer()
+        {
         }
 
-        private class LongValueComparer : IComparer<object>
+        public static readonly LongValueComparer Instance = new();
+
+        public int Compare(object x, object y)
         {
-            private LongValueComparer()
-            {
-            }
-
-            public static readonly LongValueComparer Instance = new();
-
-            public int Compare(object x, object y)
-            {
-                if (object.ReferenceEquals(x, y))
-                    return 0;
-
-                if (x == null)
-                    return -1;
-
-                if (y == null)
-                    return 1;
-
-                if (x is long xvalue
-                    && y is long yvalue)
-                {
-                    return xvalue.CompareTo(yvalue);
-                }
-
+            if (object.ReferenceEquals(x, y))
                 return 0;
+
+            if (x is null)
+                return -1;
+
+            if (y is null)
+                return 1;
+
+            if (x is long xvalue
+                && y is long yvalue)
+            {
+                return xvalue.CompareTo(yvalue);
             }
+
+            return 0;
+        }
+    }
+
+    private class ULongValueComparer : IComparer<object>
+    {
+        private ULongValueComparer()
+        {
         }
 
-        private class ULongValueComparer : IComparer<object>
+        public static readonly ULongValueComparer Instance = new();
+
+        public int Compare(object x, object y)
         {
-            private ULongValueComparer()
-            {
-            }
-
-            public static readonly ULongValueComparer Instance = new();
-
-            public int Compare(object x, object y)
-            {
-                if (object.ReferenceEquals(x, y))
-                    return 0;
-
-                if (x == null)
-                    return -1;
-
-                if (y == null)
-                    return 1;
-
-                if (x is ulong xvalue
-                    && y is ulong yvalue)
-                {
-                    return xvalue.CompareTo(yvalue);
-                }
-
+            if (object.ReferenceEquals(x, y))
                 return 0;
+
+            if (x is null)
+                return -1;
+
+            if (y is null)
+                return 1;
+
+            if (x is ulong xvalue
+                && y is ulong yvalue)
+            {
+                return xvalue.CompareTo(yvalue);
             }
+
+            return 0;
         }
     }
 }

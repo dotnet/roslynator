@@ -5,79 +5,78 @@ using System.Diagnostics;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Syntax
+namespace Roslynator.CSharp.Syntax;
+
+[DebuggerDisplay("{Flags}")]
+internal readonly struct StringConcatenationAnalysis
 {
-    [DebuggerDisplay("{Flags}")]
-    internal readonly struct StringConcatenationAnalysis
+    private StringConcatenationAnalysis(StringConcatenationFlags flags)
     {
-        private StringConcatenationAnalysis(StringConcatenationFlags flags)
+        Flags = flags;
+    }
+
+    private StringConcatenationFlags Flags { get; }
+
+    public bool ContainsNonStringLiteral => (Flags & StringConcatenationFlags.ContainsNonStringLiteral) != 0;
+
+    public bool ContainsStringLiteral => (Flags & StringConcatenationFlags.ContainsStringLiteral) != 0;
+
+    public bool ContainsInterpolatedString => (Flags & StringConcatenationFlags.ContainsInterpolatedString) != 0;
+
+    public bool ContainsNonVerbatimExpression => (Flags & StringConcatenationFlags.ContainsNonVerbatimExpression) != 0;
+
+    public static StringConcatenationAnalysis Create(in StringConcatenationExpressionInfo stringConcatenation)
+    {
+        var flags = StringConcatenationFlags.None;
+
+        foreach (ExpressionSyntax expression in stringConcatenation.AsChain().Reverse())
         {
-            Flags = flags;
-        }
+            StringLiteralExpressionInfo stringLiteral = SyntaxInfo.StringLiteralExpressionInfo(expression);
 
-        private StringConcatenationFlags Flags { get; }
-
-        public bool ContainsNonStringLiteral => (Flags & StringConcatenationFlags.ContainsNonStringLiteral) != 0;
-
-        public bool ContainsStringLiteral => (Flags & StringConcatenationFlags.ContainsStringLiteral) != 0;
-
-        public bool ContainsInterpolatedString => (Flags & StringConcatenationFlags.ContainsInterpolatedString) != 0;
-
-        public bool ContainsNonVerbatimExpression => (Flags & StringConcatenationFlags.ContainsNonVerbatimExpression) != 0;
-
-        public static StringConcatenationAnalysis Create(in StringConcatenationExpressionInfo stringConcatenation)
-        {
-            var flags = StringConcatenationFlags.None;
-
-            foreach (ExpressionSyntax expression in stringConcatenation.AsChain().Reverse())
+            if (stringLiteral.Success)
             {
-                StringLiteralExpressionInfo stringLiteral = SyntaxInfo.StringLiteralExpressionInfo(expression);
-
-                if (stringLiteral.Success)
+                if (stringLiteral.IsVerbatim)
                 {
-                    if (stringLiteral.IsVerbatim)
-                    {
-                        flags |= StringConcatenationFlags.ContainsVerbatimStringLiteral;
-                    }
-                    else
-                    {
-                        flags |= StringConcatenationFlags.ContainsRegularStringLiteral;
-                    }
-                }
-                else if (expression.Kind() == SyntaxKind.InterpolatedStringExpression)
-                {
-                    if (((InterpolatedStringExpressionSyntax)expression).IsVerbatim())
-                    {
-                        flags |= StringConcatenationFlags.ContainsVerbatimInterpolatedString;
-                    }
-                    else
-                    {
-                        flags |= StringConcatenationFlags.ContainsRegularInterpolatedString;
-                    }
+                    flags |= StringConcatenationFlags.ContainsVerbatimStringLiteral;
                 }
                 else
                 {
-                    flags |= StringConcatenationFlags.ContainsUnspecifiedExpression;
+                    flags |= StringConcatenationFlags.ContainsRegularStringLiteral;
                 }
             }
-
-            return new StringConcatenationAnalysis(flags);
+            else if (expression.Kind() == SyntaxKind.InterpolatedStringExpression)
+            {
+                if (((InterpolatedStringExpressionSyntax)expression).IsVerbatim())
+                {
+                    flags |= StringConcatenationFlags.ContainsVerbatimInterpolatedString;
+                }
+                else
+                {
+                    flags |= StringConcatenationFlags.ContainsRegularInterpolatedString;
+                }
+            }
+            else
+            {
+                flags |= StringConcatenationFlags.ContainsUnspecifiedExpression;
+            }
         }
 
-        [Flags]
-        private enum StringConcatenationFlags
-        {
-            None = 0,
-            ContainsUnspecifiedExpression = 1,
-            ContainsRegularStringLiteral = 1 << 1,
-            ContainsVerbatimStringLiteral = 1 << 2,
-            ContainsStringLiteral = ContainsRegularStringLiteral | ContainsVerbatimStringLiteral,
-            ContainsRegularInterpolatedString = 1 << 3,
-            ContainsNonVerbatimExpression = ContainsRegularStringLiteral | ContainsRegularInterpolatedString,
-            ContainsVerbatimInterpolatedString = 1 << 4,
-            ContainsVerbatimExpression = ContainsVerbatimStringLiteral | ContainsVerbatimInterpolatedString,
-            ContainsInterpolatedString = ContainsRegularInterpolatedString | ContainsVerbatimInterpolatedString,
-            ContainsNonStringLiteral = ContainsInterpolatedString | ContainsUnspecifiedExpression,
-        }
+        return new StringConcatenationAnalysis(flags);
+    }
+
+    [Flags]
+    private enum StringConcatenationFlags
+    {
+        None = 0,
+        ContainsUnspecifiedExpression = 1,
+        ContainsRegularStringLiteral = 1 << 1,
+        ContainsVerbatimStringLiteral = 1 << 2,
+        ContainsStringLiteral = ContainsRegularStringLiteral | ContainsVerbatimStringLiteral,
+        ContainsRegularInterpolatedString = 1 << 3,
+        ContainsNonVerbatimExpression = ContainsRegularStringLiteral | ContainsRegularInterpolatedString,
+        ContainsVerbatimInterpolatedString = 1 << 4,
+        ContainsVerbatimExpression = ContainsVerbatimStringLiteral | ContainsVerbatimInterpolatedString,
+        ContainsInterpolatedString = ContainsRegularInterpolatedString | ContainsVerbatimInterpolatedString,
+        ContainsNonStringLiteral = ContainsInterpolatedString | ContainsUnspecifiedExpression,
     }
 }

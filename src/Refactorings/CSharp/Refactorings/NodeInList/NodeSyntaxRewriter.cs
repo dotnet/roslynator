@@ -3,26 +3,25 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 
-namespace Roslynator.CSharp.Refactorings.NodeInList
+namespace Roslynator.CSharp.Refactorings.NodeInList;
+
+internal abstract class NodeSyntaxRewriter<TSyntax> : CSharpSyntaxRewriter where TSyntax : SyntaxNode
 {
-    internal abstract class NodeSyntaxRewriter<TSyntax> : CSharpSyntaxRewriter where TSyntax : SyntaxNode
+    protected NodeSyntaxRewriter(RewriterInfo<TSyntax> info)
     {
-        protected NodeSyntaxRewriter(RewriterInfo<TSyntax> info)
-        {
-            Info = info;
-        }
+        Info = info;
+    }
 
-        public RewriterInfo<TSyntax> Info { get; }
+    public RewriterInfo<TSyntax> Info { get; }
 
-        public override SyntaxToken VisitToken(SyntaxToken token)
-        {
-            if (token == Info.TokenBefore)
-                return token.WithTrailingTrivia();
+    public override SyntaxToken VisitToken(SyntaxToken token)
+    {
+        if (token == Info.TokenBefore)
+            return token.WithTrailingTrivia();
 
-            if (token == Info.TokenAfter)
-                return token.WithLeadingTrivia();
+        if (token == Info.TokenAfter)
+            return token.WithLeadingTrivia();
 
-            return base.VisitToken(token);
-        }
+        return base.VisitToken(token);
     }
 }

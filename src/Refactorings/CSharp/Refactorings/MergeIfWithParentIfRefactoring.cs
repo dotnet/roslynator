@@ -7,79 +7,78 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class MergeIfWithParentIfRefactoring
 {
-    internal static class MergeIfWithParentIfRefactoring
+    public static void ComputeRefactoring(RefactoringContext context, IfStatementSyntax ifStatement)
     {
-        public static void ComputeRefactoring(RefactoringContext context, IfStatementSyntax ifStatement)
+        if (!ifStatement.IsTopmostIf())
+            return;
+
+        if (ifStatement.Condition.IsMissing)
+            return;
+
+        if (ifStatement.Parent is IfStatementSyntax parentIf)
         {
-            if (!ifStatement.IsTopmostIf())
+            parentIf = (IfStatementSyntax)ifStatement.Parent;
+        }
+        else
+        {
+            if (ifStatement.Parent is not BlockSyntax block)
                 return;
 
-            if (ifStatement.Condition.IsMissing)
+            if (block.Statements.Count != 1)
                 return;
 
-            if (ifStatement.Parent is IfStatementSyntax parentIf)
-            {
-                parentIf = (IfStatementSyntax)ifStatement.Parent;
-            }
-            else
-            {
-                if (ifStatement.Parent is not BlockSyntax block)
-                    return;
+            parentIf = block.Parent as IfStatementSyntax;
 
-                if (block.Statements.Count != 1)
-                    return;
-
-                parentIf = block.Parent as IfStatementSyntax;
-
-                if (parentIf == null)
-                    return;
-            }
-
-            if (parentIf.Condition.IsMissing)
+            if (parentIf is null)
                 return;
-
-            context.RegisterRefactoring(
-                "Merge if with parent if",
-                ct => RefactorAsync(context.Document, ifStatement, ct),
-                RefactoringDescriptors.MergeIfWithParentIf);
         }
 
-        private static Task<Document> RefactorAsync(
-            Document document,
-            IfStatementSyntax ifStatement,
-            CancellationToken cancellationToken)
+        if (parentIf.Condition.IsMissing)
+            return;
+
+        context.RegisterRefactoring(
+            "Merge if with parent if",
+            ct => RefactorAsync(context.Document, ifStatement, ct),
+            RefactoringDescriptors.MergeIfWithParentIf);
+    }
+
+    private static Task<Document> RefactorAsync(
+        Document document,
+        IfStatementSyntax ifStatement,
+        CancellationToken cancellationToken)
+    {
+        StatementSyntax newStatement;
+
+        if (ifStatement.Parent is IfStatementSyntax parentIf)
         {
-            StatementSyntax newStatement;
-
-            if (ifStatement.Parent is IfStatementSyntax parentIf)
-            {
-                newStatement = ifStatement.Statement;
-            }
-            else
-            {
-                var parentBlock = (BlockSyntax)ifStatement.Parent;
-
-                parentIf = (IfStatementSyntax)parentBlock.Parent;
-
-                SyntaxList<StatementSyntax> statements = parentBlock.Statements;
-
-                SyntaxList<StatementSyntax> newStatements = (ifStatement.Statement is BlockSyntax block)
-                    ? block.Statements
-                    : SyntaxFactory.SingletonList(ifStatement.Statement);
-
-                newStatements = statements.ReplaceRange(ifStatement, newStatements);
-
-                newStatement = parentBlock.WithStatements(newStatements);
-            }
-
-            IfStatementSyntax newNode = parentIf
-                .WithStatement(newStatement)
-                .WithCondition(LogicalAndExpression(parentIf.Condition.Parenthesize(), ifStatement.Condition.Parenthesize()))
-                .WithFormatterAnnotation();
-
-            return document.ReplaceNodeAsync(parentIf, newNode, cancellationToken);
+            newStatement = ifStatement.Statement;
         }
+        else
+        {
+            var parentBlock = (BlockSyntax)ifStatement.Parent;
+
+            parentIf = (IfStatementSyntax)parentBlock.Parent;
+
+            SyntaxList<StatementSyntax> statements = parentBlock.Statements;
+
+            SyntaxList<StatementSyntax> newStatements = (ifStatement.Statement is BlockSyntax block)
+                ? block.Statements
+                : SyntaxFactory.SingletonList(ifStatement.Statement);
+
+            newStatements = statements.ReplaceRange(ifStatement, newStatements);
+
+            newStatement = parentBlock.WithStatements(newStatements);
+        }
+
+        IfStatementSyntax newNode = parentIf
+            .WithStatement(newStatement)
+            .WithCondition(LogicalAndExpression(parentIf.Condition.Parenthesize(), ifStatement.Condition.Parenthesize()))
+            .WithFormatterAnnotation();
+
+        return document.ReplaceNodeAsync(parentIf, newNode, cancellationToken);
     }
 }

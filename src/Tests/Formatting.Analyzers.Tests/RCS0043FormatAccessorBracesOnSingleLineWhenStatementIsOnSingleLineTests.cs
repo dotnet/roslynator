@@ -6,16 +6,16 @@ using Roslynator.Formatting.CodeFixes.CSharp;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.Formatting.CSharp.Tests
-{
-    public class RCS0043FormatAccessorBracesOnSingleLineWhenStatementIsOnSingleLineTests : AbstractCSharpDiagnosticVerifier<FormatAccessorBracesAnalyzer, AccessorDeclarationCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.FormatAccessorBracesOnSingleLineWhenExpressionIsOnSingleLine;
+namespace Roslynator.Formatting.CSharp.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatAccessorBracesOnSingleLineWhenExpressionIsOnSingleLine)]
-        public async Task Test_Getter_Setter()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS0043FormatAccessorBracesOnSingleLineWhenStatementIsOnSingleLineTests : AbstractCSharpDiagnosticVerifier<FormatAccessorBracesAnalyzer, AccessorDeclarationCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.FormatAccessorBracesOnSingleLineWhenExpressionIsOnSingleLine;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatAccessorBracesOnSingleLineWhenExpressionIsOnSingleLine)]
+    public async Task Test_Getter_Setter()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     private string _p;
@@ -44,12 +44,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatAccessorBracesOnSingleLineWhenExpressionIsOnSingleLine)]
-        public async Task Test_Getter()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatAccessorBracesOnSingleLineWhenExpressionIsOnSingleLine)]
+    public async Task Test_Getter()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     private string _p;
@@ -75,12 +75,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatAccessorBracesOnSingleLineWhenExpressionIsOnSingleLine)]
-        public async Task Test_Setter()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatAccessorBracesOnSingleLineWhenExpressionIsOnSingleLine)]
+    public async Task Test_Setter()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     private string _p;
@@ -106,12 +106,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatAccessorBracesOnSingleLineWhenExpressionIsOnSingleLine)]
-        public async Task TestNoDiagnostic_FullProperty()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatAccessorBracesOnSingleLineWhenExpressionIsOnSingleLine)]
+    public async Task TestNoDiagnostic_FullProperty()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     private string _p;
@@ -123,12 +123,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatAccessorBracesOnSingleLineWhenExpressionIsOnSingleLine)]
-        public async Task TestNoDiagnostic_AutoProperty()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatAccessorBracesOnSingleLineWhenExpressionIsOnSingleLine)]
+    public async Task TestNoDiagnostic_AutoProperty()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     string P
@@ -138,6 +138,5 @@ class C
     }
 }
 ");
-        }
     }
 }

@@ -2,21 +2,20 @@
 
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class AccessorDeclarationRefactoring
 {
-    internal static class AccessorDeclarationRefactoring
+    public static void ComputeRefactorings(RefactoringContext context, AccessorDeclarationSyntax accessor)
     {
-        public static void ComputeRefactorings(RefactoringContext context, AccessorDeclarationSyntax accessor)
+        if (context.IsRefactoringEnabled(RefactoringDescriptors.ConvertBlockBodyToExpressionBody)
+            && context.SupportsCSharp6
+            && ConvertBlockBodyToExpressionBodyRefactoring.CanRefactor(accessor, context.Span))
         {
-            if (context.IsRefactoringEnabled(RefactoringDescriptors.ConvertBlockBodyToExpressionBody)
-                && context.SupportsCSharp6
-                && ConvertBlockBodyToExpressionBodyRefactoring.CanRefactor(accessor, context.Span))
-            {
-                context.RegisterRefactoring(
-                    ConvertBlockBodyToExpressionBodyRefactoring.Title,
-                    ct => ConvertBlockBodyToExpressionBodyRefactoring.RefactorAsync(context.Document, accessor, ct),
-                    RefactoringDescriptors.ConvertBlockBodyToExpressionBody);
-            }
+            context.RegisterRefactoring(
+                ConvertBlockBodyToExpressionBodyRefactoring.Title,
+                ct => ConvertBlockBodyToExpressionBodyRefactoring.RefactorAsync(context.Document, accessor, ct),
+                RefactoringDescriptors.ConvertBlockBodyToExpressionBody);
         }
     }
 }

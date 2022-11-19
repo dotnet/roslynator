@@ -199,7 +199,7 @@ namespace Roslynator.CSharp.Spelling
 
         public override void VisitTupleElement(TupleElementSyntax node)
         {
-            if (node.Identifier.Parent != null)
+            if (node.Identifier.Parent is not null)
                 AnalyzeIdentifier(node.Identifier);
 
             base.VisitTupleElement(node);
@@ -213,7 +213,7 @@ namespace Roslynator.CSharp.Spelling
 
         public override void VisitAnonymousObjectMemberDeclarator(AnonymousObjectMemberDeclaratorSyntax node)
         {
-            if (node.NameEquals != null
+            if (node.NameEquals is not null
                 && ShouldVisit(SpellingScopeFilter.LocalVariable))
             {
                 AnalyzeIdentifier(node.NameEquals.Name.Identifier);
@@ -292,7 +292,7 @@ namespace Roslynator.CSharp.Spelling
 
         public override void VisitUsingDirective(UsingDirectiveSyntax node)
         {
-            if (node.Alias != null
+            if (node.Alias is not null
                 && ShouldVisit(SpellingScopeFilter.UsingAlias))
             {
                 AnalyzeIdentifier(node.Alias.Name.Identifier);

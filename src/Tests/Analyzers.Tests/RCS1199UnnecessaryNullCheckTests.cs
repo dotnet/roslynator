@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1199UnnecessaryNullCheckTests : AbstractCSharpDiagnosticVerifier<UnnecessaryNullCheckAnalyzer, BinaryExpressionCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UnnecessaryNullCheck;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullCheck)]
-        public async Task Test_HasValue_Bool()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1199UnnecessaryNullCheckTests : AbstractCSharpDiagnosticVerifier<UnnecessaryNullCheckAnalyzer, BinaryExpressionCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UnnecessaryNullCheck;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullCheck)]
+    public async Task Test_HasValue_Bool()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -36,12 +36,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullCheck)]
-        public async Task Test_HasValue_Bool_EqualsTrue()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullCheck)]
+    public async Task Test_HasValue_Bool_EqualsTrue()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -62,12 +62,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullCheck)]
-        public async Task Test_HasValue_Bool_Parentheses()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullCheck)]
+    public async Task Test_HasValue_Bool_Parentheses()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -88,12 +88,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullCheck)]
-        public async Task Test_HasValue_Bool_False()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullCheck)]
+    public async Task Test_HasValue_Bool_False()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -114,12 +114,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullCheck)]
-        public async Task Test_HasValue_Bool_EqualsFalse()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullCheck)]
+    public async Task Test_HasValue_Bool_EqualsFalse()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -140,12 +140,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullCheck)]
-        public async Task Test_HasValue_ValueEquals()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullCheck)]
+    public async Task Test_HasValue_ValueEquals()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
@@ -172,12 +172,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullCheck)]
-        public async Task Test_NotEqualsToNull_ValueEquals()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullCheck)]
+    public async Task Test_NotEqualsToNull_ValueEquals()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
@@ -204,12 +204,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullCheck)]
-        public async Task Test_NotEqualsToNull_ValueLessThan()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullCheck)]
+    public async Task Test_NotEqualsToNull_ValueLessThan()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
@@ -236,12 +236,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullCheck)]
-        public async Task Test_NotEqualsToNull_ValueLessThanOrEquals()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullCheck)]
+    public async Task Test_NotEqualsToNull_ValueLessThanOrEquals()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
@@ -268,12 +268,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullCheck)]
-        public async Task Test_NotEqualsToNull_ValueGreaterThan()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullCheck)]
+    public async Task Test_NotEqualsToNull_ValueGreaterThan()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
@@ -300,12 +300,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullCheck)]
-        public async Task Test_NotEqualsToNull_ValueGreaterThanOrEquals()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullCheck)]
+    public async Task Test_NotEqualsToNull_ValueGreaterThanOrEquals()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
@@ -332,12 +332,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullCheck)]
-        public async Task TestNoDiagnostic()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullCheck)]
+    public async Task TestNoDiagnostic()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -365,12 +365,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullCheck)]
-        public async Task TestNoDiagnostic2()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullCheck)]
+    public async Task TestNoDiagnostic2()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 class C
@@ -392,12 +392,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullCheck)]
-        public async Task TestNoDiagnostic_RightSideIsNullable()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullCheck)]
+    public async Task TestNoDiagnostic_RightSideIsNullable()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 class C
@@ -419,12 +419,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullCheck)]
-        public async Task TestNoDiagnostic_RightSideIsNullOrDefault()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullCheck)]
+    public async Task TestNoDiagnostic_RightSideIsNullOrDefault()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 class C
@@ -439,6 +439,5 @@ class C
     }
 }
 ", options: Options.AddAllowedCompilerDiagnosticId("CS0472"));
-        }
     }
 }

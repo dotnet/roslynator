@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1056AvoidUsageOfUsingAliasDirectiveTests : AbstractCSharpDiagnosticVerifier<AvoidUsageOfUsingAliasDirectiveAnalyzer, UsingDirectiveCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AvoidUsageOfUsingAliasDirective;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidUsageOfUsingAliasDirective)]
-        public async Task Test()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1056AvoidUsageOfUsingAliasDirectiveTests : AbstractCSharpDiagnosticVerifier<AvoidUsageOfUsingAliasDirectiveAnalyzer, UsingDirectiveCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AvoidUsageOfUsingAliasDirective;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidUsageOfUsingAliasDirective)]
+    public async Task Test()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 [|using s = System;|]
 [|using scg = System.Collections.Generic;|]
 [|using ss = System.String;|]
@@ -50,6 +50,5 @@ class C
     }
 }
 ");
-        }
     }
 }

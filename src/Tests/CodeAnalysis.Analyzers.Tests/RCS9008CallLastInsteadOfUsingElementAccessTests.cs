@@ -6,16 +6,16 @@ using Roslynator.CodeAnalysis.CSharp;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS9008CallLastInsteadOfUsingElementAccessTests : AbstractCSharpDiagnosticVerifier<ElementAccessExpressionAnalyzer, ElementAccessExpressionCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.CallLastInsteadOfUsingElementAccess;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallLastInsteadOfUsingElementAccess)]
-        public async Task Test_SyntaxList()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS9008CallLastInsteadOfUsingElementAccessTests : AbstractCSharpDiagnosticVerifier<ElementAccessExpressionAnalyzer, ElementAccessExpressionCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.CallLastInsteadOfUsingElementAccess;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallLastInsteadOfUsingElementAccess)]
+    public async Task Test_SyntaxList()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using Microsoft.CodeAnalysis;
 
 class C
@@ -40,12 +40,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallLastInsteadOfUsingElementAccess)]
-        public async Task Test_SeparatedSyntaxList()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallLastInsteadOfUsingElementAccess)]
+    public async Task Test_SeparatedSyntaxList()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using Microsoft.CodeAnalysis;
 
 class C
@@ -70,12 +70,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallLastInsteadOfUsingElementAccess)]
-        public async Task Test_SyntaxTokenList()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallLastInsteadOfUsingElementAccess)]
+    public async Task Test_SyntaxTokenList()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using Microsoft.CodeAnalysis;
 
 class C
@@ -100,12 +100,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallLastInsteadOfUsingElementAccess)]
-        public async Task Test_SyntaxTriviaList()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallLastInsteadOfUsingElementAccess)]
+    public async Task Test_SyntaxTriviaList()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using Microsoft.CodeAnalysis;
 
 class C
@@ -130,12 +130,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallLastInsteadOfUsingElementAccess)]
-        public async Task Test_ChildSyntaxList()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallLastInsteadOfUsingElementAccess)]
+    public async Task Test_ChildSyntaxList()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using Microsoft.CodeAnalysis;
 
 class C
@@ -160,12 +160,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallLastInsteadOfUsingElementAccess)]
-        public async Task Test_SyntaxNodeOrTokenList()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallLastInsteadOfUsingElementAccess)]
+    public async Task Test_SyntaxNodeOrTokenList()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using Microsoft.CodeAnalysis;
 
 class C
@@ -190,12 +190,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallLastInsteadOfUsingElementAccess)]
-        public async Task TestNoDiagnostic_NotLastElement()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallLastInsteadOfUsingElementAccess)]
+    public async Task TestNoDiagnostic_NotLastElement()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using Microsoft.CodeAnalysis;
 
 class C
@@ -208,12 +208,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallLastInsteadOfUsingElementAccess)]
-        public async Task TestNoDiagnostic_ExpressionsAreNotEquivalent()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallLastInsteadOfUsingElementAccess)]
+    public async Task TestNoDiagnostic_ExpressionsAreNotEquivalent()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using Microsoft.CodeAnalysis;
 
 class C
@@ -227,6 +227,5 @@ class C
     }
 }
 ");
-        }
     }
 }

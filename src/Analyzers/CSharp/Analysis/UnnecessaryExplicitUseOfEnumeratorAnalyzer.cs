@@ -39,7 +39,7 @@ namespace Roslynator.CSharp.Analysis
 
             VariableDeclaratorSyntax declarator = usingStatement.Declaration?.Variables.SingleOrDefault(shouldThrow: false);
 
-            if (declarator == null)
+            if (declarator is null)
                 return;
 
             if (usingStatement.Statement?.SingleNonBlockStatementOrDefault() is not WhileStatementSyntax whileStatement)
@@ -85,7 +85,7 @@ namespace Roslynator.CSharp.Analysis
             }
             finally
             {
-                if (walker != null)
+                if (walker is not null)
                     UnnecessaryUsageOfEnumeratorWalker.Free(walker);
             }
 

@@ -9,33 +9,32 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.Formatting.CSharp;
 
-namespace Roslynator.Formatting.CodeFixes.CSharp
+namespace Roslynator.Formatting.CodeFixes.CSharp;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(FixFormattingOfBinaryExpressionChainCodeFixProvider))]
+[Shared]
+public sealed class FixFormattingOfBinaryExpressionChainCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(FixFormattingOfBinaryExpressionChainCodeFixProvider))]
-    [Shared]
-    public sealed class FixFormattingOfBinaryExpressionChainCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
-        {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.FixFormattingOfBinaryExpressionChain); }
-        }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.FixFormattingOfBinaryExpressionChain); }
+    }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out BinaryExpressionSyntax binaryExpression))
-                return;
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out BinaryExpressionSyntax binaryExpression))
+            return;
 
-            Document document = context.Document;
-            Diagnostic diagnostic = context.Diagnostics[0];
+        Document document = context.Document;
+        Diagnostic diagnostic = context.Diagnostics[0];
 
-            CodeAction codeAction = CodeAction.Create(
-                "Fix formatting",
-                ct => CodeFixHelpers.FixBinaryExpressionAsync(document, binaryExpression, ct),
-                GetEquivalenceKey(diagnostic));
+        CodeAction codeAction = CodeAction.Create(
+            "Fix formatting",
+            ct => CodeFixHelpers.FixBinaryExpressionAsync(document, binaryExpression, ct),
+            GetEquivalenceKey(diagnostic));
 
-            context.RegisterCodeFix(codeAction, diagnostic);
-        }
+        context.RegisterCodeFix(codeAction, diagnostic);
     }
 }

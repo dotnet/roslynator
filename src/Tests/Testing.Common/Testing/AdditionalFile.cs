@@ -6,48 +6,47 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 
-namespace Roslynator.Testing
+namespace Roslynator.Testing;
+
+/// <summary>
+/// Represents additional code file.
+/// </summary>
+[DebuggerDisplay("{DebuggerDisplay,nq}")]
+public readonly struct AdditionalFile
 {
     /// <summary>
-    /// Represents additional code file.
+    /// Initializes a new instance of <see cref="AdditionalFile"/>
     /// </summary>
-    [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public readonly struct AdditionalFile
+    /// <param name="source"></param>
+    /// <param name="expectedSource"></param>
+    public AdditionalFile(string source, string expectedSource = null)
     {
-        /// <summary>
-        /// Initializes a new instance of <see cref="AdditionalFile"/>
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="expectedSource"></param>
-        public AdditionalFile(string source, string expectedSource = null)
-        {
-            Source = source ?? throw new ArgumentNullException(nameof(source));
-            ExpectedSource = expectedSource;
-        }
+        Source = source ?? throw new ArgumentNullException(nameof(source));
+        ExpectedSource = expectedSource;
+    }
 
-        /// <summary>
-        /// Gets a source code.
-        /// </summary>
-        public string Source { get; }
+    /// <summary>
+    /// Gets a source code.
+    /// </summary>
+    public string Source { get; }
 
-        /// <summary>
-        /// Gets expected source code.
-        /// </summary>
-        public string ExpectedSource { get; }
+    /// <summary>
+    /// Gets expected source code.
+    /// </summary>
+    public string ExpectedSource { get; }
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string DebuggerDisplay => Source;
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+    private string DebuggerDisplay => Source;
 
-        internal static ImmutableArray<AdditionalFile> CreateRange(IEnumerable<string> additionalFiles)
-        {
-            return additionalFiles?.Select(f => new AdditionalFile(f)).ToImmutableArray()
-                ?? ImmutableArray<AdditionalFile>.Empty;
-        }
+    internal static ImmutableArray<AdditionalFile> CreateRange(IEnumerable<string> additionalFiles)
+    {
+        return additionalFiles?.Select(f => new AdditionalFile(f)).ToImmutableArray()
+            ?? ImmutableArray<AdditionalFile>.Empty;
+    }
 
-        internal static ImmutableArray<AdditionalFile> CreateRange(IEnumerable<(string source, string expectedSource)> additionalFiles)
-        {
-            return additionalFiles?.Select(f => new AdditionalFile(f.source, f.expectedSource)).ToImmutableArray()
-                ?? ImmutableArray<AdditionalFile>.Empty;
-        }
+    internal static ImmutableArray<AdditionalFile> CreateRange(IEnumerable<(string source, string expectedSource)> additionalFiles)
+    {
+        return additionalFiles?.Select(f => new AdditionalFile(f.source, f.expectedSource)).ToImmutableArray()
+            ?? ImmutableArray<AdditionalFile>.Empty;
     }
 }

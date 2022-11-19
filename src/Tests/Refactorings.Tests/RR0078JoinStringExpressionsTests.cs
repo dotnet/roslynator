@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0078JoinStringExpressionsTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.JoinStringExpressions;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.JoinStringExpressions)]
-        public async Task Test()
-        {
-            await VerifyRefactoringAsync(@"
+public class RR0078JoinStringExpressionsTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.JoinStringExpressions;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.JoinStringExpressions)]
+    public async Task Test()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M(string s)
@@ -30,12 +30,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.JoinStringExpressions)]
-        public async Task Test_ToInterpolatedString()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.JoinStringExpressions)]
+    public async Task Test_ToInterpolatedString()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M(string s1, string s2, string s3)
@@ -52,12 +52,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.JoinStringExpressions)]
-        public async Task Test_RegularAndInterpolated()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.JoinStringExpressions)]
+    public async Task Test_RegularAndInterpolated()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M()
@@ -76,12 +76,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.JoinStringExpressions)]
-        public async Task Test_VerbatimAndInterpolated()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.JoinStringExpressions)]
+    public async Task Test_VerbatimAndInterpolated()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M()
@@ -100,12 +100,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.JoinStringExpressions)]
-        public async Task Test_RegularAndVerbatimInterpolated()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.JoinStringExpressions)]
+    public async Task Test_RegularAndVerbatimInterpolated()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M()
@@ -124,12 +124,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.JoinStringExpressions)]
-        public async Task Test_RegularAndMultilineVerbatim()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.JoinStringExpressions)]
+    public async Task Test_RegularAndMultilineVerbatim()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M()
@@ -149,12 +149,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.JoinStringExpressions)]
-        public async Task Test_ToMultilineStringLiteral()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.JoinStringExpressions)]
+    public async Task Test_ToMultilineStringLiteral()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M()
@@ -175,12 +175,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId, "Multiline"));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.JoinStringExpressions)]
-        public async Task Test_StringConcatenationOnMultipleLines_LeadingTriviaIncluded()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.JoinStringExpressions)]
+    public async Task Test_StringConcatenationOnMultipleLines_LeadingTriviaIncluded()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M()
@@ -201,12 +201,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.JoinStringExpressions)]
-        public async Task Test_StringConcatenationOnMultipleLines_TrailingTriviaIncluded()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.JoinStringExpressions)]
+    public async Task Test_StringConcatenationOnMultipleLines_TrailingTriviaIncluded()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M()
@@ -229,12 +229,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.JoinStringExpressions)]
-        public async Task Test_StringConcatenation_PreprocessorDirectives()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.JoinStringExpressions)]
+    public async Task Test_StringConcatenation_PreprocessorDirectives()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M()
@@ -257,6 +257,5 @@ class C
 #endif
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId), options: Options.WithDebugPreprocessorSymbol());
-        }
     }
 }

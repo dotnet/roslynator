@@ -5,14 +5,13 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Host;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Roslynator.CodeMetrics
+namespace Roslynator.CodeMetrics;
+
+internal interface ICodeMetricsService : ILanguageService
 {
-    internal interface ICodeMetricsService : ILanguageService
-    {
-        ISyntaxFactsService SyntaxFacts { get; }
+    ISyntaxFactsService SyntaxFacts { get; }
 
-        CodeMetricsInfo CountPhysicalLines(SyntaxNode node, SourceText sourceText, CodeMetricsOptions options, CancellationToken cancellationToken);
+    CodeMetricsInfo CountPhysicalLines(SyntaxNode node, SourceText sourceText, CodeMetricsOptions options, CancellationToken cancellationToken);
 
-        CodeMetricsInfo CountLogicalLines(SyntaxNode node, SourceText sourceText, CodeMetricsOptions options, CancellationToken cancellationToken);
-    }
+    CodeMetricsInfo CountLogicalLines(SyntaxNode node, SourceText sourceText, CodeMetricsOptions options, CancellationToken cancellationToken);
 }

@@ -9,173 +9,172 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.SyntaxWalkers;
 
-namespace Roslynator.CSharp.Analysis.MakeMemberReadOnly
+namespace Roslynator.CSharp.Analysis.MakeMemberReadOnly;
+
+internal class MakeMemberReadOnlyWalker : AssignedExpressionWalker
 {
-    internal class MakeMemberReadOnlyWalker : AssignedExpressionWalker
+    private int _classOrStructDepth;
+    private int _localFunctionDepth;
+    private int _anonymousFunctionDepth;
+    private bool _isInInstanceConstructor;
+    private bool _isInStaticConstructor;
+
+    [ThreadStatic]
+    private static MakeMemberReadOnlyWalker _cachedInstance;
+
+    public SemanticModel SemanticModel { get; set; }
+
+    public CancellationToken CancellationToken { get; set; }
+
+    public Dictionary<string, (SyntaxNode, ISymbol)> Symbols { get; } = new();
+
+    public static MakeMemberReadOnlyWalker GetInstance()
     {
-        private int _classOrStructDepth;
-        private int _localFunctionDepth;
-        private int _anonymousFunctionDepth;
-        private bool _isInInstanceConstructor;
-        private bool _isInStaticConstructor;
+        MakeMemberReadOnlyWalker walker = _cachedInstance;
 
-        [ThreadStatic]
-        private static MakeMemberReadOnlyWalker _cachedInstance;
-
-        public SemanticModel SemanticModel { get; set; }
-
-        public CancellationToken CancellationToken { get; set; }
-
-        public Dictionary<string, (SyntaxNode, ISymbol)> Symbols { get; } = new();
-
-        public static MakeMemberReadOnlyWalker GetInstance()
+        if (walker is not null)
         {
-            MakeMemberReadOnlyWalker walker = _cachedInstance;
+            Debug.Assert(walker.Symbols.Count == 0);
+            Debug.Assert(walker.SemanticModel is null);
+            Debug.Assert(walker.CancellationToken == default);
 
-            if (walker != null)
-            {
-                Debug.Assert(walker.Symbols.Count == 0);
-                Debug.Assert(walker.SemanticModel == null);
-                Debug.Assert(walker.CancellationToken == default);
-
-                _cachedInstance = null;
-                return walker;
-            }
-
-            return new MakeMemberReadOnlyWalker();
+            _cachedInstance = null;
+            return walker;
         }
 
-        public static void Free(MakeMemberReadOnlyWalker walker)
+        return new MakeMemberReadOnlyWalker();
+    }
+
+    public static void Free(MakeMemberReadOnlyWalker walker)
+    {
+        walker.Reset();
+        _cachedInstance = walker;
+    }
+
+    private void Reset()
+    {
+        Symbols.Clear();
+        SemanticModel = null;
+        CancellationToken = default;
+        _classOrStructDepth = 0;
+        _localFunctionDepth = 0;
+        _anonymousFunctionDepth = 0;
+        _isInInstanceConstructor = false;
+        _isInStaticConstructor = false;
+    }
+
+    public override void VisitAssignedExpression(ExpressionSyntax expression)
+    {
+        SyntaxKind kind = expression.Kind();
+
+        if (kind == SyntaxKind.IdentifierName)
         {
-            walker.Reset();
-            _cachedInstance = walker;
+            AnalyzeAssigned((IdentifierNameSyntax)expression);
         }
-
-        private void Reset()
+        else if (kind == SyntaxKind.SimpleMemberAccessExpression)
         {
-            Symbols.Clear();
-            SemanticModel = null;
-            CancellationToken = default;
-            _classOrStructDepth = 0;
-            _localFunctionDepth = 0;
-            _anonymousFunctionDepth = 0;
-            _isInInstanceConstructor = false;
-            _isInStaticConstructor = false;
-        }
+            var memberAccessExpression = (MemberAccessExpressionSyntax)expression;
 
-        public override void VisitAssignedExpression(ExpressionSyntax expression)
-        {
-            SyntaxKind kind = expression.Kind();
-
-            if (kind == SyntaxKind.IdentifierName)
+            if (memberAccessExpression.Name is IdentifierNameSyntax identifierName)
             {
-                AnalyzeAssigned((IdentifierNameSyntax)expression);
-            }
-            else if (kind == SyntaxKind.SimpleMemberAccessExpression)
-            {
-                var memberAccessExpression = (MemberAccessExpressionSyntax)expression;
-
-                if (memberAccessExpression.Name is IdentifierNameSyntax identifierName)
-                {
-                    AnalyzeAssigned(identifierName, isInInstanceConstructor: memberAccessExpression.Expression.IsKind(SyntaxKind.ThisExpression));
-                }
+                AnalyzeAssigned(identifierName, isInInstanceConstructor: memberAccessExpression.Expression.IsKind(SyntaxKind.ThisExpression));
             }
         }
+    }
 
-        private void AnalyzeAssigned(IdentifierNameSyntax identifierName, bool isInInstanceConstructor = true)
+    private void AnalyzeAssigned(IdentifierNameSyntax identifierName, bool isInInstanceConstructor = true)
+    {
+        if (Symbols.TryGetValue(identifierName.Identifier.ValueText, out (SyntaxNode node, ISymbol symbol) nodeAndSymbol))
         {
-            if (Symbols.TryGetValue(identifierName.Identifier.ValueText, out (SyntaxNode node, ISymbol symbol) nodeAndSymbol))
+            ISymbol symbol = nodeAndSymbol.symbol;
+
+            if (_localFunctionDepth == 0
+                && _anonymousFunctionDepth == 0
+                && ((symbol.IsStatic) ? _isInStaticConstructor : isInInstanceConstructor && _isInInstanceConstructor))
             {
-                ISymbol symbol = nodeAndSymbol.symbol;
-
-                if (_localFunctionDepth == 0
-                    && _anonymousFunctionDepth == 0
-                    && ((symbol.IsStatic) ? _isInStaticConstructor : isInInstanceConstructor && _isInInstanceConstructor))
-                {
-                    return;
-                }
-
-                ISymbol symbol2 = SemanticModel.GetSymbol(identifierName, CancellationToken)?.OriginalDefinition;
-
-                if (SymbolEqualityComparer.Default.Equals(symbol, symbol2))
-                    Symbols.Remove(symbol.Name);
-            }
-        }
-
-        public override void VisitConstructorDeclaration(ConstructorDeclarationSyntax node)
-        {
-            if (_classOrStructDepth == 0)
-            {
-                if (node.Modifiers.Contains(SyntaxKind.StaticKeyword))
-                {
-                    _isInStaticConstructor = true;
-                }
-                else
-                {
-                    _isInInstanceConstructor = true;
-                }
+                return;
             }
 
-            base.VisitConstructorDeclaration(node);
+            ISymbol symbol2 = SemanticModel.GetSymbol(identifierName, CancellationToken)?.OriginalDefinition;
 
-            _isInInstanceConstructor = false;
-            _isInStaticConstructor = false;
+            if (SymbolEqualityComparer.Default.Equals(symbol, symbol2))
+                Symbols.Remove(symbol.Name);
         }
+    }
 
-        public override void VisitRefExpression(RefExpressionSyntax node)
+    public override void VisitConstructorDeclaration(ConstructorDeclarationSyntax node)
+    {
+        if (_classOrStructDepth == 0)
         {
-            ExpressionSyntax expression = node.Expression;
-
-            if (expression != null)
+            if (node.Modifiers.Contains(SyntaxKind.StaticKeyword))
             {
-                VisitAssignedExpression(expression);
+                _isInStaticConstructor = true;
             }
             else
             {
-                base.VisitRefExpression(node);
+                _isInInstanceConstructor = true;
             }
         }
 
-        public override void VisitLocalFunctionStatement(LocalFunctionStatementSyntax node)
-        {
-            _localFunctionDepth++;
-            base.VisitLocalFunctionStatement(node);
-            _localFunctionDepth--;
-        }
+        base.VisitConstructorDeclaration(node);
 
-        public override void VisitSimpleLambdaExpression(SimpleLambdaExpressionSyntax node)
-        {
-            _anonymousFunctionDepth++;
-            base.VisitSimpleLambdaExpression(node);
-            _anonymousFunctionDepth--;
-        }
+        _isInInstanceConstructor = false;
+        _isInStaticConstructor = false;
+    }
 
-        public override void VisitParenthesizedLambdaExpression(ParenthesizedLambdaExpressionSyntax node)
-        {
-            _anonymousFunctionDepth++;
-            base.VisitParenthesizedLambdaExpression(node);
-            _anonymousFunctionDepth--;
-        }
+    public override void VisitRefExpression(RefExpressionSyntax node)
+    {
+        ExpressionSyntax expression = node.Expression;
 
-        public override void VisitAnonymousMethodExpression(AnonymousMethodExpressionSyntax node)
+        if (expression is not null)
         {
-            _anonymousFunctionDepth++;
-            base.VisitAnonymousMethodExpression(node);
-            _anonymousFunctionDepth--;
+            VisitAssignedExpression(expression);
         }
+        else
+        {
+            base.VisitRefExpression(node);
+        }
+    }
 
-        public override void VisitClassDeclaration(ClassDeclarationSyntax node)
-        {
-            _classOrStructDepth++;
-            base.VisitClassDeclaration(node);
-            _classOrStructDepth--;
-        }
+    public override void VisitLocalFunctionStatement(LocalFunctionStatementSyntax node)
+    {
+        _localFunctionDepth++;
+        base.VisitLocalFunctionStatement(node);
+        _localFunctionDepth--;
+    }
 
-        public override void VisitStructDeclaration(StructDeclarationSyntax node)
-        {
-            _classOrStructDepth++;
-            base.VisitStructDeclaration(node);
-            _classOrStructDepth--;
-        }
+    public override void VisitSimpleLambdaExpression(SimpleLambdaExpressionSyntax node)
+    {
+        _anonymousFunctionDepth++;
+        base.VisitSimpleLambdaExpression(node);
+        _anonymousFunctionDepth--;
+    }
+
+    public override void VisitParenthesizedLambdaExpression(ParenthesizedLambdaExpressionSyntax node)
+    {
+        _anonymousFunctionDepth++;
+        base.VisitParenthesizedLambdaExpression(node);
+        _anonymousFunctionDepth--;
+    }
+
+    public override void VisitAnonymousMethodExpression(AnonymousMethodExpressionSyntax node)
+    {
+        _anonymousFunctionDepth++;
+        base.VisitAnonymousMethodExpression(node);
+        _anonymousFunctionDepth--;
+    }
+
+    public override void VisitClassDeclaration(ClassDeclarationSyntax node)
+    {
+        _classOrStructDepth++;
+        base.VisitClassDeclaration(node);
+        _classOrStructDepth--;
+    }
+
+    public override void VisitStructDeclaration(StructDeclarationSyntax node)
+    {
+        _classOrStructDepth++;
+        base.VisitStructDeclaration(node);
+        _classOrStructDepth--;
     }
 }

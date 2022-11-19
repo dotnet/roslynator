@@ -33,7 +33,7 @@ namespace Roslynator.CSharp
         public static bool IsAutoImplemented(this AccessorDeclarationSyntax accessorDeclaration)
         {
             return accessorDeclaration?.SemicolonToken.IsKind(SyntaxKind.SemicolonToken) == true
-                && accessorDeclaration.BodyOrExpressionBody() == null;
+                && accessorDeclaration.BodyOrExpressionBody() is null;
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace Roslynator.CSharp
         /// <param name="accessorDeclaration"></param>
         public static CSharpSyntaxNode BodyOrExpressionBody(this AccessorDeclarationSyntax accessorDeclaration)
         {
-            if (accessorDeclaration == null)
+            if (accessorDeclaration is null)
                 throw new ArgumentNullException(nameof(accessorDeclaration));
 
             return accessorDeclaration.Body ?? (CSharpSyntaxNode)accessorDeclaration.ExpressionBody;
@@ -70,7 +70,7 @@ namespace Roslynator.CSharp
 
         private static AccessorDeclarationSyntax Accessor(this AccessorListSyntax accessorList, SyntaxKind kind)
         {
-            if (accessorList == null)
+            if (accessorList is null)
                 throw new ArgumentNullException(nameof(accessorList));
 
             foreach (AccessorDeclarationSyntax accessor in accessorList.Accessors)
@@ -84,7 +84,7 @@ namespace Roslynator.CSharp
 
         private static AccessorDeclarationSyntax Accessor(this AccessorListSyntax accessorList, SyntaxKind kind1, SyntaxKind kind2)
         {
-            if (accessorList == null)
+            if (accessorList is null)
                 throw new ArgumentNullException(nameof(accessorList));
 
             foreach (AccessorDeclarationSyntax accessor in accessorList.Accessors)
@@ -110,7 +110,7 @@ namespace Roslynator.CSharp
 
                     body = statement as BlockSyntax;
                 }
-                while (body != null);
+                while (body is not null);
 
                 return statement;
             }
@@ -118,7 +118,7 @@ namespace Roslynator.CSharp
             {
                 StatementSyntax statement = body.Statements.SingleOrDefault(shouldThrow: false);
 
-                if (statement != null
+                if (statement is not null
                     && statement.Kind() != SyntaxKind.Block)
                 {
                     return statement;
@@ -170,7 +170,7 @@ namespace Roslynator.CSharp
         /// <param name="castExpression"></param>
         public static TextSpan ParenthesesSpan(this CastExpressionSyntax castExpression)
         {
-            if (castExpression == null)
+            if (castExpression is null)
                 throw new ArgumentNullException(nameof(castExpression));
 
             return TextSpan.FromBounds(
@@ -189,7 +189,7 @@ namespace Roslynator.CSharp
             this ClassDeclarationSyntax classDeclaration,
             MemberDeclarationSyntax member)
         {
-            if (classDeclaration == null)
+            if (classDeclaration is null)
                 throw new ArgumentNullException(nameof(classDeclaration));
 
             return classDeclaration.WithMembers(SingletonList(member));
@@ -204,7 +204,7 @@ namespace Roslynator.CSharp
             this ClassDeclarationSyntax classDeclaration,
             IEnumerable<MemberDeclarationSyntax> members)
         {
-            if (classDeclaration == null)
+            if (classDeclaration is null)
                 throw new ArgumentNullException(nameof(classDeclaration));
 
             return classDeclaration.WithMembers(List(members));
@@ -216,7 +216,7 @@ namespace Roslynator.CSharp
         /// <param name="classDeclaration"></param>
         public static TextSpan BracesSpan(this ClassDeclarationSyntax classDeclaration)
         {
-            if (classDeclaration == null)
+            if (classDeclaration is null)
                 throw new ArgumentNullException(nameof(classDeclaration));
 
             return TextSpan.FromBounds(
@@ -232,7 +232,7 @@ namespace Roslynator.CSharp
         /// <param name="forEachStatement"></param>
         public static TextSpan ParenthesesSpan(this CommonForEachStatementSyntax forEachStatement)
         {
-            if (forEachStatement == null)
+            if (forEachStatement is null)
                 throw new ArgumentNullException(nameof(forEachStatement));
 
             return TextSpan.FromBounds(forEachStatement.OpenParenToken.SpanStart, forEachStatement.CloseParenToken.Span.End);
@@ -256,7 +256,7 @@ namespace Roslynator.CSharp
             this CompilationUnitSyntax compilationUnit,
             MemberDeclarationSyntax member)
         {
-            if (compilationUnit == null)
+            if (compilationUnit is null)
                 throw new ArgumentNullException(nameof(compilationUnit));
 
             return compilationUnit.WithMembers(SingletonList(member));
@@ -271,7 +271,7 @@ namespace Roslynator.CSharp
             this CompilationUnitSyntax compilationUnit,
             IEnumerable<MemberDeclarationSyntax> members)
         {
-            if (compilationUnit == null)
+            if (compilationUnit is null)
                 throw new ArgumentNullException(nameof(compilationUnit));
 
             return compilationUnit.WithMembers(List(members));
@@ -285,10 +285,10 @@ namespace Roslynator.CSharp
         /// <param name="usings"></param>
         public static CompilationUnitSyntax AddUsings(this CompilationUnitSyntax compilationUnit, bool keepSingleLineCommentsOnTop, params UsingDirectiveSyntax[] usings)
         {
-            if (compilationUnit == null)
+            if (compilationUnit is null)
                 throw new ArgumentNullException(nameof(compilationUnit));
 
-            if (usings == null)
+            if (usings is null)
                 throw new ArgumentNullException(nameof(usings));
 
             if (keepSingleLineCommentsOnTop
@@ -382,7 +382,7 @@ namespace Roslynator.CSharp
         /// <param name="constructorDeclaration"></param>
         public static CSharpSyntaxNode BodyOrExpressionBody(this ConstructorDeclarationSyntax constructorDeclaration)
         {
-            if (constructorDeclaration == null)
+            if (constructorDeclaration is null)
                 throw new ArgumentNullException(nameof(constructorDeclaration));
 
             return constructorDeclaration.Body ?? (CSharpSyntaxNode)constructorDeclaration.ExpressionBody;
@@ -396,7 +396,7 @@ namespace Roslynator.CSharp
         /// <param name="conversionOperatorDeclaration"></param>
         public static CSharpSyntaxNode BodyOrExpressionBody(this ConversionOperatorDeclarationSyntax conversionOperatorDeclaration)
         {
-            if (conversionOperatorDeclaration == null)
+            if (conversionOperatorDeclaration is null)
                 throw new ArgumentNullException(nameof(conversionOperatorDeclaration));
 
             return conversionOperatorDeclaration.Body ?? (CSharpSyntaxNode)conversionOperatorDeclaration.ExpressionBody;
@@ -453,7 +453,7 @@ namespace Roslynator.CSharp
         /// <param name="destructorDeclaration"></param>
         public static CSharpSyntaxNode BodyOrExpressionBody(this DestructorDeclarationSyntax destructorDeclaration)
         {
-            if (destructorDeclaration == null)
+            if (destructorDeclaration is null)
                 throw new ArgumentNullException(nameof(destructorDeclaration));
 
             return destructorDeclaration.Body ?? (CSharpSyntaxNode)destructorDeclaration.ExpressionBody;
@@ -503,7 +503,7 @@ namespace Roslynator.CSharp
                         {
                             d = d.GetNextPossiblyRelatedDirective();
 
-                            if (d == null)
+                            if (d is null)
                                 break;
 
                             if (d.IsKind(
@@ -523,7 +523,7 @@ namespace Roslynator.CSharp
                         {
                             d = d.GetNextPossiblyRelatedDirective();
 
-                            if (d == null)
+                            if (d is null)
                                 break;
 
                             if (d.Kind() == SyntaxKind.EndIfDirectiveTrivia)
@@ -538,7 +538,7 @@ namespace Roslynator.CSharp
                         {
                             d = d.GetNextPossiblyRelatedDirective();
 
-                            if (d == null)
+                            if (d is null)
                                 break;
 
                             if (d.Kind() == SyntaxKind.EndRegionDirectiveTrivia)
@@ -556,11 +556,11 @@ namespace Roslynator.CSharp
         {
             DirectiveTriviaSyntax d = directiveTrivia;
 
-            while (d != null)
+            while (d is not null)
             {
                 d = d.GetNextDirective();
 
-                if (d != null)
+                if (d is not null)
                 {
                     switch (d.Kind())
                     {
@@ -570,7 +570,7 @@ namespace Roslynator.CSharp
                                 {
                                     d = d.GetNextRelatedDirective();
                                 }
-                                while (d != null && d.Kind() != SyntaxKind.EndIfDirectiveTrivia);
+                                while (d is not null && d.Kind() != SyntaxKind.EndIfDirectiveTrivia);
 
                                 continue;
                             }
@@ -580,7 +580,7 @@ namespace Roslynator.CSharp
                                 {
                                     d = d.GetNextRelatedDirective();
                                 }
-                                while (d != null && d.Kind() != SyntaxKind.EndRegionDirectiveTrivia);
+                                while (d is not null && d.Kind() != SyntaxKind.EndRegionDirectiveTrivia);
 
                                 continue;
                             }
@@ -597,7 +597,7 @@ namespace Roslynator.CSharp
         #region DocumentationCommentTriviaSyntax
         internal static XmlElementSyntax SummaryElement(this DocumentationCommentTriviaSyntax documentationComment)
         {
-            if (documentationComment == null)
+            if (documentationComment is null)
                 throw new ArgumentNullException(nameof(documentationComment));
 
             foreach (XmlNodeSyntax node in documentationComment.Content)
@@ -619,7 +619,7 @@ namespace Roslynator.CSharp
         /// <param name="localName"></param>
         public static IEnumerable<XmlElementSyntax> Elements(this DocumentationCommentTriviaSyntax documentationComment, string localName)
         {
-            if (documentationComment == null)
+            if (documentationComment is null)
                 throw new ArgumentNullException(nameof(documentationComment));
 
             return ElementsIterator();
@@ -679,7 +679,7 @@ namespace Roslynator.CSharp
         /// <param name="elseClause"></param>
         public static IfStatementSyntax GetTopmostIf(this ElseClauseSyntax elseClause)
         {
-            if (elseClause == null)
+            if (elseClause is null)
                 throw new ArgumentNullException(nameof(elseClause));
 
             if (elseClause.Parent is IfStatementSyntax ifStatement)
@@ -692,7 +692,7 @@ namespace Roslynator.CSharp
         {
             StatementSyntax statement = elseClause.Statement;
 
-            if (statement == null)
+            if (statement is null)
                 return null;
 
             SyntaxKind kind = statement.Kind();
@@ -717,7 +717,7 @@ namespace Roslynator.CSharp
         /// <param name="endRegionDirective"></param>
         public static RegionDirectiveTriviaSyntax GetRegionDirective(this EndRegionDirectiveTriviaSyntax endRegionDirective)
         {
-            if (endRegionDirective == null)
+            if (endRegionDirective is null)
                 throw new ArgumentNullException(nameof(endRegionDirective));
 
             RegionInfo region = SyntaxInfo.RegionInfo(endRegionDirective);
@@ -731,7 +731,7 @@ namespace Roslynator.CSharp
         /// <param name="endRegionDirective"></param>
         public static SyntaxTrivia GetPreprocessingMessageTrivia(this EndRegionDirectiveTriviaSyntax endRegionDirective)
         {
-            if (endRegionDirective == null)
+            if (endRegionDirective is null)
                 throw new ArgumentNullException(nameof(endRegionDirective));
 
             SyntaxToken endOfDirective = endRegionDirective.EndOfDirectiveToken;
@@ -766,7 +766,7 @@ namespace Roslynator.CSharp
         /// <param name="enumDeclaration"></param>
         public static TextSpan BracesSpan(this EnumDeclarationSyntax enumDeclaration)
         {
-            if (enumDeclaration == null)
+            if (enumDeclaration is null)
                 throw new ArgumentNullException(nameof(enumDeclaration));
 
             return TextSpan.FromBounds(
@@ -778,7 +778,7 @@ namespace Roslynator.CSharp
         #region EventDeclarationSyntax
         internal static TextSpan HeaderSpan(this EventDeclarationSyntax eventDeclaration)
         {
-            if (eventDeclaration == null)
+            if (eventDeclaration is null)
                 throw new ArgumentNullException(nameof(eventDeclaration));
 
             return TextSpan.FromBounds(
@@ -806,7 +806,7 @@ namespace Roslynator.CSharp
         /// <param name="expression"></param>
         public static ExpressionSyntax WalkDownParentheses(this ExpressionSyntax expression)
         {
-            if (expression == null)
+            if (expression is null)
                 throw new ArgumentNullException(nameof(expression));
 
             while (expression.Kind() == SyntaxKind.ParenthesizedExpression)
@@ -843,7 +843,7 @@ namespace Roslynator.CSharp
         /// <param name="forStatement"></param>
         public static TextSpan ParenthesesSpan(this ForStatementSyntax forStatement)
         {
-            if (forStatement == null)
+            if (forStatement is null)
                 throw new ArgumentNullException(nameof(forStatement));
 
             return TextSpan.FromBounds(forStatement.OpenParenToken.SpanStart, forStatement.CloseParenToken.Span.End);
@@ -871,7 +871,7 @@ namespace Roslynator.CSharp
         public static bool IsSimpleIf(this IfStatementSyntax ifStatement)
         {
             return ifStatement?.IsParentKind(SyntaxKind.ElseClause) == false
-                && ifStatement.Else == null;
+                && ifStatement.Else is null;
         }
 
         /// <summary>
@@ -880,14 +880,14 @@ namespace Roslynator.CSharp
         /// <param name="ifStatement"></param>
         public static IfStatementSyntax GetTopmostIf(this IfStatementSyntax ifStatement)
         {
-            if (ifStatement == null)
+            if (ifStatement is null)
                 throw new ArgumentNullException(nameof(ifStatement));
 
             while (true)
             {
                 IfStatementSyntax parentIf = GetPreviousIf(ifStatement);
 
-                if (parentIf != null)
+                if (parentIf is not null)
                 {
                     ifStatement = parentIf;
                 }
@@ -947,7 +947,7 @@ namespace Roslynator.CSharp
         /// <param name="ifStatement"></param>
         public static IfStatementCascade AsCascade(this IfStatementSyntax ifStatement)
         {
-            if (ifStatement == null)
+            if (ifStatement is null)
                 throw new ArgumentNullException(nameof(ifStatement));
 
             return new IfStatementCascade(ifStatement);
@@ -959,7 +959,7 @@ namespace Roslynator.CSharp
         /// <param name="ifStatement"></param>
         public static IfStatementCascadeInfo GetCascadeInfo(this IfStatementSyntax ifStatement)
         {
-            if (ifStatement == null)
+            if (ifStatement is null)
                 throw new ArgumentNullException(nameof(ifStatement));
 
             return new IfStatementCascadeInfo(ifStatement);
@@ -1039,7 +1039,7 @@ namespace Roslynator.CSharp
         /// <param name="indexerDeclaration"></param>
         public static AccessorDeclarationSyntax Getter(this IndexerDeclarationSyntax indexerDeclaration)
         {
-            if (indexerDeclaration == null)
+            if (indexerDeclaration is null)
                 throw new ArgumentNullException(nameof(indexerDeclaration));
 
             return indexerDeclaration
@@ -1053,7 +1053,7 @@ namespace Roslynator.CSharp
         /// <param name="indexerDeclaration"></param>
         public static AccessorDeclarationSyntax Setter(this IndexerDeclarationSyntax indexerDeclaration)
         {
-            if (indexerDeclaration == null)
+            if (indexerDeclaration is null)
                 throw new ArgumentNullException(nameof(indexerDeclaration));
 
             return indexerDeclaration
@@ -1069,7 +1069,7 @@ namespace Roslynator.CSharp
         /// <param name="interfaceDeclaration"></param>
         public static TextSpan BracesSpan(this InterfaceDeclarationSyntax interfaceDeclaration)
         {
-            if (interfaceDeclaration == null)
+            if (interfaceDeclaration is null)
                 throw new ArgumentNullException(nameof(interfaceDeclaration));
 
             return TextSpan.FromBounds(
@@ -1086,7 +1086,7 @@ namespace Roslynator.CSharp
             this InterfaceDeclarationSyntax interfaceDeclaration,
             MemberDeclarationSyntax member)
         {
-            if (interfaceDeclaration == null)
+            if (interfaceDeclaration is null)
                 throw new ArgumentNullException(nameof(interfaceDeclaration));
 
             return interfaceDeclaration.WithMembers(SingletonList(member));
@@ -1101,7 +1101,7 @@ namespace Roslynator.CSharp
             this InterfaceDeclarationSyntax interfaceDeclaration,
             IEnumerable<MemberDeclarationSyntax> members)
         {
-            if (interfaceDeclaration == null)
+            if (interfaceDeclaration is null)
                 throw new ArgumentNullException(nameof(interfaceDeclaration));
 
             return interfaceDeclaration.WithMembers(List(members));
@@ -1191,7 +1191,7 @@ namespace Roslynator.CSharp
         /// <param name="localFunctionStatement"></param>
         public static CSharpSyntaxNode BodyOrExpressionBody(this LocalFunctionStatementSyntax localFunctionStatement)
         {
-            if (localFunctionStatement == null)
+            if (localFunctionStatement is null)
                 throw new ArgumentNullException(nameof(localFunctionStatement));
 
             return localFunctionStatement.Body ?? (CSharpSyntaxNode)localFunctionStatement.ExpressionBody;
@@ -1212,7 +1212,7 @@ namespace Roslynator.CSharp
         /// <param name="localFunctionStatement"></param>
         public static bool ContainsYield(this LocalFunctionStatementSyntax localFunctionStatement)
         {
-            if (localFunctionStatement == null)
+            if (localFunctionStatement is null)
                 throw new ArgumentNullException(nameof(localFunctionStatement));
 
             return localFunctionStatement.Body?.ContainsYield() == true;
@@ -1244,7 +1244,7 @@ namespace Roslynator.CSharp
         /// <param name="member"></param>
         public static SyntaxTrivia GetSingleLineDocumentationCommentTrivia(this MemberDeclarationSyntax member)
         {
-            if (member == null)
+            if (member is null)
                 throw new ArgumentNullException(nameof(member));
 
             foreach (SyntaxTrivia trivia in member.GetLeadingTrivia())
@@ -1262,7 +1262,7 @@ namespace Roslynator.CSharp
         /// <param name="member"></param>
         public static SyntaxTrivia GetDocumentationCommentTrivia(this MemberDeclarationSyntax member)
         {
-            if (member == null)
+            if (member is null)
                 throw new ArgumentNullException(nameof(member));
 
             foreach (SyntaxTrivia trivia in member.GetLeadingTrivia())
@@ -1280,7 +1280,7 @@ namespace Roslynator.CSharp
         /// <param name="member"></param>
         public static DocumentationCommentTriviaSyntax GetSingleLineDocumentationComment(this MemberDeclarationSyntax member)
         {
-            if (member == null)
+            if (member is null)
                 throw new ArgumentNullException(nameof(member));
 
             SyntaxNode structure = member.GetSingleLineDocumentationCommentTrivia().GetStructure();
@@ -1297,7 +1297,7 @@ namespace Roslynator.CSharp
         /// <param name="member"></param>
         public static DocumentationCommentTriviaSyntax GetDocumentationComment(this MemberDeclarationSyntax member)
         {
-            if (member == null)
+            if (member is null)
                 throw new ArgumentNullException(nameof(member));
 
             SyntaxTrivia trivia = member.GetDocumentationCommentTrivia();
@@ -1318,7 +1318,7 @@ namespace Roslynator.CSharp
         /// <param name="member"></param>
         public static bool HasSingleLineDocumentationComment(this MemberDeclarationSyntax member)
         {
-            if (member == null)
+            if (member is null)
                 throw new ArgumentNullException(nameof(member));
 
             return member
@@ -1332,7 +1332,7 @@ namespace Roslynator.CSharp
         /// <param name="member"></param>
         public static bool HasDocumentationComment(this MemberDeclarationSyntax member)
         {
-            if (member == null)
+            if (member is null)
                 throw new ArgumentNullException(nameof(member));
 
             return member
@@ -1344,7 +1344,7 @@ namespace Roslynator.CSharp
             this TMember member,
             DocumentationCommentGeneratorSettings settings = null) where TMember : MemberDeclarationSyntax
         {
-            if (member == null)
+            if (member is null)
                 throw new ArgumentNullException(nameof(member));
 
             DocumentationCommentInserter inserter = DocumentationCommentInserter.Create(member);
@@ -1366,7 +1366,7 @@ namespace Roslynator.CSharp
             DocumentationCommentGeneratorSettings settings = null,
             CancellationToken cancellationToken = default) where TMember : MemberDeclarationSyntax
         {
-            if (member == null)
+            if (member is null)
                 throw new ArgumentNullException(nameof(member));
 
             if (DocumentationCommentGenerator.CanGenerateFromBase(member.Kind()))
@@ -1389,7 +1389,7 @@ namespace Roslynator.CSharp
             SyntaxTrivia comment,
             bool indent = false) where TMember : MemberDeclarationSyntax
         {
-            if (member == null)
+            if (member is null)
                 throw new ArgumentNullException(nameof(member));
 
             DocumentationCommentInserter inserter = DocumentationCommentInserter.Create(member);
@@ -1405,7 +1405,7 @@ namespace Roslynator.CSharp
         /// <param name="methodDeclaration"></param>
         public static bool ContainsYield(this MethodDeclarationSyntax methodDeclaration)
         {
-            if (methodDeclaration == null)
+            if (methodDeclaration is null)
                 throw new ArgumentNullException(nameof(methodDeclaration));
 
             return methodDeclaration.Body?.ContainsYield() == true;
@@ -1454,7 +1454,7 @@ namespace Roslynator.CSharp
         /// <param name="methodDeclaration"></param>
         public static CSharpSyntaxNode BodyOrExpressionBody(this MethodDeclarationSyntax methodDeclaration)
         {
-            if (methodDeclaration == null)
+            if (methodDeclaration is null)
                 throw new ArgumentNullException(nameof(methodDeclaration));
 
             return methodDeclaration.Body ?? (CSharpSyntaxNode)methodDeclaration.ExpressionBody;
@@ -1471,7 +1471,7 @@ namespace Roslynator.CSharp
             this NamespaceDeclarationSyntax namespaceDeclaration,
             MemberDeclarationSyntax member)
         {
-            if (namespaceDeclaration == null)
+            if (namespaceDeclaration is null)
                 throw new ArgumentNullException(nameof(namespaceDeclaration));
 
             return namespaceDeclaration.WithMembers(SingletonList(member));
@@ -1486,7 +1486,7 @@ namespace Roslynator.CSharp
             this NamespaceDeclarationSyntax namespaceDeclaration,
             IEnumerable<MemberDeclarationSyntax> members)
         {
-            if (namespaceDeclaration == null)
+            if (namespaceDeclaration is null)
                 throw new ArgumentNullException(nameof(namespaceDeclaration));
 
             return namespaceDeclaration.WithMembers(List(members));
@@ -1498,7 +1498,7 @@ namespace Roslynator.CSharp
         /// <param name="namespaceDeclaration"></param>
         public static TextSpan BracesSpan(this NamespaceDeclarationSyntax namespaceDeclaration)
         {
-            if (namespaceDeclaration == null)
+            if (namespaceDeclaration is null)
                 throw new ArgumentNullException(nameof(namespaceDeclaration));
 
             return TextSpan.FromBounds(
@@ -1514,7 +1514,7 @@ namespace Roslynator.CSharp
         /// <param name="operatorDeclaration"></param>
         public static CSharpSyntaxNode BodyOrExpressionBody(this OperatorDeclarationSyntax operatorDeclaration)
         {
-            if (operatorDeclaration == null)
+            if (operatorDeclaration is null)
                 throw new ArgumentNullException(nameof(operatorDeclaration));
 
             return operatorDeclaration.Body ?? (CSharpSyntaxNode)operatorDeclaration.ExpressionBody;
@@ -1588,7 +1588,7 @@ namespace Roslynator.CSharp
         /// <param name="propertyDeclaration"></param>
         public static AccessorDeclarationSyntax Getter(this PropertyDeclarationSyntax propertyDeclaration)
         {
-            if (propertyDeclaration == null)
+            if (propertyDeclaration is null)
                 throw new ArgumentNullException(nameof(propertyDeclaration));
 
             return propertyDeclaration.AccessorList?.Getter();
@@ -1600,7 +1600,7 @@ namespace Roslynator.CSharp
         /// <param name="propertyDeclaration"></param>
         public static AccessorDeclarationSyntax Setter(this PropertyDeclarationSyntax propertyDeclaration)
         {
-            if (propertyDeclaration == null)
+            if (propertyDeclaration is null)
                 throw new ArgumentNullException(nameof(propertyDeclaration));
 
             return propertyDeclaration.AccessorList?.Setter();
@@ -1627,7 +1627,7 @@ namespace Roslynator.CSharp
             this RecordDeclarationSyntax recordDeclaration,
             MemberDeclarationSyntax member)
         {
-            if (recordDeclaration == null)
+            if (recordDeclaration is null)
                 throw new ArgumentNullException(nameof(recordDeclaration));
 
             return recordDeclaration.WithMembers(SingletonList(member));
@@ -1642,7 +1642,7 @@ namespace Roslynator.CSharp
             this RecordDeclarationSyntax recordDeclaration,
             IEnumerable<MemberDeclarationSyntax> members)
         {
-            if (recordDeclaration == null)
+            if (recordDeclaration is null)
                 throw new ArgumentNullException(nameof(recordDeclaration));
 
             return recordDeclaration.WithMembers(List(members));
@@ -1654,7 +1654,7 @@ namespace Roslynator.CSharp
         /// <param name="recordDeclaration"></param>
         public static TextSpan BracesSpan(this RecordDeclarationSyntax recordDeclaration)
         {
-            if (recordDeclaration == null)
+            if (recordDeclaration is null)
                 throw new ArgumentNullException(nameof(recordDeclaration));
 
             return TextSpan.FromBounds(
@@ -1670,7 +1670,7 @@ namespace Roslynator.CSharp
         /// <param name="regionDirective"></param>
         public static EndRegionDirectiveTriviaSyntax GetEndRegionDirective(this RegionDirectiveTriviaSyntax regionDirective)
         {
-            if (regionDirective == null)
+            if (regionDirective is null)
                 throw new ArgumentNullException(nameof(regionDirective));
 
             RegionInfo region = SyntaxInfo.RegionInfo(regionDirective);
@@ -1684,7 +1684,7 @@ namespace Roslynator.CSharp
         /// <param name="regionDirective"></param>
         public static SyntaxTrivia GetPreprocessingMessageTrivia(this RegionDirectiveTriviaSyntax regionDirective)
         {
-            if (regionDirective == null)
+            if (regionDirective is null)
                 throw new ArgumentNullException(nameof(regionDirective));
 
             SyntaxToken endOfDirective = regionDirective.EndOfDirectiveToken;
@@ -1764,7 +1764,7 @@ namespace Roslynator.CSharp
 
             SyntaxTree tree = list[0].SyntaxTree;
 
-            if (tree == null)
+            if (tree is null)
                 return false;
 
             return span.IsSingleLine(tree, cancellationToken);
@@ -1783,7 +1783,7 @@ namespace Roslynator.CSharp
 
             SyntaxTree tree = list[0].SyntaxTree;
 
-            if (tree == null)
+            if (tree is null)
                 return false;
 
             return span.IsMultiLine(tree, cancellationToken);
@@ -1816,7 +1816,7 @@ namespace Roslynator.CSharp
             int count,
             TNode newNode) where TNode : SyntaxNode
         {
-            if (newNode == null)
+            if (newNode is null)
                 throw new ArgumentNullException(nameof(newNode));
 
             return ReplaceRange(list, index, count, new TNode[] { newNode });
@@ -1845,7 +1845,7 @@ namespace Roslynator.CSharp
                 throw new ArgumentOutOfRangeException(nameof(count), count, "");
             }
 
-            if (newNodes == null)
+            if (newNodes is null)
                 throw new ArgumentNullException(nameof(newNodes));
 
             return SeparatedList(ReplaceRange());
@@ -1976,7 +1976,7 @@ namespace Roslynator.CSharp
         /// <param name="statement"></param>
         public static StatementSyntax PreviousStatement(this StatementSyntax statement)
         {
-            if (statement == null)
+            if (statement is null)
                 throw new ArgumentNullException(nameof(statement));
 
             SyntaxList<StatementSyntax> statements = SyntaxInfo.StatementListInfo(statement).Statements;
@@ -1999,7 +1999,7 @@ namespace Roslynator.CSharp
         /// <param name="statement"></param>
         public static StatementSyntax NextStatement(this StatementSyntax statement)
         {
-            if (statement == null)
+            if (statement is null)
                 throw new ArgumentNullException(nameof(statement));
 
             SyntaxList<StatementSyntax> statements = SyntaxInfo.StatementListInfo(statement).Statements;
@@ -2049,7 +2049,7 @@ namespace Roslynator.CSharp
             bool canBeIfInsideElse = true,
             bool canBeUsingInsideUsing = true)
         {
-            if (statement == null)
+            if (statement is null)
                 throw new ArgumentNullException(nameof(statement));
 
             SyntaxKind kind = statement.Kind();
@@ -2065,7 +2065,7 @@ namespace Roslynator.CSharp
 
             SyntaxNode parent = statement.Parent;
 
-            if (parent == null)
+            if (parent is null)
                 return false;
 
             SyntaxKind parentKind = parent.Kind();
@@ -2090,7 +2090,7 @@ namespace Roslynator.CSharp
             this StructDeclarationSyntax structDeclaration,
             MemberDeclarationSyntax member)
         {
-            if (structDeclaration == null)
+            if (structDeclaration is null)
                 throw new ArgumentNullException(nameof(structDeclaration));
 
             return structDeclaration.WithMembers(SingletonList(member));
@@ -2105,7 +2105,7 @@ namespace Roslynator.CSharp
             this StructDeclarationSyntax structDeclaration,
             IEnumerable<MemberDeclarationSyntax> members)
         {
-            if (structDeclaration == null)
+            if (structDeclaration is null)
                 throw new ArgumentNullException(nameof(structDeclaration));
 
             return structDeclaration.WithMembers(List(members));
@@ -2117,7 +2117,7 @@ namespace Roslynator.CSharp
         /// <param name="structDeclaration"></param>
         public static TextSpan BracesSpan(this StructDeclarationSyntax structDeclaration)
         {
-            if (structDeclaration == null)
+            if (structDeclaration is null)
                 throw new ArgumentNullException(nameof(structDeclaration));
 
             return TextSpan.FromBounds(
@@ -2156,7 +2156,7 @@ namespace Roslynator.CSharp
         /// <param name="switchStatement"></param>
         public static SwitchSectionSyntax DefaultSection(this SwitchStatementSyntax switchStatement)
         {
-            if (switchStatement == null)
+            if (switchStatement is null)
                 throw new ArgumentNullException(nameof(switchStatement));
 
             foreach (SwitchSectionSyntax section in switchStatement.Sections)
@@ -2221,7 +2221,7 @@ namespace Roslynator.CSharp
 
             SyntaxTree tree = list[0].SyntaxTree;
 
-            if (tree == null)
+            if (tree is null)
                 return false;
 
             return span.IsSingleLine(tree, cancellationToken);
@@ -2240,7 +2240,7 @@ namespace Roslynator.CSharp
 
             SyntaxTree tree = list[0].SyntaxTree;
 
-            if (tree == null)
+            if (tree is null)
                 return false;
 
             return span.IsMultiLine(tree, cancellationToken);
@@ -2302,7 +2302,7 @@ namespace Roslynator.CSharp
             StatementSyntax statement,
             bool ignoreLocalFunctions)
         {
-            if (statement == null)
+            if (statement is null)
                 throw new ArgumentNullException(nameof(statement));
 
             if (!ignoreLocalFunctions)
@@ -2335,7 +2335,7 @@ namespace Roslynator.CSharp
             int count,
             TNode newNode) where TNode : SyntaxNode
         {
-            if (newNode == null)
+            if (newNode is null)
                 throw new ArgumentNullException(nameof(newNode));
 
             return ReplaceRange(list, index, count, new TNode[] { newNode });
@@ -2364,7 +2364,7 @@ namespace Roslynator.CSharp
                 throw new ArgumentOutOfRangeException(nameof(count), count, "");
             }
 
-            if (newNodes == null)
+            if (newNodes is null)
                 throw new ArgumentNullException(nameof(newNodes));
 
             return List(ReplaceRange());
@@ -2473,7 +2473,7 @@ namespace Roslynator.CSharp
                     && trivia.HasStructure
                     && (trivia.GetStructure() is DirectiveTriviaSyntax directive))
                 {
-                    if (predicate == null
+                    if (predicate is null
                         || predicate(directive))
                     {
                         yield return directive;
@@ -2490,7 +2490,7 @@ namespace Roslynator.CSharp
         /// <param name="ascendOutOfTrivia"></param>
         public static bool IsDescendantOf(this SyntaxNode node, SyntaxKind kind, bool ascendOutOfTrivia = true)
         {
-            if (node == null)
+            if (node is null)
                 throw new ArgumentNullException(nameof(node));
 
             return node.Ancestors(ascendOutOfTrivia).Any(f => f.IsKind(kind));
@@ -2504,7 +2504,7 @@ namespace Roslynator.CSharp
         /// <param name="kind2"></param>
         public static bool IsKind(this SyntaxNode node, SyntaxKind kind1, SyntaxKind kind2)
         {
-            if (node == null)
+            if (node is null)
                 return false;
 
             SyntaxKind kind = node.Kind();
@@ -2522,7 +2522,7 @@ namespace Roslynator.CSharp
         /// <param name="kind3"></param>
         public static bool IsKind(this SyntaxNode node, SyntaxKind kind1, SyntaxKind kind2, SyntaxKind kind3)
         {
-            if (node == null)
+            if (node is null)
                 return false;
 
             SyntaxKind kind = node.Kind();
@@ -2542,7 +2542,7 @@ namespace Roslynator.CSharp
         /// <param name="kind4"></param>
         public static bool IsKind(this SyntaxNode node, SyntaxKind kind1, SyntaxKind kind2, SyntaxKind kind3, SyntaxKind kind4)
         {
-            if (node == null)
+            if (node is null)
                 return false;
 
             SyntaxKind kind = node.Kind();
@@ -2564,7 +2564,7 @@ namespace Roslynator.CSharp
         /// <param name="kind5"></param>
         public static bool IsKind(this SyntaxNode node, SyntaxKind kind1, SyntaxKind kind2, SyntaxKind kind3, SyntaxKind kind4, SyntaxKind kind5)
         {
-            if (node == null)
+            if (node is null)
                 return false;
 
             SyntaxKind kind = node.Kind();
@@ -2588,7 +2588,7 @@ namespace Roslynator.CSharp
         /// <param name="kind6"></param>
         public static bool IsKind(this SyntaxNode node, SyntaxKind kind1, SyntaxKind kind2, SyntaxKind kind3, SyntaxKind kind4, SyntaxKind kind5, SyntaxKind kind6)
         {
-            if (node == null)
+            if (node is null)
                 return false;
 
             SyntaxKind kind = node.Kind();
@@ -2682,12 +2682,12 @@ namespace Roslynator.CSharp
             bool trim = true,
             CancellationToken cancellationToken = default)
         {
-            if (node == null)
+            if (node is null)
                 throw new ArgumentNullException(nameof(node));
 
             SyntaxTree syntaxTree = node.SyntaxTree;
 
-            if (syntaxTree != null)
+            if (syntaxTree is not null)
             {
                 TextSpan span = GetSpan(node, includeExteriorTrivia, trim);
 
@@ -2705,12 +2705,12 @@ namespace Roslynator.CSharp
             bool trim = true,
             CancellationToken cancellationToken = default)
         {
-            if (node == null)
+            if (node is null)
                 throw new ArgumentNullException(nameof(node));
 
             SyntaxTree syntaxTree = node.SyntaxTree;
 
-            if (syntaxTree != null)
+            if (syntaxTree is not null)
             {
                 TextSpan span = GetSpan(node, includeExteriorTrivia, trim);
 
@@ -2787,7 +2787,7 @@ namespace Roslynator.CSharp
         /// <param name="node"></param>
         public static TNode TrimLeadingTrivia<TNode>(this TNode node) where TNode : SyntaxNode
         {
-            if (node == null)
+            if (node is null)
                 throw new ArgumentNullException(nameof(node));
 
             SyntaxTriviaList trivia = node.GetLeadingTrivia();
@@ -2814,7 +2814,7 @@ namespace Roslynator.CSharp
         /// <param name="node"></param>
         public static TNode TrimTrailingTrivia<TNode>(this TNode node) where TNode : SyntaxNode
         {
-            if (node == null)
+            if (node is null)
                 throw new ArgumentNullException(nameof(node));
 
             SyntaxTriviaList trivia = node.GetTrailingTrivia();
@@ -2841,7 +2841,7 @@ namespace Roslynator.CSharp
         /// <param name="node"></param>
         public static TNode TrimTrivia<TNode>(this TNode node) where TNode : SyntaxNode
         {
-            if (node == null)
+            if (node is null)
                 throw new ArgumentNullException(nameof(node));
 
             return node
@@ -2851,7 +2851,7 @@ namespace Roslynator.CSharp
 
         internal static TextSpan TrimmedSpan(this SyntaxNode node)
         {
-            if (node == null)
+            if (node is null)
                 throw new ArgumentNullException(nameof(node));
 
             return TextSpan.FromBounds(
@@ -2915,15 +2915,15 @@ namespace Roslynator.CSharp
         /// <param name="ascendOutOfTrivia"></param>
         public static SyntaxNode FirstAncestor(this SyntaxNode node, Func<SyntaxNode, bool> predicate, bool ascendOutOfTrivia = true)
         {
-            if (node == null)
+            if (node is null)
                 throw new ArgumentNullException(nameof(node));
 
-            if (predicate == null)
+            if (predicate is null)
                 throw new ArgumentNullException(nameof(predicate));
 
             SyntaxNode parent = node.GetParent(ascendOutOfTrivia);
 
-            if (parent != null)
+            if (parent is not null)
             {
                 return FirstAncestorOrSelf(parent, predicate, ascendOutOfTrivia);
             }
@@ -2989,13 +2989,13 @@ namespace Roslynator.CSharp
         /// <param name="ascendOutOfTrivia"></param>
         public static SyntaxNode FirstAncestorOrSelf(this SyntaxNode node, Func<SyntaxNode, bool> predicate, bool ascendOutOfTrivia = true)
         {
-            if (node == null)
+            if (node is null)
                 throw new ArgumentNullException(nameof(node));
 
-            if (predicate == null)
+            if (predicate is null)
                 throw new ArgumentNullException(nameof(predicate));
 
-            while (node != null)
+            while (node is not null)
             {
                 if (predicate(node))
                     return node;
@@ -3013,10 +3013,10 @@ namespace Roslynator.CSharp
 
         internal static TNode RemoveStatement<TNode>(this TNode node, StatementSyntax statement) where TNode : SyntaxNode
         {
-            if (node == null)
+            if (node is null)
                 throw new ArgumentNullException(nameof(node));
 
-            if (statement == null)
+            if (statement is null)
                 throw new ArgumentNullException(nameof(statement));
 
             return node.RemoveNode(statement);
@@ -3052,7 +3052,7 @@ namespace Roslynator.CSharp
         /// <param name="span"></param>
         public static TNode RemoveTrivia<TNode>(this TNode node, TextSpan? span = null) where TNode : SyntaxNode
         {
-            if (node == null)
+            if (node is null)
                 throw new ArgumentNullException(nameof(node));
 
             return SyntaxRefactorings.RemoveTrivia(node, span);
@@ -3066,7 +3066,7 @@ namespace Roslynator.CSharp
         /// <param name="span"></param>
         public static TNode RemoveWhitespace<TNode>(this TNode node, TextSpan? span = null) where TNode : SyntaxNode
         {
-            if (node == null)
+            if (node is null)
                 throw new ArgumentNullException(nameof(node));
 
             return SyntaxRefactorings.RemoveWhitespace(node, span);
@@ -3081,7 +3081,7 @@ namespace Roslynator.CSharp
         /// <param name="span"></param>
         public static TNode ReplaceWhitespace<TNode>(this TNode node, SyntaxTrivia replacement, TextSpan? span = null) where TNode : SyntaxNode
         {
-            if (node == null)
+            if (node is null)
                 throw new ArgumentNullException(nameof(node));
 
             var replacer = new WhitespaceReplacer(replacement, span);
@@ -3091,7 +3091,7 @@ namespace Roslynator.CSharp
 
         internal static bool IsPartOfDocumentationComment(this SyntaxNode node)
         {
-            while (node != null)
+            while (node is not null)
             {
                 if (node.IsStructuredTrivia
                     && SyntaxFacts.IsDocumentationCommentTrivia(node.Kind()))
@@ -3116,7 +3116,7 @@ namespace Roslynator.CSharp
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default)
         {
-            for (SyntaxNode current = node; current != null; current = current.Parent)
+            for (SyntaxNode current = node; current is not null; current = current.Parent)
             {
                 switch (current.Kind())
                 {
@@ -3256,7 +3256,7 @@ namespace Roslynator.CSharp
             {
                 ISymbol symbol = info.Symbol;
 
-                if (symbol != null)
+                if (symbol is not null)
                     return IsMethodThatAcceptsExpressionAsFirstParameter2(symbol);
 
                 foreach (ISymbol candidateSymbol in info.CandidateSymbols)
@@ -3296,7 +3296,7 @@ namespace Roslynator.CSharp
         /// <param name="span"></param>
         public static bool ContainsUnbalancedIfElseDirectives(this SyntaxNode node, TextSpan span)
         {
-            if (node == null)
+            if (node is null)
                 throw new ArgumentNullException(nameof(node));
 
             if (!node.FullSpan.Contains(span))
@@ -3306,7 +3306,7 @@ namespace Roslynator.CSharp
             {
                 DirectiveTriviaSyntax first = node.GetFirstDirective(span, f => CSharpFacts.IsIfElseDirective(f.Kind()));
 
-                if (first != null)
+                if (first is not null)
                 {
                     if (!first.IsKind(SyntaxKind.IfDirectiveTrivia))
                         return true;
@@ -3325,7 +3325,7 @@ namespace Roslynator.CSharp
                     {
                         d = d.GetNextRelatedDirective();
 
-                        if (d == null)
+                        if (d is null)
                             return true;
 
                         if (!d.FullSpan.OverlapsWith(span))
@@ -3348,14 +3348,14 @@ namespace Roslynator.CSharp
         {
             DirectiveTriviaSyntax directive = node.GetFirstDirective(predicate);
 
-            if (directive == null)
+            if (directive is null)
                 return null;
 
             while (!directive.FullSpan.OverlapsWith(span))
             {
                 directive = directive.GetNextDirective(predicate);
 
-                if (directive == null)
+                if (directive is null)
                     return null;
 
                 if (!node.FullSpan.Contains(directive.FullSpan))
@@ -3369,14 +3369,14 @@ namespace Roslynator.CSharp
         {
             DirectiveTriviaSyntax directive = node.GetLastDirective(predicate);
 
-            if (directive == null)
+            if (directive is null)
                 return null;
 
             while (!directive.FullSpan.OverlapsWith(span))
             {
                 directive = directive.GetPreviousDirective(predicate);
 
-                if (directive == null)
+                if (directive is null)
                     return null;
 
                 if (!node.FullSpan.Contains(directive.FullSpan))
@@ -3810,7 +3810,7 @@ namespace Roslynator.CSharp
                 throw new ArgumentOutOfRangeException(nameof(count), count, "");
             }
 
-            if (newTokens == null)
+            if (newTokens is null)
                 throw new ArgumentNullException(nameof(newTokens));
 
             return TokenList(ReplaceRange());
@@ -4094,7 +4094,7 @@ namespace Roslynator.CSharp
                 throw new ArgumentOutOfRangeException(nameof(count), count, "");
             }
 
-            if (newTrivia == null)
+            if (newTrivia is null)
                 throw new ArgumentNullException(nameof(newTrivia));
 
             return TriviaList(ReplaceRange());
@@ -4173,7 +4173,7 @@ namespace Roslynator.CSharp
         #region TypeDeclarationSyntax
         internal static TypeDeclarationSyntax WithMembers(this TypeDeclarationSyntax typeDeclaration, SyntaxList<MemberDeclarationSyntax> newMembers)
         {
-            if (typeDeclaration == null)
+            if (typeDeclaration is null)
                 throw new ArgumentNullException(nameof(typeDeclaration));
 
             switch (typeDeclaration.Kind())
@@ -4227,7 +4227,7 @@ namespace Roslynator.CSharp
 
                     qualifiedName = left as QualifiedNameSyntax;
                 }
-                while (qualifiedName != null);
+                while (qualifiedName is not null);
 
                 SyntaxDebug.Fail(left);
             }
@@ -4247,7 +4247,7 @@ namespace Roslynator.CSharp
         /// <param name="usingStatement"></param>
         public static CSharpSyntaxNode DeclarationOrExpression(this UsingStatementSyntax usingStatement)
         {
-            if (usingStatement == null)
+            if (usingStatement is null)
                 throw new ArgumentNullException(nameof(usingStatement));
 
             return usingStatement.Declaration ?? (CSharpSyntaxNode)usingStatement.Expression;
@@ -4257,7 +4257,7 @@ namespace Roslynator.CSharp
         {
             StatementSyntax statement = usingStatement.Statement;
 
-            if (statement == null)
+            if (statement is null)
                 return null;
 
             SyntaxKind kind = statement.Kind();
@@ -4304,7 +4304,7 @@ namespace Roslynator.CSharp
         {
             XmlElementStartTagSyntax startTag = element.StartTag;
 
-            if (startTag != null)
+            if (startTag is not null)
             {
                 foreach (XmlAttributeSyntax attribute in startTag.Attributes)
                 {
@@ -4313,7 +4313,7 @@ namespace Roslynator.CSharp
                     {
                         IdentifierNameSyntax identifierName = nameAttribute.Identifier;
 
-                        if (identifierName != null)
+                        if (identifierName is not null)
                             return identifierName.Identifier.ValueText;
                     }
                 }
@@ -4345,7 +4345,7 @@ namespace Roslynator.CSharp
                 {
                     IdentifierNameSyntax identifierName = nameAttribute.Identifier;
 
-                    if (identifierName != null)
+                    if (identifierName is not null)
                         return identifierName.Identifier.ValueText;
                 }
             }

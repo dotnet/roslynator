@@ -6,124 +6,123 @@ using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 
-namespace Roslynator
+namespace Roslynator;
+
+internal readonly struct EnumSymbolInfo
 {
-    internal readonly struct EnumSymbolInfo
+    private EnumSymbolInfo(ImmutableArray<EnumFieldSymbolInfo> fields)
     {
-        private EnumSymbolInfo(ImmutableArray<EnumFieldSymbolInfo> fields)
+        Fields = fields;
+    }
+
+    public INamedTypeSymbol Symbol => (!Fields.IsDefault) ? Fields.FirstOrDefault().Symbol?.ContainingType : default;
+
+    public ImmutableArray<EnumFieldSymbolInfo> Fields { get; }
+
+    public bool IsDefault => Fields.IsDefault;
+
+    public bool Contains(ulong value)
+    {
+        foreach (EnumFieldSymbolInfo field in Fields)
         {
-            Fields = fields;
+            if (field.HasValue
+                && field.Value == value)
+            {
+                return true;
+            }
         }
 
-        public INamedTypeSymbol Symbol => (!Fields.IsDefault) ? Fields.FirstOrDefault().Symbol?.ContainingType : default;
+        return false;
+    }
 
-        public ImmutableArray<EnumFieldSymbolInfo> Fields { get; }
+    public List<EnumFieldSymbolInfo> Decompose(in EnumFieldSymbolInfo fieldInfo)
+    {
+        return Decompose(fieldInfo.Value);
+    }
 
-        public bool IsDefault => Fields.IsDefault;
+    public List<EnumFieldSymbolInfo> Decompose(ulong value)
+    {
+        List<EnumFieldSymbolInfo> values = null;
 
-        public bool Contains(ulong value)
+        int i = Fields.Length - 1;
+
+        while (i >= 0
+            && Fields[i].Value >= value)
         {
-            foreach (EnumFieldSymbolInfo field in Fields)
+            i--;
+        }
+
+        while (i >= 0)
+        {
+            ulong value2 = Fields[i].Value;
+
+            if ((value & value2) == value2)
             {
-                if (field.HasValue
-                    && field.Value == value)
-                {
-                    return true;
-                }
+                (values ??= new List<EnumFieldSymbolInfo>()).Add(Fields[i]);
+
+                value &= ~value2;
+
+                if (value == 0)
+                    return values;
             }
 
+            i--;
+        }
+
+        return null;
+    }
+
+    public static EnumSymbolInfo Create(INamedTypeSymbol symbol)
+    {
+        if (symbol is null)
+            throw new ArgumentNullException(nameof(symbol));
+
+        if (!TryCreate(symbol, out EnumSymbolInfo enumInfo))
+            throw new ArgumentException("", nameof(symbol));
+
+        return enumInfo;
+    }
+
+    public static bool TryCreate(INamedTypeSymbol symbol, out EnumSymbolInfo enumInfo)
+    {
+        if (symbol?.TypeKind != TypeKind.Enum)
+        {
+            enumInfo = default;
             return false;
         }
 
-        public List<EnumFieldSymbolInfo> Decompose(in EnumFieldSymbolInfo fieldInfo)
+        ImmutableArray<ISymbol> members = symbol.GetMembers();
+
+        ImmutableArray<EnumFieldSymbolInfo>.Builder fields = ImmutableArray.CreateBuilder<EnumFieldSymbolInfo>(members.Length);
+
+        foreach (ISymbol member in members)
         {
-            return Decompose(fieldInfo.Value);
+            if (!member.IsImplicitlyDeclared
+                && member is IFieldSymbol fieldSymbol)
+            {
+                fields.Add(EnumFieldSymbolInfo.Create(fieldSymbol));
+            }
         }
 
-        public List<EnumFieldSymbolInfo> Decompose(ulong value)
+        fields.Sort(EnumFieldSymbolInfoComparer.Instance);
+
+        enumInfo = new EnumSymbolInfo(fields.ToImmutableArray());
+
+        return true;
+    }
+
+    private class EnumFieldSymbolInfoComparer : IComparer<EnumFieldSymbolInfo>
+    {
+        public static EnumFieldSymbolInfoComparer Instance { get; } = new();
+
+        public int Compare(EnumFieldSymbolInfo x, EnumFieldSymbolInfo y)
         {
-            List<EnumFieldSymbolInfo> values = null;
+            int result = x.Value.CompareTo(y.Value);
 
-            int i = Fields.Length - 1;
+            if (result != 0)
+                return result;
 
-            while (i >= 0
-                && Fields[i].Value >= value)
-            {
-                i--;
-            }
-
-            while (i >= 0)
-            {
-                ulong value2 = Fields[i].Value;
-
-                if ((value & value2) == value2)
-                {
-                    (values ??= new List<EnumFieldSymbolInfo>()).Add(Fields[i]);
-
-                    value &= ~value2;
-
-                    if (value == 0)
-                        return values;
-                }
-
-                i--;
-            }
-
-            return null;
-        }
-
-        public static EnumSymbolInfo Create(INamedTypeSymbol symbol)
-        {
-            if (symbol == null)
-                throw new ArgumentNullException(nameof(symbol));
-
-            if (!TryCreate(symbol, out EnumSymbolInfo enumInfo))
-                throw new ArgumentException("", nameof(symbol));
-
-            return enumInfo;
-        }
-
-        public static bool TryCreate(INamedTypeSymbol symbol, out EnumSymbolInfo enumInfo)
-        {
-            if (symbol?.TypeKind != TypeKind.Enum)
-            {
-                enumInfo = default;
-                return false;
-            }
-
-            ImmutableArray<ISymbol> members = symbol.GetMembers();
-
-            ImmutableArray<EnumFieldSymbolInfo>.Builder fields = ImmutableArray.CreateBuilder<EnumFieldSymbolInfo>(members.Length);
-
-            foreach (ISymbol member in members)
-            {
-                if (!member.IsImplicitlyDeclared
-                    && member is IFieldSymbol fieldSymbol)
-                {
-                    fields.Add(EnumFieldSymbolInfo.Create(fieldSymbol));
-                }
-            }
-
-            fields.Sort(EnumFieldSymbolInfoComparer.Instance);
-
-            enumInfo = new EnumSymbolInfo(fields.ToImmutableArray());
-
-            return true;
-        }
-
-        private class EnumFieldSymbolInfoComparer : IComparer<EnumFieldSymbolInfo>
-        {
-            public static EnumFieldSymbolInfoComparer Instance { get; } = new();
-
-            public int Compare(EnumFieldSymbolInfo x, EnumFieldSymbolInfo y)
-            {
-                int result = x.Value.CompareTo(y.Value);
-
-                if (result != 0)
-                    return result;
-
-                return string.CompareOrdinal(y.Name, x.Name);
-            }
+            return string.CompareOrdinal(y.Name, x.Name);
         }
     }
 }

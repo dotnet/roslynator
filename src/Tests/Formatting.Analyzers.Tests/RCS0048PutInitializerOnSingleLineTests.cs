@@ -6,16 +6,16 @@ using Roslynator.Formatting.CodeFixes.CSharp;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.Formatting.CSharp.Tests
-{
-    public class RCS0048PutInitializerOnSingleLineTests : AbstractCSharpDiagnosticVerifier<PutInitializerOnSingleLineAnalyzer, InitializerCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.PutInitializerOnSingleLine;
+namespace Roslynator.Formatting.CSharp.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutInitializerOnSingleLine)]
-        public async Task Test_ObjectInitializer()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS0048PutInitializerOnSingleLineTests : AbstractCSharpDiagnosticVerifier<PutInitializerOnSingleLineAnalyzer, InitializerCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.PutInitializerOnSingleLine;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutInitializerOnSingleLine)]
+    public async Task Test_ObjectInitializer()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     object P { get; set; }
@@ -39,12 +39,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutInitializerOnSingleLine)]
-        public async Task Test_ObjectInitializer_TrailingComma()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutInitializerOnSingleLine)]
+    public async Task Test_ObjectInitializer_TrailingComma()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     object P { get; set; }
@@ -68,12 +68,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutInitializerOnSingleLine)]
-        public async Task Test_ObjectInitializer_TrailingComma2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutInitializerOnSingleLine)]
+    public async Task Test_ObjectInitializer_TrailingComma2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 
 class C
@@ -117,12 +117,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutInitializerOnSingleLine)]
-        public async Task Test_ObjectInitializer_AssignmentExpression()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutInitializerOnSingleLine)]
+    public async Task Test_ObjectInitializer_AssignmentExpression()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     C P1 { get; set; }
@@ -158,12 +158,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutInitializerOnSingleLine)]
-        public async Task Test_ObjectInitializer_TrailingComma_AssignmentExpression()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutInitializerOnSingleLine)]
+    public async Task Test_ObjectInitializer_TrailingComma_AssignmentExpression()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     C P1 { get; set; }
@@ -199,12 +199,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutInitializerOnSingleLine)]
-        public async Task Test_DictionaryInitializer()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutInitializerOnSingleLine)]
+    public async Task Test_DictionaryInitializer()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 
 class C
@@ -228,12 +228,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutInitializerOnSingleLine)]
-        public async Task Test_DictionaryInitializer_CSharp6()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutInitializerOnSingleLine)]
+    public async Task Test_DictionaryInitializer_CSharp6()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 
 class C
@@ -257,12 +257,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutInitializerOnSingleLine)]
-        public async Task Test_CollectionInitializer()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutInitializerOnSingleLine)]
+    public async Task Test_CollectionInitializer()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 
 class C
@@ -286,12 +286,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutInitializerOnSingleLine)]
-        public async Task Test_ArrayInitializer()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutInitializerOnSingleLine)]
+    public async Task Test_ArrayInitializer()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -311,12 +311,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutInitializerOnSingleLine)]
-        public async Task Test_ArrayInitializer_Field()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutInitializerOnSingleLine)]
+    public async Task Test_ArrayInitializer_Field()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     string[] _f =
@@ -330,12 +330,12 @@ class C
     string[] _f = { null };
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutInitializerOnSingleLine)]
-        public async Task Test_ArrayInitializer_TrailingComma_Field()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutInitializerOnSingleLine)]
+    public async Task Test_ArrayInitializer_TrailingComma_Field()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     string[] _f =
@@ -349,12 +349,12 @@ class C
     string[] _f = { null };
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutInitializerOnSingleLine)]
-        public async Task Test_ArrayInitializer_Local()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutInitializerOnSingleLine)]
+    public async Task Test_ArrayInitializer_Local()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -374,12 +374,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutInitializerOnSingleLine)]
-        public async Task Test_ArrayInitializer_TrailingComma_Local()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutInitializerOnSingleLine)]
+    public async Task Test_ArrayInitializer_TrailingComma_Local()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -399,12 +399,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutInitializerOnSingleLine)]
-        public async Task Test_ImplicitObjectCreationInitializer()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutInitializerOnSingleLine)]
+    public async Task Test_ImplicitObjectCreationInitializer()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     string P { get; set; }
@@ -428,12 +428,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutInitializerOnSingleLine)]
-        public async Task TestNoDiagnostic_MultipleExpressions()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutInitializerOnSingleLine)]
+    public async Task TestNoDiagnostic_MultipleExpressions()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     object P1 { get; set; }
@@ -449,12 +449,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutInitializerOnSingleLine)]
-        public async Task TestNoDiagnostic_MultilineExpression()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutInitializerOnSingleLine)]
+    public async Task TestNoDiagnostic_MultilineExpression()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     object P1 { get; set; }
@@ -470,12 +470,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutInitializerOnSingleLine)]
-        public async Task TestNoDiagnostic_CommentAfterCloseParenthesis()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutInitializerOnSingleLine)]
+    public async Task TestNoDiagnostic_CommentAfterCloseParenthesis()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     object P { get; set; }
@@ -489,12 +489,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutInitializerOnSingleLine)]
-        public async Task TestNoDiagnostic_CommentBeforeOpenBrace()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutInitializerOnSingleLine)]
+    public async Task TestNoDiagnostic_CommentBeforeOpenBrace()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     object P { get; set; }
@@ -508,12 +508,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutInitializerOnSingleLine)]
-        public async Task TestNoDiagnostic_CommentAfterOpenBrace()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutInitializerOnSingleLine)]
+    public async Task TestNoDiagnostic_CommentAfterOpenBrace()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     object P { get; set; }
@@ -527,12 +527,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutInitializerOnSingleLine)]
-        public async Task TestNoDiagnostic_CommentBeforeExpression()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutInitializerOnSingleLine)]
+    public async Task TestNoDiagnostic_CommentBeforeExpression()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     object P { get; set; }
@@ -546,12 +546,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutInitializerOnSingleLine)]
-        public async Task TestNoDiagnostic_CommentAfterExpression()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutInitializerOnSingleLine)]
+    public async Task TestNoDiagnostic_CommentAfterExpression()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     object P { get; set; }
@@ -565,12 +565,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutInitializerOnSingleLine)]
-        public async Task TestNoDiagnostic_CommentAfterComma()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutInitializerOnSingleLine)]
+    public async Task TestNoDiagnostic_CommentAfterComma()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     object P { get; set; }
@@ -584,12 +584,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutInitializerOnSingleLine)]
-        public async Task TestNoDiagnostic_CommentBeforeCloseBrace()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutInitializerOnSingleLine)]
+    public async Task TestNoDiagnostic_CommentBeforeCloseBrace()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     object P { get; set; }
@@ -603,6 +603,5 @@ class C
     }
 }
 ");
-        }
     }
 }

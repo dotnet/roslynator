@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1204UseEventArgsEmptyTests : AbstractCSharpDiagnosticVerifier<UseEventArgsEmptyAnalyzer, ObjectCreationExpressionCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseEventArgsEmpty;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseEventArgsEmpty)]
-        public async Task Test()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1204UseEventArgsEmptyTests : AbstractCSharpDiagnosticVerifier<UseEventArgsEmptyAnalyzer, ObjectCreationExpressionCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseEventArgsEmpty;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseEventArgsEmpty)]
+    public async Task Test()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
@@ -36,6 +36,5 @@ class C
     }
 }
 ");
-        }
     }
 }

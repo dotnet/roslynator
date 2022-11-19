@@ -2,25 +2,24 @@
 
 using System;
 
-namespace Roslynator.CommandLine
+namespace Roslynator.CommandLine;
+
+internal static class Extensions
 {
-    internal static class Extensions
+    public static VisibilityFilter ToVisibilityFilter(this Visibility visibility)
     {
-        public static VisibilityFilter ToVisibilityFilter(this Visibility visibility)
+        switch (visibility)
         {
-            switch (visibility)
-            {
-                case Visibility.NotApplicable:
-                    return VisibilityFilter.None;
-                case Visibility.Private:
-                    return VisibilityFilter.Private;
-                case Visibility.Internal:
-                    return VisibilityFilter.Internal;
-                case Visibility.Public:
-                    return VisibilityFilter.Public;
-                default:
-                    throw new InvalidOperationException();
-            }
+            case Visibility.NotApplicable:
+                return VisibilityFilter.None;
+            case Visibility.Private:
+                return VisibilityFilter.Private;
+            case Visibility.Internal:
+                return VisibilityFilter.Internal;
+            case Visibility.Public:
+                return VisibilityFilter.Public;
+            default:
+                throw new InvalidOperationException();
         }
     }
 }

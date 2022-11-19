@@ -2,124 +2,123 @@
 
 using Xunit;
 
-namespace Roslynator.Testing.CSharp
+namespace Roslynator.Testing.CSharp;
+
+public static class MetadataNameTests
 {
-    public static class MetadataNameTests
+    [Fact]
+    public static void TestParse1()
     {
-        [Fact]
-        public static void TestParse1()
-        {
-            const string x = "a";
+        const string x = "a";
 
-            var name = MetadataName.Parse(x);
+        var name = MetadataName.Parse(x);
 
-            Assert.Equal(x, name.ToString());
-        }
+        Assert.Equal(x, name.ToString());
+    }
 
-        [Fact]
-        public static void TestParse2()
-        {
-            const string x = "a.b";
+    [Fact]
+    public static void TestParse2()
+    {
+        const string x = "a.b";
 
-            var name = MetadataName.Parse(x);
+        var name = MetadataName.Parse(x);
 
-            Assert.Equal(x, name.ToString());
-        }
+        Assert.Equal(x, name.ToString());
+    }
 
-        [Fact]
-        public static void TestParse3()
-        {
-            const string x = "a.b.c";
+    [Fact]
+    public static void TestParse3()
+    {
+        const string x = "a.b.c";
 
-            var name = MetadataName.Parse(x);
+        var name = MetadataName.Parse(x);
 
-            Assert.Equal(x, name.ToString());
-        }
+        Assert.Equal(x, name.ToString());
+    }
 
-        [Fact]
-        public static void TestParse4()
-        {
-            const string x = "a+b";
+    [Fact]
+    public static void TestParse4()
+    {
+        const string x = "a+b";
 
-            var name = MetadataName.Parse(x);
+        var name = MetadataName.Parse(x);
 
-            Assert.Equal(x, name.ToString());
-        }
+        Assert.Equal(x, name.ToString());
+    }
 
-        [Fact]
-        public static void TestParse5()
-        {
-            const string x = "a.b+c+d";
+    [Fact]
+    public static void TestParse5()
+    {
+        const string x = "a.b+c+d";
 
-            var name = MetadataName.Parse(x);
+        var name = MetadataName.Parse(x);
 
-            Assert.Equal(x, name.ToString());
-        }
+        Assert.Equal(x, name.ToString());
+    }
 
-        [Fact]
-        public static void TestParse6()
-        {
-            const string x = "a.b.c+d+e+f";
+    [Fact]
+    public static void TestParse6()
+    {
+        const string x = "a.b.c+d+e+f";
 
-            var name = MetadataName.Parse(x);
+        var name = MetadataName.Parse(x);
 
-            Assert.Equal(x, name.ToString());
-        }
+        Assert.Equal(x, name.ToString());
+    }
 
-        [Fact]
-        public static void TestTryParse_Null()
-        {
-            const string x = null;
+    [Fact]
+    public static void TestTryParse_Null()
+    {
+        const string x = null;
 
-            Assert.False(MetadataName.TryParse(x, out MetadataName _));
-        }
+        Assert.False(MetadataName.TryParse(x, out MetadataName _));
+    }
 
-        [Fact]
-        public static void TestTryParse()
-        {
-            const string x = ".Foo";
+    [Fact]
+    public static void TestTryParse()
+    {
+        const string x = ".Foo";
 
-            Assert.False(MetadataName.TryParse(x, out MetadataName _));
-        }
+        Assert.False(MetadataName.TryParse(x, out MetadataName _));
+    }
 
-        [Fact]
-        public static void TestTryParse2()
-        {
-            const string x = "Foo.";
+    [Fact]
+    public static void TestTryParse2()
+    {
+        const string x = "Foo.";
 
-            Assert.False(MetadataName.TryParse(x, out MetadataName _));
-        }
+        Assert.False(MetadataName.TryParse(x, out MetadataName _));
+    }
 
-        [Fact]
-        public static void TestTryParse3()
-        {
-            const string x = "+Foo";
+    [Fact]
+    public static void TestTryParse3()
+    {
+        const string x = "+Foo";
 
-            Assert.False(MetadataName.TryParse(x, out MetadataName _));
-        }
+        Assert.False(MetadataName.TryParse(x, out MetadataName _));
+    }
 
-        [Fact]
-        public static void TestTryParse4()
-        {
-            const string x = "Foo+";
+    [Fact]
+    public static void TestTryParse4()
+    {
+        const string x = "Foo+";
 
-            Assert.False(MetadataName.TryParse(x, out MetadataName _));
-        }
+        Assert.False(MetadataName.TryParse(x, out MetadataName _));
+    }
 
-        [Fact]
-        public static void TestTryParse5()
-        {
-            const string x = "A.B+C.D";
+    [Fact]
+    public static void TestTryParse5()
+    {
+        const string x = "A.B+C.D";
 
-            Assert.False(MetadataName.TryParse(x, out MetadataName _));
-        }
+        Assert.False(MetadataName.TryParse(x, out MetadataName _));
+    }
 
-        [Fact]
-        public static void TestTryParse6()
-        {
-            const string x = "A+B.C+D";
+    [Fact]
+    public static void TestTryParse6()
+    {
+        const string x = "A+B.C+D";
 
-            Assert.False(MetadataName.TryParse(x, out MetadataName _));
-        }
+        Assert.False(MetadataName.TryParse(x, out MetadataName _));
     }
 }

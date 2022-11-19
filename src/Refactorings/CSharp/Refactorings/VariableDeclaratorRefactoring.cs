@@ -2,17 +2,16 @@
 
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class VariableDeclaratorRefactoring
 {
-    internal static class VariableDeclaratorRefactoring
+    public static void ComputeRefactorings(RefactoringContext context, VariableDeclaratorSyntax variableDeclarator)
     {
-        public static void ComputeRefactorings(RefactoringContext context, VariableDeclaratorSyntax variableDeclarator)
+        if (context.IsRefactoringEnabled(RefactoringDescriptors.InitializeFieldFromConstructor)
+            && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(variableDeclarator.Identifier))
         {
-            if (context.IsRefactoringEnabled(RefactoringDescriptors.InitializeFieldFromConstructor)
-                && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(variableDeclarator.Identifier))
-            {
-                InitializeFieldFromConstructorRefactoring.ComputeRefactoring(context, variableDeclarator);
-            }
+            InitializeFieldFromConstructorRefactoring.ComputeRefactoring(context, variableDeclarator);
         }
     }
 }

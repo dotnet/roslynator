@@ -16,7 +16,7 @@ namespace Roslynator.CSharp.Refactorings
         public static (SyntaxKind contentKind, string methodName, ImmutableArray<ArgumentSyntax> arguments)
             Refactor(InterpolatedStringContentSyntax content, bool isVerbatim)
         {
-            if (content == null)
+            if (content is null)
                 throw new ArgumentNullException(nameof(content));
 
             SyntaxKind kind = content.Kind();
@@ -30,20 +30,20 @@ namespace Roslynator.CSharp.Refactorings
                         InterpolationAlignmentClauseSyntax alignmentClause = interpolation.AlignmentClause;
                         InterpolationFormatClauseSyntax formatClause = interpolation.FormatClause;
 
-                        if (alignmentClause != null
-                            || formatClause != null)
+                        if (alignmentClause is not null
+                            || formatClause is not null)
                         {
                             StringBuilder sb = StringBuilderCache.GetInstance();
 
                             sb.Append("\"{0");
 
-                            if (alignmentClause != null)
+                            if (alignmentClause is not null)
                             {
                                 sb.Append(',');
                                 sb.Append(alignmentClause.Value.ToString());
                             }
 
-                            if (formatClause != null)
+                            if (formatClause is not null)
                             {
                                 sb.Append(':');
                                 sb.Append(formatClause.FormatStringToken.Text);

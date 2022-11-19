@@ -2,32 +2,31 @@
 
 using System.Collections.Generic;
 
-namespace Roslynator
+namespace Roslynator;
+
+/// <summary>
+/// Represents consecutive sequence of selected items in a collection.
+/// </summary>
+/// <typeparam name="T"></typeparam>
+public interface ISelection<T> : IReadOnlyList<T>
 {
     /// <summary>
-    /// Represents consecutive sequence of selected items in a collection.
+    /// Gets an index of the first selected item.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    public interface ISelection<T> : IReadOnlyList<T>
-    {
-        /// <summary>
-        /// Gets an index of the first selected item.
-        /// </summary>
-        int FirstIndex { get; }
+    int FirstIndex { get; }
 
-        /// <summary>
-        /// Gets an index of the last selected item.
-        /// </summary>
-        int LastIndex { get; }
+    /// <summary>
+    /// Gets an index of the last selected item.
+    /// </summary>
+    int LastIndex { get; }
 
-        /// <summary>
-        /// Gets the first selected item.
-        /// </summary>
-        T First();
+    /// <summary>
+    /// Gets the first selected item.
+    /// </summary>
+    T First();
 
-        /// <summary>
-        /// Gets the last selected item.
-        /// </summary>
-        T Last();
-    }
+    /// <summary>
+    /// Gets the last selected item.
+    /// </summary>
+    T Last();
 }

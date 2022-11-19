@@ -4,28 +4,27 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.SyntaxRewriters
+namespace Roslynator.CSharp.SyntaxRewriters;
+
+internal class SkipFunctionRewriter : CSharpSyntaxRewriter
 {
-    internal class SkipFunctionRewriter : CSharpSyntaxRewriter
+    public override SyntaxNode VisitAnonymousMethodExpression(AnonymousMethodExpressionSyntax node)
     {
-        public override SyntaxNode VisitAnonymousMethodExpression(AnonymousMethodExpressionSyntax node)
-        {
-            return node;
-        }
+        return node;
+    }
 
-        public override SyntaxNode VisitSimpleLambdaExpression(SimpleLambdaExpressionSyntax node)
-        {
-            return node;
-        }
+    public override SyntaxNode VisitSimpleLambdaExpression(SimpleLambdaExpressionSyntax node)
+    {
+        return node;
+    }
 
-        public override SyntaxNode VisitParenthesizedLambdaExpression(ParenthesizedLambdaExpressionSyntax node)
-        {
-            return node;
-        }
+    public override SyntaxNode VisitParenthesizedLambdaExpression(ParenthesizedLambdaExpressionSyntax node)
+    {
+        return node;
+    }
 
-        public override SyntaxNode VisitLocalFunctionStatement(LocalFunctionStatementSyntax node)
-        {
-            return node;
-        }
+    public override SyntaxNode VisitLocalFunctionStatement(LocalFunctionStatementSyntax node)
+    {
+        return node;
     }
 }

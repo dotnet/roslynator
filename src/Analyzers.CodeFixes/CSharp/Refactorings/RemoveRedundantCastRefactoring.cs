@@ -8,44 +8,43 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class RemoveRedundantCastRefactoring
 {
-    internal static class RemoveRedundantCastRefactoring
+    public static Task<Document> RefactorAsync(
+        Document document,
+        CastExpressionSyntax castExpression,
+        CancellationToken cancellationToken)
     {
-        public static Task<Document> RefactorAsync(
-            Document document,
-            CastExpressionSyntax castExpression,
-            CancellationToken cancellationToken)
-        {
-            var parenthesizedExpression = (ParenthesizedExpressionSyntax)castExpression.Parent;
+        var parenthesizedExpression = (ParenthesizedExpressionSyntax)castExpression.Parent;
 
-            ParenthesizedExpressionSyntax newNode = parenthesizedExpression
-                .WithExpression(castExpression.Expression.WithTriviaFrom(castExpression))
-                .WithFormatterAnnotation()
-                .WithSimplifierAnnotation();
+        ParenthesizedExpressionSyntax newNode = parenthesizedExpression
+            .WithExpression(castExpression.Expression.WithTriviaFrom(castExpression))
+            .WithFormatterAnnotation()
+            .WithSimplifierAnnotation();
 
-            return document.ReplaceNodeAsync(parenthesizedExpression, newNode, cancellationToken);
-        }
+        return document.ReplaceNodeAsync(parenthesizedExpression, newNode, cancellationToken);
+    }
 
-        public static Task<Document> RefactorAsync(
-            Document document,
-            InvocationExpressionSyntax invocation,
-            CancellationToken cancellationToken)
-        {
-            var memberAccessExpression = (MemberAccessExpressionSyntax)invocation.Expression;
+    public static Task<Document> RefactorAsync(
+        Document document,
+        InvocationExpressionSyntax invocation,
+        CancellationToken cancellationToken)
+    {
+        var memberAccessExpression = (MemberAccessExpressionSyntax)invocation.Expression;
 
-            ExpressionSyntax expression = memberAccessExpression.Expression;
+        ExpressionSyntax expression = memberAccessExpression.Expression;
 
-            IEnumerable<SyntaxTrivia> trailingTrivia = invocation
-                .DescendantTrivia(TextSpan.FromBounds(expression.SpanStart, invocation.Span.End))
-                .Where(f => !f.IsWhitespaceOrEndOfLineTrivia())
-                .Concat(invocation.GetTrailingTrivia());
+        IEnumerable<SyntaxTrivia> trailingTrivia = invocation
+            .DescendantTrivia(TextSpan.FromBounds(expression.SpanStart, invocation.Span.End))
+            .Where(f => !f.IsWhitespaceOrEndOfLineTrivia())
+            .Concat(invocation.GetTrailingTrivia());
 
-            ExpressionSyntax newNode = expression
-                .WithTrailingTrivia(trailingTrivia)
-                .WithFormatterAnnotation();
+        ExpressionSyntax newNode = expression
+            .WithTrailingTrivia(trailingTrivia)
+            .WithFormatterAnnotation();
 
-            return document.ReplaceNodeAsync(invocation, newNode, cancellationToken);
-        }
+        return document.ReplaceNodeAsync(invocation, newNode, cancellationToken);
     }
 }

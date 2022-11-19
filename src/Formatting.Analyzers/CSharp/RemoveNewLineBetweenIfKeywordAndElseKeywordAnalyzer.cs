@@ -8,52 +8,51 @@ using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp;
 
-namespace Roslynator.Formatting.CSharp
+namespace Roslynator.Formatting.CSharp;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class RemoveNewLineBetweenIfKeywordAndElseKeywordAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class RemoveNewLineBetweenIfKeywordAndElseKeywordAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
-            {
-                if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.RemoveNewLineBetweenIfKeywordAndElseKeyword);
+            if (_supportedDiagnostics.IsDefault)
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.RemoveNewLineBetweenIfKeywordAndElseKeyword);
 
-                return _supportedDiagnostics;
-            }
+            return _supportedDiagnostics;
         }
+    }
 
-        public override void Initialize(AnalysisContext context)
-        {
-            base.Initialize(context);
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeElseClause(f), SyntaxKind.ElseClause);
-        }
+        context.RegisterSyntaxNodeAction(f => AnalyzeElseClause(f), SyntaxKind.ElseClause);
+    }
 
-        private static void AnalyzeElseClause(SyntaxNodeAnalysisContext context)
-        {
-            var elseClause = (ElseClauseSyntax)context.Node;
+    private static void AnalyzeElseClause(SyntaxNodeAnalysisContext context)
+    {
+        var elseClause = (ElseClauseSyntax)context.Node;
 
-            StatementSyntax statement = elseClause.Statement;
+        StatementSyntax statement = elseClause.Statement;
 
-            if (!statement.IsKind(SyntaxKind.IfStatement))
-                return;
+        if (!statement.IsKind(SyntaxKind.IfStatement))
+            return;
 
-            SyntaxTriviaList trailingTrivia = elseClause.ElseKeyword.TrailingTrivia;
+        SyntaxTriviaList trailingTrivia = elseClause.ElseKeyword.TrailingTrivia;
 
-            if (!SyntaxTriviaAnalysis.IsOptionalWhitespaceThenEndOfLineTrivia(trailingTrivia))
-                return;
+        if (!SyntaxTriviaAnalysis.IsOptionalWhitespaceThenEndOfLineTrivia(trailingTrivia))
+            return;
 
-            if (!statement.GetLeadingTrivia().IsEmptyOrWhitespace())
-                return;
+        if (!statement.GetLeadingTrivia().IsEmptyOrWhitespace())
+            return;
 
-            DiagnosticHelpers.ReportDiagnostic(
-                context,
-                DiagnosticRules.RemoveNewLineBetweenIfKeywordAndElseKeyword,
-                Location.Create(elseClause.SyntaxTree, new TextSpan(trailingTrivia.Last().SpanStart, 0)));
-        }
+        DiagnosticHelpers.ReportDiagnostic(
+            context,
+            DiagnosticRules.RemoveNewLineBetweenIfKeywordAndElseKeyword,
+            Location.Create(elseClause.SyntaxTree, new TextSpan(trailingTrivia.Last().SpanStart, 0)));
     }
 }

@@ -2,29 +2,28 @@
 
 using System.Collections.Generic;
 
-namespace Roslynator
+namespace Roslynator;
+
+internal static class HashSetExtensions
 {
-    internal static class HashSetExtensions
+    public static bool ContainsAny<T>(this HashSet<T> items, T item1, T item2)
     {
-        public static bool ContainsAny<T>(this HashSet<T> items, T item1, T item2)
-        {
-            return items.Contains(item1)
-                || items.Contains(item2);
-        }
+        return items.Contains(item1)
+            || items.Contains(item2);
+    }
 
-        public static bool ContainsAny<T>(this HashSet<T> items, T item1, T item2, T item3)
-        {
-            return items.Contains(item1)
-                || items.Contains(item2)
-                || items.Contains(item3);
-        }
+    public static bool ContainsAny<T>(this HashSet<T> items, T item1, T item2, T item3)
+    {
+        return items.Contains(item1)
+            || items.Contains(item2)
+            || items.Contains(item3);
+    }
 
-        public static bool ContainsAny<T>(this HashSet<T> items, T item1, T item2, T item3, T item4)
-        {
-            return items.Contains(item1)
-                || items.Contains(item2)
-                || items.Contains(item3)
-                || items.Contains(item4);
-        }
+    public static bool ContainsAny<T>(this HashSet<T> items, T item1, T item2, T item3, T item4)
+    {
+        return items.Contains(item1)
+            || items.Contains(item2)
+            || items.Contains(item3)
+            || items.Contains(item4);
     }
 }

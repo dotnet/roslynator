@@ -34,7 +34,7 @@ namespace Roslynator.CSharp
         {
             ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken);
 
-            if (typeSymbol == null)
+            if (typeSymbol is null)
                 return null;
 
             return SymbolUtility.GetCountOrLengthPropertyName(typeSymbol, semanticModel, expression.SpanStart);
@@ -46,13 +46,13 @@ namespace Roslynator.CSharp
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default)
         {
-            if (node == null)
+            if (node is null)
                 throw new ArgumentNullException(nameof(node));
 
-            if (namespaceSymbol == null)
+            if (namespaceSymbol is null)
                 throw new ArgumentNullException(nameof(namespaceSymbol));
 
-            if (semanticModel == null)
+            if (semanticModel is null)
                 throw new ArgumentNullException(nameof(semanticModel));
 
             foreach (SyntaxNode ancestor in node.Ancestors())
@@ -91,7 +91,7 @@ namespace Roslynator.CSharp
             foreach (UsingDirectiveSyntax usingDirective in usings)
             {
                 if (!usingDirective.StaticKeyword.IsKind(SyntaxKind.StaticKeyword)
-                    && usingDirective.Alias == null
+                    && usingDirective.Alias is null
                     && IsNamespace(namespaceSymbol, usingDirective.Name, semanticModel, cancellationToken))
                 {
                     return true;
@@ -107,7 +107,7 @@ namespace Roslynator.CSharp
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            if (name != null)
+            if (name is not null)
             {
                 ISymbol symbol = semanticModel.GetSymbol(name, cancellationToken);
 
@@ -123,7 +123,7 @@ namespace Roslynator.CSharp
                     {
                         INamespaceSymbol containingNamespace = symbol.ContainingNamespace;
 
-                        while (containingNamespace != null)
+                        while (containingNamespace is not null)
                         {
                             if (string.Equals(namespaceText, containingNamespace.ToString(), StringComparison.Ordinal))
                                 return true;
@@ -143,13 +143,13 @@ namespace Roslynator.CSharp
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default)
         {
-            if (node == null)
+            if (node is null)
                 throw new ArgumentNullException(nameof(node));
 
-            if (staticClassSymbol == null)
+            if (staticClassSymbol is null)
                 throw new ArgumentNullException(nameof(staticClassSymbol));
 
-            if (semanticModel == null)
+            if (semanticModel is null)
                 throw new ArgumentNullException(nameof(semanticModel));
 
             foreach (SyntaxNode ancestor in node.Ancestors())
@@ -160,7 +160,7 @@ namespace Roslynator.CSharp
                     {
                         NameSyntax name = usingDirective.Name;
 
-                        if (name != null
+                        if (name is not null
                             && SymbolEqualityComparer.Default.Equals(staticClassSymbol, semanticModel.GetSymbol(name, cancellationToken)))
                         {
                             return true;
@@ -177,10 +177,10 @@ namespace Roslynator.CSharp
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default)
         {
-            if (expression == null)
+            if (expression is null)
                 throw new ArgumentNullException(nameof(expression));
 
-            if (semanticModel == null)
+            if (semanticModel is null)
                 throw new ArgumentNullException(nameof(semanticModel));
 
             SyntaxKind kind = expression.Kind();
@@ -248,7 +248,7 @@ namespace Roslynator.CSharp
                 var identifierName = (IdentifierNameSyntax)expression;
 
                 if (string.Equals(identifierName.Identifier.ValueText, "nameof", StringComparison.Ordinal)
-                    && semanticModel.GetSymbol(invocationExpression, cancellationToken) == null)
+                    && semanticModel.GetSymbol(invocationExpression, cancellationToken) is null)
                 {
                     return true;
                 }
@@ -296,7 +296,7 @@ namespace Roslynator.CSharp
 
         public static bool IsStringExpression(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
-            if (expression == null)
+            if (expression is null)
                 return false;
 
             if (expression
@@ -366,7 +366,7 @@ namespace Roslynator.CSharp
 
         public static bool IsPartOfExpressionThatMustBeConstant(ExpressionSyntax expression)
         {
-            for (SyntaxNode parent = expression.Parent; parent != null; parent = parent.Parent)
+            for (SyntaxNode parent = expression.Parent; parent is not null; parent = parent.Parent)
             {
                 switch (parent.Kind())
                 {
@@ -482,7 +482,7 @@ namespace Roslynator.CSharp
             {
                 ExpressionSyntax last = GetLastChild(e);
 
-                if (last != null)
+                if (last is not null)
                 {
                     e = last;
                 }
@@ -603,7 +603,7 @@ namespace Roslynator.CSharp
         {
             SyntaxNode prev = node;
 
-            for (SyntaxNode parent = node.Parent; parent != null; parent = parent.Parent)
+            for (SyntaxNode parent = node.Parent; parent is not null; parent = parent.Parent)
             {
                 switch (parent.Kind())
                 {
@@ -644,10 +644,10 @@ namespace Roslynator.CSharp
 
         internal static IFieldSymbol FindEnumDefaultField(INamedTypeSymbol enumSymbol)
         {
-            if (enumSymbol == null)
+            if (enumSymbol is null)
                 throw new ArgumentNullException(nameof(enumSymbol));
 
-            if (enumSymbol.EnumUnderlyingType == null)
+            if (enumSymbol.EnumUnderlyingType is null)
                 throw new ArgumentException($"'{enumSymbol}' is not an enumeration.", nameof(enumSymbol));
 
             foreach (ISymbol symbol in enumSymbol.GetMembers())

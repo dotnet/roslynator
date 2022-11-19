@@ -4,108 +4,107 @@ using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 
-namespace Roslynator.CSharp
+namespace Roslynator.CSharp;
+
+internal static class RemoveCommentHelper
 {
-    internal static class RemoveCommentHelper
+    public static SyntaxToken GetReplacementToken(SyntaxTrivia comment)
     {
-        public static SyntaxToken GetReplacementToken(SyntaxTrivia comment)
+        SyntaxDebug.Assert(CSharpFacts.IsCommentTrivia(comment.Kind()), comment);
+
+        SyntaxToken token = comment.Token;
+
+        int index = token.LeadingTrivia.IndexOf(comment);
+
+        if (index != -1)
         {
-            SyntaxDebug.Assert(CSharpFacts.IsCommentTrivia(comment.Kind()), comment);
+            if (comment.IsKind(SyntaxKind.SingleLineCommentTrivia))
+                return token.WithLeadingTrivia(RemoveTrivia(token.LeadingTrivia, index));
 
-            SyntaxToken token = comment.Token;
-
-            int index = token.LeadingTrivia.IndexOf(comment);
-
-            if (index != -1)
-            {
-                if (comment.IsKind(SyntaxKind.SingleLineCommentTrivia))
-                    return token.WithLeadingTrivia(RemoveTrivia(token.LeadingTrivia, index));
-
-                return token.WithLeadingTrivia(token.LeadingTrivia.RemoveAt(index));
-            }
-
-            index = token.TrailingTrivia.IndexOf(comment);
-
-            if (index != -1)
-            {
-                if (comment.IsKind(SyntaxKind.SingleLineCommentTrivia))
-                    return token.WithTrailingTrivia(RemoveTrivia(token.TrailingTrivia, index));
-
-                return token.WithTrailingTrivia(token.TrailingTrivia.RemoveAt(index));
-            }
-
-            Debug.Fail("comment trivia not found");
-
-            return token;
+            return token.WithLeadingTrivia(token.LeadingTrivia.RemoveAt(index));
         }
 
-        private static SyntaxTriviaList RemoveTrivia(SyntaxTriviaList triviaList, int index)
+        index = token.TrailingTrivia.IndexOf(comment);
+
+        if (index != -1)
         {
-            int first = FindFirstTriviaToRemove(triviaList, index);
-            int last = FindLastTriviaToRemove(triviaList, index);
+            if (comment.IsKind(SyntaxKind.SingleLineCommentTrivia))
+                return token.WithTrailingTrivia(RemoveTrivia(token.TrailingTrivia, index));
 
-            for (int i = last; i >= first; i--)
-                triviaList = triviaList.RemoveAt(i);
-
-            return triviaList;
+            return token.WithTrailingTrivia(token.TrailingTrivia.RemoveAt(index));
         }
 
-        private static int FindFirstTriviaToRemove(SyntaxTriviaList triviaList, int index)
-        {
-            int firstIndex = index;
+        Debug.Fail("comment trivia not found");
 
-            while (index > 0)
+        return token;
+    }
+
+    private static SyntaxTriviaList RemoveTrivia(SyntaxTriviaList triviaList, int index)
+    {
+        int first = FindFirstTriviaToRemove(triviaList, index);
+        int last = FindLastTriviaToRemove(triviaList, index);
+
+        for (int i = last; i >= first; i--)
+            triviaList = triviaList.RemoveAt(i);
+
+        return triviaList;
+    }
+
+    private static int FindFirstTriviaToRemove(SyntaxTriviaList triviaList, int index)
+    {
+        int firstIndex = index;
+
+        while (index > 0)
+        {
+            SyntaxKind kind = triviaList[index - 1].Kind();
+
+            if (kind == SyntaxKind.SingleLineCommentTrivia)
             {
-                SyntaxKind kind = triviaList[index - 1].Kind();
-
-                if (kind == SyntaxKind.SingleLineCommentTrivia)
-                {
-                    index--;
-                    firstIndex = index;
-                }
-                else if (kind == SyntaxKind.WhitespaceTrivia)
-                {
-                    index--;
-
-                    if (index == 0)
-                        return index;
-                }
-                else if (kind == SyntaxKind.EndOfLineTrivia)
-                {
-                    index--;
-                }
-                else
-                {
-                    break;
-                }
+                index--;
+                firstIndex = index;
             }
-
-            return firstIndex;
-        }
-
-        private static int FindLastTriviaToRemove(SyntaxTriviaList triviaList, int index)
-        {
-            int lastIndex = index;
-
-            while (index < triviaList.Count - 1)
+            else if (kind == SyntaxKind.WhitespaceTrivia)
             {
-                if (triviaList[index + 1].Kind().Is(
-                    SyntaxKind.WhitespaceTrivia,
-                    SyntaxKind.EndOfLineTrivia,
-                    SyntaxKind.SingleLineCommentTrivia))
-                {
-                    index++;
+                index--;
 
-                    if (triviaList[index].IsKind(SyntaxKind.SingleLineCommentTrivia))
-                        lastIndex = index;
-                }
-                else
-                {
-                    break;
-                }
+                if (index == 0)
+                    return index;
             }
-
-            return lastIndex;
+            else if (kind == SyntaxKind.EndOfLineTrivia)
+            {
+                index--;
+            }
+            else
+            {
+                break;
+            }
         }
+
+        return firstIndex;
+    }
+
+    private static int FindLastTriviaToRemove(SyntaxTriviaList triviaList, int index)
+    {
+        int lastIndex = index;
+
+        while (index < triviaList.Count - 1)
+        {
+            if (triviaList[index + 1].Kind().Is(
+                SyntaxKind.WhitespaceTrivia,
+                SyntaxKind.EndOfLineTrivia,
+                SyntaxKind.SingleLineCommentTrivia))
+            {
+                index++;
+
+                if (triviaList[index].IsKind(SyntaxKind.SingleLineCommentTrivia))
+                    lastIndex = index;
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        return lastIndex;
     }
 }

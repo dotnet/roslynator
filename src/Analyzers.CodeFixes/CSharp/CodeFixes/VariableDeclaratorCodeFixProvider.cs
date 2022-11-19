@@ -10,62 +10,61 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(VariableDeclaratorCodeFixProvider))]
+[Shared]
+public sealed class VariableDeclaratorCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(VariableDeclaratorCodeFixProvider))]
-    [Shared]
-    public sealed class VariableDeclaratorCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveRedundantFieldInitialization); }
+    }
+
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out VariableDeclaratorSyntax declarator))
+            return;
+
+        foreach (Diagnostic diagnostic in context.Diagnostics)
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveRedundantFieldInitialization); }
-        }
-
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
-
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out VariableDeclaratorSyntax declarator))
-                return;
-
-            foreach (Diagnostic diagnostic in context.Diagnostics)
+            switch (diagnostic.Id)
             {
-                switch (diagnostic.Id)
-                {
-                    case DiagnosticIdentifiers.RemoveRedundantFieldInitialization:
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Remove redundant initialization",
-                                ct => RemoveRedundantFieldInitializationAsync(context.Document, declarator, ct),
-                                GetEquivalenceKey(diagnostic));
+                case DiagnosticIdentifiers.RemoveRedundantFieldInitialization:
+                    {
+                        CodeAction codeAction = CodeAction.Create(
+                            "Remove redundant initialization",
+                            ct => RemoveRedundantFieldInitializationAsync(context.Document, declarator, ct),
+                            GetEquivalenceKey(diagnostic));
 
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
-                }
+                        context.RegisterCodeFix(codeAction, diagnostic);
+                        break;
+                    }
             }
         }
+    }
 
-        private static Task<Document> RemoveRedundantFieldInitializationAsync(
-            Document document,
-            VariableDeclaratorSyntax variableDeclarator,
-            CancellationToken cancellationToken)
-        {
-            EqualsValueClauseSyntax initializer = variableDeclarator.Initializer;
+    private static Task<Document> RemoveRedundantFieldInitializationAsync(
+        Document document,
+        VariableDeclaratorSyntax variableDeclarator,
+        CancellationToken cancellationToken)
+    {
+        EqualsValueClauseSyntax initializer = variableDeclarator.Initializer;
 
-            var removeOptions = SyntaxRemoveOptions.KeepExteriorTrivia;
+        var removeOptions = SyntaxRemoveOptions.KeepExteriorTrivia;
 
-            if (initializer.GetLeadingTrivia().IsEmptyOrWhitespace())
-                removeOptions &= ~SyntaxRemoveOptions.KeepLeadingTrivia;
+        if (initializer.GetLeadingTrivia().IsEmptyOrWhitespace())
+            removeOptions &= ~SyntaxRemoveOptions.KeepLeadingTrivia;
 
-            if (initializer.GetTrailingTrivia().IsEmptyOrWhitespace())
-                removeOptions &= ~SyntaxRemoveOptions.KeepTrailingTrivia;
+        if (initializer.GetTrailingTrivia().IsEmptyOrWhitespace())
+            removeOptions &= ~SyntaxRemoveOptions.KeepTrailingTrivia;
 
-            VariableDeclaratorSyntax newNode = variableDeclarator
-                .RemoveNode(initializer, removeOptions)
-                .WithFormatterAnnotation();
+        VariableDeclaratorSyntax newNode = variableDeclarator
+            .RemoveNode(initializer, removeOptions)
+            .WithFormatterAnnotation();
 
-            return document.ReplaceNodeAsync(variableDeclarator, newNode, cancellationToken);
-        }
+        return document.ReplaceNodeAsync(variableDeclarator, newNode, cancellationToken);
     }
 }

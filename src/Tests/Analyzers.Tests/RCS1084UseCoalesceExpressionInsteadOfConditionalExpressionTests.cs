@@ -6,20 +6,20 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1084UseCoalesceExpressionInsteadOfConditionalExpressionTests : AbstractCSharpDiagnosticVerifier<SimplifyNullCheckAnalyzer, ConditionalExpressionCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseCoalesceExpressionInsteadOfConditionalExpression;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfConditionalExpression)]
-        [InlineData("s != null ? s : \"\"", "s ?? \"\"")]
-        [InlineData("s == null ? \"\" : s", "s ?? \"\"")]
-        [InlineData("(s != null) ? (s) : (\"\")", "s ?? \"\"")]
-        [InlineData("(s == null) ? (\"\") : (s)", "s ?? \"\"")]
-        public async Task Test_ReferenceType(string source, string expected)
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1084UseCoalesceExpressionInsteadOfConditionalExpressionTests : AbstractCSharpDiagnosticVerifier<SimplifyNullCheckAnalyzer, ConditionalExpressionCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseCoalesceExpressionInsteadOfConditionalExpression;
+
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfConditionalExpression)]
+    [InlineData("s != null ? s : \"\"", "s ?? \"\"")]
+    [InlineData("s == null ? \"\" : s", "s ?? \"\"")]
+    [InlineData("(s != null) ? (s) : (\"\")", "s ?? \"\"")]
+    [InlineData("(s == null) ? (\"\") : (s)", "s ?? \"\"")]
+    public async Task Test_ReferenceType(string source, string expected)
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -30,16 +30,16 @@ class C
     }
 }
 ", source, expected);
-        }
+    }
 
-        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfConditionalExpression)]
-        [InlineData("(ni != null) ? ni.Value : 1", "ni ?? 1")]
-        [InlineData("(ni == null) ? 1 : ni.Value", "ni ?? 1")]
-        [InlineData("(ni.HasValue) ? ni.Value : 1", "ni ?? 1")]
-        [InlineData("(!ni.HasValue) ? 1 : ni.Value", "ni ?? 1")]
-        public async Task Test_ValueType(string source, string expected)
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfConditionalExpression)]
+    [InlineData("(ni != null) ? ni.Value : 1", "ni ?? 1")]
+    [InlineData("(ni == null) ? 1 : ni.Value", "ni ?? 1")]
+    [InlineData("(ni.HasValue) ? ni.Value : 1", "ni ?? 1")]
+    [InlineData("(!ni.HasValue) ? 1 : ni.Value", "ni ?? 1")]
+    public async Task Test_ValueType(string source, string expected)
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -51,12 +51,12 @@ class C
     }
 }
 ", source, expected);
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfConditionalExpression)]
-        public async Task TestNoDiagnostic()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfConditionalExpression)]
+    public async Task TestNoDiagnostic()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     public unsafe void M()
@@ -68,12 +68,12 @@ class C
     }
 }
 ", options: Options.WithAllowUnsafe(true));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfConditionalExpression)]
-        public async Task TestNoDiagnostic_Pointer()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfConditionalExpression)]
+    public async Task TestNoDiagnostic_Pointer()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     public unsafe void M()
@@ -85,6 +85,5 @@ class C
     }
 }
 ", options: Options.WithAllowUnsafe(true));
-        }
     }
 }

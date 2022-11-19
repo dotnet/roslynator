@@ -2,17 +2,16 @@
 
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class TypeParameterConstraintClauseRefactoring
 {
-    internal static class TypeParameterConstraintClauseRefactoring
+    public static void ComputeRefactoring(RefactoringContext context, TypeParameterConstraintClauseSyntax constraintClause)
     {
-        public static void ComputeRefactoring(RefactoringContext context, TypeParameterConstraintClauseSyntax constraintClause)
+        if (context.IsRefactoringEnabled(RefactoringDescriptors.WrapConstraintClauses)
+            && (context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(constraintClause)))
         {
-            if (context.IsRefactoringEnabled(RefactoringDescriptors.WrapConstraintClauses)
-                && (context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(constraintClause)))
-            {
-                WrapConstraintClausesRefactoring.ComputeRefactoring(context, constraintClause);
-            }
+            WrapConstraintClausesRefactoring.ComputeRefactoring(context, constraintClause);
         }
     }
 }

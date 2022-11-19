@@ -9,105 +9,104 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Roslynator.CSharp.Refactorings.InlineDefinition
+namespace Roslynator.CSharp.Refactorings.InlineDefinition;
+
+internal abstract class InlineAnalyzer<TNode, TDeclaration, TSymbol>
+    where TNode : SyntaxNode
+    where TDeclaration : MemberDeclarationSyntax
+    where TSymbol : ISymbol
 {
-    internal abstract class InlineAnalyzer<TNode, TDeclaration, TSymbol>
-        where TNode : SyntaxNode
-        where TDeclaration : MemberDeclarationSyntax
-        where TSymbol : ISymbol
+    public async Task ComputeRefactoringsAsync(RefactoringContext context, TNode node)
     {
-        public async Task ComputeRefactoringsAsync(RefactoringContext context, TNode node)
+        if (!ValidateNode(node, context.Span))
+            return;
+
+        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+        TSymbol symbol = GetMemberSymbol(node, semanticModel, context.CancellationToken);
+
+        if (EqualityComparer<TSymbol>.Default.Equals(symbol, default(TSymbol)))
+            return;
+
+        TDeclaration declaration = await GetMemberDeclarationAsync(symbol, context.CancellationToken).ConfigureAwait(false);
+
+        if (declaration is null)
+            return;
+
+        for (SyntaxNode parent = node.Parent; parent is not null; parent = parent.Parent)
         {
-            if (!ValidateNode(node, context.Span))
+            if (object.ReferenceEquals(declaration, parent))
                 return;
-
-            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-            TSymbol symbol = GetMemberSymbol(node, semanticModel, context.CancellationToken);
-
-            if (EqualityComparer<TSymbol>.Default.Equals(symbol, default(TSymbol)))
-                return;
-
-            TDeclaration declaration = await GetMemberDeclarationAsync(symbol, context.CancellationToken).ConfigureAwait(false);
-
-            if (declaration == null)
-                return;
-
-            for (SyntaxNode parent = node.Parent; parent != null; parent = parent.Parent)
-            {
-                if (object.ReferenceEquals(declaration, parent))
-                    return;
-            }
-
-            (ExpressionSyntax expression, SyntaxList<StatementSyntax> statements) = GetExpressionOrStatements(declaration);
-
-            SyntaxNode nodeIncludingConditionalAccess = node.WalkUp(f => f.IsKind(SyntaxKind.ConditionalAccessExpression));
-
-            if (expression != null
-                || (statements.Any() && nodeIncludingConditionalAccess.IsParentKind(SyntaxKind.ExpressionStatement)))
-            {
-                ImmutableArray<ParameterInfo> parameterInfos = GetParameterInfos(node, symbol);
-
-                if (parameterInfos.IsDefault)
-                    return;
-
-                INamedTypeSymbol enclosingType = semanticModel.GetEnclosingNamedType(node.SpanStart, context.CancellationToken);
-
-                SemanticModel declarationSemanticModel = semanticModel;
-
-                if (node.SyntaxTree != declaration.SyntaxTree)
-                {
-                    Document document = context.Solution.GetDocument(declaration.SyntaxTree);
-
-                    // https://github.com/dotnet/roslyn/issues/5260
-                    if (document == null)
-                        return;
-
-                    declarationSemanticModel = await document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
-                }
-
-                InlineRefactoring<TNode, TDeclaration, TSymbol> refactoring = CreateRefactoring(context.Document, nodeIncludingConditionalAccess, enclosingType, symbol, declaration, parameterInfos, semanticModel, declarationSemanticModel, context.CancellationToken);
-
-                string title = CSharpFacts.GetTitle(declaration);
-
-                if (expression != null)
-                {
-                    context.RegisterRefactoring($"Inline {title}", ct => refactoring.InlineAsync(nodeIncludingConditionalAccess, expression, ct), GetDescriptor());
-
-                    context.RegisterRefactoring($"Inline and remove {title}", ct => refactoring.InlineAndRemoveAsync(nodeIncludingConditionalAccess, expression, ct), GetDescriptor(), "Remove");
-                }
-                else
-                {
-                    var expressionStatement = (ExpressionStatementSyntax)nodeIncludingConditionalAccess.Parent;
-
-                    context.RegisterRefactoring($"Inline {title}", ct => refactoring.InlineAsync(expressionStatement, statements, ct), GetDescriptor());
-
-                    context.RegisterRefactoring($"Inline and remove {title}", ct => refactoring.InlineAndRemoveAsync(expressionStatement, statements, ct), GetDescriptor(), "Remove");
-                }
-            }
         }
 
-        protected abstract RefactoringDescriptor GetDescriptor();
+        (ExpressionSyntax expression, SyntaxList<StatementSyntax> statements) = GetExpressionOrStatements(declaration);
 
-        protected abstract bool ValidateNode(TNode node, TextSpan span);
+        SyntaxNode nodeIncludingConditionalAccess = node.WalkUp(f => f.IsKind(SyntaxKind.ConditionalAccessExpression));
 
-        protected abstract Task<TDeclaration> GetMemberDeclarationAsync(TSymbol symbol, CancellationToken cancellationToken);
+        if (expression is not null
+            || (statements.Any() && nodeIncludingConditionalAccess.IsParentKind(SyntaxKind.ExpressionStatement)))
+        {
+            ImmutableArray<ParameterInfo> parameterInfos = GetParameterInfos(node, symbol);
 
-        protected abstract TSymbol GetMemberSymbol(TNode node, SemanticModel semanticModel, CancellationToken cancellationToken);
+            if (parameterInfos.IsDefault)
+                return;
 
-        protected abstract ImmutableArray<ParameterInfo> GetParameterInfos(TNode node, TSymbol symbol);
+            INamedTypeSymbol enclosingType = semanticModel.GetEnclosingNamedType(node.SpanStart, context.CancellationToken);
 
-        protected abstract (ExpressionSyntax expression, SyntaxList<StatementSyntax> statements) GetExpressionOrStatements(TDeclaration declaration);
+            SemanticModel declarationSemanticModel = semanticModel;
 
-        protected abstract InlineRefactoring<TNode, TDeclaration, TSymbol> CreateRefactoring(
-            Document document,
-            SyntaxNode node,
-            INamedTypeSymbol nodeEnclosingType,
-            TSymbol symbol,
-            TDeclaration declaration,
-            ImmutableArray<ParameterInfo> parameterInfos,
-            SemanticModel nodeSemanticModel,
-            SemanticModel declarationSemanticModel,
-            CancellationToken cancellationToken);
+            if (node.SyntaxTree != declaration.SyntaxTree)
+            {
+                Document document = context.Solution.GetDocument(declaration.SyntaxTree);
+
+                // https://github.com/dotnet/roslyn/issues/5260
+                if (document is null)
+                    return;
+
+                declarationSemanticModel = await document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
+            }
+
+            InlineRefactoring<TNode, TDeclaration, TSymbol> refactoring = CreateRefactoring(context.Document, nodeIncludingConditionalAccess, enclosingType, symbol, declaration, parameterInfos, semanticModel, declarationSemanticModel, context.CancellationToken);
+
+            string title = CSharpFacts.GetTitle(declaration);
+
+            if (expression is not null)
+            {
+                context.RegisterRefactoring($"Inline {title}", ct => refactoring.InlineAsync(nodeIncludingConditionalAccess, expression, ct), GetDescriptor());
+
+                context.RegisterRefactoring($"Inline and remove {title}", ct => refactoring.InlineAndRemoveAsync(nodeIncludingConditionalAccess, expression, ct), GetDescriptor(), "Remove");
+            }
+            else
+            {
+                var expressionStatement = (ExpressionStatementSyntax)nodeIncludingConditionalAccess.Parent;
+
+                context.RegisterRefactoring($"Inline {title}", ct => refactoring.InlineAsync(expressionStatement, statements, ct), GetDescriptor());
+
+                context.RegisterRefactoring($"Inline and remove {title}", ct => refactoring.InlineAndRemoveAsync(expressionStatement, statements, ct), GetDescriptor(), "Remove");
+            }
+        }
     }
+
+    protected abstract RefactoringDescriptor GetDescriptor();
+
+    protected abstract bool ValidateNode(TNode node, TextSpan span);
+
+    protected abstract Task<TDeclaration> GetMemberDeclarationAsync(TSymbol symbol, CancellationToken cancellationToken);
+
+    protected abstract TSymbol GetMemberSymbol(TNode node, SemanticModel semanticModel, CancellationToken cancellationToken);
+
+    protected abstract ImmutableArray<ParameterInfo> GetParameterInfos(TNode node, TSymbol symbol);
+
+    protected abstract (ExpressionSyntax expression, SyntaxList<StatementSyntax> statements) GetExpressionOrStatements(TDeclaration declaration);
+
+    protected abstract InlineRefactoring<TNode, TDeclaration, TSymbol> CreateRefactoring(
+        Document document,
+        SyntaxNode node,
+        INamedTypeSymbol nodeEnclosingType,
+        TSymbol symbol,
+        TDeclaration declaration,
+        ImmutableArray<ParameterInfo> parameterInfos,
+        SemanticModel nodeSemanticModel,
+        SemanticModel declarationSemanticModel,
+        CancellationToken cancellationToken);
 }

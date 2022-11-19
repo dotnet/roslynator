@@ -8,47 +8,46 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class ExpandEventDeclarationRefactoring
 {
-    internal static class ExpandEventDeclarationRefactoring
+    public static bool CanRefactor(EventFieldDeclarationSyntax eventDeclaration)
     {
-        public static bool CanRefactor(EventFieldDeclarationSyntax eventDeclaration)
-        {
-            return eventDeclaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.RecordDeclaration, SyntaxKind.RecordStructDeclaration)
-                && eventDeclaration.Declaration?.Variables.Count == 1;
-        }
+        return eventDeclaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.RecordDeclaration, SyntaxKind.RecordStructDeclaration)
+            && eventDeclaration.Declaration?.Variables.Count == 1;
+    }
 
-        public static Task<Document> RefactorAsync(
-            Document document,
-            EventFieldDeclarationSyntax eventDeclaration,
-            CancellationToken cancellationToken = default)
-        {
-            EventDeclarationSyntax newNode = ExpandEvent(eventDeclaration)
-                .WithTriviaFrom(eventDeclaration)
-                .WithFormatterAnnotation();
+    public static Task<Document> RefactorAsync(
+        Document document,
+        EventFieldDeclarationSyntax eventDeclaration,
+        CancellationToken cancellationToken = default)
+    {
+        EventDeclarationSyntax newNode = ExpandEvent(eventDeclaration)
+            .WithTriviaFrom(eventDeclaration)
+            .WithFormatterAnnotation();
 
-            return document.ReplaceNodeAsync(eventDeclaration, newNode, cancellationToken);
-        }
+        return document.ReplaceNodeAsync(eventDeclaration, newNode, cancellationToken);
+    }
 
-        private static EventDeclarationSyntax ExpandEvent(EventFieldDeclarationSyntax eventDeclaration)
-        {
-            AccessorListSyntax accessorList = AccessorList(
-                AddAccessorDeclaration(Block(OpenBraceToken(), List<StatementSyntax>(), CloseBraceToken().WithNavigationAnnotation())),
-                RemoveAccessorDeclaration(Block()));
+    private static EventDeclarationSyntax ExpandEvent(EventFieldDeclarationSyntax eventDeclaration)
+    {
+        AccessorListSyntax accessorList = AccessorList(
+            AddAccessorDeclaration(Block(OpenBraceToken(), List<StatementSyntax>(), CloseBraceToken().WithNavigationAnnotation())),
+            RemoveAccessorDeclaration(Block()));
 
-            accessorList = accessorList
-                .RemoveWhitespace()
-                .WithCloseBraceToken(accessorList.CloseBraceToken.WithLeadingTrivia(NewLine()));
+        accessorList = accessorList
+            .RemoveWhitespace()
+            .WithCloseBraceToken(accessorList.CloseBraceToken.WithLeadingTrivia(NewLine()));
 
-            VariableDeclaratorSyntax declarator = eventDeclaration.Declaration.Variables[0];
+        VariableDeclaratorSyntax declarator = eventDeclaration.Declaration.Variables[0];
 
-            return EventDeclaration(
-                eventDeclaration.AttributeLists,
-                eventDeclaration.Modifiers,
-                eventDeclaration.Declaration.Type,
-                default(ExplicitInterfaceSpecifierSyntax),
-                declarator.Identifier,
-                accessorList);
-        }
+        return EventDeclaration(
+            eventDeclaration.AttributeLists,
+            eventDeclaration.Modifiers,
+            eventDeclaration.Declaration.Type,
+            default(ExplicitInterfaceSpecifierSyntax),
+            declarator.Identifier,
+            accessorList);
     }
 }

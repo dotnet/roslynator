@@ -29,7 +29,7 @@ namespace Roslynator.Host.Mef
         {
             get
             {
-                if (_default == null)
+                if (_default is null)
                 {
                     MefHostServices services = Create(DefaultAssemblies);
                     Interlocked.CompareExchange(ref _default, services, null);
@@ -52,7 +52,7 @@ namespace Roslynator.Host.Mef
 
         public static MefHostServices Create(CompositionContext compositionContext)
         {
-            if (compositionContext == null)
+            if (compositionContext is null)
                 throw new ArgumentNullException(nameof(compositionContext));
 
             return new MefHostServices(compositionContext);
@@ -60,7 +60,7 @@ namespace Roslynator.Host.Mef
 
         public static MefHostServices Create(IEnumerable<Assembly> assemblies)
         {
-            if (assemblies == null)
+            if (assemblies is null)
                 throw new ArgumentNullException(nameof(assemblies));
 
             ContainerConfiguration compositionConfiguration = new ContainerConfiguration().WithAssemblies(assemblies);
@@ -74,7 +74,7 @@ namespace Roslynator.Host.Mef
         {
             return GetAssemblyNames()
                 .Select(f => TryLoadAssembly(f))
-                .Where(f => f != null)
+                .Where(f => f is not null)
                 .ToImmutableArray();
 
             static IEnumerable<string> GetAssemblyNames()

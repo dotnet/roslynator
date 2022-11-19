@@ -59,5 +59,6 @@ namespace Roslynator.Formatting.CSharp
         public const string NormalizeWhitespaceAtBeginningOfFile = "RCS0057";
         public const string NormalizeWhitespaceAtEndOfFile = "RCS0058";
         public const string PlaceNewLineAfterOrBeforeNullConditionalOperator = "RCS0059";
+        public const string BlankLineAfterFileScopedNamespaceDeclaration = "RCS0060";
     }
 }

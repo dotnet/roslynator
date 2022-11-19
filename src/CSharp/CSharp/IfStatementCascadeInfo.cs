@@ -71,7 +71,7 @@ namespace Roslynator.CSharp
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string DebuggerDisplay
         {
-            get { return (IfStatement != null) ? $"Count = {Count} {((EndsWithIf) ? $"EndsWithIf = {EndsWithIf}" : $"EndsWithElse = {EndsWithElse}")}" : "Uninitialized"; }
+            get { return (IfStatement is not null) ? $"Count = {Count} {((EndsWithIf) ? $"EndsWithIf = {EndsWithIf}" : $"EndsWithElse = {EndsWithElse}")}" : "Uninitialized"; }
         }
 
         /// <summary>

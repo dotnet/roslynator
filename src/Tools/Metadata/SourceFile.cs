@@ -5,20 +5,19 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace Roslynator.Metadata
+namespace Roslynator.Metadata;
+
+public class SourceFile
 {
-    public class SourceFile
+    public SourceFile(
+        string id,
+        IEnumerable<string> paths)
     {
-        public SourceFile(
-            string id,
-            IEnumerable<string> paths)
-        {
-            Id = id;
-            Paths = new ReadOnlyCollection<string>(paths?.ToArray() ?? Array.Empty<string>());
-        }
-
-        public string Id { get; }
-
-        public IReadOnlyList<string> Paths { get; }
+        Id = id;
+        Paths = new ReadOnlyCollection<string>(paths?.ToArray() ?? Array.Empty<string>());
     }
+
+    public string Id { get; }
+
+    public IReadOnlyList<string> Paths { get; }
 }

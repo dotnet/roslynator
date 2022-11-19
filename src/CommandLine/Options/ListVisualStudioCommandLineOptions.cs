@@ -2,12 +2,11 @@
 
 using CommandLine;
 
-namespace Roslynator.CommandLine
-{
+namespace Roslynator.CommandLine;
+
 #if DEBUG
-    [Verb("list-vs", HelpText = "Lists Visual Studio installations.")]
+[Verb("list-vs", HelpText = "Lists Visual Studio installations.")]
 #endif
-    public class ListVisualStudioCommandLineOptions : AbstractCommandLineOptions
-    {
-    }
+public class ListVisualStudioCommandLineOptions : AbstractCommandLineOptions
+{
 }

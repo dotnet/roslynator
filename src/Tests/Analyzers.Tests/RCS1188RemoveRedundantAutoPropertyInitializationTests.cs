@@ -7,16 +7,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1188RemoveRedundantAutoPropertyInitializationTests : AbstractCSharpDiagnosticVerifier<RemoveRedundantAutoPropertyInitializationAnalyzer, PropertyDeclarationCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveRedundantAutoPropertyInitialization;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAutoPropertyInitialization)]
-        public async Task Test_Bool()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1188RemoveRedundantAutoPropertyInitializationTests : AbstractCSharpDiagnosticVerifier<RemoveRedundantAutoPropertyInitializationAnalyzer, PropertyDeclarationCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveRedundantAutoPropertyInitialization;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAutoPropertyInitialization)]
+    public async Task Test_Bool()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     const bool K = false;
@@ -33,12 +33,12 @@ class C
     bool P2 { get; set; }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAutoPropertyInitialization)]
-        public async Task Test_Bool_Nullable()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAutoPropertyInitialization)]
+    public async Task Test_Bool_Nullable()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     const bool K = false;
@@ -57,12 +57,12 @@ class C
     bool? P3 { get; set; }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAutoPropertyInitialization)]
-        public async Task Test_Char()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAutoPropertyInitialization)]
+    public async Task Test_Char()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     const char K = '\0';
@@ -79,12 +79,12 @@ class C
     char P2 { get; set; }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAutoPropertyInitialization)]
-        public async Task Test_String()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAutoPropertyInitialization)]
+    public async Task Test_String()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     const string K = null;
@@ -103,12 +103,12 @@ class C
     string P3 { get; set; }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAutoPropertyInitialization)]
-        public async Task Test_Numeric_Int()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAutoPropertyInitialization)]
+    public async Task Test_Numeric_Int()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     const int K = 0;
@@ -127,12 +127,12 @@ class C
     int P3 { get; set; }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAutoPropertyInitialization)]
-        public async Task Test_ULong()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAutoPropertyInitialization)]
+    public async Task Test_ULong()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     const ulong K = 0;
@@ -149,12 +149,12 @@ class C
     ulong P2 { get; set; }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAutoPropertyInitialization)]
-        public async Task Test_Numeric()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAutoPropertyInitialization)]
+    public async Task Test_Numeric()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     sbyte PSB { get; set; } = [|(sbyte)0|];
@@ -181,12 +181,12 @@ class C
     decimal PDE { get; set; }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantFieldInitialization)]
-        public async Task TestNoDiagnostic()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantFieldInitialization)]
+    public async Task TestNoDiagnostic()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Text.RegularExpressions;
 
 class C
@@ -197,28 +197,27 @@ class C
     RegexOptions P2 { get; set; } = RegexOptions.None;
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAutoPropertyInitialization)]
-        public async Task TestNoDiagnostic_NoInitializer()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAutoPropertyInitialization)]
+    public async Task TestNoDiagnostic_NoInitializer()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     string P { get; }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAutoPropertyInitialization)]
-        public async Task TestNoDiagnostic_SuppressNullableWarningExpression()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAutoPropertyInitialization)]
+    public async Task TestNoDiagnostic_SuppressNullableWarningExpression()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     string P { get; } = null!;
 }
 ", options: CSharpTestOptions.Default.WithParseOptions(CSharpTestOptions.Default.ParseOptions.WithLanguageVersion(LanguageVersion.Preview)));
-        }
     }
 }

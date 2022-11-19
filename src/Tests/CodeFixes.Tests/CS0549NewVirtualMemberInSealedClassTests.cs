@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.CodeFixes.Tests
-{
-    public class CS0549NewVirtualMemberInSealedClassTests : AbstractCSharpCompilerDiagnosticFixVerifier<ModifiersCodeFixProvider>
-    {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS0549_NewVirtualMemberInSealedClass;
+namespace Roslynator.CSharp.CodeFixes.Tests;
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0549_NewVirtualMemberInSealedClass)]
-        public async Task Test_ReadOnlyPropertyInSealedClass()
-        {
-            await VerifyFixAsync(@"
+public class CS0549NewVirtualMemberInSealedClassTests : AbstractCSharpCompilerDiagnosticFixVerifier<ModifiersCodeFixProvider>
+{
+    public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS0549_NewVirtualMemberInSealedClass;
+
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0549_NewVirtualMemberInSealedClass)]
+    public async Task Test_ReadOnlyPropertyInSealedClass()
+    {
+        await VerifyFixAsync(@"
 sealed class C
 {
     public virtual object P
@@ -30,6 +30,5 @@ sealed class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId, CodeFixIdentifiers.RemoveVirtualModifier));
-        }
     }
 }

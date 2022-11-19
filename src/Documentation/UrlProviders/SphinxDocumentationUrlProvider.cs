@@ -3,25 +3,24 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 
-namespace Roslynator.Documentation
+namespace Roslynator.Documentation;
+
+internal sealed class SphinxDocumentationUrlProvider : CommonDocumentationUrlProvider
 {
-    internal sealed class SphinxDocumentationUrlProvider : CommonDocumentationUrlProvider
+    public SphinxDocumentationUrlProvider(UrlSegmentProvider segmentProvider, IEnumerable<ExternalUrlProvider> externalProviders = null)
+        : base(segmentProvider, externalProviders)
     {
-        public SphinxDocumentationUrlProvider(UrlSegmentProvider segmentProvider, IEnumerable<ExternalUrlProvider> externalProviders = null)
-            : base(segmentProvider, externalProviders)
-        {
-        }
+    }
 
-        public override string IndexFileName => "index.md";
+    public override string IndexFileName => "index.md";
 
-        public override DocumentationUrlInfo GetLocalUrl(
-            ImmutableArray<string> folders,
-            ImmutableArray<string> containingFolders = default,
-            string fragment = null)
-        {
-            return (!string.IsNullOrEmpty(fragment))
-                ? new DocumentationUrlInfo(fragment, DocumentationUrlKind.Local)
-                : base.GetLocalUrl(folders, containingFolders, fragment);
-        }
+    public override DocumentationUrlInfo GetLocalUrl(
+        ImmutableArray<string> folders,
+        ImmutableArray<string> containingFolders = default,
+        string fragment = null)
+    {
+        return (!string.IsNullOrEmpty(fragment))
+            ? new DocumentationUrlInfo(fragment, DocumentationUrlKind.Local)
+            : base.GetLocalUrl(folders, containingFolders, fragment);
     }
 }

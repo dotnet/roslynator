@@ -2,17 +2,16 @@
 
 using System;
 
-namespace Roslynator
+namespace Roslynator;
+
+[Flags]
+internal enum TypeAnalysisFlags
 {
-    [Flags]
-    internal enum TypeAnalysisFlags
-    {
-        None = 0,
-        Implicit = 1,
-        Explicit = 1 << 1,
-        Dynamic = 1 << 2,
-        SupportsImplicit = 1 << 3,
-        SupportsExplicit = 1 << 4,
-        TypeObvious = 1 << 5,
-    }
+    None = 0,
+    Implicit = 1,
+    Explicit = 1 << 1,
+    Dynamic = 1 << 2,
+    SupportsImplicit = 1 << 3,
+    SupportsExplicit = 1 << 4,
+    TypeObvious = 1 << 5,
 }

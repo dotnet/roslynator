@@ -6,23 +6,23 @@ using Roslynator.Formatting.CodeFixes.CSharp;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.Formatting.CSharp.Tests
+namespace Roslynator.Formatting.CSharp.Tests;
+
+public class RCS0046UseSpacesInsteadOfTabTests : AbstractCSharpDiagnosticVerifier<UseSpacesInsteadOfTabAnalyzer, ReplaceTabWithSpacesCodeFixProvider>
 {
-    public class RCS0046UseSpacesInsteadOfTabTests : AbstractCSharpDiagnosticVerifier<UseSpacesInsteadOfTabAnalyzer, ReplaceTabWithSpacesCodeFixProvider>
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseSpacesInsteadOfTab;
+
+    private readonly string _fourSpacesEquivalenceKey;
+
+    public RCS0046UseSpacesInsteadOfTabTests()
     {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseSpacesInsteadOfTab;
+        _fourSpacesEquivalenceKey = new ReplaceTabWithSpacesCodeFixProvider().FourSpacesEquivalenceKey;
+    }
 
-        private readonly string _fourSpacesEquivalenceKey;
-
-        public RCS0046UseSpacesInsteadOfTabTests()
-        {
-            _fourSpacesEquivalenceKey = new ReplaceTabWithSpacesCodeFixProvider().FourSpacesEquivalenceKey;
-        }
-
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseSpacesInsteadOfTab)]
-        public async Task Test_FourSpaces()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseSpacesInsteadOfTab)]
+    public async Task Test_FourSpaces()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
 [|	|]void M()
@@ -39,12 +39,12 @@ class C
     }
 }
 ", equivalenceKey: _fourSpacesEquivalenceKey);
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseSpacesInsteadOfTab)]
-        public async Task TestNoDiagnostic()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseSpacesInsteadOfTab)]
+    public async Task TestNoDiagnostic()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -53,6 +53,5 @@ class C
     }
 }
 ");
-        }
     }
 }

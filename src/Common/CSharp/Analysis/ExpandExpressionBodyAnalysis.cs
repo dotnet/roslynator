@@ -4,16 +4,15 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Analysis
-{
-    internal static class ExpandExpressionBodyAnalysis
-    {
-        public static bool IsFixable(ArrowExpressionClauseSyntax arrowExpressionClause)
-        {
-            SyntaxNode parent = arrowExpressionClause.Parent;
+namespace Roslynator.CSharp.Analysis;
 
-            return parent != null
-                && CSharpFacts.CanHaveExpressionBody(parent.Kind());
-        }
+internal static class ExpandExpressionBodyAnalysis
+{
+    public static bool IsFixable(ArrowExpressionClauseSyntax arrowExpressionClause)
+    {
+        SyntaxNode parent = arrowExpressionClause.Parent;
+
+        return parent is not null
+            && CSharpFacts.CanHaveExpressionBody(parent.Kind());
     }
 }

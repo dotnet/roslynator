@@ -11,160 +11,159 @@ using Roslynator.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class GenerateOnEventMethodRefactoring
 {
-    internal static class GenerateOnEventMethodRefactoring
+    public static async Task ComputeRefactoringAsync(RefactoringContext context, EventFieldDeclarationSyntax eventFieldDeclaration)
     {
-        public static async Task ComputeRefactoringAsync(RefactoringContext context, EventFieldDeclarationSyntax eventFieldDeclaration)
+        if (eventFieldDeclaration.IsParentKind(SyntaxKind.InterfaceDeclaration))
+            return;
+
+        VariableDeclarationSyntax variableDeclaration = eventFieldDeclaration.Declaration;
+
+        if (variableDeclaration is null)
+            return;
+
+        SemanticModel semanticModel = null;
+
+        foreach (VariableDeclaratorSyntax variableDeclarator in variableDeclaration.Variables)
         {
-            if (eventFieldDeclaration.IsParentKind(SyntaxKind.InterfaceDeclaration))
+            if (!context.Span.IsContainedInSpanOrBetweenSpans(variableDeclarator.Identifier))
+                continue;
+
+            semanticModel ??= await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+            var eventSymbol = semanticModel.GetDeclaredSymbol(variableDeclarator, context.CancellationToken) as IEventSymbol;
+
+            if (eventSymbol?.IsStatic != false)
+                continue;
+
+            INamedTypeSymbol containingType = eventSymbol.ContainingType;
+
+            if (containingType is null)
                 return;
 
-            VariableDeclarationSyntax variableDeclaration = eventFieldDeclaration.Declaration;
+            if (eventSymbol.Type is not INamedTypeSymbol eventHandlerType)
+                continue;
 
-            if (variableDeclaration == null)
-                return;
+            ITypeSymbol eventArgsSymbol = GetEventArgsSymbol(eventHandlerType, semanticModel);
 
-            SemanticModel semanticModel = null;
+            if (eventArgsSymbol is null)
+                continue;
 
-            foreach (VariableDeclaratorSyntax variableDeclarator in variableDeclaration.Variables)
+            string methodName = "On" + eventSymbol.Name;
+
+            if (containingType.ContainsMember<IMethodSymbol>(
+                $"On{eventSymbol.Name}",
+                methodSymbol => SymbolEqualityComparer.Default.Equals(eventArgsSymbol, methodSymbol.Parameters.SingleOrDefault(shouldThrow: false)?.Type)))
             {
-                if (!context.Span.IsContainedInSpanOrBetweenSpans(variableDeclarator.Identifier))
-                    continue;
+                continue;
+            }
 
-                semanticModel ??= await context.GetSemanticModelAsync().ConfigureAwait(false);
+            methodName = NameGenerator.Default.EnsureUniqueName(methodName, containingType.GetMembers());
 
-                var eventSymbol = semanticModel.GetDeclaredSymbol(variableDeclarator, context.CancellationToken) as IEventSymbol;
-
-                if (eventSymbol?.IsStatic != false)
-                    continue;
-
-                INamedTypeSymbol containingType = eventSymbol.ContainingType;
-
-                if (containingType == null)
-                    return;
-
-                if (eventSymbol.Type is not INamedTypeSymbol eventHandlerType)
-                    continue;
-
-                ITypeSymbol eventArgsSymbol = GetEventArgsSymbol(eventHandlerType, semanticModel);
-
-                if (eventArgsSymbol == null)
-                    continue;
-
-                string methodName = "On" + eventSymbol.Name;
-
-                if (containingType.ContainsMember<IMethodSymbol>(
-                    $"On{eventSymbol.Name}",
-                    methodSymbol => SymbolEqualityComparer.Default.Equals(eventArgsSymbol, methodSymbol.Parameters.SingleOrDefault(shouldThrow: false)?.Type)))
+            context.RegisterRefactoring(
+                $"Generate '{methodName}' method",
+                ct =>
                 {
-                    continue;
-                }
-
-                methodName = NameGenerator.Default.EnsureUniqueName(methodName, containingType.GetMembers());
-
-                context.RegisterRefactoring(
-                    $"Generate '{methodName}' method",
-                    ct =>
-                    {
-                        return RefactorAsync(
-                            context.Document,
-                            eventFieldDeclaration,
-                            eventSymbol,
-                            eventArgsSymbol,
-                            context.SupportsCSharp6,
-                            ct);
-                    },
-                    RefactoringDescriptors.GenerateEventInvokingMethod);
-            }
+                    return RefactorAsync(
+                        context.Document,
+                        eventFieldDeclaration,
+                        eventSymbol,
+                        eventArgsSymbol,
+                        context.SupportsCSharp6,
+                        ct);
+                },
+                RefactoringDescriptors.GenerateEventInvokingMethod);
         }
+    }
 
-        private static ITypeSymbol GetEventArgsSymbol(INamedTypeSymbol eventHandlerType, SemanticModel semanticModel)
+    private static ITypeSymbol GetEventArgsSymbol(INamedTypeSymbol eventHandlerType, SemanticModel semanticModel)
+    {
+        ImmutableArray<ITypeSymbol> typeArguments = eventHandlerType.TypeArguments;
+
+        if (typeArguments.Length == 0)
+            return semanticModel.GetTypeByMetadataName("System.EventArgs");
+
+        if (typeArguments.Length == 1)
+            return typeArguments[0];
+
+        return null;
+    }
+
+    public static Task<Document> RefactorAsync(
+        Document document,
+        EventFieldDeclarationSyntax eventFieldDeclaration,
+        IEventSymbol eventSymbol,
+        ITypeSymbol eventArgsSymbol,
+        bool supportsCSharp6,
+        CancellationToken cancellationToken = default)
+    {
+        MemberDeclarationListInfo info = SyntaxInfo.MemberDeclarationListInfo(eventFieldDeclaration.Parent);
+
+        MethodDeclarationSyntax method = CreateOnEventMethod(eventSymbol, eventArgsSymbol, supportsCSharp6)
+            .WithFormatterAnnotation();
+
+        SyntaxList<MemberDeclarationSyntax> newMembers = MemberDeclarationInserter.Default.Insert(info.Members, method);
+
+        return document.ReplaceMembersAsync(info, newMembers, cancellationToken);
+    }
+
+    private static MethodDeclarationSyntax CreateOnEventMethod(
+        IEventSymbol eventSymbol,
+        ITypeSymbol eventArgsSymbol,
+        bool supportCSharp6)
+    {
+        TypeSyntax eventArgsType = eventArgsSymbol.ToTypeSyntax().WithSimplifierAnnotation();
+
+        return MethodDeclaration(
+            default(SyntaxList<AttributeListSyntax>),
+            (eventSymbol.ContainingType.IsSealed || eventSymbol.ContainingType.TypeKind == TypeKind.Struct)
+                ? Modifiers.Private()
+                : Modifiers.Protected_Virtual(),
+            VoidType(),
+            default(ExplicitInterfaceSpecifierSyntax),
+            Identifier($"On{eventSymbol.Name}"),
+            default(TypeParameterListSyntax),
+            ParameterList(Parameter(eventArgsType, Identifier(DefaultNames.EventArgsVariable))),
+            default(SyntaxList<TypeParameterConstraintClauseSyntax>),
+            Block(CreateOnEventMethodBody(eventSymbol, supportCSharp6)),
+            default(ArrowExpressionClauseSyntax));
+    }
+
+    private static IEnumerable<StatementSyntax> CreateOnEventMethodBody(
+        IEventSymbol eventSymbol,
+        bool supportsCSharp6)
+    {
+        if (supportsCSharp6)
         {
-            ImmutableArray<ITypeSymbol> typeArguments = eventHandlerType.TypeArguments;
-
-            if (typeArguments.Length == 0)
-                return semanticModel.GetTypeByMetadataName("System.EventArgs");
-
-            if (typeArguments.Length == 1)
-                return typeArguments[0];
-
-            return null;
+            yield return ExpressionStatement(
+                ConditionalAccessExpression(
+                    IdentifierName(eventSymbol.Name),
+                    InvocationExpression(
+                        MemberBindingExpression(IdentifierName("Invoke")),
+                        ArgumentList(
+                            Argument(ThisExpression()),
+                            Argument(IdentifierName(DefaultNames.EventArgsVariable))))));
         }
-
-        public static Task<Document> RefactorAsync(
-            Document document,
-            EventFieldDeclarationSyntax eventFieldDeclaration,
-            IEventSymbol eventSymbol,
-            ITypeSymbol eventArgsSymbol,
-            bool supportsCSharp6,
-            CancellationToken cancellationToken = default)
+        else
         {
-            MemberDeclarationListInfo info = SyntaxInfo.MemberDeclarationListInfo(eventFieldDeclaration.Parent);
+            yield return LocalDeclarationStatement(
+                VariableDeclaration(
+                    eventSymbol.Type.ToTypeSyntax().WithSimplifierAnnotation(),
+                    VariableDeclarator(
+                        Identifier(DefaultNames.EventHandlerVariable),
+                        EqualsValueClause(IdentifierName(eventSymbol.Name)))));
 
-            MethodDeclarationSyntax method = CreateOnEventMethod(eventSymbol, eventArgsSymbol, supportsCSharp6)
-                .WithFormatterAnnotation();
-
-            SyntaxList<MemberDeclarationSyntax> newMembers = MemberDeclarationInserter.Default.Insert(info.Members, method);
-
-            return document.ReplaceMembersAsync(info, newMembers, cancellationToken);
-        }
-
-        private static MethodDeclarationSyntax CreateOnEventMethod(
-            IEventSymbol eventSymbol,
-            ITypeSymbol eventArgsSymbol,
-            bool supportCSharp6)
-        {
-            TypeSyntax eventArgsType = eventArgsSymbol.ToTypeSyntax().WithSimplifierAnnotation();
-
-            return MethodDeclaration(
-                default(SyntaxList<AttributeListSyntax>),
-                (eventSymbol.ContainingType.IsSealed || eventSymbol.ContainingType.TypeKind == TypeKind.Struct)
-                    ? Modifiers.Private()
-                    : Modifiers.Protected_Virtual(),
-                VoidType(),
-                default(ExplicitInterfaceSpecifierSyntax),
-                Identifier($"On{eventSymbol.Name}"),
-                default(TypeParameterListSyntax),
-                ParameterList(Parameter(eventArgsType, Identifier(DefaultNames.EventArgsVariable))),
-                default(SyntaxList<TypeParameterConstraintClauseSyntax>),
-                Block(CreateOnEventMethodBody(eventSymbol, supportCSharp6)),
-                default(ArrowExpressionClauseSyntax));
-        }
-
-        private static IEnumerable<StatementSyntax> CreateOnEventMethodBody(
-            IEventSymbol eventSymbol,
-            bool supportsCSharp6)
-        {
-            if (supportsCSharp6)
-            {
-                yield return ExpressionStatement(
-                    ConditionalAccessExpression(
-                        IdentifierName(eventSymbol.Name),
-                        InvocationExpression(
-                            MemberBindingExpression(IdentifierName("Invoke")),
-                            ArgumentList(
-                                Argument(ThisExpression()),
-                                Argument(IdentifierName(DefaultNames.EventArgsVariable))))));
-            }
-            else
-            {
-                yield return LocalDeclarationStatement(
-                    VariableDeclaration(
-                        eventSymbol.Type.ToTypeSyntax().WithSimplifierAnnotation(),
-                        VariableDeclarator(
-                            Identifier(DefaultNames.EventHandlerVariable),
-                            EqualsValueClause(IdentifierName(eventSymbol.Name)))));
-
-                yield return IfStatement(
-                    NotEqualsExpression(
+            yield return IfStatement(
+                NotEqualsExpression(
+                    IdentifierName(DefaultNames.EventHandlerVariable),
+                    NullLiteralExpression()),
+                ExpressionStatement(
+                    InvocationExpression(
                         IdentifierName(DefaultNames.EventHandlerVariable),
-                        NullLiteralExpression()),
-                    ExpressionStatement(
-                        InvocationExpression(
-                            IdentifierName(DefaultNames.EventHandlerVariable),
-                            ArgumentList(Argument(ThisExpression()), Argument(IdentifierName(DefaultNames.EventArgsVariable))))));
-            }
+                        ArgumentList(Argument(ThisExpression()), Argument(IdentifierName(DefaultNames.EventArgsVariable))))));
         }
     }
 }

@@ -7,51 +7,50 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class ReplaceNullLiteralWithDefaultExpressionRefactoring
 {
-    internal static class ReplaceNullLiteralWithDefaultExpressionRefactoring
+    public static async Task ComputeRefactoringAsync(RefactoringContext context, ExpressionSyntax expression)
     {
-        public static async Task ComputeRefactoringAsync(RefactoringContext context, ExpressionSyntax expression)
+        if (!context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(expression))
+            return;
+
+        if (!expression.IsKind(SyntaxKind.NullLiteralExpression))
+            return;
+
+        if (expression.IsParentKind(SyntaxKind.EqualsValueClause)
+            && expression.Parent.IsParentKind(SyntaxKind.Parameter)
+            && object.ReferenceEquals(expression, ((ParameterSyntax)expression.Parent.Parent).Default.Value))
         {
-            if (!context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(expression))
-                return;
-
-            if (!expression.IsKind(SyntaxKind.NullLiteralExpression))
-                return;
-
-            if (expression.IsParentKind(SyntaxKind.EqualsValueClause)
-                && expression.Parent.IsParentKind(SyntaxKind.Parameter)
-                && object.ReferenceEquals(expression, ((ParameterSyntax)expression.Parent.Parent).Default.Value))
-            {
-                return;
-            }
-
-            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-            ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(expression, context.CancellationToken).ConvertedType;
-
-            if (typeSymbol?.SupportsExplicitDeclaration() != true)
-                return;
-
-            context.RegisterRefactoring(
-                "Replace 'null' with 'default(...)'",
-                ct => RefactorAsync(context.Document, expression, typeSymbol, ct),
-                RefactoringDescriptors.ReplaceNullLiteralWithDefaultExpression);
+            return;
         }
 
-        public static async Task<Document> RefactorAsync(
-            Document document,
-            ExpressionSyntax expression,
-            ITypeSymbol typeSymbol,
-            CancellationToken cancellationToken = default)
-        {
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-            TypeSyntax type = typeSymbol.ToMinimalTypeSyntax(semanticModel, expression.SpanStart, SymbolDisplayFormats.FullName_WithoutNullableReferenceTypeModifier);
+        ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(expression, context.CancellationToken).ConvertedType;
 
-            DefaultExpressionSyntax defaultExpression = DefaultExpression(type).WithTriviaFrom(expression);
+        if (typeSymbol?.SupportsExplicitDeclaration() != true)
+            return;
 
-            return await document.ReplaceNodeAsync(expression, defaultExpression, cancellationToken).ConfigureAwait(false);
-        }
+        context.RegisterRefactoring(
+            "Replace 'null' with 'default(...)'",
+            ct => RefactorAsync(context.Document, expression, typeSymbol, ct),
+            RefactoringDescriptors.ReplaceNullLiteralWithDefaultExpression);
+    }
+
+    public static async Task<Document> RefactorAsync(
+        Document document,
+        ExpressionSyntax expression,
+        ITypeSymbol typeSymbol,
+        CancellationToken cancellationToken = default)
+    {
+        SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
+        TypeSyntax type = typeSymbol.ToMinimalTypeSyntax(semanticModel, expression.SpanStart, SymbolDisplayFormats.FullName_WithoutNullableReferenceTypeModifier);
+
+        DefaultExpressionSyntax defaultExpression = DefaultExpression(type).WithTriviaFrom(expression);
+
+        return await document.ReplaceNodeAsync(expression, defaultExpression, cancellationToken).ConfigureAwait(false);
     }
 }

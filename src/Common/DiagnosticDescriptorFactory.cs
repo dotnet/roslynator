@@ -3,45 +3,44 @@
 using Microsoft.CodeAnalysis;
 using Roslynator.Configuration;
 
-namespace Roslynator
+namespace Roslynator;
+
+internal static class DiagnosticDescriptorFactory
 {
-    internal static class DiagnosticDescriptorFactory
+    public static DiagnosticDescriptor Create(
+        string id,
+        string title,
+        string messageFormat,
+        string category,
+        DiagnosticSeverity defaultSeverity,
+        bool isEnabledByDefault,
+        string description = null,
+        string helpLinkUri = null,
+        params string[] customTags)
     {
-        public static DiagnosticDescriptor Create(
-            string id,
-            string title,
-            string messageFormat,
-            string category,
-            DiagnosticSeverity defaultSeverity,
-            bool isEnabledByDefault,
-            string description = null,
-            string helpLinkUri = null,
-            params string[] customTags)
-        {
-            isEnabledByDefault = CodeAnalysisConfig.Instance.IsDiagnosticEnabledByDefault(id, category, isEnabledByDefault);
+        isEnabledByDefault = CodeAnalysisConfig.Instance.IsDiagnosticEnabledByDefault(id, category, isEnabledByDefault);
 
-            return new DiagnosticDescriptor(
-                id: id,
-                title: title,
-                messageFormat: messageFormat,
-                category: category,
-                defaultSeverity: CodeAnalysisConfig.Instance.GetDiagnosticSeverity(id, category, isEnabledByDefault) ?? defaultSeverity,
-                isEnabledByDefault: isEnabledByDefault,
-                description: description,
-                helpLinkUri: DiagnosticDescriptorUtility.GetHelpLinkUri(helpLinkUri),
-                customTags: customTags);
-        }
+        return new DiagnosticDescriptor(
+            id: id,
+            title: title,
+            messageFormat: messageFormat,
+            category: category,
+            defaultSeverity: CodeAnalysisConfig.Instance.GetDiagnosticSeverity(id, category, isEnabledByDefault) ?? defaultSeverity,
+            isEnabledByDefault: isEnabledByDefault,
+            description: description,
+            helpLinkUri: DiagnosticDescriptorUtility.GetHelpLinkUri(helpLinkUri),
+            customTags: customTags);
+    }
 
-        public static DiagnosticDescriptor CreateFadeOut(DiagnosticDescriptor descriptor)
-        {
-            return new DiagnosticDescriptor(
-                descriptor.Id + "FadeOut",
-                descriptor.Title,
-                descriptor.MessageFormat,
-                descriptor.Category,
-                DiagnosticSeverity.Hidden,
-                isEnabledByDefault: true,
-                customTags: new string[] { WellKnownDiagnosticTags.Unnecessary, WellKnownDiagnosticTags.NotConfigurable });
-        }
+    public static DiagnosticDescriptor CreateFadeOut(DiagnosticDescriptor descriptor)
+    {
+        return new DiagnosticDescriptor(
+            descriptor.Id + "FadeOut",
+            descriptor.Title,
+            descriptor.MessageFormat,
+            descriptor.Category,
+            DiagnosticSeverity.Hidden,
+            isEnabledByDefault: true,
+            customTags: new string[] { WellKnownDiagnosticTags.Unnecessary, WellKnownDiagnosticTags.NotConfigurable });
     }
 }

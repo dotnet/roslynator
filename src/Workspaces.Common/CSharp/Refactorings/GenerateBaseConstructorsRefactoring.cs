@@ -89,7 +89,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     ExpressionSyntax defaultValue = parameterSymbol.GetDefaultValueMinimalSyntax(semanticModel, position);
 
-                    if (defaultValue != null)
+                    if (defaultValue is not null)
                         @default = EqualsValueClause(defaultValue.WithSimplifierAnnotation());
                 }
 

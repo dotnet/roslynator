@@ -31,18 +31,18 @@ namespace Roslynator.CSharp.Refactorings
         {
             ISymbol symbol = GetDeclaredSymbol();
 
-            if (symbol != null)
+            if (symbol is not null)
             {
                 if (!symbol.IsOverride)
                     return symbol;
 
                 symbol = symbol.BaseOverriddenSymbol();
 
-                if (symbol != null)
+                if (symbol is not null)
                 {
                     SyntaxNode syntax = symbol.GetSyntaxOrDefault(cancellationToken);
 
-                    if (syntax != null)
+                    if (syntax is not null)
                     {
                         if (syntax is MemberDeclarationSyntax
                             || syntax.IsKind(SyntaxKind.VariableDeclarator))
@@ -61,7 +61,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     VariableDeclaratorSyntax declarator = eventFieldDeclaration.Declaration?.Variables.SingleOrDefault(shouldThrow: false);
 
-                    if (declarator != null)
+                    if (declarator is not null)
                         return semanticModel.GetDeclaredSymbol(declarator, cancellationToken);
 
                     return null;
@@ -112,7 +112,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     ISymbol symbol = GetBaseSymbolOrDefault(member, semanticModel, cancellationToken);
 
-                    if (symbol != null)
+                    if (symbol is not null)
                     {
                         foreach (MemberDeclarationSyntax member2 in GetMemberDeclarations(symbol, cancellationToken))
                             members.Add(member2);

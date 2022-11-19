@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1163UnusedParameterTests : AbstractCSharpDiagnosticVerifier<UnusedParameter.UnusedParameterAnalyzer, UnusedParameterCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UnusedParameter;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedParameter)]
-        public async Task Test_Method()
-        {
-            await VerifyDiagnosticAsync(@"
+public class RCS1163UnusedParameterTests : AbstractCSharpDiagnosticVerifier<UnusedParameter.UnusedParameterAnalyzer, UnusedParameterCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UnusedParameter;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedParameter)]
+    public async Task Test_Method()
+    {
+        await VerifyDiagnosticAsync(@"
 class C
 {
     void M([|object p|], __arglist)
@@ -24,12 +24,12 @@ class C
 }
 "
 );
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedParameter)]
-        public async Task Test_Lambda()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedParameter)]
+    public async Task Test_Lambda()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
@@ -54,12 +54,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedParameter)]
-        public async Task TestNoDiagnostic_StackAllocArrayCreationExpression()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedParameter)]
+    public async Task TestNoDiagnostic_StackAllocArrayCreationExpression()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     unsafe void M(int length)
@@ -68,12 +68,12 @@ class C
     }
 }
 ", options: Options.WithAllowUnsafe(true));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedParameter)]
-        public async Task TestNoDiagnostic_PartialMethod()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedParameter)]
+    public async Task TestNoDiagnostic_PartialMethod()
+    {
+        await VerifyNoDiagnosticAsync(@"
 partial class C
 {
     partial void M(object p);
@@ -83,12 +83,12 @@ partial class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedParameter)]
-        public async Task TestNoDiagnostic_MethodReferencedAsMethodGroup()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedParameter)]
+    public async Task TestNoDiagnostic_MethodReferencedAsMethodGroup()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 class C
@@ -99,12 +99,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedParameter)]
-        public async Task TestNoDiagnostic_ContainsOnlyThrowNew()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedParameter)]
+    public async Task TestNoDiagnostic_ContainsOnlyThrowNew()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 class C
@@ -152,12 +152,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedParameter)]
-        public async Task TestNoDiagnostic_SwitchExpression()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedParameter)]
+    public async Task TestNoDiagnostic_SwitchExpression()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 class C
@@ -171,12 +171,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedParameter)]
-        public async Task TestNoDiagnostic_Discard()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedParameter)]
+    public async Task TestNoDiagnostic_Discard()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 class C
@@ -186,12 +186,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedParameter)]
-        public async Task TestNoDiagnostic_ArgIterator()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedParameter)]
+    public async Task TestNoDiagnostic_ArgIterator()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 class C
@@ -203,6 +203,5 @@ class C
     }
 }
 ");
-        }
     }
 }

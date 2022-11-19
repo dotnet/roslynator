@@ -7,43 +7,42 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace Roslynator.CSharp.Analysis
+namespace Roslynator.CSharp.Analysis;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class EnumShouldDeclareExplicitValuesAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class EnumShouldDeclareExplicitValuesAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
-            {
-                if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.EnumShouldDeclareExplicitValues);
+            if (_supportedDiagnostics.IsDefault)
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.EnumShouldDeclareExplicitValues);
 
-                return _supportedDiagnostics;
-            }
+            return _supportedDiagnostics;
         }
+    }
 
-        public override void Initialize(AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
+
+        context.RegisterSyntaxNodeAction(f => AnalyzeEnumDeclaration(f), SyntaxKind.EnumDeclaration);
+    }
+
+    private static void AnalyzeEnumDeclaration(SyntaxNodeAnalysisContext context)
+    {
+        var enumDeclaration = (EnumDeclarationSyntax)context.Node;
+
+        foreach (EnumMemberDeclarationSyntax enumMember in enumDeclaration.Members)
         {
-            base.Initialize(context);
-
-            context.RegisterSyntaxNodeAction(f => AnalyzeEnumDeclaration(f), SyntaxKind.EnumDeclaration);
-        }
-
-        private static void AnalyzeEnumDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            var enumDeclaration = (EnumDeclarationSyntax)context.Node;
-
-            foreach (EnumMemberDeclarationSyntax enumMember in enumDeclaration.Members)
+            if (enumMember.EqualsValue is null
+                && context.SemanticModel.GetDeclaredSymbol(enumMember, context.CancellationToken)?.HasConstantValue == true)
             {
-                if (enumMember.EqualsValue == null
-                    && context.SemanticModel.GetDeclaredSymbol(enumMember, context.CancellationToken)?.HasConstantValue == true)
-                {
-                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.EnumShouldDeclareExplicitValues, enumDeclaration.Identifier);
-                    break;
-                }
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.EnumShouldDeclareExplicitValues, enumDeclaration.Identifier);
+                break;
             }
         }
     }

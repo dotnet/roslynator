@@ -3,32 +3,31 @@
 using System.Collections.Immutable;
 using System.Diagnostics;
 
-namespace Roslynator.CodeFixes
+namespace Roslynator.CodeFixes;
+
+[DebuggerDisplay("{DebuggerDisplay,nq}")]
+public class CodeFixDescriptor
 {
-    [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public class CodeFixDescriptor
+    public CodeFixDescriptor(
+        string id,
+        string title,
+        bool isEnabledByDefault,
+        params string[] fixableDiagnosticIds)
     {
-        public CodeFixDescriptor(
-            string id,
-            string title,
-            bool isEnabledByDefault,
-            params string[] fixableDiagnosticIds)
-        {
-            Id = id;
-            Title = title;
-            IsEnabledByDefault = isEnabledByDefault;
-            FixableDiagnosticIds = fixableDiagnosticIds?.ToImmutableArray() ?? ImmutableArray<string>.Empty;
-        }
-
-        public string Id { get; }
-
-        public string Title { get; }
-
-        public bool IsEnabledByDefault { get; }
-
-        public ImmutableArray<string> FixableDiagnosticIds { get; }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string DebuggerDisplay => $"{Id} ({string.Join(", ", FixableDiagnosticIds)})";
+        Id = id;
+        Title = title;
+        IsEnabledByDefault = isEnabledByDefault;
+        FixableDiagnosticIds = fixableDiagnosticIds?.ToImmutableArray() ?? ImmutableArray<string>.Empty;
     }
+
+    public string Id { get; }
+
+    public string Title { get; }
+
+    public bool IsEnabledByDefault { get; }
+
+    public ImmutableArray<string> FixableDiagnosticIds { get; }
+
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+    private string DebuggerDisplay => $"{Id} ({string.Join(", ", FixableDiagnosticIds)})";
 }

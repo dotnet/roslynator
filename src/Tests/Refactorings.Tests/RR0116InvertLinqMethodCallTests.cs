@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0116InvertLinqMethodCallTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.InvertLinqMethodCall;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InvertLinqMethodCall)]
-        public async Task Test_InvertAny()
-        {
-            await VerifyRefactoringAsync(@"
+public class RR0116InvertLinqMethodCallTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.InvertLinqMethodCall;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InvertLinqMethodCall)]
+    public async Task Test_InvertAny()
+    {
+        await VerifyRefactoringAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -44,12 +44,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InvertLinqMethodCall)]
-        public async Task Test_InvertAny_ParenthesizedLambda()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InvertLinqMethodCall)]
+    public async Task Test_InvertAny_ParenthesizedLambda()
+    {
+        await VerifyRefactoringAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -80,12 +80,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InvertLinqMethodCall)]
-        public async Task Test_InvertAll()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InvertLinqMethodCall)]
+    public async Task Test_InvertAll()
+    {
+        await VerifyRefactoringAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -116,12 +116,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InvertLinqMethodCall)]
-        public async Task Test_InvertAll_ParenthesizedLambda()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InvertLinqMethodCall)]
+    public async Task Test_InvertAll_ParenthesizedLambda()
+    {
+        await VerifyRefactoringAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -152,6 +152,5 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
     }
 }

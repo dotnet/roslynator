@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1021ConvertLambdaExpressionBodyToExpressionBodyTests : AbstractCSharpDiagnosticVerifier<LambdaExpressionAnalyzer, ConvertLambdaExpressionBodyToExpressionBodyCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.ConvertLambdaExpressionBodyToExpressionBody;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertLambdaExpressionBodyToExpressionBody)]
-        public async Task Test()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1021ConvertLambdaExpressionBodyToExpressionBodyTests : AbstractCSharpDiagnosticVerifier<LambdaExpressionAnalyzer, ConvertLambdaExpressionBodyToExpressionBodyCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.ConvertLambdaExpressionBodyToExpressionBody;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertLambdaExpressionBodyToExpressionBody)]
+    public async Task Test()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -46,12 +46,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertLambdaExpressionBodyToExpressionBody)]
-        public async Task Test2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertLambdaExpressionBodyToExpressionBody)]
+    public async Task Test2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
@@ -76,6 +76,5 @@ class C
     }
 }
 ");
-        }
     }
 }

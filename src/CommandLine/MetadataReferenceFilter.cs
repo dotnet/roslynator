@@ -2,13 +2,12 @@
 
 using System;
 
-namespace Roslynator.CommandLine
+namespace Roslynator.CommandLine;
+
+[Flags]
+internal enum MetadataReferenceFilter
 {
-    [Flags]
-    internal enum MetadataReferenceFilter
-    {
-        None = 0,
-        Dll = 1,
-        Project = 1 << 1,
-    }
+    None = 0,
+    Dll = 1,
+    Project = 1 << 1,
 }

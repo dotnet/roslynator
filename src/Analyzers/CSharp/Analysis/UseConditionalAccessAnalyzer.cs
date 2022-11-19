@@ -62,19 +62,19 @@ namespace Roslynator.CSharp.Analysis
 
             ExpressionSyntax expression = nullCheck.Expression;
 
-            if (expression == null)
+            if (expression is null)
                 return;
 
             SimpleMemberInvocationStatementInfo invocationInfo = SyntaxInfo.SimpleMemberInvocationStatementInfo(ifStatement.SingleNonBlockStatementOrDefault());
 
             ExpressionSyntax expression2 = invocationInfo.Expression;
 
-            if (expression2 == null)
+            if (expression2 is null)
                 return;
 
             ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(expression);
 
-            if (typeSymbol == null)
+            if (typeSymbol is null)
                 return;
 
             if (typeSymbol.IsNullableType())
@@ -119,7 +119,7 @@ namespace Roslynator.CSharp.Analysis
 
             (ExpressionSyntax left, ExpressionSyntax right) = GetFixableExpressions(binaryExpression, kind, context.SemanticModel, context.CancellationToken);
 
-            if (left == null)
+            if (left is null)
                 return;
 
             ISymbol operatorSymbol = context.SemanticModel.GetSymbol(binaryExpression, context.CancellationToken);
@@ -172,18 +172,18 @@ namespace Roslynator.CSharp.Analysis
 
             ExpressionSyntax expression = nullCheck.Expression;
 
-            if (expression == null)
+            if (expression is null)
                 return false;
 
             ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken);
 
-            if (typeSymbol == null)
+            if (typeSymbol is null)
                 return false;
 
             if (!typeSymbol.IsReferenceTypeOrNullableType())
                 return false;
 
-            if (right == null)
+            if (right is null)
                 return false;
 
             if (!ValidateRightExpression(right, binaryExpressionKind, semanticModel, cancellationToken))
@@ -194,7 +194,7 @@ namespace Roslynator.CSharp.Analysis
 
             ExpressionSyntax e = FindExpressionThatCanBeConditionallyAccessed(expression, right, isNullable: !typeSymbol.IsReferenceType, semanticModel, cancellationToken);
 
-            return e != null;
+            return e is not null;
         }
 
         internal static ExpressionSyntax FindExpressionThatCanBeConditionallyAccessed(
@@ -276,13 +276,13 @@ namespace Roslynator.CSharp.Analysis
                                 .Right?
                                 .WalkDownParentheses();
 
-                            if (expression == null)
+                            if (expression is null)
                                 return false;
 
                             Optional<object> optional = semanticModel.GetConstantValue(expression, cancellationToken);
 
                             return optional.HasValue
-                                && optional.Value != null;
+                                && optional.Value is not null;
                         }
                     case SyntaxKind.NotEqualsExpression:
                         {
@@ -361,7 +361,7 @@ namespace Roslynator.CSharp.Analysis
             {
                 ExpressionSyntax last = GetLastChild(e);
 
-                if (last != null)
+                if (last is not null)
                 {
                     e = last;
                 }
@@ -381,7 +381,7 @@ namespace Roslynator.CSharp.Analysis
 
                 if (!e.IsKind(kind, SyntaxKind.ParenthesizedExpression))
                 {
-                    if (right == null)
+                    if (right is null)
                     {
                         right = e;
                     }

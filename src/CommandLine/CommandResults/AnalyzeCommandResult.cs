@@ -3,16 +3,15 @@
 using System.Collections.Immutable;
 using Roslynator.Diagnostics;
 
-namespace Roslynator.CommandLine
-{
-    internal class AnalyzeCommandResult : CommandResult
-    {
-        public AnalyzeCommandResult(CommandStatus status, ImmutableArray<ProjectAnalysisResult> analysisResults)
-            : base(status)
-        {
-            AnalysisResults = analysisResults;
-        }
+namespace Roslynator.CommandLine;
 
-        public ImmutableArray<ProjectAnalysisResult> AnalysisResults { get; }
+internal class AnalyzeCommandResult : CommandResult
+{
+    public AnalyzeCommandResult(CommandStatus status, ImmutableArray<ProjectAnalysisResult> analysisResults)
+        : base(status)
+    {
+        AnalysisResults = analysisResults;
     }
+
+    public ImmutableArray<ProjectAnalysisResult> AnalysisResults { get; }
 }

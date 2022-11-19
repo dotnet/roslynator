@@ -4,37 +4,36 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 
-namespace Roslynator.FindSymbols
+namespace Roslynator.FindSymbols;
+
+[DebuggerDisplay("{DebuggerDisplay,nq}")]
+internal class WithAttributeFilterRule : SymbolFilterRule
 {
-    [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    internal class WithAttributeFilterRule : SymbolFilterRule
+    public WithAttributeFilterRule(IEnumerable<MetadataName> attributeNames)
     {
-        public WithAttributeFilterRule(IEnumerable<MetadataName> attributeNames)
+        AttributeNames = new MetadataNameSet(attributeNames);
+    }
+
+    public override SymbolFilterReason Reason => SymbolFilterReason.WithAttribute;
+
+    public MetadataNameSet AttributeNames { get; }
+
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+    private string DebuggerDisplay => $"{Reason} {string.Join(" ", AttributeNames.Values)}";
+
+    public override bool IsApplicable(ISymbol value)
+    {
+        return !value.IsKind(SymbolKind.Namespace);
+    }
+
+    public override bool IsMatch(ISymbol value)
+    {
+        foreach (AttributeData attribute in value.GetAttributes())
         {
-            AttributeNames = new MetadataNameSet(attributeNames);
+            if (AttributeNames.Contains(attribute.AttributeClass))
+                return true;
         }
 
-        public override SymbolFilterReason Reason => SymbolFilterReason.WithAttribute;
-
-        public MetadataNameSet AttributeNames { get; }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string DebuggerDisplay => $"{Reason} {string.Join(" ", AttributeNames.Values)}";
-
-        public override bool IsApplicable(ISymbol value)
-        {
-            return !value.IsKind(SymbolKind.Namespace);
-        }
-
-        public override bool IsMatch(ISymbol value)
-        {
-            foreach (AttributeData attribute in value.GetAttributes())
-            {
-                if (AttributeNames.Contains(attribute.AttributeClass))
-                    return true;
-            }
-
-            return false;
-        }
+        return false;
     }
 }
