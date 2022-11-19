@@ -16,6 +16,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add analyzer "Simplify argument null check" ([RCS1255](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1255.md)) ([#994](https://github.com/JosefPihrt/Roslynator/pull/994)).
   - Use `ArgumentNullException.ThrowIfNull` instead of `if` null check.
   - Not enabled by default
+- Add analyzer "Include/omit trailing comma" ([RCS1256](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1256.md)) ([#931](https://github.com/JosefPihrt/Roslynator/pull/931)).
+  - Required option: `roslynator_trailing_comma_style = include|omit`
+  - Not enabled by default
 
 ### Changed
 
