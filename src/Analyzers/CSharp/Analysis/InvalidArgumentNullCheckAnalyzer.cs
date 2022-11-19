@@ -36,14 +36,12 @@ public sealed class InvalidArgumentNullCheckAnalyzer : BaseDiagnosticAnalyzer
     private static void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
     {
         var methodDeclaration = (MethodDeclarationSyntax)context.Node;
-
         AnalyzeParameterList(context, methodDeclaration.ParameterList, methodDeclaration.Body);
     }
 
     private static void AnalyzeConstructorDeclaration(SyntaxNodeAnalysisContext context)
     {
         var constructorDeclaration = (ConstructorDeclarationSyntax)context.Node;
-
         AnalyzeParameterList(context, constructorDeclaration.ParameterList, constructorDeclaration.Body);
     }
 
