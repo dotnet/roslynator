@@ -1,9 +1,8 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-namespace Roslynator
+namespace Roslynator;
+
+internal interface IUserDialog
 {
-    internal interface IUserDialog
-    {
-        DialogResult ShowDialog(string text);
-    }
+    DialogResult ShowDialog(string text);
 }

@@ -6,64 +6,63 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
-{
-    internal static class RemoveBracesFromIfElseElseRefactoring
-    {
-        public static Task<Document> RefactorAsync(
-            Document document,
-            IfStatementSyntax ifStatement,
-            CancellationToken cancellationToken = default)
-        {
-            IfStatementSyntax newNode = SyntaxRewriter.VisitNode(ifStatement).WithFormatterAnnotation();
+namespace Roslynator.CSharp.Refactorings;
 
-            return document.ReplaceNodeAsync(ifStatement, newNode, cancellationToken);
+internal static class RemoveBracesFromIfElseElseRefactoring
+{
+    public static Task<Document> RefactorAsync(
+        Document document,
+        IfStatementSyntax ifStatement,
+        CancellationToken cancellationToken = default)
+    {
+        IfStatementSyntax newNode = SyntaxRewriter.VisitNode(ifStatement).WithFormatterAnnotation();
+
+        return document.ReplaceNodeAsync(ifStatement, newNode, cancellationToken);
+    }
+
+    private class SyntaxRewriter : CSharpSyntaxRewriter
+    {
+        private IfStatementSyntax _previousIf;
+
+        private SyntaxRewriter()
+        {
         }
 
-        private class SyntaxRewriter : CSharpSyntaxRewriter
+        public static IfStatementSyntax VisitNode(IfStatementSyntax node)
         {
-            private IfStatementSyntax _previousIf;
+            return (IfStatementSyntax)new SyntaxRewriter().Visit(node);
+        }
 
-            private SyntaxRewriter()
+        public override SyntaxNode VisitIfStatement(IfStatementSyntax node)
+        {
+            if (_previousIf?.Equals(node.GetPreviousIf()) != false)
             {
-            }
-
-            public static IfStatementSyntax VisitNode(IfStatementSyntax node)
-            {
-                return (IfStatementSyntax)new SyntaxRewriter().Visit(node);
-            }
-
-            public override SyntaxNode VisitIfStatement(IfStatementSyntax node)
-            {
-                if (_previousIf?.Equals(node.GetPreviousIf()) != false)
+                if (node.Statement?.Kind() == SyntaxKind.Block)
                 {
-                    if (node.Statement?.Kind() == SyntaxKind.Block)
-                    {
-                        IfStatementSyntax ifStatement = node.WithStatement(((BlockSyntax)node.Statement).Statements[0]);
+                    IfStatementSyntax ifStatement = node.WithStatement(((BlockSyntax)node.Statement).Statements[0]);
 
-                        _previousIf = ifStatement;
+                    _previousIf = ifStatement;
 
-                        return base.VisitIfStatement(ifStatement);
-                    }
-                    else
-                    {
-                        _previousIf = node;
-                    }
+                    return base.VisitIfStatement(ifStatement);
                 }
-
-                return base.VisitIfStatement(node);
-            }
-
-            public override SyntaxNode VisitElseClause(ElseClauseSyntax node)
-            {
-                if (_previousIf.Equals(node.Parent)
-                    && node.Statement?.Kind() == SyntaxKind.Block)
+                else
                 {
-                    return node.WithStatement(((BlockSyntax)node.Statement).Statements[0]);
+                    _previousIf = node;
                 }
-
-                return base.VisitElseClause(node);
             }
+
+            return base.VisitIfStatement(node);
+        }
+
+        public override SyntaxNode VisitElseClause(ElseClauseSyntax node)
+        {
+            if (_previousIf.Equals(node.Parent)
+                && node.Statement?.Kind() == SyntaxKind.Block)
+            {
+                return node.WithStatement(((BlockSyntax)node.Statement).Statements[0]);
+            }
+
+            return base.VisitElseClause(node);
         }
     }
 }

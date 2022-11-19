@@ -34,7 +34,7 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         ArrowExpressionClauseSyntax expressionBody = CSharpUtility.GetExpressionBody(member);
 
-                        if (expressionBody != null
+                        if (expressionBody is not null
                             && ExpandExpressionBodyAnalysis.IsFixable(expressionBody))
                         {
                             return (MemberDeclarationSyntax)Refactor(expressionBody, semanticModel, cancellationToken);
@@ -204,7 +204,7 @@ namespace Roslynator.CSharp.Refactorings
                 SemanticModel semanticModel,
                 CancellationToken cancellationToken)
             {
-                if (returnType == null)
+                if (returnType is null)
                     return true;
 
                 if (returnType.IsVoid())

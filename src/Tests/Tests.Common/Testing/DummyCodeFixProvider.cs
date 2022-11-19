@@ -5,14 +5,13 @@ using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.CodeFixes;
 
-namespace Roslynator.Testing
+namespace Roslynator.Testing;
+
+public sealed class DummyCodeFixProvider : CodeFixProvider
 {
-    public sealed class DummyCodeFixProvider : CodeFixProvider
-    {
-        public override ImmutableArray<string> FixableDiagnosticIds => throw new NotSupportedException();
+    public override ImmutableArray<string> FixableDiagnosticIds => throw new NotSupportedException();
 
-        public override Task RegisterCodeFixesAsync(CodeFixContext context) => throw new NotSupportedException();
+    public override Task RegisterCodeFixesAsync(CodeFixContext context) => throw new NotSupportedException();
 
-        public override FixAllProvider GetFixAllProvider() => throw new NotSupportedException();
-    }
+    public override FixAllProvider GetFixAllProvider() => throw new NotSupportedException();
 }

@@ -2,12 +2,11 @@
 
 using System;
 
-namespace Roslynator.Documentation
+namespace Roslynator.Documentation;
+
+[Flags]
+public enum CommonDocumentationParts
 {
-    [Flags]
-    public enum CommonDocumentationParts
-    {
-        None = 0,
-        Content = 1,
-    }
+    None = 0,
+    Content = 1,
 }

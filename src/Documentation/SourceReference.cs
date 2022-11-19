@@ -2,18 +2,17 @@
 
 using System;
 
-namespace Roslynator
+namespace Roslynator;
+
+public readonly struct SourceReference
 {
-    public readonly struct SourceReference
+    public SourceReference(Version version, string url)
     {
-        public SourceReference(Version version, string url)
-        {
-            Version = version;
-            Url = url;
-        }
-
-        public Version Version { get; }
-
-        public string Url { get; }
+        Version = version;
+        Url = url;
     }
+
+    public Version Version { get; }
+
+    public string Url { get; }
 }

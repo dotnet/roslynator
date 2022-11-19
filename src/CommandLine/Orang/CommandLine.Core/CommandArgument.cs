@@ -4,61 +4,60 @@ using System;
 using System.Diagnostics;
 using System.Text;
 
-namespace Roslynator
+namespace Roslynator;
+
+[DebuggerDisplay("{DebuggerDisplay,nq}")]
+public class CommandArgument
 {
-    [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public class CommandArgument
+    public CommandArgument(
+        int index,
+        string name,
+        string description = null,
+        bool isRequired = false)
     {
-        public CommandArgument(
-            int index,
-            string name,
-            string description = null,
-            bool isRequired = false)
+        Index = index;
+        Name = name ?? throw new ArgumentNullException(nameof(name));
+        Description = description;
+        IsRequired = isRequired;
+    }
+
+    public int Index { get; }
+
+    public string Name { get; }
+
+    public string Description { get; }
+
+    public bool IsRequired { get; }
+
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+    private string DebuggerDisplay
+    {
+        get
         {
-            Index = index;
-            Name = name ?? throw new ArgumentNullException(nameof(name));
-            Description = description;
-            IsRequired = isRequired;
-        }
+            var sb = new StringBuilder();
 
-        public int Index { get; }
+            if (!IsRequired)
+                sb.Append("[");
 
-        public string Name { get; }
-
-        public string Description { get; }
-
-        public bool IsRequired { get; }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string DebuggerDisplay
-        {
-            get
+            if (!string.IsNullOrEmpty(Name))
             {
-                var sb = new StringBuilder();
-
-                if (!IsRequired)
-                    sb.Append("[");
-
-                if (!string.IsNullOrEmpty(Name))
-                {
-                    sb.Append(Name);
-                }
-                else
-                {
-                    sb.Append(Index);
-                }
-
-                if (!IsRequired)
-                    sb.Append("]");
-
-                if (!string.IsNullOrEmpty(Description))
-                {
-                    sb.Append("  ");
-                    sb.Append(Description);
-                }
-
-                return sb.ToString();
+                sb.Append(Name);
             }
+            else
+            {
+                sb.Append(Index);
+            }
+
+            if (!IsRequired)
+                sb.Append("]");
+
+            if (!string.IsNullOrEmpty(Description))
+            {
+                sb.Append("  ");
+                sb.Append(Description);
+            }
+
+            return sb.ToString();
         }
     }
 }

@@ -63,7 +63,7 @@ namespace Roslynator.CSharp.Analysis
             if (memberAccess.IsParentKind(SyntaxKind.SimpleMemberAccessExpression))
                 return;
 
-            if (memberAccess.Expression == null)
+            if (memberAccess.Expression is null)
                 return;
 
             if (memberAccess.Name?.Identifier.ValueText != "Empty")

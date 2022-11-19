@@ -4,36 +4,35 @@ using System;
 using System.Collections.Immutable;
 using System.Diagnostics;
 
-namespace Roslynator.Spelling
+namespace Roslynator.Spelling;
+
+[DebuggerDisplay("{DebuggerDisplay,nq}")]
+internal readonly struct WordSequence
 {
-    [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    internal readonly struct WordSequence
+    public WordSequence(ImmutableArray<string> words)
     {
-        public WordSequence(ImmutableArray<string> words)
+        if (words.IsDefault
+            || words.Length <= 1)
         {
-            if (words.IsDefault
-                || words.Length <= 1)
-            {
-                throw new ArgumentException("", nameof(words));
-            }
-
-            Words = words;
+            throw new ArgumentException("", nameof(words));
         }
 
-        public string First => Words[0];
+        Words = words;
+    }
 
-        public int Count => Words.Length;
+    public string First => Words[0];
 
-        public ImmutableArray<string> Words { get; }
+    public int Count => Words.Length;
 
-        public bool IsDefault => Words.IsDefault;
+    public ImmutableArray<string> Words { get; }
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string DebuggerDisplay => (IsDefault) ? "Uninitialized" : $"Count = {Count}  {ToString()}";
+    public bool IsDefault => Words.IsDefault;
 
-        public override string ToString()
-        {
-            return (Words.IsDefault) ? "" : string.Join(" ", Words);
-        }
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+    private string DebuggerDisplay => (IsDefault) ? "Uninitialized" : $"Count = {Count}  {ToString()}";
+
+    public override string ToString()
+    {
+        return (Words.IsDefault) ? "" : string.Join(" ", Words);
     }
 }

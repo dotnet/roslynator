@@ -2,13 +2,12 @@
 
 using System;
 
-namespace Roslynator.CSharp
+namespace Roslynator.CSharp;
+
+[Flags]
+internal enum BracesAnalysisFlags
 {
-    [Flags]
-    internal enum BracesAnalysisFlags
-    {
-        None = 0,
-        AddBraces = 1,
-        RemoveBraces = 1 << 1,
-    }
+    None = 0,
+    AddBraces = 1,
+    RemoveBraces = 1 << 1,
 }

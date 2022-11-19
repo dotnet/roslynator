@@ -6,27 +6,26 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class ConvertDoToWhileRefactoring
 {
-    internal static class ConvertDoToWhileRefactoring
+    public static Task<Document> RefactorAsync(
+        Document document,
+        DoStatementSyntax doStatement,
+        CancellationToken cancellationToken = default)
     {
-        public static Task<Document> RefactorAsync(
-            Document document,
-            DoStatementSyntax doStatement,
-            CancellationToken cancellationToken = default)
-        {
-            WhileStatementSyntax whileStatement = WhileStatement(
-                doStatement.WhileKeyword,
-                doStatement.OpenParenToken,
-                doStatement.Condition,
-                doStatement.CloseParenToken.WithTrailingTrivia(doStatement.DoKeyword.TrailingTrivia),
-                doStatement.Statement);
+        WhileStatementSyntax whileStatement = WhileStatement(
+            doStatement.WhileKeyword,
+            doStatement.OpenParenToken,
+            doStatement.Condition,
+            doStatement.CloseParenToken.WithTrailingTrivia(doStatement.DoKeyword.TrailingTrivia),
+            doStatement.Statement);
 
-            whileStatement = whileStatement
-                .WithTriviaFrom(doStatement)
-                .WithFormatterAnnotation();
+        whileStatement = whileStatement
+            .WithTriviaFrom(doStatement)
+            .WithFormatterAnnotation();
 
-            return document.ReplaceNodeAsync(doStatement, whileStatement, cancellationToken);
-        }
+        return document.ReplaceNodeAsync(doStatement, whileStatement, cancellationToken);
     }
 }

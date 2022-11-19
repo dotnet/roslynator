@@ -6,55 +6,54 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace Roslynator.CSharp.Analysis
+namespace Roslynator.CSharp.Analysis;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class RemoveUnnecessaryBracesAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class RemoveUnnecessaryBracesAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
-            {
-                if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.RemoveUnnecessaryBraces);
+            if (_supportedDiagnostics.IsDefault)
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.RemoveUnnecessaryBraces);
 
-                return _supportedDiagnostics;
-            }
+            return _supportedDiagnostics;
         }
+    }
 
-        public override void Initialize(AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
+
+        context.RegisterSyntaxNodeAction(f => AnalyzeRecordDeclaration(f), SyntaxKind.RecordDeclaration, SyntaxKind.RecordStructDeclaration);
+    }
+
+    private static void AnalyzeRecordDeclaration(SyntaxNodeAnalysisContext context)
+    {
+        var recordDeclaration = (RecordDeclarationSyntax)context.Node;
+
+        if (!recordDeclaration.Members.Any()
+            && recordDeclaration.ParameterList is not null)
         {
-            base.Initialize(context);
+            SyntaxToken openBrace = recordDeclaration.OpenBraceToken;
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeRecordDeclaration(f), SyntaxKind.RecordDeclaration, SyntaxKind.RecordStructDeclaration);
-        }
-
-        private static void AnalyzeRecordDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            var recordDeclaration = (RecordDeclarationSyntax)context.Node;
-
-            if (!recordDeclaration.Members.Any()
-                && recordDeclaration.ParameterList != null)
+            if (!openBrace.IsKind(SyntaxKind.None))
             {
-                SyntaxToken openBrace = recordDeclaration.OpenBraceToken;
+                SyntaxToken closeBrace = recordDeclaration.CloseBraceToken;
 
-                if (!openBrace.IsKind(SyntaxKind.None))
+                if (!closeBrace.IsKind(SyntaxKind.None)
+                    && openBrace.TrailingTrivia.IsEmptyOrWhitespace()
+                    && closeBrace.LeadingTrivia.IsEmptyOrWhitespace()
+                    && recordDeclaration.ParameterList?.CloseParenToken.TrailingTrivia.IsEmptyOrWhitespace() != false)
                 {
-                    SyntaxToken closeBrace = recordDeclaration.CloseBraceToken;
-
-                    if (!closeBrace.IsKind(SyntaxKind.None)
-                        && openBrace.TrailingTrivia.IsEmptyOrWhitespace()
-                        && closeBrace.LeadingTrivia.IsEmptyOrWhitespace()
-                        && recordDeclaration.ParameterList?.CloseParenToken.TrailingTrivia.IsEmptyOrWhitespace() != false)
-                    {
-                        DiagnosticHelpers.ReportDiagnostic(
-                            context,
-                            DiagnosticRules.RemoveUnnecessaryBraces,
-                            openBrace.GetLocation(),
-                            additionalLocations: new Location[] { closeBrace.GetLocation() });
-                    }
+                    DiagnosticHelpers.ReportDiagnostic(
+                        context,
+                        DiagnosticRules.RemoveUnnecessaryBraces,
+                        openBrace.GetLocation(),
+                        additionalLocations: new Location[] { closeBrace.GetLocation() });
                 }
             }
         }

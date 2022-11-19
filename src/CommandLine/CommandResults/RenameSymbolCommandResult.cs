@@ -3,16 +3,15 @@
 using System.Collections.Immutable;
 using Roslynator.Rename;
 
-namespace Roslynator.CommandLine
-{
-    internal class RenameSymbolCommandResult : CommandResult
-    {
-        public RenameSymbolCommandResult(CommandStatus status, ImmutableArray<SymbolRenameResult> renameResults)
-            : base(status)
-        {
-            RenameResults = renameResults;
-        }
+namespace Roslynator.CommandLine;
 
-        public ImmutableArray<SymbolRenameResult> RenameResults { get; }
+internal class RenameSymbolCommandResult : CommandResult
+{
+    public RenameSymbolCommandResult(CommandStatus status, ImmutableArray<SymbolRenameResult> renameResults)
+        : base(status)
+    {
+        RenameResults = renameResults;
     }
+
+    public ImmutableArray<SymbolRenameResult> RenameResults { get; }
 }

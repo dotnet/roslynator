@@ -4,109 +4,108 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Roslynator.Spelling
+namespace Roslynator.Spelling;
+
+internal abstract class SpellingFixComparer :
+    IComparer<SpellingFix>,
+    IEqualityComparer<SpellingFix>,
+    IComparer,
+    IEqualityComparer
 {
-    internal abstract class SpellingFixComparer :
-        IComparer<SpellingFix>,
-        IEqualityComparer<SpellingFix>,
-        IComparer,
-        IEqualityComparer
+    public static SpellingFixComparer InvariantCulture { get; } = new InvariantCultureSpellingFixComparer();
+
+    public static SpellingFixComparer InvariantCultureIgnoreCase { get; } = new InvariantCultureIgnoreCaseSpellingFixComparer();
+
+    public abstract int Compare(SpellingFix x, SpellingFix y);
+
+    public abstract bool Equals(SpellingFix x, SpellingFix y);
+
+    public abstract int GetHashCode(SpellingFix obj);
+
+    public int Compare(object x, object y)
     {
-        public static SpellingFixComparer InvariantCulture { get; } = new InvariantCultureSpellingFixComparer();
+        if (x == y)
+            return 0;
 
-        public static SpellingFixComparer InvariantCultureIgnoreCase { get; } = new InvariantCultureIgnoreCaseSpellingFixComparer();
+        if (x is null)
+            return -1;
 
-        public abstract int Compare(SpellingFix x, SpellingFix y);
+        if (y is null)
+            return 1;
 
-        public abstract bool Equals(SpellingFix x, SpellingFix y);
-
-        public abstract int GetHashCode(SpellingFix obj);
-
-        public int Compare(object x, object y)
+        if (x is SpellingFix a
+            && y is SpellingFix b)
         {
-            if (x == y)
-                return 0;
-
-            if (x == null)
-                return -1;
-
-            if (y == null)
-                return 1;
-
-            if (x is SpellingFix a
-                && y is SpellingFix b)
-            {
-                return Compare(a, b);
-            }
-
-            throw new ArgumentException("", nameof(x));
+            return Compare(a, b);
         }
 
-        new public bool Equals(object x, object y)
+        throw new ArgumentException("", nameof(x));
+    }
+
+    new public bool Equals(object x, object y)
+    {
+        if (x == y)
+            return true;
+
+        if (x is null)
+            return false;
+
+        if (y is null)
+            return false;
+
+        if (x is SpellingFix a
+            && y is SpellingFix b)
         {
-            if (x == y)
-                return true;
-
-            if (x == null)
-                return false;
-
-            if (y == null)
-                return false;
-
-            if (x is SpellingFix a
-                && y is SpellingFix b)
-            {
-                return Equals(a, b);
-            }
-
-            throw new ArgumentException("", nameof(x));
+            return Equals(a, b);
         }
 
-        public int GetHashCode(object obj)
+        throw new ArgumentException("", nameof(x));
+    }
+
+    public int GetHashCode(object obj)
+    {
+        if (obj is null)
+            return 0;
+
+        if (obj is SpellingFix type)
+            return GetHashCode(type);
+
+        throw new ArgumentException("", nameof(obj));
+    }
+
+    private class InvariantCultureSpellingFixComparer : SpellingFixComparer
+    {
+        public override int Compare(SpellingFix x, SpellingFix y)
         {
-            if (obj == null)
-                return 0;
-
-            if (obj is SpellingFix type)
-                return GetHashCode(type);
-
-            throw new ArgumentException("", nameof(obj));
+            return StringComparer.CurrentCulture.Compare(x.Value, y.Value);
         }
 
-        private class InvariantCultureSpellingFixComparer : SpellingFixComparer
+        public override bool Equals(SpellingFix x, SpellingFix y)
         {
-            public override int Compare(SpellingFix x, SpellingFix y)
-            {
-                return StringComparer.CurrentCulture.Compare(x.Value, y.Value);
-            }
-
-            public override bool Equals(SpellingFix x, SpellingFix y)
-            {
-                return StringComparer.CurrentCulture.Equals(x.Value, y.Value);
-            }
-
-            public override int GetHashCode(SpellingFix obj)
-            {
-                return StringComparer.CurrentCulture.GetHashCode(obj.Value);
-            }
+            return StringComparer.CurrentCulture.Equals(x.Value, y.Value);
         }
 
-        private class InvariantCultureIgnoreCaseSpellingFixComparer : SpellingFixComparer
+        public override int GetHashCode(SpellingFix obj)
         {
-            public override int Compare(SpellingFix x, SpellingFix y)
-            {
-                return WordList.DefaultComparer.Compare(x.Value, y.Value);
-            }
+            return StringComparer.CurrentCulture.GetHashCode(obj.Value);
+        }
+    }
 
-            public override bool Equals(SpellingFix x, SpellingFix y)
-            {
-                return WordList.DefaultComparer.Equals(x.Value, y.Value);
-            }
+    private class InvariantCultureIgnoreCaseSpellingFixComparer : SpellingFixComparer
+    {
+        public override int Compare(SpellingFix x, SpellingFix y)
+        {
+            return WordList.DefaultComparer.Compare(x.Value, y.Value);
+        }
 
-            public override int GetHashCode(SpellingFix obj)
-            {
-                return WordList.DefaultComparer.GetHashCode(obj.Value);
-            }
+        public override bool Equals(SpellingFix x, SpellingFix y)
+        {
+            return WordList.DefaultComparer.Equals(x.Value, y.Value);
+        }
+
+        public override int GetHashCode(SpellingFix obj)
+        {
+            return WordList.DefaultComparer.GetHashCode(obj.Value);
         }
     }
 }

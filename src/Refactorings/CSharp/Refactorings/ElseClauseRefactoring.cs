@@ -3,28 +3,27 @@
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class ElseClauseRefactoring
 {
-    internal static class ElseClauseRefactoring
+    public static void ComputeRefactorings(RefactoringContext context, ElseClauseSyntax elseClause)
     {
-        public static void ComputeRefactorings(RefactoringContext context, ElseClauseSyntax elseClause)
+        if (context.IsRefactoringEnabled(RefactoringDescriptors.RemoveConditionFromLastElse)
+            && context.Span.IsEmptyAndContainedInSpan(elseClause.ElseKeyword))
         {
-            if (context.IsRefactoringEnabled(RefactoringDescriptors.RemoveConditionFromLastElse)
-                && context.Span.IsEmptyAndContainedInSpan(elseClause.ElseKeyword))
-            {
-                RemoveConditionFromLastElseRefactoring.ComputeRefactorings(context, elseClause);
-            }
+            RemoveConditionFromLastElseRefactoring.ComputeRefactorings(context, elseClause);
+        }
 
-            if (context.IsRefactoringEnabled(RefactoringDescriptors.AddBraces)
-                && elseClause.Statement?.Kind() == SyntaxKind.IfStatement)
-            {
-                var ifStatement = (IfStatementSyntax)elseClause.Statement;
+        if (context.IsRefactoringEnabled(RefactoringDescriptors.AddBraces)
+            && elseClause.Statement?.Kind() == SyntaxKind.IfStatement)
+        {
+            var ifStatement = (IfStatementSyntax)elseClause.Statement;
 
-                if (ifStatement.IfKeyword.Span.Contains(context.Span)
-                    || context.Span.IsBetweenSpans(ifStatement))
-                {
-                    AddBracesRefactoring.RegisterRefactoring(context, ifStatement);
-                }
+            if (ifStatement.IfKeyword.Span.Contains(context.Span)
+                || context.Span.IsBetweenSpans(ifStatement))
+            {
+                AddBracesRefactoring.RegisterRefactoring(context, ifStatement);
             }
         }
     }

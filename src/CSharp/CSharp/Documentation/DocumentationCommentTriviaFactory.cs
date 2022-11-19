@@ -70,7 +70,7 @@ namespace Roslynator.CSharp.Documentation
             {
                 string s;
 
-                while ((s = sr.ReadLine()) != null)
+                while ((s = sr.ReadLine()) is not null)
                 {
                     if (s.Length > 0)
                     {

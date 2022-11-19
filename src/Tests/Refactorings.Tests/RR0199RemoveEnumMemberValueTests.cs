@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0199RemoveEnumMemberValueTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.RemoveEnumMemberValue;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveEnumMemberValue)]
-        public async Task Test_SingleMember()
-        {
-            await VerifyRefactoringAsync(@"
+public class RR0199RemoveEnumMemberValueTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.RemoveEnumMemberValue;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveEnumMemberValue)]
+    public async Task Test_SingleMember()
+    {
+        await VerifyRefactoringAsync(@"
 enum E
 {
     [|A = 0,|]
@@ -28,12 +28,12 @@ enum E
     C
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveEnumMemberValue)]
-        public async Task Test_MultipleMembers()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveEnumMemberValue)]
+    public async Task Test_MultipleMembers()
+    {
+        await VerifyRefactoringAsync(@"
 enum E
 {
     A = 0,
@@ -54,12 +54,12 @@ enum E
     D
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveEnumMemberValue)]
-        public async Task Test_AllMembers()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveEnumMemberValue)]
+    public async Task Test_AllMembers()
+    {
+        await VerifyRefactoringAsync(@"
 enum [||]E
 {
     A = 1,
@@ -80,12 +80,12 @@ enum E
     D
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveEnumMemberValue)]
-        public async Task Test_AllMembers_Flags()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveEnumMemberValue)]
+    public async Task Test_AllMembers_Flags()
+    {
+        await VerifyRefactoringAsync(@"
 using System;
 
 [Flags]
@@ -116,12 +116,12 @@ enum E
     D
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveEnumMemberValue)]
-        public async Task TestNoRefactoring_SingleMember()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveEnumMemberValue)]
+    public async Task TestNoRefactoring_SingleMember()
+    {
+        await VerifyNoRefactoringAsync(@"
 enum E
 {
     A = 0,
@@ -131,12 +131,12 @@ enum E
     E = 4
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveEnumMemberValue)]
-        public async Task TestNoRefactoring_MultipleMembers()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveEnumMemberValue)]
+    public async Task TestNoRefactoring_MultipleMembers()
+    {
+        await VerifyNoRefactoringAsync(@"
 enum E
 {
     A = 0,
@@ -146,6 +146,5 @@ enum E
     E = 4
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
     }
 }

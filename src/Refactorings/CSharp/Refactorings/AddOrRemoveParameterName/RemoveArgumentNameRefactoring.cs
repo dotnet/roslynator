@@ -6,50 +6,49 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings.AddOrRemoveParameterName
+namespace Roslynator.CSharp.Refactorings.AddOrRemoveParameterName;
+
+internal static class RemoveArgumentNameRefactoring
 {
-    internal static class RemoveArgumentNameRefactoring
+    public static void ComputeRefactoring(
+        RefactoringContext context,
+        ArgumentListSyntax argumentList,
+        SeparatedSyntaxListSelection<ArgumentSyntax> selection)
     {
-        public static void ComputeRefactoring(
-            RefactoringContext context,
-            ArgumentListSyntax argumentList,
-            SeparatedSyntaxListSelection<ArgumentSyntax> selection)
-        {
-            if (!CanRefactor(selection))
-                return;
+        if (!CanRefactor(selection))
+            return;
 
-            context.RegisterRefactoring(
-                "Remove argument name",
-                ct => RefactorAsync(context.Document, argumentList, selection, ct),
-                RefactoringDescriptors.RemoveArgumentName);
+        context.RegisterRefactoring(
+            "Remove argument name",
+            ct => RefactorAsync(context.Document, argumentList, selection, ct),
+            RefactoringDescriptors.RemoveArgumentName);
+    }
+
+    private static bool CanRefactor(SeparatedSyntaxListSelection<ArgumentSyntax> selection)
+    {
+        for (int i = 0; i < selection.Count; i++)
+        {
+            NameColonSyntax nameColon = selection[i].NameColon;
+
+            if (nameColon?.IsMissing == false)
+                return true;
         }
 
-        private static bool CanRefactor(SeparatedSyntaxListSelection<ArgumentSyntax> selection)
-        {
-            for (int i = 0; i < selection.Count; i++)
-            {
-                NameColonSyntax nameColon = selection[i].NameColon;
+        return false;
+    }
 
-                if (nameColon?.IsMissing == false)
-                    return true;
-            }
+    private static Task<Document> RefactorAsync(
+        Document document,
+        ArgumentListSyntax argumentList,
+        SeparatedSyntaxListSelection<ArgumentSyntax> selection,
+        CancellationToken cancellationToken = default)
+    {
+        var rewriter = new RemoveParameterNameRewriter(selection.ToImmutableArray());
 
-            return false;
-        }
+        SyntaxNode newNode = rewriter
+            .Visit(argumentList)
+            .WithFormatterAnnotation();
 
-        private static Task<Document> RefactorAsync(
-            Document document,
-            ArgumentListSyntax argumentList,
-            SeparatedSyntaxListSelection<ArgumentSyntax> selection,
-            CancellationToken cancellationToken = default)
-        {
-            var rewriter = new RemoveParameterNameRewriter(selection.ToImmutableArray());
-
-            SyntaxNode newNode = rewriter
-                .Visit(argumentList)
-                .WithFormatterAnnotation();
-
-            return document.ReplaceNodeAsync(argumentList, newNode, cancellationToken);
-        }
+        return document.ReplaceNodeAsync(argumentList, newNode, cancellationToken);
     }
 }

@@ -8,65 +8,64 @@ using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp;
 
-namespace Roslynator.Formatting.CSharp
+namespace Roslynator.Formatting.CSharp;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class NormalizeWhitespaceAtBeginningOfFileAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class NormalizeWhitespaceAtBeginningOfFileAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
-            {
-                if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.NormalizeWhitespaceAtBeginningOfFile);
+            if (_supportedDiagnostics.IsDefault)
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.NormalizeWhitespaceAtBeginningOfFile);
 
-                return _supportedDiagnostics;
-            }
+            return _supportedDiagnostics;
         }
+    }
 
-        public override void Initialize(AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
+
+        context.RegisterSyntaxNodeAction(f => AnalyzeCompilationUnit(f), SyntaxKind.CompilationUnit);
+    }
+
+    private static void AnalyzeCompilationUnit(SyntaxNodeAnalysisContext context)
+    {
+        var compilationUnit = (CompilationUnitSyntax)context.Node;
+
+        if (compilationUnit.Span.Length == 0)
+            return;
+
+        SyntaxToken token = compilationUnit.EndOfFileToken;
+
+        if (token.FullSpan.Start > 0)
         {
-            base.Initialize(context);
+            token = compilationUnit.GetFirstToken();
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeCompilationUnit(f), SyntaxKind.CompilationUnit);
-        }
-
-        private static void AnalyzeCompilationUnit(SyntaxNodeAnalysisContext context)
-        {
-            var compilationUnit = (CompilationUnitSyntax)context.Node;
-
-            if (compilationUnit.Span.Length == 0)
-                return;
-
-            SyntaxToken token = compilationUnit.EndOfFileToken;
+            SyntaxDebug.Assert(token.FullSpan.Start == 0, token);
 
             if (token.FullSpan.Start > 0)
-            {
-                token = compilationUnit.GetFirstToken();
+                return;
+        }
 
-                SyntaxDebug.Assert(token.FullSpan.Start == 0, token);
+        SyntaxTriviaList.Enumerator en = token.LeadingTrivia.GetEnumerator();
 
-                if (token.FullSpan.Start > 0)
-                    return;
-            }
+        if (en.MoveNext()
+            && en.Current.IsWhitespaceOrEndOfLineTrivia())
+        {
+            ReportDiagnostic(context, token);
+        }
 
-            SyntaxTriviaList.Enumerator en = token.LeadingTrivia.GetEnumerator();
-
-            if (en.MoveNext()
-                && en.Current.IsWhitespaceOrEndOfLineTrivia())
-            {
-                ReportDiagnostic(context, token);
-            }
-
-            static void ReportDiagnostic(SyntaxNodeAnalysisContext context, SyntaxToken token)
-            {
-                DiagnosticHelpers.ReportDiagnostic(
-                    context,
-                    DiagnosticRules.NormalizeWhitespaceAtBeginningOfFile,
-                    Location.Create(token.SyntaxTree, new TextSpan(0, 0)));
-            }
+        static void ReportDiagnostic(SyntaxNodeAnalysisContext context, SyntaxToken token)
+        {
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
+                DiagnosticRules.NormalizeWhitespaceAtBeginningOfFile,
+                Location.Create(token.SyntaxTree, new TextSpan(0, 0)));
         }
     }
 }

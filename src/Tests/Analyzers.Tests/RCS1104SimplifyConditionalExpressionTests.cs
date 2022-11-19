@@ -6,32 +6,32 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
+namespace Roslynator.CSharp.Analysis.Tests;
+
+public class RCS1104SimplifyConditionalExpressionTests : AbstractCSharpDiagnosticVerifier<SimplifyConditionalExpressionAnalyzer, ConditionalExpressionCodeFixProvider>
 {
-    public class RCS1104SimplifyConditionalExpressionTests : AbstractCSharpDiagnosticVerifier<SimplifyConditionalExpressionAnalyzer, ConditionalExpressionCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.SimplifyConditionalExpression;
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.SimplifyConditionalExpression;
 
-        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyConditionalExpression)]
-        [InlineData("f ? true : false", "f")]
-        [InlineData("!f ? false : true", "f")]
-        [InlineData("((f)) ? ((true)) : ((false))", "f")]
-        [InlineData("f ? false : true", "!f")]
-        [InlineData("f == g ? false : true", "f != g")]
-        [InlineData("f != g ? false : true", "f == g")]
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyConditionalExpression)]
+    [InlineData("f ? true : false", "f")]
+    [InlineData("!f ? false : true", "f")]
+    [InlineData("((f)) ? ((true)) : ((false))", "f")]
+    [InlineData("f ? false : true", "!f")]
+    [InlineData("f == g ? false : true", "f != g")]
+    [InlineData("f != g ? false : true", "f == g")]
 
-        [InlineData(@"f
+    [InlineData(@"f
             ? true
             : false", "f")]
 
-        [InlineData(@"[|f //a
+    [InlineData(@"[|f //a
               /*b*/ ? /*c*/ true //d
                                  /*e*/ : /*f*/ false|] /*g*/", @"f //a
               /*b*/  /*c*/  //d
                                  /*e*/  /*f*/  /*g*/")]
-        public async Task Test_TrueFalse(string source, string expected)
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    public async Task Test_TrueFalse(string source, string expected)
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M(bool f, bool g)
@@ -40,18 +40,18 @@ class C
 }
 }
 ", source, expected);
-        }
+    }
 
-        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyConditionalExpression)]
-        [InlineData("f ? g : false", "f && g")]
-        [InlineData("f ? g || g : false", "f && (g || g)")]
-        [InlineData(@"[|f
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyConditionalExpression)]
+    [InlineData("f ? g : false", "f && g")]
+    [InlineData("f ? g || g : false", "f && (g || g)")]
+    [InlineData(@"[|f
             ? g
             : false|] /**/", @"f
             && g /**/")]
-        public async Task Test_LogicalAnd(string source, string expected)
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    public async Task Test_LogicalAnd(string source, string expected)
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M(bool f, bool g)
@@ -60,17 +60,17 @@ class C
     }
 }
 ", source, expected);
-        }
+    }
 
-        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyConditionalExpression)]
-        [InlineData("f ? true : g", "f || g")]
-        [InlineData(@"[|f
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyConditionalExpression)]
+    [InlineData("f ? true : g", "f || g")]
+    [InlineData(@"[|f
             ? true
             : g|] /**/", @"f
             || g /**/")]
-        public async Task Test_LogicalOr(string source, string expected)
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    public async Task Test_LogicalOr(string source, string expected)
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M(bool f, bool g)
@@ -79,12 +79,12 @@ class C
     }
 }
 ", source, expected);
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyConditionalExpression)]
-        public async Task Test_NegateCondition()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyConditionalExpression)]
+    public async Task Test_NegateCondition()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -105,12 +105,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyConditionalExpression)]
-        public async Task Test_NegateCondition2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyConditionalExpression)]
+    public async Task Test_NegateCondition2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -131,12 +131,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyConditionalExpression)]
-        public async Task TestNoDiagnostic()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyConditionalExpression)]
+    public async Task TestNoDiagnostic()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M(bool f, bool g, bool h)
@@ -154,12 +154,12 @@ class C
     }
 }
 ", options: Options.WithDebugPreprocessorSymbol());
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyConditionalExpression)]
-        public async Task TestNoDiagnostic_NullableBool()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyConditionalExpression)]
+    public async Task TestNoDiagnostic_NullableBool()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -170,12 +170,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyConditionalExpression)]
-        public async Task TestNoDiagnostic_ThrowExpression()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyConditionalExpression)]
+    public async Task TestNoDiagnostic_ThrowExpression()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 class C
@@ -191,6 +191,5 @@ class C
     }
 }
 ");
-        }
     }
 }

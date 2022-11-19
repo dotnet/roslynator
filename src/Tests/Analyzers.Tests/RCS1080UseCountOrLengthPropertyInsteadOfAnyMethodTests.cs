@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1080UseCountOrLengthPropertyInsteadOfAnyMethodTests : AbstractCSharpDiagnosticVerifier<InvocationExpressionAnalyzer, InvocationExpressionCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseCountOrLengthPropertyInsteadOfAnyMethod;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
-        public async Task Test_List()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1080UseCountOrLengthPropertyInsteadOfAnyMethodTests : AbstractCSharpDiagnosticVerifier<InvocationExpressionAnalyzer, InvocationExpressionCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseCountOrLengthPropertyInsteadOfAnyMethod;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
+    public async Task Test_List()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -44,12 +44,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
-        public async Task Test_ListNot()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
+    public async Task Test_ListNot()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -78,12 +78,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
-        public async Task Test_IList()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
+    public async Task Test_IList()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -112,12 +112,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
-        public async Task Test_IListNot()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
+    public async Task Test_IListNot()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -146,12 +146,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
-        public async Task Test_IReadOnlyList()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
+    public async Task Test_IReadOnlyList()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -180,12 +180,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
-        public async Task Test_IReadOnlyListNot()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
+    public async Task Test_IReadOnlyListNot()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -214,12 +214,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
-        public async Task Test_Collection()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
+    public async Task Test_Collection()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.ObjectModel;
 using System.Linq;
 
@@ -248,12 +248,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
-        public async Task Test_CollectionNot()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
+    public async Task Test_CollectionNot()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.ObjectModel;
 using System.Linq;
 
@@ -282,12 +282,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
-        public async Task Test_ICollection()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
+    public async Task Test_ICollection()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -316,12 +316,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
-        public async Task Test_ICollectionNot()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
+    public async Task Test_ICollectionNot()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -350,12 +350,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
-        public async Task Test_IReadOnlyCollection()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
+    public async Task Test_IReadOnlyCollection()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -384,12 +384,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
-        public async Task Test_IReadOnlyCollectionNot()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
+    public async Task Test_IReadOnlyCollectionNot()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -418,12 +418,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
-        public async Task Test_Array()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
+    public async Task Test_Array()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Linq;
 
 class C
@@ -450,12 +450,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
-        public async Task Test_ArrayNot()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
+    public async Task Test_ArrayNot()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Linq;
 
 class C
@@ -482,12 +482,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
-        public async Task Test_String()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
+    public async Task Test_String()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Linq;
 
 class C
@@ -514,12 +514,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
-        public async Task Test_StringNot()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
+    public async Task Test_StringNot()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Linq;
 
 class C
@@ -546,12 +546,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
-        public async Task Test_DerivedFromListOfT()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
+    public async Task Test_DerivedFromListOfT()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -590,12 +590,12 @@ public class List2 : List<string>
 {
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
-        public async Task TestNoDiagnostic_ImmutableArray()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
+    public async Task TestNoDiagnostic_ImmutableArray()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Collections.Immutable;
 
 class C
@@ -606,12 +606,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
-        public async Task TestNoDiagnostic_IEnumerable()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod)]
+    public async Task TestNoDiagnostic_IEnumerable()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -623,6 +623,5 @@ class C
     }
 }
 ");
-        }
     }
 }

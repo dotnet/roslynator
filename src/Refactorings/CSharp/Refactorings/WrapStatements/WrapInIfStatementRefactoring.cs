@@ -6,27 +6,26 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CSharp.Refactorings.WrapStatements
+namespace Roslynator.CSharp.Refactorings.WrapStatements;
+
+internal sealed class WrapInIfStatementRefactoring : WrapStatementsRefactoring<IfStatementSyntax>
 {
-    internal sealed class WrapInIfStatementRefactoring : WrapStatementsRefactoring<IfStatementSyntax>
+    private WrapInIfStatementRefactoring()
     {
-        private WrapInIfStatementRefactoring()
-        {
-        }
+    }
 
-        public static WrapInIfStatementRefactoring Instance { get; } = new();
+    public static WrapInIfStatementRefactoring Instance { get; } = new();
 
-        public const string Title = "Wrap in condition";
+    public const string Title = "Wrap in condition";
 
-        public override IfStatementSyntax CreateStatement(ImmutableArray<StatementSyntax> statements)
-        {
-            return IfStatement(
-                Token(SyntaxKind.IfKeyword),
-                OpenParenToken(),
-                ParseExpression(""),
-                CloseParenToken().WithNavigationAnnotation(),
-                Block(statements),
-                default(ElseClauseSyntax));
-        }
+    public override IfStatementSyntax CreateStatement(ImmutableArray<StatementSyntax> statements)
+    {
+        return IfStatement(
+            Token(SyntaxKind.IfKeyword),
+            OpenParenToken(),
+            ParseExpression(""),
+            CloseParenToken().WithNavigationAnnotation(),
+            Block(statements),
+            default(ElseClauseSyntax));
     }
 }

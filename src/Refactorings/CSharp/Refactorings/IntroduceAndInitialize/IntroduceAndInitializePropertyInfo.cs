@@ -4,34 +4,33 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
+namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize;
+
+internal class IntroduceAndInitializePropertyInfo : IntroduceAndInitializeInfo
 {
-    internal class IntroduceAndInitializePropertyInfo : IntroduceAndInitializeInfo
+    private string _name;
+
+    public IntroduceAndInitializePropertyInfo(ParameterSyntax parameter, bool supportsCSharp6)
+        : base(parameter)
     {
-        private string _name;
+        SupportsCSharp6 = supportsCSharp6;
+    }
 
-        public IntroduceAndInitializePropertyInfo(ParameterSyntax parameter, bool supportsCSharp6)
-            : base(parameter)
-        {
-            SupportsCSharp6 = supportsCSharp6;
-        }
+    public bool SupportsCSharp6 { get; }
 
-        public bool SupportsCSharp6 { get; }
+    public override string Name
+    {
+        get { return _name ??= StringUtility.FirstCharToUpper(ParameterName); }
+    }
 
-        public override string Name
-        {
-            get { return _name ??= StringUtility.FirstCharToUpper(ParameterName); }
-        }
-
-        public override MemberDeclarationSyntax CreateDeclaration()
-        {
-            return PropertyDeclaration(
-                Modifiers.Public(),
-                Type,
-                SyntaxFactory.Identifier(Name),
-                (SupportsCSharp6)
-                    ? AccessorList(AutoGetAccessorDeclaration())
-                    : AccessorList(AutoGetAccessorDeclaration(), AutoSetAccessorDeclaration(Modifiers.Private())));
-        }
+    public override MemberDeclarationSyntax CreateDeclaration()
+    {
+        return PropertyDeclaration(
+            Modifiers.Public(),
+            Type,
+            SyntaxFactory.Identifier(Name),
+            (SupportsCSharp6)
+                ? AccessorList(AutoGetAccessorDeclaration())
+                : AccessorList(AutoGetAccessorDeclaration(), AutoSetAccessorDeclaration(Modifiers.Private())));
     }
 }

@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1173UseCoalesceExpressionInsteadOfIfTests : AbstractCSharpDiagnosticVerifier<IfStatementAnalyzer, IfStatementCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseCoalesceExpressionInsteadOfIf;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfIf)]
-        public async Task Test_IfElseToAssignment()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1173UseCoalesceExpressionInsteadOfIfTests : AbstractCSharpDiagnosticVerifier<IfStatementAnalyzer, IfStatementCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseCoalesceExpressionInsteadOfIf;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfIf)]
+    public async Task Test_IfElseToAssignment()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M(string x, string y, string z)
@@ -41,12 +41,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfIf)]
-        public async Task Test_IfElseToReturn()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfIf)]
+    public async Task Test_IfElseToReturn()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     string M(string x, string y)
@@ -72,12 +72,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfIf)]
-        public async Task Test_IfElseToYieldReturn()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfIf)]
+    public async Task Test_IfElseToYieldReturn()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 
 class C
@@ -107,12 +107,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfIf)]
-        public async Task Test_IfReturnToReturn()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfIf)]
+    public async Task Test_IfReturnToReturn()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     string M(string x, string y)
@@ -136,12 +136,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfIf)]
-        public async Task TestNoDiagnostic_IfElseContainsComment()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfIf)]
+    public async Task TestNoDiagnostic_IfElseContainsComment()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M(string x, string y, string z)
@@ -158,12 +158,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfIf)]
-        public async Task TestNoDiagnostic_IfElseContainsDirective()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfIf)]
+    public async Task TestNoDiagnostic_IfElseContainsDirective()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M(string x, string y, string z)
@@ -181,12 +181,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfIf)]
-        public async Task TestNoDiagnostic_IfReturnContainsComment()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfIf)]
+    public async Task TestNoDiagnostic_IfReturnContainsComment()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M(string x, string y, string z)
@@ -201,12 +201,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfIf)]
-        public async Task TestNoDiagnostic_IfReturnContainsDirective()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfIf)]
+    public async Task TestNoDiagnostic_IfReturnContainsDirective()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M(string x, string y, string z)
@@ -222,6 +222,5 @@ class C
     }
 }
 ");
-        }
     }
 }

@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1041RemoveEmptyInitializerTests : AbstractCSharpDiagnosticVerifier<RemoveEmptyInitializerAnalyzer, RemoveEmptyInitializerCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveEmptyInitializer;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptyInitializer)]
-        public async Task Test()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1041RemoveEmptyInitializerTests : AbstractCSharpDiagnosticVerifier<RemoveEmptyInitializerAnalyzer, RemoveEmptyInitializerCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveEmptyInitializer;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptyInitializer)]
+    public async Task Test()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -32,12 +32,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptyInitializer)]
-        public async Task TestNoDiagnostic_ExpressionTree()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptyInitializer)]
+    public async Task TestNoDiagnostic_ExpressionTree()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 using System.Linq.Expressions;
 
@@ -49,6 +49,5 @@ class C
     }
 }
 ");
-        }
     }
 }

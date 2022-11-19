@@ -6,20 +6,19 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
-{
-    internal static class UseConstantInsteadOfReadOnlyFieldRefactoring
-    {
-        public static Task<Document> RefactorAsync(
-            Document document,
-            FieldDeclarationSyntax fieldDeclaration,
-            CancellationToken cancellationToken)
-        {
-            FieldDeclarationSyntax newNode = fieldDeclaration
-                .InsertModifier(SyntaxKind.ConstKeyword)
-                .RemoveModifiers(SyntaxKind.StaticKeyword, SyntaxKind.ReadOnlyKeyword);
+namespace Roslynator.CSharp.Refactorings;
 
-            return document.ReplaceNodeAsync(fieldDeclaration, newNode, cancellationToken);
-        }
+internal static class UseConstantInsteadOfReadOnlyFieldRefactoring
+{
+    public static Task<Document> RefactorAsync(
+        Document document,
+        FieldDeclarationSyntax fieldDeclaration,
+        CancellationToken cancellationToken)
+    {
+        FieldDeclarationSyntax newNode = fieldDeclaration
+            .InsertModifier(SyntaxKind.ConstKeyword)
+            .RemoveModifiers(SyntaxKind.StaticKeyword, SyntaxKind.ReadOnlyKeyword);
+
+        return document.ReplaceNodeAsync(fieldDeclaration, newNode, cancellationToken);
     }
 }

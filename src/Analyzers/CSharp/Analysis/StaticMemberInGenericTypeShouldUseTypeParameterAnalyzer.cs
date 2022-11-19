@@ -199,9 +199,9 @@ namespace Roslynator.CSharp.Analysis
         {
             SyntaxNode node = member.GetSyntaxOrDefault(context.CancellationToken);
 
-            Debug.Assert(node != null, member.ToString());
+            Debug.Assert(node is not null, member.ToString());
 
-            if (node == null)
+            if (node is null)
                 return;
 
             SyntaxToken identifier = CSharpUtility.GetIdentifier(node);

@@ -5,16 +5,15 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Roslynator.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class RemoveEmptyRegionRefactoring
 {
-    internal static class RemoveEmptyRegionRefactoring
+    public static Task<Document> RefactorAsync(
+        Document document,
+        in RegionInfo region,
+        CancellationToken cancellationToken = default)
     {
-        public static Task<Document> RefactorAsync(
-            Document document,
-            in RegionInfo region,
-            CancellationToken cancellationToken = default)
-        {
-            return document.RemoveRegionAsync(region, cancellationToken);
-        }
+        return document.RemoveRegionAsync(region, cancellationToken);
     }
 }

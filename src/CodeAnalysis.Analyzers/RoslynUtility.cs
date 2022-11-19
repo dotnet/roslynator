@@ -6,29 +6,28 @@ using System.Reflection;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 
-namespace Roslynator
+namespace Roslynator;
+
+internal static class RoslynUtility
 {
-    internal static class RoslynUtility
+    private static ImmutableHashSet<string> _wellKnownLanguageNames;
+
+    public static ImmutableHashSet<string> WellKnownLanguageNames
     {
-        private static ImmutableHashSet<string> _wellKnownLanguageNames;
-
-        public static ImmutableHashSet<string> WellKnownLanguageNames
+        get
         {
-            get
+            if (_wellKnownLanguageNames is null)
+                Interlocked.CompareExchange(ref _wellKnownLanguageNames, LoadLanguageNames(), null);
+
+            return _wellKnownLanguageNames;
+
+            static ImmutableHashSet<string> LoadLanguageNames()
             {
-                if (_wellKnownLanguageNames == null)
-                    Interlocked.CompareExchange(ref _wellKnownLanguageNames, LoadLanguageNames(), null);
-
-                return _wellKnownLanguageNames;
-
-                static ImmutableHashSet<string> LoadLanguageNames()
-                {
-                    return typeof(LanguageNames)
-                        .GetRuntimeFields()
-                        .Where(f => f.IsPublic)
-                        .Select(f => (string)f.GetValue(null))
-                        .ToImmutableHashSet();
-                }
+                return typeof(LanguageNames)
+                    .GetRuntimeFields()
+                    .Where(f => f.IsPublic)
+                    .Select(f => (string)f.GetValue(null))
+                    .ToImmutableHashSet();
             }
         }
     }

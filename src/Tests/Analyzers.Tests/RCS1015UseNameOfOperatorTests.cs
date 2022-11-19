@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1015UseNameOfOperatorTests : AbstractCSharpDiagnosticVerifier<UseNameOfOperatorAnalyzer, UseNameOfOperatorCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseNameOfOperator;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseNameOfOperator)]
-        public async Task Test()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1015UseNameOfOperatorTests : AbstractCSharpDiagnosticVerifier<UseNameOfOperatorAnalyzer, UseNameOfOperatorCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseNameOfOperator;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseNameOfOperator)]
+    public async Task Test()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
@@ -46,12 +46,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseNameOfOperator)]
-        public async Task TestNoDiagnostic_LanguageVersion()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseNameOfOperator)]
+    public async Task TestNoDiagnostic_LanguageVersion()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 class C
@@ -67,6 +67,5 @@ class C
     }
 }
 ", options: WellKnownCSharpTestOptions.Default_CSharp5);
-        }
     }
 }

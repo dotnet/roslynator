@@ -6,24 +6,24 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1202AvoidNullReferenceExceptionTests : AbstractCSharpDiagnosticVerifier<InvocationExpressionAnalyzer, AvoidNullReferenceExceptionCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AvoidNullReferenceException;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
-        [InlineData("x.ElementAtOrDefault(1)[|.|]ToString()", "x.ElementAtOrDefault(1)?.ToString()")]
-        [InlineData("x.FirstOrDefault()[|.|]ToString()", "x.FirstOrDefault()?.ToString()")]
-        [InlineData("x.LastOrDefault()[|.|]ToString()", "x.LastOrDefault()?.ToString()")]
-        [InlineData("x.SingleOrDefault()[|.|]ToString()", "x.SingleOrDefault()?.ToString()")]
-        [InlineData("Enumerable.ElementAtOrDefault(x, 1)[|.|]ToString()", "Enumerable.ElementAtOrDefault(x, 1)?.ToString()")]
-        [InlineData("Enumerable.FirstOrDefault(x)[|.|]ToString()", "Enumerable.FirstOrDefault(x)?.ToString()")]
-        [InlineData("Enumerable.LastOrDefault(x)[|.|]ToString()", "Enumerable.LastOrDefault(x)?.ToString()")]
-        [InlineData("Enumerable.SingleOrDefault(x)[|.|]ToString()", "Enumerable.SingleOrDefault(x)?.ToString()")]
-        public async Task Test_MemberAccessExpression(string source, string expected)
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1202AvoidNullReferenceExceptionTests : AbstractCSharpDiagnosticVerifier<InvocationExpressionAnalyzer, AvoidNullReferenceExceptionCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AvoidNullReferenceException;
+
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
+    [InlineData("x.ElementAtOrDefault(1)[|.|]ToString()", "x.ElementAtOrDefault(1)?.ToString()")]
+    [InlineData("x.FirstOrDefault()[|.|]ToString()", "x.FirstOrDefault()?.ToString()")]
+    [InlineData("x.LastOrDefault()[|.|]ToString()", "x.LastOrDefault()?.ToString()")]
+    [InlineData("x.SingleOrDefault()[|.|]ToString()", "x.SingleOrDefault()?.ToString()")]
+    [InlineData("Enumerable.ElementAtOrDefault(x, 1)[|.|]ToString()", "Enumerable.ElementAtOrDefault(x, 1)?.ToString()")]
+    [InlineData("Enumerable.FirstOrDefault(x)[|.|]ToString()", "Enumerable.FirstOrDefault(x)?.ToString()")]
+    [InlineData("Enumerable.LastOrDefault(x)[|.|]ToString()", "Enumerable.LastOrDefault(x)?.ToString()")]
+    [InlineData("Enumerable.SingleOrDefault(x)[|.|]ToString()", "Enumerable.SingleOrDefault(x)?.ToString()")]
+    public async Task Test_MemberAccessExpression(string source, string expected)
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -36,20 +36,20 @@ class C
     }
 }
 ", source, expected);
-        }
+    }
 
-        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
-        [InlineData("x.ElementAtOrDefault(1)[|.|]ToString()", "x.ElementAtOrDefault(1)?.ToString()")]
-        [InlineData("x.FirstOrDefault()[|.|]ToString()", "x.FirstOrDefault()?.ToString()")]
-        [InlineData("x.LastOrDefault()[|.|]ToString()", "x.LastOrDefault()?.ToString()")]
-        [InlineData("x.SingleOrDefault()[|.|]ToString()", "x.SingleOrDefault()?.ToString()")]
-        [InlineData("Enumerable.ElementAtOrDefault(x, 1)[|.|]ToString()", "Enumerable.ElementAtOrDefault(x, 1)?.ToString()")]
-        [InlineData("Enumerable.FirstOrDefault(x)[|.|]ToString()", "Enumerable.FirstOrDefault(x)?.ToString()")]
-        [InlineData("Enumerable.LastOrDefault(x)[|.|]ToString()", "Enumerable.LastOrDefault(x)?.ToString()")]
-        [InlineData("Enumerable.SingleOrDefault(x)[|.|]ToString()", "Enumerable.SingleOrDefault(x)?.ToString()")]
-        public async Task Test_MemberAccessExpression2(string source, string expected)
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
+    [InlineData("x.ElementAtOrDefault(1)[|.|]ToString()", "x.ElementAtOrDefault(1)?.ToString()")]
+    [InlineData("x.FirstOrDefault()[|.|]ToString()", "x.FirstOrDefault()?.ToString()")]
+    [InlineData("x.LastOrDefault()[|.|]ToString()", "x.LastOrDefault()?.ToString()")]
+    [InlineData("x.SingleOrDefault()[|.|]ToString()", "x.SingleOrDefault()?.ToString()")]
+    [InlineData("Enumerable.ElementAtOrDefault(x, 1)[|.|]ToString()", "Enumerable.ElementAtOrDefault(x, 1)?.ToString()")]
+    [InlineData("Enumerable.FirstOrDefault(x)[|.|]ToString()", "Enumerable.FirstOrDefault(x)?.ToString()")]
+    [InlineData("Enumerable.LastOrDefault(x)[|.|]ToString()", "Enumerable.LastOrDefault(x)?.ToString()")]
+    [InlineData("Enumerable.SingleOrDefault(x)[|.|]ToString()", "Enumerable.SingleOrDefault(x)?.ToString()")]
+    public async Task Test_MemberAccessExpression2(string source, string expected)
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -72,14 +72,14 @@ class C : IEnumerable<object>
     IEnumerator IEnumerable.GetEnumerator() => null;
 }
 ", source, expected);
-        }
+    }
 
-        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
-        [InlineData("((x.ElementAtOrDefault(1)))[|.|]ToString()", "((x.ElementAtOrDefault(1)))?.ToString()")]
-        [InlineData("((Enumerable.ElementAtOrDefault(x, 1)))[|.|]ToString()", "((Enumerable.ElementAtOrDefault(x, 1)))?.ToString()")]
-        public async Task Test_MemberAccessExpression_Parenthesized(string source, string expected)
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
+    [InlineData("((x.ElementAtOrDefault(1)))[|.|]ToString()", "((x.ElementAtOrDefault(1)))?.ToString()")]
+    [InlineData("((Enumerable.ElementAtOrDefault(x, 1)))[|.|]ToString()", "((Enumerable.ElementAtOrDefault(x, 1)))?.ToString()")]
+    public async Task Test_MemberAccessExpression_Parenthesized(string source, string expected)
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -92,12 +92,12 @@ class C
     }
 }
 ", source, expected);
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
-        public async Task Test_MemberAccessExpression_AddCoalesceExpression()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
+    public async Task Test_MemberAccessExpression_AddCoalesceExpression()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -122,20 +122,20 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
-        [InlineData("x.ElementAtOrDefault(1)[|[[|]0]", "x.ElementAtOrDefault(1)?[0]")]
-        [InlineData("x.FirstOrDefault()[|[[|]0]", "x.FirstOrDefault()?[0]")]
-        [InlineData("x.LastOrDefault()[|[[|]0]", "x.LastOrDefault()?[0]")]
-        [InlineData("x.SingleOrDefault()[|[[|]0]", "x.SingleOrDefault()?[0]")]
-        [InlineData("Enumerable.ElementAtOrDefault(x, 1)[|[[|]0]", "Enumerable.ElementAtOrDefault(x, 1)?[0]")]
-        [InlineData("Enumerable.FirstOrDefault(x)[|[[|]0]", "Enumerable.FirstOrDefault(x)?[0]")]
-        [InlineData("Enumerable.LastOrDefault(x)[|[[|]0]", "Enumerable.LastOrDefault(x)?[0]")]
-        [InlineData("Enumerable.SingleOrDefault(x)[|[[|]0]", "Enumerable.SingleOrDefault(x)?[0]")]
-        public async Task Test_ElementAccessExpression(string source, string expected)
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
+    [InlineData("x.ElementAtOrDefault(1)[|[[|]0]", "x.ElementAtOrDefault(1)?[0]")]
+    [InlineData("x.FirstOrDefault()[|[[|]0]", "x.FirstOrDefault()?[0]")]
+    [InlineData("x.LastOrDefault()[|[[|]0]", "x.LastOrDefault()?[0]")]
+    [InlineData("x.SingleOrDefault()[|[[|]0]", "x.SingleOrDefault()?[0]")]
+    [InlineData("Enumerable.ElementAtOrDefault(x, 1)[|[[|]0]", "Enumerable.ElementAtOrDefault(x, 1)?[0]")]
+    [InlineData("Enumerable.FirstOrDefault(x)[|[[|]0]", "Enumerable.FirstOrDefault(x)?[0]")]
+    [InlineData("Enumerable.LastOrDefault(x)[|[[|]0]", "Enumerable.LastOrDefault(x)?[0]")]
+    [InlineData("Enumerable.SingleOrDefault(x)[|[[|]0]", "Enumerable.SingleOrDefault(x)?[0]")]
+    public async Task Test_ElementAccessExpression(string source, string expected)
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -148,20 +148,20 @@ class C
     }
 }
 ", source, expected);
-        }
+    }
 
-        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
-        [InlineData("x.ElementAtOrDefault(1)[|[[|]0]", "x.ElementAtOrDefault(1)?[0]")]
-        [InlineData("x.FirstOrDefault()[|[[|]0]", "x.FirstOrDefault()?[0]")]
-        [InlineData("x.LastOrDefault()[|[[|]0]", "x.LastOrDefault()?[0]")]
-        [InlineData("x.SingleOrDefault()[|[[|]0]", "x.SingleOrDefault()?[0]")]
-        [InlineData("Enumerable.ElementAtOrDefault(x, 1)[|[[|]0]", "Enumerable.ElementAtOrDefault(x, 1)?[0]")]
-        [InlineData("Enumerable.FirstOrDefault(x)[|[[|]0]", "Enumerable.FirstOrDefault(x)?[0]")]
-        [InlineData("Enumerable.LastOrDefault(x)[|[[|]0]", "Enumerable.LastOrDefault(x)?[0]")]
-        [InlineData("Enumerable.SingleOrDefault(x)[|[[|]0]", "Enumerable.SingleOrDefault(x)?[0]")]
-        public async Task Test_ElementAccessExpression2(string source, string expected)
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
+    [InlineData("x.ElementAtOrDefault(1)[|[[|]0]", "x.ElementAtOrDefault(1)?[0]")]
+    [InlineData("x.FirstOrDefault()[|[[|]0]", "x.FirstOrDefault()?[0]")]
+    [InlineData("x.LastOrDefault()[|[[|]0]", "x.LastOrDefault()?[0]")]
+    [InlineData("x.SingleOrDefault()[|[[|]0]", "x.SingleOrDefault()?[0]")]
+    [InlineData("Enumerable.ElementAtOrDefault(x, 1)[|[[|]0]", "Enumerable.ElementAtOrDefault(x, 1)?[0]")]
+    [InlineData("Enumerable.FirstOrDefault(x)[|[[|]0]", "Enumerable.FirstOrDefault(x)?[0]")]
+    [InlineData("Enumerable.LastOrDefault(x)[|[[|]0]", "Enumerable.LastOrDefault(x)?[0]")]
+    [InlineData("Enumerable.SingleOrDefault(x)[|[[|]0]", "Enumerable.SingleOrDefault(x)?[0]")]
+    public async Task Test_ElementAccessExpression2(string source, string expected)
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -184,12 +184,12 @@ class C : IEnumerable<object>
     IEnumerator IEnumerable.GetEnumerator() => null;
 }
 ", source, expected);
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
-        public async Task Test_ElementAccessExpression_AddCoalesceExpression()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
+    public async Task Test_ElementAccessExpression_AddCoalesceExpression()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -214,12 +214,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
-        public async Task TestNoDiagnostic_ValueType()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
+    public async Task TestNoDiagnostic_ValueType()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -238,12 +238,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
-        public async Task TestNoDiagnostic_NullableType()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
+    public async Task TestNoDiagnostic_NullableType()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -262,12 +262,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
-        public async Task TestNoDiagnostic_NoMemberAccessOrElementAccess()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
+    public async Task TestNoDiagnostic_NoMemberAccessOrElementAccess()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -286,12 +286,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
-        public async Task TestNoDiagnostic_ConditionalAccess()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
+    public async Task TestNoDiagnostic_ConditionalAccess()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -327,12 +327,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
-        public async Task TestNoDiagnostic_ExtensionMethod()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
+    public async Task TestNoDiagnostic_ExtensionMethod()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -354,6 +354,5 @@ static class E
     }
 }
 ");
-        }
     }
 }

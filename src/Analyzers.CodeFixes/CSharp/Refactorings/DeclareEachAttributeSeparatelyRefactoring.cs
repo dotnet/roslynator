@@ -6,19 +6,18 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class DeclareEachAttributeSeparatelyRefactoring
 {
-    internal static class DeclareEachAttributeSeparatelyRefactoring
+    public static Task<Document> RefactorAsync(
+        Document document,
+        AttributeListSyntax attributeList,
+        CancellationToken cancellationToken)
     {
-        public static Task<Document> RefactorAsync(
-            Document document,
-            AttributeListSyntax attributeList,
-            CancellationToken cancellationToken)
-        {
-            return document.ReplaceNodeAsync(
-                attributeList,
-                SyntaxRefactorings.SplitAttributeList(attributeList).Select(f => f.WithFormatterAnnotation()),
-                cancellationToken);
-        }
+        return document.ReplaceNodeAsync(
+            attributeList,
+            SyntaxRefactorings.SplitAttributeList(attributeList).Select(f => f.WithFormatterAnnotation()),
+            cancellationToken);
     }
 }

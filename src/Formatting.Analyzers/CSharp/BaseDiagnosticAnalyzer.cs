@@ -4,25 +4,24 @@ using System.Diagnostics;
 using System.Linq;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace Roslynator.Formatting
+namespace Roslynator.Formatting;
+
+[DebuggerDisplay("{DebuggerDisplay,nq}")]
+public abstract class BaseDiagnosticAnalyzer : DiagnosticAnalyzer
 {
-    [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public abstract class BaseDiagnosticAnalyzer : DiagnosticAnalyzer
+    protected BaseDiagnosticAnalyzer()
     {
-        protected BaseDiagnosticAnalyzer()
-        {
-        }
+    }
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string DebuggerDisplay
-        {
-            get { return $"{GetType()} {{{string.Join(", ", SupportedDiagnostics.Select(f => f.Id))}}}"; }
-        }
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+    private string DebuggerDisplay
+    {
+        get { return $"{GetType()} {{{string.Join(", ", SupportedDiagnostics.Select(f => f.Id))}}}"; }
+    }
 
-        public override void Initialize(AnalysisContext context)
-        {
-            context.EnableConcurrentExecution();
-            context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
-        }
+    public override void Initialize(AnalysisContext context)
+    {
+        context.EnableConcurrentExecution();
+        context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
     }
 }

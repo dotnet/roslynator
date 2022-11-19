@@ -65,7 +65,7 @@ namespace Roslynator.CSharp.Analysis
 
             InvocationExpressionSyntax invocationExpression = GetInvocationExpression(lambda.Body);
 
-            if (invocationExpression == null)
+            if (invocationExpression is null)
                 return;
 
             ExpressionSyntax expression = invocationExpression.Expression;
@@ -152,7 +152,7 @@ namespace Roslynator.CSharp.Analysis
 
             InvocationExpressionSyntax invocationExpression = GetInvocationExpression(lambda.Body);
 
-            if (invocationExpression == null)
+            if (invocationExpression is null)
                 return;
 
             ExpressionSyntax expression = invocationExpression.Expression;
@@ -249,12 +249,12 @@ namespace Roslynator.CSharp.Analysis
 
             ParameterListSyntax parameterList = anonymousMethod.ParameterList;
 
-            if (parameterList == null)
+            if (parameterList is null)
                 return;
 
             InvocationExpressionSyntax invocationExpression = GetInvocationExpression(anonymousMethod.Body);
 
-            if (invocationExpression == null)
+            if (invocationExpression is null)
                 return;
 
             ExpressionSyntax expression = invocationExpression.Expression;
@@ -379,7 +379,7 @@ namespace Roslynator.CSharp.Analysis
 
             IMethodSymbol invokeMethod = typeSymbol?.DelegateInvokeMethod;
 
-            if (invokeMethod == null)
+            if (invokeMethod is null)
                 return false;
 
             if (invokeMethod.ReturnType.IsVoid()
@@ -456,7 +456,7 @@ namespace Roslynator.CSharp.Analysis
 
                     methodSymbol = semanticModel.GetSymbol(node, cancellationToken) as IMethodSymbol;
 
-                    return methodSymbol != null
+                    return methodSymbol is not null
                         && CheckSpeculativeSymbol(symbolInfo);
                 }
             }
@@ -543,7 +543,7 @@ namespace Roslynator.CSharp.Analysis
 
             IMethodSymbol methodSymbol = context.SemanticModel.GetMethodSymbol(expression, context.CancellationToken);
 
-            if (methodSymbol == null)
+            if (methodSymbol is null)
                 return;
 
             ReportMethodGroup(context, expression);
@@ -563,7 +563,7 @@ namespace Roslynator.CSharp.Analysis
 
             IMethodSymbol methodSymbol = context.SemanticModel.GetMethodSymbol(expression, context.CancellationToken);
 
-            if (methodSymbol == null)
+            if (methodSymbol is null)
                 return;
 
             ReportMethodGroup(context, expression);
@@ -583,7 +583,7 @@ namespace Roslynator.CSharp.Analysis
 
             IMethodSymbol methodSymbol = context.SemanticModel.GetMethodSymbol(expression, context.CancellationToken);
 
-            if (methodSymbol == null)
+            if (methodSymbol is null)
                 return;
 
             ReportMethodGroup(context, expression);
@@ -603,7 +603,7 @@ namespace Roslynator.CSharp.Analysis
 
             IMethodSymbol methodSymbol = context.SemanticModel.GetMethodSymbol(expression, context.CancellationToken);
 
-            if (methodSymbol == null)
+            if (methodSymbol is null)
                 return;
 
             ReportMethodGroup(context, expression);
@@ -623,7 +623,7 @@ namespace Roslynator.CSharp.Analysis
 
             IMethodSymbol methodSymbol = context.SemanticModel.GetMethodSymbol(expression, context.CancellationToken);
 
-            if (methodSymbol == null)
+            if (methodSymbol is null)
                 return;
 
             ReportMethodGroup(context, expression);
@@ -643,7 +643,7 @@ namespace Roslynator.CSharp.Analysis
 
             IMethodSymbol methodSymbol = context.SemanticModel.GetMethodSymbol(expression, context.CancellationToken);
 
-            if (methodSymbol == null)
+            if (methodSymbol is null)
                 return;
 
             ReportMethodGroup(context, expression);
@@ -663,7 +663,7 @@ namespace Roslynator.CSharp.Analysis
 
             IMethodSymbol methodSymbol = context.SemanticModel.GetMethodSymbol(expression, context.CancellationToken);
 
-            if (methodSymbol == null)
+            if (methodSymbol is null)
                 return;
 
             ReportMethodGroup(context, expression);
@@ -684,7 +684,7 @@ namespace Roslynator.CSharp.Analysis
                 {
                     IMethodSymbol methodSymbol = context.SemanticModel.GetMethodSymbol(expression2, context.CancellationToken);
 
-                    if (methodSymbol != null)
+                    if (methodSymbol is not null)
                         ReportMethodGroup(context, expression2);
                 }
             }

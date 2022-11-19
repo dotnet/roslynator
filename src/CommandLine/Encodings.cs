@@ -2,10 +2,9 @@
 
 using System.Text;
 
-namespace Roslynator.CommandLine
+namespace Roslynator.CommandLine;
+
+internal static class Encodings
 {
-    internal static class Encodings
-    {
-        public static Encoding UTF8NoBom { get; } = new UTF8Encoding(encoderShouldEmitUTF8Identifier: false);
-    }
+    public static Encoding UTF8NoBom { get; } = new UTF8Encoding(encoderShouldEmitUTF8Identifier: false);
 }

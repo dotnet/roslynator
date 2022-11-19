@@ -7,83 +7,82 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp;
 
-namespace Roslynator.Formatting.CSharp
+namespace Roslynator.Formatting.CSharp;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class AddBlankLineBeforeEndRegionDirectiveAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class AddBlankLineBeforeEndRegionDirectiveAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
-            {
-                if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddBlankLineBeforeEndRegionDirective);
+            if (_supportedDiagnostics.IsDefault)
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddBlankLineBeforeEndRegionDirective);
 
-                return _supportedDiagnostics;
-            }
+            return _supportedDiagnostics;
         }
+    }
 
-        public override void Initialize(AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
+
+        context.RegisterSyntaxNodeAction(f => AnalyzeEndRegionDirectiveTrivia(f), SyntaxKind.EndRegionDirectiveTrivia);
+    }
+
+    private static void AnalyzeEndRegionDirectiveTrivia(SyntaxNodeAnalysisContext context)
+    {
+        var endRegionDirective = (EndRegionDirectiveTriviaSyntax)context.Node;
+
+        if (IsPrecededWithEmptyLineOrRegionDirective())
+            return;
+
+        DiagnosticHelpers.ReportDiagnostic(
+            context,
+            DiagnosticRules.AddBlankLineBeforeEndRegionDirective,
+            Location.Create(endRegionDirective.SyntaxTree, endRegionDirective.Span.WithLength(0)));
+
+        bool IsPrecededWithEmptyLineOrRegionDirective()
         {
-            base.Initialize(context);
+            SyntaxTrivia parentTrivia = endRegionDirective.ParentTrivia;
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeEndRegionDirectiveTrivia(f), SyntaxKind.EndRegionDirectiveTrivia);
-        }
+            SyntaxTriviaList.Reversed.Enumerator en = parentTrivia.Token.LeadingTrivia.Reverse().GetEnumerator();
 
-        private static void AnalyzeEndRegionDirectiveTrivia(SyntaxNodeAnalysisContext context)
-        {
-            var endRegionDirective = (EndRegionDirectiveTriviaSyntax)context.Node;
-
-            if (IsPrecededWithEmptyLineOrRegionDirective())
-                return;
-
-            DiagnosticHelpers.ReportDiagnostic(
-                context,
-                DiagnosticRules.AddBlankLineBeforeEndRegionDirective,
-                Location.Create(endRegionDirective.SyntaxTree, endRegionDirective.Span.WithLength(0)));
-
-            bool IsPrecededWithEmptyLineOrRegionDirective()
+            while (en.MoveNext())
             {
-                SyntaxTrivia parentTrivia = endRegionDirective.ParentTrivia;
-
-                SyntaxTriviaList.Reversed.Enumerator en = parentTrivia.Token.LeadingTrivia.Reverse().GetEnumerator();
-
-                while (en.MoveNext())
+                if (en.Current == parentTrivia)
                 {
-                    if (en.Current == parentTrivia)
+                    if (!en.MoveNext())
+                        return false;
+
+                    if (en.Current.IsWhitespaceTrivia()
+                        && !en.MoveNext())
                     {
-                        if (!en.MoveNext())
-                            return false;
-
-                        if (en.Current.IsWhitespaceTrivia()
-                            && !en.MoveNext())
-                        {
-                            return false;
-                        }
-
-                        if (en.Current.IsKind(SyntaxKind.RegionDirectiveTrivia))
-                            return true;
-
-                        if (!en.Current.IsEndOfLineTrivia())
-                            return false;
-
-                        if (!en.MoveNext())
-                            return true;
-
-                        if (en.Current.IsWhitespaceTrivia()
-                            && !en.MoveNext())
-                        {
-                            return false;
-                        }
-
-                        return en.Current.IsEndOfLineTrivia();
+                        return false;
                     }
-                }
 
-                return false;
+                    if (en.Current.IsKind(SyntaxKind.RegionDirectiveTrivia))
+                        return true;
+
+                    if (!en.Current.IsEndOfLineTrivia())
+                        return false;
+
+                    if (!en.MoveNext())
+                        return true;
+
+                    if (en.Current.IsWhitespaceTrivia()
+                        && !en.MoveNext())
+                    {
+                        return false;
+                    }
+
+                    return en.Current.IsEndOfLineTrivia();
+                }
             }
+
+            return false;
         }
     }
 }

@@ -6,46 +6,45 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class AddOrRemoveRegionNameRefactoring
 {
-    internal static class AddOrRemoveRegionNameRefactoring
+    public static Task<Document> RefactorAsync(
+        Document document,
+        EndRegionDirectiveTriviaSyntax endRegionDirective,
+        SyntaxTrivia trivia,
+        CancellationToken cancellationToken)
     {
-        public static Task<Document> RefactorAsync(
-            Document document,
-            EndRegionDirectiveTriviaSyntax endRegionDirective,
-            SyntaxTrivia trivia,
-            CancellationToken cancellationToken)
+        SyntaxToken endRegionKeyword = endRegionDirective.EndRegionKeyword;
+
+        EndRegionDirectiveTriviaSyntax newNode = endRegionDirective;
+
+        if (trivia.IsKind(SyntaxKind.PreprocessingMessageTrivia))
         {
-            SyntaxToken endRegionKeyword = endRegionDirective.EndRegionKeyword;
+            SyntaxTriviaList trailingTrivia = endRegionKeyword.TrailingTrivia;
 
-            EndRegionDirectiveTriviaSyntax newNode = endRegionDirective;
-
-            if (trivia.IsKind(SyntaxKind.PreprocessingMessageTrivia))
+            if (trailingTrivia.Any())
             {
-                SyntaxTriviaList trailingTrivia = endRegionKeyword.TrailingTrivia;
+                if (endRegionDirective.HasPreprocessingMessageTrivia())
+                    newNode = newNode.WithEndOfDirectiveToken(newNode.EndOfDirectiveToken.WithoutLeadingTrivia());
 
-                if (trailingTrivia.Any())
-                {
-                    if (endRegionDirective.HasPreprocessingMessageTrivia())
-                        newNode = newNode.WithEndOfDirectiveToken(newNode.EndOfDirectiveToken.WithoutLeadingTrivia());
-
-                    newNode = newNode.WithEndRegionKeyword(endRegionKeyword.WithTrailingTrivia(SyntaxFactory.Space, trivia));
-                }
-                else
-                {
-                    newNode = endRegionDirective.Update(
-                        endRegionDirective.HashToken,
-                        endRegionKeyword.WithTrailingTrivia(SyntaxFactory.Space),
-                        endRegionDirective.EndOfDirectiveToken.WithLeadingTrivia(trivia),
-                        endRegionDirective.IsActive);
-                }
+                newNode = newNode.WithEndRegionKeyword(endRegionKeyword.WithTrailingTrivia(SyntaxFactory.Space, trivia));
             }
             else
             {
-                newNode = endRegionDirective.WithEndOfDirectiveToken(endRegionDirective.EndOfDirectiveToken.WithoutLeadingTrivia());
+                newNode = endRegionDirective.Update(
+                    endRegionDirective.HashToken,
+                    endRegionKeyword.WithTrailingTrivia(SyntaxFactory.Space),
+                    endRegionDirective.EndOfDirectiveToken.WithLeadingTrivia(trivia),
+                    endRegionDirective.IsActive);
             }
-
-            return document.ReplaceNodeAsync(endRegionDirective, newNode, cancellationToken);
         }
+        else
+        {
+            newNode = endRegionDirective.WithEndOfDirectiveToken(endRegionDirective.EndOfDirectiveToken.WithoutLeadingTrivia());
+        }
+
+        return document.ReplaceNodeAsync(endRegionDirective, newNode, cancellationToken);
     }
 }

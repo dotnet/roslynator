@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0189InvertIfTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.InvertIf;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InvertIf)]
-        public async Task Test_If_SingleStatement()
-        {
-            await VerifyRefactoringAsync(@"
+public class RR0189InvertIfTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.InvertIf;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InvertIf)]
+    public async Task Test_If_SingleStatement()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M(bool f = false)
@@ -46,12 +46,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InvertIf)]
-        public async Task Test_If_Return_Recursive()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InvertIf)]
+    public async Task Test_If_Return_Recursive()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M(bool f1 = false, bool f2 = false, bool f3 = false)
@@ -92,12 +92,12 @@ class C
     }
 }
 ", equivalenceKey: InvertIfRefactoring.RecursiveRefactoringIdentifier);
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InvertIf)]
-        public async Task Test_If_ReturnBool_Recursive()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InvertIf)]
+    public async Task Test_If_ReturnBool_Recursive()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     bool M(bool f1 = false, bool f2 = false, bool f3 = false)
@@ -153,12 +153,12 @@ class C
     }
 }
 ", equivalenceKey: InvertIfRefactoring.RecursiveRefactoringIdentifier);
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InvertIf)]
-        public async Task Test_If_MultipleStatementsInIf_Recursive()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InvertIf)]
+    public async Task Test_If_MultipleStatementsInIf_Recursive()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M(bool f1 = false, bool f2 = false, bool f3 = false)
@@ -222,12 +222,12 @@ class C
     void M3() => M();
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId, "Recursive"));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InvertIf)]
-        public async Task Test_If_SingleStatement_LastStatementIsRedundant()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InvertIf)]
+    public async Task Test_If_SingleStatement_LastStatementIsRedundant()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M(bool f = false)
@@ -252,12 +252,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InvertIf)]
-        public async Task Test_If_EmbeddedStatement()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InvertIf)]
+    public async Task Test_If_EmbeddedStatement()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M(bool f = false)
@@ -280,12 +280,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InvertIf)]
-        public async Task Test_If_MultipleStatementInIf()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InvertIf)]
+    public async Task Test_If_MultipleStatementInIf()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M(bool f = false)
@@ -319,12 +319,12 @@ class C
     void M2() => M();
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InvertIf)]
-        public async Task Test_If_MultipleStatementAfterIf()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InvertIf)]
+    public async Task Test_If_MultipleStatementAfterIf()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M(bool f = false)
@@ -355,12 +355,12 @@ class C
     void M2() => M();
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InvertIf)]
-        public async Task Test_If_MultipleStatements_LocalFunction()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InvertIf)]
+    public async Task Test_If_MultipleStatements_LocalFunction()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M(bool f = false)
@@ -402,12 +402,12 @@ class C
     void M3() => M();
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InvertIf)]
-        public async Task Test_If_LastStatementIsJumpStatement()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InvertIf)]
+    public async Task Test_If_LastStatementIsJumpStatement()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M(bool f = false)
@@ -440,12 +440,12 @@ class C
     void M2() => M();
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InvertIf)]
-        public async Task Test_InvertIsPattern()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InvertIf)]
+    public async Task Test_InvertIsPattern()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M()
@@ -474,12 +474,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InvertIf)]
-        public async Task TestNoRefactoring_NotTopmostIf()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InvertIf)]
+    public async Task TestNoRefactoring_NotTopmostIf()
+    {
+        await VerifyNoRefactoringAsync(@"
 class C
 {
     void M()
@@ -499,6 +499,5 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
     }
 }

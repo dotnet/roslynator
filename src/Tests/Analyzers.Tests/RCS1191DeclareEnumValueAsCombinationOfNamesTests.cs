@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1191DeclareEnumValueAsCombinationOfNamesTests : AbstractCSharpDiagnosticVerifier<EnumSymbolAnalyzer, EnumMemberDeclarationCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.DeclareEnumValueAsCombinationOfNames;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareEnumValueAsCombinationOfNames)]
-        public async Task Test()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1191DeclareEnumValueAsCombinationOfNamesTests : AbstractCSharpDiagnosticVerifier<EnumSymbolAnalyzer, EnumMemberDeclarationCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.DeclareEnumValueAsCombinationOfNames;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareEnumValueAsCombinationOfNames)]
+    public async Task Test()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 [Flags]
@@ -42,12 +42,12 @@ enum Foo
     ABD = A | B | D,
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareEnumValueAsCombinationOfNames)]
-        public async Task Test2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareEnumValueAsCombinationOfNames)]
+    public async Task Test2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 [Flags]
@@ -74,12 +74,12 @@ enum Foo
     ABCD = A | B | C | D,
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareEnumValueAsCombinationOfNames)]
-        public async Task Test3()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareEnumValueAsCombinationOfNames)]
+    public async Task Test3()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 [Flags]
@@ -108,12 +108,12 @@ enum Foo
     ABD = AB | D,
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareEnumValueAsCombinationOfNames)]
-        public async Task Test4()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareEnumValueAsCombinationOfNames)]
+    public async Task Test4()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 [Flags]
@@ -138,12 +138,12 @@ enum Foo
     ABD = AB | D,
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareEnumValueAsCombinationOfNames)]
-        public async Task Test5()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareEnumValueAsCombinationOfNames)]
+    public async Task Test5()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 [Flags]
@@ -172,12 +172,12 @@ enum Foo
     ABD = (AB | D),
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareEnumValueAsCombinationOfNames)]
-        public async Task Test6()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareEnumValueAsCombinationOfNames)]
+    public async Task Test6()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 [Flags]
@@ -208,12 +208,12 @@ enum Foo
     ABCD = ABD | C,
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareEnumValueAsCombinationOfNames)]
-        public async Task Test_SByte()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DeclareEnumValueAsCombinationOfNames)]
+    public async Task Test_SByte()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 [Flags]
@@ -236,6 +236,5 @@ enum Foo : sbyte
     AB = A | B,
 }
 ");
-        }
     }
 }

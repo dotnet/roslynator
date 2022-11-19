@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1074RemoveRedundantConstructorTests : AbstractCSharpDiagnosticVerifier<RemoveRedundantConstructorAnalyzer, ConstructorDeclarationCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveRedundantConstructor;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantConstructor)]
-        public async Task Test_SingleInstanceConstructor()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1074RemoveRedundantConstructorTests : AbstractCSharpDiagnosticVerifier<RemoveRedundantConstructorAnalyzer, ConstructorDeclarationCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveRedundantConstructor;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantConstructor)]
+    public async Task Test_SingleInstanceConstructor()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     [|public C()
@@ -27,12 +27,12 @@ class C
 {
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantConstructor)]
-        public async Task TestNoDiagnostic_UsedImplicitlyAttribute()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantConstructor)]
+    public async Task TestNoDiagnostic_UsedImplicitlyAttribute()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     [JetBrains.Annotations.UsedImplicitly]
@@ -48,6 +48,5 @@ namespace JetBrains.Annotations
     }
 }
 ");
-        }
     }
 }

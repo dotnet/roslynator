@@ -5,23 +5,22 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class UnnecessaryInterpolatedStringRefactoring
 {
-    internal static class UnnecessaryInterpolatedStringRefactoring
+    public static Task<Document> RefactorAsync(
+        Document document,
+        InterpolatedStringExpressionSyntax interpolatedString,
+        CancellationToken cancellationToken)
     {
-        public static Task<Document> RefactorAsync(
-            Document document,
-            InterpolatedStringExpressionSyntax interpolatedString,
-            CancellationToken cancellationToken)
-        {
-            var interpolation = (InterpolationSyntax)interpolatedString.Contents[0];
+        var interpolation = (InterpolationSyntax)interpolatedString.Contents[0];
 
-            ExpressionSyntax newNode = interpolation.Expression
-                .WithTriviaFrom(interpolatedString)
-                .Parenthesize()
-                .WithFormatterAnnotation();
+        ExpressionSyntax newNode = interpolation.Expression
+            .WithTriviaFrom(interpolatedString)
+            .Parenthesize()
+            .WithFormatterAnnotation();
 
-            return document.ReplaceNodeAsync(interpolatedString, newNode, cancellationToken);
-        }
+        return document.ReplaceNodeAsync(interpolatedString, newNode, cancellationToken);
     }
 }

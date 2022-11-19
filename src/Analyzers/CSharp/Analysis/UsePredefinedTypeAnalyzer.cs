@@ -67,7 +67,7 @@ namespace Roslynator.CSharp.Analysis
 
             IAliasSymbol aliasSymbol = context.SemanticModel.GetAliasInfo(identifierName, context.CancellationToken);
 
-            if (aliasSymbol != null)
+            if (aliasSymbol is not null)
                 return;
 
             ReportDiagnostic(context, identifierName);
@@ -117,7 +117,7 @@ namespace Roslynator.CSharp.Analysis
 
             IAliasSymbol aliasSymbol = context.SemanticModel.GetAliasInfo(identifierName, context.CancellationToken);
 
-            if (aliasSymbol != null)
+            if (aliasSymbol is not null)
                 return;
 
             ReportDiagnostic(context, cref);
@@ -157,7 +157,7 @@ namespace Roslynator.CSharp.Analysis
 
             ExpressionSyntax expression = memberAccess.Expression;
 
-            if (expression == null)
+            if (expression is null)
                 return;
 
             SyntaxKind kind = expression.Kind();
@@ -190,7 +190,7 @@ namespace Roslynator.CSharp.Analysis
 
             IAliasSymbol aliasSymbol = context.SemanticModel.GetAliasInfo(expression, context.CancellationToken);
 
-            if (aliasSymbol != null)
+            if (aliasSymbol is not null)
                 return;
 
             ReportDiagnostic(context, expression);
@@ -210,13 +210,13 @@ namespace Roslynator.CSharp.Analysis
 
             parent = parent.Parent;
 
-            return parent != null
+            return parent is not null
                 && CSharpUtility.IsNameOfExpression(parent, context.SemanticModel, context.CancellationToken);
         }
 
         private static bool SupportsPredefinedType(IdentifierNameSyntax identifierName)
         {
-            if (identifierName == null)
+            if (identifierName is null)
                 return false;
 
             switch (identifierName.Identifier.ValueText)

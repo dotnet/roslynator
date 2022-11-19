@@ -11,36 +11,35 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(EndRegionDirectiveTriviaCodeFixProvider))]
+[Shared]
+public sealed class EndRegionDirectiveTriviaCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(EndRegionDirectiveTriviaCodeFixProvider))]
-    [Shared]
-    public sealed class EndRegionDirectiveTriviaCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
-        {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.AddOrRemoveRegionName); }
-        }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.AddOrRemoveRegionName); }
+    }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out EndRegionDirectiveTriviaSyntax endRegionDirective, findInsideTrivia: true))
-                return;
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out EndRegionDirectiveTriviaSyntax endRegionDirective, findInsideTrivia: true))
+            return;
 
-            RegionDirectiveTriviaSyntax regionDirective = endRegionDirective.GetRegionDirective();
+        RegionDirectiveTriviaSyntax regionDirective = endRegionDirective.GetRegionDirective();
 
-            SyntaxTrivia trivia = regionDirective.GetPreprocessingMessageTrivia();
+        SyntaxTrivia trivia = regionDirective.GetPreprocessingMessageTrivia();
 
-            CodeAction codeAction = CodeAction.Create(
-                (trivia.IsKind(SyntaxKind.PreprocessingMessageTrivia))
-                    ? "Add region name to #endregion"
-                    : "Remove region name from #endregion",
-                ct => AddOrRemoveRegionNameRefactoring.RefactorAsync(context.Document, endRegionDirective, trivia, ct),
-                GetEquivalenceKey(DiagnosticIdentifiers.AddOrRemoveRegionName));
+        CodeAction codeAction = CodeAction.Create(
+            (trivia.IsKind(SyntaxKind.PreprocessingMessageTrivia))
+                ? "Add region name to #endregion"
+                : "Remove region name from #endregion",
+            ct => AddOrRemoveRegionNameRefactoring.RefactorAsync(context.Document, endRegionDirective, trivia, ct),
+            GetEquivalenceKey(DiagnosticIdentifiers.AddOrRemoveRegionName));
 
-            context.RegisterCodeFix(codeAction, context.Diagnostics);
-        }
+        context.RegisterCodeFix(codeAction, context.Diagnostics);
     }
 }

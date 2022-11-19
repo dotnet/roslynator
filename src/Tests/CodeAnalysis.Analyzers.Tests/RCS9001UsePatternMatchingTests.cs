@@ -6,16 +6,16 @@ using Roslynator.CodeAnalysis.CSharp;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS9001UsePatternMatchingTests : AbstractCSharpDiagnosticVerifier<UsePatternMatchingAnalyzer, UsePatternMatchingCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UsePatternMatching;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatching)]
-        public async Task Test_SwitchStatement()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS9001UsePatternMatchingTests : AbstractCSharpDiagnosticVerifier<UsePatternMatchingAnalyzer, UsePatternMatchingCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UsePatternMatching;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatching)]
+    public async Task Test_SwitchStatement()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -73,12 +73,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatching)]
-        public async Task Test_SwitchStatement_LocalDeclaration()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatching)]
+    public async Task Test_SwitchStatement_LocalDeclaration()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -138,12 +138,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatching)]
-        public async Task Test_IfStatement_IsKind()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatching)]
+    public async Task Test_IfStatement_IsKind()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -177,12 +177,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatching)]
-        public async Task Test_IfStatement_IsKind_Conditional()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatching)]
+    public async Task Test_IfStatement_IsKind_Conditional()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -216,12 +216,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatching)]
-        public async Task Test_IfStatement_Kind()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatching)]
+    public async Task Test_IfStatement_Kind()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -255,12 +255,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatching)]
-        public async Task Test_IfStatement_Kind_Conditional()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatching)]
+    public async Task Test_IfStatement_Kind_Conditional()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -294,12 +294,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatching)]
-        public async Task Test_IfStatement_NotIsKind()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatching)]
+    public async Task Test_IfStatement_NotIsKind()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -336,12 +336,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatching)]
-        public async Task Test_IfStatement_NotIsKind_Embedded()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatching)]
+    public async Task Test_IfStatement_NotIsKind_Embedded()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -374,12 +374,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatching)]
-        public async Task Test_IfStatement_NotIsKind_Conditional()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatching)]
+    public async Task Test_IfStatement_NotIsKind_Conditional()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -416,12 +416,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatching)]
-        public async Task Test_IfStatement_NotKind()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatching)]
+    public async Task Test_IfStatement_NotKind()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -458,12 +458,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatching)]
-        public async Task Test_IfStatement_NotKind_Conditional()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatching)]
+    public async Task Test_IfStatement_NotKind_Conditional()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -500,12 +500,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatching)]
-        public async Task TestNoDiagnostic_SwitchStatement_VariableIsReferenced()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatching)]
+    public async Task TestNoDiagnostic_SwitchStatement_VariableIsReferenced()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -531,12 +531,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatching)]
-        public async Task TestNoDiagnostic_IfStatement_SimpleMemberAccessExpression()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatching)]
+    public async Task TestNoDiagnostic_IfStatement_SimpleMemberAccessExpression()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -554,6 +554,5 @@ class C
     }
 }
 ");
-        }
     }
 }

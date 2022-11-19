@@ -7,56 +7,55 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace Roslynator.CSharp.Analysis
+namespace Roslynator.CSharp.Analysis;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class AddOrRemoveRegionNameAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class AddOrRemoveRegionNameAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
-            {
-                if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddOrRemoveRegionName);
+            if (_supportedDiagnostics.IsDefault)
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddOrRemoveRegionName);
 
-                return _supportedDiagnostics;
+            return _supportedDiagnostics;
+        }
+    }
+
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
+
+        context.RegisterSyntaxNodeAction(f => AnalyzeEndRegionDirectiveTrivia(f), SyntaxKind.EndRegionDirectiveTrivia);
+    }
+
+    private static void AnalyzeEndRegionDirectiveTrivia(SyntaxNodeAnalysisContext context)
+    {
+        var endRegionDirective = (EndRegionDirectiveTriviaSyntax)context.Node;
+
+        RegionDirectiveTriviaSyntax regionDirective = endRegionDirective.GetRegionDirective();
+
+        if (regionDirective is null)
+            return;
+
+        SyntaxTrivia trivia = regionDirective.GetPreprocessingMessageTrivia();
+
+        SyntaxTrivia endTrivia = endRegionDirective.GetPreprocessingMessageTrivia();
+
+        if (trivia.IsKind(SyntaxKind.PreprocessingMessageTrivia))
+        {
+            if (!endTrivia.IsKind(SyntaxKind.PreprocessingMessageTrivia)
+                || !string.Equals(trivia.ToString(), endTrivia.ToString(), StringComparison.Ordinal))
+            {
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AddOrRemoveRegionName, endRegionDirective, "Add", "to");
             }
         }
-
-        public override void Initialize(AnalysisContext context)
+        else if (endTrivia.IsKind(SyntaxKind.PreprocessingMessageTrivia))
         {
-            base.Initialize(context);
-
-            context.RegisterSyntaxNodeAction(f => AnalyzeEndRegionDirectiveTrivia(f), SyntaxKind.EndRegionDirectiveTrivia);
-        }
-
-        private static void AnalyzeEndRegionDirectiveTrivia(SyntaxNodeAnalysisContext context)
-        {
-            var endRegionDirective = (EndRegionDirectiveTriviaSyntax)context.Node;
-
-            RegionDirectiveTriviaSyntax regionDirective = endRegionDirective.GetRegionDirective();
-
-            if (regionDirective == null)
-                return;
-
-            SyntaxTrivia trivia = regionDirective.GetPreprocessingMessageTrivia();
-
-            SyntaxTrivia endTrivia = endRegionDirective.GetPreprocessingMessageTrivia();
-
-            if (trivia.IsKind(SyntaxKind.PreprocessingMessageTrivia))
-            {
-                if (!endTrivia.IsKind(SyntaxKind.PreprocessingMessageTrivia)
-                    || !string.Equals(trivia.ToString(), endTrivia.ToString(), StringComparison.Ordinal))
-                {
-                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AddOrRemoveRegionName, endRegionDirective, "Add", "to");
-                }
-            }
-            else if (endTrivia.IsKind(SyntaxKind.PreprocessingMessageTrivia))
-            {
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AddOrRemoveRegionName, endRegionDirective, "Remove", "from");
-            }
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AddOrRemoveRegionName, endRegionDirective, "Remove", "from");
         }
     }
 }

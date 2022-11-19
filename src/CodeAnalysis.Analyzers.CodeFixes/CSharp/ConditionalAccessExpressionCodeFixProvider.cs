@@ -10,49 +10,48 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp;
 
-namespace Roslynator.CodeAnalysis.CSharp
+namespace Roslynator.CodeAnalysis.CSharp;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ConditionalAccessExpressionCodeFixProvider))]
+[Shared]
+public sealed class ConditionalAccessExpressionCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ConditionalAccessExpressionCodeFixProvider))]
-    [Shared]
-    public sealed class ConditionalAccessExpressionCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
-        {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.UnnecessaryConditionalAccess); }
-        }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.UnnecessaryConditionalAccess); }
+    }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out ConditionalAccessExpressionSyntax conditionalAccess))
-                return;
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out ConditionalAccessExpressionSyntax conditionalAccess))
+            return;
 
-            Document document = context.Document;
-            Diagnostic diagnostic = context.Diagnostics[0];
+        Document document = context.Document;
+        Diagnostic diagnostic = context.Diagnostics[0];
 
-            CodeAction codeAction = CodeAction.Create(
-                "Remove unnecessary '?'",
-                ct => RemoveUnnecessaryConditionalAccessAsync(document, conditionalAccess, ct),
-                GetEquivalenceKey(diagnostic));
+        CodeAction codeAction = CodeAction.Create(
+            "Remove unnecessary '?'",
+            ct => RemoveUnnecessaryConditionalAccessAsync(document, conditionalAccess, ct),
+            GetEquivalenceKey(diagnostic));
 
-            context.RegisterCodeFix(codeAction, diagnostic);
-        }
+        context.RegisterCodeFix(codeAction, diagnostic);
+    }
 
-        private static Task<Document> RemoveUnnecessaryConditionalAccessAsync(
-            Document document,
-            ConditionalAccessExpressionSyntax conditionalAccess,
-            CancellationToken cancellationToken)
-        {
-            SyntaxNode equalsExpression = conditionalAccess.WalkUpParentheses().Parent;
+    private static Task<Document> RemoveUnnecessaryConditionalAccessAsync(
+        Document document,
+        ConditionalAccessExpressionSyntax conditionalAccess,
+        CancellationToken cancellationToken)
+    {
+        SyntaxNode equalsExpression = conditionalAccess.WalkUpParentheses().Parent;
 
-            ExpressionSyntax newExpression = conditionalAccess
-                .RemoveOperatorToken()
-                .WithLeadingTrivia(equalsExpression.GetLeadingTrivia())
-                .WithTrailingTrivia(equalsExpression.GetTrailingTrivia())
-                .WithFormatterAnnotation();
+        ExpressionSyntax newExpression = conditionalAccess
+            .RemoveOperatorToken()
+            .WithLeadingTrivia(equalsExpression.GetLeadingTrivia())
+            .WithTrailingTrivia(equalsExpression.GetTrailingTrivia())
+            .WithFormatterAnnotation();
 
-            return document.ReplaceNodeAsync(equalsExpression, newExpression, cancellationToken);
-        }
+        return document.ReplaceNodeAsync(equalsExpression, newExpression, cancellationToken);
     }
 }

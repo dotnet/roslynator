@@ -18,195 +18,194 @@ using Roslynator.CSharp.SyntaxWalkers;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AssignDefaultValueToOutParameterCodeFixProvider))]
+[Shared]
+public sealed class AssignDefaultValueToOutParameterCodeFixProvider : CompilerDiagnosticCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AssignDefaultValueToOutParameterCodeFixProvider))]
-    [Shared]
-    public sealed class AssignDefaultValueToOutParameterCodeFixProvider : CompilerDiagnosticCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
+        get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.CS0177_OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod); }
+    }
+
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        Diagnostic diagnostic = context.Diagnostics[0];
+
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+        if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.AssignDefaultValueToOutParameter, context.Document, root.SyntaxTree))
+            return;
+
+        if (!TryFindFirstAncestorOrSelf(
+            root,
+            context.Span,
+            out SyntaxNode node,
+            predicate: f => f.IsKind(SyntaxKind.MethodDeclaration) || f is StatementSyntax))
         {
-            get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.CS0177_OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod); }
+            return;
         }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+        StatementSyntax statement = null;
+
+        if (!node.IsKind(SyntaxKind.MethodDeclaration, SyntaxKind.LocalFunctionStatement))
         {
-            Diagnostic diagnostic = context.Diagnostics[0];
+            statement = (StatementSyntax)node;
 
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+            node = node.FirstAncestor(f => f.IsKind(SyntaxKind.MethodDeclaration, SyntaxKind.LocalFunctionStatement));
 
-            if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.AssignDefaultValueToOutParameter, context.Document, root.SyntaxTree))
+            Debug.Assert(node is not null, "Containing method or local function not found.");
+
+            if (node is null)
                 return;
-
-            if (!TryFindFirstAncestorOrSelf(
-                root,
-                context.Span,
-                out SyntaxNode node,
-                predicate: f => f.IsKind(SyntaxKind.MethodDeclaration) || f is StatementSyntax))
-            {
-                return;
-            }
-
-            StatementSyntax statement = null;
-
-            if (!node.IsKind(SyntaxKind.MethodDeclaration, SyntaxKind.LocalFunctionStatement))
-            {
-                statement = (StatementSyntax)node;
-
-                node = node.FirstAncestor(f => f.IsKind(SyntaxKind.MethodDeclaration, SyntaxKind.LocalFunctionStatement));
-
-                Debug.Assert(node != null, "Containing method or local function not found.");
-
-                if (node == null)
-                    return;
-            }
-
-            SyntaxNode bodyOrExpressionBody = GetBodyOrExpressionBody(node);
-
-            if (bodyOrExpressionBody == null)
-                return;
-
-            if (bodyOrExpressionBody is BlockSyntax body
-                && body.ContainsYield())
-            {
-                return;
-            }
-
-            SemanticModel semanticModel = await context.Document.GetSemanticModelAsync().ConfigureAwait(false);
-
-            DataFlowAnalysis dataFlowAnalysis = AnalyzeDataFlow(bodyOrExpressionBody, semanticModel);
-
-            // Flow analysis APIs do not work with local functions: https://github.com/dotnet/roslyn/issues/14214
-            if (!dataFlowAnalysis.Succeeded)
-                return;
-
-            var methodSymbol = (IMethodSymbol)semanticModel.GetDeclaredSymbol(node);
-
-            ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
-
-            ImmutableArray<ISymbol> alwaysAssigned = dataFlowAnalysis.AlwaysAssigned;
-
-            IParameterSymbol singleParameter = null;
-            var isAny = false;
-            foreach (IParameterSymbol parameter in parameters)
-            {
-                if (parameter.RefKind == RefKind.Out
-                    && !alwaysAssigned.Contains(parameter))
-                {
-                    if (singleParameter == null)
-                    {
-                        singleParameter = parameter;
-                        isAny = true;
-                    }
-                    else
-                    {
-                        singleParameter = null;
-                        break;
-                    }
-                }
-            }
-
-            Debug.Assert(isAny, "No unassigned 'out' parameter found.");
-
-            if (!isAny)
-                return;
-
-            CodeAction codeAction = CodeAction.Create(
-                (singleParameter != null)
-                    ? $"Assign default value to parameter '{singleParameter.Name}'"
-                    : "Assign default value to parameters",
-                ct => RefactorAsync(context.Document, node, statement, bodyOrExpressionBody, parameters, alwaysAssigned, semanticModel, ct),
-                GetEquivalenceKey(diagnostic));
-
-            context.RegisterCodeFix(codeAction, diagnostic);
         }
 
-        private static DataFlowAnalysis AnalyzeDataFlow(
-            SyntaxNode bodyOrExpressionBody,
-            SemanticModel semanticModel)
-        {
-            if (bodyOrExpressionBody is BlockSyntax body)
-                return semanticModel.AnalyzeDataFlow(body);
+        SyntaxNode bodyOrExpressionBody = GetBodyOrExpressionBody(node);
 
-            return semanticModel.AnalyzeDataFlow(((ArrowExpressionClauseSyntax)bodyOrExpressionBody).Expression);
+        if (bodyOrExpressionBody is null)
+            return;
+
+        if (bodyOrExpressionBody is BlockSyntax body
+            && body.ContainsYield())
+        {
+            return;
         }
 
-        private static Task<Document> RefactorAsync(
-            Document document,
-            SyntaxNode node,
-            StatementSyntax statement,
-            SyntaxNode bodyOrExpressionBody,
-            ImmutableArray<IParameterSymbol> parameterSymbols,
-            ImmutableArray<ISymbol> alwaysAssigned,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken = default)
+        SemanticModel semanticModel = await context.Document.GetSemanticModelAsync().ConfigureAwait(false);
+
+        DataFlowAnalysis dataFlowAnalysis = AnalyzeDataFlow(bodyOrExpressionBody, semanticModel);
+
+        // Flow analysis APIs do not work with local functions: https://github.com/dotnet/roslyn/issues/14214
+        if (!dataFlowAnalysis.Succeeded)
+            return;
+
+        var methodSymbol = (IMethodSymbol)semanticModel.GetDeclaredSymbol(node);
+
+        ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
+
+        ImmutableArray<ISymbol> alwaysAssigned = dataFlowAnalysis.AlwaysAssigned;
+
+        IParameterSymbol singleParameter = null;
+        var isAny = false;
+        foreach (IParameterSymbol parameter in parameters)
         {
-            IEnumerable<ExpressionStatementSyntax> expressionStatements = parameterSymbols
-                .Where(f => f.RefKind == RefKind.Out && !alwaysAssigned.Contains(f))
-                .Select(f =>
-                {
-                    ExpressionStatementSyntax expressionStatement = SimpleAssignmentStatement(
-                        IdentifierName(f.Name),
-                        f.Type.GetDefaultValueSyntax(document.GetDefaultSyntaxOptions()));
-
-                    return expressionStatement.WithFormatterAnnotation();
-                });
-
-            SyntaxNode newNode = null;
-
-            if (bodyOrExpressionBody is ArrowExpressionClauseSyntax expressionBody)
+            if (parameter.RefKind == RefKind.Out
+                && !alwaysAssigned.Contains(parameter))
             {
-                newNode = ConvertExpressionBodyToBlockBodyRefactoring.Refactor(expressionBody, semanticModel, cancellationToken);
-
-                newNode = InsertStatements(newNode, expressionStatements);
-            }
-            else if (statement != null)
-            {
-                if (statement.IsEmbedded())
+                if (singleParameter is null)
                 {
-                    newNode = node.ReplaceNode(statement, Block(expressionStatements.Concat(new StatementSyntax[] { statement })));
+                    singleParameter = parameter;
+                    isAny = true;
                 }
                 else
                 {
-                    newNode = node.InsertNodesBefore(statement, expressionStatements);
+                    singleParameter = null;
+                    break;
                 }
+            }
+        }
+
+        Debug.Assert(isAny, "No unassigned 'out' parameter found.");
+
+        if (!isAny)
+            return;
+
+        CodeAction codeAction = CodeAction.Create(
+            (singleParameter is not null)
+                ? $"Assign default value to parameter '{singleParameter.Name}'"
+                : "Assign default value to parameters",
+            ct => RefactorAsync(context.Document, node, statement, bodyOrExpressionBody, parameters, alwaysAssigned, semanticModel, ct),
+            GetEquivalenceKey(diagnostic));
+
+        context.RegisterCodeFix(codeAction, diagnostic);
+    }
+
+    private static DataFlowAnalysis AnalyzeDataFlow(
+        SyntaxNode bodyOrExpressionBody,
+        SemanticModel semanticModel)
+    {
+        if (bodyOrExpressionBody is BlockSyntax body)
+            return semanticModel.AnalyzeDataFlow(body);
+
+        return semanticModel.AnalyzeDataFlow(((ArrowExpressionClauseSyntax)bodyOrExpressionBody).Expression);
+    }
+
+    private static Task<Document> RefactorAsync(
+        Document document,
+        SyntaxNode node,
+        StatementSyntax statement,
+        SyntaxNode bodyOrExpressionBody,
+        ImmutableArray<IParameterSymbol> parameterSymbols,
+        ImmutableArray<ISymbol> alwaysAssigned,
+        SemanticModel semanticModel,
+        CancellationToken cancellationToken = default)
+    {
+        IEnumerable<ExpressionStatementSyntax> expressionStatements = parameterSymbols
+            .Where(f => f.RefKind == RefKind.Out && !alwaysAssigned.Contains(f))
+            .Select(f =>
+            {
+                ExpressionStatementSyntax expressionStatement = SimpleAssignmentStatement(
+                    IdentifierName(f.Name),
+                    f.Type.GetDefaultValueSyntax(document.GetDefaultSyntaxOptions()));
+
+                return expressionStatement.WithFormatterAnnotation();
+            });
+
+        SyntaxNode newNode = null;
+
+        if (bodyOrExpressionBody is ArrowExpressionClauseSyntax expressionBody)
+        {
+            newNode = ConvertExpressionBodyToBlockBodyRefactoring.Refactor(expressionBody, semanticModel, cancellationToken);
+
+            newNode = InsertStatements(newNode, expressionStatements);
+        }
+        else if (statement is not null)
+        {
+            if (statement.IsEmbedded())
+            {
+                newNode = node.ReplaceNode(statement, Block(expressionStatements.Concat(new StatementSyntax[] { statement })));
             }
             else
             {
-                newNode = InsertStatements(node, expressionStatements);
+                newNode = node.InsertNodesBefore(statement, expressionStatements);
             }
-
-            return document.ReplaceNodeAsync(node, newNode, cancellationToken);
         }
-
-        private static SyntaxNode InsertStatements(
-            SyntaxNode node,
-            IEnumerable<StatementSyntax> newStatements)
+        else
         {
-            var body = (BlockSyntax)GetBodyOrExpressionBody(node);
-
-            SyntaxList<StatementSyntax> statements = body.Statements;
-
-            StatementSyntax lastStatement = statements.LastOrDefault(f => !f.IsKind(SyntaxKind.LocalFunctionStatement, SyntaxKind.ReturnStatement));
-
-            int index = (lastStatement != null)
-                ? statements.IndexOf(lastStatement) + 1
-                : 0;
-
-            BlockSyntax newBody = body.WithStatements(statements.InsertRange(index, newStatements));
-
-            if (node is MethodDeclarationSyntax methodDeclaration)
-                return methodDeclaration.WithBody(newBody);
-
-            return ((LocalFunctionStatementSyntax)node).WithBody(newBody);
+            newNode = InsertStatements(node, expressionStatements);
         }
 
-        private static SyntaxNode GetBodyOrExpressionBody(SyntaxNode node)
-        {
-            if (node is MethodDeclarationSyntax methodDeclaration)
-                return methodDeclaration.BodyOrExpressionBody();
+        return document.ReplaceNodeAsync(node, newNode, cancellationToken);
+    }
 
-            return ((LocalFunctionStatementSyntax)node).BodyOrExpressionBody();
-        }
+    private static SyntaxNode InsertStatements(
+        SyntaxNode node,
+        IEnumerable<StatementSyntax> newStatements)
+    {
+        var body = (BlockSyntax)GetBodyOrExpressionBody(node);
+
+        SyntaxList<StatementSyntax> statements = body.Statements;
+
+        StatementSyntax lastStatement = statements.LastOrDefault(f => !f.IsKind(SyntaxKind.LocalFunctionStatement, SyntaxKind.ReturnStatement));
+
+        int index = (lastStatement is not null)
+            ? statements.IndexOf(lastStatement) + 1
+            : 0;
+
+        BlockSyntax newBody = body.WithStatements(statements.InsertRange(index, newStatements));
+
+        if (node is MethodDeclarationSyntax methodDeclaration)
+            return methodDeclaration.WithBody(newBody);
+
+        return ((LocalFunctionStatementSyntax)node).WithBody(newBody);
+    }
+
+    private static SyntaxNode GetBodyOrExpressionBody(SyntaxNode node)
+    {
+        if (node is MethodDeclarationSyntax methodDeclaration)
+            return methodDeclaration.BodyOrExpressionBody();
+
+        return ((LocalFunctionStatementSyntax)node).BodyOrExpressionBody();
     }
 }

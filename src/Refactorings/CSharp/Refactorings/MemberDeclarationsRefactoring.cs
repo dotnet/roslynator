@@ -9,130 +9,129 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class MemberDeclarationsRefactoring
 {
-    internal static class MemberDeclarationsRefactoring
+    public static void ComputeRefactoring(RefactoringContext context, MemberDeclarationSyntax member)
     {
-        public static void ComputeRefactoring(RefactoringContext context, MemberDeclarationSyntax member)
+        MemberDeclarationListInfo info = SyntaxInfo.MemberDeclarationListInfo(member.Parent);
+
+        if (!info.Success)
+            return;
+
+        SyntaxList<MemberDeclarationSyntax> members = info.Members;
+
+        if (members.Count <= 1)
+            return;
+
+        int index = IndexOfMemberToSwap(member, members, context.Span);
+
+        if (index == -1)
+            return;
+
+        SyntaxTree tree = member.SyntaxTree;
+
+        FileLinePositionSpan fileLinePositionSpan = tree.GetLineSpan(context.Span, context.CancellationToken);
+
+        int startLine = fileLinePositionSpan.StartLine();
+        int endLine = fileLinePositionSpan.EndLine();
+
+        if (startLine <= tree.GetEndLine(members[index].TrimmedSpan(), context.CancellationToken))
+            return;
+
+        if (endLine >= tree.GetStartLine(members[index + 1].TrimmedSpan(), context.CancellationToken))
+            return;
+
+        if (context.IsRefactoringEnabled(RefactoringDescriptors.RemoveMemberDeclarations))
         {
-            MemberDeclarationListInfo info = SyntaxInfo.MemberDeclarationListInfo(member.Parent);
+            context.RegisterRefactoring(
+                "Remove members above",
+                ct => ReplaceMembersAsync(context.Document, info, members.Skip(index + 1), ct),
+                RefactoringDescriptors.RemoveMemberDeclarations,
+                "Above");
 
-            if (!info.Success)
-                return;
+            context.RegisterRefactoring(
+                "Remove members below",
+                ct => ReplaceMembersAsync(context.Document, info, members.Take(index + 1), ct),
+                RefactoringDescriptors.RemoveMemberDeclarations,
+                "Below");
+        }
 
-            SyntaxList<MemberDeclarationSyntax> members = info.Members;
+        if (context.IsRefactoringEnabled(RefactoringDescriptors.SwapMemberDeclarations))
+        {
+            context.RegisterRefactoring(
+                "Swap members",
+                ct => SwapMembersAsync(context.Document, info, index, ct),
+                RefactoringDescriptors.SwapMemberDeclarations);
+        }
+    }
 
-            if (members.Count <= 1)
-                return;
+    private static int IndexOfMemberToSwap(
+        MemberDeclarationSyntax member,
+        SyntaxList<MemberDeclarationSyntax> members,
+        TextSpan span)
+    {
+        int index = members.IndexOf(member);
 
-            int index = IndexOfMemberToSwap(member, members, context.Span);
-
-            if (index == -1)
-                return;
-
-            SyntaxTree tree = member.SyntaxTree;
-
-            FileLinePositionSpan fileLinePositionSpan = tree.GetLineSpan(context.Span, context.CancellationToken);
-
-            int startLine = fileLinePositionSpan.StartLine();
-            int endLine = fileLinePositionSpan.EndLine();
-
-            if (startLine <= tree.GetEndLine(members[index].TrimmedSpan(), context.CancellationToken))
-                return;
-
-            if (endLine >= tree.GetStartLine(members[index + 1].TrimmedSpan(), context.CancellationToken))
-                return;
-
-            if (context.IsRefactoringEnabled(RefactoringDescriptors.RemoveMemberDeclarations))
+        if (span.End < member.SpanStart)
+        {
+            if (index > 0
+                && span.Start > members[index - 1].Span.End)
             {
-                context.RegisterRefactoring(
-                    "Remove members above",
-                    ct => ReplaceMembersAsync(context.Document, info, members.Skip(index + 1), ct),
-                    RefactoringDescriptors.RemoveMemberDeclarations,
-                    "Above");
-
-                context.RegisterRefactoring(
-                    "Remove members below",
-                    ct => ReplaceMembersAsync(context.Document, info, members.Take(index + 1), ct),
-                    RefactoringDescriptors.RemoveMemberDeclarations,
-                    "Below");
+                return index - 1;
             }
-
-            if (context.IsRefactoringEnabled(RefactoringDescriptors.SwapMemberDeclarations))
+        }
+        else if (span.End > member.Span.End)
+        {
+            if (index < members.Count - 1
+                && span.End < members[index + 1].SpanStart)
             {
-                context.RegisterRefactoring(
-                    "Swap members",
-                    ct => SwapMembersAsync(context.Document, info, index, ct),
-                    RefactoringDescriptors.SwapMemberDeclarations);
+                return index;
             }
         }
 
-        private static int IndexOfMemberToSwap(
-            MemberDeclarationSyntax member,
-            SyntaxList<MemberDeclarationSyntax> members,
-            TextSpan span)
+        return -1;
+    }
+
+    private static Task<Document> SwapMembersAsync(
+        Document document,
+        in MemberDeclarationListInfo info,
+        int index,
+        CancellationToken cancellationToken = default)
+    {
+        SyntaxList<MemberDeclarationSyntax> members = info.Members;
+
+        MemberDeclarationSyntax member = members[index];
+        MemberDeclarationSyntax nextMember = members[index + 1];
+
+        if (index == 0
+            && !member.GetLeadingTrivia().FirstOrDefault().IsEndOfLineTrivia())
         {
-            int index = members.IndexOf(member);
+            SyntaxTriviaList leading = nextMember.GetLeadingTrivia();
 
-            if (span.End < member.SpanStart)
-            {
-                if (index > 0
-                    && span.Start > members[index - 1].Span.End)
-                {
-                    return index - 1;
-                }
-            }
-            else if (span.End > member.Span.End)
-            {
-                if (index < members.Count - 1
-                    && span.End < members[index + 1].SpanStart)
-                {
-                    return index;
-                }
-            }
+            SyntaxTrivia trivia = leading.FirstOrDefault();
 
-            return -1;
+            if (trivia.IsEndOfLineTrivia())
+            {
+                member = member.PrependToLeadingTrivia(trivia);
+                nextMember = nextMember.WithLeadingTrivia(leading.Remove(trivia)).WithNavigationAnnotation();
+            }
         }
 
-        private static Task<Document> SwapMembersAsync(
-            Document document,
-            in MemberDeclarationListInfo info,
-            int index,
-            CancellationToken cancellationToken = default)
-        {
-            SyntaxList<MemberDeclarationSyntax> members = info.Members;
+        SyntaxList<MemberDeclarationSyntax> newMembers = members
+            .ReplaceAt(index, nextMember)
+            .ReplaceAt(index + 1, member);
 
-            MemberDeclarationSyntax member = members[index];
-            MemberDeclarationSyntax nextMember = members[index + 1];
+        return document.ReplaceMembersAsync(info, newMembers, cancellationToken);
+    }
 
-            if (index == 0
-                && !member.GetLeadingTrivia().FirstOrDefault().IsEndOfLineTrivia())
-            {
-                SyntaxTriviaList leading = nextMember.GetLeadingTrivia();
-
-                SyntaxTrivia trivia = leading.FirstOrDefault();
-
-                if (trivia.IsEndOfLineTrivia())
-                {
-                    member = member.PrependToLeadingTrivia(trivia);
-                    nextMember = nextMember.WithLeadingTrivia(leading.Remove(trivia)).WithNavigationAnnotation();
-                }
-            }
-
-            SyntaxList<MemberDeclarationSyntax> newMembers = members
-                .ReplaceAt(index, nextMember)
-                .ReplaceAt(index + 1, member);
-
-            return document.ReplaceMembersAsync(info, newMembers, cancellationToken);
-        }
-
-        private static Task<Document> ReplaceMembersAsync(
-            Document document,
-            in MemberDeclarationListInfo info,
-            IEnumerable<MemberDeclarationSyntax> newMembers,
-            CancellationToken cancellationToken = default)
-        {
-            return document.ReplaceMembersAsync(info, newMembers, cancellationToken);
-        }
+    private static Task<Document> ReplaceMembersAsync(
+        Document document,
+        in MemberDeclarationListInfo info,
+        IEnumerable<MemberDeclarationSyntax> newMembers,
+        CancellationToken cancellationToken = default)
+    {
+        return document.ReplaceMembersAsync(info, newMembers, cancellationToken);
     }
 }

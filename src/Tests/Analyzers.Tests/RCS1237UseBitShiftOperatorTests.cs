@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1237UseBitShiftOperatorTests : AbstractCSharpDiagnosticVerifier<EnumSymbolAnalyzer, EnumDeclarationCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseBitShiftOperator;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBitShiftOperator)]
-        public async Task Test()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1237UseBitShiftOperatorTests : AbstractCSharpDiagnosticVerifier<EnumSymbolAnalyzer, EnumDeclarationCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseBitShiftOperator;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBitShiftOperator)]
+    public async Task Test()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 [Flags]
@@ -40,12 +40,12 @@ enum Foo
     C = (1 << 2),
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBitShiftOperator)]
-        public async Task TestNoDiagnostic_WithoutFlags()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBitShiftOperator)]
+    public async Task TestNoDiagnostic_WithoutFlags()
+    {
+        await VerifyNoDiagnosticAsync(@"
 enum Foo
 {
     _ = 0,
@@ -54,12 +54,12 @@ enum Foo
     C = 4,
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBitShiftOperator)]
-        public async Task TestNoDiagnostic_BitShift()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBitShiftOperator)]
+    public async Task TestNoDiagnostic_BitShift()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 [Flags]
@@ -70,12 +70,12 @@ enum Foo
     B = 1 << 1,
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBitShiftOperator)]
-        public async Task TestNoDiagnostic_CombinedValue()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBitShiftOperator)]
+    public async Task TestNoDiagnostic_CombinedValue()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 [Flags]
@@ -92,6 +92,5 @@ enum Foo
     X = int.MaxValue,
 }
 ");
-        }
     }
 }

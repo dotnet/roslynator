@@ -7,81 +7,80 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class UncommentSingleLineCommentRefactoring
 {
-    internal static class UncommentSingleLineCommentRefactoring
+    public static Task<Document> RefactorAsync(
+        Document document,
+        SyntaxTrivia singleLineComment,
+        CancellationToken cancellationToken = default)
     {
-        public static Task<Document> RefactorAsync(
-            Document document,
-            SyntaxTrivia singleLineComment,
-            CancellationToken cancellationToken = default)
+        SyntaxToken token = singleLineComment.Token;
+
+        SyntaxTriviaList triviaList;
+
+        int index = token.LeadingTrivia.IndexOf(singleLineComment);
+
+        if (index != -1)
         {
-            SyntaxToken token = singleLineComment.Token;
+            triviaList = token.LeadingTrivia;
+        }
+        else
+        {
+            index = token.TrailingTrivia.IndexOf(singleLineComment);
+            triviaList = token.TrailingTrivia;
+        }
 
-            SyntaxTriviaList triviaList;
+        IEnumerable<TextChange> textChanges = GetTextChanges(triviaList, index);
 
-            int index = token.LeadingTrivia.IndexOf(singleLineComment);
+        return document.WithTextChangesAsync(textChanges, cancellationToken);
+    }
 
-            if (index != -1)
+    private static IEnumerable<TextChange> GetTextChanges(SyntaxTriviaList triviaList, int index)
+    {
+        int i = index;
+        while (i >= 0)
+        {
+            SyntaxTrivia trivia = triviaList[i];
+
+            if (IsAllowedTrivia(trivia))
             {
-                triviaList = token.LeadingTrivia;
+                if (trivia.IsKind(SyntaxKind.SingleLineCommentTrivia))
+                    yield return new TextChange(trivia.Span, trivia.ToString().Substring(2));
+
+                i--;
             }
             else
             {
-                index = token.TrailingTrivia.IndexOf(singleLineComment);
-                triviaList = token.TrailingTrivia;
+                break;
             }
-
-            IEnumerable<TextChange> textChanges = GetTextChanges(triviaList, index);
-
-            return document.WithTextChangesAsync(textChanges, cancellationToken);
         }
 
-        private static IEnumerable<TextChange> GetTextChanges(SyntaxTriviaList triviaList, int index)
+        i = index + 1;
+        while (i < triviaList.Count)
         {
-            int i = index;
-            while (i >= 0)
+            SyntaxTrivia trivia = triviaList[i];
+
+            if (IsAllowedTrivia(trivia))
             {
-                SyntaxTrivia trivia = triviaList[i];
+                if (trivia.IsKind(SyntaxKind.SingleLineCommentTrivia))
+                    yield return new TextChange(trivia.Span, trivia.ToString().Substring(2));
 
-                if (IsAllowedTrivia(trivia))
-                {
-                    if (trivia.IsKind(SyntaxKind.SingleLineCommentTrivia))
-                        yield return new TextChange(trivia.Span, trivia.ToString().Substring(2));
-
-                    i--;
-                }
-                else
-                {
-                    break;
-                }
+                i++;
             }
-
-            i = index + 1;
-            while (i < triviaList.Count)
+            else
             {
-                SyntaxTrivia trivia = triviaList[i];
-
-                if (IsAllowedTrivia(trivia))
-                {
-                    if (trivia.IsKind(SyntaxKind.SingleLineCommentTrivia))
-                        yield return new TextChange(trivia.Span, trivia.ToString().Substring(2));
-
-                    i++;
-                }
-                else
-                {
-                    break;
-                }
+                break;
             }
         }
+    }
 
-        private static bool IsAllowedTrivia(SyntaxTrivia trivia)
-        {
-            return trivia.IsKind(
-                SyntaxKind.WhitespaceTrivia,
-                SyntaxKind.EndOfLineTrivia,
-                SyntaxKind.SingleLineCommentTrivia);
-        }
+    private static bool IsAllowedTrivia(SyntaxTrivia trivia)
+    {
+        return trivia.IsKind(
+            SyntaxKind.WhitespaceTrivia,
+            SyntaxKind.EndOfLineTrivia,
+            SyntaxKind.SingleLineCommentTrivia);
     }
 }

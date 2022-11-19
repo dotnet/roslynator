@@ -4,21 +4,21 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
+namespace Roslynator.CSharp.Refactorings.Tests;
+
+public class RR0213AddParameterToInterfaceMemberTests : AbstractCSharpRefactoringVerifier
 {
-    public class RR0213AddParameterToInterfaceMemberTests : AbstractCSharpRefactoringVerifier
+    public override string RefactoringId { get; } = RefactoringIdentifiers.AddParameterToInterfaceMember;
+
+    public override CSharpTestOptions Options
     {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.AddParameterToInterfaceMember;
+        get { return base.Options.AddAllowedCompilerDiagnosticIds(new[] { "CS0535", "CS0539" }); }
+    }
 
-        public override CSharpTestOptions Options
-        {
-            get { return base.Options.AddAllowedCompilerDiagnosticIds(new[] { "CS0535", "CS0539" }); }
-        }
-
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddParameterToInterfaceMember)]
-        public async Task Test_Method()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddParameterToInterfaceMember)]
+    public async Task Test_Method()
+    {
+        await VerifyRefactoringAsync(@"
 interface IFoo
 {
     void M(object p);
@@ -43,12 +43,12 @@ class C : IFoo
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId, "M:IFoo.M(System.Object)"));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddParameterToInterfaceMember)]
-        public async Task Test_Method_OutParameter()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddParameterToInterfaceMember)]
+    public async Task Test_Method_OutParameter()
+    {
+        await VerifyRefactoringAsync(@"
 interface IFoo
 {
     void M(object p);
@@ -75,12 +75,12 @@ class C : IFoo
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId, "M:IFoo.M(System.Object)"));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddParameterToInterfaceMember)]
-        public async Task Test_Method_Parameter_WithDefaultValue()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddParameterToInterfaceMember)]
+    public async Task Test_Method_Parameter_WithDefaultValue()
+    {
+        await VerifyRefactoringAsync(@"
 interface IFoo
 {
     void M(object p);
@@ -107,12 +107,12 @@ class C : IFoo
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId, "M:IFoo.M(System.Object)"));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddParameterToInterfaceMember)]
-        public async Task Test_Method_Generic()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddParameterToInterfaceMember)]
+    public async Task Test_Method_Generic()
+    {
+        await VerifyRefactoringAsync(@"
 interface IFoo<T>
 {
     void M(T p);
@@ -137,12 +137,12 @@ class C : IFoo<string>
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId, "M:IFoo`1.M(`0)"));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddParameterToInterfaceMember)]
-        public async Task Test_Indexer()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddParameterToInterfaceMember)]
+    public async Task Test_Indexer()
+    {
+        await VerifyRefactoringAsync(@"
 interface IFoo
 {
     object this[object p] { get; }
@@ -163,6 +163,5 @@ class C : IFoo
     public object this[object p, object p2] => null;
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId, "P:IFoo.Item(System.Object)"));
-        }
     }
 }

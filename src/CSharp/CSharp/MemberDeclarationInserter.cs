@@ -22,10 +22,10 @@ namespace Roslynator.CSharp
         /// <param name="member"></param>
         public ClassDeclarationSyntax Insert(ClassDeclarationSyntax classDeclaration, MemberDeclarationSyntax member)
         {
-            if (classDeclaration == null)
+            if (classDeclaration is null)
                 throw new ArgumentNullException(nameof(classDeclaration));
 
-            if (member == null)
+            if (member is null)
                 throw new ArgumentNullException(nameof(member));
 
             return classDeclaration.WithMembers(Insert(classDeclaration.Members, member));
@@ -38,10 +38,10 @@ namespace Roslynator.CSharp
         /// <param name="member"></param>
         public CompilationUnitSyntax Insert(CompilationUnitSyntax compilationUnit, MemberDeclarationSyntax member)
         {
-            if (compilationUnit == null)
+            if (compilationUnit is null)
                 throw new ArgumentNullException(nameof(compilationUnit));
 
-            if (member == null)
+            if (member is null)
                 throw new ArgumentNullException(nameof(member));
 
             return compilationUnit.WithMembers(Insert(compilationUnit.Members, member));
@@ -54,10 +54,10 @@ namespace Roslynator.CSharp
         /// <param name="member"></param>
         public InterfaceDeclarationSyntax Insert(InterfaceDeclarationSyntax interfaceDeclaration, MemberDeclarationSyntax member)
         {
-            if (interfaceDeclaration == null)
+            if (interfaceDeclaration is null)
                 throw new ArgumentNullException(nameof(interfaceDeclaration));
 
-            if (member == null)
+            if (member is null)
                 throw new ArgumentNullException(nameof(member));
 
             return interfaceDeclaration.WithMembers(Insert(interfaceDeclaration.Members, member));
@@ -70,10 +70,10 @@ namespace Roslynator.CSharp
         /// <param name="member"></param>
         public NamespaceDeclarationSyntax Insert(NamespaceDeclarationSyntax namespaceDeclaration, MemberDeclarationSyntax member)
         {
-            if (namespaceDeclaration == null)
+            if (namespaceDeclaration is null)
                 throw new ArgumentNullException(nameof(namespaceDeclaration));
 
-            if (member == null)
+            if (member is null)
                 throw new ArgumentNullException(nameof(member));
 
             return namespaceDeclaration.WithMembers(Insert(namespaceDeclaration.Members, member));
@@ -86,10 +86,10 @@ namespace Roslynator.CSharp
         /// <param name="member"></param>
         public StructDeclarationSyntax Insert(StructDeclarationSyntax structDeclaration, MemberDeclarationSyntax member)
         {
-            if (structDeclaration == null)
+            if (structDeclaration is null)
                 throw new ArgumentNullException(nameof(structDeclaration));
 
-            if (member == null)
+            if (member is null)
                 throw new ArgumentNullException(nameof(member));
 
             return structDeclaration.WithMembers(Insert(structDeclaration.Members, member));
@@ -102,10 +102,10 @@ namespace Roslynator.CSharp
         /// <param name="member"></param>
         public RecordDeclarationSyntax Insert(RecordDeclarationSyntax recordDeclaration, MemberDeclarationSyntax member)
         {
-            if (recordDeclaration == null)
+            if (recordDeclaration is null)
                 throw new ArgumentNullException(nameof(recordDeclaration));
 
-            if (member == null)
+            if (member is null)
                 throw new ArgumentNullException(nameof(member));
 
             return recordDeclaration.WithMembers(Insert(recordDeclaration.Members, member));
@@ -118,10 +118,10 @@ namespace Roslynator.CSharp
         /// <param name="member"></param>
         public TypeDeclarationSyntax Insert(TypeDeclarationSyntax typeDeclaration, MemberDeclarationSyntax member)
         {
-            if (typeDeclaration == null)
+            if (typeDeclaration is null)
                 throw new ArgumentNullException(nameof(typeDeclaration));
 
-            if (member == null)
+            if (member is null)
                 throw new ArgumentNullException(nameof(member));
 
             return typeDeclaration.WithMembers(Insert(typeDeclaration.Members, member));
@@ -143,7 +143,7 @@ namespace Roslynator.CSharp
         {
             public override int GetInsertIndex(SyntaxList<MemberDeclarationSyntax> members, MemberDeclarationSyntax member)
             {
-                if (member == null)
+                if (member is null)
                     throw new ArgumentNullException(nameof(member));
 
                 int index = -1;

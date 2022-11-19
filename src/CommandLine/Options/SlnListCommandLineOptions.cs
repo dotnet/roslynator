@@ -3,17 +3,16 @@
 using System.Collections.Generic;
 using CommandLine;
 
-namespace Roslynator.CommandLine
-{
+namespace Roslynator.CommandLine;
+
 #if DEBUG
-    [Verb("sln-list", HelpText = "Gets an information about specified solution and its projects.")]
+[Verb("sln-list", HelpText = "Gets an information about specified solution and its projects.")]
 #endif
-    public class SlnListCommandLineOptions : MSBuildCommandLineOptions
-    {
-        [Value(
-            index: 0,
-            HelpText = "Path to one or more project/solution files.",
-            MetaName = "<PROJECT|SOLUTION>")]
-        public IEnumerable<string> Paths { get; set; }
-    }
+public class SlnListCommandLineOptions : MSBuildCommandLineOptions
+{
+    [Value(
+        index: 0,
+        HelpText = "Path to one or more project/solution files.",
+        MetaName = "<PROJECT|SOLUTION>")]
+    public IEnumerable<string> Paths { get; set; }
 }

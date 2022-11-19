@@ -2,28 +2,27 @@
 
 using System.Diagnostics;
 
-namespace Roslynator.Documentation
+namespace Roslynator.Documentation;
+
+[DebuggerDisplay("{DebuggerDisplay,nq}")]
+public class DocumentationGeneratorResult
 {
-    [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public class DocumentationGeneratorResult
+    public DocumentationGeneratorResult(string content, string filePath, DocumentationFileKind kind, string label)
     {
-        public DocumentationGeneratorResult(string content, string filePath, DocumentationFileKind kind, string label)
-        {
-            Content = content;
-            FilePath = filePath;
-            Kind = kind;
-            Label = label;
-        }
-
-        public string Content { get; internal set; }
-
-        public string FilePath { get; }
-
-        public DocumentationFileKind Kind { get; }
-
-        public string Label { get; }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string DebuggerDisplay => $"{Kind} {FilePath} {Content}";
+        Content = content;
+        FilePath = filePath;
+        Kind = kind;
+        Label = label;
     }
+
+    public string Content { get; internal set; }
+
+    public string FilePath { get; }
+
+    public DocumentationFileKind Kind { get; }
+
+    public string Label { get; }
+
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+    private string DebuggerDisplay => $"{Kind} {FilePath} {Content}";
 }

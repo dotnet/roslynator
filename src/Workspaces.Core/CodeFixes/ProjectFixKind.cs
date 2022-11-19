@@ -2,22 +2,21 @@
 
 using System;
 
-namespace Roslynator.CodeFixes
+namespace Roslynator.CodeFixes;
+
+internal enum ProjectFixKind
 {
-    internal enum ProjectFixKind
-    {
-        Success = 0,
+    Success = 0,
 
-        [Obsolete]
-        NoAnalyzers = 1,
+    [Obsolete]
+    NoAnalyzers = 1,
 
-        NoFixers = 2,
+    NoFixers = 2,
 
-        [Obsolete]
-        NoFixableAnalyzers = 3,
+    [Obsolete]
+    NoFixableAnalyzers = 3,
 
-        CompilerError = 4,
-        Skipped = 5,
-        InfiniteLoop = 6
-    }
+    CompilerError = 4,
+    Skipped = 5,
+    InfiniteLoop = 6
 }

@@ -1,315 +1,320 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.Documentation;
 using static Roslynator.CSharp.SyntaxAccessibility;
 
-namespace Roslynator.CSharp.Documentation
+namespace Roslynator.CSharp.Documentation;
+
+internal class AddNewDocumentationCommentRewriter : CSharpSyntaxRewriter
 {
-    internal class AddNewDocumentationCommentRewriter : CSharpSyntaxRewriter
+    public AddNewDocumentationCommentRewriter(DocumentationCommentGeneratorSettings settings = null, bool skipNamespaceDeclaration = true)
     {
-        public AddNewDocumentationCommentRewriter(DocumentationCommentGeneratorSettings settings = null, bool skipNamespaceDeclaration = true)
+        Settings = settings ?? DocumentationCommentGeneratorSettings.Default;
+        SkipNamespaceDeclaration = skipNamespaceDeclaration;
+    }
+
+    public bool SkipNamespaceDeclaration { get; }
+
+    public DocumentationCommentGeneratorSettings Settings { get; }
+
+    protected virtual MemberDeclarationSyntax AddDocumentationComment(MemberDeclarationSyntax memberDeclaration)
+    {
+        return memberDeclaration.WithNewSingleLineDocumentationComment(Settings);
+    }
+
+    public override SyntaxNode VisitNamespaceDeclaration(NamespaceDeclarationSyntax node)
+    {
+        if (node is null)
         {
-            Settings = settings ?? DocumentationCommentGeneratorSettings.Default;
-            SkipNamespaceDeclaration = skipNamespaceDeclaration;
+            throw new ArgumentNullException(nameof(node));
         }
 
-        public bool SkipNamespaceDeclaration { get; }
+        node = (NamespaceDeclarationSyntax)base.VisitNamespaceDeclaration(node);
 
-        public DocumentationCommentGeneratorSettings Settings { get; }
-
-        protected virtual MemberDeclarationSyntax AddDocumentationComment(MemberDeclarationSyntax memberDeclaration)
+        if (!SkipNamespaceDeclaration
+            && !node.HasDocumentationComment())
         {
-            return memberDeclaration.WithNewSingleLineDocumentationComment(Settings);
+            return AddDocumentationComment(node);
         }
-
-        public override SyntaxNode VisitNamespaceDeclaration(NamespaceDeclarationSyntax node)
+        else
         {
-            node = (NamespaceDeclarationSyntax)base.VisitNamespaceDeclaration(node);
-
-            if (!SkipNamespaceDeclaration
-                && !node.HasDocumentationComment())
-            {
-                return AddDocumentationComment(node);
-            }
-            else
-            {
-                return node;
-            }
+            return node;
         }
+    }
 
-        public override SyntaxNode VisitClassDeclaration(ClassDeclarationSyntax node)
+    public override SyntaxNode VisitClassDeclaration(ClassDeclarationSyntax node)
+    {
+        bool isPubliclyVisible = IsPubliclyVisible(node);
+
+        node = (ClassDeclarationSyntax)base.VisitClassDeclaration(node);
+
+        if (isPubliclyVisible
+            && !node.HasDocumentationComment())
         {
-            bool isPubliclyVisible = IsPubliclyVisible(node);
-
-            node = (ClassDeclarationSyntax)base.VisitClassDeclaration(node);
-
-            if (isPubliclyVisible
-                && !node.HasDocumentationComment())
-            {
-                return AddDocumentationComment(node);
-            }
-            else
-            {
-                return node;
-            }
+            return AddDocumentationComment(node);
         }
-
-        public override SyntaxNode VisitStructDeclaration(StructDeclarationSyntax node)
+        else
         {
-            bool isPubliclyVisible = IsPubliclyVisible(node);
-
-            node = (StructDeclarationSyntax)base.VisitStructDeclaration(node);
-
-            if (isPubliclyVisible
-                && !node.HasDocumentationComment())
-            {
-                return AddDocumentationComment(node);
-            }
-            else
-            {
-                return node;
-            }
+            return node;
         }
+    }
 
-        public override SyntaxNode VisitInterfaceDeclaration(InterfaceDeclarationSyntax node)
+    public override SyntaxNode VisitStructDeclaration(StructDeclarationSyntax node)
+    {
+        bool isPubliclyVisible = IsPubliclyVisible(node);
+
+        node = (StructDeclarationSyntax)base.VisitStructDeclaration(node);
+
+        if (isPubliclyVisible
+            && !node.HasDocumentationComment())
         {
-            bool isPubliclyVisible = IsPubliclyVisible(node);
-
-            node = (InterfaceDeclarationSyntax)base.VisitInterfaceDeclaration(node);
-
-            if (isPubliclyVisible
-                && !node.HasDocumentationComment())
-            {
-                return AddDocumentationComment(node);
-            }
-            else
-            {
-                return node;
-            }
+            return AddDocumentationComment(node);
         }
-
-        public override SyntaxNode VisitEnumDeclaration(EnumDeclarationSyntax node)
+        else
         {
-            bool isPubliclyVisible = IsPubliclyVisible(node);
-
-            node = (EnumDeclarationSyntax)base.VisitEnumDeclaration(node);
-
-            if (isPubliclyVisible
-                && !node.HasDocumentationComment())
-            {
-                return AddDocumentationComment(node);
-            }
-            else
-            {
-                return node;
-            }
+            return node;
         }
+    }
 
-        public override SyntaxNode VisitDelegateDeclaration(DelegateDeclarationSyntax node)
+    public override SyntaxNode VisitInterfaceDeclaration(InterfaceDeclarationSyntax node)
+    {
+        bool isPubliclyVisible = IsPubliclyVisible(node);
+
+        node = (InterfaceDeclarationSyntax)base.VisitInterfaceDeclaration(node);
+
+        if (isPubliclyVisible
+            && !node.HasDocumentationComment())
         {
-            bool isPubliclyVisible = IsPubliclyVisible(node);
-
-            node = (DelegateDeclarationSyntax)base.VisitDelegateDeclaration(node);
-
-            if (isPubliclyVisible
-                && !node.HasDocumentationComment())
-            {
-                return AddDocumentationComment(node);
-            }
-            else
-            {
-                return node;
-            }
+            return AddDocumentationComment(node);
         }
-
-        public override SyntaxNode VisitEnumMemberDeclaration(EnumMemberDeclarationSyntax node)
+        else
         {
-            bool isPubliclyVisible = IsPubliclyVisible(node);
-
-            node = (EnumMemberDeclarationSyntax)base.VisitEnumMemberDeclaration(node);
-
-            if (isPubliclyVisible
-                && !node.HasDocumentationComment())
-            {
-                return AddDocumentationComment(node);
-            }
-            else
-            {
-                return node;
-            }
+            return node;
         }
+    }
 
-        public override SyntaxNode VisitFieldDeclaration(FieldDeclarationSyntax node)
+    public override SyntaxNode VisitEnumDeclaration(EnumDeclarationSyntax node)
+    {
+        bool isPubliclyVisible = IsPubliclyVisible(node);
+
+        node = (EnumDeclarationSyntax)base.VisitEnumDeclaration(node);
+
+        if (isPubliclyVisible
+            && !node.HasDocumentationComment())
         {
-            bool isPubliclyVisible = IsPubliclyVisible(node);
-
-            node = (FieldDeclarationSyntax)base.VisitFieldDeclaration(node);
-
-            if (isPubliclyVisible
-                && !node.HasDocumentationComment())
-            {
-                return AddDocumentationComment(node);
-            }
-            else
-            {
-                return node;
-            }
+            return AddDocumentationComment(node);
         }
-
-        public override SyntaxNode VisitEventFieldDeclaration(EventFieldDeclarationSyntax node)
+        else
         {
-            bool isPubliclyVisible = IsPubliclyVisible(node);
-
-            node = (EventFieldDeclarationSyntax)base.VisitEventFieldDeclaration(node);
-
-            if (isPubliclyVisible
-                && !node.HasDocumentationComment())
-            {
-                return AddDocumentationComment(node);
-            }
-            else
-            {
-                return node;
-            }
+            return node;
         }
+    }
 
-        public override SyntaxNode VisitMethodDeclaration(MethodDeclarationSyntax node)
+    public override SyntaxNode VisitDelegateDeclaration(DelegateDeclarationSyntax node)
+    {
+        bool isPubliclyVisible = IsPubliclyVisible(node);
+
+        node = (DelegateDeclarationSyntax)base.VisitDelegateDeclaration(node);
+
+        if (isPubliclyVisible
+            && !node.HasDocumentationComment())
         {
-            bool isPubliclyVisible = IsPubliclyVisible(node);
-
-            node = (MethodDeclarationSyntax)base.VisitMethodDeclaration(node);
-
-            if (isPubliclyVisible
-                && !node.HasDocumentationComment())
-            {
-                return AddDocumentationComment(node);
-            }
-            else
-            {
-                return node;
-            }
+            return AddDocumentationComment(node);
         }
-
-        public override SyntaxNode VisitOperatorDeclaration(OperatorDeclarationSyntax node)
+        else
         {
-            bool isPubliclyVisible = IsPubliclyVisible(node);
-
-            node = (OperatorDeclarationSyntax)base.VisitOperatorDeclaration(node);
-
-            if (isPubliclyVisible
-                && !node.HasDocumentationComment())
-            {
-                return AddDocumentationComment(node);
-            }
-            else
-            {
-                return node;
-            }
+            return node;
         }
+    }
 
-        public override SyntaxNode VisitConversionOperatorDeclaration(ConversionOperatorDeclarationSyntax node)
+    public override SyntaxNode VisitEnumMemberDeclaration(EnumMemberDeclarationSyntax node)
+    {
+        bool isPubliclyVisible = IsPubliclyVisible(node);
+
+        node = (EnumMemberDeclarationSyntax)base.VisitEnumMemberDeclaration(node);
+
+        if (isPubliclyVisible
+            && !node.HasDocumentationComment())
         {
-            bool isPubliclyVisible = IsPubliclyVisible(node);
-
-            node = (ConversionOperatorDeclarationSyntax)base.VisitConversionOperatorDeclaration(node);
-
-            if (isPubliclyVisible
-                && !node.HasDocumentationComment())
-            {
-                return AddDocumentationComment(node);
-            }
-            else
-            {
-                return node;
-            }
+            return AddDocumentationComment(node);
         }
-
-        public override SyntaxNode VisitConstructorDeclaration(ConstructorDeclarationSyntax node)
+        else
         {
-            bool isPubliclyVisible = IsPubliclyVisible(node);
-
-            node = (ConstructorDeclarationSyntax)base.VisitConstructorDeclaration(node);
-
-            if (isPubliclyVisible
-                && !node.HasDocumentationComment())
-            {
-                return AddDocumentationComment(node);
-            }
-            else
-            {
-                return node;
-            }
+            return node;
         }
+    }
 
-        public override SyntaxNode VisitDestructorDeclaration(DestructorDeclarationSyntax node)
+    public override SyntaxNode VisitFieldDeclaration(FieldDeclarationSyntax node)
+    {
+        bool isPubliclyVisible = IsPubliclyVisible(node);
+
+        node = (FieldDeclarationSyntax)base.VisitFieldDeclaration(node);
+
+        if (isPubliclyVisible
+            && !node.HasDocumentationComment())
         {
-            bool isPubliclyVisible = IsPubliclyVisible(node);
-
-            node = (DestructorDeclarationSyntax)base.VisitDestructorDeclaration(node);
-
-            if (isPubliclyVisible
-                && !node.HasDocumentationComment())
-            {
-                return AddDocumentationComment(node);
-            }
-            else
-            {
-                return node;
-            }
+            return AddDocumentationComment(node);
         }
-
-        public override SyntaxNode VisitPropertyDeclaration(PropertyDeclarationSyntax node)
+        else
         {
-            bool isPubliclyVisible = IsPubliclyVisible(node);
-
-            node = (PropertyDeclarationSyntax)base.VisitPropertyDeclaration(node);
-
-            if (isPubliclyVisible
-                && !node.HasDocumentationComment())
-            {
-                return AddDocumentationComment(node);
-            }
-            else
-            {
-                return node;
-            }
+            return node;
         }
+    }
 
-        public override SyntaxNode VisitEventDeclaration(EventDeclarationSyntax node)
+    public override SyntaxNode VisitEventFieldDeclaration(EventFieldDeclarationSyntax node)
+    {
+        bool isPubliclyVisible = IsPubliclyVisible(node);
+
+        node = (EventFieldDeclarationSyntax)base.VisitEventFieldDeclaration(node);
+
+        if (isPubliclyVisible
+            && !node.HasDocumentationComment())
         {
-            bool isPubliclyVisible = IsPubliclyVisible(node);
-
-            node = (EventDeclarationSyntax)base.VisitEventDeclaration(node);
-
-            if (isPubliclyVisible
-                && !node.HasDocumentationComment())
-            {
-                return AddDocumentationComment(node);
-            }
-            else
-            {
-                return node;
-            }
+            return AddDocumentationComment(node);
         }
-
-        public override SyntaxNode VisitIndexerDeclaration(IndexerDeclarationSyntax node)
+        else
         {
-            bool isPubliclyVisible = IsPubliclyVisible(node);
+            return node;
+        }
+    }
 
-            node = (IndexerDeclarationSyntax)base.VisitIndexerDeclaration(node);
+    public override SyntaxNode VisitMethodDeclaration(MethodDeclarationSyntax node)
+    {
+        bool isPubliclyVisible = IsPubliclyVisible(node);
 
-            if (isPubliclyVisible
-                && !node.HasDocumentationComment())
-            {
-                return AddDocumentationComment(node);
-            }
-            else
-            {
-                return node;
-            }
+        node = (MethodDeclarationSyntax)base.VisitMethodDeclaration(node);
+
+        if (isPubliclyVisible
+            && !node.HasDocumentationComment())
+        {
+            return AddDocumentationComment(node);
+        }
+        else
+        {
+            return node;
+        }
+    }
+
+    public override SyntaxNode VisitOperatorDeclaration(OperatorDeclarationSyntax node)
+    {
+        bool isPubliclyVisible = IsPubliclyVisible(node);
+
+        node = (OperatorDeclarationSyntax)base.VisitOperatorDeclaration(node);
+
+        if (isPubliclyVisible
+            && !node.HasDocumentationComment())
+        {
+            return AddDocumentationComment(node);
+        }
+        else
+        {
+            return node;
+        }
+    }
+
+    public override SyntaxNode VisitConversionOperatorDeclaration(ConversionOperatorDeclarationSyntax node)
+    {
+        bool isPubliclyVisible = IsPubliclyVisible(node);
+
+        node = (ConversionOperatorDeclarationSyntax)base.VisitConversionOperatorDeclaration(node);
+
+        if (isPubliclyVisible
+            && !node.HasDocumentationComment())
+        {
+            return AddDocumentationComment(node);
+        }
+        else
+        {
+            return node;
+        }
+    }
+
+    public override SyntaxNode VisitConstructorDeclaration(ConstructorDeclarationSyntax node)
+    {
+        bool isPubliclyVisible = IsPubliclyVisible(node);
+
+        node = (ConstructorDeclarationSyntax)base.VisitConstructorDeclaration(node);
+
+        if (isPubliclyVisible
+            && !node.HasDocumentationComment())
+        {
+            return AddDocumentationComment(node);
+        }
+        else
+        {
+            return node;
+        }
+    }
+
+    public override SyntaxNode VisitDestructorDeclaration(DestructorDeclarationSyntax node)
+    {
+        bool isPubliclyVisible = IsPubliclyVisible(node);
+
+        node = (DestructorDeclarationSyntax)base.VisitDestructorDeclaration(node);
+
+        if (isPubliclyVisible
+            && !node.HasDocumentationComment())
+        {
+            return AddDocumentationComment(node);
+        }
+        else
+        {
+            return node;
+        }
+    }
+
+    public override SyntaxNode VisitPropertyDeclaration(PropertyDeclarationSyntax node)
+    {
+        bool isPubliclyVisible = IsPubliclyVisible(node);
+
+        node = (PropertyDeclarationSyntax)base.VisitPropertyDeclaration(node);
+
+        if (isPubliclyVisible
+            && !node.HasDocumentationComment())
+        {
+            return AddDocumentationComment(node);
+        }
+        else
+        {
+            return node;
+        }
+    }
+
+    public override SyntaxNode VisitEventDeclaration(EventDeclarationSyntax node)
+    {
+        bool isPubliclyVisible = IsPubliclyVisible(node);
+
+        node = (EventDeclarationSyntax)base.VisitEventDeclaration(node);
+
+        if (isPubliclyVisible
+            && !node.HasDocumentationComment())
+        {
+            return AddDocumentationComment(node);
+        }
+        else
+        {
+            return node;
+        }
+    }
+
+    public override SyntaxNode VisitIndexerDeclaration(IndexerDeclarationSyntax node)
+    {
+        bool isPubliclyVisible = IsPubliclyVisible(node);
+
+        node = (IndexerDeclarationSyntax)base.VisitIndexerDeclaration(node);
+
+        if (isPubliclyVisible
+            && !node.HasDocumentationComment())
+        {
+            return AddDocumentationComment(node);
+        }
+        else
+        {
+            return node;
         }
     }
 }

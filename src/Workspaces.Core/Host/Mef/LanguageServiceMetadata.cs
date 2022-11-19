@@ -2,19 +2,18 @@
 
 using System.Collections.Generic;
 
-namespace Roslynator.Host.Mef
+namespace Roslynator.Host.Mef;
+
+internal class LanguageServiceMetadata : LanguageMetadata
 {
-    internal class LanguageServiceMetadata : LanguageMetadata
+    public string ServiceType { get; }
+
+    public IReadOnlyDictionary<string, object> Data { get; }
+
+    public LanguageServiceMetadata(IDictionary<string, object> data) : base(data)
     {
-        public string ServiceType { get; }
+        ServiceType = (string)data.GetValueOrDefault("ServiceType");
 
-        public IReadOnlyDictionary<string, object> Data { get; }
-
-        public LanguageServiceMetadata(IDictionary<string, object> data) : base(data)
-        {
-            ServiceType = (string)data.GetValueOrDefault("ServiceType");
-
-            Data = (IReadOnlyDictionary<string, object>)data;
-        }
+        Data = (IReadOnlyDictionary<string, object>)data;
     }
 }

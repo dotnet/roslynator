@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1097RemoveRedundantToStringCallTests : AbstractCSharpDiagnosticVerifier<InvocationExpressionAnalyzer, InvocationExpressionCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveRedundantToStringCall;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantToStringCall)]
-        public async Task Test_StringVariable()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1097RemoveRedundantToStringCallTests : AbstractCSharpDiagnosticVerifier<InvocationExpressionAnalyzer, InvocationExpressionCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveRedundantToStringCall;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantToStringCall)]
+    public async Task Test_StringVariable()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -34,12 +34,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantToStringCall)]
-        public async Task Test_StringLiteral()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantToStringCall)]
+    public async Task Test_StringLiteral()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -56,12 +56,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantToStringCall)]
-        public async Task Test_InterpolatedString()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantToStringCall)]
+    public async Task Test_InterpolatedString()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -78,12 +78,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantToStringCall)]
-        public async Task Test_Interpolation()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantToStringCall)]
+    public async Task Test_Interpolation()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -102,12 +102,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantToStringCall)]
-        public async Task TestNoDiagnostic_ValueType()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantToStringCall)]
+    public async Task TestNoDiagnostic_ValueType()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -117,6 +117,5 @@ class C
     }
 }
 ");
-        }
     }
 }

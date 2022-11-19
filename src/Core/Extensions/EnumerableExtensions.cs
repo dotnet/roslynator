@@ -3,82 +3,81 @@
 using System;
 using System.Collections.Generic;
 
-namespace Roslynator
+namespace Roslynator;
+
+internal static class EnumerableExtensions
 {
-    internal static class EnumerableExtensions
+    public static bool IsSorted<T>(this IEnumerable<T> enumerable, IComparer<T> comparer)
     {
-        public static bool IsSorted<T>(this IEnumerable<T> enumerable, IComparer<T> comparer)
+        using (IEnumerator<T> en = enumerable.GetEnumerator())
+        {
+            if (en.MoveNext())
+            {
+                T member1 = en.Current;
+
+                while (en.MoveNext())
+                {
+                    T member2 = en.Current;
+
+                    if (comparer.Compare(member1, member2) > 0)
+                        return false;
+
+                    member1 = member2;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    public static IEnumerable<T> ModifyRange<T>(
+        this IEnumerable<T> enumerable,
+        int startIndex,
+        int count,
+        Func<T, T> selector)
+    {
+        if (enumerable is null)
+            throw new ArgumentNullException(nameof(enumerable));
+
+        if (selector is null)
+            throw new ArgumentNullException(nameof(selector));
+
+        if (startIndex < 0)
+            throw new ArgumentOutOfRangeException(nameof(startIndex), startIndex, "");
+
+        if (count < 0)
+            throw new ArgumentOutOfRangeException(nameof(count), count, "");
+
+        return ModifyRange();
+
+        IEnumerable<T> ModifyRange()
         {
             using (IEnumerator<T> en = enumerable.GetEnumerator())
             {
-                if (en.MoveNext())
+                int i = 0;
+
+                while (i < startIndex)
                 {
-                    T member1 = en.Current;
+                    if (!en.MoveNext())
+                        throw new InvalidOperationException();
 
-                    while (en.MoveNext())
-                    {
-                        T member2 = en.Current;
-
-                        if (comparer.Compare(member1, member2) > 0)
-                            return false;
-
-                        member1 = member2;
-                    }
+                    yield return en.Current;
+                    i++;
                 }
-            }
 
-            return true;
-        }
+                int endIndex = startIndex + count;
 
-        public static IEnumerable<T> ModifyRange<T>(
-            this IEnumerable<T> enumerable,
-            int startIndex,
-            int count,
-            Func<T, T> selector)
-        {
-            if (enumerable == null)
-                throw new ArgumentNullException(nameof(enumerable));
-
-            if (selector == null)
-                throw new ArgumentNullException(nameof(selector));
-
-            if (startIndex < 0)
-                throw new ArgumentOutOfRangeException(nameof(startIndex), startIndex, "");
-
-            if (count < 0)
-                throw new ArgumentOutOfRangeException(nameof(count), count, "");
-
-            return ModifyRange();
-
-            IEnumerable<T> ModifyRange()
-            {
-                using (IEnumerator<T> en = enumerable.GetEnumerator())
+                while (i < endIndex)
                 {
-                    int i = 0;
+                    if (!en.MoveNext())
+                        throw new InvalidOperationException();
 
-                    while (i < startIndex)
-                    {
-                        if (!en.MoveNext())
-                            throw new InvalidOperationException();
-
-                        yield return en.Current;
-                        i++;
-                    }
-
-                    int endIndex = startIndex + count;
-
-                    while (i < endIndex)
-                    {
-                        if (!en.MoveNext())
-                            throw new InvalidOperationException();
-
-                        yield return selector(en.Current);
-                        i++;
-                    }
-
-                    while (en.MoveNext())
-                        yield return en.Current;
+                    yield return selector(en.Current);
+                    i++;
                 }
+
+                while (en.MoveNext())
+                    yield return en.Current;
             }
         }
     }

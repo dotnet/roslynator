@@ -5,31 +5,30 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class UnusedParameterRefactoring
 {
-    internal static class UnusedParameterRefactoring
+    public static Task<Document> RefactorAsync(
+        Document document,
+        TypeParameterSyntax typeParameter,
+        CancellationToken cancellationToken)
     {
-        public static Task<Document> RefactorAsync(
-            Document document,
-            TypeParameterSyntax typeParameter,
-            CancellationToken cancellationToken)
-        {
-            SyntaxNode node = typeParameter;
+        SyntaxNode node = typeParameter;
 
-            var typeParameterList = (TypeParameterListSyntax)typeParameter.Parent;
+        var typeParameterList = (TypeParameterListSyntax)typeParameter.Parent;
 
-            if (typeParameterList.Parameters.Count == 1)
-                node = typeParameterList;
+        if (typeParameterList.Parameters.Count == 1)
+            node = typeParameterList;
 
-            SyntaxRemoveOptions options = SyntaxRefactorings.DefaultRemoveOptions;
+        SyntaxRemoveOptions options = SyntaxRefactorings.DefaultRemoveOptions;
 
-            if (node.GetLeadingTrivia().All(f => f.IsWhitespaceTrivia()))
-                options &= ~SyntaxRemoveOptions.KeepLeadingTrivia;
+        if (node.GetLeadingTrivia().All(f => f.IsWhitespaceTrivia()))
+            options &= ~SyntaxRemoveOptions.KeepLeadingTrivia;
 
-            if (node.GetTrailingTrivia().All(f => f.IsWhitespaceTrivia()))
-                options &= ~SyntaxRemoveOptions.KeepTrailingTrivia;
+        if (node.GetTrailingTrivia().All(f => f.IsWhitespaceTrivia()))
+            options &= ~SyntaxRemoveOptions.KeepTrailingTrivia;
 
-            return document.RemoveNodeAsync(node, options, cancellationToken);
-        }
+        return document.RemoveNodeAsync(node, options, cancellationToken);
     }
 }

@@ -6,16 +6,16 @@ using Roslynator.Formatting.CodeFixes.CSharp;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.Formatting.CSharp.Tests
-{
-    public class RCS0016PutEachAttributeListOnItsOwnLineTests : AbstractCSharpDiagnosticVerifier<PutAttributeListOnItsOwnLineAnalyzer, SyntaxTokenCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.PutAttributeListOnItsOwnLine;
+namespace Roslynator.Formatting.CSharp.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
-        public async Task Test_Class()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS0016PutEachAttributeListOnItsOwnLineTests : AbstractCSharpDiagnosticVerifier<PutAttributeListOnItsOwnLineAnalyzer, SyntaxTokenCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.PutAttributeListOnItsOwnLine;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
+    public async Task Test_Class()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 namespace N
@@ -44,12 +44,12 @@ namespace N
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
-        public async Task Test_ClassWithMultipleAttributeLists()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
+    public async Task Test_ClassWithMultipleAttributeLists()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 namespace N
@@ -70,12 +70,12 @@ namespace N
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
-        public async Task Test_Constructor()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
+    public async Task Test_Constructor()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
@@ -104,12 +104,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
-        public async Task Test_ConversionOperator()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
+    public async Task Test_ConversionOperator()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
@@ -125,12 +125,12 @@ class C
     public static explicit operator C(string value) => null;
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
-        public async Task Test_Delegate()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
+    public async Task Test_Delegate()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
@@ -146,12 +146,12 @@ class C
     delegate void D();
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
-        public async Task Test_Destructor()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
+    public async Task Test_Destructor()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
@@ -171,12 +171,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
-        public async Task Test_Enum()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
+    public async Task Test_Enum()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 namespace N
@@ -205,12 +205,12 @@ namespace N
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
-        public async Task Test_EnumMember()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
+    public async Task Test_EnumMember()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 enum E
@@ -226,12 +226,12 @@ enum E
     A
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
-        public async Task Test_Event()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
+    public async Task Test_Event()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
@@ -268,12 +268,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
-        public async Task Test_EventField()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
+    public async Task Test_EventField()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
@@ -294,12 +294,12 @@ class C
     public event EventHandler E2;
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
-        public async Task Test_Field()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
+    public async Task Test_Field()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
@@ -320,12 +320,12 @@ class C
     public string F2;
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
-        public async Task Test_Indexer()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
+    public async Task Test_Indexer()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
@@ -362,12 +362,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
-        public async Task Test_Interface()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
+    public async Task Test_Interface()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 namespace N
@@ -396,12 +396,12 @@ namespace N
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
-        public async Task Test_Method()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
+    public async Task Test_Method()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
@@ -430,12 +430,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
-        public async Task Test_Operator()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
+    public async Task Test_Operator()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
@@ -451,12 +451,12 @@ class C
     public static C operator !(C value) => null;
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
-        public async Task Test_Property()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
+    public async Task Test_Property()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
@@ -493,12 +493,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
-        public async Task Test_Struct()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
+    public async Task Test_Struct()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 namespace N
@@ -527,12 +527,12 @@ namespace N
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
-        public async Task Test_GetSetAccessor()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
+    public async Task Test_GetSetAccessor()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
@@ -595,12 +595,12 @@ public sealed class FooAttribute : Attribute
 {
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
-        public async Task Test_InitSetter()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
+    public async Task Test_InitSetter()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
@@ -638,12 +638,12 @@ public sealed class FooAttribute : Attribute
 {
 }
 ", options: Options.AddAllowedCompilerDiagnosticId("CS0518"));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
-        public async Task Test_AddRemoveAccessor()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
+    public async Task Test_AddRemoveAccessor()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
@@ -678,12 +678,12 @@ public sealed class FooAttribute : Attribute
 {
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
-        public async Task TestNoDiagnostic_SingleLineIndexer()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
+    public async Task TestNoDiagnostic_SingleLineIndexer()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 class C
@@ -691,12 +691,12 @@ class C
     public string this[int index] { get => null; [Obsolete] set => value = null; }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
-        public async Task TestNoDiagnostic_SingleLineProperty()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
+    public async Task TestNoDiagnostic_SingleLineProperty()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 class C
@@ -704,12 +704,12 @@ class C
     public string P { get; [Obsolete] set; }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
-        public async Task TestNoDiagnostic_SingleLineEvent()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
+    public async Task TestNoDiagnostic_SingleLineEvent()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 class C
@@ -722,16 +722,15 @@ public sealed class FooAttribute : Attribute
 {
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
-        public async Task TestNoDiagnostic_SingleLineEnumDeclaration()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAttributeListOnItsOwnLine)]
+    public async Task TestNoDiagnostic_SingleLineEnumDeclaration()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 enum E { A, [Obsolete] B, C }
 ");
-        }
     }
 }

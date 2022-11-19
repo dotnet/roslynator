@@ -109,7 +109,7 @@ namespace Roslynator.CSharp
 
                         ArgumentListSyntax argumentList = expression.ArgumentList;
 
-                        if (argumentList != null)
+                        if (argumentList is not null)
                         {
                             newParent = expression.WithArgumentList(argumentList.WithTrailingTrivia(Space));
                         }
@@ -128,7 +128,7 @@ namespace Roslynator.CSharp
 
                         ArgumentListSyntax argumentList = expression.ArgumentList;
 
-                        if (argumentList != null)
+                        if (argumentList is not null)
                         {
                             newParent = expression.WithArgumentList(argumentList.WithTrailingTrivia(Space));
                         }
@@ -427,7 +427,7 @@ namespace Roslynator.CSharp
                 }
             }
 
-            if (textChanges != null)
+            if (textChanges is not null)
             {
                 TextChange[] arr = textChanges.ToArray();
                 Array.Reverse(arr);
@@ -442,7 +442,7 @@ namespace Roslynator.CSharp
             {
                 var tc = new TextChange(new TextSpan(operatorToken.SpanStart, 0), indentation);
 
-                if (textChange == null)
+                if (textChange is null)
                 {
                     textChange = tc;
                 }
@@ -525,7 +525,7 @@ namespace Roslynator.CSharp
         {
             BlockSyntax body = accessor.Body;
 
-            if (body != null)
+            if (body is not null)
             {
                 SyntaxToken closeBrace = body.CloseBraceToken;
 

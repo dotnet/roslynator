@@ -22,11 +22,11 @@ namespace Roslynator
             _project = null;
         }
 
-        public bool IsProject => _project != null;
+        public bool IsProject => _project is not null;
 
-        public bool IsSolution => _solution != null;
+        public bool IsSolution => _solution is not null;
 
-        public bool IsDefault => _project == null && _solution == null;
+        public bool IsDefault => _project is null && _solution is null;
 
         public string FilePath => (IsProject) ? _project.FilePath : _solution?.FilePath;
 
@@ -51,11 +51,11 @@ namespace Roslynator
 
         public bool Equals(ProjectOrSolution other)
         {
-            if (_project != null)
+            if (_project is not null)
             {
                 return _project == other._project;
             }
-            else if (_solution != null)
+            else if (_solution is not null)
             {
                 return _solution == other._solution;
             }

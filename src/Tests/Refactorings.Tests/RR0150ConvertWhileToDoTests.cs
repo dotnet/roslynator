@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0150ConvertWhileToDoTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.ConvertWhileToDo;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertWhileToDo)]
-        public async Task Test()
-        {
-            await VerifyRefactoringAsync(@"
+public class RR0150ConvertWhileToDoTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.ConvertWhileToDo;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertWhileToDo)]
+    public async Task Test()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M()
@@ -46,12 +46,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertWhileToDo)]
-        public async Task Test_WithoutIf()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertWhileToDo)]
+    public async Task Test_WithoutIf()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M()
@@ -81,6 +81,5 @@ class C
     }
 }
 ", equivalenceKey: WhileStatementRefactoring.ConvertWhileToDoWithoutIfEquivalenceKey);
-        }
     }
 }

@@ -10,30 +10,29 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(RemoveEnumDefaultBaseTypeCodeFixProvider))]
+[Shared]
+public sealed class RemoveEnumDefaultBaseTypeCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(RemoveEnumDefaultBaseTypeCodeFixProvider))]
-    [Shared]
-    public sealed class RemoveEnumDefaultBaseTypeCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
-        {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveEnumDefaultUnderlyingType); }
-        }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveEnumDefaultUnderlyingType); }
+    }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out BaseTypeSyntax baseType))
-                return;
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out BaseTypeSyntax baseType))
+            return;
 
-            CodeAction codeAction = CodeAction.Create(
-                "Remove default underlying type",
-                ct => RemoveEnumDefaultUnderlyingTypeRefactoring.RefactorAsync(context.Document, baseType, ct),
-                GetEquivalenceKey(DiagnosticIdentifiers.RemoveEnumDefaultUnderlyingType));
+        CodeAction codeAction = CodeAction.Create(
+            "Remove default underlying type",
+            ct => RemoveEnumDefaultUnderlyingTypeRefactoring.RefactorAsync(context.Document, baseType, ct),
+            GetEquivalenceKey(DiagnosticIdentifiers.RemoveEnumDefaultUnderlyingType));
 
-            context.RegisterCodeFix(codeAction, context.Diagnostics);
-        }
+        context.RegisterCodeFix(codeAction, context.Diagnostics);
     }
 }

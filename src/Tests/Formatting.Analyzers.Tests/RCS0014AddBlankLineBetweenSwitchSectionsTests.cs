@@ -6,16 +6,16 @@ using Roslynator.Formatting.CodeFixes.CSharp;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.Formatting.CSharp.Tests
-{
-    public class RCS0014AddBlankLineBetweenSwitchSectionsTests : AbstractCSharpDiagnosticVerifier<AddBlankLineBetweenSwitchSectionsAnalyzer, SwitchSectionCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddBlankLineBetweenSwitchSections;
+namespace Roslynator.Formatting.CSharp.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenSwitchSections)]
-        public async Task Test()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS0014AddBlankLineBetweenSwitchSectionsTests : AbstractCSharpDiagnosticVerifier<AddBlankLineBetweenSwitchSectionsAnalyzer, SwitchSectionCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddBlankLineBetweenSwitchSections;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenSwitchSections)]
+    public async Task Test()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     string M()
@@ -60,12 +60,12 @@ class C
     public string B() => null;
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenSwitchSections)]
-        public async Task Test_ClosingBraceAndSection()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenSwitchSections)]
+    public async Task Test_ClosingBraceAndSection()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     string M()
@@ -114,12 +114,12 @@ class C
     public string B() => null;
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenSwitchSections)]
-        public async Task Test_ClosingBraceAndSection2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenSwitchSections)]
+    public async Task Test_ClosingBraceAndSection2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     string M()
@@ -161,12 +161,12 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenClosingBraceAndSwitchSection, true));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenSwitchSections)]
-        public async Task Test_ClosingBraceAndSection3()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenSwitchSections)]
+    public async Task Test_ClosingBraceAndSection3()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     string M()
@@ -204,12 +204,12 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenClosingBraceAndSwitchSection, false));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenSwitchSections)]
-        public async Task TestNoDiagnostic_NoEmptyLineBetweenClosingBraceAndSwitchSection()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenSwitchSections)]
+    public async Task TestNoDiagnostic_NoEmptyLineBetweenClosingBraceAndSwitchSection()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     string M()
@@ -230,12 +230,12 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenClosingBraceAndSwitchSection, false));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenSwitchSections)]
-        public async Task TestNoDiagnostic_NoEmptyLineBetweenClosingBraceAndSwitchSection2()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenSwitchSections)]
+    public async Task TestNoDiagnostic_NoEmptyLineBetweenClosingBraceAndSwitchSection2()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     string M()
@@ -257,12 +257,12 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenClosingBraceAndSwitchSection, true));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenSwitchSections)]
-        public async Task TestNoDiagnostic_NoEmptyLineBetweenClosingBraceAndSwitchSection3()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenSwitchSections)]
+    public async Task TestNoDiagnostic_NoEmptyLineBetweenClosingBraceAndSwitchSection3()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     string M()
@@ -282,12 +282,12 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenClosingBraceAndSwitchSection, false));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenSwitchSections)]
-        public async Task Test_Comment()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenSwitchSections)]
+    public async Task Test_Comment()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     string M()
@@ -325,12 +325,12 @@ class C
     public string A() => null;
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenSwitchSections)]
-        public async Task TestNoDiagnostic_SingleSection()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenSwitchSections)]
+    public async Task TestNoDiagnostic_SingleSection()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     string M()
@@ -349,6 +349,5 @@ class C
     public string A() => null;
 }
 ");
-        }
     }
 }

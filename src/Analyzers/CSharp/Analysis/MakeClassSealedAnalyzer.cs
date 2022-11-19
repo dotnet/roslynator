@@ -7,100 +7,99 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace Roslynator.CSharp.Analysis
+namespace Roslynator.CSharp.Analysis;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class MakeClassSealedAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class MakeClassSealedAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
-            {
-                if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.MakeClassSealed);
+            if (_supportedDiagnostics.IsDefault)
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.MakeClassSealed);
 
-                return _supportedDiagnostics;
-            }
+            return _supportedDiagnostics;
+        }
+    }
+
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
+
+        context.RegisterSymbolAction(f => AnalyzeNamedType(f), SymbolKind.NamedType);
+    }
+
+    private static void AnalyzeNamedType(SymbolAnalysisContext context)
+    {
+        ISymbol symbol = context.Symbol;
+
+        if (symbol.IsStatic)
+            return;
+
+        if (symbol.IsSealed)
+            return;
+
+        if (symbol.IsAbstract)
+            return;
+
+        if (symbol.IsImplicitlyDeclared)
+            return;
+
+        if (symbol.DeclaredAccessibility == Accessibility.Private)
+            return;
+
+        var namedTypeSymbol = (INamedTypeSymbol)context.Symbol;
+
+        if (namedTypeSymbol.IsImplicitClass)
+            return;
+
+        if (namedTypeSymbol.TypeKind != TypeKind.Class)
+            return;
+
+        var isAnyExplicit = false;
+
+        foreach (IMethodSymbol constructor in namedTypeSymbol.InstanceConstructors)
+        {
+            if (constructor.DeclaredAccessibility != Accessibility.Private)
+                return;
+
+            if (!constructor.IsImplicitlyDeclared)
+                isAnyExplicit = true;
         }
 
-        public override void Initialize(AnalysisContext context)
+        if (!isAnyExplicit)
+            return;
+
+        if (namedTypeSymbol.GetMembers().Any(f => f.IsVirtual))
+            return;
+
+        if (ContainsDerivedType(namedTypeSymbol, namedTypeSymbol.GetTypeMembers()))
+            return;
+
+        var classDeclaration = (ClassDeclarationSyntax)namedTypeSymbol.GetSyntax(context.CancellationToken);
+
+        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.MakeClassSealed, classDeclaration.Identifier);
+    }
+
+    private static bool ContainsDerivedType(
+        INamedTypeSymbol typeSymbol,
+        ImmutableArray<INamedTypeSymbol> typeMembers)
+    {
+        foreach (INamedTypeSymbol typeMember in typeMembers)
         {
-            base.Initialize(context);
-
-            context.RegisterSymbolAction(f => AnalyzeNamedType(f), SymbolKind.NamedType);
-        }
-
-        private static void AnalyzeNamedType(SymbolAnalysisContext context)
-        {
-            ISymbol symbol = context.Symbol;
-
-            if (symbol.IsStatic)
-                return;
-
-            if (symbol.IsSealed)
-                return;
-
-            if (symbol.IsAbstract)
-                return;
-
-            if (symbol.IsImplicitlyDeclared)
-                return;
-
-            if (symbol.DeclaredAccessibility == Accessibility.Private)
-                return;
-
-            var namedTypeSymbol = (INamedTypeSymbol)context.Symbol;
-
-            if (namedTypeSymbol.IsImplicitClass)
-                return;
-
-            if (namedTypeSymbol.TypeKind != TypeKind.Class)
-                return;
-
-            var isAnyExplicit = false;
-
-            foreach (IMethodSymbol constructor in namedTypeSymbol.InstanceConstructors)
+            if (typeMember.TypeKind == TypeKind.Class
+                && SymbolEqualityComparer.Default.Equals(typeMember.OriginalDefinition.BaseType, typeSymbol))
             {
-                if (constructor.DeclaredAccessibility != Accessibility.Private)
-                    return;
-
-                if (!constructor.IsImplicitlyDeclared)
-                    isAnyExplicit = true;
-            }
-
-            if (!isAnyExplicit)
-                return;
-
-            if (namedTypeSymbol.GetMembers().Any(f => f.IsVirtual))
-                return;
-
-            if (ContainsDerivedType(namedTypeSymbol, namedTypeSymbol.GetTypeMembers()))
-                return;
-
-            var classDeclaration = (ClassDeclarationSyntax)namedTypeSymbol.GetSyntax(context.CancellationToken);
-
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.MakeClassSealed, classDeclaration.Identifier);
-        }
-
-        private static bool ContainsDerivedType(
-            INamedTypeSymbol typeSymbol,
-            ImmutableArray<INamedTypeSymbol> typeMembers)
-        {
-            foreach (INamedTypeSymbol typeMember in typeMembers)
-            {
-                if (typeMember.TypeKind == TypeKind.Class
-                    && SymbolEqualityComparer.Default.Equals(typeMember.OriginalDefinition.BaseType, typeSymbol))
-                {
-                    return true;
-                }
-
-                if (ContainsDerivedType(typeSymbol, typeMember.GetTypeMembers()))
-                    return true;
+                return true;
             }
 
-            return false;
+            if (ContainsDerivedType(typeSymbol, typeMember.GetTypeMembers()))
+                return true;
         }
+
+        return false;
     }
 }

@@ -4,24 +4,23 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 
-namespace Roslynator.CodeFixes
+namespace Roslynator.CodeFixes;
+
+internal struct DiagnosticFix
 {
-    internal struct DiagnosticFix
+    public DiagnosticFix(CodeAction codeAction, Document document, CodeFixProvider fixProvider, CodeFixProvider fixProvider2)
     {
-        public DiagnosticFix(CodeAction codeAction, Document document, CodeFixProvider fixProvider, CodeFixProvider fixProvider2)
-        {
-            CodeAction = codeAction;
-            Document = document;
-            FixProvider = fixProvider;
-            FixProvider2 = fixProvider2;
-        }
-
-        public CodeAction CodeAction { get; }
-
-        public Document Document { get; }
-
-        public CodeFixProvider FixProvider { get; }
-
-        public CodeFixProvider FixProvider2 { get; }
+        CodeAction = codeAction;
+        Document = document;
+        FixProvider = fixProvider;
+        FixProvider2 = fixProvider2;
     }
+
+    public CodeAction CodeAction { get; }
+
+    public Document Document { get; }
+
+    public CodeFixProvider FixProvider { get; }
+
+    public CodeFixProvider FixProvider2 { get; }
 }

@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1198AvoidBoxingOfValueTypeTests2 : AbstractCSharpDiagnosticVerifier<InvocationExpressionAnalyzer, AvoidBoxingOfValueTypeCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AvoidBoxingOfValueType;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidBoxingOfValueType)]
-        public async Task Test_StringBuilder_Append()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1198AvoidBoxingOfValueTypeTests2 : AbstractCSharpDiagnosticVerifier<InvocationExpressionAnalyzer, AvoidBoxingOfValueTypeCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AvoidBoxingOfValueType;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidBoxingOfValueType)]
+    public async Task Test_StringBuilder_Append()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 using System.Text;
 
@@ -44,12 +44,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidBoxingOfValueType)]
-        public async Task Test_StringBuilder_Insert()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidBoxingOfValueType)]
+    public async Task Test_StringBuilder_Insert()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 using System.Text;
 
@@ -78,13 +78,13 @@ class C
     }
 }
 ");
-        }
+    }
 
-        // https://github.com/dotnet/roslyn/pull/35006
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidBoxingOfValueType)]
-        public async Task TestNoDiagnostic_AppendFormat()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    // https://github.com/dotnet/roslyn/pull/35006
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidBoxingOfValueType)]
+    public async Task TestNoDiagnostic_AppendFormat()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Text;
 
 class C
@@ -101,12 +101,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidBoxingOfValueType)]
-        public async Task TestNoDiagnostic_NoTypeSymbol()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidBoxingOfValueType)]
+    public async Task TestNoDiagnostic_NoTypeSymbol()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Text;
 
 class C
@@ -121,6 +121,5 @@ class C
     }
 }
 ");
-        }
     }
 }

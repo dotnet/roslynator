@@ -4,24 +4,24 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0159SwapBinaryOperandsTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.SwapBinaryOperands;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Theory, Trait(Traits.Refactoring, RefactoringIdentifiers.SwapBinaryOperands)]
-        [InlineData("f &[||]& f2", "f2 && f")]
-        [InlineData("f |[||]| f2", "f2 || f")]
-        [InlineData("i =[||]= j", "j == i")]
-        [InlineData("i ![||]= j", "j != i")]
-        [InlineData("i [||]> j", "j < i")]
-        [InlineData("i >[||]= j", "j <= i")]
-        [InlineData("i [||]< j", "j > i")]
-        [InlineData("i <[||]= j", "j >= i")]
-        public async Task Test(string source, string expected)
-        {
-            await VerifyRefactoringAsync(@"
+public class RR0159SwapBinaryOperandsTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.SwapBinaryOperands;
+
+    [Theory, Trait(Traits.Refactoring, RefactoringIdentifiers.SwapBinaryOperands)]
+    [InlineData("f &[||]& f2", "f2 && f")]
+    [InlineData("f |[||]| f2", "f2 || f")]
+    [InlineData("i =[||]= j", "j == i")]
+    [InlineData("i ![||]= j", "j != i")]
+    [InlineData("i [||]> j", "j < i")]
+    [InlineData("i >[||]= j", "j <= i")]
+    [InlineData("i [||]< j", "j > i")]
+    [InlineData("i <[||]= j", "j >= i")]
+    public async Task Test(string source, string expected)
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M()
@@ -35,14 +35,14 @@ class C
     }
 }
 ", source, expected, equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Theory, Trait(Traits.Refactoring, RefactoringIdentifiers.SwapBinaryOperands)]
-        [InlineData("i [||]+ j", "j + i")]
-        [InlineData("i [||]* j", "j * i")]
-        public async Task Test_AddMultiply(string source, string expected)
-        {
-            await VerifyRefactoringAsync(@"
+    [Theory, Trait(Traits.Refactoring, RefactoringIdentifiers.SwapBinaryOperands)]
+    [InlineData("i [||]+ j", "j + i")]
+    [InlineData("i [||]* j", "j * i")]
+    public async Task Test_AddMultiply(string source, string expected)
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M(int i, int j)
@@ -51,12 +51,12 @@ class C
     }
 }
 ", source, expected, equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SwapBinaryOperands)]
-        public async Task Test_BitwiseAnd()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SwapBinaryOperands)]
+    public async Task Test_BitwiseAnd()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M(bool f1, bool f2)
@@ -73,12 +73,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SwapBinaryOperands)]
-        public async Task Test_BitwiseOr()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SwapBinaryOperands)]
+    public async Task Test_BitwiseOr()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M(bool f1, bool f2)
@@ -95,12 +95,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SwapBinaryOperands)]
-        public async Task Test_ExclusiveOr()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SwapBinaryOperands)]
+    public async Task Test_ExclusiveOr()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M(bool f1, bool f2)
@@ -117,12 +117,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SwapBinaryOperands)]
-        public async Task TestNoRefactoring()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SwapBinaryOperands)]
+    public async Task TestNoRefactoring()
+    {
+        await VerifyNoRefactoringAsync(@"
 class C
 {
     void M(object x, bool f)
@@ -134,6 +134,5 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
     }
 }

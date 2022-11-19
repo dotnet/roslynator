@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1187UseConstantInsteadOfFieldTests : AbstractCSharpDiagnosticVerifier<UseConstantInsteadOfFieldAnalyzer, MemberDeclarationCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseConstantInsteadOfField;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConstantInsteadOfField)]
-        public async Task TestNoDiagnostic_AssignmentInInStaticConstructor()
-        {
-            await VerifyNoDiagnosticAsync(@"
+public class RCS1187UseConstantInsteadOfFieldTests : AbstractCSharpDiagnosticVerifier<UseConstantInsteadOfFieldAnalyzer, MemberDeclarationCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseConstantInsteadOfField;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConstantInsteadOfField)]
+    public async Task TestNoDiagnostic_AssignmentInInStaticConstructor()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     private static readonly int _f = 1;
@@ -26,12 +26,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConstantInsteadOfField)]
-        public async Task TestNoDiagnostic_RefInStaticConstructor()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConstantInsteadOfField)]
+    public async Task TestNoDiagnostic_RefInStaticConstructor()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     private static readonly int _f = 1;
@@ -46,12 +46,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConstantInsteadOfField)]
-        public async Task TestNoDiagnostic_OutInStaticConstructor()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConstantInsteadOfField)]
+    public async Task TestNoDiagnostic_OutInStaticConstructor()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     private static readonly int _f = 1;
@@ -67,12 +67,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConstantInsteadOfField)]
-        public async Task TestNoDiagnostic_InInStaticConstructor()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConstantInsteadOfField)]
+    public async Task TestNoDiagnostic_InInStaticConstructor()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     private static readonly int _f = 1;
@@ -87,6 +87,5 @@ class C
     }
 }
 ");
-        }
     }
 }

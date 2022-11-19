@@ -8,214 +8,213 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.SyntaxWalkers;
 
-namespace Roslynator.CSharp.Analysis
+namespace Roslynator.CSharp.Analysis;
+
+internal static class UseConstantInsteadOfFieldAnalysis
 {
-    internal static class UseConstantInsteadOfFieldAnalysis
+    public static bool IsFixable(
+        FieldDeclarationSyntax fieldDeclaration,
+        SemanticModel semanticModel,
+        bool onlyPrivate = false,
+        CancellationToken cancellationToken = default)
     {
-        public static bool IsFixable(
-            FieldDeclarationSyntax fieldDeclaration,
-            SemanticModel semanticModel,
-            bool onlyPrivate = false,
-            CancellationToken cancellationToken = default)
+        var isStatic = false;
+        var isReadOnly = false;
+
+        foreach (SyntaxToken modifier in fieldDeclaration.Modifiers)
         {
-            var isStatic = false;
-            var isReadOnly = false;
-
-            foreach (SyntaxToken modifier in fieldDeclaration.Modifiers)
+            switch (modifier.Kind())
             {
-                switch (modifier.Kind())
-                {
-                    case SyntaxKind.ConstKeyword:
-                    case SyntaxKind.NewKeyword:
-                        {
-                            return false;
-                        }
-                    case SyntaxKind.PublicKeyword:
-                    case SyntaxKind.InternalKeyword:
-                    case SyntaxKind.ProtectedKeyword:
-                        {
-                            if (onlyPrivate)
-                                return false;
-
-                            break;
-                        }
-                    case SyntaxKind.StaticKeyword:
-                        {
-                            isStatic = true;
-                            break;
-                        }
-                    case SyntaxKind.ReadOnlyKeyword:
-                        {
-                            isReadOnly = true;
-                            break;
-                        }
-                }
-            }
-
-            if (!isStatic)
-                return false;
-
-            if (!isReadOnly)
-                return false;
-
-            SeparatedSyntaxList<VariableDeclaratorSyntax> declarators = fieldDeclaration.Declaration.Variables;
-
-            VariableDeclaratorSyntax firstDeclarator = declarators[0];
-
-            var fieldSymbol = (IFieldSymbol)semanticModel.GetDeclaredSymbol(firstDeclarator, cancellationToken);
-
-            if (fieldSymbol == null)
-                return false;
-
-            if (!fieldSymbol.Type.SupportsConstantValue())
-                return false;
-
-            foreach (VariableDeclaratorSyntax declarator in declarators)
-            {
-                ExpressionSyntax value = declarator.Initializer?.Value;
-
-                if (value == null)
-                    return false;
-
-                if (value.WalkDownParentheses().IsKind(SyntaxKind.InterpolatedStringExpression))
-                    return false;
-
-                if (!semanticModel.HasConstantValue(value, cancellationToken))
-                    return false;
-            }
-
-            foreach (IMethodSymbol constructorSymbol in fieldSymbol.ContainingType.StaticConstructors)
-            {
-                foreach (SyntaxReference syntaxReference in constructorSymbol.DeclaringSyntaxReferences)
-                {
-                    if (syntaxReference.SyntaxTree != fieldDeclaration.SyntaxTree)
-                        return false;
-
-                    var constructorDeclaration = (ConstructorDeclarationSyntax)syntaxReference.GetSyntax(cancellationToken);
-
-                    BlockSyntax body = constructorDeclaration.Body;
-
-                    if (body != null)
+                case SyntaxKind.ConstKeyword:
+                case SyntaxKind.NewKeyword:
                     {
-                        bool canBeConvertedToConstant;
-                        UseConstantInsteadOfFieldWalker walker = null;
-
-                        try
-                        {
-                            walker = UseConstantInsteadOfFieldWalker.GetInstance();
-
-                            walker.FieldSymbol = fieldSymbol;
-                            walker.SemanticModel = semanticModel;
-                            walker.CancellationToken = cancellationToken;
-
-                            walker.VisitBlock(body);
-
-                            canBeConvertedToConstant = walker.CanBeConvertedToConstant;
-                        }
-                        finally
-                        {
-                            if (walker != null)
-                                UseConstantInsteadOfFieldWalker.Free(walker);
-                        }
-
-                        if (!canBeConvertedToConstant)
-                            return false;
+                        return false;
                     }
-                }
-            }
+                case SyntaxKind.PublicKeyword:
+                case SyntaxKind.InternalKeyword:
+                case SyntaxKind.ProtectedKeyword:
+                    {
+                        if (onlyPrivate)
+                            return false;
 
-            return true;
+                        break;
+                    }
+                case SyntaxKind.StaticKeyword:
+                    {
+                        isStatic = true;
+                        break;
+                    }
+                case SyntaxKind.ReadOnlyKeyword:
+                    {
+                        isReadOnly = true;
+                        break;
+                    }
+            }
         }
 
-        private class UseConstantInsteadOfFieldWalker : AssignedExpressionWalker
+        if (!isStatic)
+            return false;
+
+        if (!isReadOnly)
+            return false;
+
+        SeparatedSyntaxList<VariableDeclaratorSyntax> declarators = fieldDeclaration.Declaration.Variables;
+
+        VariableDeclaratorSyntax firstDeclarator = declarators[0];
+
+        var fieldSymbol = (IFieldSymbol)semanticModel.GetDeclaredSymbol(firstDeclarator, cancellationToken);
+
+        if (fieldSymbol is null)
+            return false;
+
+        if (!fieldSymbol.Type.SupportsConstantValue())
+            return false;
+
+        foreach (VariableDeclaratorSyntax declarator in declarators)
         {
-            [ThreadStatic]
-            private static UseConstantInsteadOfFieldWalker _cachedInstance;
+            ExpressionSyntax value = declarator.Initializer?.Value;
 
-            public IFieldSymbol FieldSymbol { get; set; }
+            if (value is null)
+                return false;
 
-            public SemanticModel SemanticModel { get; set; }
+            if (value.WalkDownParentheses().IsKind(SyntaxKind.InterpolatedStringExpression))
+                return false;
 
-            public CancellationToken CancellationToken { get; set; }
+            if (!semanticModel.HasConstantValue(value, cancellationToken))
+                return false;
+        }
 
-            public bool CanBeConvertedToConstant { get; set; }
-
-            protected override bool ShouldVisit
+        foreach (IMethodSymbol constructorSymbol in fieldSymbol.ContainingType.StaticConstructors)
+        {
+            foreach (SyntaxReference syntaxReference in constructorSymbol.DeclaringSyntaxReferences)
             {
-                get { return CanBeConvertedToConstant; }
-            }
+                if (syntaxReference.SyntaxTree != fieldDeclaration.SyntaxTree)
+                    return false;
 
-            public override void VisitAssignedExpression(ExpressionSyntax expression)
-            {
-                if (IsFieldIdentifier(expression))
-                    CanBeConvertedToConstant = false;
-            }
+                var constructorDeclaration = (ConstructorDeclarationSyntax)syntaxReference.GetSyntax(cancellationToken);
 
-            private bool IsFieldIdentifier(ExpressionSyntax expression)
-            {
-                CancellationToken.ThrowIfCancellationRequested();
+                BlockSyntax body = constructorDeclaration.Body;
 
-                return expression?.WalkDownParentheses() is IdentifierNameSyntax identifierName
-                    && string.Equals(identifierName.Identifier.ValueText, FieldSymbol.Name, StringComparison.Ordinal)
-                    && SymbolEqualityComparer.Default.Equals(SemanticModel.GetSymbol(identifierName, CancellationToken), FieldSymbol);
-            }
-
-            public override void VisitArgument(ArgumentSyntax node)
-            {
-                switch (node.RefOrOutKeyword.Kind())
+                if (body is not null)
                 {
-                    case SyntaxKind.RefKeyword:
-                        {
-                            VisitAssignedExpression(node.Expression);
-                            break;
-                        }
-                    case SyntaxKind.OutKeyword:
-                        {
-                            ExpressionSyntax expression = node.Expression;
+                    bool canBeConvertedToConstant;
+                    UseConstantInsteadOfFieldWalker walker = null;
 
-                            if (expression?.IsKind(SyntaxKind.DeclarationExpression) == false)
-                                VisitAssignedExpression(expression);
+                    try
+                    {
+                        walker = UseConstantInsteadOfFieldWalker.GetInstance();
 
-                            break;
-                        }
-                    case SyntaxKind.InKeyword:
-                        {
-                            if (IsFieldIdentifier(node.Expression))
-                                CanBeConvertedToConstant = false;
+                        walker.FieldSymbol = fieldSymbol;
+                        walker.SemanticModel = semanticModel;
+                        walker.CancellationToken = cancellationToken;
 
-                            break;
-                        }
+                        walker.VisitBlock(body);
+
+                        canBeConvertedToConstant = walker.CanBeConvertedToConstant;
+                    }
+                    finally
+                    {
+                        if (walker is not null)
+                            UseConstantInsteadOfFieldWalker.Free(walker);
+                    }
+
+                    if (!canBeConvertedToConstant)
+                        return false;
                 }
-
-                base.VisitArgument(node);
             }
+        }
 
-            public static UseConstantInsteadOfFieldWalker GetInstance()
+        return true;
+    }
+
+    private class UseConstantInsteadOfFieldWalker : AssignedExpressionWalker
+    {
+        [ThreadStatic]
+        private static UseConstantInsteadOfFieldWalker _cachedInstance;
+
+        public IFieldSymbol FieldSymbol { get; set; }
+
+        public SemanticModel SemanticModel { get; set; }
+
+        public CancellationToken CancellationToken { get; set; }
+
+        public bool CanBeConvertedToConstant { get; set; }
+
+        protected override bool ShouldVisit
+        {
+            get { return CanBeConvertedToConstant; }
+        }
+
+        public override void VisitAssignedExpression(ExpressionSyntax expression)
+        {
+            if (IsFieldIdentifier(expression))
+                CanBeConvertedToConstant = false;
+        }
+
+        private bool IsFieldIdentifier(ExpressionSyntax expression)
+        {
+            CancellationToken.ThrowIfCancellationRequested();
+
+            return expression?.WalkDownParentheses() is IdentifierNameSyntax identifierName
+                && string.Equals(identifierName.Identifier.ValueText, FieldSymbol.Name, StringComparison.Ordinal)
+                && SymbolEqualityComparer.Default.Equals(SemanticModel.GetSymbol(identifierName, CancellationToken), FieldSymbol);
+        }
+
+        public override void VisitArgument(ArgumentSyntax node)
+        {
+            switch (node.RefOrOutKeyword.Kind())
             {
-                UseConstantInsteadOfFieldWalker walker = _cachedInstance;
+                case SyntaxKind.RefKeyword:
+                    {
+                        VisitAssignedExpression(node.Expression);
+                        break;
+                    }
+                case SyntaxKind.OutKeyword:
+                    {
+                        ExpressionSyntax expression = node.Expression;
 
-                if (walker != null)
-                {
-                    Debug.Assert(walker.FieldSymbol == null);
-                    Debug.Assert(walker.SemanticModel == null);
-                    Debug.Assert(walker.CancellationToken == default);
+                        if (expression?.IsKind(SyntaxKind.DeclarationExpression) == false)
+                            VisitAssignedExpression(expression);
 
-                    _cachedInstance = null;
-                    return walker;
-                }
+                        break;
+                    }
+                case SyntaxKind.InKeyword:
+                    {
+                        if (IsFieldIdentifier(node.Expression))
+                            CanBeConvertedToConstant = false;
 
-                return new UseConstantInsteadOfFieldWalker();
+                        break;
+                    }
             }
 
-            public static void Free(UseConstantInsteadOfFieldWalker walker)
+            base.VisitArgument(node);
+        }
+
+        public static UseConstantInsteadOfFieldWalker GetInstance()
+        {
+            UseConstantInsteadOfFieldWalker walker = _cachedInstance;
+
+            if (walker is not null)
             {
-                walker.FieldSymbol = null;
-                walker.SemanticModel = null;
-                walker.CancellationToken = default;
-                walker.CanBeConvertedToConstant = true;
+                Debug.Assert(walker.FieldSymbol is null);
+                Debug.Assert(walker.SemanticModel is null);
+                Debug.Assert(walker.CancellationToken == default);
 
-                _cachedInstance = walker;
+                _cachedInstance = null;
+                return walker;
             }
+
+            return new UseConstantInsteadOfFieldWalker();
+        }
+
+        public static void Free(UseConstantInsteadOfFieldWalker walker)
+        {
+            walker.FieldSymbol = null;
+            walker.SemanticModel = null;
+            walker.CancellationToken = default;
+            walker.CanBeConvertedToConstant = true;
+
+            _cachedInstance = walker;
         }
     }
 }

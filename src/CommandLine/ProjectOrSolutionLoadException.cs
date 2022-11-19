@@ -2,20 +2,19 @@
 
 using System;
 
-namespace Roslynator.CommandLine
+namespace Roslynator.CommandLine;
+
+internal class ProjectOrSolutionLoadException : Exception
 {
-    internal class ProjectOrSolutionLoadException : Exception
+    public ProjectOrSolutionLoadException()
     {
-        public ProjectOrSolutionLoadException()
-        {
-        }
+    }
 
-        public ProjectOrSolutionLoadException(string message) : base(message)
-        {
-        }
+    public ProjectOrSolutionLoadException(string message) : base(message)
+    {
+    }
 
-        public ProjectOrSolutionLoadException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
+    public ProjectOrSolutionLoadException(string message, Exception innerException) : base(message, innerException)
+    {
     }
 }

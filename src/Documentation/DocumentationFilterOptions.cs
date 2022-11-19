@@ -4,22 +4,21 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using Roslynator.FindSymbols;
 
-namespace Roslynator.Documentation
-{
-    internal class DocumentationFilterOptions : SymbolFilterOptions
-    {
-        public static DocumentationFilterOptions Instance { get; } = new(
-            visibility: VisibilityFilter.Public,
-            symbolGroups: SymbolGroupFilter.TypeOrMember,
-            rules: null,
-            attributeRules: ImmutableArray.Create<AttributeFilterRule>(IgnoredAttributeNameFilterRule.Default));
+namespace Roslynator.Documentation;
 
-        internal DocumentationFilterOptions(
-            VisibilityFilter visibility = VisibilityFilter.All,
-            SymbolGroupFilter symbolGroups = SymbolGroupFilter.TypeOrMember,
-            IEnumerable<SymbolFilterRule> rules = null,
-            IEnumerable<AttributeFilterRule> attributeRules = null) : base(visibility, symbolGroups, rules, attributeRules)
-        {
-        }
+internal class DocumentationFilterOptions : SymbolFilterOptions
+{
+    public static DocumentationFilterOptions Instance { get; } = new(
+        visibility: VisibilityFilter.Public,
+        symbolGroups: SymbolGroupFilter.TypeOrMember,
+        rules: null,
+        attributeRules: ImmutableArray.Create<AttributeFilterRule>(IgnoredAttributeNameFilterRule.Default));
+
+    internal DocumentationFilterOptions(
+        VisibilityFilter visibility = VisibilityFilter.All,
+        SymbolGroupFilter symbolGroups = SymbolGroupFilter.TypeOrMember,
+        IEnumerable<SymbolFilterRule> rules = null,
+        IEnumerable<AttributeFilterRule> attributeRules = null) : base(visibility, symbolGroups, rules, attributeRules)
+    {
     }
 }

@@ -150,7 +150,7 @@ namespace Roslynator.CSharp.Analysis
                 }
                 finally
                 {
-                    if (walker != null)
+                    if (walker is not null)
                         ContainsLocalOrParameterReferenceWalker.Free(walker);
                 }
             }
@@ -218,7 +218,7 @@ namespace Roslynator.CSharp.Analysis
             {
                 ContainsContinueStatementWalker walker = _cachedInstance;
 
-                if (walker != null)
+                if (walker is not null)
                 {
                     _cachedInstance = null;
                     return walker;

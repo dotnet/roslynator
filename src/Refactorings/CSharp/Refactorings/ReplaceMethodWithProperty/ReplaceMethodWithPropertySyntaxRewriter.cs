@@ -7,79 +7,78 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-namespace Roslynator.CSharp.Refactorings.ReplaceMethodWithProperty
+namespace Roslynator.CSharp.Refactorings.ReplaceMethodWithProperty;
+
+internal class ReplaceMethodWithPropertySyntaxRewriter : CSharpSyntaxRewriter
 {
-    internal class ReplaceMethodWithPropertySyntaxRewriter : CSharpSyntaxRewriter
+    private readonly ImmutableArray<SyntaxNode> _nodes;
+    private readonly string _propertyName;
+    private readonly MethodDeclarationSyntax _methodDeclaration;
+
+    public ReplaceMethodWithPropertySyntaxRewriter(ImmutableArray<SyntaxNode> nodes, string propertyName, MethodDeclarationSyntax methodDeclaration = null)
     {
-        private readonly ImmutableArray<SyntaxNode> _nodes;
-        private readonly string _propertyName;
-        private readonly MethodDeclarationSyntax _methodDeclaration;
+        _nodes = nodes;
+        _propertyName = propertyName;
+        _methodDeclaration = methodDeclaration;
+    }
 
-        public ReplaceMethodWithPropertySyntaxRewriter(ImmutableArray<SyntaxNode> nodes, string propertyName, MethodDeclarationSyntax methodDeclaration = null)
+    public override SyntaxNode VisitInvocationExpression(InvocationExpressionSyntax node)
+    {
+        ExpressionSyntax expression = node.Expression;
+
+        if (expression is not null)
         {
-            _nodes = nodes;
-            _propertyName = propertyName;
-            _methodDeclaration = methodDeclaration;
-        }
-
-        public override SyntaxNode VisitInvocationExpression(InvocationExpressionSyntax node)
-        {
-            ExpressionSyntax expression = node.Expression;
-
-            if (expression != null)
+            if (_nodes.Contains(expression))
             {
-                if (_nodes.Contains(expression))
+                expression = IdentifierName(_propertyName).WithTriviaFrom(expression);
+
+                return AppendToTrailingTrivia(expression, node);
+            }
+            else if (expression?.Kind() == SyntaxKind.SimpleMemberAccessExpression)
+            {
+                var memberAccess = (MemberAccessExpressionSyntax)expression;
+
+                SimpleNameSyntax name = memberAccess.Name;
+
+                if (name is not null && _nodes.Contains(name))
                 {
-                    expression = IdentifierName(_propertyName).WithTriviaFrom(expression);
+                    expression = (ExpressionSyntax)base.Visit(memberAccess.Expression);
 
-                    return AppendToTrailingTrivia(expression, node);
-                }
-                else if (expression?.Kind() == SyntaxKind.SimpleMemberAccessExpression)
-                {
-                    var memberAccess = (MemberAccessExpressionSyntax)expression;
+                    memberAccess = memberAccess
+                        .WithExpression(expression)
+                        .WithName(IdentifierName(_propertyName).WithTriviaFrom(name));
 
-                    SimpleNameSyntax name = memberAccess.Name;
-
-                    if (name != null && _nodes.Contains(name))
-                    {
-                        expression = (ExpressionSyntax)base.Visit(memberAccess.Expression);
-
-                        memberAccess = memberAccess
-                            .WithExpression(expression)
-                            .WithName(IdentifierName(_propertyName).WithTriviaFrom(name));
-
-                        return AppendToTrailingTrivia(memberAccess, node);
-                    }
+                    return AppendToTrailingTrivia(memberAccess, node);
                 }
             }
-
-            return base.VisitInvocationExpression(node);
         }
 
-        private static TNode AppendToTrailingTrivia<TNode>(TNode node, InvocationExpressionSyntax invocation) where TNode : SyntaxNode
+        return base.VisitInvocationExpression(node);
+    }
+
+    private static TNode AppendToTrailingTrivia<TNode>(TNode node, InvocationExpressionSyntax invocation) where TNode : SyntaxNode
+    {
+        ArgumentListSyntax argumentList = invocation.ArgumentList;
+
+        if (argumentList is not null)
         {
-            ArgumentListSyntax argumentList = invocation.ArgumentList;
-
-            if (argumentList != null)
-            {
-                node = node.AppendToTrailingTrivia(
-                    argumentList.OpenParenToken.GetAllTrivia()
-                        .Concat(argumentList.CloseParenToken.GetAllTrivia()));
-            }
-
-            return node;
+            node = node.AppendToTrailingTrivia(
+                argumentList.OpenParenToken.GetAllTrivia()
+                    .Concat(argumentList.CloseParenToken.GetAllTrivia()));
         }
 
-        public override SyntaxNode VisitMethodDeclaration(MethodDeclarationSyntax node)
+        return node;
+    }
+
+    public override SyntaxNode VisitMethodDeclaration(MethodDeclarationSyntax node)
+    {
+        if (node == _methodDeclaration)
         {
-            if (node == _methodDeclaration)
-            {
-                node = (MethodDeclarationSyntax)base.VisitMethodDeclaration(node);
+            node = (MethodDeclarationSyntax)base.VisitMethodDeclaration(node);
 
-                return ReplaceMethodWithPropertyRefactoring.ToPropertyDeclaration(node);
-            }
-
-            return base.VisitMethodDeclaration(node);
+            return ReplaceMethodWithPropertyRefactoring.ToPropertyDeclaration(node);
         }
+
+        return base.VisitMethodDeclaration(node);
     }
 }

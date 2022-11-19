@@ -42,10 +42,10 @@ namespace Roslynator.CSharp
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default)
         {
-            if (node == null)
+            if (node is null)
                 return Default;
 
-            if (semanticModel == null)
+            if (semanticModel is null)
                 throw new ArgumentNullException(nameof(semanticModel));
 
             switch (node)
@@ -74,12 +74,12 @@ namespace Roslynator.CSharp
         {
             IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(methodDeclaration, cancellationToken);
 
-            if (methodSymbol == null)
+            if (methodSymbol is null)
                 return Default;
 
             IMethodSymbol overriddenMethod = methodSymbol.OverriddenMethod;
 
-            if (overriddenMethod == null)
+            if (overriddenMethod is null)
                 return Default;
 
             return new OverriddenSymbolInfo(methodSymbol, overriddenMethod);
@@ -92,12 +92,12 @@ namespace Roslynator.CSharp
         {
             var propertySymbol = (IPropertySymbol)semanticModel.GetDeclaredSymbol(basePropertyDeclaration, cancellationToken);
 
-            if (propertySymbol == null)
+            if (propertySymbol is null)
                 return Default;
 
             IPropertySymbol overriddenProperty = propertySymbol.OverriddenProperty;
 
-            if (overriddenProperty == null)
+            if (overriddenProperty is null)
                 return Default;
 
             return new OverriddenSymbolInfo(propertySymbol, overriddenProperty);
@@ -110,12 +110,12 @@ namespace Roslynator.CSharp
         {
             IEventSymbol eventSymbol = semanticModel.GetDeclaredSymbol(eventDeclaration, cancellationToken);
 
-            if (eventSymbol == null)
+            if (eventSymbol is null)
                 return Default;
 
             IEventSymbol overriddenEvent = eventSymbol.OverriddenEvent;
 
-            if (overriddenEvent == null)
+            if (overriddenEvent is null)
                 return Default;
 
             return new OverriddenSymbolInfo(eventSymbol, overriddenEvent);
@@ -137,7 +137,7 @@ namespace Roslynator.CSharp
 
             IEventSymbol overriddenEvent = eventSymbol.OverriddenEvent;
 
-            if (overriddenEvent == null)
+            if (overriddenEvent is null)
                 return Default;
 
             return new OverriddenSymbolInfo(eventSymbol, overriddenEvent);
@@ -150,12 +150,12 @@ namespace Roslynator.CSharp
         {
             IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(accessorDeclaration, cancellationToken);
 
-            if (methodSymbol == null)
+            if (methodSymbol is null)
                 return Default;
 
             IMethodSymbol overriddenMethod = methodSymbol.OverriddenMethod;
 
-            if (overriddenMethod == null)
+            if (overriddenMethod is null)
                 return Default;
 
             return new OverriddenSymbolInfo(methodSymbol, overriddenMethod);

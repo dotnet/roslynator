@@ -7,27 +7,26 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class UseLambdaInsteadOfAnonymousMethodRefactoring
 {
-    internal static class UseLambdaInsteadOfAnonymousMethodRefactoring
+    public static Task<Document> RefactorAsync(
+        Document document,
+        AnonymousMethodExpressionSyntax anonymousMethod,
+        CancellationToken cancellationToken = default)
     {
-        public static Task<Document> RefactorAsync(
-            Document document,
-            AnonymousMethodExpressionSyntax anonymousMethod,
-            CancellationToken cancellationToken = default)
-        {
-            ExpressionSyntax newNode = ParenthesizedLambdaExpression(
-                anonymousMethod.AsyncKeyword,
-                anonymousMethod.ParameterList,
-                Token(SyntaxKind.EqualsGreaterThanToken),
-                anonymousMethod.Block);
+        ExpressionSyntax newNode = ParenthesizedLambdaExpression(
+            anonymousMethod.AsyncKeyword,
+            anonymousMethod.ParameterList,
+            Token(SyntaxKind.EqualsGreaterThanToken),
+            anonymousMethod.Block);
 
-            newNode = newNode
-                .WithTriviaFrom(anonymousMethod)
-                .Parenthesize()
-                .WithFormatterAnnotation();
+        newNode = newNode
+            .WithTriviaFrom(anonymousMethod)
+            .Parenthesize()
+            .WithFormatterAnnotation();
 
-            return document.ReplaceNodeAsync(anonymousMethod, newNode, cancellationToken);
-        }
+        return document.ReplaceNodeAsync(anonymousMethod, newNode, cancellationToken);
     }
 }

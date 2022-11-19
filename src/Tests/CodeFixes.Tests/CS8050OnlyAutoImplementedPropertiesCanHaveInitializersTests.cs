@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.CodeFixes.Tests
-{
-    public class CS8050OnlyAutoImplementedPropertiesCanHaveInitializersTests : AbstractCSharpCompilerDiagnosticFixVerifier<RemovePropertyOrFieldInitializerCodeFixProvider>
-    {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS8050_OnlyAutoImplementedPropertiesCanHaveInitializers;
+namespace Roslynator.CSharp.CodeFixes.Tests;
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS8050_OnlyAutoImplementedPropertiesCanHaveInitializers)]
-        public async Task Test()
-        {
-            await VerifyFixAsync(@"
+public class CS8050OnlyAutoImplementedPropertiesCanHaveInitializersTests : AbstractCSharpCompilerDiagnosticFixVerifier<RemovePropertyOrFieldInitializerCodeFixProvider>
+{
+    public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS8050_OnlyAutoImplementedPropertiesCanHaveInitializers;
+
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS8050_OnlyAutoImplementedPropertiesCanHaveInitializers)]
+    public async Task Test()
+    {
+        await VerifyFixAsync(@"
 class C
 {
     private string _p;
@@ -36,6 +36,5 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId, CodeFixIdentifiers.RemovePropertyOrFieldInitializer));
-        }
     }
 }
