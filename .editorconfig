@@ -39,8 +39,6 @@ roslynator_blank_line_after_file_scoped_namespace_declaration = true
 
 csharp_style_namespace_declarations = file_scoped:suggestion
 
-csharp_style_namespace_declarations = file_scoped:suggestion
-
 dotnet_diagnostic.RCS0001.severity = suggestion
 dotnet_diagnostic.RCS0003.severity = suggestion
 dotnet_diagnostic.RCS0004.severity = suggestion
