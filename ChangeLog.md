@@ -18,8 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Not enabled by default.
 - Add analyzer "Invalid argument null check" ([RCS1256](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS1256.md)) ([#888](https://github.com/JosefPihrt/Roslynator/pull/888)).
   - This analyzer reports null checks of arguments that are:
-	- annotated as nullable reference type.
-	- optional and its default value is `null`.
+    - annotated as nullable reference type.
+    - optional and its default value is `null`.
 
 ### Changed
 
