@@ -2,23 +2,22 @@
 
 using Roslynator.Testing.CSharp;
 
-namespace Roslynator
+namespace Roslynator;
+
+internal static class CSharpTestExtensions
 {
-    internal static class CSharpTestExtensions
+    public static CSharpTestOptions AddConfigOption(this CSharpTestOptions options, string key, string value)
     {
-        public static CSharpTestOptions AddConfigOption(this CSharpTestOptions options, string key, string value)
-        {
-            return options.WithConfigOptions(options.ConfigOptions.SetItem(key, value));
-        }
+        return options.WithConfigOptions(options.ConfigOptions.SetItem(key, value));
+    }
 
-        public static CSharpTestOptions AddConfigOption(this CSharpTestOptions options, string key, bool value)
-        {
-            return AddConfigOption(options, key, (value) ? "true" : "false");
-        }
+    public static CSharpTestOptions AddConfigOption(this CSharpTestOptions options, string key, bool value)
+    {
+        return AddConfigOption(options, key, (value) ? "true" : "false");
+    }
 
-        public static CSharpTestOptions EnableConfigOption(this CSharpTestOptions options, string key)
-        {
-            return AddConfigOption(options, key, "true");
-        }
+    public static CSharpTestOptions EnableConfigOption(this CSharpTestOptions options, string key)
+    {
+        return AddConfigOption(options, key, "true");
     }
 }

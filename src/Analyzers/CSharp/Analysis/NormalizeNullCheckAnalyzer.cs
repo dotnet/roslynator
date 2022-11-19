@@ -9,115 +9,114 @@ using Roslynator.CSharp;
 using Roslynator.CSharp.CodeStyle;
 using Roslynator.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Analysis
+namespace Roslynator.CSharp.Analysis;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class NormalizeNullCheckAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class NormalizeNullCheckAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
+            if (_supportedDiagnostics.IsDefault)
             {
-                if (_supportedDiagnostics.IsDefault)
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.NormalizeNullCheck);
+            }
+
+            return _supportedDiagnostics;
+        }
+    }
+
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
+
+        context.RegisterSyntaxNodeAction(
+            c =>
+            {
+                if (c.GetNullCheckStyle() == NullCheckStyle.EqualityOperator)
+                    AnalyzeIsPatternExpression(c);
+            },
+            SyntaxKind.IsPatternExpression);
+
+        context.RegisterSyntaxNodeAction(
+            c =>
+            {
+                if (c.GetNullCheckStyle() == NullCheckStyle.PatternMatching)
+                    AnalyzeEqualsExpression(c);
+            },
+            SyntaxKind.EqualsExpression);
+
+        context.RegisterSyntaxNodeAction(
+            c =>
+            {
+                if (((CSharpCompilation)c.Compilation).LanguageVersion >= LanguageVersion.CSharp9
+                    && c.GetNullCheckStyle() == NullCheckStyle.PatternMatching)
                 {
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.NormalizeNullCheck);
+                    AnalyzeNotEqualsExpression(c);
                 }
+            },
+            SyntaxKind.NotEqualsExpression);
+    }
 
-                return _supportedDiagnostics;
-            }
-        }
+    private static void AnalyzeEqualsExpression(SyntaxNodeAnalysisContext context)
+    {
+        if (context.Node.ContainsDiagnostics)
+            return;
 
-        public override void Initialize(AnalysisContext context)
+        var binaryExpression = (BinaryExpressionSyntax)context.Node;
+
+        NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(binaryExpression, allowedStyles: NullCheckStyles.EqualsToNull, walkDownParentheses: false);
+
+        if (!nullCheck.Success)
+            return;
+
+        if (binaryExpression.IsInExpressionTree(context.SemanticModel, context.CancellationToken))
+            return;
+
+        ReportDiagnostic(context, binaryExpression, "pattern matching");
+    }
+
+    private static void AnalyzeNotEqualsExpression(SyntaxNodeAnalysisContext context)
+    {
+        if (context.Node.ContainsDiagnostics)
+            return;
+
+        var binaryExpression = (BinaryExpressionSyntax)context.Node;
+
+        NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(binaryExpression, allowedStyles: NullCheckStyles.NotEqualsToNull);
+
+        if (!nullCheck.Success)
+            return;
+
+        if (binaryExpression.IsInExpressionTree(context.SemanticModel, context.CancellationToken))
+            return;
+
+        ReportDiagnostic(context, binaryExpression, "pattern matching");
+    }
+
+    private static void AnalyzeIsPatternExpression(SyntaxNodeAnalysisContext context)
+    {
+        if (context.Node.ContainsDiagnostics)
+            return;
+
+        var isPatternExpression = (IsPatternExpressionSyntax)context.Node;
+
+        if (isPatternExpression.Pattern is ConstantPatternSyntax constantPattern
+            && constantPattern.Expression.IsKind(SyntaxKind.NullLiteralExpression))
         {
-            base.Initialize(context);
-
-            context.RegisterSyntaxNodeAction(
-                c =>
-                {
-                    if (c.GetNullCheckStyle() == NullCheckStyle.EqualityOperator)
-                        AnalyzeIsPatternExpression(c);
-                },
-                SyntaxKind.IsPatternExpression);
-
-            context.RegisterSyntaxNodeAction(
-                c =>
-                {
-                    if (c.GetNullCheckStyle() == NullCheckStyle.PatternMatching)
-                        AnalyzeEqualsExpression(c);
-                },
-                SyntaxKind.EqualsExpression);
-
-            context.RegisterSyntaxNodeAction(
-                c =>
-                {
-                    if (((CSharpCompilation)c.Compilation).LanguageVersion >= LanguageVersion.CSharp9
-                        && c.GetNullCheckStyle() == NullCheckStyle.PatternMatching)
-                    {
-                        AnalyzeNotEqualsExpression(c);
-                    }
-                },
-                SyntaxKind.NotEqualsExpression);
+            ReportDiagnostic(context, isPatternExpression, "equality operator");
         }
+    }
 
-        private static void AnalyzeEqualsExpression(SyntaxNodeAnalysisContext context)
-        {
-            if (context.Node.ContainsDiagnostics)
-                return;
-
-            var binaryExpression = (BinaryExpressionSyntax)context.Node;
-
-            NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(binaryExpression, allowedStyles: NullCheckStyles.EqualsToNull, walkDownParentheses: false);
-
-            if (!nullCheck.Success)
-                return;
-
-            if (binaryExpression.IsInExpressionTree(context.SemanticModel, context.CancellationToken))
-                return;
-
-            ReportDiagnostic(context, binaryExpression, "pattern matching");
-        }
-
-        private static void AnalyzeNotEqualsExpression(SyntaxNodeAnalysisContext context)
-        {
-            if (context.Node.ContainsDiagnostics)
-                return;
-
-            var binaryExpression = (BinaryExpressionSyntax)context.Node;
-
-            NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(binaryExpression, allowedStyles: NullCheckStyles.NotEqualsToNull);
-
-            if (!nullCheck.Success)
-                return;
-
-            if (binaryExpression.IsInExpressionTree(context.SemanticModel, context.CancellationToken))
-                return;
-
-            ReportDiagnostic(context, binaryExpression, "pattern matching");
-        }
-
-        private static void AnalyzeIsPatternExpression(SyntaxNodeAnalysisContext context)
-        {
-            if (context.Node.ContainsDiagnostics)
-                return;
-
-            var isPatternExpression = (IsPatternExpressionSyntax)context.Node;
-
-            if (isPatternExpression.Pattern is ConstantPatternSyntax constantPattern
-                && constantPattern.Expression.IsKind(SyntaxKind.NullLiteralExpression))
-            {
-                ReportDiagnostic(context, isPatternExpression, "equality operator");
-            }
-        }
-
-        private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, ExpressionSyntax expression, string messageArg)
-        {
-            DiagnosticHelpers.ReportDiagnostic(
-                context,
-                DiagnosticRules.NormalizeNullCheck,
-                expression,
-                messageArg);
-        }
+    private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, ExpressionSyntax expression, string messageArg)
+    {
+        DiagnosticHelpers.ReportDiagnostic(
+            context,
+            DiagnosticRules.NormalizeNullCheck,
+            expression,
+            messageArg);
     }
 }

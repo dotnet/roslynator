@@ -6,103 +6,102 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class ChangeMethodReturnTypeToVoidRefactoring
 {
-    internal static class ChangeMethodReturnTypeToVoidRefactoring
+    public static async Task ComputeRefactoringAsync(RefactoringContext context, MethodDeclarationSyntax methodDeclaration)
     {
-        public static async Task ComputeRefactoringAsync(RefactoringContext context, MethodDeclarationSyntax methodDeclaration)
+        TypeSyntax returnType = methodDeclaration.ReturnType;
+
+        if (returnType?.IsVoid() != false)
+            return;
+
+        BlockSyntax body = methodDeclaration.Body;
+
+        if (body is null)
+            return;
+
+        SyntaxList<StatementSyntax> statements = body.Statements;
+
+        if (!statements.Any())
+            return;
+
+        if (statements.SingleOrDefault(shouldThrow: false)?.Kind() == SyntaxKind.ThrowStatement)
+            return;
+
+        if (methodDeclaration.ContainsYield())
+            return;
+
+        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+        IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(methodDeclaration, context.CancellationToken);
+
+        ComputeRefactoring(context, methodSymbol, semanticModel, body, returnType);
+    }
+
+    public static async Task ComputeRefactoringAsync(RefactoringContext context, LocalFunctionStatementSyntax localFunction)
+    {
+        TypeSyntax returnType = localFunction.ReturnType;
+
+        if (returnType?.IsVoid() != false)
+            return;
+
+        BlockSyntax body = localFunction.Body;
+
+        if (body is null)
+            return;
+
+        SyntaxList<StatementSyntax> statements = body.Statements;
+
+        if (!statements.Any())
+            return;
+
+        if (statements.SingleOrDefault(shouldThrow: false)?.Kind() == SyntaxKind.ThrowStatement)
+            return;
+
+        if (localFunction.ContainsYield())
+            return;
+
+        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+        IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(localFunction, context.CancellationToken);
+
+        ComputeRefactoring(context, methodSymbol, semanticModel, body, returnType);
+    }
+
+    private static void ComputeRefactoring(
+        RefactoringContext context,
+        IMethodSymbol methodSymbol,
+        SemanticModel semanticModel,
+        BlockSyntax body,
+        TypeSyntax returnType)
+    {
+        if (methodSymbol?.IsOverride != false)
+            return;
+
+        if (methodSymbol.ImplementsInterfaceMember())
+            return;
+
+        if (methodSymbol.IsAsync
+            && methodSymbol.ReturnType.HasMetadataName(MetadataNames.System_Threading_Tasks_Task))
         {
-            TypeSyntax returnType = methodDeclaration.ReturnType;
-
-            if (returnType?.IsVoid() != false)
-                return;
-
-            BlockSyntax body = methodDeclaration.Body;
-
-            if (body == null)
-                return;
-
-            SyntaxList<StatementSyntax> statements = body.Statements;
-
-            if (!statements.Any())
-                return;
-
-            if (statements.SingleOrDefault(shouldThrow: false)?.Kind() == SyntaxKind.ThrowStatement)
-                return;
-
-            if (methodDeclaration.ContainsYield())
-                return;
-
-            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-            IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(methodDeclaration, context.CancellationToken);
-
-            ComputeRefactoring(context, methodSymbol, semanticModel, body, returnType);
+            return;
         }
 
-        public static async Task ComputeRefactoringAsync(RefactoringContext context, LocalFunctionStatementSyntax localFunction)
-        {
-            TypeSyntax returnType = localFunction.ReturnType;
+        ControlFlowAnalysis analysis = semanticModel.AnalyzeControlFlow(body);
 
-            if (returnType?.IsVoid() != false)
-                return;
+        if (!analysis.Succeeded)
+            return;
 
-            BlockSyntax body = localFunction.Body;
+        if (!analysis.ReturnStatements.All(f => (f as ReturnStatementSyntax)?.Expression is null))
+            return;
 
-            if (body == null)
-                return;
+        Document document = context.Document;
 
-            SyntaxList<StatementSyntax> statements = body.Statements;
-
-            if (!statements.Any())
-                return;
-
-            if (statements.SingleOrDefault(shouldThrow: false)?.Kind() == SyntaxKind.ThrowStatement)
-                return;
-
-            if (localFunction.ContainsYield())
-                return;
-
-            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-            IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(localFunction, context.CancellationToken);
-
-            ComputeRefactoring(context, methodSymbol, semanticModel, body, returnType);
-        }
-
-        private static void ComputeRefactoring(
-            RefactoringContext context,
-            IMethodSymbol methodSymbol,
-            SemanticModel semanticModel,
-            BlockSyntax body,
-            TypeSyntax returnType)
-        {
-            if (methodSymbol?.IsOverride != false)
-                return;
-
-            if (methodSymbol.ImplementsInterfaceMember())
-                return;
-
-            if (methodSymbol.IsAsync
-                && methodSymbol.ReturnType.HasMetadataName(MetadataNames.System_Threading_Tasks_Task))
-            {
-                return;
-            }
-
-            ControlFlowAnalysis analysis = semanticModel.AnalyzeControlFlow(body);
-
-            if (!analysis.Succeeded)
-                return;
-
-            if (!analysis.ReturnStatements.All(f => (f as ReturnStatementSyntax)?.Expression == null))
-                return;
-
-            Document document = context.Document;
-
-            context.RegisterRefactoring(
-                "Change return type to 'void'",
-                ct => document.ReplaceNodeAsync(returnType, CSharpFactory.VoidType().WithTriviaFrom(returnType), ct),
-                RefactoringDescriptors.ChangeMethodReturnTypeToVoid);
-        }
+        context.RegisterRefactoring(
+            "Change return type to 'void'",
+            ct => document.ReplaceNodeAsync(returnType, CSharpFactory.VoidType().WithTriviaFrom(returnType), ct),
+            RefactoringDescriptors.ChangeMethodReturnTypeToVoid);
     }
 }

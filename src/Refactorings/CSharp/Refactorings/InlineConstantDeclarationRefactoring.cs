@@ -9,98 +9,97 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.FindSymbols;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class InlineConstantDeclarationRefactoring
 {
-    internal static class InlineConstantDeclarationRefactoring
+    private static readonly SyntaxAnnotation _removeAnnotation = new();
+
+    public static async Task<Solution> RefactorAsync(
+        Document document,
+        FieldDeclarationSyntax fieldDeclaration,
+        VariableDeclaratorSyntax variableDeclarator,
+        CancellationToken cancellationToken)
     {
-        private static readonly SyntaxAnnotation _removeAnnotation = new();
+        ExpressionSyntax value = variableDeclarator.Initializer.Value;
 
-        public static async Task<Solution> RefactorAsync(
-            Document document,
-            FieldDeclarationSyntax fieldDeclaration,
-            VariableDeclaratorSyntax variableDeclarator,
-            CancellationToken cancellationToken)
+        ParenthesizedExpressionSyntax newValue = value.Parenthesize();
+
+        SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
+        ISymbol symbol = semanticModel.GetDeclaredSymbol(variableDeclarator, cancellationToken);
+
+        IEnumerable<ReferencedSymbol> referencedSymbols = await SymbolFinder.FindReferencesAsync(symbol, document.Solution(), cancellationToken).ConfigureAwait(false);
+
+        var newDocuments = new List<KeyValuePair<DocumentId, SyntaxNode>>();
+
+        foreach (IGrouping<Document, ReferenceLocation> grouping in referencedSymbols
+            .First()
+            .Locations
+            .Where(f => !f.IsImplicit && !f.IsCandidateLocation)
+            .GroupBy(f => f.Document))
         {
-            ExpressionSyntax value = variableDeclarator.Initializer.Value;
+            SyntaxNode root = await grouping.Key.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            ParenthesizedExpressionSyntax newValue = value.Parenthesize();
+            SyntaxNode newRoot = root.ReplaceNodes(
+                GetNodesToReplace(grouping.AsEnumerable(), root, fieldDeclaration, variableDeclarator),
+                (f, _) =>
+                {
+                    if (f.IsKind(SyntaxKind.FieldDeclaration, SyntaxKind.VariableDeclarator))
+                        return f.WithAdditionalAnnotations(_removeAnnotation);
 
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+                    return newValue.WithTriviaFrom(f);
+                });
 
-            ISymbol symbol = semanticModel.GetDeclaredSymbol(variableDeclarator, cancellationToken);
+            SyntaxNode nodeToRemove = newRoot.GetAnnotatedNodes(_removeAnnotation).FirstOrDefault();
 
-            IEnumerable<ReferencedSymbol> referencedSymbols = await SymbolFinder.FindReferencesAsync(symbol, document.Solution(), cancellationToken).ConfigureAwait(false);
+            if (nodeToRemove is not null)
+                newRoot = newRoot.RemoveNode(nodeToRemove);
 
-            var newDocuments = new List<KeyValuePair<DocumentId, SyntaxNode>>();
-
-            foreach (IGrouping<Document, ReferenceLocation> grouping in referencedSymbols
-                .First()
-                .Locations
-                .Where(f => !f.IsImplicit && !f.IsCandidateLocation)
-                .GroupBy(f => f.Document))
-            {
-                SyntaxNode root = await grouping.Key.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-                SyntaxNode newRoot = root.ReplaceNodes(
-                    GetNodesToReplace(grouping.AsEnumerable(), root, fieldDeclaration, variableDeclarator),
-                    (f, _) =>
-                    {
-                        if (f.IsKind(SyntaxKind.FieldDeclaration, SyntaxKind.VariableDeclarator))
-                            return f.WithAdditionalAnnotations(_removeAnnotation);
-
-                        return newValue.WithTriviaFrom(f);
-                    });
-
-                SyntaxNode nodeToRemove = newRoot.GetAnnotatedNodes(_removeAnnotation).FirstOrDefault();
-
-                if (nodeToRemove != null)
-                    newRoot = newRoot.RemoveNode(nodeToRemove);
-
-                newDocuments.Add(new KeyValuePair<DocumentId, SyntaxNode>(grouping.Key.Id, newRoot));
-            }
-
-            Solution newSolution = document.Solution();
-
-            foreach (KeyValuePair<DocumentId, SyntaxNode> kvp in newDocuments)
-                newSolution = newSolution.WithDocumentSyntaxRoot(kvp.Key, kvp.Value);
-
-            return newSolution;
+            newDocuments.Add(new KeyValuePair<DocumentId, SyntaxNode>(grouping.Key.Id, newRoot));
         }
 
-        private static IEnumerable<SyntaxNode> GetNodesToReplace(
-            IEnumerable<ReferenceLocation> referenceLocations,
-            SyntaxNode root,
-            FieldDeclarationSyntax fieldDeclaration,
-            VariableDeclaratorSyntax variableDeclarator)
+        Solution newSolution = document.Solution();
+
+        foreach (KeyValuePair<DocumentId, SyntaxNode> kvp in newDocuments)
+            newSolution = newSolution.WithDocumentSyntaxRoot(kvp.Key, kvp.Value);
+
+        return newSolution;
+    }
+
+    private static IEnumerable<SyntaxNode> GetNodesToReplace(
+        IEnumerable<ReferenceLocation> referenceLocations,
+        SyntaxNode root,
+        FieldDeclarationSyntax fieldDeclaration,
+        VariableDeclaratorSyntax variableDeclarator)
+    {
+        foreach (ReferenceLocation referenceLocation in referenceLocations)
         {
-            foreach (ReferenceLocation referenceLocation in referenceLocations)
+            if (!referenceLocation.IsImplicit
+                && !referenceLocation.IsCandidateLocation)
             {
-                if (!referenceLocation.IsImplicit
-                    && !referenceLocation.IsCandidateLocation)
-                {
-                    SyntaxNode node = root.FindNode(referenceLocation.Location.SourceSpan, getInnermostNodeForTie: true);
+                SyntaxNode node = root.FindNode(referenceLocation.Location.SourceSpan, getInnermostNodeForTie: true);
 
-                    if (node.IsParentKind(SyntaxKind.SimpleMemberAccessExpression))
-                    {
-                        yield return node.Parent;
-                    }
-                    else
-                    {
-                        yield return node;
-                    }
-                }
-            }
-
-            if (variableDeclarator.SyntaxTree == root.SyntaxTree)
-            {
-                if (fieldDeclaration.Declaration.Variables.Count == 1)
+                if (node.IsParentKind(SyntaxKind.SimpleMemberAccessExpression))
                 {
-                    yield return fieldDeclaration;
+                    yield return node.Parent;
                 }
                 else
                 {
-                    yield return variableDeclarator;
+                    yield return node;
                 }
+            }
+        }
+
+        if (variableDeclarator.SyntaxTree == root.SyntaxTree)
+        {
+            if (fieldDeclaration.Declaration.Variables.Count == 1)
+            {
+                yield return fieldDeclaration;
+            }
+            else
+            {
+                yield return variableDeclarator;
             }
         }
     }

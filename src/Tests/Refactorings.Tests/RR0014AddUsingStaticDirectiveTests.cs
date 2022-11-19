@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0014AddUsingStaticDirectiveTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.AddUsingStaticDirective;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddUsingStaticDirective)]
-        public async Task Test_Math_Max()
-        {
-            await VerifyRefactoringAsync(@"
+public class RR0014AddUsingStaticDirectiveTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.AddUsingStaticDirective;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddUsingStaticDirective)]
+    public async Task Test_Math_Max()
+    {
+        await VerifyRefactoringAsync(@"
 using System;
 
 class C
@@ -35,12 +35,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddUsingStaticDirective)]
-        public async Task Test_Math_Max2()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddUsingStaticDirective)]
+    public async Task Test_Math_Max2()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M()
@@ -58,12 +58,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddUsingStaticDirective)]
-        public async Task Test_Math_Max3()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddUsingStaticDirective)]
+    public async Task Test_Math_Max3()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M()
@@ -81,12 +81,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddUsingStaticDirective)]
-        public async Task Test_SimpleMemberAccessExpression()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddUsingStaticDirective)]
+    public async Task Test_SimpleMemberAccessExpression()
+    {
+        await VerifyRefactoringAsync(@"
 using System;
 
 class C
@@ -108,12 +108,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddUsingStaticDirective)]
-        public async Task Test_SimpleMemberAccessExpression2()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddUsingStaticDirective)]
+    public async Task Test_SimpleMemberAccessExpression2()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M()
@@ -131,12 +131,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddUsingStaticDirective)]
-        public async Task Test_Struct()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddUsingStaticDirective)]
+    public async Task Test_Struct()
+    {
+        await VerifyRefactoringAsync(@"
 using System;
 
 class C
@@ -158,6 +158,5 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
     }
 }

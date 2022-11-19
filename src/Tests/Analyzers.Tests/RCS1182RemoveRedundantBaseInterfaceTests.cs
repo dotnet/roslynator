@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1182RemoveRedundantBaseInterfaceTests : AbstractCSharpDiagnosticVerifier<RemoveRedundantBaseInterfaceAnalyzer, BaseTypeCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveRedundantBaseInterface;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantBaseInterface)]
-        public async Task Test_IEnumerableOfT()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1182RemoveRedundantBaseInterfaceTests : AbstractCSharpDiagnosticVerifier<RemoveRedundantBaseInterfaceAnalyzer, BaseTypeCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveRedundantBaseInterface;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantBaseInterface)]
+    public async Task Test_IEnumerableOfT()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 
 class Foo1<T> : List<T>, [|IEnumerable<T>|] where T : class
@@ -28,12 +28,12 @@ class Foo1<T> : List<T> where T : class
 {
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantBaseInterface)]
-        public async Task TestNoDiagnostic_ExplicitImplementation()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantBaseInterface)]
+    public async Task TestNoDiagnostic_ExplicitImplementation()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Collections.Generic;
 
 class C : List<object>, ICollection<object>
@@ -44,12 +44,12 @@ class C : List<object>, ICollection<object>
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantBaseInterface)]
-        public async Task TestNoDiagnostic_MethodImplementedWithNewKeyword()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantBaseInterface)]
+    public async Task TestNoDiagnostic_MethodImplementedWithNewKeyword()
+    {
+        await VerifyNoDiagnosticAsync(@"
 interface IFoo
 {
     void Bar();
@@ -69,12 +69,12 @@ class C : B, IFoo
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantBaseInterface)]
-        public async Task TestNoDiagnostic_PropertyImplementedWithNewKeyword()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantBaseInterface)]
+    public async Task TestNoDiagnostic_PropertyImplementedWithNewKeyword()
+    {
+        await VerifyNoDiagnosticAsync(@"
 interface IFoo
 {
     object Bar { get; }
@@ -90,12 +90,12 @@ class C : B, IFoo
     new public object Bar { get; }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantBaseInterface)]
-        public async Task TestNoDiagnostic_IndexerImplementedWithNewKeyword()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantBaseInterface)]
+    public async Task TestNoDiagnostic_IndexerImplementedWithNewKeyword()
+    {
+        await VerifyNoDiagnosticAsync(@"
 interface IFoo
 {
     object this[int index] { get; }
@@ -117,12 +117,12 @@ class C : B, IFoo
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantBaseInterface)]
-        public async Task TestNoDiagnostic_EventFieldImplementedWithNewKeyword()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantBaseInterface)]
+    public async Task TestNoDiagnostic_EventFieldImplementedWithNewKeyword()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 interface IFoo
@@ -140,12 +140,12 @@ class C : B, IFoo
     new public event EventHandler Bar;
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantBaseInterface)]
-        public async Task TestNoDiagnostic_EventImplementedWithNewKeyword()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantBaseInterface)]
+    public async Task TestNoDiagnostic_EventImplementedWithNewKeyword()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 interface IFoo
@@ -167,6 +167,5 @@ class C : B, IFoo
     }
 }
 ");
-        }
     }
 }

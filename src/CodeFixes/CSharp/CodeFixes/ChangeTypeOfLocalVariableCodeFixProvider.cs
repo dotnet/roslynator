@@ -10,151 +10,150 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ChangeTypeOfLocalVariableCodeFixProvider))]
+[Shared]
+public sealed class ChangeTypeOfLocalVariableCodeFixProvider : CompilerDiagnosticCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ChangeTypeOfLocalVariableCodeFixProvider))]
-    [Shared]
-    public sealed class ChangeTypeOfLocalVariableCodeFixProvider : CompilerDiagnosticCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
+        get
         {
-            get
-            {
-                return ImmutableArray.Create(
-                    CompilerDiagnosticIdentifiers.CS0815_CannotAssignMethodGroupToImplicitlyTypedVariable,
-                    CompilerDiagnosticIdentifiers.CS0123_NoOverloadMatchesDelegate,
-                    CompilerDiagnosticIdentifiers.CS0407_MethodHasWrongReturnType);
-            }
+            return ImmutableArray.Create(
+                CompilerDiagnosticIdentifiers.CS0815_CannotAssignMethodGroupToImplicitlyTypedVariable,
+                CompilerDiagnosticIdentifiers.CS0123_NoOverloadMatchesDelegate,
+                CompilerDiagnosticIdentifiers.CS0407_MethodHasWrongReturnType);
         }
+    }
 
-        public override FixAllProvider GetFixAllProvider()
+    public override FixAllProvider GetFixAllProvider()
+    {
+        return null;
+    }
+
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        Diagnostic diagnostic = context.Diagnostics[0];
+
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+        if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.ChangeTypeOfLocalVariable, context.Document, root.SyntaxTree))
+            return;
+
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out SyntaxNode node, predicate: f => f.IsKind(SyntaxKind.VariableDeclarator, SyntaxKind.AddAssignmentExpression, SyntaxKind.SubtractAssignmentExpression)))
+            return;
+
+        if (node is not VariableDeclaratorSyntax variableDeclarator)
+            return;
+
+        if (!variableDeclarator.IsParentKind(SyntaxKind.VariableDeclaration))
+            return;
+
+        ExpressionSyntax value = variableDeclarator.Initializer?.Value;
+
+        if (value is null)
+            return;
+
+        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+        SymbolInfo symbolInfo = semanticModel.GetSymbolInfo(value, context.CancellationToken);
+
+        if (symbolInfo.Symbol is not null)
         {
-            return null;
+            ComputeCodeFix(context, diagnostic, variableDeclarator, symbolInfo.Symbol, semanticModel);
         }
-
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+        else
         {
-            Diagnostic diagnostic = context.Diagnostics[0];
-
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
-
-            if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.ChangeTypeOfLocalVariable, context.Document, root.SyntaxTree))
-                return;
-
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out SyntaxNode node, predicate: f => f.IsKind(SyntaxKind.VariableDeclarator, SyntaxKind.AddAssignmentExpression, SyntaxKind.SubtractAssignmentExpression)))
-                return;
-
-            if (node is not VariableDeclaratorSyntax variableDeclarator)
-                return;
-
-            if (!variableDeclarator.IsParentKind(SyntaxKind.VariableDeclaration))
-                return;
-
-            ExpressionSyntax value = variableDeclarator.Initializer?.Value;
-
-            if (value == null)
-                return;
-
-            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-            SymbolInfo symbolInfo = semanticModel.GetSymbolInfo(value, context.CancellationToken);
-
-            if (symbolInfo.Symbol != null)
-            {
-                ComputeCodeFix(context, diagnostic, variableDeclarator, symbolInfo.Symbol, semanticModel);
-            }
-            else
-            {
-                foreach (ISymbol candidateSymbol in symbolInfo.CandidateSymbols)
-                    ComputeCodeFix(context, diagnostic, variableDeclarator, candidateSymbol, semanticModel);
-            }
+            foreach (ISymbol candidateSymbol in symbolInfo.CandidateSymbols)
+                ComputeCodeFix(context, diagnostic, variableDeclarator, candidateSymbol, semanticModel);
         }
+    }
 
-        private void ComputeCodeFix(
-            CodeFixContext context,
-            Diagnostic diagnostic,
-            VariableDeclaratorSyntax variableDeclarator,
-            ISymbol symbol,
-            SemanticModel semanticModel)
+    private void ComputeCodeFix(
+        CodeFixContext context,
+        Diagnostic diagnostic,
+        VariableDeclaratorSyntax variableDeclarator,
+        ISymbol symbol,
+        SemanticModel semanticModel)
+    {
+        if (symbol is IMethodSymbol methodSymbol)
         {
-            if (symbol is IMethodSymbol methodSymbol)
-            {
-                ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
+            ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
 
-                if (parameters.Length <= 16)
+            if (parameters.Length <= 16)
+            {
+                ITypeSymbol returnType = methodSymbol.ReturnType;
+
+                if (SupportsExplicitDeclaration(returnType, parameters))
                 {
-                    ITypeSymbol returnType = methodSymbol.ReturnType;
+                    INamedTypeSymbol typeSymbol = ConstructActionOrFunc(returnType, parameters, semanticModel);
 
-                    if (SupportsExplicitDeclaration(returnType, parameters))
-                    {
-                        INamedTypeSymbol typeSymbol = ConstructActionOrFunc(returnType, parameters, semanticModel);
+                    var variableDeclaration = (VariableDeclarationSyntax)variableDeclarator.Parent;
 
-                        var variableDeclaration = (VariableDeclarationSyntax)variableDeclarator.Parent;
+                    CodeAction codeAction = CodeActionFactory.ChangeType(
+                        context.Document,
+                        variableDeclaration.Type,
+                        typeSymbol,
+                        semanticModel,
+                        equivalenceKey: GetEquivalenceKey(diagnostic, SymbolDisplay.ToDisplayString(typeSymbol)));
 
-                        CodeAction codeAction = CodeActionFactory.ChangeType(
-                            context.Document,
-                            variableDeclaration.Type,
-                            typeSymbol,
-                            semanticModel,
-                            equivalenceKey: GetEquivalenceKey(diagnostic, SymbolDisplay.ToDisplayString(typeSymbol)));
-
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
                 }
             }
         }
+    }
 
-        private static bool SupportsExplicitDeclaration(ITypeSymbol returnType, ImmutableArray<IParameterSymbol> parameters)
+    private static bool SupportsExplicitDeclaration(ITypeSymbol returnType, ImmutableArray<IParameterSymbol> parameters)
+    {
+        if (!returnType.IsVoid()
+            && !returnType.SupportsExplicitDeclaration())
         {
-            if (!returnType.IsVoid()
-                && !returnType.SupportsExplicitDeclaration())
-            {
-                return false;
-            }
-
-            foreach (IParameterSymbol parameter in parameters)
-            {
-                if (!parameter.Type.SupportsExplicitDeclaration())
-                    return false;
-            }
-
-            return true;
+            return false;
         }
 
-        private static INamedTypeSymbol ConstructActionOrFunc(
-            ITypeSymbol returnType,
-            ImmutableArray<IParameterSymbol> parameters,
-            SemanticModel semanticModel)
+        foreach (IParameterSymbol parameter in parameters)
         {
-            int length = parameters.Length;
+            if (!parameter.Type.SupportsExplicitDeclaration())
+                return false;
+        }
 
-            if (returnType.IsVoid())
-            {
-                if (length == 0)
-                    return semanticModel.GetTypeByMetadataName("System.Action");
+        return true;
+    }
 
-                INamedTypeSymbol actionSymbol = semanticModel.GetTypeByMetadataName($"System.Action`{length.ToString()}");
+    private static INamedTypeSymbol ConstructActionOrFunc(
+        ITypeSymbol returnType,
+        ImmutableArray<IParameterSymbol> parameters,
+        SemanticModel semanticModel)
+    {
+        int length = parameters.Length;
 
-                var typeArguments = new ITypeSymbol[length];
+        if (returnType.IsVoid())
+        {
+            if (length == 0)
+                return semanticModel.GetTypeByMetadataName("System.Action");
 
-                for (int i = 0; i < length; i++)
-                    typeArguments[i] = parameters[i].Type;
+            INamedTypeSymbol actionSymbol = semanticModel.GetTypeByMetadataName($"System.Action`{length.ToString()}");
 
-                return actionSymbol.Construct(typeArguments);
-            }
-            else
-            {
-                INamedTypeSymbol funcSymbol = semanticModel.GetTypeByMetadataName($"System.Func`{(length + 1).ToString()}");
+            var typeArguments = new ITypeSymbol[length];
 
-                var typeArguments = new ITypeSymbol[length + 1];
+            for (int i = 0; i < length; i++)
+                typeArguments[i] = parameters[i].Type;
 
-                for (int i = 0; i < length; i++)
-                    typeArguments[i] = parameters[i].Type;
+            return actionSymbol.Construct(typeArguments);
+        }
+        else
+        {
+            INamedTypeSymbol funcSymbol = semanticModel.GetTypeByMetadataName($"System.Func`{(length + 1).ToString()}");
 
-                typeArguments[length] = returnType;
+            var typeArguments = new ITypeSymbol[length + 1];
 
-                return funcSymbol.Construct(typeArguments);
-            }
+            for (int i = 0; i < length; i++)
+                typeArguments[i] = parameters[i].Type;
+
+            typeArguments[length] = returnType;
+
+            return funcSymbol.Construct(typeArguments);
         }
     }
 }

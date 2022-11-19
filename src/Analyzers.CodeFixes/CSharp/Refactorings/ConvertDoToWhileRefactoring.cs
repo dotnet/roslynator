@@ -6,32 +6,31 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class ConvertDoToWhileRefactoring
 {
-    internal static class ConvertDoToWhileRefactoring
+    public static Task<Document> RefactorAsync(
+        Document document,
+        DoStatementSyntax doStatement,
+        CancellationToken cancellationToken = default)
     {
-        public static Task<Document> RefactorAsync(
-            Document document,
-            DoStatementSyntax doStatement,
-            CancellationToken cancellationToken = default)
-        {
-            SyntaxTriviaList trailingTrivia = doStatement.Statement
-                .GetTrailingTrivia()
-                .EmptyIfWhitespace()
-                .AddRange(doStatement.CloseParenToken.TrailingTrivia.EmptyIfWhitespace())
-                .AddRange(doStatement.SemicolonToken.LeadingTrivia.EmptyIfWhitespace())
-                .AddRange(doStatement.SemicolonToken.TrailingTrivia);
+        SyntaxTriviaList trailingTrivia = doStatement.Statement
+            .GetTrailingTrivia()
+            .EmptyIfWhitespace()
+            .AddRange(doStatement.CloseParenToken.TrailingTrivia.EmptyIfWhitespace())
+            .AddRange(doStatement.SemicolonToken.LeadingTrivia.EmptyIfWhitespace())
+            .AddRange(doStatement.SemicolonToken.TrailingTrivia);
 
-            WhileStatementSyntax newNode = WhileStatement(
-                doStatement.WhileKeyword.WithLeadingTrivia(doStatement.DoKeyword.LeadingTrivia),
-                doStatement.OpenParenToken,
-                doStatement.Condition,
-                doStatement.CloseParenToken.WithTrailingTrivia(doStatement.DoKeyword.TrailingTrivia),
-                doStatement.Statement.WithTrailingTrivia(trailingTrivia));
+        WhileStatementSyntax newNode = WhileStatement(
+            doStatement.WhileKeyword.WithLeadingTrivia(doStatement.DoKeyword.LeadingTrivia),
+            doStatement.OpenParenToken,
+            doStatement.Condition,
+            doStatement.CloseParenToken.WithTrailingTrivia(doStatement.DoKeyword.TrailingTrivia),
+            doStatement.Statement.WithTrailingTrivia(trailingTrivia));
 
-            newNode = newNode.WithFormatterAnnotation();
+        newNode = newNode.WithFormatterAnnotation();
 
-            return document.ReplaceNodeAsync(doStatement, newNode, cancellationToken);
-        }
+        return document.ReplaceNodeAsync(doStatement, newNode, cancellationToken);
     }
 }

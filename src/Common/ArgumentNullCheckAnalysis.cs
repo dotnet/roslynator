@@ -6,138 +6,131 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Syntax;
 
-namespace Roslynator.CSharp
+namespace Roslynator.CSharp;
+
+internal readonly struct ArgumentNullCheckAnalysis
 {
-    internal readonly struct ArgumentNullCheckAnalysis
+    private ArgumentNullCheckAnalysis(ArgumentNullCheckStyle style, bool success)
     {
-        private ArgumentNullCheckAnalysis(ArgumentNullCheckStyle style, string name, bool success)
+        Style = style;
+        Success = success;
+    }
+
+    public ArgumentNullCheckStyle Style { get; }
+
+    public bool Success { get; }
+
+    public static ArgumentNullCheckAnalysis Create(
+        StatementSyntax statement,
+        SemanticModel semanticModel,
+        CancellationToken cancellationToken = default)
+    {
+        return Create(statement, semanticModel, name: null, cancellationToken);
+    }
+
+    public static ArgumentNullCheckAnalysis Create(
+        StatementSyntax statement,
+        SemanticModel semanticModel,
+        string name,
+        CancellationToken cancellationToken = default)
+    {
+        if (statement is IfStatementSyntax ifStatement)
         {
-            Style = style;
-            Name = name;
-            Success = success;
-        }
+            var style = ArgumentNullCheckStyle.None;
+            var success = false;
 
-        public ArgumentNullCheckStyle Style { get; }
-
-        public string Name { get; }
-
-        public bool Success { get; }
-
-        public static ArgumentNullCheckAnalysis Create(
-            StatementSyntax statement,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken = default)
-        {
-            return Create(statement, semanticModel, name: null, cancellationToken);
-        }
-
-        public static ArgumentNullCheckAnalysis Create(
-            StatementSyntax statement,
-            SemanticModel semanticModel,
-            string name,
-            CancellationToken cancellationToken = default)
-        {
-            if (statement is IfStatementSyntax ifStatement)
+            if (ifStatement.SingleNonBlockStatementOrDefault() is ThrowStatementSyntax throwStatement
+                && throwStatement.Expression is ObjectCreationExpressionSyntax objectCreation)
             {
-                var style = ArgumentNullCheckStyle.None;
-                string identifier = null;
-                var success = false;
+                NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(
+                    ifStatement.Condition,
+                    semanticModel,
+                    NullCheckStyles.EqualsToNull | NullCheckStyles.IsNull,
+                    cancellationToken: cancellationToken);
 
-                if (ifStatement.SingleNonBlockStatementOrDefault() is ThrowStatementSyntax throwStatement
-                    && throwStatement.Expression is ObjectCreationExpressionSyntax objectCreation)
+                if (nullCheck.Success)
                 {
-                    NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(
-                        ifStatement.Condition,
-                        semanticModel,
-                        NullCheckStyles.EqualsToNull | NullCheckStyles.IsNull,
-                        cancellationToken: cancellationToken);
+                    style = ArgumentNullCheckStyle.IfStatement;
 
-                    if (nullCheck.Success)
+                    if (name is null
+                        || (nullCheck.Expression is IdentifierNameSyntax identifierName
+                            && string.Equals(name, identifierName.Identifier.ValueText, StringComparison.Ordinal)))
                     {
-                        style = ArgumentNullCheckStyle.IfStatement;
-
-                        if (nullCheck.Expression is IdentifierNameSyntax identifierName)
+                        if (semanticModel
+                            .GetSymbol(objectCreation, cancellationToken)?
+                            .ContainingType?
+                            .HasMetadataName(MetadataNames.System_ArgumentNullException) == true)
                         {
-                            identifier = identifierName.Identifier.ValueText;
-
-                            if (name is null
-                                || string.Equals(name, identifier, StringComparison.Ordinal))
-                            {
-                                if (semanticModel
-                                    .GetSymbol(objectCreation, cancellationToken)?
-                                    .ContainingType?
-                                    .HasMetadataName(MetadataNames.System_ArgumentNullException) == true)
-                                {
-                                    success = true;
-                                }
-                            }
+                            success = true;
                         }
                     }
                 }
+            }
 
-                return new ArgumentNullCheckAnalysis(style, identifier, success);
-            }
-            else
-            {
-                return CreateFromThrowIfNullCheck(statement, semanticModel, name, cancellationToken);
-            }
+            return new ArgumentNullCheckAnalysis(style, success);
         }
-
-        private static ArgumentNullCheckAnalysis CreateFromThrowIfNullCheck(StatementSyntax statement, SemanticModel semanticModel, string name, CancellationToken cancellationToken)
+        else
         {
-            var style = ArgumentNullCheckStyle.None;
-            string identifier = null;
-            var success = false;
+            return CreateFromArgumentNullExceptionThrowIfNullCheck(statement, semanticModel, name, cancellationToken);
+        }
+    }
 
-            if (statement is ExpressionStatementSyntax expressionStatement)
+    private static ArgumentNullCheckAnalysis CreateFromArgumentNullExceptionThrowIfNullCheck(
+        StatementSyntax statement,
+        SemanticModel semanticModel,
+        string name,
+        CancellationToken cancellationToken)
+    {
+        var style = ArgumentNullCheckStyle.None;
+        var success = false;
+
+        if (statement is ExpressionStatementSyntax expressionStatement)
+        {
+            SimpleMemberInvocationStatementInfo invocationInfo = SyntaxInfo.SimpleMemberInvocationStatementInfo(expressionStatement);
+
+            if (invocationInfo.Success
+                && string.Equals(invocationInfo.NameText, "ThrowIfNull", StringComparison.Ordinal)
+                && semanticModel
+                    .GetSymbol(invocationInfo.InvocationExpression, cancellationToken)?
+                    .ContainingType?
+                    .HasMetadataName(MetadataNames.System_ArgumentNullException) == true)
             {
-                SimpleMemberInvocationStatementInfo invocationInfo = SyntaxInfo.SimpleMemberInvocationStatementInfo(expressionStatement);
+                style = ArgumentNullCheckStyle.ThrowIfNullMethod;
 
-                if (invocationInfo.Success
-                    && string.Equals(invocationInfo.NameText, "ThrowIfNull", StringComparison.Ordinal)
-                    && semanticModel
-                        .GetSymbol(invocationInfo.InvocationExpression, cancellationToken)?
-                        .ContainingType?
-                        .HasMetadataName(MetadataNames.System_ArgumentNullException) == true)
+                if (name is null
+                    || (invocationInfo.Arguments.SingleOrDefault(shouldThrow: false)?.Expression is IdentifierNameSyntax identifierName
+                        && string.Equals(name, identifierName.Identifier.ValueText, StringComparison.Ordinal)))
                 {
-                    style = ArgumentNullCheckStyle.ThrowIfNullMethod;
-
-                    if (invocationInfo.Arguments.SingleOrDefault(shouldThrow: false)?.Expression is IdentifierNameSyntax identifierName)
-                    {
-                        identifier = identifierName.Identifier.ValueText;
-
-                        if (string.Equals(name, identifier, StringComparison.Ordinal))
-                            success = true;
-                    }
+                    success = true;
                 }
             }
-
-            return new ArgumentNullCheckAnalysis(style, identifier, success);
         }
 
-        public static bool IsThrowIfNullCheck(
-            StatementSyntax statement,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken = default)
-        {
-            return CreateFromThrowIfNullCheck(statement, semanticModel, null, cancellationToken).Success;
-        }
+        return new ArgumentNullCheckAnalysis(style, success);
+    }
 
-        public static bool IsArgumentNullCheck(
-            StatementSyntax statement,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken = default)
-        {
-            return IsArgumentNullCheck(statement, semanticModel, name: null, cancellationToken);
-        }
+    public static bool IsArgumentNullExceptionThrowIfNullCheck(
+        StatementSyntax statement,
+        SemanticModel semanticModel,
+        CancellationToken cancellationToken = default)
+    {
+        return CreateFromArgumentNullExceptionThrowIfNullCheck(statement, semanticModel, null, cancellationToken).Success;
+    }
 
-        public static bool IsArgumentNullCheck(
-            StatementSyntax statement,
-            SemanticModel semanticModel,
-            string name,
-            CancellationToken cancellationToken = default)
-        {
-            return Create(statement, semanticModel, name, cancellationToken).Success;
-        }
+    public static bool IsArgumentNullCheck(
+        StatementSyntax statement,
+        SemanticModel semanticModel,
+        CancellationToken cancellationToken = default)
+    {
+        return IsArgumentNullCheck(statement, semanticModel, name: null, cancellationToken);
+    }
+
+    public static bool IsArgumentNullCheck(
+        StatementSyntax statement,
+        SemanticModel semanticModel,
+        string name,
+        CancellationToken cancellationToken = default)
+    {
+        return Create(statement, semanticModel, name, cancellationToken).Success;
     }
 }

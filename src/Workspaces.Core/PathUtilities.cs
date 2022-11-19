@@ -10,7 +10,7 @@ namespace Roslynator
     {
         internal static string TrimStart(string path, string basePath, bool trimLeadingDirectorySeparator = true)
         {
-            if (basePath != null)
+            if (basePath is not null)
             {
                 if (string.Equals(path, basePath, StringComparison.Ordinal))
                     return Path.GetFileName(path);

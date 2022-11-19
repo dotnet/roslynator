@@ -7,359 +7,358 @@ using Microsoft.CodeAnalysis;
 using Roslynator.CSharp;
 using Roslynator.FindSymbols;
 
-namespace Roslynator.Documentation.Markdown
+namespace Roslynator.Documentation.Markdown;
+
+internal class SymbolDefinitionMarkdownWriter : AbstractSymbolDefinitionTextWriter
 {
-    internal class SymbolDefinitionMarkdownWriter : AbstractSymbolDefinitionTextWriter
+    private const string LocalLinkPrefix = "__roslynator-";
+
+    private MarkdownWriter _writer;
+    private readonly DocumentationUrlProvider _urlProvider;
+
+    public SymbolDefinitionMarkdownWriter(
+        MarkdownWriter writer,
+        SymbolFilterOptions filter = null,
+        DefinitionListFormat format = null,
+        SymbolDocumentationProvider documentationProvider = null,
+        INamedTypeSymbol hierarchyRoot = null,
+        DocumentationUrlProvider urlProvider = null) : base(filter, format, documentationProvider, hierarchyRoot)
     {
-        private const string LocalLinkPrefix = "__roslynator-";
+        _writer = writer;
+        _urlProvider = urlProvider;
+    }
 
-        private MarkdownWriter _writer;
-        private readonly DocumentationUrlProvider _urlProvider;
+    public override bool SupportsMultilineDefinitions => false;
 
-        public SymbolDefinitionMarkdownWriter(
-            MarkdownWriter writer,
-            SymbolFilterOptions filter = null,
-            DefinitionListFormat format = null,
-            SymbolDocumentationProvider documentationProvider = null,
-            INamedTypeSymbol hierarchyRoot = null,
-            DocumentationUrlProvider urlProvider = null) : base(filter, format, documentationProvider, hierarchyRoot)
+    public override bool SupportsDocumentationComments => false;
+
+    public override void WriteStartAssembly(IAssemblySymbol assemblySymbol)
+    {
+        WriteStartBulletItem();
+        base.WriteStartAssembly(assemblySymbol);
+    }
+
+    public override void WriteAssemblyDefinition(IAssemblySymbol assemblySymbol)
+    {
+        Write("assembly ");
+        WriteLine(assemblySymbol.Identity.ToString());
+        WriteEndBulletItem();
+
+        IncreaseDepth();
+
+        if (Format.Includes(SymbolDefinitionPartFilter.AssemblyAttributes))
+            WriteAttributes(assemblySymbol);
+    }
+
+    public override void WriteAssemblySeparator()
+    {
+    }
+
+    public override void WriteStartNamespaces()
+    {
+    }
+
+    public override void WriteStartNamespace(INamespaceSymbol namespaceSymbol)
+    {
+        WriteStartBulletItem();
+        base.WriteStartNamespace(namespaceSymbol);
+    }
+
+    public override void WriteNamespaceDefinition(INamespaceSymbol namespaceSymbol, SymbolDisplayFormat format = null)
+    {
+        base.WriteNamespaceDefinition(namespaceSymbol, format);
+        WriteEndBulletItem();
+    }
+
+    public override void WriteNamespaceSeparator()
+    {
+    }
+
+    public override void WriteStartTypes()
+    {
+    }
+
+    public override void WriteStartType(INamedTypeSymbol typeSymbol)
+    {
+        WriteStartBulletItem();
+        base.WriteStartType(typeSymbol);
+    }
+
+    protected override void WriteAttributeName(ISymbol symbol)
+    {
+        WriteName(symbol, symbol.ToDisplayString(TypeSymbolDisplayFormats.Name));
+    }
+
+    public override void WriteTypeDefinition(INamedTypeSymbol typeSymbol, SymbolDisplayFormat format = null)
+    {
+        if (typeSymbol is not null)
         {
-            _writer = writer;
-            _urlProvider = urlProvider;
+            WriteDocumentationComment(typeSymbol);
+            WriteDefinition(typeSymbol, format);
         }
 
-        public override bool SupportsMultilineDefinitions => false;
+        _writer.WriteRaw($"<a id=\"{DocumentationUtility.CreateLocalLink(typeSymbol, LocalLinkPrefix)}\"></a>");
 
-        public override bool SupportsDocumentationComments => false;
+        WriteLine();
+        IncreaseDepth();
 
-        public override void WriteStartAssembly(IAssemblySymbol assemblySymbol)
+        WriteEndBulletItem();
+    }
+
+    protected override void WriteDefinitionName(ISymbol symbol, SymbolDisplayFormat format = null)
+    {
+        DocumentationUrlInfo urlInfo = _urlProvider.GetExternalUrl(symbol);
+
+        if (urlInfo.Url is not null)
         {
-            WriteStartBulletItem();
-            base.WriteStartAssembly(assemblySymbol);
+            WriteContainingNamespaceInTypeHierarchy(symbol);
+
+            _writer.WriteStartBold();
+            _writer.WriteLink(symbol.ToDisplayString(format ?? GetDefinitionNameFormat(symbol)), urlInfo.Url);
+            _writer.WriteEndBold();
         }
-
-        public override void WriteAssemblyDefinition(IAssemblySymbol assemblySymbol)
+        else
         {
-            Write("assembly ");
-            WriteLine(assemblySymbol.Identity.ToString());
-            WriteEndBulletItem();
-
-            IncreaseDepth();
-
-            if (Format.Includes(SymbolDefinitionPartFilter.AssemblyAttributes))
-                WriteAttributes(assemblySymbol);
+            _writer.WriteStartBold();
+            base.WriteDefinitionName(symbol, format);
+            _writer.WriteEndBold();
         }
+    }
 
-        public override void WriteAssemblySeparator()
-        {
-        }
+    protected override void WriteSymbol(ISymbol symbol, SymbolDisplayFormat format = null, bool removeAttributeSuffix = false)
+    {
+        format ??= GetSymbolFormat(symbol);
 
-        public override void WriteStartNamespaces()
-        {
-        }
+        ImmutableArray<SymbolDisplayPart> parts = symbol.ToDisplayParts(format);
 
-        public override void WriteStartNamespace(INamespaceSymbol namespaceSymbol)
-        {
-            WriteStartBulletItem();
-            base.WriteStartNamespace(namespaceSymbol);
-        }
+        int index = -1;
 
-        public override void WriteNamespaceDefinition(INamespaceSymbol namespaceSymbol, SymbolDisplayFormat format = null)
+        for (int i = parts.Length - 1; i >= 0; i--)
         {
-            base.WriteNamespaceDefinition(namespaceSymbol, format);
-            WriteEndBulletItem();
-        }
-
-        public override void WriteNamespaceSeparator()
-        {
-        }
-
-        public override void WriteStartTypes()
-        {
-        }
-
-        public override void WriteStartType(INamedTypeSymbol typeSymbol)
-        {
-            WriteStartBulletItem();
-            base.WriteStartType(typeSymbol);
-        }
-
-        protected override void WriteAttributeName(ISymbol symbol)
-        {
-            WriteName(symbol, symbol.ToDisplayString(TypeSymbolDisplayFormats.Name));
-        }
-
-        public override void WriteTypeDefinition(INamedTypeSymbol typeSymbol, SymbolDisplayFormat format = null)
-        {
-            if (typeSymbol != null)
+            if ((parts[i].IsName()
+                || (parts[i].Kind == SymbolDisplayPartKind.Keyword
+                    && parts[i].Symbol is ITypeSymbol typeSymbol
+                    && CSharpFacts.IsPredefinedType(typeSymbol.SpecialType)))
+                && SymbolEqualityComparer.Default.Equals(symbol, parts[i].Symbol))
             {
-                WriteDocumentationComment(typeSymbol);
-                WriteDefinition(typeSymbol, format);
-            }
-
-            _writer.WriteRaw($"<a id=\"{DocumentationUtility.CreateLocalLink(typeSymbol, LocalLinkPrefix)}\"></a>");
-
-            WriteLine();
-            IncreaseDepth();
-
-            WriteEndBulletItem();
-        }
-
-        protected override void WriteDefinitionName(ISymbol symbol, SymbolDisplayFormat format = null)
-        {
-            DocumentationUrlInfo urlInfo = _urlProvider.GetExternalUrl(symbol);
-
-            if (urlInfo.Url != null)
-            {
-                WriteContainingNamespaceInTypeHierarchy(symbol);
-
-                _writer.WriteStartBold();
-                _writer.WriteLink(symbol.ToDisplayString(format ?? GetDefinitionNameFormat(symbol)), urlInfo.Url);
-                _writer.WriteEndBold();
-            }
-            else
-            {
-                _writer.WriteStartBold();
-                base.WriteDefinitionName(symbol, format);
-                _writer.WriteEndBold();
-            }
-        }
-
-        protected override void WriteSymbol(ISymbol symbol, SymbolDisplayFormat format = null, bool removeAttributeSuffix = false)
-        {
-            format ??= GetSymbolFormat(symbol);
-
-            ImmutableArray<SymbolDisplayPart> parts = symbol.ToDisplayParts(format);
-
-            int index = -1;
-
-            for (int i = parts.Length - 1; i >= 0; i--)
-            {
-                if ((parts[i].IsName()
-                    || (parts[i].Kind == SymbolDisplayPartKind.Keyword
-                        && parts[i].Symbol is ITypeSymbol typeSymbol
-                        && CSharpFacts.IsPredefinedType(typeSymbol.SpecialType)))
-                    && SymbolEqualityComparer.Default.Equals(symbol, parts[i].Symbol))
-                {
-                    index = i;
-                    break;
-                }
-            }
-
-            Debug.Assert(index >= 0, $"{index} {parts.Length} {parts.ToDisplayString()}");
-
-            if (index >= 0)
-            {
-                if (removeAttributeSuffix)
-                    parts = SymbolDefinitionWriterHelpers.RemoveAttributeSuffix(symbol, parts);
-
-                Write(parts, 0, index);
-
-                WriteName(symbol, parts[index].ToString());
-
-                Write(parts, index + 1, parts.Length - index - 1);
-            }
-            else
-            {
-                base.WriteSymbol(symbol, format, removeAttributeSuffix);
+                index = i;
+                break;
             }
         }
 
-        private void WriteName(ISymbol symbol, string text)
+        Debug.Assert(index >= 0, $"{index} {parts.Length} {parts.ToDisplayString()}");
+
+        if (index >= 0)
         {
-            if (TypeSymbols != null
-                && symbol is INamedTypeSymbol typeSymbol
-                && TypeSymbols.Contains(typeSymbol))
+            if (removeAttributeSuffix)
+                parts = SymbolDefinitionWriterHelpers.RemoveAttributeSuffix(symbol, parts);
+
+            Write(parts, 0, index);
+
+            WriteName(symbol, parts[index].ToString());
+
+            Write(parts, index + 1, parts.Length - index - 1);
+        }
+        else
+        {
+            base.WriteSymbol(symbol, format, removeAttributeSuffix);
+        }
+    }
+
+    private void WriteName(ISymbol symbol, string text)
+    {
+        if (TypeSymbols is not null
+            && symbol is INamedTypeSymbol typeSymbol
+            && TypeSymbols.Contains(typeSymbol))
+        {
+            _writer.WriteLink(
+                text,
+                "#" + DocumentationUtility.CreateLocalLink(symbol, LocalLinkPrefix),
+                symbol.ToDisplayString(TypeSymbolDisplayFormats.Name_ContainingTypes_TypeParameters));
+        }
+        else
+        {
+            string url = _urlProvider.GetExternalUrl(symbol).Url;
+
+            if (url is not null)
             {
                 _writer.WriteLink(
                     text,
-                    "#" + DocumentationUtility.CreateLocalLink(symbol, LocalLinkPrefix),
+                    url,
                     symbol.ToDisplayString(TypeSymbolDisplayFormats.Name_ContainingTypes_TypeParameters));
             }
-            else
-            {
-                string url = _urlProvider.GetExternalUrl(symbol).Url;
-
-                if (url != null)
-                {
-                    _writer.WriteLink(
-                        text,
-                        url,
-                        symbol.ToDisplayString(TypeSymbolDisplayFormats.Name_ContainingTypes_TypeParameters));
-                }
-            }
         }
+    }
 
-        public override void WriteTypeSeparator()
-        {
-        }
+    public override void WriteTypeSeparator()
+    {
+    }
 
-        public override void WriteStartMembers()
-        {
-        }
+    public override void WriteStartMembers()
+    {
+    }
 
-        public override void WriteStartMember(ISymbol symbol)
+    public override void WriteStartMember(ISymbol symbol)
+    {
+        WriteStartBulletItem();
+        base.WriteStartMember(symbol);
+    }
+
+    public override void WriteMemberDefinition(ISymbol symbol, SymbolDisplayFormat format = null)
+    {
+        base.WriteMemberDefinition(symbol, format);
+        WriteEndBulletItem();
+    }
+
+    public override void WriteMemberSeparator()
+    {
+    }
+
+    public override void WriteStartEnumMembers()
+    {
+    }
+
+    public override void WriteStartEnumMember(ISymbol symbol)
+    {
+        WriteStartBulletItem();
+        base.WriteStartEnumMember(symbol);
+    }
+
+    public override void WriteEnumMemberDefinition(ISymbol symbol, SymbolDisplayFormat format = null)
+    {
+        base.WriteEnumMemberDefinition(symbol, format);
+        WriteEndBulletItem();
+    }
+
+    public override void WriteEnumMemberSeparator()
+    {
+    }
+
+    public override void WriteStartAttributes(ISymbol symbol)
+    {
+        if (symbol.Kind == SymbolKind.Assembly)
         {
             WriteStartBulletItem();
-            base.WriteStartMember(symbol);
+            WriteIndentation();
+            Write("[");
         }
-
-        public override void WriteMemberDefinition(ISymbol symbol, SymbolDisplayFormat format = null)
+        else
         {
-            base.WriteMemberDefinition(symbol, format);
+            base.WriteStartAttributes(symbol);
+        }
+    }
+
+    public override void WriteEndAttributes(ISymbol symbol)
+    {
+        if (symbol.Kind == SymbolKind.Assembly)
+        {
+            Write("]");
             WriteEndBulletItem();
         }
-
-        public override void WriteMemberSeparator()
+        else
         {
+            base.WriteEndAttributes(symbol);
         }
+    }
 
-        public override void WriteStartEnumMembers()
+    public override void WriteAttributeSeparator(ISymbol symbol)
+    {
+        if (symbol.Kind == SymbolKind.Assembly)
         {
-        }
-
-        public override void WriteStartEnumMember(ISymbol symbol)
-        {
+            Write("]");
+            WriteEndBulletItem();
             WriteStartBulletItem();
-            base.WriteStartEnumMember(symbol);
+            WriteIndentation();
+            Write("[");
         }
-
-        public override void WriteEnumMemberDefinition(ISymbol symbol, SymbolDisplayFormat format = null)
+        else
         {
-            base.WriteEnumMemberDefinition(symbol, format);
-            WriteEndBulletItem();
+            base.WriteAttributeSeparator(symbol);
         }
+    }
 
-        public override void WriteEnumMemberSeparator()
-        {
-        }
+    private void WriteStartBulletItem()
+    {
+        _writer.WriteStartBulletItem();
+    }
 
-        public override void WriteStartAttributes(ISymbol symbol)
+    private void WriteEndBulletItem()
+    {
+        _writer.WriteEndBulletItem();
+    }
+
+    public override void Write(SymbolDisplayPart part)
+    {
+        base.Write(part);
+
+        Debug.Assert(part.Kind != SymbolDisplayPartKind.LineBreak, "");
+    }
+
+    public override void Write(string value)
+    {
+        Debug.Assert(value?.Contains("\n") != true, @"\n");
+        Debug.Assert(value?.Contains("\r") != true, @"\r");
+
+        _writer.WriteString(value);
+    }
+
+    public override void WriteLine()
+    {
+        _writer.WriteLine();
+    }
+
+    protected override void WriteIndentation()
+    {
+        if (Depth > 0)
         {
-            if (symbol.Kind == SymbolKind.Assembly)
+            _writer.WriteEntityRef("emsp");
+
+            if (SymbolHierarchy.Count > 0)
             {
-                WriteStartBulletItem();
-                WriteIndentation();
-                Write("[");
-            }
-            else
-            {
-                base.WriteStartAttributes(symbol);
-            }
-        }
-
-        public override void WriteEndAttributes(ISymbol symbol)
-        {
-            if (symbol.Kind == SymbolKind.Assembly)
-            {
-                Write("]");
-                WriteEndBulletItem();
-            }
-            else
-            {
-                base.WriteEndAttributes(symbol);
-            }
-        }
-
-        public override void WriteAttributeSeparator(ISymbol symbol)
-        {
-            if (symbol.Kind == SymbolKind.Assembly)
-            {
-                Write("]");
-                WriteEndBulletItem();
-                WriteStartBulletItem();
-                WriteIndentation();
-                Write("[");
-            }
-            else
-            {
-                base.WriteAttributeSeparator(symbol);
-            }
-        }
-
-        private void WriteStartBulletItem()
-        {
-            _writer.WriteStartBulletItem();
-        }
-
-        private void WriteEndBulletItem()
-        {
-            _writer.WriteEndBulletItem();
-        }
-
-        public override void Write(SymbolDisplayPart part)
-        {
-            base.Write(part);
-
-            Debug.Assert(part.Kind != SymbolDisplayPartKind.LineBreak, "");
-        }
-
-        public override void Write(string value)
-        {
-            Debug.Assert(value?.Contains("\n") != true, @"\n");
-            Debug.Assert(value?.Contains("\r") != true, @"\r");
-
-            _writer.WriteString(value);
-        }
-
-        public override void WriteLine()
-        {
-            _writer.WriteLine();
-        }
-
-        protected override void WriteIndentation()
-        {
-            if (Depth > 0)
-            {
-                _writer.WriteEntityRef("emsp");
-
-                if (SymbolHierarchy.Count > 0)
+                for (int i = 1; i < Depth; i++)
                 {
-                    for (int i = 1; i < Depth; i++)
-                    {
-                        Write(" ");
-                        _writer.WriteStartLink();
-                        _writer.WriteEntityRef("bull");
-                        _writer.WriteEndLink("#" + DocumentationUtility.CreateLocalLink(SymbolHierarchy[i], LocalLinkPrefix), SymbolHierarchy[i].ToDisplayString(TypeSymbolDisplayFormats.Name_ContainingTypes_TypeParameters));
-                        Write(" ");
-                        _writer.WriteEntityRef("emsp");
-                    }
+                    Write(" ");
+                    _writer.WriteStartLink();
+                    _writer.WriteEntityRef("bull");
+                    _writer.WriteEndLink("#" + DocumentationUtility.CreateLocalLink(SymbolHierarchy[i], LocalLinkPrefix), SymbolHierarchy[i].ToDisplayString(TypeSymbolDisplayFormats.Name_ContainingTypes_TypeParameters));
+                    Write(" ");
+                    _writer.WriteEntityRef("emsp");
                 }
-                else
-                {
-                    for (int i = 1; i < Depth; i++)
-                    {
-                        Write(" | ");
-                        _writer.WriteEntityRef("emsp");
-                    }
-                }
-
-                Write(" ");
             }
-        }
+            else
+            {
+                for (int i = 1; i < Depth; i++)
+                {
+                    Write(" | ");
+                    _writer.WriteEntityRef("emsp");
+                }
+            }
 
-        public override void WriteDocumentationComment(ISymbol symbol)
-        {
+            Write(" ");
         }
+    }
 
-        public override void Close()
+    public override void WriteDocumentationComment(ISymbol symbol)
+    {
+    }
+
+    public override void Close()
+    {
+        if (_writer is not null)
         {
-            if (_writer != null)
+            try
+            {
+                _writer.Flush();
+            }
+            finally
             {
                 try
                 {
-                    _writer.Flush();
+                    _writer.Dispose();
                 }
                 finally
                 {
-                    try
-                    {
-                        _writer.Dispose();
-                    }
-                    finally
-                    {
-                        _writer = null;
-                    }
+                    _writer = null;
                 }
             }
         }

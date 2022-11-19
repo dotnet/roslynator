@@ -3,17 +3,16 @@
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings.SortMemberDeclarations;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class NamespaceDeclarationRefactoring
 {
-    internal static class NamespaceDeclarationRefactoring
+    public static void ComputeRefactorings(RefactoringContext context, NamespaceDeclarationSyntax namespaceDeclaration)
     {
-        public static void ComputeRefactorings(RefactoringContext context, NamespaceDeclarationSyntax namespaceDeclaration)
+        if (context.IsRefactoringEnabled(RefactoringDescriptors.SortMemberDeclarations)
+            && namespaceDeclaration.BracesSpan().Contains(context.Span))
         {
-            if (context.IsRefactoringEnabled(RefactoringDescriptors.SortMemberDeclarations)
-                && namespaceDeclaration.BracesSpan().Contains(context.Span))
-            {
-                SortMemberDeclarationsRefactoring.ComputeRefactoring(context, namespaceDeclaration);
-            }
+            SortMemberDeclarationsRefactoring.ComputeRefactoring(context, namespaceDeclaration);
         }
     }
 }

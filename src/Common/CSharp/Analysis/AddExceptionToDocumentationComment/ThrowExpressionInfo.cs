@@ -6,36 +6,35 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Analysis.AddExceptionToDocumentationComment
+namespace Roslynator.CSharp.Analysis.AddExceptionToDocumentationComment;
+
+internal class ThrowExpressionInfo : ThrowInfo
 {
-    internal class ThrowExpressionInfo : ThrowInfo
+    internal ThrowExpressionInfo(ThrowExpressionSyntax node, ExpressionSyntax expression, ITypeSymbol exceptionSymbol, ISymbol declarationSymbol)
+        : base(node, expression, exceptionSymbol, declarationSymbol)
     {
-        internal ThrowExpressionInfo(ThrowExpressionSyntax node, ExpressionSyntax expression, ITypeSymbol exceptionSymbol, ISymbol declarationSymbol)
-            : base(node, expression, exceptionSymbol, declarationSymbol)
-        {
-        }
+    }
 
-        protected override IParameterSymbol GetParameterSymbolCore(SemanticModel semanticModel, CancellationToken cancellationToken)
-        {
-            SyntaxNode parent = Node.Parent;
+    protected override IParameterSymbol GetParameterSymbolCore(SemanticModel semanticModel, CancellationToken cancellationToken)
+    {
+        SyntaxNode parent = Node.Parent;
 
-            if (!parent.IsKind(SyntaxKind.CoalesceExpression))
-                return null;
+        if (!parent.IsKind(SyntaxKind.CoalesceExpression))
+            return null;
 
-            SimpleAssignmentExpressionInfo simpleAssignment = SyntaxInfo.SimpleAssignmentExpressionInfo(parent.Parent);
+        SimpleAssignmentExpressionInfo simpleAssignment = SyntaxInfo.SimpleAssignmentExpressionInfo(parent.Parent);
 
-            if (!simpleAssignment.Success)
-                return null;
+        if (!simpleAssignment.Success)
+            return null;
 
-            ISymbol leftSymbol = semanticModel.GetSymbol(simpleAssignment.Left, cancellationToken);
+        ISymbol leftSymbol = semanticModel.GetSymbol(simpleAssignment.Left, cancellationToken);
 
-            if (leftSymbol?.Kind != SymbolKind.Parameter)
-                return null;
+        if (leftSymbol?.Kind != SymbolKind.Parameter)
+            return null;
 
-            if (!SymbolEqualityComparer.Default.Equals(leftSymbol.ContainingSymbol, DeclarationSymbol))
-                return null;
+        if (!SymbolEqualityComparer.Default.Equals(leftSymbol.ContainingSymbol, DeclarationSymbol))
+            return null;
 
-            return (IParameterSymbol)leftSymbol;
-        }
+        return (IParameterSymbol)leftSymbol;
     }
 }

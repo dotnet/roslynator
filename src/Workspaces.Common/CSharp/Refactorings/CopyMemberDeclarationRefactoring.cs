@@ -75,7 +75,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     SyntaxToken? openBrace = memberList.OpenBraceToken;
 
-                    if (openBrace != null
+                    if (openBrace is not null
                         && openBrace.Value.GetFullSpanEndLine() == member.GetFullSpanStartLine())
                     {
                         newMember = newMember.WithLeadingTrivia(member.GetLeadingTrivia().Insert(0, NewLine()));
@@ -85,7 +85,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     SyntaxToken? closeBrace = memberList.CloseBraceToken;
 
-                    if (closeBrace != null)
+                    if (closeBrace is not null)
                         newMember = newMember.WithTrailingTrivia(member.GetTrailingTrivia().Add(NewLine()));
                 }
             }

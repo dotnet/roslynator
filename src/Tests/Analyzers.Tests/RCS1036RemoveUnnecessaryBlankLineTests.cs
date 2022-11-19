@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1036RemoveUnnecessaryBlankLineTests : AbstractCSharpDiagnosticVerifier<RemoveUnnecessaryBlankLineAnalyzer, WhitespaceTriviaCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveUnnecessaryBlankLine;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBlankLine)]
-        public async Task Test_ObjectInitializer()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1036RemoveUnnecessaryBlankLineTests : AbstractCSharpDiagnosticVerifier<RemoveUnnecessaryBlankLineAnalyzer, WhitespaceTriviaCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveUnnecessaryBlankLine;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBlankLine)]
+    public async Task Test_ObjectInitializer()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -48,12 +48,12 @@ class C
     public int P2 { get; set; }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBlankLine)]
-        public async Task Test_ObjectInitializer_WithTrailingComma()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBlankLine)]
+    public async Task Test_ObjectInitializer_WithTrailingComma()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -86,12 +86,12 @@ class C
     public int P2 { get; set; }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBlankLine)]
-        public async Task Test_ArrayInitializer()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBlankLine)]
+    public async Task Test_ArrayInitializer()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -118,12 +118,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBlankLine)]
-        public async Task Test_CollectionInitializer()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBlankLine)]
+    public async Task Test_CollectionInitializer()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 
 class C
@@ -154,12 +154,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBlankLine)]
-        public async Task Test_EmptyDeclaration()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBlankLine)]
+    public async Task Test_EmptyDeclaration()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
 [|
@@ -169,12 +169,12 @@ class C
 {
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBlankLine)]
-        public async Task Test_EmptyBlock()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBlankLine)]
+    public async Task Test_EmptyBlock()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -190,12 +190,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBlankLine)]
-        public async Task Test_EmptyLineAfterDocComment()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBlankLine)]
+    public async Task Test_EmptyLineAfterDocComment()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     /// <summary></summary>
@@ -213,12 +213,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBlankLine)]
-        public async Task Test_EmptyLineBetweenClosingBraceAndSwitchSection()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBlankLine)]
+    public async Task Test_EmptyLineBetweenClosingBraceAndSwitchSection()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -269,12 +269,12 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineBetweenClosingBraceAndSwitchSection, false));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBlankLine)]
-        public async Task Test_EndOfFile()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBlankLine)]
+    public async Task Test_EndOfFile()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
 }
@@ -284,12 +284,12 @@ class C
 {
 }
 ", options: Options.EnableConfigOption(ConfigOptionKeys.BlankLineBetweenClosingBraceAndSwitchSection));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBlankLine)]
-        public async Task Test_EndOfFile2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBlankLine)]
+    public async Task Test_EndOfFile2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
 }
@@ -300,12 +300,12 @@ class C
 {
 }
 ", options: Options.EnableConfigOption(ConfigOptionKeys.BlankLineBetweenClosingBraceAndSwitchSection));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBlankLine)]
-        public async Task Test_LastEmptyLineInDoStatement()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBlankLine)]
+    public async Task Test_LastEmptyLineInDoStatement()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -329,12 +329,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBlankLine)]
-        public async Task Test_EmptyLineAfterLastEnumMember_NoTrailingComma()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBlankLine)]
+    public async Task Test_EmptyLineAfterLastEnumMember_NoTrailingComma()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     enum E
@@ -354,12 +354,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBlankLine)]
-        public async Task Test_EmptyLineAfterLastEnumMember_TrailingComma()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBlankLine)]
+    public async Task Test_EmptyLineAfterLastEnumMember_TrailingComma()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     enum E
@@ -379,12 +379,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBlankLine)]
-        public async Task Test_EmptyLineBeforeFirstEnumMember()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBlankLine)]
+    public async Task Test_EmptyLineBeforeFirstEnumMember()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     enum E
@@ -404,12 +404,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBlankLine)]
-        public async Task TestNoDiagnostic_ObjectInitializer()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBlankLine)]
+    public async Task TestNoDiagnostic_ObjectInitializer()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -425,12 +425,12 @@ class C
     public int P2 { get; set; }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBlankLine)]
-        public async Task TestNoDiagnostic_ObjectInitializer_Singleline()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBlankLine)]
+    public async Task TestNoDiagnostic_ObjectInitializer_Singleline()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -442,12 +442,12 @@ class C
     public int P2 { get; set; }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBlankLine)]
-        public async Task TestNoDiagnostic_ObjectInitializer_Empty()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBlankLine)]
+    public async Task TestNoDiagnostic_ObjectInitializer_Empty()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -456,12 +456,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBlankLine)]
-        public async Task TestNoDiagnostic_EmptyLineBetweenClosingBraceAndSwitchSection()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBlankLine)]
+    public async Task TestNoDiagnostic_EmptyLineBetweenClosingBraceAndSwitchSection()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -482,60 +482,59 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBlankLine)]
-        public async Task TestNoDiagnostic_EmptyLineAtEndOfFile()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBlankLine)]
+    public async Task TestNoDiagnostic_EmptyLineAtEndOfFile()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBlankLine)]
-        public async Task TestNoDiagnostic_EmptyLineAtEndOfFileAfterMultiLineComment()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBlankLine)]
+    public async Task TestNoDiagnostic_EmptyLineAtEndOfFileAfterMultiLineComment()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
 }
 /** **/ 
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBlankLine)]
-        public async Task TestNoDiagnostic_EmptyLineAtEndOfFileWithWhitespace()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBlankLine)]
+    public async Task TestNoDiagnostic_EmptyLineAtEndOfFileWithWhitespace()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
 }
  ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBlankLine)]
-        public async Task TestNoDiagnostic_EmptyLineAtEndOfFileAfterSingleLineComment()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBlankLine)]
+    public async Task TestNoDiagnostic_EmptyLineAtEndOfFileAfterSingleLineComment()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
 }
 //x
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBlankLine)]
-        public async Task TestNoDiagnostic_EmptyLineAtEndOfFileAfterPreprocessorDirective()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBlankLine)]
+    public async Task TestNoDiagnostic_EmptyLineAtEndOfFileAfterPreprocessorDirective()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
 }
 #if DEBUG
 #endif
 ");
-        }
     }
 }

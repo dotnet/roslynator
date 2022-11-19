@@ -2,28 +2,27 @@
 
 using Microsoft.CodeAnalysis;
 
-namespace Roslynator.CSharp.Analysis.AddExceptionToDocumentationComment
+namespace Roslynator.CSharp.Analysis.AddExceptionToDocumentationComment;
+
+internal readonly struct AddExceptionToDocumentationCommentAnalysisResult
 {
-    internal readonly struct AddExceptionToDocumentationCommentAnalysisResult
+    internal AddExceptionToDocumentationCommentAnalysisResult(ThrowInfo info, SyntaxTrivia documentationComment)
     {
-        internal AddExceptionToDocumentationCommentAnalysisResult(ThrowInfo info, SyntaxTrivia documentationComment)
-        {
-            ThrowInfo = info;
-            DocumentationComment = documentationComment;
-        }
-
-        internal ThrowInfo ThrowInfo { get; }
-
-        public bool Success
-        {
-            get { return ThrowInfo != null; }
-        }
-
-        public ISymbol DeclarationSymbol
-        {
-            get { return ThrowInfo?.DeclarationSymbol; }
-        }
-
-        public SyntaxTrivia DocumentationComment { get; }
+        ThrowInfo = info;
+        DocumentationComment = documentationComment;
     }
+
+    internal ThrowInfo ThrowInfo { get; }
+
+    public bool Success
+    {
+        get { return ThrowInfo is not null; }
+    }
+
+    public ISymbol DeclarationSymbol
+    {
+        get { return ThrowInfo?.DeclarationSymbol; }
+    }
+
+    public SyntaxTrivia DocumentationComment { get; }
 }

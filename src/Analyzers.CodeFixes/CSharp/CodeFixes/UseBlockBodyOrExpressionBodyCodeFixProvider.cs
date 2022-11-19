@@ -11,51 +11,50 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UseBlockBodyOrExpressionBodyCodeFixProvider))]
+[Shared]
+public sealed class UseBlockBodyOrExpressionBodyCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UseBlockBodyOrExpressionBodyCodeFixProvider))]
-    [Shared]
-    public sealed class UseBlockBodyOrExpressionBodyCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.UseBlockBodyOrExpressionBody); }
+    }
+
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+        if (!TryFindFirstAncestorOrSelf(
+            root,
+            context.Span,
+            out SyntaxNode node,
+            predicate: f => f.IsKind(SyntaxKind.ArrowExpressionClause) || CSharpFacts.CanHaveExpressionBody(f.Kind())))
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.UseBlockBodyOrExpressionBody); }
+            return;
         }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+        Document document = context.Document;
+        Diagnostic diagnostic = context.Diagnostics[0];
+
+        if (node is ArrowExpressionClauseSyntax arrowExpressionClause)
         {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+            CodeAction codeAction = CodeAction.Create(
+                ConvertExpressionBodyToBlockBodyRefactoring.Title,
+                ct => ConvertExpressionBodyToBlockBodyRefactoring.RefactorAsync(document, arrowExpressionClause, ct),
+                GetEquivalenceKey(diagnostic));
 
-            if (!TryFindFirstAncestorOrSelf(
-                root,
-                context.Span,
-                out SyntaxNode node,
-                predicate: f => f.IsKind(SyntaxKind.ArrowExpressionClause) || CSharpFacts.CanHaveExpressionBody(f.Kind())))
-            {
-                return;
-            }
+            context.RegisterCodeFix(codeAction, diagnostic);
+        }
+        else
+        {
+            CodeAction codeAction = CodeAction.Create(
+                ConvertBlockBodyToExpressionBodyRefactoring.Title,
+                ct => ConvertBlockBodyToExpressionBodyRefactoring.RefactorAsync(document, node, ct),
+                GetEquivalenceKey(diagnostic));
 
-            Document document = context.Document;
-            Diagnostic diagnostic = context.Diagnostics[0];
-
-            if (node is ArrowExpressionClauseSyntax arrowExpressionClause)
-            {
-                CodeAction codeAction = CodeAction.Create(
-                    ConvertExpressionBodyToBlockBodyRefactoring.Title,
-                    ct => ConvertExpressionBodyToBlockBodyRefactoring.RefactorAsync(document, arrowExpressionClause, ct),
-                    GetEquivalenceKey(diagnostic));
-
-                context.RegisterCodeFix(codeAction, diagnostic);
-            }
-            else
-            {
-                CodeAction codeAction = CodeAction.Create(
-                    ConvertBlockBodyToExpressionBodyRefactoring.Title,
-                    ct => ConvertBlockBodyToExpressionBodyRefactoring.RefactorAsync(document, node, ct),
-                    GetEquivalenceKey(diagnostic));
-
-                context.RegisterCodeFix(codeAction, diagnostic);
-            }
+            context.RegisterCodeFix(codeAction, diagnostic);
         }
     }
 }

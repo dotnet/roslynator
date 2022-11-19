@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0211ConvertStatementsToIfElseTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.ConvertStatementsToIfElse;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertStatementsToIfElse)]
-        public async Task Test_IfStatementsOnly()
-        {
-            await VerifyRefactoringAsync(@"
+public class RR0211ConvertStatementsToIfElseTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.ConvertStatementsToIfElse;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertStatementsToIfElse)]
+    public async Task Test_IfStatementsOnly()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     int M()
@@ -68,12 +68,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertStatementsToIfElse)]
-        public async Task Test_IfStatementsAndStatements()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertStatementsToIfElse)]
+    public async Task Test_IfStatementsAndStatements()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     int M()
@@ -125,12 +125,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertStatementsToIfElse)]
-        public async Task Test_IfStatementAndStatements()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertStatementsToIfElse)]
+    public async Task Test_IfStatementAndStatements()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     int M()
@@ -165,12 +165,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertStatementsToIfElse)]
-        public async Task Test_IfElse()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertStatementsToIfElse)]
+    public async Task Test_IfElse()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     int M()
@@ -197,12 +197,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertStatementsToIfElse)]
-        public async Task Test_IfElse_WithBlock()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertStatementsToIfElse)]
+    public async Task Test_IfElse_WithBlock()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     int M()
@@ -235,12 +235,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertStatementsToIfElse)]
-        public async Task TestNoRefactoring_IfWithoutJumpStatement()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertStatementsToIfElse)]
+    public async Task TestNoRefactoring_IfWithoutJumpStatement()
+    {
+        await VerifyNoRefactoringAsync(@"
 class C
 {
 [|    public string M(bool f)
@@ -254,12 +254,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertStatementsToIfElse)]
-        public async Task TestNoRefactoring_IfEndsWithElse()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertStatementsToIfElse)]
+    public async Task TestNoRefactoring_IfEndsWithElse()
+    {
+        await VerifyNoRefactoringAsync(@"
 class C
 {
     public string M2(bool f)
@@ -276,6 +276,5 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
     }
 }

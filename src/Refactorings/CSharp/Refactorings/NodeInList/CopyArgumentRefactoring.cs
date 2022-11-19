@@ -3,33 +3,32 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings.NodeInList
+namespace Roslynator.CSharp.Refactorings.NodeInList;
+
+internal class CopyArgumentRefactoring : CopyArgumentOrParameterRefactoring<ArgumentSyntax, ArgumentListSyntax>
 {
-    internal class CopyArgumentRefactoring : CopyArgumentOrParameterRefactoring<ArgumentSyntax, ArgumentListSyntax>
+    public CopyArgumentRefactoring(ArgumentListSyntax listSyntax)
+        : base(listSyntax, listSyntax.Arguments)
     {
-        public CopyArgumentRefactoring(ArgumentListSyntax listSyntax)
-            : base(listSyntax, listSyntax.Arguments)
-        {
-        }
+    }
 
-        public override SyntaxToken GetOpenParenToken()
-        {
-            return ListSyntax.OpenParenToken;
-        }
+    public override SyntaxToken GetOpenParenToken()
+    {
+        return ListSyntax.OpenParenToken;
+    }
 
-        public override SyntaxToken GetCloseParenToken()
-        {
-            return ListSyntax.CloseParenToken;
-        }
+    public override SyntaxToken GetCloseParenToken()
+    {
+        return ListSyntax.CloseParenToken;
+    }
 
-        protected override NodeSyntaxRewriter<ArgumentSyntax> GetRewriter(RewriterInfo<ArgumentSyntax> info)
-        {
-            return new ArgumentSyntaxRewriter(info);
-        }
+    protected override NodeSyntaxRewriter<ArgumentSyntax> GetRewriter(RewriterInfo<ArgumentSyntax> info)
+    {
+        return new ArgumentSyntaxRewriter(info);
+    }
 
-        protected override string GetTitle(params string[] args)
-        {
-            return "Copy argument";
-        }
+    protected override string GetTitle(params string[] args)
+    {
+        return "Copy argument";
     }
 }

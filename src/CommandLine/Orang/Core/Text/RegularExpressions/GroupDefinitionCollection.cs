@@ -6,66 +6,65 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace Roslynator.Text.RegularExpressions
+namespace Roslynator.Text.RegularExpressions;
+
+internal class GroupDefinitionCollection : ReadOnlyCollection<GroupDefinition>
 {
-    internal class GroupDefinitionCollection : ReadOnlyCollection<GroupDefinition>
+    private readonly Dictionary<string, GroupDefinition> _names;
+    private readonly Dictionary<int, GroupDefinition> _numbers;
+
+    public GroupDefinitionCollection(Regex regex)
+        : base(CreateGroupDefinitions(regex))
     {
-        private readonly Dictionary<string, GroupDefinition> _names;
-        private readonly Dictionary<int, GroupDefinition> _numbers;
+        _names = Items.ToDictionary(f => f.Name, f => f);
+        _numbers = Items.ToDictionary(f => f.Number, f => f);
+    }
 
-        public GroupDefinitionCollection(Regex regex)
-            : base(CreateGroupDefinitions(regex))
+    private static GroupDefinition[] CreateGroupDefinitions(Regex regex)
+    {
+        if (regex is null)
+            throw new ArgumentNullException(nameof(regex));
+
+        string[] names = regex.GetGroupNames();
+
+        var groups = new GroupDefinition[names.Length];
+
+        for (int i = 0; i < names.Length; i++)
+            groups[i] = new GroupDefinition(i, names[i]);
+
+        return groups;
+    }
+
+    public bool Contains(string name)
+    {
+        if (name is null)
+            throw new ArgumentNullException(nameof(name));
+
+        return _names.ContainsKey(name);
+    }
+
+    public bool Contains(int number)
+    {
+        if (number < 0)
+            throw new ArgumentOutOfRangeException(nameof(number));
+
+        return _numbers.ContainsKey(number);
+    }
+
+    public GroupDefinition this[string name]
+    {
+        get
         {
-            _names = Items.ToDictionary(f => f.Name, f => f);
-            _numbers = Items.ToDictionary(f => f.Number, f => f);
-        }
-
-        private static GroupDefinition[] CreateGroupDefinitions(Regex regex)
-        {
-            if (regex == null)
-                throw new ArgumentNullException(nameof(regex));
-
-            string[] names = regex.GetGroupNames();
-
-            var groups = new GroupDefinition[names.Length];
-
-            for (int i = 0; i < names.Length; i++)
-                groups[i] = new GroupDefinition(i, names[i]);
-
-            return groups;
-        }
-
-        public bool Contains(string name)
-        {
-            if (name == null)
+            if (name is null)
                 throw new ArgumentNullException(nameof(name));
 
-            return _names.ContainsKey(name);
-        }
-
-        public bool Contains(int number)
-        {
-            if (number < 0)
-                throw new ArgumentOutOfRangeException(nameof(number));
-
-            return _numbers.ContainsKey(number);
-        }
-
-        public GroupDefinition this[string name]
-        {
-            get
+            try
             {
-                if (name == null)
-                    throw new ArgumentNullException(nameof(name));
-
-                try
-                {
-                    return _names[name];
-                }
-                catch (KeyNotFoundException)
-                {
-                    throw new ArgumentOutOfRangeException(nameof(name));
-                }
+                return _names[name];
+            }
+            catch (KeyNotFoundException)
+            {
+                throw new ArgumentOutOfRangeException(nameof(name));
             }
         }
     }

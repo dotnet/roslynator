@@ -117,7 +117,7 @@ namespace Roslynator.CSharp
         /// <param name="format"></param>
         public static TypeSyntax ToTypeSyntax(this INamespaceOrTypeSymbol namespaceOrTypeSymbol, SymbolDisplayFormat format = null)
         {
-            if (namespaceOrTypeSymbol == null)
+            if (namespaceOrTypeSymbol is null)
                 throw new ArgumentNullException(nameof(namespaceOrTypeSymbol));
 
             if (namespaceOrTypeSymbol.IsType)
@@ -139,10 +139,10 @@ namespace Roslynator.CSharp
         /// <param name="format"></param>
         public static TypeSyntax ToMinimalTypeSyntax(this INamespaceOrTypeSymbol namespaceOrTypeSymbol, SemanticModel semanticModel, int position, SymbolDisplayFormat format = null)
         {
-            if (namespaceOrTypeSymbol == null)
+            if (namespaceOrTypeSymbol is null)
                 throw new ArgumentNullException(nameof(namespaceOrTypeSymbol));
 
-            if (semanticModel == null)
+            if (semanticModel is null)
                 throw new ArgumentNullException(nameof(semanticModel));
 
             if (namespaceOrTypeSymbol.IsType)
@@ -164,7 +164,7 @@ namespace Roslynator.CSharp
         /// <param name="format"></param>
         public static TypeSyntax ToTypeSyntax(this INamespaceSymbol namespaceSymbol, SymbolDisplayFormat format = null)
         {
-            if (namespaceSymbol == null)
+            if (namespaceSymbol is null)
                 throw new ArgumentNullException(nameof(namespaceSymbol));
 
             ThrowIfExplicitDeclarationIsNotSupported(namespaceSymbol);
@@ -181,10 +181,10 @@ namespace Roslynator.CSharp
         /// <param name="format"></param>
         public static TypeSyntax ToMinimalTypeSyntax(this INamespaceSymbol namespaceSymbol, SemanticModel semanticModel, int position, SymbolDisplayFormat format = null)
         {
-            if (namespaceSymbol == null)
+            if (namespaceSymbol is null)
                 throw new ArgumentNullException(nameof(namespaceSymbol));
 
-            if (semanticModel == null)
+            if (semanticModel is null)
                 throw new ArgumentNullException(nameof(semanticModel));
 
             ThrowIfExplicitDeclarationIsNotSupported(namespaceSymbol);
@@ -202,7 +202,7 @@ namespace Roslynator.CSharp
         #region IParameterSymbol
         internal static ExpressionSyntax GetDefaultValueMinimalSyntax(this IParameterSymbol parameterSymbol, SemanticModel semanticModel, int position, SymbolDisplayFormat format = null)
         {
-            if (parameterSymbol == null)
+            if (parameterSymbol is null)
                 throw new ArgumentNullException(nameof(parameterSymbol));
 
             if (!parameterSymbol.HasExplicitDefaultValue)
@@ -214,14 +214,14 @@ namespace Roslynator.CSharp
 
             if (typeSymbol.TypeKind == TypeKind.Enum)
             {
-                if (value == null)
+                if (value is null)
                     return NullLiteralExpression();
 
                 IFieldSymbol fieldSymbol = FindFieldWithConstantValue();
 
                 TypeSyntax type = typeSymbol.ToMinimalTypeSyntax(semanticModel, position, format);
 
-                if (fieldSymbol != null)
+                if (fieldSymbol is not null)
                 {
                     return SimpleMemberAccessExpression(type, IdentifierName(fieldSymbol.Name));
                 }
@@ -231,7 +231,7 @@ namespace Roslynator.CSharp
                 }
             }
 
-            if (value == null
+            if (value is null
                 && !typeSymbol.IsReferenceTypeOrNullableType())
             {
                 return DefaultExpression(typeSymbol.ToMinimalTypeSyntax(semanticModel, position, format));
@@ -268,7 +268,7 @@ namespace Roslynator.CSharp
         /// <param name="format"></param>
         public static TypeSyntax ToTypeSyntax(this ITypeSymbol typeSymbol, SymbolDisplayFormat format = null)
         {
-            if (typeSymbol == null)
+            if (typeSymbol is null)
                 throw new ArgumentNullException(nameof(typeSymbol));
 
             ThrowIfExplicitDeclarationIsNotSupported(typeSymbol);
@@ -285,10 +285,10 @@ namespace Roslynator.CSharp
         /// <param name="format"></param>
         public static TypeSyntax ToMinimalTypeSyntax(this ITypeSymbol typeSymbol, SemanticModel semanticModel, int position, SymbolDisplayFormat format = null)
         {
-            if (typeSymbol == null)
+            if (typeSymbol is null)
                 throw new ArgumentNullException(nameof(typeSymbol));
 
-            if (semanticModel == null)
+            if (semanticModel is null)
                 throw new ArgumentNullException(nameof(semanticModel));
 
             ThrowIfExplicitDeclarationIsNotSupported(typeSymbol);
@@ -308,7 +308,7 @@ namespace Roslynator.CSharp
         /// <param name="typeSymbol"></param>
         public static bool SupportsConstantValue(this ITypeSymbol typeSymbol)
         {
-            if (typeSymbol == null)
+            if (typeSymbol is null)
                 throw new ArgumentNullException(nameof(typeSymbol));
 
             switch (typeSymbol.SpecialType)
@@ -335,7 +335,7 @@ namespace Roslynator.CSharp
 
         internal static bool SupportsPrefixOrPostfixUnaryOperator(this ITypeSymbol typeSymbol)
         {
-            if (typeSymbol == null)
+            if (typeSymbol is null)
                 throw new ArgumentNullException(nameof(typeSymbol));
 
             return CSharpFacts.SupportsPrefixOrPostfixUnaryOperator(typeSymbol.SpecialType)

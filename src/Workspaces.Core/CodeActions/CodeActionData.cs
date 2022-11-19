@@ -20,7 +20,7 @@ namespace Roslynator.CodeActions
 
         public string EquivalenceKey { get; }
 
-        public bool IsDefault => Title == null;
+        public bool IsDefault => Title is null;
 
         public CodeAction ToCodeAction(Func<CancellationToken, Task<Document>> createChangedDocument)
         {

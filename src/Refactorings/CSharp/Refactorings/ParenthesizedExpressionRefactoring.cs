@@ -2,26 +2,25 @@
 
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class ParenthesizedExpressionRefactoring
 {
-    internal static class ParenthesizedExpressionRefactoring
+    public static void ComputeRefactorings(RefactoringContext context, ParenthesizedExpressionSyntax parenthesizedExpression)
     {
-        public static void ComputeRefactorings(RefactoringContext context, ParenthesizedExpressionSyntax parenthesizedExpression)
+        if (context.IsRefactoringEnabled(RefactoringDescriptors.RemoveParentheses)
+            && ExtractExpressionFromParenthesesRefactoring.CanRefactor(context, parenthesizedExpression))
         {
-            if (context.IsRefactoringEnabled(RefactoringDescriptors.RemoveParentheses)
-                && ExtractExpressionFromParenthesesRefactoring.CanRefactor(context, parenthesizedExpression))
-            {
-                context.RegisterRefactoring(
-                    "Remove parentheses",
-                    ct =>
-                    {
-                        return ExtractExpressionFromParenthesesRefactoring.RefactorAsync(
-                            context.Document,
-                            parenthesizedExpression,
-                            ct);
-                    },
-                    RefactoringDescriptors.RemoveParentheses);
-            }
+            context.RegisterRefactoring(
+                "Remove parentheses",
+                ct =>
+                {
+                    return ExtractExpressionFromParenthesesRefactoring.RefactorAsync(
+                        context.Document,
+                        parenthesizedExpression,
+                        ct);
+                },
+                RefactoringDescriptors.RemoveParentheses);
         }
     }
 }

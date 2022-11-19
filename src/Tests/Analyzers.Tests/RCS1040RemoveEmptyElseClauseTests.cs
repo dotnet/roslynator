@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1040RemoveEmptyElseClauseTests : AbstractCSharpDiagnosticVerifier<RemoveEmptyElseClauseAnalyzer, ElseClauseCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveEmptyElseClause;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptyElseClause)]
-        public async Task Test()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1040RemoveEmptyElseClauseTests : AbstractCSharpDiagnosticVerifier<RemoveEmptyElseClauseAnalyzer, ElseClauseCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveEmptyElseClause;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptyElseClause)]
+    public async Task Test()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -43,12 +43,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptyElseClause)]
-        public async Task TestNoDiagnostic_ElseIf()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptyElseClause)]
+    public async Task TestNoDiagnostic_ElseIf()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -64,12 +64,12 @@ class C
 }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptyElseClause)]
-        public async Task TestNoDiagnostic_NonEmptyElse()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptyElseClause)]
+    public async Task TestNoDiagnostic_NonEmptyElse()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -86,12 +86,12 @@ class C
 }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptyElseClause)]
-        public async Task TestNoDiagnostic_IfElseEmbeddedInIfWithElse()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptyElseClause)]
+    public async Task TestNoDiagnostic_IfElseEmbeddedInIfWithElse()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -107,12 +107,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptyElseClause)]
-        public async Task TestNoDiagnostic_IfElseEmbeddedInIfWithElse2()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptyElseClause)]
+    public async Task TestNoDiagnostic_IfElseEmbeddedInIfWithElse2()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -128,6 +128,5 @@ class C
     }
 }
 ");
-        }
     }
 }

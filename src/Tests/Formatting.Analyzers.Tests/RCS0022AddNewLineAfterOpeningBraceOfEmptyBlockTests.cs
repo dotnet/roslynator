@@ -6,16 +6,16 @@ using Roslynator.Formatting.CodeFixes.CSharp;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.Formatting.CSharp.Tests
-{
-    public class RCS0022AddNewLineAfterOpeningBraceOfEmptyBlockTests : AbstractCSharpDiagnosticVerifier<FormatBlockBracesAnalyzer, BlockCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddNewLineAfterOpeningBraceOfEmptyBlock;
+namespace Roslynator.Formatting.CSharp.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterOpeningBraceOfEmptyBlock)]
-        public async Task Test()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS0022AddNewLineAfterOpeningBraceOfEmptyBlockTests : AbstractCSharpDiagnosticVerifier<FormatBlockBracesAnalyzer, BlockCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddNewLineAfterOpeningBraceOfEmptyBlock;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterOpeningBraceOfEmptyBlock)]
+    public async Task Test()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -29,12 +29,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterOpeningBraceOfEmptyBlock)]
-        public async Task Test_WithWhitespace()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterOpeningBraceOfEmptyBlock)]
+    public async Task Test_WithWhitespace()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -48,12 +48,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterOpeningBraceOfEmptyBlock)]
-        public async Task TestNoDiagnostic_EmptyLine()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineAfterOpeningBraceOfEmptyBlock)]
+    public async Task TestNoDiagnostic_EmptyLine()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -62,6 +62,5 @@ class C
     }
 }
 ");
-        }
     }
 }

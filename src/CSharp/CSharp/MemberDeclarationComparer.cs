@@ -23,7 +23,7 @@ namespace Roslynator.CSharp
 
         public virtual int GetRank(MemberDeclarationSyntax member)
         {
-            if (member == null)
+            if (member is null)
                 throw new ArgumentNullException(nameof(member));
 
             SyntaxKind kind = member.Kind();
@@ -78,10 +78,10 @@ namespace Roslynator.CSharp
                 if (object.ReferenceEquals(x, y))
                     return 0;
 
-                if (x == null)
+                if (x is null)
                     return -1;
 
-                if (y == null)
+                if (y is null)
                     return 1;
 
                 return GetRank(x).CompareTo(GetRank(y));

@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1066RemoveEmptyFinallyClauseTests : AbstractCSharpDiagnosticVerifier<RemoveEmptyFinallyClauseAnalyzer, FinallyClauseCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveEmptyFinallyClause;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptyFinallyClause)]
-        public async Task Test_TryCatchFinally()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1066RemoveEmptyFinallyClauseTests : AbstractCSharpDiagnosticVerifier<RemoveEmptyFinallyClauseAnalyzer, FinallyClauseCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveEmptyFinallyClause;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptyFinallyClause)]
+    public async Task Test_TryCatchFinally()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -45,12 +45,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptyFinallyClause)]
-        public async Task Test_TryFinally()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptyFinallyClause)]
+    public async Task Test_TryFinally()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -81,12 +81,12 @@ class C
     string M2() => null;
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptyFinallyClause)]
-        public async Task TestNoDiagnostic_NonEmptyFinally()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptyFinallyClause)]
+    public async Task TestNoDiagnostic_NonEmptyFinally()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -104,6 +104,5 @@ class C
     }
 }
 ");
-        }
     }
 }

@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0062InlineMethodTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.InlineMethod;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InlineMethod)]
-        public async Task Test()
-        {
-            await VerifyRefactoringAsync(@"
+public class RR0062InlineMethodTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.InlineMethod;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InlineMethod)]
+    public async Task Test()
+    {
+        await VerifyRefactoringAsync(@"
 namespace N
 {
     class C
@@ -56,12 +56,12 @@ namespace N
     {
     }
 }", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InlineMethod)]
-        public async Task Test_ReplaceTypeArgumentWithPredefinedType()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InlineMethod)]
+    public async Task Test_ReplaceTypeArgumentWithPredefinedType()
+    {
+        await VerifyRefactoringAsync(@"
 namespace N
 {
     class C
@@ -102,12 +102,12 @@ namespace N
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InlineMethod)]
-        public async Task Test_ReplaceTypeArgumentWithQualifiedName()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InlineMethod)]
+    public async Task Test_ReplaceTypeArgumentWithQualifiedName()
+    {
+        await VerifyRefactoringAsync(@"
 namespace N
 {
     class C
@@ -168,12 +168,12 @@ namespace N2
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InlineMethod)]
-        public async Task Test_IdentifierNameInsideTypeOf()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InlineMethod)]
+    public async Task Test_IdentifierNameInsideTypeOf()
+    {
+        await VerifyRefactoringAsync(@"
 using System;
 using System.Runtime.CompilerServices;
 using System.Reflection;
@@ -214,12 +214,12 @@ public static class E
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InlineMethod)]
-        public async Task TestNoRefactoring()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InlineMethod)]
+    public async Task TestNoRefactoring()
+    {
+        await VerifyNoRefactoringAsync(@"
 class C
 {
     void M()
@@ -240,6 +240,5 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
     }
 }

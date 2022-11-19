@@ -81,13 +81,13 @@ namespace Roslynator.CSharp.Analysis
             {
                 InitializerExpressionSyntax initializer = expression.Initializer;
 
-                if (initializer != null)
+                if (initializer is not null)
                 {
                     var isObvious = false;
 
                     foreach (ExpressionSyntax expression2 in initializer.Expressions)
                     {
-                        if (arrayTypeSymbol == null)
+                        if (arrayTypeSymbol is null)
                         {
                             arrayTypeSymbol = context.SemanticModel.GetTypeSymbol(expression, context.CancellationToken) as IArrayTypeSymbol;
 
@@ -106,7 +106,7 @@ namespace Roslynator.CSharp.Analysis
                 }
             }
 
-            if (arrayTypeSymbol == null)
+            if (arrayTypeSymbol is null)
             {
                 arrayTypeSymbol = context.SemanticModel.GetTypeSymbol(expression, context.CancellationToken) as IArrayTypeSymbol;
 
@@ -146,7 +146,7 @@ namespace Roslynator.CSharp.Analysis
             {
                 foreach (ExpressionSyntax expression in expressions)
                 {
-                    if (typeSymbol == null)
+                    if (typeSymbol is null)
                     {
                         typeSymbol = context.SemanticModel.GetTypeSymbol(arrayCreation.Type.ElementType, context.CancellationToken);
 

@@ -10,171 +10,170 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.FindSymbols;
 
-namespace Roslynator
+namespace Roslynator;
+
+internal static class SyntaxFinder
 {
-    internal static class SyntaxFinder
+    public static Task<ImmutableArray<SyntaxNode>> FindReferencesAsync(
+        ISymbol symbol,
+        Solution solution,
+        bool allowCandidate = false,
+        CancellationToken cancellationToken = default)
     {
-        public static Task<ImmutableArray<SyntaxNode>> FindReferencesAsync(
-            ISymbol symbol,
-            Solution solution,
-            bool allowCandidate = false,
-            CancellationToken cancellationToken = default)
+        return FindReferencesAsync(symbol, solution, null, allowCandidate, cancellationToken);
+    }
+
+    public static async Task<ImmutableArray<SyntaxNode>> FindReferencesAsync(
+        ISymbol symbol,
+        Solution solution,
+        IImmutableSet<Document> documents,
+        bool allowCandidate = false,
+        CancellationToken cancellationToken = default)
+    {
+        if (symbol is null)
+            throw new ArgumentNullException(nameof(symbol));
+
+        if (solution is null)
+            throw new ArgumentNullException(nameof(solution));
+
+        List<SyntaxNode> nodes = null;
+
+        foreach (ReferencedSymbol referencedSymbol in await SymbolFinder.FindReferencesAsync(
+            symbol,
+            solution,
+            documents,
+            cancellationToken)
+            .ConfigureAwait(false))
         {
-            return FindReferencesAsync(symbol, solution, null, allowCandidate, cancellationToken);
-        }
-
-        public static async Task<ImmutableArray<SyntaxNode>> FindReferencesAsync(
-            ISymbol symbol,
-            Solution solution,
-            IImmutableSet<Document> documents,
-            bool allowCandidate = false,
-            CancellationToken cancellationToken = default)
-        {
-            if (symbol == null)
-                throw new ArgumentNullException(nameof(symbol));
-
-            if (solution == null)
-                throw new ArgumentNullException(nameof(solution));
-
-            List<SyntaxNode> nodes = null;
-
-            foreach (ReferencedSymbol referencedSymbol in await SymbolFinder.FindReferencesAsync(
-                symbol,
-                solution,
-                documents,
-                cancellationToken)
-                .ConfigureAwait(false))
+            foreach (IGrouping<Document, ReferenceLocation> grouping in referencedSymbol.Locations.GroupBy(f => f.Document))
             {
-                foreach (IGrouping<Document, ReferenceLocation> grouping in referencedSymbol.Locations.GroupBy(f => f.Document))
-                {
-                    Document document = grouping.Key;
+                Document document = grouping.Key;
 
-                    SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+                SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-                    FindReferences(grouping, root, allowCandidate, ref nodes);
-                }
+                FindReferences(grouping, root, allowCandidate, ref nodes);
             }
-
-            return ToImmutableArray(nodes);
         }
 
-        public static Task<ImmutableArray<DocumentReferenceInfo>> FindReferencesByDocumentAsync(
-            ISymbol symbol,
-            Solution solution,
-            bool allowCandidate = false,
-            CancellationToken cancellationToken = default)
+        return ToImmutableArray(nodes);
+    }
+
+    public static Task<ImmutableArray<DocumentReferenceInfo>> FindReferencesByDocumentAsync(
+        ISymbol symbol,
+        Solution solution,
+        bool allowCandidate = false,
+        CancellationToken cancellationToken = default)
+    {
+        return FindReferencesByDocumentAsync(symbol, solution, null, allowCandidate, cancellationToken);
+    }
+
+    public static async Task<ImmutableArray<DocumentReferenceInfo>> FindReferencesByDocumentAsync(
+        ISymbol symbol,
+        Solution solution,
+        IImmutableSet<Document> documents,
+        bool allowCandidate = false,
+        CancellationToken cancellationToken = default)
+    {
+        if (symbol is null)
+            throw new ArgumentNullException(nameof(symbol));
+
+        if (solution is null)
+            throw new ArgumentNullException(nameof(solution));
+
+        List<DocumentReferenceInfo> infos = null;
+
+        foreach (ReferencedSymbol referencedSymbol in await SymbolFinder.FindReferencesAsync(
+            symbol,
+            solution,
+            documents,
+            cancellationToken)
+            .ConfigureAwait(false))
         {
-            return FindReferencesByDocumentAsync(symbol, solution, null, allowCandidate, cancellationToken);
-        }
-
-        public static async Task<ImmutableArray<DocumentReferenceInfo>> FindReferencesByDocumentAsync(
-            ISymbol symbol,
-            Solution solution,
-            IImmutableSet<Document> documents,
-            bool allowCandidate = false,
-            CancellationToken cancellationToken = default)
-        {
-            if (symbol == null)
-                throw new ArgumentNullException(nameof(symbol));
-
-            if (solution == null)
-                throw new ArgumentNullException(nameof(solution));
-
-            List<DocumentReferenceInfo> infos = null;
-
-            foreach (ReferencedSymbol referencedSymbol in await SymbolFinder.FindReferencesAsync(
-                symbol,
-                solution,
-                documents,
-                cancellationToken)
-                .ConfigureAwait(false))
+            foreach (IGrouping<Document, ReferenceLocation> grouping in referencedSymbol.Locations.GroupBy(f => f.Document))
             {
-                foreach (IGrouping<Document, ReferenceLocation> grouping in referencedSymbol.Locations.GroupBy(f => f.Document))
+                Document document = grouping.Key;
+
+                SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+
+                List<SyntaxNode> nodes = null;
+
+                FindReferences(grouping, root, allowCandidate, ref nodes);
+
+                if (nodes is not null)
                 {
-                    Document document = grouping.Key;
+                    var info = new DocumentReferenceInfo(document, root, nodes.ToImmutableArray());
 
-                    SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-                    List<SyntaxNode> nodes = null;
-
-                    FindReferences(grouping, root, allowCandidate, ref nodes);
-
-                    if (nodes != null)
-                    {
-                        var info = new DocumentReferenceInfo(document, root, nodes.ToImmutableArray());
-
-                        (infos ??= new List<DocumentReferenceInfo>()).Add(info);
-                    }
-                }
-            }
-
-            return ToImmutableArray(infos);
-        }
-
-        public static async Task<ImmutableArray<SyntaxNode>> FindReferencesAsync(
-            ISymbol symbol,
-            Document document,
-            bool allowCandidate = false,
-            CancellationToken cancellationToken = default)
-        {
-            if (symbol == null)
-                throw new ArgumentNullException(nameof(symbol));
-
-            if (document == null)
-                throw new ArgumentNullException(nameof(document));
-
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-            List<SyntaxNode> nodes = null;
-
-            foreach (ReferencedSymbol referencedSymbol in await SymbolFinder.FindReferencesAsync(
-                symbol,
-                document.Solution(),
-                ImmutableHashSet.Create(document),
-                cancellationToken)
-                .ConfigureAwait(false))
-            {
-                FindReferences(referencedSymbol.Locations, root, allowCandidate, ref nodes);
-            }
-
-            return ToImmutableArray(nodes);
-        }
-
-        private static void FindReferences(
-            IEnumerable<ReferenceLocation> referenceLocations,
-            SyntaxNode root,
-            bool allowCandidate,
-            ref List<SyntaxNode> nodes)
-        {
-            foreach (ReferenceLocation referenceLocation in referenceLocations)
-            {
-                if (!referenceLocation.IsImplicit
-                    && (allowCandidate || !referenceLocation.IsCandidateLocation))
-                {
-                    Location location = referenceLocation.Location;
-
-                    if (location.IsInSource)
-                    {
-                        SyntaxNode node = root.FindNode(location.SourceSpan, findInsideTrivia: true, getInnermostNodeForTie: true);
-
-                        Debug.Assert(node != null);
-
-                        (nodes ??= new List<SyntaxNode>()).Add(node);
-                    }
+                    (infos ??= new List<DocumentReferenceInfo>()).Add(info);
                 }
             }
         }
 
-        private static ImmutableArray<T> ToImmutableArray<T>(IEnumerable<T> nodes)
+        return ToImmutableArray(infos);
+    }
+
+    public static async Task<ImmutableArray<SyntaxNode>> FindReferencesAsync(
+        ISymbol symbol,
+        Document document,
+        bool allowCandidate = false,
+        CancellationToken cancellationToken = default)
+    {
+        if (symbol is null)
+            throw new ArgumentNullException(nameof(symbol));
+
+        if (document is null)
+            throw new ArgumentNullException(nameof(document));
+
+        SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+
+        List<SyntaxNode> nodes = null;
+
+        foreach (ReferencedSymbol referencedSymbol in await SymbolFinder.FindReferencesAsync(
+            symbol,
+            document.Solution(),
+            ImmutableHashSet.Create(document),
+            cancellationToken)
+            .ConfigureAwait(false))
         {
-            if (nodes != null)
+            FindReferences(referencedSymbol.Locations, root, allowCandidate, ref nodes);
+        }
+
+        return ToImmutableArray(nodes);
+    }
+
+    private static void FindReferences(
+        IEnumerable<ReferenceLocation> referenceLocations,
+        SyntaxNode root,
+        bool allowCandidate,
+        ref List<SyntaxNode> nodes)
+    {
+        foreach (ReferenceLocation referenceLocation in referenceLocations)
+        {
+            if (!referenceLocation.IsImplicit
+                && (allowCandidate || !referenceLocation.IsCandidateLocation))
             {
-                return ImmutableArray.CreateRange(nodes);
+                Location location = referenceLocation.Location;
+
+                if (location.IsInSource)
+                {
+                    SyntaxNode node = root.FindNode(location.SourceSpan, findInsideTrivia: true, getInnermostNodeForTie: true);
+
+                    Debug.Assert(node is not null);
+
+                    (nodes ??= new List<SyntaxNode>()).Add(node);
+                }
             }
-            else
-            {
-                return ImmutableArray<T>.Empty;
-            }
+        }
+    }
+
+    private static ImmutableArray<T> ToImmutableArray<T>(IEnumerable<T> nodes)
+    {
+        if (nodes is not null)
+        {
+            return ImmutableArray.CreateRange(nodes);
+        }
+        else
+        {
+            return ImmutableArray<T>.Empty;
         }
     }
 }

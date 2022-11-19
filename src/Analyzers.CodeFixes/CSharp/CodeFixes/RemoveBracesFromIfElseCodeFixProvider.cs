@@ -10,32 +10,31 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(RemoveBracesFromIfElseCodeFixProvider))]
+[Shared]
+public sealed class RemoveBracesFromIfElseCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(RemoveBracesFromIfElseCodeFixProvider))]
-    [Shared]
-    public sealed class RemoveBracesFromIfElseCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
-        {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveBracesFromIfElse); }
-        }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveBracesFromIfElse); }
+    }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out IfStatementSyntax ifStatement))
-                return;
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out IfStatementSyntax ifStatement))
+            return;
 
-            ifStatement = ifStatement.GetTopmostIf();
+        ifStatement = ifStatement.GetTopmostIf();
 
-            CodeAction codeAction = CodeAction.Create(
-                "Remove braces from if-else",
-                ct => RemoveBracesFromIfElseElseRefactoring.RefactorAsync(context.Document, ifStatement, ct),
-                GetEquivalenceKey(DiagnosticIdentifiers.RemoveBracesFromIfElse));
+        CodeAction codeAction = CodeAction.Create(
+            "Remove braces from if-else",
+            ct => RemoveBracesFromIfElseElseRefactoring.RefactorAsync(context.Document, ifStatement, ct),
+            GetEquivalenceKey(DiagnosticIdentifiers.RemoveBracesFromIfElse));
 
-            context.RegisterCodeFix(codeAction, context.Diagnostics);
-        }
+        context.RegisterCodeFix(codeAction, context.Diagnostics);
     }
 }

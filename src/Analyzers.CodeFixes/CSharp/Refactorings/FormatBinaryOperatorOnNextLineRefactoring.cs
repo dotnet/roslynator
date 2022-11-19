@@ -7,29 +7,28 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class FormatBinaryOperatorOnNextLineRefactoring
 {
-    internal static class FormatBinaryOperatorOnNextLineRefactoring
+    public static Task<Document> RefactorAsync(
+        Document document,
+        BinaryExpressionSyntax binaryExpression,
+        CancellationToken cancellationToken)
     {
-        public static Task<Document> RefactorAsync(
-            Document document,
-            BinaryExpressionSyntax binaryExpression,
-            CancellationToken cancellationToken)
-        {
-            BinaryExpressionSyntax newBinaryExpression = BinaryExpression(
-                binaryExpression.Kind(),
-                binaryExpression.Left.WithTrailingTrivia(binaryExpression.OperatorToken.TrailingTrivia),
-                Token(
-                    binaryExpression.Right.GetLeadingTrivia(),
-                    binaryExpression.OperatorToken.Kind(),
-                    TriviaList(Space)),
-                binaryExpression.Right.WithoutLeadingTrivia());
+        BinaryExpressionSyntax newBinaryExpression = BinaryExpression(
+            binaryExpression.Kind(),
+            binaryExpression.Left.WithTrailingTrivia(binaryExpression.OperatorToken.TrailingTrivia),
+            Token(
+                binaryExpression.Right.GetLeadingTrivia(),
+                binaryExpression.OperatorToken.Kind(),
+                TriviaList(Space)),
+            binaryExpression.Right.WithoutLeadingTrivia());
 
-            newBinaryExpression = newBinaryExpression
-                .WithTriviaFrom(binaryExpression)
-                .WithFormatterAnnotation();
+        newBinaryExpression = newBinaryExpression
+            .WithTriviaFrom(binaryExpression)
+            .WithFormatterAnnotation();
 
-            return document.ReplaceNodeAsync(binaryExpression, newBinaryExpression, cancellationToken);
-        }
+        return document.ReplaceNodeAsync(binaryExpression, newBinaryExpression, cancellationToken);
     }
 }

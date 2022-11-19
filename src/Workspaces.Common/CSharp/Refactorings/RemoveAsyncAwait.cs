@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             BlockSyntax body = localFunction.Body;
 
-                            if (body != null)
+                            if (body is not null)
                             {
                                 localFunction = localFunction.WithBody((BlockSyntax)remover.VisitBlock(body));
                             }
@@ -49,7 +49,7 @@ namespace Roslynator.CSharp.Refactorings
                             {
                                 ArrowExpressionClauseSyntax expressionBody = localFunction.ExpressionBody;
 
-                                if (expressionBody != null)
+                                if (expressionBody is not null)
                                     localFunction = localFunction.WithExpressionBody((ArrowExpressionClauseSyntax)remover.VisitArrowExpressionClause(expressionBody));
                             }
 

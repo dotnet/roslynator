@@ -108,7 +108,7 @@ namespace Roslynator.CSharp
         /// <param name="comparer"></param>
         public TNode Insert(TNode node, SyntaxKind kind, IComparer<SyntaxKind> comparer = null)
         {
-            if (node == null)
+            if (node is null)
                 throw new ArgumentNullException(nameof(node));
 
             SyntaxTokenList modifiers = GetModifiers(node);
@@ -126,7 +126,7 @@ namespace Roslynator.CSharp
         /// <param name="comparer"></param>
         public TNode Insert(TNode node, SyntaxToken modifier, IComparer<SyntaxToken> comparer = null)
         {
-            if (node == null)
+            if (node is null)
                 throw new ArgumentNullException(nameof(node));
 
             SyntaxTokenList modifiers = GetModifiers(node);
@@ -151,7 +151,7 @@ namespace Roslynator.CSharp
                 {
                     AttributeListSyntax attributeList = GetAttributeLists(node).LastOrDefault();
 
-                    if (attributeList != null)
+                    if (attributeList is not null)
                     {
                         token = attributeList.GetLastToken().GetNextToken();
                     }
@@ -208,7 +208,7 @@ namespace Roslynator.CSharp
         /// <param name="kind"></param>
         public TNode Remove(TNode node, SyntaxKind kind)
         {
-            if (node == null)
+            if (node is null)
                 throw new ArgumentNullException(nameof(node));
 
             SyntaxTokenList modifiers = GetModifiers(node);
@@ -232,7 +232,7 @@ namespace Roslynator.CSharp
         /// <param name="modifier"></param>
         public TNode Remove(TNode node, SyntaxToken modifier)
         {
-            if (node == null)
+            if (node is null)
                 throw new ArgumentNullException(nameof(node));
 
             SyntaxTokenList modifiers = GetModifiers(node);
@@ -256,7 +256,7 @@ namespace Roslynator.CSharp
         /// <param name="index"></param>
         public TNode RemoveAt(TNode node, int index)
         {
-            if (node == null)
+            if (node is null)
                 throw new ArgumentNullException(nameof(node));
 
             SyntaxTokenList modifiers = GetModifiers(node);

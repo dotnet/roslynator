@@ -5,24 +5,23 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.Documentation;
 
-namespace Roslynator.CSharp.Documentation
+namespace Roslynator.CSharp.Documentation;
+
+internal class AddBaseOrNewDocumentationCommentRewriter : AddNewDocumentationCommentRewriter
 {
-    internal class AddBaseOrNewDocumentationCommentRewriter : AddNewDocumentationCommentRewriter
+    public AddBaseOrNewDocumentationCommentRewriter(SemanticModel semanticModel, DocumentationCommentGeneratorSettings settings = null, bool skipNamespaceDeclaration = true, CancellationToken cancellationToken = default)
+        : base(settings, skipNamespaceDeclaration)
     {
-        public AddBaseOrNewDocumentationCommentRewriter(SemanticModel semanticModel, DocumentationCommentGeneratorSettings settings = null, bool skipNamespaceDeclaration = true, CancellationToken cancellationToken = default)
-            : base(settings, skipNamespaceDeclaration)
-        {
-            SemanticModel = semanticModel;
-            CancellationToken = cancellationToken;
-        }
+        SemanticModel = semanticModel;
+        CancellationToken = cancellationToken;
+    }
 
-        public SemanticModel SemanticModel { get; }
+    public SemanticModel SemanticModel { get; }
 
-        public CancellationToken CancellationToken { get; }
+    public CancellationToken CancellationToken { get; }
 
-        protected override MemberDeclarationSyntax AddDocumentationComment(MemberDeclarationSyntax memberDeclaration)
-        {
-            return memberDeclaration.WithBaseOrNewSingleLineDocumentationComment(SemanticModel, Settings, CancellationToken);
-        }
+    protected override MemberDeclarationSyntax AddDocumentationComment(MemberDeclarationSyntax memberDeclaration)
+    {
+        return memberDeclaration.WithBaseOrNewSingleLineDocumentationComment(SemanticModel, Settings, CancellationToken);
     }
 }

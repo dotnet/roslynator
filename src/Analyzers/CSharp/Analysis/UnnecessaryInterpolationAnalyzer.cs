@@ -37,10 +37,10 @@ namespace Roslynator.CSharp.Analysis
         {
             var interpolation = (InterpolationSyntax)context.Node;
 
-            if (interpolation.AlignmentClause != null)
+            if (interpolation.AlignmentClause is not null)
                 return;
 
-            if (interpolation.FormatClause != null)
+            if (interpolation.FormatClause is not null)
                 return;
 
             StringLiteralExpressionInfo stringLiteralInfo = SyntaxInfo.StringLiteralExpressionInfo(interpolation.Expression);

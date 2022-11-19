@@ -10,30 +10,29 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(DeclareEachAttributeSeparatelyCodeFixProvider))]
+[Shared]
+public sealed class DeclareEachAttributeSeparatelyCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(DeclareEachAttributeSeparatelyCodeFixProvider))]
-    [Shared]
-    public sealed class DeclareEachAttributeSeparatelyCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
-        {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.DeclareEachAttributeSeparately); }
-        }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.DeclareEachAttributeSeparately); }
+    }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out AttributeListSyntax attributeList))
-                return;
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out AttributeListSyntax attributeList))
+            return;
 
-            CodeAction codeAction = CodeAction.Create(
-                "Split attributes",
-                ct => DeclareEachAttributeSeparatelyRefactoring.RefactorAsync(context.Document, attributeList, ct),
-                GetEquivalenceKey(DiagnosticIdentifiers.DeclareEachAttributeSeparately));
+        CodeAction codeAction = CodeAction.Create(
+            "Split attributes",
+            ct => DeclareEachAttributeSeparatelyRefactoring.RefactorAsync(context.Document, attributeList, ct),
+            GetEquivalenceKey(DiagnosticIdentifiers.DeclareEachAttributeSeparately));
 
-            context.RegisterCodeFix(codeAction, context.Diagnostics);
-        }
+        context.RegisterCodeFix(codeAction, context.Diagnostics);
     }
 }

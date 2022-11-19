@@ -10,137 +10,136 @@ using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp;
 using Roslynator.CSharp.Syntax;
 
-namespace Roslynator.CodeAnalysis.CSharp
+namespace Roslynator.CodeAnalysis.CSharp;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class SimpleMemberAccessExpressionAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class SimpleMemberAccessExpressionAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
+            if (_supportedDiagnostics.IsDefault)
             {
-                if (_supportedDiagnostics.IsDefault)
-                {
-                    Immutable.InterlockedInitialize(
-                        ref _supportedDiagnostics,
-                        DiagnosticRules.UsePropertySyntaxNodeSpanStart,
-                        DiagnosticRules.CallAnyInsteadOfAccessingCount);
-                }
-
-                return _supportedDiagnostics;
+                Immutable.InterlockedInitialize(
+                    ref _supportedDiagnostics,
+                    DiagnosticRules.UsePropertySyntaxNodeSpanStart,
+                    DiagnosticRules.CallAnyInsteadOfAccessingCount);
             }
+
+            return _supportedDiagnostics;
         }
+    }
 
-        public override void Initialize(AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
+
+        context.RegisterSyntaxNodeAction(f => AnalyzeSimpleMemberAccessExpression(f), SyntaxKind.SimpleMemberAccessExpression);
+    }
+
+    private static void AnalyzeSimpleMemberAccessExpression(SyntaxNodeAnalysisContext context)
+    {
+        var memberAccessExpression = (MemberAccessExpressionSyntax)context.Node;
+
+        SimpleNameSyntax name = memberAccessExpression.Name;
+
+        switch (name)
         {
-            base.Initialize(context);
-
-            context.RegisterSyntaxNodeAction(f => AnalyzeSimpleMemberAccessExpression(f), SyntaxKind.SimpleMemberAccessExpression);
-        }
-
-        private static void AnalyzeSimpleMemberAccessExpression(SyntaxNodeAnalysisContext context)
-        {
-            var memberAccessExpression = (MemberAccessExpressionSyntax)context.Node;
-
-            SimpleNameSyntax name = memberAccessExpression.Name;
-
-            switch (name)
-            {
-                case IdentifierNameSyntax identifierName:
+            case IdentifierNameSyntax identifierName:
+                {
+                    switch (identifierName.Identifier.ValueText)
                     {
-                        switch (identifierName.Identifier.ValueText)
-                        {
-                            case "Start":
-                                {
-                                    ExpressionSyntax expression = memberAccessExpression.Expression;
+                        case "Start":
+                            {
+                                ExpressionSyntax expression = memberAccessExpression.Expression;
 
-                                    if (!expression.IsKind(SyntaxKind.SimpleMemberAccessExpression))
-                                        break;
-
-                                    ISymbol symbol = context.SemanticModel.GetSymbol(memberAccessExpression, context.CancellationToken);
-
-                                    if (symbol == null)
-                                        break;
-
-                                    if (!symbol.ContainingType.HasMetadataName(RoslynMetadataNames.Microsoft_CodeAnalysis_Text_TextSpan))
-                                        break;
-
-                                    var memberAccess2 = (MemberAccessExpressionSyntax)expression;
-
-                                    SimpleNameSyntax name2 = memberAccess2.Name;
-
-                                    if (name2 is not IdentifierNameSyntax identifierName2)
-                                        break;
-
-                                    if (!string.Equals(identifierName2.Identifier.ValueText, "Span", StringComparison.Ordinal))
-                                        break;
-
-                                    ISymbol symbol2 = context.SemanticModel.GetSymbol(expression, context.CancellationToken);
-
-                                    if (symbol2 == null)
-                                        break;
-
-                                    if (!symbol2.ContainingType.HasMetadataName(MetadataNames.Microsoft_CodeAnalysis_SyntaxNode))
-                                        break;
-
-                                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UsePropertySyntaxNodeSpanStart, memberAccessExpression);
+                                if (!expression.IsKind(SyntaxKind.SimpleMemberAccessExpression))
                                     break;
-                                }
-                            case "Count":
-                                {
-                                    CallAnyInsteadOfUsingCount();
-                                    break;
-                                }
-                        }
 
-                        break;
+                                ISymbol symbol = context.SemanticModel.GetSymbol(memberAccessExpression, context.CancellationToken);
+
+                                if (symbol is null)
+                                    break;
+
+                                if (!symbol.ContainingType.HasMetadataName(RoslynMetadataNames.Microsoft_CodeAnalysis_Text_TextSpan))
+                                    break;
+
+                                var memberAccess2 = (MemberAccessExpressionSyntax)expression;
+
+                                SimpleNameSyntax name2 = memberAccess2.Name;
+
+                                if (name2 is not IdentifierNameSyntax identifierName2)
+                                    break;
+
+                                if (!string.Equals(identifierName2.Identifier.ValueText, "Span", StringComparison.Ordinal))
+                                    break;
+
+                                ISymbol symbol2 = context.SemanticModel.GetSymbol(expression, context.CancellationToken);
+
+                                if (symbol2 is null)
+                                    break;
+
+                                if (!symbol2.ContainingType.HasMetadataName(MetadataNames.Microsoft_CodeAnalysis_SyntaxNode))
+                                    break;
+
+                                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UsePropertySyntaxNodeSpanStart, memberAccessExpression);
+                                break;
+                            }
+                        case "Count":
+                            {
+                                CallAnyInsteadOfUsingCount();
+                                break;
+                            }
                     }
-            }
 
-            void CallAnyInsteadOfUsingCount()
-            {
-                SyntaxNode expression = memberAccessExpression.WalkUpParentheses();
-
-                SyntaxNode parent = expression.Parent;
-
-                if (!parent.IsKind(SyntaxKind.EqualsExpression, SyntaxKind.NotEqualsExpression, SyntaxKind.GreaterThanExpression))
-                    return;
-
-                BinaryExpressionInfo binaryExpressionInfo = SyntaxInfo.BinaryExpressionInfo((BinaryExpressionSyntax)parent);
-
-                if (!binaryExpressionInfo.Success)
-                    return;
-
-                ExpressionSyntax otherExpression = (expression == binaryExpressionInfo.Left)
-                    ? binaryExpressionInfo.Right
-                    : binaryExpressionInfo.Left;
-
-                if (!otherExpression.IsKind(SyntaxKind.NumericLiteralExpression))
-                    return;
-
-                var numericLiteralExpression = (LiteralExpressionSyntax)otherExpression;
-
-                if (numericLiteralExpression.Token.ValueText != "0")
-                    return;
-
-                ISymbol symbol = context.SemanticModel.GetSymbol(memberAccessExpression, context.CancellationToken);
-
-                if (symbol?.Kind != SymbolKind.Property
-                    || symbol.IsStatic
-                    || symbol.DeclaredAccessibility != Accessibility.Public
-                    || !RoslynSymbolUtility.IsList(symbol.ContainingType.OriginalDefinition))
-                {
-                    return;
+                    break;
                 }
+        }
 
-                TextSpan span = (memberAccessExpression == binaryExpressionInfo.Left)
-                    ? TextSpan.FromBounds(name.SpanStart, numericLiteralExpression.Span.End)
-                    : TextSpan.FromBounds(numericLiteralExpression.SpanStart, name.Span.End);
+        void CallAnyInsteadOfUsingCount()
+        {
+            SyntaxNode expression = memberAccessExpression.WalkUpParentheses();
 
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.CallAnyInsteadOfAccessingCount, Location.Create(memberAccessExpression.SyntaxTree, span));
+            SyntaxNode parent = expression.Parent;
+
+            if (!parent.IsKind(SyntaxKind.EqualsExpression, SyntaxKind.NotEqualsExpression, SyntaxKind.GreaterThanExpression))
+                return;
+
+            BinaryExpressionInfo binaryExpressionInfo = SyntaxInfo.BinaryExpressionInfo((BinaryExpressionSyntax)parent);
+
+            if (!binaryExpressionInfo.Success)
+                return;
+
+            ExpressionSyntax otherExpression = (expression == binaryExpressionInfo.Left)
+                ? binaryExpressionInfo.Right
+                : binaryExpressionInfo.Left;
+
+            if (!otherExpression.IsKind(SyntaxKind.NumericLiteralExpression))
+                return;
+
+            var numericLiteralExpression = (LiteralExpressionSyntax)otherExpression;
+
+            if (numericLiteralExpression.Token.ValueText != "0")
+                return;
+
+            ISymbol symbol = context.SemanticModel.GetSymbol(memberAccessExpression, context.CancellationToken);
+
+            if (symbol?.Kind != SymbolKind.Property
+                || symbol.IsStatic
+                || symbol.DeclaredAccessibility != Accessibility.Public
+                || !RoslynSymbolUtility.IsList(symbol.ContainingType.OriginalDefinition))
+            {
+                return;
             }
+
+            TextSpan span = (memberAccessExpression == binaryExpressionInfo.Left)
+                ? TextSpan.FromBounds(name.SpanStart, numericLiteralExpression.Span.End)
+                : TextSpan.FromBounds(numericLiteralExpression.SpanStart, name.Span.End);
+
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.CallAnyInsteadOfAccessingCount, Location.Create(memberAccessExpression.SyntaxTree, span));
         }
     }
 }

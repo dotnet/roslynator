@@ -8,30 +8,29 @@ using Roslynator.Metadata;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CodeGeneration.CSharp
+namespace Roslynator.CodeGeneration.CSharp;
+
+public static class CompilerDiagnosticIdentifiersGenerator
 {
-    public static class CompilerDiagnosticIdentifiersGenerator
+    public static CompilationUnitSyntax Generate(IEnumerable<CompilerDiagnosticMetadata> compilerDiagnostics, IComparer<string> comparer)
     {
-        public static CompilationUnitSyntax Generate(IEnumerable<CompilerDiagnosticMetadata> compilerDiagnostics, IComparer<string> comparer)
-        {
-            return CompilationUnit(
-                UsingDirectives(),
-                NamespaceDeclaration(
-                    "Roslynator.CSharp",
-                    ClassDeclaration(
-                        Modifiers.Internal_Static(),
-                        "CompilerDiagnosticIdentifiers",
-                        compilerDiagnostics
-                            .OrderBy(f => f.Id, comparer)
-                            .Select(f =>
-                            {
-                                return FieldDeclaration(
-                                    Modifiers.Public_Const(),
-                                    PredefinedStringType(),
-                                    $"{f.Id}_{f.Identifier}",
-                                    StringLiteralExpression(f.Id));
-                            })
-                            .ToSyntaxList<MemberDeclarationSyntax>())));
-        }
+        return CompilationUnit(
+            UsingDirectives(),
+            NamespaceDeclaration(
+                "Roslynator.CSharp",
+                ClassDeclaration(
+                    Modifiers.Internal_Static(),
+                    "CompilerDiagnosticIdentifiers",
+                    compilerDiagnostics
+                        .OrderBy(f => f.Id, comparer)
+                        .Select(f =>
+                        {
+                            return FieldDeclaration(
+                                Modifiers.Public_Const(),
+                                PredefinedStringType(),
+                                $"{f.Id}_{f.Identifier}",
+                                StringLiteralExpression(f.Id));
+                        })
+                        .ToSyntaxList<MemberDeclarationSyntax>())));
     }
 }

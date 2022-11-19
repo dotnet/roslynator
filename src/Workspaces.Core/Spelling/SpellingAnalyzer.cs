@@ -8,75 +8,74 @@ using Microsoft.CodeAnalysis;
 using Roslynator.Host.Mef;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Roslynator.Spelling
+namespace Roslynator.Spelling;
+
+internal sealed class SpellingAnalyzer
 {
-    internal sealed class SpellingAnalyzer
+    [SuppressMessage("MicrosoftCodeAnalysisReleaseTracking", "RS2008:Enable analyzer release tracking")]
+    public static readonly DiagnosticDescriptor DiagnosticDescriptor = new(
+        id: CommonDiagnosticIdentifiers.PossibleMisspellingOrTypo,
+        title: "Possible misspelling or typo",
+        messageFormat: "Possible misspelling or typo in '{0}'",
+        category: "Spelling",
+        defaultSeverity: DiagnosticSeverity.Info,
+        isEnabledByDefault: true,
+        description: null,
+        helpLinkUri: DiagnosticDescriptorUtility.GetHelpLinkUri(CommonDiagnosticIdentifiers.PossibleMisspellingOrTypo),
+        customTags: Array.Empty<string>());
+
+    public static async Task<ImmutableArray<Diagnostic>> AnalyzeSpellingAsync(
+        Project project,
+        SpellingData spellingData,
+        SpellingFixerOptions options = null,
+        CancellationToken cancellationToken = default)
     {
-        [SuppressMessage("MicrosoftCodeAnalysisReleaseTracking", "RS2008:Enable analyzer release tracking")]
-        public static readonly DiagnosticDescriptor DiagnosticDescriptor = new(
-            id: CommonDiagnosticIdentifiers.PossibleMisspellingOrTypo,
-            title: "Possible misspelling or typo",
-            messageFormat: "Possible misspelling or typo in '{0}'",
-            category: "Spelling",
-            defaultSeverity: DiagnosticSeverity.Info,
-            isEnabledByDefault: true,
-            description: null,
-            helpLinkUri: DiagnosticDescriptorUtility.GetHelpLinkUri(CommonDiagnosticIdentifiers.PossibleMisspellingOrTypo),
-            customTags: Array.Empty<string>());
+        ISpellingService service = MefWorkspaceServices.Default.GetService<ISpellingService>(project.Language);
 
-        public static async Task<ImmutableArray<Diagnostic>> AnalyzeSpellingAsync(
-            Project project,
-            SpellingData spellingData,
-            SpellingFixerOptions options = null,
-            CancellationToken cancellationToken = default)
+        if (service is null)
+            return ImmutableArray<Diagnostic>.Empty;
+
+        ImmutableArray<Diagnostic>.Builder diagnostics = ImmutableArray.CreateBuilder<Diagnostic>();
+
+        foreach (Document document in project.Documents)
         {
-            ISpellingService service = MefWorkspaceServices.Default.GetService<ISpellingService>(project.Language);
+            if (!document.SupportsSyntaxTree)
+                continue;
 
-            if (service == null)
-                return ImmutableArray<Diagnostic>.Empty;
+            ImmutableArray<Diagnostic> diagnostics2 = await AnalyzeSpellingAsync(
+                service,
+                document,
+                spellingData,
+                options,
+                cancellationToken)
+                .ConfigureAwait(false);
 
-            ImmutableArray<Diagnostic>.Builder diagnostics = ImmutableArray.CreateBuilder<Diagnostic>();
-
-            foreach (Document document in project.Documents)
-            {
-                if (!document.SupportsSyntaxTree)
-                    continue;
-
-                ImmutableArray<Diagnostic> diagnostics2 = await AnalyzeSpellingAsync(
-                    service,
-                    document,
-                    spellingData,
-                    options,
-                    cancellationToken)
-                    .ConfigureAwait(false);
-
-                diagnostics.AddRange(diagnostics2);
-            }
-
-            return diagnostics.ToImmutableArray();
+            diagnostics.AddRange(diagnostics2);
         }
 
-        public static async Task<ImmutableArray<Diagnostic>> AnalyzeSpellingAsync(
-            ISpellingService service,
-            Document document,
-            SpellingData spellingData,
-            SpellingFixerOptions options = null,
-            CancellationToken cancellationToken = default)
+        return diagnostics.ToImmutableArray();
+    }
+
+    public static async Task<ImmutableArray<Diagnostic>> AnalyzeSpellingAsync(
+        ISpellingService service,
+        Document document,
+        SpellingData spellingData,
+        SpellingFixerOptions options = null,
+        CancellationToken cancellationToken = default)
+    {
+        SyntaxTree tree = await document.GetSyntaxTreeAsync(cancellationToken).ConfigureAwait(false);
+
+        if (tree is null)
+            return ImmutableArray<Diagnostic>.Empty;
+
+        if (!options.IncludeGeneratedCode
+            && GeneratedCodeUtility.IsGeneratedCode(tree, f => service.SyntaxFacts.IsComment(f), cancellationToken))
         {
-            SyntaxTree tree = await document.GetSyntaxTreeAsync(cancellationToken).ConfigureAwait(false);
-
-            if (tree == null)
-                return ImmutableArray<Diagnostic>.Empty;
-
-            if (!options.IncludeGeneratedCode
-                && GeneratedCodeUtility.IsGeneratedCode(tree, f => service.SyntaxFacts.IsComment(f), cancellationToken))
-            {
-                return ImmutableArray<Diagnostic>.Empty;
-            }
-
-            SyntaxNode root = await tree.GetRootAsync(cancellationToken).ConfigureAwait(false);
-
-            return service.AnalyzeSpelling(root, spellingData, options, cancellationToken);
+            return ImmutableArray<Diagnostic>.Empty;
         }
+
+        SyntaxNode root = await tree.GetRootAsync(cancellationToken).ConfigureAwait(false);
+
+        return service.AnalyzeSpelling(root, spellingData, options, cancellationToken);
     }
 }

@@ -13,30 +13,29 @@ using Roslynator.CodeFixes;
 using Roslynator.CSharp.Analysis;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SimplifyNestedUsingStatementCodeFixProvider))]
+[Shared]
+public sealed class SimplifyNestedUsingStatementCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SimplifyNestedUsingStatementCodeFixProvider))]
-    [Shared]
-    public sealed class SimplifyNestedUsingStatementCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
-        {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.SimplifyNestedUsingStatement); }
-        }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.SimplifyNestedUsingStatement); }
+    }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out UsingStatementSyntax usingStatement))
-                return;
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out UsingStatementSyntax usingStatement))
+            return;
 
-            CodeAction codeAction = CodeAction.Create(
-                "Remove braces",
-                ct => SimplifyNestedUsingStatementRefactoring.RefactorAsync(context.Document, usingStatement, ct),
-                GetEquivalenceKey(DiagnosticIdentifiers.SimplifyNestedUsingStatement));
+        CodeAction codeAction = CodeAction.Create(
+            "Remove braces",
+            ct => SimplifyNestedUsingStatementRefactoring.RefactorAsync(context.Document, usingStatement, ct),
+            GetEquivalenceKey(DiagnosticIdentifiers.SimplifyNestedUsingStatement));
 
-            context.RegisterCodeFix(codeAction, context.Diagnostics);
-        }
+        context.RegisterCodeFix(codeAction, context.Diagnostics);
     }
 }

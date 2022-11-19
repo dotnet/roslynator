@@ -64,7 +64,7 @@ namespace Roslynator.Diagnostics
 
                 Project project = solution.GetProject(projectIds[i]);
 
-                if (predicate == null || predicate(project))
+                if (predicate is null || predicate(project))
                 {
                     WriteLine($"Analyze '{project.Name}' {$"{i + 1}/{projectIds.Length}"}", Verbosity.Minimal);
 
@@ -200,7 +200,7 @@ namespace Roslynator.Diagnostics
 
                         SyntaxTree tree = diagnostic.Location.SourceTree;
 
-                        if (tree == null
+                        if (tree is null
                             || !GeneratedCodeUtility.IsGeneratedCode(tree, f => MefWorkspaceServices.Default.GetService<ISyntaxFactsService>(tree.Options.Language).IsComment(f), cancellationToken))
                         {
                             yield return diagnostic;

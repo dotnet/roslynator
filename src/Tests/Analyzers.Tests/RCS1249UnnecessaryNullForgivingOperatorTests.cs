@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1249UnnecessaryNullForgivingOperatorTests : AbstractCSharpDiagnosticVerifier<UnncessaryNullForgivingOperatorAnalyzer, TokenCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UnnecessaryNullForgivingOperator;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullForgivingOperator)]
-        public async Task Test_Property()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1249UnnecessaryNullForgivingOperatorTests : AbstractCSharpDiagnosticVerifier<UnncessaryNullForgivingOperatorAnalyzer, TokenCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UnnecessaryNullForgivingOperator;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullForgivingOperator)]
+    public async Task Test_Property()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 #nullable enable
 
 class C
@@ -30,12 +30,12 @@ class C
     string? P { get; set; } //x
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullForgivingOperator)]
-        public async Task Test_Property_DefaultLiteral()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullForgivingOperator)]
+    public async Task Test_Property_DefaultLiteral()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 #nullable enable
 
 class C
@@ -50,12 +50,12 @@ class C
     string? P { get; set; }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullForgivingOperator)]
-        public async Task Test_Property_DefaultExpression()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullForgivingOperator)]
+    public async Task Test_Property_DefaultExpression()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 #nullable enable
 
 class C
@@ -70,12 +70,12 @@ class C
     string? P { get; set; }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullForgivingOperator)]
-        public async Task Test_Field()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullForgivingOperator)]
+    public async Task Test_Field()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 #nullable enable
 
 class C
@@ -90,12 +90,12 @@ class C
     private string? F; //x
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullForgivingOperator)]
-        public async Task Test_LocalVariable()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullForgivingOperator)]
+    public async Task Test_LocalVariable()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 #nullable enable
 
 class C
@@ -116,12 +116,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullForgivingOperator)]
-        public async Task Test_Argument()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullForgivingOperator)]
+    public async Task Test_Argument()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 #nullable enable
 
 class C
@@ -146,12 +146,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullForgivingOperator)]
-        public async Task TestNoDiagnostic_Argument()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullForgivingOperator)]
+    public async Task TestNoDiagnostic_Argument()
+    {
+        await VerifyNoDiagnosticAsync(@"
 #nullable enable
 
 class C
@@ -164,12 +164,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullForgivingOperator)]
-        public async Task TestNoDiagnostic_MaybeNullWhenAttribute()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryNullForgivingOperator)]
+    public async Task TestNoDiagnostic_MaybeNullWhenAttribute()
+    {
+        await VerifyNoDiagnosticAsync(@"
 #nullable enable
 
 using System.Diagnostics.CodeAnalysis;
@@ -189,6 +189,5 @@ class C
     }
 }
 ");
-        }
     }
 }

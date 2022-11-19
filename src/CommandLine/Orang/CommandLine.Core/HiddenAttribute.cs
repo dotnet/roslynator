@@ -2,10 +2,9 @@
 
 using System;
 
-namespace Roslynator
+namespace Roslynator;
+
+[AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
+internal sealed class HiddenAttribute : Attribute
 {
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
-    internal sealed class HiddenAttribute : Attribute
-    {
-    }
 }

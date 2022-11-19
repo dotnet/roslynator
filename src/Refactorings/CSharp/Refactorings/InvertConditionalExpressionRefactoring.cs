@@ -5,32 +5,31 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class InvertConditionalExpressionRefactoring
 {
-    internal static class InvertConditionalExpressionRefactoring
+    public static bool CanRefactor(ConditionalExpressionSyntax conditionalExpression)
     {
-        public static bool CanRefactor(ConditionalExpressionSyntax conditionalExpression)
-        {
-            return SyntaxInfo.ConditionalExpressionInfo(conditionalExpression).Success;
-        }
+        return SyntaxInfo.ConditionalExpressionInfo(conditionalExpression).Success;
+    }
 
-        public static async Task<Document> RefactorAsync(
-            Document document,
-            ConditionalExpressionSyntax conditionalExpression,
-            CancellationToken cancellationToken = default)
-        {
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+    public static async Task<Document> RefactorAsync(
+        Document document,
+        ConditionalExpressionSyntax conditionalExpression,
+        CancellationToken cancellationToken = default)
+    {
+        SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            ConditionalExpressionSyntax newNode = conditionalExpression.Update(
-                condition: SyntaxLogicalInverter.GetInstance(document).LogicallyInvert(conditionalExpression.Condition, semanticModel, cancellationToken),
-                questionToken: conditionalExpression.QuestionToken,
-                whenTrue: conditionalExpression.WhenFalse.WithTriviaFrom(conditionalExpression.WhenTrue),
-                colonToken: conditionalExpression.ColonToken,
-                whenFalse: conditionalExpression.WhenTrue.WithTriviaFrom(conditionalExpression.WhenFalse));
+        ConditionalExpressionSyntax newNode = conditionalExpression.Update(
+            condition: SyntaxLogicalInverter.GetInstance(document).LogicallyInvert(conditionalExpression.Condition, semanticModel, cancellationToken),
+            questionToken: conditionalExpression.QuestionToken,
+            whenTrue: conditionalExpression.WhenFalse.WithTriviaFrom(conditionalExpression.WhenTrue),
+            colonToken: conditionalExpression.ColonToken,
+            whenFalse: conditionalExpression.WhenTrue.WithTriviaFrom(conditionalExpression.WhenFalse));
 
-            newNode = newNode.WithFormatterAnnotation();
+        newNode = newNode.WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(conditionalExpression, newNode, cancellationToken).ConfigureAwait(false);
-        }
+        return await document.ReplaceNodeAsync(conditionalExpression, newNode, cancellationToken).ConfigureAwait(false);
     }
 }

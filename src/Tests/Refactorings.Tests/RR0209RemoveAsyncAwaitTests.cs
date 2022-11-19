@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0209RemoveAsyncAwaitTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.RemoveAsyncAwait;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAsyncAwait)]
-        public async Task Test_Method_Body_ReturnAwait()
-        {
-            await VerifyRefactoringAsync(@"
+public class RR0209RemoveAsyncAwaitTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.RemoveAsyncAwait;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAsyncAwait)]
+    public async Task Test_Method_Body_ReturnAwait()
+    {
+        await VerifyRefactoringAsync(@"
 using System.Threading.Tasks;
 
 class C
@@ -38,12 +38,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAsyncAwait)]
-        public async Task Test_Method_Body_ReturnAwait_ConfigureAwait()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAsyncAwait)]
+    public async Task Test_Method_Body_ReturnAwait_ConfigureAwait()
+    {
+        await VerifyRefactoringAsync(@"
 using System.Threading.Tasks;
 
 class C
@@ -64,12 +64,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAsyncAwait)]
-        public async Task Test_Method_ExpressionBody()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAsyncAwait)]
+    public async Task Test_Method_ExpressionBody()
+    {
+        await VerifyRefactoringAsync(@"
 using System.Threading.Tasks;
 
 class C
@@ -84,12 +84,12 @@ class C
     Task<object> GetAsync() => GetAsync();
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAsyncAwait)]
-        public async Task Test_LocalFunction_Body_ReturnAwait()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAsyncAwait)]
+    public async Task Test_LocalFunction_Body_ReturnAwait()
+    {
+        await VerifyRefactoringAsync(@"
 using System.Threading.Tasks;
 
 class C
@@ -116,12 +116,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAsyncAwait)]
-        public async Task Test_LocalFunction_ExpressionBody()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAsyncAwait)]
+    public async Task Test_LocalFunction_ExpressionBody()
+    {
+        await VerifyRefactoringAsync(@"
 using System.Threading.Tasks;
 
 class C
@@ -142,12 +142,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAsyncAwait)]
-        public async Task Test_SimpleLambda_Body()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAsyncAwait)]
+    public async Task Test_SimpleLambda_Body()
+    {
+        await VerifyRefactoringAsync(@"
 using System;
 using System.Threading.Tasks;
 
@@ -180,12 +180,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId), options: Options.AddAllowedCompilerDiagnosticId("CS1998"));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAsyncAwait)]
-        public async Task Test_SimpleLambda_ExpressionBody()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAsyncAwait)]
+    public async Task Test_SimpleLambda_ExpressionBody()
+    {
+        await VerifyRefactoringAsync(@"
 using System;
 using System.Threading.Tasks;
 
@@ -212,12 +212,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId), options: Options.AddAllowedCompilerDiagnosticId("CS1998"));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAsyncAwait)]
-        public async Task Test_ParenthesizedLambda_Body()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAsyncAwait)]
+    public async Task Test_ParenthesizedLambda_Body()
+    {
+        await VerifyRefactoringAsync(@"
 using System;
 using System.Threading.Tasks;
 
@@ -250,12 +250,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId), options: Options.AddAllowedCompilerDiagnosticId("CS1998"));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAsyncAwait)]
-        public async Task Test_ParenthesizedLambda_ExpressionBody()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAsyncAwait)]
+    public async Task Test_ParenthesizedLambda_ExpressionBody()
+    {
+        await VerifyRefactoringAsync(@"
 using System;
 using System.Threading.Tasks;
 
@@ -282,12 +282,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId), options: Options.AddAllowedCompilerDiagnosticId("CS1998"));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAsyncAwait)]
-        public async Task Test_AnonymousMethod()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAsyncAwait)]
+    public async Task Test_AnonymousMethod()
+    {
+        await VerifyRefactoringAsync(@"
 using System;
 using System.Threading.Tasks;
 
@@ -320,12 +320,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId), options: Options.AddAllowedCompilerDiagnosticId("CS1998"));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAsyncAwait)]
-        public async Task Test_IfElseIfReturn()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAsyncAwait)]
+    public async Task Test_IfElseIfReturn()
+    {
+        await VerifyRefactoringAsync(@"
 using System.Threading.Tasks;
 
 class C
@@ -368,12 +368,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAsyncAwait)]
-        public async Task Test_IfElse()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAsyncAwait)]
+    public async Task Test_IfElse()
+    {
+        await VerifyRefactoringAsync(@"
 using System.Threading.Tasks;
 
 class C
@@ -412,12 +412,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAsyncAwait)]
-        public async Task Test_SwitchWithoutDefaultSection()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAsyncAwait)]
+    public async Task Test_SwitchWithoutDefaultSection()
+    {
+        await VerifyRefactoringAsync(@"
 using System.Threading.Tasks;
 
 class C
@@ -466,12 +466,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAsyncAwait)]
-        public async Task Test_SwitchWithDefaultSection()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveAsyncAwait)]
+    public async Task Test_SwitchWithDefaultSection()
+    {
+        await VerifyRefactoringAsync(@"
 using System.Threading.Tasks;
 
 class C
@@ -524,6 +524,5 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
     }
 }

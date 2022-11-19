@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.Documentation
 
         public static SyntaxTriviaList Generate(MemberDeclarationSyntax memberDeclaration, DocumentationCommentGeneratorSettings settings = null)
         {
-            if (memberDeclaration == null)
+            if (memberDeclaration is null)
                 throw new ArgumentNullException(nameof(memberDeclaration));
 
             switch (memberDeclaration.Kind())
@@ -72,7 +72,7 @@ namespace Roslynator.CSharp.Documentation
 
         public static SyntaxTriviaList Generate(NamespaceDeclarationSyntax namespaceDeclaration, DocumentationCommentGeneratorSettings settings = null)
         {
-            if (namespaceDeclaration == null)
+            if (namespaceDeclaration is null)
                 throw new ArgumentNullException(nameof(namespaceDeclaration));
 
             return Generate(settings: settings);
@@ -80,7 +80,7 @@ namespace Roslynator.CSharp.Documentation
 
         public static SyntaxTriviaList Generate(ClassDeclarationSyntax classDeclaration, DocumentationCommentGeneratorSettings settings = null)
         {
-            if (classDeclaration == null)
+            if (classDeclaration is null)
                 throw new ArgumentNullException(nameof(classDeclaration));
 
             return Generate(
@@ -92,7 +92,7 @@ namespace Roslynator.CSharp.Documentation
 
         public static SyntaxTriviaList Generate(RecordDeclarationSyntax recordDeclaration, DocumentationCommentGeneratorSettings settings = null)
         {
-            if (recordDeclaration == null)
+            if (recordDeclaration is null)
                 throw new ArgumentNullException(nameof(recordDeclaration));
 
             return Generate(
@@ -104,7 +104,7 @@ namespace Roslynator.CSharp.Documentation
 
         public static SyntaxTriviaList Generate(StructDeclarationSyntax structDeclaration, DocumentationCommentGeneratorSettings settings = null)
         {
-            if (structDeclaration == null)
+            if (structDeclaration is null)
                 throw new ArgumentNullException(nameof(structDeclaration));
 
             return Generate(
@@ -116,7 +116,7 @@ namespace Roslynator.CSharp.Documentation
 
         public static SyntaxTriviaList Generate(InterfaceDeclarationSyntax interfaceDeclaration, DocumentationCommentGeneratorSettings settings = null)
         {
-            if (interfaceDeclaration == null)
+            if (interfaceDeclaration is null)
                 throw new ArgumentNullException(nameof(interfaceDeclaration));
 
             return Generate(
@@ -128,7 +128,7 @@ namespace Roslynator.CSharp.Documentation
 
         public static SyntaxTriviaList Generate(EnumDeclarationSyntax enumDeclaration, DocumentationCommentGeneratorSettings settings = null)
         {
-            if (enumDeclaration == null)
+            if (enumDeclaration is null)
                 throw new ArgumentNullException(nameof(enumDeclaration));
 
             return Generate(settings: settings);
@@ -136,7 +136,7 @@ namespace Roslynator.CSharp.Documentation
 
         public static SyntaxTriviaList Generate(DelegateDeclarationSyntax delegateDeclaration, DocumentationCommentGeneratorSettings settings = null)
         {
-            if (delegateDeclaration == null)
+            if (delegateDeclaration is null)
                 throw new ArgumentNullException(nameof(delegateDeclaration));
 
             return Generate(
@@ -148,7 +148,7 @@ namespace Roslynator.CSharp.Documentation
 
         public static SyntaxTriviaList Generate(EnumMemberDeclarationSyntax enumMemberDeclaration, DocumentationCommentGeneratorSettings settings = null)
         {
-            if (enumMemberDeclaration == null)
+            if (enumMemberDeclaration is null)
                 throw new ArgumentNullException(nameof(enumMemberDeclaration));
 
             return Generate(settings: settings);
@@ -156,7 +156,7 @@ namespace Roslynator.CSharp.Documentation
 
         public static SyntaxTriviaList Generate(FieldDeclarationSyntax fieldDeclaration, DocumentationCommentGeneratorSettings settings = null)
         {
-            if (fieldDeclaration == null)
+            if (fieldDeclaration is null)
                 throw new ArgumentNullException(nameof(fieldDeclaration));
 
             return Generate(settings: settings);
@@ -164,7 +164,7 @@ namespace Roslynator.CSharp.Documentation
 
         public static SyntaxTriviaList Generate(EventFieldDeclarationSyntax eventFieldDeclaration, DocumentationCommentGeneratorSettings settings = null)
         {
-            if (eventFieldDeclaration == null)
+            if (eventFieldDeclaration is null)
                 throw new ArgumentNullException(nameof(eventFieldDeclaration));
 
             return Generate(settings: settings);
@@ -172,7 +172,7 @@ namespace Roslynator.CSharp.Documentation
 
         public static SyntaxTriviaList Generate(MethodDeclarationSyntax methodDeclaration, DocumentationCommentGeneratorSettings settings = null)
         {
-            if (methodDeclaration == null)
+            if (methodDeclaration is null)
                 throw new ArgumentNullException(nameof(methodDeclaration));
 
             return Generate(
@@ -184,7 +184,7 @@ namespace Roslynator.CSharp.Documentation
 
         public static SyntaxTriviaList Generate(OperatorDeclarationSyntax operatorDeclaration, DocumentationCommentGeneratorSettings settings = null)
         {
-            if (operatorDeclaration == null)
+            if (operatorDeclaration is null)
                 throw new ArgumentNullException(nameof(operatorDeclaration));
 
             return Generate(
@@ -196,7 +196,7 @@ namespace Roslynator.CSharp.Documentation
 
         public static SyntaxTriviaList Generate(ConversionOperatorDeclarationSyntax conversionOperatorDeclaration, DocumentationCommentGeneratorSettings settings = null)
         {
-            if (conversionOperatorDeclaration == null)
+            if (conversionOperatorDeclaration is null)
                 throw new ArgumentNullException(nameof(conversionOperatorDeclaration));
 
             return Generate(
@@ -208,7 +208,7 @@ namespace Roslynator.CSharp.Documentation
 
         public static SyntaxTriviaList Generate(ConstructorDeclarationSyntax constructorDeclaration, DocumentationCommentGeneratorSettings settings = null)
         {
-            if (constructorDeclaration == null)
+            if (constructorDeclaration is null)
                 throw new ArgumentNullException(nameof(constructorDeclaration));
 
             return Generate(
@@ -220,7 +220,7 @@ namespace Roslynator.CSharp.Documentation
 
         public static SyntaxTriviaList Generate(DestructorDeclarationSyntax destructorDeclaration, DocumentationCommentGeneratorSettings settings = null)
         {
-            if (destructorDeclaration == null)
+            if (destructorDeclaration is null)
                 throw new ArgumentNullException(nameof(destructorDeclaration));
 
             return Generate(settings: settings);
@@ -228,7 +228,7 @@ namespace Roslynator.CSharp.Documentation
 
         public static SyntaxTriviaList Generate(PropertyDeclarationSyntax propertyDeclaration, DocumentationCommentGeneratorSettings settings = null)
         {
-            if (propertyDeclaration == null)
+            if (propertyDeclaration is null)
                 throw new ArgumentNullException(nameof(propertyDeclaration));
 
             return Generate(settings: settings);
@@ -236,7 +236,7 @@ namespace Roslynator.CSharp.Documentation
 
         public static SyntaxTriviaList Generate(EventDeclarationSyntax eventDeclaration, DocumentationCommentGeneratorSettings settings = null)
         {
-            if (eventDeclaration == null)
+            if (eventDeclaration is null)
                 throw new ArgumentNullException(nameof(eventDeclaration));
 
             return Generate(settings: settings);
@@ -244,7 +244,7 @@ namespace Roslynator.CSharp.Documentation
 
         public static SyntaxTriviaList Generate(IndexerDeclarationSyntax indexerDeclaration, DocumentationCommentGeneratorSettings settings = null)
         {
-            if (indexerDeclaration == null)
+            if (indexerDeclaration is null)
                 throw new ArgumentNullException(nameof(indexerDeclaration));
 
             return Generate(
@@ -385,7 +385,7 @@ namespace Roslynator.CSharp.Documentation
         internal static DocumentationCommentData GenerateFromBase(MethodDeclarationSyntax methodDeclaration, SemanticModel semanticModel, CancellationToken cancellationToken = default)
         {
             if (!methodDeclaration.Modifiers.Contains(SyntaxKind.OverrideKeyword)
-                && methodDeclaration.ExplicitInterfaceSpecifier == null
+                && methodDeclaration.ExplicitInterfaceSpecifier is null
                 && !ContainingTypeHasBaseType(methodDeclaration))
             {
                 return default;
@@ -397,12 +397,12 @@ namespace Roslynator.CSharp.Documentation
             {
                 string xml = GenerateFromOverriddenMethods(methodSymbol, cancellationToken);
 
-                if (xml != null)
+                if (xml is not null)
                     return new DocumentationCommentData(xml, DocumentationCommentOrigin.BaseMember);
 
                 xml = GenerateFromInterfaceMember<IMethodSymbol>(methodSymbol, cancellationToken);
 
-                if (xml != null)
+                if (xml is not null)
                     return new DocumentationCommentData(xml, DocumentationCommentOrigin.InterfaceMember);
             }
 
@@ -412,7 +412,7 @@ namespace Roslynator.CSharp.Documentation
         internal static DocumentationCommentData GenerateFromBase(PropertyDeclarationSyntax propertyDeclaration, SemanticModel semanticModel, CancellationToken cancellationToken = default)
         {
             if (!propertyDeclaration.Modifiers.Contains(SyntaxKind.OverrideKeyword)
-                && propertyDeclaration.ExplicitInterfaceSpecifier == null
+                && propertyDeclaration.ExplicitInterfaceSpecifier is null
                 && !ContainingTypeHasBaseType(propertyDeclaration))
             {
                 return default;
@@ -426,7 +426,7 @@ namespace Roslynator.CSharp.Documentation
         internal static DocumentationCommentData GenerateFromBase(IndexerDeclarationSyntax indexerDeclaration, SemanticModel semanticModel, CancellationToken cancellationToken = default)
         {
             if (!indexerDeclaration.Modifiers.Contains(SyntaxKind.OverrideKeyword)
-                && indexerDeclaration.ExplicitInterfaceSpecifier == null
+                && indexerDeclaration.ExplicitInterfaceSpecifier is null
                 && !ContainingTypeHasBaseType(indexerDeclaration))
             {
                 return default;
@@ -443,12 +443,12 @@ namespace Roslynator.CSharp.Documentation
             {
                 string xml = GenerateFromOverriddenProperties(propertySymbol, cancellationToken);
 
-                if (xml != null)
+                if (xml is not null)
                     return new DocumentationCommentData(xml, DocumentationCommentOrigin.BaseMember);
 
                 xml = GenerateFromInterfaceMember<IPropertySymbol>(propertySymbol, cancellationToken);
 
-                if (xml != null)
+                if (xml is not null)
                     return new DocumentationCommentData(xml, DocumentationCommentOrigin.InterfaceMember);
             }
 
@@ -458,7 +458,7 @@ namespace Roslynator.CSharp.Documentation
         internal static DocumentationCommentData GenerateFromBase(EventDeclarationSyntax eventDeclaration, SemanticModel semanticModel, CancellationToken cancellationToken = default)
         {
             if (!eventDeclaration.Modifiers.Contains(SyntaxKind.OverrideKeyword)
-                && eventDeclaration.ExplicitInterfaceSpecifier == null
+                && eventDeclaration.ExplicitInterfaceSpecifier is null
                 && !ContainingTypeHasBaseType(eventDeclaration))
             {
                 return default;
@@ -479,7 +479,7 @@ namespace Roslynator.CSharp.Documentation
 
             VariableDeclaratorSyntax variableDeclarator = eventFieldDeclaration.Declaration?.Variables.FirstOrDefault();
 
-            if (variableDeclarator != null)
+            if (variableDeclarator is not null)
             {
                 var eventSymbol = semanticModel.GetDeclaredSymbol(variableDeclarator, cancellationToken) as IEventSymbol;
 
@@ -495,12 +495,12 @@ namespace Roslynator.CSharp.Documentation
             {
                 string xml = GenerateFromOverriddenEvents(eventSymbol, cancellationToken);
 
-                if (xml != null)
+                if (xml is not null)
                     return new DocumentationCommentData(xml, DocumentationCommentOrigin.BaseMember);
 
                 xml = GenerateFromInterfaceMember<IEventSymbol>(eventSymbol, cancellationToken);
 
-                if (xml != null)
+                if (xml is not null)
                     return new DocumentationCommentData(xml, DocumentationCommentOrigin.InterfaceMember);
             }
 
@@ -519,7 +519,7 @@ namespace Roslynator.CSharp.Documentation
                 {
                     string xml = GetDocumentationCommentXml(baseConstructor, cancellationToken);
 
-                    if (xml != null)
+                    if (xml is not null)
                         return new DocumentationCommentData(xml, DocumentationCommentOrigin.BaseMember);
                 }
             }
@@ -529,11 +529,11 @@ namespace Roslynator.CSharp.Documentation
 
         private static string GenerateFromOverriddenMethods(IMethodSymbol methodSymbol, CancellationToken cancellationToken)
         {
-            for (IMethodSymbol overriddenMethod = methodSymbol.OverriddenMethod; overriddenMethod != null; overriddenMethod = overriddenMethod.OverriddenMethod)
+            for (IMethodSymbol overriddenMethod = methodSymbol.OverriddenMethod; overriddenMethod is not null; overriddenMethod = overriddenMethod.OverriddenMethod)
             {
                 string xml = GetDocumentationCommentXml(overriddenMethod, cancellationToken);
 
-                if (xml != null)
+                if (xml is not null)
                     return xml;
             }
 
@@ -542,11 +542,11 @@ namespace Roslynator.CSharp.Documentation
 
         private static string GenerateFromOverriddenProperties(IPropertySymbol propertySymbol, CancellationToken cancellationToken)
         {
-            for (IPropertySymbol overriddenProperty = propertySymbol.OverriddenProperty; overriddenProperty != null; overriddenProperty = overriddenProperty.OverriddenProperty)
+            for (IPropertySymbol overriddenProperty = propertySymbol.OverriddenProperty; overriddenProperty is not null; overriddenProperty = overriddenProperty.OverriddenProperty)
             {
                 string xml = GetDocumentationCommentXml(overriddenProperty, cancellationToken);
 
-                if (xml != null)
+                if (xml is not null)
                     return xml;
             }
 
@@ -555,11 +555,11 @@ namespace Roslynator.CSharp.Documentation
 
         private static string GenerateFromOverriddenEvents(IEventSymbol eventSymbol, CancellationToken cancellationToken)
         {
-            for (IEventSymbol overriddenEvent = eventSymbol.OverriddenEvent; overriddenEvent != null; overriddenEvent = overriddenEvent.OverriddenEvent)
+            for (IEventSymbol overriddenEvent = eventSymbol.OverriddenEvent; overriddenEvent is not null; overriddenEvent = overriddenEvent.OverriddenEvent)
             {
                 string xml = GetDocumentationCommentXml(overriddenEvent, cancellationToken);
 
-                if (xml != null)
+                if (xml is not null)
                     return xml;
             }
 
@@ -586,7 +586,7 @@ namespace Roslynator.CSharp.Documentation
         {
             string xml = symbol.GetDocumentationCommentXml(cancellationToken: cancellationToken);
 
-            if (xml == null)
+            if (xml is null)
                 return null;
 
             using (var sr = new StringReader(xml))

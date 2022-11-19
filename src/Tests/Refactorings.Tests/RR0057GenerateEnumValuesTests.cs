@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0057GenerateEnumValuesTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.GenerateEnumValues;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.GenerateEnumValues)]
-        public async Task Test()
-        {
-            await VerifyRefactoringAsync(@"
+public class RR0057GenerateEnumValuesTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.GenerateEnumValues;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.GenerateEnumValues)]
+    public async Task Test()
+    {
+        await VerifyRefactoringAsync(@"
 using System;
 
 [Flags]
@@ -36,12 +36,12 @@ enum Foo
     C = 4,
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.GenerateEnumValues)]
-        public async Task Test_OverwriteExistingValues()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.GenerateEnumValues)]
+    public async Task Test_OverwriteExistingValues()
+    {
+        await VerifyRefactoringAsync(@"
 enum [||]Foo
 {
     None = 0,
@@ -64,12 +64,12 @@ enum Foo
     C = 3,
 }
 ", equivalenceKey: GenerateAllEnumValuesRefactoring.EquivalenceKey);
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.GenerateEnumValues)]
-        public async Task Test_OverwriteExistingValues_Flags()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.GenerateEnumValues)]
+    public async Task Test_OverwriteExistingValues_Flags()
+    {
+        await VerifyRefactoringAsync(@"
 using System;
 
 [Flags]
@@ -94,12 +94,12 @@ enum Foo
     C = 4,
 }
 ", equivalenceKey: GenerateAllEnumValuesRefactoring.EquivalenceKey);
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.GenerateEnumValues)]
-        public async Task TestNoRefactoring()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.GenerateEnumValues)]
+    public async Task TestNoRefactoring()
+    {
+        await VerifyNoRefactoringAsync(@"
 enum [||]Foo
 {
     None = 0,
@@ -109,12 +109,12 @@ enum [||]Foo
     D = 4,
 }
 ", equivalenceKey: GenerateAllEnumValuesRefactoring.EquivalenceKey);
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.GenerateEnumValues)]
-        public async Task TestNoRefactoring_Flags()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.GenerateEnumValues)]
+    public async Task TestNoRefactoring_Flags()
+    {
+        await VerifyNoRefactoringAsync(@"
 using System;
 
 [Flags]
@@ -128,6 +128,5 @@ enum [||]Foo
     D = 8,
 }
 ", equivalenceKey: GenerateAllEnumValuesRefactoring.EquivalenceKey);
-        }
     }
 }

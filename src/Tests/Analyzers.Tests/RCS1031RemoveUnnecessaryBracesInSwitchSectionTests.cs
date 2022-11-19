@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1031RemoveUnnecessaryBracesInSwitchSectionTests : AbstractCSharpDiagnosticVerifier<RemoveUnnecessaryBracesInSwitchSectionAnalyzer, BlockCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveUnnecessaryBracesInSwitchSection;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBracesInSwitchSection)]
-        public async Task Test_Section()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1031RemoveUnnecessaryBracesInSwitchSectionTests : AbstractCSharpDiagnosticVerifier<RemoveUnnecessaryBracesInSwitchSectionAnalyzer, BlockCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.RemoveUnnecessaryBracesInSwitchSection;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBracesInSwitchSection)]
+    public async Task Test_Section()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -53,12 +53,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBracesInSwitchSection)]
-        public async Task Test_SectionWithComments()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBracesInSwitchSection)]
+    public async Task Test_SectionWithComments()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -102,12 +102,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBracesInSwitchSection)]
-        public async Task Test_LastSection()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBracesInSwitchSection)]
+    public async Task Test_LastSection()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -140,12 +140,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBracesInSwitchSection)]
-        public async Task TestNoDiagnostic_SectionWithoutBlock()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBracesInSwitchSection)]
+    public async Task TestNoDiagnostic_SectionWithoutBlock()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -160,12 +160,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBracesInSwitchSection)]
-        public async Task TestNoDiagnostic_UsingLocalVariable()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnnecessaryBracesInSwitchSection)]
+    public async Task TestNoDiagnostic_UsingLocalVariable()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 class C
@@ -185,6 +185,5 @@ class C
     }
 }
 ");
-        }
     }
 }

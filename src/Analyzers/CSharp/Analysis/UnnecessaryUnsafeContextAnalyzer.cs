@@ -195,7 +195,7 @@ namespace Roslynator.CSharp.Analysis
         {
             SyntaxNode parent = unsafeStatement.Parent;
 
-            while (parent != null)
+            while (parent is not null)
             {
                 SyntaxKind kind = parent.Kind();
 

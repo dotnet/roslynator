@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0217DeconstructForeachVariableTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.DeconstructForeachVariable;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.DeconstructForeachVariable)]
-        public async Task Test_Dictionary()
-        {
-            await VerifyRefactoringAsync(@"
+public class RR0217DeconstructForeachVariableTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.DeconstructForeachVariable;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.DeconstructForeachVariable)]
+    public async Task Test_Dictionary()
+    {
+        await VerifyRefactoringAsync(@"
 using System.Collections.Generic;
 
 class C
@@ -46,12 +46,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.DeconstructForeachVariable)]
-        public async Task Test_Dictionary_TopLevelStatement()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.DeconstructForeachVariable)]
+    public async Task Test_Dictionary_TopLevelStatement()
+    {
+        await VerifyRefactoringAsync(@"
 using System.Collections.Generic;
 
 var dic = new Dictionary<object, object>();
@@ -72,12 +72,12 @@ foreach (var (key, value) in dic)
     var v = value.ToString();
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.DeconstructForeachVariable)]
-        public async Task Test_Tuple()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.DeconstructForeachVariable)]
+    public async Task Test_Tuple()
+    {
+        await VerifyRefactoringAsync(@"
 using System.Collections.Generic;
 
 class C
@@ -110,12 +110,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.DeconstructForeachVariable)]
-        public async Task Test_TupleWithNamedFields()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.DeconstructForeachVariable)]
+    public async Task Test_TupleWithNamedFields()
+    {
+        await VerifyRefactoringAsync(@"
 using System.Collections.Generic;
 
 class C
@@ -150,6 +150,5 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
     }
 }

@@ -4,38 +4,37 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 
-namespace Roslynator
+namespace Roslynator;
+
+internal class UnderscoreSuffixNameGenerator : NameGenerator
 {
-    internal class UnderscoreSuffixNameGenerator : NameGenerator
+    public override string EnsureUniqueName(string baseName, IEnumerable<string> reservedNames, bool isCaseSensitive = true)
     {
-        public override string EnsureUniqueName(string baseName, IEnumerable<string> reservedNames, bool isCaseSensitive = true)
+        var suffix = "";
+
+        string name = baseName;
+
+        while (!IsUniqueName(name, reservedNames, isCaseSensitive))
         {
-            var suffix = "";
-
-            string name = baseName;
-
-            while (!IsUniqueName(name, reservedNames, isCaseSensitive))
-            {
-                suffix += "_";
-                name = baseName + suffix;
-            }
-
-            return name;
+            suffix += "_";
+            name = baseName + suffix;
         }
 
-        public override string EnsureUniqueName(string baseName, ImmutableArray<ISymbol> symbols, bool isCaseSensitive = true)
+        return name;
+    }
+
+    public override string EnsureUniqueName(string baseName, ImmutableArray<ISymbol> symbols, bool isCaseSensitive = true)
+    {
+        var suffix = "";
+
+        string name = baseName;
+
+        while (!IsUniqueName(name, symbols, isCaseSensitive))
         {
-            var suffix = "";
-
-            string name = baseName;
-
-            while (!IsUniqueName(name, symbols, isCaseSensitive))
-            {
-                suffix += "_";
-                name = baseName + suffix;
-            }
-
-            return name;
+            suffix += "_";
+            name = baseName + suffix;
         }
+
+        return name;
     }
 }

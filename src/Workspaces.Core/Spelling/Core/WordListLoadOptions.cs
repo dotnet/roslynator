@@ -2,12 +2,11 @@
 
 using System;
 
-namespace Roslynator.Spelling
+namespace Roslynator.Spelling;
+
+[Flags]
+internal enum WordListLoadOptions
 {
-    [Flags]
-    internal enum WordListLoadOptions
-    {
-        None = 0,
-        IgnoreCase = 1,
-    }
+    None = 0,
+    IgnoreCase = 1,
 }

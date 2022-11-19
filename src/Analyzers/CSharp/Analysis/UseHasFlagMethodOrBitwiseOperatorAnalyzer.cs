@@ -10,166 +10,165 @@ using Roslynator.CSharp.CodeStyle;
 using Roslynator.CSharp.Syntax;
 using static Roslynator.CSharp.Analysis.ConvertHasFlagCallToBitwiseOperationAnalysis;
 
-namespace Roslynator.CSharp.Analysis
+namespace Roslynator.CSharp.Analysis;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class UseHasFlagMethodOrBitwiseOperatorAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class UseHasFlagMethodOrBitwiseOperatorAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
+            if (_supportedDiagnostics.IsDefault)
             {
-                if (_supportedDiagnostics.IsDefault)
-                {
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.UseHasFlagMethodOrBitwiseOperator);
-                }
-
-                return _supportedDiagnostics;
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.UseHasFlagMethodOrBitwiseOperator);
             }
+
+            return _supportedDiagnostics;
+        }
+    }
+
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
+
+        context.RegisterSyntaxNodeAction(
+            c =>
+            {
+                EnumFlagOperationStyle style = c.GetEnumHasFlagStyle();
+
+                if (style == EnumFlagOperationStyle.HasFlagMethod)
+                    AnalyzeBitwiseAndExpression(c);
+            },
+            SyntaxKind.BitwiseAndExpression);
+
+        context.RegisterSyntaxNodeAction(
+            c =>
+            {
+                EnumFlagOperationStyle style = c.GetEnumHasFlagStyle();
+
+                if (style == EnumFlagOperationStyle.BitwiseOperator)
+                    AnalyzeInvocationExpression(c);
+            },
+            SyntaxKind.InvocationExpression);
+    }
+
+    private static void AnalyzeBitwiseAndExpression(SyntaxNodeAnalysisContext context)
+    {
+        var bitwiseAnd = (BinaryExpressionSyntax)context.Node;
+
+        ExpressionSyntax expression = bitwiseAnd.WalkUpParentheses();
+
+        if (!expression.IsParentKind(SyntaxKind.EqualsExpression, SyntaxKind.NotEqualsExpression))
+            return;
+
+        var equalsOrNotEquals = (BinaryExpressionSyntax)expression.Parent;
+
+        ExpressionSyntax otherExpression = (ReferenceEquals(equalsOrNotEquals.Left, expression))
+            ? equalsOrNotEquals.Right
+            : equalsOrNotEquals.Left;
+
+        otherExpression = otherExpression.WalkDownParentheses();
+
+        ExpressionSyntax right = bitwiseAnd.Right.WalkDownParentheses();
+
+        SemanticModel semanticModel = context.SemanticModel;
+        CancellationToken cancellationToken = context.CancellationToken;
+
+        if (otherExpression.IsNumericLiteralExpression("0"))
+        {
+            if (SyntaxUtility.IsCompositeEnumValue(right, semanticModel, cancellationToken))
+                return;
+        }
+        else if (!CSharpFactory.AreEquivalent(right, otherExpression))
+        {
+            return;
         }
 
-        public override void Initialize(AnalysisContext context)
+        IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(bitwiseAnd, cancellationToken);
+
+        if (methodSymbol?.MethodKind != MethodKind.BuiltinOperator
+            || methodSymbol.Name != WellKnownMemberNames.BitwiseAndOperatorName
+            || methodSymbol.ContainingType?.TypeKind != TypeKind.Enum)
         {
-            base.Initialize(context);
-
-            context.RegisterSyntaxNodeAction(
-                c =>
-                {
-                    EnumFlagOperationStyle style = c.GetEnumHasFlagStyle();
-
-                    if (style == EnumFlagOperationStyle.HasFlagMethod)
-                        AnalyzeBitwiseAndExpression(c);
-                },
-                SyntaxKind.BitwiseAndExpression);
-
-            context.RegisterSyntaxNodeAction(
-                c =>
-                {
-                    EnumFlagOperationStyle style = c.GetEnumHasFlagStyle();
-
-                    if (style == EnumFlagOperationStyle.BitwiseOperator)
-                        AnalyzeInvocationExpression(c);
-                },
-                SyntaxKind.InvocationExpression);
+            return;
         }
 
-        private static void AnalyzeBitwiseAndExpression(SyntaxNodeAnalysisContext context)
+        ExpressionSyntax left = bitwiseAnd.Left.WalkDownParentheses();
+
+        if (!IsSuitableAsExpressionOfHasFlag(left))
+            return;
+
+        if (!IsSuitableAsArgumentOfHasFlag(right))
+            return;
+
+        DiagnosticHelpers.ReportDiagnostic(
+            context,
+            DiagnosticRules.UseHasFlagMethodOrBitwiseOperator,
+            equalsOrNotEquals,
+            "'HasFlag' method");
+
+        bool IsSuitableAsExpressionOfHasFlag(ExpressionSyntax expression)
         {
-            var bitwiseAnd = (BinaryExpressionSyntax)context.Node;
-
-            ExpressionSyntax expression = bitwiseAnd.WalkUpParentheses();
-
-            if (!expression.IsParentKind(SyntaxKind.EqualsExpression, SyntaxKind.NotEqualsExpression))
-                return;
-
-            var equalsOrNotEquals = (BinaryExpressionSyntax)expression.Parent;
-
-            ExpressionSyntax otherExpression = (ReferenceEquals(equalsOrNotEquals.Left, expression))
-                ? equalsOrNotEquals.Right
-                : equalsOrNotEquals.Left;
-
-            otherExpression = otherExpression.WalkDownParentheses();
-
-            ExpressionSyntax right = bitwiseAnd.Right.WalkDownParentheses();
-
-            SemanticModel semanticModel = context.SemanticModel;
-            CancellationToken cancellationToken = context.CancellationToken;
-
-            if (otherExpression.IsNumericLiteralExpression("0"))
+            if (expression.IsKind(
+                SyntaxKind.IdentifierName,
+                SyntaxKind.SimpleMemberAccessExpression,
+                SyntaxKind.InvocationExpression,
+                SyntaxKind.ElementAccessExpression))
             {
-                if (SyntaxUtility.IsCompositeEnumValue(right, semanticModel, cancellationToken))
-                    return;
-            }
-            else if (!CSharpFactory.AreEquivalent(right, otherExpression))
-            {
-                return;
+                return semanticModel.GetTypeSymbol(expression, cancellationToken)?.TypeKind == TypeKind.Enum;
             }
 
-            IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(bitwiseAnd, cancellationToken);
-
-            if (methodSymbol?.MethodKind != MethodKind.BuiltinOperator
-                || methodSymbol.Name != WellKnownMemberNames.BitwiseAndOperatorName
-                || methodSymbol.ContainingType?.TypeKind != TypeKind.Enum)
-            {
-                return;
-            }
-
-            ExpressionSyntax left = bitwiseAnd.Left.WalkDownParentheses();
-
-            if (!IsSuitableAsExpressionOfHasFlag(left))
-                return;
-
-            if (!IsSuitableAsArgumentOfHasFlag(right))
-                return;
-
-            DiagnosticHelpers.ReportDiagnostic(
-                context,
-                DiagnosticRules.UseHasFlagMethodOrBitwiseOperator,
-                equalsOrNotEquals,
-                "'HasFlag' method");
-
-            bool IsSuitableAsExpressionOfHasFlag(ExpressionSyntax expression)
-            {
-                if (expression.IsKind(
-                    SyntaxKind.IdentifierName,
-                    SyntaxKind.SimpleMemberAccessExpression,
-                    SyntaxKind.InvocationExpression,
-                    SyntaxKind.ElementAccessExpression))
-                {
-                    return semanticModel.GetTypeSymbol(expression, cancellationToken)?.TypeKind == TypeKind.Enum;
-                }
-
-                return false;
-            }
-
-            bool IsSuitableAsArgumentOfHasFlag(ExpressionSyntax expression)
-            {
-                expression = expression.WalkDownParentheses();
-
-                if (expression.IsKind(
-                    SyntaxKind.BitwiseAndExpression,
-                    SyntaxKind.BitwiseOrExpression,
-                    SyntaxKind.SimpleMemberAccessExpression,
-                    SyntaxKind.IdentifierName))
-                {
-                    return semanticModel.GetTypeSymbol(expression, cancellationToken)?.TypeKind == TypeKind.Enum;
-                }
-
-                return false;
-            }
+            return false;
         }
 
-        private static void AnalyzeInvocationExpression(SyntaxNodeAnalysisContext context)
+        bool IsSuitableAsArgumentOfHasFlag(ExpressionSyntax expression)
         {
-            var invocation = (InvocationExpressionSyntax)context.Node;
+            expression = expression.WalkDownParentheses();
 
-            if (invocation.ContainsDiagnostics)
-                return;
+            if (expression.IsKind(
+                SyntaxKind.BitwiseAndExpression,
+                SyntaxKind.BitwiseOrExpression,
+                SyntaxKind.SimpleMemberAccessExpression,
+                SyntaxKind.IdentifierName))
+            {
+                return semanticModel.GetTypeSymbol(expression, cancellationToken)?.TypeKind == TypeKind.Enum;
+            }
 
-            if (invocation.SpanContainsDirectives())
-                return;
-
-            SimpleMemberInvocationExpressionInfo invocationInfo = SyntaxInfo.SimpleMemberInvocationExpressionInfo(invocation);
-
-            if (invocationInfo.Arguments.Count != 1)
-                return;
-
-            if (!invocationInfo.Name.IsKind(SyntaxKind.IdentifierName))
-                return;
-
-            if (invocationInfo.NameText != "HasFlag")
-                return;
-
-            if (!IsFixable(invocationInfo, context.SemanticModel, context.CancellationToken))
-                return;
-
-            DiagnosticHelpers.ReportDiagnostic(
-                context,
-                DiagnosticRules.UseHasFlagMethodOrBitwiseOperator,
-                invocation,
-                "bitwise operator");
+            return false;
         }
+    }
+
+    private static void AnalyzeInvocationExpression(SyntaxNodeAnalysisContext context)
+    {
+        var invocation = (InvocationExpressionSyntax)context.Node;
+
+        if (invocation.ContainsDiagnostics)
+            return;
+
+        if (invocation.SpanContainsDirectives())
+            return;
+
+        SimpleMemberInvocationExpressionInfo invocationInfo = SyntaxInfo.SimpleMemberInvocationExpressionInfo(invocation);
+
+        if (invocationInfo.Arguments.Count != 1)
+            return;
+
+        if (!invocationInfo.Name.IsKind(SyntaxKind.IdentifierName))
+            return;
+
+        if (invocationInfo.NameText != "HasFlag")
+            return;
+
+        if (!IsFixable(invocationInfo, context.SemanticModel, context.CancellationToken))
+            return;
+
+        DiagnosticHelpers.ReportDiagnostic(
+            context,
+            DiagnosticRules.UseHasFlagMethodOrBitwiseOperator,
+            invocation,
+            "bitwise operator");
     }
 }

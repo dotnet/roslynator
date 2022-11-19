@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1205OrderNamedArgumentsTests : AbstractCSharpDiagnosticVerifier<OrderNamedArgumentsAnalyzer, BaseArgumentListCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.OrderNamedArguments;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderNamedArguments)]
-        public async Task Test()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1205OrderNamedArgumentsTests : AbstractCSharpDiagnosticVerifier<OrderNamedArgumentsAnalyzer, BaseArgumentListCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.OrderNamedArguments;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderNamedArguments)]
+    public async Task Test()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M(string a, string b, string c)
@@ -32,12 +32,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderNamedArguments)]
-        public async Task Test_OptionalArguments()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderNamedArguments)]
+    public async Task Test_OptionalArguments()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M(string a, string b, string c, string d = null)
@@ -54,12 +54,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderNamedArguments)]
-        public async Task Test_OptionalArguments2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderNamedArguments)]
+    public async Task Test_OptionalArguments2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M(string a, string b = """", string c = """", string d = """", string e = """")
@@ -86,12 +86,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderNamedArguments)]
-        public async Task Test_OptionalArguments3()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderNamedArguments)]
+    public async Task Test_OptionalArguments3()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M(string a = """", string b = """", string c = """", string d = """")
@@ -114,12 +114,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderNamedArguments)]
-        public async Task TestNoDiagnostic_OptionalArguments()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderNamedArguments)]
+    public async Task TestNoDiagnostic_OptionalArguments()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M(string a, string b = """", string c = """", string d = """")
@@ -131,13 +131,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderNamedArguments)]
-        public async Task TestNoDiagnostic_OptionalArguments2()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OrderNamedArguments)]
+    public async Task TestNoDiagnostic_OptionalArguments2()
+    {
+        await VerifyNoDiagnosticAsync(@"
 ");
-        }
     }
 }

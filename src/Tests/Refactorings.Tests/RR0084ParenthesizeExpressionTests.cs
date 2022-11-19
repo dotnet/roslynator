@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0084ParenthesizeExpressionTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.ParenthesizeExpression;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ParenthesizeExpression)]
-        public async Task TestNoRefactoring_ReturnType_TupleType()
-        {
-            await VerifyNoRefactoringAsync(@"
+public class RR0084ParenthesizeExpressionTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.ParenthesizeExpression;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ParenthesizeExpression)]
+    public async Task TestNoRefactoring_ReturnType_TupleType()
+    {
+        await VerifyNoRefactoringAsync(@"
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +27,5 @@ class C
         }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
     }
 }

@@ -6,33 +6,32 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class UseReadOnlyFieldInsteadOfConstantRefactoring
 {
-    internal static class UseReadOnlyFieldInsteadOfConstantRefactoring
+    public const string Title = "Use read-only field instead of constant";
+
+    public static async Task<Document> RefactorAsync(
+        Document document,
+        FieldDeclarationSyntax field,
+        CancellationToken cancellationToken = default)
     {
-        public const string Title = "Use read-only field instead of constant";
+        FieldDeclarationSyntax newField = field
+            .RemoveModifier(SyntaxKind.ConstKeyword)
+            .InsertModifier(SyntaxKind.ReadOnlyKeyword);
 
-        public static async Task<Document> RefactorAsync(
-            Document document,
-            FieldDeclarationSyntax field,
-            CancellationToken cancellationToken = default)
+        var containingDeclaration = (MemberDeclarationSyntax)field.Parent;
+
+        SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
+        if (semanticModel.GetDeclaredSymbol(containingDeclaration, cancellationToken)?.IsStatic == true)
         {
-            FieldDeclarationSyntax newField = field
-                .RemoveModifier(SyntaxKind.ConstKeyword)
-                .InsertModifier(SyntaxKind.ReadOnlyKeyword);
-
-            var containingDeclaration = (MemberDeclarationSyntax)field.Parent;
-
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
-
-            if (semanticModel.GetDeclaredSymbol(containingDeclaration, cancellationToken)?.IsStatic == true)
-            {
-                newField = newField.InsertModifier(SyntaxKind.StaticKeyword);
-            }
-
-            newField = newField.WithFormatterAnnotation();
-
-            return await document.ReplaceNodeAsync(field, newField, cancellationToken).ConfigureAwait(false);
+            newField = newField.InsertModifier(SyntaxKind.StaticKeyword);
         }
+
+        newField = newField.WithFormatterAnnotation();
+
+        return await document.ReplaceNodeAsync(field, newField, cancellationToken).ConfigureAwait(false);
     }
 }

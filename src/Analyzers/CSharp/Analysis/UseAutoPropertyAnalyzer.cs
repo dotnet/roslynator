@@ -65,22 +65,22 @@ namespace Roslynator.CSharp.Analysis
 
             ArrowExpressionClauseSyntax expressionBody = property.ExpressionBody;
 
-            if (expressionBody != null)
+            if (expressionBody is not null)
             {
                 IdentifierNameSyntax identifierName = GetIdentifierNameFromExpression(expressionBody.Expression);
 
-                if (identifierName != null)
+                if (identifierName is not null)
                     fieldSymbol = GetBackingFieldSymbol(identifierName, semanticModel, cancellationToken);
             }
             else
             {
                 getter = property.Getter();
 
-                if (getter != null)
+                if (getter is not null)
                 {
                     setter = property.Setter();
 
-                    if (setter != null)
+                    if (setter is not null)
                     {
                         fieldSymbol = GetBackingFieldSymbol(getter, setter, semanticModel, cancellationToken);
                     }
@@ -88,13 +88,13 @@ namespace Roslynator.CSharp.Analysis
                     {
                         IdentifierNameSyntax identifierName = GetIdentifierNameFromGetter(getter);
 
-                        if (identifierName != null)
+                        if (identifierName is not null)
                             fieldSymbol = GetBackingFieldSymbol(identifierName, semanticModel, cancellationToken);
                     }
                 }
             }
 
-            if (fieldSymbol == null)
+            if (fieldSymbol is null)
                 return;
 
             var variableDeclarator = (VariableDeclaratorSyntax)fieldSymbol.GetSyntax(cancellationToken);
@@ -129,9 +129,9 @@ namespace Roslynator.CSharp.Analysis
             if (!SymbolEqualityComparer.Default.Equals(propertySymbol.ContainingType, fieldSymbol.ContainingType))
                 return;
 
-            if (setter == null
+            if (setter is null
                 && propertySymbol.IsOverride
-                && propertySymbol.OverriddenProperty?.SetMethod != null)
+                && propertySymbol.OverriddenProperty?.SetMethod is not null)
             {
                 return;
             }
@@ -152,16 +152,16 @@ namespace Roslynator.CSharp.Analysis
 
             DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.UseAutoProperty, property.Identifier);
 
-            if (property.ExpressionBody != null)
+            if (property.ExpressionBody is not null)
             {
                 DiagnosticHelpers.ReportNode(context, DiagnosticRules.UseAutoPropertyFadeOut, property.ExpressionBody);
             }
             else
             {
-                if (getter != null)
+                if (getter is not null)
                     FadeOut(getter);
 
-                if (setter != null)
+                if (setter is not null)
                     FadeOut(setter);
             }
 
@@ -169,7 +169,7 @@ namespace Roslynator.CSharp.Analysis
             {
                 BlockSyntax body = accessor.Body;
 
-                if (body != null)
+                if (body is not null)
                 {
                     switch (body.Statements[0])
                     {
@@ -250,7 +250,7 @@ namespace Roslynator.CSharp.Analysis
             }
             finally
             {
-                if (walker != null)
+                if (walker is not null)
                     UseAutoPropertyWalker.Free(walker);
             }
 
@@ -287,12 +287,12 @@ namespace Roslynator.CSharp.Analysis
         {
             IdentifierNameSyntax getterName = GetIdentifierNameFromGetter(getter);
 
-            if (getterName == null)
+            if (getterName is null)
                 return null;
 
             IdentifierNameSyntax setterName = GetIdentifierNameFromSetter(setter);
 
-            if (setterName == null)
+            if (setterName is null)
                 return null;
 
             ISymbol getterSymbol = semanticModel.GetSymbol(getterName, cancellationToken);
@@ -318,11 +318,11 @@ namespace Roslynator.CSharp.Analysis
 
         private static IdentifierNameSyntax GetIdentifierNameFromGetter(AccessorDeclarationSyntax getter)
         {
-            if (getter != null)
+            if (getter is not null)
             {
                 BlockSyntax body = getter.Body;
 
-                if (body != null)
+                if (body is not null)
                 {
                     if (body.Statements.SingleOrDefault(shouldThrow: false) is ReturnStatementSyntax returnStatement)
                     {
@@ -340,11 +340,11 @@ namespace Roslynator.CSharp.Analysis
 
         private static IdentifierNameSyntax GetIdentifierNameFromSetter(AccessorDeclarationSyntax setter)
         {
-            if (setter != null)
+            if (setter is not null)
             {
                 BlockSyntax body = setter.Body;
 
-                if (body != null)
+                if (body is not null)
                 {
                     if (body.Statements.SingleOrDefault(shouldThrow: false) is ExpressionStatementSyntax expressionStatement)
                     {
@@ -408,7 +408,7 @@ namespace Roslynator.CSharp.Analysis
         {
             AttributeData attribute = typeSymbol.GetAttribute(MetadataNames.System_Runtime_InteropServices_StructLayoutAttribute);
 
-            if (attribute != null)
+            if (attribute is not null)
             {
                 TypedConstant typedConstant = attribute.ConstructorArguments.SingleOrDefault(shouldThrow: false);
 
@@ -423,7 +423,7 @@ namespace Roslynator.CSharp.Analysis
         {
             ArrowExpressionClauseSyntax expressionBody = property.ExpressionBody;
 
-            if (expressionBody != null)
+            if (expressionBody is not null)
             {
                 if (expressionBody.SpanContainsDirectives())
                     return false;
@@ -658,10 +658,10 @@ namespace Roslynator.CSharp.Analysis
             {
                 UseAutoPropertyWalker walker = _cachedInstance;
 
-                if (walker != null)
+                if (walker is not null)
                 {
-                    Debug.Assert(walker.FieldSymbol == null);
-                    Debug.Assert(walker.SemanticModel == null);
+                    Debug.Assert(walker.FieldSymbol is null);
+                    Debug.Assert(walker.SemanticModel is null);
                     Debug.Assert(walker.CancellationToken == default);
 
                     _cachedInstance = null;

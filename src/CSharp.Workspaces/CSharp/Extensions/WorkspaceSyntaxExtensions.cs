@@ -84,7 +84,7 @@ namespace Roslynator.CSharp
         /// <param name="node"></param>
         public static TNode WithFormatterAnnotation<TNode>(this TNode node) where TNode : SyntaxNode
         {
-            if (node == null)
+            if (node is null)
                 throw new ArgumentNullException(nameof(node));
 
             return node.WithAdditionalAnnotations(_formatterAnnotationArray);
@@ -97,7 +97,7 @@ namespace Roslynator.CSharp
         /// <param name="node"></param>
         public static TNode WithSimplifierAnnotation<TNode>(this TNode node) where TNode : SyntaxNode
         {
-            if (node == null)
+            if (node is null)
                 throw new ArgumentNullException(nameof(node));
 
             return node.WithAdditionalAnnotations(_simplifierAnnotationArray);
@@ -105,7 +105,7 @@ namespace Roslynator.CSharp
 
         internal static TNode WithNavigationAnnotation<TNode>(this TNode node) where TNode : SyntaxNode
         {
-            if (node == null)
+            if (node is null)
                 throw new ArgumentNullException(nameof(node));
 
             SyntaxToken token = node.GetFirstToken();
@@ -123,7 +123,7 @@ namespace Roslynator.CSharp
 
         internal static TNode WithFormatterAndSimplifierAnnotation<TNode>(this TNode node) where TNode : SyntaxNode
         {
-            if (node == null)
+            if (node is null)
                 throw new ArgumentNullException(nameof(node));
 
             return node.WithAdditionalAnnotations(_formatterAndSimplifierAnnotationArray);

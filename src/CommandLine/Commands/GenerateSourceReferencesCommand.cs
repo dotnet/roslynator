@@ -15,135 +15,134 @@ using Roslynator.Documentation;
 using Roslynator.FindSymbols;
 using static Roslynator.Logger;
 
-namespace Roslynator.CommandLine
+namespace Roslynator.CommandLine;
+
+internal class GenerateSourceReferencesCommand : MSBuildWorkspaceCommand<CommandResult>
 {
-    internal class GenerateSourceReferencesCommand : MSBuildWorkspaceCommand<CommandResult>
+    public GenerateSourceReferencesCommand(
+        GenerateSourceReferencesCommandLineOptions options,
+        DocumentationDepth depth,
+        Visibility visibility,
+        in ProjectFilter projectFilter) : base(projectFilter)
     {
-        public GenerateSourceReferencesCommand(
-            GenerateSourceReferencesCommandLineOptions options,
-            DocumentationDepth depth,
-            Visibility visibility,
-            in ProjectFilter projectFilter) : base(projectFilter)
+        Options = options;
+        Depth = depth;
+        Visibility = visibility;
+    }
+
+    public GenerateSourceReferencesCommandLineOptions Options { get; }
+
+    public DocumentationDepth Depth { get; }
+
+    public Visibility Visibility { get; }
+
+    public override async Task<CommandResult> ExecuteAsync(ProjectOrSolution projectOrSolution, CancellationToken cancellationToken = default)
+    {
+        AssemblyResolver.Register();
+
+        var filter = new SymbolFilterOptions(Visibility.ToVisibilityFilter());
+
+        WriteLine($"Save source references to '{Options.Output}'.", Verbosity.Minimal);
+
+        using (XmlWriter writer = XmlWriter.Create(Options.Output, new XmlWriterSettings() { Indent = true }))
         {
-            Options = options;
-            Depth = depth;
-            Visibility = visibility;
-        }
+            writer.WriteStartDocument();
+            writer.WriteStartElement("source");
+            writer.WriteStartElement("repository");
 
-        public GenerateSourceReferencesCommandLineOptions Options { get; }
+            writer.WriteAttributeString("type", Options.RepositoryType);
+            writer.WriteAttributeString("url", Options.RepositoryUrl);
+            writer.WriteAttributeString("version", Options.Version);
+            writer.WriteAttributeString("branch", Options.Branch);
+            writer.WriteAttributeString("commit", Options.Commit);
+            writer.WriteStartElement("members");
 
-        public DocumentationDepth Depth { get; }
-
-        public Visibility Visibility { get; }
-
-        public override async Task<CommandResult> ExecuteAsync(ProjectOrSolution projectOrSolution, CancellationToken cancellationToken = default)
-        {
-            AssemblyResolver.Register();
-
-            var filter = new SymbolFilterOptions(Visibility.ToVisibilityFilter());
-
-            WriteLine($"Save source references to '{Options.Output}'.", Verbosity.Minimal);
-
-            using (XmlWriter writer = XmlWriter.Create(Options.Output, new XmlWriterSettings() { Indent = true }))
+            foreach (Project project in FilterProjects(projectOrSolution))
             {
-                writer.WriteStartDocument();
-                writer.WriteStartElement("source");
-                writer.WriteStartElement("repository");
+                Compilation compilation = await project.GetCompilationAsync(cancellationToken);
 
-                writer.WriteAttributeString("type", Options.RepositoryType);
-                writer.WriteAttributeString("url", Options.RepositoryUrl);
-                writer.WriteAttributeString("version", Options.Version);
-                writer.WriteAttributeString("branch", Options.Branch);
-                writer.WriteAttributeString("commit", Options.Commit);
-                writer.WriteStartElement("members");
+                IAssemblySymbol assembly = compilation.Assembly;
 
-                foreach (Project project in FilterProjects(projectOrSolution))
+                foreach (INamedTypeSymbol type in assembly.GetTypes(symbol => filter.IsMatch(symbol)))
                 {
-                    Compilation compilation = await project.GetCompilationAsync(cancellationToken);
+                    WriteSymbol(writer, type, cancellationToken);
 
-                    IAssemblySymbol assembly = compilation.Assembly;
-
-                    foreach (INamedTypeSymbol type in assembly.GetTypes(symbol => filter.IsMatch(symbol)))
+                    foreach (ISymbol member in type.GetMembers())
                     {
-                        WriteSymbol(writer, type, cancellationToken);
-
-                        foreach (ISymbol member in type.GetMembers())
+                        if (!member.IsKind(SymbolKind.NamedType))
                         {
-                            if (!member.IsKind(SymbolKind.NamedType))
+                            if (filter.IsMatch(member)
+                                || member.IsExplicitImplementation())
                             {
-                                if (filter.IsMatch(member)
-                                    || member.IsExplicitImplementation())
-                                {
-                                    WriteSymbol(writer, member, cancellationToken);
-                                }
+                                WriteSymbol(writer, member, cancellationToken);
                             }
                         }
                     }
                 }
-
-                writer.WriteEndDocument();
             }
 
-            WriteLine($"Source references successfully saved to '{Options.Output}'.", Verbosity.Minimal);
-
-            return CommandResults.Success;
+            writer.WriteEndDocument();
         }
 
-        private void WriteSymbol(XmlWriter writer, ISymbol symbol, CancellationToken cancellationToken)
+        WriteLine($"Source references successfully saved to '{Options.Output}'.", Verbosity.Minimal);
+
+        return CommandResults.Success;
+    }
+
+    private void WriteSymbol(XmlWriter writer, ISymbol symbol, CancellationToken cancellationToken)
+    {
+        writer.WriteStartElement("member");
+        writer.WriteAttributeString("name", symbol.GetDocumentationCommentId());
+
+        ImmutableArray<SyntaxReference> syntaxReferences = symbol.DeclaringSyntaxReferences;
+
+        Debug.Assert(syntaxReferences.Any() || IsImplicitConstructor(symbol), symbol.ToDisplayString());
+
+        ImmutableArray<SyntaxReference>.Enumerator en = syntaxReferences.GetEnumerator();
+
+        if (en.MoveNext())
         {
-            writer.WriteStartElement("member");
-            writer.WriteAttributeString("name", symbol.GetDocumentationCommentId());
+            writer.WriteStartElement("locations");
 
-            ImmutableArray<SyntaxReference> syntaxReferences = symbol.DeclaringSyntaxReferences;
-
-            Debug.Assert(syntaxReferences.Any() || IsImplicitConstructor(symbol), symbol.ToDisplayString());
-
-            ImmutableArray<SyntaxReference>.Enumerator en = syntaxReferences.GetEnumerator();
-
-            if (en.MoveNext())
+            do
             {
-                writer.WriteStartElement("locations");
+                writer.WriteStartElement("location");
 
-                do
-                {
-                    writer.WriteStartElement("location");
+                SyntaxTree tree = en.Current.SyntaxTree;
 
-                    SyntaxTree tree = en.Current.SyntaxTree;
+                string path = tree.FilePath;
 
-                    string path = tree.FilePath;
+                if (path.StartsWith(Options.RootPath, StringComparison.OrdinalIgnoreCase))
+                    path = path.Remove(0, Options.RootPath.Length).TrimStart(Path.DirectorySeparatorChar);
 
-                    if (path.StartsWith(Options.RootPath, StringComparison.OrdinalIgnoreCase))
-                        path = path.Remove(0, Options.RootPath.Length).TrimStart(Path.DirectorySeparatorChar);
+                if (Path.DirectorySeparatorChar == '\\')
+                    path = path.Replace(Path.DirectorySeparatorChar, '/');
 
-                    if (Path.DirectorySeparatorChar == '\\')
-                        path = path.Replace(Path.DirectorySeparatorChar, '/');
+                Debug.Assert(path is not null, symbol.ToDisplayString());
 
-                    Debug.Assert(path != null, symbol.ToDisplayString());
+                writer.WriteAttributeString("path", path);
 
-                    writer.WriteAttributeString("path", path);
+                int line = tree.GetLineSpan(en.Current.Span, cancellationToken).StartLine() + 1;
 
-                    int line = tree.GetLineSpan(en.Current.Span, cancellationToken).StartLine() + 1;
-
-                    writer.WriteAttributeString("line", line.ToString(CultureInfo.InvariantCulture));
-
-                    writer.WriteEndElement();
-                }
-                while (en.MoveNext());
+                writer.WriteAttributeString("line", line.ToString(CultureInfo.InvariantCulture));
 
                 writer.WriteEndElement();
             }
+            while (en.MoveNext());
 
             writer.WriteEndElement();
         }
 
-#pragma warning disable RS1024
-        private static bool IsImplicitConstructor(ISymbol symbol)
-        {
-            return symbol is IMethodSymbol methodSymbol
-                && methodSymbol.MethodKind == MethodKind.Constructor
-                && !methodSymbol.Parameters.Any()
-                && methodSymbol.ContainingType.InstanceConstructors.SingleOrDefault(shouldThrow: false) == methodSymbol;
-        }
-#pragma warning restore RS1024
+        writer.WriteEndElement();
     }
+
+#pragma warning disable RS1024
+    private static bool IsImplicitConstructor(ISymbol symbol)
+    {
+        return symbol is IMethodSymbol methodSymbol
+            && methodSymbol.MethodKind == MethodKind.Constructor
+            && !methodSymbol.Parameters.Any()
+            && methodSymbol.ContainingType.InstanceConstructors.SingleOrDefault(shouldThrow: false) == methodSymbol;
+    }
+#pragma warning restore RS1024
 }

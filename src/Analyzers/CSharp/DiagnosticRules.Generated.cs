@@ -778,7 +778,7 @@ namespace Roslynator.CSharp
             messageFormat:      "Use '{0}' property instead of 'Any' method.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: true, 
+            isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod, 
             customTags:         Array.Empty<string>());
@@ -2495,6 +2495,18 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true, 
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.NormalizeFormatOfEnumFlagValue, 
+            customTags:         Array.Empty<string>());
+
+        /// <summary>RCS1255</summary>
+        public static readonly DiagnosticDescriptor SimplifyArgumentNullCheck = DiagnosticDescriptorFactory.Create(
+            id:                 DiagnosticIdentifiers.SimplifyArgumentNullCheck, 
+            title:              "Simplify argument null check.", 
+            messageFormat:      "Simplify argument null check.", 
+            category:           DiagnosticCategories.Roslynator, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: false, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.SimplifyArgumentNullCheck, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1256</summary>

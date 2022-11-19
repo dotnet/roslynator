@@ -6,16 +6,16 @@ using Roslynator.Formatting.CodeFixes.CSharp;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.Formatting.CSharp.Tests
-{
-    public class RCS0009AddEmptyLineBetweenDeclarationAndDocumentationCommentTests : AbstractCSharpDiagnosticVerifier<BlankLineBetweenDeclarationsAnalyzer, BlankLineBetweenDeclarationsCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddBlankLineBetweenDeclarationAndDocumentationComment;
+namespace Roslynator.Formatting.CSharp.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenDeclarationAndDocumentationComment)]
-        public async Task Test_MemberDeclaration_SingleLine()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS0009AddEmptyLineBetweenDeclarationAndDocumentationCommentTests : AbstractCSharpDiagnosticVerifier<BlankLineBetweenDeclarationsAnalyzer, BlankLineBetweenDeclarationsCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddBlankLineBetweenDeclarationAndDocumentationComment;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenDeclarationAndDocumentationComment)]
+    public async Task Test_MemberDeclaration_SingleLine()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     string P1 { get; set; }[||]
@@ -35,12 +35,12 @@ class C
     string P2 { get; set; }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenDeclarationAndDocumentationComment)]
-        public async Task Test_MemberDeclaration_Multiline()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenDeclarationAndDocumentationComment)]
+    public async Task Test_MemberDeclaration_Multiline()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M1()
@@ -68,12 +68,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenDeclarationAndDocumentationComment)]
-        public async Task Test_EnumMemberDeclaration_SingleLine()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenDeclarationAndDocumentationComment)]
+    public async Task Test_EnumMemberDeclaration_SingleLine()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 enum E
 {
     A = 0,[||]
@@ -93,12 +93,12 @@ enum E
     B = 1
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenDeclarationAndDocumentationComment)]
-        public async Task Test_EnumMemberDeclaration_Multiline()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenDeclarationAndDocumentationComment)]
+    public async Task Test_EnumMemberDeclaration_Multiline()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 enum E
@@ -126,12 +126,12 @@ enum E
     B = 1
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenDeclarationAndDocumentationComment)]
-        public async Task TestNoDiagnostic_MemberDeclaration()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenDeclarationAndDocumentationComment)]
+    public async Task TestNoDiagnostic_MemberDeclaration()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M1()
@@ -142,18 +142,17 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenDeclarationAndDocumentationComment)]
-        public async Task TestNoDiagnostic_EnumMemberDeclaration()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenDeclarationAndDocumentationComment)]
+    public async Task TestNoDiagnostic_EnumMemberDeclaration()
+    {
+        await VerifyNoDiagnosticAsync(@"
 enum E
 {
     A = 0,
     B = 1
 }
 ");
-        }
     }
 }

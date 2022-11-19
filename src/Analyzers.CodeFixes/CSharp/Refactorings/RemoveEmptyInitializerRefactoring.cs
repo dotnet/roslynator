@@ -9,53 +9,52 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class RemoveEmptyInitializerRefactoring
 {
-    internal static class RemoveEmptyInitializerRefactoring
+    public static Task<Document> RefactorAsync(
+        Document document,
+        ObjectCreationExpressionSyntax objectCreationExpression,
+        CancellationToken cancellationToken)
     {
-        public static Task<Document> RefactorAsync(
-            Document document,
-            ObjectCreationExpressionSyntax objectCreationExpression,
-            CancellationToken cancellationToken)
+        ArgumentListSyntax argumentList = objectCreationExpression.ArgumentList;
+        InitializerExpressionSyntax initializer = objectCreationExpression.Initializer;
+
+        ObjectCreationExpressionSyntax newNode = objectCreationExpression.WithInitializer(null);
+        if (argumentList is null)
         {
-            ArgumentListSyntax argumentList = objectCreationExpression.ArgumentList;
-            InitializerExpressionSyntax initializer = objectCreationExpression.Initializer;
+            TypeSyntax type = objectCreationExpression.Type;
 
-            ObjectCreationExpressionSyntax newNode = objectCreationExpression.WithInitializer(null);
-            if (argumentList == null)
+            ArgumentListSyntax newArgumentList = SyntaxFactory.ArgumentList();
+
+            IEnumerable<SyntaxTrivia> trivia = objectCreationExpression.DescendantTrivia(TextSpan.FromBounds(type.Span.End, initializer.Span.End));
+
+            if (trivia.Any(f => !f.IsWhitespaceOrEndOfLineTrivia()))
+                newArgumentList = newArgumentList.WithTrailingTrivia(trivia);
+
+            newNode = newNode
+                .WithType(type.WithoutTrailingTrivia())
+                .WithArgumentList(newArgumentList);
+        }
+        else
+        {
+            IEnumerable<SyntaxTrivia> trivia = objectCreationExpression.DescendantTrivia(TextSpan.FromBounds(argumentList.Span.End, initializer.Span.End));
+
+            if (trivia.Any(f => !f.IsWhitespaceOrEndOfLineTrivia()))
             {
-                TypeSyntax type = objectCreationExpression.Type;
-
-                ArgumentListSyntax newArgumentList = SyntaxFactory.ArgumentList();
-
-                IEnumerable<SyntaxTrivia> trivia = objectCreationExpression.DescendantTrivia(TextSpan.FromBounds(type.Span.End, initializer.Span.End));
-
-                if (trivia.Any(f => !f.IsWhitespaceOrEndOfLineTrivia()))
-                    newArgumentList = newArgumentList.WithTrailingTrivia(trivia);
-
-                newNode = newNode
-                    .WithType(type.WithoutTrailingTrivia())
-                    .WithArgumentList(newArgumentList);
+                newNode = newNode.WithTrailingTrivia(trivia);
             }
             else
             {
-                IEnumerable<SyntaxTrivia> trivia = objectCreationExpression.DescendantTrivia(TextSpan.FromBounds(argumentList.Span.End, initializer.Span.End));
-
-                if (trivia.Any(f => !f.IsWhitespaceOrEndOfLineTrivia()))
-                {
-                    newNode = newNode.WithTrailingTrivia(trivia);
-                }
-                else
-                {
-                    newNode = newNode.WithoutTrailingTrivia();
-                }
+                newNode = newNode.WithoutTrailingTrivia();
             }
-
-            newNode = newNode
-                .AppendToTrailingTrivia(initializer.GetTrailingTrivia())
-                .WithFormatterAnnotation();
-
-            return document.ReplaceNodeAsync(objectCreationExpression, newNode, cancellationToken);
         }
+
+        newNode = newNode
+            .AppendToTrailingTrivia(initializer.GetTrailingTrivia())
+            .WithFormatterAnnotation();
+
+        return document.ReplaceNodeAsync(objectCreationExpression, newNode, cancellationToken);
     }
 }

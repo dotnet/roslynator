@@ -4,29 +4,28 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Roslynator.CSharp.SyntaxRewriters
+namespace Roslynator.CSharp.SyntaxRewriters;
+
+internal class WhitespaceReplacer : CSharpSyntaxRewriter
 {
-    internal class WhitespaceReplacer : CSharpSyntaxRewriter
+    public SyntaxTrivia Replacement { get; }
+
+    public TextSpan? Span { get; }
+
+    public WhitespaceReplacer(SyntaxTrivia replacement, TextSpan? span = null)
     {
-        public SyntaxTrivia Replacement { get; }
+        Replacement = replacement;
+        Span = span;
+    }
 
-        public TextSpan? Span { get; }
-
-        public WhitespaceReplacer(SyntaxTrivia replacement, TextSpan? span = null)
+    public override SyntaxTrivia VisitTrivia(SyntaxTrivia trivia)
+    {
+        if (trivia.IsWhitespaceOrEndOfLineTrivia()
+            && (Span?.Contains(trivia.Span) != false))
         {
-            Replacement = replacement;
-            Span = span;
+            return Replacement;
         }
 
-        public override SyntaxTrivia VisitTrivia(SyntaxTrivia trivia)
-        {
-            if (trivia.IsWhitespaceOrEndOfLineTrivia()
-                && (Span?.Contains(trivia.Span) != false))
-            {
-                return Replacement;
-            }
-
-            return base.VisitTrivia(trivia);
-        }
+        return base.VisitTrivia(trivia);
     }
 }

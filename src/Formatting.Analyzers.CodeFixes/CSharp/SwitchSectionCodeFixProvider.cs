@@ -9,33 +9,32 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.Formatting.CSharp;
 
-namespace Roslynator.Formatting.CodeFixes.CSharp
+namespace Roslynator.Formatting.CodeFixes.CSharp;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SwitchSectionCodeFixProvider))]
+[Shared]
+public sealed class SwitchSectionCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SwitchSectionCodeFixProvider))]
-    [Shared]
-    public sealed class SwitchSectionCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
-        {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.AddBlankLineBetweenSwitchSections); }
-        }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.AddBlankLineBetweenSwitchSections); }
+    }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out SwitchSectionSyntax switchSection))
-                return;
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out SwitchSectionSyntax switchSection))
+            return;
 
-            Document document = context.Document;
-            Diagnostic diagnostic = context.Diagnostics[0];
+        Document document = context.Document;
+        Diagnostic diagnostic = context.Diagnostics[0];
 
-            CodeAction codeAction = CodeAction.Create(
-                CodeFixTitles.AddNewLine,
-                ct => CodeFixHelpers.AppendEndOfLineAsync(document, switchSection, ct),
-                GetEquivalenceKey(diagnostic));
+        CodeAction codeAction = CodeAction.Create(
+            CodeFixTitles.AddNewLine,
+            ct => CodeFixHelpers.AppendEndOfLineAsync(document, switchSection, ct),
+            GetEquivalenceKey(diagnostic));
 
-            context.RegisterCodeFix(codeAction, diagnostic);
-        }
+        context.RegisterCodeFix(codeAction, diagnostic);
     }
 }

@@ -8,43 +8,42 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class UseExclusiveOrOperatorRefactoring
 {
-    internal static class UseExclusiveOrOperatorRefactoring
+    public static Task<Document> RefactorAsync(
+        Document document,
+        BinaryExpressionSyntax logicalOr,
+        CancellationToken cancellationToken)
     {
-        public static Task<Document> RefactorAsync(
-            Document document,
-            BinaryExpressionSyntax logicalOr,
-            CancellationToken cancellationToken)
+        var logicalAnd = (BinaryExpressionSyntax)logicalOr.Left.WalkDownParentheses();
+
+        ExpressionSyntax left = logicalAnd.Left;
+        ExpressionSyntax right = logicalAnd.Right;
+
+        ExpressionSyntax newLeft = left.WalkDownParentheses();
+        ExpressionSyntax newRight = right.WalkDownParentheses();
+
+        if (newLeft.IsKind(SyntaxKind.LogicalNotExpression))
         {
-            var logicalAnd = (BinaryExpressionSyntax)logicalOr.Left.WalkDownParentheses();
-
-            ExpressionSyntax left = logicalAnd.Left;
-            ExpressionSyntax right = logicalAnd.Right;
-
-            ExpressionSyntax newLeft = left.WalkDownParentheses();
-            ExpressionSyntax newRight = right.WalkDownParentheses();
-
-            if (newLeft.IsKind(SyntaxKind.LogicalNotExpression))
-            {
-                newLeft = ((PrefixUnaryExpressionSyntax)newLeft).Operand.WalkDownParentheses();
-            }
-            else if (newRight.IsKind(SyntaxKind.LogicalNotExpression))
-            {
-                newRight = ((PrefixUnaryExpressionSyntax)newRight).Operand.WalkDownParentheses();
-            }
-
-            ExpressionSyntax newNode = ExclusiveOrExpression(
-                newLeft.WithTriviaFrom(left).Parenthesize(),
-                SyntaxFactory.Token(SyntaxKind.CaretToken).WithTriviaFrom(logicalOr.OperatorToken),
-                newRight.WithTriviaFrom(right).Parenthesize());
-
-            newNode = newNode
-                .WithTriviaFrom(logicalOr)
-                .Parenthesize()
-                .WithFormatterAnnotation();
-
-            return document.ReplaceNodeAsync(logicalOr, newNode, cancellationToken);
+            newLeft = ((PrefixUnaryExpressionSyntax)newLeft).Operand.WalkDownParentheses();
         }
+        else if (newRight.IsKind(SyntaxKind.LogicalNotExpression))
+        {
+            newRight = ((PrefixUnaryExpressionSyntax)newRight).Operand.WalkDownParentheses();
+        }
+
+        ExpressionSyntax newNode = ExclusiveOrExpression(
+            newLeft.WithTriviaFrom(left).Parenthesize(),
+            SyntaxFactory.Token(SyntaxKind.CaretToken).WithTriviaFrom(logicalOr.OperatorToken),
+            newRight.WithTriviaFrom(right).Parenthesize());
+
+        newNode = newNode
+            .WithTriviaFrom(logicalOr)
+            .Parenthesize()
+            .WithFormatterAnnotation();
+
+        return document.ReplaceNodeAsync(logicalOr, newNode, cancellationToken);
     }
 }

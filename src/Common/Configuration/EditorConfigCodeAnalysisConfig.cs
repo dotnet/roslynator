@@ -9,13 +9,13 @@ using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
 
-namespace Roslynator.Configuration
-{
-    internal class EditorConfigCodeAnalysisConfig
-    {
-        public const string FileName = ".roslynatorconfig";
+namespace Roslynator.Configuration;
 
-        internal const string FileDefaultContent = @"# Roslynator Config File
+internal class EditorConfigCodeAnalysisConfig
+{
+    public const string FileName = ".roslynatorconfig";
+
+    internal const string FileDefaultContent = @"# Roslynator Config File
 
 is_global = true
 
@@ -46,169 +46,168 @@ roslynator_analyzers.enabled_by_default = true|false
 #roslynator_compiler_diagnostic_fix.<COMPILER_DIAGNOSTIC_ID>.enabled = true|false
 ";
 
-        internal static EditorConfigCodeAnalysisConfig Empty { get; } = new();
+    internal static EditorConfigCodeAnalysisConfig Empty { get; } = new();
 
-        public EditorConfigCodeAnalysisConfig(
-            IEnumerable<KeyValuePair<string, string>> options = null,
-            IEnumerable<KeyValuePair<string, ReportDiagnostic>> analyzers = null,
-            IEnumerable<KeyValuePair<string, ReportDiagnostic>> analyzerCategories = null,
-            IEnumerable<KeyValuePair<string, bool>> refactorings = null,
-            IEnumerable<KeyValuePair<string, bool>> codeFixes = null,
-            bool? analyzersEnabledByDefault = null)
+    public EditorConfigCodeAnalysisConfig(
+        IEnumerable<KeyValuePair<string, string>> options = null,
+        IEnumerable<KeyValuePair<string, ReportDiagnostic>> analyzers = null,
+        IEnumerable<KeyValuePair<string, ReportDiagnostic>> analyzerCategories = null,
+        IEnumerable<KeyValuePair<string, bool>> refactorings = null,
+        IEnumerable<KeyValuePair<string, bool>> codeFixes = null,
+        bool? analyzersEnabledByDefault = null)
+    {
+        Options = options?.ToImmutableDictionary() ?? ImmutableDictionary<string, string>.Empty;
+        Analyzers = analyzers?.ToImmutableDictionary(StringComparer.InvariantCultureIgnoreCase) ?? ImmutableDictionary<string, ReportDiagnostic>.Empty;
+        AnalyzerCategories = analyzerCategories?.ToImmutableDictionary(StringComparer.InvariantCultureIgnoreCase) ?? ImmutableDictionary<string, ReportDiagnostic>.Empty;
+        Refactorings = refactorings?.ToImmutableDictionary(StringComparer.InvariantCultureIgnoreCase) ?? ImmutableDictionary<string, bool>.Empty;
+        CodeFixes = codeFixes?.ToImmutableDictionary(StringComparer.InvariantCultureIgnoreCase) ?? ImmutableDictionary<string, bool>.Empty;
+
+        if (Options.TryGetValue(ConfigOptionKeys.MaxLineLength, out string maxLineLengthRaw)
+            && int.TryParse(maxLineLengthRaw, out int maxLineLength))
         {
-            Options = options?.ToImmutableDictionary() ?? ImmutableDictionary<string, string>.Empty;
-            Analyzers = analyzers?.ToImmutableDictionary(StringComparer.InvariantCultureIgnoreCase) ?? ImmutableDictionary<string, ReportDiagnostic>.Empty;
-            AnalyzerCategories = analyzerCategories?.ToImmutableDictionary(StringComparer.InvariantCultureIgnoreCase) ?? ImmutableDictionary<string, ReportDiagnostic>.Empty;
-            Refactorings = refactorings?.ToImmutableDictionary(StringComparer.InvariantCultureIgnoreCase) ?? ImmutableDictionary<string, bool>.Empty;
-            CodeFixes = codeFixes?.ToImmutableDictionary(StringComparer.InvariantCultureIgnoreCase) ?? ImmutableDictionary<string, bool>.Empty;
-
-            if (Options.TryGetValue(ConfigOptionKeys.MaxLineLength, out string maxLineLengthRaw)
-                && int.TryParse(maxLineLengthRaw, out int maxLineLength))
-            {
-                MaxLineLength = maxLineLength;
-            }
-
-            if (Options.TryGetValue(ConfigOptionKeys.PrefixFieldIdentifierWithUnderscore, out string prefixFieldIdentifierWithUnderscoreRaw)
-                && bool.TryParse(prefixFieldIdentifierWithUnderscoreRaw, out bool prefixFieldIdentifierWithUnderscore))
-            {
-                PrefixFieldIdentifierWithUnderscore = prefixFieldIdentifierWithUnderscore;
-            }
-
-            AnalyzersEnabledByDefault = analyzersEnabledByDefault;
+            MaxLineLength = maxLineLength;
         }
 
-        public int? MaxLineLength { get; }
-
-        public bool? PrefixFieldIdentifierWithUnderscore { get; }
-
-        public ImmutableDictionary<string, string> Options { get; }
-
-        public ImmutableDictionary<string, ReportDiagnostic> Analyzers { get; }
-
-        public ImmutableDictionary<string, ReportDiagnostic> AnalyzerCategories { get; }
-
-        public ImmutableDictionary<string, bool> Refactorings { get; }
-
-        public ImmutableDictionary<string, bool> CodeFixes { get; }
-
-        public bool? AnalyzersEnabledByDefault { get; }
-
-        internal IReadOnlyDictionary<string, bool> GetRefactorings()
+        if (Options.TryGetValue(ConfigOptionKeys.PrefixFieldIdentifierWithUnderscore, out string prefixFieldIdentifierWithUnderscoreRaw)
+            && bool.TryParse(prefixFieldIdentifierWithUnderscoreRaw, out bool prefixFieldIdentifierWithUnderscore))
         {
-            return Refactorings;
+            PrefixFieldIdentifierWithUnderscore = prefixFieldIdentifierWithUnderscore;
         }
 
-        internal IReadOnlyDictionary<string, bool> GetCodeFixes()
-        {
-            return CodeFixes;
-        }
+        AnalyzersEnabledByDefault = analyzersEnabledByDefault;
+    }
 
-        public static string GetDefaultConfigFilePath()
+    public int? MaxLineLength { get; }
+
+    public bool? PrefixFieldIdentifierWithUnderscore { get; }
+
+    public ImmutableDictionary<string, string> Options { get; }
+
+    public ImmutableDictionary<string, ReportDiagnostic> Analyzers { get; }
+
+    public ImmutableDictionary<string, ReportDiagnostic> AnalyzerCategories { get; }
+
+    public ImmutableDictionary<string, bool> Refactorings { get; }
+
+    public ImmutableDictionary<string, bool> CodeFixes { get; }
+
+    public bool? AnalyzersEnabledByDefault { get; }
+
+    internal IReadOnlyDictionary<string, bool> GetRefactorings()
+    {
+        return Refactorings;
+    }
+
+    internal IReadOnlyDictionary<string, bool> GetCodeFixes()
+    {
+        return CodeFixes;
+    }
+
+    public static string GetDefaultConfigFilePath()
+    {
+        string path = typeof(EditorConfigCodeAnalysisConfig).Assembly.Location;
+
+        if (!string.IsNullOrEmpty(path))
         {
-            string path = typeof(EditorConfigCodeAnalysisConfig).Assembly.Location;
+            path = Path.GetDirectoryName(path);
 
             if (!string.IsNullOrEmpty(path))
-            {
-                path = Path.GetDirectoryName(path);
-
-                if (!string.IsNullOrEmpty(path))
-                    return Path.Combine(path, FileName);
-            }
-
-            return null;
+                return Path.Combine(path, FileName);
         }
 
-        public DiagnosticSeverity? GetDiagnosticSeverity(string id, string category, bool isEnabledByDefault)
+        return null;
+    }
+
+    public DiagnosticSeverity? GetDiagnosticSeverity(string id, string category, bool isEnabledByDefault)
+    {
+        ReportDiagnostic? reportDiagnostic = GetReportDiagnostic(id, category, isEnabledByDefault);
+
+        switch (reportDiagnostic)
         {
-            ReportDiagnostic? reportDiagnostic = GetReportDiagnostic(id, category, isEnabledByDefault);
-
-            switch (reportDiagnostic)
-            {
-                case ReportDiagnostic.Error:
-                case ReportDiagnostic.Warn:
-                case ReportDiagnostic.Info:
-                case ReportDiagnostic.Hidden:
-                    return reportDiagnostic.Value.ToDiagnosticSeverity();
-            }
-
-            return null;
+            case ReportDiagnostic.Error:
+            case ReportDiagnostic.Warn:
+            case ReportDiagnostic.Info:
+            case ReportDiagnostic.Hidden:
+                return reportDiagnostic.Value.ToDiagnosticSeverity();
         }
 
-        public bool? IsDiagnosticEnabledByDefault(string id, string category, bool defaultValue)
+        return null;
+    }
+
+    public bool? IsDiagnosticEnabledByDefault(string id, string category, bool defaultValue)
+    {
+        switch (GetReportDiagnostic(id, category, defaultValue))
         {
-            switch (GetReportDiagnostic(id, category, defaultValue))
-            {
-                case ReportDiagnostic.Error:
-                case ReportDiagnostic.Warn:
-                case ReportDiagnostic.Info:
-                case ReportDiagnostic.Hidden:
-                    return true;
-                case ReportDiagnostic.Suppress:
-                    return false;
-            }
-
-            return AnalyzersEnabledByDefault ?? defaultValue;
+            case ReportDiagnostic.Error:
+            case ReportDiagnostic.Warn:
+            case ReportDiagnostic.Info:
+            case ReportDiagnostic.Hidden:
+                return true;
+            case ReportDiagnostic.Suppress:
+                return false;
         }
 
-        private ReportDiagnostic? GetReportDiagnostic(string id, string category, bool isEnabledByDefault)
+        return AnalyzersEnabledByDefault ?? defaultValue;
+    }
+
+    private ReportDiagnostic? GetReportDiagnostic(string id, string category, bool isEnabledByDefault)
+    {
+        ReportDiagnostic? reportDiagnostic = null;
+
+        if (isEnabledByDefault
+            && AnalyzerCategories.TryGetValue(category, out ReportDiagnostic categoryReportDiagnostic))
         {
-            ReportDiagnostic? reportDiagnostic = null;
-
-            if (isEnabledByDefault
-                && AnalyzerCategories.TryGetValue(category, out ReportDiagnostic categoryReportDiagnostic))
-            {
-                reportDiagnostic = categoryReportDiagnostic;
-            }
-
-            if (Analyzers.TryGetValue(id, out ReportDiagnostic analyzerReportDiagnostic))
-                reportDiagnostic = analyzerReportDiagnostic;
-
-            return reportDiagnostic;
+            reportDiagnostic = categoryReportDiagnostic;
         }
 
-        public static void Save(
-            string path,
-            IEnumerable<KeyValuePair<string, string>> options,
-            IEnumerable<KeyValuePair<string, bool>> refactorings,
-            IEnumerable<KeyValuePair<string, bool>> codeFixes)
+        if (Analyzers.TryGetValue(id, out ReportDiagnostic analyzerReportDiagnostic))
+            reportDiagnostic = analyzerReportDiagnostic;
+
+        return reportDiagnostic;
+    }
+
+    public static void Save(
+        string path,
+        IEnumerable<KeyValuePair<string, string>> options,
+        IEnumerable<KeyValuePair<string, bool>> refactorings,
+        IEnumerable<KeyValuePair<string, bool>> codeFixes)
+    {
+        using var writer = new EditorConfigWriter(new StringWriter());
+
+        writer.WriteGlobalDirective();
+        writer.WriteLine();
+        writer.WriteEntries(options.OrderBy(f => f.Key));
+        writer.WriteLineIf(options.Any());
+        writer.WriteRefactorings(refactorings.OrderBy(f => f.Key));
+        writer.WriteLineIf(refactorings.Any());
+        writer.WriteCompilerDiagnosticFixes(codeFixes.OrderBy(f => f.Key));
+
+        File.WriteAllText(path, writer.ToString());
+    }
+
+    internal static string CreateDefaultConfigFileIfNotExists()
+    {
+        string path = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "JosefPihrt",
+            "Roslynator",
+            FileName);
+
+        if (!File.Exists(path))
         {
-            using var writer = new EditorConfigWriter(new StringWriter());
-
-            writer.WriteGlobalDirective();
-            writer.WriteLine();
-            writer.WriteEntries(options.OrderBy(f => f.Key));
-            writer.WriteLineIf(options.Any());
-            writer.WriteRefactorings(refactorings.OrderBy(f => f.Key));
-            writer.WriteLineIf(refactorings.Any());
-            writer.WriteCompilerDiagnosticFixes(codeFixes.OrderBy(f => f.Key));
-
-            File.WriteAllText(path, writer.ToString());
-        }
-
-        internal static string CreateDefaultConfigFileIfNotExists()
-        {
-            string path = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                "JosefPihrt",
-                "Roslynator",
-                FileName);
-
-            if (!File.Exists(path))
+            try
             {
-                try
-                {
-                    Directory.CreateDirectory(Path.GetDirectoryName(path));
+                Directory.CreateDirectory(Path.GetDirectoryName(path));
 
-                    File.WriteAllText(path, FileDefaultContent, Encoding.UTF8);
-                }
-                catch (Exception ex) when (ex is IOException
-                    || ex is UnauthorizedAccessException)
-                {
-                    Debug.WriteLine(ex.ToString());
-                }
+                File.WriteAllText(path, FileDefaultContent, Encoding.UTF8);
             }
-
-            return path;
+            catch (Exception ex) when (ex is IOException
+                || ex is UnauthorizedAccessException)
+            {
+                Debug.WriteLine(ex.ToString());
+            }
         }
+
+        return path;
     }
 }

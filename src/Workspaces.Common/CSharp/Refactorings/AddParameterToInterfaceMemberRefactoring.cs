@@ -79,7 +79,7 @@ namespace Roslynator.CSharp.Refactorings
             if (modifiers.Contains(SyntaxKind.StaticKeyword))
                 return default;
 
-            if (explicitInterfaceSpecifier != null)
+            if (explicitInterfaceSpecifier is not null)
                 return default;
 
             return ComputeRefactoringForImplicitImplementation(
@@ -99,7 +99,7 @@ namespace Roslynator.CSharp.Refactorings
 
             NameSyntax explicitInterfaceName = explicitInterfaceSpecifier?.Name;
 
-            if (explicitInterfaceName == null)
+            if (explicitInterfaceName is null)
                 return default;
 
             var interfaceSymbol = (INamedTypeSymbol)context.SemanticModel.GetTypeSymbol(explicitInterfaceName, context.CancellationToken);
@@ -112,12 +112,12 @@ namespace Roslynator.CSharp.Refactorings
 
             ISymbol memberSymbol = context.SemanticModel.GetDeclaredSymbol(memberDeclaration, context.CancellationToken);
 
-            if (memberSymbol == null)
+            if (memberSymbol is null)
                 return default;
 
             ISymbol interfaceMemberSymbol = FindInterfaceMember(memberSymbol, interfaceSymbol);
 
-            if (interfaceMemberSymbol == null)
+            if (interfaceMemberSymbol is null)
                 return default;
 
             return ComputeCodeAction(context, memberDeclaration, memberSymbol, interfaceMemberSymbol);
@@ -133,14 +133,14 @@ namespace Roslynator.CSharp.Refactorings
 
             BaseListSyntax baseList = GetBaseList(memberDeclaration.Parent);
 
-            if (baseList == null)
+            if (baseList is null)
                 return default;
 
             SeparatedSyntaxList<BaseTypeSyntax> baseTypes = baseList.Types;
 
             ISymbol memberSymbol = context.SemanticModel.GetDeclaredSymbol(memberDeclaration, context.CancellationToken);
 
-            if (memberSymbol == null)
+            if (memberSymbol is null)
                 return default;
 
             if (memberSymbol.ImplementsInterfaceMember())
@@ -170,11 +170,11 @@ namespace Roslynator.CSharp.Refactorings
 
                 ISymbol interfaceMemberSymbol = FindInterfaceMember(memberSymbol, interfaceSymbol);
 
-                if (interfaceMemberSymbol != null)
+                if (interfaceMemberSymbol is not null)
                 {
                     CodeAction codeAction = ComputeCodeAction(context, memberDeclaration, memberSymbol, interfaceMemberSymbol);
 
-                    if (singleCodeAction == null)
+                    if (singleCodeAction is null)
                     {
                         singleCodeAction = codeAction;
                     }
@@ -190,11 +190,11 @@ namespace Roslynator.CSharp.Refactorings
                 }
             }
 
-            if (codeActions != null)
+            if (codeActions is not null)
             {
                 return OneOrMany.Create(codeActions.ToImmutableArray());
             }
-            else if (singleCodeAction != null)
+            else if (singleCodeAction is not null)
             {
                 return OneOrMany.Create(singleCodeAction);
             }
@@ -408,7 +408,7 @@ namespace Roslynator.CSharp.Refactorings
                 GetModifiers(),
                 parameterSymbol.Type.ToTypeSyntax().WithSimplifierAnnotation(),
                 Identifier(parameterSymbol.Name),
-                (defaultValue != null) ? EqualsValueClause(defaultValue) : default);
+                (defaultValue is not null) ? EqualsValueClause(defaultValue) : default);
 
             SyntaxTokenList GetModifiers()
             {

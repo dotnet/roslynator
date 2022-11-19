@@ -7,35 +7,34 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Roslynator.CodeFixes;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(RemoveDuplicateModifierCodeFixProvider))]
+[Shared]
+public sealed class RemoveDuplicateModifierCodeFixProvider : CompilerDiagnosticCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(RemoveDuplicateModifierCodeFixProvider))]
-    [Shared]
-    public sealed class RemoveDuplicateModifierCodeFixProvider : CompilerDiagnosticCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
-        {
-            get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.CS1004_DuplicateModifier); }
-        }
+        get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.CS1004_DuplicateModifier); }
+    }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            Diagnostic diagnostic = context.Diagnostics[0];
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        Diagnostic diagnostic = context.Diagnostics[0];
 
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveDuplicateModifier, context.Document, root.SyntaxTree))
-                return;
+        if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveDuplicateModifier, context.Document, root.SyntaxTree))
+            return;
 
-            if (!TryFindToken(root, context.Span.Start, out SyntaxToken token))
-                return;
+        if (!TryFindToken(root, context.Span.Start, out SyntaxToken token))
+            return;
 
-            ModifiersCodeFixRegistrator.RemoveModifier(
-                context,
-                diagnostic,
-                token.Parent,
-                token,
-                additionalKey: CodeFixIdentifiers.RemoveDuplicateModifier);
-        }
+        ModifiersCodeFixRegistrator.RemoveModifier(
+            context,
+            diagnostic,
+            token.Parent,
+            token,
+            additionalKey: CodeFixIdentifiers.RemoveDuplicateModifier);
     }
 }

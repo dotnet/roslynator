@@ -2,26 +2,25 @@
 
 using Microsoft.CodeAnalysis;
 
-namespace Roslynator
+namespace Roslynator;
+
+internal readonly struct DiagnosticInfo
 {
-    internal readonly struct DiagnosticInfo
+    public DiagnosticInfo(DiagnosticDescriptor descriptor, FileLinePositionSpan lineSpan, DiagnosticSeverity severity)
     {
-        public DiagnosticInfo(DiagnosticDescriptor descriptor, FileLinePositionSpan lineSpan, DiagnosticSeverity severity)
-        {
-            Descriptor = descriptor;
-            LineSpan = lineSpan;
-            Severity = severity;
-        }
+        Descriptor = descriptor;
+        LineSpan = lineSpan;
+        Severity = severity;
+    }
 
-        public DiagnosticDescriptor Descriptor { get; }
+    public DiagnosticDescriptor Descriptor { get; }
 
-        public FileLinePositionSpan LineSpan { get; }
+    public FileLinePositionSpan LineSpan { get; }
 
-        public DiagnosticSeverity Severity { get; }
+    public DiagnosticSeverity Severity { get; }
 
-        public static DiagnosticInfo Create(Diagnostic diagnostic)
-        {
-            return new DiagnosticInfo(diagnostic.Descriptor, diagnostic.Location.GetMappedLineSpan(), diagnostic.Severity);
-        }
+    public static DiagnosticInfo Create(Diagnostic diagnostic)
+    {
+        return new DiagnosticInfo(diagnostic.Descriptor, diagnostic.Location.GetMappedLineSpan(), diagnostic.Severity);
     }
 }

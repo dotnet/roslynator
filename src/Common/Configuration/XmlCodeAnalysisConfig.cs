@@ -6,104 +6,103 @@ using System.Collections.Immutable;
 using System.IO;
 using Microsoft.CodeAnalysis;
 
-namespace Roslynator.Configuration
+namespace Roslynator.Configuration;
+
+public class XmlCodeAnalysisConfig
 {
-    public class XmlCodeAnalysisConfig
+    public const string FileName = "roslynator.config";
+
+    private static readonly IEqualityComparer<string> _keyComparer = StringComparer.OrdinalIgnoreCase;
+
+    public static XmlCodeAnalysisConfig Empty { get; } = new();
+
+    internal XmlCodeAnalysisConfig(
+        IEnumerable<string> includes = null,
+        IEnumerable<KeyValuePair<string, bool>> analyzers = null,
+        IEnumerable<KeyValuePair<string, bool>> codeFixes = null,
+        IEnumerable<KeyValuePair<string, bool>> refactorings = null,
+        IEnumerable<string> ruleSets = null,
+        bool? prefixFieldIdentifierWithUnderscore = ConfigOptionDefaultValues.PrefixFieldIdentifierWithUnderscore,
+        int? maxLineLength = ConfigOptionDefaultValues.MaxLineLength)
     {
-        public const string FileName = "roslynator.config";
+        Includes = includes?.ToImmutableArray() ?? ImmutableArray<string>.Empty;
+        Analyzers = analyzers?.ToImmutableDictionary(_keyComparer) ?? ImmutableDictionary<string, bool>.Empty;
+        CodeFixes = codeFixes?.ToImmutableDictionary(_keyComparer) ?? ImmutableDictionary<string, bool>.Empty;
+        Refactorings = refactorings?.ToImmutableDictionary(_keyComparer) ?? ImmutableDictionary<string, bool>.Empty;
+        RuleSets = ruleSets?.ToImmutableArray() ?? ImmutableArray<string>.Empty;
+        PrefixFieldIdentifierWithUnderscore = prefixFieldIdentifierWithUnderscore;
+        MaxLineLength = maxLineLength;
 
-        private static readonly IEqualityComparer<string> _keyComparer = StringComparer.OrdinalIgnoreCase;
+        string path = typeof(XmlCodeAnalysisConfig).Assembly.Location;
 
-        public static XmlCodeAnalysisConfig Empty { get; } = new();
+        if (!string.IsNullOrEmpty(path))
+            path = Path.Combine(Path.GetDirectoryName(path), RuleSetLoader.DefaultRuleSetName);
 
-        internal XmlCodeAnalysisConfig(
-            IEnumerable<string> includes = null,
-            IEnumerable<KeyValuePair<string, bool>> analyzers = null,
-            IEnumerable<KeyValuePair<string, bool>> codeFixes = null,
-            IEnumerable<KeyValuePair<string, bool>> refactorings = null,
-            IEnumerable<string> ruleSets = null,
-            bool? prefixFieldIdentifierWithUnderscore = ConfigOptionDefaultValues.PrefixFieldIdentifierWithUnderscore,
-            int? maxLineLength = ConfigOptionDefaultValues.MaxLineLength)
+        RuleSet ruleSet = RuleSetLoader.Load(path, RuleSets) ?? RuleSetLoader.EmptyRuleSet;
+
+        GeneralDiagnosticOption = ruleSet.GeneralDiagnosticOption;
+        SpecificDiagnosticOptions = ruleSet.SpecificDiagnosticOptions;
+    }
+
+    public ImmutableArray<string> Includes { get; }
+
+    public ImmutableDictionary<string, bool> Analyzers { get; }
+
+    public ImmutableDictionary<string, bool> CodeFixes { get; }
+
+    public ImmutableDictionary<string, bool> Refactorings { get; }
+
+    public ImmutableArray<string> RuleSets { get; }
+
+    public ReportDiagnostic GeneralDiagnosticOption { get; }
+
+    public ImmutableDictionary<string, ReportDiagnostic> SpecificDiagnosticOptions { get; }
+
+    public bool? PrefixFieldIdentifierWithUnderscore { get; }
+
+    public int? MaxLineLength { get; }
+
+    public static string GetDefaultConfigFilePath()
+    {
+        string path = typeof(XmlCodeAnalysisConfig).Assembly.Location;
+
+        if (!string.IsNullOrEmpty(path))
         {
-            Includes = includes?.ToImmutableArray() ?? ImmutableArray<string>.Empty;
-            Analyzers = analyzers?.ToImmutableDictionary(_keyComparer) ?? ImmutableDictionary<string, bool>.Empty;
-            CodeFixes = codeFixes?.ToImmutableDictionary(_keyComparer) ?? ImmutableDictionary<string, bool>.Empty;
-            Refactorings = refactorings?.ToImmutableDictionary(_keyComparer) ?? ImmutableDictionary<string, bool>.Empty;
-            RuleSets = ruleSets?.ToImmutableArray() ?? ImmutableArray<string>.Empty;
-            PrefixFieldIdentifierWithUnderscore = prefixFieldIdentifierWithUnderscore;
-            MaxLineLength = maxLineLength;
-
-            string path = typeof(XmlCodeAnalysisConfig).Assembly.Location;
+            path = Path.GetDirectoryName(path);
 
             if (!string.IsNullOrEmpty(path))
-                path = Path.Combine(Path.GetDirectoryName(path), RuleSetLoader.DefaultRuleSetName);
-
-            RuleSet ruleSet = RuleSetLoader.Load(path, RuleSets) ?? RuleSetLoader.EmptyRuleSet;
-
-            GeneralDiagnosticOption = ruleSet.GeneralDiagnosticOption;
-            SpecificDiagnosticOptions = ruleSet.SpecificDiagnosticOptions;
+                return Path.Combine(path, FileName);
         }
 
-        public ImmutableArray<string> Includes { get; }
+        return null;
+    }
 
-        public ImmutableDictionary<string, bool> Analyzers { get; }
+    public DiagnosticSeverity? GetDiagnosticSeverity(string id)
+    {
+        if (!SpecificDiagnosticOptions.TryGetValue(id, out ReportDiagnostic reportDiagnostic))
+            reportDiagnostic = GeneralDiagnosticOption;
 
-        public ImmutableDictionary<string, bool> CodeFixes { get; }
-
-        public ImmutableDictionary<string, bool> Refactorings { get; }
-
-        public ImmutableArray<string> RuleSets { get; }
-
-        public ReportDiagnostic GeneralDiagnosticOption { get; }
-
-        public ImmutableDictionary<string, ReportDiagnostic> SpecificDiagnosticOptions { get; }
-
-        public bool? PrefixFieldIdentifierWithUnderscore { get; }
-
-        public int? MaxLineLength { get; }
-
-        public static string GetDefaultConfigFilePath()
+        if (reportDiagnostic != ReportDiagnostic.Default
+            && reportDiagnostic != ReportDiagnostic.Suppress)
         {
-            string path = typeof(XmlCodeAnalysisConfig).Assembly.Location;
-
-            if (!string.IsNullOrEmpty(path))
-            {
-                path = Path.GetDirectoryName(path);
-
-                if (!string.IsNullOrEmpty(path))
-                    return Path.Combine(path, FileName);
-            }
-
-            return null;
+            return reportDiagnostic.ToDiagnosticSeverity();
         }
 
-        public DiagnosticSeverity? GetDiagnosticSeverity(string id)
+        return null;
+    }
+
+    public bool? IsDiagnosticEnabledByDefault(string id)
+    {
+        if (SpecificDiagnosticOptions.TryGetValue(id, out ReportDiagnostic reportDiagnostic))
         {
-            if (!SpecificDiagnosticOptions.TryGetValue(id, out ReportDiagnostic reportDiagnostic))
-                reportDiagnostic = GeneralDiagnosticOption;
-
-            if (reportDiagnostic != ReportDiagnostic.Default
-                && reportDiagnostic != ReportDiagnostic.Suppress)
-            {
-                return reportDiagnostic.ToDiagnosticSeverity();
-            }
-
-            return null;
+            if (reportDiagnostic != ReportDiagnostic.Default)
+                return reportDiagnostic != ReportDiagnostic.Suppress;
         }
-
-        public bool? IsDiagnosticEnabledByDefault(string id)
+        else if (GeneralDiagnosticOption == ReportDiagnostic.Suppress)
         {
-            if (SpecificDiagnosticOptions.TryGetValue(id, out ReportDiagnostic reportDiagnostic))
-            {
-                if (reportDiagnostic != ReportDiagnostic.Default)
-                    return reportDiagnostic != ReportDiagnostic.Suppress;
-            }
-            else if (GeneralDiagnosticOption == ReportDiagnostic.Suppress)
-            {
-                return false;
-            }
-
-            return null;
+            return false;
         }
+
+        return null;
     }
 }

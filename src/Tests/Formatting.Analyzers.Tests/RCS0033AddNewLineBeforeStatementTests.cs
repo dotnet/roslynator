@@ -6,16 +6,16 @@ using Roslynator.Formatting.CodeFixes.CSharp;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.Formatting.CSharp.Tests
-{
-    public class RCS0033AddNewLineBeforeStatementTests : AbstractCSharpDiagnosticVerifier<AddNewLineBeforeStatementAnalyzer, StatementCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddNewLineBeforeStatement;
+namespace Roslynator.Formatting.CSharp.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeStatement)]
-        public async Task Test_Block()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS0033AddNewLineBeforeStatementTests : AbstractCSharpDiagnosticVerifier<AddNewLineBeforeStatementAnalyzer, StatementCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddNewLineBeforeStatement;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeStatement)]
+    public async Task Test_Block()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -33,12 +33,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeStatement)]
-        public async Task Test_Block_SingleLine()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeStatement)]
+    public async Task Test_Block_SingleLine()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M() { M(); [||]M(); }
@@ -53,12 +53,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeStatement)]
-        public async Task Test_SwitchSection()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeStatement)]
+    public async Task Test_SwitchSection()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -88,12 +88,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeStatement)]
-        public async Task TestNoDiagnostic_EmptyStatement()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeStatement)]
+    public async Task TestNoDiagnostic_EmptyStatement()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -102,6 +102,5 @@ class C
     }
 }
 ");
-        }
     }
 }

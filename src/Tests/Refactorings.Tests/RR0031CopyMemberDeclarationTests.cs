@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0031CopyMemberDeclarationTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.CopyMemberDeclaration;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CopyMemberDeclaration)]
-        public async Task Test_CopyMemberBefore()
-        {
-            await VerifyRefactoringAsync(@"
+public class RR0031CopyMemberDeclarationTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.CopyMemberDeclaration;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CopyMemberDeclaration)]
+    public async Task Test_CopyMemberBefore()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M()
@@ -48,12 +48,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CopyMemberDeclaration)]
-        public async Task Test_CopyMemberAfter()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CopyMemberDeclaration)]
+    public async Task Test_CopyMemberAfter()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M()
@@ -88,12 +88,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CopyMemberDeclaration)]
-        public async Task Test_CopyFirstMemberBefore()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CopyMemberDeclaration)]
+    public async Task Test_CopyFirstMemberBefore()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M()
@@ -120,12 +120,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CopyMemberDeclaration)]
-        public async Task Test_CopyFirstMemberAfter()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CopyMemberDeclaration)]
+    public async Task Test_CopyFirstMemberAfter()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M()
@@ -152,12 +152,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CopyMemberDeclaration)]
-        public async Task Test_CopyLastMemberBefore()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CopyMemberDeclaration)]
+    public async Task Test_CopyLastMemberBefore()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M()
@@ -184,12 +184,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CopyMemberDeclaration)]
-        public async Task Test_CopyLastMemberAfter()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CopyMemberDeclaration)]
+    public async Task Test_CopyLastMemberAfter()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M()
@@ -216,12 +216,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CopyMemberDeclaration)]
-        public async Task Test_ClassInsideFileScopedNamespace()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CopyMemberDeclaration)]
+    public async Task Test_ClassInsideFileScopedNamespace()
+    {
+        await VerifyRefactoringAsync(@"
 namespace N;
 
 class C
@@ -238,12 +238,12 @@ class C2
 {
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CopyMemberDeclaration)]
-        public async Task Test_Class()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CopyMemberDeclaration)]
+    public async Task Test_Class()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M()
@@ -284,12 +284,12 @@ class C2
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CopyMemberDeclaration)]
-        public async Task Test_Constructor()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CopyMemberDeclaration)]
+    public async Task Test_Constructor()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     public C()
@@ -308,12 +308,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId), options: Options.AddAllowedCompilerDiagnosticId("CS0111"));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CopyMemberDeclaration)]
-        public async Task Test_Indexer()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CopyMemberDeclaration)]
+    public async Task Test_Indexer()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M()
@@ -346,12 +346,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId), options: Options.AddAllowedCompilerDiagnosticId("CS0111"));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CopyMemberDeclaration)]
-        public async Task Test_FileScopedNamespace()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CopyMemberDeclaration)]
+    public async Task Test_FileScopedNamespace()
+    {
+        await VerifyRefactoringAsync(@"
 namespace N;
 
 class C
@@ -376,6 +376,5 @@ class C2
 {
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId), options: Options.AddAllowedCompilerDiagnosticId("CS0111"));
-        }
     }
 }

@@ -5745,4 +5745,21 @@ void M()
       <Option Key="enum_flag_value_style" IsRequired="true" />
     </ConfigOptions>
   </Analyzer>
+  <Analyzer Identifier="SimplifyArgumentNullCheck">
+    <Id>RCS1255</Id>
+    <Title>Simplify argument null check.</Title>
+    <Category>General</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <Summary>Use `ArgumentNullException.ThrowIfNull` instead of `if` null check.</Summary>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[if (arg is null) // [|Id|]
+{
+    throw new ArgumentNullException(nameof(arg));
+}]]></Before>
+        <After><![CDATA[ArgumentNullException.ThrowIfNull(arg);]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
 </Analyzers>

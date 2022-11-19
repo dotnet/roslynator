@@ -10,110 +10,109 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(CodeFixProvider))]
+[Shared]
+public sealed class ReturnTypeOfAsyncMethodMustBeVoidOrTaskOrTaskOfTCodeFixProvider : CompilerDiagnosticCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(CodeFixProvider))]
-    [Shared]
-    public sealed class ReturnTypeOfAsyncMethodMustBeVoidOrTaskOrTaskOfTCodeFixProvider : CompilerDiagnosticCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
+        get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.CS1983_ReturnTypeOfAsyncMethodMustBeVoidOrTaskOrTaskOfT); }
+    }
+
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        Diagnostic diagnostic = context.Diagnostics[0];
+
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+        if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.ChangeMethodReturnType, context.Document, root.SyntaxTree))
+            return;
+
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out SyntaxNode node, predicate: f => f.IsKind(SyntaxKind.MethodDeclaration, SyntaxKind.LocalFunctionStatement)))
+            return;
+
+        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+        var methodSymbol = (IMethodSymbol)semanticModel.GetDeclaredSymbol(node, context.CancellationToken);
+
+        SyntaxDebug.Assert(methodSymbol is not null, node);
+
+        ITypeSymbol typeSymbol = methodSymbol.ReturnType;
+
+        if (typeSymbol.IsErrorType())
+            return;
+
+        (bool containsReturnAwait, bool containsAwaitStatement) = AnalyzeAwaitExpressions(node);
+
+        SyntaxDebug.Assert(containsAwaitStatement || containsReturnAwait, node);
+
+        if (containsAwaitStatement)
         {
-            get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.CS1983_ReturnTypeOfAsyncMethodMustBeVoidOrTaskOrTaskOfT); }
+            INamedTypeSymbol taskSymbol = semanticModel.GetTypeByMetadataName("System.Threading.Tasks.Task");
+
+            CodeFixRegistrator.ChangeTypeOrReturnType(context, diagnostic, node, taskSymbol, semanticModel, "Task");
         }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+        if (containsReturnAwait)
         {
-            Diagnostic diagnostic = context.Diagnostics[0];
+            typeSymbol = semanticModel.GetTypeByMetadataName("System.Threading.Tasks.Task`1").Construct(typeSymbol);
 
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+            CodeFixRegistrator.ChangeTypeOrReturnType(context, diagnostic, node, typeSymbol, semanticModel, "TaskOfT");
+        }
+    }
 
-            if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.ChangeMethodReturnType, context.Document, root.SyntaxTree))
-                return;
+    private static (bool containsReturnAwait, bool containsAwaitStatement) AnalyzeAwaitExpressions(SyntaxNode node)
+    {
+        if (node is MethodDeclarationSyntax methodDeclaration)
+        {
+            ArrowExpressionClauseSyntax expressionBody = methodDeclaration.ExpressionBody;
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out SyntaxNode node, predicate: f => f.IsKind(SyntaxKind.MethodDeclaration, SyntaxKind.LocalFunctionStatement)))
-                return;
+            if (expressionBody is not null)
+                return (expressionBody.Expression?.Kind() == SyntaxKind.AwaitExpression, false);
 
-            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+            node = methodDeclaration.Body;
+        }
+        else
+        {
+            var localFunction = (LocalFunctionStatementSyntax)node;
 
-            var methodSymbol = (IMethodSymbol)semanticModel.GetDeclaredSymbol(node, context.CancellationToken);
+            ArrowExpressionClauseSyntax expressionBody = localFunction.ExpressionBody;
 
-            SyntaxDebug.Assert(methodSymbol != null, node);
+            if (expressionBody is not null)
+                return (expressionBody.Expression?.Kind() == SyntaxKind.AwaitExpression, false);
 
-            ITypeSymbol typeSymbol = methodSymbol.ReturnType;
+            node = localFunction.Body;
+        }
 
-            if (typeSymbol.IsErrorType())
-                return;
+        if (node is null)
+            return (false, false);
 
-            (bool containsReturnAwait, bool containsAwaitStatement) = AnalyzeAwaitExpressions(node);
+        var containsReturnAwait = false;
+        var containsAwaitStatement = false;
 
-            SyntaxDebug.Assert(containsAwaitStatement || containsReturnAwait, node);
-
-            if (containsAwaitStatement)
+        foreach (SyntaxNode descendant in node.DescendantNodes(node.Span, f => !CSharpFacts.IsFunction(f.Kind())))
+        {
+            switch (descendant)
             {
-                INamedTypeSymbol taskSymbol = semanticModel.GetTypeByMetadataName("System.Threading.Tasks.Task");
+                case ReturnStatementSyntax returnStatement:
+                    {
+                        if (returnStatement.Expression?.WalkDownParentheses().Kind() == SyntaxKind.AwaitExpression)
+                            containsReturnAwait = true;
 
-                CodeFixRegistrator.ChangeTypeOrReturnType(context, diagnostic, node, taskSymbol, semanticModel, "Task");
-            }
+                        break;
+                    }
+                case ExpressionStatementSyntax expressionStatement:
+                    {
+                        if (expressionStatement.Expression?.Kind() == SyntaxKind.AwaitExpression)
+                            containsAwaitStatement = true;
 
-            if (containsReturnAwait)
-            {
-                typeSymbol = semanticModel.GetTypeByMetadataName("System.Threading.Tasks.Task`1").Construct(typeSymbol);
-
-                CodeFixRegistrator.ChangeTypeOrReturnType(context, diagnostic, node, typeSymbol, semanticModel, "TaskOfT");
+                        break;
+                    }
             }
         }
 
-        private static (bool containsReturnAwait, bool containsAwaitStatement) AnalyzeAwaitExpressions(SyntaxNode node)
-        {
-            if (node is MethodDeclarationSyntax methodDeclaration)
-            {
-                ArrowExpressionClauseSyntax expressionBody = methodDeclaration.ExpressionBody;
-
-                if (expressionBody != null)
-                    return (expressionBody.Expression?.Kind() == SyntaxKind.AwaitExpression, false);
-
-                node = methodDeclaration.Body;
-            }
-            else
-            {
-                var localFunction = (LocalFunctionStatementSyntax)node;
-
-                ArrowExpressionClauseSyntax expressionBody = localFunction.ExpressionBody;
-
-                if (expressionBody != null)
-                    return (expressionBody.Expression?.Kind() == SyntaxKind.AwaitExpression, false);
-
-                node = localFunction.Body;
-            }
-
-            if (node == null)
-                return (false, false);
-
-            var containsReturnAwait = false;
-            var containsAwaitStatement = false;
-
-            foreach (SyntaxNode descendant in node.DescendantNodes(node.Span, f => !CSharpFacts.IsFunction(f.Kind())))
-            {
-                switch (descendant)
-                {
-                    case ReturnStatementSyntax returnStatement:
-                        {
-                            if (returnStatement.Expression?.WalkDownParentheses().Kind() == SyntaxKind.AwaitExpression)
-                                containsReturnAwait = true;
-
-                            break;
-                        }
-                    case ExpressionStatementSyntax expressionStatement:
-                        {
-                            if (expressionStatement.Expression?.Kind() == SyntaxKind.AwaitExpression)
-                                containsAwaitStatement = true;
-
-                            break;
-                        }
-                }
-            }
-
-            return (containsReturnAwait, containsAwaitStatement);
-        }
+        return (containsReturnAwait, containsAwaitStatement);
     }
 }

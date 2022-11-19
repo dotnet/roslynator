@@ -9,91 +9,90 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Syntax;
 using static Roslynator.CSharp.Refactorings.ChangeAccessibilityRefactoring;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class AccessModifierRefactoring
 {
-    internal static class AccessModifierRefactoring
+    public static async Task ComputeRefactoringsAsync(RefactoringContext context, SyntaxToken modifier)
     {
-        public static async Task ComputeRefactoringsAsync(RefactoringContext context, SyntaxToken modifier)
+        SyntaxNode node = modifier.Parent;
+
+        if (node.IsKind(SyntaxKind.DestructorDeclaration))
+            return;
+
+        ModifierListInfo modifiersInfo = SyntaxInfo.ModifierListInfo(node);
+
+        if (node.IsKind(
+            SyntaxKind.ClassDeclaration,
+            SyntaxKind.InterfaceDeclaration,
+            SyntaxKind.StructDeclaration,
+            SyntaxKind.RecordStructDeclaration))
         {
-            SyntaxNode node = modifier.Parent;
+            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-            if (node.IsKind(SyntaxKind.DestructorDeclaration))
-                return;
+            var symbol = (INamedTypeSymbol)semanticModel.GetDeclaredSymbol(node, context.CancellationToken);
 
-            ModifierListInfo modifiersInfo = SyntaxInfo.ModifierListInfo(node);
+            ImmutableArray<SyntaxReference> syntaxReferences = symbol.DeclaringSyntaxReferences;
 
-            if (node.IsKind(
-                SyntaxKind.ClassDeclaration,
-                SyntaxKind.InterfaceDeclaration,
-                SyntaxKind.StructDeclaration,
-                SyntaxKind.RecordStructDeclaration))
+            if (syntaxReferences.Length > 1)
             {
-                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                ImmutableArray<MemberDeclarationSyntax> memberDeclarations = ImmutableArray.CreateRange(
+                    syntaxReferences,
+                    f => (MemberDeclarationSyntax)f.GetSyntax(context.CancellationToken));
 
-                var symbol = (INamedTypeSymbol)semanticModel.GetDeclaredSymbol(node, context.CancellationToken);
-
-                ImmutableArray<SyntaxReference> syntaxReferences = symbol.DeclaringSyntaxReferences;
-
-                if (syntaxReferences.Length > 1)
+                foreach (Accessibility accessibility in AvailableAccessibilities)
                 {
-                    ImmutableArray<MemberDeclarationSyntax> memberDeclarations = ImmutableArray.CreateRange(
-                        syntaxReferences,
-                        f => (MemberDeclarationSyntax)f.GetSyntax(context.CancellationToken));
-
-                    foreach (Accessibility accessibility in AvailableAccessibilities)
-                    {
-                        if (accessibility != modifiersInfo.ExplicitAccessibility
-                            && SyntaxAccessibility.IsValidAccessibility(node, accessibility))
-                        {
-                            context.RegisterRefactoring(
-                                GetTitle(accessibility),
-                                ct => RefactorAsync(context.Solution, memberDeclarations, accessibility, ct),
-                                RefactoringDescriptors.ChangeAccessibility,
-                                accessibility.ToString());
-                        }
-                    }
-
-                    return;
-                }
-            }
-
-            foreach (Accessibility accessibility in AvailableAccessibilities)
-            {
-                if (accessibility == modifiersInfo.ExplicitAccessibility)
-                    continue;
-
-                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                ISymbol symbol = GetBaseSymbolOrDefault(semanticModel, context.CancellationToken);
-
-                if (symbol != null)
-                {
-                    if (SyntaxAccessibility.IsValidAccessibility(node, accessibility, ignoreOverride: true))
+                    if (accessibility != modifiersInfo.ExplicitAccessibility
+                        && SyntaxAccessibility.IsValidAccessibility(node, accessibility))
                     {
                         context.RegisterRefactoring(
                             GetTitle(accessibility),
-                            ct => RefactorAsync(context.Solution, symbol, accessibility, ct),
+                            ct => RefactorAsync(context.Solution, memberDeclarations, accessibility, ct),
                             RefactoringDescriptors.ChangeAccessibility,
                             accessibility.ToString());
                     }
                 }
-                else if (SyntaxAccessibility.IsValidAccessibility(node, accessibility))
+
+                return;
+            }
+        }
+
+        foreach (Accessibility accessibility in AvailableAccessibilities)
+        {
+            if (accessibility == modifiersInfo.ExplicitAccessibility)
+                continue;
+
+            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+            ISymbol symbol = GetBaseSymbolOrDefault(semanticModel, context.CancellationToken);
+
+            if (symbol is not null)
+            {
+                if (SyntaxAccessibility.IsValidAccessibility(node, accessibility, ignoreOverride: true))
                 {
                     context.RegisterRefactoring(
                         GetTitle(accessibility),
-                        ct => RefactorAsync(context.Document, node, accessibility, ct),
+                        ct => RefactorAsync(context.Solution, symbol, accessibility, ct),
                         RefactoringDescriptors.ChangeAccessibility,
                         accessibility.ToString());
                 }
             }
-
-            ISymbol GetBaseSymbolOrDefault(SemanticModel semanticModel, CancellationToken cancellationToken)
+            else if (SyntaxAccessibility.IsValidAccessibility(node, accessibility))
             {
-                if (modifiersInfo.GetFilter().HasAnyFlag(ModifierFilter.AbstractVirtualOverride))
-                    return ChangeAccessibilityRefactoring.GetBaseSymbolOrDefault(node, semanticModel, cancellationToken);
-
-                return null;
+                context.RegisterRefactoring(
+                    GetTitle(accessibility),
+                    ct => RefactorAsync(context.Document, node, accessibility, ct),
+                    RefactoringDescriptors.ChangeAccessibility,
+                    accessibility.ToString());
             }
+        }
+
+        ISymbol GetBaseSymbolOrDefault(SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            if (modifiersInfo.GetFilter().HasAnyFlag(ModifierFilter.AbstractVirtualOverride))
+                return ChangeAccessibilityRefactoring.GetBaseSymbolOrDefault(node, semanticModel, cancellationToken);
+
+            return null;
         }
     }
 }

@@ -35,15 +35,15 @@ namespace Roslynator
 
         public ConsoleColor? Background { get; }
 
-        public bool IsDefault => Foreground == null && Background == null;
+        public bool IsDefault => Foreground is null && Background is null;
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string DebuggerDisplay
         {
             get
             {
-                return $"{((Foreground != null) ? Foreground.ToString() : "None")}  "
-                    + $"{((Background != null) ? Background.ToString() : "None")}";
+                return $"{((Foreground is not null) ? Foreground.ToString() : "None")}  "
+                    + $"{((Background is not null) ? Background.ToString() : "None")}";
             }
         }
 

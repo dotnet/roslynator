@@ -6,60 +6,59 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class RemoveRedundantDefaultSwitchSectionRefactoring
 {
-    internal static class RemoveRedundantDefaultSwitchSectionRefactoring
+    public static Task<Document> RefactorAsync(
+        Document document,
+        SwitchSectionSyntax switchSection,
+        CancellationToken cancellationToken)
     {
-        public static Task<Document> RefactorAsync(
-            Document document,
-            SwitchSectionSyntax switchSection,
-            CancellationToken cancellationToken)
+        var switchStatement = (SwitchStatementSyntax)switchSection.Parent;
+
+        SwitchStatementSyntax newSwitchStatement = GetNewSwitchStatement(switchSection, switchStatement);
+
+        return document.ReplaceNodeAsync(switchStatement, newSwitchStatement, cancellationToken);
+    }
+
+    private static SwitchStatementSyntax GetNewSwitchStatement(SwitchSectionSyntax switchSection, SwitchStatementSyntax switchStatement)
+    {
+        if (switchSection.GetLeadingTrivia().IsEmptyOrWhitespace())
         {
-            var switchStatement = (SwitchStatementSyntax)switchSection.Parent;
+            int index = switchStatement.Sections.IndexOf(switchSection);
 
-            SwitchStatementSyntax newSwitchStatement = GetNewSwitchStatement(switchSection, switchStatement);
-
-            return document.ReplaceNodeAsync(switchStatement, newSwitchStatement, cancellationToken);
-        }
-
-        private static SwitchStatementSyntax GetNewSwitchStatement(SwitchSectionSyntax switchSection, SwitchStatementSyntax switchStatement)
-        {
-            if (switchSection.GetLeadingTrivia().IsEmptyOrWhitespace())
+            if (index > 0)
             {
-                int index = switchStatement.Sections.IndexOf(switchSection);
+                SwitchSectionSyntax previousSection = switchStatement.Sections[index - 1];
 
-                if (index > 0)
+                if (previousSection.GetTrailingTrivia().IsEmptyOrWhitespace())
                 {
-                    SwitchSectionSyntax previousSection = switchStatement.Sections[index - 1];
+                    SwitchStatementSyntax newSwitchStatement = switchStatement.RemoveNode(
+                        switchSection,
+                        SyntaxRemoveOptions.KeepNoTrivia);
 
-                    if (previousSection.GetTrailingTrivia().IsEmptyOrWhitespace())
-                    {
-                        SwitchStatementSyntax newSwitchStatement = switchStatement.RemoveNode(
-                            switchSection,
-                            SyntaxRemoveOptions.KeepNoTrivia);
+                    previousSection = newSwitchStatement.Sections[index - 1];
 
-                        previousSection = newSwitchStatement.Sections[index - 1];
-
-                        return newSwitchStatement.ReplaceNode(
-                            previousSection,
-                            previousSection.WithTrailingTrivia(switchSection.GetTrailingTrivia()));
-                    }
-                }
-                else
-                {
-                    SyntaxToken openBrace = switchStatement.OpenBraceToken;
-
-                    if (!openBrace.IsMissing
-                        && openBrace.TrailingTrivia.IsEmptyOrWhitespace())
-                    {
-                        return switchStatement
-                            .RemoveNode(switchSection, SyntaxRemoveOptions.KeepNoTrivia)
-                            .WithOpenBraceToken(openBrace.WithTrailingTrivia(switchSection.GetTrailingTrivia()));
-                    }
+                    return newSwitchStatement.ReplaceNode(
+                        previousSection,
+                        previousSection.WithTrailingTrivia(switchSection.GetTrailingTrivia()));
                 }
             }
+            else
+            {
+                SyntaxToken openBrace = switchStatement.OpenBraceToken;
 
-            return switchStatement.RemoveNode(switchSection, SyntaxRemoveOptions.KeepExteriorTrivia);
+                if (!openBrace.IsMissing
+                    && openBrace.TrailingTrivia.IsEmptyOrWhitespace())
+                {
+                    return switchStatement
+                        .RemoveNode(switchSection, SyntaxRemoveOptions.KeepNoTrivia)
+                        .WithOpenBraceToken(openBrace.WithTrailingTrivia(switchSection.GetTrailingTrivia()));
+                }
+            }
         }
+
+        return switchStatement.RemoveNode(switchSection, SyntaxRemoveOptions.KeepExteriorTrivia);
     }
 }

@@ -10,36 +10,35 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(CaseSwitchLabelCodeFixProvider))]
+[Shared]
+public sealed class CaseSwitchLabelCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(CaseSwitchLabelCodeFixProvider))]
-    [Shared]
-    public sealed class CaseSwitchLabelCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
-        {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveUnnecessaryCaseLabel); }
-        }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveUnnecessaryCaseLabel); }
+    }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out CaseSwitchLabelSyntax label))
-                return;
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out CaseSwitchLabelSyntax label))
+            return;
 
-            CodeAction codeAction = CodeAction.Create(
-                "Remove unnecessary case label",
-                ct =>
-                {
-                    return RemoveUnnecessaryCaseLabelRefactoring.RefactorAsync(
-                        context.Document,
-                        label,
-                        ct);
-                },
-                GetEquivalenceKey(DiagnosticIdentifiers.RemoveUnnecessaryCaseLabel));
+        CodeAction codeAction = CodeAction.Create(
+            "Remove unnecessary case label",
+            ct =>
+            {
+                return RemoveUnnecessaryCaseLabelRefactoring.RefactorAsync(
+                    context.Document,
+                    label,
+                    ct);
+            },
+            GetEquivalenceKey(DiagnosticIdentifiers.RemoveUnnecessaryCaseLabel));
 
-            context.RegisterCodeFix(codeAction, context.Diagnostics);
-        }
+        context.RegisterCodeFix(codeAction, context.Diagnostics);
     }
 }

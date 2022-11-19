@@ -6,21 +6,21 @@ using Roslynator.Formatting.CodeFixes.CSharp;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.Formatting.CSharp.Tests
+namespace Roslynator.Formatting.CSharp.Tests;
+
+public class RCS0006AddEmptyLineBeforeUsingDirectiveListTests : AbstractCSharpDiagnosticVerifier<AddBlankLineBeforeUsingDirectiveListAnalyzer, AddBlankLineBeforeAndAfterUsingDirectiveListCodeFixProvider>
 {
-    public class RCS0006AddEmptyLineBeforeUsingDirectiveListTests : AbstractCSharpDiagnosticVerifier<AddBlankLineBeforeUsingDirectiveListAnalyzer, AddBlankLineBeforeAndAfterUsingDirectiveListCodeFixProvider>
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddBlankLineBeforeUsingDirectiveList;
+
+    public override CSharpTestOptions Options
     {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddBlankLineBeforeUsingDirectiveList;
+        get { return base.Options.AddAllowedCompilerDiagnosticId("CS0430"); }
+    }
 
-        public override CSharpTestOptions Options
-        {
-            get { return base.Options.AddAllowedCompilerDiagnosticId("CS0430"); }
-        }
-
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeUsingDirectiveList)]
-        public async Task Test_Comment_Before()
-        {
-            await VerifyDiagnosticAndFixAsync(@"// x
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeUsingDirectiveList)]
+    public async Task Test_Comment_Before()
+    {
+        await VerifyDiagnosticAndFixAsync(@"// x
 [||]using System;
 using System.Linq;
 
@@ -36,12 +36,12 @@ namespace N
 {
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeUsingDirectiveList)]
-        public async Task Test_CommentAndExternAlias_Before()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeUsingDirectiveList)]
+    public async Task Test_CommentAndExternAlias_Before()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 extern alias x;
 [||]using System;
 using System.Linq;
@@ -59,12 +59,12 @@ namespace N
 {
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeUsingDirectiveList)]
-        public async Task Test_Comment_ExternAliasAndComment_Before()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeUsingDirectiveList)]
+    public async Task Test_Comment_ExternAliasAndComment_Before()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 extern alias x; // x
 [||]using System;
 using System.Linq;
@@ -82,12 +82,12 @@ namespace N
 {
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeUsingDirectiveList)]
-        public async Task Test_ExternAliasAndRegionDirective_Before()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeUsingDirectiveList)]
+    public async Task Test_ExternAliasAndRegionDirective_Before()
+    {
+        await VerifyNoDiagnosticAsync(@"
 extern alias x;
 #region
 using System;
@@ -98,12 +98,12 @@ namespace N
 {
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeUsingDirectiveList)]
-        public async Task TestNoDiagnostic_CommentAndRegionDirective_Before()
-        {
-            await VerifyNoDiagnosticAsync(@"// x
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeUsingDirectiveList)]
+    public async Task TestNoDiagnostic_CommentAndRegionDirective_Before()
+    {
+        await VerifyNoDiagnosticAsync(@"// x
 #region
 using System;
 using System.Linq;
@@ -113,12 +113,12 @@ namespace N
 {
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeUsingDirectiveList)]
-        public async Task TestNoDiagnostic_CommentAndPragmaDirective_Before()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeUsingDirectiveList)]
+    public async Task TestNoDiagnostic_CommentAndPragmaDirective_Before()
+    {
+        await VerifyNoDiagnosticAsync(@"
 #pragma warning disable x
 using System;
 using System.Linq;
@@ -127,6 +127,5 @@ namespace N
 {
 }
 ");
-        }
     }
 }

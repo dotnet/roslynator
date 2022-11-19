@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1128UseCoalesceExpressionTests : AbstractCSharpDiagnosticVerifier<UseCoalesceExpressionAnalyzer, UseCoalesceExpressionCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseCoalesceExpression;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
-        public async Task Test_LocalDeclarationStatement()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1128UseCoalesceExpressionTests : AbstractCSharpDiagnosticVerifier<UseCoalesceExpressionAnalyzer, UseCoalesceExpressionCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseCoalesceExpression;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
+    public async Task Test_LocalDeclarationStatement()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M(string s)
@@ -37,12 +37,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
-        public async Task Test_LocalDeclarationStatement_IsNull()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
+    public async Task Test_LocalDeclarationStatement_IsNull()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M(string s)
@@ -64,12 +64,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
-        public async Task Test_LocalDeclarationStatement_WithComments()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
+    public async Task Test_LocalDeclarationStatement_WithComments()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M(string s)
@@ -100,12 +100,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
-        public async Task Test_LocalDeclarationStatement_EmbeddedStatement()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
+    public async Task Test_LocalDeclarationStatement_EmbeddedStatement()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M(string s)
@@ -125,12 +125,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
-        public async Task Test_LocalDeclarationStatement_CastExpression()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
+    public async Task Test_LocalDeclarationStatement_CastExpression()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C : B
 {
     void M(C c)
@@ -156,12 +156,12 @@ class C : B
 
 class B { }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
-        public async Task Test_SimpleAssignmentStatement()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
+    public async Task Test_SimpleAssignmentStatement()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M(string s, string x)
@@ -183,12 +183,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
-        public async Task Test_SimpleAssignmentStatement_CastExpression()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
+    public async Task Test_SimpleAssignmentStatement_CastExpression()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C : B
 {
     void M(C c, B b)
@@ -214,12 +214,12 @@ class C : B
 
 class B { }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
-        public async Task Test_IfStatement_Nullable()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
+    public async Task Test_IfStatement_Nullable()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M(int? i)
@@ -241,12 +241,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
-        public async Task Test_IfStatement_Nullable_NotHasValue()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
+    public async Task Test_IfStatement_Nullable_NotHasValue()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M(int? i)
@@ -268,12 +268,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
-        public async Task Test_LocalDeclarationStatement_Nullable()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
+    public async Task Test_LocalDeclarationStatement_Nullable()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M(int? i)
@@ -295,12 +295,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
-        public async Task Test_SimpleAssignmentStatement_Nullable()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
+    public async Task Test_SimpleAssignmentStatement_Nullable()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M(int? i, int? x)
@@ -322,12 +322,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
-        public async Task Test_NullableReferenceType()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
+    public async Task Test_NullableReferenceType()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 #nullable enable
 
 public class C
@@ -356,12 +356,12 @@ public class C
     string? GetValue() => """";
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
-        public async Task TestNoDiagnostic_NotEqualsToNull()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
+    public async Task TestNoDiagnostic_NotEqualsToNull()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -373,12 +373,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
-        public async Task TestNoDiagnostic_NotIsNull()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
+    public async Task TestNoDiagnostic_NotIsNull()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -390,12 +390,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
-        public async Task TestNoDiagnostic_HasValue()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
+    public async Task TestNoDiagnostic_HasValue()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -407,12 +407,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
-        public async Task TestNoDiagnostic_RefType()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
+    public async Task TestNoDiagnostic_RefType()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 class C
@@ -431,6 +431,5 @@ class C
     }
 }
 ");
-        }
     }
 }

@@ -6,30 +6,29 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Analysis.AddExceptionToDocumentationComment;
 using Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class ThrowStatementRefactoring
 {
-    internal static class ThrowStatementRefactoring
+    public static async Task ComputeRefactoringAsync(RefactoringContext context, ThrowStatementSyntax throwStatement)
     {
-        public static async Task ComputeRefactoringAsync(RefactoringContext context, ThrowStatementSyntax throwStatement)
+        if (context.IsRefactoringEnabled(RefactoringDescriptors.AddExceptionElementToDocumentationComment)
+            && context.Span.IsContainedInSpanOrBetweenSpans(throwStatement))
         {
-            if (context.IsRefactoringEnabled(RefactoringDescriptors.AddExceptionElementToDocumentationComment)
-                && context.Span.IsContainedInSpanOrBetweenSpans(throwStatement))
+            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+            AddExceptionToDocumentationCommentAnalysisResult analysis = AddExceptionToDocumentationCommentAnalysis.Analyze(
+                throwStatement,
+                semanticModel.GetTypeByMetadataName("System.Exception"),
+                semanticModel,
+                context.CancellationToken);
+
+            if (analysis.Success)
             {
-                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                AddExceptionToDocumentationCommentAnalysisResult analysis = AddExceptionToDocumentationCommentAnalysis.Analyze(
-                    throwStatement,
-                    semanticModel.GetTypeByMetadataName("System.Exception"),
-                    semanticModel,
-                    context.CancellationToken);
-
-                if (analysis.Success)
-                {
-                    context.RegisterRefactoring(
-                        "Add 'exception' element to documentation comment",
-                        ct => AddExceptionElementToDocumentationCommentRefactoring.RefactorAsync(context.Document, analysis, ct),
-                        RefactoringDescriptors.AddExceptionElementToDocumentationComment);
-                }
+                context.RegisterRefactoring(
+                    "Add 'exception' element to documentation comment",
+                    ct => AddExceptionElementToDocumentationCommentRefactoring.RefactorAsync(context.Document, analysis, ct),
+                    RefactoringDescriptors.AddExceptionElementToDocumentationComment);
             }
         }
     }

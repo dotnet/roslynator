@@ -33,8 +33,8 @@ namespace Roslynator.CSharp.Analysis
                 INamedTypeSymbol attributeSymbol = startContext.Compilation.GetTypeByMetadataName("System.Attribute");
                 INamedTypeSymbol attributeUsageAttributeSymbol = startContext.Compilation.GetTypeByMetadataName("System.AttributeUsageAttribute");
 
-                if (attributeSymbol != null
-                    && attributeUsageAttributeSymbol != null)
+                if (attributeSymbol is not null
+                    && attributeUsageAttributeSymbol is not null)
                 {
                     startContext.RegisterSymbolAction(
                         nodeContext => AnalyzerNamedTypeSymbol(nodeContext, attributeSymbol, attributeUsageAttributeSymbol),

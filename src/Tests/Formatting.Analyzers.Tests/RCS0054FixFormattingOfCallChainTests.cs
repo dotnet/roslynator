@@ -6,16 +6,16 @@ using Roslynator.Formatting.CodeFixes.CSharp;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.Formatting.CSharp.Tests
-{
-    public class RCS0054FixFormattingOfCallChainTests : AbstractCSharpDiagnosticVerifier<FixFormattingOfCallChainAnalyzer, FixFormattingOfCallChainCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.FixFormattingOfCallChain;
+namespace Roslynator.Formatting.CSharp.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfCallChain)]
-        public async Task Test_WrongIndentation()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS0054FixFormattingOfCallChainTests : AbstractCSharpDiagnosticVerifier<FixFormattingOfCallChainAnalyzer, FixFormattingOfCallChainCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.FixFormattingOfCallChain;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfCallChain)]
+    public async Task Test_WrongIndentation()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     C M() 
@@ -38,12 +38,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfCallChain)]
-        public async Task Test_WrongIndentation_NullConditionalOperator()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfCallChain)]
+    public async Task Test_WrongIndentation_NullConditionalOperator()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     C M() 
@@ -66,12 +66,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfCallChain)]
-        public async Task Test_Invocation_NoIndentation()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfCallChain)]
+    public async Task Test_Invocation_NoIndentation()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     C M() 
@@ -94,12 +94,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfCallChain)]
-        public async Task Test_Invocation_NoIndentation_EmptyLineBetween()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfCallChain)]
+    public async Task Test_Invocation_NoIndentation_EmptyLineBetween()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     C M() 
@@ -122,12 +122,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfCallChain)]
-        public async Task Test_Invocation_WrapAndIndent()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfCallChain)]
+    public async Task Test_Invocation_WrapAndIndent()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     C M() 
@@ -151,12 +151,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfCallChain)]
-        public async Task Test_Invocation_WrapAndIndent_NullConditionalOperator_NewLineBefore()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfCallChain)]
+    public async Task Test_Invocation_WrapAndIndent_NullConditionalOperator_NewLineBefore()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     C M() 
@@ -180,12 +180,12 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.NullConditionalOperatorNewLine, "before"));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfCallChain)]
-        public async Task Test_Invocation_WrapAndIndent_NullConditionalOperator_NewLineAfter()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfCallChain)]
+    public async Task Test_Invocation_WrapAndIndent_NullConditionalOperator_NewLineAfter()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     C M() 
@@ -209,12 +209,12 @@ class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.NullConditionalOperatorNewLine, "after"));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfCallChain)]
-        public async Task Test_Invocation_EmptyLineBetween()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfCallChain)]
+    public async Task Test_Invocation_EmptyLineBetween()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     C M() 
@@ -238,12 +238,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfCallChain)]
-        public async Task Test_Invocation_CommentBetween()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfCallChain)]
+    public async Task Test_Invocation_CommentBetween()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     C M() 
@@ -268,12 +268,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfCallChain)]
-        public async Task Test_Invocation_IndentationsDiffer()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfCallChain)]
+    public async Task Test_Invocation_IndentationsDiffer()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     C M(string s) 
@@ -312,12 +312,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfCallChain)]
-        public async Task Test_TopLevelStatement_SwitchStatement()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfCallChain)]
+    public async Task Test_TopLevelStatement_SwitchStatement()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 var s = """";
 
 s = [|s.ToString().ToString()
@@ -340,12 +340,12 @@ switch (s)
         break;
 }
 ", options: Options.WithCompilationOptions(Options.CompilationOptions.WithOutputKind(OutputKind.ConsoleApplication)));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfCallChain)]
-        public async Task Test_TopLevelStatement_ForEachStatement()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfCallChain)]
+    public async Task Test_TopLevelStatement_ForEachStatement()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 var s = """";
 
 s = [|s.ToString().ToString()
@@ -366,12 +366,12 @@ foreach (char ch in s)
     var x = ch;
 }
 ", options: Options.WithCompilationOptions(Options.CompilationOptions.WithOutputKind(OutputKind.ConsoleApplication)));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfCallChain)]
-        public async Task Test_TopLevelStatement()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfCallChain)]
+    public async Task Test_TopLevelStatement()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 Console
@@ -384,35 +384,35 @@ partial class Program
     }
 }
 ", options: Options.WithCompilationOptions(Options.CompilationOptions.WithOutputKind(OutputKind.ConsoleApplication)));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfCallChain)]
-        public async Task Test_TopLevelStatement2()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfCallChain)]
+    public async Task Test_TopLevelStatement2()
+    {
+        await VerifyNoDiagnosticAsync(@"
 var s = """";
 
 s = s.ToString().ToString()
 .ToString();
 ", options: Options.WithCompilationOptions(Options.CompilationOptions.WithOutputKind(OutputKind.ConsoleApplication)));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfCallChain)]
-        public async Task Test_TopLevelStatement3()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfCallChain)]
+    public async Task Test_TopLevelStatement3()
+    {
+        await VerifyNoDiagnosticAsync(@"
 var s = """";
 
 s = s.ToString().ToString()
 
 .ToString();
 ", options: Options.WithCompilationOptions(Options.CompilationOptions.WithOutputKind(OutputKind.ConsoleApplication)));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfCallChain)]
-        public async Task TestNoDiagnostic()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FixFormattingOfCallChain)]
+    public async Task TestNoDiagnostic()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     C M() 
@@ -423,6 +423,5 @@ class C
     }
 }
 ");
-        }
     }
 }

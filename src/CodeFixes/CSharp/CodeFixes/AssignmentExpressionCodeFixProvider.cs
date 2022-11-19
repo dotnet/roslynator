@@ -8,33 +8,32 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AssignmentExpressionCodeFixProvider))]
+[Shared]
+public sealed class AssignmentExpressionCodeFixProvider : CompilerDiagnosticCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AssignmentExpressionCodeFixProvider))]
-    [Shared]
-    public sealed class AssignmentExpressionCodeFixProvider : CompilerDiagnosticCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
-        {
-            get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.CS1717_AssignmentMadeToSameVariable); }
-        }
+        get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.CS1717_AssignmentMadeToSameVariable); }
+    }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            Diagnostic diagnostic = context.Diagnostics[0];
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        Diagnostic diagnostic = context.Diagnostics[0];
 
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveRedundantAssignment, context.Document, root.SyntaxTree))
-                return;
+        if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveRedundantAssignment, context.Document, root.SyntaxTree))
+            return;
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out AssignmentExpressionSyntax assignmentExpression))
-                return;
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out AssignmentExpressionSyntax assignmentExpression))
+            return;
 
-            if (assignmentExpression.Parent is not ExpressionStatementSyntax expressionStatement)
-                return;
+        if (assignmentExpression.Parent is not ExpressionStatementSyntax expressionStatement)
+            return;
 
-            CodeFixRegistrator.RemoveStatement(context, diagnostic, expressionStatement, title: "Remove assignment");
-        }
+        CodeFixRegistrator.RemoveStatement(context, diagnostic, expressionStatement, title: "Remove assignment");
     }
 }

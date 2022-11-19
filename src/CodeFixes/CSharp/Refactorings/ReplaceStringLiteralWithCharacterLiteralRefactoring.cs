@@ -5,18 +5,17 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
-{
-    internal static class ReplaceStringLiteralWithCharacterLiteralRefactoring
-    {
-        public static Task<Document> RefactorAsync(
-            Document document,
-            LiteralExpressionSyntax literalExpression,
-            CancellationToken cancellationToken = default)
-        {
-            LiteralExpressionSyntax newNode = SyntaxRefactorings.ReplaceStringLiteralWithCharacterLiteral(literalExpression);
+namespace Roslynator.CSharp.Refactorings;
 
-            return document.ReplaceNodeAsync(literalExpression, newNode, cancellationToken);
-        }
+internal static class ReplaceStringLiteralWithCharacterLiteralRefactoring
+{
+    public static Task<Document> RefactorAsync(
+        Document document,
+        LiteralExpressionSyntax literalExpression,
+        CancellationToken cancellationToken = default)
+    {
+        LiteralExpressionSyntax newNode = SyntaxRefactorings.ReplaceStringLiteralWithCharacterLiteral(literalExpression);
+
+        return document.ReplaceNodeAsync(literalExpression, newNode, cancellationToken);
     }
 }

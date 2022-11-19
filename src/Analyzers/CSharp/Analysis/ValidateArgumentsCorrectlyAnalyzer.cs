@@ -6,7 +6,6 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.CSharp.Syntax;
 using Roslynator.CSharp.SyntaxWalkers;
 
 namespace Roslynator.CSharp.Analysis
@@ -32,48 +31,34 @@ namespace Roslynator.CSharp.Analysis
             base.Initialize(context);
 
             context.RegisterSyntaxNodeAction(f => AnalyzeMethodDeclaration(f), SyntaxKind.MethodDeclaration);
-            context.RegisterSyntaxNodeAction(f => AnalyzeConstructorDeclaration(f), SyntaxKind.ConstructorDeclaration);
         }
 
         private static void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
         {
             var methodDeclaration = (MethodDeclarationSyntax)context.Node;
 
-            AnalyzeParameterList(context, methodDeclaration.ParameterList, methodDeclaration.Body);
-        }
+            BlockSyntax body = methodDeclaration.Body;
 
-        private static void AnalyzeConstructorDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            var constructorDeclaration = (ConstructorDeclarationSyntax)context.Node;
-
-            AnalyzeParameterList(context, constructorDeclaration.ParameterList, constructorDeclaration.Body);
-        }
-
-        private static void AnalyzeParameterList(SyntaxNodeAnalysisContext context, ParameterListSyntax parameterList, BlockSyntax body)
-        {
-            if (body == null)
+            if (body is null)
                 return;
 
-            if (parameterList == null)
+            ParameterListSyntax parameterList = methodDeclaration.ParameterList;
+
+            if (parameterList is null)
                 return;
 
-            SeparatedSyntaxList<ParameterSyntax> parameters = parameterList.Parameters;
-
-            if (!parameters.Any())
+            if (!parameterList.Parameters.Any())
                 return;
 
             SyntaxList<StatementSyntax> statements = body.Statements;
 
             int statementCount = statements.Count;
 
-            if (statementCount == 0)
-                return;
-
             int index = -1;
             for (int i = 0; i < statementCount; i++)
             {
                 if (IsConditionWithThrow(statements[i])
-                    || ArgumentNullCheckAnalysis.IsThrowIfNullCheck(statements[i], context.SemanticModel, context.CancellationToken))
+                    || ArgumentNullCheckAnalysis.IsArgumentNullExceptionThrowIfNullCheck(statements[i], context.SemanticModel, context.CancellationToken))
                 {
                     index++;
                 }
@@ -104,7 +89,7 @@ namespace Roslynator.CSharp.Analysis
 
             ContainsYieldWalker.Free(walker);
 
-            if (yieldStatement == null)
+            if (yieldStatement is null)
                 return;
 
             if (yieldStatement.SpanStart < statements[index].Span.End)

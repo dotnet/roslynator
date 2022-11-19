@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1222MergePreprocessorDirectivesTests : AbstractCSharpDiagnosticVerifier<MergePreprocessorDirectivesAnalyzer, DirectiveTriviaCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.MergePreprocessorDirectives;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MergePreprocessorDirectives)]
-        public async Task Test_PragmaWarningDisable()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1222MergePreprocessorDirectivesTests : AbstractCSharpDiagnosticVerifier<MergePreprocessorDirectivesAnalyzer, DirectiveTriviaCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.MergePreprocessorDirectives;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MergePreprocessorDirectives)]
+    public async Task Test_PragmaWarningDisable()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -37,12 +37,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MergePreprocessorDirectives)]
-        public async Task Test_PragmaWarningRestore()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MergePreprocessorDirectives)]
+    public async Task Test_PragmaWarningRestore()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -64,12 +64,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MergePreprocessorDirectives)]
-        public async Task TestNoDiagnostic_SingleDirective()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MergePreprocessorDirectives)]
+    public async Task TestNoDiagnostic_SingleDirective()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -78,12 +78,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MergePreprocessorDirectives)]
-        public async Task TestNoDiagnostic_DisableAndRestore()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MergePreprocessorDirectives)]
+    public async Task TestNoDiagnostic_DisableAndRestore()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -93,12 +93,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MergePreprocessorDirectives)]
-        public async Task TestNoDiagnostic_TrailingComment()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MergePreprocessorDirectives)]
+    public async Task TestNoDiagnostic_TrailingComment()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -108,12 +108,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MergePreprocessorDirectives)]
-        public async Task TestNoDiagnostic_TrailingComma_TrailingComment()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MergePreprocessorDirectives)]
+    public async Task TestNoDiagnostic_TrailingComma_TrailingComment()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -123,12 +123,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MergePreprocessorDirectives)]
-        public async Task TestNoDiagnostic_PreviousDirectiveIsSuppressingThisAnalyzer()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MergePreprocessorDirectives)]
+    public async Task TestNoDiagnostic_PreviousDirectiveIsSuppressingThisAnalyzer()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -139,12 +139,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MergePreprocessorDirectives)]
-        public async Task TestNoDiagnostic_NextDirectiveIsSuppressingThisAnalyzer()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MergePreprocessorDirectives)]
+    public async Task TestNoDiagnostic_NextDirectiveIsSuppressingThisAnalyzer()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -154,6 +154,5 @@ class C
     }
 }
 ");
-        }
     }
 }

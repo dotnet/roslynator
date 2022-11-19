@@ -44,7 +44,7 @@ namespace Roslynator.CSharp.Analysis
             if (!string.Equals(node.Identifier.ValueText, _name))
                 return;
 
-            if (_symbol == null)
+            if (_symbol is null)
             {
                 _symbol = _semanticModel.GetDeclaredSymbol(_variableDeclarator, _cancellationToken);
 
@@ -91,11 +91,11 @@ namespace Roslynator.CSharp.Analysis
         {
             UnnecessaryUsageOfEnumeratorWalker walker = _cachedInstance;
 
-            if (walker != null)
+            if (walker is not null)
             {
-                Debug.Assert(walker._symbol == null);
-                Debug.Assert(walker._variableDeclarator == null);
-                Debug.Assert(walker._semanticModel == null);
+                Debug.Assert(walker._symbol is null);
+                Debug.Assert(walker._variableDeclarator is null);
+                Debug.Assert(walker._semanticModel is null);
                 Debug.Assert(walker._cancellationToken == default);
 
                 _cachedInstance = null;

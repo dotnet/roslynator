@@ -1481,4 +1481,35 @@ Default maximal length is 140.</Summary>
       <Option Key="null_conditional_operator_new_line" IsRequired="true" />
     </ConfigOptions>
   </Analyzer>
+  <Analyzer Identifier="BlankLineAfterFileScopedNamespaceDeclaration">
+    <Id>RCS0060</Id>
+    <Title>Add/remove line after file scoped namespace declaration.</Title>
+    <MessageFormat>{0} line after file scoped namespace declaration.</MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <MinLanguageVersion>10.0</MinLanguageVersion>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[namespace A.B // [|Id|]
+public class C
+{
+}]]></Before>
+        <After><![CDATA[namespace A.B
+
+public class C
+{
+}]]></After>
+      </Sample>
+    </Samples>
+    <ConfigOptions>
+      <Option Key="blank_line_after_file_scoped_namespace_declaration" IsRequired="true" />
+    </ConfigOptions>
+    <Links>
+      <Link>
+        <Url>https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csharp-10.0/file-scoped-namespaces</Url>
+        <Text>File Scoped Namespaces</Text>
+      </Link>
+    </Links>
+  </Analyzer>
 </Analyzers>

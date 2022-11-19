@@ -10,76 +10,75 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SwitchSectionCodeFixProvider))]
+[Shared]
+public sealed class SwitchSectionCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SwitchSectionCodeFixProvider))]
-    [Shared]
-    public sealed class SwitchSectionCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
+        get
         {
-            get
-            {
-                return ImmutableArray.Create(
-                    DiagnosticIdentifiers.RemoveRedundantDefaultSwitchSection,
-                    DiagnosticIdentifiers.DefaultLabelShouldBeLastLabelInSwitchSection,
-                    DiagnosticIdentifiers.AddBracesToSwitchSectionWithMultipleStatements,
-                    DiagnosticIdentifiers.MergeSwitchSectionsWithEquivalentContent);
-            }
+            return ImmutableArray.Create(
+                DiagnosticIdentifiers.RemoveRedundantDefaultSwitchSection,
+                DiagnosticIdentifiers.DefaultLabelShouldBeLastLabelInSwitchSection,
+                DiagnosticIdentifiers.AddBracesToSwitchSectionWithMultipleStatements,
+                DiagnosticIdentifiers.MergeSwitchSectionsWithEquivalentContent);
         }
+    }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out SwitchSectionSyntax switchSection))
+            return;
+
+        foreach (Diagnostic diagnostic in context.Diagnostics)
         {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
-
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out SwitchSectionSyntax switchSection))
-                return;
-
-            foreach (Diagnostic diagnostic in context.Diagnostics)
+            switch (diagnostic.Id)
             {
-                switch (diagnostic.Id)
-                {
-                    case DiagnosticIdentifiers.RemoveRedundantDefaultSwitchSection:
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Remove redundant switch section",
-                                ct => RemoveRedundantDefaultSwitchSectionRefactoring.RefactorAsync(context.Document, switchSection, ct),
-                                GetEquivalenceKey(diagnostic));
+                case DiagnosticIdentifiers.RemoveRedundantDefaultSwitchSection:
+                    {
+                        CodeAction codeAction = CodeAction.Create(
+                            "Remove redundant switch section",
+                            ct => RemoveRedundantDefaultSwitchSectionRefactoring.RefactorAsync(context.Document, switchSection, ct),
+                            GetEquivalenceKey(diagnostic));
 
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
-                    case DiagnosticIdentifiers.DefaultLabelShouldBeLastLabelInSwitchSection:
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Move default label to the last position",
-                                ct => DefaultLabelShouldBeLastLabelInSwitchSectionRefactoring.RefactorAsync(context.Document, switchSection, ct),
-                                GetEquivalenceKey(diagnostic));
+                        context.RegisterCodeFix(codeAction, diagnostic);
+                        break;
+                    }
+                case DiagnosticIdentifiers.DefaultLabelShouldBeLastLabelInSwitchSection:
+                    {
+                        CodeAction codeAction = CodeAction.Create(
+                            "Move default label to the last position",
+                            ct => DefaultLabelShouldBeLastLabelInSwitchSectionRefactoring.RefactorAsync(context.Document, switchSection, ct),
+                            GetEquivalenceKey(diagnostic));
 
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
-                    case DiagnosticIdentifiers.AddBracesToSwitchSectionWithMultipleStatements:
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                AddBracesToSwitchSectionRefactoring.Title,
-                                ct => AddBracesToSwitchSectionRefactoring.RefactorAsync(context.Document, switchSection, ct),
-                                GetEquivalenceKey(diagnostic));
+                        context.RegisterCodeFix(codeAction, diagnostic);
+                        break;
+                    }
+                case DiagnosticIdentifiers.AddBracesToSwitchSectionWithMultipleStatements:
+                    {
+                        CodeAction codeAction = CodeAction.Create(
+                            AddBracesToSwitchSectionRefactoring.Title,
+                            ct => AddBracesToSwitchSectionRefactoring.RefactorAsync(context.Document, switchSection, ct),
+                            GetEquivalenceKey(diagnostic));
 
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
-                    case DiagnosticIdentifiers.MergeSwitchSectionsWithEquivalentContent:
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Merge sections",
-                                ct => MergeSwitchSectionsRefactoring.RefactorAsync(context.Document, switchSection, ct),
-                                GetEquivalenceKey(diagnostic));
+                        context.RegisterCodeFix(codeAction, diagnostic);
+                        break;
+                    }
+                case DiagnosticIdentifiers.MergeSwitchSectionsWithEquivalentContent:
+                    {
+                        CodeAction codeAction = CodeAction.Create(
+                            "Merge sections",
+                            ct => MergeSwitchSectionsRefactoring.RefactorAsync(context.Document, switchSection, ct),
+                            GetEquivalenceKey(diagnostic));
 
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
-                }
+                        context.RegisterCodeFix(codeAction, diagnostic);
+                        break;
+                    }
             }
         }
     }

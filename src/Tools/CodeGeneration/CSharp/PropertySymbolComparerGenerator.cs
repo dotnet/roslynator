@@ -8,73 +8,72 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CodeGeneration.CSharp.CSharpFactory2;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CodeGeneration.CSharp
+namespace Roslynator.CodeGeneration.CSharp;
+
+public static class PropertySymbolComparerGenerator
 {
-    public static class PropertySymbolComparerGenerator
+    public static CompilationUnitSyntax Generate()
     {
-        public static CompilationUnitSyntax Generate()
-        {
-            return CompilationUnit(
-                UsingDirectives(
-                    "System",
-                    "Microsoft.CodeAnalysis"),
-                NamespaceDeclaration(
-                    "Roslynator.CodeGeneration.CSharp",
-                    ClassDeclaration(
-                        default(SyntaxList<AttributeListSyntax>),
-                        Modifiers.Internal_Static(),
-                        Identifier("PropertySymbolComparer"),
-                        default(TypeParameterListSyntax),
-                        default(BaseListSyntax),
-                        default(SyntaxList<TypeParameterConstraintClauseSyntax>),
-                        SingletonList<MemberDeclarationSyntax>(GenerateMethodDeclaration()))));
-        }
+        return CompilationUnit(
+            UsingDirectives(
+                "System",
+                "Microsoft.CodeAnalysis"),
+            NamespaceDeclaration(
+                "Roslynator.CodeGeneration.CSharp",
+                ClassDeclaration(
+                    default(SyntaxList<AttributeListSyntax>),
+                    Modifiers.Internal_Static(),
+                    Identifier("PropertySymbolComparer"),
+                    default(TypeParameterListSyntax),
+                    default(BaseListSyntax),
+                    default(SyntaxList<TypeParameterConstraintClauseSyntax>),
+                    SingletonList<MemberDeclarationSyntax>(GenerateMethodDeclaration()))));
+    }
 
-        private static MethodDeclarationSyntax GenerateMethodDeclaration()
-        {
-            return MethodDeclaration(
-                Modifiers.Public_Static(),
-                PredefinedIntType(),
-                Identifier("GetRank"),
-                ParameterList(Parameter(IdentifierName("IPropertySymbol"), "x")),
-                Block(
-                    SwitchStatement(
+    private static MethodDeclarationSyntax GenerateMethodDeclaration()
+    {
+        return MethodDeclaration(
+            Modifiers.Public_Static(),
+            PredefinedIntType(),
+            Identifier("GetRank"),
+            ParameterList(Parameter(IdentifierName("IPropertySymbol"), "x")),
+            Block(
+                SwitchStatement(
+                    SimpleMemberAccessExpression(
                         SimpleMemberAccessExpression(
-                            SimpleMemberAccessExpression(
-                                IdentifierName("x"),
-                                IdentifierName("ContainingType")),
-                            IdentifierName("Name")),
-                        GenerateSections().ToSyntaxList().Add(DefaultSwitchSection(Block(ThrowNewInvalidOperationException()))))));
+                            IdentifierName("x"),
+                            IdentifierName("ContainingType")),
+                        IdentifierName("Name")),
+                    GenerateSections().ToSyntaxList().Add(DefaultSwitchSection(Block(ThrowNewInvalidOperationException()))))));
 
-            static IEnumerable<SwitchSectionSyntax> GenerateSections()
+        static IEnumerable<SwitchSectionSyntax> GenerateSections()
+        {
+            foreach (INamedTypeSymbol typeSymbol in Symbols.SyntaxSymbols)
             {
-                foreach (INamedTypeSymbol typeSymbol in Symbols.SyntaxSymbols)
-                {
-                    SyntaxList<SwitchSectionSyntax> sections = GenerateSections2(typeSymbol).ToSyntaxList();
+                SyntaxList<SwitchSectionSyntax> sections = GenerateSections2(typeSymbol).ToSyntaxList();
 
-                    if (sections.Count > 1)
-                    {
-                        yield return SwitchSection(
-                            CaseSwitchLabel(StringLiteralExpression(typeSymbol.Name)),
-                            Block(
-                                SwitchStatement(
-                                    SimpleMemberAccessExpression(IdentifierName("x"), IdentifierName("Name")),
-                                    sections.Add(DefaultSwitchSection(Block(ThrowNewInvalidOperationException()))))));
-                    }
+                if (sections.Count > 1)
+                {
+                    yield return SwitchSection(
+                        CaseSwitchLabel(StringLiteralExpression(typeSymbol.Name)),
+                        Block(
+                            SwitchStatement(
+                                SimpleMemberAccessExpression(IdentifierName("x"), IdentifierName("Name")),
+                                sections.Add(DefaultSwitchSection(Block(ThrowNewInvalidOperationException()))))));
                 }
+            }
 
-                static IEnumerable<SwitchSectionSyntax> GenerateSections2(INamedTypeSymbol typeSymbol)
+            static IEnumerable<SwitchSectionSyntax> GenerateSections2(INamedTypeSymbol typeSymbol)
+            {
+                int i = 0;
+
+                foreach (IPropertySymbol propertySymbol in Symbols.GetPropertySymbols(typeSymbol))
                 {
-                    int i = 0;
+                    yield return SwitchSection(
+                        CaseSwitchLabel(StringLiteralExpression(propertySymbol.Name)),
+                        ReturnStatement(NumericLiteralExpression(i)));
 
-                    foreach (IPropertySymbol propertySymbol in Symbols.GetPropertySymbols(typeSymbol))
-                    {
-                        yield return SwitchSection(
-                            CaseSwitchLabel(StringLiteralExpression(propertySymbol.Name)),
-                            ReturnStatement(NumericLiteralExpression(i)));
-
-                        i++;
-                    }
+                    i++;
                 }
             }
         }

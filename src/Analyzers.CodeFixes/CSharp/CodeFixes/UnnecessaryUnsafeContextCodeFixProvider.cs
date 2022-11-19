@@ -11,46 +11,45 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UnnecessaryUnsafeContextCodeFixProvider))]
+[Shared]
+public sealed class UnnecessaryUnsafeContextCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UnnecessaryUnsafeContextCodeFixProvider))]
-    [Shared]
-    public sealed class UnnecessaryUnsafeContextCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.UnnecessaryUnsafeContext); }
+    }
+
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+        if (!TryFindToken(root, context.Span.Start, out SyntaxToken token))
+            return;
+
+        Debug.Assert(token.IsKind(SyntaxKind.UnsafeKeyword), token.Kind().ToString());
+
+        if (!token.IsKind(SyntaxKind.UnsafeKeyword))
+            return;
+
+        Diagnostic diagnostic = context.Diagnostics[0];
+
+        SyntaxNode parent = token.Parent;
+
+        if (parent is UnsafeStatementSyntax unsafeStatement)
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.UnnecessaryUnsafeContext); }
+            CodeAction codeAction = CodeAction.Create(
+                "Remove unsafe context",
+                ct => context.Document.ReplaceNodeAsync(unsafeStatement, SyntaxRefactorings.RemoveUnsafeContext(unsafeStatement), ct),
+                GetEquivalenceKey(diagnostic));
+
+            context.RegisterCodeFix(codeAction, diagnostic);
         }
-
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+        else
         {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
-
-            if (!TryFindToken(root, context.Span.Start, out SyntaxToken token))
-                return;
-
-            Debug.Assert(token.IsKind(SyntaxKind.UnsafeKeyword), token.Kind().ToString());
-
-            if (!token.IsKind(SyntaxKind.UnsafeKeyword))
-                return;
-
-            Diagnostic diagnostic = context.Diagnostics[0];
-
-            SyntaxNode parent = token.Parent;
-
-            if (parent is UnsafeStatementSyntax unsafeStatement)
-            {
-                CodeAction codeAction = CodeAction.Create(
-                    "Remove unsafe context",
-                    ct => context.Document.ReplaceNodeAsync(unsafeStatement, SyntaxRefactorings.RemoveUnsafeContext(unsafeStatement), ct),
-                    GetEquivalenceKey(diagnostic));
-
-                context.RegisterCodeFix(codeAction, diagnostic);
-            }
-            else
-            {
-                ModifiersCodeFixRegistrator.RemoveModifier(context, diagnostic, parent, token);
-            }
+            ModifiersCodeFixRegistrator.RemoveModifier(context, diagnostic, parent, token);
         }
     }
 }

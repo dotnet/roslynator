@@ -3,27 +3,26 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Analysis.If
+namespace Roslynator.CSharp.Analysis.If;
+
+internal abstract class ToAssignmentWithConditionalExpressionAnalysis : IfAnalysis
 {
-    internal abstract class ToAssignmentWithConditionalExpressionAnalysis : IfAnalysis
+    protected ToAssignmentWithConditionalExpressionAnalysis(
+        IfStatementSyntax ifStatement,
+        ExpressionSyntax whenTrue,
+        ExpressionSyntax whenFalse,
+        SemanticModel semanticModel) : base(ifStatement, semanticModel)
     {
-        protected ToAssignmentWithConditionalExpressionAnalysis(
-            IfStatementSyntax ifStatement,
-            ExpressionSyntax whenTrue,
-            ExpressionSyntax whenFalse,
-            SemanticModel semanticModel) : base(ifStatement, semanticModel)
-        {
-            WhenTrue = whenTrue;
-            WhenFalse = whenFalse;
-        }
-
-        public override string Title
-        {
-            get { return "Convert 'if' to ?:"; }
-        }
-
-        public ExpressionSyntax WhenTrue { get; }
-
-        public ExpressionSyntax WhenFalse { get; }
+        WhenTrue = whenTrue;
+        WhenFalse = whenFalse;
     }
+
+    public override string Title
+    {
+        get { return "Convert 'if' to ?:"; }
+    }
+
+    public ExpressionSyntax WhenTrue { get; }
+
+    public ExpressionSyntax WhenFalse { get; }
 }

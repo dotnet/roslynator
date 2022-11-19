@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1081SplitVariableDeclarationTests : AbstractCSharpDiagnosticVerifier<SplitVariableDeclarationAnalyzer, VariableDeclarationCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.SplitVariableDeclaration;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SplitVariableDeclaration)]
-        public async Task Test_SwitchSection()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1081SplitVariableDeclarationTests : AbstractCSharpDiagnosticVerifier<SplitVariableDeclarationAnalyzer, VariableDeclarationCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.SplitVariableDeclaration;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SplitVariableDeclaration)]
+    public async Task Test_SwitchSection()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -43,6 +43,5 @@ class C
     }
 }
 ");
-        }
     }
 }

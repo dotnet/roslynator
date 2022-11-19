@@ -310,7 +310,7 @@ namespace Roslynator
         public static bool ShouldWrite(Verbosity verbosity)
         {
             return verbosity <= ConsoleOut.Verbosity
-                || (Out != null && verbosity <= Out.Verbosity);
+                || (Out is not null && verbosity <= Out.Verbosity);
         }
     }
 }

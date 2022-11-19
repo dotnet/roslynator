@@ -30,7 +30,7 @@ namespace Roslynator.CSharp.Refactorings
 
             public override SyntaxNode VisitIfStatement(IfStatementSyntax node)
             {
-                if (node == null)
+                if (node is null)
                     throw new ArgumentNullException(nameof(node));
 
                 if (_previousIf?.Equals(node.GetPreviousIf()) != false)
@@ -54,7 +54,7 @@ namespace Roslynator.CSharp.Refactorings
 
             public override SyntaxNode VisitElseClause(ElseClauseSyntax node)
             {
-                if (node == null)
+                if (node is null)
                     throw new ArgumentNullException(nameof(node));
 
                 if (_previousIf.Equals(node.Parent)

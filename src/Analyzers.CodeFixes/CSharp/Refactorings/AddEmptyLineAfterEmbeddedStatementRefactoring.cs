@@ -5,20 +5,19 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
-{
-    internal static class AddEmptyLineAfterEmbeddedStatementRefactoring
-    {
-        public static Task<Document> RefactorAsync(
-            Document document,
-            StatementSyntax statement,
-            CancellationToken cancellationToken)
-        {
-            StatementSyntax newNode = statement
-                .AppendToTrailingTrivia(CSharpFactory.NewLine())
-                .WithFormatterAnnotation();
+namespace Roslynator.CSharp.Refactorings;
 
-            return document.ReplaceNodeAsync(statement, newNode, cancellationToken);
-        }
+internal static class AddEmptyLineAfterEmbeddedStatementRefactoring
+{
+    public static Task<Document> RefactorAsync(
+        Document document,
+        StatementSyntax statement,
+        CancellationToken cancellationToken)
+    {
+        StatementSyntax newNode = statement
+            .AppendToTrailingTrivia(CSharpFactory.NewLine())
+            .WithFormatterAnnotation();
+
+        return document.ReplaceNodeAsync(statement, newNode, cancellationToken);
     }
 }
