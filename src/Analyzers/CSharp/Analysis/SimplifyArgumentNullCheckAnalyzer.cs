@@ -42,7 +42,7 @@ public sealed class SimplifyArgumentNullCheckAnalyzer : BaseDiagnosticAnalyzer
 
         NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(
             ifStatement.Condition,
-            NullCheckStyles.CheckingNull);
+            NullCheckStyles.EqualsToNull | NullCheckStyles.IsNull);
 
         if (!nullCheck.Success)
             return;

@@ -138,6 +138,7 @@ dotnet_diagnostic.RCS1250.severity = suggestion
 dotnet_diagnostic.RCS1252.severity = suggestion
 dotnet_diagnostic.RCS1253.severity = suggestion
 dotnet_diagnostic.RCS1254.severity = suggestion
+dotnet_diagnostic.RCS1255.severity = suggestion
 
 dotnet_diagnostic.IDE0007.severity = none
 dotnet_diagnostic.IDE0007WithoutSuggestion.severity = none

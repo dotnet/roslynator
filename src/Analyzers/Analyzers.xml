@@ -5746,7 +5746,7 @@ void M()
     <Title>Simplify argument null check.</Title>
     <Category>General</Category>
     <DefaultSeverity>Info</DefaultSeverity>
-    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
     <Summary>Use `ArgumentNullException.ThrowIfNull` instead of `if` null check.</Summary>
     <Samples>
       <Sample>

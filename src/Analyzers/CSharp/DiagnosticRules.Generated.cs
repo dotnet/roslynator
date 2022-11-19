@@ -2504,7 +2504,7 @@ namespace Roslynator.CSharp
             messageFormat:      "Simplify argument null check.", 
             category:           DiagnosticCategories.Roslynator, 
             defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: true, 
+            isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.SimplifyArgumentNullCheck, 
             customTags:         Array.Empty<string>());
