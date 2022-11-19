@@ -495,6 +495,16 @@ internal static class CodeStyleExtensions
         return null;
     }
 
+    public static BlankLineStyle GetBlankLineAfterFileScopedNamespaceDeclaration(this SyntaxNodeAnalysisContext context)
+    {
+        if (ConfigOptions.TryGetValueAsBool(context.GetConfigOptions(), ConfigOptions.BlankLineAfterFileScopedNamespaceDeclaration, out bool value))
+        {
+            return (value) ? BlankLineStyle.Add : BlankLineStyle.Remove;
+        }
+
+        return BlankLineStyle.None;
+    }
+
     public static bool? GetSuppressUnityScriptMethods(this SyntaxNodeAnalysisContext context)
     {
         if (ConfigOptions.TryGetValueAsBool(context.GetConfigOptions(), ConfigOptions.SuppressUnityScriptMethods, out bool value))

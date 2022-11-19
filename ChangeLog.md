@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Add Arm64 VS 2022 extension support ([#990](https://github.com/JosefPihrt/Roslynator/pull/990) by @snickler).
+- Add analyzer "Add/remove blank line after file scoped namespace declaration" [RCS0060](https://github.com/JosefPihrt/Roslynator/blob/main/docs/analyzers/RCS0060.md) ([#993](https://github.com/josefpihrt/roslynator/pull/993).
+  - Required option: `roslynator_blank_line_after_file_scoped_namespace_declaration = true|false`
 
 ### Changed
 
