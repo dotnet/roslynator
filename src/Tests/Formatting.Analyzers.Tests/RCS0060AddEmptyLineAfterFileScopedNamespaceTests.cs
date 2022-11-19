@@ -6,16 +6,16 @@ using Roslynator.Formatting.CodeFixes.CSharp;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.Formatting.CSharp.Tests
+namespace Roslynator.Formatting.CSharp.Tests;
+
+public class RCS0060BlankLineAfterFileScopedNamespaceDeclarationTests : AbstractCSharpDiagnosticVerifier<BlankLineAfterFileScopedNamespaceDeclarationAnalyzer, FileScopedNamespaceDeclarationCodeFixProvider>
 {
-    public class RCS0060BlankLineAfterFileScopedNamespaceDeclarationTests : AbstractCSharpDiagnosticVerifier<BlankLineAfterFileScopedNamespaceDeclarationAnalyzer, FileScopedNamespaceDeclarationCodeFixProvider>
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.BlankLineAfterFileScopedNamespaceDeclaration;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.BlankLineAfterFileScopedNamespaceDeclaration)]
+    public async Task Test_AddEmptyLine()
     {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.BlankLineAfterFileScopedNamespaceDeclaration;
-
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.BlankLineAfterFileScopedNamespaceDeclaration)]
-        public async Task Test_AddEmptyLine()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+        await VerifyDiagnosticAndFixAsync(@"
 namespace A.B;
 [||]class C
 {
@@ -27,12 +27,12 @@ class C
 {
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineAfterFileScopedNamespaceDeclaration, true));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.BlankLineAfterFileScopedNamespaceDeclaration)]
-        public async Task Test_AddEmptyLine2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.BlankLineAfterFileScopedNamespaceDeclaration)]
+    public async Task Test_AddEmptyLine2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 namespace A.B;  
 [||]class C
 {
@@ -44,12 +44,12 @@ class C
 {
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineAfterFileScopedNamespaceDeclaration, true));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.BlankLineAfterFileScopedNamespaceDeclaration)]
-        public async Task Test_AddEmptyLine3()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.BlankLineAfterFileScopedNamespaceDeclaration)]
+    public async Task Test_AddEmptyLine3()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 namespace A.B;  //x
 [||]class C
 {
@@ -61,12 +61,12 @@ class C
 {
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineAfterFileScopedNamespaceDeclaration, true));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.BlankLineAfterFileScopedNamespaceDeclaration)]
-        public async Task Test_AddEmptyLine4()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.BlankLineAfterFileScopedNamespaceDeclaration)]
+    public async Task Test_AddEmptyLine4()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 namespace A.B;//x
 [||]class C
 {
@@ -78,12 +78,12 @@ class C
 {
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineAfterFileScopedNamespaceDeclaration, true));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.BlankLineAfterFileScopedNamespaceDeclaration)]
-        public async Task Test_AddEmptyLine5()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.BlankLineAfterFileScopedNamespaceDeclaration)]
+    public async Task Test_AddEmptyLine5()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 namespace A.B;[||]class C
 {
 }
@@ -94,12 +94,12 @@ class C
 {
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineAfterFileScopedNamespaceDeclaration, true));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.BlankLineAfterFileScopedNamespaceDeclaration)]
-        public async Task Test_AddEmptyLine6()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.BlankLineAfterFileScopedNamespaceDeclaration)]
+    public async Task Test_AddEmptyLine6()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 namespace A.B;  [||]class C
 {
 }
@@ -110,12 +110,12 @@ class C
 {
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineAfterFileScopedNamespaceDeclaration, true));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.BlankLineAfterFileScopedNamespaceDeclaration)]
-        public async Task Test_AddEmptyLine7()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.BlankLineAfterFileScopedNamespaceDeclaration)]
+    public async Task Test_AddEmptyLine7()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 namespace A.B;
 [||]  class C
 {
@@ -127,12 +127,12 @@ namespace A.B;
 {
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineAfterFileScopedNamespaceDeclaration, true));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.BlankLineAfterFileScopedNamespaceDeclaration)]
-        public async Task Test_AddEmptyLine8()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.BlankLineAfterFileScopedNamespaceDeclaration)]
+    public async Task Test_AddEmptyLine8()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 namespace A.B;
 [||]/// <summary>
 /// 
@@ -150,12 +150,12 @@ class C
 {
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineAfterFileScopedNamespaceDeclaration, true));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.BlankLineAfterFileScopedNamespaceDeclaration)]
-        public async Task Test_AddEmptyLine9()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.BlankLineAfterFileScopedNamespaceDeclaration)]
+    public async Task Test_AddEmptyLine9()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 namespace A.B;
 [||]// x
 class C
@@ -169,12 +169,12 @@ class C
 {
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineAfterFileScopedNamespaceDeclaration, true));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.BlankLineAfterFileScopedNamespaceDeclaration)]
-        public async Task Test_RemoveEmptyLine()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.BlankLineAfterFileScopedNamespaceDeclaration)]
+    public async Task Test_RemoveEmptyLine()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 namespace A.B;
 [||]
 class C
@@ -186,12 +186,12 @@ class C
 {
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineAfterFileScopedNamespaceDeclaration, false));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.BlankLineAfterFileScopedNamespaceDeclaration)]
-        public async Task Test_RemoveEmptyLine2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.BlankLineAfterFileScopedNamespaceDeclaration)]
+    public async Task Test_RemoveEmptyLine2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 namespace A.B;  
 [||]
 class C
@@ -203,12 +203,12 @@ class C
 {
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineAfterFileScopedNamespaceDeclaration, false));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.BlankLineAfterFileScopedNamespaceDeclaration)]
-        public async Task Test_RemoveEmptyLine3()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.BlankLineAfterFileScopedNamespaceDeclaration)]
+    public async Task Test_RemoveEmptyLine3()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 namespace A.B;  //x
 [||]
 class C
@@ -220,12 +220,12 @@ class C
 {
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineAfterFileScopedNamespaceDeclaration, false));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.BlankLineAfterFileScopedNamespaceDeclaration)]
-        public async Task Test_RemoveEmptyLine4()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.BlankLineAfterFileScopedNamespaceDeclaration)]
+    public async Task Test_RemoveEmptyLine4()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 namespace A.B;//x
 [||]
 class C
@@ -237,12 +237,12 @@ class C
 {
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineAfterFileScopedNamespaceDeclaration, false));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.BlankLineAfterFileScopedNamespaceDeclaration)]
-        public async Task Test_RemoveEmptyLine5()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.BlankLineAfterFileScopedNamespaceDeclaration)]
+    public async Task Test_RemoveEmptyLine5()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 namespace A.B;
 [||]
 
@@ -255,6 +255,5 @@ class C
 {
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.BlankLineAfterFileScopedNamespaceDeclaration, false));
-        }
     }
 }
