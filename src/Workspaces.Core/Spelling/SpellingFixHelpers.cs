@@ -11,291 +11,290 @@ using System.Threading;
 using Microsoft.CodeAnalysis;
 using static Roslynator.Logger;
 
-namespace Roslynator.Spelling
+namespace Roslynator.Spelling;
+
+[Obsolete]
+internal class SpellingFixHelpers
 {
-    [Obsolete]
-    internal class SpellingFixHelpers
+    private static readonly Regex _lowercasedSeparatedWithUnderscoresRegex = new(@"\A_*\p{Ll}+(_+\p{Ll}+)+\z");
+
+    public SpellingFix ChooseFix(
+        SpellingDiagnostic diagnostic,
+        List<SpellingFix> fixes,
+        bool interactive)
     {
-        private static readonly Regex _lowercasedSeparatedWithUnderscoresRegex = new(@"\A_*\p{Ll}+(_+\p{Ll}+)+\z");
-
-        public SpellingFix ChooseFix(
-            SpellingDiagnostic diagnostic,
-            List<SpellingFix> fixes,
-            bool interactive)
-        {
-            fixes = fixes
-                .Distinct(SpellingFixComparer.InvariantCulture)
-                .Where(f =>
-                {
-                    return f.Kind == SpellingFixKind.Predefined
-                        || diagnostic.IsApplicableFix(f.Value);
-                })
-                .Select(fix =>
-                {
-                    if (TextUtility.GetTextCasing(fix.Value) != TextCasing.Undefined)
-                        return fix.WithValue(TextUtility.SetTextCasing(fix.Value, diagnostic.Casing));
-
-                    return fix;
-                })
-                .OrderBy(f => f.Kind)
-                .Take(9)
-                .ToList();
-
-            if (fixes.Count > 0)
+        fixes = fixes
+            .Distinct(SpellingFixComparer.InvariantCulture)
+            .Where(f =>
             {
-                for (int i = 0; i < fixes.Count; i++)
-                    WriteSuggestion(diagnostic, fixes[i], i, interactive);
+                return f.Kind == SpellingFixKind.Predefined
+                    || diagnostic.IsApplicableFix(f.Value);
+            })
+            .Select(fix =>
+            {
+                if (TextUtility.GetTextCasing(fix.Value) != TextCasing.Undefined)
+                    return fix.WithValue(TextUtility.SetTextCasing(fix.Value, diagnostic.Casing));
 
-                if (TryReadSuggestion(out int index)
-                    && index < fixes.Count)
-                {
-                    return fixes[index];
-                }
+                return fix;
+            })
+            .OrderBy(f => f.Kind)
+            .Take(9)
+            .ToList();
+
+        if (fixes.Count > 0)
+        {
+            for (int i = 0; i < fixes.Count; i++)
+                WriteSuggestion(diagnostic, fixes[i], i, interactive);
+
+            if (TryReadSuggestion(out int index)
+                && index < fixes.Count)
+            {
+                return fixes[index];
             }
-
-            return default;
         }
 
-        public void AddPossibleFixes(
-            SpellingDiagnostic diagnostic,
-            SpellingData spellingData,
-            ref List<SpellingFix> fixes)
+        return default;
+    }
+
+    public void AddPossibleFixes(
+        SpellingDiagnostic diagnostic,
+        SpellingData spellingData,
+        ref List<SpellingFix> fixes)
+    {
+        Debug.WriteLine($"find possible fix for '{diagnostic.Value}'");
+
+        string value = diagnostic.Value;
+
+        ImmutableArray<string> matches = SpellingFixProvider.SwapLetters(
+            diagnostic.ValueLower,
+            spellingData);
+
+        foreach (string match in matches)
+            fixes.Add(new SpellingFix(match, SpellingFixKind.None));
+
+        if (fixes.Count == 0
+            && (diagnostic.Casing == TextCasing.Lower
+                || diagnostic.Casing == TextCasing.FirstUpper))
         {
-            Debug.WriteLine($"find possible fix for '{diagnostic.Value}'");
-
-            string value = diagnostic.Value;
-
-            ImmutableArray<string> matches = SpellingFixProvider.SwapLetters(
-                diagnostic.ValueLower,
-                spellingData);
-
-            foreach (string match in matches)
-                fixes.Add(new SpellingFix(match, SpellingFixKind.None));
-
-            if (fixes.Count == 0
-                && (diagnostic.Casing == TextCasing.Lower
-                    || diagnostic.Casing == TextCasing.FirstUpper))
+            foreach (int splitIndex in GetSplitIndexes(diagnostic, spellingData))
             {
-                foreach (int splitIndex in GetSplitIndexes(diagnostic, spellingData))
+                //TODO: foofooBar > fooBar
+                //if (value.Length - splitIndex >= splitIndex
+                //    && string.Compare(value, 0, value, splitIndex, splitIndex, StringComparison.Ordinal) == 0)
+                //{
+                //    fixes.Add(new SpellingFix(value.Remove(splitIndex, splitIndex), SpellingFixKind.Split));
+                //}
+
+                bool? canInsertUnderscore = null;
+
+                if (!diagnostic.IsSymbol
+                    || !(canInsertUnderscore ??= _lowercasedSeparatedWithUnderscoresRegex.IsMatch(value)))
                 {
-                    //TODO: foofooBar > fooBar
-                    //if (value.Length - splitIndex >= splitIndex
-                    //    && string.Compare(value, 0, value, splitIndex, splitIndex, StringComparison.Ordinal) == 0)
-                    //{
-                    //    fixes.Add(new SpellingFix(value.Remove(splitIndex, splitIndex), SpellingFixKind.Split));
-                    //}
+                    // foobar > fooBar
+                    // Tvalue > TValue
+                    fixes.Add(new SpellingFix(
+                        TextUtility.ReplaceRange(value, char.ToUpperInvariant(value[splitIndex]).ToString(), splitIndex, 1),
+                        SpellingFixKind.None));
+                }
 
-                    bool? canInsertUnderscore = null;
-
-                    if (!diagnostic.IsSymbol
-                        || !(canInsertUnderscore ??= _lowercasedSeparatedWithUnderscoresRegex.IsMatch(value)))
-                    {
-                        // foobar > fooBar
-                        // Tvalue > TValue
-                        fixes.Add(new SpellingFix(
-                            TextUtility.ReplaceRange(value, char.ToUpperInvariant(value[splitIndex]).ToString(), splitIndex, 1),
-                            SpellingFixKind.None));
-                    }
-
-                    if (diagnostic.IsSymbol)
-                    {
-                        // foobar > foo_bar
-                        if (canInsertUnderscore == true)
-                            fixes.Add(new SpellingFix(value.Insert(splitIndex, "_"), SpellingFixKind.None));
-                    }
-                    else if (splitIndex > 1)
-                    {
-                        // foobar > foo bar
-                        fixes.Add(new SpellingFix(value.Insert(splitIndex, " "), SpellingFixKind.None));
-                    }
+                if (diagnostic.IsSymbol)
+                {
+                    // foobar > foo_bar
+                    if (canInsertUnderscore == true)
+                        fixes.Add(new SpellingFix(value.Insert(splitIndex, "_"), SpellingFixKind.None));
+                }
+                else if (splitIndex > 1)
+                {
+                    // foobar > foo bar
+                    fixes.Add(new SpellingFix(value.Insert(splitIndex, " "), SpellingFixKind.None));
                 }
             }
-
-            //TODO: 
-            //if (matches.Length == 0)
-            //{
-            //    matches = SpellingFixProvider.FuzzyMatches(
-            //        diagnostic.ValueLower,
-            //        SpellingData,
-            //        cancellationToken);
-
-            //    foreach (string match in matches)
-            //        fixes.Add(new SpellingFix(match, SpellingFixKind.Fuzzy));
-            //}
         }
 
-        private void WriteSuggestion(
-            SpellingDiagnostic diagnostic,
-            SpellingFix fix,
-            int index,
-            bool interactive)
+        //TODO: 
+        //if (matches.Length == 0)
+        //{
+        //    matches = SpellingFixProvider.FuzzyMatches(
+        //        diagnostic.ValueLower,
+        //        SpellingData,
+        //        cancellationToken);
+
+        //    foreach (string match in matches)
+        //        fixes.Add(new SpellingFix(match, SpellingFixKind.Fuzzy));
+        //}
+    }
+
+    private void WriteSuggestion(
+        SpellingDiagnostic diagnostic,
+        SpellingFix fix,
+        int index,
+        bool interactive)
+    {
+        string value = diagnostic.Value;
+        string containingValue = diagnostic.Parent;
+
+        if (index == 0)
         {
-            string value = diagnostic.Value;
-            string containingValue = diagnostic.Parent;
-
-            if (index == 0)
-            {
-                Write("    Replace  '");
-
-                if (containingValue != null)
-                {
-                    Write(containingValue.Remove(diagnostic.Index));
-                    Write(value);
-                    Write(containingValue.Substring(diagnostic.EndIndex, containingValue.Length - diagnostic.EndIndex));
-                }
-                else
-                {
-                    Write(value, ConsoleColors.Cyan);
-                }
-
-                WriteLine("'");
-            }
-
-            Write("    ");
-
-            if (interactive)
-            {
-                Write($"({index + 1}) ");
-            }
-            else
-            {
-                Write("   ");
-            }
-
-            Write("with '");
+            Write("    Replace  '");
 
             if (containingValue != null)
             {
                 Write(containingValue.Remove(diagnostic.Index));
-                Write(fix.Value, ConsoleColors.Cyan);
+                Write(value);
                 Write(containingValue.Substring(diagnostic.EndIndex, containingValue.Length - diagnostic.EndIndex));
             }
             else
             {
-                Write(fix.Value, ConsoleColors.Cyan);
+                Write(value, ConsoleColors.Cyan);
             }
 
-            Write("'");
-
-            if (interactive)
-                Write($" ({index + 1})");
-
-            WriteLine();
+            WriteLine("'");
         }
 
-        private static bool TryReadSuggestion(out int index)
+        Write("    ");
+
+        if (interactive)
         {
-            Write("    Enter number of a suggestion: ");
+            Write($"({index + 1}) ");
+        }
+        else
+        {
+            Write("   ");
+        }
 
-            string text = Console.ReadLine()?.Trim();
+        Write("with '");
 
-            if (text?.Length == 1)
+        if (containingValue != null)
+        {
+            Write(containingValue.Remove(diagnostic.Index));
+            Write(fix.Value, ConsoleColors.Cyan);
+            Write(containingValue.Substring(diagnostic.EndIndex, containingValue.Length - diagnostic.EndIndex));
+        }
+        else
+        {
+            Write(fix.Value, ConsoleColors.Cyan);
+        }
+
+        Write("'");
+
+        if (interactive)
+            Write($" ({index + 1})");
+
+        WriteLine();
+    }
+
+    private static bool TryReadSuggestion(out int index)
+    {
+        Write("    Enter number of a suggestion: ");
+
+        string text = Console.ReadLine()?.Trim();
+
+        if (text?.Length == 1)
+        {
+            int num = text[0];
+
+            if (num >= 97
+                && num <= 122)
             {
-                int num = text[0];
-
-                if (num >= 97
-                    && num <= 122)
-                {
-                    index = num - 97;
-                    return true;
-                }
-            }
-
-            if (int.TryParse(
-                text,
-                NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite,
-                CultureInfo.CurrentCulture,
-                out index)
-                && index > 0)
-            {
-                index--;
+                index = num - 97;
                 return true;
             }
-
-            index = -1;
-            return false;
         }
 
-        private static ImmutableArray<int> GetSplitIndexes(
-            SpellingDiagnostic diagnostic,
-            SpellingData spellingData,
-            CancellationToken cancellationToken = default)
+        if (int.TryParse(
+            text,
+            NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite,
+            CultureInfo.CurrentCulture,
+            out index)
+            && index > 0)
         {
-            string value = diagnostic.Value;
-            int length = value.Length;
+            index--;
+            return true;
+        }
 
-            ImmutableArray<int>.Builder splitIndexes = null;
+        index = -1;
+        return false;
+    }
 
-            if (length >= 4)
+    private static ImmutableArray<int> GetSplitIndexes(
+        SpellingDiagnostic diagnostic,
+        SpellingData spellingData,
+        CancellationToken cancellationToken = default)
+    {
+        string value = diagnostic.Value;
+        int length = value.Length;
+
+        ImmutableArray<int>.Builder splitIndexes = null;
+
+        if (length >= 4)
+        {
+            char ch = value[0];
+
+            // Tvalue > TValue
+            // Ienumerable > IEnumerable
+            if ((ch == 'I' || ch == 'T')
+                && diagnostic.Casing == TextCasing.FirstUpper
+                && spellingData.Words.Contains(value.Substring(1)))
             {
-                char ch = value[0];
-
-                // Tvalue > TValue
-                // Ienumerable > IEnumerable
-                if ((ch == 'I' || ch == 'T')
-                    && diagnostic.Casing == TextCasing.FirstUpper
-                    && spellingData.Words.Contains(value.Substring(1)))
-                {
-                    (splitIndexes ??= ImmutableArray.CreateBuilder<int>()).Add(1);
-                }
+                (splitIndexes ??= ImmutableArray.CreateBuilder<int>()).Add(1);
             }
+        }
 
-            if (length < 6)
-                return splitIndexes?.ToImmutableArray() ?? ImmutableArray<int>.Empty;
+        if (length < 6)
+            return splitIndexes?.ToImmutableArray() ?? ImmutableArray<int>.Empty;
 
-            value = diagnostic.ValueLower;
+        value = diagnostic.ValueLower;
 
-            WordCharMap map = spellingData.CharIndexMap;
+        WordCharMap map = spellingData.CharIndexMap;
 
-            ImmutableHashSet<string> values = ImmutableHashSet<string>.Empty;
+        ImmutableHashSet<string> values = ImmutableHashSet<string>.Empty;
 
-            for (int i = 0; i < length - 3; i++)
+        for (int i = 0; i < length - 3; i++)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            if (!map.TryGetValue(value, i, out ImmutableHashSet<string> values2))
+                break;
+
+            values = (i == 0) ? values2 : values.Intersect(values2);
+
+            if (values.Count == 0)
+                break;
+
+            if (i < 2)
+                continue;
+
+            foreach (string value2 in values)
             {
-                cancellationToken.ThrowIfCancellationRequested();
-
-                if (!map.TryGetValue(value, i, out ImmutableHashSet<string> values2))
-                    break;
-
-                values = (i == 0) ? values2 : values.Intersect(values2);
-
-                if (values.Count == 0)
-                    break;
-
-                if (i < 2)
+                if (value2.Length != i + 1)
                     continue;
 
-                foreach (string value2 in values)
+                ImmutableHashSet<string> values3 = ImmutableHashSet<string>.Empty;
+
+                for (int j = i + 1; j < length; j++)
                 {
-                    if (value2.Length != i + 1)
+                    if (!map.TryGetValue(value[j], j - i - 1, out ImmutableHashSet<string> values4))
+                        break;
+
+                    values3 = (j == i + 1) ? values4 : values3.Intersect(values4);
+
+                    if (values3.Count == 0)
+                        break;
+                }
+
+                foreach (string value3 in values3)
+                {
+                    if (value3.Length != length - i - 1)
                         continue;
 
-                    ImmutableHashSet<string> values3 = ImmutableHashSet<string>.Empty;
-
-                    for (int j = i + 1; j < length; j++)
-                    {
-                        if (!map.TryGetValue(value[j], j - i - 1, out ImmutableHashSet<string> values4))
-                            break;
-
-                        values3 = (j == i + 1) ? values4 : values3.Intersect(values4);
-
-                        if (values3.Count == 0)
-                            break;
-                    }
-
-                    foreach (string value3 in values3)
-                    {
-                        if (value3.Length != length - i - 1)
-                            continue;
-
-                        (splitIndexes ??= ImmutableArray.CreateBuilder<int>()).Add(i + 1);
-                        break;
-                    }
-
+                    (splitIndexes ??= ImmutableArray.CreateBuilder<int>()).Add(i + 1);
                     break;
                 }
-            }
 
-            return splitIndexes?.ToImmutableArray() ?? ImmutableArray<int>.Empty;
+                break;
+            }
         }
+
+        return splitIndexes?.ToImmutableArray() ?? ImmutableArray<int>.Empty;
     }
 }

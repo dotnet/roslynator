@@ -6,55 +6,54 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.Spelling;
 
-namespace Roslynator.CSharp.Spelling
+namespace Roslynator.CSharp.Spelling;
+
+internal partial class CSharpSpellingService
 {
-    internal partial class CSharpSpellingService
+    [SuppressMessage("MicrosoftCodeAnalysisCorrectness", "RS1001:Missing diagnostic analyzer attribute.")]
+    private class CSharpSpellingAnalyzer : DiagnosticAnalyzer
     {
-        [SuppressMessage("MicrosoftCodeAnalysisCorrectness", "RS1001:Missing diagnostic analyzer attribute.")]
-        private class CSharpSpellingAnalyzer : DiagnosticAnalyzer
+        private static readonly ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics = ImmutableArray.Create(SpellingAnalyzer.DiagnosticDescriptor);
+
+        private readonly SpellingData _spellingData;
+        private readonly SpellingFixerOptions _options;
+
+        public CSharpSpellingAnalyzer(
+            SpellingData spellingData,
+            SpellingFixerOptions options)
         {
-            private static readonly ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics = ImmutableArray.Create(SpellingAnalyzer.DiagnosticDescriptor);
+            _spellingData = spellingData;
+            _options = options;
+        }
 
-            private readonly SpellingData _spellingData;
-            private readonly SpellingFixerOptions _options;
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => _supportedDiagnostics;
 
-            public CSharpSpellingAnalyzer(
-                SpellingData spellingData,
-                SpellingFixerOptions options)
-            {
-                _spellingData = spellingData;
-                _options = options;
-            }
+        public override void Initialize(AnalysisContext context)
+        {
+            context.EnableConcurrentExecution();
 
-            public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => _supportedDiagnostics;
+            context.ConfigureGeneratedCodeAnalysis((_options.IncludeGeneratedCode)
+                ? GeneratedCodeAnalysisFlags.ReportDiagnostics
+                : GeneratedCodeAnalysisFlags.None);
 
-            public override void Initialize(AnalysisContext context)
-            {
-                context.EnableConcurrentExecution();
+            context.RegisterSyntaxTreeAction(f => AnalyzeSyntaxTree(f));
+        }
 
-                context.ConfigureGeneratedCodeAnalysis((_options.IncludeGeneratedCode)
-                    ? GeneratedCodeAnalysisFlags.ReportDiagnostics
-                    : GeneratedCodeAnalysisFlags.None);
+        private void AnalyzeSyntaxTree(SyntaxTreeAnalysisContext context)
+        {
+            SyntaxTree tree = context.Tree;
 
-                context.RegisterSyntaxTreeAction(f => AnalyzeSyntaxTree(f));
-            }
+            SyntaxNode root = tree.GetRoot(context.CancellationToken);
 
-            private void AnalyzeSyntaxTree(SyntaxTreeAnalysisContext context)
-            {
-                SyntaxTree tree = context.Tree;
+            var analysisContext = new SpellingAnalysisContext(
+                diagnostic => context.ReportDiagnostic(diagnostic),
+                _spellingData,
+                _options,
+                context.CancellationToken);
 
-                SyntaxNode root = tree.GetRoot(context.CancellationToken);
+            CSharpSpellingWalker walker = CSharpSpellingWalker.Create(analysisContext);
 
-                var analysisContext = new SpellingAnalysisContext(
-                    diagnostic => context.ReportDiagnostic(diagnostic),
-                    _spellingData,
-                    _options,
-                    context.CancellationToken);
-
-                CSharpSpellingWalker walker = CSharpSpellingWalker.Create(analysisContext);
-
-                walker.Visit(root);
-            }
+            walker.Visit(root);
         }
     }
 }

@@ -1,10 +1,9 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-namespace Roslynator.Formatting.CodeFixes.CSharp
+namespace Roslynator.Formatting.CodeFixes.CSharp;
+
+internal enum ListFixMode
 {
-    internal enum ListFixMode
-    {
-        Fix = 0,
-        Wrap = 1,
-    }
+    Fix = 0,
+    Wrap = 1,
 }

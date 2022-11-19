@@ -9,187 +9,186 @@ using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp;
 using static Roslynator.CSharp.SyntaxTriviaAnalysis;
 
-namespace Roslynator.Formatting.CSharp
+namespace Roslynator.Formatting.CSharp;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class FixFormattingOfCallChainAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class FixFormattingOfCallChainAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
-            {
-                if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.FixFormattingOfCallChain);
+            if (_supportedDiagnostics.IsDefault)
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.FixFormattingOfCallChain);
 
-                return _supportedDiagnostics;
-            }
+            return _supportedDiagnostics;
+        }
+    }
+
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
+
+        context.RegisterSyntaxNodeAction(f => AnalyzeExpression(f), SyntaxKind.InvocationExpression);
+        context.RegisterSyntaxNodeAction(f => AnalyzeExpression(f), SyntaxKind.ElementAccessExpression);
+        context.RegisterSyntaxNodeAction(f => AnalyzeExpression(f), SyntaxKind.ConditionalAccessExpression);
+    }
+
+    private static void AnalyzeExpression(SyntaxNodeAnalysisContext context)
+    {
+        var expression = (ExpressionSyntax)context.Node;
+
+        if (expression.IsParentKind(
+            SyntaxKind.ConditionalAccessExpression,
+            SyntaxKind.SimpleMemberAccessExpression,
+            SyntaxKind.ElementAccessExpression,
+            SyntaxKind.MemberBindingExpression,
+            SyntaxKind.InvocationExpression))
+        {
+            return;
         }
 
-        public override void Initialize(AnalysisContext context)
+        MethodChain.Enumerator en = new MethodChain(expression).GetEnumerator();
+
+        if (!en.MoveNext())
+            return;
+
+        TextLineCollection lines = null;
+        int startLine = -1;
+        IndentationAnalysis indentationAnalysis = default;
+
+        do
         {
-            base.Initialize(context);
+            context.CancellationToken.ThrowIfCancellationRequested();
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeExpression(f), SyntaxKind.InvocationExpression);
-            context.RegisterSyntaxNodeAction(f => AnalyzeExpression(f), SyntaxKind.ElementAccessExpression);
-            context.RegisterSyntaxNodeAction(f => AnalyzeExpression(f), SyntaxKind.ConditionalAccessExpression);
-        }
+            SyntaxKind kind = en.Current.Kind();
 
-        private static void AnalyzeExpression(SyntaxNodeAnalysisContext context)
-        {
-            var expression = (ExpressionSyntax)context.Node;
-
-            if (expression.IsParentKind(
-                SyntaxKind.ConditionalAccessExpression,
-                SyntaxKind.SimpleMemberAccessExpression,
-                SyntaxKind.ElementAccessExpression,
-                SyntaxKind.MemberBindingExpression,
-                SyntaxKind.InvocationExpression))
+            if (kind == SyntaxKind.SimpleMemberAccessExpression)
             {
-                return;
+                var memberAccess = (MemberAccessExpressionSyntax)en.Current;
+
+                if (AnalyzeToken(memberAccess.OperatorToken))
+                    return;
             }
-
-            MethodChain.Enumerator en = new MethodChain(expression).GetEnumerator();
-
-            if (!en.MoveNext())
-                return;
-
-            TextLineCollection lines = null;
-            int startLine = -1;
-            IndentationAnalysis indentationAnalysis = default;
-
-            do
+            else if (kind == SyntaxKind.MemberBindingExpression)
             {
-                context.CancellationToken.ThrowIfCancellationRequested();
+                var memberBinding = (MemberBindingExpressionSyntax)en.Current;
 
-                SyntaxKind kind = en.Current.Kind();
-
-                if (kind == SyntaxKind.SimpleMemberAccessExpression)
+                if (!memberBinding.HasLeadingTrivia)
                 {
-                    var memberAccess = (MemberAccessExpressionSyntax)en.Current;
+                    SyntaxToken prevToken = memberBinding.GetFirstToken().GetPreviousToken();
 
-                    if (AnalyzeToken(memberAccess.OperatorToken))
-                        return;
-                }
-                else if (kind == SyntaxKind.MemberBindingExpression)
-                {
-                    var memberBinding = (MemberBindingExpressionSyntax)en.Current;
-
-                    if (!memberBinding.HasLeadingTrivia)
-                    {
-                        SyntaxToken prevToken = memberBinding.GetFirstToken().GetPreviousToken();
-
-                        if (prevToken.IsKind(SyntaxKind.QuestionToken)
-                            && prevToken.IsParentKind(SyntaxKind.ConditionalAccessExpression)
-                            && prevToken.HasLeadingTrivia
-                            && prevToken.TrailingTrivia.IsEmptyOrSingleWhitespaceTrivia())
-                        {
-                            continue;
-                        }
-                    }
-
-                    if (AnalyzeToken(memberBinding.OperatorToken))
-                        return;
-                }
-                else if (kind == SyntaxKind.ConditionalAccessExpression)
-                {
-                    var conditionalAccess = (ConditionalAccessExpressionSyntax)en.Current;
-
-                    if (conditionalAccess.Expression.GetTrailingTrivia().IsEmptyOrSingleWhitespaceTrivia()
-                        && !conditionalAccess.OperatorToken.HasLeadingTrivia)
+                    if (prevToken.IsKind(SyntaxKind.QuestionToken)
+                        && prevToken.IsParentKind(SyntaxKind.ConditionalAccessExpression)
+                        && prevToken.HasLeadingTrivia
+                        && prevToken.TrailingTrivia.IsEmptyOrSingleWhitespaceTrivia())
                     {
                         continue;
                     }
-
-                    if (AnalyzeToken(conditionalAccess.OperatorToken))
-                        return;
                 }
+
+                if (AnalyzeToken(memberBinding.OperatorToken))
+                    return;
             }
-            while (en.MoveNext());
-
-            bool AnalyzeToken(SyntaxToken token)
+            else if (kind == SyntaxKind.ConditionalAccessExpression)
             {
-                SyntaxTriviaList.Reversed.Enumerator en = token.LeadingTrivia.Reverse().GetEnumerator();
+                var conditionalAccess = (ConditionalAccessExpressionSyntax)en.Current;
 
-                if (!en.MoveNext())
+                if (conditionalAccess.Expression.GetTrailingTrivia().IsEmptyOrSingleWhitespaceTrivia()
+                    && !conditionalAccess.OperatorToken.HasLeadingTrivia)
                 {
-                    if (lines == null)
-                    {
-                        lines = expression.SyntaxTree.GetText().Lines;
-                        startLine = lines.IndexOf(expression.SpanStart);
-                    }
-
-                    int endLine = lines.IndexOf(token.SpanStart);
-
-                    if (startLine != endLine)
-                    {
-                        if (!indentationAnalysis.IsDefault
-                            || !AnalyzeIndentation(expression).IsDefault)
-                        {
-                            ReportDiagnostic();
-                        }
-                    }
-
-                    return true;
+                    continue;
                 }
 
-                switch (en.Current.Kind())
+                if (AnalyzeToken(conditionalAccess.OperatorToken))
+                    return;
+            }
+        }
+        while (en.MoveNext());
+
+        bool AnalyzeToken(SyntaxToken token)
+        {
+            SyntaxTriviaList.Reversed.Enumerator en = token.LeadingTrivia.Reverse().GetEnumerator();
+
+            if (!en.MoveNext())
+            {
+                if (lines == null)
                 {
-                    case SyntaxKind.WhitespaceTrivia:
+                    lines = expression.SyntaxTree.GetText().Lines;
+                    startLine = lines.IndexOf(expression.SpanStart);
+                }
+
+                int endLine = lines.IndexOf(token.SpanStart);
+
+                if (startLine != endLine)
+                {
+                    if (!indentationAnalysis.IsDefault
+                        || !AnalyzeIndentation(expression).IsDefault)
+                    {
+                        ReportDiagnostic();
+                    }
+                }
+
+                return true;
+            }
+
+            switch (en.Current.Kind())
+            {
+                case SyntaxKind.WhitespaceTrivia:
+                    {
+                        if (indentationAnalysis.IsDefault)
                         {
+                            indentationAnalysis = AnalyzeIndentation(expression);
+
                             if (indentationAnalysis.IsDefault)
-                            {
-                                indentationAnalysis = AnalyzeIndentation(expression);
-
-                                if (indentationAnalysis.IsDefault)
-                                    return true;
-                            }
-
-                            if (en.Current.Span.Length != indentationAnalysis.IncreasedIndentationLength)
-                            {
-                                if (!en.MoveNext()
-                                    || en.Current.IsEndOfLineTrivia())
-                                {
-                                    if (expression.FindTrivia(token.FullSpan.Start - 1).IsEndOfLineTrivia())
-                                    {
-                                        ReportDiagnostic();
-                                        return true;
-                                    }
-                                }
-
-                                break;
-                            }
-
-                            break;
+                                return true;
                         }
-                    case SyntaxKind.EndOfLineTrivia:
+
+                        if (en.Current.Span.Length != indentationAnalysis.IncreasedIndentationLength)
                         {
-                            if (expression.FindTrivia(token.FullSpan.Start - 1).IsEndOfLineTrivia())
+                            if (!en.MoveNext()
+                                || en.Current.IsEndOfLineTrivia())
                             {
-                                if (!indentationAnalysis.IsDefault
-                                    || !AnalyzeIndentation(expression).IsDefault)
+                                if (expression.FindTrivia(token.FullSpan.Start - 1).IsEndOfLineTrivia())
                                 {
                                     ReportDiagnostic();
+                                    return true;
                                 }
-
-                                return true;
                             }
 
                             break;
                         }
-                }
 
-                return false;
+                        break;
+                    }
+                case SyntaxKind.EndOfLineTrivia:
+                    {
+                        if (expression.FindTrivia(token.FullSpan.Start - 1).IsEndOfLineTrivia())
+                        {
+                            if (!indentationAnalysis.IsDefault
+                                || !AnalyzeIndentation(expression).IsDefault)
+                            {
+                                ReportDiagnostic();
+                            }
+
+                            return true;
+                        }
+
+                        break;
+                    }
             }
 
-            void ReportDiagnostic()
-            {
-                DiagnosticHelpers.ReportDiagnostic(
-                    context,
-                    DiagnosticRules.FixFormattingOfCallChain,
-                    expression);
-            }
+            return false;
+        }
+
+        void ReportDiagnostic()
+        {
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
+                DiagnosticRules.FixFormattingOfCallChain,
+                expression);
         }
     }
 }

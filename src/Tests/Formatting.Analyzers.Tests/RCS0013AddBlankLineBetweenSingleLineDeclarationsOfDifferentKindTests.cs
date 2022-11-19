@@ -6,16 +6,16 @@ using Roslynator.Formatting.CodeFixes.CSharp;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.Formatting.CSharp.Tests
-{
-    public class RCS0013AddBlankLineBetweenSingleLineDeclarationsOfDifferentKindTests : AbstractCSharpDiagnosticVerifier<BlankLineBetweenDeclarationsAnalyzer, BlankLineBetweenDeclarationsCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddBlankLineBetweenSingleLineDeclarationsOfDifferentKind;
+namespace Roslynator.Formatting.CSharp.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenSingleLineDeclarationsOfDifferentKind)]
-        public async Task Test_MemberDeclaration_PropertyAndIndexer()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS0013AddBlankLineBetweenSingleLineDeclarationsOfDifferentKindTests : AbstractCSharpDiagnosticVerifier<BlankLineBetweenDeclarationsAnalyzer, BlankLineBetweenDeclarationsCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddBlankLineBetweenSingleLineDeclarationsOfDifferentKind;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenSingleLineDeclarationsOfDifferentKind)]
+    public async Task Test_MemberDeclaration_PropertyAndIndexer()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 abstract class C
 {
     public abstract string P { get; set; }[||]
@@ -29,12 +29,12 @@ abstract class C
     public abstract string this[int index] { get; }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenSingleLineDeclarationsOfDifferentKind)]
-        public async Task Test_ConstAndField()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenSingleLineDeclarationsOfDifferentKind)]
+    public async Task Test_ConstAndField()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     const string K = null;[||]
@@ -48,12 +48,12 @@ class C
     string F = null;
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenSingleLineDeclarationsOfDifferentKind)]
-        public async Task TestNoDiagnostic_MultilineMethod()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenSingleLineDeclarationsOfDifferentKind)]
+    public async Task TestNoDiagnostic_MultilineMethod()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -62,24 +62,24 @@ class C
     string P { get; set; }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenSingleLineDeclarationsOfDifferentKind)]
-        public async Task TestNoDiagnostic_Properties()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenSingleLineDeclarationsOfDifferentKind)]
+    public async Task TestNoDiagnostic_Properties()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     string P1 { get; set; }
     string P2 { get; set; }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenSingleLineDeclarationsOfDifferentKind)]
-        public async Task TestNoDiagnostic_Event2()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBetweenSingleLineDeclarationsOfDifferentKind)]
+    public async Task TestNoDiagnostic_Event2()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 class C
@@ -92,6 +92,5 @@ class C
     }
 }
 ");
-        }
     }
 }

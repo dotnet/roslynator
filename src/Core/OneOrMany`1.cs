@@ -6,202 +6,201 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 
-namespace Roslynator
+namespace Roslynator;
+
+internal readonly struct OneOrMany<T> : IReadOnlyList<T>, IEquatable<OneOrMany<T>>
 {
-    internal readonly struct OneOrMany<T> : IReadOnlyList<T>, IEquatable<OneOrMany<T>>
+    private readonly State _state;
+    private readonly T _value;
+    private readonly ImmutableArray<T> _values;
+
+    internal OneOrMany(T value)
     {
-        private readonly State _state;
-        private readonly T _value;
-        private readonly ImmutableArray<T> _values;
+        _value = value;
+        _values = default;
+        _state = State.One;
+    }
 
-        internal OneOrMany(T value)
-        {
-            _value = value;
-            _values = default;
-            _state = State.One;
-        }
+    internal OneOrMany(ImmutableArray<T> values)
+    {
+        Debug.Assert(!values.IsDefault, "Immutable array is not initialized.");
 
-        internal OneOrMany(ImmutableArray<T> values)
-        {
-            Debug.Assert(!values.IsDefault, "Immutable array is not initialized.");
+        _value = default;
+        _values = values;
+        _state = State.Many;
+    }
 
-            _value = default;
-            _values = values;
-            _state = State.Many;
-        }
-
-        public T this[int index]
-        {
-            get
-            {
-                switch (_state)
-                {
-                    case State.One:
-                        {
-                            if (index == 0)
-                                return _value;
-
-                            break;
-                        }
-                    case State.Many:
-                        {
-                            return _values[index];
-                        }
-                }
-
-                throw new ArgumentOutOfRangeException(nameof(index), index, "");
-            }
-        }
-
-        public int Count
-        {
-            get
-            {
-                switch (_state)
-                {
-                    case State.One:
-                        return 1;
-                    case State.Many:
-                        return _values.Length;
-                    default:
-                        return 0;
-                }
-            }
-        }
-
-        public bool IsDefault => _state == State.Default;
-
-        public Enumerator GetEnumerator()
-        {
-            return new Enumerator(this);
-        }
-
-        IEnumerator<T> IEnumerable<T>.GetEnumerator()
-        {
-            if (_state != State.Default)
-                return new EnumeratorImpl(this);
-
-            return Empty.Enumerator<T>();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            if (_state != State.Default)
-                return new EnumeratorImpl(this);
-
-            return Empty.Enumerator<T>();
-        }
-
-        public override bool Equals(object obj)
-        {
-            return obj is OneOrMany<T> other && Equals(other);
-        }
-
-        public bool Equals(OneOrMany<T> other)
+    public T this[int index]
+    {
+        get
         {
             switch (_state)
             {
-                case State.Default:
-                    {
-                        return other._state == State.Default;
-                    }
                 case State.One:
                     {
-                        return other._state == State.One
-                            && EqualityComparer<T>.Default.Equals(_value, other._value);
+                        if (index == 0)
+                            return _value;
+
+                        break;
                     }
                 case State.Many:
                     {
-                        return other._state == State.Many
-                            && _values.Equals(other._values);
+                        return _values[index];
                     }
             }
 
-            throw new InvalidOperationException();
+            throw new ArgumentOutOfRangeException(nameof(index), index, "");
         }
+    }
 
-        public override int GetHashCode()
+    public int Count
+    {
+        get
         {
-            int hashCode = Hash.Create((int)_state);
-
-            if (_state == State.One)
-                return Hash.Combine(EqualityComparer<T>.Default.GetHashCode(_value), hashCode);
-
-            if (_state == State.Many)
-                return Hash.Combine(_values.GetHashCode(), hashCode);
-
-            return hashCode;
-        }
-
-        public static bool operator ==(in OneOrMany<T> oneOrMany1, in OneOrMany<T> oneOrMany2)
-        {
-            return oneOrMany1.Equals(oneOrMany2);
-        }
-
-        public static bool operator !=(in OneOrMany<T> oneOrMany1, in OneOrMany<T> oneOrMany2)
-        {
-            return !(oneOrMany1 == oneOrMany2);
-        }
-
-        public struct Enumerator
-        {
-            private readonly OneOrMany<T> _oneOrMany;
-            private int _index;
-
-            internal Enumerator(in OneOrMany<T> oneOrMany)
+            switch (_state)
             {
-                _oneOrMany = oneOrMany;
-                _index = -1;
-            }
-
-            public bool MoveNext()
-            {
-                _index++;
-                return _index < _oneOrMany.Count;
-            }
-
-            public T Current
-            {
-                get { return _oneOrMany[_index]; }
-            }
-
-            public void Reset()
-            {
-                _index = -1;
-            }
-
-            public override bool Equals(object obj) => throw new NotSupportedException();
-
-            public override int GetHashCode() => throw new NotSupportedException();
-        }
-
-        private class EnumeratorImpl : IEnumerator<T>
-        {
-            private Enumerator _en;
-
-            internal EnumeratorImpl(in OneOrMany<T> oneOrMany)
-            {
-                _en = new Enumerator(oneOrMany);
-            }
-
-            public T Current => _en.Current;
-
-            object IEnumerator.Current => _en.Current;
-
-            public bool MoveNext() => _en.MoveNext();
-
-            public void Reset() => _en.Reset();
-
-            public void Dispose()
-            {
+                case State.One:
+                    return 1;
+                case State.Many:
+                    return _values.Length;
+                default:
+                    return 0;
             }
         }
+    }
 
-        private enum State
+    public bool IsDefault => _state == State.Default;
+
+    public Enumerator GetEnumerator()
+    {
+        return new Enumerator(this);
+    }
+
+    IEnumerator<T> IEnumerable<T>.GetEnumerator()
+    {
+        if (_state != State.Default)
+            return new EnumeratorImpl(this);
+
+        return Empty.Enumerator<T>();
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        if (_state != State.Default)
+            return new EnumeratorImpl(this);
+
+        return Empty.Enumerator<T>();
+    }
+
+    public override bool Equals(object obj)
+    {
+        return obj is OneOrMany<T> other && Equals(other);
+    }
+
+    public bool Equals(OneOrMany<T> other)
+    {
+        switch (_state)
         {
-            Default,
-            One,
-            Many,
+            case State.Default:
+                {
+                    return other._state == State.Default;
+                }
+            case State.One:
+                {
+                    return other._state == State.One
+                        && EqualityComparer<T>.Default.Equals(_value, other._value);
+                }
+            case State.Many:
+                {
+                    return other._state == State.Many
+                        && _values.Equals(other._values);
+                }
         }
+
+        throw new InvalidOperationException();
+    }
+
+    public override int GetHashCode()
+    {
+        int hashCode = Hash.Create((int)_state);
+
+        if (_state == State.One)
+            return Hash.Combine(EqualityComparer<T>.Default.GetHashCode(_value), hashCode);
+
+        if (_state == State.Many)
+            return Hash.Combine(_values.GetHashCode(), hashCode);
+
+        return hashCode;
+    }
+
+    public static bool operator ==(in OneOrMany<T> oneOrMany1, in OneOrMany<T> oneOrMany2)
+    {
+        return oneOrMany1.Equals(oneOrMany2);
+    }
+
+    public static bool operator !=(in OneOrMany<T> oneOrMany1, in OneOrMany<T> oneOrMany2)
+    {
+        return !(oneOrMany1 == oneOrMany2);
+    }
+
+    public struct Enumerator
+    {
+        private readonly OneOrMany<T> _oneOrMany;
+        private int _index;
+
+        internal Enumerator(in OneOrMany<T> oneOrMany)
+        {
+            _oneOrMany = oneOrMany;
+            _index = -1;
+        }
+
+        public bool MoveNext()
+        {
+            _index++;
+            return _index < _oneOrMany.Count;
+        }
+
+        public T Current
+        {
+            get { return _oneOrMany[_index]; }
+        }
+
+        public void Reset()
+        {
+            _index = -1;
+        }
+
+        public override bool Equals(object obj) => throw new NotSupportedException();
+
+        public override int GetHashCode() => throw new NotSupportedException();
+    }
+
+    private class EnumeratorImpl : IEnumerator<T>
+    {
+        private Enumerator _en;
+
+        internal EnumeratorImpl(in OneOrMany<T> oneOrMany)
+        {
+            _en = new Enumerator(oneOrMany);
+        }
+
+        public T Current => _en.Current;
+
+        object IEnumerator.Current => _en.Current;
+
+        public bool MoveNext() => _en.MoveNext();
+
+        public void Reset() => _en.Reset();
+
+        public void Dispose()
+        {
+        }
+    }
+
+    private enum State
+    {
+        Default,
+        One,
+        Many,
     }
 }

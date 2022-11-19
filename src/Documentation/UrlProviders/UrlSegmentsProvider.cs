@@ -3,10 +3,9 @@
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 
-namespace Roslynator.Documentation
+namespace Roslynator.Documentation;
+
+public abstract class UrlSegmentProvider
 {
-    public abstract class UrlSegmentProvider
-    {
-        public abstract ImmutableArray<string> GetSegments(ISymbol symbol);
-    }
+    public abstract ImmutableArray<string> GetSegments(ISymbol symbol);
 }

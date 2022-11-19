@@ -7,45 +7,44 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings.AddOrRemoveParameterName;
 using Roslynator.CSharp.Refactorings.NodeInList;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class ArgumentListRefactoring
 {
-    internal static class ArgumentListRefactoring
+    public static async Task ComputeRefactoringsAsync(RefactoringContext context, ArgumentListSyntax argumentList)
     {
-        public static async Task ComputeRefactoringsAsync(RefactoringContext context, ArgumentListSyntax argumentList)
+        SeparatedSyntaxList<ArgumentSyntax> arguments = argumentList.Arguments;
+
+        if (!arguments.Any())
+            return;
+
+        await AddOrRemoveArgumentNameRefactoring.ComputeRefactoringsAsync(context, argumentList).ConfigureAwait(false);
+
+        if (context.IsRefactoringEnabled(RefactoringDescriptors.CopyArgument))
         {
-            SeparatedSyntaxList<ArgumentSyntax> arguments = argumentList.Arguments;
+            var refactoring = new CopyArgumentRefactoring(argumentList);
+            refactoring.ComputeRefactoring(context, RefactoringDescriptors.CopyArgument);
+        }
 
-            if (!arguments.Any())
-                return;
-
-            await AddOrRemoveArgumentNameRefactoring.ComputeRefactoringsAsync(context, argumentList).ConfigureAwait(false);
-
-            if (context.IsRefactoringEnabled(RefactoringDescriptors.CopyArgument))
+        if (context.IsRefactoringEnabled(RefactoringDescriptors.WrapArguments)
+            && (context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(argumentList)))
+        {
+            if (argumentList.IsSingleLine())
             {
-                var refactoring = new CopyArgumentRefactoring(argumentList);
-                refactoring.ComputeRefactoring(context, RefactoringDescriptors.CopyArgument);
-            }
-
-            if (context.IsRefactoringEnabled(RefactoringDescriptors.WrapArguments)
-                && (context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(argumentList)))
-            {
-                if (argumentList.IsSingleLine())
-                {
-                    if (arguments.Count > 1)
-                    {
-                        context.RegisterRefactoring(
-                            "Wrap arguments",
-                            ct => SyntaxFormatter.WrapArgumentsAsync(context.Document, argumentList, ct),
-                            RefactoringDescriptors.WrapArguments);
-                    }
-                }
-                else if (argumentList.DescendantTrivia(argumentList.Span).All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+                if (arguments.Count > 1)
                 {
                     context.RegisterRefactoring(
-                        "Unwrap arguments",
-                        ct => SyntaxFormatter.UnwrapExpressionAsync(context.Document, argumentList, ct),
+                        "Wrap arguments",
+                        ct => SyntaxFormatter.WrapArgumentsAsync(context.Document, argumentList, ct),
                         RefactoringDescriptors.WrapArguments);
                 }
+            }
+            else if (argumentList.DescendantTrivia(argumentList.Span).All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+            {
+                context.RegisterRefactoring(
+                    "Unwrap arguments",
+                    ct => SyntaxFormatter.UnwrapExpressionAsync(context.Document, argumentList, ct),
+                    RefactoringDescriptors.WrapArguments);
             }
         }
     }

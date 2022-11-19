@@ -7,62 +7,61 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Options;
 using Microsoft.CodeAnalysis.Rename;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class DeclarationExpressionRefactoring
 {
-    internal static class DeclarationExpressionRefactoring
+    public static async Task ComputeRefactoringsAsync(RefactoringContext context, DeclarationExpressionSyntax declarationExpression)
     {
-        public static async Task ComputeRefactoringsAsync(RefactoringContext context, DeclarationExpressionSyntax declarationExpression)
-        {
-            if (context.IsRefactoringEnabled(RefactoringDescriptors.RenameIdentifierAccordingToTypeName))
-                await RenameVariableAccordingToTypeNameAsync(context, declarationExpression).ConfigureAwait(false);
+        if (context.IsRefactoringEnabled(RefactoringDescriptors.RenameIdentifierAccordingToTypeName))
+            await RenameVariableAccordingToTypeNameAsync(context, declarationExpression).ConfigureAwait(false);
 
-            await ChangeDeclarationExpressionTypeRefactoring.ComputeRefactoringsAsync(context, declarationExpression).ConfigureAwait(false);
-        }
+        await ChangeDeclarationExpressionTypeRefactoring.ComputeRefactoringsAsync(context, declarationExpression).ConfigureAwait(false);
+    }
 
-        private static async Task RenameVariableAccordingToTypeNameAsync(
-            RefactoringContext context,
-            DeclarationExpressionSyntax declarationExpression)
-        {
-            TypeSyntax type = declarationExpression.Type;
+    private static async Task RenameVariableAccordingToTypeNameAsync(
+        RefactoringContext context,
+        DeclarationExpressionSyntax declarationExpression)
+    {
+        TypeSyntax type = declarationExpression.Type;
 
-            if (type == null)
-                return;
+        if (type == null)
+            return;
 
-            VariableDesignationSyntax designation = declarationExpression.Designation;
+        VariableDesignationSyntax designation = declarationExpression.Designation;
 
-            if (designation?.Kind() != SyntaxKind.SingleVariableDesignation)
-                return;
+        if (designation?.Kind() != SyntaxKind.SingleVariableDesignation)
+            return;
 
-            var singleVariableDesignation = (SingleVariableDesignationSyntax)designation;
+        var singleVariableDesignation = (SingleVariableDesignationSyntax)designation;
 
-            SyntaxToken identifier = singleVariableDesignation.Identifier;
+        SyntaxToken identifier = singleVariableDesignation.Identifier;
 
-            if (!identifier.Span.Contains(context.Span))
-                return;
+        if (!identifier.Span.Contains(context.Span))
+            return;
 
-            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-            var localSymbol = semanticModel.GetDeclaredSymbol(singleVariableDesignation, context.CancellationToken) as ILocalSymbol;
+        var localSymbol = semanticModel.GetDeclaredSymbol(singleVariableDesignation, context.CancellationToken) as ILocalSymbol;
 
-            if (localSymbol?.IsErrorType() != false)
-                return;
+        if (localSymbol?.IsErrorType() != false)
+            return;
 
-            string oldName = identifier.ValueText;
+        string oldName = identifier.ValueText;
 
-            string newName = NameGenerator.Default.CreateUniqueLocalName(
-                localSymbol.Type,
-                oldName,
-                semanticModel,
-                singleVariableDesignation.SpanStart,
-                cancellationToken: context.CancellationToken);
+        string newName = NameGenerator.Default.CreateUniqueLocalName(
+            localSymbol.Type,
+            oldName,
+            semanticModel,
+            singleVariableDesignation.SpanStart,
+            cancellationToken: context.CancellationToken);
 
-            if (newName == null)
-                return;
+        if (newName == null)
+            return;
 
-            context.RegisterRefactoring(
-                $"Rename '{oldName}' to '{newName}'",
-                ct => Renamer.RenameSymbolAsync(context.Solution, localSymbol, newName, default(OptionSet), ct),
-                RefactoringDescriptors.RenameIdentifierAccordingToTypeName);
-        }
+        context.RegisterRefactoring(
+            $"Rename '{oldName}' to '{newName}'",
+            ct => Renamer.RenameSymbolAsync(context.Solution, localSymbol, newName, default(OptionSet), ct),
+            RefactoringDescriptors.RenameIdentifierAccordingToTypeName);
     }
 }

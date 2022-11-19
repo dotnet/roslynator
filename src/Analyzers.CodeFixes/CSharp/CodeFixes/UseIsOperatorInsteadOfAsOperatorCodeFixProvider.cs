@@ -10,38 +10,37 @@ using Microsoft.CodeAnalysis.CSharp;
 using Roslynator.CodeFixes;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UseIsOperatorInsteadOfAsOperatorCodeFixProvider))]
+[Shared]
+public sealed class UseIsOperatorInsteadOfAsOperatorCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UseIsOperatorInsteadOfAsOperatorCodeFixProvider))]
-    [Shared]
-    public sealed class UseIsOperatorInsteadOfAsOperatorCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.UseIsOperatorInsteadOfAsOperator); }
+    }
+
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+        if (!TryFindFirstAncestorOrSelf(
+            root,
+            context.Span,
+            out SyntaxNode node,
+            predicate: f => f.IsKind(SyntaxKind.EqualsExpression, SyntaxKind.NotEqualsExpression, SyntaxKind.IsPatternExpression)))
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.UseIsOperatorInsteadOfAsOperator); }
+            return;
         }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+        Diagnostic diagnostic = context.Diagnostics[0];
 
-            if (!TryFindFirstAncestorOrSelf(
-                root,
-                context.Span,
-                out SyntaxNode node,
-                predicate: f => f.IsKind(SyntaxKind.EqualsExpression, SyntaxKind.NotEqualsExpression, SyntaxKind.IsPatternExpression)))
-            {
-                return;
-            }
+        CodeAction codeAction = CodeAction.Create(
+            "Use 'is' operator",
+            ct => UseIsOperatorInsteadOfAsOperatorRefactoring.RefactorAsync(context.Document, node, ct),
+            GetEquivalenceKey(diagnostic));
 
-            Diagnostic diagnostic = context.Diagnostics[0];
-
-            CodeAction codeAction = CodeAction.Create(
-                "Use 'is' operator",
-                ct => UseIsOperatorInsteadOfAsOperatorRefactoring.RefactorAsync(context.Document, node, ct),
-                GetEquivalenceKey(diagnostic));
-
-            context.RegisterCodeFix(codeAction, diagnostic);
-        }
+        context.RegisterCodeFix(codeAction, diagnostic);
     }
 }

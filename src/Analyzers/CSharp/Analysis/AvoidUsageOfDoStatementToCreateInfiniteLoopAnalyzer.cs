@@ -7,42 +7,41 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace Roslynator.CSharp.Analysis
+namespace Roslynator.CSharp.Analysis;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class AvoidUsageOfDoStatementToCreateInfiniteLoopAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class AvoidUsageOfDoStatementToCreateInfiniteLoopAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
-            {
-                if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AvoidUsageOfDoStatementToCreateInfiniteLoop);
+            if (_supportedDiagnostics.IsDefault)
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AvoidUsageOfDoStatementToCreateInfiniteLoop);
 
-                return _supportedDiagnostics;
-            }
+            return _supportedDiagnostics;
         }
+    }
 
-        public override void Initialize(AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
+
+        context.RegisterSyntaxNodeAction(f => AnalyzeDoStatement(f), SyntaxKind.DoStatement);
+    }
+
+    private static void AnalyzeDoStatement(SyntaxNodeAnalysisContext context)
+    {
+        var doStatement = (DoStatementSyntax)context.Node;
+
+        if (doStatement.Condition?.Kind() == SyntaxKind.TrueLiteralExpression)
         {
-            base.Initialize(context);
-
-            context.RegisterSyntaxNodeAction(f => AnalyzeDoStatement(f), SyntaxKind.DoStatement);
-        }
-
-        private static void AnalyzeDoStatement(SyntaxNodeAnalysisContext context)
-        {
-            var doStatement = (DoStatementSyntax)context.Node;
-
-            if (doStatement.Condition?.Kind() == SyntaxKind.TrueLiteralExpression)
-            {
-                DiagnosticHelpers.ReportDiagnostic(
-                    context,
-                    DiagnosticRules.AvoidUsageOfDoStatementToCreateInfiniteLoop,
-                    doStatement.DoKeyword);
-            }
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
+                DiagnosticRules.AvoidUsageOfDoStatementToCreateInfiniteLoop,
+                doStatement.DoKeyword);
         }
     }
 }

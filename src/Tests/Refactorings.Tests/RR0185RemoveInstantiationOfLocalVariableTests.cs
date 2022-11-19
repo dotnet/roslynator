@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0185RemoveInstantiationOfLocalVariableTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.RemoveInstantiationOfLocalVariable;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveInstantiationOfLocalVariable)]
-        public async Task Test_WithoutNullableContext()
-        {
-            await VerifyRefactoringAsync(@"
+public class RR0185RemoveInstantiationOfLocalVariableTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.RemoveInstantiationOfLocalVariable;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveInstantiationOfLocalVariable)]
+    public async Task Test_WithoutNullableContext()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M()
@@ -30,12 +30,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringDescriptors.RemoveInstantiationOfLocalVariable));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveInstantiationOfLocalVariable)]
-        public async Task Test_WithNullableContext()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveInstantiationOfLocalVariable)]
+    public async Task Test_WithNullableContext()
+    {
+        await VerifyRefactoringAsync(@"
 #nullable enable annotations
 
 class C
@@ -56,12 +56,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringDescriptors.RemoveInstantiationOfLocalVariable));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveInstantiationOfLocalVariable)]
-        public async Task TestNoDiagnostic_SpanInInitializer()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveInstantiationOfLocalVariable)]
+    public async Task TestNoDiagnostic_SpanInInitializer()
+    {
+        await VerifyNoRefactoringAsync(@"
 class C
 {
     void M()
@@ -70,6 +70,5 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringDescriptors.RemoveInstantiationOfLocalVariable));
-        }
     }
 }

@@ -11,309 +11,308 @@ using Roslynator.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class ExpandInitializerRefactoring
 {
-    internal static class ExpandInitializerRefactoring
+    private const string Title = "Expand initializer";
+
+    public static async Task ComputeRefactoringsAsync(RefactoringContext context, InitializerExpressionSyntax initializer)
     {
-        private const string Title = "Expand initializer";
-
-        public static async Task ComputeRefactoringsAsync(RefactoringContext context, InitializerExpressionSyntax initializer)
+        if (!initializer.IsKind(
+            SyntaxKind.ObjectInitializerExpression,
+            SyntaxKind.CollectionInitializerExpression))
         {
-            if (!initializer.IsKind(
-                SyntaxKind.ObjectInitializerExpression,
-                SyntaxKind.CollectionInitializerExpression))
+            return;
+        }
+
+        if (!initializer.Expressions.Any())
+            return;
+
+        SyntaxNode parent = initializer.Parent;
+
+        if (!parent.IsKind(SyntaxKind.ObjectCreationExpression))
+            return;
+
+        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+        if (!CanExpand(initializer, semanticModel, context.CancellationToken))
+            return;
+
+        if (parent.IsParentKind(SyntaxKind.SimpleAssignmentExpression))
+        {
+            SimpleAssignmentStatementInfo simpleAssignment = SyntaxInfo.SimpleAssignmentStatementInfo((AssignmentExpressionSyntax)parent.Parent);
+
+            if (simpleAssignment.Success)
+                RegisterRefactoring(context, simpleAssignment.Statement, initializer, simpleAssignment.Left);
+        }
+        else
+        {
+            LocalDeclarationStatementInfo localInfo = SyntaxInfo.LocalDeclarationStatementInfo((ExpressionSyntax)parent);
+
+            if (localInfo.Success)
             {
-                return;
+                var declarator = (VariableDeclaratorSyntax)parent.Parent.Parent;
+
+                RegisterRefactoring(
+                    context,
+                    localInfo.Statement,
+                    initializer,
+                    IdentifierName(declarator.Identifier.ValueText));
             }
+        }
+    }
 
-            if (!initializer.Expressions.Any())
-                return;
+    private static void RegisterRefactoring(
+        RefactoringContext context,
+        StatementSyntax statement,
+        InitializerExpressionSyntax initializer,
+        ExpressionSyntax expression)
+    {
+        StatementListInfo statementsInfo = SyntaxInfo.StatementListInfo(statement);
 
-            SyntaxNode parent = initializer.Parent;
+        if (!statementsInfo.Success)
+            return;
 
-            if (!parent.IsKind(SyntaxKind.ObjectCreationExpression))
-                return;
+        context.RegisterRefactoring(
+            Title,
+            ct => RefactorAsync(
+                context.Document,
+                statementsInfo,
+                statement,
+                initializer,
+                expression.WithoutTrivia(),
+                ct),
+            RefactoringDescriptors.ExpandInitializer);
+    }
 
-            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+    private static bool CanExpand(
+        InitializerExpressionSyntax initializer,
+        SemanticModel semanticModel,
+        CancellationToken cancellationToken)
+    {
+        var objectCreationExpression = (ObjectCreationExpressionSyntax)initializer.Parent;
 
-            if (!CanExpand(initializer, semanticModel, context.CancellationToken))
-                return;
+        if (objectCreationExpression.Type != null)
+        {
+            ExpressionSyntax expression = initializer.Expressions[0];
 
-            if (parent.IsParentKind(SyntaxKind.SimpleAssignmentExpression))
+            if (expression.IsKind(SyntaxKind.SimpleAssignmentExpression))
             {
-                SimpleAssignmentStatementInfo simpleAssignment = SyntaxInfo.SimpleAssignmentStatementInfo((AssignmentExpressionSyntax)parent.Parent);
+                var assignment = (AssignmentExpressionSyntax)expression;
 
-                if (simpleAssignment.Success)
-                    RegisterRefactoring(context, simpleAssignment.Statement, initializer, simpleAssignment.Left);
+                ExpressionSyntax left = assignment.Left;
+
+                if (left is ImplicitElementAccessSyntax implicitElementAccess)
+                {
+                    BracketedArgumentListSyntax argumentList = implicitElementAccess.ArgumentList;
+
+                    if (argumentList?.Arguments.Any() == true)
+                    {
+                        return HasAccessibleIndexer(
+                            argumentList.Arguments[0].Expression,
+                            objectCreationExpression,
+                            semanticModel,
+                            cancellationToken);
+                    }
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            else if (expression.IsKind(SyntaxKind.ComplexElementInitializerExpression))
+            {
+                var initializerExpression = (InitializerExpressionSyntax)expression;
+
+                SeparatedSyntaxList<ExpressionSyntax> expressions = initializerExpression.Expressions;
+
+                if (expressions.Any())
+                    return HasAccessibleIndexer(expressions[0], objectCreationExpression, semanticModel, cancellationToken);
             }
             else
             {
-                LocalDeclarationStatementInfo localInfo = SyntaxInfo.LocalDeclarationStatementInfo((ExpressionSyntax)parent);
+                return HasAccessibleAddMethod(expression, objectCreationExpression, semanticModel, cancellationToken);
+            }
+        }
 
-                if (localInfo.Success)
+        return false;
+    }
+
+    private static bool HasAccessibleAddMethod(
+        ExpressionSyntax expression,
+        ObjectCreationExpressionSyntax objectCreationExpression,
+        SemanticModel semanticModel,
+        CancellationToken cancellationToken)
+    {
+        if (semanticModel.GetSymbol(objectCreationExpression.Type, cancellationToken) is ITypeSymbol typeSymbol)
+        {
+            foreach (ISymbol symbol in semanticModel.LookupSymbols(objectCreationExpression.SpanStart, typeSymbol, "Add"))
+            {
+                if (!symbol.IsStatic
+                    && symbol.Kind == SymbolKind.Method)
                 {
-                    var declarator = (VariableDeclaratorSyntax)parent.Parent.Parent;
+                    var methodSymbol = (IMethodSymbol)symbol;
 
-                    RegisterRefactoring(
-                        context,
-                        localInfo.Statement,
-                        initializer,
-                        IdentifierName(declarator.Identifier.ValueText));
+                    IParameterSymbol parameter = methodSymbol.Parameters.SingleOrDefault(shouldThrow: false);
+
+                    if (parameter != null)
+                    {
+                        TypeInfo typeInfo = semanticModel.GetTypeInfo(expression, cancellationToken);
+
+                        if (SymbolEqualityComparer.Default.Equals(parameter.Type, typeInfo.ConvertedType))
+                            return true;
+                    }
                 }
             }
         }
 
-        private static void RegisterRefactoring(
-            RefactoringContext context,
-            StatementSyntax statement,
-            InitializerExpressionSyntax initializer,
-            ExpressionSyntax expression)
+        return false;
+    }
+
+    private static bool HasAccessibleIndexer(
+        ExpressionSyntax expression,
+        ObjectCreationExpressionSyntax objectCreationExpression,
+        SemanticModel semanticModel,
+        CancellationToken cancellationToken)
+    {
+        if (semanticModel.GetSymbol(objectCreationExpression.Type, cancellationToken) is ITypeSymbol typeSymbol)
         {
-            StatementListInfo statementsInfo = SyntaxInfo.StatementListInfo(statement);
+            int position = objectCreationExpression.SpanStart;
 
-            if (!statementsInfo.Success)
-                return;
+            foreach (ISymbol member in semanticModel.LookupSymbols(position, typeSymbol, "this[]"))
+            {
+                var propertySymbol = (IPropertySymbol)member;
 
-            context.RegisterRefactoring(
-                Title,
-                ct => RefactorAsync(
-                    context.Document,
-                    statementsInfo,
-                    statement,
-                    initializer,
-                    expression.WithoutTrivia(),
-                    ct),
-                RefactoringDescriptors.ExpandInitializer);
+                if (!propertySymbol.IsReadOnly
+                    && semanticModel.IsAccessible(position, propertySymbol.SetMethod))
+                {
+                    IParameterSymbol parameter = propertySymbol.Parameters.SingleOrDefault(shouldThrow: false);
+
+                    if (parameter != null)
+                    {
+                        TypeInfo typeInfo = semanticModel.GetTypeInfo(expression, cancellationToken);
+
+                        if (SymbolEqualityComparer.Default.Equals(parameter.Type, typeInfo.ConvertedType))
+                            return true;
+                    }
+                }
+            }
         }
 
-        private static bool CanExpand(
-            InitializerExpressionSyntax initializer,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
+        return false;
+    }
+
+    private static Task<Document> RefactorAsync(
+        Document document,
+        in StatementListInfo statementsInfo,
+        StatementSyntax statement,
+        InitializerExpressionSyntax initializer,
+        ExpressionSyntax initializedExpression,
+        CancellationToken cancellationToken)
+    {
+        ExpressionStatementSyntax[] expressions = CreateExpressionStatements(initializer, initializedExpression).ToArray();
+
+        expressions[expressions.Length - 1] = expressions[expressions.Length - 1]
+            .WithTrailingTrivia(statement.GetTrailingTrivia());
+
+        var objectCreationExpression = (ObjectCreationExpressionSyntax)initializer.Parent;
+
+        ObjectCreationExpressionSyntax newObjectCreationExpression = objectCreationExpression.WithInitializer(null);
+
+        if (newObjectCreationExpression.ArgumentList == null)
         {
-            var objectCreationExpression = (ObjectCreationExpressionSyntax)initializer.Parent;
+            TypeSyntax type = newObjectCreationExpression.Type;
 
-            if (objectCreationExpression.Type != null)
-            {
-                ExpressionSyntax expression = initializer.Expressions[0];
-
-                if (expression.IsKind(SyntaxKind.SimpleAssignmentExpression))
-                {
-                    var assignment = (AssignmentExpressionSyntax)expression;
-
-                    ExpressionSyntax left = assignment.Left;
-
-                    if (left is ImplicitElementAccessSyntax implicitElementAccess)
-                    {
-                        BracketedArgumentListSyntax argumentList = implicitElementAccess.ArgumentList;
-
-                        if (argumentList?.Arguments.Any() == true)
-                        {
-                            return HasAccessibleIndexer(
-                                argumentList.Arguments[0].Expression,
-                                objectCreationExpression,
-                                semanticModel,
-                                cancellationToken);
-                        }
-                    }
-                    else
-                    {
-                        return true;
-                    }
-                }
-                else if (expression.IsKind(SyntaxKind.ComplexElementInitializerExpression))
-                {
-                    var initializerExpression = (InitializerExpressionSyntax)expression;
-
-                    SeparatedSyntaxList<ExpressionSyntax> expressions = initializerExpression.Expressions;
-
-                    if (expressions.Any())
-                        return HasAccessibleIndexer(expressions[0], objectCreationExpression, semanticModel, cancellationToken);
-                }
-                else
-                {
-                    return HasAccessibleAddMethod(expression, objectCreationExpression, semanticModel, cancellationToken);
-                }
-            }
-
-            return false;
+            newObjectCreationExpression = newObjectCreationExpression
+                .WithArgumentList(ArgumentList().WithTrailingTrivia(type.GetTrailingTrivia()))
+                .WithType(type.WithoutTrailingTrivia());
         }
 
-        private static bool HasAccessibleAddMethod(
-            ExpressionSyntax expression,
-            ObjectCreationExpressionSyntax objectCreationExpression,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
+        SyntaxList<StatementSyntax> statements = statementsInfo.Statements;
+
+        int index = statements.IndexOf(statement);
+
+        StatementSyntax newStatement = statement.ReplaceNode(objectCreationExpression, newObjectCreationExpression);
+
+        SyntaxKind statementKind = statement.Kind();
+
+        if (statementKind == SyntaxKind.ExpressionStatement)
         {
-            if (semanticModel.GetSymbol(objectCreationExpression.Type, cancellationToken) is ITypeSymbol typeSymbol)
-            {
-                foreach (ISymbol symbol in semanticModel.LookupSymbols(objectCreationExpression.SpanStart, typeSymbol, "Add"))
-                {
-                    if (!symbol.IsStatic
-                        && symbol.Kind == SymbolKind.Method)
-                    {
-                        var methodSymbol = (IMethodSymbol)symbol;
+            var expressionStatement = (ExpressionStatementSyntax)newStatement;
 
-                        IParameterSymbol parameter = methodSymbol.Parameters.SingleOrDefault(shouldThrow: false);
+            newStatement = expressionStatement
+                .WithExpression(expressionStatement.Expression.WithoutTrailingTrivia());
+        }
+        else if (statementKind == SyntaxKind.LocalDeclarationStatement)
+        {
+            var localDeclaration = (LocalDeclarationStatementSyntax)newStatement;
 
-                        if (parameter != null)
-                        {
-                            TypeInfo typeInfo = semanticModel.GetTypeInfo(expression, cancellationToken);
-
-                            if (SymbolEqualityComparer.Default.Equals(parameter.Type, typeInfo.ConvertedType))
-                                return true;
-                        }
-                    }
-                }
-            }
-
-            return false;
+            newStatement = localDeclaration
+                .WithDeclaration(localDeclaration.Declaration.WithoutTrailingTrivia());
         }
 
-        private static bool HasAccessibleIndexer(
-            ExpressionSyntax expression,
-            ObjectCreationExpressionSyntax objectCreationExpression,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
+        SyntaxList<StatementSyntax> newStatements = statements.Replace(statement, newStatement);
+
+        SyntaxNode newNode = statementsInfo
+            .WithStatements(newStatements.InsertRange(index + 1, expressions))
+            .Parent
+            .WithFormatterAnnotation();
+
+        return document.ReplaceNodeAsync(statementsInfo.Parent, newNode, cancellationToken);
+    }
+
+    private static IEnumerable<ExpressionStatementSyntax> CreateExpressionStatements(
+        InitializerExpressionSyntax initializer,
+        ExpressionSyntax initializedExpression)
+    {
+        foreach (ExpressionSyntax expression in initializer.Expressions)
         {
-            if (semanticModel.GetSymbol(objectCreationExpression.Type, cancellationToken) is ITypeSymbol typeSymbol)
-            {
-                int position = objectCreationExpression.SpanStart;
+            SyntaxKind kind = expression.Kind();
 
-                foreach (ISymbol member in semanticModel.LookupSymbols(position, typeSymbol, "this[]"))
+            if (kind == SyntaxKind.SimpleAssignmentExpression)
+            {
+                var assignment = (AssignmentExpressionSyntax)expression;
+                ExpressionSyntax left = assignment.Left;
+                ExpressionSyntax right = assignment.Right;
+
+                if (left.IsKind(SyntaxKind.ImplicitElementAccess))
                 {
-                    var propertySymbol = (IPropertySymbol)member;
-
-                    if (!propertySymbol.IsReadOnly
-                        && semanticModel.IsAccessible(position, propertySymbol.SetMethod))
-                    {
-                        IParameterSymbol parameter = propertySymbol.Parameters.SingleOrDefault(shouldThrow: false);
-
-                        if (parameter != null)
-                        {
-                            TypeInfo typeInfo = semanticModel.GetTypeInfo(expression, cancellationToken);
-
-                            if (SymbolEqualityComparer.Default.Equals(parameter.Type, typeInfo.ConvertedType))
-                                return true;
-                        }
-                    }
-                }
-            }
-
-            return false;
-        }
-
-        private static Task<Document> RefactorAsync(
-            Document document,
-            in StatementListInfo statementsInfo,
-            StatementSyntax statement,
-            InitializerExpressionSyntax initializer,
-            ExpressionSyntax initializedExpression,
-            CancellationToken cancellationToken)
-        {
-            ExpressionStatementSyntax[] expressions = CreateExpressionStatements(initializer, initializedExpression).ToArray();
-
-            expressions[expressions.Length - 1] = expressions[expressions.Length - 1]
-                .WithTrailingTrivia(statement.GetTrailingTrivia());
-
-            var objectCreationExpression = (ObjectCreationExpressionSyntax)initializer.Parent;
-
-            ObjectCreationExpressionSyntax newObjectCreationExpression = objectCreationExpression.WithInitializer(null);
-
-            if (newObjectCreationExpression.ArgumentList == null)
-            {
-                TypeSyntax type = newObjectCreationExpression.Type;
-
-                newObjectCreationExpression = newObjectCreationExpression
-                    .WithArgumentList(ArgumentList().WithTrailingTrivia(type.GetTrailingTrivia()))
-                    .WithType(type.WithoutTrailingTrivia());
-            }
-
-            SyntaxList<StatementSyntax> statements = statementsInfo.Statements;
-
-            int index = statements.IndexOf(statement);
-
-            StatementSyntax newStatement = statement.ReplaceNode(objectCreationExpression, newObjectCreationExpression);
-
-            SyntaxKind statementKind = statement.Kind();
-
-            if (statementKind == SyntaxKind.ExpressionStatement)
-            {
-                var expressionStatement = (ExpressionStatementSyntax)newStatement;
-
-                newStatement = expressionStatement
-                    .WithExpression(expressionStatement.Expression.WithoutTrailingTrivia());
-            }
-            else if (statementKind == SyntaxKind.LocalDeclarationStatement)
-            {
-                var localDeclaration = (LocalDeclarationStatementSyntax)newStatement;
-
-                newStatement = localDeclaration
-                    .WithDeclaration(localDeclaration.Declaration.WithoutTrailingTrivia());
-            }
-
-            SyntaxList<StatementSyntax> newStatements = statements.Replace(statement, newStatement);
-
-            SyntaxNode newNode = statementsInfo
-                .WithStatements(newStatements.InsertRange(index + 1, expressions))
-                .Parent
-                .WithFormatterAnnotation();
-
-            return document.ReplaceNodeAsync(statementsInfo.Parent, newNode, cancellationToken);
-        }
-
-        private static IEnumerable<ExpressionStatementSyntax> CreateExpressionStatements(
-            InitializerExpressionSyntax initializer,
-            ExpressionSyntax initializedExpression)
-        {
-            foreach (ExpressionSyntax expression in initializer.Expressions)
-            {
-                SyntaxKind kind = expression.Kind();
-
-                if (kind == SyntaxKind.SimpleAssignmentExpression)
-                {
-                    var assignment = (AssignmentExpressionSyntax)expression;
-                    ExpressionSyntax left = assignment.Left;
-                    ExpressionSyntax right = assignment.Right;
-
-                    if (left.IsKind(SyntaxKind.ImplicitElementAccess))
-                    {
-                        yield return SimpleAssignmentStatement(
-                            ElementAccessExpression(
-                                initializedExpression,
-                                ((ImplicitElementAccessSyntax)left).ArgumentList),
-                            right);
-                    }
-                    else
-                    {
-                        yield return SimpleAssignmentStatement(
-                            SimpleMemberAccessExpression(
-                                initializedExpression,
-                                (IdentifierNameSyntax)left),
-                            right);
-                    }
-                }
-                else if (kind == SyntaxKind.ComplexElementInitializerExpression)
-                {
-                    var elementInitializer = (InitializerExpressionSyntax)expression;
-
                     yield return SimpleAssignmentStatement(
                         ElementAccessExpression(
                             initializedExpression,
-                            BracketedArgumentList(SingletonSeparatedList(Argument(elementInitializer.Expressions[0])))),
-                        elementInitializer.Expressions[1]);
+                            ((ImplicitElementAccessSyntax)left).ArgumentList),
+                        right);
                 }
                 else
                 {
-                    yield return ExpressionStatement(
-                        InvocationExpression(
-                            SimpleMemberAccessExpression(
-                                initializedExpression,
-                                IdentifierName("Add")),
-                            ArgumentList(Argument(expression))
-                        )
-                    );
+                    yield return SimpleAssignmentStatement(
+                        SimpleMemberAccessExpression(
+                            initializedExpression,
+                            (IdentifierNameSyntax)left),
+                        right);
                 }
+            }
+            else if (kind == SyntaxKind.ComplexElementInitializerExpression)
+            {
+                var elementInitializer = (InitializerExpressionSyntax)expression;
+
+                yield return SimpleAssignmentStatement(
+                    ElementAccessExpression(
+                        initializedExpression,
+                        BracketedArgumentList(SingletonSeparatedList(Argument(elementInitializer.Expressions[0])))),
+                    elementInitializer.Expressions[1]);
+            }
+            else
+            {
+                yield return ExpressionStatement(
+                    InvocationExpression(
+                        SimpleMemberAccessExpression(
+                            initializedExpression,
+                            IdentifierName("Add")),
+                        ArgumentList(Argument(expression))
+                    )
+                );
             }
         }
     }

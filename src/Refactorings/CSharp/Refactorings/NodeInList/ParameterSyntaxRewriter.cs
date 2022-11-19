@@ -3,21 +3,20 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings.NodeInList
+namespace Roslynator.CSharp.Refactorings.NodeInList;
+
+internal class ParameterSyntaxRewriter : NodeSyntaxRewriter<ParameterSyntax>
 {
-    internal class ParameterSyntaxRewriter : NodeSyntaxRewriter<ParameterSyntax>
+    public ParameterSyntaxRewriter(RewriterInfo<ParameterSyntax> info)
+        : base(info)
     {
-        public ParameterSyntaxRewriter(RewriterInfo<ParameterSyntax> info)
-            : base(info)
-        {
-        }
+    }
 
-        public override SyntaxNode VisitParameter(ParameterSyntax node)
-        {
-            if (node == Info.Node)
-                return Info.NewNode;
+    public override SyntaxNode VisitParameter(ParameterSyntax node)
+    {
+        if (node == Info.Node)
+            return Info.NewNode;
 
-            return base.VisitParameter(node);
-        }
+        return base.VisitParameter(node);
     }
 }

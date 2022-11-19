@@ -5,42 +5,41 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class ChangeDeclarationExpressionTypeRefactoring
 {
-    internal static class ChangeDeclarationExpressionTypeRefactoring
+    public static async Task ComputeRefactoringsAsync(
+        RefactoringContext context,
+        DeclarationExpressionSyntax declarationExpression)
     {
-        public static async Task ComputeRefactoringsAsync(
-            RefactoringContext context,
-            DeclarationExpressionSyntax declarationExpression)
+        if (declarationExpression.Type?.Span.Contains(context.Span) == true
+            && context.IsAnyRefactoringEnabled(
+                RefactoringDescriptors.UseImplicitType,
+                RefactoringDescriptors.UseExplicitType))
         {
-            if (declarationExpression.Type?.Span.Contains(context.Span) == true
-                && context.IsAnyRefactoringEnabled(
-                    RefactoringDescriptors.UseImplicitType,
-                    RefactoringDescriptors.UseExplicitType))
+            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+            TypeAnalysis analysis = CSharpTypeAnalysis.AnalyzeType(declarationExpression, semanticModel, context.CancellationToken);
+
+            if (analysis.IsExplicit)
             {
-                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                TypeAnalysis analysis = CSharpTypeAnalysis.AnalyzeType(declarationExpression, semanticModel, context.CancellationToken);
-
-                if (analysis.IsExplicit)
+                if (analysis.SupportsImplicit
+                    && context.IsRefactoringEnabled(RefactoringDescriptors.UseImplicitType))
                 {
-                    if (analysis.SupportsImplicit
-                        && context.IsRefactoringEnabled(RefactoringDescriptors.UseImplicitType))
-                    {
-                        context.RegisterRefactoring(CodeActionFactory.ChangeTypeToVar(context.Document, declarationExpression.Type, equivalenceKey: EquivalenceKey.Create(RefactoringDescriptors.UseImplicitType)));
-                    }
+                    context.RegisterRefactoring(CodeActionFactory.ChangeTypeToVar(context.Document, declarationExpression.Type, equivalenceKey: EquivalenceKey.Create(RefactoringDescriptors.UseImplicitType)));
                 }
-                else if (analysis.SupportsExplicit
-                    && context.IsRefactoringEnabled(RefactoringDescriptors.UseExplicitType))
-                {
-                    TypeSyntax type = declarationExpression.Type;
+            }
+            else if (analysis.SupportsExplicit
+                && context.IsRefactoringEnabled(RefactoringDescriptors.UseExplicitType))
+            {
+                TypeSyntax type = declarationExpression.Type;
 
-                    var localSymbol = (ILocalSymbol)semanticModel.GetDeclaredSymbol(declarationExpression.Designation, context.CancellationToken);
+                var localSymbol = (ILocalSymbol)semanticModel.GetDeclaredSymbol(declarationExpression.Designation, context.CancellationToken);
 
-                    ITypeSymbol typeSymbol = localSymbol.Type;
+                ITypeSymbol typeSymbol = localSymbol.Type;
 
-                    context.RegisterRefactoring(CodeActionFactory.ChangeType(context.Document, type, typeSymbol, semanticModel, equivalenceKey: EquivalenceKey.Create(RefactoringDescriptors.UseExplicitType)));
-                }
+                context.RegisterRefactoring(CodeActionFactory.ChangeType(context.Document, type, typeSymbol, semanticModel, equivalenceKey: EquivalenceKey.Create(RefactoringDescriptors.UseExplicitType)));
             }
         }
     }

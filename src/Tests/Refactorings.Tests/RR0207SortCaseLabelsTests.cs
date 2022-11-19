@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0207SortCaseLabelsTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.SortCaseLabels;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SortCaseLabels)]
-        public async Task Test_StringLiteral()
-        {
-            await VerifyRefactoringAsync(@"
+public class RR0207SortCaseLabelsTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.SortCaseLabels;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SortCaseLabels)]
+    public async Task Test_StringLiteral()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M(string s)
@@ -48,12 +48,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SortCaseLabels)]
-        public async Task Test_SimpleMemberAccessExpression()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SortCaseLabels)]
+    public async Task Test_SimpleMemberAccessExpression()
+    {
+        await VerifyRefactoringAsync(@"
 using System.Text.RegularExpressions;
 
 class C
@@ -98,12 +98,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SortCaseLabels)]
-        public async Task TestNoRefactoring_StringLiteral_IsSorted()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SortCaseLabels)]
+    public async Task TestNoRefactoring_StringLiteral_IsSorted()
+    {
+        await VerifyNoRefactoringAsync(@"
 class C
 {
     void M(string s)
@@ -121,12 +121,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SortCaseLabels)]
-        public async Task TestNoRefactoring_SimpleMemberAccessExpression_IsSorted()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SortCaseLabels)]
+    public async Task TestNoRefactoring_SimpleMemberAccessExpression_IsSorted()
+    {
+        await VerifyNoRefactoringAsync(@"
 using System.Text.RegularExpressions;
 
 class C
@@ -150,6 +150,5 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
     }
 }

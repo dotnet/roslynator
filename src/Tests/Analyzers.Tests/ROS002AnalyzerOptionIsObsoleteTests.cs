@@ -6,16 +6,16 @@ using Roslynator.Testing;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class ROS0002AnalyzerOptionIsObsoleteTests : AbstractCSharpDiagnosticVerifier<AnalyzerOptionIsObsoleteAnalyzer, DummyCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = CommonDiagnosticRules.AnalyzerOptionIsObsolete;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveBracesFromIfElse)]
-        public async Task Test()
-        {
-            await VerifyDiagnosticAsync(@"
+public class ROS0002AnalyzerOptionIsObsoleteTests : AbstractCSharpDiagnosticVerifier<AnalyzerOptionIsObsoleteAnalyzer, DummyCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = CommonDiagnosticRules.AnalyzerOptionIsObsolete;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveBracesFromIfElse)]
+    public async Task Test()
+    {
+        await VerifyDiagnosticAsync(@"
 class C
 {
     void M()
@@ -23,13 +23,13 @@ class C
     }
 }
 ", options: Options.AddConfigOption("dotnet_diagnostic.RCS1207.severity", "suggestion")
-                .AddConfigOption(LegacyConfigOptions.ConvertMethodGroupToAnonymousFunction.Key, "true"));
-        }
+            .AddConfigOption(LegacyConfigOptions.ConvertMethodGroupToAnonymousFunction.Key, "true"));
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveBracesFromIfElse)]
-        public async Task Test2()
-        {
-            await VerifyDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveBracesFromIfElse)]
+    public async Task Test2()
+    {
+        await VerifyDiagnosticAsync(@"
 class C
 {
     void M()
@@ -37,7 +37,6 @@ class C
     }
 }
 ", options: Options.EnableDiagnostic(DiagnosticRules.UseAnonymousFunctionOrMethodGroup)
-                .AddConfigOption(LegacyConfigOptions.ConvertMethodGroupToAnonymousFunction.Key, "true"));
-        }
+            .AddConfigOption(LegacyConfigOptions.ConvertMethodGroupToAnonymousFunction.Key, "true"));
     }
 }

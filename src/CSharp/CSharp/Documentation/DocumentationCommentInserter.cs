@@ -6,81 +6,80 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Documentation
+namespace Roslynator.CSharp.Documentation;
+
+internal readonly struct DocumentationCommentInserter
 {
-    internal readonly struct DocumentationCommentInserter
+    private DocumentationCommentInserter(SyntaxTriviaList leadingTrivia, int index, string indent)
     {
-        private DocumentationCommentInserter(SyntaxTriviaList leadingTrivia, int index, string indent)
+        LeadingTrivia = leadingTrivia;
+        Index = index;
+        Indent = indent;
+    }
+
+    public static DocumentationCommentInserter Default { get; } = new(default(SyntaxTriviaList), 0, "");
+
+    public SyntaxTriviaList LeadingTrivia { get; }
+
+    public int Index { get; }
+
+    public string Indent { get; }
+
+    public static DocumentationCommentInserter Create(MemberDeclarationSyntax memberDeclaration)
+    {
+        return Create(memberDeclaration.GetLeadingTrivia());
+    }
+
+    public static DocumentationCommentInserter Create(SyntaxTriviaList leadingTrivia)
+    {
+        if (leadingTrivia.Any())
         {
-            LeadingTrivia = leadingTrivia;
-            Index = index;
-            Indent = indent;
-        }
+            int index = leadingTrivia.Count;
 
-        public static DocumentationCommentInserter Default { get; } = new(default(SyntaxTriviaList), 0, "");
-
-        public SyntaxTriviaList LeadingTrivia { get; }
-
-        public int Index { get; }
-
-        public string Indent { get; }
-
-        public static DocumentationCommentInserter Create(MemberDeclarationSyntax memberDeclaration)
-        {
-            return Create(memberDeclaration.GetLeadingTrivia());
-        }
-
-        public static DocumentationCommentInserter Create(SyntaxTriviaList leadingTrivia)
-        {
-            if (leadingTrivia.Any())
+            while (index >= 1
+                && leadingTrivia[index - 1].IsWhitespaceTrivia())
             {
-                int index = leadingTrivia.Count;
-
-                while (index >= 1
-                    && leadingTrivia[index - 1].IsWhitespaceTrivia())
-                {
-                    index--;
-                }
-
-                string indent = string.Concat(leadingTrivia.Skip(index));
-
-                return new DocumentationCommentInserter(leadingTrivia, index, indent);
+                index--;
             }
 
-            return Default;
+            string indent = string.Concat(leadingTrivia.Skip(index));
+
+            return new DocumentationCommentInserter(leadingTrivia, index, indent);
         }
 
-        public SyntaxTriviaList Insert(SyntaxTrivia comment, bool indent = false)
+        return Default;
+    }
+
+    public SyntaxTriviaList Insert(SyntaxTrivia comment, bool indent = false)
+    {
+        if (indent)
         {
-            if (indent)
-            {
-                return IndentAndInsert(comment.ToFullString());
-            }
-            else
-            {
-                return LeadingTrivia.Insert(Index, comment);
-            }
+            return IndentAndInsert(comment.ToFullString());
         }
-
-        public SyntaxTriviaList InsertRange(SyntaxTriviaList comment, bool indent = false)
+        else
         {
-            if (indent)
-            {
-                return IndentAndInsert(comment.ToFullString());
-            }
-            else
-            {
-                return LeadingTrivia.InsertRange(Index, comment);
-            }
+            return LeadingTrivia.Insert(Index, comment);
         }
+    }
 
-        private SyntaxTriviaList IndentAndInsert(string commentText)
+    public SyntaxTriviaList InsertRange(SyntaxTriviaList comment, bool indent = false)
+    {
+        if (indent)
         {
-            string text = Regex.Replace(commentText, @"^(?!\z)", Indent, RegexOptions.Multiline);
-
-            SyntaxTriviaList trivia = SyntaxFactory.ParseLeadingTrivia(text);
-
-            return LeadingTrivia.InsertRange(Index, trivia);
+            return IndentAndInsert(comment.ToFullString());
         }
+        else
+        {
+            return LeadingTrivia.InsertRange(Index, comment);
+        }
+    }
+
+    private SyntaxTriviaList IndentAndInsert(string commentText)
+    {
+        string text = Regex.Replace(commentText, @"^(?!\z)", Indent, RegexOptions.Multiline);
+
+        SyntaxTriviaList trivia = SyntaxFactory.ParseLeadingTrivia(text);
+
+        return LeadingTrivia.InsertRange(Index, trivia);
     }
 }

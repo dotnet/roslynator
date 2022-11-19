@@ -9,42 +9,41 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(InvocationExpressionCodeFixProvider))]
+[Shared]
+public sealed class InvocationExpressionCodeFixProvider : CompilerDiagnosticCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(InvocationExpressionCodeFixProvider))]
-    [Shared]
-    public sealed class InvocationExpressionCodeFixProvider : CompilerDiagnosticCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
-        {
-            get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.CS1955_NonInvocableMemberCannotBeUsedLikeMethod); }
-        }
+        get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.CS1955_NonInvocableMemberCannotBeUsedLikeMethod); }
+    }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            Diagnostic diagnostic = context.Diagnostics[0];
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        Diagnostic diagnostic = context.Diagnostics[0];
 
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveArgumentList, context.Document, root.SyntaxTree))
-                return;
+        if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveArgumentList, context.Document, root.SyntaxTree))
+            return;
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out InvocationExpressionSyntax invocationExpression))
-                return;
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out InvocationExpressionSyntax invocationExpression))
+            return;
 
-            CodeAction codeAction = CodeAction.Create(
-                "Remove argument list",
-                ct =>
-                {
-                    ExpressionSyntax newNode = invocationExpression.Expression
-                        .AppendToTrailingTrivia(invocationExpression.ArgumentList.GetTrailingTrivia())
-                        .WithFormatterAnnotation();
+        CodeAction codeAction = CodeAction.Create(
+            "Remove argument list",
+            ct =>
+            {
+                ExpressionSyntax newNode = invocationExpression.Expression
+                    .AppendToTrailingTrivia(invocationExpression.ArgumentList.GetTrailingTrivia())
+                    .WithFormatterAnnotation();
 
-                    return context.Document.ReplaceNodeAsync(invocationExpression, newNode, ct);
-                },
-                GetEquivalenceKey(diagnostic));
+                return context.Document.ReplaceNodeAsync(invocationExpression, newNode, ct);
+            },
+            GetEquivalenceKey(diagnostic));
 
-            context.RegisterCodeFix(codeAction, diagnostic);
-        }
+        context.RegisterCodeFix(codeAction, diagnostic);
     }
 }

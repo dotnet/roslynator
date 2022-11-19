@@ -10,46 +10,45 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UseNameOfOperatorCodeFixProvider))]
+[Shared]
+public sealed class UseNameOfOperatorCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UseNameOfOperatorCodeFixProvider))]
-    [Shared]
-    public sealed class UseNameOfOperatorCodeFixProvider : BaseCodeFixProvider
+    private const string Title = "Use nameof operator";
+
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        private const string Title = "Use nameof operator";
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.UseNameOfOperator); }
+    }
 
-        public override ImmutableArray<string> FixableDiagnosticIds
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+        if (!TryFindNode(root, context.Span, out SyntaxNode node))
+            return;
+
+        Diagnostic diagnostic = context.Diagnostics[0];
+
+        if (diagnostic.Properties.TryGetValue("Identifier", out string identifier))
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.UseNameOfOperator); }
+            CodeAction codeAction = CodeAction.Create(
+                Title,
+                ct => UseNameOfOperatorRefactoring.RefactorAsync(context.Document, (LiteralExpressionSyntax)node, identifier, ct),
+                GetEquivalenceKey(diagnostic));
+
+            context.RegisterCodeFix(codeAction, diagnostic);
         }
-
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+        else
         {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+            CodeAction codeAction = CodeAction.Create(
+                Title,
+                ct => UseNameOfOperatorRefactoring.RefactorAsync(context.Document, (InvocationExpressionSyntax)node, ct),
+                GetEquivalenceKey(diagnostic));
 
-            if (!TryFindNode(root, context.Span, out SyntaxNode node))
-                return;
-
-            Diagnostic diagnostic = context.Diagnostics[0];
-
-            if (diagnostic.Properties.TryGetValue("Identifier", out string identifier))
-            {
-                CodeAction codeAction = CodeAction.Create(
-                    Title,
-                    ct => UseNameOfOperatorRefactoring.RefactorAsync(context.Document, (LiteralExpressionSyntax)node, identifier, ct),
-                    GetEquivalenceKey(diagnostic));
-
-                context.RegisterCodeFix(codeAction, diagnostic);
-            }
-            else
-            {
-                CodeAction codeAction = CodeAction.Create(
-                    Title,
-                    ct => UseNameOfOperatorRefactoring.RefactorAsync(context.Document, (InvocationExpressionSyntax)node, ct),
-                    GetEquivalenceKey(diagnostic));
-
-                context.RegisterCodeFix(codeAction, diagnostic);
-            }
+            context.RegisterCodeFix(codeAction, diagnostic);
         }
     }
 }

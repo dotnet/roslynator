@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.CodeFixes.Tests
-{
-    public class CS1715MemberTypeMustMatchOverriddenMemberTypeTests : AbstractCSharpCompilerDiagnosticFixVerifier<MemberDeclarationCodeFixProvider>
-    {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS1715_MemberTypeMustMatchOverriddenMemberType;
+namespace Roslynator.CSharp.CodeFixes.Tests;
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1715_MemberTypeMustMatchOverriddenMemberType)]
-        public async Task TestFix()
-        {
-            await VerifyFixAsync(@"
+public class CS1715MemberTypeMustMatchOverriddenMemberTypeTests : AbstractCSharpCompilerDiagnosticFixVerifier<MemberDeclarationCodeFixProvider>
+{
+    public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS1715_MemberTypeMustMatchOverriddenMemberType;
+
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS1715_MemberTypeMustMatchOverriddenMemberType)]
+    public async Task TestFix()
+    {
+        await VerifyFixAsync(@"
 using System;
 
 public class Foo : Base
@@ -84,6 +84,5 @@ public class FooEventArgs : EventArgs
 {
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
     }
 }

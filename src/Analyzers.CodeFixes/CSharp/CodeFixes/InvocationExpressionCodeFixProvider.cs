@@ -14,128 +14,127 @@ using Roslynator.CodeFixes;
 using Roslynator.CSharp.Refactorings;
 using Roslynator.CSharp.Syntax;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(InvocationExpressionCodeFixProvider))]
+[Shared]
+public sealed class InvocationExpressionCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(InvocationExpressionCodeFixProvider))]
-    [Shared]
-    public sealed class InvocationExpressionCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
+        get
         {
-            get
+            return ImmutableArray.Create(
+                DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod,
+                DiagnosticIdentifiers.RemoveRedundantToStringCall,
+                DiagnosticIdentifiers.RemoveRedundantStringToCharArrayCall,
+                DiagnosticIdentifiers.CombineEnumerableWhereMethodChain,
+                DiagnosticIdentifiers.CallExtensionMethodAsInstanceMethod,
+                DiagnosticIdentifiers.CallThenByInsteadOfOrderBy);
+        }
+    }
+
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out InvocationExpressionSyntax invocation))
+            return;
+
+        foreach (Diagnostic diagnostic in context.Diagnostics)
+        {
+            switch (diagnostic.Id)
             {
-                return ImmutableArray.Create(
-                    DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod,
-                    DiagnosticIdentifiers.RemoveRedundantToStringCall,
-                    DiagnosticIdentifiers.RemoveRedundantStringToCharArrayCall,
-                    DiagnosticIdentifiers.CombineEnumerableWhereMethodChain,
-                    DiagnosticIdentifiers.CallExtensionMethodAsInstanceMethod,
-                    DiagnosticIdentifiers.CallThenByInsteadOfOrderBy);
+                case DiagnosticIdentifiers.CombineEnumerableWhereMethodChain:
+                    {
+                        CodeAction codeAction = CodeAction.Create(
+                            "Combine 'Where' method chain",
+                            ct => CombineEnumerableWhereMethodChainRefactoring.RefactorAsync(context.Document, invocation, ct),
+                            GetEquivalenceKey(diagnostic));
+
+                        context.RegisterCodeFix(codeAction, diagnostic);
+                        break;
+                    }
+                case DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod:
+                    {
+                        string propertyName = diagnostic.Properties["PropertyName"];
+
+                        CodeAction codeAction = CodeAction.Create(
+                            $"Use '{propertyName}' property instead of calling 'Any'",
+                            ct => UseCountOrLengthPropertyInsteadOfAnyMethodRefactoring.RefactorAsync(context.Document, invocation, propertyName, ct),
+                            GetEquivalenceKey(diagnostic));
+
+                        context.RegisterCodeFix(codeAction, diagnostic);
+                        break;
+                    }
+                case DiagnosticIdentifiers.RemoveRedundantToStringCall:
+                    {
+                        CodeAction codeAction = CodeAction.Create(
+                            "Remove redundant 'ToString' call",
+                            ct => context.Document.ReplaceNodeAsync(invocation, RemoveInvocation(invocation).WithFormatterAnnotation(), ct),
+                            GetEquivalenceKey(diagnostic));
+
+                        context.RegisterCodeFix(codeAction, diagnostic);
+                        break;
+                    }
+                case DiagnosticIdentifiers.RemoveRedundantStringToCharArrayCall:
+                    {
+                        CodeAction codeAction = CodeAction.Create(
+                            "Remove redundant 'ToCharArray' call",
+                            ct => context.Document.ReplaceNodeAsync(invocation, RemoveInvocation(invocation).WithFormatterAnnotation(), ct),
+                            GetEquivalenceKey(diagnostic));
+
+                        context.RegisterCodeFix(codeAction, diagnostic);
+                        break;
+                    }
+                case DiagnosticIdentifiers.CallExtensionMethodAsInstanceMethod:
+                    {
+                        CodeAction codeAction = CodeAction.Create(
+                            CallExtensionMethodAsInstanceMethodRefactoring.Title,
+                            ct => CallExtensionMethodAsInstanceMethodRefactoring.RefactorAsync(context.Document, invocation, ct),
+                            GetEquivalenceKey(diagnostic));
+
+                        context.RegisterCodeFix(codeAction, diagnostic);
+                        break;
+                    }
+                case DiagnosticIdentifiers.CallThenByInsteadOfOrderBy:
+                    {
+                        SimpleMemberInvocationExpressionInfo invocationInfo = SyntaxInfo.SimpleMemberInvocationExpressionInfo(invocation);
+
+                        string oldName = invocationInfo.NameText;
+
+                        string newName = (string.Equals(oldName, "OrderBy", StringComparison.Ordinal))
+                            ? "ThenBy"
+                            : "ThenByDescending";
+
+                        CodeAction codeAction = CodeAction.Create(
+                            $"Call '{newName}' instead of '{oldName}'",
+                            ct => CallThenByInsteadOfOrderByRefactoring.RefactorAsync(context.Document, invocation, newName, ct),
+                            GetEquivalenceKey(diagnostic));
+
+                        context.RegisterCodeFix(codeAction, diagnostic);
+                        break;
+                    }
             }
         }
+    }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+    private static ExpressionSyntax RemoveInvocation(InvocationExpressionSyntax invocation)
+    {
+        var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out InvocationExpressionSyntax invocation))
-                return;
+        ArgumentListSyntax argumentList = invocation.ArgumentList;
 
-            foreach (Diagnostic diagnostic in context.Diagnostics)
-            {
-                switch (diagnostic.Id)
-                {
-                    case DiagnosticIdentifiers.CombineEnumerableWhereMethodChain:
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Combine 'Where' method chain",
-                                ct => CombineEnumerableWhereMethodChainRefactoring.RefactorAsync(context.Document, invocation, ct),
-                                GetEquivalenceKey(diagnostic));
+        SyntaxToken closeParen = argumentList.CloseParenToken;
 
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
-                    case DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod:
-                        {
-                            string propertyName = diagnostic.Properties["PropertyName"];
-
-                            CodeAction codeAction = CodeAction.Create(
-                                $"Use '{propertyName}' property instead of calling 'Any'",
-                                ct => UseCountOrLengthPropertyInsteadOfAnyMethodRefactoring.RefactorAsync(context.Document, invocation, propertyName, ct),
-                                GetEquivalenceKey(diagnostic));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
-                    case DiagnosticIdentifiers.RemoveRedundantToStringCall:
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Remove redundant 'ToString' call",
-                                ct => context.Document.ReplaceNodeAsync(invocation, RemoveInvocation(invocation).WithFormatterAnnotation(), ct),
-                                GetEquivalenceKey(diagnostic));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
-                    case DiagnosticIdentifiers.RemoveRedundantStringToCharArrayCall:
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Remove redundant 'ToCharArray' call",
-                                ct => context.Document.ReplaceNodeAsync(invocation, RemoveInvocation(invocation).WithFormatterAnnotation(), ct),
-                                GetEquivalenceKey(diagnostic));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
-                    case DiagnosticIdentifiers.CallExtensionMethodAsInstanceMethod:
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                CallExtensionMethodAsInstanceMethodRefactoring.Title,
-                                ct => CallExtensionMethodAsInstanceMethodRefactoring.RefactorAsync(context.Document, invocation, ct),
-                                GetEquivalenceKey(diagnostic));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
-                    case DiagnosticIdentifiers.CallThenByInsteadOfOrderBy:
-                        {
-                            SimpleMemberInvocationExpressionInfo invocationInfo = SyntaxInfo.SimpleMemberInvocationExpressionInfo(invocation);
-
-                            string oldName = invocationInfo.NameText;
-
-                            string newName = (string.Equals(oldName, "OrderBy", StringComparison.Ordinal))
-                                ? "ThenBy"
-                                : "ThenByDescending";
-
-                            CodeAction codeAction = CodeAction.Create(
-                                $"Call '{newName}' instead of '{oldName}'",
-                                ct => CallThenByInsteadOfOrderByRefactoring.RefactorAsync(context.Document, invocation, newName, ct),
-                                GetEquivalenceKey(diagnostic));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
-                }
-            }
-        }
-
-        private static ExpressionSyntax RemoveInvocation(InvocationExpressionSyntax invocation)
-        {
-            var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
-
-            ArgumentListSyntax argumentList = invocation.ArgumentList;
-
-            SyntaxToken closeParen = argumentList.CloseParenToken;
-
-            return memberAccess.Expression
-                .AppendToTrailingTrivia(
-                    memberAccess.OperatorToken.GetAllTrivia()
-                        .Concat(memberAccess.Name.GetLeadingAndTrailingTrivia())
-                        .Concat(argumentList.OpenParenToken.GetAllTrivia())
-                        .Concat(closeParen.LeadingTrivia)
-                        .ToSyntaxTriviaList()
-                        .EmptyIfWhitespace()
-                        .AddRange(closeParen.TrailingTrivia));
-        }
+        return memberAccess.Expression
+            .AppendToTrailingTrivia(
+                memberAccess.OperatorToken.GetAllTrivia()
+                    .Concat(memberAccess.Name.GetLeadingAndTrailingTrivia())
+                    .Concat(argumentList.OpenParenToken.GetAllTrivia())
+                    .Concat(closeParen.LeadingTrivia)
+                    .ToSyntaxTriviaList()
+                    .EmptyIfWhitespace()
+                    .AddRange(closeParen.TrailingTrivia));
     }
 }

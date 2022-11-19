@@ -9,174 +9,173 @@ using System.Text;
 using Microsoft.CodeAnalysis;
 using Roslynator.Text;
 
-namespace Roslynator.Documentation
+namespace Roslynator.Documentation;
+
+public abstract class DocumentationUrlProvider
 {
-    public abstract class DocumentationUrlProvider
+    private readonly Dictionary<string, string> _symbolToLinkMap = new();
+
+    protected DocumentationUrlProvider(UrlSegmentProvider segmentProvider, IEnumerable<ExternalUrlProvider> externalProviders = null)
     {
-        private readonly Dictionary<string, string> _symbolToLinkMap = new();
+        SegmentProvider = segmentProvider;
 
-        protected DocumentationUrlProvider(UrlSegmentProvider segmentProvider, IEnumerable<ExternalUrlProvider> externalProviders = null)
+        ExternalProviders = (externalProviders != null)
+            ? ImmutableArray.CreateRange(externalProviders)
+            : ImmutableArray<ExternalUrlProvider>.Empty;
+    }
+
+    public abstract string IndexFileName { get; }
+
+    public string ExtensionsFileName => "Extensions.md";
+
+    public UrlSegmentProvider SegmentProvider { get; }
+
+    public ImmutableArray<ExternalUrlProvider> ExternalProviders { get; }
+
+    public abstract string GetFileName(DocumentationFileKind kind);
+
+    public abstract DocumentationUrlInfo GetLocalUrl(ImmutableArray<string> folders, ImmutableArray<string> containingFolders = default, string fragment = null);
+
+    public abstract string GetFragment(string value);
+
+    public DocumentationUrlInfo GetExternalUrl(ISymbol symbol)
+    {
+        foreach (ExternalUrlProvider provider in ExternalProviders)
         {
-            SegmentProvider = segmentProvider;
+            DocumentationUrlInfo urlInfo = provider.CreateUrl(symbol);
 
-            ExternalProviders = (externalProviders != null)
-                ? ImmutableArray.CreateRange(externalProviders)
-                : ImmutableArray<ExternalUrlProvider>.Empty;
+            if (urlInfo.Url != null)
+                return urlInfo;
         }
 
-        public abstract string IndexFileName { get; }
+        return default;
+    }
 
-        public string ExtensionsFileName => "Extensions.md";
+    public bool HasExternalUrl(ISymbol symbol)
+    {
+        return MicrosoftDocsUrlProvider.Instance.CanCreateUrl(symbol);
+    }
 
-        public UrlSegmentProvider SegmentProvider { get; }
+    internal string GetUrl(ISymbol symbol, string fileName, char separator)
+    {
+        return GetUrl(fileName, SegmentProvider.GetSegments(symbol), separator);
+    }
 
-        public ImmutableArray<ExternalUrlProvider> ExternalProviders { get; }
+    internal static string GetUrl(string fileName, ImmutableArray<string> segments, char separator)
+    {
+        int capacity = fileName.Length + 1;
 
-        public abstract string GetFileName(DocumentationFileKind kind);
+        foreach (string name in segments)
+            capacity += name.Length;
 
-        public abstract DocumentationUrlInfo GetLocalUrl(ImmutableArray<string> folders, ImmutableArray<string> containingFolders = default, string fragment = null);
+        capacity += segments.Length - 1;
 
-        public abstract string GetFragment(string value);
+        StringBuilder sb = StringBuilderCache.GetInstance(capacity);
 
-        public DocumentationUrlInfo GetExternalUrl(ISymbol symbol)
+        sb.Append(segments[0]);
+
+        for (int i = 1; i < segments.Length; i++)
         {
-            foreach (ExternalUrlProvider provider in ExternalProviders)
-            {
-                DocumentationUrlInfo urlInfo = provider.CreateUrl(symbol);
-
-                if (urlInfo.Url != null)
-                    return urlInfo;
-            }
-
-            return default;
-        }
-
-        public bool HasExternalUrl(ISymbol symbol)
-        {
-            return MicrosoftDocsUrlProvider.Instance.CanCreateUrl(symbol);
-        }
-
-        internal string GetUrl(ISymbol symbol, string fileName, char separator)
-        {
-            return GetUrl(fileName, SegmentProvider.GetSegments(symbol), separator);
-        }
-
-        internal static string GetUrl(string fileName, ImmutableArray<string> segments, char separator)
-        {
-            int capacity = fileName.Length + 1;
-
-            foreach (string name in segments)
-                capacity += name.Length;
-
-            capacity += segments.Length - 1;
-
-            StringBuilder sb = StringBuilderCache.GetInstance(capacity);
-
-            sb.Append(segments[0]);
-
-            for (int i = 1; i < segments.Length; i++)
-            {
-                sb.Append(separator);
-                sb.Append(segments[i]);
-            }
-
             sb.Append(separator);
-            sb.Append(fileName);
-
-            return StringBuilderCache.GetStringAndFree(sb);
+            sb.Append(segments[i]);
         }
 
-        internal string GetUrlToRoot(int depth, char separator, bool scrollToContent = false)
+        sb.Append(separator);
+        sb.Append(fileName);
+
+        return StringBuilderCache.GetStringAndFree(sb);
+    }
+
+    internal string GetUrlToRoot(int depth, char separator, bool scrollToContent = false)
+    {
+        string fileName = GetFileName(DocumentationFileKind.Root);
+
+        if (depth == 0)
+            return fileName + ((scrollToContent) ? "#" + WellKnownNames.TopFragmentName : null);
+
+        int capacity = (depth * 3) + fileName.Length;
+
+        StringBuilder sb = StringBuilderCache.GetInstance(capacity);
+
+        sb.Append("..");
+
+        for (int i = 1; i < depth; i++)
         {
-            string fileName = GetFileName(DocumentationFileKind.Root);
-
-            if (depth == 0)
-                return fileName + ((scrollToContent) ? "#" + WellKnownNames.TopFragmentName : null);
-
-            int capacity = (depth * 3) + fileName.Length;
-
-            StringBuilder sb = StringBuilderCache.GetInstance(capacity);
-
+            sb.Append(separator);
             sb.Append("..");
-
-            for (int i = 1; i < depth; i++)
-            {
-                sb.Append(separator);
-                sb.Append("..");
-            }
-
-            sb.Append(separator);
-            sb.Append(fileName);
-
-            if (scrollToContent)
-            {
-                sb.Append("#");
-                sb.Append(WellKnownNames.TopFragmentName);
-            }
-
-            return StringBuilderCache.GetStringAndFree(sb);
         }
 
-        internal string GetFragment(ISymbol symbol)
+        sb.Append(separator);
+        sb.Append(fileName);
+
+        if (scrollToContent)
         {
-            string id = symbol.GetDocumentationCommentId();
+            sb.Append("#");
+            sb.Append(WellKnownNames.TopFragmentName);
+        }
 
-            if (!_symbolToLinkMap.TryGetValue(id, out string link))
+        return StringBuilderCache.GetStringAndFree(sb);
+    }
+
+    internal string GetFragment(ISymbol symbol)
+    {
+        string id = symbol.GetDocumentationCommentId();
+
+        if (!_symbolToLinkMap.TryGetValue(id, out string link))
+        {
+            int hashCode = GetDeterministicHashCode(id);
+
+            long linkCode;
+            if (hashCode >= 0)
             {
-                int hashCode = GetDeterministicHashCode(id);
+                linkCode = (uint)hashCode;
+            }
+            else
+            {
+                linkCode = int.MaxValue + (uint)Math.Abs(hashCode);
+            }
 
-                long linkCode;
-                if (hashCode >= 0)
-                {
-                    linkCode = (uint)hashCode;
-                }
-                else
-                {
-                    linkCode = int.MaxValue + (uint)Math.Abs(hashCode);
-                }
+            link = linkCode.ToString(CultureInfo.InvariantCulture);
 
+            if (_symbolToLinkMap.ContainsValue(link))
+            {
+                Debug.Fail(id);
+
+                linkCode += uint.MaxValue;
                 link = linkCode.ToString(CultureInfo.InvariantCulture);
 
-                if (_symbolToLinkMap.ContainsValue(link))
+                while (_symbolToLinkMap.ContainsValue(link))
                 {
-                    Debug.Fail(id);
-
-                    linkCode += uint.MaxValue;
+                    linkCode++;
                     link = linkCode.ToString(CultureInfo.InvariantCulture);
-
-                    while (_symbolToLinkMap.ContainsValue(link))
-                    {
-                        linkCode++;
-                        link = linkCode.ToString(CultureInfo.InvariantCulture);
-                    }
                 }
-
-                _symbolToLinkMap.Add(id, link);
             }
 
-            return link;
+            _symbolToLinkMap.Add(id, link);
         }
 
-        // https://andrewlock.net/why-is-string-gethashcode-different-each-time-i-run-my-program-in-net-core/#a-deterministic-gethashcode-implementation
-        private static int GetDeterministicHashCode(string s)
+        return link;
+    }
+
+    // https://andrewlock.net/why-is-string-gethashcode-different-each-time-i-run-my-program-in-net-core/#a-deterministic-gethashcode-implementation
+    private static int GetDeterministicHashCode(string s)
+    {
+        unchecked
         {
-            unchecked
+            int hash1 = (5381 << 16) + 5381;
+            int hash2 = hash1;
+
+            for (int i = 0; i < s.Length; i += 2)
             {
-                int hash1 = (5381 << 16) + 5381;
-                int hash2 = hash1;
+                hash1 = ((hash1 << 5) + hash1) ^ s[i];
 
-                for (int i = 0; i < s.Length; i += 2)
-                {
-                    hash1 = ((hash1 << 5) + hash1) ^ s[i];
+                if (i == s.Length - 1)
+                    break;
 
-                    if (i == s.Length - 1)
-                        break;
-
-                    hash2 = ((hash2 << 5) + hash2) ^ s[i + 1];
-                }
-
-                return hash1 + (hash2 * 1566083941);
+                hash2 = ((hash2 << 5) + hash2) ^ s[i + 1];
             }
+
+            return hash1 + (hash2 * 1566083941);
         }
     }
 }

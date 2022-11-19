@@ -9,111 +9,110 @@ using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp.CodeStyle;
 
-namespace Roslynator.CSharp.Analysis
+namespace Roslynator.CSharp.Analysis;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class NormalizeUsageOfInfiniteLoopAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class NormalizeUsageOfInfiniteLoopAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
-            {
-                if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.NormalizeUsageOfInfiniteLoop);
+            if (_supportedDiagnostics.IsDefault)
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.NormalizeUsageOfInfiniteLoop);
 
-                return _supportedDiagnostics;
+            return _supportedDiagnostics;
+        }
+    }
+
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
+
+        context.RegisterSyntaxNodeAction(f => AnalyzeForStatement(f), SyntaxKind.ForStatement);
+        context.RegisterSyntaxNodeAction(f => AnalyzeWhileStatement(f), SyntaxKind.WhileStatement);
+        context.RegisterSyntaxNodeAction(f => AnalyzeDoStatement(f), SyntaxKind.DoStatement);
+    }
+
+    private void AnalyzeForStatement(SyntaxNodeAnalysisContext context)
+    {
+        InfiniteLoopStyle style = context.GetInfiniteLoopStyle();
+
+        if (style == InfiniteLoopStyle.WhileStatement)
+        {
+            var forStatement = (ForStatementSyntax)context.Node;
+
+            if (forStatement.Declaration == null
+                && forStatement.Condition == null
+                && !forStatement.Incrementors.Any()
+                && !forStatement.Initializers.Any()
+                && !forStatement.OpenParenToken.ContainsDirectives
+                && !forStatement.FirstSemicolonToken.ContainsDirectives
+                && !forStatement.SecondSemicolonToken.ContainsDirectives
+                && !forStatement.CloseParenToken.ContainsDirectives)
+            {
+                DiagnosticHelpers.ReportDiagnostic(
+                    context,
+                    DiagnosticRules.NormalizeUsageOfInfiniteLoop,
+                    forStatement.ForKeyword,
+                    "while");
             }
         }
+    }
 
-        public override void Initialize(AnalysisContext context)
+    private void AnalyzeWhileStatement(SyntaxNodeAnalysisContext context)
+    {
+        InfiniteLoopStyle style = context.GetInfiniteLoopStyle();
+
+        if (style == InfiniteLoopStyle.ForStatement)
         {
-            base.Initialize(context);
+            var whileStatement = (WhileStatementSyntax)context.Node;
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeForStatement(f), SyntaxKind.ForStatement);
-            context.RegisterSyntaxNodeAction(f => AnalyzeWhileStatement(f), SyntaxKind.WhileStatement);
-            context.RegisterSyntaxNodeAction(f => AnalyzeDoStatement(f), SyntaxKind.DoStatement);
-        }
-
-        private void AnalyzeForStatement(SyntaxNodeAnalysisContext context)
-        {
-            InfiniteLoopStyle style = context.GetInfiniteLoopStyle();
-
-            if (style == InfiniteLoopStyle.WhileStatement)
+            if (whileStatement.Condition.IsKind(SyntaxKind.TrueLiteralExpression))
             {
-                var forStatement = (ForStatementSyntax)context.Node;
+                TextSpan span = TextSpan.FromBounds(
+                    whileStatement.OpenParenToken.Span.End,
+                    whileStatement.CloseParenToken.SpanStart);
 
-                if (forStatement.Declaration == null
-                    && forStatement.Condition == null
-                    && !forStatement.Incrementors.Any()
-                    && !forStatement.Initializers.Any()
-                    && !forStatement.OpenParenToken.ContainsDirectives
-                    && !forStatement.FirstSemicolonToken.ContainsDirectives
-                    && !forStatement.SecondSemicolonToken.ContainsDirectives
-                    && !forStatement.CloseParenToken.ContainsDirectives)
+                if (whileStatement
+                    .DescendantTrivia(span)
+                    .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                 {
                     DiagnosticHelpers.ReportDiagnostic(
                         context,
                         DiagnosticRules.NormalizeUsageOfInfiniteLoop,
-                        forStatement.ForKeyword,
-                        "while");
+                        whileStatement.WhileKeyword,
+                        "for");
                 }
             }
         }
+    }
 
-        private void AnalyzeWhileStatement(SyntaxNodeAnalysisContext context)
+    private void AnalyzeDoStatement(SyntaxNodeAnalysisContext context)
+    {
+        var doStatement = (DoStatementSyntax)context.Node;
+
+        if (doStatement.Condition.IsKind(SyntaxKind.TrueLiteralExpression))
         {
             InfiniteLoopStyle style = context.GetInfiniteLoopStyle();
 
             if (style == InfiniteLoopStyle.ForStatement)
             {
-                var whileStatement = (WhileStatementSyntax)context.Node;
-
-                if (whileStatement.Condition.IsKind(SyntaxKind.TrueLiteralExpression))
-                {
-                    TextSpan span = TextSpan.FromBounds(
-                        whileStatement.OpenParenToken.Span.End,
-                        whileStatement.CloseParenToken.SpanStart);
-
-                    if (whileStatement
-                        .DescendantTrivia(span)
-                        .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
-                    {
-                        DiagnosticHelpers.ReportDiagnostic(
-                            context,
-                            DiagnosticRules.NormalizeUsageOfInfiniteLoop,
-                            whileStatement.WhileKeyword,
-                            "for");
-                    }
-                }
+                DiagnosticHelpers.ReportDiagnostic(
+                    context,
+                    DiagnosticRules.NormalizeUsageOfInfiniteLoop,
+                    doStatement.DoKeyword,
+                    "for");
             }
-        }
-
-        private void AnalyzeDoStatement(SyntaxNodeAnalysisContext context)
-        {
-            var doStatement = (DoStatementSyntax)context.Node;
-
-            if (doStatement.Condition.IsKind(SyntaxKind.TrueLiteralExpression))
+            else if (style == InfiniteLoopStyle.WhileStatement)
             {
-                InfiniteLoopStyle style = context.GetInfiniteLoopStyle();
-
-                if (style == InfiniteLoopStyle.ForStatement)
-                {
-                    DiagnosticHelpers.ReportDiagnostic(
-                        context,
-                        DiagnosticRules.NormalizeUsageOfInfiniteLoop,
-                        doStatement.DoKeyword,
-                        "for");
-                }
-                else if (style == InfiniteLoopStyle.WhileStatement)
-                {
-                    DiagnosticHelpers.ReportDiagnostic(
-                        context,
-                        DiagnosticRules.NormalizeUsageOfInfiniteLoop,
-                        doStatement.DoKeyword,
-                        "while");
-                }
+                DiagnosticHelpers.ReportDiagnostic(
+                    context,
+                    DiagnosticRules.NormalizeUsageOfInfiniteLoop,
+                    doStatement.DoKeyword,
+                    "while");
             }
         }
     }

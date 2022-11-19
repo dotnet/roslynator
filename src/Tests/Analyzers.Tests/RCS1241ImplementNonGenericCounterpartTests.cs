@@ -6,23 +6,23 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
+namespace Roslynator.CSharp.Analysis.Tests;
+
+public class RCS1241ImplementNonGenericCounterpartTests : AbstractCSharpDiagnosticVerifier<NamedTypeSymbolAnalyzer, ImplementNonGenericCounterpartCodeFixProvider>
 {
-    public class RCS1241ImplementNonGenericCounterpartTests : AbstractCSharpDiagnosticVerifier<NamedTypeSymbolAnalyzer, ImplementNonGenericCounterpartCodeFixProvider>
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.ImplementNonGenericCounterpart;
+
+    private readonly string _explicitEquivalenceKey;
+
+    public RCS1241ImplementNonGenericCounterpartTests()
     {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.ImplementNonGenericCounterpart;
+        _explicitEquivalenceKey = new ImplementNonGenericCounterpartCodeFixProvider().ExplicitEquivalenceKey;
+    }
 
-        private readonly string _explicitEquivalenceKey;
-
-        public RCS1241ImplementNonGenericCounterpartTests()
-        {
-            _explicitEquivalenceKey = new ImplementNonGenericCounterpartCodeFixProvider().ExplicitEquivalenceKey;
-        }
-
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ImplementNonGenericCounterpart)]
-        public async Task Test_IComparable()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ImplementNonGenericCounterpart)]
+    public async Task Test_IComparable()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 using System.Collections.Generic;
 
@@ -62,12 +62,12 @@ public abstract class Comparable : IComparable<C>, IComparable
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(Descriptor.Id));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ImplementNonGenericCounterpart)]
-        public async Task Test_IComparable_Explicit()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ImplementNonGenericCounterpart)]
+    public async Task Test_IComparable_Explicit()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 using System.Collections.Generic;
 
@@ -107,12 +107,12 @@ public abstract class Comparable : IComparable<C>, IComparable
     }
 }
 ", equivalenceKey: _explicitEquivalenceKey);
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ImplementNonGenericCounterpart)]
-        public async Task Test_IComparer()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ImplementNonGenericCounterpart)]
+    public async Task Test_IComparer()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -165,12 +165,12 @@ public abstract class Comparer : IComparer<C>, IComparer
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(Descriptor.Id));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ImplementNonGenericCounterpart)]
-        public async Task Test_IComparer_Explicit()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ImplementNonGenericCounterpart)]
+    public async Task Test_IComparer_Explicit()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -223,12 +223,12 @@ public abstract class Comparer : IComparer<C>, IComparer
     }
 }
 ", equivalenceKey: _explicitEquivalenceKey);
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ImplementNonGenericCounterpart)]
-        public async Task Test_IEqualityComparer()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ImplementNonGenericCounterpart)]
+    public async Task Test_IEqualityComparer()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -295,12 +295,12 @@ public abstract class EqualityComparer : IEqualityComparer<C>, IEqualityComparer
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(Descriptor.Id));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ImplementNonGenericCounterpart)]
-        public async Task Test_IEqualityComparer_Explicit()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ImplementNonGenericCounterpart)]
+    public async Task Test_IEqualityComparer_Explicit()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -367,6 +367,5 @@ public abstract class EqualityComparer : IEqualityComparer<C>, IEqualityComparer
     }
 }
 ", equivalenceKey: _explicitEquivalenceKey);
-        }
     }
 }

@@ -9,106 +9,105 @@ using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp;
 
-namespace Roslynator.Formatting.CSharp
+namespace Roslynator.Formatting.CSharp;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class UseSpacesInsteadOfTabAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class UseSpacesInsteadOfTabAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
-            {
-                if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.UseSpacesInsteadOfTab);
+            if (_supportedDiagnostics.IsDefault)
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.UseSpacesInsteadOfTab);
 
-                return _supportedDiagnostics;
-            }
+            return _supportedDiagnostics;
+        }
+    }
+
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
+
+        context.RegisterSyntaxTreeAction(f => AnalyzeSyntaxTree(f));
+    }
+
+    private static void AnalyzeSyntaxTree(SyntaxTreeAnalysisContext context)
+    {
+        SyntaxTree tree = context.Tree;
+
+        if (!tree.TryGetRoot(out SyntaxNode root))
+            return;
+
+        UseSpacesInsteadOfTabWalker walker = UseSpacesInsteadOfTabWalker.GetInstance();
+
+        walker.AnalysisContext = context;
+        walker.Visit(root);
+
+        UseSpacesInsteadOfTabWalker.Free(walker);
+    }
+
+    private class UseSpacesInsteadOfTabWalker : CSharpSyntaxWalker
+    {
+        [ThreadStatic]
+        private static UseSpacesInsteadOfTabWalker _cachedInstance;
+
+        public UseSpacesInsteadOfTabWalker()
+            : base(SyntaxWalkerDepth.StructuredTrivia)
+        {
         }
 
-        public override void Initialize(AnalysisContext context)
+        public SyntaxTreeAnalysisContext AnalysisContext { get; set; }
+
+        public override void VisitTrivia(SyntaxTrivia trivia)
         {
-            base.Initialize(context);
-
-            context.RegisterSyntaxTreeAction(f => AnalyzeSyntaxTree(f));
-        }
-
-        private static void AnalyzeSyntaxTree(SyntaxTreeAnalysisContext context)
-        {
-            SyntaxTree tree = context.Tree;
-
-            if (!tree.TryGetRoot(out SyntaxNode root))
+            if (!trivia.IsWhitespaceTrivia())
                 return;
 
-            UseSpacesInsteadOfTabWalker walker = UseSpacesInsteadOfTabWalker.GetInstance();
+            string text = trivia.ToString();
 
-            walker.AnalysisContext = context;
-            walker.Visit(root);
+            for (int i = 0; i < text.Length; i++)
+            {
+                if (text[i] == '\t')
+                {
+                    int index = i;
 
-            UseSpacesInsteadOfTabWalker.Free(walker);
+                    do
+                    {
+                        i++;
+                    }
+                    while (i < text.Length && text[i] == '\t');
+
+                    AnalysisContext.ReportDiagnostic(
+                        DiagnosticRules.UseSpacesInsteadOfTab,
+                        Location.Create(AnalysisContext.Tree, new TextSpan(trivia.SpanStart + index, i - index)));
+                }
+            }
         }
 
-        private class UseSpacesInsteadOfTabWalker : CSharpSyntaxWalker
+        public static UseSpacesInsteadOfTabWalker GetInstance()
         {
-            [ThreadStatic]
-            private static UseSpacesInsteadOfTabWalker _cachedInstance;
+            UseSpacesInsteadOfTabWalker walker = _cachedInstance;
 
-            public UseSpacesInsteadOfTabWalker()
-                : base(SyntaxWalkerDepth.StructuredTrivia)
+            if (walker != null)
             {
+                Debug.Assert(walker.AnalysisContext.Tree == null);
+                Debug.Assert(walker.AnalysisContext.CancellationToken == default);
+
+                _cachedInstance = null;
+                return walker;
             }
 
-            public SyntaxTreeAnalysisContext AnalysisContext { get; set; }
+            return new UseSpacesInsteadOfTabWalker();
+        }
 
-            public override void VisitTrivia(SyntaxTrivia trivia)
-            {
-                if (!trivia.IsWhitespaceTrivia())
-                    return;
+        public static void Free(UseSpacesInsteadOfTabWalker walker)
+        {
+            walker.AnalysisContext = default;
 
-                string text = trivia.ToString();
-
-                for (int i = 0; i < text.Length; i++)
-                {
-                    if (text[i] == '\t')
-                    {
-                        int index = i;
-
-                        do
-                        {
-                            i++;
-                        }
-                        while (i < text.Length && text[i] == '\t');
-
-                        AnalysisContext.ReportDiagnostic(
-                            DiagnosticRules.UseSpacesInsteadOfTab,
-                            Location.Create(AnalysisContext.Tree, new TextSpan(trivia.SpanStart + index, i - index)));
-                    }
-                }
-            }
-
-            public static UseSpacesInsteadOfTabWalker GetInstance()
-            {
-                UseSpacesInsteadOfTabWalker walker = _cachedInstance;
-
-                if (walker != null)
-                {
-                    Debug.Assert(walker.AnalysisContext.Tree == null);
-                    Debug.Assert(walker.AnalysisContext.CancellationToken == default);
-
-                    _cachedInstance = null;
-                    return walker;
-                }
-
-                return new UseSpacesInsteadOfTabWalker();
-            }
-
-            public static void Free(UseSpacesInsteadOfTabWalker walker)
-            {
-                walker.AnalysisContext = default;
-
-                _cachedInstance = walker;
-            }
+            _cachedInstance = walker;
         }
     }
 }

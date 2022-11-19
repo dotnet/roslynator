@@ -11,87 +11,86 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(MethodDeclarationOrLocalFunctionStatementCodeFixProvider))]
+[Shared]
+public sealed class MethodDeclarationOrLocalFunctionStatementCodeFixProvider : CompilerDiagnosticCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(MethodDeclarationOrLocalFunctionStatementCodeFixProvider))]
-    [Shared]
-    public sealed class MethodDeclarationOrLocalFunctionStatementCodeFixProvider : CompilerDiagnosticCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
+        get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.CS1624_BodyCannotBeIteratorBlockBecauseTypeIsNotIteratorInterfaceType); }
+    }
+
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        Diagnostic diagnostic = context.Diagnostics[0];
+
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+        if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.ChangeMethodReturnType, context.Document, root.SyntaxTree))
+            return;
+
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out SyntaxNode node, predicate: f => f.IsKind(SyntaxKind.MethodDeclaration, SyntaxKind.LocalFunctionStatement)))
+            return;
+
+        BlockSyntax body = (node is MethodDeclarationSyntax methodDeclaration)
+            ? methodDeclaration.Body
+            : ((LocalFunctionStatementSyntax)node).Body;
+
+        SyntaxDebug.Assert(body != null, node);
+
+        if (body == null)
+            return;
+
+        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+        ITypeSymbol typeSymbol = null;
+        HashSet<ITypeSymbol> typeSymbols = null;
+        INamedTypeSymbol ienumerableOfTSymbol = null;
+
+        foreach (SyntaxNode descendant in body.DescendantNodes(descendIntoChildren: f => !CSharpFacts.IsFunction(f.Kind())))
         {
-            get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.CS1624_BodyCannotBeIteratorBlockBecauseTypeIsNotIteratorInterfaceType); }
-        }
+            if (!descendant.IsKind(SyntaxKind.YieldReturnStatement))
+                continue;
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            Diagnostic diagnostic = context.Diagnostics[0];
+            var yieldReturn = (YieldStatementSyntax)descendant;
 
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+            ExpressionSyntax expression = yieldReturn.Expression;
 
-            if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.ChangeMethodReturnType, context.Document, root.SyntaxTree))
-                return;
+            if (expression == null)
+                continue;
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out SyntaxNode node, predicate: f => f.IsKind(SyntaxKind.MethodDeclaration, SyntaxKind.LocalFunctionStatement)))
-                return;
+            var namedTypeSymbol = semanticModel.GetTypeSymbol(expression, context.CancellationToken) as INamedTypeSymbol;
 
-            BlockSyntax body = (node is MethodDeclarationSyntax methodDeclaration)
-                ? methodDeclaration.Body
-                : ((LocalFunctionStatementSyntax)node).Body;
+            if (namedTypeSymbol?.IsErrorType() != false)
+                continue;
 
-            SyntaxDebug.Assert(body != null, node);
-
-            if (body == null)
-                return;
-
-            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-            ITypeSymbol typeSymbol = null;
-            HashSet<ITypeSymbol> typeSymbols = null;
-            INamedTypeSymbol ienumerableOfTSymbol = null;
-
-            foreach (SyntaxNode descendant in body.DescendantNodes(descendIntoChildren: f => !CSharpFacts.IsFunction(f.Kind())))
+            if (typeSymbol == null)
             {
-                if (!descendant.IsKind(SyntaxKind.YieldReturnStatement))
-                    continue;
-
-                var yieldReturn = (YieldStatementSyntax)descendant;
-
-                ExpressionSyntax expression = yieldReturn.Expression;
-
-                if (expression == null)
-                    continue;
-
-                var namedTypeSymbol = semanticModel.GetTypeSymbol(expression, context.CancellationToken) as INamedTypeSymbol;
-
-                if (namedTypeSymbol?.IsErrorType() != false)
-                    continue;
-
-                if (typeSymbol == null)
-                {
-                    typeSymbol = namedTypeSymbol;
-                }
-                else
-                {
-                    if (typeSymbols == null)
-                    {
-                        typeSymbols = new HashSet<ITypeSymbol>() { typeSymbol };
-                    }
-
-                    if (!typeSymbols.Add(namedTypeSymbol))
-                        continue;
-                }
-
-                if (ienumerableOfTSymbol == null)
-                    ienumerableOfTSymbol = semanticModel.GetTypeByMetadataName("System.Collections.Generic.IEnumerable`1");
-
-                CodeFixRegistrator.ChangeTypeOrReturnType(
-                    context,
-                    diagnostic,
-                    node,
-                    ienumerableOfTSymbol.Construct(namedTypeSymbol),
-                    semanticModel,
-                    additionalKey: SymbolDisplay.ToMinimalDisplayString(namedTypeSymbol, semanticModel, node.SpanStart, SymbolDisplayFormats.DisplayName));
+                typeSymbol = namedTypeSymbol;
             }
+            else
+            {
+                if (typeSymbols == null)
+                {
+                    typeSymbols = new HashSet<ITypeSymbol>() { typeSymbol };
+                }
+
+                if (!typeSymbols.Add(namedTypeSymbol))
+                    continue;
+            }
+
+            if (ienumerableOfTSymbol == null)
+                ienumerableOfTSymbol = semanticModel.GetTypeByMetadataName("System.Collections.Generic.IEnumerable`1");
+
+            CodeFixRegistrator.ChangeTypeOrReturnType(
+                context,
+                diagnostic,
+                node,
+                ienumerableOfTSymbol.Construct(namedTypeSymbol),
+                semanticModel,
+                additionalKey: SymbolDisplay.ToMinimalDisplayString(namedTypeSymbol, semanticModel, node.SpanStart, SymbolDisplayFormats.DisplayName));
         }
     }
 }

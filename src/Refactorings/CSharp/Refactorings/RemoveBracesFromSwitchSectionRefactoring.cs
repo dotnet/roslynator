@@ -6,29 +6,28 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class RemoveBracesFromSwitchSectionRefactoring
 {
-    internal static class RemoveBracesFromSwitchSectionRefactoring
+    public const string Title = "Remove braces from section";
+
+    public static bool CanRemoveBraces(SwitchSectionSyntax section)
     {
-        public const string Title = "Remove braces from section";
+        return section.Statements.SingleOrDefault(shouldThrow: false)?.Kind() == SyntaxKind.Block;
+    }
 
-        public static bool CanRemoveBraces(SwitchSectionSyntax section)
-        {
-            return section.Statements.SingleOrDefault(shouldThrow: false)?.Kind() == SyntaxKind.Block;
-        }
+    public static Task<Document> RefactorAsync(
+        Document document,
+        SwitchSectionSyntax switchSection,
+        CancellationToken cancellationToken = default)
+    {
+        var block = (BlockSyntax)switchSection.Statements[0];
 
-        public static Task<Document> RefactorAsync(
-            Document document,
-            SwitchSectionSyntax switchSection,
-            CancellationToken cancellationToken = default)
-        {
-            var block = (BlockSyntax)switchSection.Statements[0];
+        SwitchSectionSyntax newSwitchSection = switchSection
+            .WithStatements(block.Statements)
+            .WithFormatterAnnotation();
 
-            SwitchSectionSyntax newSwitchSection = switchSection
-                .WithStatements(block.Statements)
-                .WithFormatterAnnotation();
-
-            return document.ReplaceNodeAsync(switchSection, newSwitchSection, cancellationToken);
-        }
+        return document.ReplaceNodeAsync(switchSection, newSwitchSection, cancellationToken);
     }
 }

@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1253FormatDocumentationCommentSummaryTests : AbstractCSharpDiagnosticVerifier<FormatDocumentationCommentSummaryAnalyzer, SingleLineDocumentationCommentTriviaCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.FormatDocumentationCommentSummary;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatDocumentationCommentSummary)]
-        public async Task Test_ToMultiLine()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1253FormatDocumentationCommentSummaryTests : AbstractCSharpDiagnosticVerifier<FormatDocumentationCommentSummaryAnalyzer, SingleLineDocumentationCommentTriviaCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.FormatDocumentationCommentSummary;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatDocumentationCommentSummary)]
+    public async Task Test_ToMultiLine()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 /// [|<summary>a<code>b</code>c</summary>|]
 class C
 {
@@ -28,12 +28,12 @@ class C
 {
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.DocCommentSummaryStyle, ConfigOptionValues.DocCommentSummaryStyle_MultiLine));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatDocumentationCommentSummary)]
-        public async Task Test_EmptySummary_ToMultiLine()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatDocumentationCommentSummary)]
+    public async Task Test_EmptySummary_ToMultiLine()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 /// [|<summary></summary>|]
 class C
 {
@@ -46,12 +46,12 @@ class C
 {
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.DocCommentSummaryStyle, ConfigOptionValues.DocCommentSummaryStyle_MultiLine));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatDocumentationCommentSummary)]
-        public async Task Test_Tab_ToMultiLine()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatDocumentationCommentSummary)]
+    public async Task Test_Tab_ToMultiLine()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
 	/// [|<summary>x</summary>|]
@@ -70,12 +70,12 @@ class C
 	}
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.DocCommentSummaryStyle, ConfigOptionValues.DocCommentSummaryStyle_MultiLine));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatDocumentationCommentSummary)]
-        public async Task Test_ToSingleLine()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatDocumentationCommentSummary)]
+    public async Task Test_ToSingleLine()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 /// [|<summary>
 /// a<code>b</code>c
 /// </summary>|]
@@ -88,12 +88,12 @@ class C
 {
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.DocCommentSummaryStyle, ConfigOptionValues.DocCommentSummaryStyle_SingleLine));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatDocumentationCommentSummary)]
-        public async Task Test_EmptySummary_ToSingleLine()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatDocumentationCommentSummary)]
+    public async Task Test_EmptySummary_ToSingleLine()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 /// [|<summary>
 /// 
 /// </summary>|]
@@ -106,12 +106,12 @@ class C
 {
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.DocCommentSummaryStyle, ConfigOptionValues.DocCommentSummaryStyle_SingleLine));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatDocumentationCommentSummary)]
-        public async Task Test_Tab_ToSingleLine()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatDocumentationCommentSummary)]
+    public async Task Test_Tab_ToSingleLine()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
 	/// [|<summary>
@@ -130,12 +130,12 @@ class C
 	}
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.DocCommentSummaryStyle, ConfigOptionValues.DocCommentSummaryStyle_SingleLine));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatDocumentationCommentSummary)]
-        public async Task TestNoDiagnostic_MultiLine()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatDocumentationCommentSummary)]
+    public async Task TestNoDiagnostic_MultiLine()
+    {
+        await VerifyNoDiagnosticAsync(@"
 /// <summary>
 /// x
 /// </summary>
@@ -143,35 +143,35 @@ class C
 {
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatDocumentationCommentSummary)]
-        public async Task TestNoDiagnostic_EmptySummary_ToMultiLine()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatDocumentationCommentSummary)]
+    public async Task TestNoDiagnostic_EmptySummary_ToMultiLine()
+    {
+        await VerifyNoDiagnosticAsync(@"
 /// <summary>
 /// </summary>
 class C
 {
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatDocumentationCommentSummary)]
-        public async Task TestNoDiagnostic_SingleLine()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatDocumentationCommentSummary)]
+    public async Task TestNoDiagnostic_SingleLine()
+    {
+        await VerifyNoDiagnosticAsync(@"
 /// <summary>x</summary>
 class C
 {
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatDocumentationCommentSummary)]
-        public async Task TestNoDiagnostic_ToSingleLine()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatDocumentationCommentSummary)]
+    public async Task TestNoDiagnostic_ToSingleLine()
+    {
+        await VerifyNoDiagnosticAsync(@"
 /// <summary>
 /// x
 /// x
@@ -180,6 +180,5 @@ class C
 {
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.DocCommentSummaryStyle, ConfigOptionValues.DocCommentSummaryStyle_SingleLine));
-        }
     }
 }

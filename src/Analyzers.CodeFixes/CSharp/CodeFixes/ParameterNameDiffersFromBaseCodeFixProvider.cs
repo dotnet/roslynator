@@ -12,85 +12,84 @@ using Microsoft.CodeAnalysis.Options;
 using Microsoft.CodeAnalysis.Rename;
 using Roslynator.CodeFixes;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ParameterNameDiffersFromBaseCodeFixProvider))]
+[Shared]
+public sealed class ParameterNameDiffersFromBaseCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ParameterNameDiffersFromBaseCodeFixProvider))]
-    [Shared]
-    public sealed class ParameterNameDiffersFromBaseCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.ParameterNameDiffersFromBase); }
+    }
+
+    public override FixAllProvider GetFixAllProvider()
+    {
+        return null;
+    }
+
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out ParameterSyntax parameter))
+            return;
+
+        foreach (Diagnostic diagnostic in context.Diagnostics)
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.ParameterNameDiffersFromBase); }
-        }
-
-        public override FixAllProvider GetFixAllProvider()
-        {
-            return null;
-        }
-
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
-
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out ParameterSyntax parameter))
-                return;
-
-            foreach (Diagnostic diagnostic in context.Diagnostics)
+            switch (diagnostic.Id)
             {
-                switch (diagnostic.Id)
-                {
-                    case DiagnosticIdentifiers.ParameterNameDiffersFromBase:
+                case DiagnosticIdentifiers.ParameterNameDiffersFromBase:
+                    {
+                        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                        var parameterSymbol = (IParameterSymbol)semanticModel.GetDeclaredSymbol(parameter, context.CancellationToken);
+
+                        ISymbol containingSymbol = parameterSymbol.ContainingSymbol;
+
+                        ISymbol baseParameterSymbol = null;
+
+                        switch (containingSymbol.Kind)
                         {
-                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                            case SymbolKind.Method:
+                                {
+                                    var methodSymbol = (IMethodSymbol)containingSymbol;
 
-                            var parameterSymbol = (IParameterSymbol)semanticModel.GetDeclaredSymbol(parameter, context.CancellationToken);
+                                    IMethodSymbol baseSymbol = methodSymbol.OverriddenMethod ?? methodSymbol.FindFirstImplementedInterfaceMember<IMethodSymbol>();
 
-                            ISymbol containingSymbol = parameterSymbol.ContainingSymbol;
+                                    baseParameterSymbol = baseSymbol.Parameters[parameterSymbol.Ordinal];
+                                    break;
+                                }
+                            case SymbolKind.Property:
+                                {
+                                    var propertySymbol = (IPropertySymbol)containingSymbol;
 
-                            ISymbol baseParameterSymbol = null;
+                                    IPropertySymbol baseSymbol = propertySymbol.OverriddenProperty ?? propertySymbol.FindFirstImplementedInterfaceMember<IPropertySymbol>();
 
-                            switch (containingSymbol.Kind)
-                            {
-                                case SymbolKind.Method:
-                                    {
-                                        var methodSymbol = (IMethodSymbol)containingSymbol;
-
-                                        IMethodSymbol baseSymbol = methodSymbol.OverriddenMethod ?? methodSymbol.FindFirstImplementedInterfaceMember<IMethodSymbol>();
-
-                                        baseParameterSymbol = baseSymbol.Parameters[parameterSymbol.Ordinal];
-                                        break;
-                                    }
-                                case SymbolKind.Property:
-                                    {
-                                        var propertySymbol = (IPropertySymbol)containingSymbol;
-
-                                        IPropertySymbol baseSymbol = propertySymbol.OverriddenProperty ?? propertySymbol.FindFirstImplementedInterfaceMember<IPropertySymbol>();
-
-                                        baseParameterSymbol = baseSymbol.Parameters[parameterSymbol.Ordinal];
-                                        break;
-                                    }
-                            }
-
-                            string oldName = parameterSymbol.Name;
-
-                            string newName = NameGenerator.Default.EnsureUniqueParameterName(
-                                baseParameterSymbol.Name,
-                                containingSymbol,
-                                semanticModel,
-                                cancellationToken: context.CancellationToken);
-
-                            if (!string.Equals(newName, baseParameterSymbol.Name, StringComparison.Ordinal))
-                                break;
-
-                            CodeAction codeAction = CodeAction.Create(
-                                $"Rename '{oldName}' to '{newName}'",
-                                ct => Renamer.RenameSymbolAsync(context.Document.Solution(), parameterSymbol, newName, default(OptionSet), ct),
-                                GetEquivalenceKey(diagnostic));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
+                                    baseParameterSymbol = baseSymbol.Parameters[parameterSymbol.Ordinal];
+                                    break;
+                                }
                         }
-                }
+
+                        string oldName = parameterSymbol.Name;
+
+                        string newName = NameGenerator.Default.EnsureUniqueParameterName(
+                            baseParameterSymbol.Name,
+                            containingSymbol,
+                            semanticModel,
+                            cancellationToken: context.CancellationToken);
+
+                        if (!string.Equals(newName, baseParameterSymbol.Name, StringComparison.Ordinal))
+                            break;
+
+                        CodeAction codeAction = CodeAction.Create(
+                            $"Rename '{oldName}' to '{newName}'",
+                            ct => Renamer.RenameSymbolAsync(context.Document.Solution(), parameterSymbol, newName, default(OptionSet), ct),
+                            GetEquivalenceKey(diagnostic));
+
+                        context.RegisterCodeFix(codeAction, diagnostic);
+                        break;
+                    }
             }
         }
     }

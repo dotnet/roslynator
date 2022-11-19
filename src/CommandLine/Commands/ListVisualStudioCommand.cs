@@ -4,33 +4,32 @@ using System;
 using Microsoft.Build.Locator;
 using static Roslynator.Logger;
 
-namespace Roslynator.CommandLine
+namespace Roslynator.CommandLine;
+
+internal class ListVisualStudioCommand
 {
-    internal class ListVisualStudioCommand
+    public ListVisualStudioCommand(ListVisualStudioCommandLineOptions options)
     {
-        public ListVisualStudioCommand(ListVisualStudioCommandLineOptions options)
+        Options = options;
+    }
+
+    public ListVisualStudioCommandLineOptions Options { get; set; }
+
+    public CommandStatus Execute()
+    {
+        int count = 0;
+        foreach (VisualStudioInstance instance in MSBuildLocator.QueryVisualStudioInstances())
         {
-            Options = options;
+            WriteLine($"{instance.Name} {instance.Version}", ConsoleColors.Cyan, Verbosity.Normal);
+            WriteLine($"  Visual Studio Path: {instance.VisualStudioRootPath}", Verbosity.Detailed);
+            WriteLine($"  MSBuild Path:       {instance.MSBuildPath}", Verbosity.Detailed);
+
+            count++;
         }
 
-        public ListVisualStudioCommandLineOptions Options { get; set; }
+        WriteLine(Verbosity.Minimal);
+        WriteLine($"{count} Visual Studio {((count == 1) ? "installation" : "installations")} found", ConsoleColors.Green, Verbosity.Minimal);
 
-        public CommandStatus Execute()
-        {
-            int count = 0;
-            foreach (VisualStudioInstance instance in MSBuildLocator.QueryVisualStudioInstances())
-            {
-                WriteLine($"{instance.Name} {instance.Version}", ConsoleColors.Cyan, Verbosity.Normal);
-                WriteLine($"  Visual Studio Path: {instance.VisualStudioRootPath}", Verbosity.Detailed);
-                WriteLine($"  MSBuild Path:       {instance.MSBuildPath}", Verbosity.Detailed);
-
-                count++;
-            }
-
-            WriteLine(Verbosity.Minimal);
-            WriteLine($"{count} Visual Studio {((count == 1) ? "installation" : "installations")} found", ConsoleColors.Green, Verbosity.Minimal);
-
-            return CommandStatus.Success;
-        }
+        return CommandStatus.Success;
     }
 }

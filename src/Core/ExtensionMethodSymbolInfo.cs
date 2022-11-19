@@ -5,82 +5,81 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 
-namespace Roslynator
+namespace Roslynator;
+
+/// <summary>
+/// Represents an extension method symbol.
+/// </summary>
+[DebuggerDisplay("{DebuggerDisplay,nq}")]
+public readonly struct ExtensionMethodSymbolInfo : IEquatable<ExtensionMethodSymbolInfo>
 {
-    /// <summary>
-    /// Represents an extension method symbol.
-    /// </summary>
-    [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public readonly struct ExtensionMethodSymbolInfo : IEquatable<ExtensionMethodSymbolInfo>
+    internal ExtensionMethodSymbolInfo(IMethodSymbol symbol, IMethodSymbol reducedSymbol)
     {
-        internal ExtensionMethodSymbolInfo(IMethodSymbol symbol, IMethodSymbol reducedSymbol)
+        Symbol = symbol;
+        ReducedSymbol = reducedSymbol;
+    }
+
+    /// <summary>
+    /// The definition of extension method from which this symbol was reduced, or null, if the symbol was not reduced.
+    /// </summary>
+    public IMethodSymbol ReducedSymbol { get; }
+
+    /// <summary>
+    /// The extension method symbol.
+    /// </summary>
+    public IMethodSymbol Symbol { get; }
+
+    /// <summary>
+    /// The reduced symbol or the symbol if the reduced symbol is null.
+    /// </summary>
+    public IMethodSymbol ReducedSymbolOrSymbol
+    {
+        get { return ReducedSymbol ?? Symbol; }
+    }
+
+    /// <summary>
+    /// True if the symbol was reduced.
+    /// </summary>
+    public bool IsReduced
+    {
+        get { return Symbol != null && !object.ReferenceEquals(ReducedSymbol, Symbol); }
+    }
+
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+    private string DebuggerDisplay
+    {
+        get
         {
-            Symbol = symbol;
-            ReducedSymbol = reducedSymbol;
+            return (Symbol != null)
+              ? $"{Symbol.MethodKind} {Symbol.ToDisplayString(SymbolDisplayFormats.Test)}"
+              : "Uninitialized";
         }
-
-        /// <summary>
-        /// The definition of extension method from which this symbol was reduced, or null, if the symbol was not reduced.
-        /// </summary>
-        public IMethodSymbol ReducedSymbol { get; }
-
-        /// <summary>
-        /// The extension method symbol.
-        /// </summary>
-        public IMethodSymbol Symbol { get; }
-
-        /// <summary>
-        /// The reduced symbol or the symbol if the reduced symbol is null.
-        /// </summary>
-        public IMethodSymbol ReducedSymbolOrSymbol
-        {
-            get { return ReducedSymbol ?? Symbol; }
-        }
-
-        /// <summary>
-        /// True if the symbol was reduced.
-        /// </summary>
-        public bool IsReduced
-        {
-            get { return Symbol != null && !object.ReferenceEquals(ReducedSymbol, Symbol); }
-        }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string DebuggerDisplay
-        {
-            get
-            {
-                return (Symbol != null)
-                  ? $"{Symbol.MethodKind} {Symbol.ToDisplayString(SymbolDisplayFormats.Test)}"
-                  : "Uninitialized";
-            }
-        }
+    }
 
 #pragma warning disable CS1591
-        public override bool Equals(object obj)
-        {
-            return obj is ExtensionMethodSymbolInfo other && Equals(other);
-        }
-
-        public bool Equals(ExtensionMethodSymbolInfo other)
-        {
-            return EqualityComparer<IMethodSymbol>.Default.Equals(Symbol, other.Symbol);
-        }
-
-        public override int GetHashCode()
-        {
-            return Symbol?.GetHashCode() ?? 0;
-        }
-
-        public static bool operator ==(in ExtensionMethodSymbolInfo info1, in ExtensionMethodSymbolInfo info2)
-        {
-            return info1.Equals(info2);
-        }
-
-        public static bool operator !=(in ExtensionMethodSymbolInfo info1, in ExtensionMethodSymbolInfo info2)
-        {
-            return !(info1 == info2);
-        }
-#pragma warning restore CS1591
+    public override bool Equals(object obj)
+    {
+        return obj is ExtensionMethodSymbolInfo other && Equals(other);
     }
+
+    public bool Equals(ExtensionMethodSymbolInfo other)
+    {
+        return EqualityComparer<IMethodSymbol>.Default.Equals(Symbol, other.Symbol);
+    }
+
+    public override int GetHashCode()
+    {
+        return Symbol?.GetHashCode() ?? 0;
+    }
+
+    public static bool operator ==(in ExtensionMethodSymbolInfo info1, in ExtensionMethodSymbolInfo info2)
+    {
+        return info1.Equals(info2);
+    }
+
+    public static bool operator !=(in ExtensionMethodSymbolInfo info1, in ExtensionMethodSymbolInfo info2)
+    {
+        return !(info1 == info2);
+    }
+#pragma warning restore CS1591
 }

@@ -11,112 +11,111 @@ using Roslynator.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class UseStringBuilderInsteadOfConcatenationRefactoring
 {
-    internal static class UseStringBuilderInsteadOfConcatenationRefactoring
+    public static void ComputeRefactoring(RefactoringContext context, in StringConcatenationExpressionInfo concatenationInfo)
     {
-        public static void ComputeRefactoring(RefactoringContext context, in StringConcatenationExpressionInfo concatenationInfo)
+        BinaryExpressionSyntax binaryExpression = concatenationInfo.BinaryExpression;
+
+        if (binaryExpression.IsParentKind(SyntaxKind.SimpleAssignmentExpression, SyntaxKind.AddAssignmentExpression))
         {
-            BinaryExpressionSyntax binaryExpression = concatenationInfo.BinaryExpression;
+            var assignment = (AssignmentExpressionSyntax)binaryExpression.Parent;
 
-            if (binaryExpression.IsParentKind(SyntaxKind.SimpleAssignmentExpression, SyntaxKind.AddAssignmentExpression))
+            if (assignment.IsParentKind(SyntaxKind.ExpressionStatement)
+                && assignment.Right == binaryExpression)
             {
-                var assignment = (AssignmentExpressionSyntax)binaryExpression.Parent;
-
-                if (assignment.IsParentKind(SyntaxKind.ExpressionStatement)
-                    && assignment.Right == binaryExpression)
-                {
-                    RegisterRefactoring(context, concatenationInfo, (StatementSyntax)assignment.Parent);
-                }
-            }
-            else
-            {
-                SingleLocalDeclarationStatementInfo info = SyntaxInfo.SingleLocalDeclarationStatementInfo(binaryExpression);
-
-                if (info.Success)
-                    RegisterRefactoring(context, concatenationInfo, info.Statement);
+                RegisterRefactoring(context, concatenationInfo, (StatementSyntax)assignment.Parent);
             }
         }
-
-        private static void RegisterRefactoring(RefactoringContext context, StringConcatenationExpressionInfo concatenationInfo, StatementSyntax statement)
+        else
         {
-            context.RegisterRefactoring(
-                "Use StringBuilder instead of concatenation",
-                ct => RefactorAsync(context.Document, concatenationInfo, statement, ct),
-                RefactoringDescriptors.UseStringBuilderInsteadOfConcatenation);
+            SingleLocalDeclarationStatementInfo info = SyntaxInfo.SingleLocalDeclarationStatementInfo(binaryExpression);
+
+            if (info.Success)
+                RegisterRefactoring(context, concatenationInfo, info.Statement);
         }
+    }
 
-        private static async Task<Document> RefactorAsync(
-            Document document,
-            StringConcatenationExpressionInfo concatenationInfo,
-            StatementSyntax statement,
-            CancellationToken cancellationToken)
+    private static void RegisterRefactoring(RefactoringContext context, StringConcatenationExpressionInfo concatenationInfo, StatementSyntax statement)
+    {
+        context.RegisterRefactoring(
+            "Use StringBuilder instead of concatenation",
+            ct => RefactorAsync(context.Document, concatenationInfo, statement, ct),
+            RefactoringDescriptors.UseStringBuilderInsteadOfConcatenation);
+    }
+
+    private static async Task<Document> RefactorAsync(
+        Document document,
+        StringConcatenationExpressionInfo concatenationInfo,
+        StatementSyntax statement,
+        CancellationToken cancellationToken)
+    {
+        SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
+        string name = NameGenerator.Default.EnsureUniqueLocalName(DefaultNames.StringBuilderVariable, semanticModel, statement.SpanStart, cancellationToken: cancellationToken);
+
+        IdentifierNameSyntax stringBuilderName = IdentifierName(name);
+
+        var statements = new List<StatementSyntax>()
         {
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+            LocalDeclarationStatement(
+                VarType(),
+                Identifier(name).WithRenameAnnotation(),
+                ObjectCreationExpression(
+                    ParseTypeName("System.Text.StringBuilder").WithSimplifierAnnotation(),
+                    ArgumentList()))
+                .WithLeadingTrivia(statement.GetLeadingTrivia())
+        };
 
-            string name = NameGenerator.Default.EnsureUniqueLocalName(DefaultNames.StringBuilderVariable, semanticModel, statement.SpanStart, cancellationToken: cancellationToken);
-
-            IdentifierNameSyntax stringBuilderName = IdentifierName(name);
-
-            var statements = new List<StatementSyntax>()
+        ExpressionSyntax newInvocation = null;
+        foreach (ExpressionSyntax expression in concatenationInfo.AsChain())
+        {
+            if (expression is InterpolatedStringExpressionSyntax interpolatedString)
             {
-                LocalDeclarationStatement(
-                    VarType(),
-                    Identifier(name).WithRenameAnnotation(),
-                    ObjectCreationExpression(
-                        ParseTypeName("System.Text.StringBuilder").WithSimplifierAnnotation(),
-                        ArgumentList()))
-                    .WithLeadingTrivia(statement.GetLeadingTrivia())
-            };
+                bool isVerbatim = interpolatedString.IsVerbatim();
 
-            ExpressionSyntax newInvocation = null;
-            foreach (ExpressionSyntax expression in concatenationInfo.AsChain())
-            {
-                if (expression is InterpolatedStringExpressionSyntax interpolatedString)
+                SyntaxList<InterpolatedStringContentSyntax> contents = interpolatedString.Contents;
+
+                for (int j = 0; j < contents.Count; j++)
                 {
-                    bool isVerbatim = interpolatedString.IsVerbatim();
+                    (SyntaxKind _, string methodName, ImmutableArray<ArgumentSyntax> arguments) = ConvertInterpolatedStringToStringBuilderMethodRefactoring.Refactor(contents[j], isVerbatim);
 
-                    SyntaxList<InterpolatedStringContentSyntax> contents = interpolatedString.Contents;
-
-                    for (int j = 0; j < contents.Count; j++)
-                    {
-                        (SyntaxKind _, string methodName, ImmutableArray<ArgumentSyntax> arguments) = ConvertInterpolatedStringToStringBuilderMethodRefactoring.Refactor(contents[j], isVerbatim);
-
-                        newInvocation = SimpleMemberInvocationExpression(
-                            newInvocation ?? stringBuilderName,
-                            IdentifierName(methodName),
-                            ArgumentList(arguments.ToSeparatedSyntaxList()));
-                    }
-                }
-                else
-                {
                     newInvocation = SimpleMemberInvocationExpression(
                         newInvocation ?? stringBuilderName,
-                        IdentifierName("Append"),
-                        Argument(expression.WithoutTrivia()));
+                        IdentifierName(methodName),
+                        ArgumentList(arguments.ToSeparatedSyntaxList()));
                 }
-            }
-
-            statements.Add(ExpressionStatement(newInvocation));
-
-            statements.Add(statement
-                .ReplaceNode(concatenationInfo.BinaryExpression, SimpleMemberInvocationExpression(stringBuilderName, IdentifierName("ToString")))
-                .WithTrailingTrivia(statement.GetTrailingTrivia())
-                .WithoutLeadingTrivia());
-
-            if (statement.IsEmbedded())
-            {
-                BlockSyntax block = Block(statements).WithFormatterAnnotation();
-
-                return await document.ReplaceNodeAsync(statement, block, cancellationToken).ConfigureAwait(false);
             }
             else
             {
-                for (int i = 0; i < statements.Count; i++)
-                    statements[i] = statements[i].WithFormatterAnnotation();
-
-                return await document.ReplaceNodeAsync(statement, statements, cancellationToken).ConfigureAwait(false);
+                newInvocation = SimpleMemberInvocationExpression(
+                    newInvocation ?? stringBuilderName,
+                    IdentifierName("Append"),
+                    Argument(expression.WithoutTrivia()));
             }
+        }
+
+        statements.Add(ExpressionStatement(newInvocation));
+
+        statements.Add(statement
+            .ReplaceNode(concatenationInfo.BinaryExpression, SimpleMemberInvocationExpression(stringBuilderName, IdentifierName("ToString")))
+            .WithTrailingTrivia(statement.GetTrailingTrivia())
+            .WithoutLeadingTrivia());
+
+        if (statement.IsEmbedded())
+        {
+            BlockSyntax block = Block(statements).WithFormatterAnnotation();
+
+            return await document.ReplaceNodeAsync(statement, block, cancellationToken).ConfigureAwait(false);
+        }
+        else
+        {
+            for (int i = 0; i < statements.Count; i++)
+                statements[i] = statements[i].WithFormatterAnnotation();
+
+            return await document.ReplaceNodeAsync(statement, statements, cancellationToken).ConfigureAwait(false);
         }
     }
 }

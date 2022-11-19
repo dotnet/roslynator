@@ -3,40 +3,39 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Roslynator.Documentation
+namespace Roslynator.Documentation;
+
+internal sealed class RootDocumentationPartComparer : IComparer<RootDocumentationParts>
 {
-    internal sealed class RootDocumentationPartComparer : IComparer<RootDocumentationParts>
+    private RootDocumentationPartComparer()
     {
-        private RootDocumentationPartComparer()
+    }
+
+    public static RootDocumentationPartComparer Instance { get; } = new();
+
+    public int Compare(RootDocumentationParts x, RootDocumentationParts y)
+    {
+        return GetRank(x).CompareTo(GetRank(y));
+    }
+
+    private static int GetRank(RootDocumentationParts part)
+    {
+        switch (part)
         {
+            case RootDocumentationParts.Content:
+                return 1;
+            case RootDocumentationParts.Namespaces:
+                return 2;
+            case RootDocumentationParts.Types:
+                return 3;
+            case RootDocumentationParts.ClassHierarchy:
+                return 4;
+            case RootDocumentationParts.Other:
+                return 5;
         }
 
-        public static RootDocumentationPartComparer Instance { get; } = new();
+        Debug.Fail(part.ToString());
 
-        public int Compare(RootDocumentationParts x, RootDocumentationParts y)
-        {
-            return GetRank(x).CompareTo(GetRank(y));
-        }
-
-        private static int GetRank(RootDocumentationParts part)
-        {
-            switch (part)
-            {
-                case RootDocumentationParts.Content:
-                    return 1;
-                case RootDocumentationParts.Namespaces:
-                    return 2;
-                case RootDocumentationParts.Types:
-                    return 3;
-                case RootDocumentationParts.ClassHierarchy:
-                    return 4;
-                case RootDocumentationParts.Other:
-                    return 5;
-            }
-
-            Debug.Fail(part.ToString());
-
-            return 0;
-        }
+        return 0;
     }
 }

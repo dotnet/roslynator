@@ -6,16 +6,16 @@ using Roslynator.Formatting.CodeFixes.CSharp;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.Formatting.CSharp.Tests
-{
-    public class RCS0005AddBlankLineBeforeEndRegionDirectiveTests : AbstractCSharpDiagnosticVerifier<AddBlankLineBeforeEndRegionDirectiveAnalyzer, DirectiveTriviaCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddBlankLineBeforeEndRegionDirective;
+namespace Roslynator.Formatting.CSharp.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeEndRegionDirective)]
-        public async Task Test()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS0005AddBlankLineBeforeEndRegionDirectiveTests : AbstractCSharpDiagnosticVerifier<AddBlankLineBeforeEndRegionDirectiveAnalyzer, DirectiveTriviaCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddBlankLineBeforeEndRegionDirective;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeEndRegionDirective)]
+    public async Task Test()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     #region Methods
@@ -37,12 +37,12 @@ class C
     #endregion
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeEndRegionDirective)]
-        public async Task Test_NoIndentation()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeEndRegionDirective)]
+    public async Task Test_NoIndentation()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
 #region Methods
@@ -64,12 +64,12 @@ void M()
 #endregion
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeEndRegionDirective)]
-        public async Task Test_Comment()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeEndRegionDirective)]
+    public async Task Test_Comment()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     #region Methods
@@ -95,12 +95,12 @@ class C
     #endregion
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeEndRegionDirective)]
-        public async Task Test_DocumentationComment()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeEndRegionDirective)]
+    public async Task Test_DocumentationComment()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     #region Methods
@@ -128,12 +128,12 @@ class C
     #endregion
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeEndRegionDirective)]
-        public async Task TestNoDiagnostic()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeEndRegionDirective)]
+    public async Task TestNoDiagnostic()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     #region Methods
@@ -144,24 +144,24 @@ class C
     #endregion
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeEndRegionDirective)]
-        public async Task TestNoDiagnostic_EmptyRegion()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeEndRegionDirective)]
+    public async Task TestNoDiagnostic_EmptyRegion()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     #region Methods
     #endregion
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeEndRegionDirective)]
-        public async Task TestNoDiagnostic_Comment()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeEndRegionDirective)]
+    public async Task TestNoDiagnostic_Comment()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     #region Methods
@@ -174,12 +174,12 @@ class C
     #endregion
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeEndRegionDirective)]
-        public async Task TestNoDiagnostic_DocumentationComment()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBlankLineBeforeEndRegionDirective)]
+    public async Task TestNoDiagnostic_DocumentationComment()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     #region Methods
@@ -193,6 +193,5 @@ class C
     #endregion
 }
 ");
-        }
     }
 }

@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0063InsertStringInterpolationTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.InsertStringInterpolation;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InsertStringInterpolation)]
-        public async Task Test_EmptyStringLiteral()
-        {
-            await VerifyRefactoringAsync(@"
+public class RR0063InsertStringInterpolationTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.InsertStringInterpolation;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InsertStringInterpolation)]
+    public async Task Test_EmptyStringLiteral()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M()
@@ -31,12 +31,12 @@ class C
 }
 ",
 equivalenceKey: EquivalenceKey.Create(RefactoringId), options: Options.AddAllowedCompilerDiagnosticId("CS1733"));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InsertStringInterpolation)]
-        public async Task Test_EmptyInterpolatedString()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InsertStringInterpolation)]
+    public async Task Test_EmptyInterpolatedString()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M()
@@ -54,6 +54,5 @@ class C
 }
 ",
 equivalenceKey: EquivalenceKey.Create(RefactoringId), options: Options.AddAllowedCompilerDiagnosticId("CS1733"));
-        }
     }
 }

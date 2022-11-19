@@ -2,16 +2,15 @@
 
 using System;
 
-namespace Roslynator
+namespace Roslynator;
+
+[Flags]
+internal enum SymbolDisplayTypeDeclarationOptions
 {
-    [Flags]
-    internal enum SymbolDisplayTypeDeclarationOptions
-    {
-        None = 0,
-        IncludeModifiers = 1,
-        IncludeAccessibility = 1 << 1,
-        BaseType = 1 << 2,
-        Interfaces = 1 << 3,
-        BaseList = BaseType | Interfaces
-    }
+    None = 0,
+    IncludeModifiers = 1,
+    IncludeAccessibility = 1 << 1,
+    BaseType = 1 << 2,
+    Interfaces = 1 << 3,
+    BaseList = BaseType | Interfaces
 }

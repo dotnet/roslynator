@@ -12,101 +12,100 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(TypeCodeFixProvider))]
+[Shared]
+public sealed class TypeCodeFixProvider : CompilerDiagnosticCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(TypeCodeFixProvider))]
-    [Shared]
-    public sealed class TypeCodeFixProvider : CompilerDiagnosticCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
+        get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.CS0305_UsingGenericTypeRequiresNumberOfTypeArguments); }
+    }
+
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        Diagnostic diagnostic = context.Diagnostics[0];
+
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+        if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddTypeArgument, context.Document, root.SyntaxTree))
+            return;
+
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out TypeSyntax type))
+            return;
+
+        if (!type.IsKind(SyntaxKind.IdentifierName))
+            return;
+
+        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+        SymbolInfo symbolInfo = semanticModel.GetSymbolInfo(type, context.CancellationToken);
+
+        foreach (ISymbol symbol in symbolInfo.CandidateSymbols)
         {
-            get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.CS0305_UsingGenericTypeRequiresNumberOfTypeArguments); }
-        }
-
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            Diagnostic diagnostic = context.Diagnostics[0];
-
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
-
-            if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddTypeArgument, context.Document, root.SyntaxTree))
-                return;
-
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out TypeSyntax type))
-                return;
-
-            if (!type.IsKind(SyntaxKind.IdentifierName))
-                return;
-
-            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-            SymbolInfo symbolInfo = semanticModel.GetSymbolInfo(type, context.CancellationToken);
-
-            foreach (ISymbol symbol in symbolInfo.CandidateSymbols)
+            if (symbol is INamedTypeSymbol namedTypeSymbol)
             {
-                if (symbol is INamedTypeSymbol namedTypeSymbol)
+                ImmutableArray<ITypeParameterSymbol> typeParameters = namedTypeSymbol.TypeParameters;
+
+                if (typeParameters.Any())
                 {
-                    ImmutableArray<ITypeParameterSymbol> typeParameters = namedTypeSymbol.TypeParameters;
+                    CodeAction codeAction = CodeAction.Create(
+                        GetTitle(typeParameters),
+                        ct =>
+                        {
+                            SeparatedSyntaxList<TypeSyntax> typeArguments = CreateTypeArguments(typeParameters, type.SpanStart, semanticModel).ToSeparatedSyntaxList();
 
-                    if (typeParameters.Any())
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            GetTitle(typeParameters),
-                            ct =>
-                            {
-                                SeparatedSyntaxList<TypeSyntax> typeArguments = CreateTypeArguments(typeParameters, type.SpanStart, semanticModel).ToSeparatedSyntaxList();
+                            var identifierName = (IdentifierNameSyntax)type;
 
-                                var identifierName = (IdentifierNameSyntax)type;
+                            GenericNameSyntax newNode = SyntaxFactory.GenericName(identifierName.Identifier, SyntaxFactory.TypeArgumentList(typeArguments));
 
-                                GenericNameSyntax newNode = SyntaxFactory.GenericName(identifierName.Identifier, SyntaxFactory.TypeArgumentList(typeArguments));
+                            return context.Document.ReplaceNodeAsync(type, newNode, ct);
+                        },
+                        GetEquivalenceKey(diagnostic, SymbolDisplay.ToDisplayString(namedTypeSymbol, SymbolDisplayFormats.DisplayName)));
 
-                                return context.Document.ReplaceNodeAsync(type, newNode, ct);
-                            },
-                            GetEquivalenceKey(diagnostic, SymbolDisplay.ToDisplayString(namedTypeSymbol, SymbolDisplayFormats.DisplayName)));
-
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                    }
+                    context.RegisterCodeFix(codeAction, diagnostic);
                 }
             }
         }
+    }
 
-        private static string GetTitle(ImmutableArray<ITypeParameterSymbol> typeParameters)
+    private static string GetTitle(ImmutableArray<ITypeParameterSymbol> typeParameters)
+    {
+        if (typeParameters.Length == 1)
         {
-            if (typeParameters.Length == 1)
-            {
-                return $"Add type argument {typeParameters[0].Name}";
-            }
-            else
-            {
-                return $"Add type arguments {string.Join(", ", typeParameters.Select(f => f.Name))}";
-            }
+            return $"Add type argument {typeParameters[0].Name}";
         }
-
-        private static IEnumerable<TypeSyntax> CreateTypeArguments(
-            ImmutableArray<ITypeParameterSymbol> typeParameters,
-            int position,
-            SemanticModel semanticModel)
+        else
         {
-            var isFirst = true;
+            return $"Add type arguments {string.Join(", ", typeParameters.Select(f => f.Name))}";
+        }
+    }
 
-            ImmutableArray<ISymbol> symbols = semanticModel.LookupSymbols(position);
+    private static IEnumerable<TypeSyntax> CreateTypeArguments(
+        ImmutableArray<ITypeParameterSymbol> typeParameters,
+        int position,
+        SemanticModel semanticModel)
+    {
+        var isFirst = true;
 
-            foreach (ITypeParameterSymbol typeParameter in typeParameters)
+        ImmutableArray<ISymbol> symbols = semanticModel.LookupSymbols(position);
+
+        foreach (ITypeParameterSymbol typeParameter in typeParameters)
+        {
+            string name = NameGenerator.Default.EnsureUniqueName(
+                typeParameter.Name,
+                symbols);
+
+            SyntaxToken identifier = SyntaxFactory.Identifier(name);
+
+            if (isFirst)
             {
-                string name = NameGenerator.Default.EnsureUniqueName(
-                    typeParameter.Name,
-                    symbols);
-
-                SyntaxToken identifier = SyntaxFactory.Identifier(name);
-
-                if (isFirst)
-                {
-                    identifier = identifier.WithRenameAnnotation();
-                    isFirst = false;
-                }
-
-                yield return SyntaxFactory.IdentifierName(identifier);
+                identifier = identifier.WithRenameAnnotation();
+                isFirst = false;
             }
+
+            yield return SyntaxFactory.IdentifierName(identifier);
         }
     }
 }

@@ -8,87 +8,86 @@ using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Roslynator.Spelling
+namespace Roslynator.Spelling;
+
+internal class SpellingAnalysisContext
 {
-    internal class SpellingAnalysisContext
+    private readonly Action<Diagnostic> _reportDiagnostic;
+
+    private readonly Spellchecker _spellchecker;
+
+    public SpellingData SpellingData { get; }
+
+    public SpellingFixerOptions Options { get; }
+
+    public CancellationToken CancellationToken { get; }
+
+    public SpellingAnalysisContext(
+        Action<Diagnostic> reportDiagnostic,
+        SpellingData spellingData,
+        SpellingFixerOptions options,
+        CancellationToken cancellationToken)
     {
-        private readonly Action<Diagnostic> _reportDiagnostic;
+        SpellingData = spellingData;
+        Options = options;
+        CancellationToken = cancellationToken;
 
-        private readonly Spellchecker _spellchecker;
+        _reportDiagnostic = reportDiagnostic;
 
-        public SpellingData SpellingData { get; }
+        _spellchecker = new Spellchecker(spellingData, options: new SpellcheckerOptions(options.SplitMode, options.MinWordLength, options.MaxWordLength));
+    }
 
-        public SpellingFixerOptions Options { get; }
+    public void AnalyzeText(string value, TextSpan textSpan, SyntaxTree syntaxTree)
+    {
+        ImmutableArray<SpellingMatch> matches = _spellchecker.AnalyzeText(value);
 
-        public CancellationToken CancellationToken { get; }
+        ProcessMatches(matches, textSpan, syntaxTree);
+    }
 
-        public SpellingAnalysisContext(
-            Action<Diagnostic> reportDiagnostic,
-            SpellingData spellingData,
-            SpellingFixerOptions options,
-            CancellationToken cancellationToken)
+    public void AnalyzeIdentifier(
+        SyntaxToken identifier,
+        int prefixLength = 0)
+    {
+        ImmutableArray<SpellingMatch> matches = _spellchecker.AnalyzeIdentifier(identifier.ValueText, prefixLength);
+
+        ProcessMatches(matches, identifier.Span, identifier.SyntaxTree);
+    }
+
+    private void ProcessMatches(
+        ImmutableArray<SpellingMatch> matches,
+        TextSpan span,
+        SyntaxTree syntaxTree)
+    {
+        foreach (SpellingMatch match in matches)
         {
-            SpellingData = spellingData;
-            Options = options;
-            CancellationToken = cancellationToken;
+            int index = span.Start + match.Index;
 
-            _reportDiagnostic = reportDiagnostic;
+            ImmutableDictionary<string, string> properties;
 
-            _spellchecker = new Spellchecker(spellingData, options: new SpellcheckerOptions(options.SplitMode, options.MinWordLength, options.MaxWordLength));
-        }
-
-        public void AnalyzeText(string value, TextSpan textSpan, SyntaxTree syntaxTree)
-        {
-            ImmutableArray<SpellingMatch> matches = _spellchecker.AnalyzeText(value);
-
-            ProcessMatches(matches, textSpan, syntaxTree);
-        }
-
-        public void AnalyzeIdentifier(
-            SyntaxToken identifier,
-            int prefixLength = 0)
-        {
-            ImmutableArray<SpellingMatch> matches = _spellchecker.AnalyzeIdentifier(identifier.ValueText, prefixLength);
-
-            ProcessMatches(matches, identifier.Span, identifier.SyntaxTree);
-        }
-
-        private void ProcessMatches(
-            ImmutableArray<SpellingMatch> matches,
-            TextSpan span,
-            SyntaxTree syntaxTree)
-        {
-            foreach (SpellingMatch match in matches)
+            if (match.Parent != null)
             {
-                int index = span.Start + match.Index;
-
-                ImmutableDictionary<string, string> properties;
-
-                if (match.Parent != null)
-                {
-                    properties = ImmutableDictionary.CreateRange(new[]
-                        {
-                            new KeyValuePair<string, string>("Value", match.Value),
-                            new KeyValuePair<string, string>("Parent", match.Parent),
-                            new KeyValuePair<string, string>("ParentIndex", (span.Start + match.ParentIndex).ToString(CultureInfo.InvariantCulture)),
-                        });
-                }
-                else
-                {
-                    properties = ImmutableDictionary.CreateRange(new[]
-                        {
-                            new KeyValuePair<string, string>("Value", match.Value),
-                        });
-                }
-
-                Diagnostic diagnostic = Diagnostic.Create(
-                    SpellingAnalyzer.DiagnosticDescriptor,
-                    Location.Create(syntaxTree, new TextSpan(index, match.Value.Length)),
-                    properties: properties,
-                    messageArgs: match.Value);
-
-                _reportDiagnostic(diagnostic);
+                properties = ImmutableDictionary.CreateRange(new[]
+                    {
+                        new KeyValuePair<string, string>("Value", match.Value),
+                        new KeyValuePair<string, string>("Parent", match.Parent),
+                        new KeyValuePair<string, string>("ParentIndex", (span.Start + match.ParentIndex).ToString(CultureInfo.InvariantCulture)),
+                    });
             }
+            else
+            {
+                properties = ImmutableDictionary.CreateRange(new[]
+                    {
+                        new KeyValuePair<string, string>("Value", match.Value),
+                    });
+            }
+
+            Diagnostic diagnostic = Diagnostic.Create(
+                SpellingAnalyzer.DiagnosticDescriptor,
+                Location.Create(syntaxTree, new TextSpan(index, match.Value.Length)),
+                properties: properties,
+                messageArgs: match.Value);
+
+            _reportDiagnostic(diagnostic);
         }
     }
 }

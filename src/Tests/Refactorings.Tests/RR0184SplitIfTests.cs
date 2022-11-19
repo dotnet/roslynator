@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0184SplitIfTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.SplitIf;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SplitIf)]
-        public async Task Test_SimpleIf()
-        {
-            await VerifyRefactoringAsync(@"
+public class RR0184SplitIfTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.SplitIf;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SplitIf)]
+    public async Task Test_SimpleIf()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     bool M(bool x, bool y)
@@ -45,12 +45,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SplitIf)]
-        public async Task Test_SimpleIf2()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SplitIf)]
+    public async Task Test_SimpleIf2()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     bool M(bool a, bool b, bool c, bool d, bool e)
@@ -94,12 +94,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SplitIf)]
-        public async Task Test_SimpleIf_EmbeddedStatement()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SplitIf)]
+    public async Task Test_SimpleIf_EmbeddedStatement()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     bool M(bool a, bool b, bool c, bool d)
@@ -135,12 +135,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SplitIf)]
-        public async Task Test_LastElseIf()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SplitIf)]
+    public async Task Test_LastElseIf()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     bool M(bool x, bool y)
@@ -177,12 +177,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SplitIf)]
-        public async Task Test_LastElseIf2()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SplitIf)]
+    public async Task Test_LastElseIf2()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     bool M(bool a, bool b, bool c, bool d, bool e)
@@ -223,12 +223,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SplitIf)]
-        public async Task TestNoRefactoring_SimpleIf_SimpleCondition()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SplitIf)]
+    public async Task TestNoRefactoring_SimpleIf_SimpleCondition()
+    {
+        await VerifyNoRefactoringAsync(@"
 class C
 {
     bool M(bool f)
@@ -242,6 +242,5 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
     }
 }

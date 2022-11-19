@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0037ConvertExpressionBodyToBlockBodyTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.ConvertExpressionBodyToBlockBody;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertExpressionBodyToBlockBody)]
-        public async Task Test_MultipleMembers()
-        {
-            await VerifyRefactoringAsync(@"
+public class RR0037ConvertExpressionBodyToBlockBodyTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.ConvertExpressionBodyToBlockBody;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertExpressionBodyToBlockBody)]
+    public async Task Test_MultipleMembers()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
 [|    public C() => M();
@@ -74,12 +74,12 @@ class C
         return default;
     }
 }", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertExpressionBodyToBlockBody)]
-        public async Task Test_MultipleMembers_FirstAndLast()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertExpressionBodyToBlockBody)]
+    public async Task Test_MultipleMembers_FirstAndLast()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
 [|    public C() => M();
@@ -108,12 +108,12 @@ class C
         get { return default; }
     }
 }", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertExpressionBodyToBlockBody)]
-        public async Task Test_InitSetter()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertExpressionBodyToBlockBody)]
+    public async Task Test_InitSetter()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     string _f;
@@ -141,6 +141,5 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId), options: Options.AddAllowedCompilerDiagnosticId("CS0518"));
-        }
     }
 }

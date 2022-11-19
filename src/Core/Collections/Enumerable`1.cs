@@ -3,20 +3,19 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Roslynator.Collections
+namespace Roslynator.Collections;
+
+internal class Enumerable<T> : IEnumerable<T>
 {
-    internal class Enumerable<T> : IEnumerable<T>
+    private readonly IEnumerator<T> _enumerator = Enumerator<T>.Instance;
+
+    public IEnumerator<T> GetEnumerator()
     {
-        private readonly IEnumerator<T> _enumerator = Enumerator<T>.Instance;
+        return _enumerator;
+    }
 
-        public IEnumerator<T> GetEnumerator()
-        {
-            return _enumerator;
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 }

@@ -5,19 +5,18 @@ using Roslynator.CSharp;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CodeGeneration.CSharp
+namespace Roslynator.CodeGeneration.CSharp;
+
+public static class CodeFixesOptionsPageGenerator
 {
-    public static class CodeFixesOptionsPageGenerator
+    public static CompilationUnitSyntax Generate()
     {
-        public static CompilationUnitSyntax Generate()
-        {
-            return CompilationUnit(
-                UsingDirectives("Roslynator.CSharp"),
-                NamespaceDeclaration(
-                    "Roslynator.VisualStudio",
-                    ClassDeclaration(
-                        Modifiers.Public_Partial(),
-                        "CodeFixesOptionsPage")));
-        }
+        return CompilationUnit(
+            UsingDirectives("Roslynator.CSharp"),
+            NamespaceDeclaration(
+                "Roslynator.VisualStudio",
+                ClassDeclaration(
+                    Modifiers.Public_Partial(),
+                    "CodeFixesOptionsPage")));
     }
 }

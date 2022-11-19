@@ -10,31 +10,30 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Roslynator.CodeFixes;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(RemoveRedundantAsyncAwaitCodeFixProvider))]
+[Shared]
+public sealed class RemoveRedundantAsyncAwaitCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(RemoveRedundantAsyncAwaitCodeFixProvider))]
-    [Shared]
-    public sealed class RemoveRedundantAsyncAwaitCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
-        {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveRedundantAsyncAwait); }
-        }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveRedundantAsyncAwait); }
+    }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            if (!TryFindToken(root, context.Span.Start, out SyntaxToken token))
-                return;
+        if (!TryFindToken(root, context.Span.Start, out SyntaxToken token))
+            return;
 
-            Debug.Assert(token.IsKind(SyntaxKind.AsyncKeyword), token.Kind().ToString());
+        Debug.Assert(token.IsKind(SyntaxKind.AsyncKeyword), token.Kind().ToString());
 
-            Diagnostic diagnostic = context.Diagnostics[0];
+        Diagnostic diagnostic = context.Diagnostics[0];
 
-            CodeAction codeAction = CodeActionFactory.RemoveAsyncAwait(context.Document, token, equivalenceKey: GetEquivalenceKey(diagnostic));
+        CodeAction codeAction = CodeActionFactory.RemoveAsyncAwait(context.Document, token, equivalenceKey: GetEquivalenceKey(diagnostic));
 
-            context.RegisterCodeFix(codeAction, diagnostic);
-        }
+        context.RegisterCodeFix(codeAction, diagnostic);
     }
 }

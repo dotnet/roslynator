@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1229UseAsyncAwaitTests : AbstractCSharpDiagnosticVerifier<UseAsyncAwaitAnalyzer, UseAsyncAwaitCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseAsyncAwait;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
-        public async Task Test_Method_TaskOfT()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1229UseAsyncAwaitTests : AbstractCSharpDiagnosticVerifier<UseAsyncAwaitAnalyzer, UseAsyncAwaitCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseAsyncAwait;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
+    public async Task Test_Method_TaskOfT()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 using System.Threading.Tasks;
 
@@ -48,12 +48,12 @@ class C
     Task<string> GetAsync() => Task.FromResult(default(string));
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
-        public async Task Test_Method_Task()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
+    public async Task Test_Method_Task()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 using System.Threading.Tasks;
 
@@ -87,12 +87,12 @@ class C
     Task DoAsync() => Task.CompletedTask;
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
-        public async Task Test_Method_MultipleReturnStatements()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
+    public async Task Test_Method_MultipleReturnStatements()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 using System.Threading.Tasks;
 
@@ -147,12 +147,12 @@ class C
     Task<string> GetAsync() => Task.FromResult(default(string));
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
-        public async Task Test_LocalFunction()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
+    public async Task Test_LocalFunction()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 using System.Threading.Tasks;
 
@@ -191,12 +191,12 @@ class C
     Task<string> GetAsync() => Task.FromResult(default(string));
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
-        public async Task Test_SimpleLambda()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
+    public async Task Test_SimpleLambda()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 using System.Threading.Tasks;
 
@@ -235,12 +235,12 @@ class C
     Task<string> GetAsync() => Task.FromResult(default(string));
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
-        public async Task Test_ParenthesizedLambda()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
+    public async Task Test_ParenthesizedLambda()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 using System.Threading.Tasks;
 
@@ -279,12 +279,12 @@ class C
     Task<string> GetAsync() => Task.FromResult(default(string));
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
-        public async Task Test_AnonymousMethod()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
+    public async Task Test_AnonymousMethod()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 using System.Threading.Tasks;
 
@@ -323,12 +323,12 @@ class C
     Task<string> GetAsync() => Task.FromResult(default(string));
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
-        public async Task Test_UsingLocalDeclaration()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
+    public async Task Test_UsingLocalDeclaration()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 using System.Threading.Tasks;
 
@@ -357,12 +357,12 @@ public class C
     Task<string> GetAsync() => Task.FromResult(default(string));
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
-        public async Task Test_UsingLocalDeclaration2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
+    public async Task Test_UsingLocalDeclaration2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 using System.Threading.Tasks;
 
@@ -403,12 +403,12 @@ public class C
     Task<string> GetAsync() => Task.FromResult(default(string));
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
-        public async Task Test_TryCatch()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAsyncAwait)]
+    public async Task Test_TryCatch()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 using System.Threading.Tasks;
 
@@ -451,12 +451,12 @@ class C
     Task<int> GetAsync() => Task.FromResult(0);
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
-        public async Task TestNoDiagnostic_UsingLocalDeclaration()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
+    public async Task TestNoDiagnostic_UsingLocalDeclaration()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 using System.Threading.Tasks;
 
@@ -476,12 +476,12 @@ public class C
     Task<string> GetAsync() => Task.FromResult(default(string));
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
-        public async Task TestNoDiagnostic_TaskCompletedTask()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
+    public async Task TestNoDiagnostic_TaskCompletedTask()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -495,12 +495,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
-        public async Task TestNoDiagnostic_TaskFromCanceled()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
+    public async Task TestNoDiagnostic_TaskFromCanceled()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -514,12 +514,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
-        public async Task TestNoDiagnostic_TaskFromException()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
+    public async Task TestNoDiagnostic_TaskFromException()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -533,12 +533,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
-        public async Task TestNoDiagnostic_TaskOfTFromResult()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
+    public async Task TestNoDiagnostic_TaskOfTFromResult()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -552,12 +552,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
-        public async Task TestNoDiagnostic_TaskOfTFromCanceled()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
+    public async Task TestNoDiagnostic_TaskOfTFromCanceled()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -571,12 +571,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
-        public async Task TestNoDiagnostic_TaskOfTFromException()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
+    public async Task TestNoDiagnostic_TaskOfTFromException()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -590,12 +590,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
-        public async Task TestNoDiagnostic_IAsyncEnumerable()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
+    public async Task TestNoDiagnostic_IAsyncEnumerable()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 using System.Collections.Generic;
 
@@ -617,6 +617,5 @@ class C
     }
 }
 ");
-        }
     }
 }

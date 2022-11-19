@@ -8,109 +8,108 @@ using System.Xml;
 using System.Xml.Linq;
 using Microsoft.CodeAnalysis;
 
-namespace Roslynator.Documentation
+namespace Roslynator.Documentation;
+
+public sealed class XmlDocumentation
 {
-    public sealed class XmlDocumentation
+    private const string DefaultIndentChars = "            ";
+
+    private static readonly Regex _indentationRegex = new("(?<=\n)" + DefaultIndentChars);
+
+    private readonly XElement _membersElement;
+    private ImmutableDictionary<string, XElement> _elementsById;
+
+    private XmlDocumentation(XDocument document)
     {
-        private const string DefaultIndentChars = "            ";
+        _membersElement = document.Root.Element("members");
+    }
 
-        private static readonly Regex _indentationRegex = new("(?<=\n)" + DefaultIndentChars);
+    public static XmlDocumentation Load(string filePath)
+    {
+        string rawXml = File.ReadAllText(filePath);
 
-        private readonly XElement _membersElement;
-        private ImmutableDictionary<string, XElement> _elementsById;
+        rawXml = Unindent(rawXml);
 
-        private XmlDocumentation(XDocument document)
+        if (!string.IsNullOrEmpty(rawXml))
         {
-            _membersElement = document.Root.Element("members");
+            var document = XDocument.Parse(rawXml, LoadOptions.PreserveWhitespace);
+
+            return new XmlDocumentation(document);
         }
 
-        public static XmlDocumentation Load(string filePath)
+        return null;
+    }
+
+    public static string Unindent(string rawXml)
+    {
+        var s = "";
+
+        try
         {
-            string rawXml = File.ReadAllText(filePath);
-
-            rawXml = Unindent(rawXml);
-
-            if (!string.IsNullOrEmpty(rawXml))
+            using (var sr = new StringReader(rawXml))
+            using (XmlReader xr = XmlReader.Create(sr))
             {
-                var document = XDocument.Parse(rawXml, LoadOptions.PreserveWhitespace);
+                if (xr.ReadToDescendant("member"))
+                {
+                    xr.ReadStartElement();
 
-                return new XmlDocumentation(document);
+                    if (xr.NodeType == XmlNodeType.Whitespace)
+                        s = xr.Value;
+                }
             }
-
+        }
+        catch (XmlException)
+        {
             return null;
         }
 
-        public static string Unindent(string rawXml)
+        int index = s.Length;
+
+        for (int i = s.Length - 1; i >= 0; i--)
         {
-            var s = "";
+            char ch = s[i];
 
-            try
+            if (ch == '\n'
+                || ch == '\r')
             {
-                using (var sr = new StringReader(rawXml))
-                using (XmlReader xr = XmlReader.Create(sr))
-                {
-                    if (xr.ReadToDescendant("member"))
-                    {
-                        xr.ReadStartElement();
-
-                        if (xr.NodeType == XmlNodeType.Whitespace)
-                            s = xr.Value;
-                    }
-                }
-            }
-            catch (XmlException)
-            {
-                return null;
+                break;
             }
 
-            int index = s.Length;
-
-            for (int i = s.Length - 1; i >= 0; i--)
-            {
-                char ch = s[i];
-
-                if (ch == '\n'
-                    || ch == '\r')
-                {
-                    break;
-                }
-
-                index--;
-            }
-
-            if (index < s.Length)
-            {
-                rawXml = (string.CompareOrdinal(s, index, DefaultIndentChars, 0, DefaultIndentChars.Length) == 0)
-                    ? _indentationRegex.Replace(rawXml, "")
-                    : Regex.Replace(rawXml, "(?<=\n)" + s.Substring(index), "");
-            }
-
-            return rawXml;
+            index--;
         }
 
-        public SymbolXmlDocumentation GetXmlDocumentation(ISymbol symbol)
+        if (index < s.Length)
         {
-            return GetXmlDocumentation(symbol, symbol.GetDocumentationCommentId());
+            rawXml = (string.CompareOrdinal(s, index, DefaultIndentChars, 0, DefaultIndentChars.Length) == 0)
+                ? _indentationRegex.Replace(rawXml, "")
+                : Regex.Replace(rawXml, "(?<=\n)" + s.Substring(index), "");
         }
 
-        internal SymbolXmlDocumentation GetXmlDocumentation(ISymbol symbol, string commentId)
+        return rawXml;
+    }
+
+    public SymbolXmlDocumentation GetXmlDocumentation(ISymbol symbol)
+    {
+        return GetXmlDocumentation(symbol, symbol.GetDocumentationCommentId());
+    }
+
+    internal SymbolXmlDocumentation GetXmlDocumentation(ISymbol symbol, string commentId)
+    {
+        if (_elementsById == null)
         {
-            if (_elementsById == null)
-            {
-                Interlocked.CompareExchange(ref _elementsById, LoadElements(), null);
-            }
+            Interlocked.CompareExchange(ref _elementsById, LoadElements(), null);
+        }
 
-            if (_elementsById.TryGetValue(commentId, out XElement element))
-            {
-                return new SymbolXmlDocumentation(symbol, element);
-            }
+        if (_elementsById.TryGetValue(commentId, out XElement element))
+        {
+            return new SymbolXmlDocumentation(symbol, element);
+        }
 
-            return null;
+        return null;
 
-            ImmutableDictionary<string, XElement> LoadElements()
-            {
-                return _membersElement.Elements().ToImmutableDictionary(f => f.Attribute("name").Value, f => f);
-            }
+        ImmutableDictionary<string, XElement> LoadElements()
+        {
+            return _membersElement.Elements().ToImmutableDictionary(f => f.Attribute("name").Value, f => f);
         }
     }
 }

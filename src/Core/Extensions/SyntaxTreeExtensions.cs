@@ -5,90 +5,89 @@ using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Roslynator
+namespace Roslynator;
+
+/// <summary>
+/// A set of extension methods for <see cref="SyntaxTree"/>.
+/// </summary>
+public static class SyntaxTreeExtensions
 {
     /// <summary>
-    /// A set of extension methods for <see cref="SyntaxTree"/>.
+    /// Returns zero-based index of the start line of the specified span.
     /// </summary>
-    public static class SyntaxTreeExtensions
+    /// <param name="syntaxTree"></param>
+    /// <param name="span"></param>
+    /// <param name="cancellationToken"></param>
+    public static int GetStartLine(
+        this SyntaxTree syntaxTree,
+        TextSpan span,
+        CancellationToken cancellationToken = default)
     {
-        /// <summary>
-        /// Returns zero-based index of the start line of the specified span.
-        /// </summary>
-        /// <param name="syntaxTree"></param>
-        /// <param name="span"></param>
-        /// <param name="cancellationToken"></param>
-        public static int GetStartLine(
-            this SyntaxTree syntaxTree,
-            TextSpan span,
-            CancellationToken cancellationToken = default)
-        {
-            if (syntaxTree == null)
-                throw new ArgumentNullException(nameof(syntaxTree));
+        if (syntaxTree == null)
+            throw new ArgumentNullException(nameof(syntaxTree));
 
-            return syntaxTree.GetLineSpan(span, cancellationToken).StartLine();
-        }
+        return syntaxTree.GetLineSpan(span, cancellationToken).StartLine();
+    }
 
-        /// <summary>
-        /// Returns zero-based index of the end line of the specified span.
-        /// </summary>
-        /// <param name="syntaxTree"></param>
-        /// <param name="span"></param>
-        /// <param name="cancellationToken"></param>
-        public static int GetEndLine(
-            this SyntaxTree syntaxTree,
-            TextSpan span,
-            CancellationToken cancellationToken = default)
-        {
-            if (syntaxTree == null)
-                throw new ArgumentNullException(nameof(syntaxTree));
+    /// <summary>
+    /// Returns zero-based index of the end line of the specified span.
+    /// </summary>
+    /// <param name="syntaxTree"></param>
+    /// <param name="span"></param>
+    /// <param name="cancellationToken"></param>
+    public static int GetEndLine(
+        this SyntaxTree syntaxTree,
+        TextSpan span,
+        CancellationToken cancellationToken = default)
+    {
+        if (syntaxTree == null)
+            throw new ArgumentNullException(nameof(syntaxTree));
 
-            return syntaxTree.GetLineSpan(span, cancellationToken).EndLine();
-        }
+        return syntaxTree.GetLineSpan(span, cancellationToken).EndLine();
+    }
 
-        /// <summary>
-        /// Returns true if the specified <see cref="TextSpan"/> spans over multiple lines.
-        /// </summary>
-        /// <param name="syntaxTree"></param>
-        /// <param name="span"></param>
-        /// <param name="cancellationToken"></param>
-        public static bool IsMultiLineSpan(
-            this SyntaxTree syntaxTree,
-            TextSpan span,
-            CancellationToken cancellationToken = default)
-        {
-            if (syntaxTree == null)
-                throw new ArgumentNullException(nameof(syntaxTree));
+    /// <summary>
+    /// Returns true if the specified <see cref="TextSpan"/> spans over multiple lines.
+    /// </summary>
+    /// <param name="syntaxTree"></param>
+    /// <param name="span"></param>
+    /// <param name="cancellationToken"></param>
+    public static bool IsMultiLineSpan(
+        this SyntaxTree syntaxTree,
+        TextSpan span,
+        CancellationToken cancellationToken = default)
+    {
+        if (syntaxTree == null)
+            throw new ArgumentNullException(nameof(syntaxTree));
 
-            return syntaxTree.GetLineSpan(span, cancellationToken).IsMultiLine();
-        }
+        return syntaxTree.GetLineSpan(span, cancellationToken).IsMultiLine();
+    }
 
-        /// <summary>
-        /// Returns true if the specified <see cref="TextSpan"/> does not span over multiple lines.
-        /// </summary>
-        /// <param name="syntaxTree"></param>
-        /// <param name="span"></param>
-        /// <param name="cancellationToken"></param>
-        public static bool IsSingleLineSpan(
-            this SyntaxTree syntaxTree,
-            TextSpan span,
-            CancellationToken cancellationToken = default)
-        {
-            if (syntaxTree == null)
-                throw new ArgumentNullException(nameof(syntaxTree));
+    /// <summary>
+    /// Returns true if the specified <see cref="TextSpan"/> does not span over multiple lines.
+    /// </summary>
+    /// <param name="syntaxTree"></param>
+    /// <param name="span"></param>
+    /// <param name="cancellationToken"></param>
+    public static bool IsSingleLineSpan(
+        this SyntaxTree syntaxTree,
+        TextSpan span,
+        CancellationToken cancellationToken = default)
+    {
+        if (syntaxTree == null)
+            throw new ArgumentNullException(nameof(syntaxTree));
 
-            return syntaxTree.GetLineSpan(span, cancellationToken).IsSingleLine();
-        }
+        return syntaxTree.GetLineSpan(span, cancellationToken).IsSingleLine();
+    }
 
-        internal static int GetLineCount(
-            this SyntaxTree syntaxTree,
-            TextSpan span,
-            CancellationToken cancellationToken = default)
-        {
-            if (syntaxTree == null)
-                throw new ArgumentNullException(nameof(syntaxTree));
+    internal static int GetLineCount(
+        this SyntaxTree syntaxTree,
+        TextSpan span,
+        CancellationToken cancellationToken = default)
+    {
+        if (syntaxTree == null)
+            throw new ArgumentNullException(nameof(syntaxTree));
 
-            return syntaxTree.GetLineSpan(span, cancellationToken).GetLineCount();
-        }
+        return syntaxTree.GetLineSpan(span, cancellationToken).GetLineCount();
     }
 }

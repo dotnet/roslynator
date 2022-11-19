@@ -8,108 +8,107 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Roslynator.CSharp.Analysis
+namespace Roslynator.CSharp.Analysis;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class AsyncSuffixAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class AsyncSuffixAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
+            if (_supportedDiagnostics.IsDefault)
             {
-                if (_supportedDiagnostics.IsDefault)
-                {
-                    Immutable.InterlockedInitialize(
-                        ref _supportedDiagnostics,
-                        DiagnosticRules.AsynchronousMethodNameShouldEndWithAsync,
-                        DiagnosticRules.NonAsynchronousMethodNameShouldNotEndWithAsync,
-                        DiagnosticRules.NonAsynchronousMethodNameShouldNotEndWithAsyncFadeOut);
-                }
-
-                return _supportedDiagnostics;
+                Immutable.InterlockedInitialize(
+                    ref _supportedDiagnostics,
+                    DiagnosticRules.AsynchronousMethodNameShouldEndWithAsync,
+                    DiagnosticRules.NonAsynchronousMethodNameShouldNotEndWithAsync,
+                    DiagnosticRules.NonAsynchronousMethodNameShouldNotEndWithAsyncFadeOut);
             }
+
+            return _supportedDiagnostics;
         }
+    }
 
-        public override void Initialize(AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
+
+        context.RegisterCompilationStartAction(startContext =>
         {
-            base.Initialize(context);
+            INamedTypeSymbol asyncAction = startContext.Compilation.GetTypeByMetadataName("Windows.Foundation.IAsyncAction");
 
-            context.RegisterCompilationStartAction(startContext =>
-            {
-                INamedTypeSymbol asyncAction = startContext.Compilation.GetTypeByMetadataName("Windows.Foundation.IAsyncAction");
+            bool shouldCheckWindowsRuntimeTypes = asyncAction != null;
 
-                bool shouldCheckWindowsRuntimeTypes = asyncAction != null;
-
-                startContext.RegisterSyntaxNodeAction(
-                    c =>
+            startContext.RegisterSyntaxNodeAction(
+                c =>
+                {
+                    if (DiagnosticHelpers.IsAnyEffective(
+                        c,
+                        DiagnosticRules.AsynchronousMethodNameShouldEndWithAsync,
+                        DiagnosticRules.NonAsynchronousMethodNameShouldNotEndWithAsync))
                     {
-                        if (DiagnosticHelpers.IsAnyEffective(
-                            c,
-                            DiagnosticRules.AsynchronousMethodNameShouldEndWithAsync,
-                            DiagnosticRules.NonAsynchronousMethodNameShouldNotEndWithAsync))
-                        {
-                            AnalyzeMethodDeclaration(c, shouldCheckWindowsRuntimeTypes);
-                        }
-                    },
-                    SyntaxKind.MethodDeclaration);
-            });
-        }
+                        AnalyzeMethodDeclaration(c, shouldCheckWindowsRuntimeTypes);
+                    }
+                },
+                SyntaxKind.MethodDeclaration);
+        });
+    }
 
-        private static void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context, bool shouldCheckWindowsRuntimeTypes)
+    private static void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context, bool shouldCheckWindowsRuntimeTypes)
+    {
+        var methodDeclaration = (MethodDeclarationSyntax)context.Node;
+
+        if (methodDeclaration.Modifiers.Contains(SyntaxKind.OverrideKeyword))
+            return;
+
+        if (methodDeclaration.Identifier.ValueText.EndsWith("Async", StringComparison.Ordinal))
         {
-            var methodDeclaration = (MethodDeclarationSyntax)context.Node;
+            IMethodSymbol methodSymbol = context.SemanticModel.GetDeclaredSymbol(methodDeclaration, context.CancellationToken);
 
-            if (methodDeclaration.Modifiers.Contains(SyntaxKind.OverrideKeyword))
+            if (methodSymbol.IsAsync)
                 return;
 
-            if (methodDeclaration.Identifier.ValueText.EndsWith("Async", StringComparison.Ordinal))
+            if (!methodSymbol.Name.EndsWith("Async", StringComparison.Ordinal))
+                return;
+
+            if (SymbolUtility.IsAwaitable(methodSymbol.ReturnType, shouldCheckWindowsRuntimeTypes)
+                || methodSymbol.ReturnType.OriginalDefinition.HasMetadataName(MetadataNames.System_Collections_Generic_IAsyncEnumerable_T))
             {
-                IMethodSymbol methodSymbol = context.SemanticModel.GetDeclaredSymbol(methodDeclaration, context.CancellationToken);
-
-                if (methodSymbol.IsAsync)
-                    return;
-
-                if (!methodSymbol.Name.EndsWith("Async", StringComparison.Ordinal))
-                    return;
-
-                if (SymbolUtility.IsAwaitable(methodSymbol.ReturnType, shouldCheckWindowsRuntimeTypes)
-                    || methodSymbol.ReturnType.OriginalDefinition.HasMetadataName(MetadataNames.System_Collections_Generic_IAsyncEnumerable_T))
-                {
-                    return;
-                }
-
-                SyntaxToken identifier = methodDeclaration.Identifier;
-
-                DiagnosticHelpers.ReportDiagnostic(
-                    context,
-                    DiagnosticRules.NonAsynchronousMethodNameShouldNotEndWithAsync,
-                    identifier);
-
-                DiagnosticHelpers.ReportDiagnostic(
-                    context,
-                    DiagnosticRules.NonAsynchronousMethodNameShouldNotEndWithAsyncFadeOut,
-                    Location.Create(identifier.SyntaxTree, TextSpan.FromBounds(identifier.Span.End - 5, identifier.Span.End)));
+                return;
             }
-            else
+
+            SyntaxToken identifier = methodDeclaration.Identifier;
+
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
+                DiagnosticRules.NonAsynchronousMethodNameShouldNotEndWithAsync,
+                identifier);
+
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
+                DiagnosticRules.NonAsynchronousMethodNameShouldNotEndWithAsyncFadeOut,
+                Location.Create(identifier.SyntaxTree, TextSpan.FromBounds(identifier.Span.End - 5, identifier.Span.End)));
+        }
+        else
+        {
+            IMethodSymbol methodSymbol = context.SemanticModel.GetDeclaredSymbol(methodDeclaration, context.CancellationToken);
+
+            if (methodSymbol.Name.EndsWith("Async", StringComparison.Ordinal))
+                return;
+
+            if (SymbolUtility.CanBeEntryPoint(methodSymbol))
+                return;
+
+            if (!SymbolUtility.IsAwaitable(methodSymbol.ReturnType, shouldCheckWindowsRuntimeTypes)
+                && !methodSymbol.ReturnType.OriginalDefinition.HasMetadataName(MetadataNames.System_Collections_Generic_IAsyncEnumerable_T))
             {
-                IMethodSymbol methodSymbol = context.SemanticModel.GetDeclaredSymbol(methodDeclaration, context.CancellationToken);
-
-                if (methodSymbol.Name.EndsWith("Async", StringComparison.Ordinal))
-                    return;
-
-                if (SymbolUtility.CanBeEntryPoint(methodSymbol))
-                    return;
-
-                if (!SymbolUtility.IsAwaitable(methodSymbol.ReturnType, shouldCheckWindowsRuntimeTypes)
-                    && !methodSymbol.ReturnType.OriginalDefinition.HasMetadataName(MetadataNames.System_Collections_Generic_IAsyncEnumerable_T))
-                {
-                    return;
-                }
-
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AsynchronousMethodNameShouldEndWithAsync, methodDeclaration.Identifier);
+                return;
             }
+
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AsynchronousMethodNameShouldEndWithAsync, methodDeclaration.Identifier);
         }
     }
 }

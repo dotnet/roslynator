@@ -6,94 +6,93 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-namespace Roslynator.CSharp.Refactorings.ReplacePropertyWithMethod
+namespace Roslynator.CSharp.Refactorings.ReplacePropertyWithMethod;
+
+internal class ReplacePropertyWithMethodSyntaxRewriter : CSharpSyntaxRewriter
 {
-    internal class ReplacePropertyWithMethodSyntaxRewriter : CSharpSyntaxRewriter
+    private readonly ImmutableArray<SyntaxNode> _nodes;
+    private readonly string _methodName;
+    private readonly PropertyDeclarationSyntax _propertyDeclaration;
+
+    public ReplacePropertyWithMethodSyntaxRewriter(ImmutableArray<SyntaxNode> nodes, string methodName, PropertyDeclarationSyntax propertyDeclaration = null)
     {
-        private readonly ImmutableArray<SyntaxNode> _nodes;
-        private readonly string _methodName;
-        private readonly PropertyDeclarationSyntax _propertyDeclaration;
+        _nodes = nodes;
+        _methodName = methodName;
+        _propertyDeclaration = propertyDeclaration;
+    }
 
-        public ReplacePropertyWithMethodSyntaxRewriter(ImmutableArray<SyntaxNode> nodes, string methodName, PropertyDeclarationSyntax propertyDeclaration = null)
+    public override SyntaxNode VisitIdentifierName(IdentifierNameSyntax node)
+    {
+        if (_nodes.Contains(node))
         {
-            _nodes = nodes;
-            _methodName = methodName;
-            _propertyDeclaration = propertyDeclaration;
+            node = IdentifierName(_methodName).WithTriviaFrom(node);
+
+            return InvocationExpression(
+                node.WithoutTrailingTrivia(),
+                ArgumentList().WithTrailingTrivia(node.GetTrailingTrivia()));
         }
 
-        public override SyntaxNode VisitIdentifierName(IdentifierNameSyntax node)
+        return base.VisitIdentifierName(node);
+    }
+
+    public override SyntaxNode VisitMemberAccessExpression(MemberAccessExpressionSyntax node)
+    {
+        SimpleNameSyntax name = node.Name;
+
+        if (name != null && _nodes.Contains(name))
         {
-            if (_nodes.Contains(node))
-            {
-                node = IdentifierName(_methodName).WithTriviaFrom(node);
+            var expression = (ExpressionSyntax)base.Visit(node.Expression);
 
-                return InvocationExpression(
-                    node.WithoutTrailingTrivia(),
-                    ArgumentList().WithTrailingTrivia(node.GetTrailingTrivia()));
-            }
+            node = node
+                .WithExpression(expression)
+                .WithName(IdentifierName(_methodName).WithTriviaFrom(name));
 
-            return base.VisitIdentifierName(node);
+            return InvocationExpression(
+                node.WithoutTrailingTrivia(),
+                ArgumentList().WithTrailingTrivia(node.GetTrailingTrivia()));
         }
 
-        public override SyntaxNode VisitMemberAccessExpression(MemberAccessExpressionSyntax node)
-        {
-            SimpleNameSyntax name = node.Name;
+        return base.VisitMemberAccessExpression(node);
+    }
 
-            if (name != null && _nodes.Contains(name))
+    public override SyntaxNode VisitConditionalAccessExpression(ConditionalAccessExpressionSyntax node)
+    {
+        ExpressionSyntax whenNotNull = node.WhenNotNull;
+
+        if (whenNotNull?.Kind() == SyntaxKind.MemberBindingExpression)
+        {
+            var memberBinding = (MemberBindingExpressionSyntax)whenNotNull;
+
+            SimpleNameSyntax name = memberBinding.Name;
+
+            if (name != null
+                && _nodes.Contains(name))
             {
                 var expression = (ExpressionSyntax)base.Visit(node.Expression);
 
-                node = node
+                InvocationExpressionSyntax invocation = InvocationExpression(
+                    memberBinding.WithName(IdentifierName(_methodName).WithLeadingTrivia(name.GetLeadingTrivia())),
+                    ArgumentList().WithTrailingTrivia(memberBinding.GetTrailingTrivia()));
+
+                return node
                     .WithExpression(expression)
-                    .WithName(IdentifierName(_methodName).WithTriviaFrom(name));
-
-                return InvocationExpression(
-                    node.WithoutTrailingTrivia(),
-                    ArgumentList().WithTrailingTrivia(node.GetTrailingTrivia()));
+                    .WithWhenNotNull(invocation);
             }
-
-            return base.VisitMemberAccessExpression(node);
         }
 
-        public override SyntaxNode VisitConditionalAccessExpression(ConditionalAccessExpressionSyntax node)
+        return base.VisitConditionalAccessExpression(node);
+    }
+
+    public override SyntaxNode VisitPropertyDeclaration(PropertyDeclarationSyntax node)
+    {
+        if (_propertyDeclaration != null
+            && node.Span == _propertyDeclaration.Span)
         {
-            ExpressionSyntax whenNotNull = node.WhenNotNull;
+            node = (PropertyDeclarationSyntax)base.VisitPropertyDeclaration(node);
 
-            if (whenNotNull?.Kind() == SyntaxKind.MemberBindingExpression)
-            {
-                var memberBinding = (MemberBindingExpressionSyntax)whenNotNull;
-
-                SimpleNameSyntax name = memberBinding.Name;
-
-                if (name != null
-                    && _nodes.Contains(name))
-                {
-                    var expression = (ExpressionSyntax)base.Visit(node.Expression);
-
-                    InvocationExpressionSyntax invocation = InvocationExpression(
-                        memberBinding.WithName(IdentifierName(_methodName).WithLeadingTrivia(name.GetLeadingTrivia())),
-                        ArgumentList().WithTrailingTrivia(memberBinding.GetTrailingTrivia()));
-
-                    return node
-                        .WithExpression(expression)
-                        .WithWhenNotNull(invocation);
-                }
-            }
-
-            return base.VisitConditionalAccessExpression(node);
+            return ReplacePropertyWithMethodRefactoring.ToMethodDeclaration(node);
         }
 
-        public override SyntaxNode VisitPropertyDeclaration(PropertyDeclarationSyntax node)
-        {
-            if (_propertyDeclaration != null
-                && node.Span == _propertyDeclaration.Span)
-            {
-                node = (PropertyDeclarationSyntax)base.VisitPropertyDeclaration(node);
-
-                return ReplacePropertyWithMethodRefactoring.ToMethodDeclaration(node);
-            }
-
-            return base.VisitPropertyDeclaration(node);
-        }
+        return base.VisitPropertyDeclaration(node);
     }
 }

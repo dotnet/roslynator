@@ -6,30 +6,30 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
+namespace Roslynator.CSharp.Analysis.Tests;
+
+public class RCS1016UseBlockBodyWhenExpressionIsMultiLineTests : AbstractCSharpDiagnosticVerifier<UseBlockBodyOrExpressionBodyAnalyzer, UseBlockBodyOrExpressionBodyCodeFixProvider>
 {
-    public class RCS1016UseBlockBodyWhenExpressionIsMultiLineTests : AbstractCSharpDiagnosticVerifier<UseBlockBodyOrExpressionBodyAnalyzer, UseBlockBodyOrExpressionBodyCodeFixProvider>
+    private CSharpTestOptions _options_ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine;
+    private CSharpTestOptions _options_ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine;
+
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseBlockBodyOrExpressionBody;
+
+    public override CSharpTestOptions Options
     {
-        private CSharpTestOptions _options_ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine;
-        private CSharpTestOptions _options_ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine;
+        get { return base.Options.EnableConfigOption(ConfigOptionKeys.UseBlockBodyWhenExpressionSpansOverMultipleLines); }
+    }
 
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UseBlockBodyOrExpressionBody;
+    private CSharpTestOptions Options_ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine
+        => _options_ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine ??= Options.EnableConfigOption(ConfigOptionKeys.UseBlockBodyWhenExpressionSpansOverMultipleLines);
 
-        public override CSharpTestOptions Options
-        {
-            get { return base.Options.EnableConfigOption(ConfigOptionKeys.UseBlockBodyWhenExpressionSpansOverMultipleLines); }
-        }
+    private CSharpTestOptions Options_ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine
+        => _options_ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine ??= Options.EnableConfigOption(ConfigOptionKeys.UseBlockBodyWhenDeclarationSpansOverMultipleLines);
 
-        private CSharpTestOptions Options_ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine
-            => _options_ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine ??= Options.EnableConfigOption(ConfigOptionKeys.UseBlockBodyWhenExpressionSpansOverMultipleLines);
-
-        private CSharpTestOptions Options_ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine
-            => _options_ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine ??= Options.EnableConfigOption(ConfigOptionKeys.UseBlockBodyWhenDeclarationSpansOverMultipleLines);
-
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
-        public async Task Test_Method_MultilineExpression()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task Test_Method_MultilineExpression()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     string M(object x, object y) [|=> M(
@@ -47,12 +47,12 @@ class C
     }
 }
 ", options: Options_ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine);
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
-        public async Task Test_Method_MultilineExpression2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task Test_Method_MultilineExpression2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     string M(object x, object y) [|=>
@@ -71,12 +71,12 @@ class C
     }
 }
 ", options: Options_ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine);
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
-        public async Task Test_Method_MultilineExpression_NoIndentation()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task Test_Method_MultilineExpression_NoIndentation()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     string M(object x, object y) [|=>
@@ -95,12 +95,12 @@ class C
     }
 }
 ", options: Options_ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine);
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
-        public async Task Test_Method_MultilineExpression_IndentationsDiffer()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task Test_Method_MultilineExpression_IndentationsDiffer()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     string M(object x, object y, object z) [|=>
@@ -121,12 +121,12 @@ class C
     }
 }
 ", options: Options_ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine);
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
-        public async Task Test_LocalFunction_MultilineExpression()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task Test_LocalFunction_MultilineExpression()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     string M(object x, object y)
@@ -154,12 +154,12 @@ class C
     }
 }
 ", options: Options_ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine);
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
-        public async Task Test_PropertyWithGetter_MultilineExpression()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task Test_PropertyWithGetter_MultilineExpression()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     string P [|=> M(
@@ -184,12 +184,12 @@ class C
     string M(string x, string y) => null;
 }
 ", options: Options_ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine);
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
-        public async Task Test_PropertyWithGetter_MultilineDeclaration()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task Test_PropertyWithGetter_MultilineDeclaration()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
@@ -213,12 +213,12 @@ class C
     string M(string x, string y) => null;
 }
 ", options: Options_ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine);
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
-        public async Task Test_PropertyWithGetterAndSetter_MultilineExpression()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task Test_PropertyWithGetterAndSetter_MultilineExpression()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     string _f;
@@ -254,12 +254,12 @@ class C
     string M(string x, string y) => null;
 }
 ", options: Options_ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine);
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
-        public async Task Test_PropertyWithGetterAndInitSetter()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task Test_PropertyWithGetterAndInitSetter()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     string _f;
@@ -289,12 +289,12 @@ class C
     }
 }
 ", options: Options_ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine.AddAllowedCompilerDiagnosticId("CS0518"));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
-        public async Task Test_Method_MultilineDeclaration()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task Test_Method_MultilineDeclaration()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     string M(
@@ -312,12 +312,12 @@ class C
     }
 }
 ", options: Options_ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine);
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
-        public async Task Test_Method_Multiline_WithComment()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task Test_Method_Multiline_WithComment()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     object M(string p)
@@ -336,12 +336,12 @@ class C
     }
 }
 ", options: Options_ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine);
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
-        public async Task TestNoDiagnostic_PreprocessorDirective()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task TestNoDiagnostic_PreprocessorDirective()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     string M() =>
@@ -352,12 +352,12 @@ class C
 #endif
 }
 ", options: Options_ConvertExpressionBodyToBlockBodyWhenExpressionIsMultiLine);
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
-        public async Task TestNoDiagnostic_MethodWithAttributes()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBlockBodyOrExpressionBody)]
+    public async Task TestNoDiagnostic_MethodWithAttributes()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 class C
@@ -366,6 +366,5 @@ class C
     string M(object x, object y) => M(x, y);
 }
 ", options: Options_ConvertExpressionBodyToBlockBodyWhenDeclarationIsMultiLine);
-        }
     }
 }

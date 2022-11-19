@@ -7,48 +7,47 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Options;
 using Microsoft.CodeAnalysis.Rename;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class DeclarationPatternRefactoring
 {
-    internal static class DeclarationPatternRefactoring
+    internal static async Task ComputeRefactoringAsync(RefactoringContext context, DeclarationPatternSyntax declarationPattern)
     {
-        internal static async Task ComputeRefactoringAsync(RefactoringContext context, DeclarationPatternSyntax declarationPattern)
+        if (context.IsRefactoringEnabled(RefactoringDescriptors.RenameIdentifierAccordingToTypeName))
         {
-            if (context.IsRefactoringEnabled(RefactoringDescriptors.RenameIdentifierAccordingToTypeName))
+            VariableDesignationSyntax designation = declarationPattern.Designation;
+
+            if (designation?.Kind() == SyntaxKind.SingleVariableDesignation)
             {
-                VariableDesignationSyntax designation = declarationPattern.Designation;
+                var singleVariableDesignation = (SingleVariableDesignationSyntax)designation;
 
-                if (designation?.Kind() == SyntaxKind.SingleVariableDesignation)
+                SyntaxToken identifier = singleVariableDesignation.Identifier;
+
+                if (identifier.Span.Contains(context.Span))
                 {
-                    var singleVariableDesignation = (SingleVariableDesignationSyntax)designation;
+                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                    SyntaxToken identifier = singleVariableDesignation.Identifier;
+                    ISymbol symbol = semanticModel.GetDeclaredSymbol(singleVariableDesignation, context.CancellationToken);
 
-                    if (identifier.Span.Contains(context.Span))
+                    if (symbol?.Kind == SymbolKind.Local)
                     {
-                        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                        var localSymbol = (ILocalSymbol)symbol;
 
-                        ISymbol symbol = semanticModel.GetDeclaredSymbol(singleVariableDesignation, context.CancellationToken);
+                        string oldName = identifier.ValueText;
 
-                        if (symbol?.Kind == SymbolKind.Local)
+                        string newName = NameGenerator.Default.CreateUniqueLocalName(
+                            localSymbol.Type,
+                            oldName,
+                            semanticModel,
+                            singleVariableDesignation.SpanStart,
+                            cancellationToken: context.CancellationToken);
+
+                        if (newName != null)
                         {
-                            var localSymbol = (ILocalSymbol)symbol;
-
-                            string oldName = identifier.ValueText;
-
-                            string newName = NameGenerator.Default.CreateUniqueLocalName(
-                                localSymbol.Type,
-                                oldName,
-                                semanticModel,
-                                singleVariableDesignation.SpanStart,
-                                cancellationToken: context.CancellationToken);
-
-                            if (newName != null)
-                            {
-                                context.RegisterRefactoring(
-                                    $"Rename '{oldName}' to '{newName}'",
-                                    ct => Renamer.RenameSymbolAsync(context.Solution, symbol, newName, default(OptionSet), ct),
-                                    RefactoringDescriptors.RenameIdentifierAccordingToTypeName);
-                            }
+                            context.RegisterRefactoring(
+                                $"Rename '{oldName}' to '{newName}'",
+                                ct => Renamer.RenameSymbolAsync(context.Solution, symbol, newName, default(OptionSet), ct),
+                                RefactoringDescriptors.RenameIdentifierAccordingToTypeName);
                         }
                     }
                 }

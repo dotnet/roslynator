@@ -7,66 +7,65 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace Roslynator.CSharp.Analysis
+namespace Roslynator.CSharp.Analysis;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class AvoidEmptyCatchClauseThatCatchesSystemExceptionAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class AvoidEmptyCatchClauseThatCatchesSystemExceptionAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
-            {
-                if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AvoidEmptyCatchClauseThatCatchesSystemException);
+            if (_supportedDiagnostics.IsDefault)
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AvoidEmptyCatchClauseThatCatchesSystemException);
 
-                return _supportedDiagnostics;
-            }
+            return _supportedDiagnostics;
         }
+    }
 
-        public override void Initialize(AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
+
+        context.RegisterCompilationStartAction(startContext =>
         {
-            base.Initialize(context);
+            INamedTypeSymbol exceptionSymbol = startContext.Compilation.GetTypeByMetadataName("System.Exception");
 
-            context.RegisterCompilationStartAction(startContext =>
-            {
-                INamedTypeSymbol exceptionSymbol = startContext.Compilation.GetTypeByMetadataName("System.Exception");
-
-                if (exceptionSymbol == null)
-                    return;
-
-                startContext.RegisterSyntaxNodeAction(nodeContext => AnalyzeCatchClause(nodeContext, exceptionSymbol), SyntaxKind.CatchClause);
-            });
-        }
-
-        private static void AnalyzeCatchClause(SyntaxNodeAnalysisContext context, ITypeSymbol exceptionSymbol)
-        {
-            var catchClause = (CatchClauseSyntax)context.Node;
-
-            if (catchClause.ContainsDiagnostics)
+            if (exceptionSymbol == null)
                 return;
 
-            if (catchClause.Filter != null)
-                return;
+            startContext.RegisterSyntaxNodeAction(nodeContext => AnalyzeCatchClause(nodeContext, exceptionSymbol), SyntaxKind.CatchClause);
+        });
+    }
 
-            if (catchClause.Block?.Statements.Any() != false)
-                return;
+    private static void AnalyzeCatchClause(SyntaxNodeAnalysisContext context, ITypeSymbol exceptionSymbol)
+    {
+        var catchClause = (CatchClauseSyntax)context.Node;
 
-            TypeSyntax type = catchClause.Declaration?.Type;
+        if (catchClause.ContainsDiagnostics)
+            return;
 
-            if (type == null)
-                return;
+        if (catchClause.Filter != null)
+            return;
 
-            ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(type, context.CancellationToken);
+        if (catchClause.Block?.Statements.Any() != false)
+            return;
 
-            if (!SymbolEqualityComparer.Default.Equals(typeSymbol, exceptionSymbol))
-                return;
+        TypeSyntax type = catchClause.Declaration?.Type;
 
-            DiagnosticHelpers.ReportDiagnostic(
-                context,
-                DiagnosticRules.AvoidEmptyCatchClauseThatCatchesSystemException,
-                catchClause.CatchKeyword);
-        }
+        if (type == null)
+            return;
+
+        ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(type, context.CancellationToken);
+
+        if (!SymbolEqualityComparer.Default.Equals(typeSymbol, exceptionSymbol))
+            return;
+
+        DiagnosticHelpers.ReportDiagnostic(
+            context,
+            DiagnosticRules.AvoidEmptyCatchClauseThatCatchesSystemException,
+            catchClause.CatchKeyword);
     }
 }

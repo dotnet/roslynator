@@ -4,25 +4,24 @@ using System;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 
-namespace Roslynator.Text.RegularExpressions
+namespace Roslynator.Text.RegularExpressions;
+
+[DebuggerDisplay("{DebuggerDisplay,nq}")]
+public class RegexCapture : ICapture
 {
-    [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public class RegexCapture : ICapture
+    public RegexCapture(Capture capture)
     {
-        public RegexCapture(Capture capture)
-        {
-            Capture = capture ?? throw new ArgumentNullException(nameof(capture));
-        }
-
-        public Capture Capture { get; }
-
-        public string Value => Capture.Value;
-
-        public int Index => Capture.Index;
-
-        public int Length => Capture.Length;
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string DebuggerDisplay => $"{Index}  {Length}  {Value}";
+        Capture = capture ?? throw new ArgumentNullException(nameof(capture));
     }
+
+    public Capture Capture { get; }
+
+    public string Value => Capture.Value;
+
+    public int Index => Capture.Index;
+
+    public int Length => Capture.Length;
+
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+    private string DebuggerDisplay => $"{Index}  {Length}  {Value}";
 }

@@ -11,52 +11,51 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ElementAccessCodeFixProvider))]
+[Shared]
+public sealed class ElementAccessCodeFixProvider : CompilerDiagnosticCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ElementAccessCodeFixProvider))]
-    [Shared]
-    public sealed class ElementAccessCodeFixProvider : CompilerDiagnosticCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
-        {
-            get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.CS0021_CannotApplyIndexingToExpression); }
-        }
+        get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.CS0021_CannotApplyIndexingToExpression); }
+    }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            Diagnostic diagnostic = context.Diagnostics[0];
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        Diagnostic diagnostic = context.Diagnostics[0];
 
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.ReplaceElementAccessWithInvocation, context.Document, root.SyntaxTree))
-                return;
+        if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.ReplaceElementAccessWithInvocation, context.Document, root.SyntaxTree))
+            return;
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out ElementAccessExpressionSyntax elementAccess))
-                return;
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out ElementAccessExpressionSyntax elementAccess))
+            return;
 
-            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-            BracketedArgumentListSyntax argumentList = elementAccess.ArgumentList;
+        BracketedArgumentListSyntax argumentList = elementAccess.ArgumentList;
 
-            SyntaxToken openBracket = argumentList.OpenBracketToken;
-            SyntaxToken closeBracket = argumentList.CloseBracketToken;
+        SyntaxToken openBracket = argumentList.OpenBracketToken;
+        SyntaxToken closeBracket = argumentList.CloseBracketToken;
 
-            InvocationExpressionSyntax invocationExpression = InvocationExpression(
-                elementAccess.Expression,
-                ArgumentList(
-                    Token(openBracket.LeadingTrivia, SyntaxKind.OpenParenToken, openBracket.TrailingTrivia),
-                    argumentList.Arguments,
-                    Token(closeBracket.LeadingTrivia, SyntaxKind.CloseParenToken, closeBracket.TrailingTrivia)));
+        InvocationExpressionSyntax invocationExpression = InvocationExpression(
+            elementAccess.Expression,
+            ArgumentList(
+                Token(openBracket.LeadingTrivia, SyntaxKind.OpenParenToken, openBracket.TrailingTrivia),
+                argumentList.Arguments,
+                Token(closeBracket.LeadingTrivia, SyntaxKind.CloseParenToken, closeBracket.TrailingTrivia)));
 
-            if (semanticModel.GetSpeculativeMethodSymbol(elementAccess.SpanStart, invocationExpression) == null)
-                return;
+        if (semanticModel.GetSpeculativeMethodSymbol(elementAccess.SpanStart, invocationExpression) == null)
+            return;
 
-            CodeAction codeAction = CodeAction.Create(
-                "Replace [] with ()",
-                ct => context.Document.ReplaceNodeAsync(elementAccess, invocationExpression, ct),
-                GetEquivalenceKey(diagnostic));
+        CodeAction codeAction = CodeAction.Create(
+            "Replace [] with ()",
+            ct => context.Document.ReplaceNodeAsync(elementAccess, invocationExpression, ct),
+            GetEquivalenceKey(diagnostic));
 
-            context.RegisterCodeFix(codeAction, diagnostic);
-        }
+        context.RegisterCodeFix(codeAction, diagnostic);
     }
 }

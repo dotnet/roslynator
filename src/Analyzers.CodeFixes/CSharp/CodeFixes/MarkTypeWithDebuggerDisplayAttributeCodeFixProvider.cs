@@ -10,32 +10,31 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(MarkTypeWithDebuggerDisplayAttributeCodeFixProvider))]
+[Shared]
+public sealed class MarkTypeWithDebuggerDisplayAttributeCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(MarkTypeWithDebuggerDisplayAttributeCodeFixProvider))]
-    [Shared]
-    public sealed class MarkTypeWithDebuggerDisplayAttributeCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
-        {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute); }
-        }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute); }
+    }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out TypeDeclarationSyntax typeDeclaration))
-                return;
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out TypeDeclarationSyntax typeDeclaration))
+            return;
 
-            Diagnostic diagnostic = context.Diagnostics[0];
+        Diagnostic diagnostic = context.Diagnostics[0];
 
-            CodeAction codeAction = CodeAction.Create(
-                "Use DebuggerDisplay attribute",
-                ct => MarkTypeWithDebuggerDisplayAttributeRefactoring.RefactorAsync(context.Document, typeDeclaration, ct),
-                GetEquivalenceKey(diagnostic));
+        CodeAction codeAction = CodeAction.Create(
+            "Use DebuggerDisplay attribute",
+            ct => MarkTypeWithDebuggerDisplayAttributeRefactoring.RefactorAsync(context.Document, typeDeclaration, ct),
+            GetEquivalenceKey(diagnostic));
 
-            context.RegisterCodeFix(codeAction, diagnostic);
-        }
+        context.RegisterCodeFix(codeAction, diagnostic);
     }
 }

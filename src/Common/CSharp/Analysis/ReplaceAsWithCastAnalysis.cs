@@ -5,29 +5,28 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Analysis
+namespace Roslynator.CSharp.Analysis;
+
+internal static class ReplaceAsWithCastAnalysis
 {
-    internal static class ReplaceAsWithCastAnalysis
+    public static bool IsFixable(
+        BinaryExpressionSyntax binaryExpression,
+        SemanticModel semanticModel,
+        CancellationToken cancellationToken = default)
     {
-        public static bool IsFixable(
-            BinaryExpressionSyntax binaryExpression,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken = default)
-        {
-            AsExpressionInfo info = SyntaxInfo.AsExpressionInfo(binaryExpression);
+        AsExpressionInfo info = SyntaxInfo.AsExpressionInfo(binaryExpression);
 
-            if (!info.Success)
-                return false;
+        if (!info.Success)
+            return false;
 
-            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(info.Type, cancellationToken);
+        ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(info.Type, cancellationToken);
 
-            if (typeSymbol == null)
-                return false;
+        if (typeSymbol == null)
+            return false;
 
-            if (!semanticModel.IsExplicitConversion(info.Expression, typeSymbol))
-                return false;
+        if (!semanticModel.IsExplicitConversion(info.Expression, typeSymbol))
+            return false;
 
-            return true;
-        }
+        return true;
     }
 }

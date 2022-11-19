@@ -10,52 +10,51 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 using Roslynator.CSharp.Syntax;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(TypeParameterCodeFixProvider))]
+[Shared]
+public sealed class TypeParameterCodeFixProvider : CompilerDiagnosticCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(TypeParameterCodeFixProvider))]
-    [Shared]
-    public sealed class TypeParameterCodeFixProvider : CompilerDiagnosticCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
-        {
-            get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.CS0693_TypeParameterHasSameNameAsTypeParameterFromOuterType); }
-        }
+        get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.CS0693_TypeParameterHasSameNameAsTypeParameterFromOuterType); }
+    }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            Diagnostic diagnostic = context.Diagnostics[0];
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        Diagnostic diagnostic = context.Diagnostics[0];
 
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveTypeParameter, context.Document, root.SyntaxTree))
-                return;
+        if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveTypeParameter, context.Document, root.SyntaxTree))
+            return;
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out TypeParameterSyntax typeParameter))
-                return;
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out TypeParameterSyntax typeParameter))
+            return;
 
-            string name = typeParameter.Identifier.ValueText;
+        string name = typeParameter.Identifier.ValueText;
 
-            if (string.IsNullOrEmpty(name))
-                return;
+        if (string.IsNullOrEmpty(name))
+            return;
 
-            CodeAction codeAction = CodeAction.Create(
-                $"Remove type parameter '{name}'",
-                ct =>
-                {
-                    GenericInfo genericInfo = SyntaxInfo.GenericInfo(typeParameter);
+        CodeAction codeAction = CodeAction.Create(
+            $"Remove type parameter '{name}'",
+            ct =>
+            {
+                GenericInfo genericInfo = SyntaxInfo.GenericInfo(typeParameter);
 
-                    GenericInfo newGenericInfo = genericInfo.RemoveTypeParameter(typeParameter);
+                GenericInfo newGenericInfo = genericInfo.RemoveTypeParameter(typeParameter);
 
-                    TypeParameterConstraintClauseSyntax constraintClause = genericInfo.FindConstraintClause(name);
+                TypeParameterConstraintClauseSyntax constraintClause = genericInfo.FindConstraintClause(name);
 
-                    if (constraintClause != null)
-                        newGenericInfo = newGenericInfo.RemoveConstraintClause(constraintClause);
+                if (constraintClause != null)
+                    newGenericInfo = newGenericInfo.RemoveConstraintClause(constraintClause);
 
-                    return context.Document.ReplaceNodeAsync(genericInfo.Node, newGenericInfo.Node, ct);
-                },
-                GetEquivalenceKey(diagnostic));
+                return context.Document.ReplaceNodeAsync(genericInfo.Node, newGenericInfo.Node, ct);
+            },
+            GetEquivalenceKey(diagnostic));
 
-            context.RegisterCodeFix(codeAction, diagnostic);
-        }
+        context.RegisterCodeFix(codeAction, diagnostic);
     }
 }

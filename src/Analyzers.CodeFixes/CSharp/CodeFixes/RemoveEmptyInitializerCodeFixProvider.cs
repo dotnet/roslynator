@@ -10,30 +10,29 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(RemoveEmptyInitializerCodeFixProvider))]
+[Shared]
+public sealed class RemoveEmptyInitializerCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(RemoveEmptyInitializerCodeFixProvider))]
-    [Shared]
-    public sealed class RemoveEmptyInitializerCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
-        {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveEmptyInitializer); }
-        }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveEmptyInitializer); }
+    }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out ObjectCreationExpressionSyntax objectCreationExpression))
-                return;
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out ObjectCreationExpressionSyntax objectCreationExpression))
+            return;
 
-            CodeAction codeAction = CodeAction.Create(
-                "Remove empty initializer",
-                ct => RemoveEmptyInitializerRefactoring.RefactorAsync(context.Document, objectCreationExpression, ct),
-                GetEquivalenceKey(DiagnosticIdentifiers.RemoveEmptyInitializer));
+        CodeAction codeAction = CodeAction.Create(
+            "Remove empty initializer",
+            ct => RemoveEmptyInitializerRefactoring.RefactorAsync(context.Document, objectCreationExpression, ct),
+            GetEquivalenceKey(DiagnosticIdentifiers.RemoveEmptyInitializer));
 
-            context.RegisterCodeFix(codeAction, context.Diagnostics);
-        }
+        context.RegisterCodeFix(codeAction, context.Diagnostics);
     }
 }

@@ -11,47 +11,46 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(RemoveRedundantCastCodeFixProvider))]
+[Shared]
+public sealed class RemoveRedundantCastCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(RemoveRedundantCastCodeFixProvider))]
-    [Shared]
-    public sealed class RemoveRedundantCastCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveRedundantCast); }
+    }
+
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out SyntaxNode node, predicate: f => f.IsKind(SyntaxKind.CastExpression, SyntaxKind.InvocationExpression)))
+            return;
+
+        switch (node.Kind())
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveRedundantCast); }
-        }
+            case SyntaxKind.CastExpression:
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Remove redundant cast",
+                        ct => RemoveRedundantCastRefactoring.RefactorAsync(context.Document, (CastExpressionSyntax)node, ct),
+                        GetEquivalenceKey(DiagnosticIdentifiers.RemoveRedundantCast));
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+                    context.RegisterCodeFix(codeAction, context.Diagnostics);
+                    break;
+                }
+            case SyntaxKind.InvocationExpression:
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Remove redundant cast",
+                        ct => RemoveRedundantCastRefactoring.RefactorAsync(context.Document, (InvocationExpressionSyntax)node, ct),
+                        GetEquivalenceKey(DiagnosticIdentifiers.RemoveRedundantCast));
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out SyntaxNode node, predicate: f => f.IsKind(SyntaxKind.CastExpression, SyntaxKind.InvocationExpression)))
-                return;
-
-            switch (node.Kind())
-            {
-                case SyntaxKind.CastExpression:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Remove redundant cast",
-                            ct => RemoveRedundantCastRefactoring.RefactorAsync(context.Document, (CastExpressionSyntax)node, ct),
-                            GetEquivalenceKey(DiagnosticIdentifiers.RemoveRedundantCast));
-
-                        context.RegisterCodeFix(codeAction, context.Diagnostics);
-                        break;
-                    }
-                case SyntaxKind.InvocationExpression:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Remove redundant cast",
-                            ct => RemoveRedundantCastRefactoring.RefactorAsync(context.Document, (InvocationExpressionSyntax)node, ct),
-                            GetEquivalenceKey(DiagnosticIdentifiers.RemoveRedundantCast));
-
-                        context.RegisterCodeFix(codeAction, context.Diagnostics);
-                        break;
-                    }
-            }
+                    context.RegisterCodeFix(codeAction, context.Diagnostics);
+                    break;
+                }
         }
     }
 }

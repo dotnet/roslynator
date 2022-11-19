@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0120ConvertConditionalExpressionToIfElseTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.ConvertConditionalExpressionToIfElse;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalExpressionToIfElse)]
-        public async Task Test_LocalDeclaration()
-        {
-            await VerifyRefactoringAsync(@"
+public class RR0120ConvertConditionalExpressionToIfElseTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.ConvertConditionalExpressionToIfElse;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalExpressionToIfElse)]
+    public async Task Test_LocalDeclaration()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M(bool f, string x, string y)
@@ -38,12 +38,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalExpressionToIfElse)]
-        public async Task Test_LocalDeclaration_Multiline()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalExpressionToIfElse)]
+    public async Task Test_LocalDeclaration_Multiline()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M(bool f, string x, string y)
@@ -70,12 +70,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalExpressionToIfElse)]
-        public async Task Test_LocalDeclaration_Recursive()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalExpressionToIfElse)]
+    public async Task Test_LocalDeclaration_Recursive()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M(bool f, bool f2, string x, string y, string z)
@@ -107,12 +107,12 @@ class C
     }
 }
 ", equivalenceKey: ConditionalExpressionRefactoring.ConvertConditionalExpressionToIfElseRecursiveEquivalenceKey);
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalExpressionToIfElse)]
-        public async Task Test_LocalDeclaration_Recursive2()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalExpressionToIfElse)]
+    public async Task Test_LocalDeclaration_Recursive2()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M(bool f, bool f2, string x, string y, string z)
@@ -141,12 +141,12 @@ class C
     }
 }
 ", equivalenceKey: ConditionalExpressionRefactoring.ConvertConditionalExpressionToIfElseRecursiveEquivalenceKey);
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalExpressionToIfElse)]
-        public async Task Test_SimpleAssignment()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalExpressionToIfElse)]
+    public async Task Test_SimpleAssignment()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M(bool f, string x, string y)
@@ -172,12 +172,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalExpressionToIfElse)]
-        public async Task Test_SimpleAssignment_Multiline()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalExpressionToIfElse)]
+    public async Task Test_SimpleAssignment_Multiline()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M(bool f, string x, string y)
@@ -205,12 +205,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalExpressionToIfElse)]
-        public async Task Test_SimpleAssignment_Recursive()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalExpressionToIfElse)]
+    public async Task Test_SimpleAssignment_Recursive()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M(bool f, bool f2, string x, string y, string z)
@@ -243,12 +243,12 @@ class C
     }
 }
 ", equivalenceKey: ConditionalExpressionRefactoring.ConvertConditionalExpressionToIfElseRecursiveEquivalenceKey);
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalExpressionToIfElse)]
-        public async Task Test_SimpleAssignment_Recursive2()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalExpressionToIfElse)]
+    public async Task Test_SimpleAssignment_Recursive2()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M(bool f, bool f2, string x, string y, string z)
@@ -278,12 +278,12 @@ class C
     }
 }
 ", equivalenceKey: ConditionalExpressionRefactoring.ConvertConditionalExpressionToIfElseRecursiveEquivalenceKey);
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalExpressionToIfElse)]
-        public async Task Test_ReturnStatement()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalExpressionToIfElse)]
+    public async Task Test_ReturnStatement()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     string M(bool f, string x, string y)
@@ -307,12 +307,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalExpressionToIfElse)]
-        public async Task Test_ReturnStatement_Multiline()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalExpressionToIfElse)]
+    public async Task Test_ReturnStatement_Multiline()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     string M(bool f, string x, string y)
@@ -338,12 +338,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalExpressionToIfElse)]
-        public async Task Test_ReturnStatement_Recursive()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalExpressionToIfElse)]
+    public async Task Test_ReturnStatement_Recursive()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     string M(bool f, bool f2, bool f3)
@@ -378,12 +378,12 @@ class C
     }
 }
 ", equivalenceKey: ConditionalExpressionRefactoring.ConvertConditionalExpressionToIfElseRecursiveEquivalenceKey);
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalExpressionToIfElse)]
-        public async Task Test_ReturnStatement_Recursive2()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalExpressionToIfElse)]
+    public async Task Test_ReturnStatement_Recursive2()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     string M(bool f, bool f2, bool f3)
@@ -415,12 +415,12 @@ class C
     }
 }
 ", equivalenceKey: ConditionalExpressionRefactoring.ConvertConditionalExpressionToIfElseRecursiveEquivalenceKey);
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalExpressionToIfElse)]
-        public async Task Test_YieldReturnStatement()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalExpressionToIfElse)]
+    public async Task Test_YieldReturnStatement()
+    {
+        await VerifyRefactoringAsync(@"
 using System.Collections.Generic;
 
 class C
@@ -448,12 +448,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalExpressionToIfElse)]
-        public async Task Test_YieldReturnStatement_Multiline()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalExpressionToIfElse)]
+    public async Task Test_YieldReturnStatement_Multiline()
+    {
+        await VerifyRefactoringAsync(@"
 using System.Collections.Generic;
 
 class C
@@ -483,12 +483,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalExpressionToIfElse)]
-        public async Task Test_YieldReturnStatement_Recursive()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalExpressionToIfElse)]
+    public async Task Test_YieldReturnStatement_Recursive()
+    {
+        await VerifyRefactoringAsync(@"
 using System.Collections.Generic;
 
 class C
@@ -527,12 +527,12 @@ class C
     }
 }
 ", equivalenceKey: ConditionalExpressionRefactoring.ConvertConditionalExpressionToIfElseRecursiveEquivalenceKey);
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalExpressionToIfElse)]
-        public async Task Test_YieldReturnStatement_Recursive2()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertConditionalExpressionToIfElse)]
+    public async Task Test_YieldReturnStatement_Recursive2()
+    {
+        await VerifyRefactoringAsync(@"
 using System.Collections.Generic;
 
 class C
@@ -568,6 +568,5 @@ class C
     }
 }
 ", equivalenceKey: ConditionalExpressionRefactoring.ConvertConditionalExpressionToIfElseRecursiveEquivalenceKey);
-        }
     }
 }

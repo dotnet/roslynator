@@ -2,19 +2,18 @@
 
 using Microsoft.CodeAnalysis.CodeRefactorings;
 
-namespace Roslynator.Testing.CSharp.Xunit
+namespace Roslynator.Testing.CSharp.Xunit;
+
+/// <summary>
+/// Represents verifier for a C# code refactoring.
+/// </summary>
+public abstract class XunitRefactoringVerifier<TRefactoringProvider> : CSharpRefactoringVerifier<TRefactoringProvider>
+    where TRefactoringProvider : CodeRefactoringProvider, new()
 {
     /// <summary>
-    /// Represents verifier for a C# code refactoring.
+    /// Initializes a new instance of <see cref="XunitRefactoringVerifier{TRefactoringProvider}"/>.
     /// </summary>
-    public abstract class XunitRefactoringVerifier<TRefactoringProvider> : CSharpRefactoringVerifier<TRefactoringProvider>
-        where TRefactoringProvider : CodeRefactoringProvider, new()
+    protected XunitRefactoringVerifier() : base(XunitAssert.Instance)
     {
-        /// <summary>
-        /// Initializes a new instance of <see cref="XunitRefactoringVerifier{TRefactoringProvider}"/>.
-        /// </summary>
-        protected XunitRefactoringVerifier() : base(XunitAssert.Instance)
-        {
-        }
     }
 }

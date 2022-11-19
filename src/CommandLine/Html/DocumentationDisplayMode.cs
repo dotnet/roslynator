@@ -1,10 +1,9 @@
 ﻿// Copyright (c) Josef Pihrt and Contributors. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-namespace Roslynator.Documentation.Html
+namespace Roslynator.Documentation.Html;
+
+internal enum DocumentationDisplayMode
 {
-    internal enum DocumentationDisplayMode
-    {
-        ToolTip,
-        Xml,
-    }
+    ToolTip,
+    Xml,
 }

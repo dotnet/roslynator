@@ -4,26 +4,25 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Analysis
-{
-    internal static class AddBracesToSwitchSectionAnalysis
-    {
-        public static bool CanAddBraces(SwitchSectionSyntax section)
-        {
-            SyntaxList<StatementSyntax> statements = section.Statements;
+namespace Roslynator.CSharp.Analysis;
 
-            if (statements.Count > 1)
-            {
-                return true;
-            }
-            else if (statements.Count == 1 && statements[0].Kind() != SyntaxKind.Block)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+internal static class AddBracesToSwitchSectionAnalysis
+{
+    public static bool CanAddBraces(SwitchSectionSyntax section)
+    {
+        SyntaxList<StatementSyntax> statements = section.Statements;
+
+        if (statements.Count > 1)
+        {
+            return true;
+        }
+        else if (statements.Count == 1 && statements[0].Kind() != SyntaxKind.Block)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 }

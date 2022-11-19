@@ -7,40 +7,39 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class SimplifyCoalesceExpressionRefactoring
 {
-    internal static class SimplifyCoalesceExpressionRefactoring
+    public static Task<Document> RefactorAsync(
+        Document document,
+        BinaryExpressionSyntax binaryExpression,
+        ExpressionSyntax expression,
+        CancellationToken cancellationToken)
     {
-        public static Task<Document> RefactorAsync(
-            Document document,
-            BinaryExpressionSyntax binaryExpression,
-            ExpressionSyntax expression,
-            CancellationToken cancellationToken)
+        ExpressionSyntax left = binaryExpression.Left;
+        ExpressionSyntax right = binaryExpression.Right;
+        SyntaxToken operatorToken = binaryExpression.OperatorToken;
+
+        ExpressionSyntax newNode;
+
+        if (expression == left)
         {
-            ExpressionSyntax left = binaryExpression.Left;
-            ExpressionSyntax right = binaryExpression.Right;
-            SyntaxToken operatorToken = binaryExpression.OperatorToken;
+            IEnumerable<SyntaxTrivia> trivia = binaryExpression.DescendantTrivia(TextSpan.FromBounds(left.FullSpan.Start, operatorToken.FullSpan.End));
 
-            ExpressionSyntax newNode;
-
-            if (expression == left)
-            {
-                IEnumerable<SyntaxTrivia> trivia = binaryExpression.DescendantTrivia(TextSpan.FromBounds(left.FullSpan.Start, operatorToken.FullSpan.End));
-
-                newNode = right.WithLeadingTrivia(trivia);
-            }
-            else
-            {
-                IEnumerable<SyntaxTrivia> trivia = binaryExpression.DescendantTrivia(TextSpan.FromBounds(operatorToken.FullSpan.Start, right.FullSpan.End));
-
-                newNode = left.WithTrailingTrivia(trivia);
-            }
-
-            newNode = newNode
-                .Parenthesize()
-                .WithFormatterAnnotation();
-
-            return document.ReplaceNodeAsync(binaryExpression, newNode, cancellationToken);
+            newNode = right.WithLeadingTrivia(trivia);
         }
+        else
+        {
+            IEnumerable<SyntaxTrivia> trivia = binaryExpression.DescendantTrivia(TextSpan.FromBounds(operatorToken.FullSpan.Start, right.FullSpan.End));
+
+            newNode = left.WithTrailingTrivia(trivia);
+        }
+
+        newNode = newNode
+            .Parenthesize()
+            .WithFormatterAnnotation();
+
+        return document.ReplaceNodeAsync(binaryExpression, newNode, cancellationToken);
     }
 }

@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0216AddAllPropertiesToInitializerTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.AddAllPropertiesToInitializer;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddAllPropertiesToInitializer)]
-        public async Task Test_EmptyObjectInitializer()
-        {
-            await VerifyRefactoringAsync(@"
+public class RR0216AddAllPropertiesToInitializerTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.AddAllPropertiesToInitializer;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddAllPropertiesToInitializer)]
+    public async Task Test_EmptyObjectInitializer()
+    {
+        await VerifyRefactoringAsync(@"
 using System;
 
 class C
@@ -44,12 +44,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddAllPropertiesToInitializer)]
-        public async Task Test_EmptyRecordInitializer()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddAllPropertiesToInitializer)]
+    public async Task Test_EmptyRecordInitializer()
+    {
+        await VerifyRefactoringAsync(@"
 using System;
 
 record C
@@ -84,12 +84,12 @@ record C
 
 namespace System.Runtime.CompilerServices { internal static class IsExternalInit {} }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddAllPropertiesToInitializer)]
-        public async Task Test_ObjectInitializer_Accessibility()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddAllPropertiesToInitializer)]
+    public async Task Test_ObjectInitializer_Accessibility()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     public string P0 { get; set; }
@@ -124,12 +124,12 @@ class C2 : C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddAllPropertiesToInitializer)]
-        public async Task Test_ObjectInitializer_Span()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddAllPropertiesToInitializer)]
+    public async Task Test_ObjectInitializer_Span()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     public string P0 { get; set; }
@@ -160,12 +160,12 @@ class C2 : C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddAllPropertiesToInitializer)]
-        public async Task Test_ObjectInitializer_Span2()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddAllPropertiesToInitializer)]
+    public async Task Test_ObjectInitializer_Span2()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     public string P0 { get; set; }
@@ -200,12 +200,12 @@ class C2 : C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddAllPropertiesToInitializer)]
-        public async Task TestNoRefactoring_AllObjectPropertiesInitialized()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddAllPropertiesToInitializer)]
+    public async Task TestNoRefactoring_AllObjectPropertiesInitialized()
+    {
+        await VerifyNoRefactoringAsync(@"
 class C
 {
     public string P1 { get; set; }
@@ -217,12 +217,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddAllPropertiesToInitializer)]
-        public async Task TestNoRefactoring_AnonymousType()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddAllPropertiesToInitializer)]
+    public async Task TestNoRefactoring_AnonymousType()
+    {
+        await VerifyNoRefactoringAsync(@"
 class C
 {
     void M()
@@ -231,6 +231,5 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
     }
 }

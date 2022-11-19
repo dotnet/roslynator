@@ -10,142 +10,141 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.Text;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class CommentOutRefactoring
 {
-    internal static class CommentOutRefactoring
+    public static void RegisterRefactoring(RefactoringContext context, MemberDeclarationSyntax member)
     {
-        public static void RegisterRefactoring(RefactoringContext context, MemberDeclarationSyntax member)
-        {
-            FileLinePositionSpan fileSpan = GetFileLinePositionSpan(member, context.CancellationToken);
+        FileLinePositionSpan fileSpan = GetFileLinePositionSpan(member, context.CancellationToken);
 
-            context.RegisterRefactoring(
-                $"Comment out {CSharpFacts.GetTitle(member)}",
-                ct => RefactorAsync(context.Document, fileSpan.StartLine(), fileSpan.EndLine(), ct),
-                RefactoringDescriptors.CommentOutMemberDeclaration);
+        context.RegisterRefactoring(
+            $"Comment out {CSharpFacts.GetTitle(member)}",
+            ct => RefactorAsync(context.Document, fileSpan.StartLine(), fileSpan.EndLine(), ct),
+            RefactoringDescriptors.CommentOutMemberDeclaration);
+    }
+
+    public static void RegisterRefactoring(RefactoringContext context, LocalFunctionStatementSyntax localFunctionStatement)
+    {
+        FileLinePositionSpan fileSpan = GetFileLinePositionSpan(localFunctionStatement, context.CancellationToken);
+
+        context.RegisterRefactoring(
+            $"Comment out {CSharpFacts.GetTitle(localFunctionStatement)}",
+            ct => RefactorAsync(context.Document, fileSpan.StartLine(), fileSpan.EndLine(), ct),
+            RefactoringDescriptors.CommentOutMemberDeclaration);
+    }
+
+    public static void RegisterRefactoring(RefactoringContext context, StatementSyntax statement)
+    {
+        FileLinePositionSpan fileSpan = statement.SyntaxTree.GetLineSpan(statement.Span, context.CancellationToken);
+
+        context.RegisterRefactoring(
+            "Comment out statement",
+            ct => RefactorAsync(context.Document, fileSpan.StartLine(), fileSpan.EndLine(), ct),
+            RefactoringDescriptors.CommentOutStatement);
+    }
+
+    private static async Task<Document> RefactorAsync(
+        Document document,
+        int startLine,
+        int endLine,
+        CancellationToken cancellationToken = default)
+    {
+        SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
+
+        int minIndentLength = GetMinIndentLength(sourceText, startLine, endLine);
+
+        if (minIndentLength >= 0)
+        {
+            SourceText newSourceText = sourceText.WithChange(
+                TextSpan.FromBounds(
+                    sourceText.Lines[startLine].Span.Start,
+                    sourceText.Lines[endLine].SpanIncludingLineBreak.End),
+                CommentOutLines(sourceText, startLine, endLine, minIndentLength));
+
+            return document.WithText(newSourceText);
         }
 
-        public static void RegisterRefactoring(RefactoringContext context, LocalFunctionStatementSyntax localFunctionStatement)
+        return document;
+    }
+
+    private static int GetMinIndentLength(SourceText sourceText, int startLine, int endLine)
+    {
+        int minIndentLength = -1;
+
+        for (int i = startLine; i <= endLine; i++)
         {
-            FileLinePositionSpan fileSpan = GetFileLinePositionSpan(localFunctionStatement, context.CancellationToken);
+            TextLine textLine = sourceText.Lines[i];
 
-            context.RegisterRefactoring(
-                $"Comment out {CSharpFacts.GetTitle(localFunctionStatement)}",
-                ct => RefactorAsync(context.Document, fileSpan.StartLine(), fileSpan.EndLine(), ct),
-                RefactoringDescriptors.CommentOutMemberDeclaration);
-        }
+            int indentLength = GetIndentLength(textLine.ToString());
 
-        public static void RegisterRefactoring(RefactoringContext context, StatementSyntax statement)
-        {
-            FileLinePositionSpan fileSpan = statement.SyntaxTree.GetLineSpan(statement.Span, context.CancellationToken);
-
-            context.RegisterRefactoring(
-                "Comment out statement",
-                ct => RefactorAsync(context.Document, fileSpan.StartLine(), fileSpan.EndLine(), ct),
-                RefactoringDescriptors.CommentOutStatement);
-        }
-
-        private static async Task<Document> RefactorAsync(
-            Document document,
-            int startLine,
-            int endLine,
-            CancellationToken cancellationToken = default)
-        {
-            SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
-
-            int minIndentLength = GetMinIndentLength(sourceText, startLine, endLine);
-
-            if (minIndentLength >= 0)
+            if (indentLength < textLine.Span.Length)
             {
-                SourceText newSourceText = sourceText.WithChange(
-                    TextSpan.FromBounds(
-                        sourceText.Lines[startLine].Span.Start,
-                        sourceText.Lines[endLine].SpanIncludingLineBreak.End),
-                    CommentOutLines(sourceText, startLine, endLine, minIndentLength));
-
-                return document.WithText(newSourceText);
-            }
-
-            return document;
-        }
-
-        private static int GetMinIndentLength(SourceText sourceText, int startLine, int endLine)
-        {
-            int minIndentLength = -1;
-
-            for (int i = startLine; i <= endLine; i++)
-            {
-                TextLine textLine = sourceText.Lines[i];
-
-                int indentLength = GetIndentLength(textLine.ToString());
-
-                if (indentLength < textLine.Span.Length)
+                if (minIndentLength == -1 || indentLength < minIndentLength)
                 {
-                    if (minIndentLength == -1 || indentLength < minIndentLength)
-                    {
-                        minIndentLength = indentLength;
-                    }
+                    minIndentLength = indentLength;
                 }
             }
-
-            return minIndentLength;
         }
 
-        private static string CommentOutLines(SourceText sourceText, int startLine, int endLine, int minIndentLength)
+        return minIndentLength;
+    }
+
+    private static string CommentOutLines(SourceText sourceText, int startLine, int endLine, int minIndentLength)
+    {
+        StringBuilder sb = StringBuilderCache.GetInstance();
+
+        for (int i = startLine; i <= endLine; i++)
         {
-            StringBuilder sb = StringBuilderCache.GetInstance();
+            TextLine textLine = sourceText.Lines[i];
+            string s = textLine.ToString();
 
-            for (int i = startLine; i <= endLine; i++)
+            if (StringUtility.IsEmptyOrWhitespace(s))
             {
-                TextLine textLine = sourceText.Lines[i];
-                string s = textLine.ToString();
-
-                if (StringUtility.IsEmptyOrWhitespace(s))
-                {
-                    sb.Append(s);
-                }
-                else
-                {
-                    sb.Append(s, 0, minIndentLength);
-                    sb.Append("//");
-                    sb.Append(s, minIndentLength, s.Length - minIndentLength);
-                }
-
-                sb.Append(sourceText.GetSubText(TextSpan.FromBounds(textLine.Span.End, textLine.SpanIncludingLineBreak.End)));
-            }
-
-            return StringBuilderCache.GetStringAndFree(sb);
-        }
-
-        private static FileLinePositionSpan GetFileLinePositionSpan(SyntaxNode node, CancellationToken cancellationToken)
-        {
-            SyntaxTrivia trivia = node
-                .GetLeadingTrivia()
-                .Reverse()
-                .SkipWhile(f => f.IsWhitespaceOrEndOfLineTrivia())
-                .FirstOrDefault();
-
-            if (trivia.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia))
-            {
-                TextSpan span = TextSpan.FromBounds(trivia.SpanStart, node.Span.End);
-
-                return node.SyntaxTree.GetLineSpan(span, cancellationToken);
+                sb.Append(s);
             }
             else
             {
-                return node.SyntaxTree.GetLineSpan(node.Span, cancellationToken);
+                sb.Append(s, 0, minIndentLength);
+                sb.Append("//");
+                sb.Append(s, minIndentLength, s.Length - minIndentLength);
             }
+
+            sb.Append(sourceText.GetSubText(TextSpan.FromBounds(textLine.Span.End, textLine.SpanIncludingLineBreak.End)));
         }
 
-        private static int GetIndentLength(string value)
+        return StringBuilderCache.GetStringAndFree(sb);
+    }
+
+    private static FileLinePositionSpan GetFileLinePositionSpan(SyntaxNode node, CancellationToken cancellationToken)
+    {
+        SyntaxTrivia trivia = node
+            .GetLeadingTrivia()
+            .Reverse()
+            .SkipWhile(f => f.IsWhitespaceOrEndOfLineTrivia())
+            .FirstOrDefault();
+
+        if (trivia.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia))
         {
-            int i = 0;
-            while (i < value.Length
-                && char.IsWhiteSpace(value, i))
-            {
-                i++;
-            }
+            TextSpan span = TextSpan.FromBounds(trivia.SpanStart, node.Span.End);
 
-            return i;
+            return node.SyntaxTree.GetLineSpan(span, cancellationToken);
         }
+        else
+        {
+            return node.SyntaxTree.GetLineSpan(node.Span, cancellationToken);
+        }
+    }
+
+    private static int GetIndentLength(string value)
+    {
+        int i = 0;
+        while (i < value.Length
+            && char.IsWhiteSpace(value, i))
+        {
+            i++;
+        }
+
+        return i;
     }
 }
