@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1231MakeParameterRefReadOnlyTests : AbstractCSharpDiagnosticVerifier<RefReadOnlyParameterAnalyzer, ParameterCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.MakeParameterRefReadOnly;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeParameterRefReadOnly)]
-        public async Task Test()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1231MakeParameterRefReadOnlyTests : AbstractCSharpDiagnosticVerifier<RefReadOnlyParameterAnalyzer, ParameterCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.MakeParameterRefReadOnly;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeParameterRefReadOnly)]
+    public async Task Test()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 
 readonly struct C
@@ -42,12 +42,12 @@ readonly struct C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeParameterRefReadOnly)]
-        public async Task TestNoDiagnostic_Assigned()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeParameterRefReadOnly)]
+    public async Task TestNoDiagnostic_Assigned()
+    {
+        await VerifyNoDiagnosticAsync(@"
 readonly struct C
 {
     void M(C c)
@@ -56,12 +56,12 @@ readonly struct C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeParameterRefReadOnly)]
-        public async Task TestNoDiagnostic_ReferencedInLocalFunction()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeParameterRefReadOnly)]
+    public async Task TestNoDiagnostic_ReferencedInLocalFunction()
+    {
+        await VerifyNoDiagnosticAsync(@"
 readonly struct C
 {
     void M(C c)
@@ -73,12 +73,12 @@ readonly struct C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeParameterRefReadOnly)]
-        public async Task TestNoDiagnostic_ReferencedInLambda()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeParameterRefReadOnly)]
+    public async Task TestNoDiagnostic_ReferencedInLambda()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Linq;
 
 readonly struct C
@@ -89,12 +89,12 @@ readonly struct C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeParameterRefReadOnly)]
-        public async Task TestNoDiagnostic_Iterator()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeParameterRefReadOnly)]
+    public async Task TestNoDiagnostic_Iterator()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Collections.Generic;
 
 readonly struct C
@@ -105,12 +105,12 @@ readonly struct C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeParameterRefReadOnly)]
-        public async Task TestNoDiagnostic_DuplicateParameterName()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeParameterRefReadOnly)]
+    public async Task TestNoDiagnostic_DuplicateParameterName()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Collections.Generic;
 
 readonly struct C
@@ -120,12 +120,12 @@ readonly struct C
     }
 }
 ", options: Options.AddAllowedCompilerDiagnosticId("CS0100"));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeParameterRefReadOnly)]
-        public async Task TestNoDiagnostic_MethodReferencedAsMethodGroup()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeParameterRefReadOnly)]
+    public async Task TestNoDiagnostic_MethodReferencedAsMethodGroup()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -141,12 +141,12 @@ class C
     bool M(List<B> p) => p.Any(M);
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeParameterRefReadOnly)]
-        public async Task TestNoDiagnostic_LocalFunctionReferencedAsMethodGroup()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeParameterRefReadOnly)]
+    public async Task TestNoDiagnostic_LocalFunctionReferencedAsMethodGroup()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -165,12 +165,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeParameterRefReadOnly)]
-        public async Task TestNoDiagnostic_BoolType()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeParameterRefReadOnly)]
+    public async Task TestNoDiagnostic_BoolType()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M(bool value)
@@ -178,12 +178,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeParameterRefReadOnly)]
-        public async Task TestNoDiagnostic_ExpressionTree()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeParameterRefReadOnly)]
+    public async Task TestNoDiagnostic_ExpressionTree()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 using System.Linq;
 
@@ -201,6 +201,5 @@ class C
     public DateTime P { get; set; }
 }
 ");
-        }
     }
 }

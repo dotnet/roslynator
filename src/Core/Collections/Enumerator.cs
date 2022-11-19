@@ -3,29 +3,28 @@
 using System;
 using System.Collections;
 
-namespace Roslynator.Collections
+namespace Roslynator.Collections;
+
+internal class Enumerator : IEnumerator
 {
-    internal class Enumerator : IEnumerator
+    public static readonly IEnumerator Instance = new Enumerator();
+
+    protected Enumerator()
     {
-        public static readonly IEnumerator Instance = new Enumerator();
+    }
 
-        protected Enumerator()
-        {
-        }
+    public object Current
+    {
+        get { throw new InvalidOperationException(); }
+    }
 
-        public object Current
-        {
-            get { throw new InvalidOperationException(); }
-        }
+    public bool MoveNext()
+    {
+        return false;
+    }
 
-        public bool MoveNext()
-        {
-            return false;
-        }
-
-        public void Reset()
-        {
-            throw new InvalidOperationException();
-        }
+    public void Reset()
+    {
+        throw new InvalidOperationException();
     }
 }

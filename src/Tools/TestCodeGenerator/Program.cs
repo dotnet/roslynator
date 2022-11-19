@@ -33,7 +33,7 @@ namespace Roslynator.CodeGeneration
                 {
                     AnalyzerMetadata analyzer = analyzers.FirstOrDefault(f => string.Equals(f.Id, id, StringComparison.OrdinalIgnoreCase));
 
-                    if (analyzer == null)
+                    if (analyzer is null)
                     {
                         Console.WriteLine($"Analyzer '{id}' not found");
                         continue;
@@ -53,7 +53,7 @@ namespace Roslynator.CodeGeneration
                 {
                     RefactoringMetadata refactoring = refactorings.FirstOrDefault(f => string.Equals(f.Id, id, StringComparison.OrdinalIgnoreCase));
 
-                    if (refactoring == null)
+                    if (refactoring is null)
                     {
                         Console.WriteLine($"Refactoring '{id}' not found");
                         continue;
@@ -73,7 +73,7 @@ namespace Roslynator.CodeGeneration
                 {
                     CompilerDiagnosticMetadata compilerDiagnostic = compilerDiagnostics.FirstOrDefault(f => string.Equals(f.Id, id, StringComparison.OrdinalIgnoreCase));
 
-                    if (compilerDiagnostic == null)
+                    if (compilerDiagnostic is null)
                     {
                         Console.WriteLine($"Compiler diagnostic '{id}' not found");
                         continue;

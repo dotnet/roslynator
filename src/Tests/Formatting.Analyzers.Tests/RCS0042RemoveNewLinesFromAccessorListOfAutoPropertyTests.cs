@@ -6,16 +6,16 @@ using Roslynator.Formatting.CodeFixes.CSharp;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.Formatting.CSharp.Tests
-{
-    public class RCS0042RemoveNewLinesFromAccessorListOfAutoPropertyTests : AbstractCSharpDiagnosticVerifier<AccessorListAnalyzer, AccessorListCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.PutAutoAccessorsOnSingleLine;
+namespace Roslynator.Formatting.CSharp.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAutoAccessorsOnSingleLine)]
-        public async Task Test_ReadOnlyProperty()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS0042RemoveNewLinesFromAccessorListOfAutoPropertyTests : AbstractCSharpDiagnosticVerifier<AccessorListAnalyzer, AccessorListCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.PutAutoAccessorsOnSingleLine;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAutoAccessorsOnSingleLine)]
+    public async Task Test_ReadOnlyProperty()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     string P
@@ -29,12 +29,12 @@ class C
     string P { get; }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAutoAccessorsOnSingleLine)]
-        public async Task Test_Property()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAutoAccessorsOnSingleLine)]
+    public async Task Test_Property()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     string P
@@ -49,12 +49,12 @@ class C
     string P { get; set; }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAutoAccessorsOnSingleLine)]
-        public async Task Test_ReadOnlyIndexer()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAutoAccessorsOnSingleLine)]
+    public async Task Test_ReadOnlyIndexer()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 interface I
 {
     string this[int index]
@@ -68,12 +68,12 @@ interface I
     string this[int index] { get; }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAutoAccessorsOnSingleLine)]
-        public async Task Test_Indexer()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAutoAccessorsOnSingleLine)]
+    public async Task Test_Indexer()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 interface I
 {
     string this[int index]
@@ -88,12 +88,12 @@ interface I
     string this[int index] { get; set; }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAutoAccessorsOnSingleLine)]
-        public async Task TestNoDiagnostic()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutAutoAccessorsOnSingleLine)]
+    public async Task TestNoDiagnostic()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     string P { get; set; }
@@ -104,6 +104,5 @@ interface I
     string this[int index] { get; set; }
 }
 ");
-        }
     }
 }

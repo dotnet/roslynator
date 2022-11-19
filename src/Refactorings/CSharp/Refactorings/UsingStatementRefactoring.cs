@@ -2,23 +2,22 @@
 
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
-{
-    internal static class UsingStatementRefactoring
-    {
-        public static void ComputeRefactorings(RefactoringContext context, UsingStatementSyntax usingStatement)
-        {
-            if (context.IsRefactoringEnabled(RefactoringDescriptors.IntroduceLocalVariable))
-            {
-                ExpressionSyntax expression = usingStatement.Expression;
+namespace Roslynator.CSharp.Refactorings;
 
-                if (expression != null)
-                {
-                    context.RegisterRefactoring(
-                        IntroduceLocalVariableRefactoring.GetTitle(expression),
-                        ct => IntroduceLocalVariableRefactoring.RefactorAsync(context.Document, usingStatement, expression, ct),
-                        RefactoringDescriptors.IntroduceLocalVariable);
-                }
+internal static class UsingStatementRefactoring
+{
+    public static void ComputeRefactorings(RefactoringContext context, UsingStatementSyntax usingStatement)
+    {
+        if (context.IsRefactoringEnabled(RefactoringDescriptors.IntroduceLocalVariable))
+        {
+            ExpressionSyntax expression = usingStatement.Expression;
+
+            if (expression is not null)
+            {
+                context.RegisterRefactoring(
+                    IntroduceLocalVariableRefactoring.GetTitle(expression),
+                    ct => IntroduceLocalVariableRefactoring.RefactorAsync(context.Document, usingStatement, expression, ct),
+                    RefactoringDescriptors.IntroduceLocalVariable);
             }
         }
     }

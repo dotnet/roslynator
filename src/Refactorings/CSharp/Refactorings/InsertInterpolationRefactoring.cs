@@ -9,97 +9,96 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class InsertInterpolationRefactoring
 {
-    internal static class InsertInterpolationRefactoring
+    public static bool CanRefactor(RefactoringContext context, InterpolatedStringExpressionSyntax interpolatedString)
     {
-        public static bool CanRefactor(RefactoringContext context, InterpolatedStringExpressionSyntax interpolatedString)
+        TextSpan span = context.Span;
+
+        int i = 0;
+        SyntaxList<InterpolatedStringContentSyntax> contents = interpolatedString.Contents;
+
+        if (!contents.Any())
         {
-            TextSpan span = context.Span;
-
-            int i = 0;
-            SyntaxList<InterpolatedStringContentSyntax> contents = interpolatedString.Contents;
-
-            if (!contents.Any())
-            {
-                return span.Start == interpolatedString.StringStartToken.Span.End
-                    && span.End == interpolatedString.StringEndToken.SpanStart;
-            }
-
-            foreach (InterpolatedStringContentSyntax content in contents)
-            {
-                SyntaxKind kind = content.Kind();
-                TextSpan contentSpan = content.Span;
-
-                if (kind == SyntaxKind.InterpolatedStringText)
-                {
-                    if (contentSpan.End == span.End)
-                        return true;
-                }
-                else if (kind == SyntaxKind.Interpolation)
-                {
-                    if (contentSpan.Start == span.End)
-                        return true;
-
-                    if (contentSpan.End == span.Start
-                        && (i == contents.Count - 1 || !contents[i + 1].IsKind(SyntaxKind.InterpolatedStringText)))
-                    {
-                        return true;
-                    }
-                }
-
-                i++;
-            }
-
-            return false;
+            return span.Start == interpolatedString.StringStartToken.Span.End
+                && span.End == interpolatedString.StringEndToken.SpanStart;
         }
 
-        public static Task<Document> RefactorAsync(
-            Document document,
-            InterpolatedStringExpressionSyntax interpolatedString,
-            TextSpan span,
-            bool addNameOf = false,
-            CancellationToken cancellationToken = default)
+        foreach (InterpolatedStringContentSyntax content in contents)
         {
-            string s = interpolatedString.ToString();
+            SyntaxKind kind = content.Kind();
+            TextSpan contentSpan = content.Span;
 
-            int startIndex = span.Start - interpolatedString.SpanStart;
-
-            var sb = new StringBuilder();
-
-            sb.Append(s, 0, startIndex);
-            sb.Append('{');
-
-            if (addNameOf)
+            if (kind == SyntaxKind.InterpolatedStringText)
             {
-                string identifier = StringLiteralParser.Parse(
-                    s,
-                    startIndex,
-                    span.Length,
-                    isVerbatim: interpolatedString.IsVerbatim(),
-                    isInterpolatedText: true);
+                if (contentSpan.End == span.End)
+                    return true;
+            }
+            else if (kind == SyntaxKind.Interpolation)
+            {
+                if (contentSpan.Start == span.End)
+                    return true;
 
-                sb.Append("nameof(");
-                sb.Append(identifier);
-                sb.Append(")");
+                if (contentSpan.End == span.Start
+                    && (i == contents.Count - 1 || !contents[i + 1].IsKind(SyntaxKind.InterpolatedStringText)))
+                {
+                    return true;
+                }
             }
 
-            int closeBracePosition = sb.Length;
-
-            sb.Append('}');
-
-            startIndex += span.Length;
-            sb.Append(s, startIndex, s.Length - startIndex);
-
-            ExpressionSyntax newNode = ParseExpression(sb.ToString());
-
-            SyntaxToken closeBrace = newNode.FindToken(closeBracePosition);
-
-            newNode = newNode
-                .ReplaceToken(closeBrace, closeBrace.WithNavigationAnnotation())
-                .WithTriviaFrom(interpolatedString);
-
-            return document.ReplaceNodeAsync(interpolatedString, newNode, cancellationToken);
+            i++;
         }
+
+        return false;
+    }
+
+    public static Task<Document> RefactorAsync(
+        Document document,
+        InterpolatedStringExpressionSyntax interpolatedString,
+        TextSpan span,
+        bool addNameOf = false,
+        CancellationToken cancellationToken = default)
+    {
+        string s = interpolatedString.ToString();
+
+        int startIndex = span.Start - interpolatedString.SpanStart;
+
+        var sb = new StringBuilder();
+
+        sb.Append(s, 0, startIndex);
+        sb.Append('{');
+
+        if (addNameOf)
+        {
+            string identifier = StringLiteralParser.Parse(
+                s,
+                startIndex,
+                span.Length,
+                isVerbatim: interpolatedString.IsVerbatim(),
+                isInterpolatedText: true);
+
+            sb.Append("nameof(");
+            sb.Append(identifier);
+            sb.Append(")");
+        }
+
+        int closeBracePosition = sb.Length;
+
+        sb.Append('}');
+
+        startIndex += span.Length;
+        sb.Append(s, startIndex, s.Length - startIndex);
+
+        ExpressionSyntax newNode = ParseExpression(sb.ToString());
+
+        SyntaxToken closeBrace = newNode.FindToken(closeBracePosition);
+
+        newNode = newNode
+            .ReplaceToken(closeBrace, closeBrace.WithNavigationAnnotation())
+            .WithTriviaFrom(interpolatedString);
+
+        return document.ReplaceNodeAsync(interpolatedString, newNode, cancellationToken);
     }
 }

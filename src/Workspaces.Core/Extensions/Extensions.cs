@@ -324,7 +324,7 @@ namespace Roslynator
         {
             SyntaxTree tree = await document.GetSyntaxTreeAsync(cancellationToken).ConfigureAwait(false);
 
-            if (tree == null)
+            if (tree is null)
                 return default;
 
             if (!options.IncludeGeneratedCode
@@ -356,7 +356,7 @@ namespace Roslynator
             {
                 if (ex is OperationCanceledException operationCanceledException2)
                 {
-                    if (operationCanceledException == null)
+                    if (operationCanceledException is null)
                         operationCanceledException = operationCanceledException2;
                 }
                 else if (ex is AggregateException aggregateException2)
@@ -365,7 +365,7 @@ namespace Roslynator
                     {
                         if (ex2 is OperationCanceledException operationCanceledException3)
                         {
-                            if (operationCanceledException == null)
+                            if (operationCanceledException is null)
                                 operationCanceledException = operationCanceledException3;
                         }
                         else
@@ -414,7 +414,7 @@ namespace Roslynator
 
             SyntaxTree tree = diagnostic.Location.SourceTree;
 
-            ReportDiagnostic reportDiagnostic = (tree != null)
+            ReportDiagnostic reportDiagnostic = (tree is not null)
                 ? diagnostic.Descriptor.GetEffectiveSeverity(tree, compilationOptions, cancellationToken)
                 : diagnostic.Descriptor.GetEffectiveSeverity(compilationOptions);
 

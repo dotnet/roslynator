@@ -4,33 +4,32 @@ using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Roslynator.CodeMetrics
+namespace Roslynator.CodeMetrics;
+
+internal abstract class CodeMetricsService : ICodeMetricsService
 {
-    internal abstract class CodeMetricsService : ICodeMetricsService
+    public abstract ISyntaxFactsService SyntaxFacts { get; }
+
+    public abstract CodeMetricsInfo CountPhysicalLines(SyntaxNode node, SourceText sourceText, CodeMetricsOptions options, CancellationToken cancellationToken);
+
+    public abstract CodeMetricsInfo CountLogicalLines(SyntaxNode node, SourceText sourceText, CodeMetricsOptions options, CancellationToken cancellationToken);
+
+    private protected int CountWhitespaceLines(SyntaxNode root, SourceText sourceText)
     {
-        public abstract ISyntaxFactsService SyntaxFacts { get; }
+        int whitespaceLineCount = 0;
 
-        public abstract CodeMetricsInfo CountPhysicalLines(SyntaxNode node, SourceText sourceText, CodeMetricsOptions options, CancellationToken cancellationToken);
-
-        public abstract CodeMetricsInfo CountLogicalLines(SyntaxNode node, SourceText sourceText, CodeMetricsOptions options, CancellationToken cancellationToken);
-
-        private protected int CountWhitespaceLines(SyntaxNode root, SourceText sourceText)
+        foreach (TextLine line in sourceText.Lines)
         {
-            int whitespaceLineCount = 0;
-
-            foreach (TextLine line in sourceText.Lines)
+            if (line.IsEmptyOrWhiteSpace())
             {
-                if (line.IsEmptyOrWhiteSpace())
+                if (line.End == sourceText.Length
+                    || SyntaxFacts.IsEndOfLineTrivia(root.FindTrivia(line.End)))
                 {
-                    if (line.End == sourceText.Length
-                        || SyntaxFacts.IsEndOfLineTrivia(root.FindTrivia(line.End)))
-                    {
-                        whitespaceLineCount++;
-                    }
+                    whitespaceLineCount++;
                 }
             }
-
-            return whitespaceLineCount;
         }
+
+        return whitespaceLineCount;
     }
 }

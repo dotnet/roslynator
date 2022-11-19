@@ -2,22 +2,21 @@
 
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class AssignmentExpressionRefactoring
 {
-    internal static class AssignmentExpressionRefactoring
+    public static void ComputeRefactorings(RefactoringContext context, AssignmentExpressionSyntax assignmentExpression)
     {
-        public static void ComputeRefactorings(RefactoringContext context, AssignmentExpressionSyntax assignmentExpression)
+        if (context.IsRefactoringEnabled(RefactoringDescriptors.ExpandCompoundAssignment)
+            && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(assignmentExpression.OperatorToken)
+            && CSharpFacts.IsCompoundAssignmentExpression(assignmentExpression.Kind())
+            && SyntaxInfo.AssignmentExpressionInfo(assignmentExpression).Success)
         {
-            if (context.IsRefactoringEnabled(RefactoringDescriptors.ExpandCompoundAssignment)
-                && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(assignmentExpression.OperatorToken)
-                && CSharpFacts.IsCompoundAssignmentExpression(assignmentExpression.Kind())
-                && SyntaxInfo.AssignmentExpressionInfo(assignmentExpression).Success)
-            {
-                context.RegisterRefactoring(
-                    $"Expand {assignmentExpression.OperatorToken}",
-                    ct => ExpandCompoundAssignmentRefactoring.RefactorAsync(context.Document, assignmentExpression, ct),
-                    RefactoringDescriptors.ExpandCompoundAssignment);
-            }
+            context.RegisterRefactoring(
+                $"Expand {assignmentExpression.OperatorToken}",
+                ct => ExpandCompoundAssignmentRefactoring.RefactorAsync(context.Document, assignmentExpression, ct),
+                RefactoringDescriptors.ExpandCompoundAssignment);
         }
     }
 }

@@ -2,19 +2,18 @@
 
 using System.Diagnostics;
 
-namespace Roslynator.Text.RegularExpressions
+namespace Roslynator.Text.RegularExpressions;
+
+[DebuggerDisplay("{Index} {Name}")]
+internal readonly struct GroupDefinition
 {
-    [DebuggerDisplay("{Index} {Name}")]
-    internal readonly struct GroupDefinition
+    internal GroupDefinition(int number, string name)
     {
-        internal GroupDefinition(int number, string name)
-        {
-            Number = number;
-            Name = name;
-        }
-
-        public int Number { get; }
-
-        public string Name { get; }
+        Number = number;
+        Name = name;
     }
+
+    public int Number { get; }
+
+    public string Name { get; }
 }

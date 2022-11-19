@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1243DuplicateWordInCommentTests : AbstractCSharpDiagnosticVerifier<DuplicateWordInCommentAnalyzer, DuplicateWordInCommentCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.DuplicateWordInComment;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DuplicateWordInComment)]
-        public async Task Test()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1243DuplicateWordInCommentTests : AbstractCSharpDiagnosticVerifier<DuplicateWordInCommentAnalyzer, DuplicateWordInCommentCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.DuplicateWordInComment;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DuplicateWordInComment)]
+    public async Task Test()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     /// <summary>
@@ -36,12 +36,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DuplicateWordInComment)]
-        public async Task Test_MoreWhiteSpace()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DuplicateWordInComment)]
+    public async Task Test_MoreWhiteSpace()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     /// <summary>
@@ -62,12 +62,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DuplicateWordInComment)]
-        public async Task Test_EndOfText()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DuplicateWordInComment)]
+    public async Task Test_EndOfText()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     /// <summary>
@@ -88,12 +88,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DuplicateWordInComment)]
-        public async Task Test_StartOfText()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DuplicateWordInComment)]
+    public async Task Test_StartOfText()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     /// <summary>
@@ -114,12 +114,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DuplicateWordInComment)]
-        public async Task Test_ThreeConsecutiveWords()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DuplicateWordInComment)]
+    public async Task Test_ThreeConsecutiveWords()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     /// <summary>
@@ -140,12 +140,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DuplicateWordInComment)]
-        public async Task Test_TwoConsecutiveDuplicateWords()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DuplicateWordInComment)]
+    public async Task Test_TwoConsecutiveDuplicateWords()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     /// <summary>
@@ -166,12 +166,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DuplicateWordInComment)]
-        public async Task Test_TwoDuplicateWords()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DuplicateWordInComment)]
+    public async Task Test_TwoDuplicateWords()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     /// <summary>
@@ -192,6 +192,5 @@ class C
     }
 }
 ");
-        }
     }
 }

@@ -7,37 +7,36 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace Roslynator.CSharp.Analysis
+namespace Roslynator.CSharp.Analysis;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class AttributeArgumentListAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class AttributeArgumentListAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
-            {
-                if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.RemoveArgumentListFromAttribute);
+            if (_supportedDiagnostics.IsDefault)
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.RemoveArgumentListFromAttribute);
 
-                return _supportedDiagnostics;
-            }
+            return _supportedDiagnostics;
         }
+    }
 
-        public override void Initialize(AnalysisContext context)
-        {
-            base.Initialize(context);
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeAttributeArgumentList(f), SyntaxKind.AttributeArgumentList);
-        }
+        context.RegisterSyntaxNodeAction(f => AnalyzeAttributeArgumentList(f), SyntaxKind.AttributeArgumentList);
+    }
 
-        private static void AnalyzeAttributeArgumentList(SyntaxNodeAnalysisContext context)
-        {
-            var attributeArgumentList = (AttributeArgumentListSyntax)context.Node;
+    private static void AnalyzeAttributeArgumentList(SyntaxNodeAnalysisContext context)
+    {
+        var attributeArgumentList = (AttributeArgumentListSyntax)context.Node;
 
-            if (!attributeArgumentList.Arguments.Any())
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveArgumentListFromAttribute, attributeArgumentList);
-        }
+        if (!attributeArgumentList.Arguments.Any())
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.RemoveArgumentListFromAttribute, attributeArgumentList);
     }
 }

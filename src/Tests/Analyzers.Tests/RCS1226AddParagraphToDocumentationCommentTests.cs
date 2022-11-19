@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1226AddParagraphToDocumentationCommentTests : AbstractCSharpDiagnosticVerifier<AddParagraphToDocumentationCommentAnalyzer, AddParagraphToDocumentationCommentCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddParagraphToDocumentationComment;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
-        public async Task Test_TwoParagraphs_Summary()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1226AddParagraphToDocumentationCommentTests : AbstractCSharpDiagnosticVerifier<AddParagraphToDocumentationCommentAnalyzer, AddParagraphToDocumentationCommentCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddParagraphToDocumentationComment;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
+    public async Task Test_TwoParagraphs_Summary()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 namespace N
 {
     /// <summary>
@@ -39,12 +39,12 @@ namespace N
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
-        public async Task Test_TwoParagraphs_Returns()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
+    public async Task Test_TwoParagraphs_Returns()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 namespace N
 {
     /// <summary></summary>
@@ -70,12 +70,12 @@ namespace N
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
-        public async Task Test_TwoParagraphs_Remarks()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
+    public async Task Test_TwoParagraphs_Remarks()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 namespace N
 {
     /// <summary></summary>
@@ -101,12 +101,12 @@ namespace N
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
-        public async Task Test_TwoParagraphs_Multiline()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
+    public async Task Test_TwoParagraphs_Multiline()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 namespace N
 {
     /// <summary>
@@ -138,12 +138,12 @@ namespace N
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
-        public async Task Test_TwoParagraphs_Multiline2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
+    public async Task Test_TwoParagraphs_Multiline2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 namespace N
 {
     /// <summary>
@@ -171,12 +171,12 @@ namespace N
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
-        public async Task Test_TwoParagraphs_Multiline3()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
+    public async Task Test_TwoParagraphs_Multiline3()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 namespace N
 {
     /// <summary>
@@ -204,12 +204,12 @@ namespace N
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
-        public async Task Test_ThreeParagraphs()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
+    public async Task Test_ThreeParagraphs()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 namespace N
 {
     /// <summary>
@@ -236,12 +236,12 @@ namespace N
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
-        public async Task Test_ThreeParagraphs_Multiline()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
+    public async Task Test_ThreeParagraphs_Multiline()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 namespace N
 {
     /// <summary>
@@ -280,12 +280,12 @@ namespace N
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
-        public async Task Test_TwoParagraphs_ElementsOnly()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
+    public async Task Test_TwoParagraphs_ElementsOnly()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 namespace N
 {
     /// <summary>
@@ -317,12 +317,12 @@ namespace N
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
-        public async Task Test_ClassWithAttribute()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
+    public async Task Test_ClassWithAttribute()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 namespace N
@@ -352,12 +352,12 @@ namespace N
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
-        public async Task Test_StartsWithParaElement()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
+    public async Task Test_StartsWithParaElement()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 namespace N
 {
     /// <summary>
@@ -383,12 +383,12 @@ namespace N
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
-        public async Task Test_ContainsParaElement()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
+    public async Task Test_ContainsParaElement()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 namespace N
 {
     /// <summary>
@@ -416,12 +416,12 @@ namespace N
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
-        public async Task Test_EndsWithParaElement()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
+    public async Task Test_EndsWithParaElement()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 namespace N
 {
     /// <summary>
@@ -447,12 +447,12 @@ namespace N
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
-        public async Task Test_EndsWithParaElement2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
+    public async Task Test_EndsWithParaElement2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 namespace N
 {
     /// <summary>
@@ -481,12 +481,12 @@ namespace N
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
-        public async Task TestNoDiagnostic_SimpleComment()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
+    public async Task TestNoDiagnostic_SimpleComment()
+    {
+        await VerifyNoDiagnosticAsync(@"
 /// <summary>
 /// a
 /// </summary>
@@ -494,12 +494,12 @@ class C
 {
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
-        public async Task TestNoDiagnostic_NoEmptyLine()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
+    public async Task TestNoDiagnostic_NoEmptyLine()
+    {
+        await VerifyNoDiagnosticAsync(@"
 /// <summary>
 /// a
 /// b
@@ -508,12 +508,12 @@ class C
 {
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
-        public async Task TestNoDiagnostic_MissingEndTag()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
+    public async Task TestNoDiagnostic_MissingEndTag()
+    {
+        await VerifyNoDiagnosticAsync(@"
 /// <summary>
 /// x
 ///
@@ -524,12 +524,12 @@ class C
 {
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
-        public async Task TestNoDiagnostic_CodeElement()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
+    public async Task TestNoDiagnostic_CodeElement()
+    {
+        await VerifyNoDiagnosticAsync(@"
 /// <summary>
 /// a
 /// 
@@ -541,12 +541,12 @@ class C
 {
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
-        public async Task TestNoDiagnostic_CodeElement2()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
+    public async Task TestNoDiagnostic_CodeElement2()
+    {
+        await VerifyNoDiagnosticAsync(@"
 /// <summary>
 /// <code>
 /// a
@@ -558,12 +558,12 @@ class C
 {
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
-        public async Task TestNoDiagnostic_InheritDocElement()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
+    public async Task TestNoDiagnostic_InheritDocElement()
+    {
+        await VerifyNoDiagnosticAsync(@"
 /// <summary>
 /// a
 /// 
@@ -573,12 +573,12 @@ class C
 {
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
-        public async Task TestNoDiagnostic_InheritDocElement2()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
+    public async Task TestNoDiagnostic_InheritDocElement2()
+    {
+        await VerifyNoDiagnosticAsync(@"
 /// <summary>
 /// <inheritdoc>a</inheritdoc>
 /// 
@@ -588,12 +588,12 @@ class C
 {
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
-        public async Task TestNoDiagnostic_ListElement()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
+    public async Task TestNoDiagnostic_ListElement()
+    {
+        await VerifyNoDiagnosticAsync(@"
 /// <summary>
 /// a
 /// 
@@ -605,12 +605,12 @@ class C
 {
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
-        public async Task TestNoDiagnostic_ListElement2()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
+    public async Task TestNoDiagnostic_ListElement2()
+    {
+        await VerifyNoDiagnosticAsync(@"
 /// <summary>
 /// <list type=""bullet"">
 /// <item><description>b</description></item>
@@ -622,6 +622,5 @@ class C
 {
 }
 ");
-        }
     }
 }

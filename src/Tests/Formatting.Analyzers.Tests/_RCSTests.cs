@@ -8,16 +8,16 @@ using Roslynator.Formatting.CodeFixes.CSharp;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.Formatting.CSharp.Tests
-{
-    public class RCSTests : AbstractCSharpDiagnosticVerifier<AccessorListAnalyzer, AccessorListCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddNewLineBeforeStatement;
+namespace Roslynator.Formatting.CSharp.Tests;
 
-        //[Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeStatement)]
-        public async Task Test()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCSTests : AbstractCSharpDiagnosticVerifier<AccessorListAnalyzer, AccessorListCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddNewLineBeforeStatement;
+
+    //[Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeStatement)]
+    public async Task Test()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,12 +34,12 @@ class C
 }
 ", @"
 ");
-        }
+    }
 
-        //[Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeStatement)]
-        public async Task TestNoDiagnostic()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    //[Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddNewLineBeforeStatement)]
+    public async Task TestNoDiagnostic()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,6 +55,5 @@ class C
     }
 }
 ");
-        }
     }
 }

@@ -2,16 +2,15 @@
 
 using System;
 
-namespace Roslynator
-{
-    [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
-    internal sealed class CodeFixOptionAttribute : Attribute
-    {
-        public CodeFixOptionAttribute(string value)
-        {
-            Value = value;
-        }
+namespace Roslynator;
 
-        public string Value { get; }
+[AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
+internal sealed class CodeFixOptionAttribute : Attribute
+{
+    public CodeFixOptionAttribute(string value)
+    {
+        Value = value;
     }
+
+    public string Value { get; }
 }

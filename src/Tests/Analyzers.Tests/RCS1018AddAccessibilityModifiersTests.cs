@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1018AddAccessibilityModifiersTests : AbstractCSharpDiagnosticVerifier<AddOrRemoveAccessibilityModifiersAnalyzer, MemberDeclarationCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddOrRemoveAccessibilityModifiers;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
-        public async Task Test_NonNestedType()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1018AddAccessibilityModifiersTests : AbstractCSharpDiagnosticVerifier<AddOrRemoveAccessibilityModifiersAnalyzer, MemberDeclarationCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddOrRemoveAccessibilityModifiers;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
+    public async Task Test_NonNestedType()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 namespace N
 {
     /// <summary>x</summary>
@@ -52,12 +52,12 @@ namespace N
     internal delegate void D();
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.AccessibilityModifiers, ConfigOptionValues.AccessibilityModifiers_Explicit));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
-        public async Task Test_MemberDeclaration()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
+    public async Task Test_MemberDeclaration()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 using System.Collections.Generic;
 
@@ -140,12 +140,12 @@ namespace N
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.AccessibilityModifiers, ConfigOptionValues.AccessibilityModifiers_Explicit));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
-        public async Task Test_OperatorDeclaration()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
+    public async Task Test_OperatorDeclaration()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 namespace N
 {
     /// <summary>x</summary>
@@ -196,12 +196,12 @@ namespace N
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.AccessibilityModifiers, ConfigOptionValues.AccessibilityModifiers_Explicit).AddAllowedCompilerDiagnosticId(CompilerDiagnosticIdentifiers.CS0558_UserDefinedOperatorMustBeDeclaredStaticAndPublic));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
-        public async Task Test_PartialClass()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
+    public async Task Test_PartialClass()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 namespace N
 {
     partial class [|C|]
@@ -232,12 +232,12 @@ namespace N
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.AccessibilityModifiers, ConfigOptionValues.AccessibilityModifiers_Explicit));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
-        public async Task Test_PartialClass2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
+    public async Task Test_PartialClass2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 public class Foo
 {
     partial class [|C|] { }
@@ -268,12 +268,12 @@ public class Foo
     protected internal partial interface S { }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.AccessibilityModifiers, ConfigOptionValues.AccessibilityModifiers_Explicit));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
-        public async Task Test_PartialClass3()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
+    public async Task Test_PartialClass3()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 public class Foo
 {
     partial class [|C|] { }
@@ -288,12 +288,12 @@ public class Foo
     internal protected partial class C { }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.AccessibilityModifiers, ConfigOptionValues.AccessibilityModifiers_Explicit));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
-        public async Task Test_PartialClass4()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
+    public async Task Test_PartialClass4()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 public class Foo
 {
     partial class [|C|] { }
@@ -308,12 +308,12 @@ public class Foo
     protected partial class C { }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.AccessibilityModifiers, ConfigOptionValues.AccessibilityModifiers_Explicit));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
-        public async Task Test_PartialClass5()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
+    public async Task Test_PartialClass5()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 public class Foo
 {
     partial class [|C|] { }
@@ -328,12 +328,12 @@ public class Foo
     internal partial class C { }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.AccessibilityModifiers, ConfigOptionValues.AccessibilityModifiers_Explicit));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
-        public async Task Test_PartialClass6()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
+    public async Task Test_PartialClass6()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 public class Foo
 {
     partial class [|C|] { }
@@ -348,12 +348,12 @@ public class Foo
     internal partial class C { }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.AccessibilityModifiers, ConfigOptionValues.AccessibilityModifiers_Explicit));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
-        public async Task Test_PartialClass7()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
+    public async Task Test_PartialClass7()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 public class Foo
 {
     partial class [|C|] { }
@@ -368,12 +368,12 @@ public class Foo
     private partial class C { }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.AccessibilityModifiers, ConfigOptionValues.AccessibilityModifiers_Explicit));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
-        public async Task Test_PartialClass8()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
+    public async Task Test_PartialClass8()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 public class C
 {
     protected class C2
@@ -402,12 +402,12 @@ public class C3 : C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.AccessibilityModifiers, ConfigOptionValues.AccessibilityModifiers_Explicit));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
-        public async Task TestNoDiagnostic_StaticConstructor()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
+    public async Task TestNoDiagnostic_StaticConstructor()
+    {
+        await VerifyNoDiagnosticAsync(@"
 public class C
 {
     static C()
@@ -415,12 +415,12 @@ public class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.AccessibilityModifiers, ConfigOptionValues.AccessibilityModifiers_Explicit));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
-        public async Task TestNoDiagnostic_Destructor()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
+    public async Task TestNoDiagnostic_Destructor()
+    {
+        await VerifyNoDiagnosticAsync(@"
 public class C
 {
     ~C()
@@ -428,12 +428,12 @@ public class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.AccessibilityModifiers, "implicit"));
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
-        public async Task TestNoDiagnostic_ExplicitInterfaceImplementation()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddOrRemoveAccessibilityModifiers)]
+    public async Task TestNoDiagnostic_ExplicitInterfaceImplementation()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 public class C
@@ -473,6 +473,5 @@ public class C
     }
 }
 ", options: Options.AddConfigOption(ConfigOptionKeys.AccessibilityModifiers, ConfigOptionValues.AccessibilityModifiers_Explicit));
-        }
     }
 }

@@ -6,48 +6,47 @@ using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.Formatting.CSharp;
 
-namespace Roslynator.Formatting
+namespace Roslynator.Formatting;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp, LanguageNames.VisualBasic)]
+public sealed class UseCarriageReturnAndLinefeedAsNewLineAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp, LanguageNames.VisualBasic)]
-    public sealed class UseCarriageReturnAndLinefeedAsNewLineAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
-            {
-                if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.UseCarriageReturnAndLinefeedAsNewLine);
+            if (_supportedDiagnostics.IsDefault)
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.UseCarriageReturnAndLinefeedAsNewLine);
 
-                return _supportedDiagnostics;
-            }
+            return _supportedDiagnostics;
         }
+    }
 
-        public override void Initialize(AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
+
+        context.RegisterSyntaxTreeAction(f => Analyze(f));
+    }
+
+    private static void Analyze(SyntaxTreeAnalysisContext context)
+    {
+        if (!context.Tree.TryGetText(out SourceText sourceText))
+            return;
+
+        foreach (TextLine textLine in sourceText.Lines)
         {
-            base.Initialize(context);
+            int end = textLine.End;
 
-            context.RegisterSyntaxTreeAction(f => Analyze(f));
-        }
-
-        private static void Analyze(SyntaxTreeAnalysisContext context)
-        {
-            if (!context.Tree.TryGetText(out SourceText sourceText))
-                return;
-
-            foreach (TextLine textLine in sourceText.Lines)
+            if (textLine.EndIncludingLineBreak - end == 1
+                && textLine.Text[end] == '\n')
             {
-                int end = textLine.End;
-
-                if (textLine.EndIncludingLineBreak - end == 1
-                    && textLine.Text[end] == '\n')
-                {
-                    DiagnosticHelpers.ReportDiagnostic(
-                        context,
-                        DiagnosticRules.UseCarriageReturnAndLinefeedAsNewLine,
-                        Location.Create(context.Tree, new TextSpan(end, 1)));
-                }
+                DiagnosticHelpers.ReportDiagnostic(
+                    context,
+                    DiagnosticRules.UseCarriageReturnAndLinefeedAsNewLine,
+                    Location.Create(context.Tree, new TextSpan(end, 1)));
             }
         }
     }

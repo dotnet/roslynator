@@ -13,104 +13,103 @@ using Roslynator.CodeFixes;
 using Roslynator.CSharp.Analysis;
 using Roslynator.CSharp.Syntax;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(OrderTypeParameterConstraintsCodeFixProvider))]
+[Shared]
+public sealed class OrderTypeParameterConstraintsCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(OrderTypeParameterConstraintsCodeFixProvider))]
-    [Shared]
-    public sealed class OrderTypeParameterConstraintsCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.OrderTypeParameterConstraints); }
+    }
+
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out SyntaxNode node, predicate: f => f is MemberDeclarationSyntax || f.IsKind(SyntaxKind.LocalFunctionStatement)))
+            return;
+
+        foreach (Diagnostic diagnostic in context.Diagnostics)
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.OrderTypeParameterConstraints); }
+            CodeAction codeAction = CodeAction.Create(
+                "Order constraints",
+                ct => RefactorAsync(context.Document, node, ct),
+                GetEquivalenceKey(diagnostic));
+
+            context.RegisterCodeFix(codeAction, diagnostic);
         }
+    }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    private static Task<Document> RefactorAsync(
+        Document document,
+        SyntaxNode node,
+        CancellationToken cancellationToken)
+    {
+        GenericInfo genericInfo = SyntaxInfo.GenericInfo(node);
+
+        SyntaxList<TypeParameterConstraintClauseSyntax> newConstraintClauses = SortConstraints(genericInfo.TypeParameters, genericInfo.ConstraintClauses);
+
+        GenericInfo newInfo = genericInfo.WithConstraintClauses(newConstraintClauses);
+
+        return document.ReplaceNodeAsync(genericInfo.Node, newInfo.Node, cancellationToken);
+    }
+
+    private static SyntaxList<TypeParameterConstraintClauseSyntax> SortConstraints(
+        SeparatedSyntaxList<TypeParameterSyntax> typeParameters,
+        SyntaxList<TypeParameterConstraintClauseSyntax> constraintClauses)
+    {
+        int lastIndex = -1;
+
+        for (int i = 0; i < typeParameters.Count; i++)
         {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+            string name = typeParameters[i].Identifier.ValueText;
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out SyntaxNode node, predicate: f => f is MemberDeclarationSyntax || f.IsKind(SyntaxKind.LocalFunctionStatement)))
-                return;
+            int index = OrderTypeParameterConstraintsAnalyzer.IndexOf(constraintClauses, name);
 
-            foreach (Diagnostic diagnostic in context.Diagnostics)
+            if (index != -1)
             {
-                CodeAction codeAction = CodeAction.Create(
-                    "Order constraints",
-                    ct => RefactorAsync(context.Document, node, ct),
-                    GetEquivalenceKey(diagnostic));
+                if (index != lastIndex + 1)
+                    constraintClauses = Swap(constraintClauses, index, lastIndex + 1);
 
-                context.RegisterCodeFix(codeAction, diagnostic);
+                lastIndex++;
             }
         }
 
-        private static Task<Document> RefactorAsync(
-            Document document,
-            SyntaxNode node,
-            CancellationToken cancellationToken)
+        return constraintClauses;
+    }
+
+    private static SyntaxList<TNode> Swap<TNode>(
+        SyntaxList<TNode> list,
+        int index1,
+        int index2) where TNode : SyntaxNode
+    {
+        TNode first = list[index1];
+        TNode second = list[index2];
+
+        SyntaxTriviaList firstLeading = first.GetLeadingTrivia();
+        SyntaxTriviaList secondLeading = second.GetLeadingTrivia();
+
+        if (firstLeading.IsEmptyOrWhitespace()
+            && secondLeading.IsEmptyOrWhitespace())
         {
-            GenericInfo genericInfo = SyntaxInfo.GenericInfo(node);
-
-            SyntaxList<TypeParameterConstraintClauseSyntax> newConstraintClauses = SortConstraints(genericInfo.TypeParameters, genericInfo.ConstraintClauses);
-
-            GenericInfo newInfo = genericInfo.WithConstraintClauses(newConstraintClauses);
-
-            return document.ReplaceNodeAsync(genericInfo.Node, newInfo.Node, cancellationToken);
+            first = first.WithLeadingTrivia(secondLeading);
+            second = second.WithLeadingTrivia(firstLeading);
         }
 
-        private static SyntaxList<TypeParameterConstraintClauseSyntax> SortConstraints(
-            SeparatedSyntaxList<TypeParameterSyntax> typeParameters,
-            SyntaxList<TypeParameterConstraintClauseSyntax> constraintClauses)
+        SyntaxTriviaList firstTrailing = first.GetTrailingTrivia();
+        SyntaxTriviaList secondTrailing = second.GetTrailingTrivia();
+
+        if (firstTrailing.IsEmptyOrWhitespace()
+            && secondTrailing.IsEmptyOrWhitespace())
         {
-            int lastIndex = -1;
-
-            for (int i = 0; i < typeParameters.Count; i++)
-            {
-                string name = typeParameters[i].Identifier.ValueText;
-
-                int index = OrderTypeParameterConstraintsAnalyzer.IndexOf(constraintClauses, name);
-
-                if (index != -1)
-                {
-                    if (index != lastIndex + 1)
-                        constraintClauses = Swap(constraintClauses, index, lastIndex + 1);
-
-                    lastIndex++;
-                }
-            }
-
-            return constraintClauses;
+            first = first.WithTrailingTrivia(secondTrailing);
+            second = second.WithTrailingTrivia(firstTrailing);
         }
 
-        private static SyntaxList<TNode> Swap<TNode>(
-            SyntaxList<TNode> list,
-            int index1,
-            int index2) where TNode : SyntaxNode
-        {
-            TNode first = list[index1];
-            TNode second = list[index2];
-
-            SyntaxTriviaList firstLeading = first.GetLeadingTrivia();
-            SyntaxTriviaList secondLeading = second.GetLeadingTrivia();
-
-            if (firstLeading.IsEmptyOrWhitespace()
-                && secondLeading.IsEmptyOrWhitespace())
-            {
-                first = first.WithLeadingTrivia(secondLeading);
-                second = second.WithLeadingTrivia(firstLeading);
-            }
-
-            SyntaxTriviaList firstTrailing = first.GetTrailingTrivia();
-            SyntaxTriviaList secondTrailing = second.GetTrailingTrivia();
-
-            if (firstTrailing.IsEmptyOrWhitespace()
-                && secondTrailing.IsEmptyOrWhitespace())
-            {
-                first = first.WithTrailingTrivia(secondTrailing);
-                second = second.WithTrailingTrivia(firstTrailing);
-            }
-
-            return list
-                .ReplaceAt(index1, second)
-                .ReplaceAt(index2, first);
-        }
+        return list
+            .ReplaceAt(index1, second)
+            .ReplaceAt(index2, first);
     }
 }

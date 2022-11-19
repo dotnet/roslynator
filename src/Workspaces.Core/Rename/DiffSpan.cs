@@ -3,26 +3,25 @@
 using System.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Roslynator.Rename
+namespace Roslynator.Rename;
+
+[DebuggerDisplay("{DebuggerDisplay,nq}")]
+internal readonly struct DiffSpan
 {
-    [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    internal readonly struct DiffSpan
+    public DiffSpan(TextSpan span, int diff)
     {
-        public DiffSpan(TextSpan span, int diff)
-        {
-            Span = span;
-            Diff = diff;
-        }
-
-        public TextSpan Span { get; }
-
-        public int Diff { get; }
-
-        public int Start => Span.Start;
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string DebuggerDisplay => $"{Start}  {Diff}";
-
-        public DiffSpan Offset(int value) => new(Span.Offset(value), Diff);
+        Span = span;
+        Diff = diff;
     }
+
+    public TextSpan Span { get; }
+
+    public int Diff { get; }
+
+    public int Start => Span.Start;
+
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+    private string DebuggerDisplay => $"{Start}  {Diff}";
+
+    public DiffSpan Offset(int value) => new(Span.Offset(value), Diff);
 }

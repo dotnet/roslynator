@@ -2,34 +2,33 @@
 
 using System.Text.RegularExpressions;
 
-namespace Roslynator.Text.RegularExpressions
+namespace Roslynator.Text.RegularExpressions;
+
+internal sealed class CaptureItem
 {
-    internal sealed class CaptureItem
+    internal CaptureItem(Capture capture, GroupItem groupItem)
     {
-        internal CaptureItem(Capture capture, GroupItem groupItem)
-        {
-            Capture = capture;
-            GroupItem = groupItem;
-        }
-
-        public string Value => Capture.Value;
-
-        public int Index => Capture.Index;
-
-        public int Length => Capture.Length;
-
-        public Capture Capture { get; }
-
-        public GroupItem GroupItem { get; }
-
-        public MatchItem MatchItem => GroupItem.MatchItem;
-
-        public int GroupNumber => GroupDefinition.Number;
-
-        public string GroupName => GroupDefinition.Name;
-
-        public GroupDefinition GroupDefinition => GroupItem.GroupDefinition;
-
-        public override string ToString() => Value;
+        Capture = capture;
+        GroupItem = groupItem;
     }
+
+    public string Value => Capture.Value;
+
+    public int Index => Capture.Index;
+
+    public int Length => Capture.Length;
+
+    public Capture Capture { get; }
+
+    public GroupItem GroupItem { get; }
+
+    public MatchItem MatchItem => GroupItem.MatchItem;
+
+    public int GroupNumber => GroupDefinition.Number;
+
+    public string GroupName => GroupDefinition.Name;
+
+    public GroupDefinition GroupDefinition => GroupItem.GroupDefinition;
+
+    public override string ToString() => Value;
 }

@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0130ConvertForToForEachTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.ConvertForToForEach;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertForToForEach)]
-        public async Task Test_UseExplicitType()
-        {
-            await VerifyRefactoringAsync(@"
+public class RR0130ConvertForToForEachTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.ConvertForToForEach;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertForToForEach)]
+    public async Task Test_UseExplicitType()
+    {
+        await VerifyRefactoringAsync(@"
 using System;
 using System.Collections;
 
@@ -76,6 +76,5 @@ abstract class RowCollection : ICollection
     public abstract IEnumerator GetEnumerator();
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
     }
 }

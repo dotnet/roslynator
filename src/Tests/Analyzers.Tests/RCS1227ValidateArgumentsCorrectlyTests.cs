@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1227ValidateArgumentsCorrectlyTests : AbstractCSharpDiagnosticVerifier<ValidateArgumentsCorrectlyAnalyzer, ValidateArgumentsCorrectlyCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.ValidateArgumentsCorrectly;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ValidateArgumentsCorrectly)]
-        public async Task Test()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1227ValidateArgumentsCorrectlyTests : AbstractCSharpDiagnosticVerifier<ValidateArgumentsCorrectlyAnalyzer, ValidateArgumentsCorrectlyCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.ValidateArgumentsCorrectly;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ValidateArgumentsCorrectly)]
+    public async Task Test()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 using System.Collections.Generic;
 
@@ -57,12 +57,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ValidateArgumentsCorrectly)]
-        public async Task Test_PreprocessorDirectives()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ValidateArgumentsCorrectly)]
+    public async Task Test_PreprocessorDirectives()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 using System.Collections.Generic;
 
@@ -108,12 +108,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ValidateArgumentsCorrectly)]
-        public async Task Test_IAsyncEnumerable()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ValidateArgumentsCorrectly)]
+    public async Task Test_IAsyncEnumerable()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -151,12 +151,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ValidateArgumentsCorrectly)]
-        public async Task TestNoDiagnostic_NoStatement()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ValidateArgumentsCorrectly)]
+    public async Task TestNoDiagnostic_NoStatement()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M(object p)
@@ -164,12 +164,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ValidateArgumentsCorrectly)]
-        public async Task TestNoDiagnostic_NoNullCheck()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ValidateArgumentsCorrectly)]
+    public async Task TestNoDiagnostic_NoNullCheck()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 using System.Collections.Generic;
 
@@ -182,12 +182,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ValidateArgumentsCorrectly)]
-        public async Task TestNoDiagnostic_NullChecksOnly()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ValidateArgumentsCorrectly)]
+    public async Task TestNoDiagnostic_NullChecksOnly()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 class C
@@ -202,12 +202,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ValidateArgumentsCorrectly)]
-        public async Task TestNoDiagnostic_IfElse_PreprocessorDirectives()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ValidateArgumentsCorrectly)]
+    public async Task TestNoDiagnostic_IfElse_PreprocessorDirectives()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 using System.Collections.Generic;
 
@@ -224,12 +224,12 @@ class C
     }
 }
 ", options: Options.WithDebugPreprocessorSymbol());
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ValidateArgumentsCorrectly)]
-        public async Task TestNoDiagnostic_NoParameters()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ValidateArgumentsCorrectly)]
+    public async Task TestNoDiagnostic_NoParameters()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Collections.Generic;
 
 class C
@@ -241,12 +241,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ValidateArgumentsCorrectly)]
-        public async Task TestNoDiagnostic_NoMethodBody()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ValidateArgumentsCorrectly)]
+    public async Task TestNoDiagnostic_NoMethodBody()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System.Collections.Generic;
 
 abstract class C
@@ -254,6 +254,5 @@ abstract class C
     protected abstract IEnumerable<string> M();
 }
 ");
-        }
     }
 }

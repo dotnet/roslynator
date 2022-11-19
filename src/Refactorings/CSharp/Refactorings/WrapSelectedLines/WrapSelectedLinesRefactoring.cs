@@ -5,57 +5,56 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Roslynator.CSharp.Refactorings.WrapSelectedLines
+namespace Roslynator.CSharp.Refactorings.WrapSelectedLines;
+
+internal abstract class WrapSelectedLinesRefactoring : SelectedLinesRefactoring
 {
-    internal abstract class WrapSelectedLinesRefactoring : SelectedLinesRefactoring
+    public virtual bool Indent
     {
-        public virtual bool Indent
+        get { return false; }
+    }
+
+    public abstract string GetFirstLineText();
+
+    public abstract string GetLastLineText();
+
+    public override ImmutableArray<TextChange> GetTextChanges(IEnumerable<TextLine> selectedLines)
+    {
+        var textChanges = new List<TextChange>();
+
+        using (IEnumerator<TextLine> en = selectedLines.GetEnumerator())
         {
-            get { return false; }
-        }
+            en.MoveNext();
 
-        public abstract string GetFirstLineText();
+            TextLine firstLine = en.Current;
 
-        public abstract string GetLastLineText();
+            string text = firstLine.ToString();
 
-        public override ImmutableArray<TextChange> GetTextChanges(IEnumerable<TextLine> selectedLines)
-        {
-            var textChanges = new List<TextChange>();
+            string indent = (Indent)
+                ? StringUtility.GetLeadingWhitespaceExceptNewLine(text)
+                : "";
 
-            using (IEnumerator<TextLine> en = selectedLines.GetEnumerator())
+            string newText = indent + GetFirstLineText() + Environment.NewLine + text + Environment.NewLine;
+
+            if (en.MoveNext())
             {
-                en.MoveNext();
+                textChanges.Add(firstLine.SpanIncludingLineBreak, newText);
 
-                TextLine firstLine = en.Current;
+                TextLine lastLine = en.Current;
 
-                string text = firstLine.ToString();
+                while (en.MoveNext())
+                    lastLine = en.Current;
 
-                string indent = (Indent)
-                    ? StringUtility.GetLeadingWhitespaceExceptNewLine(text)
-                    : "";
-
-                string newText = indent + GetFirstLineText() + Environment.NewLine + text + Environment.NewLine;
-
-                if (en.MoveNext())
-                {
-                    textChanges.Add(firstLine.SpanIncludingLineBreak, newText);
-
-                    TextLine lastLine = en.Current;
-
-                    while (en.MoveNext())
-                        lastLine = en.Current;
-
-                    textChanges.Add(lastLine.SpanIncludingLineBreak, lastLine.ToString() + Environment.NewLine + indent + GetLastLineText() + Environment.NewLine);
-                }
-                else
-                {
-                    newText += indent + GetLastLineText() + Environment.NewLine;
-
-                    textChanges.Add(firstLine.SpanIncludingLineBreak, newText);
-                }
+                textChanges.Add(lastLine.SpanIncludingLineBreak, lastLine.ToString() + Environment.NewLine + indent + GetLastLineText() + Environment.NewLine);
             }
+            else
+            {
+                newText += indent + GetLastLineText() + Environment.NewLine;
 
-            return textChanges.ToImmutableArray();
+                textChanges.Add(firstLine.SpanIncludingLineBreak, newText);
+            }
         }
+
+        return textChanges.ToImmutableArray();
     }
 }

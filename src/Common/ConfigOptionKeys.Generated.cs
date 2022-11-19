@@ -11,6 +11,7 @@ namespace Roslynator
         public const string ArrayCreationTypeStyle                            = "roslynator_array_creation_type_style";
         public const string ArrowTokenNewLine                                 = "roslynator_arrow_token_new_line";
         public const string BinaryOperatorNewLine                             = "roslynator_binary_operator_new_line";
+        public const string BlankLineAfterFileScopedNamespaceDeclaration      = "roslynator_blank_line_after_file_scoped_namespace_declaration";
         public const string BlankLineBetweenClosingBraceAndSwitchSection      = "roslynator_blank_line_between_closing_brace_and_switch_section";
         public const string BlankLineBetweenSingleLineAccessors               = "roslynator_blank_line_between_single_line_accessors";
         public const string BlankLineBetweenUsingDirectives                   = "roslynator_blank_line_between_using_directives";

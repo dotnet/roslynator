@@ -211,6 +211,7 @@ namespace Roslynator.CSharp
         public const string NormalizeUsageOfInfiniteLoop = "RCS1252";
         public const string FormatDocumentationCommentSummary = "RCS1253";
         public const string NormalizeFormatOfEnumFlagValue = "RCS1254";
+        public const string SimplifyArgumentNullCheck = "RCS1255";
         public const string AddOrRemoveTrailingComma = "RCS1260";
     }
 }

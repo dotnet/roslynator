@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0041ConvertAutoPropertyToFullPropertyTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.ConvertAutoPropertyToFullProperty;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertAutoPropertyToFullProperty)]
-        public async Task Test_Property()
-        {
-            await VerifyRefactoringAsync(@"
+public class RR0041ConvertAutoPropertyToFullPropertyTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.ConvertAutoPropertyToFullProperty;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertAutoPropertyToFullProperty)]
+    public async Task Test_Property()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     private string value;
@@ -33,12 +33,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertAutoPropertyToFullProperty)]
-        public async Task Test_Property_InitSetter()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertAutoPropertyToFullProperty)]
+    public async Task Test_Property_InitSetter()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     private string value;
@@ -58,12 +58,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId), options: Options.AddAllowedCompilerDiagnosticId("CS0518"));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertAutoPropertyToFullProperty)]
-        public async Task Test_StaticProperty()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertAutoPropertyToFullProperty)]
+    public async Task Test_StaticProperty()
+    {
+        await VerifyRefactoringAsync(@"
 static class C
 {
     private static string value;
@@ -83,12 +83,12 @@ static class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertAutoPropertyToFullProperty)]
-        public async Task Test_ReadOnlyProperty()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertAutoPropertyToFullProperty)]
+    public async Task Test_ReadOnlyProperty()
+    {
+        await VerifyRefactoringAsync(@"
 class C : B
 {
     private string value;
@@ -129,12 +129,12 @@ class B
     public virtual string Value { get; }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertAutoPropertyToFullProperty)]
-        public async Task Test_Property_INotifyPropertyChanged()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertAutoPropertyToFullProperty)]
+    public async Task Test_Property_INotifyPropertyChanged()
+    {
+        await VerifyRefactoringAsync(@"
 using System.ComponentModel;
 
 class C : INotifyPropertyChanged
@@ -176,6 +176,5 @@ class C : INotifyPropertyChanged
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
     }
 }

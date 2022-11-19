@@ -6,77 +6,76 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class AvoidSemicolonAtEndOfDeclarationRefactoring
 {
-    internal static class AvoidSemicolonAtEndOfDeclarationRefactoring
+    public static Task<Document> RefactorAsync(
+        Document document,
+        MemberDeclarationSyntax memberDeclaration,
+        CancellationToken cancellationToken)
     {
-        public static Task<Document> RefactorAsync(
-            Document document,
-            MemberDeclarationSyntax memberDeclaration,
-            CancellationToken cancellationToken)
-        {
-            MemberDeclarationSyntax newMemberDeclaration = GetNewMemberDeclaration(memberDeclaration);
+        MemberDeclarationSyntax newMemberDeclaration = GetNewMemberDeclaration(memberDeclaration);
 
-            return document.ReplaceNodeAsync(memberDeclaration, newMemberDeclaration, cancellationToken);
+        return document.ReplaceNodeAsync(memberDeclaration, newMemberDeclaration, cancellationToken);
+    }
+
+    private static MemberDeclarationSyntax GetNewMemberDeclaration(MemberDeclarationSyntax memberDeclaration)
+    {
+        switch (memberDeclaration)
+        {
+            case NamespaceDeclarationSyntax declaration:
+                {
+                    return declaration
+                        .WithSemicolonToken(default(SyntaxToken))
+                        .WithCloseBraceToken(declaration.CloseBraceToken
+                            .WithTrailingTrivia(GetNewTrailingTrivia(declaration.CloseBraceToken, declaration.SemicolonToken)));
+                }
+            case ClassDeclarationSyntax declaration:
+                {
+                    return declaration
+                        .WithSemicolonToken(default(SyntaxToken))
+                        .WithCloseBraceToken(declaration.CloseBraceToken
+                            .WithTrailingTrivia(GetNewTrailingTrivia(declaration.CloseBraceToken, declaration.SemicolonToken)));
+                }
+            case InterfaceDeclarationSyntax declaration:
+                {
+                    return declaration
+                        .WithSemicolonToken(default(SyntaxToken))
+                        .WithCloseBraceToken(declaration.CloseBraceToken
+                            .WithTrailingTrivia(GetNewTrailingTrivia(declaration.CloseBraceToken, declaration.SemicolonToken)));
+                }
+            case StructDeclarationSyntax declaration:
+                {
+                    return declaration
+                        .WithSemicolonToken(default(SyntaxToken))
+                        .WithCloseBraceToken(declaration.CloseBraceToken
+                            .WithTrailingTrivia(GetNewTrailingTrivia(declaration.CloseBraceToken, declaration.SemicolonToken)));
+                }
+            case EnumDeclarationSyntax declaration:
+                {
+                    return declaration
+                        .WithSemicolonToken(default(SyntaxToken))
+                        .WithCloseBraceToken(declaration.CloseBraceToken
+                            .WithTrailingTrivia(GetNewTrailingTrivia(declaration.CloseBraceToken, declaration.SemicolonToken)));
+                }
         }
 
-        private static MemberDeclarationSyntax GetNewMemberDeclaration(MemberDeclarationSyntax memberDeclaration)
-        {
-            switch (memberDeclaration)
-            {
-                case NamespaceDeclarationSyntax declaration:
-                    {
-                        return declaration
-                            .WithSemicolonToken(default(SyntaxToken))
-                            .WithCloseBraceToken(declaration.CloseBraceToken
-                                .WithTrailingTrivia(GetNewTrailingTrivia(declaration.CloseBraceToken, declaration.SemicolonToken)));
-                    }
-                case ClassDeclarationSyntax declaration:
-                    {
-                        return declaration
-                            .WithSemicolonToken(default(SyntaxToken))
-                            .WithCloseBraceToken(declaration.CloseBraceToken
-                                .WithTrailingTrivia(GetNewTrailingTrivia(declaration.CloseBraceToken, declaration.SemicolonToken)));
-                    }
-                case InterfaceDeclarationSyntax declaration:
-                    {
-                        return declaration
-                            .WithSemicolonToken(default(SyntaxToken))
-                            .WithCloseBraceToken(declaration.CloseBraceToken
-                                .WithTrailingTrivia(GetNewTrailingTrivia(declaration.CloseBraceToken, declaration.SemicolonToken)));
-                    }
-                case StructDeclarationSyntax declaration:
-                    {
-                        return declaration
-                            .WithSemicolonToken(default(SyntaxToken))
-                            .WithCloseBraceToken(declaration.CloseBraceToken
-                                .WithTrailingTrivia(GetNewTrailingTrivia(declaration.CloseBraceToken, declaration.SemicolonToken)));
-                    }
-                case EnumDeclarationSyntax declaration:
-                    {
-                        return declaration
-                            .WithSemicolonToken(default(SyntaxToken))
-                            .WithCloseBraceToken(declaration.CloseBraceToken
-                                .WithTrailingTrivia(GetNewTrailingTrivia(declaration.CloseBraceToken, declaration.SemicolonToken)));
-                    }
-            }
+        return null;
+    }
 
-            return null;
+    private static SyntaxTriviaList GetNewTrailingTrivia(SyntaxToken closeBrace, SyntaxToken semicolon)
+    {
+        if (closeBrace.TrailingTrivia.IsEmptyOrWhitespace()
+            && semicolon.LeadingTrivia.IsEmptyOrWhitespace())
+        {
+            return semicolon.TrailingTrivia;
         }
-
-        private static SyntaxTriviaList GetNewTrailingTrivia(SyntaxToken closeBrace, SyntaxToken semicolon)
+        else
         {
-            if (closeBrace.TrailingTrivia.IsEmptyOrWhitespace()
-                && semicolon.LeadingTrivia.IsEmptyOrWhitespace())
-            {
-                return semicolon.TrailingTrivia;
-            }
-            else
-            {
-                return SyntaxFactory.TriviaList(closeBrace.TrailingTrivia)
-                    .AddRange(semicolon.LeadingTrivia)
-                    .AddRange(semicolon.TrailingTrivia);
-            }
+            return SyntaxFactory.TriviaList(closeBrace.TrailingTrivia)
+                .AddRange(semicolon.LeadingTrivia)
+                .AddRange(semicolon.TrailingTrivia);
         }
     }
 }

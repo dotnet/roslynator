@@ -7,58 +7,57 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace Roslynator.CSharp.Analysis
+namespace Roslynator.CSharp.Analysis;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class AvoidLockingOnPubliclyAccessibleInstanceAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class AvoidLockingOnPubliclyAccessibleInstanceAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
-            {
-                if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AvoidLockingOnPubliclyAccessibleInstance);
+            if (_supportedDiagnostics.IsDefault)
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AvoidLockingOnPubliclyAccessibleInstance);
 
-                return _supportedDiagnostics;
-            }
+            return _supportedDiagnostics;
+        }
+    }
+
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
+
+        context.RegisterSyntaxNodeAction(f => AnalyzeLockStatement(f), SyntaxKind.LockStatement);
+    }
+
+    private static void AnalyzeLockStatement(SyntaxNodeAnalysisContext context)
+    {
+        var lockStatement = (LockStatementSyntax)context.Node;
+
+        ExpressionSyntax expression = lockStatement.Expression;
+
+        if (expression?.IsKind(SyntaxKind.ThisExpression, SyntaxKind.TypeOfExpression) != true)
+            return;
+
+        ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(expression, context.CancellationToken);
+
+        if (typeSymbol is null)
+            return;
+
+        if (!typeSymbol.DeclaredAccessibility.Is(
+            Accessibility.Public,
+            Accessibility.Protected,
+            Accessibility.ProtectedOrInternal))
+        {
+            return;
         }
 
-        public override void Initialize(AnalysisContext context)
-        {
-            base.Initialize(context);
-
-            context.RegisterSyntaxNodeAction(f => AnalyzeLockStatement(f), SyntaxKind.LockStatement);
-        }
-
-        private static void AnalyzeLockStatement(SyntaxNodeAnalysisContext context)
-        {
-            var lockStatement = (LockStatementSyntax)context.Node;
-
-            ExpressionSyntax expression = lockStatement.Expression;
-
-            if (expression?.IsKind(SyntaxKind.ThisExpression, SyntaxKind.TypeOfExpression) != true)
-                return;
-
-            ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(expression, context.CancellationToken);
-
-            if (typeSymbol == null)
-                return;
-
-            if (!typeSymbol.DeclaredAccessibility.Is(
-                Accessibility.Public,
-                Accessibility.Protected,
-                Accessibility.ProtectedOrInternal))
-            {
-                return;
-            }
-
-            DiagnosticHelpers.ReportDiagnostic(
-                context,
-                DiagnosticRules.AvoidLockingOnPubliclyAccessibleInstance,
-                expression,
-                expression.ToString());
-        }
+        DiagnosticHelpers.ReportDiagnostic(
+            context,
+            DiagnosticRules.AvoidLockingOnPubliclyAccessibleInstance,
+            expression,
+            expression.ToString());
     }
 }

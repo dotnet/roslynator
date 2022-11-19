@@ -11,40 +11,39 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SimplifyNullableOfTCodeFixProvider))]
+[Shared]
+public sealed class SimplifyNullableOfTCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SimplifyNullableOfTCodeFixProvider))]
-    [Shared]
-    public sealed class SimplifyNullableOfTCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
-        {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.SimplifyNullableOfT); }
-        }
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.SimplifyNullableOfT); }
+    }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out TypeSyntax type, findInsideTrivia: true))
-                return;
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out TypeSyntax type, findInsideTrivia: true))
+            return;
 
-            TypeSyntax nullableType = GetNullableType(type);
+        TypeSyntax nullableType = GetNullableType(type);
 
-            CodeAction codeAction = CodeAction.Create(
-                $"Simplify name '{type}'",
-                ct => SimplifyNullableOfTRefactoring.RefactorAsync(context.Document, type, nullableType, ct),
-                GetEquivalenceKey(DiagnosticIdentifiers.SimplifyNullableOfT));
+        CodeAction codeAction = CodeAction.Create(
+            $"Simplify name '{type}'",
+            ct => SimplifyNullableOfTRefactoring.RefactorAsync(context.Document, type, nullableType, ct),
+            GetEquivalenceKey(DiagnosticIdentifiers.SimplifyNullableOfT));
 
-            context.RegisterCodeFix(codeAction, context.Diagnostics);
-        }
+        context.RegisterCodeFix(codeAction, context.Diagnostics);
+    }
 
-        private static TypeSyntax GetNullableType(TypeSyntax type)
-        {
-            if (type.IsKind(SyntaxKind.QualifiedName))
-                type = ((QualifiedNameSyntax)type).Right;
+    private static TypeSyntax GetNullableType(TypeSyntax type)
+    {
+        if (type.IsKind(SyntaxKind.QualifiedName))
+            type = ((QualifiedNameSyntax)type).Right;
 
-            return ((GenericNameSyntax)type).TypeArgumentList.Arguments[0];
-        }
+        return ((GenericNameSyntax)type).TypeArgumentList.Arguments[0];
     }
 }

@@ -38,6 +38,12 @@ namespace Roslynator
             defaultValuePlaceholder: "after|before", 
             description:             "Place new line after/before binary operator");
 
+        public static readonly ConfigOptionDescriptor BlankLineAfterFileScopedNamespaceDeclaration = new(
+            key:                     ConfigOptionKeys.BlankLineAfterFileScopedNamespaceDeclaration, 
+            defaultValue:            null, 
+            defaultValuePlaceholder: "true|false", 
+            description:             "Add/remove blank line after file scoped namespace declaration");
+
         public static readonly ConfigOptionDescriptor BlankLineBetweenClosingBraceAndSwitchSection = new(
             key:                     ConfigOptionKeys.BlankLineBetweenClosingBraceAndSwitchSection, 
             defaultValue:            null, 
@@ -219,6 +225,7 @@ namespace Roslynator
             yield return new KeyValuePair<string, string>("RCS0052", JoinOptionKeys(ConfigOptionKeys.EqualsTokenNewLine));
             yield return new KeyValuePair<string, string>("RCS0058", JoinOptionKeys(ConfigOptionKeys.NewLineAtEndOfFile));
             yield return new KeyValuePair<string, string>("RCS0059", JoinOptionKeys(ConfigOptionKeys.NullConditionalOperatorNewLine));
+            yield return new KeyValuePair<string, string>("RCS0060", JoinOptionKeys(ConfigOptionKeys.BlankLineAfterFileScopedNamespaceDeclaration));
             yield return new KeyValuePair<string, string>("RCS1014", JoinOptionKeys(ConfigOptionKeys.ArrayCreationTypeStyle));
             yield return new KeyValuePair<string, string>("RCS1016", JoinOptionKeys(ConfigOptionKeys.BodyStyle, ConfigOptionKeys.UseBlockBodyWhenDeclarationSpansOverMultipleLines, ConfigOptionKeys.UseBlockBodyWhenExpressionSpansOverMultipleLines));
             yield return new KeyValuePair<string, string>("RCS1018", JoinOptionKeys(ConfigOptionKeys.AccessibilityModifiers));

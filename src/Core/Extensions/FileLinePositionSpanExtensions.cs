@@ -2,52 +2,51 @@
 
 using Microsoft.CodeAnalysis;
 
-namespace Roslynator
+namespace Roslynator;
+
+/// <summary>
+/// A set of extension methods for <see cref="FileLinePositionSpan"/>.
+/// </summary>
+public static class FileLinePositionSpanExtensions
 {
     /// <summary>
-    /// A set of extension methods for <see cref="FileLinePositionSpan"/>.
+    /// Returns zero-based index of the start line of the specified span.
     /// </summary>
-    public static class FileLinePositionSpanExtensions
+    /// <param name="fileLinePositionSpan"></param>
+    public static int StartLine(this FileLinePositionSpan fileLinePositionSpan)
     {
-        /// <summary>
-        /// Returns zero-based index of the start line of the specified span.
-        /// </summary>
-        /// <param name="fileLinePositionSpan"></param>
-        public static int StartLine(this FileLinePositionSpan fileLinePositionSpan)
-        {
-            return fileLinePositionSpan.StartLinePosition.Line;
-        }
+        return fileLinePositionSpan.StartLinePosition.Line;
+    }
 
-        /// <summary>
-        /// Returns zero-based index of the end line of the specified span.
-        /// </summary>
-        /// <param name="fileLinePositionSpan"></param>
-        public static int EndLine(this FileLinePositionSpan fileLinePositionSpan)
-        {
-            return fileLinePositionSpan.EndLinePosition.Line;
-        }
+    /// <summary>
+    /// Returns zero-based index of the end line of the specified span.
+    /// </summary>
+    /// <param name="fileLinePositionSpan"></param>
+    public static int EndLine(this FileLinePositionSpan fileLinePositionSpan)
+    {
+        return fileLinePositionSpan.EndLinePosition.Line;
+    }
 
-        /// <summary>
-        /// Returns true if the specified <see cref="FileLinePositionSpan"/> spans over multiple lines.
-        /// </summary>
-        /// <param name="fileLinePositionSpan"></param>
-        public static bool IsMultiLine(this FileLinePositionSpan fileLinePositionSpan)
-        {
-            return fileLinePositionSpan.StartLine() != fileLinePositionSpan.EndLine();
-        }
+    /// <summary>
+    /// Returns true if the specified <see cref="FileLinePositionSpan"/> spans over multiple lines.
+    /// </summary>
+    /// <param name="fileLinePositionSpan"></param>
+    public static bool IsMultiLine(this FileLinePositionSpan fileLinePositionSpan)
+    {
+        return fileLinePositionSpan.StartLine() != fileLinePositionSpan.EndLine();
+    }
 
-        /// <summary>
-        /// Returns true if the specified <see cref="FileLinePositionSpan"/> does not span over multiple lines.
-        /// </summary>
-        /// <param name="fileLinePositionSpan"></param>
-        public static bool IsSingleLine(this FileLinePositionSpan fileLinePositionSpan)
-        {
-            return fileLinePositionSpan.StartLine() == fileLinePositionSpan.EndLine();
-        }
+    /// <summary>
+    /// Returns true if the specified <see cref="FileLinePositionSpan"/> does not span over multiple lines.
+    /// </summary>
+    /// <param name="fileLinePositionSpan"></param>
+    public static bool IsSingleLine(this FileLinePositionSpan fileLinePositionSpan)
+    {
+        return fileLinePositionSpan.StartLine() == fileLinePositionSpan.EndLine();
+    }
 
-        internal static int GetLineCount(this FileLinePositionSpan fileLinePositionSpan)
-        {
-            return fileLinePositionSpan.EndLine() - fileLinePositionSpan.StartLine() + 1;
-        }
+    internal static int GetLineCount(this FileLinePositionSpan fileLinePositionSpan)
+    {
+        return fileLinePositionSpan.EndLine() - fileLinePositionSpan.StartLine() + 1;
     }
 }

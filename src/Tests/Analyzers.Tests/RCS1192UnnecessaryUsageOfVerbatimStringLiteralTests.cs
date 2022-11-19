@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1192UnnecessaryUsageOfVerbatimStringLiteralTests : AbstractCSharpDiagnosticVerifier<UnnecessaryUsageOfVerbatimStringLiteralAnalyzer, UnnecessaryUsageOfVerbatimStringLiteralCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UnnecessaryUsageOfVerbatimStringLiteral;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUsageOfVerbatimStringLiteral)]
-        public async Task Test_EmptyStringLiteral()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1192UnnecessaryUsageOfVerbatimStringLiteralTests : AbstractCSharpDiagnosticVerifier<UnnecessaryUsageOfVerbatimStringLiteralAnalyzer, UnnecessaryUsageOfVerbatimStringLiteralCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.UnnecessaryUsageOfVerbatimStringLiteral;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUsageOfVerbatimStringLiteral)]
+    public async Task Test_EmptyStringLiteral()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -32,12 +32,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUsageOfVerbatimStringLiteral)]
-        public async Task Test_NonEmptyStringLiteral()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUsageOfVerbatimStringLiteral)]
+    public async Task Test_NonEmptyStringLiteral()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -54,12 +54,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUsageOfVerbatimStringLiteral)]
-        public async Task Test_EmptyInterpolatedString()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUsageOfVerbatimStringLiteral)]
+    public async Task Test_EmptyInterpolatedString()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -76,12 +76,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUsageOfVerbatimStringLiteral)]
-        public async Task Test_EmptyInterpolatedString_AmpersandIsFirst()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUsageOfVerbatimStringLiteral)]
+    public async Task Test_EmptyInterpolatedString_AmpersandIsFirst()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -98,12 +98,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUsageOfVerbatimStringLiteral)]
-        public async Task Test_NonEmptyInterpolatedString()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUsageOfVerbatimStringLiteral)]
+    public async Task Test_NonEmptyInterpolatedString()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -120,12 +120,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUsageOfVerbatimStringLiteral)]
-        public async Task TestNoDiagnostic_StringLiteral()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUsageOfVerbatimStringLiteral)]
+    public async Task TestNoDiagnostic_StringLiteral()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -139,12 +139,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUsageOfVerbatimStringLiteral)]
-        public async Task TestNoDiagnostic_InterpolatedString()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUsageOfVerbatimStringLiteral)]
+    public async Task TestNoDiagnostic_InterpolatedString()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -161,12 +161,12 @@ s}s"";
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUsageOfVerbatimStringLiteral)]
-        public async Task TestNoDiagnostic_InterpolatedString_FormatClauseContainsBackslash()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnnecessaryUsageOfVerbatimStringLiteral)]
+    public async Task TestNoDiagnostic_InterpolatedString_FormatClauseContainsBackslash()
+    {
+        await VerifyNoDiagnosticAsync(@"
 using System;
 
 class C
@@ -177,6 +177,5 @@ class C
     }
 }
 ");
-        }
     }
 }

@@ -73,15 +73,15 @@ namespace Roslynator.CSharp.Analysis
                 if (contents.SingleOrDefault(shouldThrow: false) is not InterpolationSyntax interpolation)
                     return;
 
-                if (interpolation.AlignmentClause != null)
+                if (interpolation.AlignmentClause is not null)
                     return;
 
-                if (interpolation.FormatClause != null)
+                if (interpolation.FormatClause is not null)
                     return;
 
                 ExpressionSyntax expression = interpolation.Expression?.WalkDownParentheses();
 
-                if (expression == null)
+                if (expression is null)
                     return;
 
                 if (!IsNonNullStringExpression(expression))
@@ -107,7 +107,7 @@ namespace Roslynator.CSharp.Analysis
 
                 return constantValue.HasValue
                     && constantValue.Value is string value
-                    && value != null;
+                    && value is not null;
             }
 
             static bool IsFormattableString(SyntaxNodeAnalysisContext context)

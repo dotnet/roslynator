@@ -9,53 +9,52 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.Formatting.CSharp;
 
-namespace Roslynator.Formatting.CodeFixes
+namespace Roslynator.Formatting.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, LanguageNames.VisualBasic, Name = nameof(NewLineCodeFixProvider))]
+[Shared]
+public sealed class NewLineCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, LanguageNames.VisualBasic, Name = nameof(NewLineCodeFixProvider))]
-    [Shared]
-    public sealed class NewLineCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
+        get
         {
-            get
-            {
-                return ImmutableArray.Create(
-                    DiagnosticIdentifiers.UseLinefeedAsNewLine,
-                    DiagnosticIdentifiers.UseCarriageReturnAndLinefeedAsNewLine);
-            }
+            return ImmutableArray.Create(
+                DiagnosticIdentifiers.UseLinefeedAsNewLine,
+                DiagnosticIdentifiers.UseCarriageReturnAndLinefeedAsNewLine);
+        }
+    }
+
+    public override Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        Document document = context.Document;
+        Diagnostic diagnostic = context.Diagnostics[0];
+        TextSpan span = context.Span;
+
+        switch (diagnostic.Id)
+        {
+            case DiagnosticIdentifiers.UseLinefeedAsNewLine:
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Use linefeed as newline",
+                        ct => document.WithTextChangeAsync(span, "\n", ct),
+                        GetEquivalenceKey(diagnostic));
+
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
+            case DiagnosticIdentifiers.UseCarriageReturnAndLinefeedAsNewLine:
+                {
+                    CodeAction codeAction = CodeAction.Create(
+                        "Use carriage return + linefeed as newline",
+                        ct => document.WithTextChangeAsync(span, "\r\n", ct),
+                        GetEquivalenceKey(diagnostic));
+
+                    context.RegisterCodeFix(codeAction, diagnostic);
+                    break;
+                }
         }
 
-        public override Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            Document document = context.Document;
-            Diagnostic diagnostic = context.Diagnostics[0];
-            TextSpan span = context.Span;
-
-            switch (diagnostic.Id)
-            {
-                case DiagnosticIdentifiers.UseLinefeedAsNewLine:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Use linefeed as newline",
-                            ct => document.WithTextChangeAsync(span, "\n", ct),
-                            GetEquivalenceKey(diagnostic));
-
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
-                case DiagnosticIdentifiers.UseCarriageReturnAndLinefeedAsNewLine:
-                    {
-                        CodeAction codeAction = CodeAction.Create(
-                            "Use carriage return + linefeed as newline",
-                            ct => document.WithTextChangeAsync(span, "\r\n", ct),
-                            GetEquivalenceKey(diagnostic));
-
-                        context.RegisterCodeFix(codeAction, diagnostic);
-                        break;
-                    }
-            }
-
-            return Task.CompletedTask;
-        }
+        return Task.CompletedTask;
     }
 }

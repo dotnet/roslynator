@@ -6,20 +6,19 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Host;
 
-namespace Roslynator.Spelling
+namespace Roslynator.Spelling;
+
+internal interface ISpellingService : ILanguageService
 {
-    internal interface ISpellingService : ILanguageService
-    {
-        ISyntaxFactsService SyntaxFacts { get; }
+    ISyntaxFactsService SyntaxFacts { get; }
 
-        DiagnosticAnalyzer CreateAnalyzer(SpellingData spellingData, SpellingFixerOptions options);
+    DiagnosticAnalyzer CreateAnalyzer(SpellingData spellingData, SpellingFixerOptions options);
 
-        ImmutableArray<Diagnostic> AnalyzeSpelling(
-            SyntaxNode node,
-            SpellingData spellingData,
-            SpellingFixerOptions options,
-            CancellationToken cancellationToken);
+    ImmutableArray<Diagnostic> AnalyzeSpelling(
+        SyntaxNode node,
+        SpellingData spellingData,
+        SpellingFixerOptions options,
+        CancellationToken cancellationToken);
 
-        SpellingDiagnostic CreateSpellingDiagnostic(Diagnostic diagnostic);
-    }
+    SpellingDiagnostic CreateSpellingDiagnostic(Diagnostic diagnostic);
 }

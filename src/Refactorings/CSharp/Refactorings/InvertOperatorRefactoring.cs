@@ -6,68 +6,67 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class InvertOperatorRefactoring
 {
-    internal static class InvertOperatorRefactoring
+    public static bool CanBeInverted(SyntaxToken operatorToken)
     {
-        public static bool CanBeInverted(SyntaxToken operatorToken)
+        switch (operatorToken.Kind())
         {
-            switch (operatorToken.Kind())
-            {
-                case SyntaxKind.AmpersandAmpersandToken:
-                case SyntaxKind.BarBarToken:
-                case SyntaxKind.EqualsEqualsToken:
-                case SyntaxKind.ExclamationEqualsToken:
-                case SyntaxKind.GreaterThanToken:
-                case SyntaxKind.GreaterThanEqualsToken:
-                case SyntaxKind.LessThanToken:
-                case SyntaxKind.LessThanEqualsToken:
-                    return true;
-                default:
-                    return false;
-            }
+            case SyntaxKind.AmpersandAmpersandToken:
+            case SyntaxKind.BarBarToken:
+            case SyntaxKind.EqualsEqualsToken:
+            case SyntaxKind.ExclamationEqualsToken:
+            case SyntaxKind.GreaterThanToken:
+            case SyntaxKind.GreaterThanEqualsToken:
+            case SyntaxKind.LessThanToken:
+            case SyntaxKind.LessThanEqualsToken:
+                return true;
+            default:
+                return false;
         }
+    }
 
-        public static Task<Document> RefactorAsync(
-            Document document,
-            SyntaxToken operatorToken,
-            CancellationToken cancellationToken = default)
+    public static Task<Document> RefactorAsync(
+        Document document,
+        SyntaxToken operatorToken,
+        CancellationToken cancellationToken = default)
+    {
+        SyntaxToken newToken = SyntaxFactory.Token(GetInvertedOperatorKind(operatorToken))
+            .WithTriviaFrom(operatorToken);
+
+        return document.ReplaceTokenAsync(
+            operatorToken,
+            newToken,
+            cancellationToken);
+    }
+
+    private static SyntaxKind GetInvertedOperatorKind(SyntaxToken operatorToken)
+    {
+        switch (operatorToken.Kind())
         {
-            SyntaxToken newToken = SyntaxFactory.Token(GetInvertedOperatorKind(operatorToken))
-                .WithTriviaFrom(operatorToken);
-
-            return document.ReplaceTokenAsync(
-                operatorToken,
-                newToken,
-                cancellationToken);
-        }
-
-        private static SyntaxKind GetInvertedOperatorKind(SyntaxToken operatorToken)
-        {
-            switch (operatorToken.Kind())
-            {
-                case SyntaxKind.AmpersandAmpersandToken:
-                    return SyntaxKind.BarBarToken;
-                case SyntaxKind.BarBarToken:
-                    return SyntaxKind.AmpersandAmpersandToken;
-                case SyntaxKind.EqualsEqualsToken:
-                    return SyntaxKind.ExclamationEqualsToken;
-                case SyntaxKind.ExclamationEqualsToken:
-                    return SyntaxKind.EqualsEqualsToken;
-                case SyntaxKind.GreaterThanToken:
-                    return SyntaxKind.LessThanEqualsToken;
-                case SyntaxKind.GreaterThanEqualsToken:
-                    return SyntaxKind.LessThanToken;
-                case SyntaxKind.LessThanToken:
-                    return SyntaxKind.GreaterThanEqualsToken;
-                case SyntaxKind.LessThanEqualsToken:
-                    return SyntaxKind.GreaterThanToken;
-                default:
-                    {
-                        SyntaxDebug.Fail(operatorToken);
-                        return operatorToken.Kind();
-                    }
-            }
+            case SyntaxKind.AmpersandAmpersandToken:
+                return SyntaxKind.BarBarToken;
+            case SyntaxKind.BarBarToken:
+                return SyntaxKind.AmpersandAmpersandToken;
+            case SyntaxKind.EqualsEqualsToken:
+                return SyntaxKind.ExclamationEqualsToken;
+            case SyntaxKind.ExclamationEqualsToken:
+                return SyntaxKind.EqualsEqualsToken;
+            case SyntaxKind.GreaterThanToken:
+                return SyntaxKind.LessThanEqualsToken;
+            case SyntaxKind.GreaterThanEqualsToken:
+                return SyntaxKind.LessThanToken;
+            case SyntaxKind.LessThanToken:
+                return SyntaxKind.GreaterThanEqualsToken;
+            case SyntaxKind.LessThanEqualsToken:
+                return SyntaxKind.GreaterThanToken;
+            default:
+                {
+                    SyntaxDebug.Fail(operatorToken);
+                    return operatorToken.Kind();
+                }
         }
     }
 }

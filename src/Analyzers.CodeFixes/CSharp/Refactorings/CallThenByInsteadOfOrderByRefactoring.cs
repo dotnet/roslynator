@@ -5,19 +5,18 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
-{
-    internal static class CallThenByInsteadOfOrderByRefactoring
-    {
-        public static Task<Document> RefactorAsync(
-            Document document,
-            InvocationExpressionSyntax invocationExpression,
-            string newName,
-            CancellationToken cancellationToken)
-        {
-            InvocationExpressionSyntax newInvocationExpression = SyntaxRefactorings.ChangeInvokedMethodName(invocationExpression, newName);
+namespace Roslynator.CSharp.Refactorings;
 
-            return document.ReplaceNodeAsync(invocationExpression, newInvocationExpression, cancellationToken);
-        }
+internal static class CallThenByInsteadOfOrderByRefactoring
+{
+    public static Task<Document> RefactorAsync(
+        Document document,
+        InvocationExpressionSyntax invocationExpression,
+        string newName,
+        CancellationToken cancellationToken)
+    {
+        InvocationExpressionSyntax newInvocationExpression = SyntaxRefactorings.ChangeInvokedMethodName(invocationExpression, newName);
+
+        return document.ReplaceNodeAsync(invocationExpression, newInvocationExpression, cancellationToken);
     }
 }

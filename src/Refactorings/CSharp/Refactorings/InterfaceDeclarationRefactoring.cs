@@ -3,23 +3,22 @@
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings.SortMemberDeclarations;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class InterfaceDeclarationRefactoring
 {
-    internal static class InterfaceDeclarationRefactoring
+    public static void ComputeRefactorings(RefactoringContext context, InterfaceDeclarationSyntax interfaceDeclaration)
     {
-        public static void ComputeRefactorings(RefactoringContext context, InterfaceDeclarationSyntax interfaceDeclaration)
+        if (context.IsRefactoringEnabled(RefactoringDescriptors.AddGenericParameterToDeclaration))
+            AddGenericParameterToDeclarationRefactoring.ComputeRefactoring(context, interfaceDeclaration);
+
+        if (context.IsRefactoringEnabled(RefactoringDescriptors.ExtractTypeDeclarationToNewFile))
+            ExtractTypeDeclarationToNewFileRefactoring.ComputeRefactorings(context, interfaceDeclaration);
+
+        if (context.IsRefactoringEnabled(RefactoringDescriptors.SortMemberDeclarations)
+            && interfaceDeclaration.BracesSpan().Contains(context.Span))
         {
-            if (context.IsRefactoringEnabled(RefactoringDescriptors.AddGenericParameterToDeclaration))
-                AddGenericParameterToDeclarationRefactoring.ComputeRefactoring(context, interfaceDeclaration);
-
-            if (context.IsRefactoringEnabled(RefactoringDescriptors.ExtractTypeDeclarationToNewFile))
-                ExtractTypeDeclarationToNewFileRefactoring.ComputeRefactorings(context, interfaceDeclaration);
-
-            if (context.IsRefactoringEnabled(RefactoringDescriptors.SortMemberDeclarations)
-                && interfaceDeclaration.BracesSpan().Contains(context.Span))
-            {
-                SortMemberDeclarationsRefactoring.ComputeRefactoring(context, interfaceDeclaration);
-            }
+            SortMemberDeclarationsRefactoring.ComputeRefactoring(context, interfaceDeclaration);
         }
     }
 }

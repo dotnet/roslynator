@@ -4,21 +4,20 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Analysis
+namespace Roslynator.CSharp.Analysis;
+
+internal static class ConvertInterpolatedStringToStringLiteralAnalysis
 {
-    internal static class ConvertInterpolatedStringToStringLiteralAnalysis
+    public static bool IsFixable(InterpolatedStringExpressionSyntax interpolatedString)
     {
-        public static bool IsFixable(InterpolatedStringExpressionSyntax interpolatedString)
-        {
-            SyntaxList<InterpolatedStringContentSyntax> contents = interpolatedString.Contents;
+        SyntaxList<InterpolatedStringContentSyntax> contents = interpolatedString.Contents;
 
-            return IsFixable(contents);
-        }
+        return IsFixable(contents);
+    }
 
-        public static bool IsFixable(SyntaxList<InterpolatedStringContentSyntax> contents)
-        {
-            return !contents.Any()
-                || contents.SingleOrDefault(shouldThrow: false)?.Kind() == SyntaxKind.InterpolatedStringText;
-        }
+    public static bool IsFixable(SyntaxList<InterpolatedStringContentSyntax> contents)
+    {
+        return !contents.Any()
+            || contents.SingleOrDefault(shouldThrow: false)?.Kind() == SyntaxKind.InterpolatedStringText;
     }
 }

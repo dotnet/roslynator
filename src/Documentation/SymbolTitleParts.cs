@@ -2,15 +2,14 @@
 
 using System;
 
-namespace Roslynator.Documentation
+namespace Roslynator.Documentation;
+
+[Flags]
+public enum SymbolTitleParts
 {
-    [Flags]
-    public enum SymbolTitleParts
-    {
-        None = 0,
-        ContainingNamespace = 1,
-        ContainingType = 1 << 1,
-        Parameters = 1 << 2,
-        ExplicitImplementation = 1 << 3,
-    }
+    None = 0,
+    ContainingNamespace = 1,
+    ContainingType = 1 << 1,
+    Parameters = 1 << 2,
+    ExplicitImplementation = 1 << 3,
 }

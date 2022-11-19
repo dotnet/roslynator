@@ -8,77 +8,76 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp;
 
-namespace Roslynator.CSharp.Analysis
+namespace Roslynator.CSharp.Analysis;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class AnonymousMethodAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class AnonymousMethodAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
+            if (_supportedDiagnostics.IsDefault)
             {
-                if (_supportedDiagnostics.IsDefault)
-                {
-                    Immutable.InterlockedInitialize(
-                        ref _supportedDiagnostics,
-                        DiagnosticRules.UseLambdaExpressionInsteadOfAnonymousMethod,
-                        DiagnosticRules.UseLambdaExpressionInsteadOfAnonymousMethodFadeOut);
-                }
-
-                return _supportedDiagnostics;
-            }
-        }
-
-        public override void Initialize(AnalysisContext context)
-        {
-            base.Initialize(context);
-
-            context.RegisterSyntaxNodeAction(
-                c =>
-                {
-                    if (DiagnosticRules.UseLambdaExpressionInsteadOfAnonymousMethod.IsEffective(c))
-                        AnalyzeAnonymousMethod(c);
-                },
-                SyntaxKind.AnonymousMethodExpression);
-        }
-
-        private static void AnalyzeAnonymousMethod(SyntaxNodeAnalysisContext context)
-        {
-            var anonymousMethod = (AnonymousMethodExpressionSyntax)context.Node;
-
-            if (UseLambdaInsteadOfAnonymousMethodAnalysis.IsFixable(anonymousMethod))
-            {
-                DiagnosticHelpers.ReportDiagnostic(
-                    context,
+                Immutable.InterlockedInitialize(
+                    ref _supportedDiagnostics,
                     DiagnosticRules.UseLambdaExpressionInsteadOfAnonymousMethod,
-                    anonymousMethod);
-
-                FadeOut(context, anonymousMethod);
+                    DiagnosticRules.UseLambdaExpressionInsteadOfAnonymousMethodFadeOut);
             }
+
+            return _supportedDiagnostics;
         }
+    }
 
-        private static void FadeOut(SyntaxNodeAnalysisContext context, AnonymousMethodExpressionSyntax anonymousMethod)
-        {
-            DiagnosticHelpers.ReportToken(context, DiagnosticRules.UseLambdaExpressionInsteadOfAnonymousMethodFadeOut, anonymousMethod.DelegateKeyword);
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
 
-            BlockSyntax block = anonymousMethod.Block;
-
-            SyntaxList<StatementSyntax> statements = block.Statements;
-
-            if (statements.Count == 1
-                && block.IsSingleLine())
+        context.RegisterSyntaxNodeAction(
+            c =>
             {
-                StatementSyntax statement = statements[0];
+                if (DiagnosticRules.UseLambdaExpressionInsteadOfAnonymousMethod.IsEffective(c))
+                    AnalyzeAnonymousMethod(c);
+            },
+            SyntaxKind.AnonymousMethodExpression);
+    }
 
-                if (statement.IsKind(SyntaxKind.ReturnStatement, SyntaxKind.ExpressionStatement))
-                {
-                    CSharpDiagnosticHelpers.ReportBraces(context, DiagnosticRules.UseLambdaExpressionInsteadOfAnonymousMethodFadeOut, block);
+    private static void AnalyzeAnonymousMethod(SyntaxNodeAnalysisContext context)
+    {
+        var anonymousMethod = (AnonymousMethodExpressionSyntax)context.Node;
 
-                    if (statement.IsKind(SyntaxKind.ReturnStatement))
-                        DiagnosticHelpers.ReportToken(context, DiagnosticRules.UseLambdaExpressionInsteadOfAnonymousMethodFadeOut, ((ReturnStatementSyntax)statement).ReturnKeyword);
-                }
+        if (UseLambdaInsteadOfAnonymousMethodAnalysis.IsFixable(anonymousMethod))
+        {
+            DiagnosticHelpers.ReportDiagnostic(
+                context,
+                DiagnosticRules.UseLambdaExpressionInsteadOfAnonymousMethod,
+                anonymousMethod);
+
+            FadeOut(context, anonymousMethod);
+        }
+    }
+
+    private static void FadeOut(SyntaxNodeAnalysisContext context, AnonymousMethodExpressionSyntax anonymousMethod)
+    {
+        DiagnosticHelpers.ReportToken(context, DiagnosticRules.UseLambdaExpressionInsteadOfAnonymousMethodFadeOut, anonymousMethod.DelegateKeyword);
+
+        BlockSyntax block = anonymousMethod.Block;
+
+        SyntaxList<StatementSyntax> statements = block.Statements;
+
+        if (statements.Count == 1
+            && block.IsSingleLine())
+        {
+            StatementSyntax statement = statements[0];
+
+            if (statement.IsKind(SyntaxKind.ReturnStatement, SyntaxKind.ExpressionStatement))
+            {
+                CSharpDiagnosticHelpers.ReportBraces(context, DiagnosticRules.UseLambdaExpressionInsteadOfAnonymousMethodFadeOut, block);
+
+                if (statement.IsKind(SyntaxKind.ReturnStatement))
+                    DiagnosticHelpers.ReportToken(context, DiagnosticRules.UseLambdaExpressionInsteadOfAnonymousMethodFadeOut, ((ReturnStatementSyntax)statement).ReturnKeyword);
             }
         }
     }

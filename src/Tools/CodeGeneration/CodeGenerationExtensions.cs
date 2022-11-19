@@ -2,14 +2,13 @@
 
 using Roslynator.Configuration;
 
-namespace Roslynator.CodeGeneration
+namespace Roslynator.CodeGeneration;
+
+internal static class CodeGenerationExtensions
 {
-    internal static class CodeGenerationExtensions
+    public static void WriteCommentCharIf(this EditorConfigWriter writer, bool condition)
     {
-        public static void WriteCommentCharIf(this EditorConfigWriter writer, bool condition)
-        {
-            if (condition)
-                writer.WriteCommentChar();
-        }
+        if (condition)
+            writer.WriteCommentChar();
     }
 }

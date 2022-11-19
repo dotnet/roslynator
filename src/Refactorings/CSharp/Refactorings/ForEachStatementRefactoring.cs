@@ -8,163 +8,162 @@ using Microsoft.CodeAnalysis.Options;
 using Microsoft.CodeAnalysis.Rename;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class ForEachStatementRefactoring
 {
-    internal static class ForEachStatementRefactoring
+    public static async Task ComputeRefactoringsAsync(RefactoringContext context, ForEachStatementSyntax forEachStatement)
     {
-        public static async Task ComputeRefactoringsAsync(RefactoringContext context, ForEachStatementSyntax forEachStatement)
+        if (context.IsAnyRefactoringEnabled(
+            RefactoringDescriptors.UseImplicitType,
+            RefactoringDescriptors.UseExplicitType,
+            RefactoringDescriptors.ChangeTypeAccordingToExpression))
         {
-            if (context.IsAnyRefactoringEnabled(
-                RefactoringDescriptors.UseImplicitType,
-                RefactoringDescriptors.UseExplicitType,
-                RefactoringDescriptors.ChangeTypeAccordingToExpression))
-            {
-                await ChangeTypeAsync(context, forEachStatement).ConfigureAwait(false);
-            }
-
-            if (context.IsRefactoringEnabled(RefactoringDescriptors.RenameIdentifierAccordingToTypeName))
-                await RenameIdentifierAccordingToTypeNameAsync(context, forEachStatement).ConfigureAwait(false);
-
-            SemanticModel semanticModel = null;
-
-            if (context.IsAnyRefactoringEnabled(RefactoringDescriptors.ConvertForEachToFor, RefactoringDescriptors.ConvertForEachToForAndReverseLoop)
-                && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(forEachStatement))
-            {
-                semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(forEachStatement.Expression, context.CancellationToken);
-
-                if (SymbolUtility.HasAccessibleIndexer(typeSymbol, semanticModel, forEachStatement.SpanStart))
-                {
-                    if (context.IsRefactoringEnabled(RefactoringDescriptors.ConvertForEachToFor))
-                    {
-                        context.RegisterRefactoring(
-                            "Convert to 'for'",
-                            ct => ConvertForEachToForRefactoring.RefactorAsync(context.Document, forEachStatement, semanticModel: semanticModel, reverseLoop: false, cancellationToken: ct),
-                            RefactoringDescriptors.ConvertForEachToFor);
-                    }
-
-                    if (context.IsRefactoringEnabled(RefactoringDescriptors.ConvertForEachToForAndReverseLoop))
-                    {
-                        context.RegisterRefactoring(
-                            "Convert to 'for' and reverse loop",
-                            ct => ConvertForEachToForRefactoring.RefactorAsync(context.Document, forEachStatement, semanticModel: semanticModel, reverseLoop: true, cancellationToken: ct),
-                            RefactoringDescriptors.ConvertForEachToForAndReverseLoop);
-                    }
-                }
-            }
-
-            if (context.IsRefactoringEnabled(RefactoringDescriptors.DeconstructForeachVariable)
-                && TextSpan.FromBounds(forEachStatement.Type.SpanStart, forEachStatement.Identifier.Span.End).Contains(context.Span))
-            {
-                semanticModel ??= await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                DeconstructForeachVariableRefactoring.ComputeRefactoring(context, forEachStatement, semanticModel);
-            }
-
-            if (context.IsRefactoringEnabled(RefactoringDescriptors.UseEnumeratorExplicitly)
-                && context.Span.IsEmptyAndContainedInSpan(forEachStatement.ForEachKeyword))
-            {
-                UseEnumeratorExplicitlyRefactoring.ComputeRefactoring(context, forEachStatement);
-            }
+            await ChangeTypeAsync(context, forEachStatement).ConfigureAwait(false);
         }
 
-        internal static async Task ChangeTypeAsync(
-            RefactoringContext context,
-            ForEachStatementSyntax forEachStatement)
+        if (context.IsRefactoringEnabled(RefactoringDescriptors.RenameIdentifierAccordingToTypeName))
+            await RenameIdentifierAccordingToTypeNameAsync(context, forEachStatement).ConfigureAwait(false);
+
+        SemanticModel semanticModel = null;
+
+        if (context.IsAnyRefactoringEnabled(RefactoringDescriptors.ConvertForEachToFor, RefactoringDescriptors.ConvertForEachToForAndReverseLoop)
+            && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(forEachStatement))
         {
-            TypeSyntax type = forEachStatement.Type;
+            semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-            if (type?.Span.Contains(context.Span) != true)
-                return;
+            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(forEachStatement.Expression, context.CancellationToken);
 
-            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-            TypeAnalysis analysis = CSharpTypeAnalysis.AnalyzeType(forEachStatement, semanticModel);
-
-            if (analysis.IsExplicit)
+            if (SymbolUtility.HasAccessibleIndexer(typeSymbol, semanticModel, forEachStatement.SpanStart))
             {
-                if (analysis.SupportsImplicit
-                    && context.IsRefactoringEnabled(RefactoringDescriptors.UseImplicitType))
+                if (context.IsRefactoringEnabled(RefactoringDescriptors.ConvertForEachToFor))
                 {
-                    context.RegisterRefactoring(CodeActionFactory.ChangeTypeToVar(context.Document, type, equivalenceKey: EquivalenceKey.Create(RefactoringDescriptors.UseImplicitType)));
+                    context.RegisterRefactoring(
+                        "Convert to 'for'",
+                        ct => ConvertForEachToForRefactoring.RefactorAsync(context.Document, forEachStatement, semanticModel: semanticModel, reverseLoop: false, cancellationToken: ct),
+                        RefactoringDescriptors.ConvertForEachToFor);
                 }
 
-                if (!forEachStatement.ContainsDiagnostics
-                    && context.IsRefactoringEnabled(RefactoringDescriptors.ChangeTypeAccordingToExpression))
+                if (context.IsRefactoringEnabled(RefactoringDescriptors.ConvertForEachToForAndReverseLoop))
                 {
-                    ChangeTypeAccordingToExpression(context, forEachStatement, semanticModel);
+                    context.RegisterRefactoring(
+                        "Convert to 'for' and reverse loop",
+                        ct => ConvertForEachToForRefactoring.RefactorAsync(context.Document, forEachStatement, semanticModel: semanticModel, reverseLoop: true, cancellationToken: ct),
+                        RefactoringDescriptors.ConvertForEachToForAndReverseLoop);
                 }
             }
-            else if (analysis.SupportsExplicit
-                && context.IsRefactoringEnabled(RefactoringDescriptors.UseExplicitType))
+        }
+
+        if (context.IsRefactoringEnabled(RefactoringDescriptors.DeconstructForeachVariable)
+            && TextSpan.FromBounds(forEachStatement.Type.SpanStart, forEachStatement.Identifier.Span.End).Contains(context.Span))
+        {
+            semanticModel ??= await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+            DeconstructForeachVariableRefactoring.ComputeRefactoring(context, forEachStatement, semanticModel);
+        }
+
+        if (context.IsRefactoringEnabled(RefactoringDescriptors.UseEnumeratorExplicitly)
+            && context.Span.IsEmptyAndContainedInSpan(forEachStatement.ForEachKeyword))
+        {
+            UseEnumeratorExplicitlyRefactoring.ComputeRefactoring(context, forEachStatement);
+        }
+    }
+
+    internal static async Task ChangeTypeAsync(
+        RefactoringContext context,
+        ForEachStatementSyntax forEachStatement)
+    {
+        TypeSyntax type = forEachStatement.Type;
+
+        if (type?.Span.Contains(context.Span) != true)
+            return;
+
+        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+        TypeAnalysis analysis = CSharpTypeAnalysis.AnalyzeType(forEachStatement, semanticModel);
+
+        if (analysis.IsExplicit)
+        {
+            if (analysis.SupportsImplicit
+                && context.IsRefactoringEnabled(RefactoringDescriptors.UseImplicitType))
             {
-                context.RegisterRefactoring(CodeActionFactory.UseExplicitType(context.Document, type, analysis.Symbol, semanticModel, equivalenceKey: EquivalenceKey.Create(RefactoringDescriptors.UseExplicitType)));
+                context.RegisterRefactoring(CodeActionFactory.ChangeTypeToVar(context.Document, type, equivalenceKey: EquivalenceKey.Create(RefactoringDescriptors.UseImplicitType)));
+            }
+
+            if (!forEachStatement.ContainsDiagnostics
+                && context.IsRefactoringEnabled(RefactoringDescriptors.ChangeTypeAccordingToExpression))
+            {
+                ChangeTypeAccordingToExpression(context, forEachStatement, semanticModel);
             }
         }
-
-        private static void ChangeTypeAccordingToExpression(
-            RefactoringContext context,
-            ForEachStatementSyntax forEachStatement,
-            SemanticModel semanticModel)
+        else if (analysis.SupportsExplicit
+            && context.IsRefactoringEnabled(RefactoringDescriptors.UseExplicitType))
         {
-            ForEachStatementInfo info = semanticModel.GetForEachStatementInfo(forEachStatement);
-
-            ITypeSymbol elementType = info.ElementType;
-
-            if (elementType?.IsErrorType() != false)
-                return;
-
-            Conversion conversion = info.ElementConversion;
-
-            if (conversion.IsIdentity)
-                return;
-
-            if (!conversion.IsImplicit)
-                return;
-
-            context.RegisterRefactoring(CodeActionFactory.UseExplicitType(context.Document, forEachStatement.Type, elementType, semanticModel, equivalenceKey: EquivalenceKey.Create(RefactoringDescriptors.ChangeTypeAccordingToExpression)));
+            context.RegisterRefactoring(CodeActionFactory.UseExplicitType(context.Document, type, analysis.Symbol, semanticModel, equivalenceKey: EquivalenceKey.Create(RefactoringDescriptors.UseExplicitType)));
         }
+    }
 
-        internal static async Task RenameIdentifierAccordingToTypeNameAsync(
-            RefactoringContext context,
-            ForEachStatementSyntax forEachStatement)
-        {
-            TypeSyntax type = forEachStatement.Type;
+    private static void ChangeTypeAccordingToExpression(
+        RefactoringContext context,
+        ForEachStatementSyntax forEachStatement,
+        SemanticModel semanticModel)
+    {
+        ForEachStatementInfo info = semanticModel.GetForEachStatementInfo(forEachStatement);
 
-            if (type == null)
-                return;
+        ITypeSymbol elementType = info.ElementType;
 
-            SyntaxToken identifier = forEachStatement.Identifier;
+        if (elementType?.IsErrorType() != false)
+            return;
 
-            if (!identifier.Span.Contains(context.Span))
-                return;
+        Conversion conversion = info.ElementConversion;
 
-            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+        if (conversion.IsIdentity)
+            return;
 
-            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, context.CancellationToken);
+        if (!conversion.IsImplicit)
+            return;
 
-            if (typeSymbol?.IsErrorType() != false)
-                return;
+        context.RegisterRefactoring(CodeActionFactory.UseExplicitType(context.Document, forEachStatement.Type, elementType, semanticModel, equivalenceKey: EquivalenceKey.Create(RefactoringDescriptors.ChangeTypeAccordingToExpression)));
+    }
 
-            string oldName = identifier.ValueText;
+    internal static async Task RenameIdentifierAccordingToTypeNameAsync(
+        RefactoringContext context,
+        ForEachStatementSyntax forEachStatement)
+    {
+        TypeSyntax type = forEachStatement.Type;
 
-            string newName = NameGenerator.Default.CreateUniqueLocalName(
-                typeSymbol,
-                oldName,
-                semanticModel,
-                forEachStatement.SpanStart,
-                cancellationToken: context.CancellationToken);
+        if (type is null)
+            return;
 
-            if (newName == null)
-                return;
+        SyntaxToken identifier = forEachStatement.Identifier;
 
-            ISymbol symbol = semanticModel.GetDeclaredSymbol(forEachStatement, context.CancellationToken);
+        if (!identifier.Span.Contains(context.Span))
+            return;
 
-            context.RegisterRefactoring(
-                $"Rename '{oldName}' to '{newName}'",
-                ct => Renamer.RenameSymbolAsync(context.Solution, symbol, newName, default(OptionSet), ct),
-                RefactoringDescriptors.RenameIdentifierAccordingToTypeName);
-        }
+        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+        ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, context.CancellationToken);
+
+        if (typeSymbol?.IsErrorType() != false)
+            return;
+
+        string oldName = identifier.ValueText;
+
+        string newName = NameGenerator.Default.CreateUniqueLocalName(
+            typeSymbol,
+            oldName,
+            semanticModel,
+            forEachStatement.SpanStart,
+            cancellationToken: context.CancellationToken);
+
+        if (newName is null)
+            return;
+
+        ISymbol symbol = semanticModel.GetDeclaredSymbol(forEachStatement, context.CancellationToken);
+
+        context.RegisterRefactoring(
+            $"Rename '{oldName}' to '{newName}'",
+            ct => Renamer.RenameSymbolAsync(context.Solution, symbol, newName, default(OptionSet), ct),
+            RefactoringDescriptors.RenameIdentifierAccordingToTypeName);
     }
 }

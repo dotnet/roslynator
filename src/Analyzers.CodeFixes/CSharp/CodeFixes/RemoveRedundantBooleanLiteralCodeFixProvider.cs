@@ -15,85 +15,84 @@ using Roslynator.CodeFixes;
 using Roslynator.CSharp.Analysis;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(RemoveRedundantBooleanLiteralCodeFixProvider))]
+[Shared]
+public sealed class RemoveRedundantBooleanLiteralCodeFixProvider : BaseCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(RemoveRedundantBooleanLiteralCodeFixProvider))]
-    [Shared]
-    public sealed class RemoveRedundantBooleanLiteralCodeFixProvider : BaseCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
+        get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveRedundantBooleanLiteral); }
+    }
+
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+        if (!TryFindFirstAncestorOrSelf(
+            root,
+            context.Span,
+            out SyntaxNode node,
+            predicate: f => f.IsKind(
+                SyntaxKind.TrueLiteralExpression,
+                SyntaxKind.EqualsExpression,
+                SyntaxKind.NotEqualsExpression,
+                SyntaxKind.LogicalAndExpression,
+                SyntaxKind.LogicalOrExpression)))
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveRedundantBooleanLiteral); }
+            return;
         }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+        switch (node.Kind())
         {
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+            case SyntaxKind.TrueLiteralExpression:
+                {
+                    RegisterCodeFix(
+                        context,
+                        node.ToString(),
+                        ct =>
+                        {
+                            return RemoveRedundantBooleanLiteralRefactoring.RefactorAsync(
+                                context.Document,
+                                (ForStatementSyntax)node.Parent,
+                                ct);
+                        });
 
-            if (!TryFindFirstAncestorOrSelf(
-                root,
-                context.Span,
-                out SyntaxNode node,
-                predicate: f => f.IsKind(
-                    SyntaxKind.TrueLiteralExpression,
-                    SyntaxKind.EqualsExpression,
-                    SyntaxKind.NotEqualsExpression,
-                    SyntaxKind.LogicalAndExpression,
-                    SyntaxKind.LogicalOrExpression)))
-            {
-                return;
-            }
+                    break;
+                }
+            case SyntaxKind.EqualsExpression:
+            case SyntaxKind.NotEqualsExpression:
+            case SyntaxKind.LogicalAndExpression:
+            case SyntaxKind.LogicalOrExpression:
+                {
+                    var binaryExpression = (BinaryExpressionSyntax)node;
 
-            switch (node.Kind())
-            {
-                case SyntaxKind.TrueLiteralExpression:
-                    {
-                        RegisterCodeFix(
-                            context,
-                            node.ToString(),
-                            ct =>
-                            {
-                                return RemoveRedundantBooleanLiteralRefactoring.RefactorAsync(
-                                    context.Document,
-                                    (ForStatementSyntax)node.Parent,
-                                    ct);
-                            });
+                    TextSpan span = RemoveRedundantBooleanLiteralAnalysis.GetSpanToRemove(binaryExpression, binaryExpression.Left, binaryExpression.Right);
 
-                        break;
-                    }
-                case SyntaxKind.EqualsExpression:
-                case SyntaxKind.NotEqualsExpression:
-                case SyntaxKind.LogicalAndExpression:
-                case SyntaxKind.LogicalOrExpression:
-                    {
-                        var binaryExpression = (BinaryExpressionSyntax)node;
+                    RegisterCodeFix(
+                        context,
+                        binaryExpression.ToString(span),
+                        ct =>
+                        {
+                            return RemoveRedundantBooleanLiteralRefactoring.RefactorAsync(
+                                context.Document,
+                                binaryExpression,
+                                ct);
+                        });
 
-                        TextSpan span = RemoveRedundantBooleanLiteralAnalysis.GetSpanToRemove(binaryExpression, binaryExpression.Left, binaryExpression.Right);
-
-                        RegisterCodeFix(
-                            context,
-                            binaryExpression.ToString(span),
-                            ct =>
-                            {
-                                return RemoveRedundantBooleanLiteralRefactoring.RefactorAsync(
-                                    context.Document,
-                                    binaryExpression,
-                                    ct);
-                            });
-
-                        break;
-                    }
-            }
+                    break;
+                }
         }
+    }
 
-        private void RegisterCodeFix(CodeFixContext context, string textToRemove, Func<CancellationToken, Task<Document>> createChangedDocument)
-        {
-            CodeAction codeAction = CodeAction.Create(
-                $"Remove redundant '{textToRemove}'",
-                createChangedDocument,
-                GetEquivalenceKey(DiagnosticIdentifiers.RemoveRedundantBooleanLiteral));
+    private void RegisterCodeFix(CodeFixContext context, string textToRemove, Func<CancellationToken, Task<Document>> createChangedDocument)
+    {
+        CodeAction codeAction = CodeAction.Create(
+            $"Remove redundant '{textToRemove}'",
+            createChangedDocument,
+            GetEquivalenceKey(DiagnosticIdentifiers.RemoveRedundantBooleanLiteral));
 
-            context.RegisterCodeFix(codeAction, context.Diagnostics);
-        }
+        context.RegisterCodeFix(codeAction, context.Diagnostics);
     }
 }

@@ -11,45 +11,44 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(BaseTypeCodeFixProvider))]
+[Shared]
+public sealed class BaseTypeCodeFixProvider : CompilerDiagnosticCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(BaseTypeCodeFixProvider))]
-    [Shared]
-    public sealed class BaseTypeCodeFixProvider : CompilerDiagnosticCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
-        {
-            get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.CS0527_TypeInInterfaceListIsNotInterface); }
-        }
+        get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.CS0527_TypeInInterfaceListIsNotInterface); }
+    }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            Diagnostic diagnostic = context.Diagnostics[0];
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        Diagnostic diagnostic = context.Diagnostics[0];
 
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.ReplaceStructWithClass, context.Document, root.SyntaxTree))
-                return;
+        if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.ReplaceStructWithClass, context.Document, root.SyntaxTree))
+            return;
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out BaseTypeSyntax baseType))
-                return;
+        if (!TryFindFirstAncestorOrSelf(root, context.Span, out BaseTypeSyntax baseType))
+            return;
 
-            SyntaxNode parent = baseType.Parent;
+        SyntaxNode parent = baseType.Parent;
 
-            if (!parent.IsKind(SyntaxKind.BaseList))
-                return;
+        if (!parent.IsKind(SyntaxKind.BaseList))
+            return;
 
-            parent = parent.Parent;
+        parent = parent.Parent;
 
-            if (parent is not StructDeclarationSyntax structDeclaration)
-                return;
+        if (parent is not StructDeclarationSyntax structDeclaration)
+            return;
 
-            CodeAction codeAction = CodeAction.Create(
-                "Replace 'struct' with 'class'",
-                ct => context.Document.ReplaceNodeAsync(structDeclaration, ClassDeclaration(structDeclaration), ct),
-                GetEquivalenceKey(diagnostic));
+        CodeAction codeAction = CodeAction.Create(
+            "Replace 'struct' with 'class'",
+            ct => context.Document.ReplaceNodeAsync(structDeclaration, ClassDeclaration(structDeclaration), ct),
+            GetEquivalenceKey(diagnostic));
 
-            context.RegisterCodeFix(codeAction, diagnostic);
-        }
+        context.RegisterCodeFix(codeAction, diagnostic);
     }
 }

@@ -42,7 +42,7 @@ namespace Roslynator.CSharp.Analysis
             if (objectCreation.ArgumentList?.Arguments.Count != 0)
                 return;
 
-            if (objectCreation.Initializer != null)
+            if (objectCreation.Initializer is not null)
                 return;
 
             ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(objectCreation, context.CancellationToken);

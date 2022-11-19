@@ -7,89 +7,88 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class WrapCallChainRefactoring
 {
-    internal static class WrapCallChainRefactoring
+    public static Task ComputeRefactoringsAsync(RefactoringContext context, ConditionalAccessExpressionSyntax conditionalAccessExpression)
     {
-        public static Task ComputeRefactoringsAsync(RefactoringContext context, ConditionalAccessExpressionSyntax conditionalAccessExpression)
+        return ComputeRefactoringsAsync(context, (ExpressionSyntax)conditionalAccessExpression);
+    }
+
+    public static Task ComputeRefactoringsAsync(RefactoringContext context, MemberAccessExpressionSyntax memberAccessExpression)
+    {
+        return ComputeRefactoringsAsync(context, (ExpressionSyntax)memberAccessExpression);
+    }
+
+    private static async Task ComputeRefactoringsAsync(RefactoringContext context, ExpressionSyntax expression)
+    {
+        if (!context.Span.IsEmptyAndContainedInSpan(expression))
+            return;
+
+        expression = CSharpUtility.GetTopmostExpressionInCallChain(expression);
+
+        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+        if (!IsFormattable(expression, semanticModel, context.CancellationToken))
+            return;
+
+        if (expression.IsSingleLine(includeExteriorTrivia: false))
         {
-            return ComputeRefactoringsAsync(context, (ExpressionSyntax)conditionalAccessExpression);
+            context.RegisterRefactoring(
+                "Wrap call chain",
+                ct => SyntaxFormatter.WrapCallChainAsync(context.Document, expression, semanticModel, ct),
+                RefactoringDescriptors.WrapCallChain);
         }
-
-        public static Task ComputeRefactoringsAsync(RefactoringContext context, MemberAccessExpressionSyntax memberAccessExpression)
+        else if (expression.DescendantTrivia(expression.Span).All(f => f.IsWhitespaceOrEndOfLineTrivia()))
         {
-            return ComputeRefactoringsAsync(context, (ExpressionSyntax)memberAccessExpression);
+            context.RegisterRefactoring(
+                "Unwrap call chain",
+                ct => SyntaxFormatter.UnwrapExpressionAsync(context.Document, expression, ct),
+                RefactoringDescriptors.WrapCallChain);
         }
+    }
 
-        private static async Task ComputeRefactoringsAsync(RefactoringContext context, ExpressionSyntax expression)
+    private static bool IsFormattable(
+        ExpressionSyntax expression,
+        SemanticModel semanticModel,
+        CancellationToken cancellationToken)
+    {
+        int levels = 0;
+
+        foreach (SyntaxNode node in new MethodChain(expression))
         {
-            if (!context.Span.IsEmptyAndContainedInSpan(expression))
-                return;
-
-            expression = CSharpUtility.GetTopmostExpressionInCallChain(expression);
-
-            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-            if (!IsFormattable(expression, semanticModel, context.CancellationToken))
-                return;
-
-            if (expression.IsSingleLine(includeExteriorTrivia: false))
+            switch (node.Kind())
             {
-                context.RegisterRefactoring(
-                    "Wrap call chain",
-                    ct => SyntaxFormatter.WrapCallChainAsync(context.Document, expression, semanticModel, ct),
-                    RefactoringDescriptors.WrapCallChain);
-            }
-            else if (expression.DescendantTrivia(expression.Span).All(f => f.IsWhitespaceOrEndOfLineTrivia()))
-            {
-                context.RegisterRefactoring(
-                    "Unwrap call chain",
-                    ct => SyntaxFormatter.UnwrapExpressionAsync(context.Document, expression, ct),
-                    RefactoringDescriptors.WrapCallChain);
-            }
-        }
+                case SyntaxKind.SimpleMemberAccessExpression:
+                    {
+                        var memberAccess = (MemberAccessExpressionSyntax)node;
 
-        private static bool IsFormattable(
-            ExpressionSyntax expression,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
-        {
-            int levels = 0;
+                        if (memberAccess.Expression.IsKind(SyntaxKind.ThisExpression))
+                            return levels == 2;
 
-            foreach (SyntaxNode node in new MethodChain(expression))
-            {
-                switch (node.Kind())
-                {
-                    case SyntaxKind.SimpleMemberAccessExpression:
+                        if (semanticModel
+                            .GetSymbol(memberAccess.Expression, cancellationToken)?
+                            .Kind == SymbolKind.Namespace)
                         {
-                            var memberAccess = (MemberAccessExpressionSyntax)node;
-
-                            if (memberAccess.Expression.IsKind(SyntaxKind.ThisExpression))
-                                return levels == 2;
-
-                            if (semanticModel
-                                .GetSymbol(memberAccess.Expression, cancellationToken)?
-                                .Kind == SymbolKind.Namespace)
-                            {
-                                return levels == 2;
-                            }
-
-                            if (++levels == 2)
-                                return true;
-
-                            break;
+                            return levels == 2;
                         }
-                    case SyntaxKind.MemberBindingExpression:
-                        {
-                            if (++levels == 2)
-                                return true;
 
-                            break;
-                        }
-                }
+                        if (++levels == 2)
+                            return true;
+
+                        break;
+                    }
+                case SyntaxKind.MemberBindingExpression:
+                    {
+                        if (++levels == 2)
+                            return true;
+
+                        break;
+                    }
             }
-
-            return false;
         }
+
+        return false;
     }
 }

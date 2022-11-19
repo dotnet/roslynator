@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.CodeFixes.Tests
-{
-    public class CS3002ReturnTypeIsNotCLSCompliantTests : AbstractCSharpCompilerDiagnosticFixVerifier<MemberDeclarationCodeFixProvider>
-    {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS3002_ReturnTypeIsNotCLSCompliant;
+namespace Roslynator.CSharp.CodeFixes.Tests;
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS3002_ReturnTypeIsNotCLSCompliant)]
-        public async Task Test()
-        {
-            await VerifyFixAsync(@"
+public class CS3002ReturnTypeIsNotCLSCompliantTests : AbstractCSharpCompilerDiagnosticFixVerifier<MemberDeclarationCodeFixProvider>
+{
+    public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS3002_ReturnTypeIsNotCLSCompliant;
+
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS3002_ReturnTypeIsNotCLSCompliant)]
+    public async Task Test()
+    {
+        await VerifyFixAsync(@"
 using System;
 
 [assembly: CLSCompliant(true)]
@@ -39,6 +39,5 @@ public class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
     }
 }

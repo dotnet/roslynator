@@ -36,10 +36,10 @@ namespace Roslynator
             if (object.ReferenceEquals(x, y))
                 return 0;
 
-            if (x == null)
+            if (x is null)
                 return -1;
 
-            if (y == null)
+            if (y is null)
                 return 1;
 
             switch (x.Kind)
@@ -174,7 +174,7 @@ namespace Roslynator
             {
                 get
                 {
-                    if (_namespaceComparer == null)
+                    if (_namespaceComparer is null)
                         Interlocked.CompareExchange(ref _namespaceComparer, CreateNamespaceComparer(), null);
 
                     return _namespaceComparer;
@@ -190,7 +190,7 @@ namespace Roslynator
             {
                 get
                 {
-                    if (_typeComparer == null)
+                    if (_typeComparer is null)
                         Interlocked.CompareExchange(ref _typeComparer, CreateTypeComparer(), null);
 
                     return _typeComparer;
@@ -206,7 +206,7 @@ namespace Roslynator
             {
                 get
                 {
-                    if (_memberComparer == null)
+                    if (_memberComparer is null)
                         Interlocked.CompareExchange(ref _memberComparer, CreateMemberComparer(), null);
 
                     return _memberComparer;

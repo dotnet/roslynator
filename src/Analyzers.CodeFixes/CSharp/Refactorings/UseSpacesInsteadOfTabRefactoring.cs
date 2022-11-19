@@ -5,16 +5,15 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class UseSpacesInsteadOfTabRefactoring
 {
-    internal static class UseSpacesInsteadOfTabRefactoring
+    public static Task<Document> RefactorAsync(
+        Document document,
+        TextSpan span,
+        CancellationToken cancellationToken = default)
     {
-        public static Task<Document> RefactorAsync(
-            Document document,
-            TextSpan span,
-            CancellationToken cancellationToken = default)
-        {
-            return document.WithTextChangeAsync(span, new string(' ', span.Length * 4), cancellationToken);
-        }
+        return document.WithTextChangeAsync(span, new string(' ', span.Length * 4), cancellationToken);
     }
 }

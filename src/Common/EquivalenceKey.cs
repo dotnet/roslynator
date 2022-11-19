@@ -3,70 +3,69 @@
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 
-namespace Roslynator
+namespace Roslynator;
+
+internal static class EquivalenceKey
 {
-    internal static class EquivalenceKey
+    private const string Prefix = "Roslynator" + Separator;
+
+    private const string Separator = ".";
+
+    public static string Create(RefactoringDescriptor descriptor, string additionalKey1 = null, string additionalKey2 = null)
     {
-        private const string Prefix = "Roslynator" + Separator;
+        return Create(descriptor.Id, additionalKey1, additionalKey2);
+    }
 
-        private const string Separator = ".";
+    public static string Create(Diagnostic diagnostic, string additionalKey1 = null, string additionalKey2 = null)
+    {
+        return Create(diagnostic.Id, additionalKey1, additionalKey2);
+    }
 
-        public static string Create(RefactoringDescriptor descriptor, string additionalKey1 = null, string additionalKey2 = null)
+    public static string Create(string key, string additionalKey1 = null, string additionalKey2 = null)
+    {
+        Debug.Assert(!string.IsNullOrEmpty(key));
+
+        if (additionalKey1 is not null)
         {
-            return Create(descriptor.Id, additionalKey1, additionalKey2);
-        }
-
-        public static string Create(Diagnostic diagnostic, string additionalKey1 = null, string additionalKey2 = null)
-        {
-            return Create(diagnostic.Id, additionalKey1, additionalKey2);
-        }
-
-        public static string Create(string key, string additionalKey1 = null, string additionalKey2 = null)
-        {
-            Debug.Assert(!string.IsNullOrEmpty(key));
-
-            if (additionalKey1 != null)
+            if (additionalKey2 is not null)
             {
-                if (additionalKey2 != null)
-                {
-                    return Prefix + key + Separator + additionalKey1 + Separator + additionalKey2;
-                }
-                else
-                {
-                    return Prefix + key + Separator + additionalKey1;
-                }
-            }
-            else if (additionalKey2 != null)
-            {
-                return Prefix + key + Separator + additionalKey2;
+                return Prefix + key + Separator + additionalKey1 + Separator + additionalKey2;
             }
             else
             {
-                return Prefix + key;
+                return Prefix + key + Separator + additionalKey1;
             }
         }
-
-        internal static string Join(string value1, string value2)
+        else if (additionalKey2 is not null)
         {
-            if (value1 != null)
+            return Prefix + key + Separator + additionalKey2;
+        }
+        else
+        {
+            return Prefix + key;
+        }
+    }
+
+    internal static string Join(string value1, string value2)
+    {
+        if (value1 is not null)
+        {
+            if (value2 is not null)
             {
-                if (value2 != null)
-                {
-                    return value1 + Separator + value2;
-                }
-                else
-                {
-                    return value1;
-                }
-            }
-            else if (value2 != null)
-            {
-                return value2;
+                return value1 + Separator + value2;
             }
             else
             {
-                return "";
+                return value1;
             }
+        }
+        else if (value2 is not null)
+        {
+            return value2;
+        }
+        else
+        {
+            return "";
         }
     }
 }

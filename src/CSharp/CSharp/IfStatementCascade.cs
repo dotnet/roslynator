@@ -41,7 +41,7 @@ namespace Roslynator.CSharp
 
         IEnumerator<IfStatementOrElseClause> IEnumerable<IfStatementOrElseClause>.GetEnumerator()
         {
-            if (IfStatement != null)
+            if (IfStatement is not null)
                 return new EnumeratorImpl(IfStatement);
 
             return Empty.Enumerator<IfStatementOrElseClause>();
@@ -49,7 +49,7 @@ namespace Roslynator.CSharp
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            if (IfStatement != null)
+            if (IfStatement is not null)
                 return new EnumeratorImpl(IfStatement);
 
             return Empty.Enumerator<IfStatementOrElseClause>();
@@ -130,7 +130,7 @@ namespace Roslynator.CSharp
                 {
                     ElseClauseSyntax elseClause = _ifOrElse.AsIf().Else;
 
-                    if (elseClause != null)
+                    if (elseClause is not null)
                     {
                         if (elseClause.Statement is IfStatementSyntax nextIf)
                         {

@@ -7,211 +7,210 @@ using System.Linq;
 using Microsoft.CodeAnalysis;
 using static Roslynator.WellKnownDiagnosticIdPrefixes;
 
-namespace Roslynator
+namespace Roslynator;
+
+internal static class DiagnosticIdPrefix
 {
-    internal static class DiagnosticIdPrefix
+    public static string GetPrefix(string id)
     {
-        public static string GetPrefix(string id)
+        int length = id.Length;
+
+        if (length == 0)
+            return "";
+
+        switch (id[0])
         {
-            int length = id.Length;
-
-            if (length == 0)
-                return "";
-
-            switch (id[0])
-            {
-                case 'A':
+            case 'A':
+                {
+                    if (HasPrefix(AD))
                     {
-                        if (HasPrefix(AD))
-                        {
-                            return AD;
-                        }
-                        else if (HasPrefix(Async))
-                        {
-                            return Async;
-                        }
-
-                        break;
+                        return AD;
                     }
-                case 'B':
+                    else if (HasPrefix(Async))
                     {
-                        if (HasPrefix(BC))
-                        {
-                            return BC;
-                        }
-                        else if (HasPrefix(BL))
-                        {
-                            return BL;
-                        }
-
-                        break;
+                        return Async;
                     }
-                case 'C':
+
+                    break;
+                }
+            case 'B':
+                {
+                    if (HasPrefix(BC))
                     {
-                        if (HasPrefix(CA))
-                        {
-                            return CA;
-                        }
-                        else if (HasPrefix(CC))
-                        {
-                            return CC;
-                        }
-                        else if (HasPrefix(CS))
-                        {
-                            return CS;
-                        }
-
-                        break;
+                        return BC;
                     }
-                case 'E':
+                    else if (HasPrefix(BL))
                     {
-                        if (HasPrefix(ENC))
-                        {
-                            return ENC;
-                        }
-
-                        break;
+                        return BL;
                     }
-                case 'I':
+
+                    break;
+                }
+            case 'C':
+                {
+                    if (HasPrefix(CA))
                     {
-                        if (HasPrefix(IDE))
-                        {
-                            return IDE;
-                        }
-                        else if (HasPrefix(IL))
-                        {
-                            return IL;
-                        }
-
-                        break;
+                        return CA;
                     }
-                case 'R':
+                    else if (HasPrefix(CC))
                     {
-                        if (HasPrefix(RCS))
-                        {
-                            return RCS;
-                        }
-                        else if (HasPrefix(ROS))
-                        {
-                            return ROS;
-                        }
-                        else if (HasPrefix(RECS))
-                        {
-                            return RECS;
-                        }
-                        else if (HasPrefix(REVB))
-                        {
-                            return REVB;
-                        }
-                        else if (HasPrefix(RS))
-                        {
-                            return RS;
-                        }
-
-                        break;
+                        return CC;
                     }
-                case 'S':
+                    else if (HasPrefix(CS))
                     {
-                        if (HasPrefix(SA))
-                        {
-                            return SA;
-                        }
-                        else if (HasPrefix(SX))
-                        {
-                            return SX;
-                        }
-
-                        break;
+                        return CS;
                     }
-                case 'U':
+
+                    break;
+                }
+            case 'E':
+                {
+                    if (HasPrefix(ENC))
                     {
-                        if (HasPrefix(U2U))
-                        {
-                            return U2U;
-                        }
-
-                        break;
+                        return ENC;
                     }
-                case 'V':
+
+                    break;
+                }
+            case 'I':
+                {
+                    if (HasPrefix(IDE))
                     {
-                        if (HasPrefix(VB))
-                        {
-                            return VB;
-                        }
-                        else if (HasPrefix(VSSDK))
-                        {
-                            return VSSDK;
-                        }
-                        else if (HasPrefix(VSTHRD))
-                        {
-                            return VSTHRD;
-                        }
-
-                        break;
+                        return IDE;
                     }
-                case 'x':
+                    else if (HasPrefix(IL))
                     {
-                        if (HasPrefix(xUnit))
-                        {
-                            return xUnit;
-                        }
-
-                        break;
+                        return IL;
                     }
-            }
 
-            int prefixLength = GetPrefixLength(id);
+                    break;
+                }
+            case 'R':
+                {
+                    if (HasPrefix(RCS))
+                    {
+                        return RCS;
+                    }
+                    else if (HasPrefix(ROS))
+                    {
+                        return ROS;
+                    }
+                    else if (HasPrefix(RECS))
+                    {
+                        return RECS;
+                    }
+                    else if (HasPrefix(REVB))
+                    {
+                        return REVB;
+                    }
+                    else if (HasPrefix(RS))
+                    {
+                        return RS;
+                    }
 
-            string prefix = id.Substring(0, prefixLength);
+                    break;
+                }
+            case 'S':
+                {
+                    if (HasPrefix(SA))
+                    {
+                        return SA;
+                    }
+                    else if (HasPrefix(SX))
+                    {
+                        return SX;
+                    }
 
-            if (prefix.Length > 0)
-            {
-                Debug.Fail($"Unknown diagnostic id prefix: {prefix}");
-            }
-            else
-            {
-                Debug.Assert(prefix != "RemoveUnnecessaryImportsFixable", $"Unknown diagnostic id: {id}");
-            }
+                    break;
+                }
+            case 'U':
+                {
+                    if (HasPrefix(U2U))
+                    {
+                        return U2U;
+                    }
 
-            return prefix;
+                    break;
+                }
+            case 'V':
+                {
+                    if (HasPrefix(VB))
+                    {
+                        return VB;
+                    }
+                    else if (HasPrefix(VSSDK))
+                    {
+                        return VSSDK;
+                    }
+                    else if (HasPrefix(VSTHRD))
+                    {
+                        return VSTHRD;
+                    }
 
-            bool HasPrefix(string value)
-            {
-                return length > value.Length
-                    && char.IsDigit(id, value.Length)
-                    && string.Compare(id, 1, value, 1, value.Length - 1, StringComparison.Ordinal) == 0;
-            }
+                    break;
+                }
+            case 'x':
+                {
+                    if (HasPrefix(xUnit))
+                    {
+                        return xUnit;
+                    }
+
+                    break;
+                }
         }
 
-        public static int GetPrefixLength(string id)
+        int prefixLength = GetPrefixLength(id);
+
+        string prefix = id.Substring(0, prefixLength);
+
+        if (prefix.Length > 0)
         {
-            int length = id.Length;
-
-            int i = length - 1;
-
-            while (i >= 0
-                && char.IsLetter(id[i]))
-            {
-                i--;
-            }
-
-            while (i >= 0
-                && char.IsDigit(id[i]))
-            {
-                i--;
-            }
-
-            return i + 1;
+            Debug.Fail($"Unknown diagnostic id prefix: {prefix}");
+        }
+        else
+        {
+            Debug.Assert(prefix != "RemoveUnnecessaryImportsFixable", $"Unknown diagnostic id: {id}");
         }
 
-        public static IEnumerable<(string prefix, int count)> CountPrefixes(IEnumerable<string> values)
+        return prefix;
+
+        bool HasPrefix(string value)
         {
-            foreach (IGrouping<string, string> grouping in values
-                .GroupBy(f => GetPrefix(f))
-                .OrderBy(f => f.Key))
-            {
-                yield return (grouping.Key, grouping.Count());
-            }
+            return length > value.Length
+                && char.IsDigit(id, value.Length)
+                && string.Compare(id, 1, value, 1, value.Length - 1, StringComparison.Ordinal) == 0;
+        }
+    }
+
+    public static int GetPrefixLength(string id)
+    {
+        int length = id.Length;
+
+        int i = length - 1;
+
+        while (i >= 0
+            && char.IsLetter(id[i]))
+        {
+            i--;
+        }
+
+        while (i >= 0
+            && char.IsDigit(id[i]))
+        {
+            i--;
+        }
+
+        return i + 1;
+    }
+
+    public static IEnumerable<(string prefix, int count)> CountPrefixes(IEnumerable<string> values)
+    {
+        foreach (IGrouping<string, string> grouping in values
+            .GroupBy(f => GetPrefix(f))
+            .OrderBy(f => f.Key))
+        {
+            yield return (grouping.Key, grouping.Count());
         }
     }
 }

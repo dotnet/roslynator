@@ -12,177 +12,176 @@ using Roslynator.CodeMetrics;
 using Roslynator.Host.Mef;
 using static Roslynator.Logger;
 
-namespace Roslynator.CommandLine
+namespace Roslynator.CommandLine;
+
+internal class PhysicalLinesOfCodeCommand : AbstractLinesOfCodeCommand<LinesOfCodeCommandResult>
 {
-    internal class PhysicalLinesOfCodeCommand : AbstractLinesOfCodeCommand<LinesOfCodeCommandResult>
+    public PhysicalLinesOfCodeCommand(PhysicalLinesOfCodeCommandLineOptions options, in ProjectFilter projectFilter) : base(projectFilter)
     {
-        public PhysicalLinesOfCodeCommand(PhysicalLinesOfCodeCommandLineOptions options, in ProjectFilter projectFilter) : base(projectFilter)
+        Options = options;
+    }
+
+    public PhysicalLinesOfCodeCommandLineOptions Options { get; }
+
+    public override async Task<LinesOfCodeCommandResult> ExecuteAsync(ProjectOrSolution projectOrSolution, CancellationToken cancellationToken = default)
+    {
+        var codeMetricsOptions = new CodeMetricsOptions(
+            includeGenerated: Options.IncludeGeneratedCode,
+            includeWhitespace: Options.IncludeWhitespace,
+            includeComments: Options.IncludeComments,
+            includePreprocessorDirectives: Options.IncludePreprocessorDirectives,
+            ignoreBlockBoundary: Options.IgnoreBlockBoundary);
+
+        CodeMetricsInfo codeMetrics;
+
+        if (projectOrSolution.IsProject)
         {
-            Options = options;
-        }
+            Project project = projectOrSolution.AsProject();
 
-        public PhysicalLinesOfCodeCommandLineOptions Options { get; }
+            ICodeMetricsService service = MefWorkspaceServices.Default.GetService<ICodeMetricsService>(project.Language);
 
-        public override async Task<LinesOfCodeCommandResult> ExecuteAsync(ProjectOrSolution projectOrSolution, CancellationToken cancellationToken = default)
-        {
-            var codeMetricsOptions = new CodeMetricsOptions(
-                includeGenerated: Options.IncludeGeneratedCode,
-                includeWhitespace: Options.IncludeWhitespace,
-                includeComments: Options.IncludeComments,
-                includePreprocessorDirectives: Options.IncludePreprocessorDirectives,
-                ignoreBlockBoundary: Options.IgnoreBlockBoundary);
-
-            CodeMetricsInfo codeMetrics;
-
-            if (projectOrSolution.IsProject)
+            if (service is not null)
             {
-                Project project = projectOrSolution.AsProject();
-
-                ICodeMetricsService service = MefWorkspaceServices.Default.GetService<ICodeMetricsService>(project.Language);
-
-                if (service != null)
-                {
-                    codeMetrics = await CountLinesAsync(project, service, codeMetricsOptions, cancellationToken);
-                }
-                else
-                {
-                    WriteLine($"Cannot count lines for '{project.FilePath}', language '{project.Language}' is not supported", ConsoleColors.Yellow, Verbosity.Minimal);
-                    return new LinesOfCodeCommandResult(CommandStatus.Fail, default);
-                }
+                codeMetrics = await CountLinesAsync(project, service, codeMetricsOptions, cancellationToken);
             }
             else
             {
-                ImmutableDictionary<ProjectId, CodeMetricsInfo> codeMetricsByProject = CountLines(projectOrSolution.AsSolution(), codeMetricsOptions, cancellationToken);
-
-                codeMetrics = CodeMetricsInfo.Create(codeMetricsByProject.Values);
+                WriteLine($"Cannot count lines for '{project.FilePath}', language '{project.Language}' is not supported", ConsoleColors.Yellow, Verbosity.Minimal);
+                return new LinesOfCodeCommandResult(CommandStatus.Fail, default);
             }
+        }
+        else
+        {
+            ImmutableDictionary<ProjectId, CodeMetricsInfo> codeMetricsByProject = CountLines(projectOrSolution.AsSolution(), codeMetricsOptions, cancellationToken);
 
-            return new LinesOfCodeCommandResult(CommandStatus.Success, codeMetrics);
+            codeMetrics = CodeMetricsInfo.Create(codeMetricsByProject.Values);
         }
 
-        private async Task<CodeMetricsInfo> CountLinesAsync(Project project, ICodeMetricsService service, CodeMetricsOptions options, CancellationToken cancellationToken)
+        return new LinesOfCodeCommandResult(CommandStatus.Success, codeMetrics);
+    }
+
+    private async Task<CodeMetricsInfo> CountLinesAsync(Project project, ICodeMetricsService service, CodeMetricsOptions options, CancellationToken cancellationToken)
+    {
+        WriteLine($"Count lines for '{project.Name}'", ConsoleColors.Cyan, Verbosity.Minimal);
+
+        Stopwatch stopwatch = Stopwatch.StartNew();
+
+        CodeMetricsInfo codeMetrics = await service.CountLinesAsync(project, LinesOfCodeKind.Physical, options, cancellationToken);
+
+        stopwatch.Stop();
+
+        WriteMetrics(
+            codeMetrics.CodeLineCount,
+            codeMetrics.BlockBoundaryLineCount,
+            codeMetrics.WhitespaceLineCount,
+            codeMetrics.CommentLineCount,
+            codeMetrics.PreprocessorDirectiveLineCount,
+            codeMetrics.TotalLineCount);
+
+        WriteLine(Verbosity.Minimal);
+        WriteLine($"Done counting lines for '{project.FilePath}' in {stopwatch.Elapsed:mm\\:ss\\.ff}", Verbosity.Normal);
+
+        return codeMetrics;
+    }
+
+    private ImmutableDictionary<ProjectId, CodeMetricsInfo> CountLines(Solution solution, CodeMetricsOptions options, CancellationToken cancellationToken)
+    {
+        WriteLine($"Count lines for solution '{solution.FilePath}'", ConsoleColors.Cyan, Verbosity.Minimal);
+
+        IEnumerable<Project> projects = FilterProjects(solution);
+
+        Stopwatch stopwatch = Stopwatch.StartNew();
+
+        ImmutableDictionary<ProjectId, CodeMetricsInfo> codeMetrics = LinesOfCodeHelpers.CountLinesInParallel(projects, LinesOfCodeKind.Physical, options, cancellationToken);
+
+        stopwatch.Stop();
+
+        if (codeMetrics.Count > 0)
         {
-            WriteLine($"Count lines for '{project.Name}'", ConsoleColors.Cyan, Verbosity.Minimal);
+            WriteLine(Verbosity.Normal);
+            WriteLine("Lines of code by project:", Verbosity.Normal);
 
-            Stopwatch stopwatch = Stopwatch.StartNew();
-
-            CodeMetricsInfo codeMetrics = await service.CountLinesAsync(project, LinesOfCodeKind.Physical, options, cancellationToken);
-
-            stopwatch.Stop();
-
-            WriteMetrics(
-                codeMetrics.CodeLineCount,
-                codeMetrics.BlockBoundaryLineCount,
-                codeMetrics.WhitespaceLineCount,
-                codeMetrics.CommentLineCount,
-                codeMetrics.PreprocessorDirectiveLineCount,
-                codeMetrics.TotalLineCount);
-
-            WriteLine(Verbosity.Minimal);
-            WriteLine($"Done counting lines for '{project.FilePath}' in {stopwatch.Elapsed:mm\\:ss\\.ff}", Verbosity.Normal);
-
-            return codeMetrics;
+            LinesOfCodeHelpers.WriteLinesOfCode(solution, codeMetrics);
         }
 
-        private ImmutableDictionary<ProjectId, CodeMetricsInfo> CountLines(Solution solution, CodeMetricsOptions options, CancellationToken cancellationToken)
-        {
-            WriteLine($"Count lines for solution '{solution.FilePath}'", ConsoleColors.Cyan, Verbosity.Minimal);
+        WriteMetrics(
+            codeMetrics.Sum(f => f.Value.CodeLineCount),
+            codeMetrics.Sum(f => f.Value.BlockBoundaryLineCount),
+            codeMetrics.Sum(f => f.Value.WhitespaceLineCount),
+            codeMetrics.Sum(f => f.Value.CommentLineCount),
+            codeMetrics.Sum(f => f.Value.PreprocessorDirectiveLineCount),
+            codeMetrics.Sum(f => f.Value.TotalLineCount));
 
-            IEnumerable<Project> projects = FilterProjects(solution);
+        WriteLine(Verbosity.Minimal);
+        WriteLine($"Done counting lines for solution '{solution.FilePath}' in {stopwatch.Elapsed:mm\\:ss\\.ff}", Verbosity.Minimal);
 
-            Stopwatch stopwatch = Stopwatch.StartNew();
+        return codeMetrics;
+    }
 
-            ImmutableDictionary<ProjectId, CodeMetricsInfo> codeMetrics = LinesOfCodeHelpers.CountLinesInParallel(projects, LinesOfCodeKind.Physical, options, cancellationToken);
+    private void WriteMetrics(int totalCodeLineCount, int totalBlockBoundaryLineCount, int totalWhitespaceLineCount, int totalCommentLineCount, int totalPreprocessorDirectiveLineCount, int totalLineCount)
+    {
+        string totalCodeLines = totalCodeLineCount.ToString("n0");
+        string totalBlockBoundaryLines = totalBlockBoundaryLineCount.ToString("n0");
+        string totalWhitespaceLines = totalWhitespaceLineCount.ToString("n0");
+        string totalCommentLines = totalCommentLineCount.ToString("n0");
+        string totalPreprocessorDirectiveLines = totalPreprocessorDirectiveLineCount.ToString("n0");
+        string totalLines = totalLineCount.ToString("n0");
 
-            stopwatch.Stop();
-
-            if (codeMetrics.Count > 0)
-            {
-                WriteLine(Verbosity.Normal);
-                WriteLine("Lines of code by project:", Verbosity.Normal);
-
-                LinesOfCodeHelpers.WriteLinesOfCode(solution, codeMetrics);
-            }
-
-            WriteMetrics(
-                codeMetrics.Sum(f => f.Value.CodeLineCount),
-                codeMetrics.Sum(f => f.Value.BlockBoundaryLineCount),
-                codeMetrics.Sum(f => f.Value.WhitespaceLineCount),
-                codeMetrics.Sum(f => f.Value.CommentLineCount),
-                codeMetrics.Sum(f => f.Value.PreprocessorDirectiveLineCount),
-                codeMetrics.Sum(f => f.Value.TotalLineCount));
-
-            WriteLine(Verbosity.Minimal);
-            WriteLine($"Done counting lines for solution '{solution.FilePath}' in {stopwatch.Elapsed:mm\\:ss\\.ff}", Verbosity.Minimal);
-
-            return codeMetrics;
-        }
-
-        private void WriteMetrics(int totalCodeLineCount, int totalBlockBoundaryLineCount, int totalWhitespaceLineCount, int totalCommentLineCount, int totalPreprocessorDirectiveLineCount, int totalLineCount)
-        {
-            string totalCodeLines = totalCodeLineCount.ToString("n0");
-            string totalBlockBoundaryLines = totalBlockBoundaryLineCount.ToString("n0");
-            string totalWhitespaceLines = totalWhitespaceLineCount.ToString("n0");
-            string totalCommentLines = totalCommentLineCount.ToString("n0");
-            string totalPreprocessorDirectiveLines = totalPreprocessorDirectiveLineCount.ToString("n0");
-            string totalLines = totalLineCount.ToString("n0");
-
-            int maxDigits = Math.Max(
-                totalCodeLines.Length,
+        int maxDigits = Math.Max(
+            totalCodeLines.Length,
+            Math.Max(
+                totalBlockBoundaryLines.Length,
                 Math.Max(
-                    totalBlockBoundaryLines.Length,
+                    totalWhitespaceLines.Length,
                     Math.Max(
-                        totalWhitespaceLines.Length,
-                        Math.Max(
-                            totalCommentLines.Length,
-                            Math.Max(totalPreprocessorDirectiveLines.Length, totalLines.Length)))));
+                        totalCommentLines.Length,
+                        Math.Max(totalPreprocessorDirectiveLines.Length, totalLines.Length)))));
 
-            WriteLine(Verbosity.Minimal);
+        WriteLine(Verbosity.Minimal);
 
-            if (Options.IgnoreBlockBoundary
-                || !Options.IncludeWhitespace
-                || !Options.IncludeComments
-                || !Options.IncludePreprocessorDirectives)
-            {
-                WriteLine($"{totalCodeLines.PadLeft(maxDigits)} {totalCodeLineCount / (double)totalLineCount,5:P0} lines of code", ConsoleColors.Green, Verbosity.Minimal);
-            }
-            else
-            {
-                WriteLine($"{totalCodeLines.PadLeft(maxDigits)} lines of code", ConsoleColors.Green, Verbosity.Minimal);
-            }
-
-            if (Options.IgnoreBlockBoundary)
-                WriteLine($"{totalBlockBoundaryLines.PadLeft(maxDigits)} {totalBlockBoundaryLineCount / (double)totalLineCount,5:P0} block boundary lines", Verbosity.Minimal);
-
-            if (!Options.IncludeWhitespace)
-                WriteLine($"{totalWhitespaceLines.PadLeft(maxDigits)} {totalWhitespaceLineCount / (double)totalLineCount,5:P0} white-space lines", Verbosity.Minimal);
-
-            if (!Options.IncludeComments)
-                WriteLine($"{totalCommentLines.PadLeft(maxDigits)} {totalCommentLineCount / (double)totalLineCount,5:P0} comment lines", Verbosity.Minimal);
-
-            if (!Options.IncludePreprocessorDirectives)
-                WriteLine($"{totalPreprocessorDirectiveLines.PadLeft(maxDigits)} {totalPreprocessorDirectiveLineCount / (double)totalLineCount,5:P0} preprocessor directive lines", Verbosity.Minimal);
-
-            WriteLine($"{totalLines.PadLeft(maxDigits)} {totalLineCount / (double)totalLineCount,5:P0} total lines", Verbosity.Minimal);
-        }
-
-        protected override void ProcessResults(IList<LinesOfCodeCommandResult> results)
+        if (Options.IgnoreBlockBoundary
+            || !Options.IncludeWhitespace
+            || !Options.IncludeComments
+            || !Options.IncludePreprocessorDirectives)
         {
-            if (results.Count <= 1)
-                return;
-
-            WriteMetrics(
-                totalCodeLineCount: results.Sum(f => f.Metrics.CodeLineCount),
-                totalBlockBoundaryLineCount: results.Sum(f => f.Metrics.BlockBoundaryLineCount),
-                totalWhitespaceLineCount: results.Sum(f => f.Metrics.WhitespaceLineCount),
-                totalCommentLineCount: results.Sum(f => f.Metrics.CommentLineCount),
-                totalPreprocessorDirectiveLineCount: results.Sum(f => f.Metrics.PreprocessorDirectiveLineCount),
-                totalLineCount: results.Sum(f => f.Metrics.TotalLineCount));
+            WriteLine($"{totalCodeLines.PadLeft(maxDigits)} {totalCodeLineCount / (double)totalLineCount,5:P0} lines of code", ConsoleColors.Green, Verbosity.Minimal);
         }
-
-        protected override void OperationCanceled(OperationCanceledException ex)
+        else
         {
-            WriteLine("Lines counting was canceled.", Verbosity.Quiet);
+            WriteLine($"{totalCodeLines.PadLeft(maxDigits)} lines of code", ConsoleColors.Green, Verbosity.Minimal);
         }
+
+        if (Options.IgnoreBlockBoundary)
+            WriteLine($"{totalBlockBoundaryLines.PadLeft(maxDigits)} {totalBlockBoundaryLineCount / (double)totalLineCount,5:P0} block boundary lines", Verbosity.Minimal);
+
+        if (!Options.IncludeWhitespace)
+            WriteLine($"{totalWhitespaceLines.PadLeft(maxDigits)} {totalWhitespaceLineCount / (double)totalLineCount,5:P0} white-space lines", Verbosity.Minimal);
+
+        if (!Options.IncludeComments)
+            WriteLine($"{totalCommentLines.PadLeft(maxDigits)} {totalCommentLineCount / (double)totalLineCount,5:P0} comment lines", Verbosity.Minimal);
+
+        if (!Options.IncludePreprocessorDirectives)
+            WriteLine($"{totalPreprocessorDirectiveLines.PadLeft(maxDigits)} {totalPreprocessorDirectiveLineCount / (double)totalLineCount,5:P0} preprocessor directive lines", Verbosity.Minimal);
+
+        WriteLine($"{totalLines.PadLeft(maxDigits)} {totalLineCount / (double)totalLineCount,5:P0} total lines", Verbosity.Minimal);
+    }
+
+    protected override void ProcessResults(IList<LinesOfCodeCommandResult> results)
+    {
+        if (results.Count <= 1)
+            return;
+
+        WriteMetrics(
+            totalCodeLineCount: results.Sum(f => f.Metrics.CodeLineCount),
+            totalBlockBoundaryLineCount: results.Sum(f => f.Metrics.BlockBoundaryLineCount),
+            totalWhitespaceLineCount: results.Sum(f => f.Metrics.WhitespaceLineCount),
+            totalCommentLineCount: results.Sum(f => f.Metrics.CommentLineCount),
+            totalPreprocessorDirectiveLineCount: results.Sum(f => f.Metrics.PreprocessorDirectiveLineCount),
+            totalLineCount: results.Sum(f => f.Metrics.TotalLineCount));
+    }
+
+    protected override void OperationCanceled(OperationCanceledException ex)
+    {
+        WriteLine("Lines counting was canceled.", Verbosity.Quiet);
     }
 }

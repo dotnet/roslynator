@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1238AvoidNestedConditionalOperatorsTests : AbstractCSharpDiagnosticVerifier<ConditionalExpressionAnalyzer, ConditionalExpressionCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AvoidNestedConditionalOperators;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNestedConditionalOperators)]
-        public async Task Test_LocalDeclaration()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1238AvoidNestedConditionalOperatorsTests : AbstractCSharpDiagnosticVerifier<ConditionalExpressionAnalyzer, ConditionalExpressionCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AvoidNestedConditionalOperators;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNestedConditionalOperators)]
+    public async Task Test_LocalDeclaration()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M(bool f, bool f2, string x, string y, string z)
@@ -47,12 +47,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNestedConditionalOperators)]
-        public async Task Test_LocalDeclaration2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNestedConditionalOperators)]
+    public async Task Test_LocalDeclaration2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M(bool f, bool f2, string x, string y, string z)
@@ -81,12 +81,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNestedConditionalOperators)]
-        public async Task Test_LocalDeclaration3()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNestedConditionalOperators)]
+    public async Task Test_LocalDeclaration3()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M(bool f, bool f2, bool f3, string a, string b, string c, string d)
@@ -122,12 +122,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNestedConditionalOperators)]
-        public async Task Test_SimpleAssignment()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNestedConditionalOperators)]
+    public async Task Test_SimpleAssignment()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M(bool f, bool f2, string x, string y, string z)
@@ -160,12 +160,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNestedConditionalOperators)]
-        public async Task Test_SimpleAssignment2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNestedConditionalOperators)]
+    public async Task Test_SimpleAssignment2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M(bool f, bool f2, string x, string y, string z)
@@ -195,12 +195,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNestedConditionalOperators)]
-        public async Task Test_SimpleAssignment3()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNestedConditionalOperators)]
+    public async Task Test_SimpleAssignment3()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M(bool f, bool f2, bool f3, string a, string b, string c, string d)
@@ -237,12 +237,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNestedConditionalOperators)]
-        public async Task Test_ReturnStatement()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNestedConditionalOperators)]
+    public async Task Test_ReturnStatement()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     string M(bool f, bool f2, bool f3)
@@ -277,12 +277,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNestedConditionalOperators)]
-        public async Task Test_ReturnStatement2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNestedConditionalOperators)]
+    public async Task Test_ReturnStatement2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     string M(bool f, bool f2, bool f3)
@@ -314,12 +314,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNestedConditionalOperators)]
-        public async Task Test_ReturnStatement3()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNestedConditionalOperators)]
+    public async Task Test_ReturnStatement3()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     string M(bool f, bool f2, bool f3, string a, string b, string c, string d)
@@ -354,12 +354,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNestedConditionalOperators)]
-        public async Task Test_YieldReturnStatement()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNestedConditionalOperators)]
+    public async Task Test_YieldReturnStatement()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 
 class C
@@ -398,12 +398,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNestedConditionalOperators)]
-        public async Task Test_YieldReturnStatement2()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNestedConditionalOperators)]
+    public async Task Test_YieldReturnStatement2()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 
 class C
@@ -439,12 +439,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNestedConditionalOperators)]
-        public async Task Test_YieldReturnStatement3()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNestedConditionalOperators)]
+    public async Task Test_YieldReturnStatement3()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 
 class C
@@ -483,6 +483,5 @@ class C
     }
 }
 ");
-        }
     }
 }

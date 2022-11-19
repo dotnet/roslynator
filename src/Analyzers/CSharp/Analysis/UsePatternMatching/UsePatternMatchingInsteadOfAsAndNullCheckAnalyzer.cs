@@ -68,7 +68,7 @@ namespace Roslynator.CSharp.Analysis.UsePatternMatching
 
             StatementSyntax statement = ifStatement.SingleNonBlockStatementOrDefault();
 
-            if (statement == null)
+            if (statement is null)
                 return;
 
             if (!CSharpFacts.IsJumpStatement(statement.Kind()))

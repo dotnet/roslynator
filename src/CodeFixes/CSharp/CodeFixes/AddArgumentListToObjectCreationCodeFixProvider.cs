@@ -11,51 +11,50 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CodeFixes;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.CodeFixes;
+
+[ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AddArgumentListToObjectCreationCodeFixProvider))]
+[Shared]
+public sealed class AddArgumentListToObjectCreationCodeFixProvider : CompilerDiagnosticCodeFixProvider
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AddArgumentListToObjectCreationCodeFixProvider))]
-    [Shared]
-    public sealed class AddArgumentListToObjectCreationCodeFixProvider : CompilerDiagnosticCodeFixProvider
+    public override ImmutableArray<string> FixableDiagnosticIds
     {
-        public override ImmutableArray<string> FixableDiagnosticIds
-        {
-            get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.CS1526_NewExpressionRequiresParenthesesOrBracketsOrBracesAfterType); }
-        }
+        get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.CS1526_NewExpressionRequiresParenthesesOrBracketsOrBracesAfterType); }
+    }
 
-        public override async Task RegisterCodeFixesAsync(CodeFixContext context)
-        {
-            Diagnostic diagnostic = context.Diagnostics[0];
+    public override async Task RegisterCodeFixesAsync(CodeFixContext context)
+    {
+        Diagnostic diagnostic = context.Diagnostics[0];
 
-            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+        SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddArgumentList, context.Document, root.SyntaxTree))
-                return;
+        if (!IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddArgumentList, context.Document, root.SyntaxTree))
+            return;
 
-            if (!TryFindFirstAncestorOrSelf(root, new TextSpan(context.Span.Start - 1, 0), out ObjectCreationExpressionSyntax objectCreation))
-                return;
+        if (!TryFindFirstAncestorOrSelf(root, new TextSpan(context.Span.Start - 1, 0), out ObjectCreationExpressionSyntax objectCreation))
+            return;
 
-            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-            ISymbol symbol = semanticModel.GetSymbol(objectCreation.Type, context.CancellationToken);
+        ISymbol symbol = semanticModel.GetSymbol(objectCreation.Type, context.CancellationToken);
 
-            if (symbol?.IsErrorType() != false)
-                return;
+        if (symbol?.IsErrorType() != false)
+            return;
 
-            CodeAction codeAction = CodeAction.Create(
-                "Add argument list",
-                ct =>
-                {
-                    ObjectCreationExpressionSyntax newNode = objectCreation.Update(
-                        objectCreation.NewKeyword,
-                        objectCreation.Type.WithoutTrailingTrivia(),
-                        SyntaxFactory.ArgumentList().WithTrailingTrivia(objectCreation.Type.GetTrailingTrivia()),
-                        objectCreation.Initializer);
+        CodeAction codeAction = CodeAction.Create(
+            "Add argument list",
+            ct =>
+            {
+                ObjectCreationExpressionSyntax newNode = objectCreation.Update(
+                    objectCreation.NewKeyword,
+                    objectCreation.Type.WithoutTrailingTrivia(),
+                    SyntaxFactory.ArgumentList().WithTrailingTrivia(objectCreation.Type.GetTrailingTrivia()),
+                    objectCreation.Initializer);
 
-                    return context.Document.ReplaceNodeAsync(objectCreation, newNode, ct);
-                },
-                GetEquivalenceKey(diagnostic));
+                return context.Document.ReplaceNodeAsync(objectCreation, newNode, ct);
+            },
+            GetEquivalenceKey(diagnostic));
 
-            context.RegisterCodeFix(codeAction, diagnostic);
-        }
+        context.RegisterCodeFix(codeAction, diagnostic);
     }
 }

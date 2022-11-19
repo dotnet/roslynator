@@ -71,7 +71,7 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
             {
                 IMethodSymbol symbol = context.SemanticModel.GetDeclaredSymbol(constructorDeclaration, context.CancellationToken);
 
-                if (symbol != null)
+                if (symbol is not null)
                 {
                     ImmutableArray<IParameterSymbol> parameters = symbol.Parameters;
 
@@ -116,7 +116,7 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
 
             IMethodSymbol methodSymbol = context.SemanticModel.GetDeclaredSymbol(methodDeclaration, context.CancellationToken);
 
-            if (methodSymbol == null)
+            if (methodSymbol is null)
                 return;
 
             if (SymbolUtility.IsEventHandlerMethod(methodSymbol))
@@ -147,7 +147,7 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
             }
             finally
             {
-                if (walker != null)
+                if (walker is not null)
                     UnusedParameterWalker.Free(walker);
             }
         }
@@ -234,7 +234,7 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
 
             IMethodSymbol methodSymbol = context.SemanticModel.GetDeclaredSymbol(localFunctionStatement, context.CancellationToken);
 
-            if (methodSymbol == null)
+            if (methodSymbol is null)
                 return;
 
             if (SymbolUtility.IsEventHandlerMethod(methodSymbol))
@@ -257,7 +257,7 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
 
             var methodSymbol = (IMethodSymbol)context.SemanticModel.GetSymbol(lambda, context.CancellationToken);
 
-            if (methodSymbol == null)
+            if (methodSymbol is null)
                 return;
 
             if (SymbolUtility.IsEventHandlerMethod(methodSymbol))
@@ -280,7 +280,7 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
 
             var methodSymbol = (IMethodSymbol)context.SemanticModel.GetSymbol(lambda, context.CancellationToken);
 
-            if (methodSymbol == null)
+            if (methodSymbol is null)
                 return;
 
             if (SymbolUtility.IsEventHandlerMethod(methodSymbol))
@@ -303,7 +303,7 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
 
             var methodSymbol = (IMethodSymbol)context.SemanticModel.GetSymbol(anonymousMethod, context.CancellationToken);
 
-            if (methodSymbol == null)
+            if (methodSymbol is null)
                 return;
 
             if (SymbolUtility.IsEventHandlerMethod(methodSymbol))
@@ -328,14 +328,14 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
             }
             finally
             {
-                if (walker != null)
+                if (walker is not null)
                     UnusedParameterWalker.Free(walker);
             }
         }
 
         private static void FindUnusedNodes(in ParameterInfo parameterInfo, UnusedParameterWalker walker)
         {
-            if (parameterInfo.Parameter != null
+            if (parameterInfo.Parameter is not null
                 && !IsArgListOrDiscard(parameterInfo.Parameter))
             {
                 walker.AddParameter(parameterInfo.Parameter);

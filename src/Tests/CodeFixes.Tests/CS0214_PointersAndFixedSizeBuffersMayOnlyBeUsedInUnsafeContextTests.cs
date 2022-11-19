@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.CodeFixes.Tests
-{
-    public class CS0214_PointersAndFixedSizeBuffersMayOnlyBeUsedInUnsafeContextTests : AbstractCSharpCompilerDiagnosticFixVerifier<UnsafeCodeFixProvider>
-    {
-        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS0214_PointersAndFixedSizeBuffersMayOnlyBeUsedInUnsafeContext;
+namespace Roslynator.CSharp.CodeFixes.Tests;
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0201_OnlyAssignmentCallIncrementDecrementAndNewObjectExpressionsCanBeUsedAsStatement)]
-        public async Task Test_SpanOfT()
-        {
-            await VerifyFixAsync(@"
+public class CS0214_PointersAndFixedSizeBuffersMayOnlyBeUsedInUnsafeContextTests : AbstractCSharpCompilerDiagnosticFixVerifier<UnsafeCodeFixProvider>
+{
+    public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CS0214_PointersAndFixedSizeBuffersMayOnlyBeUsedInUnsafeContext;
+
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0201_OnlyAssignmentCallIncrementDecrementAndNewObjectExpressionsCanBeUsedAsStatement)]
+    public async Task Test_SpanOfT()
+    {
+        await VerifyFixAsync(@"
 using System;
 
 class C
@@ -34,12 +34,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId, CodeFixIdentifiers.UseExplicitTypeInsteadOfVar, "System_Span_T"));
-        }
+    }
 
-        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0201_OnlyAssignmentCallIncrementDecrementAndNewObjectExpressionsCanBeUsedAsStatement)]
-        public async Task Test_ReadOnlySpanOfT()
-        {
-            await VerifyFixAsync(@"
+    [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.CS0201_OnlyAssignmentCallIncrementDecrementAndNewObjectExpressionsCanBeUsedAsStatement)]
+    public async Task Test_ReadOnlySpanOfT()
+    {
+        await VerifyFixAsync(@"
 using System;
 
 class C
@@ -60,6 +60,5 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId, CodeFixIdentifiers.UseExplicitTypeInsteadOfVar, "System_ReadOnlySpan_T"));
-        }
     }
 }

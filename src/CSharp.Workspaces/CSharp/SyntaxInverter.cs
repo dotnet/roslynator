@@ -40,7 +40,7 @@ namespace Roslynator.CSharp
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default)
         {
-            if (expression == null)
+            if (expression is null)
                 throw new ArgumentNullException(nameof(expression));
 
             ExpressionSyntax newExpression = LogicallyInvertImpl(expression, semanticModel, cancellationToken);
@@ -53,7 +53,7 @@ namespace Roslynator.CSharp
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            if (expression == null)
+            if (expression is null)
                 return null;
 
             return LogicallyInvertImpl(expression, semanticModel, cancellationToken).Parenthesize();
@@ -64,7 +64,7 @@ namespace Roslynator.CSharp
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            if (expression == null)
+            if (expression is null)
                 return expression;
 
             switch (expression.Kind())
@@ -97,7 +97,7 @@ namespace Roslynator.CSharp
                 case SyntaxKind.GreaterThanExpression:
                 case SyntaxKind.GreaterThanOrEqualExpression:
                     {
-                        return (semanticModel != null)
+                        return (semanticModel is not null)
                             ? InvertLessThanOrGreaterThan((BinaryExpressionSyntax)expression, semanticModel, cancellationToken)
                             : DefaultInvert(expression);
                     }
@@ -158,7 +158,7 @@ namespace Roslynator.CSharp
 
                         ExpressionSyntax expression2 = parenthesizedExpression.Expression;
 
-                        if (expression2 == null)
+                        if (expression2 is null)
                             return parenthesizedExpression;
 
                         if (expression2.IsMissing)
@@ -245,7 +245,7 @@ namespace Roslynator.CSharp
 
             ExpressionSyntax newExpression = TryCreateExpressionWithoutConditionalAccess(conditionalAccess);
 
-            if (newExpression == null)
+            if (newExpression is null)
                 return DefaultInvert(binaryExpression);
 
             return LogicalOrExpression(

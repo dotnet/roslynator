@@ -8,152 +8,151 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class UseObjectInitializerRefactoring
 {
-    internal static class UseObjectInitializerRefactoring
+    public static async Task ComputeRefactoringsAsync(RefactoringContext context, StatementListSelection selectedStatements)
     {
-        public static async Task ComputeRefactoringsAsync(RefactoringContext context, StatementListSelection selectedStatements)
+        if (selectedStatements.Count <= 1)
+            return;
+
+        StatementSyntax firstStatement = selectedStatements.First();
+
+        SemanticModel semanticModel = null;
+        ISymbol symbol = null;
+        ObjectCreationExpressionSyntax objectCreation = null;
+
+        SyntaxKind kind = firstStatement.Kind();
+
+        if (kind == SyntaxKind.LocalDeclarationStatement)
         {
-            if (selectedStatements.Count <= 1)
-                return;
+            var localDeclaration = (LocalDeclarationStatementSyntax)firstStatement;
 
-            StatementSyntax firstStatement = selectedStatements.First();
+            VariableDeclaratorSyntax variable = localDeclaration
+                .Declaration?
+                .Variables
+                .SingleOrDefault(shouldThrow: false);
 
-            SemanticModel semanticModel = null;
-            ISymbol symbol = null;
-            ObjectCreationExpressionSyntax objectCreation = null;
+            objectCreation = variable?.Initializer?.Value as ObjectCreationExpressionSyntax;
 
-            SyntaxKind kind = firstStatement.Kind();
-
-            if (kind == SyntaxKind.LocalDeclarationStatement)
+            if (objectCreation is not null)
             {
-                var localDeclaration = (LocalDeclarationStatementSyntax)firstStatement;
+                semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                VariableDeclaratorSyntax variable = localDeclaration
-                    .Declaration?
-                    .Variables
-                    .SingleOrDefault(shouldThrow: false);
+                symbol = semanticModel.GetDeclaredSymbol(variable, context.CancellationToken);
+            }
+        }
+        else if (kind == SyntaxKind.ExpressionStatement)
+        {
+            var expressionStatement = (ExpressionStatementSyntax)firstStatement;
 
-                objectCreation = variable?.Initializer?.Value as ObjectCreationExpressionSyntax;
+            if (expressionStatement.Expression is AssignmentExpressionSyntax assignment)
+            {
+                objectCreation = assignment.Right as ObjectCreationExpressionSyntax;
 
-                if (objectCreation != null)
+                if (objectCreation is not null)
                 {
                     semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                    symbol = semanticModel.GetDeclaredSymbol(variable, context.CancellationToken);
+                    symbol = semanticModel.GetSymbol(assignment.Left, context.CancellationToken);
                 }
             }
-            else if (kind == SyntaxKind.ExpressionStatement)
-            {
-                var expressionStatement = (ExpressionStatementSyntax)firstStatement;
+        }
 
-                if (expressionStatement.Expression is AssignmentExpressionSyntax assignment)
-                {
-                    objectCreation = assignment.Right as ObjectCreationExpressionSyntax;
+        if (objectCreation is null)
+            return;
 
-                    if (objectCreation != null)
-                    {
-                        semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+        if (symbol?.IsErrorType() != false)
+            return;
 
-                        symbol = semanticModel.GetSymbol(assignment.Left, context.CancellationToken);
-                    }
-                }
-            }
-
-            if (objectCreation == null)
+        for (int i = 1; i < selectedStatements.Count; i++)
+        {
+            if (!IsValidAssignmentStatement(selectedStatements[i], symbol, semanticModel, context.CancellationToken))
                 return;
-
-            if (symbol?.IsErrorType() != false)
-                return;
-
-            for (int i = 1; i < selectedStatements.Count; i++)
-            {
-                if (!IsValidAssignmentStatement(selectedStatements[i], symbol, semanticModel, context.CancellationToken))
-                    return;
-            }
-
-            context.RegisterRefactoring(
-                "Use object initializer",
-                ct => RefactorAsync(context.Document, objectCreation, selectedStatements, ct),
-                RefactoringDescriptors.UseObjectInitializer);
         }
 
-        public static bool IsValidAssignmentStatement(
-            StatementSyntax statement,
-            ISymbol symbol,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
+        context.RegisterRefactoring(
+            "Use object initializer",
+            ct => RefactorAsync(context.Document, objectCreation, selectedStatements, ct),
+            RefactoringDescriptors.UseObjectInitializer);
+    }
+
+    public static bool IsValidAssignmentStatement(
+        StatementSyntax statement,
+        ISymbol symbol,
+        SemanticModel semanticModel,
+        CancellationToken cancellationToken)
+    {
+        SimpleAssignmentStatementInfo simpleAssignment = SyntaxInfo.SimpleAssignmentStatementInfo(statement);
+
+        if (!simpleAssignment.Success)
+            return false;
+
+        ExpressionSyntax left = simpleAssignment.Left;
+
+        if (left.Kind() != SyntaxKind.SimpleMemberAccessExpression)
+            return false;
+
+        var memberAccess = (MemberAccessExpressionSyntax)left;
+
+        ISymbol expressionSymbol = semanticModel.GetSymbol(memberAccess.Expression, cancellationToken);
+
+        if (!SymbolEqualityComparer.Default.Equals(symbol, expressionSymbol))
+            return false;
+
+        return semanticModel.GetSymbol(left, cancellationToken)?.Kind == SymbolKind.Property;
+    }
+
+    public static Task<Document> RefactorAsync(
+        Document document,
+        ObjectCreationExpressionSyntax objectCreation,
+        StatementListSelection selectedStatements,
+        CancellationToken cancellationToken = default)
+    {
+        ExpressionStatementSyntax[] expressionStatements = selectedStatements
+            .Skip(1)
+            .Cast<ExpressionStatementSyntax>()
+            .ToArray();
+
+        StatementSyntax firstStatement = selectedStatements.First();
+
+        SyntaxList<StatementSyntax> newStatements = selectedStatements.UnderlyingList.Replace(
+            firstStatement,
+            firstStatement.ReplaceNode(
+                objectCreation,
+                objectCreation.WithInitializer(CreateInitializer(objectCreation, expressionStatements))));
+
+        int count = expressionStatements.Length;
+        int index = selectedStatements.FirstIndex + 1;
+
+        while (count > 0)
         {
-            SimpleAssignmentStatementInfo simpleAssignment = SyntaxInfo.SimpleAssignmentStatementInfo(statement);
-
-            if (!simpleAssignment.Success)
-                return false;
-
-            ExpressionSyntax left = simpleAssignment.Left;
-
-            if (left.Kind() != SyntaxKind.SimpleMemberAccessExpression)
-                return false;
-
-            var memberAccess = (MemberAccessExpressionSyntax)left;
-
-            ISymbol expressionSymbol = semanticModel.GetSymbol(memberAccess.Expression, cancellationToken);
-
-            if (!SymbolEqualityComparer.Default.Equals(symbol, expressionSymbol))
-                return false;
-
-            return semanticModel.GetSymbol(left, cancellationToken)?.Kind == SymbolKind.Property;
+            newStatements = newStatements.RemoveAt(index);
+            count--;
         }
 
-        public static Task<Document> RefactorAsync(
-            Document document,
-            ObjectCreationExpressionSyntax objectCreation,
-            StatementListSelection selectedStatements,
-            CancellationToken cancellationToken = default)
+        return document.ReplaceStatementsAsync(SyntaxInfo.StatementListInfo(selectedStatements), newStatements, cancellationToken);
+    }
+
+    private static InitializerExpressionSyntax CreateInitializer(ObjectCreationExpressionSyntax objectCreation, ExpressionStatementSyntax[] expressionStatements)
+    {
+        InitializerExpressionSyntax initializer = objectCreation.Initializer
+            ?? SyntaxFactory.InitializerExpression(SyntaxKind.ObjectInitializerExpression);
+
+        var expressions = new AssignmentExpressionSyntax[expressionStatements.Length];
+
+        for (int i = 0; i < expressionStatements.Length; i++)
         {
-            ExpressionStatementSyntax[] expressionStatements = selectedStatements
-                .Skip(1)
-                .Cast<ExpressionStatementSyntax>()
-                .ToArray();
+            var assignment = (AssignmentExpressionSyntax)expressionStatements[i].Expression;
 
-            StatementSyntax firstStatement = selectedStatements.First();
+            var memberAccess = (MemberAccessExpressionSyntax)assignment.Left;
 
-            SyntaxList<StatementSyntax> newStatements = selectedStatements.UnderlyingList.Replace(
-                firstStatement,
-                firstStatement.ReplaceNode(
-                    objectCreation,
-                    objectCreation.WithInitializer(CreateInitializer(objectCreation, expressionStatements))));
-
-            int count = expressionStatements.Length;
-            int index = selectedStatements.FirstIndex + 1;
-
-            while (count > 0)
-            {
-                newStatements = newStatements.RemoveAt(index);
-                count--;
-            }
-
-            return document.ReplaceStatementsAsync(SyntaxInfo.StatementListInfo(selectedStatements), newStatements, cancellationToken);
+            expressions[i] = assignment.ReplaceNode(memberAccess, memberAccess.Name);
         }
 
-        private static InitializerExpressionSyntax CreateInitializer(ObjectCreationExpressionSyntax objectCreation, ExpressionStatementSyntax[] expressionStatements)
-        {
-            InitializerExpressionSyntax initializer = objectCreation.Initializer
-                ?? SyntaxFactory.InitializerExpression(SyntaxKind.ObjectInitializerExpression);
-
-            var expressions = new AssignmentExpressionSyntax[expressionStatements.Length];
-
-            for (int i = 0; i < expressionStatements.Length; i++)
-            {
-                var assignment = (AssignmentExpressionSyntax)expressionStatements[i].Expression;
-
-                var memberAccess = (MemberAccessExpressionSyntax)assignment.Left;
-
-                expressions[i] = assignment.ReplaceNode(memberAccess, memberAccess.Name);
-            }
-
-            return initializer
-                .AddExpressions(expressions)
-                .WithFormatterAnnotation();
-        }
+        return initializer
+            .AddExpressions(expressions)
+            .WithFormatterAnnotation();
     }
 }

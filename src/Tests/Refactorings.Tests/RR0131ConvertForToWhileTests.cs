@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0131ConvertForToWhileTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.ConvertForToWhile;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertForToWhile)]
-        public async Task Test_CommonFor()
-        {
-            await VerifyRefactoringAsync(@"
+public class RR0131ConvertForToWhileTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.ConvertForToWhile;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertForToWhile)]
+    public async Task Test_CommonFor()
+    {
+        await VerifyRefactoringAsync(@"
 using System.Collections.Generic;
 
 class C
@@ -46,12 +46,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertForToWhile)]
-        public async Task Test_ForWithEmbeddedStatement()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertForToWhile)]
+    public async Task Test_ForWithEmbeddedStatement()
+    {
+        await VerifyRefactoringAsync(@"
 using System.Collections.Generic;
 
 class C
@@ -82,12 +82,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertForToWhile)]
-        public async Task Test_ForWithContinue()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertForToWhile)]
+    public async Task Test_ForWithContinue()
+    {
+        await VerifyRefactoringAsync(@"
 using System.Collections.Generic;
 
 class C
@@ -154,12 +154,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertForToWhile)]
-        public async Task Test_ForWithMultipleDeclarationsAndIncrementors()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertForToWhile)]
+    public async Task Test_ForWithMultipleDeclarationsAndIncrementors()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M()
@@ -192,12 +192,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertForToWhile)]
-        public async Task Test_EmptyFor()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertForToWhile)]
+    public async Task Test_EmptyFor()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M()
@@ -218,12 +218,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertForToWhile)]
-        public async Task Test_EmbeddedFor()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertForToWhile)]
+    public async Task Test_EmbeddedFor()
+    {
+        await VerifyRefactoringAsync(@"
 using System.Collections.Generic;
 
 class C
@@ -260,6 +260,5 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
     }
 }

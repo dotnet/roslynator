@@ -4,49 +4,49 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0051WrapCallChainTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.WrapCallChain;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Theory, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapCallChain)]
-        [InlineData("[||]x.M().M()", @"x
+public class RR0051WrapCallChainTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.WrapCallChain;
+
+    [Theory, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapCallChain)]
+    [InlineData("[||]x.M().M()", @"x
                 .M()
                 .M()")]
-        [InlineData("[||]x?.M()?.M()", @"x?
+    [InlineData("[||]x?.M()?.M()", @"x?
                 .M()?
                 .M()")]
-        [InlineData("[||]x[0].M()[0].M()[0]", @"x[0]
+    [InlineData("[||]x[0].M()[0].M()[0]", @"x[0]
                 .M()[0]
                 .M()[0]")]
-        [InlineData("[||]x?[0]?.M()[0]?.M()[0]", @"x?[0]?
+    [InlineData("[||]x?[0]?.M()[0]?.M()[0]", @"x?[0]?
                 .M()[0]?
                 .M()[0]")]
-        [InlineData("[||]x.P.P", @"x
+    [InlineData("[||]x.P.P", @"x
                 .P
                 .P")]
-        [InlineData("[||]x?.P?.P", @"x?
+    [InlineData("[||]x?.P?.P", @"x?
                 .P?
                 .P")]
-        [InlineData("[||]x[0].P[0].P[0]", @"x[0]
+    [InlineData("[||]x[0].P[0].P[0]", @"x[0]
                 .P[0]
                 .P[0]")]
-        [InlineData("[||]x?[0]?.P[0]?.P[0]", @"x?[0]?
+    [InlineData("[||]x?[0]?.P[0]?.P[0]", @"x?[0]?
                 .P[0]?
                 .P[0]")]
-        [InlineData("[||]x.M(x.M().M()).M(x.M().M())", @"x
+    [InlineData("[||]x.M(x.M().M()).M(x.M().M())", @"x
                 .M(x.M().M())
                 .M(x.M().M())")]
-        [InlineData("[||]this.M().M().M()", @"this.M()
+    [InlineData("[||]this.M().M().M()", @"this.M()
                 .M()
                 .M()")]
-        [InlineData("[||]A.B.Foo.SM().M()", @"A.B.Foo
+    [InlineData("[||]A.B.Foo.SM().M()", @"A.B.Foo
                 .SM()
                 .M()")]
-        public async Task TestRefactoring(string fixableCode, string fixedCode)
-        {
-            await VerifyRefactoringAsync(@"
+    public async Task TestRefactoring(string fixableCode, string fixedCode)
+    {
+        await VerifyRefactoringAsync(@"
 namespace A.B
 {
     class Foo
@@ -72,12 +72,12 @@ namespace A.B
     }
 }
 ", fixableCode, fixedCode, equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapCallChain)]
-        public async Task TestRefactoring_ToSingleLine()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapCallChain)]
+    public async Task TestRefactoring_ToSingleLine()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     C M()
@@ -103,12 +103,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapCallChain)]
-        public async Task TestNoRefactoring()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.WrapCallChain)]
+    public async Task TestNoRefactoring()
+    {
+        await VerifyNoRefactoringAsync(@"
 namespace A.B
 {
     class Foo
@@ -144,6 +144,5 @@ namespace A.B
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
     }
 }

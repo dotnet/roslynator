@@ -2,36 +2,35 @@
 
 using Microsoft.CodeAnalysis;
 
-namespace Roslynator.CSharp.Refactorings.NodeInList
+namespace Roslynator.CSharp.Refactorings.NodeInList;
+
+internal class RewriterInfo<TSyntax> where TSyntax : SyntaxNode
 {
-    internal class RewriterInfo<TSyntax> where TSyntax : SyntaxNode
+    public RewriterInfo(TSyntax node, TSyntax newNode, SyntaxToken tokenBefore, SyntaxToken tokenAfter)
     {
-        public RewriterInfo(TSyntax node, TSyntax newNode, SyntaxToken tokenBefore, SyntaxToken tokenAfter)
-        {
-            Node = node;
-            NewNode = SetTrivia(newNode, tokenBefore, tokenAfter);
-            TokenBefore = tokenBefore;
-            TokenAfter = tokenAfter;
-        }
+        Node = node;
+        NewNode = SetTrivia(newNode, tokenBefore, tokenAfter);
+        TokenBefore = tokenBefore;
+        TokenAfter = tokenAfter;
+    }
 
-        public TSyntax Node { get; }
+    public TSyntax Node { get; }
 
-        public TSyntax NewNode { get; }
+    public TSyntax NewNode { get; }
 
-        public SyntaxToken TokenBefore { get; }
+    public SyntaxToken TokenBefore { get; }
 
-        public SyntaxToken TokenAfter { get; }
+    public SyntaxToken TokenAfter { get; }
 
-        private static TSyntax SetTrivia(TSyntax newNode, SyntaxToken tokenBefore, SyntaxToken tokenAfter)
-        {
-            SyntaxTriviaList leadingTrivia = tokenBefore
-                .TrailingTrivia
-                .AddRange(tokenAfter.LeadingTrivia);
+    private static TSyntax SetTrivia(TSyntax newNode, SyntaxToken tokenBefore, SyntaxToken tokenAfter)
+    {
+        SyntaxTriviaList leadingTrivia = tokenBefore
+            .TrailingTrivia
+            .AddRange(tokenAfter.LeadingTrivia);
 
-            return newNode
-                .WithLeadingTrivia(leadingTrivia)
-                .WithTrailingTrivia()
-                .WithFormatterAnnotation();
-        }
+        return newNode
+            .WithLeadingTrivia(leadingTrivia)
+            .WithTrailingTrivia()
+            .WithFormatterAnnotation();
     }
 }

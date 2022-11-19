@@ -8,122 +8,121 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class CopySwitchSectionRefactoring
 {
-    internal static class CopySwitchSectionRefactoring
+    public static void ComputeRefactoring(RefactoringContext context, SwitchSectionSyntax switchSection)
     {
-        public static void ComputeRefactoring(RefactoringContext context, SwitchSectionSyntax switchSection)
+        if (!context.Span.IsEmpty)
+            return;
+
+        SyntaxList<StatementSyntax> statements = switchSection.Statements;
+
+        if (!statements.Any())
+            return;
+
+        if (statements.SingleOrDefault(shouldThrow: false) is BlockSyntax block
+            && block.CloseBraceToken.Span.Contains(context.Span))
         {
-            if (!context.Span.IsEmpty)
-                return;
+            RegisterRefactoring(context, switchSection);
+        }
 
-            SyntaxList<StatementSyntax> statements = switchSection.Statements;
+        if (!IsOnEmptyLine(context.Span, switchSection.GetLeadingTrivia()))
+            return;
 
-            if (!statements.Any())
-                return;
+        var switchStatement = (SwitchStatementSyntax)switchSection.Parent;
 
-            if (statements.SingleOrDefault(shouldThrow: false) is BlockSyntax block
-                && block.CloseBraceToken.Span.Contains(context.Span))
+        SyntaxList<SwitchSectionSyntax> sections = switchStatement.Sections;
+
+        int index = sections.IndexOf(switchSection);
+
+        if (index > 0)
+        {
+            SwitchSectionSyntax previousSection = sections[index - 1];
+            RegisterRefactoring(context, previousSection, insertNewLine: true);
+        }
+    }
+
+    public static void ComputeRefactoring(RefactoringContext context, SwitchStatementSyntax switchStatement)
+    {
+        if (!context.Span.IsEmpty)
+            return;
+
+        SyntaxList<SwitchSectionSyntax> sections = switchStatement.Sections;
+
+        if (!sections.Any())
+            return;
+
+        if (!IsOnEmptyLine(context.Span, switchStatement.CloseBraceToken.LeadingTrivia))
+            return;
+
+        RegisterRefactoring(context, sections.Last(), insertNewLine: true);
+    }
+
+    private static bool IsOnEmptyLine(TextSpan span, SyntaxTriviaList leadingTrivia)
+    {
+        SyntaxTriviaList.Enumerator en = leadingTrivia.GetEnumerator();
+
+        while (en.MoveNext())
+        {
+            if (en.Current.Span.Contains(span))
             {
-                RegisterRefactoring(context, switchSection);
-            }
+                if (en.Current.IsEndOfLineTrivia())
+                    return true;
 
-            if (!IsOnEmptyLine(context.Span, switchSection.GetLeadingTrivia()))
-                return;
-
-            var switchStatement = (SwitchStatementSyntax)switchSection.Parent;
-
-            SyntaxList<SwitchSectionSyntax> sections = switchStatement.Sections;
-
-            int index = sections.IndexOf(switchSection);
-
-            if (index > 0)
-            {
-                SwitchSectionSyntax previousSection = sections[index - 1];
-                RegisterRefactoring(context, previousSection, insertNewLine: true);
+                return en.Current.IsWhitespaceTrivia()
+                    && en.MoveNext()
+                    && en.Current.IsEndOfLineTrivia();
             }
         }
 
-        public static void ComputeRefactoring(RefactoringContext context, SwitchStatementSyntax switchStatement)
+        return false;
+    }
+
+    private static void RegisterRefactoring(RefactoringContext context, SwitchSectionSyntax switchSection, bool insertNewLine = false)
+    {
+        context.RegisterRefactoring(
+            "Copy section",
+            ct => CopySwitchSectionAsync(context.Document, switchSection, insertNewLine, ct),
+            RefactoringDescriptors.CopySwitchSection);
+    }
+
+    private static Task<Document> CopySwitchSectionAsync(
+        Document document,
+        SwitchSectionSyntax switchSection,
+        bool insertNewLine,
+        CancellationToken cancellationToken)
+    {
+        var switchStatement = (SwitchStatementSyntax)switchSection.Parent;
+
+        SyntaxList<SwitchSectionSyntax> sections = switchStatement.Sections;
+
+        int index = sections.IndexOf(switchSection);
+
+        SwitchLabelSyntax label = switchSection.Labels[0];
+
+        SyntaxToken firstToken = label.GetFirstToken();
+
+        SyntaxToken newFirstToken = firstToken.WithNavigationAnnotation();
+
+        if (insertNewLine
+            && !firstToken.LeadingTrivia.Contains(SyntaxKind.EndOfLineTrivia))
         {
-            if (!context.Span.IsEmpty)
-                return;
-
-            SyntaxList<SwitchSectionSyntax> sections = switchStatement.Sections;
-
-            if (!sections.Any())
-                return;
-
-            if (!IsOnEmptyLine(context.Span, switchStatement.CloseBraceToken.LeadingTrivia))
-                return;
-
-            RegisterRefactoring(context, sections.Last(), insertNewLine: true);
+            newFirstToken = newFirstToken.PrependToLeadingTrivia(CSharpFactory.NewLine());
         }
 
-        private static bool IsOnEmptyLine(TextSpan span, SyntaxTriviaList leadingTrivia)
-        {
-            SyntaxTriviaList.Enumerator en = leadingTrivia.GetEnumerator();
+        SwitchSectionSyntax newSection = switchSection
+            .WithLabels(switchSection.Labels.ReplaceAt(0, label.ReplaceToken(firstToken, newFirstToken)))
+            .WithFormatterAnnotation();
 
-            while (en.MoveNext())
-            {
-                if (en.Current.Span.Contains(span))
-                {
-                    if (en.Current.IsEndOfLineTrivia())
-                        return true;
+        if (index == sections.Count - 1)
+            newSection = newSection.TrimTrailingTrivia();
 
-                    return en.Current.IsWhitespaceTrivia()
-                        && en.MoveNext()
-                        && en.Current.IsEndOfLineTrivia();
-                }
-            }
+        SyntaxList<SwitchSectionSyntax> newSections = sections.Insert(index + 1, newSection);
 
-            return false;
-        }
+        SwitchStatementSyntax newSwitchStatement = switchStatement.WithSections(newSections);
 
-        private static void RegisterRefactoring(RefactoringContext context, SwitchSectionSyntax switchSection, bool insertNewLine = false)
-        {
-            context.RegisterRefactoring(
-                "Copy section",
-                ct => CopySwitchSectionAsync(context.Document, switchSection, insertNewLine, ct),
-                RefactoringDescriptors.CopySwitchSection);
-        }
-
-        private static Task<Document> CopySwitchSectionAsync(
-            Document document,
-            SwitchSectionSyntax switchSection,
-            bool insertNewLine,
-            CancellationToken cancellationToken)
-        {
-            var switchStatement = (SwitchStatementSyntax)switchSection.Parent;
-
-            SyntaxList<SwitchSectionSyntax> sections = switchStatement.Sections;
-
-            int index = sections.IndexOf(switchSection);
-
-            SwitchLabelSyntax label = switchSection.Labels[0];
-
-            SyntaxToken firstToken = label.GetFirstToken();
-
-            SyntaxToken newFirstToken = firstToken.WithNavigationAnnotation();
-
-            if (insertNewLine
-                && !firstToken.LeadingTrivia.Contains(SyntaxKind.EndOfLineTrivia))
-            {
-                newFirstToken = newFirstToken.PrependToLeadingTrivia(CSharpFactory.NewLine());
-            }
-
-            SwitchSectionSyntax newSection = switchSection
-                .WithLabels(switchSection.Labels.ReplaceAt(0, label.ReplaceToken(firstToken, newFirstToken)))
-                .WithFormatterAnnotation();
-
-            if (index == sections.Count - 1)
-                newSection = newSection.TrimTrailingTrivia();
-
-            SyntaxList<SwitchSectionSyntax> newSections = sections.Insert(index + 1, newSection);
-
-            SwitchStatementSyntax newSwitchStatement = switchStatement.WithSections(newSections);
-
-            return document.ReplaceNodeAsync(switchStatement, newSwitchStatement, cancellationToken);
-        }
+        return document.ReplaceNodeAsync(switchStatement, newSwitchStatement, cancellationToken);
     }
 }

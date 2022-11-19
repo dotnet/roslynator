@@ -6,63 +6,62 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CodeGeneration.CSharp
+namespace Roslynator.CodeGeneration.CSharp;
+
+public class MethodGenerationContext
 {
-    public class MethodGenerationContext
+    private IMethodSymbol _methodSymbol;
+
+    internal MethodGenerationContext()
     {
-        private IMethodSymbol _methodSymbol;
+        Statements = new List<StatementSyntax>();
+        LocalNames = new HashSet<string>();
+    }
 
-        internal MethodGenerationContext()
+    public List<StatementSyntax> Statements { get; }
+
+    public HashSet<string> LocalNames { get; }
+
+    public IMethodSymbol MethodSymbol
+    {
+        get { return _methodSymbol; }
+        internal set
         {
-            Statements = new List<StatementSyntax>();
-            LocalNames = new HashSet<string>();
+            _methodSymbol = value;
+            ParameterSymbol = _methodSymbol?.Parameters.Single();
         }
+    }
 
-        public List<StatementSyntax> Statements { get; }
+    public string MethodName => MethodSymbol?.Name;
 
-        public HashSet<string> LocalNames { get; }
+    public IParameterSymbol ParameterSymbol { get; private set; }
 
-        public IMethodSymbol MethodSymbol
-        {
-            get { return _methodSymbol; }
-            internal set
-            {
-                _methodSymbol = value;
-                ParameterSymbol = _methodSymbol?.Parameters.Single();
-            }
-        }
+    public IPropertySymbol PropertySymbol { get; internal set; }
 
-        public string MethodName => MethodSymbol?.Name;
+    public ITypeSymbol ParameterType => ParameterSymbol?.Type;
 
-        public IParameterSymbol ParameterSymbol { get; private set; }
+    public string ParameterName => ParameterSymbol?.Name;
 
-        public IPropertySymbol PropertySymbol { get; internal set; }
+    public ITypeSymbol PropertyType => PropertySymbol?.Type;
 
-        public ITypeSymbol ParameterType => ParameterSymbol?.Type;
+    public string PropertyName => PropertySymbol?.Name;
 
-        public string ParameterName => ParameterSymbol?.Name;
+    public void AddStatement(StatementSyntax statement)
+    {
+        Statements.Add(statement);
+    }
 
-        public ITypeSymbol PropertyType => PropertySymbol?.Type;
+    public string CreateVariableName(string name)
+    {
+        name = StringUtility.ToCamelCase(name);
 
-        public string PropertyName => PropertySymbol?.Name;
+        name = NameGenerator.Default.EnsureUniqueName(name, LocalNames);
 
-        public void AddStatement(StatementSyntax statement)
-        {
-            Statements.Add(statement);
-        }
+        if (SyntaxFacts.GetKeywordKind(name) != SyntaxKind.None)
+            name = $"@{name}";
 
-        public string CreateVariableName(string name)
-        {
-            name = StringUtility.ToCamelCase(name);
+        LocalNames.Add(name);
 
-            name = NameGenerator.Default.EnsureUniqueName(name, LocalNames);
-
-            if (SyntaxFacts.GetKeywordKind(name) != SyntaxKind.None)
-                name = $"@{name}";
-
-            LocalNames.Add(name);
-
-            return name;
-        }
+        return name;
     }
 }

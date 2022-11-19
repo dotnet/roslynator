@@ -12,260 +12,259 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class InitializeFieldFromConstructorRefactoring
 {
-    internal static class InitializeFieldFromConstructorRefactoring
+    public static void ComputeRefactoring(RefactoringContext context, FieldDeclarationSyntax fieldDeclaration)
     {
-        public static void ComputeRefactoring(RefactoringContext context, FieldDeclarationSyntax fieldDeclaration)
+        if (!CanRefactor(fieldDeclaration))
+            return;
+
+        SeparatedSyntaxList<VariableDeclaratorSyntax> variables = fieldDeclaration.Declaration.Variables;
+
+        if (variables.Any(f => f.Initializer is not null))
+            return;
+
+        context.RegisterRefactoring(
+            GetTitle(variables.Count == 1),
+            ct => RefactorAsync(context.Document, fieldDeclaration, ct),
+            RefactoringDescriptors.InitializeFieldFromConstructor);
+    }
+
+    public static void ComputeRefactoring(RefactoringContext context, MemberDeclarationListSelection selectedMembers)
+    {
+        int count = 0;
+
+        foreach (MemberDeclarationSyntax selectedMember in selectedMembers)
         {
-            if (!CanRefactor(fieldDeclaration))
+            if (selectedMember.Kind() != SyntaxKind.FieldDeclaration)
                 return;
 
-            SeparatedSyntaxList<VariableDeclaratorSyntax> variables = fieldDeclaration.Declaration.Variables;
+            var fieldDeclaration = (FieldDeclarationSyntax)selectedMember;
 
-            if (variables.Any(f => f.Initializer != null))
-                return;
-
-            context.RegisterRefactoring(
-                GetTitle(variables.Count == 1),
-                ct => RefactorAsync(context.Document, fieldDeclaration, ct),
-                RefactoringDescriptors.InitializeFieldFromConstructor);
-        }
-
-        public static void ComputeRefactoring(RefactoringContext context, MemberDeclarationListSelection selectedMembers)
-        {
-            int count = 0;
-
-            foreach (MemberDeclarationSyntax selectedMember in selectedMembers)
-            {
-                if (selectedMember.Kind() != SyntaxKind.FieldDeclaration)
-                    return;
-
-                var fieldDeclaration = (FieldDeclarationSyntax)selectedMember;
-
-                if (fieldDeclaration.Declaration.Variables.Any(f => f.Initializer != null))
-                    return;
-
-                if (!CanRefactor(fieldDeclaration))
-                    return;
-
-                count += fieldDeclaration.Declaration.Variables.Count;
-            }
-
-            context.RegisterRefactoring(
-                GetTitle(count == 1),
-                ct => RefactorAsync(context.Document, selectedMembers, ct),
-                RefactoringDescriptors.InitializeFieldFromConstructor);
-        }
-
-        private static string GetTitle(bool isSingle)
-        {
-            return (isSingle)
-                ? "Initialize field from constructor"
-                : "Initialize fields from constructor";
-        }
-
-        public static void ComputeRefactoring(RefactoringContext context, VariableDeclaratorSyntax variableDeclarator)
-        {
-            if (variableDeclarator.Initializer != null)
-                return;
-
-            if (variableDeclarator.Parent is not VariableDeclarationSyntax variableDeclaration)
-                return;
-
-            if (variableDeclaration.Parent is not FieldDeclarationSyntax fieldDeclaration)
+            if (fieldDeclaration.Declaration.Variables.Any(f => f.Initializer is not null))
                 return;
 
             if (!CanRefactor(fieldDeclaration))
                 return;
 
-            FieldInfo fieldInfo = FieldInfo.Create(variableDeclaration.Type, variableDeclarator);
-
-            context.RegisterRefactoring(
-                "Initialize field from constructor",
-                ct => RefactorAsync(context.Document, ImmutableArray.Create(fieldInfo), (TypeDeclarationSyntax)fieldDeclaration.Parent, ct),
-                RefactoringDescriptors.InitializeFieldFromConstructor);
+            count += fieldDeclaration.Declaration.Variables.Count;
         }
 
-        private static bool CanRefactor(FieldDeclarationSyntax fieldDeclaration)
+        context.RegisterRefactoring(
+            GetTitle(count == 1),
+            ct => RefactorAsync(context.Document, selectedMembers, ct),
+            RefactoringDescriptors.InitializeFieldFromConstructor);
+    }
+
+    private static string GetTitle(bool isSingle)
+    {
+        return (isSingle)
+            ? "Initialize field from constructor"
+            : "Initialize fields from constructor";
+    }
+
+    public static void ComputeRefactoring(RefactoringContext context, VariableDeclaratorSyntax variableDeclarator)
+    {
+        if (variableDeclarator.Initializer is not null)
+            return;
+
+        if (variableDeclarator.Parent is not VariableDeclarationSyntax variableDeclaration)
+            return;
+
+        if (variableDeclaration.Parent is not FieldDeclarationSyntax fieldDeclaration)
+            return;
+
+        if (!CanRefactor(fieldDeclaration))
+            return;
+
+        FieldInfo fieldInfo = FieldInfo.Create(variableDeclaration.Type, variableDeclarator);
+
+        context.RegisterRefactoring(
+            "Initialize field from constructor",
+            ct => RefactorAsync(context.Document, ImmutableArray.Create(fieldInfo), (TypeDeclarationSyntax)fieldDeclaration.Parent, ct),
+            RefactoringDescriptors.InitializeFieldFromConstructor);
+    }
+
+    private static bool CanRefactor(FieldDeclarationSyntax fieldDeclaration)
+    {
+        if (fieldDeclaration.Modifiers.ContainsAny(SyntaxKind.StaticKeyword, SyntaxKind.ConstKeyword))
+            return false;
+
+        if (fieldDeclaration.Parent is not TypeDeclarationSyntax typeDeclaration)
+            return false;
+
+        if (!typeDeclaration.IsKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.RecordDeclaration, SyntaxKind.RecordStructDeclaration))
+            return false;
+
+        return typeDeclaration
+            .Members
+            .Any(f => f.Kind() == SyntaxKind.ConstructorDeclaration && !((ConstructorDeclarationSyntax)f).Modifiers.Contains(SyntaxKind.StaticKeyword));
+    }
+
+    private static Task<Document> RefactorAsync(
+        Document document,
+        FieldDeclarationSyntax fieldDeclaration,
+        CancellationToken cancellationToken)
+    {
+        VariableDeclarationSyntax declaration = fieldDeclaration.Declaration;
+
+        ImmutableArray<FieldInfo> fieldInfo = declaration
+            .Variables
+            .Select(declarator => FieldInfo.Create(declaration.Type, declarator))
+            .ToImmutableArray();
+
+        return RefactorAsync(document, fieldInfo, (TypeDeclarationSyntax)fieldDeclaration.Parent, cancellationToken);
+    }
+
+    private static Task<Document> RefactorAsync(
+        Document document,
+        MemberDeclarationListSelection selectedMembers,
+        CancellationToken cancellationToken)
+    {
+        ImmutableArray<FieldInfo> fieldInfo = selectedMembers
+            .Select(member => ((FieldDeclarationSyntax)member).Declaration)
+            .SelectMany(declaration => declaration.Variables.Select(declarator => FieldInfo.Create(declaration.Type, declarator)))
+            .ToImmutableArray();
+
+        return RefactorAsync(document, fieldInfo, (TypeDeclarationSyntax)selectedMembers.Parent, cancellationToken);
+    }
+
+    private static Task<Document> RefactorAsync(
+        Document document,
+        ImmutableArray<FieldInfo> fieldInfos,
+        TypeDeclarationSyntax typeDeclaration,
+        CancellationToken cancellationToken)
+    {
+        SyntaxList<MemberDeclarationSyntax> members = typeDeclaration.Members;
+
+        HashSet<string> reservedNames = null;
+
+        for (int i = 0; i < members.Count; i++)
         {
-            if (fieldDeclaration.Modifiers.ContainsAny(SyntaxKind.StaticKeyword, SyntaxKind.ConstKeyword))
-                return false;
+            if (members[i] is not ConstructorDeclarationSyntax constructorDeclaration)
+                continue;
 
-            if (fieldDeclaration.Parent is not TypeDeclarationSyntax typeDeclaration)
-                return false;
+            if (constructorDeclaration.Modifiers.Contains(SyntaxKind.StaticKeyword))
+                continue;
 
-            if (!typeDeclaration.IsKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.RecordDeclaration, SyntaxKind.RecordStructDeclaration))
-                return false;
+            ParameterListSyntax parameterList = constructorDeclaration.ParameterList;
 
-            return typeDeclaration
-                .Members
-                .Any(f => f.Kind() == SyntaxKind.ConstructorDeclaration && !((ConstructorDeclarationSyntax)f).Modifiers.Contains(SyntaxKind.StaticKeyword));
-        }
+            if (parameterList is null)
+                continue;
 
-        private static Task<Document> RefactorAsync(
-            Document document,
-            FieldDeclarationSyntax fieldDeclaration,
-            CancellationToken cancellationToken)
-        {
-            VariableDeclarationSyntax declaration = fieldDeclaration.Declaration;
+            BlockSyntax body = constructorDeclaration.Body;
 
-            ImmutableArray<FieldInfo> fieldInfo = declaration
-                .Variables
-                .Select(declarator => FieldInfo.Create(declaration.Type, declarator))
-                .ToImmutableArray();
+            if (body is null)
+                continue;
 
-            return RefactorAsync(document, fieldInfo, (TypeDeclarationSyntax)fieldDeclaration.Parent, cancellationToken);
-        }
+            SeparatedSyntaxList<ParameterSyntax> parameters = parameterList.Parameters;
 
-        private static Task<Document> RefactorAsync(
-            Document document,
-            MemberDeclarationListSelection selectedMembers,
-            CancellationToken cancellationToken)
-        {
-            ImmutableArray<FieldInfo> fieldInfo = selectedMembers
-                .Select(member => ((FieldDeclarationSyntax)member).Declaration)
-                .SelectMany(declaration => declaration.Variables.Select(declarator => FieldInfo.Create(declaration.Type, declarator)))
-                .ToImmutableArray();
+            reservedNames?.Clear();
 
-            return RefactorAsync(document, fieldInfo, (TypeDeclarationSyntax)selectedMembers.Parent, cancellationToken);
-        }
+            ConstructorInitializerSyntax initializer = constructorDeclaration.Initializer;
+            ArgumentListSyntax argumentList = initializer?.ArgumentList;
+            SeparatedSyntaxList<ArgumentSyntax> arguments = argumentList?.Arguments ?? default;
 
-        private static Task<Document> RefactorAsync(
-            Document document,
-            ImmutableArray<FieldInfo> fieldInfos,
-            TypeDeclarationSyntax typeDeclaration,
-            CancellationToken cancellationToken)
-        {
-            SyntaxList<MemberDeclarationSyntax> members = typeDeclaration.Members;
+            bool addToInitializer = initializer?.Kind() == SyntaxKind.ThisConstructorInitializer
+                && argumentList is not null;
 
-            HashSet<string> reservedNames = null;
+            SyntaxList<StatementSyntax> statements = body.Statements;
 
-            for (int i = 0; i < members.Count; i++)
+            foreach (FieldInfo fieldInfo in fieldInfos)
             {
-                if (members[i] is not ConstructorDeclarationSyntax constructorDeclaration)
-                    continue;
+                string parameterName = GetParameterName(fieldInfo.NameCamelCase, parameters, ref reservedNames);
 
-                if (constructorDeclaration.Modifiers.Contains(SyntaxKind.StaticKeyword))
-                    continue;
-
-                ParameterListSyntax parameterList = constructorDeclaration.ParameterList;
-
-                if (parameterList == null)
-                    continue;
-
-                BlockSyntax body = constructorDeclaration.Body;
-
-                if (body == null)
-                    continue;
-
-                SeparatedSyntaxList<ParameterSyntax> parameters = parameterList.Parameters;
-
-                reservedNames?.Clear();
-
-                ConstructorInitializerSyntax initializer = constructorDeclaration.Initializer;
-                ArgumentListSyntax argumentList = initializer?.ArgumentList;
-                SeparatedSyntaxList<ArgumentSyntax> arguments = argumentList?.Arguments ?? default;
-
-                bool addToInitializer = initializer?.Kind() == SyntaxKind.ThisConstructorInitializer
-                    && argumentList != null;
-
-                SyntaxList<StatementSyntax> statements = body.Statements;
-
-                foreach (FieldInfo fieldInfo in fieldInfos)
-                {
-                    string parameterName = GetParameterName(fieldInfo.NameCamelCase, parameters, ref reservedNames);
-
-                    parameters = parameters.Add(Parameter(fieldInfo.Type.WithoutTrivia(), parameterName));
-
-                    if (addToInitializer)
-                        arguments = arguments.Add(Argument(IdentifierName(parameterName)));
-
-                    statements = statements.Add(
-                        SimpleAssignmentStatement(
-                            SimpleMemberAccessExpression(ThisExpression(), IdentifierName(fieldInfo.Name)).WithSimplifierAnnotation(),
-                            IdentifierName(parameterName))
-                            .WithFormatterAnnotation());
-                }
-
-                parameterList = parameterList.WithParameters(parameters).WithFormatterAnnotation();
+                parameters = parameters.Add(Parameter(fieldInfo.Type.WithoutTrivia(), parameterName));
 
                 if (addToInitializer)
-                {
-                    initializer = initializer
-                        .WithArgumentList(argumentList.WithArguments(arguments))
-                        .WithFormatterAnnotation();
-                }
+                    arguments = arguments.Add(Argument(IdentifierName(parameterName)));
 
-                body = body.WithStatements(statements);
-
-                constructorDeclaration = constructorDeclaration.Update(
-                    constructorDeclaration.AttributeLists,
-                    constructorDeclaration.Modifiers,
-                    constructorDeclaration.Identifier,
-                    parameterList,
-                    initializer,
-                    body,
-                    constructorDeclaration.SemicolonToken);
-
-                members = members.ReplaceAt(i, constructorDeclaration);
+                statements = statements.Add(
+                    SimpleAssignmentStatement(
+                        SimpleMemberAccessExpression(ThisExpression(), IdentifierName(fieldInfo.Name)).WithSimplifierAnnotation(),
+                        IdentifierName(parameterName))
+                        .WithFormatterAnnotation());
             }
 
-            TypeDeclarationSyntax newNode = typeDeclaration.WithMembers(members);
+            parameterList = parameterList.WithParameters(parameters).WithFormatterAnnotation();
 
-            return document.ReplaceNodeAsync(typeDeclaration, newNode, cancellationToken);
+            if (addToInitializer)
+            {
+                initializer = initializer
+                    .WithArgumentList(argumentList.WithArguments(arguments))
+                    .WithFormatterAnnotation();
+            }
+
+            body = body.WithStatements(statements);
+
+            constructorDeclaration = constructorDeclaration.Update(
+                constructorDeclaration.AttributeLists,
+                constructorDeclaration.Modifiers,
+                constructorDeclaration.Identifier,
+                parameterList,
+                initializer,
+                body,
+                constructorDeclaration.SemicolonToken);
+
+            members = members.ReplaceAt(i, constructorDeclaration);
         }
 
-        private static string GetParameterName(
-            string name,
-            SeparatedSyntaxList<ParameterSyntax> parameters,
-            ref HashSet<string> reservedNames)
+        TypeDeclarationSyntax newNode = typeDeclaration.WithMembers(members);
+
+        return document.ReplaceNodeAsync(typeDeclaration, newNode, cancellationToken);
+    }
+
+    private static string GetParameterName(
+        string name,
+        SeparatedSyntaxList<ParameterSyntax> parameters,
+        ref HashSet<string> reservedNames)
+    {
+        var isConflict = false;
+
+        foreach (ParameterSyntax parameter in parameters)
         {
-            var isConflict = false;
-
-            foreach (ParameterSyntax parameter in parameters)
+            if (string.Equals(name, parameter.Identifier.ValueText, StringComparison.Ordinal))
             {
-                if (string.Equals(name, parameter.Identifier.ValueText, StringComparison.Ordinal))
-                {
-                    isConflict = true;
-                    break;
-                }
+                isConflict = true;
+                break;
             }
-
-            if (!isConflict)
-                return name;
-
-            if (reservedNames == null)
-                reservedNames = new HashSet<string>();
-
-            foreach (ParameterSyntax parameter in parameters)
-                reservedNames.Add(parameter.Identifier.ValueText);
-
-            return NameGenerator.Default.EnsureUniqueName(name, reservedNames);
         }
 
-        private readonly struct FieldInfo
+        if (!isConflict)
+            return name;
+
+        if (reservedNames is null)
+            reservedNames = new HashSet<string>();
+
+        foreach (ParameterSyntax parameter in parameters)
+            reservedNames.Add(parameter.Identifier.ValueText);
+
+        return NameGenerator.Default.EnsureUniqueName(name, reservedNames);
+    }
+
+    private readonly struct FieldInfo
+    {
+        private FieldInfo(TypeSyntax type, string name, string nameCamelCase)
         {
-            private FieldInfo(TypeSyntax type, string name, string nameCamelCase)
-            {
-                Type = type;
-                Name = name;
-                NameCamelCase = nameCamelCase;
-            }
-
-            public static FieldInfo Create(TypeSyntax type, VariableDeclaratorSyntax variableDeclarator)
-            {
-                string name = variableDeclarator.Identifier.ValueText;
-                string nameCamelCase = StringUtility.ToCamelCase(name);
-
-                return new FieldInfo(type, name, nameCamelCase);
-            }
-
-            public TypeSyntax Type { get; }
-
-            public string Name { get; }
-
-            public string NameCamelCase { get; }
+            Type = type;
+            Name = name;
+            NameCamelCase = nameCamelCase;
         }
+
+        public static FieldInfo Create(TypeSyntax type, VariableDeclaratorSyntax variableDeclarator)
+        {
+            string name = variableDeclarator.Identifier.ValueText;
+            string nameCamelCase = StringUtility.ToCamelCase(name);
+
+            return new FieldInfo(type, name, nameCamelCase);
+        }
+
+        public TypeSyntax Type { get; }
+
+        public string Name { get; }
+
+        public string NameCamelCase { get; }
     }
 }

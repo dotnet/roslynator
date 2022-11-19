@@ -120,7 +120,7 @@ namespace Roslynator.CSharp.Analysis
 
             public bool IsValid
             {
-                get { return Expression != null && InvertedExpression != null; }
+                get { return Expression is not null && InvertedExpression is not null; }
             }
 
             public ExpressionSyntax Expression { get; }

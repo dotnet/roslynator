@@ -49,7 +49,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             AccessorListSyntax accessorList = propertyDeclaration.AccessorList;
 
-            if (accessorList != null
+            if (accessorList is not null
                 && span?.IsEmptyAndContainedInSpanOrBetweenSpans(accessorList) != false)
             {
                 AccessorDeclarationSyntax accessor = propertyDeclaration
@@ -59,7 +59,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (accessor?.AttributeLists.Any() == false
                     && accessor.IsKind(SyntaxKind.GetAccessorDeclaration)
-                    && accessor.Body != null
+                    && accessor.Body is not null
                     && BlockExpressionAnalysis.SupportsExpressionBody(accessor.Body, allowExpressionStatement: false))
                 {
                     return true;
@@ -71,28 +71,28 @@ namespace Roslynator.CSharp.Refactorings
 
         public static bool CanRefactor(MethodDeclarationSyntax methodDeclaration, TextSpan? span = null)
         {
-            return methodDeclaration.Body != null
+            return methodDeclaration.Body is not null
                 && span?.IsEmptyAndContainedInSpanOrBetweenSpans(methodDeclaration.Body) != false
                 && BlockExpressionAnalysis.SupportsExpressionBody(methodDeclaration.Body);
         }
 
         public static bool CanRefactor(OperatorDeclarationSyntax operatorDeclaration, TextSpan? span = null)
         {
-            return operatorDeclaration.Body != null
+            return operatorDeclaration.Body is not null
                 && span?.IsEmptyAndContainedInSpanOrBetweenSpans(operatorDeclaration.Body) != false
                 && BlockExpressionAnalysis.SupportsExpressionBody(operatorDeclaration.Body, allowExpressionStatement: false);
         }
 
         public static bool CanRefactor(ConversionOperatorDeclarationSyntax operatorDeclaration, TextSpan? span = null)
         {
-            return operatorDeclaration.Body != null
+            return operatorDeclaration.Body is not null
                 && span?.IsEmptyAndContainedInSpanOrBetweenSpans(operatorDeclaration.Body) != false
                 && BlockExpressionAnalysis.SupportsExpressionBody(operatorDeclaration.Body, allowExpressionStatement: false);
         }
 
         public static bool CanRefactor(LocalFunctionStatementSyntax localFunctionStatement, TextSpan? span = null)
         {
-            return localFunctionStatement.Body != null
+            return localFunctionStatement.Body is not null
                 && span?.IsEmptyAndContainedInSpanOrBetweenSpans(localFunctionStatement.Body) != false
                 && BlockExpressionAnalysis.SupportsExpressionBody(localFunctionStatement.Body);
         }
@@ -101,7 +101,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             AccessorListSyntax accessorList = indexerDeclaration.AccessorList;
 
-            if (accessorList != null
+            if (accessorList is not null
                 && span?.IsEmptyAndContainedInSpanOrBetweenSpans(accessorList) != false)
             {
                 AccessorDeclarationSyntax accessor = indexerDeclaration
@@ -111,7 +111,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (accessor?.AttributeLists.Any() == false
                     && accessor.IsKind(SyntaxKind.GetAccessorDeclaration)
-                    && accessor.Body != null
+                    && accessor.Body is not null
                     && BlockExpressionAnalysis.SupportsExpressionBody(accessor.Body, allowExpressionStatement: false))
                 {
                     return true;
@@ -123,14 +123,14 @@ namespace Roslynator.CSharp.Refactorings
 
         public static bool CanRefactor(DestructorDeclarationSyntax destructorDeclaration, TextSpan? span = null)
         {
-            return destructorDeclaration.Body != null
+            return destructorDeclaration.Body is not null
                 && span?.IsEmptyAndContainedInSpanOrBetweenSpans(destructorDeclaration.Body) != false
                 && BlockExpressionAnalysis.SupportsExpressionBody(destructorDeclaration.Body);
         }
 
         public static bool CanRefactor(ConstructorDeclarationSyntax constructorDeclaration, TextSpan? span = null)
         {
-            return constructorDeclaration.Body != null
+            return constructorDeclaration.Body is not null
                 && span?.IsEmptyAndContainedInSpanOrBetweenSpans(constructorDeclaration.Body) != false
                 && BlockExpressionAnalysis.SupportsExpressionBody(constructorDeclaration.Body);
         }
@@ -139,7 +139,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             BlockSyntax body = accessorDeclaration.Body;
 
-            return body != null
+            return body is not null
                 && (span?.IsEmptyAndContainedInSpanOrBetweenSpans(accessorDeclaration) != false
                     || span.Value.IsEmptyAndContainedInSpanOrBetweenSpans(body))
                 && !accessorDeclaration.AttributeLists.Any()

@@ -6,16 +6,16 @@ using Roslynator.Formatting.CodeFixes.CSharp;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.Formatting.CSharp.Tests
-{
-    public class RCS0029AddNewLineBeforeConstructorInitializerTests : AbstractCSharpDiagnosticVerifier<PutConstructorInitializerOnItsOwnLineAnalyzer, MemberDeclarationCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.PutConstructorInitializerOnItsOwnLine;
+namespace Roslynator.Formatting.CSharp.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutConstructorInitializerOnItsOwnLine)]
-        public async Task Test_ThisInitializer()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS0029AddNewLineBeforeConstructorInitializerTests : AbstractCSharpDiagnosticVerifier<PutConstructorInitializerOnItsOwnLineAnalyzer, MemberDeclarationCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.PutConstructorInitializerOnItsOwnLine;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutConstructorInitializerOnItsOwnLine)]
+    public async Task Test_ThisInitializer()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     C(object p1)
@@ -39,12 +39,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutConstructorInitializerOnItsOwnLine)]
-        public async Task Test_ThisInitializer_Multiline()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutConstructorInitializerOnItsOwnLine)]
+    public async Task Test_ThisInitializer_Multiline()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     C(object p1)
@@ -72,12 +72,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutConstructorInitializerOnItsOwnLine)]
-        public async Task Test_BaseInitializer()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.PutConstructorInitializerOnItsOwnLine)]
+    public async Task Test_BaseInitializer()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class B
 {
     protected B(object p1)
@@ -105,6 +105,5 @@ class C : B
     }
 }
 ");
-        }
     }
 }

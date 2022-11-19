@@ -8,80 +8,79 @@ using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp.CodeStyle;
 
-namespace Roslynator.CSharp.Analysis
+namespace Roslynator.CSharp.Analysis;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class AddOrRemoveParenthesesWhenCreatingNewObjectAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class AddOrRemoveParenthesesWhenCreatingNewObjectAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
+            if (_supportedDiagnostics.IsDefault)
             {
-                if (_supportedDiagnostics.IsDefault)
-                {
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.IncludeParenthesesWhenCreatingNewObject);
-                }
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.IncludeParenthesesWhenCreatingNewObject);
+            }
 
-                return _supportedDiagnostics;
+            return _supportedDiagnostics;
+        }
+    }
+
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
+
+        context.RegisterSyntaxNodeAction(f => AnalyzeObjectCreationExpression(f), SyntaxKind.ObjectCreationExpression);
+    }
+
+    private static void AnalyzeObjectCreationExpression(SyntaxNodeAnalysisContext context)
+    {
+        var objectCreationExpression = (ObjectCreationExpressionSyntax)context.Node;
+
+        if (objectCreationExpression.Type?.IsMissing != false)
+            return;
+
+        if (objectCreationExpression.Initializer?.IsMissing != false)
+            return;
+
+        ObjectCreationParenthesesStyle style = context.GetObjectCreationParenthesesStyle();
+
+        if (style == ObjectCreationParenthesesStyle.None)
+            return;
+
+        ArgumentListSyntax argumentList = objectCreationExpression.ArgumentList;
+
+        if (argumentList is null)
+        {
+            if (style == ObjectCreationParenthesesStyle.Include)
+            {
+                var span = new TextSpan(objectCreationExpression.Type.Span.End, 0);
+
+                DiagnosticHelpers.ReportDiagnostic(
+                    context,
+                    DiagnosticRules.IncludeParenthesesWhenCreatingNewObject,
+                    Location.Create(objectCreationExpression.SyntaxTree, span),
+                    "Add");
             }
         }
-
-        public override void Initialize(AnalysisContext context)
+        else if (!argumentList.Arguments.Any()
+            && style == ObjectCreationParenthesesStyle.Omit)
         {
-            base.Initialize(context);
+            SyntaxToken openParen = argumentList.OpenParenToken;
+            SyntaxToken closeParen = argumentList.CloseParenToken;
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeObjectCreationExpression(f), SyntaxKind.ObjectCreationExpression);
-        }
-
-        private static void AnalyzeObjectCreationExpression(SyntaxNodeAnalysisContext context)
-        {
-            var objectCreationExpression = (ObjectCreationExpressionSyntax)context.Node;
-
-            if (objectCreationExpression.Type?.IsMissing != false)
-                return;
-
-            if (objectCreationExpression.Initializer?.IsMissing != false)
-                return;
-
-            ObjectCreationParenthesesStyle style = context.GetObjectCreationParenthesesStyle();
-
-            if (style == ObjectCreationParenthesesStyle.None)
-                return;
-
-            ArgumentListSyntax argumentList = objectCreationExpression.ArgumentList;
-
-            if (argumentList == null)
+            if (!openParen.IsMissing
+                && !closeParen.IsMissing
+                && openParen.TrailingTrivia.IsEmptyOrWhitespace()
+                && closeParen.LeadingTrivia.IsEmptyOrWhitespace())
             {
-                if (style == ObjectCreationParenthesesStyle.Include)
-                {
-                    var span = new TextSpan(objectCreationExpression.Type.Span.End, 0);
-
-                    DiagnosticHelpers.ReportDiagnostic(
-                        context,
-                        DiagnosticRules.IncludeParenthesesWhenCreatingNewObject,
-                        Location.Create(objectCreationExpression.SyntaxTree, span),
-                        "Add");
-                }
-            }
-            else if (!argumentList.Arguments.Any()
-                && style == ObjectCreationParenthesesStyle.Omit)
-            {
-                SyntaxToken openParen = argumentList.OpenParenToken;
-                SyntaxToken closeParen = argumentList.CloseParenToken;
-
-                if (!openParen.IsMissing
-                    && !closeParen.IsMissing
-                    && openParen.TrailingTrivia.IsEmptyOrWhitespace()
-                    && closeParen.LeadingTrivia.IsEmptyOrWhitespace())
-                {
-                    DiagnosticHelpers.ReportDiagnostic(
-                        context,
-                        DiagnosticRules.IncludeParenthesesWhenCreatingNewObject,
-                        argumentList,
-                        "Remove");
-                }
+                DiagnosticHelpers.ReportDiagnostic(
+                    context,
+                    DiagnosticRules.IncludeParenthesesWhenCreatingNewObject,
+                    argumentList,
+                    "Remove");
             }
         }
     }

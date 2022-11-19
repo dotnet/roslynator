@@ -2,18 +2,17 @@
 
 using System.Diagnostics;
 
-namespace Roslynator.FindSymbols
+namespace Roslynator.FindSymbols;
+
+[DebuggerDisplay("{DebuggerDisplay,nq}")]
+internal abstract class FilterRule<T>
 {
-    [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    internal abstract class FilterRule<T>
-    {
-        public abstract SymbolFilterReason Reason { get; }
+    public abstract SymbolFilterReason Reason { get; }
 
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string DebuggerDisplay => $"{Reason}";
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+    private string DebuggerDisplay => $"{Reason}";
 
-        public abstract bool IsApplicable(T value);
+    public abstract bool IsApplicable(T value);
 
-        public abstract bool IsMatch(T value);
-    }
+    public abstract bool IsMatch(T value);
 }

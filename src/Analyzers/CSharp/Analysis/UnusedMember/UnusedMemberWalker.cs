@@ -85,13 +85,13 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
 
                 if (info.Name == name)
                 {
-                    if (info.Symbol == null)
+                    if (info.Symbol is null)
                     {
                         ISymbol declaredSymbol = SemanticModel.GetDeclaredSymbol(info.Node, CancellationToken);
 
-                        Debug.Assert(declaredSymbol != null, "");
+                        Debug.Assert(declaredSymbol is not null, "");
 
-                        if (declaredSymbol == null)
+                        if (declaredSymbol is null)
                         {
                             RemoveNodeAt(i);
                             continue;
@@ -104,7 +104,7 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
 
                     SymbolInfo symbolInfo = SemanticModel.GetSymbolInfo(node, CancellationToken);
 
-                    if (symbolInfo.Symbol != null)
+                    if (symbolInfo.Symbol is not null)
                     {
                         ISymbol symbol = symbolInfo.Symbol;
 
@@ -212,7 +212,7 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
 
         public override void VisitParameterList(ParameterListSyntax node)
         {
-            if (node != null)
+            if (node is not null)
                 base.VisitParameterList(node);
         }
 
@@ -259,7 +259,7 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
 
             TypeSyntax returnType = node.ReturnType;
 
-            if (returnType != null)
+            if (returnType is not null)
                 VisitType(returnType);
 
             if (!ShouldVisit)
@@ -277,7 +277,7 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
 
             TypeSyntax type = node.Type;
 
-            if (type != null)
+            if (type is not null)
                 VisitType(type);
 
             if (!ShouldVisit)
@@ -285,7 +285,7 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
 
             AccessorListSyntax accessorList = node.AccessorList;
 
-            if (accessorList != null)
+            if (accessorList is not null)
                 VisitAccessorList(accessorList);
         }
 
@@ -319,7 +319,7 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
 
             TypeSyntax type = node.Type;
 
-            if (type != null)
+            if (type is not null)
                 VisitType(type);
 
             if (!ShouldVisit)
@@ -327,7 +327,7 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
 
             EqualsValueClauseSyntax initializer = node.Initializer;
 
-            if (initializer != null)
+            if (initializer is not null)
                 VisitEqualsValueClause(initializer);
 
             if (!ShouldVisit)
@@ -335,7 +335,7 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
 
             AccessorListSyntax accessorList = node.AccessorList;
 
-            if (accessorList != null)
+            if (accessorList is not null)
             {
                 VisitAccessorList(accessorList);
             }
@@ -343,7 +343,7 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
             {
                 ArrowExpressionClauseSyntax expressionBody = node.ExpressionBody;
 
-                if (expressionBody != null)
+                if (expressionBody is not null)
                     VisitArrowExpressionClause(expressionBody);
             }
         }
@@ -357,7 +357,7 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
 
             TypeSyntax type = node.Type;
 
-            if (type != null)
+            if (type is not null)
                 VisitType(type);
 
             if (!ShouldVisit)
@@ -365,7 +365,7 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
 
             BracketedParameterListSyntax parameterList = node.ParameterList;
 
-            if (node != null)
+            if (node is not null)
                 VisitBracketedParameterList(parameterList);
 
             if (!ShouldVisit)
@@ -373,7 +373,7 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
 
             AccessorListSyntax accessorList = node.AccessorList;
 
-            if (accessorList != null)
+            if (accessorList is not null)
             {
                 VisitAccessorList(accessorList);
             }
@@ -381,7 +381,7 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
             {
                 ArrowExpressionClauseSyntax expressionBody = node.ExpressionBody;
 
-                if (expressionBody != null)
+                if (expressionBody is not null)
                     VisitArrowExpressionClause(expressionBody);
             }
         }
@@ -390,7 +390,7 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
         {
             TypeSyntax returnType = node.ReturnType;
 
-            if (returnType != null)
+            if (returnType is not null)
                 VisitType(returnType);
 
             if (!ShouldVisit)
@@ -403,7 +403,7 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
 
             BlockSyntax body = node.Body;
 
-            if (body != null)
+            if (body is not null)
             {
                 VisitBlock(body);
             }
@@ -411,7 +411,7 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
             {
                 ArrowExpressionClauseSyntax expressionBody = node.ExpressionBody;
 
-                if (expressionBody != null)
+                if (expressionBody is not null)
                 {
                     VisitArrowExpressionClause(expressionBody);
                 }
@@ -420,7 +420,7 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
 
         public override void VisitMethodDeclaration(MethodDeclarationSyntax node)
         {
-            Debug.Assert(_containingMethodSymbol == null);
+            Debug.Assert(_containingMethodSymbol is null);
 
             _containingMethodSymbol = SemanticModel.GetDeclaredSymbol(node, CancellationToken);
 
@@ -431,7 +431,7 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
 
             TypeSyntax returnType = node.ReturnType;
 
-            if (returnType != null)
+            if (returnType is not null)
                 VisitType(returnType);
 
             if (!ShouldVisit)
@@ -444,7 +444,7 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
 
             BlockSyntax body = node.Body;
 
-            if (body != null)
+            if (body is not null)
             {
                 VisitBlock(body);
             }
@@ -452,7 +452,7 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
             {
                 ArrowExpressionClauseSyntax expressionBody = node.ExpressionBody;
 
-                if (expressionBody != null)
+                if (expressionBody is not null)
                 {
                     VisitArrowExpressionClause(expressionBody);
                 }
@@ -465,7 +465,7 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
         {
             TypeSyntax type = node.Type;
 
-            if (type != null)
+            if (type is not null)
             {
                 if (type.IsKind(SyntaxKind.ArrayType))
                 {
@@ -482,7 +482,7 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
 
             InitializerExpressionSyntax initializer = node.Initializer;
 
-            if (initializer != null)
+            if (initializer is not null)
                 VisitInitializerExpression(initializer);
         }
 
@@ -512,11 +512,11 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
         {
             UnusedMemberWalker walker = _cachedInstance;
 
-            if (walker != null)
+            if (walker is not null)
             {
-                Debug.Assert(walker._containingMethodSymbol == null);
+                Debug.Assert(walker._containingMethodSymbol is null);
                 Debug.Assert(walker.Nodes.Count == 0);
-                Debug.Assert(walker.SemanticModel == null);
+                Debug.Assert(walker.SemanticModel is null);
                 Debug.Assert(walker.CancellationToken == default);
 
                 _cachedInstance = null;

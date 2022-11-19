@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0210ImplementCustomEnumeratorTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.ImplementCustomEnumerator;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ImplementCustomEnumerator)]
-        public async Task Test()
-        {
-            await VerifyRefactoringAsync(@"
+public class RR0210ImplementCustomEnumeratorTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.ImplementCustomEnumerator;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ImplementCustomEnumerator)]
+    public async Task Test()
+    {
+        await VerifyRefactoringAsync(@"
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -135,12 +135,12 @@ class C<T> : IEnumerable<T>
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ImplementCustomEnumerator)]
-        public async Task TestNoRefactoring_BaseTypeContainsEnumerator()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ImplementCustomEnumerator)]
+    public async Task TestNoRefactoring_BaseTypeContainsEnumerator()
+    {
+        await VerifyNoRefactoringAsync(@"
 using System.Collections.Generic;
 
 class [||]C : List<object>
@@ -150,6 +150,5 @@ class [||]C : List<object>
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
     }
 }

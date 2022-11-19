@@ -9,62 +9,61 @@ using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.Analysis.AddExceptionToDocumentationComment;
 using static Roslynator.CSharp.Analysis.AddExceptionToDocumentationComment.AddExceptionToDocumentationCommentAnalysis;
 
-namespace Roslynator.CSharp.Analysis
+namespace Roslynator.CSharp.Analysis;
+
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public sealed class AddExceptionToDocumentationCommentAnalyzer : BaseDiagnosticAnalyzer
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class AddExceptionToDocumentationCommentAnalyzer : BaseDiagnosticAnalyzer
+    private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
+
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        private static ImmutableArray<DiagnosticDescriptor> _supportedDiagnostics;
-
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
-            {
-                if (_supportedDiagnostics.IsDefault)
-                    Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddExceptionToDocumentationComment);
+            if (_supportedDiagnostics.IsDefault)
+                Immutable.InterlockedInitialize(ref _supportedDiagnostics, DiagnosticRules.AddExceptionToDocumentationComment);
 
-                return _supportedDiagnostics;
-            }
+            return _supportedDiagnostics;
         }
+    }
 
-        public override void Initialize(AnalysisContext context)
+    public override void Initialize(AnalysisContext context)
+    {
+        base.Initialize(context);
+
+        context.RegisterCompilationStartAction(startContext =>
         {
-            base.Initialize(context);
+            INamedTypeSymbol exceptionSymbol = startContext.Compilation.GetTypeByMetadataName("System.Exception");
 
-            context.RegisterCompilationStartAction(startContext =>
-            {
-                INamedTypeSymbol exceptionSymbol = startContext.Compilation.GetTypeByMetadataName("System.Exception");
-
-                if (exceptionSymbol == null)
-                    return;
-
-                startContext.RegisterSyntaxNodeAction(f => AnalyzeThrowStatement(f, exceptionSymbol), SyntaxKind.ThrowStatement);
-                startContext.RegisterSyntaxNodeAction(f => AnalyzeThrowExpression(f, exceptionSymbol), SyntaxKind.ThrowExpression);
-            });
-        }
-
-        private static void AnalyzeThrowStatement(SyntaxNodeAnalysisContext context, INamedTypeSymbol exceptionSymbol)
-        {
-            var throwStatement = (ThrowStatementSyntax)context.Node;
-
-            AddExceptionToDocumentationCommentAnalysisResult analysis = Analyze(throwStatement, exceptionSymbol, context.SemanticModel, context.CancellationToken);
-
-            if (!analysis.Success)
+            if (exceptionSymbol is null)
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AddExceptionToDocumentationComment, throwStatement);
-        }
+            startContext.RegisterSyntaxNodeAction(f => AnalyzeThrowStatement(f, exceptionSymbol), SyntaxKind.ThrowStatement);
+            startContext.RegisterSyntaxNodeAction(f => AnalyzeThrowExpression(f, exceptionSymbol), SyntaxKind.ThrowExpression);
+        });
+    }
 
-        private static void AnalyzeThrowExpression(SyntaxNodeAnalysisContext context, INamedTypeSymbol exceptionSymbol)
-        {
-            var throwExpression = (ThrowExpressionSyntax)context.Node;
+    private static void AnalyzeThrowStatement(SyntaxNodeAnalysisContext context, INamedTypeSymbol exceptionSymbol)
+    {
+        var throwStatement = (ThrowStatementSyntax)context.Node;
 
-            AddExceptionToDocumentationCommentAnalysisResult analysis = Analyze(throwExpression, exceptionSymbol, context.SemanticModel, context.CancellationToken);
+        AddExceptionToDocumentationCommentAnalysisResult analysis = Analyze(throwStatement, exceptionSymbol, context.SemanticModel, context.CancellationToken);
 
-            if (!analysis.Success)
-                return;
+        if (!analysis.Success)
+            return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AddExceptionToDocumentationComment, throwExpression);
-        }
+        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AddExceptionToDocumentationComment, throwStatement);
+    }
+
+    private static void AnalyzeThrowExpression(SyntaxNodeAnalysisContext context, INamedTypeSymbol exceptionSymbol)
+    {
+        var throwExpression = (ThrowExpressionSyntax)context.Node;
+
+        AddExceptionToDocumentationCommentAnalysisResult analysis = Analyze(throwExpression, exceptionSymbol, context.SemanticModel, context.CancellationToken);
+
+        if (!analysis.Success)
+            return;
+
+        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticRules.AddExceptionToDocumentationComment, throwExpression);
     }
 }

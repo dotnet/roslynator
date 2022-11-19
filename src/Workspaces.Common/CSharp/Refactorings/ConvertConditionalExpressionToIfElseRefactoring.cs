@@ -12,223 +12,222 @@ using Roslynator.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class ConvertConditionalExpressionToIfElseRefactoring
 {
-    internal static class ConvertConditionalExpressionToIfElseRefactoring
+    public const string Title = "Convert ?: to if-else";
+
+    public const string RecursiveTitle = Title + " (recursively)";
+
+    public static (CodeAction codeAction, CodeAction recursiveCodeAction) ComputeRefactoring(
+        Document document,
+        ConditionalExpressionSyntax conditionalExpression,
+        in CodeActionData data,
+        in CodeActionData recursiveData,
+        SemanticModel semanticModel,
+        CancellationToken cancellationToken = default)
     {
-        public const string Title = "Convert ?: to if-else";
+        CodeAction codeAction = null;
+        CodeAction recursiveCodeAction = null;
 
-        public const string RecursiveTitle = Title + " (recursively)";
+        ExpressionSyntax expression = conditionalExpression.WalkUpParentheses();
 
-        public static (CodeAction codeAction, CodeAction recursiveCodeAction) ComputeRefactoring(
-            Document document,
-            ConditionalExpressionSyntax conditionalExpression,
-            in CodeActionData data,
-            in CodeActionData recursiveData,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken = default)
+        SyntaxNode parent = expression.Parent;
+
+        if (parent.IsKind(SyntaxKind.ReturnStatement, SyntaxKind.YieldReturnStatement))
         {
-            CodeAction codeAction = null;
-            CodeAction recursiveCodeAction = null;
+            var statement = (StatementSyntax)parent;
 
-            ExpressionSyntax expression = conditionalExpression.WalkUpParentheses();
+            if (!data.IsDefault)
+                codeAction = CreateCodeAction(document, conditionalExpression, statement, data);
 
-            SyntaxNode parent = expression.Parent;
-
-            if (parent.IsKind(SyntaxKind.ReturnStatement, SyntaxKind.YieldReturnStatement))
+            if (!recursiveData.IsDefault && IsRecursive())
+                recursiveCodeAction = CreateCodeAction(document, conditionalExpression, statement, recursiveData, recursive: true);
+        }
+        else if (parent is AssignmentExpressionSyntax assignment)
+        {
+            if (assignment.Parent is ExpressionStatementSyntax expressionStatement)
             {
-                var statement = (StatementSyntax)parent;
-
                 if (!data.IsDefault)
-                    codeAction = CreateCodeAction(document, conditionalExpression, statement, data);
+                    codeAction = CreateCodeAction(document, conditionalExpression, expressionStatement, data);
 
                 if (!recursiveData.IsDefault && IsRecursive())
-                    recursiveCodeAction = CreateCodeAction(document, conditionalExpression, statement, recursiveData, recursive: true);
+                    recursiveCodeAction = CreateCodeAction(document, conditionalExpression, expressionStatement, recursiveData, recursive: true);
             }
-            else if (parent is AssignmentExpressionSyntax assignment)
+        }
+        else
+        {
+            SingleLocalDeclarationStatementInfo localDeclarationInfo = SyntaxInfo.SingleLocalDeclarationStatementInfo(expression);
+
+            if (localDeclarationInfo.Success)
             {
-                if (assignment.Parent is ExpressionStatementSyntax expressionStatement)
+                TypeSyntax type = localDeclarationInfo.Type;
+
+                if (!type.IsVar
+                    || semanticModel.GetTypeSymbol(type, cancellationToken)?.SupportsExplicitDeclaration() == true)
                 {
+                    LocalDeclarationStatementSyntax statement = localDeclarationInfo.Statement;
+
                     if (!data.IsDefault)
-                        codeAction = CreateCodeAction(document, conditionalExpression, expressionStatement, data);
+                        codeAction = CreateCodeAction(document, conditionalExpression, statement, semanticModel, data);
 
                     if (!recursiveData.IsDefault && IsRecursive())
-                        recursiveCodeAction = CreateCodeAction(document, conditionalExpression, expressionStatement, recursiveData, recursive: true);
+                        recursiveCodeAction = CreateCodeAction(document, conditionalExpression, statement, semanticModel, recursiveData, recursive: true);
                 }
             }
-            else
-            {
-                SingleLocalDeclarationStatementInfo localDeclarationInfo = SyntaxInfo.SingleLocalDeclarationStatementInfo(expression);
+        }
 
-                if (localDeclarationInfo.Success)
+        return (codeAction, recursiveCodeAction);
+
+        bool IsRecursive()
+        {
+            return conditionalExpression.WhenTrue.WalkDownParentheses().IsKind(SyntaxKind.ConditionalExpression)
+                || conditionalExpression.WhenFalse.WalkDownParentheses().IsKind(SyntaxKind.ConditionalExpression);
+        }
+    }
+
+    private static CodeAction CreateCodeAction(
+        Document document,
+        ConditionalExpressionSyntax conditionalExpression,
+        StatementSyntax statement,
+        in CodeActionData data,
+        bool recursive = false)
+    {
+        return data.ToCodeAction(ct => RefactorAsync(document, conditionalExpression, statement, recursive: recursive, cancellationToken: ct));
+    }
+
+    private static CodeAction CreateCodeAction(
+        Document document,
+        ConditionalExpressionSyntax conditionalExpression,
+        LocalDeclarationStatementSyntax localDeclaration,
+        SemanticModel semanticModel,
+        in CodeActionData data,
+        bool recursive = false)
+    {
+        return data.ToCodeAction(ct => RefactorAsync(document, conditionalExpression, localDeclaration, semanticModel, recursive: recursive, cancellationToken: ct));
+    }
+
+    private static Task<Document> RefactorAsync(
+        Document document,
+        ConditionalExpressionSyntax conditionalExpression,
+        StatementSyntax statement,
+        bool recursive,
+        CancellationToken cancellationToken)
+    {
+        StatementSyntax newStatement = statement.TrimTrivia();
+
+        IfStatementSyntax ifElseStatement = ConvertConditionalExpressionToIfElse(
+            conditionalExpression,
+            expression => CreateNewStatement(newStatement, expression),
+            recursive: recursive);
+
+        ifElseStatement = ifElseStatement
+            .WithTriviaFrom(statement)
+            .WithFormatterAnnotation();
+
+        return document.ReplaceNodeAsync(statement, ifElseStatement, cancellationToken);
+    }
+
+    private static StatementSyntax CreateNewStatement(StatementSyntax statement, ExpressionSyntax expression)
+    {
+        switch (statement.Kind())
+        {
+            case SyntaxKind.ReturnStatement:
                 {
-                    TypeSyntax type = localDeclarationInfo.Type;
-
-                    if (!type.IsVar
-                        || semanticModel.GetTypeSymbol(type, cancellationToken)?.SupportsExplicitDeclaration() == true)
-                    {
-                        LocalDeclarationStatementSyntax statement = localDeclarationInfo.Statement;
-
-                        if (!data.IsDefault)
-                            codeAction = CreateCodeAction(document, conditionalExpression, statement, semanticModel, data);
-
-                        if (!recursiveData.IsDefault && IsRecursive())
-                            recursiveCodeAction = CreateCodeAction(document, conditionalExpression, statement, semanticModel, recursiveData, recursive: true);
-                    }
+                    return ((ReturnStatementSyntax)statement).WithExpression(expression);
                 }
-            }
+            case SyntaxKind.YieldReturnStatement:
+                {
+                    return ((YieldStatementSyntax)statement).WithExpression(expression);
+                }
+            case SyntaxKind.ExpressionStatement:
+                {
+                    var expressionStatement = (ExpressionStatementSyntax)statement;
 
-            return (codeAction, recursiveCodeAction);
+                    var assignment = (AssignmentExpressionSyntax)expressionStatement.Expression;
 
-            bool IsRecursive()
-            {
-                return conditionalExpression.WhenTrue.WalkDownParentheses().IsKind(SyntaxKind.ConditionalExpression)
-                    || conditionalExpression.WhenFalse.WalkDownParentheses().IsKind(SyntaxKind.ConditionalExpression);
-            }
+                    return expressionStatement.WithExpression(assignment.WithRight(expression));
+                }
+            default:
+                {
+                    throw new InvalidOperationException();
+                }
         }
+    }
 
-        private static CodeAction CreateCodeAction(
-            Document document,
-            ConditionalExpressionSyntax conditionalExpression,
-            StatementSyntax statement,
-            in CodeActionData data,
-            bool recursive = false)
+    private static Task<Document> RefactorAsync(
+        Document document,
+        ConditionalExpressionSyntax conditionalExpression,
+        LocalDeclarationStatementSyntax localDeclaration,
+        SemanticModel semanticModel,
+        bool recursive,
+        CancellationToken cancellationToken)
+    {
+        VariableDeclaratorSyntax variableDeclarator = localDeclaration.Declaration.Variables[0];
+
+        LocalDeclarationStatementSyntax newLocalDeclaration = localDeclaration.RemoveNode(variableDeclarator.Initializer, SyntaxRemoveOptions.KeepExteriorTrivia);
+
+        TypeSyntax type = newLocalDeclaration.Declaration.Type;
+
+        if (type.IsVar)
         {
-            return data.ToCodeAction(ct => RefactorAsync(document, conditionalExpression, statement, recursive: recursive, cancellationToken: ct));
+            newLocalDeclaration = newLocalDeclaration.ReplaceNode(
+                type,
+                semanticModel.GetTypeSymbol(conditionalExpression)
+                    .ToMinimalTypeSyntax(semanticModel, type.SpanStart)
+                    .WithTriviaFrom(type));
         }
 
-        private static CodeAction CreateCodeAction(
-            Document document,
-            ConditionalExpressionSyntax conditionalExpression,
-            LocalDeclarationStatementSyntax localDeclaration,
-            SemanticModel semanticModel,
-            in CodeActionData data,
-            bool recursive = false)
+        IdentifierNameSyntax left = IdentifierName(variableDeclarator.Identifier.ValueText);
+
+        IfStatementSyntax ifElseStatement = ConvertConditionalExpressionToIfElse(conditionalExpression, expression => SimpleAssignmentStatement(left, expression), recursive: recursive);
+
+        StatementListInfo statementsInfo = SyntaxInfo.StatementListInfo(localDeclaration);
+
+        SyntaxList<StatementSyntax> statements = statementsInfo.Statements;
+
+        SyntaxList<StatementSyntax> newStatements = statements
+            .Replace(localDeclaration, newLocalDeclaration.WithFormatterAnnotation())
+            .Insert(statements.IndexOf(localDeclaration) + 1, ifElseStatement.WithFormatterAnnotation());
+
+        return document.ReplaceStatementsAsync(statementsInfo, newStatements, cancellationToken);
+    }
+
+    private static IfStatementSyntax ConvertConditionalExpressionToIfElse(
+        ConditionalExpressionSyntax conditionalExpression,
+        Func<ExpressionSyntax, StatementSyntax> createStatement,
+        bool recursive = false)
+    {
+        StatementSyntax statement = null;
+
+        if (recursive
+            && conditionalExpression.WhenTrue.WalkDownParentheses() is ConditionalExpressionSyntax whenTrue)
         {
-            return data.ToCodeAction(ct => RefactorAsync(document, conditionalExpression, localDeclaration, semanticModel, recursive: recursive, cancellationToken: ct));
+            statement = ConvertConditionalExpressionToIfElse(whenTrue, createStatement, recursive: true);
         }
-
-        private static Task<Document> RefactorAsync(
-            Document document,
-            ConditionalExpressionSyntax conditionalExpression,
-            StatementSyntax statement,
-            bool recursive,
-            CancellationToken cancellationToken)
+        else
         {
-            StatementSyntax newStatement = statement.TrimTrivia();
-
-            IfStatementSyntax ifElseStatement = ConvertConditionalExpressionToIfElse(
-                conditionalExpression,
-                expression => CreateNewStatement(newStatement, expression),
-                recursive: recursive);
-
-            ifElseStatement = ifElseStatement
-                .WithTriviaFrom(statement)
-                .WithFormatterAnnotation();
-
-            return document.ReplaceNodeAsync(statement, ifElseStatement, cancellationToken);
+            statement = createStatement(conditionalExpression.WhenTrue.WithoutTrivia());
         }
 
-        private static StatementSyntax CreateNewStatement(StatementSyntax statement, ExpressionSyntax expression)
+        ElseClauseSyntax elseClause;
+
+        if (recursive
+            && conditionalExpression.WhenFalse.WalkDownParentheses() is ConditionalExpressionSyntax whenFalse)
         {
-            switch (statement.Kind())
-            {
-                case SyntaxKind.ReturnStatement:
-                    {
-                        return ((ReturnStatementSyntax)statement).WithExpression(expression);
-                    }
-                case SyntaxKind.YieldReturnStatement:
-                    {
-                        return ((YieldStatementSyntax)statement).WithExpression(expression);
-                    }
-                case SyntaxKind.ExpressionStatement:
-                    {
-                        var expressionStatement = (ExpressionStatementSyntax)statement;
+            IfStatementSyntax ifElseStatement = ConvertConditionalExpressionToIfElse(whenFalse, createStatement, recursive: true);
 
-                        var assignment = (AssignmentExpressionSyntax)expressionStatement.Expression;
-
-                        return expressionStatement.WithExpression(assignment.WithRight(expression));
-                    }
-                default:
-                    {
-                        throw new InvalidOperationException();
-                    }
-            }
+            elseClause = ElseClause(ifElseStatement);
         }
-
-        private static Task<Document> RefactorAsync(
-            Document document,
-            ConditionalExpressionSyntax conditionalExpression,
-            LocalDeclarationStatementSyntax localDeclaration,
-            SemanticModel semanticModel,
-            bool recursive,
-            CancellationToken cancellationToken)
+        else
         {
-            VariableDeclaratorSyntax variableDeclarator = localDeclaration.Declaration.Variables[0];
-
-            LocalDeclarationStatementSyntax newLocalDeclaration = localDeclaration.RemoveNode(variableDeclarator.Initializer, SyntaxRemoveOptions.KeepExteriorTrivia);
-
-            TypeSyntax type = newLocalDeclaration.Declaration.Type;
-
-            if (type.IsVar)
-            {
-                newLocalDeclaration = newLocalDeclaration.ReplaceNode(
-                    type,
-                    semanticModel.GetTypeSymbol(conditionalExpression)
-                        .ToMinimalTypeSyntax(semanticModel, type.SpanStart)
-                        .WithTriviaFrom(type));
-            }
-
-            IdentifierNameSyntax left = IdentifierName(variableDeclarator.Identifier.ValueText);
-
-            IfStatementSyntax ifElseStatement = ConvertConditionalExpressionToIfElse(conditionalExpression, expression => SimpleAssignmentStatement(left, expression), recursive: recursive);
-
-            StatementListInfo statementsInfo = SyntaxInfo.StatementListInfo(localDeclaration);
-
-            SyntaxList<StatementSyntax> statements = statementsInfo.Statements;
-
-            SyntaxList<StatementSyntax> newStatements = statements
-                .Replace(localDeclaration, newLocalDeclaration.WithFormatterAnnotation())
-                .Insert(statements.IndexOf(localDeclaration) + 1, ifElseStatement.WithFormatterAnnotation());
-
-            return document.ReplaceStatementsAsync(statementsInfo, newStatements, cancellationToken);
+            elseClause = ElseClause(Block(createStatement(conditionalExpression.WhenFalse.WithoutTrivia())));
         }
 
-        private static IfStatementSyntax ConvertConditionalExpressionToIfElse(
-            ConditionalExpressionSyntax conditionalExpression,
-            Func<ExpressionSyntax, StatementSyntax> createStatement,
-            bool recursive = false)
-        {
-            StatementSyntax statement = null;
-
-            if (recursive
-                && conditionalExpression.WhenTrue.WalkDownParentheses() is ConditionalExpressionSyntax whenTrue)
-            {
-                statement = ConvertConditionalExpressionToIfElse(whenTrue, createStatement, recursive: true);
-            }
-            else
-            {
-                statement = createStatement(conditionalExpression.WhenTrue.WithoutTrivia());
-            }
-
-            ElseClauseSyntax elseClause;
-
-            if (recursive
-                && conditionalExpression.WhenFalse.WalkDownParentheses() is ConditionalExpressionSyntax whenFalse)
-            {
-                IfStatementSyntax ifElseStatement = ConvertConditionalExpressionToIfElse(whenFalse, createStatement, recursive: true);
-
-                elseClause = ElseClause(ifElseStatement);
-            }
-            else
-            {
-                elseClause = ElseClause(Block(createStatement(conditionalExpression.WhenFalse.WithoutTrivia())));
-            }
-
-            return IfStatement(
-                conditionalExpression.Condition.WalkDownParentheses().WithoutTrivia(),
-                Block(statement),
-                elseClause);
-        }
+        return IfStatement(
+            conditionalExpression.Condition.WalkDownParentheses().WithoutTrivia(),
+            Block(statement),
+            elseClause);
     }
 }

@@ -8,35 +8,34 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.Refactorings;
+
+internal static class RemoveRedundantAsOperatorRefactoring
 {
-    internal static class RemoveRedundantAsOperatorRefactoring
+    public static Task<Document> RefactorAsync(
+        Document document,
+        BinaryExpressionSyntax binaryExpression,
+        CancellationToken cancellationToken)
     {
-        public static Task<Document> RefactorAsync(
-            Document document,
-            BinaryExpressionSyntax binaryExpression,
-            CancellationToken cancellationToken)
+        ExpressionSyntax left = binaryExpression.Left;
+        ExpressionSyntax right = binaryExpression.Right;
+
+        TextSpan span = TextSpan.FromBounds(left.Span.End, right.Span.End);
+        IEnumerable<SyntaxTrivia> trivia = binaryExpression.DescendantTrivia(span);
+
+        ExpressionSyntax newNode = left;
+
+        if (trivia.All(f => f.IsWhitespaceOrEndOfLineTrivia()))
         {
-            ExpressionSyntax left = binaryExpression.Left;
-            ExpressionSyntax right = binaryExpression.Right;
-
-            TextSpan span = TextSpan.FromBounds(left.Span.End, right.Span.End);
-            IEnumerable<SyntaxTrivia> trivia = binaryExpression.DescendantTrivia(span);
-
-            ExpressionSyntax newNode = left;
-
-            if (trivia.All(f => f.IsWhitespaceOrEndOfLineTrivia()))
-            {
-                newNode = newNode.WithTrailingTrivia(binaryExpression.GetTrailingTrivia());
-            }
-            else
-            {
-                newNode = newNode
-                    .WithTrailingTrivia(trivia.Concat(binaryExpression.GetTrailingTrivia()))
-                    .WithFormatterAnnotation();
-            }
-
-            return document.ReplaceNodeAsync(binaryExpression, newNode, cancellationToken);
+            newNode = newNode.WithTrailingTrivia(binaryExpression.GetTrailingTrivia());
         }
+        else
+        {
+            newNode = newNode
+                .WithTrailingTrivia(trivia.Concat(binaryExpression.GetTrailingTrivia()))
+                .WithFormatterAnnotation();
+        }
+
+        return document.ReplaceNodeAsync(binaryExpression, newNode, cancellationToken);
     }
 }

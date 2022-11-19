@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0109RemoveStatementTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.RemoveStatement;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveStatement)]
-        public async Task Test_If()
-        {
-            await VerifyRefactoringAsync(@"
+public class RR0109RemoveStatementTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.RemoveStatement;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveStatement)]
+    public async Task Test_If()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M()
@@ -34,12 +34,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveStatement)]
-        public async Task Test_IfInSwitchSection()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveStatement)]
+    public async Task Test_IfInSwitchSection()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M()
@@ -77,12 +77,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveStatement)]
-        public async Task Test_IfElseIf()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveStatement)]
+    public async Task Test_IfElseIf()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     void M()
@@ -106,12 +106,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveStatement)]
-        public async Task Test_UsingInsideUsing()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveStatement)]
+    public async Task Test_UsingInsideUsing()
+    {
+        await VerifyRefactoringAsync(@"
 using System;
 
 class C
@@ -137,12 +137,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveStatement)]
-        public async Task TestNoRefactoring_EmbeddedIf()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.RemoveStatement)]
+    public async Task TestNoRefactoring_EmbeddedIf()
+    {
+        await VerifyNoRefactoringAsync(@"
 class C
 {
     void M()
@@ -156,6 +156,5 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
     }
 }

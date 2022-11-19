@@ -6,16 +6,16 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Analysis.Tests
-{
-    public class RCS1123AddParenthesesWhenNecessaryTests : AbstractCSharpDiagnosticVerifier<AddParenthesesWhenNecessaryAnalyzer, AddParenthesesWhenNecessaryCodeFixProvider>
-    {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddParenthesesWhenNecessary;
+namespace Roslynator.CSharp.Analysis.Tests;
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParenthesesWhenNecessary)]
-        public async Task Test()
-        {
-            await VerifyDiagnosticAndFixAsync(@"
+public class RCS1123AddParenthesesWhenNecessaryTests : AbstractCSharpDiagnosticVerifier<AddParenthesesWhenNecessaryAnalyzer, AddParenthesesWhenNecessaryCodeFixProvider>
+{
+    public override DiagnosticDescriptor Descriptor { get; } = DiagnosticRules.AddParenthesesWhenNecessary;
+
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParenthesesWhenNecessary)]
+    public async Task Test()
+    {
+        await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -48,12 +48,12 @@ class C
     }
 }
 ");
-        }
+    }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParenthesesWhenNecessary)]
-        public async Task TestNoDiagnostic_PreprocessorDirectives()
-        {
-            await VerifyNoDiagnosticAsync(@"
+    [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParenthesesWhenNecessary)]
+    public async Task TestNoDiagnostic_PreprocessorDirectives()
+    {
+        await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -75,6 +75,5 @@ class C
     }
 }
 ");
-        }
     }
 }

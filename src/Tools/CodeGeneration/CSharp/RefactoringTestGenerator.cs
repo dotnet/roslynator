@@ -4,21 +4,21 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.Metadata;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-namespace Roslynator.CodeGeneration.CSharp
+namespace Roslynator.CodeGeneration.CSharp;
+
+public static class RefactoringTestGenerator
 {
-    public static class RefactoringTestGenerator
+    public static CompilationUnitSyntax Generate(RefactoringMetadata refactoring, string className)
     {
-        public static CompilationUnitSyntax Generate(RefactoringMetadata refactoring, string className)
-        {
-            string s = _sourceTemplate
-                .Replace("$ClassName$", className)
-                .Replace("$Id$", refactoring.Id)
-                .Replace("$Identifier$", refactoring.Identifier);
+        string s = _sourceTemplate
+            .Replace("$ClassName$", className)
+            .Replace("$Id$", refactoring.Id)
+            .Replace("$Identifier$", refactoring.Identifier);
 
-            return ParseCompilationUnit(s);
-        }
+        return ParseCompilationUnit(s);
+    }
 
-        private const string _sourceTemplate = @"
+    private const string _sourceTemplate = @"
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.CodeRefactorings;
 using Roslynator.Tests;
@@ -89,5 +89,4 @@ class C
     }
 }
 ";
-    }
 }

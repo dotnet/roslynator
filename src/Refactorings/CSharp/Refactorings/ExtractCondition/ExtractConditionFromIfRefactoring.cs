@@ -3,18 +3,17 @@
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings.ExtractCondition
-{
-    internal abstract class ExtractConditionFromIfRefactoring : ExtractConditionRefactoring<IfStatementSyntax>
-    {
-        public override StatementSyntax GetStatement(IfStatementSyntax statement)
-        {
-            return statement.Statement;
-        }
+namespace Roslynator.CSharp.Refactorings.ExtractCondition;
 
-        public override IfStatementSyntax SetStatement(IfStatementSyntax statement, StatementSyntax newStatement)
-        {
-            return statement.WithStatement(newStatement);
-        }
+internal abstract class ExtractConditionFromIfRefactoring : ExtractConditionRefactoring<IfStatementSyntax>
+{
+    public override StatementSyntax GetStatement(IfStatementSyntax statement)
+    {
+        return statement.Statement;
+    }
+
+    public override IfStatementSyntax SetStatement(IfStatementSyntax statement, StatementSyntax newStatement)
+    {
+        return statement.WithStatement(newStatement);
     }
 }

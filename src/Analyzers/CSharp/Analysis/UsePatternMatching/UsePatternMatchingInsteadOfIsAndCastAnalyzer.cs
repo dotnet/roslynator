@@ -53,7 +53,7 @@ namespace Roslynator.CSharp.Analysis.UsePatternMatching
 
             var identifierName = expression as IdentifierNameSyntax;
 
-            if (identifierName == null)
+            if (identifierName is null)
             {
                 if (expression.IsKind(SyntaxKind.SimpleMemberAccessExpression))
                 {
@@ -63,7 +63,7 @@ namespace Roslynator.CSharp.Analysis.UsePatternMatching
                         identifierName = memberAccess.Name as IdentifierNameSyntax;
                 }
 
-                if (identifierName == null)
+                if (identifierName is null)
                     return;
             }
 
@@ -85,7 +85,7 @@ namespace Roslynator.CSharp.Analysis.UsePatternMatching
 
                         ExpressionSyntax right = logicalAnd.Right;
 
-                        if (right == null)
+                        if (right is null)
                             return;
 
                         SemanticModel semanticModel = context.SemanticModel;
@@ -112,7 +112,7 @@ namespace Roslynator.CSharp.Analysis.UsePatternMatching
 
                         StatementSyntax statement = ifStatement.Statement;
 
-                        if (statement == null)
+                        if (statement is null)
                             return;
 
                         SemanticModel semanticModel = context.SemanticModel;
@@ -151,7 +151,7 @@ namespace Roslynator.CSharp.Analysis.UsePatternMatching
             }
             finally
             {
-                if (walker != null)
+                if (walker is not null)
                     UsePatternMatchingWalker.Free(walker);
             }
 

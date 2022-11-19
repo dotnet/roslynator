@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using Roslynator.Testing.CSharp;
 using Xunit;
 
-namespace Roslynator.CSharp.Refactorings.Tests
-{
-    public class RR0208AddTagToDocumentationCommentTests : AbstractCSharpRefactoringVerifier
-    {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.AddTagToDocumentationComment;
+namespace Roslynator.CSharp.Refactorings.Tests;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddTagToDocumentationComment)]
-        public async Task Test()
-        {
-            await VerifyRefactoringAsync(@"
+public class RR0208AddTagToDocumentationCommentTests : AbstractCSharpRefactoringVerifier
+{
+    public override string RefactoringId { get; } = RefactoringIdentifiers.AddTagToDocumentationComment;
+
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddTagToDocumentationComment)]
+    public async Task Test()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     /// <summary>
@@ -34,12 +34,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddTagToDocumentationComment)]
-        public async Task Test_StartOfText()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddTagToDocumentationComment)]
+    public async Task Test_StartOfText()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     /// <summary>
@@ -60,12 +60,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddTagToDocumentationComment)]
-        public async Task Test_EndOfText()
-        {
-            await VerifyRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddTagToDocumentationComment)]
+    public async Task Test_EndOfText()
+    {
+        await VerifyRefactoringAsync(@"
 class C
 {
     /// <summary>
@@ -86,12 +86,12 @@ class C
     }
 }
 ", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddTagToDocumentationComment)]
-        public async Task TestNoRefactoring_EmptySpan()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddTagToDocumentationComment)]
+    public async Task TestNoRefactoring_EmptySpan()
+    {
+        await VerifyNoRefactoringAsync(@"
 class C
 {
     /// <summary>
@@ -101,12 +101,12 @@ class C
     {
     }
 }", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
+    }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddTagToDocumentationComment)]
-        public async Task TestNoRefactoring_InvalidSpan()
-        {
-            await VerifyNoRefactoringAsync(@"
+    [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddTagToDocumentationComment)]
+    public async Task TestNoRefactoring_InvalidSpan()
+    {
+        await VerifyNoRefactoringAsync(@"
 class C
 {
     /// <summary>
@@ -123,6 +123,5 @@ class C
     {
     }
 }", equivalenceKey: EquivalenceKey.Create(RefactoringId));
-        }
     }
 }
